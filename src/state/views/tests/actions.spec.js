@@ -467,7 +467,7 @@ describe('actions', () => {
             const jobType = 'jobTypeValue'
             const jobPartialParams = {exampleVar: 'exampleValue'}
 
-            return store.dispatch(actions.createJob(view, jobType, jobPartialParams)).then(() => {
+            return store.dispatch(actions.bulkUpdate(view, jobType, jobPartialParams)).then(() => {
                 expect(mockServer.history).toMatchSnapshot()
             })
         })
@@ -486,7 +486,7 @@ describe('actions', () => {
             const jobType = 'jobTypeValue'
             const jobPartialParams = {exampleVar: 'exampleValue'}
 
-            return store.dispatch(actions.createJob(view, jobType, jobPartialParams)).then(() => {
+            return store.dispatch(actions.bulkUpdate(view, jobType, jobPartialParams)).then(() => {
                 expect(mockServer.history).toMatchSnapshot()
             })
         })

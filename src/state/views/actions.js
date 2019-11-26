@@ -11,7 +11,7 @@ import {BASE_VIEW_ID, NEXT_VIEW_NAV_DIRECTION, PREV_VIEW_NAV_DIRECTION, VIEW_NAV
 import {notify} from '../notifications/actions'
 import socketManager from '../../services/socketManager'
 import {getPluralObjectName, getHashOfObj, isCurrentlyOnTicket, isCurrentlyOnView} from '../../utils'
-import {buildJobMessage} from '../../utils/notificationUtils'
+import {buildChangesMessage} from '../../utils/notificationUtils'
 import {getMoment} from '../../utils/date'
 import type {dispatchType, getStateType, thunkActionType} from '../types'
 
@@ -381,7 +381,7 @@ export function toggleIdInSelectedItemsIds(id: number) {
     }
 }
 
-export function createJob(view: viewType, jobType: string, jobPartialParams: Object): thunkActionType {
+export function bulkUpdate(view: viewType, jobType: string, jobPartialParams: Object): thunkActionType {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         let requestPayload
         if (view.get('dirty', false)) {
@@ -406,7 +406,7 @@ export function createJob(view: viewType, jobType: string, jobPartialParams: Obj
             status: 'loading',
             dismissAfter: 10000,
             closeOnNext: true,
-            message:  buildJobMessage(jobType, true,
+            message:  buildChangesMessage(true,
                 viewsConfig.getConfigByType(view.get('type')).get('plural'),
                 jobPartialParams),
             buttons: []
@@ -442,8 +442,8 @@ export function createJob(view: viewType, jobType: string, jobPartialParams: Obj
                 if (error.response.status === 403) {
                     notification.message = error.response.data.error.msg
                 } else {
-                    notification.message = 'Failed to apply action on ' +
-                        viewsConfig.getConfigByType(view.get('type')).get('plural') + ' view. Please try again.'
+                    notification.message = 'Failed to modify ' +
+                        viewsConfig.getConfigByType(view.get('type')).get('plural') + '. Please try again.'
                 }
                 dispatch(updateNotification(notification))
                 throw error

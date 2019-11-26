@@ -1,11 +1,9 @@
-import {buildJobMessage} from '../notificationUtils'
-import {APPLY_MACRO_JOB_TYPE, UPDATE_TICKET_JOB_TYPE, EXPORT_TICKET_JOB_TYPE} from '../../constants/job'
-
+import {buildChangesMessage} from '../notificationUtils'
 
 describe('Notification utils', () => {
     describe('buildActionNotificationMessage()', () => {
         it('Should return the message for a assignee update', () => {
-            expect(buildJobMessage(UPDATE_TICKET_JOB_TYPE, true, 'tickets', {
+            expect(buildChangesMessage(true, 'tickets', {
                 'updates': {
                     'assignee_user': {'name': 'John Snow'}
                 }
@@ -14,7 +12,7 @@ describe('Notification utils', () => {
         })
 
         it('Should return the message for a status update', () => {
-            expect(buildJobMessage(UPDATE_TICKET_JOB_TYPE, false, 'tickets', {
+            expect(buildChangesMessage(false, 'tickets', {
                 'updates': {
                     'status': 'open'
                 }
@@ -22,7 +20,7 @@ describe('Notification utils', () => {
         })
 
         it('Should return the message for one tag update', () => {
-            expect(buildJobMessage(UPDATE_TICKET_JOB_TYPE, false, 'ticket', {
+            expect(buildChangesMessage(false, 'ticket', {
                 'updates': {
                     'tags': ['Awesome Tag']
                 }
@@ -30,7 +28,7 @@ describe('Notification utils', () => {
         })
 
         it('Should return the message for multiple tags update', () => {
-            expect(buildJobMessage(UPDATE_TICKET_JOB_TYPE, true, 'ticket', {
+            expect(buildChangesMessage(true, 'ticket', {
                 'updates': {
                     'tags': ['Tag one', 'Tag two']
                 }
@@ -38,7 +36,7 @@ describe('Notification utils', () => {
         })
 
         it('Should return the message for priority update', () => {
-            expect(buildJobMessage(UPDATE_TICKET_JOB_TYPE, false, 'tickets', {
+            expect(buildChangesMessage(false, 'tickets', {
                 'updates': {
                     'priority': 'normal'
                 }
@@ -46,7 +44,7 @@ describe('Notification utils', () => {
         })
 
         it('Should return the message for when we trash an item', () => {
-            expect(buildJobMessage(UPDATE_TICKET_JOB_TYPE, true, 'tickets', {
+            expect(buildChangesMessage(true, 'tickets', {
                 'updates': {
                     'trashed_datetime': '2018-01-01T14:00:00'
                 }
@@ -54,7 +52,7 @@ describe('Notification utils', () => {
         })
 
         it('Should return the message for when we untrash an item', () => {
-            expect(buildJobMessage(UPDATE_TICKET_JOB_TYPE, true, 'tickets', {
+            expect(buildChangesMessage(true, 'tickets', {
                 'updates': {
                     'trashed_datetime': null
                 }
@@ -62,7 +60,7 @@ describe('Notification utils', () => {
         })
 
         it('Should return the message for unhandled update', () => {
-            expect(buildJobMessage(UPDATE_TICKET_JOB_TYPE, false, 'tickets', {
+            expect(buildChangesMessage(false, 'tickets', {
                 'updates': {
                     'non_handled_key': 1
                 }
@@ -70,7 +68,7 @@ describe('Notification utils', () => {
         })
 
         it('Should return the message for multiple updates', () => {
-            expect(buildJobMessage(UPDATE_TICKET_JOB_TYPE, true, 'tickets', {
+            expect(buildChangesMessage(true, 'tickets', {
                 'updates': {
                     'status': 'open',
                     'subject': 'new subject'
@@ -79,33 +77,23 @@ describe('Notification utils', () => {
         })
 
         it('Should return the message for an apply macro action that also close items', () => {
-            expect(buildJobMessage(APPLY_MACRO_JOB_TYPE, false, 'tickets',{
+            expect(buildChangesMessage(false, 'tickets',{
                 'macro_id': 1,
                 'apply_and_close': true
             }, 15)).toMatchSnapshot()
         })
 
         it('Should return the message for an apply macro action that don\'t close the items', () => {
-            expect(buildJobMessage(APPLY_MACRO_JOB_TYPE, false, 'tickets', {
+            expect(buildChangesMessage(false, 'tickets', {
                 'macro_id': 1,
                 'apply_and_close': false
             }, 15)).toMatchSnapshot()
         })
 
         it('Should return the message for an unknown action', () => {
-            expect(buildJobMessage(UPDATE_TICKET_JOB_TYPE, true, 'tickets', {
+            expect(buildChangesMessage(true, 'tickets', {
                 'random_key': {}
             })).toMatchSnapshot()
-        })
-
-        it('Should return the message for an export tickets job', () => {
-            expect(buildJobMessage(EXPORT_TICKET_JOB_TYPE, true, 'tickets', {})
-            ).toMatchSnapshot()
-        })
-
-        it('Should return the message for an unknow job type', () => {
-            expect(buildJobMessage('FAKE_JOB_TYPE', false, 'customers',
-                {}, 30)).toMatchSnapshot()
         })
     })
 })

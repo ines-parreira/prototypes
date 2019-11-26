@@ -122,7 +122,7 @@ export default class MacroModal extends React.Component<Props, State> {
     _launchApplyMacroJob = (jobPartialParams: Object) => {
         const actionsToUse = this.props.allViewItemsSelected ? this.props.actions.views : this.props.actions.tickets
         const jobSelection = this.props.allViewItemsSelected ? this.props.activeView : this.props.selectedItemsIds
-        actionsToUse.createJob(jobSelection, APPLY_MACRO_JOB_TYPE, jobPartialParams)
+        actionsToUse.bulkUpdate(jobSelection, APPLY_MACRO_JOB_TYPE, jobPartialParams)
             .then(() => {
                 this.props.actions.views.updateSelectedItemsIds(fromJS([]))
             })

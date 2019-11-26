@@ -52,7 +52,7 @@ exports[`TicketDetailContainer component should render container for new ticket 
           "views": Object {
             "addFieldFilter": [Function],
             "addRecentView": [Function],
-            "createJob": [Function],
+            "bulkUpdate": [Function],
             "deleteView": [Function],
             "deleteViewSuccess": [Function],
             "fetchActiveViewCount": [Function],
