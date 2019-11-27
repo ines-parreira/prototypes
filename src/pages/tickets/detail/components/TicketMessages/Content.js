@@ -69,7 +69,7 @@ export default class Content extends React.Component<Props, State> {
             isHtml,
         )
 
-        if (!displayContent) {
+        if (!displayContent && !isStripped) {
             return null
         }
 
