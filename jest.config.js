@@ -80,7 +80,7 @@ module.exports = {
 
     // A map from regular expressions to module names that allow to stub out resources with a single module
     moduleNameMapper: {
-        '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/g/static/private/js/test/__mocks__/fileMock.js',
+        '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/g/static/private/js/tests/__mocks__/fileMock.js',
         '\\.(css|less)$': 'identity-obj-proxy'
     },
 
@@ -127,7 +127,7 @@ module.exports = {
 
     // The paths to modules that run some code to configure or set up the testing environment before each test
     setupFiles: [
-        './g/static/private/js/test/setup.js'
+        './g/static/private/js/tests/setup.js'
     ],
 
     // The path to a module that runs some code to configure or set up the testing framework before each test

@@ -14,7 +14,7 @@ import {initialState as ticketInitialState} from '../../ticket/reducers'
 import {integrationsState} from '../../../fixtures/integrations'
 import * as integrationSelectors from '../../integrations/selectors'
 import {getLastSenderChannel, getPreferredChannel} from '../../ticket/utils'
-import {smoochTicket, emailTicket, instagramMedia} from '../../ticket/test/fixtures'
+import {smoochTicket, emailTicket, instagramMedia} from '../../ticket/tests/fixtures'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

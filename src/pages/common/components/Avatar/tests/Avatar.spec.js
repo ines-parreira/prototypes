@@ -3,7 +3,7 @@ import {shallow, mount} from 'enzyme'
 
 import {getAvatar} from '../utils'
 import Avatar from '../Avatar'
-import {mockImageOnload} from '../../../../../test/utils'
+import {mockImageOnload} from '../../../../../tests/utils'
 
 describe('Avatar component', () => {
     mockImageOnload()
