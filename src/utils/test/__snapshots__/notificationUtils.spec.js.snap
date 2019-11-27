@@ -8,6 +8,10 @@ exports[`Notification utils buildActionNotificationMessage() Should return the m
 
 exports[`Notification utils buildActionNotificationMessage() Should return the message for an apply macro action that don't close the items 1`] = `"15 tickets will be updated with the macro in a few seconds."`;
 
+exports[`Notification utils buildActionNotificationMessage() Should return the message for an export tickets job 1`] = `"All the tickets in this view will be exported. You will receive the download link via email once the export is done."`;
+
+exports[`Notification utils buildActionNotificationMessage() Should return the message for an unknow job type 1`] = `"30 customers will be updated in a few seconds."`;
+
 exports[`Notification utils buildActionNotificationMessage() Should return the message for an unknown action 1`] = `"All the tickets in this view will be updated."`;
 
 exports[`Notification utils buildActionNotificationMessage() Should return the message for multiple tags update 1`] = `"All the ticket in this view will be tagged with 2 tags."`;

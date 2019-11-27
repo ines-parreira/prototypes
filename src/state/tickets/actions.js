@@ -4,7 +4,7 @@ import {updateNotification} from 'reapop'
 
 import {notify} from '../notifications/actions'
 import type {dispatchType, thunkActionType} from '../types'
-import {buildChangesMessage} from '../../utils/notificationUtils'
+import {buildJobMessage} from '../../utils/notificationUtils'
 
 import * as types from'./constants'
 
@@ -16,11 +16,11 @@ export const updateCursor = (cursor) => (dispatch) => {
     })
 }
 
-export function bulkUpdate(ids: List<*>, key: string, jobPartialParams: Object): thunkActionType {
+export function createJob(ids: List<*>, jobType: string, jobPartialParams: Object): thunkActionType {
     return (dispatch: dispatchType): Promise<dispatchType> => {
 
         const requestPayload = {
-            'type': key,
+            'type': jobType,
             'params': Object.assign({}, {'ticket_ids': ids.toJS()}, jobPartialParams)
         }
 
@@ -28,7 +28,7 @@ export function bulkUpdate(ids: List<*>, key: string, jobPartialParams: Object):
             status: 'loading',
             dismissAfter: 0,
             closeOnNext: true,
-            message: buildChangesMessage(false,
+            message: buildJobMessage(jobType, false,
                 ids.size === 1 ? 'ticket' : 'tickets',
                 jobPartialParams,
                 ids.size)
@@ -42,7 +42,7 @@ export function bulkUpdate(ids: List<*>, key: string, jobPartialParams: Object):
             })
             .catch((error) => {
                 notification.status = 'error'
-                notification.message = 'Failed to modify tickets. Please try again.'
+                notification.message = 'Failed to apply action on tickets. Please try again.'
                 dispatch(updateNotification(notification))
                 throw error
             })
