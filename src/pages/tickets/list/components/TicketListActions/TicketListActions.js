@@ -34,13 +34,14 @@ import type {currentUserType} from '../../../../../state/types'
 import type {teamsType} from '../../../../../state/teams/types'
 import type {agentsType} from '../../../../../state/agents/types'
 import type {viewType} from '../../../../../state/views/types'
+import {AGENT_ROLE} from '../../../../../config/user'
 import {DELETE_TICKET_JOB_TYPE, EXPORT_TICKET_JOB_TYPE, UPDATE_TICKET_JOB_TYPE} from '../../../../../constants/job'
 import {AgentLabel, TeamLabel} from '../../../../common/utils/labels'
+import {hasRole} from '../../../../../utils'
 import TagDropdownMenu from '../../../../common/components/TagDropdownMenu/TagDropdownMenu'
 
 import css from './TicketListActions.less'
-// import {AGENT_ROLE} from '../../../../../config/user'
-// import {hasRole} from '../../../../../utils'
+
 
 type Props = {
     view: viewType,
@@ -623,16 +624,16 @@ class TicketListActions extends React.Component<Props, State> {
                         >
                             Apply macro
                         </DropdownItem>
-                        {/*{*/}
-                        {/*    hasRole(currentUser, AGENT_ROLE) && (*/}
-                        {/*        <DropdownItem*/}
-                        {/*            type="button"*/}
-                        {/*            onClick={this._bulkExport}*/}
-                        {/*        >*/}
-                        {/*            Export tickets*/}
-                        {/*        </DropdownItem>*/}
-                        {/*    )*/}
-                        {/*}*/}
+                        {
+                            hasRole(currentUser, AGENT_ROLE) && (
+                                <DropdownItem
+                                    type="button"
+                                    onClick={this._bulkExport}
+                                >
+                                    Export tickets
+                                </DropdownItem>
+                            )
+                        }
                         <DropdownItem divider/>
                         {isActiveViewTrashView ?
                             ([

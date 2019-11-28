@@ -1405,6 +1405,14 @@ exports[`TicketListActions component should display the export tickets button fo
           Apply macro
         </DropdownItem>
         <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Export tickets
+        </DropdownItem>
+        <DropdownItem
           divider={true}
           tag="button"
           toggle={true}
