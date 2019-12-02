@@ -1,3 +1,5 @@
+import _deburr from 'lodash/deburr'
+
 /**
  * Adapted from https://github.com/draft-js-plugins/draft-js-plugins/tree/master/draft-js-mention-plugin
  */
@@ -13,9 +15,9 @@ export const decodeOffsetKey = (offsetKey) => {
 
 // Get the first 5 suggestions that match
 export const defaultSuggestionsFilter = (searchValue, suggestions) => {
-    const value = searchValue.toLowerCase()
+    const value = _deburr(searchValue.toLowerCase())
     const filteredSuggestions = suggestions.filter((suggestion) => (
-        !value || suggestion.get('name').toLowerCase().indexOf(value) > -1
+        !value || _deburr(suggestion.get('name').toLowerCase()).indexOf(value) > -1
     ))
     const size = filteredSuggestions.size < 5 ? filteredSuggestions.size : 5
     return filteredSuggestions.setSize(size)

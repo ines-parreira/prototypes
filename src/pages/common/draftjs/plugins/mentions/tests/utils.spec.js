@@ -1,4 +1,6 @@
-import {getWordAt, getTypeByTrigger} from '../utils'
+import {fromJS} from 'immutable'
+
+import {defaultSuggestionsFilter, getTypeByTrigger, getWordAt} from '../utils'
 
 describe('getWordAt', () => {
     it('finds a word in between sentences', () => {
@@ -40,5 +42,30 @@ describe('getTypeByTrigger', () => {
 
     it('returns "-mention" for trigger "-"', () => {
         expect(getTypeByTrigger('-')).toEqual('-mention')
+    })
+})
+
+describe('defaultSuggestionsFilter()', () => {
+    const suggestions = fromJS([
+        {name: 'Severine Smith'},
+        {name: 'Séverine Dupont'},
+        {name: 'Jean Bon'},
+    ])
+
+    const expectedResults = fromJS([
+        {name: 'Severine Smith'},
+        {name: 'Séverine Dupont'},
+    ])
+
+    describe('should return matching suggestions', () => {
+        it('when the search value contains diacritics', () => {
+            const results = defaultSuggestionsFilter('séverine', suggestions)
+            expect(results).toEqual(expectedResults)
+        })
+
+        it('when the search value does not contain diacritics', () => {
+            const results = defaultSuggestionsFilter('severine', suggestions)
+            expect(results).toEqual(expectedResults)
+        })
     })
 })

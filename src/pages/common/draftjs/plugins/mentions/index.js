@@ -30,7 +30,7 @@ const createMentionPlugin = () => {
     const mentionTrigger = '@'
     const mentionPrefix = '@'
     const entityMutability = 'SEGMENTED'
-    const mentionRegExp = '[\\w]*'
+    const mentionRegExp = '[\\wÀ-ž]*'
 
     const callbacks = {
         keyBindingFn: undefined,
