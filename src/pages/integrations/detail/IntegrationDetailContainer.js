@@ -445,10 +445,7 @@ class IntegrationDetailContainer extends React.Component {
                         <SmileIntegrationDetail
                             actions={actions}
                             integration={commonProps.integration}
-                            shopifyIntegrations={getEligibleShopifyIntegrationsFor(SMILE_INTEGRATION_TYPE)}
-                            isUpdate={isUpdate}
                             loading={commonProps.loading}
-                            redirectUri={redirectUri}
                         />
                     )
                 }
@@ -457,8 +454,8 @@ class IntegrationDetailContainer extends React.Component {
                     <SmileIntegrationList
                         actions={actions}
                         integrations={commonProps.integrations}
-                        shopifyIntegrations={getEligibleShopifyIntegrationsFor(SMILE_INTEGRATION_TYPE)}
                         loading={commonProps.loading}
+                        redirectUri={redirectUri}
                     />
                 )
 

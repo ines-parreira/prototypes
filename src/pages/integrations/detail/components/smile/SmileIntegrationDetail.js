@@ -1,8 +1,8 @@
+// @flow
 import React from 'react'
-import type {List} from 'immutable'
+import type {Map} from 'immutable'
 import {Link, withRouter} from 'react-router'
 import classNames from 'classnames'
-import _isEmpty from 'lodash/isEmpty'
 import {
     Alert,
     Breadcrumb,
@@ -10,47 +10,49 @@ import {
     Button,
     Col,
     Container,
-    Label,
     Row,
 } from 'reactstrap'
 
-import * as integrationHelpers from '../../../../../state/integrations/helpers'
-
+import {PENDING_AUTHENTICATION_STATUS} from '../../../../../constants/integration'
 import Loader from '../../../../common/components/Loader'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
-
 import InputField from '../../../../common/forms/InputField'
 import PageHeader from '../../../../common/components/PageHeader'
 
 
 type Props = {
-    integration: string,
-    shopifyIntegrations: List,
+    integration: Map<*, *>,
 
     actions: Object,
-    loading: Object,
-
-    redirectUri: string,
+    loading: Map<*, *>,
 
     // Router
-    location: Object,
-    params: Object
+    location: Object
 }
 
 type State = {
-    store_name: string
+    name: string
 }
 
-class SmileIntegrationDetail extends React.Component<Props, State> {
+export class SmileIntegrationDetailComponent extends React.Component<Props, State> {
     isInitialized = false
 
     state = {
-        store_name: ''
+        name: ''
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (_isEmpty(this.props.integration.toJS()) && !_isEmpty(nextProps.integration.toJS())) {
-            const authenticationRequired = nextProps.integration.getIn(['meta', 'oauth', 'status']) === 'pending'
+    componentDidMount() {
+        if (!this.props.integration.isEmpty()) {
+            this.setState({name: this.props.integration.get('name')})
+        }
+    }
+
+    componentWillReceiveProps(nextProps: Props) {
+        if (this.props.integration.isEmpty() && !nextProps.integration.isEmpty()) {
+            this.setState({name: nextProps.integration.get('name')})
+
+            const authenticationRequired =
+                nextProps.integration.getIn(['meta', 'oauth', 'status']) === PENDING_AUTHENTICATION_STATUS
             const isAuthenticating = nextProps.location.query.action === 'authentication'
 
             if (isAuthenticating) {
@@ -68,28 +70,26 @@ class SmileIntegrationDetail extends React.Component<Props, State> {
         }
     }
 
-    _updateAppPermissions = () => {
-        const name = this.props.integration.getIn(['meta', 'store_name'])
-        window.location.href = this.props.redirectUri.concat('?store_name=').concat(name)
-    }
+    _handleUpdate = (evt: Event): void => {
+        evt.preventDefault()
+        const {integration, actions} = this.props
 
-    _installForShopifyStore = (shopifyIntegration) => {
-        window.location.href = this.props.redirectUri.concat('?store_name=').concat(shopifyIntegration.get('name'))
+        actions.updateOrCreateIntegration(integration.set('name', this.state.name))
     }
 
     render() {
-        const {actions, integration, shopifyIntegrations, loading} = this.props
+        const {actions, integration, loading} = this.props
 
-        const isUpdate = this.props.params.integrationId !== 'new'
         const isSubmitting = loading.get('updateIntegration')
         const isActive = !integration.get('deactivated_datetime')
 
-        const authenticationRequired = this.props.integration.getIn(['meta', 'oauth', 'status']) === 'pending'
+        const authenticationRequired =
+            integration.getIn(['meta', 'oauth', 'status']) === PENDING_AUTHENTICATION_STATUS
 
-        const isSyncOver = integration.getIn(['meta', 'sync_state', 'is_initialized'])
+        const isImportOver = integration.getIn(['meta', 'sync_state', 'is_initialized'])
 
         if (loading.get('integration')) {
-            return <Loader />
+            return <Loader/>
         }
 
         return (
@@ -103,7 +103,7 @@ class SmileIntegrationDetail extends React.Component<Props, State> {
                             <Link to="/app/settings/integrations/smile">Smile</Link>
                         </BreadcrumbItem>
                         <BreadcrumbItem active>
-                            {isUpdate ? integration.get('name') : 'Add integration'}
+                            {integration.get('name')}
                         </BreadcrumbItem>
                     </Breadcrumb>
                 )}
@@ -116,12 +116,12 @@ class SmileIntegrationDetail extends React.Component<Props, State> {
                     <Row>
                         <Col md="8">
                             {
-                                isUpdate && isActive && isSyncOver !== undefined && (
-                                    isSyncOver
+                                isActive && isImportOver !== undefined && (
+                                    isImportOver
                                         ? (
                                             <p>
-                                                All your Smile customers have been imported. You can now see their info in the
-                                                sidebar. <Link to="/app/customers">Review your customers.</Link>
+                                                All your Smile customers have been imported. You can now see their info
+                                                in the sidebar. <Link to="/app/customers">Review your customers.</Link>
                                             </p>
                                         ) : (
                                             <Alert
@@ -137,61 +137,39 @@ class SmileIntegrationDetail extends React.Component<Props, State> {
                                                     </b>
                                                 </p>
                                                 <p>
-                                                    We're currently importing all your Smile customers. This way, you'll see
-                                                    customer rewards points next to tickets. We'll notify you via email when the
-                                                    import is done. <Link to="/app/customers">Review imported customers.</Link>
+                                                    We're currently importing all your Smile customers. This way,
+                                                    you'll see customer rewards points next to tickets. We'll notify
+                                                    you via email when the import is done.{' '}
+                                                    <Link to="/app/customers">Review imported customers.</Link>
                                                 </p>
                                             </Alert>
                                         )
                                 )
                             }
 
-                            {
-                                isUpdate
-                                    ? (
-                                        <InputField
-                                            type="text"
-                                            name="name"
-                                            label="Shopify store name"
-                                            value={isUpdate ? integration.get('name') : undefined}
-                                            onChange={(value) => this.setState({store_name: value})}
-                                            placeholder={'ex: "acme" for acme.myshopify.com'}
-                                            disabled={isUpdate}
-                                            rightAddon=".myshopify.com"
-                                        />
-                                    ): (
-                                        <div className="shopifyIntegrationsList">
-                                            <Label className="control-label">
-                                                Select an existing Shopify integration
-                                            </Label>
-                                            {
-                                                shopifyIntegrations.map((integration, idx) => {
-                                                    return (
-                                                        <Button
-                                                            block
-                                                            key={idx}
-                                                            onClick={() => this._installForShopifyStore(integration)}
-                                                            className={classNames('mb-2', {
-                                                                'btn-loading': this.state.integrationLoading === integration.get('id')
-                                                            })}
-                                                            color="secondary"
-                                                        >
-                                                            <img
-                                                                className="shopifyLogo"
-                                                                src={integrationHelpers.getIconFromType('shopify')}
-                                                            />
-                                                            Install Smile for {integration.get('name')}
-                                                        </Button>
-                                                    )
-                                                })
-                                            }
-                                        </div>
-                                    )
-                            }
+                            <InputField
+                                type="text"
+                                name="name"
+                                label="Integration name"
+                                value={this.state.name}
+                                onChange={(value) => this.setState({name: value})}
+                            />
 
                             <div>
+                                <Button
+                                    type="submit"
+                                    color="success"
+                                    className={classNames('mr-2', {
+                                        'btn-loading': isSubmitting,
+                                    })}
+                                    onClick={this._handleUpdate}
+                                    disabled={isSubmitting}
+                                >
+                                    Update integration
+                                </Button>
+
                                 {
-                                    isUpdate && !authenticationRequired && isActive && (
+                                    !authenticationRequired && isActive && (
                                         <Button
                                             type="button"
                                             color="warning"
@@ -200,13 +178,14 @@ class SmileIntegrationDetail extends React.Component<Props, State> {
                                                 'btn-loading': isSubmitting,
                                             })}
                                             onClick={() => actions.deactivateIntegration(integration.get('id'))}
+                                            disabled={isSubmitting}
                                         >
                                             Deactivate integration
                                         </Button>
                                     )
                                 }
                                 {
-                                    isUpdate && !authenticationRequired && !isActive && (
+                                    !authenticationRequired && !isActive && (
                                         <Button
                                             type="button"
                                             color="success"
@@ -214,26 +193,24 @@ class SmileIntegrationDetail extends React.Component<Props, State> {
                                                 'btn-loading': isSubmitting,
                                             })}
                                             onClick={() => actions.activateIntegration(integration.get('id'))}
+                                            disabled={isSubmitting}
                                         >
                                             Re-activate integration
                                         </Button>
                                     )
                                 }
-                                {
-                                    isUpdate && (
-                                        <ConfirmButton
-                                            className="float-right"
-                                            color="secondary"
-                                            confirm={() => actions.deleteIntegration(integration)}
-                                            content="Are you sure you want to delete this integration?"
-                                        >
-                                            <i className="material-icons mr-1 text-danger">
-                                                delete
-                                            </i>
-                                            Delete
-                                        </ConfirmButton>
-                                    )
-                                }
+                                <ConfirmButton
+                                    className="float-right"
+                                    color="secondary"
+                                    confirm={() => actions.deleteIntegration(integration)}
+                                    content="Are you sure you want to delete this integration?"
+                                    disabled={isSubmitting}
+                                >
+                                    <i className="material-icons mr-1 text-danger">
+                                        delete
+                                    </i>
+                                    Delete
+                                </ConfirmButton>
                             </div>
                         </Col>
                     </Row>
@@ -243,4 +220,4 @@ class SmileIntegrationDetail extends React.Component<Props, State> {
     }
 }
 
-export default withRouter(SmileIntegrationDetail)
+export default withRouter(SmileIntegrationDetailComponent)

@@ -26,13 +26,8 @@ import * as utils from '../../../../../utils'
 
 import {notify} from '../../../../../state/notifications/actions'
 import * as integrationSelectors from '../../../../../state/integrations/selectors'
-import {PENDING_AUTHENTICATION_STATUS, SHOPIFY_INTEGRATION_TYPE} from '../../../../../constants/integration'
+import {PENDING_AUTHENTICATION_STATUS} from '../../../../../constants/integration'
 
-
-export const defaultContent = {
-    type: SHOPIFY_INTEGRATION_TYPE,
-    meta: {}
-}
 
 type Props = {
     integration: Map<*, *>,
@@ -98,7 +93,8 @@ class ShopifyIntegrationDetail extends React.Component<Props, State> {
 
     componentWillReceiveProps(nextProps) {
         if (_isEmpty(this.props.integration.toJS()) && !_isEmpty(nextProps.integration.toJS())) {
-            const authenticationRequired = nextProps.integration.getIn(['meta', 'oauth', 'status']) === PENDING_AUTHENTICATION_STATUS
+            const authenticationRequired =
+                nextProps.integration.getIn(['meta', 'oauth', 'status']) === PENDING_AUTHENTICATION_STATUS
             const isAuthenticating = nextProps.location.query.action === 'authentication'
 
             if (isAuthenticating) {

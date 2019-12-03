@@ -1,34 +1,29 @@
+// @flow
 import React from 'react'
-import {List} from 'immutable'
-import {Link, browserHistory} from 'react-router'
+import {List, type Map} from 'immutable'
+import {Link} from 'react-router'
 import {connect} from 'react-redux'
 import Lightbox from 'react-images'
 
-import {
-    Alert
-} from 'reactstrap'
-
+import Carousel from '../../../common/Carousel'
 import ToggleButton from '../../../../common/components/ToggleButton'
 import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'
 import * as integrationsActions from '../../../../../state/integrations/actions'
 
-import Carousel from './../../../common/Carousel'
-
-
 
 type Props = {
     integrations: List,
-    shopifyIntegrations: List,
+    redirectUri: string,
 
     loading: Object,
-    activate: typeof integrationsActions.activateIntegration,
-    deactivate: typeof integrationsActions.deactivateIntegration,
+    activate: (number) => Promise<*>,
+    deactivate: (number) => Promise<*>,
 }
 
 type State = {
     isLightboxOpen: boolean,
-    currentImage: Number,
+    currentImage: number,
 }
 
 @connect(null, {
@@ -36,25 +31,24 @@ type State = {
     deactivate: integrationsActions.deactivateIntegration,
 })
 export default class SmileIntegrationList extends React.Component<Props, State> {
-
-    state = {
+    state: State = {
         isLightboxOpen: false,
-        currentImage: 0,
+        currentImage: 0
     }
 
-    _shouldHideCreateButton = () => {
-        return !this.props.shopifyIntegrations.size
-    }
-
-    _toggleLightbox = (selectedImageId) => {
+    _toggleLightbox = (selectedImageId: ?number) => {
         this.setState({
             isLightboxOpen: !this.state.isLightboxOpen,
             currentImage: selectedImageId || 0,
         })
     }
 
-    _gotoImage = (index) => {
+    _gotoImage = (index: number) => {
         this.setState({currentImage: index})
+    }
+
+    _onLogin = () => {
+        window.location = this.props.redirectUri
     }
 
     render() {
@@ -68,19 +62,6 @@ export default class SmileIntegrationList extends React.Component<Props, State> 
 
         const longTypeDescription = (
             <div>
-                {
-                    this._shouldHideCreateButton() && (!smileIntegrations.size ? (
-                        <Alert color="danger">
-                            You need to have at least one Shopify integration to add Smile integrations.
-                        </Alert>
-                    ) : (
-                        <Alert color="info">
-                                All your Shopify integrations have a Smile integration connected.
-                        </Alert>
-                    )
-                    )
-                }
-
                 <p>Smile is a reward program app for online businesses.</p>
 
                 <p>Here's what you can do with the Smile integration:</p>
@@ -90,7 +71,10 @@ export default class SmileIntegrationList extends React.Component<Props, State> 
                     <li>Triage tickets based on VIP tier</li>
                 </ul>
 
-                <p>For each customer, the following Smile data is available in Gorgias: point balance, referral url, VIP tier, state.</p>
+                <p>
+                    For each customer, the following Smile data is available in Gorgias: point balance, referral url,
+                    VIP tier, state.
+                </p>
 
                 <Carousel
                     imagesUrl={imagesUrl}
@@ -117,21 +101,21 @@ export default class SmileIntegrationList extends React.Component<Props, State> 
             </div>
         )
 
-        const integrationToItemDisplay = (int) => {
-            const toggleIntegration = (value) => {
-                const integrationId = int.get('id')
+        const integrationToItemDisplay = (integration: Map<*, *>) => {
+            const toggleIntegration = (value: boolean): Promise<*> => {
+                const integrationId = integration.get('id')
                 return value ? this.props.activate(integrationId) : this.props.deactivate(integrationId)
             }
 
-            const isDisabled = int.get('deactivated_datetime')
-            const editLink = `/app/settings/integrations/smile/${int.get('id')}`
+            const isDisabled = integration.get('deactivated_datetime')
+            const editLink = `/app/settings/integrations/smile/${integration.get('id')}`
 
             return (
-                <tr key={int.get('id')}>
+                <tr key={integration.get('id')}>
                     <td className="link-full-td">
                         <Link to={editLink}>
                             <div>
-                                <b>{int.get('name')}</b>
+                                <b>{integration.get('name')}</b>
                             </div>
                         </Link>
                     </td>
@@ -153,11 +137,10 @@ export default class SmileIntegrationList extends React.Component<Props, State> 
                 longTypeDescription={longTypeDescription}
                 integrationType="smile"
                 integrations={smileIntegrations}
-                createIntegration={() => browserHistory.push('/app/settings/integrations/smile/new')}
-                createIntegrationButtonContent="Add Smile"
+                createIntegration={this._onLogin}
+                createIntegrationButtonContent="Add Smile account"
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}
-                createIntegrationButtonHidden={this._shouldHideCreateButton()}
             />
         )
     }

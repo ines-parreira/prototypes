@@ -1,0 +1,759 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SmileIntegrationDetail/> componentDidMount() should set the integration's name in the state 1`] = `
+Object {
+  "name": "foo",
+}
+`;
+
+exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should not do anything because the previous integration was not empty 1`] = `
+Object {
+  "name": "foo",
+}
+`;
+
+exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should not do anything because there is no integration 1`] = `
+Object {
+  "name": "",
+}
+`;
+
+exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should set the name of the integration in the state because there was no integration before and there is one now 1`] = `
+Object {
+  "name": "foo",
+}
+`;
+
+exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should set the name of the integration the state and set a timeout to fetch the integration because the action in the URL is set to \`authentication\` and the integration is not yet authenticated 1`] = `
+Object {
+  "name": "foo",
+}
+`;
+
+exports[`<SmileIntegrationDetail/> componentWillReceiveProps() should set the name of the integration the state and trigger a success notification because the action in the URL is set to \`authentication\` and the integration is already authenticated 1`] = `
+Object {
+  "name": "foo",
+}
+`;
+
+exports[`<SmileIntegrationDetail/> render() should not render anything about the import and render the re-activate button instead of the deactivate button because the integration is deactivated 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/smile"
+          >
+            Smile
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        />
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <Row
+      tag="div"
+    >
+      <Col
+        md="8"
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <InputField
+          label="Integration name"
+          name="name"
+          onChange={[Function]}
+          type="text"
+        />
+        <div>
+          <Button
+            className="mr-2"
+            color="success"
+            onClick={[Function]}
+            tag="button"
+            type="submit"
+          >
+            Update integration
+          </Button>
+          <Button
+            className=""
+            color="success"
+            onClick={[Function]}
+            tag="button"
+            type="button"
+          >
+            Re-activate integration
+          </Button>
+          <ConfirmButton
+            className="float-right"
+            color="secondary"
+            confirm={[Function]}
+            confirmColor="success"
+            content="Are you sure you want to delete this integration?"
+            disabled={false}
+            loading={false}
+            placement="bottom"
+            skip={false}
+            title="Are you sure?"
+            type="button"
+          >
+            <i
+              className="material-icons mr-1 text-danger"
+            >
+              delete
+            </i>
+            Delete
+          </ConfirmButton>
+        </div>
+      </Col>
+    </Row>
+  </Container>
+</div>
+`;
+
+exports[`<SmileIntegrationDetail/> render() should render a loader because the integration is loading 1`] = `
+<Loader
+  inline={false}
+  minHeight="500px"
+  size="40px"
+/>
+`;
+
+exports[`<SmileIntegrationDetail/> render() should render a small paragraph because the import is over 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/smile"
+          >
+            Smile
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        />
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <Row
+      tag="div"
+    >
+      <Col
+        md="8"
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <p>
+          All your Smile customers have been imported. You can now see their info in the sidebar. 
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/customers"
+          >
+            Review your customers.
+          </Link>
+        </p>
+        <InputField
+          label="Integration name"
+          name="name"
+          onChange={[Function]}
+          type="text"
+        />
+        <div>
+          <Button
+            className="mr-2"
+            color="success"
+            onClick={[Function]}
+            tag="button"
+            type="submit"
+          >
+            Update integration
+          </Button>
+          <Button
+            className=""
+            color="warning"
+            onClick={[Function]}
+            outline={true}
+            tag="button"
+            type="button"
+          >
+            Deactivate integration
+          </Button>
+          <ConfirmButton
+            className="float-right"
+            color="secondary"
+            confirm={[Function]}
+            confirmColor="success"
+            content="Are you sure you want to delete this integration?"
+            disabled={false}
+            loading={false}
+            placement="bottom"
+            skip={false}
+            title="Are you sure?"
+            type="button"
+          >
+            <i
+              className="material-icons mr-1 text-danger"
+            >
+              delete
+            </i>
+            Delete
+          </ConfirmButton>
+        </div>
+      </Col>
+    </Row>
+  </Container>
+</div>
+`;
+
+exports[`<SmileIntegrationDetail/> render() should render an alert because the import is in progress 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/smile"
+          >
+            Smile
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        />
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <Row
+      tag="div"
+    >
+      <Col
+        md="8"
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <Alert
+          className="mb-4"
+          closeAriaLabel="Close"
+          color="info"
+          isOpen={true}
+          tag="div"
+          transition={
+            Object {
+              "appear": true,
+              "baseClass": "fade",
+              "baseClassActive": "show",
+              "enter": true,
+              "exit": true,
+              "in": true,
+              "mountOnEnter": false,
+              "onEnter": [Function],
+              "onEntered": [Function],
+              "onEntering": [Function],
+              "onExit": [Function],
+              "onExited": [Function],
+              "onExiting": [Function],
+              "tag": "div",
+              "timeout": 150,
+              "unmountOnExit": true,
+            }
+          }
+        >
+          <p>
+            <b
+              className="alert-heading"
+            >
+              <i
+                className="material-icons md-spin mr-2"
+              >
+                autorenew
+              </i>
+              Importing your Smile customers
+            </b>
+          </p>
+          <p>
+            We're currently importing all your Smile customers. This way, you'll see customer rewards points next to tickets. We'll notify you via email when the import is done.
+             
+            <Link
+              onlyActiveOnIndex={false}
+              style={Object {}}
+              to="/app/customers"
+            >
+              Review imported customers.
+            </Link>
+          </p>
+        </Alert>
+        <InputField
+          label="Integration name"
+          name="name"
+          onChange={[Function]}
+          type="text"
+        />
+        <div>
+          <Button
+            className="mr-2"
+            color="success"
+            onClick={[Function]}
+            tag="button"
+            type="submit"
+          >
+            Update integration
+          </Button>
+          <Button
+            className=""
+            color="warning"
+            onClick={[Function]}
+            outline={true}
+            tag="button"
+            type="button"
+          >
+            Deactivate integration
+          </Button>
+          <ConfirmButton
+            className="float-right"
+            color="secondary"
+            confirm={[Function]}
+            confirmColor="success"
+            content="Are you sure you want to delete this integration?"
+            disabled={false}
+            loading={false}
+            placement="bottom"
+            skip={false}
+            title="Are you sure?"
+            type="button"
+          >
+            <i
+              className="material-icons mr-1 text-danger"
+            >
+              delete
+            </i>
+            Delete
+          </ConfirmButton>
+        </div>
+      </Col>
+    </Row>
+  </Container>
+</div>
+`;
+
+exports[`<SmileIntegrationDetail/> render() should render buttons loading and disabled because a submit is in progress 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/smile"
+          >
+            Smile
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        />
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <Row
+      tag="div"
+    >
+      <Col
+        md="8"
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <Alert
+          className="mb-4"
+          closeAriaLabel="Close"
+          color="info"
+          isOpen={true}
+          tag="div"
+          transition={
+            Object {
+              "appear": true,
+              "baseClass": "fade",
+              "baseClassActive": "show",
+              "enter": true,
+              "exit": true,
+              "in": true,
+              "mountOnEnter": false,
+              "onEnter": [Function],
+              "onEntered": [Function],
+              "onEntering": [Function],
+              "onExit": [Function],
+              "onExited": [Function],
+              "onExiting": [Function],
+              "tag": "div",
+              "timeout": 150,
+              "unmountOnExit": true,
+            }
+          }
+        >
+          <p>
+            <b
+              className="alert-heading"
+            >
+              <i
+                className="material-icons md-spin mr-2"
+              >
+                autorenew
+              </i>
+              Importing your Smile customers
+            </b>
+          </p>
+          <p>
+            We're currently importing all your Smile customers. This way, you'll see customer rewards points next to tickets. We'll notify you via email when the import is done.
+             
+            <Link
+              onlyActiveOnIndex={false}
+              style={Object {}}
+              to="/app/customers"
+            >
+              Review imported customers.
+            </Link>
+          </p>
+        </Alert>
+        <InputField
+          label="Integration name"
+          name="name"
+          onChange={[Function]}
+          type="text"
+        />
+        <div>
+          <Button
+            className="mr-2 btn-loading"
+            color="success"
+            disabled={true}
+            onClick={[Function]}
+            tag="button"
+            type="submit"
+          >
+            Update integration
+          </Button>
+          <Button
+            className="btn-loading"
+            color="warning"
+            disabled={true}
+            onClick={[Function]}
+            outline={true}
+            tag="button"
+            type="button"
+          >
+            Deactivate integration
+          </Button>
+          <ConfirmButton
+            className="float-right"
+            color="secondary"
+            confirm={[Function]}
+            confirmColor="success"
+            content="Are you sure you want to delete this integration?"
+            disabled={true}
+            loading={false}
+            placement="bottom"
+            skip={false}
+            title="Are you sure?"
+            type="button"
+          >
+            <i
+              className="material-icons mr-1 text-danger"
+            >
+              delete
+            </i>
+            Delete
+          </ConfirmButton>
+        </div>
+      </Col>
+    </Row>
+  </Container>
+</div>
+`;
+
+exports[`<SmileIntegrationDetail/> render() should render not render deactivate / reactivate buttons because authentication is required 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/smile"
+          >
+            Smile
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        />
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <Row
+      tag="div"
+    >
+      <Col
+        md="8"
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <Alert
+          className="mb-4"
+          closeAriaLabel="Close"
+          color="info"
+          isOpen={true}
+          tag="div"
+          transition={
+            Object {
+              "appear": true,
+              "baseClass": "fade",
+              "baseClassActive": "show",
+              "enter": true,
+              "exit": true,
+              "in": true,
+              "mountOnEnter": false,
+              "onEnter": [Function],
+              "onEntered": [Function],
+              "onEntering": [Function],
+              "onExit": [Function],
+              "onExited": [Function],
+              "onExiting": [Function],
+              "tag": "div",
+              "timeout": 150,
+              "unmountOnExit": true,
+            }
+          }
+        >
+          <p>
+            <b
+              className="alert-heading"
+            >
+              <i
+                className="material-icons md-spin mr-2"
+              >
+                autorenew
+              </i>
+              Importing your Smile customers
+            </b>
+          </p>
+          <p>
+            We're currently importing all your Smile customers. This way, you'll see customer rewards points next to tickets. We'll notify you via email when the import is done.
+             
+            <Link
+              onlyActiveOnIndex={false}
+              style={Object {}}
+              to="/app/customers"
+            >
+              Review imported customers.
+            </Link>
+          </p>
+        </Alert>
+        <InputField
+          label="Integration name"
+          name="name"
+          onChange={[Function]}
+          type="text"
+        />
+        <div>
+          <Button
+            className="mr-2"
+            color="success"
+            onClick={[Function]}
+            tag="button"
+            type="submit"
+          >
+            Update integration
+          </Button>
+          <ConfirmButton
+            className="float-right"
+            color="secondary"
+            confirm={[Function]}
+            confirmColor="success"
+            content="Are you sure you want to delete this integration?"
+            disabled={false}
+            loading={false}
+            placement="bottom"
+            skip={false}
+            title="Are you sure?"
+            type="button"
+          >
+            <i
+              className="material-icons mr-1 text-danger"
+            >
+              delete
+            </i>
+            Delete
+          </ConfirmButton>
+        </div>
+      </Col>
+    </Row>
+  </Container>
+</div>
+`;
