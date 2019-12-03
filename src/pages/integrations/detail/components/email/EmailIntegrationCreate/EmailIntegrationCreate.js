@@ -104,14 +104,14 @@ export class EmailIntegrationCreate extends React.Component<Props> {
 
                         <div className="divider">OR</div>
 
-                        <Button
-                            tag="a"
-                            href="/app/settings/integrations/email/new/custom"
-                            block
-                            className={classnames('mb-2', css.connectButton)}
-                        >
-                            <span>Connect other email provider</span>
-                        </Button>
+                        <Link to="/app/settings/integrations/email/new/custom">
+                            <Button
+                                block
+                                className={classnames('mb-2', css.connectButton)}
+                            >
+                                <span>Connect other email provider</span>
+                            </Button>
+                        </Link>
                         <p className="text-muted text-center">
                             Alternatively connect another email provider. Note that the setup is a bit more complex
                             compared to the above options.

@@ -82,13 +82,14 @@ exports[`<EmailIntegrationCreate/> render() should render 1`] = `
       >
         OR
       </div>
-      <a
-        class="mb-2 connectButton btn btn-secondary btn-block"
-        href="/app/settings/integrations/email/new/custom"
-      >
-        <span>
-          Connect other email provider
-        </span>
+      <a>
+        <button
+          class="mb-2 connectButton btn btn-secondary btn-block"
+        >
+          <span>
+            Connect other email provider
+          </span>
+        </button>
       </a>
       <p
         class="text-muted text-center"
