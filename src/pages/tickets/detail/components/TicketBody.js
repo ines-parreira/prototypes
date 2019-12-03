@@ -1,4 +1,5 @@
 //@flow
+
 import React from 'react'
 import moment from 'moment'
 import {connect} from 'react-redux'
@@ -12,14 +13,17 @@ import type {stateType} from '../../../../state/types'
 import type {
     Channel,
     TicketElement,
-    TicketMessage,
     TicketEvent,
+    TicketMessage,
     TicketSatisfactionSurvey,
 } from '../../../../models/ticket/types'
-import {isTicketMessage, isTicketEvent, isTicketSatisfactionSurvey} from '../../../../models/ticket'
+import {isTicketEvent, isTicketMessage, isTicketSatisfactionSurvey} from '../../../../models/ticket'
+import {TicketChannels} from '../../../../business/ticket'
+import {TICKET_AUDIT_LOG_EVENTS} from '../../../../constants/event'
 
 import TicketMessages from './TicketMessages'
 import SatisfactionSurvey from './SatisfactionSurvey'
+import AuditLogEvent from './AuditLogEvent'
 import Event from './Event'
 
 type Props = {
@@ -39,7 +43,7 @@ type State = {
 
 export class TicketBody extends React.Component<Props, State> {
     static defaultProps: $Shape<Props> = {
-        messageGroupingChannels: ['facebook-messenger', 'chat'],
+        messageGroupingChannels: [TicketChannels.FACEBOOK_MESSENGER, TicketChannels.CHAT],
         messageGroupingDuration: 'PT5M',
     }
 
@@ -178,13 +182,21 @@ export class TicketBody extends React.Component<Props, State> {
                             }
 
                             if (isTicketEvent(element)) {
-                                return (
-                                    <Event
-                                        key={`event-${index}`}
-                                        event={elementMap}
-                                        isLast={index === elements.size - 1}
-                                    />
-                                )
+                                return TICKET_AUDIT_LOG_EVENTS.includes(elementMap.get('type'))
+                                    ? (
+                                        <AuditLogEvent
+                                            key={`event-${elementMap.get('id')}`}
+                                            event={elementMap}
+                                            isLast={index === elements.size - 1}
+                                        />
+                                    )
+                                    : (
+                                        <Event
+                                            key={`event-${elementMap.get('id')}`}
+                                            event={elementMap}
+                                            isLast={index === elements.size - 1}
+                                        />
+                                    )
                             }
 
                             return null

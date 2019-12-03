@@ -6,18 +6,15 @@ import classnames from 'classnames'
 import _noop from 'lodash/noop'
 import {Button} from 'reactstrap'
 
-
 import {AgentLabel} from '../../../common/utils/labels'
 import Timeline from '../../../common/components/timeline/Timeline'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
-
 import * as tagsSelectors from '../../../../state/tags/selectors'
 import * as customersSelectors from '../../../../state/customers/selectors'
 import * as agentSelectors from '../../../../state/agents/selectors'
 import * as ticketSelectors from '../../../../state/ticket/selectors'
 
 import appCss from '../../../App.less'
-import {getCustomersState} from '../../../../state/customers/selectors'
 
 import css from './TicketView.less'
 import HistoryButton from './HistoryButton'
@@ -37,7 +34,7 @@ import TicketHeader from './TicketHeader'
         tags: tagsSelectors.getTags(state),
         ticket: state.ticket,
         ticketBody: ticketSelectors.getBody(state),
-        customers: getCustomersState(state),
+        customers: customersSelectors.getCustomersState(state),
         customersIsLoading: customersSelectors.makeIsLoading(state),
         views: state.views,
         isHistoryDisplayed: ticketSelectors.getDisplayHistory(state),

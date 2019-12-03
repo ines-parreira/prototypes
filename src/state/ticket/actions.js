@@ -11,8 +11,9 @@ import type Moment from 'moment'
 import {DEFAULT_ACTIONS} from '../../config'
 import {INSTAGRAM_AD_COMMENT_SOURCE, INSTAGRAM_COMMENT_SOURCE} from '../../config/ticket'
 import browserNotification from '../../services/browserNotification'
+import GorgiasApi from '../../services/gorgiasApi'
 import socketManager from '../../services/socketManager'
-import {isCurrentlyOnTicket, isTabActive,} from '../../utils'
+import {isCurrentlyOnTicket, isTabActive} from '../../utils'
 import {markChatAsRead} from '../chats/actions'
 import * as newMessageActions from '../newMessage/actions'
 import * as newMessageTypes from '../newMessage/constants'
@@ -25,7 +26,7 @@ import type {Action, Ticket, TicketMessage} from '../../models/ticket'
 import type {Macro} from '../macro/types'
 import type {dispatchType, getStateType, thunkActionType} from '../types'
 
-import {buildPartialUpdateFromAction, getSourceTypeOfResponse, nestedReplace,} from './utils'
+import {buildPartialUpdateFromAction, getSourceTypeOfResponse, nestedReplace} from './utils'
 import * as types from './constants'
 
 export const mergeTicket = (ticket: Ticket) => (dispatch: dispatchType, getState: getStateType) => {
@@ -558,6 +559,48 @@ export const goToPrevTicket = (ticketId: number, promise: Promise<?dispatchType>
  */
 export const goToNextTicket = (ticketId: number, promise: Promise<?dispatchType>) => (dispatch: dispatchType) => {
     return dispatch(_goToNextOrPrevTicket(ticketId, 'next', promise))
+}
+
+export const displayAuditLogEvents = (ticketId: number) => async (dispatch: dispatchType) => {
+    const client = new GorgiasApi()
+    const generator = client.getTicketEvents(ticketId)
+    let total = 0
+
+    dispatch({
+        type: types.DISPLAY_TICKET_AUDIT_LOG_EVENTS,
+    })
+
+    for await (const events of generator) {
+        total += events.size
+
+        if (events.size) {
+            dispatch({
+                type: types.ADD_TICKET_AUDIT_LOG_EVENTS,
+                payload: events,
+            })
+        }
+    }
+
+    if (!total) {
+        dispatch(notify({
+            status: 'info',
+            message: 'No event for this ticket',
+        }))
+
+        dispatch({
+            type: types.HIDE_TICKET_AUDIT_LOG_EVENTS,
+        })
+    }
+}
+
+export const hideAuditLogEvents = () => (dispatch: dispatchType) => {
+    dispatch({
+        type: types.HIDE_TICKET_AUDIT_LOG_EVENTS,
+    })
+
+    dispatch({
+        type: types.REMOVE_TICKET_AUDIT_LOG_EVENTS,
+    })
 }
 
 export const handleMessageActionError = (ticketId: string) => (dispatch: dispatchType) => {

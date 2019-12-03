@@ -38,6 +38,11 @@ export const getDisplayHistory = createImmutableSelector(
     (state) => state.getIn(['_internal', 'displayHistory'])
 )
 
+export const shouldDisplayAuditLogEvents = createImmutableSelector(
+    [getTicketState],
+    (state) => state.getIn(['_internal', 'shouldDisplayAuditLogEvents'])
+)
+
 // in props usage
 // ex: isMerging: isLoading('merge')(state)
 export const isLoading = (name) => createSelector(

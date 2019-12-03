@@ -3,10 +3,12 @@ import {fromJS} from 'immutable'
 import * as customerTypes from '../customers/constants'
 import ticketReplyCache from '../newMessage/ticketReplyCache'
 import * as newMessageTypes from '../newMessage/constants'
+import {TICKET_AUDIT_LOG_EVENTS} from '../../constants/event'
 import {compare} from '../../utils'
 
 import {getPendingMessageIndex} from './utils'
 import * as types from './constants'
+import {deduplicateAuditLogEvents} from './helpers'
 
 export const initialState = fromJS({
     state: {
@@ -16,6 +18,7 @@ export const initialState = fromJS({
     },
     _internal: {
         displayHistory: false,
+        shouldDisplayAuditLogEvents: false,
         shouldDisplayHistoryOnNextPage: false,
         loading: {
             fetchTicket: false,
@@ -288,6 +291,15 @@ export default function reducer(state = initialState, action) {
             // merge received ticket with current ticket
             let newState = state.merge(ticket)
 
+            // keep audit log events
+            const auditLogEvents = state.get('events').filter((event) =>
+                TICKET_AUDIT_LOG_EVENTS.includes(event.get('type'))
+                && event.get('object_id') === ticket.get('id')
+                && newState.get('events').every((existingEvent) => existingEvent.get('id') !== event.get('id'))
+            )
+
+            newState = newState.updateIn(['events'], (events) => events.concat(auditLogEvents))
+
             // order messages by created datetime
             newState = newState.update('messages', (messages) => {
                 return messages.sort((a, b) => compare(a.get('created_datetime'), b.get('created_datetime')))
@@ -341,6 +353,34 @@ export default function reducer(state = initialState, action) {
                 return messages
             })
         }
+
+        case types.DISPLAY_TICKET_AUDIT_LOG_EVENTS:
+            return state.setIn(['_internal', 'shouldDisplayAuditLogEvents'], true)
+
+        case types.HIDE_TICKET_AUDIT_LOG_EVENTS:
+            return state.setIn(['_internal', 'shouldDisplayAuditLogEvents'], false)
+
+        case types.ADD_TICKET_AUDIT_LOG_EVENTS:
+            return state.updateIn(['events'], (events) => {
+                let results = events
+
+                action.payload.forEach((eventToDisplay) => {
+                    const index = results.findIndex((event) => event.get('id') === eventToDisplay.get('id'))
+
+                    if (index === -1) {
+                        results = results.push(eventToDisplay)
+                    } else {
+                        results = results.set(index, eventToDisplay)
+                    }
+                })
+
+                return deduplicateAuditLogEvents(results)
+            })
+
+        case types.REMOVE_TICKET_AUDIT_LOG_EVENTS:
+            return state.updateIn(['events'], (events) =>
+                events.filter((event) => !TICKET_AUDIT_LOG_EVENTS.includes(event.get('type')))
+            )
 
         default:
             return state

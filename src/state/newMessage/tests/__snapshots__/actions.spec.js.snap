@@ -2120,6 +2120,7 @@ Array [
       "id": 12,
       "_internal": Immutable.Map {
         "displayHistory": false,
+        "shouldDisplayAuditLogEvents": false,
         "shouldDisplayHistoryOnNextPage": false,
         "loading": Immutable.Map {
           "fetchTicket": false,

@@ -5,6 +5,7 @@ import {fromJS} from 'immutable'
 
 import {TicketBody} from '../TicketBody'
 import {message} from '../../../../../models/ticket/tests/mocks'
+import {TICKET_ASSIGNED} from '../../../../../constants/event'
 import type {TicketMessage} from '../../../../../models/ticket'
 import TicketMessages from '../TicketMessages/TicketMessages'
 import Event from '../Event'
@@ -45,6 +46,40 @@ describe('TicketBody', () => {
                     isMessage: false,
                     isEvent: true,
                     created_datetime: '2017-07-01T19:00:00'
+                }])}
+                lastReadMessage={fromJS({
+                    id: 1
+                })}
+                loadingState={fromJS([])}
+                ticket={fromJS({id: 1})}
+                setStatus={() => {}}
+                currentUser={fromJS({
+                    timezone: 'UTC'
+                })}
+            />
+        )
+
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should display audit log events with messages', () => {
+        const component = shallow(
+            <TicketBody
+                elements={fromJS([{
+                    ...message,
+                    id: 1,
+                    created_datetime: '2017-07-01T18:00:00'
+                }, {
+                    id: 1,
+                    account_id: 1,
+                    user_id: 1,
+                    object_type: 'Ticket',
+                    object_id: 1,
+                    data: null,
+                    context: 'foo',
+                    type: TICKET_ASSIGNED,
+                    created_datetime: '2019-11-15 19:00:00.000000',
+                    isEvent: true,
                 }])}
                 lastReadMessage={fromJS({
                     id: 1

@@ -1,0 +1,1124 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<AuditLogEvent/> render() should render should not render when the executed rule is a system rule 1`] = `""`;
+
+exports[`<AuditLogEvent/> render() should render should not render when the icon or content is missing 1`] = `""`;
+
+exports[`<AuditLogEvent/> render() should render when the event has been added via a rule 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          loop
+        </i>
+      </div>
+      <ActionName>
+        Ticket reopened
+      </ActionName>
+      <Filler>
+        via rule
+      </Filler>
+    </div>
+    <Connect(DatetimeLabel)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.500000"
+      settings={
+        Object {
+          "position": "top left",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`<AuditLogEvent/> render() should render when the event is the last component to display before the reply area 1`] = `
+<div
+  className="component last"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          loop
+        </i>
+      </div>
+      <ActionName>
+        Ticket reopened
+      </ActionName>
+      <Filler>
+        by
+      </Filler>
+      <AgentLabel
+        className="assigneeLabel"
+        name="User 1"
+        profilePictureUrl=""
+        shouldDisplayAvatar={false}
+      />
+    </div>
+    <Connect(DatetimeLabel)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.000000"
+      settings={
+        Object {
+          "position": "top left",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`<AuditLogEvent/> render() should render when the user ID is missing 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          loop
+        </i>
+      </div>
+      <ActionName>
+        Ticket reopened
+      </ActionName>
+    </div>
+    <Connect(DatetimeLabel)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.000000"
+      settings={
+        Object {
+          "position": "top left",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`<AuditLogEvent/> render() should render with event type rule-executed 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          settings
+        </i>
+      </div>
+      <ActionName>
+        Rule "
+        <a
+          href="/app/settings/rules?ruleId=1"
+        >
+          Rule 1
+        </a>
+        " executed
+      </ActionName>
+    </div>
+    <Connect(DatetimeLabel)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.000000"
+      settings={
+        Object {
+          "position": "top left",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`<AuditLogEvent/> render() should render with event type ticket-assigned 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          person_add
+        </i>
+      </div>
+      <ActionName
+        key="action-name"
+      >
+        Ticket assigned
+      </ActionName>
+      <Filler
+        key="to"
+      >
+        to
+      </Filler>
+      <AgentLabel
+        className="assigneeLabel"
+        key="assign-label"
+        name="User 1"
+        profilePictureUrl=""
+        shouldDisplayAvatar={false}
+      />
+      <Filler>
+        by
+      </Filler>
+      <AgentLabel
+        className="assigneeLabel"
+        name="User 1"
+        profilePictureUrl=""
+        shouldDisplayAvatar={false}
+      />
+    </div>
+    <Connect(DatetimeLabel)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.000000"
+      settings={
+        Object {
+          "position": "top left",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`<AuditLogEvent/> render() should render with event type ticket-assigned and missing assignee 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          person_add
+        </i>
+      </div>
+      <ActionName
+        key="action-name"
+      >
+        Ticket assigned
+      </ActionName>
+      <Filler>
+        by
+      </Filler>
+      <AgentLabel
+        className="assigneeLabel"
+        name="User 1"
+        profilePictureUrl=""
+        shouldDisplayAvatar={false}
+      />
+    </div>
+    <Connect(DatetimeLabel)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.000000"
+      settings={
+        Object {
+          "position": "top left",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`<AuditLogEvent/> render() should render with event type ticket-closed 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          done
+        </i>
+      </div>
+      <ActionName>
+        Ticket closed
+      </ActionName>
+      <Filler>
+        by
+      </Filler>
+      <AgentLabel
+        className="assigneeLabel"
+        name="User 1"
+        profilePictureUrl=""
+        shouldDisplayAvatar={false}
+      />
+    </div>
+    <Connect(DatetimeLabel)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.000000"
+      settings={
+        Object {
+          "position": "top left",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`<AuditLogEvent/> render() should render with event type ticket-created 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          add
+        </i>
+      </div>
+      <ActionName>
+        Ticket created
+      </ActionName>
+      <Filler>
+        by
+      </Filler>
+      <AgentLabel
+        className="assigneeLabel"
+        name="User 1"
+        profilePictureUrl=""
+        shouldDisplayAvatar={false}
+      />
+    </div>
+    <Connect(DatetimeLabel)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.000000"
+      settings={
+        Object {
+          "position": "top left",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`<AuditLogEvent/> render() should render with event type ticket-marked-spam 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          flag
+        </i>
+      </div>
+      <ActionName>
+        Ticket marked as spam
+      </ActionName>
+      <Filler>
+        by
+      </Filler>
+      <AgentLabel
+        className="assigneeLabel"
+        name="User 1"
+        profilePictureUrl=""
+        shouldDisplayAvatar={false}
+      />
+    </div>
+    <Connect(DatetimeLabel)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.000000"
+      settings={
+        Object {
+          "position": "top left",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`<AuditLogEvent/> render() should render with event type ticket-merged 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          call_merge
+        </i>
+      </div>
+      <ActionName>
+        Ticket merged
+      </ActionName>
+      <Filler>
+        by
+      </Filler>
+      <AgentLabel
+        className="assigneeLabel"
+        name="User 1"
+        profilePictureUrl=""
+        shouldDisplayAvatar={false}
+      />
+    </div>
+    <Connect(DatetimeLabel)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.000000"
+      settings={
+        Object {
+          "position": "top left",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`<AuditLogEvent/> render() should render with event type ticket-reopened 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          loop
+        </i>
+      </div>
+      <ActionName>
+        Ticket reopened
+      </ActionName>
+      <Filler>
+        by
+      </Filler>
+      <AgentLabel
+        className="assigneeLabel"
+        name="User 1"
+        profilePictureUrl=""
+        shouldDisplayAvatar={false}
+      />
+    </div>
+    <Connect(DatetimeLabel)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.000000"
+      settings={
+        Object {
+          "position": "top left",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`<AuditLogEvent/> render() should render with event type ticket-snoozed 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          timer
+        </i>
+      </div>
+      <ActionName>
+        Ticket snoozed
+      </ActionName>
+      <Filler>
+        by
+      </Filler>
+      <AgentLabel
+        className="assigneeLabel"
+        name="User 1"
+        profilePictureUrl=""
+        shouldDisplayAvatar={false}
+      />
+    </div>
+    <Connect(DatetimeLabel)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.000000"
+      settings={
+        Object {
+          "position": "top left",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`<AuditLogEvent/> render() should render with event type ticket-tags-added 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          local_offer
+        </i>
+      </div>
+      <ActionName
+        key="action-name-left"
+      >
+        Tag
+      </ActionName>
+      <TagLabel
+        className="equalFiller"
+        key="1"
+        style={Object {}}
+      >
+        tag-1
+      </TagLabel>
+      <ActionName
+        key="action-name-right"
+      >
+        added
+      </ActionName>
+      <Filler>
+        by
+      </Filler>
+      <AgentLabel
+        className="assigneeLabel"
+        name="User 1"
+        profilePictureUrl=""
+        shouldDisplayAvatar={false}
+      />
+    </div>
+    <Connect(DatetimeLabel)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.000000"
+      settings={
+        Object {
+          "position": "top left",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`<AuditLogEvent/> render() should render with event type ticket-tags-added and several tags 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          local_offer
+        </i>
+      </div>
+      <ActionName
+        key="action-name-left"
+      >
+        Tags
+      </ActionName>
+      <TagLabel
+        className="equalFiller"
+        key="1"
+        style={Object {}}
+      >
+        tag-1
+      </TagLabel>
+      <TagLabel
+        className="equalFiller"
+        key="2"
+        style={Object {}}
+      >
+        tag-2
+      </TagLabel>
+      <ActionName
+        key="action-name-right"
+      >
+        added
+      </ActionName>
+      <Filler>
+        by
+      </Filler>
+      <AgentLabel
+        className="assigneeLabel"
+        name="User 1"
+        profilePictureUrl=""
+        shouldDisplayAvatar={false}
+      />
+    </div>
+    <Connect(DatetimeLabel)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.000000"
+      settings={
+        Object {
+          "position": "top left",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`<AuditLogEvent/> render() should render with event type ticket-tags-removed 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          local_offer
+        </i>
+      </div>
+      <ActionName
+        key="action-name-left"
+      >
+        Tag
+      </ActionName>
+      <TagLabel
+        className="equalFiller"
+        key="1"
+        style={Object {}}
+      >
+        tag-1
+      </TagLabel>
+      <ActionName
+        key="action-name-right"
+      >
+        removed
+      </ActionName>
+      <Filler>
+        by
+      </Filler>
+      <AgentLabel
+        className="assigneeLabel"
+        name="User 1"
+        profilePictureUrl=""
+        shouldDisplayAvatar={false}
+      />
+    </div>
+    <Connect(DatetimeLabel)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.000000"
+      settings={
+        Object {
+          "position": "top left",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`<AuditLogEvent/> render() should render with event type ticket-tags-removed and several tags 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          local_offer
+        </i>
+      </div>
+      <ActionName
+        key="action-name-left"
+      >
+        Tags
+      </ActionName>
+      <TagLabel
+        className="equalFiller"
+        key="1"
+        style={Object {}}
+      >
+        tag-1
+      </TagLabel>
+      <TagLabel
+        className="equalFiller"
+        key="2"
+        style={Object {}}
+      >
+        tag-2
+      </TagLabel>
+      <ActionName
+        key="action-name-right"
+      >
+        removed
+      </ActionName>
+      <Filler>
+        by
+      </Filler>
+      <AgentLabel
+        className="assigneeLabel"
+        name="User 1"
+        profilePictureUrl=""
+        shouldDisplayAvatar={false}
+      />
+    </div>
+    <Connect(DatetimeLabel)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.000000"
+      settings={
+        Object {
+          "position": "top left",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`<AuditLogEvent/> render() should render with event type ticket-team-assigned 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          group_add
+        </i>
+      </div>
+      <ActionName
+        key="action-name"
+      >
+        Ticket assigned
+      </ActionName>
+      <Filler
+        key="to"
+      >
+        to
+      </Filler>
+      <TeamLabel
+        className="assigneeLabel"
+        key="team-label"
+        name="Team 1"
+        shouldDisplayAvatar={false}
+        shouldDisplayTeamIcon={false}
+      />
+      <Filler>
+        by
+      </Filler>
+      <AgentLabel
+        className="assigneeLabel"
+        name="User 1"
+        profilePictureUrl=""
+        shouldDisplayAvatar={false}
+      />
+    </div>
+    <Connect(DatetimeLabel)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.000000"
+      settings={
+        Object {
+          "position": "top left",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`<AuditLogEvent/> render() should render with event type ticket-team-assigned and missing assignee 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          group_add
+        </i>
+      </div>
+      <ActionName
+        key="action-name"
+      >
+        Ticket assigned
+      </ActionName>
+      <Filler>
+        by
+      </Filler>
+      <AgentLabel
+        className="assigneeLabel"
+        name="User 1"
+        profilePictureUrl=""
+        shouldDisplayAvatar={false}
+      />
+    </div>
+    <Connect(DatetimeLabel)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.000000"
+      settings={
+        Object {
+          "position": "top left",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`<AuditLogEvent/> render() should render with event type ticket-team-unassigned 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          person_add_disabled
+        </i>
+      </div>
+      <ActionName>
+        Ticket unassigned from team
+      </ActionName>
+      <Filler>
+        by
+      </Filler>
+      <AgentLabel
+        className="assigneeLabel"
+        name="User 1"
+        profilePictureUrl=""
+        shouldDisplayAvatar={false}
+      />
+    </div>
+    <Connect(DatetimeLabel)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.000000"
+      settings={
+        Object {
+          "position": "top left",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`<AuditLogEvent/> render() should render with event type ticket-trashed 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          delete
+        </i>
+      </div>
+      <ActionName>
+        Ticket deleted
+      </ActionName>
+      <Filler>
+        by
+      </Filler>
+      <AgentLabel
+        className="assigneeLabel"
+        name="User 1"
+        profilePictureUrl=""
+        shouldDisplayAvatar={false}
+      />
+    </div>
+    <Connect(DatetimeLabel)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.000000"
+      settings={
+        Object {
+          "position": "top left",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`<AuditLogEvent/> render() should render with event type ticket-unassigned 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          person_add_disabled
+        </i>
+      </div>
+      <ActionName>
+        Ticket unassigned from user
+      </ActionName>
+      <Filler>
+        by
+      </Filler>
+      <AgentLabel
+        className="assigneeLabel"
+        name="User 1"
+        profilePictureUrl=""
+        shouldDisplayAvatar={false}
+      />
+    </div>
+    <Connect(DatetimeLabel)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.000000"
+      settings={
+        Object {
+          "position": "top left",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`<AuditLogEvent/> render() should render with event type ticket-unmarked-spam 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          undo
+        </i>
+      </div>
+      <ActionName>
+        Ticket unmarked as spam
+      </ActionName>
+      <Filler>
+        by
+      </Filler>
+      <AgentLabel
+        className="assigneeLabel"
+        name="User 1"
+        profilePictureUrl=""
+        shouldDisplayAvatar={false}
+      />
+    </div>
+    <Connect(DatetimeLabel)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.000000"
+      settings={
+        Object {
+          "position": "top left",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`<AuditLogEvent/> render() should render with event type ticket-untrashed 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          undo
+        </i>
+      </div>
+      <ActionName>
+        Ticket undeleted
+      </ActionName>
+      <Filler>
+        by
+      </Filler>
+      <AgentLabel
+        className="assigneeLabel"
+        name="User 1"
+        profilePictureUrl=""
+        shouldDisplayAvatar={false}
+      />
+    </div>
+    <Connect(DatetimeLabel)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.000000"
+      settings={
+        Object {
+          "position": "top left",
+        }
+      }
+    />
+  </div>
+</div>
+`;

@@ -1,13 +1,26 @@
 // @flow
 
-import axios from 'axios'
-import {fromJS} from 'immutable'
+import axios, {type AxiosInstance, type AxiosResponse, type CancelTokenSource} from 'axios'
+import {fromJS, type List, type Map, type Record} from 'immutable'
 
-import type {AxiosInstance, CancelTokenSource} from 'axios'
-import type {Map} from 'immutable'
+import type {AuditLogEvent} from '../models/event'
 
-type GorgiasApiOptions = {
+export type GorgiasApiOptions = {
     requestsCancellation: boolean,
+}
+
+export type PaginatedResponse<T> = {
+    data: Array<T>,
+    object: string,
+    uri: string,
+    meta: {
+        page: number,
+        per_page: number,
+        current_page: string,
+        item_count: number,
+        nb_pages: number,
+        next_page?: string,
+    },
 }
 
 export default class GorgiasApi {
@@ -33,6 +46,23 @@ export default class GorgiasApi {
         }
 
         this._requestCanceller.cancel()
+    }
+
+    /**
+     * Yield each page of requested items until last page is reached
+     *
+     * @param {string} url - URL of the endpoint to call
+     * @returns {AsyncGenerator<Array<T>, void, void>}
+     */
+    async *paginate<T>(url: string): AsyncGenerator<Array<T>, void, void> {
+        let path: ?string = url
+
+        while (path) {
+            const response: AxiosResponse<PaginatedResponse<T>> = await this._api.get(path)
+            const { data: {data, meta} } = response
+            yield data
+            path = meta.next_page
+        }
     }
 
     /**
@@ -116,5 +146,19 @@ export default class GorgiasApi {
     async updateCreditCard(data: Map<*, *>): Map<*, *> {
         const resp = await this._api.put('/api/billing/credit-card/', data.toJS())
         return fromJS(resp.data)
+    }
+
+    /**
+     * Yield each page of events until last page is reached
+     *
+     * @param {number} ticketId
+     * @returns {AsyncGenerator<List<Record<AuditLogEvent>>, void, Array<AuditLogEvent>>}
+     */
+    async *getTicketEvents(ticketId: number): AsyncGenerator<List<Record<AuditLogEvent>>, void, Array<AuditLogEvent>> {
+        const pages = this.paginate(`/api/tickets/${ticketId}/events/`)
+
+        for await (const events of pages) {
+            yield fromJS(events)
+        }
     }
 }

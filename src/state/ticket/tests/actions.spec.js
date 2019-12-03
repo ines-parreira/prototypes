@@ -1,3 +1,6 @@
+import querystring from 'querystring'
+import url from 'url'
+
 import configureMockStore from 'redux-mock-store'
 import axios from 'axios'
 import moment from 'moment'
@@ -9,7 +12,10 @@ import * as immutableMatchers from 'jest-immutable-matchers'
 
 import * as actions from '../actions'
 import {initialState} from '../reducers'
+import {notify} from '../../notifications/actions'
 import {initialState as newMessageState} from '../../newMessage/reducers'
+import {TICKET_REOPENED} from '../../../constants/event'
+import type {AuditLogEvent} from '../../../models/event'
 
 jest.addMatchers(immutableMatchers)
 
@@ -584,6 +590,65 @@ describe('ticket actions', () => {
             return store.dispatch(actions.findAndSetCustomer('foo@gorgias.io')).then(() => {
                 expect(store.getActions()).toMatchSnapshot()
             })
+        })
+    })
+
+    describe('loadAuditLogEvents()', () => {
+        const getEvent = (id: number): AuditLogEvent => ({
+            id,
+            account_id: 1,
+            user_id: 1,
+            object_type: 'Ticket',
+            object_id: 1,
+            data: null,
+            context: 'foo',
+            type: TICKET_REOPENED,
+            created_datetime: '2019-11-15 19:00:00.000000',
+        })
+
+        it('should dispatch audit logs events, page per page', async () => {
+            const ticketId = 123
+            const path = `/api/tickets/${ticketId}/events/`
+            const matcher = new RegExp(path + '*')
+
+            const mocks = [
+                {data: [getEvent(1), getEvent(2), getEvent(3)], meta: {next_page: `${path}?page=2`}},
+                {data: [getEvent(4), getEvent(5), getEvent(6)], meta: {next_page: `${path}?page=3`}},
+                {data: [getEvent(7), getEvent(8), getEvent(9)], meta: {}},
+            ]
+
+            mockServer.onGet(matcher).reply((config) => {
+                const parsedUrl = url.parse(config.url)
+                const parsedQuery = querystring.parse(parsedUrl.query || '')
+                const page = parsedQuery && parsedQuery.page ? parseInt(parsedQuery.page) : 1
+                const index = page - 1
+                return [200, mocks[index]]
+            })
+
+            await store.dispatch(actions.displayAuditLogEvents(ticketId))
+            expect(store.getActions()).toMatchSnapshot()
+        })
+
+        it('should dispatch a notification because there is no event for the given ticket', async () => {
+            const ticketId = 123
+            const path = `/api/tickets/${ticketId}/events/`
+
+            mockServer.onGet(path).reply(200, {data: [], meta: {}})
+
+            await store.dispatch(actions.displayAuditLogEvents(ticketId))
+
+            expect(notify).toBeCalledWith({
+                status: 'info',
+                message: 'No event for this ticket',
+            })
+        })
+    })
+
+    describe('hideAuditLogEvents()', () => {
+        it('should dispatch REMOVE_TICKET_AUDIT_LOG_EVENTS action', () => {
+            const ticketId = 123
+            store.dispatch(actions.hideAuditLogEvents(ticketId))
+            expect(store.getActions()).toMatchSnapshot()
         })
     })
 })

@@ -73,6 +73,7 @@ Array [
       "id": 1,
       "_internal": Immutable.Map {
         "displayHistory": false,
+        "shouldDisplayAuditLogEvents": false,
         "shouldDisplayHistoryOnNextPage": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
@@ -120,6 +121,7 @@ Array [
       "id": 1,
       "_internal": Immutable.Map {
         "displayHistory": false,
+        "shouldDisplayAuditLogEvents": false,
         "shouldDisplayHistoryOnNextPage": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
@@ -199,6 +201,7 @@ Object {
     "id": 1,
     "_internal": Immutable.Map {
       "displayHistory": false,
+      "shouldDisplayAuditLogEvents": false,
       "shouldDisplayHistoryOnNextPage": false,
       "loading": Immutable.Map {
         "fetchTicket": false,
@@ -367,6 +370,7 @@ Array [
       "id": 1,
       "_internal": Immutable.Map {
         "displayHistory": false,
+        "shouldDisplayAuditLogEvents": false,
         "shouldDisplayHistoryOnNextPage": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
@@ -480,6 +484,7 @@ Array [
       "id": 1,
       "_internal": Immutable.Map {
         "displayHistory": false,
+        "shouldDisplayAuditLogEvents": false,
         "shouldDisplayHistoryOnNextPage": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
@@ -544,6 +549,7 @@ Array [
       "assignee_user": null,
       "_internal": Immutable.Map {
         "displayHistory": false,
+        "shouldDisplayAuditLogEvents": false,
         "shouldDisplayHistoryOnNextPage": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
@@ -648,6 +654,7 @@ Array [
       "assignee_user": null,
       "_internal": Immutable.Map {
         "displayHistory": false,
+        "shouldDisplayAuditLogEvents": false,
         "shouldDisplayHistoryOnNextPage": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
@@ -744,6 +751,7 @@ Array [
       "assignee_user": null,
       "_internal": Immutable.Map {
         "displayHistory": false,
+        "shouldDisplayAuditLogEvents": false,
         "shouldDisplayHistoryOnNextPage": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
@@ -847,6 +855,7 @@ Array [
       "assignee_user": null,
       "_internal": Immutable.Map {
         "displayHistory": false,
+        "shouldDisplayAuditLogEvents": false,
         "shouldDisplayHistoryOnNextPage": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
@@ -947,6 +956,7 @@ Array [
       "assignee_user": null,
       "_internal": Immutable.Map {
         "displayHistory": false,
+        "shouldDisplayAuditLogEvents": false,
         "shouldDisplayHistoryOnNextPage": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
@@ -1043,6 +1053,7 @@ Array [
       "assignee_user": null,
       "_internal": Immutable.Map {
         "displayHistory": false,
+        "shouldDisplayAuditLogEvents": false,
         "shouldDisplayHistoryOnNextPage": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
@@ -1146,6 +1157,7 @@ Array [
       "assignee_user": null,
       "_internal": Immutable.Map {
         "displayHistory": false,
+        "shouldDisplayAuditLogEvents": false,
         "shouldDisplayHistoryOnNextPage": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
@@ -1237,6 +1249,7 @@ Array [
       "assignee_user": null,
       "_internal": Immutable.Map {
         "displayHistory": false,
+        "shouldDisplayAuditLogEvents": false,
         "shouldDisplayHistoryOnNextPage": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
@@ -1322,6 +1335,7 @@ Array [
       "assignee_user": null,
       "_internal": Immutable.Map {
         "displayHistory": false,
+        "shouldDisplayAuditLogEvents": false,
         "shouldDisplayHistoryOnNextPage": false,
         "loading": Immutable.Map {
           "fetchTicket": false,
@@ -1352,6 +1366,139 @@ Array [
 `;
 
 exports[`ticket actions handleMessageError() should not fetch the ticket because the user is not currently on it 1`] = `Array []`;
+
+exports[`ticket actions hideAuditLogEvents() should dispatch REMOVE_TICKET_AUDIT_LOG_EVENTS action 1`] = `
+Array [
+  Object {
+    "type": "HIDE_TICKET_AUDIT_LOG_EVENTS",
+  },
+  Object {
+    "type": "REMOVE_TICKET_AUDIT_LOG_EVENTS",
+  },
+]
+`;
+
+exports[`ticket actions loadAuditLogEvents() should dispatch audit logs events, page per page 1`] = `
+Array [
+  Object {
+    "type": "DISPLAY_TICKET_AUDIT_LOG_EVENTS",
+  },
+  Object {
+    "payload": Immutable.List [
+      Immutable.Map {
+        "data": null,
+        "account_id": 1,
+        "context": "foo",
+        "user_id": 1,
+        "created_datetime": "2019-11-15 19:00:00.000000",
+        "object_type": "Ticket",
+        "type": "ticket-reopened",
+        "id": 1,
+        "object_id": 1,
+      },
+      Immutable.Map {
+        "data": null,
+        "account_id": 1,
+        "context": "foo",
+        "user_id": 1,
+        "created_datetime": "2019-11-15 19:00:00.000000",
+        "object_type": "Ticket",
+        "type": "ticket-reopened",
+        "id": 2,
+        "object_id": 1,
+      },
+      Immutable.Map {
+        "data": null,
+        "account_id": 1,
+        "context": "foo",
+        "user_id": 1,
+        "created_datetime": "2019-11-15 19:00:00.000000",
+        "object_type": "Ticket",
+        "type": "ticket-reopened",
+        "id": 3,
+        "object_id": 1,
+      },
+    ],
+    "type": "ADD_TICKET_AUDIT_LOG_EVENTS",
+  },
+  Object {
+    "payload": Immutable.List [
+      Immutable.Map {
+        "data": null,
+        "account_id": 1,
+        "context": "foo",
+        "user_id": 1,
+        "created_datetime": "2019-11-15 19:00:00.000000",
+        "object_type": "Ticket",
+        "type": "ticket-reopened",
+        "id": 4,
+        "object_id": 1,
+      },
+      Immutable.Map {
+        "data": null,
+        "account_id": 1,
+        "context": "foo",
+        "user_id": 1,
+        "created_datetime": "2019-11-15 19:00:00.000000",
+        "object_type": "Ticket",
+        "type": "ticket-reopened",
+        "id": 5,
+        "object_id": 1,
+      },
+      Immutable.Map {
+        "data": null,
+        "account_id": 1,
+        "context": "foo",
+        "user_id": 1,
+        "created_datetime": "2019-11-15 19:00:00.000000",
+        "object_type": "Ticket",
+        "type": "ticket-reopened",
+        "id": 6,
+        "object_id": 1,
+      },
+    ],
+    "type": "ADD_TICKET_AUDIT_LOG_EVENTS",
+  },
+  Object {
+    "payload": Immutable.List [
+      Immutable.Map {
+        "data": null,
+        "account_id": 1,
+        "context": "foo",
+        "user_id": 1,
+        "created_datetime": "2019-11-15 19:00:00.000000",
+        "object_type": "Ticket",
+        "type": "ticket-reopened",
+        "id": 7,
+        "object_id": 1,
+      },
+      Immutable.Map {
+        "data": null,
+        "account_id": 1,
+        "context": "foo",
+        "user_id": 1,
+        "created_datetime": "2019-11-15 19:00:00.000000",
+        "object_type": "Ticket",
+        "type": "ticket-reopened",
+        "id": 8,
+        "object_id": 1,
+      },
+      Immutable.Map {
+        "data": null,
+        "account_id": 1,
+        "context": "foo",
+        "user_id": 1,
+        "created_datetime": "2019-11-15 19:00:00.000000",
+        "object_type": "Ticket",
+        "type": "ticket-reopened",
+        "id": 9,
+        "object_id": 1,
+      },
+    ],
+    "type": "ADD_TICKET_AUDIT_LOG_EVENTS",
+  },
+]
+`;
 
 exports[`ticket actions mergeCustomer() 1`] = `
 Array [

@@ -20,6 +20,7 @@ import shortcutManager from '../../../../services/shortcutManager'
 import EditableTitle from '../../../common/components/EditableTitle'
 import MergeTicketsContainer from '../../../common/components/MergeTickets/MergeTicketsContainer'
 import * as ticketActions from '../../../../state/ticket/actions'
+import {shouldDisplayAuditLogEvents} from '../../../../state/ticket/selectors'
 
 import TicketTags from './TicketDetails/TicketTags'
 import TicketStatus from './TicketDetails/TicketStatus'
@@ -29,12 +30,12 @@ import TicketSnooze from './TicketDetails/TicketSnooze'
 import TicketSnoozePicker from './TicketDetails/TicketSnoozePicker'
 import TicketTrash from './TicketDetails/TicketTrash'
 
-
 import css from './TicketHeader.less'
 
 
 type Props = {
     ticket: Map<*,*>,
+    shouldDisplayAuditLogEvents: boolean,
     actions: {
         ticket: typeof ticketActions,
     },
@@ -42,21 +43,27 @@ type Props = {
     setSpam: typeof ticketActions.setSpam,
     clearTicket: typeof ticketActions.clearTicket,
     goToNextTicket: typeof ticketActions.goToNextTicket,
+    displayAuditLogEvents: (ticketId: number) => void,
+    hideAuditLogEvents: () => void,
     hideTicket: () => Promise<*>,
-    className: string
+    className: string,
 }
 
 type State = {
     askTrashConfirmation: boolean,
     showSnoozePicker: boolean,
-    isMergeTicketModalOpen: boolean
+    isMergeTicketModalOpen: boolean,
 }
 
-@connect(null, {
+@connect((state) => ({
+    shouldDisplayAuditLogEvents: shouldDisplayAuditLogEvents(state),
+}), {
     setTrashed: ticketActions.setTrashed,
     setSpam: ticketActions.setSpam,
     clearTicket: ticketActions.clearTicket,
     goToNextTicket: ticketActions.goToNextTicket,
+    displayAuditLogEvents: ticketActions.displayAuditLogEvents,
+    hideAuditLogEvents: ticketActions.hideAuditLogEvents,
 })
 export default class TicketHeader extends React.Component<Props, State> {
     state = {
@@ -135,6 +142,17 @@ export default class TicketHeader extends React.Component<Props, State> {
         this.setState({isMergeTicketModalOpen: !this.state.isMergeTicketModalOpen})
     }
 
+    _toggleAuditLogEvents = () => {
+        const {displayAuditLogEvents, hideAuditLogEvents, ticket} = this.props
+        const shouldDisplayAuditLogEvents = !this.props.shouldDisplayAuditLogEvents
+
+        if (shouldDisplayAuditLogEvents) {
+            displayAuditLogEvents(ticket.get('id'))
+        } else {
+            hideAuditLogEvents()
+        }
+    }
+
     _bindKeys() {
         shortcutManager.bind('TicketDetailContainer', {
             CLOSE_TICKET: {
@@ -160,7 +178,7 @@ export default class TicketHeader extends React.Component<Props, State> {
     }
 
     render() {
-        const {ticket, actions, className} = this.props
+        const {ticket, actions, className, shouldDisplayAuditLogEvents} = this.props
         const {showSnoozePicker} = this.state
         const isUpdate = !!ticket.get('id')
         const isTrashed = !!ticket.get('trashed_datetime')
@@ -212,7 +230,10 @@ export default class TicketHeader extends React.Component<Props, State> {
                                     toggle={this._toggleSnoozePicker}
                                     onApply={this._setSnooze}
                                 />
-                                <DropdownMenu right>
+                                <DropdownMenu
+                                    right
+                                    className={css.actionsDropdown}
+                                >
                                     <DropdownItem
                                         type="button"
                                         onClick={this._toggleSnoozePicker}
@@ -230,6 +251,15 @@ export default class TicketHeader extends React.Component<Props, State> {
                                             call_merge
                                         </i>
                                         merge ticket
+                                    </DropdownItem>
+                                    <DropdownItem
+                                        type="button"
+                                        onClick={this._toggleAuditLogEvents}
+                                    >
+                                        <i className="icon material-icons">
+                                            event_note
+                                        </i>
+                                        {shouldDisplayAuditLogEvents ? 'hide' : 'display'} all events
                                     </DropdownItem>
                                     <DropdownItem
                                         type="button"

@@ -1,11 +1,13 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
-import {fromJS} from 'immutable'
+import {fromJS, type Record} from 'immutable'
 
 import reducer, {initialState} from '../reducers'
 import * as newMessageTypes from '../../newMessage/constants'
 import * as customerTypes from '../../customers/constants'
 import * as types from '../constants'
 import * as ticketFixtures from '../../../fixtures/ticket'
+import type {AuditLogEvent} from '../../../models/event'
+import {TICKET_CLOSED, TICKET_CREATED, TICKET_REOPENED} from '../../../constants/event'
 
 // mock Date object
 const DATE_TO_USE = new Date('2017')
@@ -23,6 +25,8 @@ jest.mock('../../newMessage/ticketReplyCache', () => {
         delete: jest.fn(),
     }
 })
+
+jest.mock('moment', () => (date) => date)
 
 jest.addMatchers(immutableMatchers)
 
@@ -713,7 +717,7 @@ describe('ticket reducers', () => {
     })
 
     it('should handle MERGE_TICKET', () => {
-        const ticket = {
+        const ticket = fromJS({
             id: 1,
             subject: 'title',
             messages: [{ // deliberately not ordered
@@ -733,7 +737,7 @@ describe('ticket reducers', () => {
                 id: 1,
                 data: {hello: 'world!'},
             },
-        }
+        })
 
         // merge ticket and order messages
         expect(
@@ -764,6 +768,22 @@ describe('ticket reducers', () => {
                     type: types.MERGE_TICKET,
                     ticket,
                     messagesDifference: 1,
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+
+        // keep audit log events
+        expect(
+            reducer(
+                initialState
+                    .set('events', fromJS([
+                        {object_id: ticket.get('id'), type: TICKET_CREATED},
+                        {object_id: ticket.get('id'), type: TICKET_CLOSED},
+                        {object_id: ticket.get('id'), type: TICKET_REOPENED},
+                    ])),
+                {
+                    type: types.MERGE_TICKET,
+                    ticket,
                 }
             ).toJS()
         ).toMatchSnapshot()
@@ -841,5 +861,82 @@ describe('ticket reducers', () => {
                 }
             ).toJS()
         ).toMatchSnapshot()
+    })
+
+    describe('action ADD_TICKET_AUDIT_LOG_EVENTS', () => {
+        const getEvent = (id: number): Record<AuditLogEvent> => fromJS({
+            id,
+            account_id: 1,
+            user_id: 1,
+            object_type: 'Ticket',
+            object_id: 1,
+            data: null,
+            context: 'foo',
+            type: TICKET_REOPENED,
+            created_datetime: '2019-11-15 19:00:00.000000',
+        })
+
+        it('should add received event when it is not in the store yet', () => {
+            const action = {
+                type: types.ADD_TICKET_AUDIT_LOG_EVENTS,
+                payload: [getEvent(1)],
+            }
+
+            const nextState = reducer(initialState, action)
+            expect(nextState.toJS()).toMatchSnapshot()
+        })
+
+        it('should update stored event when received event already exists in the store', () => {
+            const initialEvent = getEvent(1)
+            const updatedEvent = initialEvent.set('data', {foo: 'bar'})
+
+            const action = {
+                type: types.ADD_TICKET_AUDIT_LOG_EVENTS,
+                payload: [updatedEvent],
+            }
+
+            const nextState = reducer(initialState.mergeDeep({events: [initialEvent]}), action)
+            expect(nextState.toJS()).toMatchSnapshot()
+        })
+
+        it('should add new received event, and update existing one', () => {
+            const initialEvent = getEvent(1)
+            const updatedEvent = initialEvent.set('type', TICKET_CLOSED).set('data', {foo: 'bar'})
+            const newEvent = getEvent(2)
+
+            const action = {
+                type: types.ADD_TICKET_AUDIT_LOG_EVENTS,
+                payload: [updatedEvent, newEvent],
+            }
+
+            const nextState = reducer(initialState.mergeDeep({events: [initialEvent]}), action)
+            expect(nextState.toJS()).toMatchSnapshot()
+        })
+    })
+
+    describe('action REMOVE_TICKET_AUDIT_LOG_EVENTS', () => {
+        const getEvent = (id: number, type: string): Record<AuditLogEvent> => fromJS({
+            id,
+            account_id: 1,
+            user_id: 1,
+            object_type: 'Ticket',
+            object_id: 1,
+            data: null,
+            context: 'foo',
+            type,
+            created_datetime: '2019-11-15 19:00:00.000000',
+        })
+
+        it('should remove audit log events', () => {
+            const auditLogEvent = getEvent(1, TICKET_REOPENED)
+            const randomEvent = getEvent(2, 'foo')
+
+            const action = {
+                type: types.REMOVE_TICKET_AUDIT_LOG_EVENTS,
+            }
+
+            const nextState = reducer(initialState.mergeDeep({events: [auditLogEvent, randomEvent]}), action)
+            expect(nextState.toJS()).toMatchSnapshot()
+        })
     })
 })
