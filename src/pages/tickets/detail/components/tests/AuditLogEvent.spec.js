@@ -9,7 +9,7 @@ import thunk from 'redux-thunk'
 import * as constants from '../../../../../constants/event'
 import Component from '../AuditLogEvent'
 
-import {type AuditLogEvent, type AuditLogEventType, SYSTEM_RULE_TYPE} from '../../../../../models/event'
+import {type AuditLogEvent, type AuditLogEventType, SYSTEM_RULE_TYPE, TAGS_ADDED_KEY} from '../../../../../models/event'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -182,36 +182,51 @@ describe('<AuditLogEvent/>', () => {
 
                 expect(component).toMatchSnapshot()
             })
+        })
 
-            describe('should not render', () => {
-                it('when the icon or content is missing', () => {
-                    const event = getEvent('invalid')
+        describe('should not render', () => {
+            it('when the content is missing', () => {
+                const event = getEvent('invalid')
 
-                    const component = shallow(
-                        <Component
-                            store={store}
-                            event={fromJS(event)}
-                            isLast={false}
-                        />
-                    ).dive()
+                const component = shallow(
+                    <Component
+                        store={store}
+                        event={fromJS(event)}
+                        isLast={false}
+                    />
+                ).dive()
 
-                    expect(component).toMatchSnapshot()
-                })
+                expect(component).toMatchSnapshot()
+            })
 
-                it('when the executed rule is a system rule', () => {
-                    const event = getEvent(constants.RULE_EXECUTED)
-                    event.data = {type: SYSTEM_RULE_TYPE}
+            it('when the executed rule is a system rule', () => {
+                const event = getEvent(constants.RULE_EXECUTED)
+                event.data = {type: SYSTEM_RULE_TYPE}
 
-                    const component = shallow(
-                        <Component
-                            store={store}
-                            event={fromJS(event)}
-                            isLast={false}
-                        />
-                    ).dive()
+                const component = shallow(
+                    <Component
+                        store={store}
+                        event={fromJS(event)}
+                        isLast={false}
+                    />
+                ).dive()
 
-                    expect(component).toMatchSnapshot()
-                })
+                expect(component).toMatchSnapshot()
+            })
+
+            it('when tag is missing', () => {
+                const event = getEvent(constants.TICKET_TAGS_ADDED)
+                event.data = {[TAGS_ADDED_KEY]: [999]}
+
+                const component = shallow(
+                    <Component
+                        store={store}
+                        event={fromJS(event)}
+                        isLast={false}
+                    />
+                ).dive()
+
+                expect(component).toMatchSnapshot()
             })
         })
     })

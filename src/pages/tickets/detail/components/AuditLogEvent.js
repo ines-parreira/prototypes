@@ -41,49 +41,56 @@ class AuditLogEventComponent extends React.Component<Props> {
     }
 
     static _ICONS = {
-        [constants.RULE_EXECUTED]: 'settings',
-        [constants.TICKET_ASSIGNED]: 'person_add',
-        [constants.TICKET_CLOSED]: 'done',
-        [constants.TICKET_CREATED]: 'add',
-        [constants.TICKET_MARKED_SPAM]: 'flag',
-        [constants.TICKET_MERGED]: 'call_merge',
-        [constants.TICKET_REOPENED]: 'loop',
-        [constants.TICKET_SNOOZED]: 'timer',
-        [constants.TICKET_TAGS_ADDED]: 'local_offer',
-        [constants.TICKET_TAGS_REMOVED]: 'local_offer',
-        [constants.TICKET_TEAM_ASSIGNED]: 'group_add',
-        [constants.TICKET_TEAM_UNASSIGNED]: 'person_add_disabled',
-        [constants.TICKET_TRASHED]: 'delete',
-        [constants.TICKET_UNASSIGNED]: 'person_add_disabled',
-        [constants.TICKET_UNMARKED_SPAM]: 'undo',
-        [constants.TICKET_UNTRASHED]: 'undo',
+        [constants.RULE_EXECUTED]: ['settings'],
+        [constants.TICKET_ASSIGNED]: ['person_add'],
+        [constants.TICKET_CLOSED]: ['done', css.success],
+        [constants.TICKET_CREATED]: ['add'],
+        [constants.TICKET_MARKED_SPAM]: ['flag', css.warning],
+        [constants.TICKET_MERGED]: ['call_merge'],
+        [constants.TICKET_REOPENED]: ['loop'],
+        [constants.TICKET_SNOOZED]: ['timer'],
+        [constants.TICKET_TAGS_ADDED]: ['local_offer'],
+        [constants.TICKET_TAGS_REMOVED]: ['local_offer'],
+        [constants.TICKET_TEAM_ASSIGNED]: ['group_add'],
+        [constants.TICKET_TEAM_UNASSIGNED]: ['person_add_disabled'],
+        [constants.TICKET_TRASHED]: ['delete', css.danger],
+        [constants.TICKET_UNASSIGNED]: ['person_add_disabled'],
+        [constants.TICKET_UNMARKED_SPAM]: ['undo'],
+        [constants.TICKET_UNTRASHED]: ['undo'],
     }
 
     _CONTENT_RENDERERS = {
         [constants.RULE_EXECUTED]: () => this._renderRuleExecutedEvent(),
         [constants.TICKET_ASSIGNED]: () => this._renderTicketAssignedEvent(),
-        [constants.TICKET_CLOSED]: () => <ActionName>Ticket closed</ActionName>,
-        [constants.TICKET_CREATED]: () => <ActionName>Ticket created</ActionName>,
-        [constants.TICKET_MARKED_SPAM]: () => <ActionName>Ticket marked as spam</ActionName>,
-        [constants.TICKET_MERGED]: () => <ActionName>Ticket merged</ActionName>,
-        [constants.TICKET_REOPENED]: () => <ActionName>Ticket reopened</ActionName>,
-        [constants.TICKET_SNOOZED]: () => <ActionName>Ticket snoozed</ActionName>,
+        [constants.TICKET_CLOSED]: () => <ActionName>Closed</ActionName>,
+        [constants.TICKET_CREATED]: () => <ActionName>Created</ActionName>,
+        [constants.TICKET_MARKED_SPAM]: () => <ActionName>Marked as spam</ActionName>,
+        [constants.TICKET_MERGED]: () => <ActionName>Merged</ActionName>,
+        [constants.TICKET_REOPENED]: () => <ActionName>Reopened</ActionName>,
+        [constants.TICKET_SNOOZED]: () => <ActionName>Snoozed</ActionName>,
         [constants.TICKET_TAGS_ADDED]: () => this._renderTagsEvent(TAGS_ADDED_KEY),
         [constants.TICKET_TAGS_REMOVED]: () => this._renderTagsEvent(TAGS_REMOVED_KEY),
         [constants.TICKET_TEAM_ASSIGNED]: () => this._renderTicketTeamAssignedEvent(),
-        [constants.TICKET_TEAM_UNASSIGNED]: () => <ActionName>Ticket unassigned from team</ActionName>,
-        [constants.TICKET_TRASHED]: () => <ActionName>Ticket deleted</ActionName>,
-        [constants.TICKET_UNASSIGNED]: () => <ActionName>Ticket unassigned from user</ActionName>,
-        [constants.TICKET_UNMARKED_SPAM]: () => <ActionName>Ticket unmarked as spam</ActionName>,
-        [constants.TICKET_UNTRASHED]: () => <ActionName>Ticket undeleted</ActionName>,
+        [constants.TICKET_TEAM_UNASSIGNED]: () => <ActionName>Unassigned from team</ActionName>,
+        [constants.TICKET_TRASHED]: () => <ActionName>Deleted</ActionName>,
+        [constants.TICKET_UNASSIGNED]: () => <ActionName>Unassigned from user</ActionName>,
+        [constants.TICKET_UNMARKED_SPAM]: () => <ActionName>Unmarked as spam</ActionName>,
+        [constants.TICKET_UNTRASHED]: () => <ActionName>Undeleted</ActionName>,
     }
 
-    _getIcon(): string {
+    _getIcon() {
         const {event} = this.props
         const type = event.get('type')
-        const icon = AuditLogEventComponent._ICONS[type]
+        const iconConfig = AuditLogEventComponent._ICONS[type] || ['info']
+        const [icon, className] = iconConfig
 
-        return icon || 'info'
+        return (
+            <div className={classnames(css.icon, className)}>
+                <i className="material-icons">
+                    {icon}
+                </i>
+            </div>
+        )
     }
 
     _getContent() {
@@ -114,7 +121,7 @@ class AuditLogEventComponent extends React.Component<Props> {
         const {event, users} = this.props
         const assigneeUserId = event.getIn(['data', 'assignee_user_id'])
         const assigneeUser = users.find((user) => user.get('id') === assigneeUserId)
-        const elements = [<ActionName key="action-name">Ticket assigned</ActionName>]
+        const elements = [<ActionName key="action-name">Assigned</ActionName>]
 
         if (assigneeUser) {
             elements.push(
@@ -134,7 +141,7 @@ class AuditLogEventComponent extends React.Component<Props> {
         const {event, teams} = this.props
         const assigneeTeamId = event.getIn(['data', 'assignee_team_id'])
         const assigneeTeam = teams.find((team) => team.get('id') === assigneeTeamId)
-        const elements = [<ActionName key="action-name">Ticket assigned</ActionName>]
+        const elements = [<ActionName key="action-name">Assigned</ActionName>]
 
         if (assigneeTeam) {
             elements.push(
@@ -154,7 +161,14 @@ class AuditLogEventComponent extends React.Component<Props> {
         const {event, tags} = this.props
         const tagsIds = event.getIn(['data', tagsIdsKey])
         const eventTags = tags.filter((tag) => tagsIds.includes(tag.get('id')))
-        const elements = [<ActionName key="action-name-left">{tagsIds.size > 1 ? 'Tags' : 'Tag'}</ActionName>]
+
+        if (!eventTags.size) {
+            return null
+        }
+
+        const elements = [
+            <ActionName key="action-name-left">{tagsIdsKey === TAGS_ADDED_KEY ? 'Tagged' : 'Untagged'}</ActionName>
+        ]
 
         {
             eventTags.forEach((tag) => {
@@ -170,10 +184,6 @@ class AuditLogEventComponent extends React.Component<Props> {
             })
         }
 
-        elements.push(
-            <ActionName key="action-name-right">{tagsIdsKey === TAGS_ADDED_KEY ? 'added' : 'removed'}</ActionName>
-        )
-
         return elements
     }
 
@@ -181,7 +191,7 @@ class AuditLogEventComponent extends React.Component<Props> {
         const icon = this._getIcon()
         const content = this._getContent()
 
-        if (!icon || !content) {
+        if (!content) {
             return null
         }
 
@@ -199,12 +209,7 @@ class AuditLogEventComponent extends React.Component<Props> {
             >
                 <div className={css.event}>
                     <div className={css.content}>
-                        <div className={classnames(css.icon)}>
-                            <i className="material-icons">
-                                {icon}
-                            </i>
-                        </div>
-
+                        {icon}
                         {content}
 
                         {shouldRenderViaRule && <Filler>via rule</Filler>}
@@ -241,6 +246,6 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps)(AuditLogEventComponent)
 
 // Internal helper components
-type HelperProps = {children: Node}
+type HelperProps = { children: Node }
 const ActionName = ({children}: HelperProps) => <span className={css.actionName}>{children}</span>
 const Filler = ({children}: HelperProps) => <span className={css.filler}>{children}</span>

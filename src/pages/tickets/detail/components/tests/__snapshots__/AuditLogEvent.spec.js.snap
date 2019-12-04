@@ -1,8 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<AuditLogEvent/> render() should render should not render when the executed rule is a system rule 1`] = `""`;
+exports[`<AuditLogEvent/> render() should not render when tag is missing 1`] = `""`;
 
-exports[`<AuditLogEvent/> render() should render should not render when the icon or content is missing 1`] = `""`;
+exports[`<AuditLogEvent/> render() should not render when the content is missing 1`] = `""`;
+
+exports[`<AuditLogEvent/> render() should not render when the executed rule is a system rule 1`] = `""`;
 
 exports[`<AuditLogEvent/> render() should render when the event has been added via a rule 1`] = `
 <div
@@ -24,7 +26,7 @@ exports[`<AuditLogEvent/> render() should render when the event has been added v
         </i>
       </div>
       <ActionName>
-        Ticket reopened
+        Reopened
       </ActionName>
       <Filler>
         via rule
@@ -63,7 +65,7 @@ exports[`<AuditLogEvent/> render() should render when the event is the last comp
         </i>
       </div>
       <ActionName>
-        Ticket reopened
+        Reopened
       </ActionName>
       <Filler>
         by
@@ -108,7 +110,7 @@ exports[`<AuditLogEvent/> render() should render when the user ID is missing 1`]
         </i>
       </div>
       <ActionName>
-        Ticket reopened
+        Reopened
       </ActionName>
     </div>
     <Connect(DatetimeLabel)
@@ -188,7 +190,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-assigned
       <ActionName
         key="action-name"
       >
-        Ticket assigned
+        Assigned
       </ActionName>
       <Filler
         key="to"
@@ -247,7 +249,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-assigned
       <ActionName
         key="action-name"
       >
-        Ticket assigned
+        Assigned
       </ActionName>
       <Filler>
         by
@@ -283,7 +285,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-closed 1
       className="content"
     >
       <div
-        className="icon"
+        className="icon success"
       >
         <i
           className="material-icons"
@@ -292,7 +294,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-closed 1
         </i>
       </div>
       <ActionName>
-        Ticket closed
+        Closed
       </ActionName>
       <Filler>
         by
@@ -337,7 +339,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-created 
         </i>
       </div>
       <ActionName>
-        Ticket created
+        Created
       </ActionName>
       <Filler>
         by
@@ -373,7 +375,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-marked-s
       className="content"
     >
       <div
-        className="icon"
+        className="icon warning"
       >
         <i
           className="material-icons"
@@ -382,7 +384,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-marked-s
         </i>
       </div>
       <ActionName>
-        Ticket marked as spam
+        Marked as spam
       </ActionName>
       <Filler>
         by
@@ -427,7 +429,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-merged 1
         </i>
       </div>
       <ActionName>
-        Ticket merged
+        Merged
       </ActionName>
       <Filler>
         by
@@ -472,7 +474,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-reopened
         </i>
       </div>
       <ActionName>
-        Ticket reopened
+        Reopened
       </ActionName>
       <Filler>
         by
@@ -517,7 +519,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-snoozed 
         </i>
       </div>
       <ActionName>
-        Ticket snoozed
+        Snoozed
       </ActionName>
       <Filler>
         by
@@ -564,7 +566,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-add
       <ActionName
         key="action-name-left"
       >
-        Tag
+        Tagged
       </ActionName>
       <TagLabel
         className="equalFiller"
@@ -573,11 +575,6 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-add
       >
         tag-1
       </TagLabel>
-      <ActionName
-        key="action-name-right"
-      >
-        added
-      </ActionName>
       <Filler>
         by
       </Filler>
@@ -623,7 +620,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-add
       <ActionName
         key="action-name-left"
       >
-        Tags
+        Tagged
       </ActionName>
       <TagLabel
         className="equalFiller"
@@ -639,11 +636,6 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-add
       >
         tag-2
       </TagLabel>
-      <ActionName
-        key="action-name-right"
-      >
-        added
-      </ActionName>
       <Filler>
         by
       </Filler>
@@ -689,7 +681,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-rem
       <ActionName
         key="action-name-left"
       >
-        Tag
+        Untagged
       </ActionName>
       <TagLabel
         className="equalFiller"
@@ -698,11 +690,6 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-rem
       >
         tag-1
       </TagLabel>
-      <ActionName
-        key="action-name-right"
-      >
-        removed
-      </ActionName>
       <Filler>
         by
       </Filler>
@@ -748,7 +735,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-rem
       <ActionName
         key="action-name-left"
       >
-        Tags
+        Untagged
       </ActionName>
       <TagLabel
         className="equalFiller"
@@ -764,11 +751,6 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-tags-rem
       >
         tag-2
       </TagLabel>
-      <ActionName
-        key="action-name-right"
-      >
-        removed
-      </ActionName>
       <Filler>
         by
       </Filler>
@@ -814,7 +796,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-team-ass
       <ActionName
         key="action-name"
       >
-        Ticket assigned
+        Assigned
       </ActionName>
       <Filler
         key="to"
@@ -873,7 +855,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-team-ass
       <ActionName
         key="action-name"
       >
-        Ticket assigned
+        Assigned
       </ActionName>
       <Filler>
         by
@@ -918,7 +900,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-team-una
         </i>
       </div>
       <ActionName>
-        Ticket unassigned from team
+        Unassigned from team
       </ActionName>
       <Filler>
         by
@@ -954,7 +936,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-trashed 
       className="content"
     >
       <div
-        className="icon"
+        className="icon danger"
       >
         <i
           className="material-icons"
@@ -963,7 +945,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-trashed 
         </i>
       </div>
       <ActionName>
-        Ticket deleted
+        Deleted
       </ActionName>
       <Filler>
         by
@@ -1008,7 +990,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-unassign
         </i>
       </div>
       <ActionName>
-        Ticket unassigned from user
+        Unassigned from user
       </ActionName>
       <Filler>
         by
@@ -1053,7 +1035,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-unmarked
         </i>
       </div>
       <ActionName>
-        Ticket unmarked as spam
+        Unmarked as spam
       </ActionName>
       <Filler>
         by
@@ -1098,7 +1080,7 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-untrashe
         </i>
       </div>
       <ActionName>
-        Ticket undeleted
+        Undeleted
       </ActionName>
       <Filler>
         by
