@@ -8,6 +8,7 @@ import {
     AIRCALL_INTEGRATION_TYPE,
     EMAIL_INTEGRATION_TYPE,
     FACEBOOK_INTEGRATION_TYPE,
+    GMAIL_INTEGRATION_TYPE,
     HTTP_INTEGRATION_TYPE,
     MAGENTO2_INTEGRATION_TYPE,
     RECHARGE_INTEGRATION_TYPE,
@@ -97,7 +98,14 @@ class IntegrationDetailContainer extends React.Component {
     }
 
     render() {
-        const {actions, integrations, params, currentUser, getEligibleShopifyIntegrationsFor} = this.props
+        const {
+            actions,
+            currentUser,
+            integrations,
+            getEligibleShopifyIntegrationsFor,
+            getRedirectUri,
+            params
+        } = this.props
 
         const isDetail = !!params.integrationId
         const isUpdate = isDetail && params.integrationId !== 'new'
@@ -116,7 +124,7 @@ class IntegrationDetailContainer extends React.Component {
             loading: integrations.getIn(['state', 'loading'], fromJS({})),
         }
 
-        const redirectUri = this.props.getRedirectUri(params.integrationType)
+        const redirectUri = getRedirectUri(params.integrationType)
 
         switch (params.integrationType) {
             case AIRCALL_INTEGRATION_TYPE:
@@ -193,6 +201,7 @@ class IntegrationDetailContainer extends React.Component {
                         actions={actions}
                         integrations={commonProps.integrations}
                         loading={commonProps.loading}
+                        gmailRedirectUri={getRedirectUri(GMAIL_INTEGRATION_TYPE)}
                     />
                 )
 

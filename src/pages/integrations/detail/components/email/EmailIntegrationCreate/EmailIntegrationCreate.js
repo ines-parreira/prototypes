@@ -1,47 +1,32 @@
 // @flow
 import React from 'react'
 import {connect} from 'react-redux'
-import {browserHistory, Link, withRouter} from 'react-router'
+import {Link, withRouter} from 'react-router'
 import classnames from 'classnames'
 import {Breadcrumb, BreadcrumbItem, Button, Container,} from 'reactstrap'
+
+import {GMAIL_INTEGRATION_TYPE, OUTLOOK_INTEGRATION_TYPE} from '../../../../../../constants/integration'
+import {getRedirectUri} from '../../../../../../state/integrations/selectors'
 
 import PageHeader from '../../../../../common/components/PageHeader'
 
 import googleLogo from '../../../../../../../img/integrations/google-icon.svg'
 import officeLogo from '../../../../../../../img/integrations/office-transparent.png'
-import {getRedirectUri} from '../../../../../../state/integrations/selectors'
 
 import css from './EmailIntegrationCreate.less'
 
 
 type Props = {
+    gmailRedirectUri: string,
     outlookRedirectUri: string,
     actions: Object,
     loading: Object,
-    location: Object,
-    notify: (Object) => Promise<*>,
+    location: Object
 }
 
 export class EmailIntegrationCreate extends React.Component<Props> {
-    componentDidMount() {
-        // display message from url
-        const {
-            message,
-            message_type: status = 'info'
-        } = this.props.location.query
-
-        if (message) {
-            this.props.notify({
-                status,
-                title: message.replace(/\+/g, ' ')
-            })
-            // remove error from url
-            browserHistory.push(window.location.pathname)
-        }
-    }
-
     render() {
-        const {outlookRedirectUri} = this.props
+        const {gmailRedirectUri, outlookRedirectUri} = this.props
 
         return (
             <div className="full-width">
@@ -68,7 +53,7 @@ export class EmailIntegrationCreate extends React.Component<Props> {
                     <div className={css.form}>
                         <Button
                             tag="a"
-                            href="/integrations/gmail/auth"
+                            href={gmailRedirectUri}
                             block
                             className={classnames('mb-2', css.connectButton, css.gmailButton)}
                         >
@@ -124,7 +109,8 @@ export class EmailIntegrationCreate extends React.Component<Props> {
 }
 
 const mapStateToProps = (state) => ({
-    outlookRedirectUri: getRedirectUri('outlook')(state)
+    gmailRedirectUri: getRedirectUri(GMAIL_INTEGRATION_TYPE)(state),
+    outlookRedirectUri: getRedirectUri(OUTLOOK_INTEGRATION_TYPE)(state)
 })
 
 export default withRouter(connect(mapStateToProps)(EmailIntegrationCreate))

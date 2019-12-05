@@ -1,11 +1,11 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import {Link, browserHistory, withRouter} from 'react-router'
+// @flow
+import React, {type Node} from 'react'
+import {Link, withRouter} from 'react-router'
 import Clipboard from 'clipboard'
 import {connect} from 'react-redux'
 import _capitalize from 'lodash/capitalize'
 import classNames from 'classnames'
-import {fromJS} from 'immutable'
+import {fromJS, type Map} from 'immutable'
 
 import {
     Container,
@@ -23,14 +23,15 @@ import {
 import {
     EMAIL_INTEGRATION_TYPE,
     GMAIL_INTEGRATION_TYPE,
-    OUTLOOK_INTEGRATION_TYPE
+    OUTLOOK_INTEGRATION_TYPE,
+    EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS
 } from '../../../../../../constants/integration'
+import {getRedirectUri} from '../../../../../../state/integrations/selectors'
 
 import {isGorgiasSupportAddress} from '../../../../../../utils'
 import {convertToHTML} from '../../../../../../utils/editor'
 import Loader from '../../../../../common/components/Loader'
 import * as segmentTracker from '../../../../../../store/middlewares/segmentTracker'
-import * as notificationActions from '../../../../../../state/notifications/actions'
 import * as integrationActions from '../../../../../../state/integrations/actions'
 import {GMAIL_IMPORTED_THREADS} from '../../../../../../config'
 import ConfirmButton from '../../../../../common/components/ConfirmButton'
@@ -39,38 +40,54 @@ import InputField from '../../../../../common/forms/InputField'
 import BooleanField from '../../../../../common/forms/BooleanField'
 import RichFieldWithVariables from '../../../../../common/forms/RichFieldWithVariables'
 import PageHeader from '../../../../../common/components/PageHeader'
-import {EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS} from '../../../../../../constants/integration'
 
 
-class EmailIntegrationUpdate extends React.Component {
-    constructor(props) {
-        super(props)
+type Props = {
+    domain: string,
+    importEmails: (Map<*, *>) => Promise<*>,
+    integration: Map<*, *>,
+    actions: Object,
+    loading: Map<*, *>,
+    location: Object,
+    gmailRedirectUri: string
+}
 
-        this.state = Object.assign({
-            isCopied: false,
-            dirty: false,
-            errors: {}
-        }, this._getIntegrationValues(props.integration))
+type State = {
+    isCopied: boolean,
+    dirty: boolean,
+    errors: Object,
+    name: string,
+    import_spam: boolean,
+    use_gmail_categories: boolean,
+    signature_text: string,
+    signature_html: string
+}
+
+
+class EmailIntegrationUpdate extends React.Component<Props, State> {
+    isInitialized: boolean = false
+
+    state = {
+        isCopied: false,
+        dirty: false,
+        errors: {},
+        name: '',
+        import_spam: false,
+        use_gmail_categories: false,
+        signature_text: '',
+        signature_html: ''
     }
 
-    componentDidMount() {
-        // display message from url
-        const {
-            message,
-            message_type: status = 'info'
-        } = this.props.location.query
+    constructor(props: Props) {
+        super(props)
 
-        if (message) {
-            this.props.notify({
-                status,
-                title: message.replace(/\+/g, ' ')
-            })
-            // remove error from url
-            browserHistory.push(window.location.pathname)
+        this.state = {
+            ...this.state,
+            ...this._getIntegrationValues(props.integration)
         }
     }
 
-    componentWillUpdate(nextProps) {
+    componentWillUpdate(nextProps: Props) {
         const {integration, loading} = nextProps
 
         // populating the form when updating an integration
@@ -80,16 +97,14 @@ class EmailIntegrationUpdate extends React.Component {
         }
     }
 
-    _getIntegrationValues = (integration) => {
-        const data = {
+    _getIntegrationValues = (integration: Map<*, *>): Object => {
+        return {
             name: integration.get('name', ''),
             import_spam: integration.getIn(['meta', 'import_spam']) || false,
+            use_gmail_categories: integration.get('type') === GMAIL_INTEGRATION_TYPE
+                ? integration.getIn(['meta', 'use_gmail_categories']) || false
+                : false
         }
-
-        if (integration.get('type') === GMAIL_INTEGRATION_TYPE) {
-            data.use_gmail_categories = integration.getIn(['meta', 'use_gmail_categories']) || false
-        }
-        return data
     }
 
     _getFormValues = () => {
@@ -103,7 +118,7 @@ class EmailIntegrationUpdate extends React.Component {
             .setIn(['meta', 'signature', 'html'], this.state.signature_html)
 
 
-        if (integration.get('type') === 'gmail') {
+        if (integration.get('type') === GMAIL_INTEGRATION_TYPE) {
             form = form.setIn(['meta', 'use_gmail_categories'], this.state.use_gmail_categories)
         }
         return form
@@ -154,7 +169,13 @@ class EmailIntegrationUpdate extends React.Component {
         }))
     }
 
-    _renderImport = (importActivated, status, mailsImported, importDescription, importMethod) => {
+    _renderImport = (
+        importActivated: boolean,
+        status: string,
+        mailsImported: boolean,
+        importDescription: Node,
+        importMethod: () => Promise<*>
+    ) => {
         const {integration, loading} = this.props
         const email = integration.getIn(['meta', 'address'], '')
 
@@ -298,7 +319,7 @@ class EmailIntegrationUpdate extends React.Component {
         )
     }
 
-    _setName = (name) => {
+    _setName = (name: string) => {
         const {errors} = this.state
         const invalidNameRegexp = new RegExp(`[${EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS.join('')}]`)
 
@@ -333,7 +354,8 @@ class EmailIntegrationUpdate extends React.Component {
             loading,
             actions: {
                 deleteIntegration
-            }
+            },
+            gmailRedirectUri
         } = this.props
 
         const isSubmitting = loading.get('updateIntegration') === integration.get('id')
@@ -378,7 +400,10 @@ class EmailIntegrationUpdate extends React.Component {
                                 <BooleanField
                                     name="use_gmail_categories"
                                     type="checkbox"
-                                    label="Tag Gorgias tickets with Gmail categories (Social, Promotions, Updates, Forums)"
+                                    label={
+                                        'Tag Gorgias tickets with Gmail categories (Social, Promotions, Updates, ' +
+                                        'Forums)'
+                                    }
                                     value={use_gmail_categories}
                                     onChange={(value) => this.setState({
                                         dirty: true,
@@ -436,7 +461,7 @@ class EmailIntegrationUpdate extends React.Component {
                                     className="ml-2"
                                     tag="a"
                                     color="success"
-                                    href={`/integrations/gmail/auth?integration_id=${integration.get('id')}`}
+                                    href={`${gmailRedirectUri}?integration_id=${integration.get('id')}`}
                                 >
                                     Re-activate
                                 </Button>
@@ -461,10 +486,7 @@ class EmailIntegrationUpdate extends React.Component {
     }
 
     render() {
-        const {
-            integration,
-            loading,
-        } = this.props
+        const {integration, loading} = this.props
 
         if (loading.get('integration')) {
             return <Loader/>
@@ -506,23 +528,13 @@ class EmailIntegrationUpdate extends React.Component {
     }
 }
 
-EmailIntegrationUpdate.propTypes = {
-    domain: PropTypes.string.isRequired,
-    notify: PropTypes.func.isRequired,
-    importEmails: PropTypes.func.isRequired,
-    integration: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired,
-    loading: PropTypes.object.isRequired,
-    location: PropTypes.object.isRequired,
-}
-
 const mapStateToProps = (state) => ({
     domain: state.currentAccount.get('domain'),
+    gmailRedirectUri: getRedirectUri(GMAIL_INTEGRATION_TYPE)(state)
 })
 
 const mapDispatchToProps = {
-    importEmails: integrationActions.importEmails,
-    notify: notificationActions.notify,
+    importEmails: integrationActions.importEmails
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EmailIntegrationUpdate))

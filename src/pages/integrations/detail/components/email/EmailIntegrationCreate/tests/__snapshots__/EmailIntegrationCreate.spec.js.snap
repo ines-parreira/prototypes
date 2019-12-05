@@ -42,7 +42,7 @@ exports[`<EmailIntegrationCreate/> render() should render 1`] = `
     >
       <a
         class="mb-2 connectButton gmailButton btn btn-secondary btn-block"
-        href="/integrations/gmail/auth"
+        href="testGmail"
       >
         <img
           src="test-file-stub"
@@ -63,7 +63,7 @@ exports[`<EmailIntegrationCreate/> render() should render 1`] = `
       </div>
       <a
         class="mb-2 connectButton outlookButton btn btn-secondary btn-block"
-        href="test"
+        href="testOutlook"
       >
         <img
           src="test-file-stub"

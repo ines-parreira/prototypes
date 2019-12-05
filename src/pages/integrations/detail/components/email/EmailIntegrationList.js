@@ -23,12 +23,13 @@ import css from './EmailIntegrationList.less'
 type Props = {
     integrations: List<Map<*,*>>,
     loading: Object,
-    actions: Object
+    actions: Object,
+    gmailRedirectUri: string
 }
 
 export default class EmailIntegrationList extends React.Component<Props> {
     render() {
-        const {integrations, loading} = this.props
+        const {integrations, loading, gmailRedirectUri} = this.props
 
         const longTypeDescription = (
             <span>
@@ -46,7 +47,9 @@ export default class EmailIntegrationList extends React.Component<Props> {
 
             const isVerified = integration.getIn(['meta', 'verified'], true)
 
-            let editLink = `/app/settings/integrations/email/${integration.get('id')}${isVerified || isGmail ? '' : '/verification'}`
+            let editLink = `/app/settings/integrations/email/${
+                integration.get('id')}${isVerified || isGmail ? '' : '/verification'
+            }`
 
             let imgComponent = (
                 <i className={classnames(css.icon, 'material-icons')}>
@@ -88,12 +91,12 @@ export default class EmailIntegrationList extends React.Component<Props> {
                                     <Button
                                         tag="a"
                                         color="success"
-                                        href={`/integrations/gmail/auth?integration_id=${integration.get('id')}`}
+                                        href={`${gmailRedirectUri}?integration_id=${integration.get('id')}`}
                                         className={classnames({
                                             'btn-loading': isRowSubmitting,
                                         })}
                                     >
-                                        Re-activate
+                                        Reactivate
                                     </Button>
                                 )
                             }
@@ -105,18 +108,15 @@ export default class EmailIntegrationList extends React.Component<Props> {
                                     </div>
                                 )
                             }
+                            {
+                                !isGmail && !isOutlook && !isVerified && (
+                                    <div>
+                                        <i className={classnames('material-icons mr-2 red')}>close</i>
+                                        Not verified
+                                    </div>
+                                )
+                            }
                         </div>
-                    </td>
-
-                    <td className="smallest align-middle">
-                        {
-                            !isGmail && !isVerified && (
-                                <div>
-                                    <i className={classnames('material-icons mr-2 red')}>close</i>
-                                    Not verified
-                                </div>
-                            )
-                        }
                     </td>
                     <td className="smallest align-middle">
                         <ForwardIcon href={editLink} />
