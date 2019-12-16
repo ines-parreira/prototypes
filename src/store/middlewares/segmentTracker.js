@@ -12,7 +12,7 @@ const analytics = window.analytics
 export const logEvent = (event, props = {}) => {
     devLog('Track Segment', event, props)
 
-    if (_isUndefined(analytics)) {
+    if (window.USER_IMPERSONATED || _isUndefined(analytics)) {
         return
     }
 
@@ -24,7 +24,7 @@ export const logEvent = (event, props = {}) => {
  * @param user
  */
 export const identifyUser = (user) => {
-    if (_isUndefined(analytics)) {
+    if (window.USER_IMPERSONATED || _isUndefined(analytics)) {
         return
     }
 
