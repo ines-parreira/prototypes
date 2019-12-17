@@ -12,7 +12,8 @@ const commonProps = {
         meta: {
             address: 'myintegration@gorgias.io'
         }
-    })
+    }),
+    forwardingEmailAddress: 'forwardingaddress@emails.gorgias.com'
 }
 
 

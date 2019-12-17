@@ -14,6 +14,8 @@ import {
     Input,
 } from 'reactstrap'
 
+import {EMAIL_INTEGRATION_TYPE} from '../../../../../../constants/integration'
+import {getForwardingEmailAddress} from '../../../../../../state/integrations/selectors'
 import * as notificationActions from '../../../../../../state/notifications/actions'
 import * as integrationActions from '../../../../../../state/integrations/actions'
 import PageHeader from '../../../../../common/components/PageHeader'
@@ -57,7 +59,7 @@ const servicesWithTutorials = [
 ]
 
 type Props = {
-    domain: string,
+    forwardingEmailAddress: string,
     notify: (Object) => void,
     sendVerificationEmail: () => Promise<dispatchType>,
     integration: Object,
@@ -78,7 +80,7 @@ export class EmailIntegrationCreateForwarding extends React.Component<Props, Sta
 
     componentDidUpdate() {
         // activate copy to clipboard button only for email integration
-        if (this.props.integration.get('type') === 'email') {
+        if (this.props.integration.get('type') === EMAIL_INTEGRATION_TYPE) {
             const clipboard = new Clipboard('#copy-forwarding-email')
             clipboard.on('success', () => {
                 this.setState({isCopied: true})
@@ -99,7 +101,7 @@ export class EmailIntegrationCreateForwarding extends React.Component<Props, Sta
     }
 
     _renderInstructions = () => {
-        const {domain, integration} = this.props
+        const {forwardingEmailAddress, integration} = this.props
         const {isLoading} = this.state
         const address = integration.getIn(['meta', 'address'], '')
 
@@ -114,7 +116,7 @@ export class EmailIntegrationCreateForwarding extends React.Component<Props, Sta
                         <Input
                             id="forwarding-email"
                             type="text"
-                            value={`${address.split('@')[0]}@${domain}.gorgias.io`}
+                            value={forwardingEmailAddress}
                             readOnly
                         />
                         <InputGroupAddon addonType="append">
@@ -215,7 +217,7 @@ export class EmailIntegrationCreateForwarding extends React.Component<Props, Sta
 
 const mapStateToProps = (state) => {
     return {
-        domain: state.currentAccount.get('domain'),
+        forwardingEmailAddress: getForwardingEmailAddress(state),
     }
 }
 

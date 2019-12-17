@@ -1,6 +1,7 @@
 import {fromJS} from 'immutable'
 
 import {
+    EMAIL_INTEGRATION_TYPE,
     FACEBOOK_INTEGRATION_TYPE,
     MAGENTO2_INTEGRATION_TYPE,
     OUTLOOK_INTEGRATION_TYPE,
@@ -16,6 +17,7 @@ import {
     getCurrentIntegration,
     getEmailIntegrations,
     getFacebookRedirectUri,
+    getForwardingEmailAddress,
     getIntegrations,
     getIntegrationsState,
     getMagento2IntegrationByStoreUrl,
@@ -67,7 +69,7 @@ describe('integrations selectors', () => {
         expect(getChannelSignature('email', 'support@acme.gorgias.io')(state)).toMatchSnapshot()
     })
 
-    describe('getShopifyIntegrationsWithoutChat selector', () => {
+    describe('getShopifyIntegrationsWithoutChat()', () => {
         it('should return one integration', () => {
             const state = {
                 integrations: fromJS({
@@ -126,7 +128,7 @@ describe('integrations selectors', () => {
         })
     })
 
-    describe('getShopifyIntegrationsWithoutFacebook', () => {
+    describe('getShopifyIntegrationsWithoutFacebook()', () => {
         it('should return one integration', () => {
             const state = {
                 integrations: fromJS({
@@ -185,7 +187,7 @@ describe('integrations selectors', () => {
         })
     })
 
-    describe('getShopifyIntegrationByShopName selector', () => {
+    describe('getShopifyIntegrationByShopName()', () => {
         it('should return the matching integration', () => {
             const state = {
                 integrations: fromJS({
@@ -220,7 +222,7 @@ describe('integrations selectors', () => {
         })
     })
 
-    describe('getChatIntegrationCampaigns selector', () => {
+    describe('getChatIntegrationCampaigns()', () => {
         it('should return the campaigns of the correct chat integration', () => {
             const expectedCampaigns = [{
                 name: 'una campagnita'
@@ -256,7 +258,7 @@ describe('integrations selectors', () => {
         })
     })
 
-    describe('getChatIntegrationCampaignById selector', () => {
+    describe('getChatIntegrationCampaignById()', () => {
         it('should return the correct campaign of the correct chat integration', () => {
             const expectedCampaign = {
                 name: 'campaign inte 3',
@@ -296,7 +298,7 @@ describe('integrations selectors', () => {
         })
     })
 
-    describe('getCurrentIntegration selector', () => {
+    describe('getCurrentIntegration()', () => {
         it('should return fromJS({}) because there is no current integration', () => {
             const state = {
                 integrations: fromJS({
@@ -321,7 +323,7 @@ describe('integrations selectors', () => {
         })
     })
 
-    describe('getOnboardingIntegrations selector', () => {
+    describe('getOnboardingIntegrations()', () => {
         [FACEBOOK_INTEGRATION_TYPE, OUTLOOK_INTEGRATION_TYPE].forEach((integrationType) => {
             it(`should return an empty list because there is no integrations in the state (${integrationType})`, () => {
                 expect(getOnboardingIntegrations(integrationType)({})).toEqual(fromJS([]))
@@ -340,7 +342,7 @@ describe('integrations selectors', () => {
         })
     })
 
-    describe('getOnboardingMeta selector', () => {
+    describe('getOnboardingMeta()', () => {
         [FACEBOOK_INTEGRATION_TYPE, OUTLOOK_INTEGRATION_TYPE].forEach((integrationType) => {
             it(`should return an empty map because there is no meta in the state (${integrationType})`, () => {
                 expect(getOnboardingMeta(integrationType)({})).toEqual(fromJS({}))
@@ -359,7 +361,7 @@ describe('integrations selectors', () => {
         })
     })
 
-    describe('getRedirectUri selector', () => {
+    describe('getFacebookRedirectUri()', () => {
         const FAKE_URI = 'https://.../'
         const FAKE_URI_RECONNECT = 'https://.../?reconnect'
         let state
@@ -388,7 +390,7 @@ describe('integrations selectors', () => {
         })
     })
 
-    describe('getMagento2IntegrationsByStoreUrl', () => {
+    describe('getMagento2IntegrationsByStoreUrl()', () => {
         it('should return the matching integration', () => {
             const state = {
                 integrations: fromJS({
@@ -420,6 +422,24 @@ describe('integrations selectors', () => {
 
             const res = getMagento2IntegrationByStoreUrl('magento.gorgi.us')(state)
             expect(res.get('id')).toEqual(2)
+        })
+    })
+
+    describe('getForwardingEmailAddress()', () => {
+        it('should return the forwarding email address of the account', () => {
+            const forwardingEmailAddress ='forward@gorgias.io'
+
+            const state = {
+                integrations: fromJS({
+                    authentication: {
+                        [EMAIL_INTEGRATION_TYPE]: {
+                            forwarding_email_address: forwardingEmailAddress
+                        }
+                    }
+                })
+            }
+
+            expect(getForwardingEmailAddress(state)).toEqual(forwardingEmailAddress)
         })
     })
 })

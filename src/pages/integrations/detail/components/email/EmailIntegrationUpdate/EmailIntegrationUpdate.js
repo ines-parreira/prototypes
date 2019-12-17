@@ -26,7 +26,7 @@ import {
     OUTLOOK_INTEGRATION_TYPE,
     EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS
 } from '../../../../../../constants/integration'
-import {getRedirectUri} from '../../../../../../state/integrations/selectors'
+import {getForwardingEmailAddress, getRedirectUri} from '../../../../../../state/integrations/selectors'
 
 import {isGorgiasSupportAddress} from '../../../../../../utils'
 import {convertToHTML} from '../../../../../../utils/editor'
@@ -44,6 +44,7 @@ import PageHeader from '../../../../../common/components/PageHeader'
 
 type Props = {
     domain: string,
+    forwardingEmailAddress: string,
     importEmails: (Map<*, *>) => Promise<*>,
     integration: Map<*, *>,
     actions: Object,
@@ -107,7 +108,7 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
         }
     }
 
-    _getFormValues = () => {
+    _getFormValues = (): Map<*, *> => {
         const {integration} = this.props
         let form
 
@@ -117,10 +118,10 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
             .setIn(['meta', 'signature', 'text'], this.state.signature_text)
             .setIn(['meta', 'signature', 'html'], this.state.signature_html)
 
-
         if (integration.get('type') === GMAIL_INTEGRATION_TYPE) {
             form = form.setIn(['meta', 'use_gmail_categories'], this.state.use_gmail_categories)
         }
+
         return form
     }
 
@@ -247,7 +248,7 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
     }
 
     _renderInstructions = () => {
-        const {domain, integration} = this.props
+        const {forwardingEmailAddress, integration} = this.props
         const address = integration.getIn(['meta', 'address'], '')
 
         if (isGorgiasSupportAddress(address)) {
@@ -287,7 +288,7 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
                     <Input
                         id="forwarding-email"
                         type="text"
-                        value={`${address.split('@')[0]}@${domain}.gorgias.io`}
+                        value={forwardingEmailAddress}
                         readOnly
                     />
                     <InputGroupAddon addonType="append">
@@ -530,7 +531,8 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
 
 const mapStateToProps = (state) => ({
     domain: state.currentAccount.get('domain'),
-    gmailRedirectUri: getRedirectUri(GMAIL_INTEGRATION_TYPE)(state)
+    gmailRedirectUri: getRedirectUri(GMAIL_INTEGRATION_TYPE)(state),
+    forwardingEmailAddress: getForwardingEmailAddress(state),
 })
 
 const mapDispatchToProps = {

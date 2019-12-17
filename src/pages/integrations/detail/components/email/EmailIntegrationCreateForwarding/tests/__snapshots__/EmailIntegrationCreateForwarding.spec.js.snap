@@ -72,7 +72,7 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
             id="forwarding-email"
             readOnly={true}
             type="text"
-            value="myintegration@undefined.gorgias.io"
+            value="forwardingaddress@emails.gorgias.com"
           />
           <InputGroupAddon
             addonType="append"
@@ -282,7 +282,7 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
             id="forwarding-email"
             readOnly={true}
             type="text"
-            value="myintegration@undefined.gorgias.io"
+            value="forwardingaddress@emails.gorgias.com"
           />
           <InputGroupAddon
             addonType="append"

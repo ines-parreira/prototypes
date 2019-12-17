@@ -145,6 +145,11 @@ export const getRedirectUri = (type: string) => createSelector(
     (state) => state.get('redirect_uri', '')
 )
 
+export const getForwardingEmailAddress = createSelector(
+    [getAuthData(EMAIL_INTEGRATION_TYPE)],
+    (state) => state.get('forwarding_email_address', '')
+)
+
 export const getFacebookRedirectUri = (reconnect: boolean = false) => createSelector(
     [getAuthData(FACEBOOK_INTEGRATION_TYPE)],
     (state) => state.get(reconnect ? 'redirect_uri_reconnect' : 'redirect_uri', '')
