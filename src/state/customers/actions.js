@@ -10,6 +10,7 @@ import {notify} from '../notifications/actions'
 import type {dispatchType, stateType, getStateType, thunkActionType} from '../types'
 
 import * as types from './constants'
+import {mergeChannels} from './helpers'
 
 
 export function fetchCustomer(customerId: number) {
@@ -180,11 +181,13 @@ export function fetchCustomerHistory(customerId: number, options: {successCondit
     }
 }
 
-export function mergeCustomers(baseCustomerId: number, mergeCustomerId: number, data: {}) {
+export function mergeCustomers(baseCustomerId: number, mergeCustomerId: number, data: Object = {}) {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
             type: types.MERGE_CUSTOMERS_START
         })
+
+        data.channels = mergeChannels(data.channels)
 
         return axios.put(`/api/customers/merge?target_id=${baseCustomerId}&source_id=${mergeCustomerId}`, data)
             .then((json = {}) => json.data)
