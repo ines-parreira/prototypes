@@ -10,11 +10,7 @@ import {initialState} from '../../views/reducers'
 import {ACTIVE_VIEW_COUNT_TIMEOUT, baseView, RECENT_VIEWS_COUNTS_TIMEOUT} from '../../../config/views'
 import socketManager from '../../../services/socketManager'
 import * as socketConstants from '../../../config/socketConstants'
-import {
-    NEXT_VIEW_NAV_DIRECTION,
-    PREV_VIEW_NAV_DIRECTION,
-    TICKET_LIST_VIEW_TYPE
-} from '../../../constants/view'
+import {NEXT_VIEW_NAV_DIRECTION, PREV_VIEW_NAV_DIRECTION, TICKET_LIST_VIEW_TYPE} from '../../../constants/view'
 
 
 const mockStore = configureMockStore([thunk])
@@ -68,7 +64,7 @@ describe('actions', () => {
             const state = initialState.mergeDeep(fromJS({
                 active: {id: 1},
                 _internal: {
-                    loading:{
+                    loading: {
                         fetchList: true
                     }
                 }
@@ -84,7 +80,7 @@ describe('actions', () => {
             const state = initialState.mergeDeep(fromJS({
                 active: {id: 1},
                 _internal: {
-                    loading:{
+                    loading: {
                         fetchListDiscreet: true
                     }
                 }
@@ -114,7 +110,7 @@ describe('actions', () => {
         })
 
         afterAll(() => {
-            socketManager.send =_send
+            socketManager.send = _send
         })
 
         it('should not fetch views counts (not on a ticket and not on a view)', () => {
@@ -187,7 +183,7 @@ describe('actions', () => {
         })
 
         afterAll(() => {
-            socketManager.send =_send
+            socketManager.send = _send
         })
 
         it('should not fetch views counts (not on a ticket)', () => {
@@ -420,7 +416,7 @@ describe('actions', () => {
 
         it('should not dispatch FETCH_LIST_VIEW_SUCCESS because the filters of the view have changed since we ' +
             'started the request', () => {
-            const preRequestState ={
+            const preRequestState = {
                 views: fromJS({
                     active: {
                         id: viewId,
@@ -510,7 +506,7 @@ describe('actions', () => {
 
         it('should prevent deletion of last view of same type', async () => {
             const views = initialState.set('items', fromJS([view]))
-            store = mockStore({ views })
+            store = mockStore({views})
 
             await store.dispatch(actions.deleteView(view))
 
@@ -523,7 +519,7 @@ describe('actions', () => {
                 view,
                 view.set('id', 2)
             ]))
-            store = mockStore({ views })
+            store = mockStore({views})
 
             await store.dispatch(actions.deleteView(view))
 
@@ -539,7 +535,7 @@ describe('actions', () => {
         beforeEach(() => {
             view = fromJS({
                 id: 1,
-                type: 'ticket-list',
+                type: TICKET_LIST_VIEW_TYPE,
             })
         })
 
@@ -550,9 +546,34 @@ describe('actions', () => {
                     view.set('id', 2)
                 ]))
                 .set('active', view)
-            store = mockStore({ views })
+            store = mockStore({views})
 
             await store.dispatch(actions.deleteViewSuccess(view.get('id')))
+
+            expect(store.getActions()).toMatchSnapshot()
+        })
+    })
+
+    describe('submitView()', () => {
+        const view = fromJS({
+            id: 0,
+            type: TICKET_LIST_VIEW_TYPE,
+            name: 'My Tickets',
+        })
+
+        it('should create view when id is 0', async () => {
+            const mockServer = new MockAdapter(axios)
+                .onPost('/api/views/')
+                .reply(() => [200, {id: 1, slug: 'my-tickets'}])
+
+            const store = mockStore({views: initialState})
+            await store.dispatch(actions.submitView(view))
+
+            expect(JSON.parse(mockServer.history.post[0].data)).toMatchObject({
+                display_order: null,
+                type: TICKET_LIST_VIEW_TYPE,
+                name: 'My Tickets',
+            })
 
             expect(store.getActions()).toMatchSnapshot()
         })

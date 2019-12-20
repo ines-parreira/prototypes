@@ -164,7 +164,7 @@ export function setPage(page: number) {
 export function submitView(view: viewType): thunkActionType {
     return (dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
         const {views} = getState()
-        const isUpdate = !!view.get('id', '')
+        const isUpdate = !!view.get('id')
         const objectName = getPluralObjectName(view.get('type', ''))
 
         dispatch({
@@ -185,6 +185,7 @@ export function submitView(view: viewType): thunkActionType {
             promise = axios.post(
                 '/api/views/',
                 view.set('display_order', _max(orders) + 1)
+                    .delete('id')
                     .delete('dirty')
                     .delete('editMode')
                     .delete('allItemsSelected')

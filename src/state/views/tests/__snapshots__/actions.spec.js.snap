@@ -340,6 +340,21 @@ Array [
 ]
 `;
 
+exports[`actions submitView() should create view when id is 0 1`] = `
+Array [
+  Object {
+    "type": "SUBMIT_VIEW_START",
+  },
+  Object {
+    "resp": Object {
+      "id": 1,
+      "slug": "my-tickets",
+    },
+    "type": "SUBMIT_NEW_VIEW_SUCCESS",
+  },
+]
+`;
+
 exports[`actions updateRecentViews should update updated datetime of recent views 1`] = `
 Object {
   "type": "UPDATE_RECENT_VIEWS",
