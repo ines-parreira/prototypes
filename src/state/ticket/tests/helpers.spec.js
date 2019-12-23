@@ -4,10 +4,20 @@ import {fromJS} from 'immutable'
 import moment from 'moment'
 
 import * as constants from '../../../constants/event'
-import {deduplicateAuditLogEvents} from '../helpers'
+import {deduplicateAuditLogEvents, shouldDeduplicateAuditLogEvents} from '../helpers'
 import {TAGS_ADDED_KEY, TAGS_REMOVED_KEY} from '../../../models/event'
 
 describe('ticket helpers', () => {
+    describe('shouldDeduplicateAuditLogEvents()', () => {
+        it('should return `True` because the given date is too old', () => {
+            expect(shouldDeduplicateAuditLogEvents('2019-12-10T00:00:00Z')).toBe(true)
+        })
+
+        it('should return `False` because the given date is not too old', () => {
+            expect(shouldDeduplicateAuditLogEvents('2019-12-10T02:00:00Z')).toBe(false)
+        })
+    })
+
     describe('deduplicateAuditLogEvents()', () => {
         describe('should deduplicate events of type', () => {
             it(constants.TICKET_ASSIGNED, () => {

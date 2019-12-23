@@ -8,7 +8,7 @@ import {compare} from '../../utils'
 
 import {getPendingMessageIndex} from './utils'
 import * as types from './constants'
-import {deduplicateAuditLogEvents} from './helpers'
+import {deduplicateAuditLogEvents, shouldDeduplicateAuditLogEvents} from './helpers'
 
 export const initialState = fromJS({
     state: {
@@ -374,7 +374,9 @@ export default function reducer(state = initialState, action) {
                     }
                 })
 
-                return deduplicateAuditLogEvents(results)
+                return shouldDeduplicateAuditLogEvents(state.get('created_datetime'))
+                    ? deduplicateAuditLogEvents(results)
+                    : results
             })
 
         case types.REMOVE_TICKET_AUDIT_LOG_EVENTS:

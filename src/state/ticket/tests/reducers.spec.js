@@ -26,6 +26,15 @@ jest.mock('../../newMessage/ticketReplyCache', () => {
     }
 })
 
+jest.mock('../helpers', () => {
+    const helpers = require.requireActual('../helpers')
+
+    return {
+        ...helpers,
+        shouldDeduplicateAuditLogEvents: () => false,
+    }
+})
+
 jest.mock('moment', () => (date) => date)
 
 jest.addMatchers(immutableMatchers)

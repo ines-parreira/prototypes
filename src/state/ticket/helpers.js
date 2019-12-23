@@ -19,6 +19,17 @@ type TicketState = {
     tags: Array<number>,
 }
 
+/**
+ * Return `true` if we should deduplicate audit log events for the given ticket.
+ * Fix for duplicated events has been deployed at 2019-12-10T00:06:02Z UTC (Dec 9, 2019, 4:06 PM PST).
+ * @param {string} ticketCreatedDatetime
+ * @returns {boolean}
+ */
+export function shouldDeduplicateAuditLogEvents(ticketCreatedDatetime: string): boolean {
+    return moment.utc(ticketCreatedDatetime).isBefore(moment.utc('2019-12-10T01:00:00Z'))
+}
+
+// TODO(@samy): delete in a few months
 export function deduplicateAuditLogEvents(events: List<Record<AuditLogEvent>>) {
     const results = []
     const ticketState: TicketState = {
