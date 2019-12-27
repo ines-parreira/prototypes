@@ -1,7 +1,6 @@
 // @flow
 import axios, {type CancelToken} from 'axios'
 import {fromJS, Map} from 'immutable'
-import _pick from 'lodash/pick'
 import _get from 'lodash/get'
 
 import {notify} from '../notifications/actions'
@@ -15,6 +14,9 @@ type fetchMacrosParamsTypes = {
     page?: number,
     currentMacros?: Map<*,*>,
     currentPage?: number,
+    ticketId?: number,
+    messageId?: number,
+    _fallbackOrderBy?: string
 }
 
 type MacrosSearchResult = {
@@ -30,10 +32,21 @@ export const fetchMacros = (
     cancelToken?: CancelToken
 ): thunkActionType =>
     (dispatch: dispatchType): Promise<?MacrosSearchResult> => {
-        const params = _pick(filters, ['search', 'page'])
-        if (orderBy) {
+        let params = {}
+        if (filters['page']) {
+            params.page = filters['page']
+        }
+        if (filters['search']) {
+            params.search = filters['search']
+        } else if (orderBy) {
             params.order_by = orderBy
             params.order_dir = orderDir
+        }
+
+        if (orderBy === 'relevance') {
+            params.ticket_id = filters['ticketId']
+            params.message_id = filters['messageId']
+            params._fallback_order_by = filters['_fallbackOrderBy']
         }
 
         return axios.get('/api/macros/', {

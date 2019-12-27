@@ -25,8 +25,6 @@ import * as macroActions from '../../../../../state/macro/actions'
 import * as ticketsActions from '../../../../../state/tickets/actions'
 import * as viewsActions from '../../../../../state/views/actions'
 
-import type {fetchMacrosType} from '../types'
-
 import css from './MacroModal.less'
 import MacroNoResults from './MacroNoResults'
 import MacroPreview from './MacroPreview'
@@ -49,7 +47,7 @@ type Props = {
     isCreatingMacro: boolean,
     closeModal: () => void,
     updateMacros: (T: Map<*, *>) => void,
-    fetchMacros: fetchMacrosType,
+    fetchMacros: typeof macroActions.fetchMacros,
     activeView: Map<*, *>,
     currentMacro: Map<*, *>,
     toggleCreateMacro?: (T?: boolean) => Promise<*>,
