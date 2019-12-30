@@ -8,6 +8,7 @@ import type {Map} from 'immutable'
 import InfiniteScroll from '../../../../common/components/InfiniteScroll'
 import {scrollToReactNode} from '../../../../common/utils/keyboard'
 import {isMacroDisabled} from '../utils'
+import {fetchMacros} from '../../../../../state/macro/actions'
 
 import css from './MacroList.less'
 
@@ -15,10 +16,7 @@ import css from './MacroList.less'
 type Props = {
     macros: Map<*,*>,
     currentMacro: Map<*,*>,
-    fetchMacros: ({
-        search?: string,
-        page?: number,
-    }) => Promise<*>,
+    fetchMacros: typeof fetchMacros,
     onClickItem: (T: Map<*,*>) => void,
     onHoverItem: (T: Map<*,*>) => void,
     search: string,
