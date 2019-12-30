@@ -6,12 +6,13 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {Input} from 'reactstrap'
 
-import {clearMacroBeforeApply, type Macro} from '../../../../../business/macro'
-import {type TicketMessageSourceType} from '../../../../../business/ticket'
+import { clearMacroBeforeApply, type Macro } from '../../../../../business/macro'
+import { type TicketMessageSourceType } from '../../../../../business/ticket'
 import shortcutManager from '../../../../../services/shortcutManager'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {applyMacro} from '../../../../../state/ticket/actions'
 import * as ticketSelectors from '../../../../../state/ticket/selectors'
+import type {fetchMacrosType} from '../../../common/macros/types'
 import {getCurrentMacro, getDefaultSelectedMacroId} from '../../../common/macros/utils'
 import {getPreferences} from '../../../../../state/currentUser/selectors'
 import {fetchMacros} from '../../../../../state/macro/actions'
@@ -36,7 +37,7 @@ type Props = {
     page: number,
     totalPages: number,
     selectMacro: () => void,
-    fetchMacros: typeof fetchMacros,
+    fetchMacros: fetchMacrosType,
     applyMacro: (M: Map<*,*>, I: number) => void,
     currentTicket: Map<*,*>,
     cacheAdded: boolean,
@@ -49,7 +50,6 @@ type State = {
     macrosVisible: boolean,
     macroSearchQuery: string,
     selectedMacroId: ?number,
-    isInitialMacrosLoading: boolean
 }
 
 export class TicketReplyArea extends React.Component<Props, State> {
@@ -66,16 +66,13 @@ export class TicketReplyArea extends React.Component<Props, State> {
             totalPages: 1,
             macrosVisible: false,
             macroSearchQuery: '',
-            selectedMacroId: null,
-            isInitialMacrosLoading: false
+            selectedMacroId: null
         }
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         this._bindKeys()
-        this.setState({isInitialMacrosLoading: true})
-        await this._loadMacros()
-        this.setState({isInitialMacrosLoading: false})
+        this._loadMacros()
     }
 
     componentDidUpdate = (prevProps: Props) => {
@@ -145,16 +142,9 @@ export class TicketReplyArea extends React.Component<Props, State> {
         return this.props.fetchMacros({
             currentMacros: this.state.macros,
             currentPage: this.state.page,
-            ticketId: this.props.currentTicket.get('id'),
-            messageId: this.props.currentTicket.getIn([
-                'messages',
-                this.props.currentTicket.get('messages').size - 1,
-                'id'
-            ]),
-            _fallbackOrderBy: 'usage',
             search,
             page,
-        }, 'relevance').then((res) => {
+        }).then((res) => {
             const selectedMacroId = getDefaultSelectedMacroId(res.macros, this.state.selectedMacroId)
             return new Promise((resolve) => {
                 this.setState({
@@ -273,7 +263,6 @@ export class TicketReplyArea extends React.Component<Props, State> {
     }
 
     render = () => {
-        const {totalPages, macros, macroSearchQuery, isInitialMacrosLoading, macrosVisible, page} = this.state
         const currentMacro = getCurrentMacro(this.state.macros, this.state.selectedMacroId)
 
         return (
@@ -296,17 +285,16 @@ export class TicketReplyArea extends React.Component<Props, State> {
                     />
                 </div>
                 <div className={css.content}>
-                    {macrosVisible ? (
+                    {this.state.macrosVisible ? (
                         <TicketMacros
                             ticket={this.props.ticket}
-                            macros={macros}
-                            page={page}
-                            isInitialMacrosLoading={isInitialMacrosLoading}
-                            totalPages={totalPages}
+                            macros={this.state.macros}
+                            page={this.state.page}
+                            totalPages={this.state.totalPages}
                             currentMacro={currentMacro}
                             selectMacro={this._setSelectedMacroId}
                             fetchMacros={this._loadMacros}
-                            searchQuery={macroSearchQuery}
+                            searchQuery={this.state.macroSearchQuery}
                             hideMacros={this._hideMacros}
                             applyMacro={this._applyMacro}
                         />

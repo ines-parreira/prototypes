@@ -8,8 +8,7 @@ import shortcutManager from '../../../../../services/shortcutManager'
 import {moveIndex} from '../../../../common/utils/keyboard'
 import {isMacroDisabled} from '../utils'
 
-import {fetchMacros} from '../../../../../state/macro/actions'
-
+import type {fetchMacrosType} from '../types'
 
 import css from './MacroModalList.less'
 
@@ -20,7 +19,7 @@ type Props = {
     currentMacro: Object,
     disableExternalActions?: boolean,
     handleClickItem: Function,
-    fetchMacros: typeof fetchMacros,
+    fetchMacros: fetchMacrosType,
     page: number,
     totalPages: number,
     search: string,
