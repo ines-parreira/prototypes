@@ -220,6 +220,7 @@ describe('widgets infobar utils', () => {
         })
 
         it('should return an age string because passed type is `age` and passed data is a valid datetime', () => {
+            // @xarg: don't try to mock this (it's a pain) - just update the snapshot
             expect(utils.guessFieldValueFromRawData('2018-01-01 00:05:00', 'age')).toMatchSnapshot()
         })
 
