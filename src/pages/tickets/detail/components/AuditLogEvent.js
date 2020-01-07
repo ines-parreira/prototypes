@@ -45,6 +45,7 @@ class AuditLogEventComponent extends React.Component<Props> {
         [constants.TICKET_ASSIGNED]: ['person_add'],
         [constants.TICKET_CLOSED]: ['done', css.success],
         [constants.TICKET_CREATED]: ['add'],
+        [constants.TICKET_CUSTOMER_UPDATED]: ['people'],
         [constants.TICKET_MARKED_SPAM]: ['flag', css.warning],
         [constants.TICKET_MERGED]: ['call_merge'],
         [constants.TICKET_REOPENED]: ['loop'],
@@ -64,6 +65,7 @@ class AuditLogEventComponent extends React.Component<Props> {
         [constants.TICKET_ASSIGNED]: () => this._renderTicketAssignedEvent(),
         [constants.TICKET_CLOSED]: () => <ActionName>Closed</ActionName>,
         [constants.TICKET_CREATED]: () => <ActionName>Created</ActionName>,
+        [constants.TICKET_CUSTOMER_UPDATED]: () => this._renderCustomerUpdated(),
         [constants.TICKET_MARKED_SPAM]: () => <ActionName>Marked as spam</ActionName>,
         [constants.TICKET_MERGED]: () => <ActionName>Merged</ActionName>,
         [constants.TICKET_REOPENED]: () => <ActionName>Reopened</ActionName>,
@@ -185,6 +187,28 @@ class AuditLogEventComponent extends React.Component<Props> {
         }
 
         return elements
+    }
+
+    _renderCustomerUpdated() {
+        const {event} = this.props
+
+        const oldCustomer = event.getIn(['data', 'old_customer'])
+        const newCustomer = event.getIn(['data', 'new_customer'])
+
+        if (!(oldCustomer && newCustomer)) {
+            return null
+        }
+
+        const oldCustomerName = oldCustomer.get('name') || `Customer #${oldCustomer.get('id')}`
+        const newCustomerName = newCustomer.get('name') || `Customer #${newCustomer.get('id')}`
+
+        return (
+            <ActionName>
+                Customer changed from <a
+                    href={`/app/customer/${oldCustomer.get('id')}`}>{oldCustomerName}</a> to <a
+                    href={`/app/customer/${newCustomer.get('id')}`}>{newCustomerName}</a>
+            </ActionName>
+        )
     }
 
     render() {

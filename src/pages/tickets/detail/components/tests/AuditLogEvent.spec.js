@@ -182,6 +182,54 @@ describe('<AuditLogEvent/>', () => {
 
                 expect(component).toMatchSnapshot()
             })
+
+            it('when the customer has changed', () => {
+                const event = getEvent(constants.TICKET_CUSTOMER_UPDATED)
+                event.data = {
+                    'old_customer': {
+                        'id': 2,
+                        'name': 'customer 2',
+                    },
+                    'new_customer': {
+                        'id': 3,
+                        'name': 'customer 3',
+                    }
+                }
+
+                const component = shallow(
+                    <Component
+                        store={store}
+                        event={fromJS(event)}
+                        isLast={false}
+                    />
+                ).dive()
+
+                expect(component).toMatchSnapshot()
+            })
+
+            it('when the customer has changed - name is empty', () => {
+                const event = getEvent(constants.TICKET_CUSTOMER_UPDATED)
+                event.data = {
+                    'old_customer': {
+                        'id': 2,
+                        'name': null,
+                    },
+                    'new_customer': {
+                        'id': 3,
+                        'name': '',
+                    }
+                }
+
+                const component = shallow(
+                    <Component
+                        store={store}
+                        event={fromJS(event)}
+                        isLast={false}
+                    />
+                ).dive()
+
+                expect(component).toMatchSnapshot()
+            })
         })
 
         describe('should not render', () => {

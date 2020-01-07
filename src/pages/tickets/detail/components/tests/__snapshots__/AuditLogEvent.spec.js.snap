@@ -6,6 +6,118 @@ exports[`<AuditLogEvent/> render() should not render when the content is missing
 
 exports[`<AuditLogEvent/> render() should not render when the executed rule is a system rule 1`] = `""`;
 
+exports[`<AuditLogEvent/> render() should render when the customer has changed - name is empty 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          people
+        </i>
+      </div>
+      <ActionName>
+        Customer changed from 
+        <a
+          href="/app/customer/2"
+        >
+          Customer #2
+        </a>
+         to 
+        <a
+          href="/app/customer/3"
+        >
+          Customer #3
+        </a>
+      </ActionName>
+      <Filler>
+        by
+      </Filler>
+      <AgentLabel
+        className="assigneeLabel"
+        name="User 1"
+        profilePictureUrl=""
+        shouldDisplayAvatar={false}
+      />
+    </div>
+    <Connect(DatetimeLabel)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.000000"
+      settings={
+        Object {
+          "position": "top left",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`<AuditLogEvent/> render() should render when the customer has changed 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          people
+        </i>
+      </div>
+      <ActionName>
+        Customer changed from 
+        <a
+          href="/app/customer/2"
+        >
+          customer 2
+        </a>
+         to 
+        <a
+          href="/app/customer/3"
+        >
+          customer 3
+        </a>
+      </ActionName>
+      <Filler>
+        by
+      </Filler>
+      <AgentLabel
+        className="assigneeLabel"
+        name="User 1"
+        profilePictureUrl=""
+        shouldDisplayAvatar={false}
+      />
+    </div>
+    <Connect(DatetimeLabel)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.000000"
+      settings={
+        Object {
+          "position": "top left",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
 exports[`<AuditLogEvent/> render() should render when the event has been added via a rule 1`] = `
 <div
   className="component"
@@ -363,6 +475,8 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-created 
   </div>
 </div>
 `;
+
+exports[`<AuditLogEvent/> render() should render with event type ticket-customer-updated 1`] = `""`;
 
 exports[`<AuditLogEvent/> render() should render with event type ticket-marked-spam 1`] = `
 <div

@@ -2,6 +2,7 @@ export const RULE_EXECUTED = 'rule-executed'
 export const TICKET_ASSIGNED = 'ticket-assigned'
 export const TICKET_CLOSED = 'ticket-closed'
 export const TICKET_CREATED = 'ticket-created'
+export const TICKET_CUSTOMER_UPDATED = 'ticket-customer-updated'
 export const TICKET_MARKED_SPAM = 'ticket-marked-spam'
 export const TICKET_MERGED = 'ticket-merged'
 export const TICKET_MESSAGE_CREATED = 'ticket-message-created'
@@ -22,6 +23,7 @@ export const TICKET_AUDIT_LOG_EVENTS = [
     TICKET_ASSIGNED,
     TICKET_CLOSED,
     TICKET_CREATED,
+    TICKET_CUSTOMER_UPDATED,
     TICKET_MARKED_SPAM,
     TICKET_MERGED,
     TICKET_REOPENED,
