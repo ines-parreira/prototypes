@@ -136,7 +136,7 @@ export default class APIView extends React.Component<Props, State> {
                             href="http://api.gorgias.io/"
                             target="_blank"
                             rel="noopener noreferrer"
-                        > http://api.gorgias.io/</a>.
+                        > http://api.gorgias.com/</a>.
                     </p>
                     <p>
                         Below are the parameters you will need to access our API. We're

@@ -24,7 +24,7 @@
     "serve": "webpack-dev-server --progress --debug",
     "uglify-file": "terser --compress --mangle --"
   },
-  "author": "Alex Plugaru <alex@gorgias.io>",
+  "author": "Alex Plugaru <alex@gorgias.com>",
   "license": "UNLICENSED",
   "dependencies": {
     "array-includes": "3.0.3",
