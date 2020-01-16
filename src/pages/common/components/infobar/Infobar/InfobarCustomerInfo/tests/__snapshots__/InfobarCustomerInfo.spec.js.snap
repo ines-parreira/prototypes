@@ -1,6 +1,240 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`InfobarCustomerInfo component should render basic customer info and a "generate widgets" button because customer data are loaded, the user is currently editing widgets, it is not currently dragging anything and widgets are currently empty 1`] = `
+exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=false\` because there is no active data integration 1`] = `
+<InfobarCustomerInfo
+  actions={
+    Object {
+      "generateAndSetWidgets": [MockFunction],
+      "resetWidgets": [MockFunction],
+      "setEditedWidgets": [MockFunction],
+      "setEditionAsDirty": [MockFunction],
+    }
+  }
+  customer={
+    Immutable.Map {
+      "id": 1,
+      "name": "foo",
+    }
+  }
+  dispatch={[Function]}
+  hasIntegrations={false}
+  isEditing={false}
+  isRequired={false}
+  sources={Immutable.Map {}}
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+  widgets={
+    Immutable.Map {
+      "currentContext": "ticket",
+    }
+  }
+/>
+`;
+
+exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because there is an active integration of type http 1`] = `
+<InfobarCustomerInfo
+  actions={
+    Object {
+      "generateAndSetWidgets": [MockFunction],
+      "resetWidgets": [MockFunction],
+      "setEditedWidgets": [MockFunction],
+      "setEditionAsDirty": [MockFunction],
+    }
+  }
+  customer={
+    Immutable.Map {
+      "id": 1,
+      "name": "foo",
+    }
+  }
+  dispatch={[Function]}
+  hasIntegrations={true}
+  isEditing={false}
+  isRequired={false}
+  sources={Immutable.Map {}}
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+  widgets={
+    Immutable.Map {
+      "currentContext": "ticket",
+    }
+  }
+/>
+`;
+
+exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because there is an active integration of type magento2 1`] = `
+<InfobarCustomerInfo
+  actions={
+    Object {
+      "generateAndSetWidgets": [MockFunction],
+      "resetWidgets": [MockFunction],
+      "setEditedWidgets": [MockFunction],
+      "setEditionAsDirty": [MockFunction],
+    }
+  }
+  customer={
+    Immutable.Map {
+      "id": 1,
+      "name": "foo",
+    }
+  }
+  dispatch={[Function]}
+  hasIntegrations={true}
+  isEditing={false}
+  isRequired={false}
+  sources={Immutable.Map {}}
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+  widgets={
+    Immutable.Map {
+      "currentContext": "ticket",
+    }
+  }
+/>
+`;
+
+exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because there is an active integration of type recharge 1`] = `
+<InfobarCustomerInfo
+  actions={
+    Object {
+      "generateAndSetWidgets": [MockFunction],
+      "resetWidgets": [MockFunction],
+      "setEditedWidgets": [MockFunction],
+      "setEditionAsDirty": [MockFunction],
+    }
+  }
+  customer={
+    Immutable.Map {
+      "id": 1,
+      "name": "foo",
+    }
+  }
+  dispatch={[Function]}
+  hasIntegrations={true}
+  isEditing={false}
+  isRequired={false}
+  sources={Immutable.Map {}}
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+  widgets={
+    Immutable.Map {
+      "currentContext": "ticket",
+    }
+  }
+/>
+`;
+
+exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because there is an active integration of type shopify 1`] = `
+<InfobarCustomerInfo
+  actions={
+    Object {
+      "generateAndSetWidgets": [MockFunction],
+      "resetWidgets": [MockFunction],
+      "setEditedWidgets": [MockFunction],
+      "setEditionAsDirty": [MockFunction],
+    }
+  }
+  customer={
+    Immutable.Map {
+      "id": 1,
+      "name": "foo",
+    }
+  }
+  dispatch={[Function]}
+  hasIntegrations={true}
+  isEditing={false}
+  isRequired={false}
+  sources={Immutable.Map {}}
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+  widgets={
+    Immutable.Map {
+      "currentContext": "ticket",
+    }
+  }
+/>
+`;
+
+exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because there is an active integration of type smile 1`] = `
+<InfobarCustomerInfo
+  actions={
+    Object {
+      "generateAndSetWidgets": [MockFunction],
+      "resetWidgets": [MockFunction],
+      "setEditedWidgets": [MockFunction],
+      "setEditionAsDirty": [MockFunction],
+    }
+  }
+  customer={
+    Immutable.Map {
+      "id": 1,
+      "name": "foo",
+    }
+  }
+  dispatch={[Function]}
+  hasIntegrations={true}
+  isEditing={false}
+  isRequired={false}
+  sources={Immutable.Map {}}
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+  widgets={
+    Immutable.Map {
+      "currentContext": "ticket",
+    }
+  }
+/>
+`;
+
+exports[`<InfobarCustomerInfo/> should render basic customer info and a "generate widgets" button because customer data are loaded, the user is currently editing widgets, it is not currently dragging anything and widgets are currently empty 1`] = `
 <div
   className="widgetsList d-flex flex-column"
 >
@@ -85,7 +319,7 @@ exports[`InfobarCustomerInfo component should render basic customer info and a "
 </div>
 `;
 
-exports[`InfobarCustomerInfo component should render basic customer info and empty widgets because customer data are loaded, the user is currently editing widgets and it is dragging a widget -- even though widgets are currently empty 1`] = `
+exports[`<InfobarCustomerInfo/> should render basic customer info and empty widgets because customer data are loaded, the user is currently editing widgets and it is dragging a widget -- even though widgets are currently empty 1`] = `
 <div
   className="widgetsList d-flex flex-column"
 >
@@ -154,26 +388,8 @@ exports[`InfobarCustomerInfo component should render basic customer info and emp
                 },
                 "ticket",
               ],
-              Array [
-                Immutable.Map {
-                  "ticket": Immutable.Map {
-                    "customer": Immutable.Map {
-                      "integrations": Immutable.Map {
-                        "118": Immutable.Map {
-                          "foo": "bar",
-                        },
-                      },
-                    },
-                  },
-                },
-                "ticket",
-              ],
             ],
             "results": Array [
-              Object {
-                "type": "return",
-                "value": undefined,
-              },
               Object {
                 "type": "return",
                 "value": undefined,
@@ -228,7 +444,7 @@ exports[`InfobarCustomerInfo component should render basic customer info and emp
 </div>
 `;
 
-exports[`InfobarCustomerInfo component should render basic customer info and the suggestion to add integrations because there is no customer data and there is no data integrations configured for the account 1`] = `
+exports[`<InfobarCustomerInfo/> should render basic customer info and the suggestion to add integrations because there is no customer data and there is no data integrations configured for the account 1`] = `
 <div
   className="widgetsList d-flex flex-column"
 >
@@ -287,7 +503,7 @@ exports[`InfobarCustomerInfo component should render basic customer info and the
 </div>
 `;
 
-exports[`InfobarCustomerInfo component should render only basic customer info because customer data are loaded, the user is not editing widgets and current widgets are empty 1`] = `
+exports[`<InfobarCustomerInfo/> should render only basic customer info because customer data are loaded, the user is not editing widgets and current widgets are empty 1`] = `
 <div
   className="widgetsList d-flex flex-column"
 >
@@ -338,7 +554,7 @@ exports[`InfobarCustomerInfo component should render only basic customer info be
 </div>
 `;
 
-exports[`InfobarCustomerInfo component should render only basic customer info because there is no customer data and there is some data integrations configured for the account 1`] = `
+exports[`<InfobarCustomerInfo/> should render only basic customer info because there is no customer data and there is some data integrations configured for the account 1`] = `
 <div
   className="widgetsList d-flex flex-column"
 >
@@ -389,7 +605,7 @@ exports[`InfobarCustomerInfo component should render only basic customer info be
 </div>
 `;
 
-exports[`InfobarCustomerInfo component sources render basic customer info and widgets because there is customer data, the user is not editing widgets and current widgets are not empty 1`] = `
+exports[`<InfobarCustomerInfo/> sources render basic customer info and widgets because there is customer data, the user is not editing widgets and current widgets are not empty 1`] = `
 <div
   className="widgetsList d-flex flex-column"
 >

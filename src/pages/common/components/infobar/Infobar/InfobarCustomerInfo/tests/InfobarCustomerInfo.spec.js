@@ -1,9 +1,18 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-import {InfobarCustomerInfo} from '../InfobarCustomerInfo'
+import {
+    HTTP_INTEGRATION_TYPE,
+    MAGENTO2_INTEGRATION_TYPE,
+    RECHARGE_INTEGRATION_TYPE, SHOPIFY_INTEGRATION_TYPE, SMILE_INTEGRATION_TYPE
+} from '../../../../../../../constants/integration'
 
+import InfobarCustomerInfoContainer, {InfobarCustomerInfo as InfobarCustomerInfoComponent} from '../InfobarCustomerInfo'
+
+const mockStore = configureMockStore([thunk])
 
 const actions = {
     setEditedWidgets: jest.fn(),
@@ -12,10 +21,14 @@ const actions = {
     generateAndSetWidgets: jest.fn()
 }
 
-describe('InfobarCustomerInfo component', () => {
+describe('<InfobarCustomerInfo/>', () => {
+    beforeEach(() => {
+        jest.resetAllMocks()
+    })
+
     it('should not render because there is no passed customer', () => {
         const component = shallow(
-            <InfobarCustomerInfo
+            <InfobarCustomerInfoComponent
                 actions={actions}
                 customer={null}
                 sources={fromJS({})}
@@ -30,7 +43,7 @@ describe('InfobarCustomerInfo component', () => {
 
     it('should not render because the passed customer is empty', () => {
         const component = shallow(
-            <InfobarCustomerInfo
+            <InfobarCustomerInfoComponent
                 actions={actions}
                 sources={fromJS({})}
                 customer={fromJS({})}
@@ -69,7 +82,7 @@ describe('InfobarCustomerInfo component', () => {
         })
 
         const component = shallow(
-            <InfobarCustomerInfo
+            <InfobarCustomerInfoComponent
                 actions={actions}
                 sources={sources}
                 widgets={widgets}
@@ -107,7 +120,7 @@ describe('InfobarCustomerInfo component', () => {
         })
 
         const component = shallow(
-            <InfobarCustomerInfo
+            <InfobarCustomerInfoComponent
                 actions={actions}
                 sources={sources}
                 widgets={widgets}
@@ -141,7 +154,7 @@ describe('InfobarCustomerInfo component', () => {
         })
 
         const component = shallow(
-            <InfobarCustomerInfo
+            <InfobarCustomerInfoComponent
                 actions={actions}
                 sources={sources}
                 widgets={widgets}
@@ -181,7 +194,7 @@ describe('InfobarCustomerInfo component', () => {
         })
 
         const component = shallow(
-            <InfobarCustomerInfo
+            <InfobarCustomerInfoComponent
                 actions={actions}
                 sources={sources}
                 widgets={widgets}
@@ -197,7 +210,7 @@ describe('InfobarCustomerInfo component', () => {
     it('should render only basic customer info because there is no customer data and there is some data integrations ' +
         'configured for the account', () => {
         const component = shallow(
-            <InfobarCustomerInfo
+            <InfobarCustomerInfoComponent
                 actions={actions}
                 sources={fromJS({})}
                 widgets={fromJS({currentContext: 'ticket'})}
@@ -213,13 +226,58 @@ describe('InfobarCustomerInfo component', () => {
     it('should render basic customer info and the suggestion to add integrations because there is no customer data ' +
         'and there is no data integrations configured for the account', () => {
         const component = shallow(
-            <InfobarCustomerInfo
+            <InfobarCustomerInfoComponent
                 actions={actions}
                 sources={fromJS({})}
                 widgets={fromJS({currentContext: 'ticket'})}
                 customer={fromJS({id: 1, name: 'foo'})}
                 isEditing={false}
                 hasIntegrations={false}
+            />
+        )
+
+        expect(component).toMatchSnapshot()
+    })
+
+    it.each([
+        HTTP_INTEGRATION_TYPE,
+        MAGENTO2_INTEGRATION_TYPE,
+        RECHARGE_INTEGRATION_TYPE,
+        SHOPIFY_INTEGRATION_TYPE,
+        SMILE_INTEGRATION_TYPE
+    ])('should pass `hasIntegrations=true` because there is an active integration of type %s',
+        (integrationType) => {
+            const component = shallow(
+                <InfobarCustomerInfoContainer
+                    store={mockStore({
+                        integrations: fromJS({
+                            integrations: [{type: integrationType}]
+                        })
+                    })}
+                    actions={actions}
+                    sources={fromJS({})}
+                    widgets={fromJS({currentContext: 'ticket'})}
+                    customer={fromJS({id: 1, name: 'foo'})}
+                    isEditing={false}
+                />
+            )
+
+            expect(component).toMatchSnapshot()
+        })
+
+    it('should pass `hasIntegrations=false` because there is no active data integration', () => {
+        const component = shallow(
+            <InfobarCustomerInfoContainer
+                store={mockStore({
+                    integrations: fromJS({
+                        integrations: []
+                    })
+                })}
+                actions={actions}
+                sources={fromJS({})}
+                widgets={fromJS({currentContext: 'ticket'})}
+                customer={fromJS({id: 1, name: 'foo'})}
+                isEditing={false}
             />
         )
 

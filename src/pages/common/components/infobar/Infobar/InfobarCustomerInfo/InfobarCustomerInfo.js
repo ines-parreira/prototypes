@@ -11,8 +11,10 @@ import Clipboard from 'clipboard'
 
 import {
     HTTP_INTEGRATION_TYPE,
+    MAGENTO2_INTEGRATION_TYPE,
     RECHARGE_INTEGRATION_TYPE,
-    SHOPIFY_INTEGRATION_TYPE, SMILE_INTEGRATION_TYPE
+    SHOPIFY_INTEGRATION_TYPE,
+    SMILE_INTEGRATION_TYPE
 } from '../../../../../../constants/integration'
 
 import {itemsWithContext} from '../../../../../../state/widgets/utils'
@@ -298,8 +300,9 @@ export class InfobarCustomerInfo extends React.Component<Props, State> {
 export default connect((state) => ({
     hasIntegrations: !integrationsSelectors.getIntegrationsByTypes([
         HTTP_INTEGRATION_TYPE,
-        SHOPIFY_INTEGRATION_TYPE,
+        MAGENTO2_INTEGRATION_TYPE,
         RECHARGE_INTEGRATION_TYPE,
-        SMILE_INTEGRATION_TYPE
+        SHOPIFY_INTEGRATION_TYPE,
+        SMILE_INTEGRATION_TYPE,
     ])(state).isEmpty(),
 }))(InfobarCustomerInfo)
