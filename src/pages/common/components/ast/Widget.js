@@ -363,6 +363,22 @@ export class Widget extends React.Component<Props, State> {
                     values={widget.value}
                     onChange={this._handleChange}
                 />
+            case 'sentiments-select':
+                return <MultiSelectField
+                    className={className}
+                    style={{
+                        display: 'inline-block',
+                        paddingBottom: '2px'
+                    }}
+                    options={widget.options.map((option) => ({
+                        value: option.toString(),
+                        label: option.toString(),
+                    }))}
+                    singular="sentiment"
+                    plural="sentiments"
+                    values={widget.value}
+                    onChange={this._handleChange}
+                />
             case 'multi-select':
                 return <MultiSelectField
                     className={className}
