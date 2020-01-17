@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`notifyDeprecatedTld() should dispatch a notification because the URL's TLD is \`.io\` 1`] = `
+Array [
+  Array [
+    Object {
+      "dismissible": false,
+      "message": "We're now a dot-com 🎉 please update your helpdesk links and bookmarks to https://acme.gorgias.com/. This message will be hidden after you login there.",
+      "onClick": [Function],
+      "status": "warning",
+      "style": "banner",
+    },
+  ],
+]
+`;

@@ -58,6 +58,27 @@ if (eventsToTrack) {
 
 export const store = configureStore(toImmutableProps(initialState))
 
+// todo(@martin): delete this in 2021 if we redirect to .com automatically
+export const notifyDeprecatedTld = (url, reduxStore) => {
+    const urlObject = new URL(url)
+
+    if (urlObject.hostname.match(/.io$/)) {
+        const updatedUrl = `https://${urlObject.hostname.replace(/.io$/, '.com')}/`
+        reduxStore.dispatch(notify({
+            style: 'banner',
+            status: 'warning',
+            dismissible: false,
+            message: `We\'re now a dot-com 🎉 please update your helpdesk links and bookmarks to ${updatedUrl}. `
+            + 'This message will be hidden after you login there.',
+            onClick: () => {
+                window.location.href = updatedUrl
+            },
+        }))
+    }
+}
+
+notifyDeprecatedTld(window.location.href, store)
+
 // Dispatch system messages as notifications
 transformSystemMessagesToNotifications(window.SYSTEM_MESSAGES || [])
     .forEach((notification) => {store.dispatch(notify(notification))})
