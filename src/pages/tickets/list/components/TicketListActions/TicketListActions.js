@@ -227,17 +227,19 @@ class TicketListActions extends React.Component<Props, State> {
 
     _queryTagsOnSearch = _debounce(this._queryTags, 300)
 
-    _createJob = (jobType: string, jobParams: Object) => {
-        this.setState({isLaunchingJob: true}, () => {
-            const actionsToUse = this.props.allViewItemsSelected ? this.props.actions.views : this.props.actions.tickets
-            const actionsArgs = this.props.allViewItemsSelected ? this.props.activeView : this.props.selectedItemsIds
-            actionsToUse.createJob(actionsArgs, jobType, jobParams)
-                .then(() => {
-                    this.props.actions.views.updateSelectedItemsIds(fromJS([]))
-                })
-                .catch()
+    _createJob = async (jobType: string, jobParams: Object) => {
+        this.setState({isLaunchingJob: true})
+        const actionsToUse = this.props.allViewItemsSelected ? this.props.actions.views : this.props.actions.tickets
+        const actionsArgs = this.props.allViewItemsSelected ? this.props.activeView : this.props.selectedItemsIds
+
+        try {
+            await actionsToUse.createJob(actionsArgs, jobType, jobParams)
+            this.props.actions.views.updateSelectedItemsIds(fromJS([]))
+        } catch {
+            // Don't raise an exception in the console
+        } finally {
             this.setState({isLaunchingJob: false})
-        })
+        }
     }
 
     _bulkUpdate = (key, value) => {

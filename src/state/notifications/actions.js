@@ -110,6 +110,7 @@ export const notify = (message: notificationType) => (dispatch: dispatchType, ge
     })
 
     // don't add duplicate notifications
+    // FIXME: Return the original notification (to be able to update it for example)
     if (duplicate) {
         return Promise.resolve()
     }
