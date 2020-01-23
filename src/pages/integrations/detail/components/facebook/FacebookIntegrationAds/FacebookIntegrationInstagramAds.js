@@ -83,7 +83,7 @@ class FacebookIntegrationInstagramAds extends React.Component<Props> {
                             comments are fetched every 20 minutes. Comments sent while an Instagram ad was not{' '}
                             active on Gorgias will not be fetched. Learn more about{' '}
                             <a
-                                href="https://docs.gorgias.io/social-media-integrations/instagram-ads-comments"
+                                href="https://docs.gorgias.com/social-media-integrations/instagram-ads-comments"
                                 rel="noopener noreferrer"
                                 target="_blank"
                             >

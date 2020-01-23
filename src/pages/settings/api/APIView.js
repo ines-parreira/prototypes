@@ -133,10 +133,10 @@ export default class APIView extends React.Component<Props, State> {
                         get, create, update and delete many objects including customers, tickets,
                         messages and events. To find out more about our API, please consult our docs here:
                         <a
-                            href="http://api.gorgias.io/"
+                            href="https://api.gorgias.com/"
                             target="_blank"
                             rel="noopener noreferrer"
-                        > http://api.gorgias.com/</a>.
+                        > https://api.gorgias.com/</a>.
                     </p>
                     <p>
                         Below are the parameters you will need to access our API. We're
@@ -151,7 +151,7 @@ export default class APIView extends React.Component<Props, State> {
                             <Input
                                 id="url"
                                 type="text"
-                                value={`https://${domain}.gorgias.io/api/`}
+                                value={`https://${domain}.gorgias.com/api/`}
                                 readOnly
                             />
                             <InputGroupAddon addonType="append">

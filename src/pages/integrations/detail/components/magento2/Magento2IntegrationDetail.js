@@ -189,7 +189,7 @@ class Magento2IntegrationDetail extends React.Component<Props, State> {
                                             </a>
                                             {' '}on your store first. Please follow instructions{' '}
                                             <a
-                                                href="https://docs.gorgias.io/article/qw7vt5pyjw-magento-2"
+                                                href="https://docs.gorgias.com/ecommerce-integrations/magento-2"
                                                 target="_blank"
                                                 rel="noopener noreferrer"
                                             >

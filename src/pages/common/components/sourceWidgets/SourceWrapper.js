@@ -118,7 +118,7 @@ export const WIDGET_DATA_TYPES = [
             <div>
                 The following data comes is the one you push yourself using our{' '}
                 <Link
-                    to="https://docs.gorgias.io"
+                    to="https://docs.gorgias.com"
                     target="_blank"
                 >
                     <b>API</b>

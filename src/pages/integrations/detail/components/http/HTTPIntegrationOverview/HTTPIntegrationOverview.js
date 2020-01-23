@@ -259,7 +259,7 @@ export default class HTTPIntegrationOverview extends React.Component<Props, Stat
                         Add the details about the HTTP integration you want to add below. If you need help, you can
                         check our {' '}
                         <a
-                            href="https://docs.gorgias.io/data-and-http-integrations/http-integrations"
+                            href="https://docs.gorgias.com/data-and-http-integrations/http-integrations"
                             target="_blank"
                             rel="noopener noreferrer"
                         >

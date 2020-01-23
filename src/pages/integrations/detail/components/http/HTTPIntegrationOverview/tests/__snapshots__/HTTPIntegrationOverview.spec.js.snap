@@ -13,7 +13,7 @@ exports[`HTTPIntegrationOverview should display data about the integration 1`] =
       Add the details about the HTTP integration you want to add below. If you need help, you can check our 
        
       <a
-        href="https://docs.gorgias.io/data-and-http-integrations/http-integrations"
+        href="https://docs.gorgias.com/data-and-http-integrations/http-integrations"
         rel="noopener noreferrer"
         target="_blank"
       >
@@ -276,7 +276,7 @@ exports[`HTTPIntegrationOverview should display data with url-encoded format 1`]
       Add the details about the HTTP integration you want to add below. If you need help, you can check our 
        
       <a
-        href="https://docs.gorgias.io/data-and-http-integrations/http-integrations"
+        href="https://docs.gorgias.com/data-and-http-integrations/http-integrations"
         rel="noopener noreferrer"
         target="_blank"
       >
@@ -550,7 +550,7 @@ exports[`HTTPIntegrationOverview should display default values because there is 
       Add the details about the HTTP integration you want to add below. If you need help, you can check our 
        
       <a
-        href="https://docs.gorgias.io/data-and-http-integrations/http-integrations"
+        href="https://docs.gorgias.com/data-and-http-integrations/http-integrations"
         rel="noopener noreferrer"
         target="_blank"
       >

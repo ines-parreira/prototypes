@@ -243,7 +243,7 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for an int
             on your store first. Please follow instructions
              
             <a
-              href="https://docs.gorgias.io/article/qw7vt5pyjw-magento-2"
+              href="https://docs.gorgias.com/ecommerce-integrations/magento-2"
               rel="noopener noreferrer"
               target="_blank"
             >
@@ -576,7 +576,7 @@ exports[`<Magento2IntegrationDetail/> render() should render the page to create 
             on your store first. Please follow instructions
              
             <a
-              href="https://docs.gorgias.io/article/qw7vt5pyjw-magento-2"
+              href="https://docs.gorgias.com/ecommerce-integrations/magento-2"
               rel="noopener noreferrer"
               target="_blank"
             >

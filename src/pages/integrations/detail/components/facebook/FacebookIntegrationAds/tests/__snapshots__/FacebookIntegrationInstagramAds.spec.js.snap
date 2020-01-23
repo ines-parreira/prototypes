@@ -273,7 +273,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render a spinner 1`]
                 active on Gorgias will not be fetched. Learn more about
                  
                 <a
-                  href="https://docs.gorgias.io/social-media-integrations/instagram-ads-comments"
+                  href="https://docs.gorgias.com/social-media-integrations/instagram-ads-comments"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -622,7 +622,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                 active on Gorgias will not be fetched. Learn more about
                  
                 <a
-                  href="https://docs.gorgias.io/social-media-integrations/instagram-ads-comments"
+                  href="https://docs.gorgias.com/social-media-integrations/instagram-ads-comments"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1510,7 +1510,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
                 active on Gorgias will not be fetched. Learn more about
                  
                 <a
-                  href="https://docs.gorgias.io/social-media-integrations/instagram-ads-comments"
+                  href="https://docs.gorgias.com/social-media-integrations/instagram-ads-comments"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -1960,7 +1960,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                 active on Gorgias will not be fetched. Learn more about
                  
                 <a
-                  href="https://docs.gorgias.io/social-media-integrations/instagram-ads-comments"
+                  href="https://docs.gorgias.com/social-media-integrations/instagram-ads-comments"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
@@ -2503,7 +2503,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render without ad 1`
                 active on Gorgias will not be fetched. Learn more about
                  
                 <a
-                  href="https://docs.gorgias.io/social-media-integrations/instagram-ads-comments"
+                  href="https://docs.gorgias.com/social-media-integrations/instagram-ads-comments"
                   rel="noopener noreferrer"
                   target="_blank"
                 >
