@@ -13,7 +13,7 @@ exports[`ViewTable::ViewTable component default view 1`] = `
       type="ticket"
     />
   </div>
-  <Connect(FilterTopbar)
+  <Connect(FilterTopbarComponent)
     isSearch={false}
     isUpdate={true}
     type="ticket"

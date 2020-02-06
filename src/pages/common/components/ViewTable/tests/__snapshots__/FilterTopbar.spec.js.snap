@@ -1,0 +1,767 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FilterTopbar/> mapStateToProps() should map the state correctly 1`] = `
+<FilterTopbarComponent
+  activeView={Immutable.Map {}}
+  addFieldFilter={[Function]}
+  agents={Immutable.List []}
+  areFiltersValid={true}
+  config={
+    Immutable.Map {
+      "mainField": "details",
+      "cell": [Function],
+      "plural": "tickets",
+      "newView": [Function],
+      "routeList": "tickets",
+      "name": "ticket",
+      "searchView": [Function],
+      "singular": "ticket",
+      "fields": Immutable.List [
+        Immutable.Map {
+          "name": "details",
+          "title": "Details",
+        },
+        Immutable.Map {
+          "name": "subject",
+          "title": "Subject",
+        },
+        Immutable.Map {
+          "name": "integrations",
+          "title": "Integration",
+          "path": "messages.integration_id",
+          "filter": Immutable.Map {
+            "type": "integration",
+          },
+          "dropdown": Immutable.Map {
+            "width": "350px",
+          },
+        },
+        Immutable.Map {
+          "name": "tags",
+          "title": "Tags",
+          "path": "tags.name",
+          "filter": Immutable.Map {
+            "type": "tag",
+          },
+        },
+        Immutable.Map {
+          "name": "customer",
+          "title": "Customer",
+          "path": "customer.id",
+          "filter": Immutable.Map {
+            "type": "customer",
+          },
+        },
+        Immutable.Map {
+          "name": "assignee_team",
+          "title": "Assignee team",
+          "path": "assignee_team.id",
+          "filter": Immutable.Map {
+            "type": "team",
+          },
+        },
+        Immutable.Map {
+          "name": "assignee",
+          "title": "Assignee user",
+          "path": "assignee_user.id",
+          "filter": Immutable.Map {
+            "type": "agent",
+          },
+        },
+        Immutable.Map {
+          "name": "status",
+          "title": "Status",
+          "filter": Immutable.Map {
+            "enum": Immutable.List [
+              "open",
+              "closed",
+            ],
+          },
+        },
+        Immutable.Map {
+          "name": "language",
+          "title": "Language",
+          "filter": Immutable.Map {
+            "enum": Immutable.List [
+              "af",
+              "ar",
+              "bg",
+              "ca",
+              "cs",
+              "cy",
+              "da",
+              "de",
+              "el",
+              "en",
+              "es",
+              "et",
+              "fa",
+              "fi",
+              "fr",
+              "gu",
+              "he",
+              "hi",
+              "hr",
+              "hu",
+              "id",
+              "it",
+              "ja",
+              "kn",
+              "ko",
+              "lt",
+              "lv",
+              "mk",
+              "ml",
+              "mr",
+              "ne",
+              "nl",
+              "no",
+              "pa",
+              "pl",
+              "pt",
+              "ro",
+              "ru",
+              "sk",
+              "sl",
+              "so",
+              "sq",
+              "sv",
+              "sw",
+              "ta",
+              "te",
+              "tl",
+              "tr",
+              "uk",
+              "ur",
+              "vi",
+              "zh-cn",
+              "zh-tw",
+            ],
+          },
+        },
+        Immutable.Map {
+          "name": "channel",
+          "title": "Channel",
+          "filter": Immutable.Map {
+            "enum": Immutable.List [
+              "aircall",
+              "api",
+              "chat",
+              "email",
+              "facebook",
+              "facebook-messenger",
+              "instagram-ad-comment",
+              "instagram-comment",
+              "phone",
+              "sms",
+              "twitter",
+            ],
+          },
+        },
+        Immutable.Map {
+          "name": "created",
+          "title": "Created",
+          "path": "created_datetime",
+          "filter": Immutable.Map {
+            "sort": Immutable.Map {
+              "created_datetime": "desc",
+            },
+          },
+        },
+        Immutable.Map {
+          "name": "updated",
+          "title": "Updated",
+          "path": "updated_datetime",
+          "filter": Immutable.Map {
+            "sort": Immutable.Map {
+              "updated_datetime": "desc",
+            },
+          },
+        },
+        Immutable.Map {
+          "name": "last_message",
+          "title": "Last message",
+          "path": "last_message_datetime",
+          "filter": Immutable.Map {
+            "sort": Immutable.Map {
+              "last_message_datetime": "desc",
+            },
+          },
+        },
+        Immutable.Map {
+          "name": "last_received_message",
+          "title": "Last received message",
+          "path": "last_received_message_datetime",
+          "filter": Immutable.Map {
+            "sort": Immutable.Map {
+              "last_received_message_datetime": "desc",
+            },
+          },
+        },
+        Immutable.Map {
+          "name": "closed",
+          "title": "Closed",
+          "path": "closed_datetime",
+          "filter": Immutable.Map {
+            "sort": Immutable.Map {
+              "closed_datetime": "desc",
+            },
+          },
+        },
+        Immutable.Map {
+          "name": "snooze",
+          "title": "Snooze",
+          "path": "snooze_datetime",
+          "filter": Immutable.Map {
+            "sort": Immutable.Map {
+              "snooze_datetime": "desc",
+            },
+          },
+        },
+      ],
+      "api": "tickets",
+      "type": "ticket-list",
+      "routeItem": "ticket",
+    }
+  }
+  currentUser={
+    Immutable.Map {
+      "first_name": "Steve",
+    }
+  }
+  deleteView={[Function]}
+  fetchViewItems={[Function]}
+  isDirty={false}
+  isSearch={false}
+  isUpdate={false}
+  pristineActiveView={Immutable.Map {}}
+  removeFieldFilter={[Function]}
+  resetView={[Function]}
+  schemas={Immutable.Map {}}
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+  submitView={[Function]}
+  teams={Immutable.List []}
+  type="ticket"
+  updateFieldFilter={[Function]}
+  updateFieldFilterOperator={[Function]}
+  updateView={[Function]}
+/>
+`;
+
+exports[`<FilterTopbar/> render() should render correctly when creating a view (here no delete button) 1`] = `
+<Card
+  className="component"
+  tag="div"
+>
+  <CardBody
+    className="filter-topbar-content"
+    tag="div"
+  >
+    <p
+      className="subtitle"
+    >
+      VIEW CONFIGURATION
+    </p>
+    <Connect(ViewFilters)
+      removeFieldFilter={[Function]}
+      updateFieldFilter={[Function]}
+      updateFieldFilterOperator={[Function]}
+      view={
+        Immutable.Map {
+          "editMode": true,
+        }
+      }
+    />
+    <UncontrolledDropdown>
+      <DropdownToggle
+        aria-haspopup={true}
+        caret={true}
+        className="mr-2"
+        color="secondary"
+        onClick={[Function]}
+        size="sm"
+        type="button"
+      >
+        <i
+          className="material-icons mr-2"
+        >
+          add
+        </i>
+        Add filter
+      </DropdownToggle>
+      <DropdownMenu
+        flip={true}
+        tag="div"
+      >
+        <DropdownItem
+          key="assignee_team"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Assignee team
+        </DropdownItem>
+        <DropdownItem
+          key="assignee"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Assignee user
+        </DropdownItem>
+        <DropdownItem
+          key="channel"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Channel
+        </DropdownItem>
+        <DropdownItem
+          key="closed"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Closed
+        </DropdownItem>
+        <DropdownItem
+          key="created"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Created
+        </DropdownItem>
+        <DropdownItem
+          key="customer"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Customer
+        </DropdownItem>
+        <DropdownItem
+          key="integrations"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Integration
+        </DropdownItem>
+        <DropdownItem
+          key="language"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Language
+        </DropdownItem>
+        <DropdownItem
+          key="last_message"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Last message
+        </DropdownItem>
+        <DropdownItem
+          key="last_received_message"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Last received message
+        </DropdownItem>
+        <DropdownItem
+          key="snooze"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Snooze
+        </DropdownItem>
+        <DropdownItem
+          key="status"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Status
+        </DropdownItem>
+        <DropdownItem
+          key="tags"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Tags
+        </DropdownItem>
+        <DropdownItem
+          key="updated"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Updated
+        </DropdownItem>
+      </DropdownMenu>
+    </UncontrolledDropdown>
+  </CardBody>
+  <CardFooter
+    tag="div"
+  >
+    <div
+      className="d-flex align-items-center justify-content-between"
+    >
+      <div>
+        <Button
+          className=""
+          color="primary"
+          disabled={true}
+          onClick={[Function]}
+          tag="button"
+          type="submit"
+        >
+          Create view
+        </Button>
+        <Button
+          className="ml-2"
+          color="secondary"
+          disabled={false}
+          onClick={[Function]}
+          tag="button"
+          type="submit"
+        >
+          Cancel
+        </Button>
+      </div>
+    </div>
+  </CardFooter>
+</Card>
+`;
+
+exports[`<FilterTopbar/> render() should render correctly when updating a view (here we have delete button) 1`] = `
+<Card
+  className="component"
+  tag="div"
+>
+  <CardBody
+    className="filter-topbar-content"
+    tag="div"
+  >
+    <p
+      className="subtitle"
+    >
+      VIEW CONFIGURATION
+    </p>
+    <Connect(ViewFilters)
+      removeFieldFilter={[Function]}
+      updateFieldFilter={[Function]}
+      updateFieldFilterOperator={[Function]}
+      view={
+        Immutable.Map {
+          "editMode": true,
+        }
+      }
+    />
+    <UncontrolledDropdown>
+      <DropdownToggle
+        aria-haspopup={true}
+        caret={true}
+        className="mr-2"
+        color="secondary"
+        onClick={[Function]}
+        size="sm"
+        type="button"
+      >
+        <i
+          className="material-icons mr-2"
+        >
+          add
+        </i>
+        Add filter
+      </DropdownToggle>
+      <DropdownMenu
+        flip={true}
+        tag="div"
+      >
+        <DropdownItem
+          key="assignee_team"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Assignee team
+        </DropdownItem>
+        <DropdownItem
+          key="assignee"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Assignee user
+        </DropdownItem>
+        <DropdownItem
+          key="channel"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Channel
+        </DropdownItem>
+        <DropdownItem
+          key="closed"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Closed
+        </DropdownItem>
+        <DropdownItem
+          key="created"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Created
+        </DropdownItem>
+        <DropdownItem
+          key="customer"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Customer
+        </DropdownItem>
+        <DropdownItem
+          key="integrations"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Integration
+        </DropdownItem>
+        <DropdownItem
+          key="language"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Language
+        </DropdownItem>
+        <DropdownItem
+          key="last_message"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Last message
+        </DropdownItem>
+        <DropdownItem
+          key="last_received_message"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Last received message
+        </DropdownItem>
+        <DropdownItem
+          key="snooze"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Snooze
+        </DropdownItem>
+        <DropdownItem
+          key="status"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Status
+        </DropdownItem>
+        <DropdownItem
+          key="tags"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Tags
+        </DropdownItem>
+        <DropdownItem
+          key="updated"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Updated
+        </DropdownItem>
+      </DropdownMenu>
+    </UncontrolledDropdown>
+  </CardBody>
+  <CardFooter
+    tag="div"
+  >
+    <div
+      className="d-flex align-items-center justify-content-between"
+    >
+      <div>
+        <UncontrolledButtonDropdown>
+          <Button
+            className=""
+            color="success"
+            disabled={true}
+            id="update-view-button"
+            onClick={[Function]}
+            tag="button"
+            type="submit"
+          >
+            Update view
+          </Button>
+          <Popover
+            delay={
+              Object {
+                "hide": 0,
+                "show": 0,
+              }
+            }
+            hideArrow={false}
+            isOpen={false}
+            placement="bottom"
+            placementPrefix="bs-popover"
+            target="update-view-button"
+            toggle={[Function]}
+          >
+            <PopoverHeader
+              tag="h3"
+            >
+              Are you sure?
+            </PopoverHeader>
+            <PopoverBody
+              tag="div"
+            >
+              <p>
+                You are about to edit this view for 
+                <b>
+                  all users
+                </b>
+                .
+              </p>
+              <Button
+                color="success"
+                onClick={[Function]}
+                tag="button"
+                type="submit"
+              >
+                Confirm
+              </Button>
+            </PopoverBody>
+          </Popover>
+          <DropdownToggle
+            aria-haspopup={true}
+            caret={true}
+            color="success"
+            type="button"
+          />
+          <DropdownMenu
+            flip={true}
+            right={true}
+            tag="div"
+          >
+            <DropdownItem
+              disabled={true}
+              key="open"
+              onClick={[Function]}
+              tag="button"
+              toggle={true}
+              type="button"
+            >
+              Save as new view
+            </DropdownItem>
+          </DropdownMenu>
+        </UncontrolledButtonDropdown>
+        <Button
+          className="ml-2"
+          color="secondary"
+          disabled={false}
+          onClick={[Function]}
+          tag="button"
+          type="submit"
+        >
+          Cancel
+        </Button>
+      </div>
+      <ConfirmButton
+        className=""
+        confirm={[Function]}
+        confirmColor="success"
+        content={
+          <span>
+            You are about to 
+            <b>
+              delete
+            </b>
+             this view for 
+            <b>
+              all users
+            </b>
+            .
+          </span>
+        }
+        disabled={false}
+        loading={false}
+        placement="bottom"
+        skip={false}
+        title="Are you sure?"
+        type="button"
+      >
+        <i
+          className="material-icons md-2 mr-2 text-danger"
+        >
+          delete
+        </i>
+        Delete view
+      </ConfirmButton>
+    </div>
+  </CardFooter>
+</Card>
+`;

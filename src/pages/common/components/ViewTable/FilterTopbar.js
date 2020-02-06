@@ -35,7 +35,7 @@ import Filters from './Filters'
 
 import css from './FilterTopbar.less'
 
-class FilterTopbar extends React.Component {
+export class FilterTopbarComponent extends React.Component {
     static propTypes = {
         activeView: ImmutablePropTypes.map.isRequired,
         addFieldFilter: PropTypes.func.isRequired,
@@ -328,7 +328,7 @@ class FilterTopbar extends React.Component {
                                 </Button>
                             )}
                         </div>
-                        {!isSearch && !isSystemView && (
+                        {!isSearch && !isSystemView && isUpdate &&(
                             <ConfirmButton
                                 content={(
                                     <span>
@@ -360,11 +360,9 @@ const mapStateToProps = (state, ownProps) => {
         areFiltersValid: viewsSelectors.areFiltersValid(state),
         config: viewsConfig.getConfigByName(ownProps.type),
         currentUser: state.currentUser,
-        isEditMode: viewsSelectors.isEditMode(state),
         isDirty: viewsSelectors.isDirty(state),
         pristineActiveView: viewsSelectors.getPristineActiveView(state),
         schemas: schemasSelectors.getSchemas(state),
-        selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),
     }
 }
 
@@ -380,4 +378,4 @@ const mapDispatchToProps = {
     updateFieldFilterOperator: viewsActions.updateFieldFilterOperator,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FilterTopbar)
+export default connect(mapStateToProps, mapDispatchToProps)(FilterTopbarComponent)
