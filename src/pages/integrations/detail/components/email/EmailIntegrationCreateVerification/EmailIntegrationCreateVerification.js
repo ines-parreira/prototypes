@@ -107,8 +107,27 @@ export class EmailIntegrationCreateVerification extends React.Component<Props, S
         )
     }
 
+    // todo(@martin): edit this to explain the real instructions for verifying the base email address
+    _renderBaseIntegrationInstructions = () => {
+        return (
+            <div>
+
+                <Alert
+                    color="warning"
+                    className="mb-4"
+                >
+                    Using the base email integration to send emails is temporarily disabled. Please connect an email
+                    integration in order to send emails from Gorgias.
+                </Alert>
+            </div>
+        )
+    }
+
     render() {
         const {integration} = this.props
+
+        const address = integration.getIn(['meta', 'address'], '')
+        const isBaseEmailIntegration = address.endsWith(window.EMAIL_FORWARDING_DOMAIN)
 
         return (
             <div className="full-width">
@@ -138,7 +157,11 @@ export class EmailIntegrationCreateVerification extends React.Component<Props, S
                         Verification in progress...
                     </h1>
 
-                    {this._renderInstructions()}
+                    {
+                        isBaseEmailIntegration
+                            ? this._renderBaseIntegrationInstructions()
+                            : this._renderInstructions()
+                    }
                 </Container>
             </div>
         )

@@ -247,12 +247,14 @@ export const setSender = (sender: ?string) => (dispatch: dispatchType, getState:
     }
 
     if (!_sender.isEmpty() && _sender.get('type') === 'email' && !_sender.get('verified')) {
-        dispatch(notify({
-            status: 'error',
-            message: `You cannot send messages using ${_sender.get('address')}, because this address is not verified yet.`
-        }))
+        if (!_sender.get('address').endsWith(window.EMAIL_FORWARDING_DOMAIN)) {
+            dispatch(notify({
+                status: 'error',
+                message: `You cannot send messages using ${_sender.get('address')}, because this address is not verified yet.`
+            }))
+        }
         _sender = channels.find(
-            (channel) => channel.get('verified') === true && EMAIL_INTEGRATION_TYPES.includes(channel.type)
+            (channel) => channel.get('verified') === true && EMAIL_INTEGRATION_TYPES.includes(channel.get('type'))
         ) || fromJS({})
     }
 

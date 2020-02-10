@@ -1,6 +1,98 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`EmailIntegrationCreateVerification component should render 1`] = `
+exports[`<EmailIntegrationCreateVerification/> render() should render instructions for the base email integration 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/email"
+          >
+            Email
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          my integration
+           
+          <span
+            className="text-faded"
+          >
+            myintegration@emails.gorgias.io
+          </span>
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <h1>
+      <i
+        className="material-icons"
+      />
+      Verification in progress...
+    </h1>
+    <div>
+      <Alert
+        className="mb-4"
+        closeAriaLabel="Close"
+        color="warning"
+        isOpen={true}
+        tag="div"
+        transition={
+          Object {
+            "appear": true,
+            "baseClass": "fade",
+            "baseClassActive": "show",
+            "enter": true,
+            "exit": true,
+            "in": true,
+            "mountOnEnter": false,
+            "onEnter": [Function],
+            "onEntered": [Function],
+            "onEntering": [Function],
+            "onExit": [Function],
+            "onExited": [Function],
+            "onExiting": [Function],
+            "tag": "div",
+            "timeout": 150,
+            "unmountOnExit": true,
+          }
+        }
+      >
+        Using the base email integration to send emails is temporarily disabled. Please connect an email integration in order to send emails from Gorgias.
+      </Alert>
+    </div>
+  </Container>
+</div>
+`;
+
+exports[`<EmailIntegrationCreateVerification/> render() should render the regular instructions 1`] = `
 <div
   className="full-width"
 >
