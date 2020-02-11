@@ -32,7 +32,7 @@ type State = {
     isInitialized: boolean
 }
 
-class ChatIntegrationQuickReplies extends React.Component<Props, State> {
+export class ChatIntegrationQuickRepliesComponent extends React.Component<Props, State> {
     state = {
         quickReplies: fromJS([]),
         quickRepliesEnabled: false,
@@ -77,14 +77,17 @@ class ChatIntegrationQuickReplies extends React.Component<Props, State> {
         this.setState({isUpdating: true})
 
         const existingMeta = integration.get('meta') || fromJS({})
+        const trimmedQuickReplies = this.state.quickReplies.map((quickReplies) => quickReplies.trim())
 
         let payload = fromJS({
             id: integration.get('id'),
-            meta: existingMeta.set('quick_replies', {
+            meta: existingMeta.set('quick_replies', fromJS({
                 enabled: this.state.quickRepliesEnabled,
-                replies: this.state.quickReplies.toJS()
-            })
+                replies: trimmedQuickReplies.toJS()
+            }))
         })
+
+        this.setState({quickReplies: trimmedQuickReplies})
 
         return updateOrCreateIntegration(payload)
             .then(() => this.setState({isUpdating: false}))
@@ -193,4 +196,5 @@ class ChatIntegrationQuickReplies extends React.Component<Props, State> {
 
 export default connect(null, {
     updateOrCreateIntegration
-})(ChatIntegrationQuickReplies)
+})(ChatIntegrationQuickRepliesComponent)
+

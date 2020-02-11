@@ -1,9 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ChatIntegrationQuickReplies component should render defaults because there is no quick replies in the integration 1`] = `
-<Connect(ChatIntegrationQuickReplies)
+exports[`<ChatIntegrationQuickReplies/> render() should render defaults because there is no quick replies in the integration 1`] = `
+<Connect(ChatIntegrationQuickRepliesComponent)
   integration={
     Immutable.Map {
+      "id": 7,
       "name": "my chat integration",
       "meta": Immutable.Map {},
       "decoration": Immutable.Map {
@@ -25,9 +26,10 @@ exports[`ChatIntegrationQuickReplies component should render defaults because th
   }
   updateOrCreateIntegration={[Function]}
 >
-  <ChatIntegrationQuickReplies
+  <ChatIntegrationQuickRepliesComponent
     integration={
       Immutable.Map {
+        "id": 7,
         "name": "my chat integration",
         "meta": Immutable.Map {},
         "decoration": Immutable.Map {
@@ -168,6 +170,7 @@ exports[`ChatIntegrationQuickReplies component should render defaults because th
       <ChatIntegrationNavigation
         integration={
           Immutable.Map {
+            "id": 7,
             "name": "my chat integration",
             "meta": Immutable.Map {},
             "decoration": Immutable.Map {
@@ -193,7 +196,7 @@ exports[`ChatIntegrationQuickReplies component should render defaults because th
                 key=".0"
                 onlyActiveOnIndex={false}
                 style={Object {}}
-                to="/app/settings/integrations/smooch_inside/undefined/appearance"
+                to="/app/settings/integrations/smooch_inside/7/appearance"
               >
                 <a
                   className="nav-link"
@@ -209,7 +212,7 @@ exports[`ChatIntegrationQuickReplies component should render defaults because th
                 key=".1"
                 onlyActiveOnIndex={false}
                 style={Object {}}
-                to="/app/settings/integrations/smooch_inside/undefined/installation"
+                to="/app/settings/integrations/smooch_inside/7/installation"
               >
                 <a
                   className="nav-link"
@@ -225,7 +228,7 @@ exports[`ChatIntegrationQuickReplies component should render defaults because th
                 key=".2"
                 onlyActiveOnIndex={false}
                 style={Object {}}
-                to="/app/settings/integrations/smooch_inside/undefined/preferences"
+                to="/app/settings/integrations/smooch_inside/7/preferences"
               >
                 <a
                   className="nav-link"
@@ -241,7 +244,7 @@ exports[`ChatIntegrationQuickReplies component should render defaults because th
                 key=".3"
                 onlyActiveOnIndex={false}
                 style={Object {}}
-                to="/app/settings/integrations/smooch_inside/undefined/campaigns"
+                to="/app/settings/integrations/smooch_inside/7/campaigns"
               >
                 <a
                   className="nav-link"
@@ -257,7 +260,7 @@ exports[`ChatIntegrationQuickReplies component should render defaults because th
                 key=".4"
                 onlyActiveOnIndex={false}
                 style={Object {}}
-                to="/app/settings/integrations/smooch_inside/undefined/quick-replies"
+                to="/app/settings/integrations/smooch_inside/7/quick-replies"
               >
                 <a
                   className="nav-link"
@@ -879,14 +882,15 @@ exports[`ChatIntegrationQuickReplies component should render defaults because th
         </div>
       </Container>
     </div>
-  </ChatIntegrationQuickReplies>
-</Connect(ChatIntegrationQuickReplies)>
+  </ChatIntegrationQuickRepliesComponent>
+</Connect(ChatIntegrationQuickRepliesComponent)>
 `;
 
-exports[`ChatIntegrationQuickReplies component should render quick replies from the integration 1`] = `
-<Connect(ChatIntegrationQuickReplies)
+exports[`<ChatIntegrationQuickReplies/> render() should render quick replies from the integration 1`] = `
+<Connect(ChatIntegrationQuickRepliesComponent)
   integration={
     Immutable.Map {
+      "id": 7,
       "name": "my chat integration",
       "meta": Immutable.Map {
         "quick_replies": Immutable.Map {
@@ -916,9 +920,10 @@ exports[`ChatIntegrationQuickReplies component should render quick replies from 
   }
   updateOrCreateIntegration={[Function]}
 >
-  <ChatIntegrationQuickReplies
+  <ChatIntegrationQuickRepliesComponent
     integration={
       Immutable.Map {
+        "id": 7,
         "name": "my chat integration",
         "meta": Immutable.Map {
           "quick_replies": Immutable.Map {
@@ -1067,6 +1072,7 @@ exports[`ChatIntegrationQuickReplies component should render quick replies from 
       <ChatIntegrationNavigation
         integration={
           Immutable.Map {
+            "id": 7,
             "name": "my chat integration",
             "meta": Immutable.Map {
               "quick_replies": Immutable.Map {
@@ -1100,7 +1106,7 @@ exports[`ChatIntegrationQuickReplies component should render quick replies from 
                 key=".0"
                 onlyActiveOnIndex={false}
                 style={Object {}}
-                to="/app/settings/integrations/smooch_inside/undefined/appearance"
+                to="/app/settings/integrations/smooch_inside/7/appearance"
               >
                 <a
                   className="nav-link"
@@ -1116,7 +1122,7 @@ exports[`ChatIntegrationQuickReplies component should render quick replies from 
                 key=".1"
                 onlyActiveOnIndex={false}
                 style={Object {}}
-                to="/app/settings/integrations/smooch_inside/undefined/installation"
+                to="/app/settings/integrations/smooch_inside/7/installation"
               >
                 <a
                   className="nav-link"
@@ -1132,7 +1138,7 @@ exports[`ChatIntegrationQuickReplies component should render quick replies from 
                 key=".2"
                 onlyActiveOnIndex={false}
                 style={Object {}}
-                to="/app/settings/integrations/smooch_inside/undefined/preferences"
+                to="/app/settings/integrations/smooch_inside/7/preferences"
               >
                 <a
                   className="nav-link"
@@ -1148,7 +1154,7 @@ exports[`ChatIntegrationQuickReplies component should render quick replies from 
                 key=".3"
                 onlyActiveOnIndex={false}
                 style={Object {}}
-                to="/app/settings/integrations/smooch_inside/undefined/campaigns"
+                to="/app/settings/integrations/smooch_inside/7/campaigns"
               >
                 <a
                   className="nav-link"
@@ -1164,7 +1170,7 @@ exports[`ChatIntegrationQuickReplies component should render quick replies from 
                 key=".4"
                 onlyActiveOnIndex={false}
                 style={Object {}}
-                to="/app/settings/integrations/smooch_inside/undefined/quick-replies"
+                to="/app/settings/integrations/smooch_inside/7/quick-replies"
               >
                 <a
                   className="nav-link"
@@ -1786,6 +1792,6 @@ exports[`ChatIntegrationQuickReplies component should render quick replies from 
         </div>
       </Container>
     </div>
-  </ChatIntegrationQuickReplies>
-</Connect(ChatIntegrationQuickReplies)>
+  </ChatIntegrationQuickRepliesComponent>
+</Connect(ChatIntegrationQuickRepliesComponent)>
 `;
