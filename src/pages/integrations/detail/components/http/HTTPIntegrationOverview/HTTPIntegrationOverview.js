@@ -15,7 +15,7 @@ import {
 
 import {AVAILABLE_HTTP_METHODS, FORM_CONTENT_TYPE, HTTP_METHOD_GET, JSON_CONTENT_TYPE} from '../../../../../../config'
 import {TICKET_CREATED, TICKET_MESSAGE_CREATED, TICKET_UPDATED} from '../../../../../../constants/event'
-import {toJS, validateWebhookURL, validateWebhookURLToPattern, hasUnicodeChars} from '../../../../../../utils'
+import {toJS, validateWebhookURL, validateWebhookURLToPattern} from '../../../../../../utils'
 
 import Loader from '../../../../../common/components/Loader'
 import ObjectListField from '../ObjectListField'
@@ -25,6 +25,7 @@ import BooleanField from '../../../../../common/forms/BooleanField'
 
 import {DEFAULT_FORM} from './constants'
 import JSONBody from './JSONBody'
+import {validateHeaderName} from './httpHeaderValidation'
 
 
 type Props = {
@@ -206,9 +207,9 @@ export default class HTTPIntegrationOverview extends React.Component<Props, Stat
         return this.props.actions.updateOrCreateIntegration(fromJS(integration))
     }
 
-    _validateHeaderName = (fieldName: string, fieldValue: string): ?string => {
-        if (fieldName === 'key' && hasUnicodeChars(fieldValue)) {
-            return 'Header\'s name can\'t contain unicode characters.'
+    _validateHeaderName = (name: string, value: string): ?string => {
+        if (value && name === 'key' && !validateHeaderName(value)) {
+            return 'Header\'s name needs to be printable ASCII characters'
         }
     }
 
