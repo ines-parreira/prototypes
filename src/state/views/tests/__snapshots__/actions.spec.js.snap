@@ -340,6 +340,57 @@ Array [
 ]
 `;
 
+exports[`actions fieldEnumSearch() should dispatch error 1`] = `
+Array [
+  Object {
+    "type": "UPDATE_VIEW_FIELD_ENUM_START",
+  },
+  Object {
+    "error": [Error: Request failed with status code 500],
+    "reason": "Failed to select this filter",
+    "type": "UPDATE_VIEW_FIELD_ENUM_ERROR",
+  },
+]
+`;
+
+exports[`actions fieldEnumSearch() should dispatch results 1`] = `
+Array [
+  Object {
+    "type": "UPDATE_VIEW_FIELD_ENUM_START",
+  },
+  Object {
+    "field": Immutable.Map {
+      "filter": Immutable.Map {
+        "type": "customer",
+      },
+    },
+    "resp": Object {
+      "data": Array [
+        Object {
+          "email": "name1@foo.bar",
+          "id": 1,
+          "name": "Name 1",
+        },
+        Object {
+          "email": "name2@foo.bar",
+          "id": 2,
+          "name": "Name 2",
+        },
+        Object {
+          "email": "name3@foo.bar",
+          "id": 3,
+          "name": "Name 3",
+        },
+      ],
+      "meta": Object {},
+      "object": "list",
+      "uri": "",
+    },
+    "type": "UPDATE_VIEW_FIELD_ENUM_SUCCESS",
+  },
+]
+`;
+
 exports[`actions submitView() should create view when id is 0 1`] = `
 Array [
   Object {

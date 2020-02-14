@@ -1,6 +1,6 @@
 // @flow
 import axios from 'axios'
-import {fromJS, type Map, type List} from 'immutable'
+import {fromJS, type List, type Map} from 'immutable'
 import _max from 'lodash/max'
 import {browserHistory} from 'react-router'
 import {updateNotification} from 'reapop'
@@ -10,7 +10,7 @@ import * as socketConstants from '../../config/socketConstants'
 import {BASE_VIEW_ID, NEXT_VIEW_NAV_DIRECTION, PREV_VIEW_NAV_DIRECTION, VIEW_NAV_DIRECTIONS} from '../../constants/view'
 import {notify} from '../notifications/actions'
 import socketManager from '../../services/socketManager'
-import {getPluralObjectName, getHashOfObj, isCurrentlyOnTicket, isCurrentlyOnView} from '../../utils'
+import {getHashOfObj, getPluralObjectName, isCurrentlyOnTicket, isCurrentlyOnView} from '../../utils'
 import {buildJobMessage} from '../../utils/notificationUtils'
 import {getMoment} from '../../utils/date'
 import type {dispatchType, getStateType, thunkActionType} from '../types'
@@ -18,7 +18,7 @@ import type {dispatchType, getStateType, thunkActionType} from '../types'
 import {activeViewUrl} from './utils'
 import * as viewsSelectors from './selectors'
 import * as types from './constants'
-import type {viewType, filterType} from './types'
+import type {filterType, viewType} from './types'
 
 export const setViewActive = (view: viewType) => (dispatch: dispatchType): dispatchType => {
     if (view) {
@@ -96,15 +96,27 @@ export const updateFieldFilterOperator = (index: number, operator: string) => ({
 })
 
 // not a real redux action, is used to return data, not to be used in the reducer
+let _cancelSearch = null
+
 export function fieldEnumSearch(field: Map<*, *>, query: string): thunkActionType {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: dispatchType): Promise<void> => {
         dispatch({
             type: types.UPDATE_VIEW_FIELD_ENUM_START
         })
 
         const data = field.get('filter').toJS()
         data.query = query
-        return axios.post('/api/search/', data)
+
+        if (_cancelSearch) {
+            _cancelSearch()
+            _cancelSearch = null
+        }
+
+        return axios.post('/api/search/', data, {
+            cancelToken: new axios.CancelToken((cancel) => {
+                _cancelSearch = cancel
+            }),
+        })
             .then((json = {}) => json.data)
             .then((resp) => {
                 dispatch({
@@ -114,11 +126,15 @@ export function fieldEnumSearch(field: Map<*, *>, query: string): thunkActionTyp
                 })
                 return fromJS(resp.data)
             }, (error) => {
-                return dispatch({
-                    type: types.UPDATE_VIEW_FIELD_ENUM_ERROR,
-                    error,
-                    reason: 'Failed to select this filter'
-                })
+                if (!axios.isCancel(error)) {
+                    dispatch({
+                        type: types.UPDATE_VIEW_FIELD_ENUM_ERROR,
+                        error,
+                        reason: 'Failed to select this filter'
+                    })
+                }
+
+                return Promise.reject()
             })
     }
 }
@@ -145,7 +161,7 @@ export function fetchViews(currentViewId: string): thunkActionType {
                     currentViewId
                 })
             }, (error) => {
-                return dispatch({
+                dispatch({
                     type: types.FETCH_VIEW_LIST_ERROR,
                     error,
                     reason: 'Failed to fetch views'
@@ -407,7 +423,7 @@ export function createJob(view: viewType, jobType: string, jobPartialParams: Obj
             status: 'loading',
             dismissAfter: 10000,
             closeOnNext: true,
-            message:  buildJobMessage(jobType, true,
+            message: buildJobMessage(jobType, true,
                 viewsConfig.getConfigByType(view.get('type')).get('plural'),
                 jobPartialParams),
             buttons: []

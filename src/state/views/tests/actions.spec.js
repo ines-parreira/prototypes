@@ -32,6 +32,53 @@ jest.mock('reapop', () => {
 describe('actions', () => {
     let store
 
+    describe('fieldEnumSearch()', () => {
+        let mockServer
+
+        beforeEach(() => {
+            store = mockStore({views: initialState})
+            mockServer = new MockAdapter(axios)
+        })
+
+        it('should dispatch results', async () => {
+            const response = {
+                data: [
+                    {id: 1, name: 'Name 1', email: 'name1@foo.bar'},
+                    {id: 2, name: 'Name 2', email: 'name2@foo.bar'},
+                    {id: 3, name: 'Name 3', email: 'name3@foo.bar'},
+                ],
+                object: 'list',
+                uri: '',
+                meta: {},
+            }
+
+            mockServer
+                .onPost('/api/search/')
+                .reply(200, response)
+
+            const field = fromJS({filter: {type: 'customer'}})
+            const query = 'foo'
+
+            await store.dispatch(actions.fieldEnumSearch(field, query))
+            expect(store.getActions()).toMatchSnapshot()
+        })
+
+        it('should dispatch error', async () => {
+            mockServer
+                .onPost('/api/search/')
+                .reply(500)
+
+            const field = fromJS({filter: {type: 'customer'}})
+            const query = 'xyz'
+
+            try {
+                await store.dispatch(actions.fieldEnumSearch(field, query))
+            } catch (e) {
+                expect(store.getActions()).toMatchSnapshot()
+            }
+        })
+    })
+
     describe('fetchActiveViewTickets', () => {
         it('should not fetch (no active view)', () => {
             store = mockStore({views: initialState})
@@ -265,9 +312,11 @@ describe('actions', () => {
         })
 
         it('should not fetch because the view is not dirty and this is a new view', () => {
-            const store = mockStore({views: fromJS({
-                active: baseView()
-            })})
+            const store = mockStore({
+                views: fromJS({
+                    active: baseView()
+                })
+            })
 
             return store.dispatch(actions.fetchViewItems()).then(() => {
                 expect(store.getActions()).toEqual([])
@@ -275,9 +324,11 @@ describe('actions', () => {
         })
 
         it('should fetch current page without cursor', () => {
-            const store = mockStore({views: fromJS({
-                active: {id: viewId, type: TICKET_LIST_VIEW_TYPE}
-            })})
+            const store = mockStore({
+                views: fromJS({
+                    active: {id: viewId, type: TICKET_LIST_VIEW_TYPE}
+                })
+            })
 
             mockServer
                 .onGet(`/api/views/${viewId}/items/`)
@@ -291,9 +342,11 @@ describe('actions', () => {
 
         it('should fetch current page with cursor', () => {
             const cursor = 1234
-            const store = mockStore({views: fromJS({
-                active: {id: viewId, type: TICKET_LIST_VIEW_TYPE}
-            })})
+            const store = mockStore({
+                views: fromJS({
+                    active: {id: viewId, type: TICKET_LIST_VIEW_TYPE}
+                })
+            })
 
             const url = `/api/views/${viewId}/items/?cursor=${cursor}`
 
@@ -310,14 +363,16 @@ describe('actions', () => {
 
         it('should fetch next page', () => {
             const nextPageUrl = `/api/views/${viewId}/items?direction=${NEXT_VIEW_NAV_DIRECTION}&cursor=123&ignored_item=7`
-            const store = mockStore({views: fromJS({
-                active: {id: viewId, type: TICKET_LIST_VIEW_TYPE},
-                _internal: {
-                    navigation: {
-                        next_items: nextPageUrl
+            const store = mockStore({
+                views: fromJS({
+                    active: {id: viewId, type: TICKET_LIST_VIEW_TYPE},
+                    _internal: {
+                        navigation: {
+                            next_items: nextPageUrl
+                        }
                     }
-                }
-            })})
+                })
+            })
 
             mockServer
                 .onGet(nextPageUrl)
@@ -332,14 +387,16 @@ describe('actions', () => {
 
         it('should fetch prev page', () => {
             const prevPageUrl = `/api/views/${viewId}/items?direction=${PREV_VIEW_NAV_DIRECTION}cursor=123&ignored_item=7`
-            const store = mockStore({views: fromJS({
-                active: {id: viewId, type: TICKET_LIST_VIEW_TYPE},
-                _internal: {
-                    navigation: {
-                        prev_items: prevPageUrl
+            const store = mockStore({
+                views: fromJS({
+                    active: {id: viewId, type: TICKET_LIST_VIEW_TYPE},
+                    _internal: {
+                        navigation: {
+                            prev_items: prevPageUrl
+                        }
                     }
-                }
-            })})
+                })
+            })
 
             mockServer
                 .onGet(prevPageUrl)
@@ -353,9 +410,11 @@ describe('actions', () => {
         })
 
         it('should pass the view because it is dirty', () => {
-            const store = mockStore({views: fromJS({
-                active: {id: viewId, dirty: true, editMode: false, type: TICKET_LIST_VIEW_TYPE}
-            })})
+            const store = mockStore({
+                views: fromJS({
+                    active: {id: viewId, dirty: true, editMode: false, type: TICKET_LIST_VIEW_TYPE}
+                })
+            })
 
             mockServer
                 .onPut(`/api/views/${viewId}/items/`)
@@ -397,12 +456,14 @@ describe('actions', () => {
 
         it('should not dispatch FETCH_LIST_VIEW_SUCCESS because this fetch was caused by the polling, and the user ' +
             'is not currently on the first page', () => {
-            const store = mockStore({views: fromJS({
-                active: {id: viewId, type: TICKET_LIST_VIEW_TYPE},
-                _internal: {
-                    navigation: {prev_items: `/api/views/1/items?direction=${PREV_VIEW_NAV_DIRECTION}`}
-                }
-            })})
+            const store = mockStore({
+                views: fromJS({
+                    active: {id: viewId, type: TICKET_LIST_VIEW_TYPE},
+                    _internal: {
+                        navigation: {prev_items: `/api/views/1/items?direction=${PREV_VIEW_NAV_DIRECTION}`}
+                    }
+                })
+            })
 
             mockServer
                 .onGet(`/api/views/${viewId}/items/`)

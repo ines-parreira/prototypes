@@ -81,6 +81,12 @@ class FilterDropdown extends React.Component<Props, State> {
                     isLoading: false,
                 })
             })
+            .catch(() => {
+                this.setState({
+                    enum: null,
+                    isLoading: false,
+                })
+            })
     }
 
     renderSearch = () => {
@@ -112,10 +118,6 @@ class FilterDropdown extends React.Component<Props, State> {
     renderEnum = () => {
         const field = this.props.field
 
-        if (!this.state.enum) {
-            return null
-        }
-
         if (this.state.isLoading) {
             return (
                 <DropdownItem disabled>
@@ -125,6 +127,10 @@ class FilterDropdown extends React.Component<Props, State> {
                     Loading...
                 </DropdownItem>
             )
+        }
+
+        if (!this.state.enum) {
+            return null
         }
 
         if (this.state.enum.isEmpty()) {
