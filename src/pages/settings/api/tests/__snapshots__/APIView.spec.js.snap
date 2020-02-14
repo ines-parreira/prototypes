@@ -1,0 +1,470 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<APIView/> render() should render a Create API Key Button 1`] = `
+<div
+  className="max-width"
+>
+  <PageHeader
+    title="REST API"
+  />
+  <Container
+    className="page-container"
+    tag="div"
+  >
+    <p>
+      Gorgias prides itself on being a developer-friendly helpdesk. We expose a 
+      <a
+        href="https://stackoverflow.com/questions/671118/what-exactly-is-restful-programming"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        RESTful API
+      </a>
+       to make it easy for you to get, create, update and delete many objects including customers, tickets, messages and events. To find out more about our API, please consult our docs here:
+      <a
+        href="https://api.gorgias.com/"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+         https://api.gorgias.com/
+      </a>
+      .
+    </p>
+    <p>
+      Below are the parameters you will need to access our API. We're using 
+      <a
+        href="https://en.wikipedia.org/wiki/Basic_access_authentication"
+        rel="noopener noreferrer"
+      >
+        HTTP basic authentication
+      </a>
+       to authenticate API requests.
+    </p>
+    <h4>
+      API Access & Credentials
+    </h4>
+    <FormGroup
+      tag="div"
+    >
+      <Label
+        for="URL"
+        tag="label"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        Base API URL
+      </Label>
+      <InputGroup
+        tag="div"
+      >
+        <Input
+          id="url"
+          readOnly={true}
+          type="text"
+          value="https://justatest.gorgias.com/api/"
+        />
+        <InputGroupAddon
+          addonType="append"
+          tag="div"
+        >
+          <Button
+            className="copyBtn"
+            color="secondary"
+            data-clipboard-target="#url"
+            tag="button"
+          >
+            <i
+              className="material-icons mr-2"
+            >
+              file_copy
+            </i>
+            Copy
+          </Button>
+        </InputGroupAddon>
+      </InputGroup>
+    </FormGroup>
+    <FormGroup
+      tag="div"
+    >
+      <Label
+        for="email"
+        tag="label"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        Username (your email address)
+      </Label>
+      <InputGroup
+        tag="div"
+      >
+        <Input
+          id="email"
+          readOnly={true}
+          type="text"
+        />
+        <InputGroupAddon
+          addonType="append"
+          tag="div"
+        >
+          <Button
+            className="copyBtn"
+            color="secondary"
+            data-clipboard-target="#email"
+            tag="button"
+          >
+            <i
+              className="material-icons mr-2"
+            >
+              file_copy
+            </i>
+            Copy
+          </Button>
+        </InputGroupAddon>
+      </InputGroup>
+    </FormGroup>
+    <FormGroup
+      tag="div"
+    >
+      <Label
+        for="apiKey"
+        tag="label"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        Password (API Key)
+      </Label>
+      <div>
+        <p>
+          <FormText
+            color="muted"
+            tag="small"
+          >
+            You can create an API Key using the button below.
+          </FormText>
+        </p>
+        <Button
+          className="resetBtn"
+          color="primary"
+          onClick={[Function]}
+          tag="button"
+        >
+          Create API Key
+        </Button>
+      </div>
+    </FormGroup>
+    <br />
+    <h4>
+      Postman collection
+    </h4>
+    <p>
+      You can also import our
+       
+      <a
+        href="https://www.getpostman.com/"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Postman
+      </a>
+       
+      collection below to quickly connect and use our REST API.
+    </p>
+    <div
+      className="postman-run-button"
+      data-postman-action="collection/import"
+      data-postman-param="env%5BGorgias%20Helpdesk%5D=W3siZW5hYmxlZCI6dHJ1ZSwia2V5IjoiZG9tYWluIiwidmFsdWUiOiJqdXN0YXRlc3QiLCJ0eXBlIjoidGV4dCJ9LHsiZW5hYmxlZCI6dHJ1ZSwia2V5IjoiZW1haWwiLCJ0eXBlIjoidGV4dCJ9LHsiZW5hYmxlZCI6dHJ1ZSwia2V5IjoiYXBpX2tleSIsInR5cGUiOiJ0ZXh0In1d"
+      data-postman-var-1="9cd4c1e0f841a18f3510"
+    />
+    <br />
+    <br />
+    <h4>
+      Developer newsletter
+    </h4>
+    <p>
+      If you're using our API, we highly encourage you to subscribe to our developer newsletter.
+       
+      It contains updates about 
+      <b>
+        upcoming changes and breaking changes to the API
+      </b>
+      , new
+       
+      features and integrations.
+    </p>
+    <Button
+      color="primary"
+      onClick={[Function]}
+      tag="button"
+    >
+      Subscribe
+    </Button>
+  </Container>
+</div>
+`;
+
+exports[`<APIView/> render() should render a Reset Button 1`] = `
+<div
+  className="max-width"
+>
+  <PageHeader
+    title="REST API"
+  />
+  <Container
+    className="page-container"
+    tag="div"
+  >
+    <p>
+      Gorgias prides itself on being a developer-friendly helpdesk. We expose a 
+      <a
+        href="https://stackoverflow.com/questions/671118/what-exactly-is-restful-programming"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        RESTful API
+      </a>
+       to make it easy for you to get, create, update and delete many objects including customers, tickets, messages and events. To find out more about our API, please consult our docs here:
+      <a
+        href="https://api.gorgias.com/"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+         https://api.gorgias.com/
+      </a>
+      .
+    </p>
+    <p>
+      Below are the parameters you will need to access our API. We're using 
+      <a
+        href="https://en.wikipedia.org/wiki/Basic_access_authentication"
+        rel="noopener noreferrer"
+      >
+        HTTP basic authentication
+      </a>
+       to authenticate API requests.
+    </p>
+    <h4>
+      API Access & Credentials
+    </h4>
+    <FormGroup
+      tag="div"
+    >
+      <Label
+        for="URL"
+        tag="label"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        Base API URL
+      </Label>
+      <InputGroup
+        tag="div"
+      >
+        <Input
+          id="url"
+          readOnly={true}
+          type="text"
+          value="https://justatest.gorgias.com/api/"
+        />
+        <InputGroupAddon
+          addonType="append"
+          tag="div"
+        >
+          <Button
+            className="copyBtn"
+            color="secondary"
+            data-clipboard-target="#url"
+            tag="button"
+          >
+            <i
+              className="material-icons mr-2"
+            >
+              file_copy
+            </i>
+            Copy
+          </Button>
+        </InputGroupAddon>
+      </InputGroup>
+    </FormGroup>
+    <FormGroup
+      tag="div"
+    >
+      <Label
+        for="email"
+        tag="label"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        Username (your email address)
+      </Label>
+      <InputGroup
+        tag="div"
+      >
+        <Input
+          id="email"
+          readOnly={true}
+          type="text"
+        />
+        <InputGroupAddon
+          addonType="append"
+          tag="div"
+        >
+          <Button
+            className="copyBtn"
+            color="secondary"
+            data-clipboard-target="#email"
+            tag="button"
+          >
+            <i
+              className="material-icons mr-2"
+            >
+              file_copy
+            </i>
+            Copy
+          </Button>
+        </InputGroupAddon>
+      </InputGroup>
+    </FormGroup>
+    <FormGroup
+      tag="div"
+    >
+      <Label
+        for="apiKey"
+        tag="label"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        Password (API Key)
+      </Label>
+      <InputGroup
+        tag="div"
+      >
+        <Input
+          id="apiKey"
+          readOnly={true}
+          type="text"
+          value="4a75a69bb409c2cd4041df29f5791103acaf0991bf0d0b3fa022951830482510"
+        />
+        <InputGroupAddon
+          addonType="append"
+          tag="div"
+        >
+          <Button
+            className="resetBtn"
+            color="danger"
+            onClick={[Function]}
+            tag="button"
+          >
+            <i
+              className="material-icons mr-2"
+            >
+              refresh
+            </i>
+            Reset
+          </Button>
+          <Button
+            className="copyBtn"
+            color="secondary"
+            data-clipboard-target="#apiKey"
+            tag="button"
+          >
+            <i
+              className="material-icons mr-2"
+            >
+              file_copy
+            </i>
+            Copy
+          </Button>
+        </InputGroupAddon>
+      </InputGroup>
+    </FormGroup>
+    <br />
+    <h4>
+      Postman collection
+    </h4>
+    <p>
+      You can also import our
+       
+      <a
+        href="https://www.getpostman.com/"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        Postman
+      </a>
+       
+      collection below to quickly connect and use our REST API.
+    </p>
+    <div
+      className="postman-run-button"
+      data-postman-action="collection/import"
+      data-postman-param="env%5BGorgias%20Helpdesk%5D=W3siZW5hYmxlZCI6dHJ1ZSwia2V5IjoiZG9tYWluIiwidmFsdWUiOiJqdXN0YXRlc3QiLCJ0eXBlIjoidGV4dCJ9LHsiZW5hYmxlZCI6dHJ1ZSwia2V5IjoiZW1haWwiLCJ0eXBlIjoidGV4dCJ9LHsiZW5hYmxlZCI6dHJ1ZSwia2V5IjoiYXBpX2tleSIsInZhbHVlIjoiNGE3NWE2OWJiNDA5YzJjZDQwNDFkZjI5ZjU3OTExMDNhY2FmMDk5MWJmMGQwYjNmYTAyMjk1MTgzMDQ4MjUxMCIsInR5cGUiOiJ0ZXh0In1d"
+      data-postman-var-1="9cd4c1e0f841a18f3510"
+    />
+    <br />
+    <br />
+    <h4>
+      Developer newsletter
+    </h4>
+    <p>
+      If you're using our API, we highly encourage you to subscribe to our developer newsletter.
+       
+      It contains updates about 
+      <b>
+        upcoming changes and breaking changes to the API
+      </b>
+      , new
+       
+      features and integrations.
+    </p>
+    <Button
+      color="primary"
+      onClick={[Function]}
+      tag="button"
+    >
+      Subscribe
+    </Button>
+  </Container>
+</div>
+`;

@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import Clipboard from 'clipboard'
-import {FormGroup, Container, Label, InputGroup, Button, Input, InputGroupAddon} from 'reactstrap'
+import {FormGroup, Container, Label, InputGroup, Button, Input, InputGroupAddon, FormText} from 'reactstrap'
 
 import * as currentUserSelectors from '../../../state/currentUser/selectors'
 import * as authsSelectors from '../../../state/auths/selectors'
@@ -22,23 +22,16 @@ type Props = {
 }
 
 type State = {
-    isCopiedapiKey: boolean,
-    isCopiedemail: boolean,
-    isCopiedurl: boolean,
+    isCopiedAPIKey: boolean,
+    isCopiedEmail: boolean,
+    isCopiedUrl: boolean,
 }
 
-@connect((state) => {
-    return {
-        apiKey: authsSelectors.getApiKey(state),
-        email: currentUserSelectors.getCurrentUser(state).get('email'),
-        domain: currentAccountSelectors.getCurrentAccountState(state).get('domain'),
-    }
-}, {fetchCurrentAuths, notify, resetApiKey})
-export default class APIView extends React.Component<Props, State> {
+export class APIViewComponent extends React.Component<Props, State> {
     state = {
-        isCopiedapiKey: false,
-        isCopiedemail: false,
-        isCopiedurl: false,
+        isCopiedAPIKey: false,
+        isCopiedEmail: false,
+        isCopiedUrl: false,
     }
 
     componentWillMount() {
@@ -91,6 +84,63 @@ export default class APIView extends React.Component<Props, State> {
         }
     }
 
+    _createApiKey = () => {
+        this.props.resetApiKey()
+    }
+
+    _renderCreateApiKeySection() {
+        return (
+            <div>
+                <p>
+                    <FormText color="muted">
+                        You can create an API Key using the button below.
+                    </FormText>
+                </p>
+                <Button
+                    className="resetBtn"
+                    color="primary"
+                    onClick={this._createApiKey}
+                >
+                    Create API Key
+                </Button>
+            </div>
+        )
+    }
+
+    _renderApiKeySection(apiKey: string) {
+        return (
+            <InputGroup>
+                <Input
+                    id="apiKey"
+                    type="text"
+                    value={apiKey}
+                    readOnly
+                />
+                <InputGroupAddon addonType="append">
+                    <Button
+                        className="resetBtn"
+                        color="danger"
+                        onClick={this._resetApiKey}
+                    >
+                        <i className="material-icons mr-2">
+                            refresh
+                        </i>
+                        Reset
+                    </Button>
+                    <Button
+                        className="copyBtn"
+                        data-clipboard-target="#apiKey"
+                    >
+                        <i className="material-icons mr-2">
+                            file_copy
+                        </i>
+                        {this.state.isCopiedAPIKey ? 'Copied!' : 'Copy'}
+                    </Button>
+                </InputGroupAddon>
+            </InputGroup>
+        )
+    }
+
     render() {
         const {domain, apiKey, email} = this.props
         const postmanVars = [
@@ -116,11 +166,10 @@ export default class APIView extends React.Component<Props, State> {
         const postmanParams = encodeURI(`env[Gorgias Helpdesk]=${btoa(JSON.stringify(postmanVars))}`)
 
         return (
-            <div className="full-width">
+            <div className="max-width">
                 <PageHeader title="REST API"/>
 
                 <Container
-                    fluid
                     className="page-container"
                 >
                     <p>
@@ -157,13 +206,12 @@ export default class APIView extends React.Component<Props, State> {
                             <InputGroupAddon addonType="append">
                                 <Button
                                     className="copyBtn"
-                                    color="primary"
                                     data-clipboard-target="#url"
                                 >
                                     <i className="material-icons mr-2">
                                         file_copy
                                     </i>
-                                    {this.state.isCopiedurl ? 'Copied!' : 'Copy'}
+                                    {this.state.isCopiedUrl ? 'Copied!' : 'Copy'}
                                 </Button>
                             </InputGroupAddon>
                         </InputGroup>
@@ -180,49 +228,23 @@ export default class APIView extends React.Component<Props, State> {
                             <InputGroupAddon addonType="append">
                                 <Button
                                     className="copyBtn"
-                                    color="primary"
                                     data-clipboard-target="#email"
                                 >
                                     <i className="material-icons mr-2">
                                         file_copy
                                     </i>
-                                    {this.state.isCopiedemail ? 'Copied!' : 'Copy'}
+                                    {this.state.isCopiedEmail ? 'Copied!' : 'Copy'}
                                 </Button>
                             </InputGroupAddon>
                         </InputGroup>
                     </FormGroup>
                     <FormGroup>
                         <Label for="apiKey">Password (API Key)</Label>
-                        <InputGroup>
-                            <Input
-                                id="apiKey"
-                                type="text"
-                                value={apiKey}
-                                readOnly
-                            />
-                            <InputGroupAddon addonType="append">
-                                <Button
-                                    className="resetBtn"
-                                    color="danger"
-                                    onClick={this._resetApiKey}
-                                >
-                                    <i className="material-icons mr-2">
-                                        refresh
-                                    </i>
-                                    Reset
-                                </Button>
-                                <Button
-                                    className="copyBtn"
-                                    color="primary"
-                                    data-clipboard-target="#apiKey"
-                                >
-                                    <i className="material-icons mr-2">
-                                        file_copy
-                                    </i>
-                                    {this.state.isCopiedapiKey ? 'Copied!' : 'Copy'}
-                                </Button>
-                            </InputGroupAddon>
-                        </InputGroup>
+                        {
+                            !!apiKey
+                                ? this._renderApiKeySection(apiKey)
+                                : this._renderCreateApiKeySection()
+                        }
                     </FormGroup>
                     <br/>
 
@@ -253,7 +275,7 @@ export default class APIView extends React.Component<Props, State> {
                         features and integrations.
                     </p>
                     <Button
-                        color="info"
+                        color="primary"
                         onClick={this._subscribeToDeveloperNewsletter}
                     >
                         Subscribe
@@ -263,3 +285,13 @@ export default class APIView extends React.Component<Props, State> {
         )
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        apiKey: authsSelectors.getApiKey(state),
+        email: currentUserSelectors.getCurrentUser(state).get('email'),
+        domain: currentAccountSelectors.getCurrentAccountState(state).get('domain'),
+    }
+}
+
+export default connect(mapStateToProps, {fetchCurrentAuths, notify, resetApiKey})(APIViewComponent)
