@@ -1,28 +1,68 @@
-import {notifyDeprecatedTld} from '../init'
-import {notify} from '../state/notifications/actions'
+import {fromJS} from 'immutable'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
-jest.mock('../state/notifications/actions', () => {
-    return {
-        notify: jest.fn()
-    }
-})
+import {EMAIL_INTEGRATION_TYPE} from '../constants/integration'
+import {notifyAccountNotVerified, notifyDeprecatedTld} from '../init'
 
-describe('notifyDeprecatedTld()', () => {
-    const reduxStore = {
-        dispatch: jest.fn()
-    }
+const mockStore = configureMockStore([thunk])
 
-    beforeEach(() => {
-        jest.resetAllMocks()
+describe('init', () => {
+    let reduxStore
+
+    describe('notifyDeprecatedTld()', () => {
+        beforeEach(() => {
+            reduxStore = mockStore({})
+        })
+
+        it('should not do anything because the URL\'s TLD is not `.io`', () => {
+            notifyDeprecatedTld('https://acme.gorgias.com/', reduxStore)
+            expect(reduxStore.getActions()).toMatchSnapshot()
+        })
+
+        it('should dispatch a notification because the URL\'s TLD is `.io`', () => {
+            notifyDeprecatedTld('https://acme.gorgias.io/', reduxStore)
+            expect(reduxStore.getActions()).toMatchSnapshot()
+        })
     })
 
-    it('should not do anything because the URL\'s TLD is not `.io`', () => {
-        notifyDeprecatedTld('https://acme.gorgias.com/', reduxStore)
-        expect(notify).not.toHaveBeenCalled()
-    })
+    describe('notifyAccountNotVerified()', () => {
+        it('should not do anything because the base email integration is verified', () => {
+            reduxStore = mockStore({
+                integrations: fromJS({
+                    integrations: [{
+                        id: 1,
+                        type: EMAIL_INTEGRATION_TYPE,
+                        meta: {
+                            address: `asdasd@${window.EMAIL_FORWARDING_DOMAIN}`,
+                            verified: true,
+                        }
+                    }]
+                })
+            })
 
-    it('should dispatch a notification because the URL\'s TLD is `.io`', () => {
-        notifyDeprecatedTld('https://acme.gorgias.io/', reduxStore)
-        expect(notify.mock.calls).toMatchSnapshot()
+            notifyAccountNotVerified(reduxStore)
+
+            expect(reduxStore.getActions()).toMatchSnapshot()
+        })
+
+        it('should dispatch a notification because the base email integration is not verified', () => {
+            reduxStore = mockStore({
+                integrations: fromJS({
+                    integrations: [{
+                        id: 1,
+                        type: EMAIL_INTEGRATION_TYPE,
+                        meta: {
+                            address: `asdasd@${window.EMAIL_FORWARDING_DOMAIN}`,
+                            verified: false,
+                        }
+                    }]
+                })
+            })
+
+            notifyAccountNotVerified(reduxStore)
+
+            expect(reduxStore.getActions()).toMatchSnapshot()
+        })
     })
 })

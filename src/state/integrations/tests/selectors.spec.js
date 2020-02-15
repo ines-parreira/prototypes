@@ -9,6 +9,7 @@ import {
 } from '../../../constants/integration'
 
 import {
+    getBaseEmailIntegration,
     getChannelByTypeAndAddress,
     getChannels,
     getChannelSignature,
@@ -49,11 +50,51 @@ describe('integrations selectors', () => {
         expect(integrations.equals(expected)).toEqual(true)
     })
 
-    it('should get email integrations', () => {
-        const integrations = getEmailIntegrations(state)
-        const expected = getIntegrations(state).filter((inte) => ['email', 'gmail'].includes(inte.get('type', '')))
+    describe('getEmailIntegrations()', () => {
+        it('should get email integrations', () => {
+            const integrations = getEmailIntegrations(state)
+            const expected = getIntegrations(state).filter((inte) => ['email', 'gmail'].includes(inte.get('type', '')))
 
-        expect(integrations.equals(expected)).toEqual(true)
+            expect(integrations.equals(expected)).toEqual(true)
+        })
+    })
+
+    describe('getBaseEmailIntegration()', () => {
+        it('should return the base email integration', () => {
+            const baseEmailIntegration = fromJS({
+                id: 1,
+                type: EMAIL_INTEGRATION_TYPE,
+                meta: {
+                    address: `asd48sa6d@${window.EMAIL_FORWARDING_DOMAIN}`
+                }
+            })
+
+            const result = getBaseEmailIntegration({
+                integrations: fromJS({
+                    integrations: [baseEmailIntegration]
+                })
+            })
+
+            expect(result).toEqual(baseEmailIntegration)
+        })
+
+        it('should return an empty map because there is no base email integration', () => {
+            const baseEmailIntegration = fromJS({
+                id: 1,
+                type: EMAIL_INTEGRATION_TYPE,
+                meta: {
+                    address: 'support@mycompany.com'
+                }
+            })
+
+            const result = getBaseEmailIntegration({
+                integrations: fromJS({
+                    integrations: [baseEmailIntegration]
+                })
+            })
+
+            expect(result).toEqual(fromJS({}))
+        })
     })
 
     it('should get channels', () => {

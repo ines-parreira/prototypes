@@ -94,6 +94,13 @@ export const getEmailIntegrations = createSelector(
     (state) => state.filter((integration) => EMAIL_INTEGRATION_TYPES.includes(integration.get('type')))
 )
 
+export const getBaseEmailIntegration = createSelector(
+    [getEmailIntegrations],
+    (state) => state
+        .find((integration) => integration.getIn(['meta', 'address'], '').endsWith(window.EMAIL_FORWARDING_DOMAIN))
+        || fromJS({})
+)
+
 // return email and gmail integrations formatted as channel
 export const getChannels = createSelector(
     [getTicketState, getCurrentUserState, getEmailIntegrations],

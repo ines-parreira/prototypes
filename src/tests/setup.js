@@ -162,3 +162,5 @@ if (!supportsOffsetParent()) {
 const windowLocation = JSON.stringify(window.location)
 delete window.location
 window.location = JSON.parse(windowLocation)
+
+window.EMAIL_FORWARDING_DOMAIN = 'emails.gorgias.com'

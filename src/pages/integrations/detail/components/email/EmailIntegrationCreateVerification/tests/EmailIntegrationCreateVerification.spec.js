@@ -31,13 +31,11 @@ describe('<EmailIntegrationCreateVerification/>', () => {
         })
 
         it('should render instructions for the base email integration', () => {
-            window.EMAIL_FORWARDING_DOMAIN = 'emails.gorgias.io'
-
             const integration = fromJS({
                 id: 1,
                 name: 'my integration',
                 meta: {
-                    address: 'myintegration@emails.gorgias.io'
+                    address: 'myintegration@emails.gorgias.com'
                 }
             })
 
@@ -49,8 +47,6 @@ describe('<EmailIntegrationCreateVerification/>', () => {
             )
 
             expect(component).toMatchSnapshot()
-
-            delete window.EMAIL_FORWARDING_DOMAIN
         })
     })
 })

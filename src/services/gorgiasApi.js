@@ -161,4 +161,8 @@ export default class GorgiasApi {
             yield fromJS(events)
         }
     }
+
+    async resendAccountVerificationEmail() {
+        await this._api.post('/api/account/send-verification-email')
+    }
 }

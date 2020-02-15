@@ -1,15 +1,47 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`notifyDeprecatedTld() should dispatch a notification because the URL's TLD is \`.io\` 1`] = `
+exports[`init notifyAccountNotVerified() should dispatch a notification because the base email integration is not verified 1`] = `
 Array [
-  Array [
-    Object {
+  Object {
+    "payload": Object {
+      "allowHTML": false,
+      "buttons": Array [],
+      "closeButton": false,
+      "dismissAfter": 0,
       "dismissible": false,
-      "message": "We're now a dot-com 🎉 please update your helpdesk links and bookmarks to https://acme.gorgias.com/. This message will be hidden after you login there.",
+      "id": "account-not-verified-notification",
+      "message": "Your email address is not verified. <u>Click here to resend the verification email</u>",
       "onClick": [Function],
+      "position": "tc",
       "status": "warning",
       "style": "banner",
     },
-  ],
+    "type": "ADD_NOTIFICATION",
+  },
 ]
 `;
+
+exports[`init notifyAccountNotVerified() should not do anything because the base email integration is verified 1`] = `Array []`;
+
+exports[`init notifyDeprecatedTld() should dispatch a notification because the URL's TLD is \`.io\` 1`] = `
+Array [
+  Object {
+    "payload": Object {
+      "allowHTML": false,
+      "buttons": Array [],
+      "closeButton": false,
+      "dismissAfter": 0,
+      "dismissible": false,
+      "id": "deprecated-tld-notification",
+      "message": "We're now a dot-com 🎉 please update your helpdesk links and bookmarks to https://acme.gorgias.com/. This message will be hidden after you login there.",
+      "onClick": [Function],
+      "position": "tc",
+      "status": "warning",
+      "style": "banner",
+    },
+    "type": "ADD_NOTIFICATION",
+  },
+]
+`;
+
+exports[`init notifyDeprecatedTld() should not do anything because the URL's TLD is not \`.io\` 1`] = `Array []`;

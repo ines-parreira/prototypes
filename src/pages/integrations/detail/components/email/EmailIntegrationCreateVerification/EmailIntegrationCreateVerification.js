@@ -5,18 +5,19 @@ import {browserHistory, Link} from 'react-router'
 import {connect} from 'react-redux'
 import classNames from 'classnames'
 
+import ConfirmButton from '../../../../../common/components/ConfirmButton'
 import PageHeader from '../../../../../common/components/PageHeader'
+import socketManager from '../../../../../../services/socketManager'
+import * as accountActions from '../../../../../../state/currentAccount/actions'
 import * as integrationActions from '../../../../../../state/integrations/actions'
 import * as notificationActions from '../../../../../../state/notifications/actions'
-import type {dispatchType} from '../../../../../../state/types'
-import socketManager from '../../../../../../services/socketManager'
-import ConfirmButton from '../../../../../common/components/ConfirmButton'
 
 type Props = {
     integration: Object,
     deleteIntegration: (Object, string) => void,
-    sendVerificationEmail: () => Promise<dispatchType>,
-    notify: ({status: string, message: string}) => Promise<dispatchType>,
+    sendVerificationEmail: () => Promise<void>,
+    notify: ({status: string, message: string}) => Promise<void>,
+    resendAccountVerificationEmail: () => Promise<void>
 }
 
 type State = {
@@ -107,8 +108,9 @@ export class EmailIntegrationCreateVerification extends React.Component<Props, S
         )
     }
 
-    // todo(@martin): edit this to explain the real instructions for verifying the base email address
     _renderBaseIntegrationInstructions = () => {
+        const {resendAccountVerificationEmail} = this.props
+
         return (
             <div>
 
@@ -116,8 +118,18 @@ export class EmailIntegrationCreateVerification extends React.Component<Props, S
                     color="warning"
                     className="mb-4"
                 >
-                    Using the base email integration to send emails is temporarily disabled. Please connect an email
-                    integration in order to send emails from Gorgias.
+                    In order to verify your base email integration, you need to verify your own email address. Please
+                    check your inbox, you should have received a verification email from us. If you did not, you can
+                    re-send this email by{' '}
+                    <Button
+                        color="link"
+                        className="p-0"
+                        style={{verticalAlign: 'initial'}}
+                        onClick={resendAccountVerificationEmail}
+                    >
+                        clicking here
+                    </Button>
+                    .
                 </Alert>
             </div>
         )
@@ -171,5 +183,6 @@ export class EmailIntegrationCreateVerification extends React.Component<Props, S
 export default connect(null, {
     sendVerificationEmail: integrationActions.sendVerificationEmail,
     notify: notificationActions.notify,
-    deleteIntegration: integrationActions.deleteIntegration
+    deleteIntegration: integrationActions.deleteIntegration,
+    resendAccountVerificationEmail: accountActions.resendVerificationEmail,
 })(EmailIntegrationCreateVerification)

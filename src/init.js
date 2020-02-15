@@ -3,11 +3,13 @@ import moment from 'moment-timezone'
 import Promise from 'promise-polyfill'
 import includes from 'array-includes'
 
-import configureStore from './store/configureStore'
+import {resendVerificationEmail} from './state/currentAccount/actions'
+import {getBaseEmailIntegration} from './state/integrations/selectors'
 import {recentViewsStorage} from './state/views/utils'
-import {transformSystemMessagesToNotifications} from './utils'
 import {notify} from './state/notifications/actions'
+import configureStore from './store/configureStore'
 import * as segmentTracker from './store/middlewares/segmentTracker'
+import {transformSystemMessagesToNotifications} from './utils'
 
 // Polyfills
 Array.prototype.includes = Array.prototype.includes || includes // eslint-disable-line no-extend-native
@@ -65,6 +67,7 @@ export const notifyDeprecatedTld = (url, reduxStore) => {
     if (urlObject.hostname.match(/.io$/)) {
         const updatedUrl = `https://${urlObject.hostname.replace(/.io$/, '.com')}/`
         reduxStore.dispatch(notify({
+            id: 'deprecated-tld-notification',
             style: 'banner',
             status: 'warning',
             dismissible: false,
@@ -78,6 +81,23 @@ export const notifyDeprecatedTld = (url, reduxStore) => {
 }
 
 notifyDeprecatedTld(window.location.href, store)
+
+export const notifyAccountNotVerified = (reduxStore) => {
+    const baseEmailIntegration = getBaseEmailIntegration(reduxStore.getState())
+
+    if (!baseEmailIntegration.getIn(['meta', 'verified'], true)) {
+        reduxStore.dispatch(notify({
+            id: 'account-not-verified-notification',
+            style: 'banner',
+            status: 'warning',
+            dismissible: false,
+            message: 'Your email address is not verified. <u>Click here to resend the verification email</u>',
+            onClick: () => resendVerificationEmail()(reduxStore.dispatch),
+        }))
+    }
+}
+
+notifyAccountNotVerified(store)
 
 // Dispatch system messages as notifications
 transformSystemMessagesToNotifications(window.SYSTEM_MESSAGES || [])

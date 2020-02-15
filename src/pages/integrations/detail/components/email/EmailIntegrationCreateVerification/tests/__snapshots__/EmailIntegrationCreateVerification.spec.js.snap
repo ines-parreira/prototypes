@@ -40,7 +40,7 @@ exports[`<EmailIntegrationCreateVerification/> render() should render instructio
           <span
             className="text-faded"
           >
-            myintegration@emails.gorgias.io
+            myintegration@emails.gorgias.com
           </span>
         </BreadcrumbItem>
       </Breadcrumb>
@@ -85,7 +85,21 @@ exports[`<EmailIntegrationCreateVerification/> render() should render instructio
           }
         }
       >
-        Using the base email integration to send emails is temporarily disabled. Please connect an email integration in order to send emails from Gorgias.
+        In order to verify your base email integration, you need to verify your own email address. Please check your inbox, you should have received a verification email from us. If you did not, you can re-send this email by
+         
+        <Button
+          className="p-0"
+          color="link"
+          style={
+            Object {
+              "verticalAlign": "initial",
+            }
+          }
+          tag="button"
+        >
+          clicking here
+        </Button>
+        .
       </Alert>
     </div>
   </Container>

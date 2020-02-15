@@ -3,7 +3,7 @@ import axios from 'axios'
 import _capitalize from 'lodash/capitalize'
 
 import {notify} from '../notifications/actions'
-
+import GorgiasApi from '../../services/gorgiasApi'
 import type {dispatchType} from '../types'
 
 import * as constants from './constants'
@@ -137,4 +137,22 @@ export const updateAccountOwner = (userId: number) => (dispatch: dispatchType): 
                 reason: 'Failed to change the account owner. Please try again in a few seconds.',
             })
         })
+}
+
+
+export const resendVerificationEmail = () => async (dispatch: dispatchType): Promise<dispatchType> => {
+    const gorgiasApi = new GorgiasApi()
+
+    try {
+        await gorgiasApi.resendAccountVerificationEmail()
+        dispatch(notify({
+            status: 'success',
+            message: 'The verification email has been resent!',
+        }))
+    } catch (exc) {
+        dispatch(notify({
+            status: 'error',
+            message: exc.response.data.error.msg,
+        }))
+    }
 }
