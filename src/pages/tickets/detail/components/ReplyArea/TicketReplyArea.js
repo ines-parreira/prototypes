@@ -149,6 +149,7 @@ export class TicketReplyArea extends React.Component<Props, State> {
             search,
             page
         }
+        const orderDir = 'desc'
         let orderBy = 'usage'
         let filters = {}
 
@@ -165,7 +166,7 @@ export class TicketReplyArea extends React.Component<Props, State> {
             }
         }
 
-        return this.props.fetchMacros({...filters, ...commonFilters}, orderBy).then((res) => {
+        return this.props.fetchMacros({...filters, ...commonFilters}, orderBy, orderDir).then((res) => {
             const selectedMacroId = getDefaultSelectedMacroId(res.macros, this.state.selectedMacroId)
             return new Promise((resolve) => {
                 this.setState({
