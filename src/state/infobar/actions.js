@@ -1,4 +1,5 @@
 // @flow
+
 import axios from 'axios'
 import {browserHistory} from 'react-router'
 
@@ -37,7 +38,9 @@ export const search = (query: string): thunkActionType => ((dispatch: dispatchTy
         })
 })
 
-export const similarCustomer = (customerId: string): thunkActionType => ((dispatch: dispatchType): Promise<dispatchType> => {
+export const similarCustomer = (
+    customerId: string,
+): thunkActionType => ((dispatch: dispatchType): Promise<dispatchType> => {
     dispatch({
         type: constants.SEARCH_SIMILAR_CUSTOMER_START
     })
@@ -70,7 +73,9 @@ export const similarCustomer = (customerId: string): thunkActionType => ((dispat
         })
 })
 
-export const fetchPreviewCustomer = (customerId: string): thunkActionType => ((dispatch: dispatchType): Promise<dispatchType> => {
+export const fetchPreviewCustomer = (
+    customerId: string,
+): thunkActionType => ((dispatch: dispatchType): Promise<dispatchType> => {
     dispatch({
         type: constants.FETCH_PREVIEW_CUSTOMER_START
     })
@@ -99,7 +104,14 @@ export const fetchPreviewCustomer = (customerId: string): thunkActionType => ((d
  * @param payload
  * @param callback
  */
-export const executeAction = (actionName: string, integrationId: string, customerId?: string, payload: {} = {}, callback: () => void = () => undefined) => ((dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
+export const executeAction = (
+    actionName: string,
+    integrationId: string,
+    customerId?: string,
+    payload: {} = {},
+    callback: () => void = () => undefined,
+) => ((dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
+
     const state = getState()
     const {ticket} = state
 
@@ -128,7 +140,8 @@ export const executeAction = (actionName: string, integrationId: string, custome
                 type: constants.EXECUTE_ACTION_ERROR,
                 data,
                 error,
-                reason: `Failed to execute action ${actionName} on customer #${customerId || ''} for integration ${integrationId}`
+                reason: `Failed to execute action ${actionName} on customer #${customerId || ''} `
+                    + `for integration ${integrationId}`
             })
         })
 })

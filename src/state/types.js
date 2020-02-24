@@ -1,5 +1,7 @@
 import type {Map} from 'immutable'
 
+import type {InfobarActionsState} from './infobarActions/types'
+
 export type stateType = {
     activity: Map<*,*>,
     agents: Map<*,*>,
@@ -9,6 +11,7 @@ export type stateType = {
     customers: Map<*,*>,
     facebookAds: Map<*,*>,
     infobar: Map<*,*>,
+    infobarActions: InfobarActionsState,
     integrations: Map<*,*>,
     layout: Map<*,*>,
     macros: Map<*,*>,

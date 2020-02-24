@@ -1,0 +1,321 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SearchInput/> render() should render a closed dropdown because input is empty 1`] = `
+<Dropdown
+  active={false}
+  addonType={false}
+  direction="down"
+  inNavbar={false}
+  isOpen={false}
+  nav={false}
+  toggle={[Function]}
+>
+  <DropdownToggle
+    aria-expanded={false}
+    aria-haspopup={true}
+    className="input-icon input-icon-right"
+    color="secondary"
+    data-toggle="dropdown"
+    tag="div"
+  >
+    <i
+      className="icon material-icons md-2"
+    >
+      search
+    </i>
+    <Input
+      innerRef={[Function]}
+      onChange={[Function]}
+      onKeyDown={[Function]}
+      placeholder="Search..."
+      type="text"
+      value=""
+    />
+  </DropdownToggle>
+  <DropdownMenu
+    className="dropdown"
+    flip={true}
+    tag="div"
+  >
+    <DropdownItem
+      className="header"
+      header={true}
+      tag="button"
+      toggle={true}
+    >
+      0 result
+    </DropdownItem>
+  </DropdownMenu>
+</Dropdown>
+`;
+
+exports[`<SearchInput/> render() should render a closed dropdown because input is not focused 1`] = `
+<Dropdown
+  active={false}
+  addonType={false}
+  direction="down"
+  inNavbar={false}
+  isOpen={false}
+  nav={false}
+  toggle={[Function]}
+>
+  <DropdownToggle
+    aria-expanded={false}
+    aria-haspopup={true}
+    className="input-icon input-icon-right"
+    color="secondary"
+    data-toggle="dropdown"
+    tag="div"
+  >
+    <i
+      className="icon material-icons md-2"
+    >
+      search
+    </i>
+    <Input
+      innerRef={[Function]}
+      onChange={[Function]}
+      onKeyDown={[Function]}
+      placeholder="Search..."
+      type="text"
+      value=""
+    />
+  </DropdownToggle>
+  <DropdownMenu
+    className="dropdown"
+    flip={true}
+    tag="div"
+  >
+    <DropdownItem
+      className="header"
+      header={true}
+      tag="button"
+      toggle={true}
+    >
+      0 result
+    </DropdownItem>
+  </DropdownMenu>
+</Dropdown>
+`;
+
+exports[`<SearchInput/> render() should render an open dropdown because input is focused and value is not empty 1`] = `
+<Dropdown
+  active={false}
+  addonType={false}
+  direction="down"
+  inNavbar={false}
+  isOpen={true}
+  nav={false}
+  toggle={[Function]}
+>
+  <DropdownToggle
+    aria-expanded={true}
+    aria-haspopup={true}
+    className="input-icon input-icon-right"
+    color="secondary"
+    data-toggle="dropdown"
+    tag="div"
+  >
+    <i
+      className="icon material-icons md-2"
+    >
+      search
+    </i>
+    <Input
+      innerRef={[Function]}
+      onChange={[Function]}
+      onKeyDown={[Function]}
+      placeholder="Search..."
+      type="text"
+      value="foo"
+    />
+  </DropdownToggle>
+  <DropdownMenu
+    className="dropdown"
+    flip={true}
+    tag="div"
+  >
+    <DropdownItem
+      className="header"
+      header={true}
+      tag="button"
+      toggle={true}
+    >
+      3 results
+    </DropdownItem>
+    <DropdownItem
+      className="dropdownItem"
+      key="result-1"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      tag="button"
+      toggle={false}
+    >
+      <Result
+        result={
+          Object {
+            "id": 1,
+            "subResults": Array [],
+          }
+        }
+      />
+    </DropdownItem>
+    <DropdownItem
+      className="dropdownItem"
+      key="result-2"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      tag="button"
+      toggle={false}
+    >
+      <Result
+        result={
+          Object {
+            "id": 2,
+            "subResults": Array [],
+          }
+        }
+      />
+    </DropdownItem>
+    <DropdownItem
+      className="dropdownItem"
+      key="result-3"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      tag="button"
+      toggle={false}
+    >
+      <Result
+        result={
+          Object {
+            "id": 3,
+            "subResults": Array [],
+          }
+        }
+      />
+    </DropdownItem>
+  </DropdownMenu>
+</Dropdown>
+`;
+
+exports[`<SearchInput/> render() should render sub results 1`] = `
+<Dropdown
+  active={false}
+  addonType={false}
+  direction="down"
+  inNavbar={false}
+  isOpen={true}
+  nav={false}
+  toggle={[Function]}
+>
+  <DropdownToggle
+    aria-expanded={true}
+    aria-haspopup={true}
+    className="input-icon input-icon-right"
+    color="secondary"
+    data-toggle="dropdown"
+    tag="div"
+  >
+    <i
+      className="icon material-icons md-2"
+    >
+      search
+    </i>
+    <Input
+      innerRef={[Function]}
+      onChange={[Function]}
+      onKeyDown={[Function]}
+      placeholder="Search..."
+      type="text"
+      value="foo"
+    />
+  </DropdownToggle>
+  <DropdownMenu
+    className="dropdown"
+    flip={true}
+    tag="div"
+  >
+    <DropdownItem
+      className="header"
+      header={true}
+      tag="button"
+      toggle={true}
+    >
+      <Button
+        className="mr-2"
+        color="light"
+        onClick={[Function]}
+        size="sm"
+        tag="button"
+        type="button"
+      >
+        <i
+          className="icon material-icons mr-2"
+        >
+          arrow_back
+        </i>
+        Back
+      </Button>
+      2 sub results
+    </DropdownItem>
+    <DropdownItem
+      className="dropdownItem"
+      key="sub-result-20"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      tag="button"
+      toggle={true}
+    >
+      <SubResult
+        result={
+          Object {
+            "id": 2,
+            "subResults": Array [
+              Object {
+                "id": 20,
+              },
+              Object {
+                "id": 21,
+              },
+            ],
+          }
+        }
+        subResult={
+          Object {
+            "id": 20,
+          }
+        }
+      />
+    </DropdownItem>
+    <DropdownItem
+      className="dropdownItem"
+      key="sub-result-21"
+      onClick={[Function]}
+      onMouseEnter={[Function]}
+      tag="button"
+      toggle={true}
+    >
+      <SubResult
+        result={
+          Object {
+            "id": 2,
+            "subResults": Array [
+              Object {
+                "id": 20,
+              },
+              Object {
+                "id": 21,
+              },
+            ],
+          }
+        }
+        subResult={
+          Object {
+            "id": 21,
+          }
+        }
+      />
+    </DropdownItem>
+  </DropdownMenu>
+</Dropdown>
+`;

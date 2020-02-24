@@ -1,3 +1,5 @@
+import {fromJS} from 'immutable'
+
 export const integrationsState = {
     authentication: {
         facebook: {
@@ -304,3 +306,80 @@ export const integrationsState = {
         smooch: null
     }
 }
+
+export const integrationsStateWithShopify = fromJS({
+    authentication: {
+        shopify: {
+            redirect_uri: 'https://{shop_name}.myshopify.com/admin/oauth/authorize?client_id=foo&scope=read_all_orders%2Cread_orders%2Cwrite_orders%2Cread_customers%2Cwrite_customers%2Cread_themes%2Cwrite_themes%2Cread_products%2Cread_draft_orders%2Cwrite_draft_orders&redirect_uri=https%3A%2F%2Faccount-manager-foo.ngrok.io%2Fintegrations%2Fshopify%2Fauth%2Fcallback%2F&state=bar'
+        },
+    },
+    integrations: [
+        {
+            deleted_datetime: null,
+            mappings: [],
+            meta: {
+                sync_customer_notes: true,
+                shop_id: 54899465,
+                uses_multi_currency: true,
+                shop_domain: 'gorgiastest.com',
+                currency: 'USD',
+                shop_display_name: 'Store Gorgias 3',
+                shop_plan: 'affiliate',
+                shop_name: 'gorgiastest',
+                oauth: {
+                    scope: [
+                        'read_all_orders',
+                        'read_orders',
+                        'write_orders',
+                        'read_customers',
+                        'write_customers',
+                        'read_themes',
+                        'write_themes',
+                        'read_products',
+                        'read_draft_orders',
+                        'write_draft_orders',
+                    ],
+                    status: 'success'
+                },
+                import_state: {
+                    customers: {
+                        is_over: true,
+                        oldest_created_at: '2017-03-17T18:26:16-07:00'
+                    },
+                    products: {
+                        is_over: true,
+                        oldest_created_at: '2020-01-07T16:36:31-08:00'
+                    }
+                },
+                is_used_for_billing: true,
+                need_scope_update: false
+            },
+            facebook: null,
+            http: null,
+            deactivated_datetime: null,
+            name: 'My Shop',
+            uri: '/api/integrations/1/',
+            decoration: null,
+            locked_datetime: null,
+            created_datetime: '2020-01-28T22:19:15.604153+00:00',
+            connections: [
+                {
+                    data: {
+                        access_token: 'sometoken'
+                    },
+                    id: 2,
+                    type: 'oauth2',
+                    user: {
+                        id: 2,
+                        name: 'Alex Plugaru'
+                    },
+                    user_id: 2
+                }
+            ],
+            type: 'shopify',
+            id: 1,
+            description: null,
+            updated_datetime: '2020-01-28T22:19:15.604157+00:00'
+        },
+    ]
+})

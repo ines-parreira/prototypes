@@ -1,0 +1,52 @@
+:local {
+  .focusable {
+    &:focus {
+      outline: auto 5px -webkit-focus-ring-color;
+    }
+  }
+
+  .amountContainer {
+    display: inline-block;
+    position: relative;
+    z-index: 2;
+  }
+
+  .amountInput {
+    width: 120px;
+  }
+
+  .leftLabel,
+  .rightLabel {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    padding: .36rem .75rem;
+    color: #95a7b7;
+  }
+
+  .leftLabel {
+    left: 0;
+  }
+
+  .rightLabel {
+    right: 0;
+  }
+
+  .hasLeftLabel {
+    padding-left: 2rem;
+  }
+
+  .hasRightLabel {
+    padding-right: 2rem;
+  }
+
+  .titleInput {
+    width: 240px;
+  }
+
+  .title {
+    display: block;
+    color: #9FA9B9;
+    font-weight: 500;
+  }
+}

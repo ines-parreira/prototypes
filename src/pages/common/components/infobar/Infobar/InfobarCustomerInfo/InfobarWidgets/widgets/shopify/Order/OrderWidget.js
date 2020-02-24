@@ -1,26 +1,25 @@
 // @flow
-import React from 'react'
+
+import React, {type Node} from 'react'
 import PropTypes from 'prop-types'
-import type {Node} from 'react'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import {fromJS} from 'immutable'
-import {
-    Badge,
-} from 'reactstrap'
+import {fromJS, type Map} from 'immutable'
+import {Badge} from 'reactstrap'
 
-import {humanizeString} from '../../../../../../../../../utils'
+import {humanizeString} from '../../../../../../../../../../utils'
+import ActionButtonsGroup from '../../ActionButtonsGroup'
+import type {ActionType} from '../../types'
 
-import ActionButtonsGroup from '../ActionButtonsGroup'
+import DuplicateOrderModal from './DuplicateOrderModal'
+import {ShopifyAction} from './constants'
 
-import type {ActionType} from '../types'
-
-export default function Order() {
+export default function OrderWidget() {
     return {
-        AfterTitle, // eslint-disable-line
-        BeforeContent, // eslint-disable-line
+        AfterTitle,
+        BeforeContent,
         editionHiddenFields: ['link'],
-        TitleWrapper, // eslint-disable-line
-        Wrapper, // eslint-disable-line
+        TitleWrapper,
+        Wrapper,
     }
 }
 
@@ -29,7 +28,7 @@ type AfterTitleProps = {
     source: Map<string, string | number | boolean>
 }
 
-class AfterTitle extends React.Component<AfterTitleProps> { // eslint-disable-line
+class AfterTitle extends React.Component<AfterTitleProps> {
     static contextTypes = {
         integrationId: PropTypes.number,
         isOrderCancelled: PropTypes.bool.isRequired,
@@ -48,12 +47,12 @@ class AfterTitle extends React.Component<AfterTitleProps> { // eslint-disable-li
 
         const orderTotalPrice: number = parseFloat(source.get('total_price') || '0')
 
-        let actions: Array<ActionType> = [
+        const actions: Array<ActionType> = [
             {
                 key: 'refund',
                 options: [
                     {
-                        value: 'shopifyPartialRefundOrder',
+                        value: ShopifyAction.PARTIAL_REFUND_ORDER,
                         label: 'Partial refund',
                         parameters: [
                             {
@@ -70,14 +69,14 @@ class AfterTitle extends React.Component<AfterTitleProps> { // eslint-disable-li
                         ],
                     },
                     {
-                        value: 'shopifyFullRefundOrder',
+                        value: ShopifyAction.PARTIAL_REFUND_ORDER,
                         label: 'Full refund',
                         parameters: [
                             {name: 'restock', type: 'checkbox', defaultValue: true, label: 'Restock all items'}
                         ]
                     },
                     {
-                        value: 'shopifyRefundShippingCostOfOrder',
+                        value: ShopifyAction.REFUND_SHIPPING_COST_OF_ORDER,
                         label: 'Refund shipping only'
                     },
                 ],
@@ -103,7 +102,7 @@ class AfterTitle extends React.Component<AfterTitleProps> { // eslint-disable-li
                 key: 'cancel',
                 options: [
                     {
-                        value: 'shopifyCancelOrder',
+                        value: ShopifyAction.CANCEL_ORDER,
                         label: 'Cancel order',
                         parameters: [
                             {name: 'refund', type: 'checkbox', defaultValue: true, label: 'Refund order'},
@@ -133,19 +132,16 @@ class AfterTitle extends React.Component<AfterTitleProps> { // eslint-disable-li
                 key: 'duplicate',
                 options: [
                     {
-                        value: 'shopifyDuplicateOrder',
+                        value: ShopifyAction.DUPLICATE_ORDER,
                         label: 'Duplicate',
-                    }
+                        parameters: [
+                            {name: 'order_id', type: 'hidden'},
+                            {name: 'draft_order_id', type: 'hidden'},
+                            {name: 'payment_pending', type: 'hidden'},
+                        ],
+                    },
                 ],
-                tooltip: 'This will create a new order with the same items and mark it as paid.',
-                title: (
-                    <div>
-                        <i className="material-icons mr-2">
-                            filter_none
-                        </i>
-                        Duplicate order
-                    </div>
-                ),
+                title: 'Duplicate order',
                 child: (
                     <div>
                         <i className="material-icons mr-2">
@@ -153,18 +149,23 @@ class AfterTitle extends React.Component<AfterTitleProps> { // eslint-disable-li
                         </i>
                         Duplicate
                     </div>
-                )
+                ),
+                modal: DuplicateOrderModal,
+                modalData: {
+                    actionName: ShopifyAction.DUPLICATE_ORDER,
+                    order: source,
+                },
             },
         ]
 
-        let removed = []
+        const removed = []
 
         if (isOrderCancelled) {
-            removed = removed.concat(['cancel'])
+            removed.push('cancel')
         }
 
         if (isOrderRefunded) {
-            removed = removed.concat(['refund'])
+            removed.push('refund')
         }
 
         // remove removed actions from list of available actions
@@ -173,7 +174,7 @@ class AfterTitle extends React.Component<AfterTitleProps> { // eslint-disable-li
 
     render() {
         const {source}: AfterTitleProps = this.props
-        const {integrationId}: {integrationId: number} = this.context
+        const {integrationId}: { integrationId: number } = this.context
 
         if (this.props.isEditing) {
             return null
@@ -206,7 +207,7 @@ const statusColors = {
 
 
 type BeforeContentProps = {
-    source: Map<*,*>
+    source: Map<*, *>
 }
 
 class BeforeContent extends React.Component<BeforeContentProps> { // eslint-disable-line
@@ -216,7 +217,7 @@ class BeforeContent extends React.Component<BeforeContentProps> { // eslint-disa
 
     render() {
         const {source} = this.props
-        const {isOrderCancelled}: {isOrderCancelled: boolean} = this.context
+        const {isOrderCancelled}: { isOrderCancelled: boolean } = this.context
 
         const status: string = source.get('financial_status') || ''
 
@@ -248,7 +249,7 @@ class BeforeContent extends React.Component<BeforeContentProps> { // eslint-disa
 
 type TitleWrapperProps = {
     children?: Node,
-    source: Map<*,*>
+    source: Map<*, *>
 }
 
 class TitleWrapper extends React.Component<TitleWrapperProps> { // eslint-disable-line
@@ -275,7 +276,7 @@ class TitleWrapper extends React.Component<TitleWrapperProps> { // eslint-disabl
 
 type WrapperProps = {
     children: Node,
-    source: Map<*,*>
+    source: Map<*, *>
 }
 
 class Wrapper extends React.Component<WrapperProps> { // eslint-disable-line

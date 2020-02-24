@@ -1,0 +1,71 @@
+@import '~css/new/colors';
+
+:local {
+  .container {
+    display: flex;
+  }
+
+  .imgContainer {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .img {
+    max-width: 40px;
+    max-height: 40px;
+    border-radius: 2px;
+  }
+
+  .legend {
+    flex: 1;
+    padding-left: 14px;
+    font-family: 'Inter UI', sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .title {
+    font-weight: bold;
+  }
+
+  .subtitle {
+    font-weight: normal;
+  }
+
+  .numberCol {
+    width: 170px;
+  }
+
+  .quantityCol {
+    width: 90px;
+  }
+
+  .times {
+    color: #9FA9B9;
+    font-size: 14px;
+    line-height: 133%;
+    align-self: center;
+    margin-left: auto;
+  }
+
+  .delete {
+    float: right;
+    color: @red;
+    cursor: pointer;
+    font-size: 17px;
+    line-height: 17px;
+    margin-right: 0.5rem;
+  }
+
+  .focusable {
+    &:focus {
+      outline: auto 5px -webkit-focus-ring-color;
+    }
+  }
+}
