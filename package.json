@@ -27,8 +27,6 @@
   "author": "Alex Plugaru <alex@gorgias.com>",
   "license": "UNLICENSED",
   "dependencies": {
-    "@shopify/theme-currency": "^3.0.3",
-    "@shopify/theme-images": "^3.0.3",
     "array-includes": "3.0.3",
     "axios": "0.19.0",
     "bootstrap": "4.3.1",
@@ -59,7 +57,6 @@
     "moment": "2.17.1",
     "moment-timezone": "0.5.11",
     "mousetrap": "1.6.2",
-    "object-hash": "^2.0.3",
     "pluralize": "7.0.0",
     "promise-polyfill": "6.0.2",
     "prop-types": "15.6.2",

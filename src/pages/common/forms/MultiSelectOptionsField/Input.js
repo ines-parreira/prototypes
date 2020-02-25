@@ -53,7 +53,7 @@ export default class Input extends React.Component<Props> {
     _onKeyDown = (event: SyntheticKeyboardEvent<*>) => {
         const {value} = this.props
         const key = event.key
-        const killedEventsKeys = ['ArrowUp', 'ArrowDown', 'Enter']
+        const killedEventsKeys = ['ArrowUp', 'ArrowDown', 'Enter', 'Tab']
 
         if (killedEventsKeys.includes(key)) {
             event.preventDefault()
@@ -67,12 +67,6 @@ export default class Input extends React.Component<Props> {
                 this.props.onChange('')
                 break
             case 'Tab':
-                if (value) {
-                    event.preventDefault()
-                    event.stopPropagation()
-                    this.props.onSubmit()
-                }
-                break
             case 'Enter':
                 this.props.onSubmit()
                 break

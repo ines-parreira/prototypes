@@ -1,7 +1,6 @@
 import jsdom from 'jsdom'
 
 import {
-    focusElement,
     linkifyHtml,
     parseHtml,
     sanitizeHtmlDefault,
@@ -152,18 +151,6 @@ describe('html util', () => {
         })
         it('should remove all `o` - outlook tags', () => {
             expect(sanitizeHtmlDefault('<o:PixelsPerInch>96</o:PixelsPerInch>')).toBe('')
-        })
-    })
-
-    describe('focusElement()', () => {
-        it('should focus given element', (done) => {
-            const focus = jest.fn()
-            focusElement(() => ({focus}))
-
-            setTimeout(() => {
-                expect(focus).toHaveBeenCalled()
-                done()
-            }, 0)
         })
     })
 })

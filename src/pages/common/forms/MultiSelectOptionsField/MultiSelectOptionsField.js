@@ -182,7 +182,7 @@ export default class MultiSelectOptionsField extends React.Component<Props, Stat
 
         return (
             <div
-                className={classNames('MultiSelectField', className, {[css.focused]: isFocused})}
+                className={classNames('MultiSelectField', className)}
                 style={style}
             >
                 <div

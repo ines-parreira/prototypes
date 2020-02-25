@@ -24,7 +24,7 @@ type State = {
 // The maximum number of actions we can display before adding the dropdown
 const NB_ACTIONS_DISPLAYED = 3
 
-export default class ActionButtonsGroup extends React.Component<Props, State> {
+export default class ActionButtonsGroup extends React.Component<Props,State> {
     state = {
         actionDropdownIsOpen: false
     }
@@ -52,8 +52,6 @@ export default class ActionButtonsGroup extends React.Component<Props, State> {
                                 payload={payload}
                                 tooltip={action.tooltip}
                                 title={action.title}
-                                modal={action.modal}
-                                modalData={action.modalData}
                             >
                                 {action.child}
                             </ActionButton>
@@ -86,8 +84,6 @@ export default class ActionButtonsGroup extends React.Component<Props, State> {
                                                 tagOptions={{toggle: false}}
                                                 tooltip={action.tooltip}
                                                 title={action.title}
-                                                modal={action.modal}
-                                                modalData={action.modalData}
                                             >
                                                 {action.child}
                                             </ActionButton>

@@ -1,25 +1,25 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import {fromJS, type Map} from 'immutable'
+import {fromJS} from 'immutable'
 import {Badge} from 'reactstrap'
 
 import ActionButtonsGroup from '../ActionButtonsGroup'
 
-export default function Item() {
+export default function Item() { // eslint-disable-line
     return {
-        AfterTitle,
-        BeforeContent,
-        Wrapper,
+        AfterTitle, // eslint-disable-line
+        BeforeContent, // eslint-disable-line
+        Wrapper, // eslint-disable-line
     }
 }
 
-type AfterTitleProps = {
-    isEditing: boolean,
-    source: Map<*, *>,
-}
+class AfterTitle extends React.Component { // eslint-disable-line
+    static propTypes = {
+        isEditing: PropTypes.bool.isRequired,
+        source: ImmutablePropTypes.map.isRequired,
+    }
 
-class AfterTitle extends React.Component<AfterTitleProps> {
     static contextTypes = {
         integrationId: PropTypes.number,
         orderId: PropTypes.number,

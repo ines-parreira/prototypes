@@ -1,6 +1,5 @@
 // @flow
-
-import React, {type ComponentType, type Node} from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
@@ -10,9 +9,14 @@ import _debounce from 'lodash/debounce'
 import _isUndefined from 'lodash/isUndefined'
 import _omit from 'lodash/omit'
 import _uniqueId from 'lodash/uniqueId'
-import _noop from 'lodash/noop'
 
-import {Button, Form, Label, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
+import {
+    Button,
+    Form,
+    Popover,
+    PopoverHeader,
+    PopoverBody, Label,
+} from 'reactstrap'
 
 import SelectField from '../../../../../../forms/SelectField'
 import BooleanField from '../../../../../../forms/BooleanField'
@@ -20,12 +24,13 @@ import InputField from '../../../../../../forms/InputField'
 
 import {getActionByName} from '../../../../../../../../config/actions'
 import * as segmentTracker from '../../../../../../../../store/middlewares/segmentTracker'
+
 import * as infobarActions from '../../../../../../../../state/infobar/actions'
 import * as infobarSelectors from '../../../../../../../../state/infobar/selectors'
 import * as infobarUtils from '../../../../../../../../state/infobar/utils'
 
 import css from './ActionButton.less'
-import type {InfobarModalProps, OptionType, ParameterType} from './types'
+import type {OptionType, ParameterType} from './types'
 
 
 type Props = {
@@ -36,18 +41,16 @@ type Props = {
     },
     children: Object,
     tag: Object,
-    modal?: ComponentType<InfobarModalProps>,
-    modalData?: Object,
     tagOptions?: Object,
     tooltip?: string,
-    title: Node,
+    title: Object,
 
-    getPendingActionCallback: (string) => Map<*, *>,
+    getPendingActionCallback: (string) => Map<*,*>,
     executeAction: (string, number, number, Object, callback: (Object) => void) => void,
 }
 
 type State = {
-    isUiOpen: boolean,
+    popoverOpen: boolean,
     isLoading: boolean,
     actionName: string,
     parameters: Object,
@@ -56,9 +59,11 @@ type State = {
     actionId: ?string,
 }
 
-@connect((state) => ({
-    getPendingActionCallback: infobarSelectors.makeGetPendingActionCallbacks(state),
-}), {
+@connect((state) => {
+    return {
+        getPendingActionCallback: infobarSelectors.makeGetPendingActionCallbacks(state),
+    }
+}, {
     executeAction: infobarActions.executeAction,
 })
 // todo(@martin): remove this flow-fix-me when flow support decorators and props injection
@@ -66,7 +71,7 @@ type State = {
 export default class ActionButton extends React.Component<Props, State> {
     id: string = ''
     state = {
-        isUiOpen: false,
+        popoverOpen: false,
         isLoading: false,
         actionName: '',
         parameters: {},
@@ -153,11 +158,8 @@ export default class ActionButton extends React.Component<Props, State> {
         return infobarUtils.actionButtonHashForData(data)
     }
 
-    _confirmAction = (event: ?Event = null) => {
-        if (event) {
-            event.preventDefault()
-        }
-
+    _confirmAction = (event: Event) => {
+        event.preventDefault()
         const actionConfig: Object = getActionByName(this.state.actionName)
 
         if (actionConfig) {
@@ -188,15 +190,15 @@ export default class ActionButton extends React.Component<Props, State> {
                 setTimeout(() => this.setState({showSuccess: false}), 4000)
             })
 
-        this._toggleUi()
+        this._togglePopover()
     }
 
     // If we don't debounce, when clicking on the button to close the Popover, toggle is called two times (once
     // by the button's `onClick`, and once by the Popover's `onClickOutside`), resulting in the Popover not closing.
     // There's probably an eventPropagation thing we can tweak to fix this, but so far we couldn't find out how.
-    _toggleUi = _debounce(() => {
+    _togglePopover = _debounce(() => {
         this.setState({
-            isUiOpen: !this.state.isUiOpen
+            popoverOpen: !this.state.popoverOpen
         })
     }, 100, {leading: true, trailing: false})
 
@@ -213,33 +215,15 @@ export default class ActionButton extends React.Component<Props, State> {
         this.setState({actionName: actionName.toString(), parameters})
     }
 
-    _updateActionParameter = (
-        name: string,
-        value: string | number | boolean | Object,
-        callback: () => void = _noop
-    ) => {
+    _updateActionParameter = (name: string, value: string | number | boolean) => {
+        const partialState = {}
+        partialState[name] = value
         this.setState({
             parameters: {
                 ...this.state.parameters,
-                [name]: value,
+                ...partialState
             }
-        }, callback)
-    }
-
-    _updateActionParameters = (
-        values: Array<{
-            name: string,
-            value: string | number | boolean | Object,
-        }>,
-        callback: () => void = _noop
-    ) => {
-        const {parameters} = this.state
-
-        values.forEach(({name, value}) => {
-            parameters[name] = value
         })
-
-        this.setState({parameters}, callback)
     }
 
     _renderActionParameters = (): Array<Object> | null => {
@@ -282,89 +266,20 @@ export default class ActionButton extends React.Component<Props, State> {
         })
     }
 
-    _renderModal(Modal: ComponentType<InfobarModalProps>) {
-        const {title, modalData} = this.props
-        const {isUiOpen} = this.state
+    render() {
+        const {
+            options,
+            children,
+            tag: Tag,
+            tooltip,
+            title,
+            tagOptions
+        } = this.props
 
-        return (
-            <Modal
-                header={title}
-                isOpen={isUiOpen}
-                onOpen={this._updateActionName}
-                onChange={this._updateActionParameter}
-                onBulkChange={this._updateActionParameters}
-                onSubmit={this._confirmAction}
-                onClose={this._toggleUi}
-                data={modalData}
-            />
-        )
-    }
+        const {actionName, popoverOpen, showSuccess, showError, isLoading} = this.state
 
-    _renderPopover() {
-        const {options, tooltip, title} = this.props
-        const {actionName, isUiOpen} = this.state
         const multipleOptions = options.length > 1
 
-        return (
-            <Popover
-                placement="bottom"
-                isOpen={isUiOpen}
-                target={this.id}
-                toggle={this._toggleUi}
-                tether={{
-                    // Necessary to avoid the popover being displayed outside of the window.
-                    // http://tether.io/#constraints
-                    constraints: [
-                        {to: 'scrollParent', attachment: 'together none', pin: true},
-                        {to: 'window', attachment: 'together none', pin: true}
-                    ]
-                }}
-            >
-                <PopoverHeader>{title}</PopoverHeader>
-                <PopoverBody>
-                    {
-                        tooltip ? (
-                            <p className={css.tooltip}>
-                                {tooltip}
-                            </p>
-                        ) : null
-                    }
-                    <Form onSubmit={this._confirmAction}>
-                        {
-                            multipleOptions ? [
-                                <Label key="label">
-                                    Type
-                                </Label>,
-                                <SelectField
-                                    key="input"
-                                    style={{marginBottom: '1rem'}}
-                                    onChange={this._updateActionName}
-                                    value={actionName}
-                                    options={options.map((option: OptionType) => ({
-                                        value: option.value,
-                                        label: option.label
-                                    }))}
-                                />
-                            ] : null
-                        }
-                        {
-                            this._renderActionParameters()
-                        }
-                        <Button
-                            color="success"
-                            block
-                        >
-                            Confirm
-                        </Button>
-                    </Form>
-                </PopoverBody>
-            </Popover>
-        )
-    }
-
-    render() {
-        const {children, tag: Tag, tagOptions, modal} = this.props
-        const {showSuccess, showError, isLoading} = this.state
         let buttonColor = 'secondary'
 
         if (showSuccess) {
@@ -382,11 +297,63 @@ export default class ActionButton extends React.Component<Props, State> {
                     'loading btn-loading': isLoading
                 })}
                 disabled={isLoading}
-                onClick={this._toggleUi}
+                onClick={this._togglePopover}
                 {...tagOptions}
             >
                 {children}
-                {modal ? this._renderModal(modal) : this._renderPopover()}
+                <Popover
+                    placement="bottom"
+                    isOpen={popoverOpen}
+                    target={this.id}
+                    toggle={this._togglePopover}
+                    tether={{
+                        // Necessary to avoid the popover being displayed outside of the window.
+                        // http://tether.io/#constraints
+                        constraints: [
+                            { to: 'scrollParent', attachment: 'together none', pin: true},
+                            { to: 'window', attachment: 'together none', pin: true }
+                        ]
+                    }}
+                >
+                    <PopoverHeader>{title}</PopoverHeader>
+                    <PopoverBody>
+                        {
+                            tooltip ? (
+                                <p className={css.tooltip}>
+                                    {tooltip}
+                                </p>
+                            ) : null
+                        }
+                        <Form onSubmit={this._confirmAction}>
+                            {
+                                multipleOptions ? [
+                                    <Label key="label">
+                                        Type
+                                    </Label>,
+                                    <SelectField
+                                        key="input"
+                                        style={{marginBottom: '1rem'}}
+                                        onChange={this._updateActionName}
+                                        value={actionName}
+                                        options={options.map((option: OptionType) => ({
+                                            value: option.value,
+                                            label: option.label
+                                        }))}
+                                    />
+                                ] : null
+                            }
+                            {
+                                this._renderActionParameters()
+                            }
+                            <Button
+                                color="success"
+                                block
+                            >
+                                Confirm
+                            </Button>
+                        </Form>
+                    </PopoverBody>
+                </Popover>
             </Tag>
         )
     }
