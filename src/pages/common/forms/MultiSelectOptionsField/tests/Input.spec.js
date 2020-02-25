@@ -88,7 +88,7 @@ describe('MultiSelectField Input', () => {
     })
 
     it('should stop propagation of events', () => {
-        const keys = ['ArrowUp', 'ArrowDown', 'Enter', 'Tab']
+        const keys = ['ArrowUp', 'ArrowDown', 'Enter']
         keys.forEach((key: string) => {
             const stopPropagationSpy = jest.fn()
             const preventDefaultSpy = jest.fn()
@@ -109,5 +109,47 @@ describe('MultiSelectField Input', () => {
             expect(preventDefaultSpy.mock.calls).toHaveLength(1)
             expect(stopPropagationSpy.mock.calls).toHaveLength(1)
         })
+    })
+
+    it('should stop propagation of "Tab" event because input is not empty', () => {
+        const stopPropagationSpy = jest.fn()
+        const preventDefaultSpy = jest.fn()
+
+        const wrapper = mount(
+            <Input
+                {...defaultProps}
+                value="foo"
+            />
+        )
+
+        wrapper.find('input').simulate('keyDown', {
+            key: 'Tab',
+            preventDefault: preventDefaultSpy,
+            stopPropagation: stopPropagationSpy
+        })
+
+        expect(preventDefaultSpy.mock.calls).toHaveLength(1)
+        expect(stopPropagationSpy.mock.calls).toHaveLength(1)
+    })
+
+    it('should not stop propagation of "Tab" event because input is empty', () => {
+        const stopPropagationSpy = jest.fn()
+        const preventDefaultSpy = jest.fn()
+
+        const wrapper = mount(
+            <Input
+                {...defaultProps}
+                value=""
+            />
+        )
+
+        wrapper.find('input').simulate('keyDown', {
+            key: 'Tab',
+            preventDefault: preventDefaultSpy,
+            stopPropagation: stopPropagationSpy
+        })
+
+        expect(preventDefaultSpy.mock.calls).toHaveLength(0)
+        expect(stopPropagationSpy.mock.calls).toHaveLength(0)
     })
 })

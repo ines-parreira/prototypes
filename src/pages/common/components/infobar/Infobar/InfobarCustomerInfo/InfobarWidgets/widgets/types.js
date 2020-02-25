@@ -1,4 +1,7 @@
 // @flow
+
+import {type ComponentType, type Node} from 'react'
+
 export type ParameterType = {
     name: string,
     type: string,
@@ -20,7 +23,26 @@ export type OptionType = {
 export type ActionType = {
     key: string,
     options: Array<OptionType>,
-    title: Object,
+    title: Node,
     child: Object,
-    tooltip?: string
+    tooltip?: string,
+    modal?: ComponentType<InfobarModalProps>,
+    modalData?: Object,
+}
+
+export type InfobarModalProps = {
+    header: Node,
+    isOpen: boolean,
+    onOpen: (actionName: string | number) => void,
+    onChange: (name: string, value: string | number | boolean | Object, callback?: () => void) => void,
+    onBulkChange: (
+        Array<{
+            name: string,
+            value: string | number | boolean | Object,
+        }>,
+        callback?: () => void
+    ) => void,
+    onSubmit: () => void,
+    onClose: () => void,
+    data: any,
 }

@@ -1,8 +1,10 @@
 // @flow
 
-import axios, {type AxiosInstance, type AxiosResponse, type CancelTokenSource} from 'axios'
+import axios, {type AxiosInstance, type AxiosRequestConfig, type AxiosResponse, type CancelTokenSource} from 'axios'
 import {fromJS, type List, type Map, type Record} from 'immutable'
 
+import type {IntegrationDataItem, IntegrationDataItemType} from '../models/integration'
+import * as Shopify from '../constants/integrations/shopify'
 import type {AuditLogEvent} from '../models/event'
 
 export type GorgiasApiOptions = {
@@ -23,9 +25,26 @@ export type PaginatedResponse<T> = {
     },
 }
 
+export type SearchResultType = {
+    id: number,
+}
+
 export default class GorgiasApi {
     _api: AxiosInstance
     _requestCanceller: CancelTokenSource
+
+    static _getDraftOrderPollingConfig(responseData: Shopify.PollingConfig): ?Shopify.PollingConfig {
+        let pollingConfig: ?Shopify.PollingConfig = null
+
+        if (responseData.retry_after) {
+            pollingConfig = {
+                location: responseData.location,
+                retry_after: parseInt(responseData.retry_after, 10),
+            }
+        }
+
+        return pollingConfig
+    }
 
     constructor({requestsCancellation: requestsCancellation = true}: GorgiasApiOptions = {}) {
         this._api = axios.create()
@@ -52,14 +71,15 @@ export default class GorgiasApi {
      * Yield each page of requested items until last page is reached
      *
      * @param {string} url - URL of the endpoint to call
+     * @param {AxiosRequestConfig} [config] Axios config
      * @returns {AsyncGenerator<Array<T>, void, void>}
      */
-    async *paginate<T>(url: string): AsyncGenerator<Array<T>, void, void> {
+    async* paginate<T>(url: string, config?: AxiosRequestConfig): AsyncGenerator<Array<T>, void, void> {
         let path: ?string = url
 
         while (path) {
-            const response: AxiosResponse<PaginatedResponse<T>> = await this._api.get(path)
-            const { data: {data, meta} } = response
+            const response: AxiosResponse<PaginatedResponse<T>> = await this._api.get(path, config)
+            const {data: {data, meta}} = response
             yield data
             path = meta.next_page
         }
@@ -154,7 +174,7 @@ export default class GorgiasApi {
      * @param {number} ticketId
      * @returns {AsyncGenerator<List<Record<AuditLogEvent>>, void, Array<AuditLogEvent>>}
      */
-    async *getTicketEvents(ticketId: number): AsyncGenerator<List<Record<AuditLogEvent>>, void, Array<AuditLogEvent>> {
+    async* getTicketEvents(ticketId: number): AsyncGenerator<List<Record<AuditLogEvent>>, void, Array<AuditLogEvent>> {
         const pages = this.paginate(`/api/tickets/${ticketId}/events/`)
 
         for await (const events of pages) {
@@ -164,5 +184,113 @@ export default class GorgiasApi {
 
     async resendAccountVerificationEmail() {
         await this._api.post('/api/account/send-verification-email')
+    }
+
+    /**
+     * Call the given API endpoint with the given filter parameter, and return results
+     *
+     * @param {string} endpoint
+     * @param {string} filter
+     * @returns {Promise<Array<SearchResultType>>}
+     */
+    async search(endpoint: string, filter: string): Promise<Array<SearchResultType>> {
+        const response = await this._api.get(endpoint, {
+            params: {
+                filter,
+            },
+        })
+
+        return response.data.data
+    }
+
+    /**
+     * Yield integration data items that match given IDs
+     *
+     * @param {number} integrationId
+     * @param {IntegrationDataItemType} integrationDataItemType
+     * @param {Array<string | number>} externalIds
+     * @returns {AsyncGenerator<List<IntegrationDataItem<T>>, void, Array<IntegrationDataItem<T>>>}
+     */
+    async* getIntegrationDataItems<T>(
+        integrationId: number,
+        integrationDataItemType: IntegrationDataItemType,
+        externalIds: Array<string | number>,
+    ): AsyncGenerator<List<IntegrationDataItem<T>>, void, Array<IntegrationDataItem<T>>> {
+        const pages = this.paginate(`/api/integrations/${integrationId}/${integrationDataItemType}`, {
+            params: {
+                external_ids: externalIds.join(','),
+            },
+        })
+
+        for await (const items of pages) {
+            yield fromJS(items)
+        }
+    }
+
+    async _upsertDraftOder(
+        integrationId: number,
+        payload: Record<$Shape<Shopify.DraftOrder>>,
+        draftOrderId?: number,
+    ): Promise<[Record<Shopify.DraftOrder>, ?Shopify.PollingConfig]> {
+        let method
+        let url
+
+        if (draftOrderId) {
+            method = this._api.put
+            url = `/integrations/shopify/order/draft/${draftOrderId}/`
+        } else {
+            method = this._api.post
+            url = '/integrations/shopify/order/draft/'
+        }
+
+        const response = await method(url, payload.toJS(), {
+            params: {
+                integration_id: integrationId,
+            },
+        })
+
+        return [
+            fromJS(response.data.draft_order),
+            GorgiasApi._getDraftOrderPollingConfig(response.data),
+        ]
+    }
+
+    async createDraftOrder(
+        integrationId: number,
+        payload: Record<$Shape<Shopify.DraftOrder>>
+    ): Promise<[Record<Shopify.DraftOrder>, ?Shopify.PollingConfig]> {
+        return await this._upsertDraftOder(integrationId, payload)
+    }
+
+    async updateDraftOrder(
+        integrationId: number,
+        payload: Record<$Shape<Shopify.DraftOrder>>,
+        draftOrderId: number,
+    ): Promise<[Record<Shopify.DraftOrder>, ?Shopify.PollingConfig]> {
+        return await this._upsertDraftOder(integrationId, payload, draftOrderId)
+    }
+
+    async getDraftOrder(
+        integrationId: number,
+        draftOrderId: number,
+    ): Promise<[Record<Shopify.DraftOrder>, ?Shopify.PollingConfig]> {
+        const response = await this._api.get(`/integrations/shopify/order/draft/${draftOrderId}/`, {
+            params: {
+                integration_id: integrationId,
+            },
+        })
+
+        return [
+            fromJS(response.data.draft_order),
+            GorgiasApi._getDraftOrderPollingConfig(response.data),
+        ]
+    }
+
+    async deleteDraftOrder(integrationId: number, draftOrderId: number): Promise<void> {
+        await this._api.delete(`/integrations/shopify/order/draft/${draftOrderId}/`, {
+            params: {
+                integration_id: integrationId,
+            },
+        })
     }
 }

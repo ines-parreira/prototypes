@@ -1,0 +1,31 @@
+@import '~css/new/colors';
+
+:local {
+  .focusable {
+    &:focus {
+      outline: auto 5px -webkit-focus-ring-color;
+    }
+  }
+
+  .formHeader {
+    display: flex;
+    padding: 1rem;
+
+    .searchInput {
+      flex: 1;
+    }
+
+    .headerButton {
+      margin-left: 1rem;
+    }
+  }
+
+  .formHeader,
+  .formFooter {
+    background-color: @quartz;
+  }
+
+  .spinner {
+    width: 20px;
+  }
+}

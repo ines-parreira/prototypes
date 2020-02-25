@@ -1,4 +1,5 @@
 // @flow
+
 import linkifyjsElement from 'linkifyjs/element'
 import linkifyjsString from 'linkifyjs/string'
 import _get from 'lodash/get'
@@ -26,7 +27,7 @@ export const linkifyHtml = (body: string) => {
     const linkifiedBody = linkifyjsElement(doc.body, linkifyOptions)
     // merge head and body contents, in case we need to load resources from head.
     // also makes it backwards-compatible with the previous dom parser (div.innerHTML = html).
-    return `${_get(doc, ['head','innerHTML'], '')}${linkifiedBody.innerHTML || ''}`
+    return `${_get(doc, ['head', 'innerHTML'], '')}${linkifiedBody.innerHTML || ''}`
 }
 
 export const linkifyString = (body: string) => linkifyjsString(body, linkifyOptions)
@@ -56,4 +57,14 @@ export function sanitizeHtmlDefault(html: string): string {
             'a': sanitizeHtml.simpleTransform('a', {target: '_blank', rel: 'noreferrer noopener'})
         }
     })
+}
+
+export function focusElement(getElement: () => HTMLElement) {
+    setTimeout(() => {
+        const element = getElement()
+
+        if (element) {
+            element.focus()
+        }
+    }, 0)
 }

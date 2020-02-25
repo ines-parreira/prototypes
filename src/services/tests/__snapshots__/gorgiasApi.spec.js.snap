@@ -39,6 +39,45 @@ Object {
 }
 `;
 
+exports[`services GorgiasApi deleteDraftOrder() should delete a draft order 1`] = `
+Object {
+  "delete": Array [
+    Object {
+      "cancelToken": CancelToken {
+        "promise": Promise {},
+      },
+      "data": undefined,
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+      },
+      "maxContentLength": -1,
+      "method": "delete",
+      "params": Object {
+        "integration_id": 1,
+      },
+      "timeout": 0,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/integrations/shopify/order/draft/2/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "get": Array [],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [],
+  "put": Array [],
+}
+`;
+
 exports[`services GorgiasApi downloadStatistic() should fetch a statistic with the given name and filters (ready to be downloaded) 1`] = `
 Immutable.Map {
   "name": "support-volume-2019-05-23-2019-05-29.csv",
