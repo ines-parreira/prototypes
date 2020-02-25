@@ -485,10 +485,11 @@ export const shopifyLineItemFixture = (
         title = 'Acidulous candy',
         sku = '0987654321-1',
         variantTitle = 'Red / A',
+        price = '1.00',
     } = {}
 ): Shopify.LineItem => ({
     taxable: true,
-    price: '1.00',
+    price,
     quantity,
     product_id: productId,
     product_exists: true,

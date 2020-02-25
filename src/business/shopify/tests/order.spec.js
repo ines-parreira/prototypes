@@ -107,6 +107,18 @@ describe('getTotalLineItemsPrice()', () => {
         const total = getTotalLineItemsPrice(payload)
         expect(total).toMatchSnapshot()
     })
+
+    // See https://floating-point-gui.de/
+    it('should return the correct value without rounding errors', () => {
+        const payload = fromJS(shopifyDraftOrderPayloadFixture())
+            .set('line_items', fromJS([
+                shopifyLineItemFixture({price: '27.99'}),
+                shopifyLineItemFixture({price: '5.00'}),
+            ]))
+
+        const total = getTotalLineItemsPrice(payload)
+        expect(total).toMatchSnapshot()
+    })
 })
 
 describe('getDiscountAmount()', () => {

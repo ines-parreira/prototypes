@@ -83,7 +83,8 @@ export function getLineItemTotal(lineItem: Record<Shopify.LineItem>): number {
 }
 
 export function getTotalLineItemsPrice(draftOrder: Record<$Shape<Shopify.DraftOrder>>): number {
-    return draftOrder.get('line_items', []).reduce((total, lineItem) => total + getLineItemTotal(lineItem), 0)
+    const total = draftOrder.get('line_items', []).reduce((total, lineItem) => total + getLineItemTotal(lineItem), 0)
+    return parseFloat(total.toFixed(2))
 }
 
 export function getDiscountAmount(amount: number, discountType: Shopify.DiscountType, discountAmount: string): number {

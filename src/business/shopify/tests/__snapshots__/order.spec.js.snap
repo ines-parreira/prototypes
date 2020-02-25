@@ -310,6 +310,8 @@ exports[`getTotalDiscountAmount() should return the total discount amount of giv
 
 exports[`getTotalLineItemsPrice() should return all the line items' total price 1`] = `5`;
 
+exports[`getTotalLineItemsPrice() should return the correct value without rounding errors 1`] = `32.99`;
+
 exports[`getTotalShippingPrice() should return the total shipping price when it is not set 1`] = `0`;
 
 exports[`getTotalShippingPrice() should return the total shipping price when it is set 1`] = `12`;
