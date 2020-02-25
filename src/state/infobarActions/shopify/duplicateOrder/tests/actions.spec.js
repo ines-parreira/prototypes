@@ -18,7 +18,7 @@ import localStorageManager from '../../../../../services/localStorageManager'
 
 jest.mock('lodash/debounce', () => (fn) => (...args) => {
     return new Promise((resolve) => {
-        process.nextTick(() => {
+        global.process.nextTick(() => {
             resolve(fn(...args))
         })
     })
