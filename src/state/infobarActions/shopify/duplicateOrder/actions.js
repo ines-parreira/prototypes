@@ -21,7 +21,14 @@ import type {dispatchType, getStateType} from '../../../types'
 import GorgiasApi from '../../../../services/gorgiasApi'
 import {notify} from '../../../notifications/actions'
 
-import {SET_DEFAULT_SHIPPING_LINE, SET_DRAFT_ORDER, SET_LOADING, SET_PAYLOAD, SET_PRODUCTS} from './constants'
+import {
+    SET_DEFAULT_SHIPPING_LINE,
+    SET_DRAFT_ORDER,
+    SET_INITIAL_STATE,
+    SET_LOADING,
+    SET_PAYLOAD,
+    SET_PRODUCTS
+} from './constants'
 import {getDuplicateOrderState} from './selectors'
 
 const shopifyLocalStorage = localStorageManager.integrations[SHOPIFY_INTEGRATION_TYPE]
@@ -60,11 +67,15 @@ const setDefaultShippingLine = (defaultShippingLine) => ({
     defaultShippingLine,
 })
 
+const setInitialState = () => ({
+    type: SET_INITIAL_STATE,
+})
+
 export const getDuplicateOrderPayload = (
-    draftOrder: Record<$Shape<Shopify.DraftOrder>>
+    payload: Record<$Shape<Shopify.DraftOrder>>
 ): Record<$Shape<Shopify.DraftOrder>> => {
     // Apply a 100% discount
-    const totalLineItemsPrice = getTotalLineItemsPrice(draftOrder)
+    const totalLineItemsPrice = getTotalLineItemsPrice(payload)
     const value = formatPrice(100)
     const type = 'percentage'
 
@@ -76,30 +87,31 @@ export const getDuplicateOrderPayload = (
     })
 
     // Set shipping price to 0
-    const shippingLine = !!draftOrder.get('shipping_line')
-        ? draftOrder.get('shipping_line').set('price', formatPrice(0))
+    const shippingLine = !!payload.get('shipping_line')
+        ? payload.get('shipping_line').set('price', formatPrice(0))
         : null
 
-    return draftOrder
+    return payload
         .set('applied_discount', appliedDiscount)
         .set('shipping_line', shippingLine)
 }
 
-export const onInit = (integrationId: number, order: Record<Shopify.Order>, onError: () => void) =>
+export const onInit = (integrationId: number, oldOrder: Record<Shopify.Order>, onError: () => void) =>
     async (dispatch: dispatchType) => {
-        const draftOrder = initDraftOrderPayload(order)
-        const defaultShippingLine = draftOrder.get('shipping_line') || null
-        const payload = getDuplicateOrderPayload(draftOrder)
+        const products = await loadProducts(integrationId, oldOrder)
+        const draftOrderPayload = initDraftOrderPayload(oldOrder, products)
+        const defaultShippingLine = draftOrderPayload.get('shipping_line') || null
+        const payload = getDuplicateOrderPayload(draftOrderPayload)
 
         segmentTracker.logEvent(segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_OPEN, {
-            orderId: order.get('id'),
+            orderId: oldOrder.get('id'),
         })
 
         return Promise.all([
             dispatch(setPayload(payload)),
             dispatch(setDraftOrder(payload)),
             dispatch(createDraftOrder(integrationId, payload, onError)),
-            dispatch(loadProducts(integrationId, payload)),
+            dispatch(setProducts(products)),
             dispatch(setDefaultShippingLine(defaultShippingLine)),
         ])
     }
@@ -178,26 +190,26 @@ export const pollDraftOrder = (integrationId: number, draftOrderId: number, poll
         })
     }
 
-export const loadProducts = (integrationId: number, payload: Record<$Shape<Shopify.DraftOrder>>) =>
-    async (dispatch: dispatchType) => {
-        const products = new Map()
-        const productIds = payload.get('line_items', []).map(
-            (lineItem: Record<Shopify.LineItem>) => lineItem.get('product_id')
-        )
-        const generator = api().getIntegrationDataItems<Shopify.Product>(
-            integrationId,
-            INTEGRATION_DATA_ITEM_TYPE_PRODUCT,
-            productIds,
-        )
+export const loadProducts = async (
+    integrationId: number,
+    oldOrder: Record<Shopify.Order>
+): Promise<Map<number, Record<Shopify.Product>>> => {
+    const products = new Map()
+    const productIds = oldOrder.get('line_items', []).map((lineItem) => lineItem.get('product_id'))
+    const generator = api().getIntegrationDataItems<Shopify.Product>(
+        integrationId,
+        INTEGRATION_DATA_ITEM_TYPE_PRODUCT,
+        productIds,
+    )
 
-        for await (const items of generator) {
-            items.forEach((item: Record<IntegrationDataItem<Shopify.Product>>) => {
-                products.set(item.getIn(['data', 'id']), item.get('data'))
-            })
-        }
-
-        dispatch(setProducts(products))
+    for await (const items of generator) {
+        items.forEach((item: Record<IntegrationDataItem<Shopify.Product>>) => {
+            products.set(item.getIn(['data', 'id']), item.get('data'))
+        })
     }
+
+    return products
+}
 
 export const onPayloadChange = (integrationId: number, payload: Record<$Shape<Shopify.DraftOrder>>) =>
     async (dispatch: dispatchType, getState: getStateType) => {
@@ -275,3 +287,7 @@ export const onSubmit = () => (dispatch: dispatchType, getState: getStateType) =
     const id = draftOrder.get('id')
     shopifyLocalStorage.draftOrders.removeListItem(id)
 }
+
+export const onReset = () => (dispatch: dispatchType) => resetState(dispatch)
+
+export const resetState = _debounce((dispatch: dispatchType) => dispatch(setInitialState()), 250)

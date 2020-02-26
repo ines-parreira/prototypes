@@ -6,21 +6,34 @@ import _round from 'lodash/round'
 
 import * as Shopify from '../../constants/integrations/shopify'
 
-export function initDraftOrderPayload(order: Record<Shopify.Order>): Record<$Shape<Shopify.DraftOrder>> {
+export function initDraftOrderPayload(
+    order: Record<Shopify.Order>,
+    products: Map<number, Record<Shopify.Product>>,
+): Record<$Shape<Shopify.DraftOrder>> {
     return fromJS({
-        line_items: order.get('line_items', []).map((lineItem) => fromJS({
-            product_id: lineItem.get('product_id'),
-            variant_id: lineItem.get('variant_id'),
-            quantity: lineItem.get('quantity') || 1,
-            price: lineItem.get('price'),
-            title: lineItem.get('title') || '',
-            variant_title: lineItem.get('variant_title') || '',
-            sku: lineItem.get('sku') || '',
-            taxable: lineItem.get('taxable') || false,
-            requires_shipping: lineItem.get('requires_shipping') || false,
-            product_exists: lineItem.get('product_exists') || false,
-            properties: lineItem.get('properties') || [],
-        })),
+        line_items: order.get('line_items', []).map((lineItem) => {
+            const product = lineItem.get('product_exists')
+                ? products.get(lineItem.get('product_id'))
+                : null
+
+            const variant = !!product
+                ? product.get('variants').find((variant) => variant.get('id') === lineItem.get('variant_id'))
+                : null
+
+            return fromJS({
+                product_id: !!product && !!variant ? product.get('id') : null,
+                variant_id: !!variant ? variant.get('id') : null,
+                quantity: lineItem.get('quantity') || 1,
+                price: !!variant ? variant.get('price') : lineItem.get('price'),
+                title: !!product ? product.get('title') : lineItem.get('title'),
+                variant_title: !!variant ? variant.get('title') : lineItem.get('variant_title'),
+                sku: !!variant ? variant.get('sku') : lineItem.get('sku'),
+                taxable: !!variant ? variant.get('taxable') : lineItem.get('taxable'),
+                requires_shipping: !!variant ? variant.get('requires_shipping') : lineItem.get('requires_shipping'),
+                product_exists: !!variant,
+                properties: lineItem.get('properties') || [],
+            })
+        }),
         note: order.get('note') || '',
         tags: order.get('tags') || null,
         shipping_line: order.getIn(['shipping_lines', 0]) || null,

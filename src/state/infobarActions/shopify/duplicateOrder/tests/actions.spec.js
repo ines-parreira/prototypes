@@ -9,7 +9,8 @@ import {
     shopifyLineItemFixture,
     shopifyOrderFixture,
     shopifyProductFixture,
-    shopifyShippingLineFixture
+    shopifyShippingLineFixture,
+    shopifyVariantFixture
 } from '../../../../../fixtures/shopify'
 import {initialState} from '../../../../infobarActions/shopify/duplicateOrder/reducers'
 import {INTEGRATION_DATA_ITEM_TYPE_PRODUCT, SHOPIFY_INTEGRATION_TYPE} from '../../../../../constants/integration'
@@ -67,13 +68,30 @@ describe('infobarActions.shopify.duplicateOrder actions', () => {
         beforeEach(() => {
             onError = jest.fn()
 
+            const product = shopifyProductFixture({
+                id: 8345093387,
+                title: 'Acidulous candy',
+                variants: [
+                    shopifyVariantFixture({
+                        id: 31128766316567,
+                        sku: '0987654321-1',
+                        title: 'Red / A',
+                        price: '1.00',
+                    }),
+                    shopifyVariantFixture({
+                        id: 31128766349335,
+                        sku: '0987654321-2',
+                        title: 'Red / B',
+                        price: '1.00',
+                    }),
+                ],
+            })
+
             mockServer
                 .onGet(`/api/integrations/${integrationId}/${integrationDataItemType}`)
                 .reply(200, {
                     data: [
-                        {data: {id: 1, foo: 'bar'}},
-                        {data: {id: 2, foo: 'bar'}},
-                        {data: {id: 3, foo: 'bar'}},
+                        {data: product},
                     ],
                     meta: {
                         next_page: null,
@@ -338,6 +356,13 @@ describe('infobarActions.shopify.duplicateOrder actions', () => {
             await store.dispatch(actions.onSubmit())
             const ids = shopifyLocalStorage.draftOrders.getList()
             expect(ids).toEqual(new Set())
+        })
+    })
+
+    describe('onReset()', () => {
+        it('should reset state', async () => {
+            await store.dispatch(actions.onReset())
+            expect(getActions()).toMatchSnapshot()
         })
     })
 })

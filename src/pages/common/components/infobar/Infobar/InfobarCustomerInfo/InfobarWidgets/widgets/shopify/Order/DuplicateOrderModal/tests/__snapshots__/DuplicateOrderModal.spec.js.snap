@@ -449,6 +449,7 @@ exports[`<DuplicateOrderModal/> render() should render as closed 1`] = `
   onClose={[MockFunction]}
   onInit={[Function]}
   onOpen={[MockFunction]}
+  onReset={[Function]}
   onSubmit={[MockFunction]}
   payload={null}
   products={Map {}}
@@ -914,6 +915,7 @@ exports[`<DuplicateOrderModal/> render() should render as open 1`] = `
   onClose={[MockFunction]}
   onInit={[Function]}
   onOpen={[MockFunction]}
+  onReset={[Function]}
   onSubmit={[MockFunction]}
   payload={null}
   products={Map {}}
@@ -957,6 +959,11 @@ exports[`<DuplicateOrderModalComponent/> render() should render as closed 1`] = 
       placement="bottom"
     />
   </div>
+  <Loader
+    inline={false}
+    minHeight="500px"
+    size="40px"
+  />
   <ModalFooter
     className="formFooter"
     tag="div"
@@ -1096,6 +1103,11 @@ exports[`<DuplicateOrderModalComponent/> render() should render as open, without
       placement="bottom"
     />
   </div>
+  <Loader
+    inline={false}
+    minHeight="500px"
+    size="40px"
+  />
   <ModalFooter
     className="formFooter"
     tag="div"

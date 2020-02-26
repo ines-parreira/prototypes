@@ -55,4 +55,14 @@ describe('infobarActions.shopify.duplicateOrder reducer', () => {
             expect(nextState.get('defaultShippingLine')).toEqualImmutable(defaultShippingLine)
         })
     })
+
+    describe('SET_INITIAL_STATE', () => {
+        it('should set initial state', () => {
+            const payload = fromJS(shopifyDraftOrderPayloadFixture())
+            const previousState = initialState.set('payload', payload)
+            const action = {type: constants.SET_INITIAL_STATE}
+            const nextState = reducer(previousState, action)
+            expect(nextState).toEqualImmutable(initialState)
+        })
+    })
 })

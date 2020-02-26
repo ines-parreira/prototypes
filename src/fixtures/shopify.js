@@ -13,11 +13,12 @@ export const shopifyVariantFixture = (
         id = 1,
         sku = '11111',
         title = 'Variant 1',
+        price = '9.99',
     } = {}
 ): Shopify.Variant => ({
     id,
     sku,
-    price: '9.99',
+    price,
     title,
     image_id: 1,
     option1: null,

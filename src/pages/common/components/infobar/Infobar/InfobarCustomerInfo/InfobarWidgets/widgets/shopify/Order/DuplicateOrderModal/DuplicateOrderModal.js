@@ -17,6 +17,7 @@ import {
     onCancel,
     onCleanUp,
     onInit,
+    onReset,
 } from '../../../../../../../../../../../state/infobarActions/shopify/duplicateOrder/actions'
 import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager'
 import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors'
@@ -47,6 +48,7 @@ type Props = InfobarModalProps & {
     onCleanUp: (integrationId: number) => void,
     onInit: (integrationId: number, order: Record<Shopify.Order>, onError: () => void) => void,
     onCancel: (integrationId: number, via: string) => void,
+    onReset: () => void,
     addRow: (integrationId: number, product: Shopify.Product, variant: Shopify.Variant) => void,
     addCustomRow: (integrationId: number, lineItem: Record<$Shape<Shopify.LineItem>>) => void,
 }
@@ -110,8 +112,8 @@ export class DuplicateOrderModalComponent extends React.PureComponent<Props> {
     _onInitError = () => {
         const {onClose} = this.props
 
-        this._beforeClose()
         onClose()
+        this._onClose()
     }
 
     _onVariantClicked = (item: IntegrationDataItem<Shopify.Product>, variant: Shopify.Variant) => {
@@ -133,8 +135,8 @@ export class DuplicateOrderModalComponent extends React.PureComponent<Props> {
         const {onChange, onSubmit} = this.props
 
         onChange('payment_pending', false, () => {
-            this._beforeClose()
             onSubmit()
+            this._onClose()
         })
 
         segmentTracker.logEvent(segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_SUBMIT, {
@@ -146,8 +148,8 @@ export class DuplicateOrderModalComponent extends React.PureComponent<Props> {
         const {onChange, onSubmit} = this.props
 
         onChange('payment_pending', true, () => {
-            this._beforeClose()
             onSubmit()
+            this._onClose()
         })
 
         segmentTracker.logEvent(segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_SUBMIT, {
@@ -160,8 +162,8 @@ export class DuplicateOrderModalComponent extends React.PureComponent<Props> {
         const {integrationId} = this.context
 
         onCancel(integrationId, via)
-        this._beforeClose()
         onClose()
+        this._onClose()
     }
 
     _onCancelViaHeader = () => {
@@ -172,19 +174,22 @@ export class DuplicateOrderModalComponent extends React.PureComponent<Props> {
         this._onCancel('footer')
     }
 
-    _beforeClose() {
+    _onClose() {
+        const {onReset} = this.props
+
         shortcutManager.unpause()
+        onReset()
     }
 
     _onMissingScopeClose = () => {
         const {onClose} = this.props
 
-        this._beforeClose()
         onClose()
+        this._onClose()
     }
 
     render() {
-        const {header, isOpen, payload, loading} = this.props
+        const {header, isOpen, payload, draftOrder, loading} = this.props
         const {integrationId} = this.context
 
         const integration = this._getIntegration()
@@ -237,19 +242,22 @@ export class DuplicateOrderModalComponent extends React.PureComponent<Props> {
                         onSubmit={this._onAddCustomItem}
                     />
                 </div>
-                {payload && (
-                    <div>
-                        <OrderTable
-                            editable
-                            shopName={shopName}
-                            currencyCode={currencyCode}
-                        />
-                        <OrderFooter
-                            editable
-                            currencyCode={currencyCode}
-                        />
-                    </div>
-                )}
+                {payload && draftOrder
+                    ? (
+                        <div>
+                            <OrderTable
+                                editable
+                                shopName={shopName}
+                                currencyCode={currencyCode}
+                            />
+                            <OrderFooter
+                                editable
+                                currencyCode={currencyCode}
+                            />
+                        </div>
+                    )
+                    : <Loader/>
+                }
                 <ModalFooter className={css.formFooter}>
                     <Button
                         color="primary"
@@ -298,11 +306,12 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
+    addCustomRow,
+    addRow,
+    onCancel,
     onCleanUp,
     onInit,
-    onCancel,
-    addRow,
-    addCustomRow,
+    onReset,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(DuplicateOrderModalComponent)

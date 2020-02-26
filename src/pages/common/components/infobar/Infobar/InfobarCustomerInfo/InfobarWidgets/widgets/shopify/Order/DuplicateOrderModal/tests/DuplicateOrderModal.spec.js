@@ -19,7 +19,7 @@ import {
     infobarActionsStateFixture
 } from '../../../../../../../../../../../../fixtures/infobarActions'
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../../constants/integration'
-import {shopifyOrderFixture} from '../../../../../../../../../../../../fixtures/shopify'
+import {shopifyOrderFixture, shopifyProductFixture} from '../../../../../../../../../../../../fixtures/shopify'
 import DuplicateOrderModal, {DuplicateOrderModalComponent} from '../DuplicateOrderModal'
 import {ShopifyAction} from '../../constants'
 import {initDraftOrderPayload} from '../../../../../../../../../../../../business/shopify/order'
@@ -40,8 +40,12 @@ describe('<DuplicateOrderModal/>', () => {
         const onClose = jest.fn()
         const onCancel = jest.fn()
         const onCleanUp = jest.fn()
+        const onReset = jest.fn()
 
-        actions = {onInit, onOpen, addRow, addCustomRow, onChange, onBulkChange, onSubmit, onClose, onCancel, onCleanUp}
+        actions = {
+            onInit, onOpen, addRow, addCustomRow, onChange, onBulkChange, onSubmit, onClose, onCancel, onCleanUp,
+            onReset,
+        }
     })
 
     describe('render()', () => {
@@ -108,8 +112,12 @@ describe('<DuplicateOrderModalComponent/>', () => {
         const onClose = jest.fn()
         const onCancel = jest.fn()
         const onCleanUp = jest.fn()
+        const onReset = jest.fn()
 
-        actions = {onInit, onOpen, addRow, addCustomRow, onChange, onBulkChange, onSubmit, onClose, onCancel, onCleanUp}
+        actions = {
+            onInit, onOpen, addRow, addCustomRow, onChange, onBulkChange, onSubmit, onClose, onCancel, onCleanUp,
+            onReset,
+        }
     })
 
     describe('render()', () => {
@@ -173,9 +181,11 @@ describe('<DuplicateOrderModalComponent/>', () => {
 
         it('should render as open, with order table', () => {
             const order = fromJS(shopifyOrderFixture())
-            const draftOrder = initDraftOrderPayload(order)
+            const product = fromJS(shopifyProductFixture())
+            const products = new Map([[product.get('id'), product]])
+            const draftOrder = initDraftOrderPayload(order, products)
             const payload = getDuplicateOrderPayload(draftOrder)
-            const duplicateOrderState = duplicateOrderStateFixture({payload})
+            const duplicateOrderState = duplicateOrderStateFixture({payload, draftOrder})
 
             const store = mockStore({
                 integrations: integrationsStateWithShopify,

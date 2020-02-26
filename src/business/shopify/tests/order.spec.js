@@ -11,7 +11,8 @@ import {
     shopifyOrderFixture,
     shopifyProductFixture,
     shopifyShippingLineFixture,
-    shopifyTaxLineFixture
+    shopifyTaxLineFixture,
+    shopifyVariantFixture
 } from '../../../fixtures/shopify'
 import {
     addCustomLineItem,
@@ -35,8 +36,35 @@ import {
 
 describe('initDraftOrderPayload()', () => {
     it('should return draft order payload for the given order', () => {
+        const product = fromJS(shopifyProductFixture({
+            id: 8345093387,
+            title: 'Acidulous candy',
+            variants: [
+                shopifyVariantFixture({
+                    id: 31128766316567,
+                    sku: '0987654321-1',
+                    title: 'Red / A',
+                    price: '1.00',
+                }),
+                shopifyVariantFixture({
+                    id: 31128766349335,
+                    sku: '0987654321-2',
+                    title: 'Red / B',
+                    price: '1.00',
+                }),
+            ],
+        }))
+
+        const products = new Map([[product.get('id'), product]])
         const order = fromJS(shopifyOrderFixture())
-        const payload = initDraftOrderPayload(order)
+        const payload = initDraftOrderPayload(order, products)
+        expect(payload).toMatchSnapshot()
+    })
+
+    it('should return draft order payload for the given order when products are missing', () => {
+        const products = new Map()
+        const order = fromJS(shopifyOrderFixture())
+        const payload = initDraftOrderPayload(order, products)
         expect(payload).toMatchSnapshot()
     })
 })

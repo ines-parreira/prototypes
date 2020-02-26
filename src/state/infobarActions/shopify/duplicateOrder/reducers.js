@@ -5,7 +5,14 @@ import {fromJS} from 'immutable'
 import type {actionType} from '../../../types'
 
 import type {DuplicateOrderState} from './types'
-import {SET_DEFAULT_SHIPPING_LINE, SET_DRAFT_ORDER, SET_LOADING, SET_PAYLOAD, SET_PRODUCTS} from './constants'
+import {
+    SET_DEFAULT_SHIPPING_LINE,
+    SET_DRAFT_ORDER,
+    SET_INITIAL_STATE,
+    SET_LOADING,
+    SET_PAYLOAD,
+    SET_PRODUCTS
+} from './constants'
 
 export const initialState: DuplicateOrderState = fromJS({
     loading: false,
@@ -30,6 +37,8 @@ export default function reducer(
             return state.set('products', action.products)
         case SET_DEFAULT_SHIPPING_LINE:
             return state.set('defaultShippingLine', action.defaultShippingLine)
+        case SET_INITIAL_STATE:
+            return initialState
         default:
             return state
     }

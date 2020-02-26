@@ -392,6 +392,80 @@ Immutable.Map {
 }
 `;
 
+exports[`initDraftOrderPayload() should return draft order payload for the given order when products are missing 1`] = `
+Immutable.Map {
+  "line_items": Immutable.List [
+    Immutable.Map {
+      "taxable": true,
+      "price": "1.00",
+      "quantity": 1,
+      "product_id": null,
+      "product_exists": false,
+      "properties": Immutable.List [],
+      "variant_id": null,
+      "title": "Acidulous candy",
+      "sku": "0987654321-1",
+      "variant_title": "Red / A",
+      "requires_shipping": true,
+    },
+    Immutable.Map {
+      "taxable": true,
+      "price": "1.00",
+      "quantity": 4,
+      "product_id": null,
+      "product_exists": false,
+      "properties": Immutable.List [],
+      "variant_id": null,
+      "title": "Acidulous candy",
+      "sku": "0987654321-2",
+      "variant_title": "Red / B",
+      "requires_shipping": true,
+    },
+  ],
+  "note": "ahahah??",
+  "tags": null,
+  "shipping_line": null,
+  "tax_exempt": false,
+  "customer": Immutable.Map {
+    "id": 2721145061399,
+  },
+  "billing_address": Immutable.Map {
+    "zip": null,
+    "city": null,
+    "name": "Apu Nahasapeemapetilon",
+    "latitude": null,
+    "phone": null,
+    "longitude": null,
+    "province": null,
+    "last_name": "Nahasapeemapetilon",
+    "country_code": "FR",
+    "country": "France",
+    "first_name": "Apu",
+    "province_code": null,
+    "company": null,
+    "address1": null,
+    "address2": null,
+  },
+  "shipping_address": Immutable.Map {
+    "zip": null,
+    "city": null,
+    "name": "Apu Nahasapeemapetilon",
+    "latitude": null,
+    "phone": null,
+    "longitude": null,
+    "province": null,
+    "last_name": "Nahasapeemapetilon",
+    "country_code": "FR",
+    "country": "France",
+    "first_name": "Apu",
+    "province_code": null,
+    "company": null,
+    "address1": null,
+    "address2": null,
+  },
+}
+`;
+
 exports[`refreshAppliedDiscounts() should refresh the applied discount amount of the given payload 1`] = `6.99`;
 
 exports[`refreshAppliedDiscounts() should work without rounding errors 1`] = `
