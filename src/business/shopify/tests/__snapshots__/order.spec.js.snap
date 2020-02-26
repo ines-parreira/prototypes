@@ -278,8 +278,6 @@ exports[`applyDiscount() should apply the given discount to the given amount for
 
 exports[`applyDiscount() should apply the given discount to the given amount for percentage discount 1`] = `45`;
 
-exports[`floorPrice() should floor the given price 1`] = `10.99`;
-
 exports[`getDiscountAmount() should return the discount amount for fixed amount discount 1`] = `10`;
 
 exports[`getDiscountAmount() should return the discount amount for percentage discount 1`] = `5`;
@@ -393,3 +391,96 @@ Immutable.Map {
 `;
 
 exports[`refreshAppliedDiscounts() should refresh the applied discount amount of the given payload 1`] = `6.99`;
+
+exports[`refreshAppliedDiscounts() should work without rounding errors 1`] = `
+Immutable.Map {
+  "shipping_address": Immutable.Map {
+    "zip": null,
+    "city": null,
+    "name": "Apu Nahasapeemapetilon",
+    "latitude": null,
+    "phone": null,
+    "longitude": null,
+    "province": null,
+    "last_name": "Nahasapeemapetilon",
+    "country_code": "FR",
+    "country": "France",
+    "first_name": "Apu",
+    "province_code": null,
+    "company": null,
+    "address1": null,
+    "address2": null,
+  },
+  "applied_discount": Immutable.Map {
+    "title": "",
+    "value": "100.00",
+    "value_type": "percentage",
+    "amount": "132.89",
+  },
+  "shipping_line": null,
+  "billing_address": Immutable.Map {
+    "zip": null,
+    "city": null,
+    "name": "Apu Nahasapeemapetilon",
+    "latitude": null,
+    "phone": null,
+    "longitude": null,
+    "province": null,
+    "last_name": "Nahasapeemapetilon",
+    "country_code": "FR",
+    "country": "France",
+    "first_name": "Apu",
+    "province_code": null,
+    "company": null,
+    "address1": null,
+    "address2": null,
+  },
+  "note": "ahahah??",
+  "tax_exempt": false,
+  "line_items": Immutable.List [
+    Immutable.Map {
+      "taxable": true,
+      "price": "98.99",
+      "quantity": 1,
+      "product_id": 8345093387,
+      "product_exists": true,
+      "properties": Immutable.List [],
+      "variant_id": 31128766316567,
+      "title": "Acidulous candy",
+      "sku": "0987654321-1",
+      "variant_title": "Red / A",
+      "requires_shipping": true,
+    },
+    Immutable.Map {
+      "taxable": true,
+      "price": "24.95",
+      "quantity": 1,
+      "product_id": 8345093387,
+      "product_exists": true,
+      "properties": Immutable.List [],
+      "variant_id": 31128766316567,
+      "title": "Acidulous candy",
+      "sku": "0987654321-1",
+      "variant_title": "Red / A",
+      "requires_shipping": true,
+    },
+    Immutable.Map {
+      "taxable": true,
+      "price": "8.95",
+      "quantity": 1,
+      "product_id": 8345093387,
+      "product_exists": true,
+      "properties": Immutable.List [],
+      "variant_id": 31128766316567,
+      "title": "Acidulous candy",
+      "sku": "0987654321-1",
+      "variant_title": "Red / A",
+      "requires_shipping": true,
+    },
+  ],
+  "tags": null,
+  "customer": Immutable.Map {
+    "id": 2721145061399,
+  },
+}
+`;

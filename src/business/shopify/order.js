@@ -1,6 +1,8 @@
 // @flow
 
 import {fromJS, type List, type Record} from 'immutable'
+import _floor from 'lodash/floor'
+import _round from 'lodash/round'
 
 import * as Shopify from '../../constants/integrations/shopify'
 
@@ -72,41 +74,46 @@ export function addCustomLineItem(
 
 export function getLineItemDiscountedPrice(lineItem: Record<Shopify.LineItem>): number {
     const appliedDiscount = lineItem.get('applied_discount')
-
-    return appliedDiscount
+    const result = appliedDiscount
         ? applyDiscount(lineItem.get('price'), appliedDiscount.get('value_type'), appliedDiscount.get('value'))
         : parseFloat(lineItem.get('price'))
+
+    return _floor(result, 2)
 }
 
 export function getLineItemTotal(lineItem: Record<Shopify.LineItem>): number {
-    return getLineItemDiscountedPrice(lineItem) * lineItem.get('quantity')
+    return _round(getLineItemDiscountedPrice(lineItem) * lineItem.get('quantity'), 2)
 }
 
 export function getTotalLineItemsPrice(draftOrder: Record<$Shape<Shopify.DraftOrder>>): number {
     const total = draftOrder.get('line_items', []).reduce((total, lineItem) => total + getLineItemTotal(lineItem), 0)
-    return parseFloat(total.toFixed(2))
+    return _round(total, 2)
 }
 
 export function getDiscountAmount(amount: number, discountType: Shopify.DiscountType, discountAmount: string): number {
-    return discountType === 'fixed_amount'
+    const result = discountType === 'fixed_amount'
         ? parseFloat(discountAmount)
-        : floorPrice(parseFloat(discountAmount) * amount / 100)
+        : parseFloat(discountAmount) * amount / 100
+
+    return _floor(result, 2)
 }
 
-export function floorPrice(price: number): number {
-    return Math.floor(price * 100) / 100
-}
-
+/**
+ * As described here, we have to use `floor` to apply discounts:
+ * https://shopify.dev/docs/admin-api/rest/reference/orders/draftorder#applying-discounts-2020-01
+ */
 export function applyDiscount(amount: string, discountType: Shopify.DiscountType, discountAmount: string): number {
     const parsedAmount = parseFloat(amount)
     const totalDiscountAmount = getDiscountAmount(parsedAmount, discountType, discountAmount)
 
-    return parsedAmount - totalDiscountAmount
+    return _floor(parsedAmount - totalDiscountAmount, 2)
 }
 
 export function getTotalDiscountAmount(draftOrder: Record<$Shape<Shopify.DraftOrder>>): number {
     const appliedDiscount = draftOrder.get('applied_discount')
-    return !!appliedDiscount ? parseFloat(appliedDiscount.get('amount')) : 0
+    const result = !!appliedDiscount ? parseFloat(appliedDiscount.get('amount')) : 0
+
+    return _floor(result, 2)
 }
 
 export function refreshAppliedDiscounts(
@@ -126,11 +133,11 @@ export function refreshAppliedDiscounts(
 }
 
 export function getSubtotal(draftOrder: Record<$Shape<Shopify.DraftOrder>>): number {
-    return getTotalLineItemsPrice(draftOrder) - getTotalDiscountAmount(draftOrder)
+    return _round(getTotalLineItemsPrice(draftOrder) - getTotalDiscountAmount(draftOrder), 2)
 }
 
 export function getTotalShippingPrice(draftOrder: Record<$Shape<Shopify.DraftOrder>>): number {
-    return parseFloat(draftOrder.getIn(['shipping_line', 'price'], 0))
+    return _round(parseFloat(draftOrder.getIn(['shipping_line', 'price'], 0)), 2)
 }
 
 export function getTaxLineLabel(taxLine: Record<Shopify.TaxLine>): string {

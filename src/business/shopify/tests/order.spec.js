@@ -17,7 +17,6 @@ import {
     addCustomLineItem,
     addVariant,
     applyDiscount,
-    floorPrice,
     formatPrice,
     getDiscountAmount,
     getLineItemDiscountedPrice,
@@ -139,14 +138,6 @@ describe('getDiscountAmount()', () => {
     })
 })
 
-describe('floorPrice()', () => {
-    it('should floor the given price', () => {
-        const price = 10.999
-        const result = floorPrice(price)
-        expect(result).toMatchSnapshot()
-    })
-})
-
 describe('applyDiscount()', () => {
     it('should apply the given discount to the given amount for fixed amount discount', () => {
         const amount = '50.0'
@@ -192,6 +183,19 @@ describe('refreshAppliedDiscounts()', () => {
         // Refresh applied discounts
         const newPayload = refreshAppliedDiscounts(payloadWithCustomLineItem)
         expect(getTotalDiscountAmount(newPayload)).toMatchSnapshot()
+    })
+
+    it('should work without rounding errors', () => {
+        // Payload has a 100% discount applied
+        const payload = fromJS(shopifyDraftOrderPayloadFixture())
+            .set('line_items', fromJS([
+                shopifyLineItemFixture({price: '98.99'}),
+                shopifyLineItemFixture({price: '24.95'}),
+                shopifyLineItemFixture({price: '8.95'}),
+            ]))
+
+        const newPayload = refreshAppliedDiscounts(payload)
+        expect(newPayload).toMatchSnapshot()
     })
 })
 
