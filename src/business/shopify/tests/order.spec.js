@@ -234,6 +234,12 @@ describe('getTaxLineLabel()', () => {
         const label = getTaxLineLabel(taxLine)
         expect(label).toMatchSnapshot()
     })
+
+    it('should return the correct label without rounding errors', () => {
+        const taxLine = fromJS(shopifyTaxLineFixture({rate: 0.0725}))
+        const label = getTaxLineLabel(taxLine)
+        expect(label).toMatchSnapshot()
+    })
 })
 
 describe('getTotalTaxes()', () => {
@@ -266,7 +272,7 @@ describe('getTaxLinesTotals()', () => {
         const results = getTaxLinesTotals(payload)
 
         expect(results).toEqual([
-            {label: 'TVA 20%', total: 3},
+            {label: 'TVA 20.00%', total: 3},
         ])
     })
 
@@ -282,10 +288,10 @@ describe('getTaxLinesTotals()', () => {
         const results = getTaxLinesTotals(payload)
 
         expect(results).toEqual([
-            {label: 'Tax Z 30%', total: 4},
-            {label: 'Tax X 20%', total: 2},
-            {label: 'Tax X 10%', total: 1},
-            {label: 'Tax Y 10%', total: 3},
+            {label: 'Tax Z 30.00%', total: 4},
+            {label: 'Tax X 20.00%', total: 2},
+            {label: 'Tax X 10.00%', total: 1},
+            {label: 'Tax Y 10.00%', total: 3},
         ])
     })
 })

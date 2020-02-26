@@ -141,7 +141,7 @@ export function getTotalShippingPrice(draftOrder: Record<$Shape<Shopify.DraftOrd
 }
 
 export function getTaxLineLabel(taxLine: Record<Shopify.TaxLine>): string {
-    return `${taxLine.get('title')} ${taxLine.get('rate') * 100}%`
+    return `${taxLine.get('title')} ${formatPrice(taxLine.get('rate') * 100)}%`
 }
 
 export function getTotalTaxes(taxLines: List<Shopify.TaxLine>): number {

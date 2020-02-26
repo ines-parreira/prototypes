@@ -292,7 +292,9 @@ exports[`getSubtotal() should return the sub total when there is an applied disc
 
 exports[`getSubtotal() should return the sub total when there is no applied discount 1`] = `5`;
 
-exports[`getTaxLineLabel() should return the label of the given tax line 1`] = `"TVA 20%"`;
+exports[`getTaxLineLabel() should return the correct label without rounding errors 1`] = `"TVA 7.25%"`;
+
+exports[`getTaxLineLabel() should return the label of the given tax line 1`] = `"TVA 20.00%"`;
 
 exports[`getTotal() should return the total of the given draft order when there are taxes 1`] = `8`;
 

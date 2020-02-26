@@ -97,9 +97,9 @@ exports[`<OrderTotalsComponent/> render() should render as loading 1`] = `
     </span>
     <span
       className="d-block grey"
-      key="eea5a4150e4ab0084a2709c5ca900b7d819dc8c3"
+      key="d558e4cc94abbcce1ed2a9c9521b9d96fbe3d8e8"
     >
-      TVA 20%
+      TVA 20.00%
     </span>
   </dt>
   <dd
@@ -108,7 +108,7 @@ exports[`<OrderTotalsComponent/> render() should render as loading 1`] = `
     <br />
     <span
       className="d-block text-muted"
-      key="eea5a4150e4ab0084a2709c5ca900b7d819dc8c3"
+      key="d558e4cc94abbcce1ed2a9c9521b9d96fbe3d8e8"
     >
       <ShopifyMoneyAmount
         amount="0.00"
@@ -239,9 +239,9 @@ exports[`<OrderTotalsComponent/> render() should render as not loading 1`] = `
     </span>
     <span
       className="d-block grey"
-      key="eea5a4150e4ab0084a2709c5ca900b7d819dc8c3"
+      key="d558e4cc94abbcce1ed2a9c9521b9d96fbe3d8e8"
     >
-      TVA 20%
+      TVA 20.00%
     </span>
   </dt>
   <dd
@@ -250,7 +250,7 @@ exports[`<OrderTotalsComponent/> render() should render as not loading 1`] = `
     <br />
     <span
       className="d-block"
-      key="eea5a4150e4ab0084a2709c5ca900b7d819dc8c3"
+      key="d558e4cc94abbcce1ed2a9c9521b9d96fbe3d8e8"
     >
       <ShopifyMoneyAmount
         amount="0.00"
@@ -387,9 +387,9 @@ exports[`<OrderTotalsComponent/> render() should render with default shipping li
     </span>
     <span
       className="d-block grey"
-      key="eea5a4150e4ab0084a2709c5ca900b7d819dc8c3"
+      key="d558e4cc94abbcce1ed2a9c9521b9d96fbe3d8e8"
     >
-      TVA 20%
+      TVA 20.00%
     </span>
   </dt>
   <dd
@@ -398,7 +398,7 @@ exports[`<OrderTotalsComponent/> render() should render with default shipping li
     <br />
     <span
       className="d-block"
-      key="eea5a4150e4ab0084a2709c5ca900b7d819dc8c3"
+      key="d558e4cc94abbcce1ed2a9c9521b9d96fbe3d8e8"
     >
       <ShopifyMoneyAmount
         amount="0.00"
