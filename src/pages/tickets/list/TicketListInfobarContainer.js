@@ -57,7 +57,7 @@ class TicketListInfobarContainer extends React.Component<Props> {
         const {agents, currentUser, emailIntegrations, hasIntegrationsOfTypes} = this.props
 
         const hasVerifiedEmailIntegration = emailIntegrations
-            .filter((integration) => !integration.getIn(['meta', 'address']).endsWith('.gorgias.io')) // remove generated gorgias addresses
+            .filter((integration) => !integration.getIn(['meta', 'address']).endsWith(window.EMAIL_FORWARDING_DOMAIN)) // remove generated gorgias addresses
             .some((integration) => {
                 // gmail or outlook is connected or forwarding is on
                 return integration.get('type') !== EMAIL_INTEGRATION_TYPE || integration.getIn(['meta', 'verified'])
