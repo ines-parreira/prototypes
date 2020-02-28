@@ -2,8 +2,9 @@
 
 import {fromJS, type Record} from 'immutable'
 import _debounce from 'lodash/debounce'
+import {type AxiosResponse} from 'axios'
 
-import type {IntegrationDataItem} from '../../../../models/integration'
+import {ShopifyAction} from '../../../../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/Order'
 import {INTEGRATION_DATA_ITEM_TYPE_PRODUCT, SHOPIFY_INTEGRATION_TYPE} from '../../../../constants/integration'
 import {
     addCustomLineItem,
@@ -16,11 +17,14 @@ import {
 } from '../../../../business/shopify/order'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 import localStorageManager from '../../../../services/localStorageManager'
+import type {IntegrationDataItem} from '../../../../models/integration'
 import * as Shopify from '../../../../constants/integrations/shopify'
 import type {dispatchType, getStateType} from '../../../types'
 import GorgiasApi from '../../../../services/gorgiasApi'
+import {executeAction} from '../../../infobar/actions'
 import {notify} from '../../../notifications/actions'
 
+import {getDuplicateOrderState} from './selectors'
 import {
     SET_DEFAULT_SHIPPING_LINE,
     SET_DRAFT_ORDER,
@@ -29,7 +33,6 @@ import {
     SET_PAYLOAD,
     SET_PRODUCTS
 } from './constants'
-import {getDuplicateOrderState} from './selectors'
 
 const shopifyLocalStorage = localStorageManager.integrations[SHOPIFY_INTEGRATION_TYPE]
 let _gorgiasApi = null
@@ -42,9 +45,10 @@ const api = (): GorgiasApi => {
     return _gorgiasApi
 }
 
-const setLoading = (loading) => ({
+const setLoading = (loading: boolean, message: ?string = null) => ({
     type: SET_LOADING,
     loading,
+    message,
 })
 
 const setPayload = (payload) => ({
@@ -98,6 +102,8 @@ export const getDuplicateOrderPayload = (
 
 export const onInit = (integrationId: number, oldOrder: Record<Shopify.Order>, onError: () => void) =>
     async (dispatch: dispatchType) => {
+        dispatch(setLoading(true, 'Fetching products...'))
+
         const products = await loadProducts(integrationId, oldOrder)
         const draftOrderPayload = initDraftOrderPayload(oldOrder, products)
         const defaultShippingLine = draftOrderPayload.get('shipping_line') || null
@@ -138,7 +144,7 @@ export const createDraftOrder =
     (integrationId: number, payload: Record<$Shape<Shopify.DraftOrder>>, onError: () => void) =>
         async (dispatch: dispatchType) => {
             try {
-                dispatch(setLoading(true))
+                dispatch(setLoading(true, 'Creating draft order...'))
 
                 const [draftOrder, pollingConfig] = await api().createDraftOrder(integrationId, payload)
                 const draftOrderId = draftOrder.get('id')
@@ -215,13 +221,13 @@ export const onPayloadChange = (integrationId: number, payload: Record<$Shape<Sh
     async (dispatch: dispatchType, getState: getStateType) => {
         const newPayload = refreshAppliedDiscounts(payload)
         dispatch(setPayload(newPayload))
-        dispatch(setLoading(true))
+        dispatch(setLoading(true, 'Updating draft order...'))
         return updateDraftOrder(integrationId, dispatch, getState)
     }
 
-const updateDraftOrder = _debounce(async (integrationId, dispatch, getState) => {
+const updateDraftOrder = _debounce(async (integrationId: number, dispatch: dispatchType, getState: getStateType) => {
     try {
-        dispatch(setLoading(true))
+        dispatch(setLoading(true, 'Updating draft order...'))
 
         const state = getState()
         const draftOrder = getDuplicateOrderState(state).get('draftOrder')
@@ -291,3 +297,52 @@ export const onSubmit = () => (dispatch: dispatchType, getState: getStateType) =
 export const onReset = () => (dispatch: dispatchType) => resetState(dispatch)
 
 export const resetState = _debounce((dispatch: dispatchType) => dispatch(setInitialState()), 250)
+
+export const onEmailInvoice = (
+    integrationId: number,
+    customerId: number,
+    orderId: number,
+    invoicePayload: Record<Shopify.DraftOrderInvoice>,
+    onSuccess: () => void,
+) => (dispatch: dispatchType, getState: getStateType): Promise<void> => {
+    return new Promise((resolve) => {
+        dispatch(setLoading(true, 'Sending invoice...'))
+
+        const state = getState()
+        const draftOrder = getDuplicateOrderState(state).get('draftOrder')
+        const draftOrderId = draftOrder.get('id')
+        const draftOrderName = draftOrder.get('name')
+
+        const payload = {
+            order_id: orderId,
+            draft_order_id: draftOrderId,
+            draft_order_name: draftOrderName,
+            draft_order_invoice: invoicePayload.toJS(),
+        }
+
+        const callback = (response: AxiosResponse) => {
+            setTimeout(() => {
+                if (response.status !== 'error') {
+                    onSuccess()
+
+                    dispatch(notify({
+                        status: 'success',
+                        message: `Draft order ${draftOrderName} created, invoice successfully sent`,
+                    }))
+                }
+
+                resolve(dispatch(setLoading(false)))
+            }, 0)
+        }
+
+        shopifyLocalStorage.draftOrders.removeListItem(draftOrderId)
+
+        dispatch(executeAction(
+            ShopifyAction.SEND_DRAFT_ORDER_INVOICE,
+            integrationId.toString(),
+            customerId.toString(),
+            payload,
+            callback,
+        ))
+    })
+}

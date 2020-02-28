@@ -4,12 +4,12 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
-import {Card, CardBody, Button} from 'reactstrap'
+import {Button, Card, CardBody} from 'reactstrap'
 import _capitalize from 'lodash/capitalize'
 
 import {getActionByName} from '../../../../config/actions'
 import {AgentLabel, DatetimeLabel} from '../../../common/utils/labels'
-import {stripErrorMessage, humanizeString} from '../../../../utils'
+import {humanizeString, stripErrorMessage} from '../../../../utils'
 
 import * as integrationsSelectors from '../../../../state/integrations/selectors'
 import * as ticketSelectors from '../../../../state/ticket/selectors'
@@ -148,12 +148,15 @@ export default class Event extends React.Component {
 
                 if (actionConfig.objectType === 'order') {
                     objectLabel += order.get('name')
+                    objectLink = `https://${shopName}.myshopify.com/admin/orders/${order.get('id')}`
+                } else if (actionConfig.objectType === 'draftOrder') {
+                    objectLabel += payload.get('draft_order_name')
+                    objectLink = `https://${shopName}.myshopify.com/admin/draft_orders/${payload.get('draft_order_id')}`
                 } else if (actionConfig.objectType === 'item') {
                     const item = this._getItem(payload.get('order_id'), payload.get('item_id'))
                     objectLabel += `${payload.get('quantity')} × ${item.get('name')}`
+                    objectLink = `https://${shopName}.myshopify.com/admin/orders/${order.get('id')}`
                 }
-
-                objectLink = `https://${shopName}.myshopify.com/admin/orders/${order.get('id')}`
             } else if (integration.get('type') === 'recharge') {
                 const storeName = integration.getIn(['meta', 'store_name'])
                 const hash = integrationData.getIn(['customer', 'hash'])
@@ -222,7 +225,7 @@ export default class Event extends React.Component {
                             by
                         </span>
 
-                        <AgentLabel name={user.get('name')} />
+                        <AgentLabel name={user.get('name')}/>
 
                         <Button
                             color="link"

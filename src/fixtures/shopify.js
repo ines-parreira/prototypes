@@ -705,3 +705,8 @@ export const shopifyTaxLineFixture = (
     title,
     price,
 })
+
+export const shopifyInvoicePayloadFixture = (): Shopify.DraftOrderInvoice => ({
+    to: 'foo@bar.xyz',
+    custom_message: 'foo bar',
+})

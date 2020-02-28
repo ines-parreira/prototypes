@@ -1,0 +1,130 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<EmailInvoicePopover/> render() should render 1`] = `
+<div>
+  <Button
+    className="focusable"
+    color="primary"
+    disabled={false}
+    id="email-invoice"
+    innerRef={[Function]}
+    onClick={[Function]}
+    tabIndex={0}
+    tag="button"
+    type="button"
+  >
+    <strong>
+      Email invoice
+    </strong>
+  </Button>
+  <Popover
+    delay={
+      Object {
+        "hide": 0,
+        "show": 0,
+      }
+    }
+    hideArrow={false}
+    isOpen={false}
+    placement="bottom"
+    placementPrefix="bs-popover"
+    target="email-invoice"
+    toggle={[Function]}
+  >
+    <Form
+      onKeyDown={[Function]}
+      onSubmit={[Function]}
+      tag="form"
+    >
+      <PopoverBody
+        className="pt-3"
+        tag="div"
+      >
+        <FormGroup
+          tag="div"
+        >
+          <Label
+            for="to"
+            tag="label"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
+          >
+            To
+          </Label>
+          <Input
+            autoComplete="off"
+            className="toInput"
+            id="to"
+            onChange={[Function]}
+            required={true}
+            type="text"
+            value="foo@bar.xyz"
+          />
+        </FormGroup>
+        <FormGroup
+          tag="div"
+        >
+          <Label
+            for="custom-message"
+            tag="label"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
+          >
+            Custom message for this customer
+          </Label>
+          <Input
+            autoComplete="off"
+            id="custom-message"
+            innerRef={[Function]}
+            onChange={[Function]}
+            rows={5}
+            type="textarea"
+            value=""
+          />
+        </FormGroup>
+      </PopoverBody>
+      <hr
+        className="m-0"
+      />
+      <PopoverBody
+        className="d-flex"
+        tag="div"
+      >
+        <Button
+          className="focusable"
+          color="secondary"
+          onClick={[Function]}
+          tabIndex={0}
+          tag="button"
+          type="button"
+        >
+          Cancel
+        </Button>
+        <Button
+          className="ml-auto focusable"
+          color="primary"
+          tabIndex={0}
+          tag="button"
+          type="submit"
+        >
+          Send notification
+        </Button>
+      </PopoverBody>
+    </Form>
+  </Popover>
+</div>
+`;

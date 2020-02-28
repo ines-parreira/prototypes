@@ -199,3 +199,11 @@ export type Product = {
     images: Array<Image>,
     variants: Variant[],
 }
+
+export type DraftOrderInvoice = {
+    to?: string,
+    from?: string,
+    bcc?: string[],
+    subject?: string,
+    custom_message?: string,
+}

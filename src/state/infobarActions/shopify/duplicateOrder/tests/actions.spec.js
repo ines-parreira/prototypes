@@ -6,26 +6,21 @@ import axios from 'axios'
 
 import {
     shopifyDraftOrderPayloadFixture,
+    shopifyInvoicePayloadFixture,
     shopifyLineItemFixture,
     shopifyOrderFixture,
     shopifyProductFixture,
     shopifyShippingLineFixture,
     shopifyVariantFixture
 } from '../../../../../fixtures/shopify'
-import {initialState} from '../../../../infobarActions/shopify/duplicateOrder/reducers'
 import {INTEGRATION_DATA_ITEM_TYPE_PRODUCT, SHOPIFY_INTEGRATION_TYPE} from '../../../../../constants/integration'
-import * as actions from '../actions'
+import {initialState} from '../../../../infobarActions/shopify/duplicateOrder/reducers'
 import localStorageManager from '../../../../../services/localStorageManager'
-
-jest.mock('lodash/debounce', () => (fn) => (...args) => {
-    return new Promise((resolve) => {
-        global.process.nextTick(() => {
-            resolve(fn(...args))
-        })
-    })
-})
+import {executeAction} from '../../../../infobar/actions'
+import * as actions from '../actions'
 
 jest.mock('lodash/debounce', () => (fn) => fn)
+jest.mock('../../../../infobar/actions')
 jest.useFakeTimers()
 
 describe('infobarActions.shopify.duplicateOrder actions', () => {
@@ -102,7 +97,7 @@ describe('infobarActions.shopify.duplicateOrder actions', () => {
         describe('on success', () => {
             beforeEach(() => {
                 mockServer
-                    .onPost('/integrations/shopify/order/draft/')
+                    .onPost(`/integrations/${SHOPIFY_INTEGRATION_TYPE}/order/draft/`)
                     .reply(200, {
                         draft_order: {
                             id: draftOrderId,
@@ -129,7 +124,7 @@ describe('infobarActions.shopify.duplicateOrder actions', () => {
         describe('on polling', () => {
             it('should poll draft order values', (done) => {
                 mockServer
-                    .onPost('/integrations/shopify/order/draft/')
+                    .onPost(`/integrations/${SHOPIFY_INTEGRATION_TYPE}/order/draft/`)
                     .reply(200, {
                         draft_order: {
                             id: draftOrderId,
@@ -139,7 +134,7 @@ describe('infobarActions.shopify.duplicateOrder actions', () => {
                     })
 
                 mockServer
-                    .onGet(`/integrations/shopify/order/draft/${draftOrderId}/`)
+                    .onGet(`/integrations/${SHOPIFY_INTEGRATION_TYPE}/order/draft/${draftOrderId}/`)
                     .reply(200, {
                         draft_order: {
                             id: draftOrderId,
@@ -363,6 +358,80 @@ describe('infobarActions.shopify.duplicateOrder actions', () => {
         it('should reset state', async () => {
             await store.dispatch(actions.onReset())
             expect(getActions()).toMatchSnapshot()
+        })
+    })
+
+    describe('onEmailInvoice()', () => {
+        const orderId = 123
+        const ticketId = 456
+        const customerId = 789
+
+        let invoicePayload
+        let onSuccess
+
+        const initTest = (error: boolean) => {
+            const response = {status: error ? 'error' : 'success'}
+
+            executeAction.mockImplementation((...args) => (...reduxArgs) => {
+                const {executeAction: realImplementation} = jest.requireActual('../../../../infobar/actions')
+                const result = realImplementation(...args)(...reduxArgs)
+                const callback = args[4]
+                callback(response)
+                return result
+            })
+
+            mockServer
+                .onPost('/api/actions/execute/')
+                .reply(error ? 500 : 200, response)
+        }
+
+        beforeEach(() => {
+            invoicePayload = fromJS(shopifyInvoicePayloadFixture())
+            onSuccess = jest.fn()
+
+            store = mockStore({
+                ticket: fromJS({
+                    id: ticketId,
+                }),
+                infobarActions: {
+                    [SHOPIFY_INTEGRATION_TYPE]: {
+                        duplicateOrder: initialState.set('draftOrder', fromJS({
+                            id: draftOrderId,
+                            name: '#D123',
+                        })),
+                    },
+                },
+            })
+        })
+
+        it('should email invoice', (done) => {
+            initTest(false)
+
+            const promise = store.dispatch(
+                actions.onEmailInvoice(integrationId, customerId, orderId, invoicePayload, onSuccess)
+            )
+
+            process.nextTick(async () => {
+                jest.runAllTimers()
+                await promise
+                expect(getActions()).toMatchSnapshot()
+                done()
+            })
+        })
+
+        it('should display an error', (done) => {
+            initTest(true)
+
+            const promise = store.dispatch(
+                actions.onEmailInvoice(integrationId, customerId, orderId, invoicePayload, onSuccess)
+            )
+
+            process.nextTick(async () => {
+                jest.runAllTimers()
+                await promise
+                expect(getActions()).toMatchSnapshot()
+                done()
+            })
         })
     })
 })

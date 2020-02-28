@@ -16,6 +16,7 @@ import {
     addRow,
     onCancel,
     onCleanUp,
+    onEmailInvoice,
     onInit,
     onReset,
 } from '../../../../../../../../../../../state/infobarActions/shopify/duplicateOrder/actions'
@@ -26,8 +27,10 @@ import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../constan
 import type {IntegrationDataItem} from '../../../../../../../../../../../models/integration'
 import * as Shopify from '../../../../../../../../../../../constants/integrations/shopify'
 import ProductSearchInput from '../../../../../../../../../forms/ProductSearchInput'
+import {DatetimeLabel} from '../../../../../../../../../utils/labels'
 import Loader from '../../../../../../../../Loader/Loader'
 import AddCustomItemPopover from '../AddCustomItemPopover'
+import EmailInvoicePopover from '../EmailInvoicePopover'
 import type {InfobarModalProps} from '../../../types'
 import Modal from '../../../../../../../../Modal'
 import OrderFooter from '../OrderFooter'
@@ -38,6 +41,7 @@ import css from './DuplicateOrderModal.less'
 type Props = InfobarModalProps & {
     integrations: List<*>,
     loading: boolean,
+    loadingMessage: ?string,
     payload: Record<$Shape<Shopify.DraftOrder>>,
     draftOrder: ?Record<Shopify.DraftOrder>,
     products: Map<number, Record<Shopify.Product>>,
@@ -45,17 +49,25 @@ type Props = InfobarModalProps & {
         actionName: ?string,
         order: Record<Shopify.Order>,
     },
-    onCleanUp: (integrationId: number) => void,
-    onInit: (integrationId: number, order: Record<Shopify.Order>, onError: () => void) => void,
-    onCancel: (integrationId: number, via: string) => void,
-    onReset: () => void,
-    addRow: (integrationId: number, product: Shopify.Product, variant: Shopify.Variant) => void,
     addCustomRow: (integrationId: number, lineItem: Record<$Shape<Shopify.LineItem>>) => void,
+    addRow: (integrationId: number, product: Shopify.Product, variant: Shopify.Variant) => void,
+    onCancel: (integrationId: number, via: string) => void,
+    onCleanUp: (integrationId: number) => void,
+    onEmailInvoice: (
+        integrationId: number,
+        customerId: number,
+        orderId: number,
+        invoicePayload: Record<Shopify.DraftOrderInvoice>,
+        onDone: () => void,
+    ) => void,
+    onInit: (integrationId: number, order: Record<Shopify.Order>, onError: () => void) => void,
+    onReset: () => void,
 }
 
 export class DuplicateOrderModalComponent extends React.PureComponent<Props> {
     static contextTypes = {
         integrationId: PropTypes.number.isRequired,
+        customerId: PropTypes.number.isRequired,
     }
 
     static defaultProps = {
@@ -131,7 +143,18 @@ export class DuplicateOrderModalComponent extends React.PureComponent<Props> {
         addCustomRow(integrationId, lineItem)
     }
 
-    _onSubmitPaid = async () => {
+    _onEmailInvoice = (invoicePayload: Record<Shopify.DraftOrderInvoice>) => {
+        const {onEmailInvoice, onClose, data: {order}} = this.props
+        const {integrationId, customerId} = this.context
+        const orderId = order.get('id')
+
+        onEmailInvoice(integrationId, customerId, orderId, invoicePayload, () => {
+            onClose()
+            this._onClose()
+        })
+    }
+
+    _onSubmitPaid = () => {
         const {onChange, onSubmit} = this.props
 
         onChange('payment_pending', false, () => {
@@ -144,7 +167,7 @@ export class DuplicateOrderModalComponent extends React.PureComponent<Props> {
         })
     }
 
-    _onSubmitPending = async () => {
+    _onSubmitPending = () => {
         const {onChange, onSubmit} = this.props
 
         onChange('payment_pending', true, () => {
@@ -189,7 +212,7 @@ export class DuplicateOrderModalComponent extends React.PureComponent<Props> {
     }
 
     render() {
-        const {header, isOpen, payload, draftOrder, loading} = this.props
+        const {header, isOpen, payload, draftOrder, loading, loadingMessage, data: {order}} = this.props
         const {integrationId} = this.context
 
         const integration = this._getIntegration()
@@ -254,16 +277,71 @@ export class DuplicateOrderModalComponent extends React.PureComponent<Props> {
                                 editable
                                 currencyCode={currencyCode}
                             />
+                            {draftOrder.get('status') === 'invoice_sent'
+                                ? (
+                                    <div className={css.emailInvoiceContainer}>
+                                        <h4 className="mr-auto">Invoice sent</h4>
+                                        <span className="mr-4">
+                                            Sent on{' '}
+                                            <DatetimeLabel
+                                                dateTime={draftOrder.get('invoice_sent_at')}
+                                                labelFormat="L LT"
+                                                hasTooltip={false}
+                                            />
+                                        </span>
+                                        <EmailInvoicePopover
+                                            id="email-invoice"
+                                            color="link"
+                                            customerEmail={order.getIn(['customer', 'email'])}
+                                            disabled={loading}
+                                            onSubmit={this._onEmailInvoice}
+                                        >
+                                            Email new invoice
+                                        </EmailInvoicePopover>
+                                    </div>
+                                )
+                                : (
+                                    <div className={css.emailInvoiceContainer}>
+                                        <h4 className="mr-auto">Email invoice</h4>
+                                        <EmailInvoicePopover
+                                            id="email-invoice"
+                                            color="primary"
+                                            customerEmail={order.getIn(['customer', 'email'])}
+                                            disabled={loading}
+                                            onSubmit={this._onEmailInvoice}
+                                        >
+                                            Email invoice
+                                        </EmailInvoicePopover>
+                                    </div>
+                                )
+                            }
                         </div>
                     )
                     : <Loader/>
                 }
                 <ModalFooter className={css.formFooter}>
                     <Button
+                        tabIndex={0}
+                        className={css.focusable}
+                        onClick={this._onCancelViaFooter}
+                    >
+                        Cancel
+                    </Button>
+                    {loading && (
+                        <div className="ml-3">
+                            <Loader
+                                className={css.spinner}
+                                minHeight="20px"
+                                size="20px"
+                            />
+                            <span className="ml-2">{loadingMessage}</span>
+                        </div>
+                    )}
+                    <Button
                         color="primary"
                         disabled={loading}
                         tabIndex={0}
-                        className={css.focusable}
+                        className={classnames(css.focusable, 'ml-auto')}
                         onClick={this._onSubmitPaid}
                     >
                         Create order as paid
@@ -277,20 +355,6 @@ export class DuplicateOrderModalComponent extends React.PureComponent<Props> {
                     >
                         Create order as pending
                     </Button>
-                    {loading && (
-                        <Loader
-                            className={css.spinner}
-                            minHeight="20px"
-                            size="20px"
-                        />
-                    )}
-                    <Button
-                        tabIndex={0}
-                        className={classnames('ml-auto', css.focusable)}
-                        onClick={this._onCancelViaFooter}
-                    >
-                        Cancel
-                    </Button>
                 </ModalFooter>
             </Modal>
         )
@@ -300,6 +364,7 @@ export class DuplicateOrderModalComponent extends React.PureComponent<Props> {
 const mapStateToProps = (state) => ({
     integrations: getIntegrationsByTypes([SHOPIFY_INTEGRATION_TYPE])(state),
     loading: getDuplicateOrderState(state).get('loading'),
+    loadingMessage: getDuplicateOrderState(state).get('loadingMessage'),
     payload: getDuplicateOrderState(state).get('payload'),
     draftOrder: getDuplicateOrderState(state).get('draftOrder'),
     products: getDuplicateOrderState(state).get('products'),
@@ -310,6 +375,7 @@ const mapDispatchToProps = {
     addRow,
     onCancel,
     onCleanUp,
+    onEmailInvoice,
     onInit,
     onReset,
 }

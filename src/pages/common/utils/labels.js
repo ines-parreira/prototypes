@@ -365,6 +365,7 @@ type DatetimeLabelProps = {
     dateTime?: string,
     labelFormat?: string,
     timezone?: string,
+    hasTooltip?: boolean,
 }
 
 @connect((state) => {
@@ -375,13 +376,17 @@ type DatetimeLabelProps = {
 export class DatetimeLabel extends React.PureComponent<DatetimeLabelProps> {
     id: string
 
+    static defaultProps = {
+        hasTooltip: true,
+    }
+
     constructor(props: DatetimeLabelProps) {
         super(props)
         this.id = `datetime-tooltip-${Math.random().toString(36).slice(2)}` // generates a random unique id
     }
 
     render() {
-        const {dateTime, labelFormat, timezone, ...rest} = _omit(this.props, 'dispatch')
+        const {dateTime, labelFormat, timezone, hasTooltip, ...rest} = _omit(this.props, 'dispatch')
 
         if (!dateTime) {
             return null
@@ -395,14 +400,16 @@ export class DatetimeLabel extends React.PureComponent<DatetimeLabelProps> {
                 <span id={this.id}>
                     {labelDatetime}
                 </span>
-                <Tooltip
-                    placement="top"
-                    target={this.id}
-                    delay={{show: 200, hide: 0}}
-                    className={classnames(css.datetimeTooltip)}
-                >
-                    {tooltipDatetime}
-                </Tooltip>
+                {hasTooltip && (
+                    <Tooltip
+                        placement="top"
+                        target={this.id}
+                        delay={{show: 200, hide: 0}}
+                        className={classnames(css.datetimeTooltip)}
+                    >
+                        {tooltipDatetime}
+                    </Tooltip>
+                )}
             </span>
         )
     }

@@ -6,4 +6,5 @@ export const ShopifyAction = Object.freeze({
     REFUND_SHIPPING_COST_OF_ORDER: 'shopifyRefundShippingCostOfOrder',
     CANCEL_ORDER: 'shopifyCancelOrder',
     DUPLICATE_ORDER: 'shopifyDuplicateOrder',
+    SEND_DRAFT_ORDER_INVOICE: 'shopifySendDraftOrderInvoice',
 })

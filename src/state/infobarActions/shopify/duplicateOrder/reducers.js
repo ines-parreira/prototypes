@@ -16,6 +16,7 @@ import {
 
 export const initialState: DuplicateOrderState = fromJS({
     loading: false,
+    loadingMessage: null,
     payload: null,
     draftOrder: null,
     products: new Map(),
@@ -28,7 +29,9 @@ export default function reducer(
 ): DuplicateOrderState {
     switch (action.type) {
         case SET_LOADING:
-            return state.set('loading', action.loading)
+            return state
+                .set('loading', action.loading)
+                .set('loadingMessage', action.message)
         case SET_PAYLOAD:
             return state.set('payload', action.payload)
         case SET_DRAFT_ORDER:

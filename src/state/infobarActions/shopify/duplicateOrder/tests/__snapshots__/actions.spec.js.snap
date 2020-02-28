@@ -97,10 +97,12 @@ Array [
   },
   Object {
     "loading": true,
+    "message": "Updating draft order...",
     "type": "infobarActions/shopify/duplicateOrder/SET_LOADING",
   },
   Object {
     "loading": true,
+    "message": "Updating draft order...",
     "type": "infobarActions/shopify/duplicateOrder/SET_LOADING",
   },
   Object {
@@ -112,6 +114,7 @@ Array [
   },
   Object {
     "loading": false,
+    "message": null,
     "type": "infobarActions/shopify/duplicateOrder/SET_LOADING",
   },
 ]
@@ -214,10 +217,12 @@ Array [
   },
   Object {
     "loading": true,
+    "message": "Updating draft order...",
     "type": "infobarActions/shopify/duplicateOrder/SET_LOADING",
   },
   Object {
     "loading": true,
+    "message": "Updating draft order...",
     "type": "infobarActions/shopify/duplicateOrder/SET_LOADING",
   },
   Object {
@@ -265,6 +270,7 @@ Array [
   },
   Object {
     "loading": false,
+    "message": null,
     "type": "infobarActions/shopify/duplicateOrder/SET_LOADING",
   },
 ]
@@ -350,8 +356,116 @@ Object {
 }
 `;
 
+exports[`infobarActions.shopify.duplicateOrder actions onEmailInvoice() should display an error 1`] = `
+Array [
+  Object {
+    "loading": true,
+    "message": "Sending invoice...",
+    "type": "infobarActions/shopify/duplicateOrder/SET_LOADING",
+  },
+  Object {
+    "callback": [Function],
+    "data": Object {
+      "action_name": "shopifySendDraftOrderInvoice",
+      "integration_id": "1",
+      "payload": Object {
+        "draft_order_id": 1,
+        "draft_order_invoice": Object {
+          "custom_message": "foo bar",
+          "to": "foo@bar.xyz",
+        },
+        "draft_order_name": "#D123",
+        "order_id": 123,
+      },
+      "ticket_id": 456,
+      "user_id": "789",
+    },
+    "type": "EXECUTE_ACTION_START",
+  },
+  Object {
+    "data": Object {
+      "action_name": "shopifySendDraftOrderInvoice",
+      "integration_id": "1",
+      "payload": Object {
+        "draft_order_id": 1,
+        "draft_order_invoice": Object {
+          "custom_message": "foo bar",
+          "to": "foo@bar.xyz",
+        },
+        "draft_order_name": "#D123",
+        "order_id": 123,
+      },
+      "ticket_id": 456,
+      "user_id": "789",
+    },
+    "error": [Error: Request failed with status code 500],
+    "reason": "Failed to execute action shopifySendDraftOrderInvoice on customer #789 for integration 1",
+    "type": "EXECUTE_ACTION_ERROR",
+  },
+  Object {
+    "loading": false,
+    "message": null,
+    "type": "infobarActions/shopify/duplicateOrder/SET_LOADING",
+  },
+]
+`;
+
+exports[`infobarActions.shopify.duplicateOrder actions onEmailInvoice() should email invoice 1`] = `
+Array [
+  Object {
+    "loading": true,
+    "message": "Sending invoice...",
+    "type": "infobarActions/shopify/duplicateOrder/SET_LOADING",
+  },
+  Object {
+    "callback": [Function],
+    "data": Object {
+      "action_name": "shopifySendDraftOrderInvoice",
+      "integration_id": "1",
+      "payload": Object {
+        "draft_order_id": 1,
+        "draft_order_invoice": Object {
+          "custom_message": "foo bar",
+          "to": "foo@bar.xyz",
+        },
+        "draft_order_name": "#D123",
+        "order_id": 123,
+      },
+      "ticket_id": 456,
+      "user_id": "789",
+    },
+    "type": "EXECUTE_ACTION_START",
+  },
+  Object {
+    "payload": Object {
+      "allowHTML": false,
+      "buttons": Array [],
+      "closeButton": false,
+      "dismissAfter": 3000,
+      "dismissible": true,
+      "id": 1,
+      "message": "Draft order #D123 created, invoice successfully sent",
+      "position": "tc",
+      "status": "success",
+      "style": "alert",
+    },
+    "type": "ADD_NOTIFICATION",
+  },
+  Object {
+    "loading": false,
+    "message": null,
+    "type": "infobarActions/shopify/duplicateOrder/SET_LOADING",
+  },
+]
+`;
+
 exports[`infobarActions.shopify.duplicateOrder actions onInit() on error should call onError 1`] = `
 Array [
+  Object {
+    "loading": true,
+    "message": "Fetching products...",
+    "type": "infobarActions/shopify/duplicateOrder/SET_LOADING",
+  },
   Object {
     "payload": Immutable.Map {
       "shipping_address": Immutable.Map {
@@ -514,6 +628,7 @@ Array [
   },
   Object {
     "loading": true,
+    "message": "Creating draft order...",
     "type": "infobarActions/shopify/duplicateOrder/SET_LOADING",
   },
   Object {
@@ -570,6 +685,7 @@ Array [
   },
   Object {
     "loading": false,
+    "message": null,
     "type": "infobarActions/shopify/duplicateOrder/SET_LOADING",
   },
   Object {
@@ -592,6 +708,11 @@ Array [
 
 exports[`infobarActions.shopify.duplicateOrder actions onInit() on polling should poll draft order values 1`] = `
 Array [
+  Object {
+    "loading": true,
+    "message": "Fetching products...",
+    "type": "infobarActions/shopify/duplicateOrder/SET_LOADING",
+  },
   Object {
     "payload": Immutable.Map {
       "shipping_address": Immutable.Map {
@@ -754,6 +875,7 @@ Array [
   },
   Object {
     "loading": true,
+    "message": "Creating draft order...",
     "type": "infobarActions/shopify/duplicateOrder/SET_LOADING",
   },
   Object {
@@ -824,6 +946,7 @@ Array [
   },
   Object {
     "loading": false,
+    "message": null,
     "type": "infobarActions/shopify/duplicateOrder/SET_LOADING",
   },
 ]
@@ -831,6 +954,11 @@ Array [
 
 exports[`infobarActions.shopify.duplicateOrder actions onInit() on success should init the state 1`] = `
 Array [
+  Object {
+    "loading": true,
+    "message": "Fetching products...",
+    "type": "infobarActions/shopify/duplicateOrder/SET_LOADING",
+  },
   Object {
     "payload": Immutable.Map {
       "shipping_address": Immutable.Map {
@@ -993,6 +1121,7 @@ Array [
   },
   Object {
     "loading": true,
+    "message": "Creating draft order...",
     "type": "infobarActions/shopify/duplicateOrder/SET_LOADING",
   },
   Object {
@@ -1056,6 +1185,7 @@ Array [
   },
   Object {
     "loading": false,
+    "message": null,
     "type": "infobarActions/shopify/duplicateOrder/SET_LOADING",
   },
 ]
@@ -1063,6 +1193,11 @@ Array [
 
 exports[`infobarActions.shopify.duplicateOrder actions onInit() on success should init the state when there is a shipping line 1`] = `
 Array [
+  Object {
+    "loading": true,
+    "message": "Fetching products...",
+    "type": "infobarActions/shopify/duplicateOrder/SET_LOADING",
+  },
   Object {
     "payload": Immutable.Map {
       "shipping_address": Immutable.Map {
@@ -1233,6 +1368,7 @@ Array [
   },
   Object {
     "loading": true,
+    "message": "Creating draft order...",
     "type": "infobarActions/shopify/duplicateOrder/SET_LOADING",
   },
   Object {
@@ -1300,6 +1436,7 @@ Array [
   },
   Object {
     "loading": false,
+    "message": null,
     "type": "infobarActions/shopify/duplicateOrder/SET_LOADING",
   },
 ]
@@ -1389,10 +1526,12 @@ Array [
   },
   Object {
     "loading": true,
+    "message": "Updating draft order...",
     "type": "infobarActions/shopify/duplicateOrder/SET_LOADING",
   },
   Object {
     "loading": true,
+    "message": "Updating draft order...",
     "type": "infobarActions/shopify/duplicateOrder/SET_LOADING",
   },
   Object {
@@ -1411,6 +1550,7 @@ Array [
   },
   Object {
     "loading": false,
+    "message": null,
     "type": "infobarActions/shopify/duplicateOrder/SET_LOADING",
   },
 ]
@@ -1500,10 +1640,12 @@ Array [
   },
   Object {
     "loading": true,
+    "message": "Updating draft order...",
     "type": "infobarActions/shopify/duplicateOrder/SET_LOADING",
   },
   Object {
     "loading": true,
+    "message": "Updating draft order...",
     "type": "infobarActions/shopify/duplicateOrder/SET_LOADING",
   },
   Object {
@@ -1515,6 +1657,7 @@ Array [
   },
   Object {
     "loading": false,
+    "message": null,
     "type": "infobarActions/shopify/duplicateOrder/SET_LOADING",
   },
 ]

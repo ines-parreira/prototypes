@@ -293,4 +293,16 @@ export default class GorgiasApi {
             },
         })
     }
+
+    async emailDraftOrderInvoice(
+        integrationId: number,
+        draftOrderId: number,
+        invoicePayload: Record<Shopify.DraftOrderInvoice>,
+    ): Promise<void> {
+        await this._api.post(`/integrations/shopify/order/draft/${draftOrderId}/send-invoice/`, invoicePayload.toJS(), {
+            params: {
+                integration_id: integrationId,
+            },
+        })
+    }
 }

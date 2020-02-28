@@ -1,30 +1,35 @@
+import {
+    ShopifyAction
+} from '../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/Order/constants'
+
 export const actions = [{
-    name: 'shopifyRefundShippingCostOfOrder',
+    name: ShopifyAction.REFUND_SHIPPING_COST_OF_ORDER,
     label: 'Refund shipping cost of order',
     objectType: 'order',
 }, {
-    name: 'shopifyCancelOrder',
+    name: ShopifyAction.CANCEL_ORDER,
     label: 'Cancel order',
     objectType: 'order',
 }, {
-    name: 'shopifyFullRefundOrder',
+    name: ShopifyAction.FULL_REFUND_ORDER,
     label: 'Full refund order',
     objectType: 'order',
 }, {
-    name: 'shopifyDuplicateOrder',
+    name: ShopifyAction.DUPLICATE_ORDER,
     label: 'Duplicate order',
     objectType: 'order',
 }, {
-    name: 'shopifyPartialRefundOrder',
+    name: ShopifyAction.SEND_DRAFT_ORDER_INVOICE,
+    label: 'Send invoice for draft order',
+    objectType: 'draftOrder',
+}, {
+    name: ShopifyAction.PARTIAL_REFUND_ORDER,
     label: 'Partial refund order',
     objectType: 'order',
 }, {
     name: 'shopifyRefundOrderItem',
     label: 'Refund item',
     objectType: 'item',
-}, {
-    name: 'shopifyDuplicateOrder',
-    label: 'Duplicate order',
 }, {
 //     name: 'shopifyCreateGiftCard',
 //     label: 'Create gift card',

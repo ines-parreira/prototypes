@@ -14,9 +14,16 @@ jest.addMatchers(immutableMatchers)
 describe('infobarActions.shopify.duplicateOrder reducer', () => {
     describe('SET_LOADING', () => {
         it('should set loading state', () => {
-            const action = {type: constants.SET_LOADING, loading: true}
+            const action = {type: constants.SET_LOADING, loading: true, message: null}
             const nextState = reducer(initialState, action)
             expect(nextState.get('loading')).toBe(true)
+        })
+
+        it('should set loading state with given loading message', () => {
+            const action = {type: constants.SET_LOADING, loading: true, message: 'foo'}
+            const nextState = reducer(initialState, action)
+            expect(nextState.get('loading')).toBe(true)
+            expect(nextState.get('loadingMessage')).toBe('foo')
         })
     })
 

@@ -126,6 +126,46 @@ Object {
 }
 `;
 
+exports[`services GorgiasApi emailDraftOrderInvoice() should email invoice of given draft order 1`] = `
+Object {
+  "delete": Array [],
+  "get": Array [],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [
+    Object {
+      "cancelToken": CancelToken {
+        "promise": Promise {},
+      },
+      "data": "{\\"to\\":\\"foo@bar.xyz\\",\\"custom_message\\":\\"foo bar\\"}",
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      "maxContentLength": -1,
+      "method": "post",
+      "params": Object {
+        "integration_id": 1,
+      },
+      "timeout": 0,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/integrations/shopify/order/draft/2/send-invoice/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "put": Array [],
+}
+`;
+
 exports[`services GorgiasApi getStatistic() should fetch a statistic with the given name and filters 1`] = `
 Object {
   "delete": Array [],

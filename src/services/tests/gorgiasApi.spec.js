@@ -11,6 +11,7 @@ import type {AuditLogEvent} from '../../models/event'
 import {TICKET_REOPENED} from '../../constants/event'
 import type {IntegrationDataItem} from '../../models/integration'
 import {INTEGRATION_DATA_ITEM_TYPE_PRODUCT, SHOPIFY_INTEGRATION_TYPE} from '../../constants/integration'
+import {shopifyInvoicePayloadFixture} from '../../fixtures/shopify'
 
 describe('services', () => {
     describe('GorgiasApi', () => {
@@ -392,6 +393,20 @@ describe('services', () => {
                 const gorgiasApi = new GorgiasApi()
                 const integrationId = 1
                 await gorgiasApi.deleteDraftOrder(integrationId, draftOrderId)
+
+                expect(apiMock.history).toMatchSnapshot()
+            })
+        })
+
+        describe('emailDraftOrderInvoice()', () => {
+            it('should email invoice of given draft order', async () => {
+                const draftOrderId = 2
+                apiMock.onPost(`/integrations/shopify/order/draft/${draftOrderId}/send-invoice/`).reply(200)
+
+                const gorgiasApi = new GorgiasApi()
+                const integrationId = 1
+                const invoicePayload = fromJS(shopifyInvoicePayloadFixture())
+                await gorgiasApi.emailDraftOrderInvoice(integrationId, draftOrderId, invoicePayload)
 
                 expect(apiMock.history).toMatchSnapshot()
             })
