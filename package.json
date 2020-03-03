@@ -29,7 +29,7 @@
   "dependencies": {
     "@shopify/theme-currency": "3.0.3",
     "@shopify/theme-images": "3.0.3",
-    "array-includes": "3.0.3",
+    "array-includes": "3.1.1",
     "axios": "0.19.0",
     "bootstrap": "4.3.1",
     "chart.js": "2.8.0",
