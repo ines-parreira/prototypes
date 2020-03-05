@@ -1,2 +1,2 @@
-import BannerNotifications from './BannerNotifications'
-export default BannerNotifications
+import BannerNotificationsContainer from './BannerNotificationsContainer'
+export default BannerNotificationsContainer

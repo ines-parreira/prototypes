@@ -2,7 +2,7 @@
 import {fromJS} from 'immutable'
 import _find from 'lodash/find'
 
-import {shouldTicketBeDisplayedInRecentChats} from '../business/recentChats'
+import {shouldTicketBeDisplayedInRecentChats, type RecentChatTicket} from '../business/recentChats'
 
 import * as agentsActions from '../state/agents/actions'
 import * as chatsActions from '../state/chats/actions'
@@ -20,7 +20,6 @@ import * as currentUserSelectors from '../state/currentUser/selectors'
 
 import {isCurrentlyOnTicket} from '../utils'
 import {store as reduxStore} from '../init'
-import * as socketEventTypes from '../services/socketManager/types'
 
 import {MAX_RECENT_CHATS} from './recentChats'
 import * as socketConstants from './socketConstants'
@@ -109,6 +108,7 @@ export const sendEvents = [
  * @enum name name of config (used to send the event)
  * @enum dataToSend function returning data that is sent to server when sending this event (bound to SocketManager instance)
  * @enum [onLeave] callback executed after leaving room (bound to SocketManager instance)
+ * @enum [onJoin] callback executed after joining room (bound to SocketManager instance)
  */
 export const joinEvents = [{
     name: 'ticket',
@@ -159,81 +159,81 @@ export const joinEvents = [{
  */
 export const receivedEvents = [{
     name: 'customer-updated',
-    onReceive: function (json: socketEventTypes.CustomerUpdatedEvent) {
-        reduxStore.dispatch(ticketActions.mergeCustomer(json.customer))
+    onReceive: function (json: Object) {
+        return reduxStore.dispatch(ticketActions.mergeCustomer(json.customer))
     },
 }, {
     name: 'user-location-updated',
-    onReceive: function (json: socketEventTypes.UserLocationUpdatedEvent) {
-        reduxStore.dispatch(agentsActions.setAgentsLocations(json.locations))
+    onReceive: function (json: Object) {
+        return reduxStore.dispatch(agentsActions.setAgentsLocations(json.locations))
     },
 }, {
     name: 'user-typing-status-updated',
-    onReceive: function (json: socketEventTypes.UserTypingStatusUpdatedEvent) {
-        reduxStore.dispatch(agentsActions.setAgentsTypingStatuses(json.locations))
+    onReceive: function (json: Object) {
+        return reduxStore.dispatch(agentsActions.setAgentsTypingStatuses(json.locations))
     },
 }, {
     name: 'ticket-updated',
-    onReceive: function (json: socketEventTypes.TicketUpdatedEvent) {
+    onReceive: function (json: Object) {
         if (isCurrentlyOnTicket(json.ticket.id)) {
             this.send(socketConstants.TICKET_VIEWED, json.ticket.id)
         }
 
-        reduxStore.dispatch(ticketActions.mergeTicket(json.ticket))
+        return reduxStore.dispatch(ticketActions.mergeTicket(json.ticket))
     },
 }, {
     name: 'ticket-message-created',
-    onReceive: function (json: socketEventTypes.TicketMessageCreatedEvent) {
+    onReceive: function (json: Object) {
         if (isCurrentlyOnTicket(json.ticket.id)) {
             this.send(socketConstants.TICKET_VIEWED, json.ticket.id)
         }
 
-        reduxStore.dispatch(ticketActions.mergeTicket(json.ticket))
+        return reduxStore.dispatch(ticketActions.mergeTicket(json.ticket))
     },
 }, {
     name: 'ticket-message-action-failed',
-    onReceive: function (json: socketEventTypes.TicketMessageActionFailedEvent) {
-        reduxStore.dispatch(ticketActions.handleMessageActionError(json.ticket_id))
+    onReceive: function (json: Object) {
+        return reduxStore.dispatch(ticketActions.handleMessageActionError(json.ticket_id))
     },
 }, {
     name: 'ticket-message-failed',
-    onReceive: function (json: socketEventTypes.TicketMessageFailedEvent) {
-        reduxStore.dispatch(ticketActions.handleMessageError(json.ticket_id))
+    onReceive: function (json: Object) {
+        return reduxStore.dispatch(ticketActions.handleMessageError(json.ticket_id))
     },
 }, {
     name: 'action-executed',
-    onReceive: function (json: socketEventTypes.ActionExecutedEvent) {
-        reduxStore.dispatch(infobarActions.handleExecutedAction(json))
+    onReceive: function (json: Object) {
+        return reduxStore.dispatch(infobarActions.handleExecutedAction(json))
     },
 }, {
     name: 'view-created',
-    onReceive: function (json: socketEventTypes.ViewCreatedEvent) {
-        reduxStore.dispatch({
+    onReceive: function (json: Object) {
+        return reduxStore.dispatch({
             type: viewsConstants.CREATE_VIEW_SUCCESS,
             resp: json.view,
         })
     },
 }, {
     name: 'view-updated',
-    onReceive: function (json: socketEventTypes.ViewUpdatedEvent) {
-        reduxStore.dispatch({
+    onReceive: function (json: Object) {
+        return reduxStore.dispatch({
             type: viewsConstants.UPDATE_VIEW_SUCCESS,
             resp: json.view,
         })
     },
 }, {
     name: 'view-deleted',
-    onReceive: function (json: socketEventTypes.ViewDeletedEvent) {
-        reduxStore.dispatch(viewsActions.deleteViewSuccess(json.view.id))
+    onReceive: function (json: Object) {
+        return reduxStore.dispatch(viewsActions.deleteViewSuccess(json.view.id))
     },
 }, {
     name: 'views-count-updated',
-    onReceive: function (json: socketEventTypes.ViewCountUpdatedEvent) {
-        reduxStore.dispatch(viewsActions.handleViewsCount(json.counts))
+    onReceive: function (json: Object) {
+        return reduxStore.dispatch(viewsActions.handleViewsCount(json.counts))
     },
 }, {
     name: socketConstants.ACCOUNT_UPDATED,
-    onReceive: function (json: socketEventTypes.AccountUpdatedEvent) {
+    onReceive: function (json: Object) {
         const state = reduxStore.getState()
         const oldTicketAssignmentSetting = currentAccountSelectors.getTicketAssignmentSettings(state)
 
@@ -268,7 +268,7 @@ export const receivedEvents = [{
             chatsActions.fetchChatsThrottled(reduxStore.dispatch)
         }
 
-        reduxStore.dispatch({
+        return reduxStore.dispatch({
             type: currentAccountConstants.UPDATE_ACCOUNT_SUCCESS,
             resp: account,
         })
@@ -276,11 +276,11 @@ export const receivedEvents = [{
 }, {
     name: socketConstants.SID_UPDATED,
     onReceive: function () {
-        this.send(socketConstants.SID_UPDATED)
+        return this.send(socketConstants.SID_UPDATED)
     },
 }, {
     name: socketConstants.TICKET_MESSAGE_CHAT_CREATED,
-    onReceive: function(json: socketEventTypes.TicketMessageChatCreatedEvent) {
+    onReceive: function(json: {data: RecentChatTicket}) {
         const ticket = json.data
         // send browser notifications only for new customer messages
         const shouldNotify = !ticket.last_message_from_agent
@@ -300,8 +300,7 @@ export const receivedEvents = [{
         if (
             shouldTicketBeDisplayedInRecentChats(ticket, ticketAssignmentSetting, currentUser, currentUserIsAvailable)
         ) {
-            reduxStore.dispatch(chatsActions.addChat(ticket, shouldNotify))
-            return
+            return reduxStore.dispatch(chatsActions.addChat(ticket, shouldNotify))
         }
 
         reduxStore.dispatch(chatsActions.removeChat(ticket.id))
@@ -314,7 +313,7 @@ export const receivedEvents = [{
     }
 }, {
     name: socketConstants.TICKET_CHAT_UPDATED,
-    onReceive: function(json: socketEventTypes.TicketChatUpdatedEvent) {
+    onReceive: function(json: {data: RecentChatTicket}) {
         const ticket = json.data
         const state = reduxStore.getState()
         const {currentUser} = state
@@ -325,8 +324,7 @@ export const receivedEvents = [{
         if (
             shouldTicketBeDisplayedInRecentChats(ticket, ticketAssignmentSetting, currentUser, currentUserIsAvailable)
         ) {
-            reduxStore.dispatch(chatsActions.addChat(ticket, false))
-            return
+            return reduxStore.dispatch(chatsActions.addChat(ticket, false))
         }
 
         reduxStore.dispatch(chatsActions.removeChat(ticket.id))
@@ -339,12 +337,12 @@ export const receivedEvents = [{
     }
 }, {
     name: socketConstants.EMAIL_INTEGRATION_VERIFIED,
-    onReceive: function(json: socketEventTypes.EmailIntegrationVerifiedEvent) {
+    onReceive: function(json: Object) {
         integrationsActions.onVerify(reduxStore.dispatch, json.integration_id)
     }
 }, {
     name: socketConstants.FACEBOOK_INTEGRATIONS_RECONNECTED,
-    onReceive: function({ event }: socketEventTypes.FacebookIntegrationsReconnected) {
+    onReceive: function({ event }: Object) {
         reduxStore.dispatch(integrationsActions.fetchIntegrations())
 
         reduxStore.dispatch(notificationsActions.notify({

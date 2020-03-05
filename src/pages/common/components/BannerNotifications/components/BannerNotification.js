@@ -1,18 +1,18 @@
-// @flow
-import React, {Component, type Node} from 'react'
+import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import classNames from 'classnames'
 
-type Props = {
-    id: string | number,
-    status: 'info' | 'success' | 'warning' | 'error',
-    onClick?: () => void,
-    message: string | Node,
-    dismissible: boolean,
-    allowHtml: boolean,
-    hide: (string | number) => void
-}
+class BannerNotification extends Component {
+    static propTypes = {
+        id: PropTypes.number.isRequired,
+        status: PropTypes.oneOf(['info', 'success', 'warning', 'error']),
+        onClick: PropTypes.func,
+        message: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
+        dismissible: PropTypes.bool.isRequired,
+        allowHtml: PropTypes.bool.isRequired,
+        hide: PropTypes.func.isRequired
+    }
 
-class BannerNotification extends Component<Props> {
     static defaultProps = {
         allowHtml: true,
         dismissible: true
