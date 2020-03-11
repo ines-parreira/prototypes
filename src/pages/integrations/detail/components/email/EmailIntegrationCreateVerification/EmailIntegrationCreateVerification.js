@@ -75,7 +75,7 @@ export class EmailIntegrationCreateVerification extends React.Component<Props, S
                     <i className="material-icons md-spin mr-2">
                         autorenew
                     </i>
-                    We're waiting to receive your verification email.
+                    We're waiting to receive your verification email on {integration.getIn(['meta', 'address'])}.
                 </Alert>
                 <p>
                     If you haven't set up the forwarding yet, you'll find the instructions{' '}
