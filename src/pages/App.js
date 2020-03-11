@@ -10,7 +10,6 @@ import NotificationsSystem from 'reapop'
 import '../../css/main.less'
 import pollingManager from '../services/pollingManager'
 import shortcutManager from '../services/shortcutManager'
-import socketManager from '../services/socketManager'
 import userActivityManager from '../services/userActivityManager'
 import * as currentAccountActions from '../state/currentAccount/actions'
 import * as layoutActions from '../state/layout/actions'
@@ -88,7 +87,6 @@ class App extends React.Component<Props> {
 
     componentWillUnmount() {
         shortcutManager.unbind('App')
-        socketManager.disconnect()
         pollingManager.stop()
     }
 

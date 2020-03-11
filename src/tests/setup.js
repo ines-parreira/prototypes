@@ -73,6 +73,30 @@ class mockPushJS {
     }
 }
 
+
+class MockSharedWorker {
+    port = {
+        start: jest.fn(),
+        postMessage: jest.fn()
+    }
+}
+
+window.SharedWorker = MockSharedWorker
+
+
+class MockBroadcastChannel {
+    addEventListener = jest.fn()
+    postMessage = jest.fn()
+    constructorSpy = jest.fn()
+
+    constructor(...args) {
+        this.constructorSpy(...args)
+    }
+}
+
+window.BroadcastChannel = MockBroadcastChannel
+
+
 jest.mock('push.js', () => {
     return new mockPushJS
 })

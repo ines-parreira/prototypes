@@ -20,8 +20,9 @@
     "test:ci:cover": "jest --coverage --no-cache --ci",
     "dll": "webpack --env.dll",
     "postinstall": "run-s dll",
-    "build": "(export NODE_ENV=production; run-s dll; webpack)",
-    "serve": "webpack-dev-server --progress --debug",
+    "build": "(export NODE_ENV=production; run-s dll; webpack; webpack --config webpack.sharedWorker.config.js)",
+    "serve": "webpack --config webpack.sharedWorker.config.js; webpack-dev-server --progress --debug",
+    "serve:sharedWorker": "webpack -w --config webpack.sharedWorker.config.js",
     "uglify-file": "terser --compress --mangle --"
   },
   "author": "Alex Plugaru <alex@gorgias.com>",
@@ -87,7 +88,7 @@
     "sanitize-html": "1.14.1",
     "scroll-into-view-if-needed": "2.2.20",
     "slick-carousel": "1.6.0",
-    "socket.io-client": "1.7.4",
+    "socket.io-client": "2.3.0",
     "sortablejs": "gorgias/Sortable",
     "urlsafe-base64": "1.0.0"
   },

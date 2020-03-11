@@ -1,9 +1,16 @@
+// @flow
 import React from 'react'
-import PropTypes from 'prop-types'
+import {connect} from 'react-redux'
+import {removeNotification as hide} from 'reapop'
 
 import BannerNotification from './BannerNotification'
 
-const BannerNotifications = ({notifications = [], hide}) => (
+type Props = {
+    notifications: Array<*>,
+    hide: (number | string) => void
+}
+
+const BannerNotifications = ({notifications = [], hide}: Props) => (
     <div>
         {notifications.map((notification) => (
             <BannerNotification
@@ -15,9 +22,4 @@ const BannerNotifications = ({notifications = [], hide}) => (
     </div>
 )
 
-BannerNotifications.propTypes = {
-    notifications: PropTypes.array.isRequired,
-    hide: PropTypes.func.isRequired
-}
-
-export default BannerNotifications
+export default connect(null, {hide})(BannerNotifications)
