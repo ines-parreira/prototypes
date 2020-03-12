@@ -210,6 +210,31 @@ describe('Event component', () => {
         expect(component).toMatchSnapshot()
     })
 
+    it('should display correctly a successful event for a Shopify Order action with custom payload', () => {
+        const event = fromJS({
+            ...baseEventFixture,
+            data: {
+                action_name: 'shopifyCancelOrder',
+                integration_id: shopifyIntegrationId,
+                payload: {
+                    order_id: orderId,
+                    payload: {foo: 'bar'},
+                },
+                status: 'success'
+            }
+        })
+
+        const component = shallow(
+            <Event
+                store={store}
+                event={event}
+                isLast={false}
+            />
+        ).dive()
+
+        expect(component).toMatchSnapshot()
+    })
+
     it('should display correctly a failed event for a Shopify Order action', () => {
         const event = fromJS({
             ...baseEventFixture,

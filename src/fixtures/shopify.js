@@ -60,7 +60,27 @@ export const integrationDataItemProductFixture = (
     deleted_datetime: null,
 })
 
-export const shopifyOrderFixture = (): Shopify.Order => ({
+export const shopifyPriceSetFixture = (
+    {
+        amount = '1.00',
+        currencyCode = 'USD',
+    } = {}
+): Shopify.PriceSet => ({
+    shop_money: {
+        amount,
+        currency_code: currencyCode,
+    },
+    presentment_money: {
+        amount,
+        currency_code: currencyCode,
+    },
+})
+
+export const shopifyOrderFixture = (
+    {
+        shippingLines = [],
+    } = {}
+): Shopify.Order => ({
     id: 1894175539223,
     name: '#1684',
     note: 'ahahah??',
@@ -127,16 +147,7 @@ export const shopifyOrderFixture = (): Shopify.Order => ({
             rate: 0.2,
             price: '1.00',
             title: 'TVA',
-            price_set: {
-                shop_money: {
-                    amount: '1.0',
-                    currency_code: 'USD'
-                },
-                presentment_money: {
-                    amount: '1.0',
-                    currency_code: 'USD'
-                }
-            }
+            price_set: shopifyPriceSetFixture({amount: '1.0'}),
         }
     ],
     total_tax: '1.00',
@@ -155,31 +166,13 @@ export const shopifyOrderFixture = (): Shopify.Order => ({
             taxable: true,
             quantity: 1,
             gift_card: false,
-            price_set: {
-                shop_money: {
-                    amount: '1.0',
-                    currency_code: 'USD'
-                },
-                presentment_money: {
-                    amount: '1.0',
-                    currency_code: 'USD'
-                }
-            },
+            price_set: shopifyPriceSetFixture({amount: '1.0'}),
             tax_lines: [
                 {
                     rate: 0.2,
                     price: '0.20',
                     title: 'TVA',
-                    price_set: {
-                        shop_money: {
-                            amount: '0.2',
-                            currency_code: 'USD'
-                        },
-                        presentment_money: {
-                            amount: '0.2',
-                            currency_code: 'USD'
-                        }
-                    }
+                    price_set: shopifyPriceSetFixture({amount: '0.2'}),
                 }
             ],
             product_id: 8345093387,
@@ -190,16 +183,7 @@ export const shopifyOrderFixture = (): Shopify.Order => ({
             total_discount: '0.00',
             requires_shipping: true,
             fulfillment_status: null,
-            total_discount_set: {
-                shop_money: {
-                    amount: '0.0',
-                    currency_code: 'USD'
-                },
-                presentment_money: {
-                    amount: '0.0',
-                    currency_code: 'USD'
-                }
-            },
+            total_discount_set: shopifyPriceSetFixture({amount: '0.0'}),
             fulfillment_service: 'manual',
             admin_graphql_api_id: 'gid://shopify/LineItem/4193100136471',
             discount_allocations: [],
@@ -217,46 +201,19 @@ export const shopifyOrderFixture = (): Shopify.Order => ({
             taxable: true,
             quantity: 4,
             gift_card: false,
-            price_set: {
-                shop_money: {
-                    amount: '1.0',
-                    currency_code: 'USD'
-                },
-                presentment_money: {
-                    amount: '1.0',
-                    currency_code: 'USD'
-                }
-            },
+            price_set: shopifyPriceSetFixture({amount: '1.0'}),
             tax_lines: [
                 {
                     rate: 0.2,
                     price: '0.60',
                     title: 'TVA',
-                    price_set: {
-                        shop_money: {
-                            amount: '0.6',
-                            currency_code: 'USD'
-                        },
-                        presentment_money: {
-                            amount: '0.6',
-                            currency_code: 'USD'
-                        }
-                    }
+                    price_set: shopifyPriceSetFixture({amount: '0.6'}),
                 },
                 {
                     rate: 0.2,
                     price: '0.20',
                     title: 'TVA',
-                    price_set: {
-                        shop_money: {
-                            amount: '0.2',
-                            currency_code: 'USD'
-                        },
-                        presentment_money: {
-                            amount: '0.2',
-                            currency_code: 'USD'
-                        }
-                    }
+                    price_set: shopifyPriceSetFixture({amount: '0.2'}),
                 }
             ],
             product_id: 8345093387,
@@ -267,16 +224,7 @@ export const shopifyOrderFixture = (): Shopify.Order => ({
             total_discount: '0.00',
             requires_shipping: true,
             fulfillment_status: null,
-            total_discount_set: {
-                shop_money: {
-                    amount: '0.0',
-                    currency_code: 'USD'
-                },
-                presentment_money: {
-                    amount: '0.0',
-                    currency_code: 'USD'
-                }
-            },
+            total_discount_set: shopifyPriceSetFixture({amount: '0.0'}),
             fulfillment_service: 'manual',
             admin_graphql_api_id: 'gid://shopify/LineItem/4193100169239',
             discount_allocations: [],
@@ -298,20 +246,11 @@ export const shopifyOrderFixture = (): Shopify.Order => ({
     total_weight: 50,
     cancel_reason: null,
     contact_email: 'apu@gorgias.com',
-    total_tax_set: {
-        shop_money: {
-            amount: '1.00',
-            currency_code: 'USD'
-        },
-        presentment_money: {
-            amount: '1.00',
-            currency_code: 'USD'
-        }
-    },
+    total_tax_set: shopifyPriceSetFixture(),
     checkout_token: null,
     discount_codes: [],
     referring_site: null,
-    shipping_lines: [],
+    shipping_lines: shippingLines,
     subtotal_price: '5.00',
     taxes_included: false,
     billing_address: {
@@ -334,16 +273,7 @@ export const shopifyOrderFixture = (): Shopify.Order => ({
     customer_locale: null,
     note_attributes: [],
     total_discounts: '0.00',
-    total_price_set: {
-        shop_money: {
-            amount: '6.00',
-            currency_code: 'USD'
-        },
-        presentment_money: {
-            amount: '6.00',
-            currency_code: 'USD'
-        }
-    },
+    total_price_set: shopifyPriceSetFixture({amount: '6.00'}),
     total_price_usd: '6.00',
     financial_status: 'partially_paid',
     landing_site_ref: null,
@@ -368,27 +298,9 @@ export const shopifyOrderFixture = (): Shopify.Order => ({
     processing_method: 'manual',
     source_identifier: null,
     fulfillment_status: null,
-    subtotal_price_set: {
-        shop_money: {
-            amount: '5.00',
-            currency_code: 'USD'
-        },
-        presentment_money: {
-            amount: '5.00',
-            currency_code: 'USD'
-        }
-    },
+    subtotal_price_set: shopifyPriceSetFixture({amount: '5.00'}),
     total_tip_received: '0.0',
-    total_discounts_set: {
-        shop_money: {
-            amount: '0.00',
-            currency_code: 'USD'
-        },
-        presentment_money: {
-            amount: '0.00',
-            currency_code: 'USD'
-        }
-    },
+    total_discounts_set: shopifyPriceSetFixture({amount: '0.00'}),
     admin_graphql_api_id: 'gid://shopify/Order/1894175539223',
     presentment_currency: 'USD',
     discount_applications: [],
@@ -397,26 +309,8 @@ export const shopifyOrderFixture = (): Shopify.Order => ({
     ],
     total_line_items_price: '5.00',
     buyer_accepts_marketing: false,
-    total_shipping_price_set: {
-        shop_money: {
-            amount: '0.00',
-            currency_code: 'USD'
-        },
-        presentment_money: {
-            amount: '0.00',
-            currency_code: 'USD'
-        }
-    },
-    total_line_items_price_set: {
-        shop_money: {
-            amount: '5.00',
-            currency_code: 'USD'
-        },
-        presentment_money: {
-            amount: '5.00',
-            currency_code: 'USD'
-        }
-    }
+    total_shipping_price_set: shopifyPriceSetFixture({amount: '0.00'}),
+    total_line_items_price_set: shopifyPriceSetFixture({amount: '5.00'}),
 })
 
 export const shopifyDraftOrderPayloadFixture = (): Shopify.DraftOrder => ({
@@ -475,7 +369,8 @@ export const shopifyDraftOrderPayloadFixture = (): Shopify.DraftOrder => ({
     tags: null,
     customer: {
         id: 2721145061399
-    }
+    },
+    currency: 'USD',
 })
 
 export const shopifyLineItemFixture = (
@@ -487,6 +382,7 @@ export const shopifyLineItemFixture = (
         sku = '0987654321-1',
         variantTitle = 'Red / A',
         price = '1.00',
+        appliedDiscount = null,
     } = {}
 ): Shopify.LineItem => ({
     taxable: true,
@@ -500,6 +396,7 @@ export const shopifyLineItemFixture = (
     sku,
     variant_title: variantTitle,
     requires_shipping: true,
+    applied_discount: appliedDiscount,
 })
 
 export const shopifyDraftOrderFixture = (): Shopify.DraftOrder => ({
@@ -679,10 +576,26 @@ export const shopifyAppliedDiscountFixture = (
     value_type: valueType,
 })
 
-export const shopifyShippingLineFixture = (): Shopify.ShippingLine => ({
+export const shopifyShippingLineFixture = (
+    {
+        price = '12.00',
+        priceSet = shopifyPriceSetFixture({amount: price}),
+    } = {}
+): Shopify.ShippingLine => ({
     code: 'custom',
-    price: '12.00',
-    title: 'Test'
+    price,
+    title: 'Test',
+    price_set: priceSet,
+})
+
+export const shopifyOrderAdjustmentFixture = (
+    {
+        kind = 'shipping_refund',
+        amount = '-5.00',
+    } = {}
+): Shopify.OrderAdjustment => ({
+    kind,
+    amount,
 })
 
 export const shopifyCustomLineItemFixture = (): Shopify.LineItem => ({
@@ -709,4 +622,104 @@ export const shopifyTaxLineFixture = (
 export const shopifyInvoicePayloadFixture = (): Shopify.DraftOrderInvoice => ({
     to: 'foo@bar.xyz',
     custom_message: 'foo bar',
+})
+
+export const shopifyDiscountAllocationFixture = (
+    {
+        amount = '0.50',
+    } = {}
+): Shopify.DiscountAllocation => ({
+    amount,
+    discount_application_index: 0,
+})
+
+export const shopifyDiscountApplicationFixture = (
+    {
+        value = '50.00',
+        type = 'percentage',
+    } = {}
+): Shopify.DiscountApplication => ({
+    type: 'manual',
+    title: '',
+    value,
+    value_type: type,
+    description: '',
+    target_type: 'line_item',
+    target_selection: 'explicit',
+    allocation_method: 'one',
+})
+
+export const shopifyRefundFixture = (
+    {
+        refundLineItems = [],
+        orderAdjustments = [],
+    } = {}
+): Shopify.Refund => ({
+    refund_line_items: refundLineItems,
+    order_adjustments: orderAdjustments,
+})
+
+export const shopifyRefundLineItemFixture = (): Shopify.RefundLineItem => ({
+    id: 139749457943,
+    quantity: 1,
+    subtotal: 1.0,
+    total_tax: 0.2,
+    location_id: 12519883,
+    line_item_id: 4193100136471,
+    restock_type: 'cancel',
+})
+
+export const shopifyCancelOrderPayloadFixture = (): Shopify.CancelOrderPayload => ({
+    reason: 'customer',
+    email: true,
+    refund: {
+        currency: 'USD',
+        restock: true,
+        notify: false,
+        refund_line_items: [
+            {
+                line_item_id: 4193100136471,
+                restock_type: 'cancel',
+                quantity: 1
+            }
+        ],
+        shipping: {
+            amount: '0.00'
+        }
+    },
+    amount: '1.00'
+})
+
+export const shopifySuggestedRefundFixture = (): Shopify.Refund => ({
+    shipping: {
+        amount: '0.00',
+        tax: '0.00',
+        maximum_refundable: '0.00'
+    },
+    refund_line_items: [
+        {
+            subtotal: '1.00',
+            location_id: 123,
+            price: '1.00',
+            discounted_price: '1.00',
+            quantity: 1,
+            discounted_total_price: '1.00',
+            total_tax: '0.20',
+            total_cart_discount_amount: '0.00',
+            restock_type: 'no_restock',
+            line_item_id: 4193100136471,
+        }
+    ],
+    transactions: [
+        {
+            order_id: 1894175539223,
+            kind: 'suggested_refund',
+            gateway: 'manual',
+            parent_id: 2521452118039,
+            amount: '1.20',
+            currency: 'USD',
+            maximum_refundable: '1.20'
+        }
+    ],
+    currency: 'USD',
 })

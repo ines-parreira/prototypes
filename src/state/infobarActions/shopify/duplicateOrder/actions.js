@@ -4,18 +4,19 @@ import {fromJS, type Record} from 'immutable'
 import _debounce from 'lodash/debounce'
 import {type AxiosResponse} from 'axios'
 
-import {ShopifyAction} from '../../../../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/Order'
+import {
+    ShopifyAction
+} from '../../../../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/Order'
 import {INTEGRATION_DATA_ITEM_TYPE_PRODUCT, SHOPIFY_INTEGRATION_TYPE} from '../../../../constants/integration'
 import {
     addCustomLineItem,
     addVariant,
-    formatPrice,
-    getDiscountAmount,
-    getTotalLineItemsPrice,
-    initDraftOrderPayload,
-    refreshAppliedDiscounts
-} from '../../../../business/shopify/order'
+    initDraftOrderPayload
+} from '../../../../business/shopify/draftOrder'
+import {getDiscountAmount, refreshAppliedDiscounts} from '../../../../business/shopify/discount'
+import {formatPercentage, formatPrice} from '../../../../business/shopify/number'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
+import {getDraftOrderTotalLineItemsPrice} from '../../../../business/shopify/lineItem'
 import localStorageManager from '../../../../services/localStorageManager'
 import type {IntegrationDataItem} from '../../../../models/integration'
 import * as Shopify from '../../../../constants/integrations/shopify'
@@ -79,20 +80,22 @@ export const getDuplicateOrderPayload = (
     payload: Record<$Shape<Shopify.DraftOrder>>
 ): Record<$Shape<Shopify.DraftOrder>> => {
     // Apply a 100% discount
-    const totalLineItemsPrice = getTotalLineItemsPrice(payload)
-    const value = formatPrice(100)
+    const totalLineItemsPrice = getDraftOrderTotalLineItemsPrice(payload)
+    const currency = payload.get('currency')
+    const value = formatPercentage(100)
     const type = 'percentage'
+    const amount = getDiscountAmount(totalLineItemsPrice, type, value)
 
     const appliedDiscount: Shopify.AppliedDiscount = fromJS({
         title: '',
         value,
         value_type: type,
-        amount: formatPrice(getDiscountAmount(totalLineItemsPrice, type, value)),
+        amount: formatPrice(amount, currency, true),
     })
 
     // Set shipping price to 0
     const shippingLine = !!payload.get('shipping_line')
-        ? payload.get('shipping_line').set('price', formatPrice(0))
+        ? payload.get('shipping_line').set('price', formatPrice(0, currency))
         : null
 
     return payload
@@ -100,17 +103,17 @@ export const getDuplicateOrderPayload = (
         .set('shipping_line', shippingLine)
 }
 
-export const onInit = (integrationId: number, oldOrder: Record<Shopify.Order>, onError: () => void) =>
+export const onInit = (integrationId: number, order: Record<Shopify.Order>, onError: () => void) =>
     async (dispatch: dispatchType) => {
         dispatch(setLoading(true, 'Fetching products...'))
 
-        const products = await loadProducts(integrationId, oldOrder)
-        const draftOrderPayload = initDraftOrderPayload(oldOrder, products)
+        const products = await loadProducts(integrationId, order)
+        const draftOrderPayload = initDraftOrderPayload(order, products)
         const defaultShippingLine = draftOrderPayload.get('shipping_line') || null
         const payload = getDuplicateOrderPayload(draftOrderPayload)
 
         segmentTracker.logEvent(segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_OPEN, {
-            orderId: oldOrder.get('id'),
+            orderId: order.get('id'),
         })
 
         return Promise.all([

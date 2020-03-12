@@ -11,7 +11,7 @@ import type {AuditLogEvent} from '../../models/event'
 import {TICKET_REOPENED} from '../../constants/event'
 import type {IntegrationDataItem} from '../../models/integration'
 import {INTEGRATION_DATA_ITEM_TYPE_PRODUCT, SHOPIFY_INTEGRATION_TYPE} from '../../constants/integration'
-import {shopifyInvoicePayloadFixture} from '../../fixtures/shopify'
+import {shopifyCancelOrderPayloadFixture, shopifyInvoicePayloadFixture} from '../../fixtures/shopify'
 
 describe('services', () => {
     describe('GorgiasApi', () => {
@@ -409,6 +409,22 @@ describe('services', () => {
                 await gorgiasApi.emailDraftOrderInvoice(integrationId, draftOrderId, invoicePayload)
 
                 expect(apiMock.history).toMatchSnapshot()
+            })
+        })
+
+        describe('calculateRefund()', () => {
+            it('should calculate refund for given draft order', async () => {
+                const orderId = 2
+                const expectedRefund = {foo: 'bar'}
+                const data = {'refund': expectedRefund}
+                apiMock.onPost(`/integrations/shopify/order/${orderId}/refunds/calculate/`).reply(200, data)
+
+                const gorgiasApi = new GorgiasApi()
+                const integrationId = 1
+                const payload = fromJS(shopifyCancelOrderPayloadFixture())
+                const refund = await gorgiasApi.calculateRefund(integrationId, orderId, payload)
+
+                expect(refund).toEqual(fromJS(expectedRefund))
             })
         })
     })

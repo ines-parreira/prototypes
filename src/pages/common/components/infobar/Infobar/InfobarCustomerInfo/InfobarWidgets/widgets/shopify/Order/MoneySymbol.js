@@ -12,21 +12,7 @@ type Props = {
  * `currencyCode` value is never render, it's the ID of a currency.
  */
 export default class ShopifyMoneySymbol extends React.PureComponent<Props> {
-    // Supported currencies on Shopify:
-    // https://help.shopify.com/en/manual/payments/shopify-payments/multi-currency#supported-currencies
-    static _SYMBOLS = {
-        AUD: 'A$',  // Australian dollar
-        CAD: 'C$',  // Canadian dollar
-        DKK: 'kr.', // Danish Krone
-        EUR: '€',   // Euro
-        HKD: 'HK$', // Hong Kong dollar
-        JPY: '¥',   // Japanese yen
-        NZD: 'NZ$', // New Zealand dollar
-        GBP: '£',   // Pound sterling (British pound)
-        SGD: 'S$',  // Singapore dollar
-        SEK: 'kr',  // Swedish krona
-        USD: '$',   // United States dollar
-    }
+    static _DEFAULT_SYMBOL = '$'
 
     static defaultProps = {
         short: false,
@@ -34,10 +20,18 @@ export default class ShopifyMoneySymbol extends React.PureComponent<Props> {
 
     render() {
         const {currencyCode, short} = this.props
-        const symbol = ShopifyMoneySymbol._SYMBOLS[currencyCode] || ShopifyMoneySymbol._SYMBOLS.USD
+        const formatter = new Intl.NumberFormat(window.navigator.language, {
+            style: 'currency',
+            currency: currencyCode,
+            currencyDisplay: 'symbol',
+        })
+        //$FlowFixMe
+        const parts = formatter.formatToParts(1)
+        const currencyPart = parts.find((part) => part.type === 'currency')
+        const symbol = currencyPart ? currencyPart.value : ShopifyMoneySymbol._DEFAULT_SYMBOL
 
-        return short && symbol.includes(ShopifyMoneySymbol._SYMBOLS.USD)
-            ? ShopifyMoneySymbol._SYMBOLS.USD
+        return short && symbol.includes(ShopifyMoneySymbol._DEFAULT_SYMBOL)
+            ? ShopifyMoneySymbol._DEFAULT_SYMBOL
             : symbol
     }
 }

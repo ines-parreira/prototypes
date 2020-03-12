@@ -90,7 +90,7 @@ export class CustomerNote extends React.Component<Props, State> {
                             })}
                             disabled={isLoading}
                             placeholder="This customer has no note."
-                            value={note}
+                            value={note || ''}
                             onChange={this._updateNote}
                             onBlur={this._submitNote}
                             rows={noteRowsCount > 2 ? noteRowsCount : 2}

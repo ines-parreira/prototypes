@@ -12,7 +12,7 @@ const analytics = window.analytics
 export const logEvent = (event, props = {}) => {
     devLog('Track Segment', event, props)
 
-    if (window.USER_IMPERSONATED || _isUndefined(analytics)) {
+    if (window.USER_IMPERSONATED || _isUndefined(analytics) || window.DEVELOPMENT) {
         return
     }
 
@@ -56,6 +56,9 @@ export const EVENTS = {
     PAYMENT_METHOD_ADD_CLICKED: 'payment-method-add-clicked',
     PAYMENT_METHOD_ADDED: 'payment-method-added',
     RECENT_ACTIVITY_CLICKED: 'recent-activity-clicked',
+    SHOPIFY_CANCEL_ORDER_CANCEL: 'shopify/cancel-order/cancel',
+    SHOPIFY_CANCEL_ORDER_OPEN: 'shopify/cancel-order/open',
+    SHOPIFY_CANCEL_ORDER_SUBMIT: 'shopify/cancel-order/submit',
     SHOPIFY_DUPLICATE_ORDER_CANCEL: 'shopify/duplicate-order/cancel',
     SHOPIFY_DUPLICATE_ORDER_CUSTOM_ITEM_POPOVER_CANCEL: 'shopify/duplicate-order/custom-item-popover/cancel',
     SHOPIFY_DUPLICATE_ORDER_CUSTOM_ITEM_POPOVER_OPEN: 'shopify/duplicate-order/custom-item-popover/open',

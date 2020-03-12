@@ -451,6 +451,7 @@ exports[`<DuplicateOrderModal/> render() should render as closed 1`] = `
   onEmailInvoice={[MockFunction]}
   onInit={[MockFunction]}
   onOpen={[MockFunction]}
+  onPayloadChange={[MockFunction]}
   onReset={[MockFunction]}
   onSubmit={[MockFunction]}
   payload={null}
@@ -919,6 +920,7 @@ exports[`<DuplicateOrderModal/> render() should render as open 1`] = `
   onEmailInvoice={[MockFunction]}
   onInit={[MockFunction]}
   onOpen={[MockFunction]}
+  onPayloadChange={[MockFunction]}
   onReset={[MockFunction]}
   onSubmit={[MockFunction]}
   payload={null}
@@ -1033,12 +1035,45 @@ exports[`<DuplicateOrderModalComponent/> render() should render as open, with in
     />
   </div>
   <div>
-    <Connect(OrderTableComponent)
+    <DraftOrderTable
       currencyCode="USD"
-      editable={true}
+      lineItems={
+        Immutable.List [
+          Immutable.Map {
+            "applied_discount": null,
+            "taxable": true,
+            "price": "1.00",
+            "quantity": 1,
+            "product_id": null,
+            "product_exists": false,
+            "properties": Immutable.List [],
+            "variant_id": null,
+            "title": "Acidulous candy",
+            "sku": "0987654321-1",
+            "variant_title": "Red / A",
+            "requires_shipping": true,
+          },
+          Immutable.Map {
+            "applied_discount": null,
+            "taxable": true,
+            "price": "1.00",
+            "quantity": 4,
+            "product_id": null,
+            "product_exists": false,
+            "properties": Immutable.List [],
+            "variant_id": null,
+            "title": "Acidulous candy",
+            "sku": "0987654321-2",
+            "variant_title": "Red / B",
+            "requires_shipping": true,
+          },
+        ]
+      }
+      onChange={[Function]}
+      products={Map {}}
       shopName="gorgiastest"
     />
-    <Connect(OrderFooterComponent)
+    <Connect(DuplicateOrderFooterComponent)
       currencyCode="USD"
       editable={true}
     />
@@ -1138,12 +1173,45 @@ exports[`<DuplicateOrderModalComponent/> render() should render as open, with or
     />
   </div>
   <div>
-    <Connect(OrderTableComponent)
+    <DraftOrderTable
       currencyCode="USD"
-      editable={true}
+      lineItems={
+        Immutable.List [
+          Immutable.Map {
+            "applied_discount": null,
+            "taxable": true,
+            "price": "1.00",
+            "quantity": 1,
+            "product_id": null,
+            "product_exists": false,
+            "properties": Immutable.List [],
+            "variant_id": null,
+            "title": "Acidulous candy",
+            "sku": "0987654321-1",
+            "variant_title": "Red / A",
+            "requires_shipping": true,
+          },
+          Immutable.Map {
+            "applied_discount": null,
+            "taxable": true,
+            "price": "1.00",
+            "quantity": 4,
+            "product_id": null,
+            "product_exists": false,
+            "properties": Immutable.List [],
+            "variant_id": null,
+            "title": "Acidulous candy",
+            "sku": "0987654321-2",
+            "variant_title": "Red / B",
+            "requires_shipping": true,
+          },
+        ]
+      }
+      onChange={[Function]}
+      products={Map {}}
       shopName="gorgiastest"
     />
-    <Connect(OrderFooterComponent)
+    <Connect(DuplicateOrderFooterComponent)
       currencyCode="USD"
       editable={true}
     />

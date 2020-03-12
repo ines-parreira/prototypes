@@ -11,6 +11,7 @@ import ActionButtonsGroup from '../../ActionButtonsGroup'
 import type {ActionType} from '../../types'
 
 import DuplicateOrderModal from './DuplicateOrderModal'
+import CancelOrderModal from './CancelOrderModal'
 import {ShopifyAction} from './constants'
 
 export default function OrderWidget() {
@@ -33,16 +34,17 @@ class AfterTitle extends React.Component<AfterTitleProps> {
         integrationId: PropTypes.number,
         isOrderCancelled: PropTypes.bool.isRequired,
         isOrderRefunded: PropTypes.bool.isRequired,
+        isOrderFulfilled: PropTypes.bool.isRequired,
+        isOrderPartiallyFulfilled: PropTypes.bool.isRequired,
     }
 
     _getActions = () => {
         const {source}: AfterTitleProps = this.props
         const {
             isOrderCancelled,
-            isOrderRefunded
-        }: {
-            isOrderCancelled: boolean,
-            isOrderRefunded: boolean
+            isOrderRefunded,
+            isOrderFulfilled,
+            isOrderPartiallyFulfilled,
         } = this.context
 
         const orderTotalPrice: number = parseFloat(source.get('total_price') || '0')
@@ -105,20 +107,12 @@ class AfterTitle extends React.Component<AfterTitleProps> {
                         value: ShopifyAction.CANCEL_ORDER,
                         label: 'Cancel order',
                         parameters: [
-                            {name: 'refund', type: 'checkbox', defaultValue: true, label: 'Refund order'},
-                            {name: 'restock', type: 'checkbox', defaultValue: true, label: 'Restock all items'},
+                            {name: 'order_id', type: 'hidden'},
+                            {name: 'payload', type: 'hidden'},
                         ]
                     }
                 ],
-                tooltip: 'This will cancel the order in Shopify.',
-                title: (
-                    <div>
-                        <i className="material-icons mr-1">
-                            block
-                        </i>
-                        Cancel order
-                    </div>
-                ),
+                title: 'Cancel order',
                 child: (
                     <div>
                         <i className="material-icons mr-1">
@@ -126,7 +120,12 @@ class AfterTitle extends React.Component<AfterTitleProps> {
                         </i>
                         Cancel
                     </div>
-                )
+                ),
+                modal: CancelOrderModal,
+                modalData: {
+                    actionName: ShopifyAction.CANCEL_ORDER,
+                    order: source,
+                },
             },
             {
                 key: 'duplicate',
@@ -160,7 +159,7 @@ class AfterTitle extends React.Component<AfterTitleProps> {
 
         const removed = []
 
-        if (isOrderCancelled) {
+        if (isOrderCancelled || isOrderFulfilled || isOrderPartiallyFulfilled) {
             removed.push('cancel')
         }
 
@@ -285,20 +284,25 @@ class Wrapper extends React.Component<WrapperProps> { // eslint-disable-line
         orderId: PropTypes.number,
         isOrderCancelled: PropTypes.bool.isRequired,
         isOrderRefunded: PropTypes.bool.isRequired,
+        isOrderFulfilled: PropTypes.bool.isRequired,
+        isOrderPartiallyFulfilled: PropTypes.bool.isRequired,
     }
 
     getChildContext() {
         const order = this.props.source || fromJS({})
 
         const isCancelled = !!order.get('cancelled_at')
-
         const isRefunded = order.get('financial_status') === 'refunded'
+        const isFulfilled = order.get('fulfillment_status') === 'fulfilled'
+        const isPartiallyFulfilled = order.get('fulfillment_status') === 'partial'
 
         return {
             order,
             orderId: order.get('id'),
             isOrderCancelled: isCancelled,
             isOrderRefunded: isRefunded,
+            isOrderFulfilled: isFulfilled,
+            isOrderPartiallyFulfilled: isPartiallyFulfilled,
         }
     }
 

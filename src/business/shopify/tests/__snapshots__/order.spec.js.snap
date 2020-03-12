@@ -1,562 +1,96 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`addCustomLineItem() should add the given line item to the given payload 1`] = `
+exports[`getFinalCancelOrderPayload() should return final cancel order payload 1`] = `
 Immutable.Map {
-  "shipping_address": Immutable.Map {
-    "zip": null,
-    "city": null,
-    "name": "Apu Nahasapeemapetilon",
-    "latitude": null,
-    "phone": null,
-    "longitude": null,
-    "province": null,
-    "last_name": "Nahasapeemapetilon",
-    "country_code": "FR",
-    "country": "France",
-    "first_name": "Apu",
-    "province_code": null,
-    "company": null,
-    "address1": null,
-    "address2": null,
-  },
-  "applied_discount": Immutable.Map {
-    "title": "",
-    "value": "100.00",
-    "value_type": "percentage",
-    "amount": "5.00",
-  },
-  "shipping_line": null,
-  "billing_address": Immutable.Map {
-    "zip": null,
-    "city": null,
-    "name": "Apu Nahasapeemapetilon",
-    "latitude": null,
-    "phone": null,
-    "longitude": null,
-    "province": null,
-    "last_name": "Nahasapeemapetilon",
-    "country_code": "FR",
-    "country": "France",
-    "first_name": "Apu",
-    "province_code": null,
-    "company": null,
-    "address1": null,
-    "address2": null,
-  },
-  "note": "ahahah??",
-  "tax_exempt": false,
-  "line_items": Immutable.List [
-    Immutable.Map {
-      "taxable": true,
-      "price": "1.00",
-      "quantity": 1,
-      "product_id": 8345093387,
-      "product_exists": true,
-      "properties": Immutable.List [],
-      "variant_id": 31128766316567,
-      "title": "Acidulous candy",
-      "sku": "0987654321-1",
-      "variant_title": "Red / A",
-      "requires_shipping": true,
+  "reason": "customer",
+  "email": true,
+  "refund": Immutable.Map {
+    "currency": "USD",
+    "shipping": Immutable.Map {
+      "amount": "0.00",
     },
-    Immutable.Map {
-      "taxable": true,
-      "price": "1.00",
-      "quantity": 4,
-      "product_id": 8345093387,
-      "product_exists": true,
-      "properties": Immutable.List [],
-      "variant_id": 31128766349335,
-      "title": "Acidulous candy",
-      "sku": "0987654321-2",
-      "variant_title": "Red / B",
-      "requires_shipping": true,
-    },
-    Immutable.Map {
-      "title": "Custom item",
-      "price": "1.99",
-      "quantity": 1,
-      "taxable": true,
-      "requires_shipping": true,
-      "product_exists": false,
-    },
-  ],
-  "tags": null,
-  "customer": Immutable.Map {
-    "id": 2721145061399,
+    "notify": false,
+    "refund_line_items": Immutable.List [
+      Immutable.Map {
+        "line_item_id": 4193100136471,
+        "restock_type": "cancel",
+        "quantity": 1,
+        "location_id": 123,
+      },
+    ],
+    "transactions": Immutable.List [
+      Immutable.Map {
+        "order_id": 1894175539223,
+        "kind": "refund",
+        "gateway": "manual",
+        "parent_id": 2521452118039,
+        "amount": "1.00",
+        "currency": "USD",
+        "maximum_refundable": "1.20",
+      },
+    ],
   },
 }
 `;
 
-exports[`addVariant() should add the given variant to the given payload, because variant is not in the payload yet 1`] = `
-Immutable.Map {
-  "shipping_address": Immutable.Map {
-    "zip": null,
-    "city": null,
-    "name": "Apu Nahasapeemapetilon",
-    "latitude": null,
-    "phone": null,
-    "longitude": null,
-    "province": null,
-    "last_name": "Nahasapeemapetilon",
-    "country_code": "FR",
-    "country": "France",
-    "first_name": "Apu",
-    "province_code": null,
-    "company": null,
-    "address1": null,
-    "address2": null,
+exports[`getLineItemQuantity() should return adjusted quantity because there is a refund 1`] = `0`;
+
+exports[`getLineItemQuantity() should return original quantity because there is no refund 1`] = `1`;
+
+exports[`getRefundableShippingAmount() should return adjusted amount because there is a refund 1`] = `7`;
+
+exports[`getRefundableShippingAmount() should return original amount because there is no refund 1`] = `12`;
+
+exports[`initCancelOrderLineItems() should return line items used to render the cancel order modal 1`] = `
+Immutable.List [
+  Immutable.Map {
+    "price": "1.00",
+    "quantity": 1,
+    "product_id": 8345093387,
+    "variant_id": 31128766316567,
+    "title": "Acidulous candy",
+    "id": 4193100136471,
+    "total_discount": "0.00",
+    "sku": "0987654321-1",
+    "variant_title": "Red / A",
   },
-  "applied_discount": Immutable.Map {
-    "title": "",
-    "value": "100.00",
-    "value_type": "percentage",
-    "amount": "5.00",
+  Immutable.Map {
+    "price": "1.00",
+    "quantity": 4,
+    "product_id": 8345093387,
+    "variant_id": 31128766349335,
+    "title": "Acidulous candy",
+    "id": 4193100169239,
+    "total_discount": "0.00",
+    "sku": "0987654321-2",
+    "variant_title": "Red / B",
   },
-  "shipping_line": null,
-  "billing_address": Immutable.Map {
-    "zip": null,
-    "city": null,
-    "name": "Apu Nahasapeemapetilon",
-    "latitude": null,
-    "phone": null,
-    "longitude": null,
-    "province": null,
-    "last_name": "Nahasapeemapetilon",
-    "country_code": "FR",
-    "country": "France",
-    "first_name": "Apu",
-    "province_code": null,
-    "company": null,
-    "address1": null,
-    "address2": null,
-  },
-  "note": "ahahah??",
-  "tax_exempt": false,
-  "line_items": Immutable.List [
-    Immutable.Map {
-      "taxable": true,
-      "price": "1.00",
-      "quantity": 1,
-      "product_id": 8345093387,
-      "product_exists": true,
-      "properties": Immutable.List [],
-      "variant_id": 31128766316567,
-      "title": "Acidulous candy",
-      "sku": "0987654321-1",
-      "variant_title": "Red / A",
-      "requires_shipping": true,
-    },
-    Immutable.Map {
-      "taxable": true,
-      "price": "1.00",
-      "quantity": 4,
-      "product_id": 8345093387,
-      "product_exists": true,
-      "properties": Immutable.List [],
-      "variant_id": 31128766349335,
-      "title": "Acidulous candy",
-      "sku": "0987654321-2",
-      "variant_title": "Red / B",
-      "requires_shipping": true,
-    },
-    Immutable.Map {
-      "taxable": true,
-      "price": "9.99",
-      "quantity": 1,
-      "product_id": 1,
-      "product_exists": true,
-      "properties": Immutable.List [],
-      "variant_id": 1,
-      "title": "Product 1",
-      "sku": "11111",
-      "variant_title": "Variant 1",
-      "requires_shipping": true,
-    },
-  ],
-  "tags": null,
-  "customer": Immutable.Map {
-    "id": 2721145061399,
-  },
-}
+]
 `;
 
-exports[`addVariant() should update quantity of the given variant in the given payload, because variant is already in the payload 1`] = `
+exports[`initCancelOrderPayload() should return cancel order payload 1`] = `
 Immutable.Map {
-  "shipping_address": Immutable.Map {
-    "zip": null,
-    "city": null,
-    "name": "Apu Nahasapeemapetilon",
-    "latitude": null,
-    "phone": null,
-    "longitude": null,
-    "province": null,
-    "last_name": "Nahasapeemapetilon",
-    "country_code": "FR",
-    "country": "France",
-    "first_name": "Apu",
-    "province_code": null,
-    "company": null,
-    "address1": null,
-    "address2": null,
-  },
-  "applied_discount": Immutable.Map {
-    "title": "",
-    "value": "100.00",
-    "value_type": "percentage",
-    "amount": "5.00",
-  },
-  "shipping_line": null,
-  "billing_address": Immutable.Map {
-    "zip": null,
-    "city": null,
-    "name": "Apu Nahasapeemapetilon",
-    "latitude": null,
-    "phone": null,
-    "longitude": null,
-    "province": null,
-    "last_name": "Nahasapeemapetilon",
-    "country_code": "FR",
-    "country": "France",
-    "first_name": "Apu",
-    "province_code": null,
-    "company": null,
-    "address1": null,
-    "address2": null,
-  },
-  "note": "ahahah??",
-  "tax_exempt": false,
-  "line_items": Immutable.List [
-    Immutable.Map {
-      "taxable": true,
-      "price": "1.00",
-      "quantity": 1,
-      "product_id": 8345093387,
-      "product_exists": true,
-      "properties": Immutable.List [],
-      "variant_id": 31128766316567,
-      "title": "Acidulous candy",
-      "sku": "0987654321-1",
-      "variant_title": "Red / A",
-      "requires_shipping": true,
+  "reason": "customer",
+  "email": true,
+  "refund": Immutable.Map {
+    "currency": "USD",
+    "restock": true,
+    "notify": false,
+    "refund_line_items": Immutable.List [
+      Immutable.Map {
+        "line_item_id": 4193100136471,
+        "restock_type": "cancel",
+        "quantity": 1,
+      },
+      Immutable.Map {
+        "line_item_id": 4193100169239,
+        "restock_type": "cancel",
+        "quantity": 4,
+      },
+    ],
+    "shipping": Immutable.Map {
+      "amount": "0.00",
     },
-    Immutable.Map {
-      "taxable": true,
-      "price": "1.00",
-      "quantity": 4,
-      "product_id": 8345093387,
-      "product_exists": true,
-      "properties": Immutable.List [],
-      "variant_id": 31128766349335,
-      "title": "Acidulous candy",
-      "sku": "0987654321-2",
-      "variant_title": "Red / B",
-      "requires_shipping": true,
-    },
-    Immutable.Map {
-      "taxable": true,
-      "price": "9.99",
-      "quantity": 2,
-      "product_id": 1,
-      "product_exists": true,
-      "properties": Immutable.List [],
-      "variant_id": 1,
-      "title": "Product 1",
-      "sku": "11111",
-      "variant_title": "Variant 1",
-      "requires_shipping": true,
-    },
-  ],
-  "tags": null,
-  "customer": Immutable.Map {
-    "id": 2721145061399,
-  },
-}
-`;
-
-exports[`applyDiscount() should apply the given discount to the given amount for fixed amount discount 1`] = `40`;
-
-exports[`applyDiscount() should apply the given discount to the given amount for percentage discount 1`] = `45`;
-
-exports[`getDiscountAmount() should return the discount amount for fixed amount discount 1`] = `10`;
-
-exports[`getDiscountAmount() should return the discount amount for percentage discount 1`] = `5`;
-
-exports[`getLineItemDiscountedPrice() should return the line item's discounted price when there is an applied discount 1`] = `0.5`;
-
-exports[`getLineItemDiscountedPrice() should return the line item's price when there is no applied discount 1`] = `1`;
-
-exports[`getLineItemTotal() should return the line item's total price 1`] = `2`;
-
-exports[`getSubtotal() should return the sub total when there is an applied discount 1`] = `0`;
-
-exports[`getSubtotal() should return the sub total when there is no applied discount 1`] = `5`;
-
-exports[`getTaxLineLabel() should return the correct label without rounding errors 1`] = `"TVA 7.25%"`;
-
-exports[`getTaxLineLabel() should return the label of the given tax line 1`] = `"TVA 20.00%"`;
-
-exports[`getTotal() should return the total of the given draft order when there are taxes 1`] = `8`;
-
-exports[`getTotal() should return the total of the given draft order when there is a shipping line 1`] = `17`;
-
-exports[`getTotal() should return the total of the given draft order when there is an applied discount 1`] = `0`;
-
-exports[`getTotal() should return the total of the given draft order when there is no applied discount 1`] = `5`;
-
-exports[`getTotalDiscountAmount() should return the total discount amount of given payload when there is an applied discount 1`] = `5`;
-
-exports[`getTotalDiscountAmount() should return the total discount amount of given payload when there is no applied discount 1`] = `0`;
-
-exports[`getTotalLineItemsPrice() should return all the line items' total price 1`] = `5`;
-
-exports[`getTotalLineItemsPrice() should return the correct value without rounding errors 1`] = `32.99`;
-
-exports[`getTotalShippingPrice() should return the total shipping price when it is not set 1`] = `0`;
-
-exports[`getTotalShippingPrice() should return the total shipping price when it is set 1`] = `12`;
-
-exports[`getTotalTaxes() should return the total taxes 1`] = `3`;
-
-exports[`initDraftOrderPayload() should return draft order payload for the given order 1`] = `
-Immutable.Map {
-  "line_items": Immutable.List [
-    Immutable.Map {
-      "taxable": true,
-      "price": "1.00",
-      "quantity": 1,
-      "product_id": 8345093387,
-      "product_exists": true,
-      "properties": Immutable.List [],
-      "variant_id": 31128766316567,
-      "title": "Acidulous candy",
-      "sku": "0987654321-1",
-      "variant_title": "Red / A",
-      "requires_shipping": true,
-    },
-    Immutable.Map {
-      "taxable": true,
-      "price": "1.00",
-      "quantity": 4,
-      "product_id": 8345093387,
-      "product_exists": true,
-      "properties": Immutable.List [],
-      "variant_id": 31128766349335,
-      "title": "Acidulous candy",
-      "sku": "0987654321-2",
-      "variant_title": "Red / B",
-      "requires_shipping": true,
-    },
-  ],
-  "note": "ahahah??",
-  "tags": null,
-  "shipping_line": null,
-  "tax_exempt": false,
-  "customer": Immutable.Map {
-    "id": 2721145061399,
-  },
-  "billing_address": Immutable.Map {
-    "zip": null,
-    "city": null,
-    "name": "Apu Nahasapeemapetilon",
-    "latitude": null,
-    "phone": null,
-    "longitude": null,
-    "province": null,
-    "last_name": "Nahasapeemapetilon",
-    "country_code": "FR",
-    "country": "France",
-    "first_name": "Apu",
-    "province_code": null,
-    "company": null,
-    "address1": null,
-    "address2": null,
-  },
-  "shipping_address": Immutable.Map {
-    "zip": null,
-    "city": null,
-    "name": "Apu Nahasapeemapetilon",
-    "latitude": null,
-    "phone": null,
-    "longitude": null,
-    "province": null,
-    "last_name": "Nahasapeemapetilon",
-    "country_code": "FR",
-    "country": "France",
-    "first_name": "Apu",
-    "province_code": null,
-    "company": null,
-    "address1": null,
-    "address2": null,
-  },
-}
-`;
-
-exports[`initDraftOrderPayload() should return draft order payload for the given order when products are missing 1`] = `
-Immutable.Map {
-  "line_items": Immutable.List [
-    Immutable.Map {
-      "taxable": true,
-      "price": "1.00",
-      "quantity": 1,
-      "product_id": null,
-      "product_exists": false,
-      "properties": Immutable.List [],
-      "variant_id": null,
-      "title": "Acidulous candy",
-      "sku": "0987654321-1",
-      "variant_title": "Red / A",
-      "requires_shipping": true,
-    },
-    Immutable.Map {
-      "taxable": true,
-      "price": "1.00",
-      "quantity": 4,
-      "product_id": null,
-      "product_exists": false,
-      "properties": Immutable.List [],
-      "variant_id": null,
-      "title": "Acidulous candy",
-      "sku": "0987654321-2",
-      "variant_title": "Red / B",
-      "requires_shipping": true,
-    },
-  ],
-  "note": "ahahah??",
-  "tags": null,
-  "shipping_line": null,
-  "tax_exempt": false,
-  "customer": Immutable.Map {
-    "id": 2721145061399,
-  },
-  "billing_address": Immutable.Map {
-    "zip": null,
-    "city": null,
-    "name": "Apu Nahasapeemapetilon",
-    "latitude": null,
-    "phone": null,
-    "longitude": null,
-    "province": null,
-    "last_name": "Nahasapeemapetilon",
-    "country_code": "FR",
-    "country": "France",
-    "first_name": "Apu",
-    "province_code": null,
-    "company": null,
-    "address1": null,
-    "address2": null,
-  },
-  "shipping_address": Immutable.Map {
-    "zip": null,
-    "city": null,
-    "name": "Apu Nahasapeemapetilon",
-    "latitude": null,
-    "phone": null,
-    "longitude": null,
-    "province": null,
-    "last_name": "Nahasapeemapetilon",
-    "country_code": "FR",
-    "country": "France",
-    "first_name": "Apu",
-    "province_code": null,
-    "company": null,
-    "address1": null,
-    "address2": null,
-  },
-}
-`;
-
-exports[`refreshAppliedDiscounts() should refresh the applied discount amount of the given payload 1`] = `6.99`;
-
-exports[`refreshAppliedDiscounts() should work without rounding errors 1`] = `
-Immutable.Map {
-  "shipping_address": Immutable.Map {
-    "zip": null,
-    "city": null,
-    "name": "Apu Nahasapeemapetilon",
-    "latitude": null,
-    "phone": null,
-    "longitude": null,
-    "province": null,
-    "last_name": "Nahasapeemapetilon",
-    "country_code": "FR",
-    "country": "France",
-    "first_name": "Apu",
-    "province_code": null,
-    "company": null,
-    "address1": null,
-    "address2": null,
-  },
-  "applied_discount": Immutable.Map {
-    "title": "",
-    "value": "100.00",
-    "value_type": "percentage",
-    "amount": "132.89",
-  },
-  "shipping_line": null,
-  "billing_address": Immutable.Map {
-    "zip": null,
-    "city": null,
-    "name": "Apu Nahasapeemapetilon",
-    "latitude": null,
-    "phone": null,
-    "longitude": null,
-    "province": null,
-    "last_name": "Nahasapeemapetilon",
-    "country_code": "FR",
-    "country": "France",
-    "first_name": "Apu",
-    "province_code": null,
-    "company": null,
-    "address1": null,
-    "address2": null,
-  },
-  "note": "ahahah??",
-  "tax_exempt": false,
-  "line_items": Immutable.List [
-    Immutable.Map {
-      "taxable": true,
-      "price": "98.99",
-      "quantity": 1,
-      "product_id": 8345093387,
-      "product_exists": true,
-      "properties": Immutable.List [],
-      "variant_id": 31128766316567,
-      "title": "Acidulous candy",
-      "sku": "0987654321-1",
-      "variant_title": "Red / A",
-      "requires_shipping": true,
-    },
-    Immutable.Map {
-      "taxable": true,
-      "price": "24.95",
-      "quantity": 1,
-      "product_id": 8345093387,
-      "product_exists": true,
-      "properties": Immutable.List [],
-      "variant_id": 31128766316567,
-      "title": "Acidulous candy",
-      "sku": "0987654321-1",
-      "variant_title": "Red / A",
-      "requires_shipping": true,
-    },
-    Immutable.Map {
-      "taxable": true,
-      "price": "8.95",
-      "quantity": 1,
-      "product_id": 8345093387,
-      "product_exists": true,
-      "properties": Immutable.List [],
-      "variant_id": 31128766316567,
-      "title": "Acidulous candy",
-      "sku": "0987654321-1",
-      "variant_title": "Red / A",
-      "requires_shipping": true,
-    },
-  ],
-  "tags": null,
-  "customer": Immutable.Map {
-    "id": 2721145061399,
   },
 }
 `;

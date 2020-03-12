@@ -25,18 +25,6 @@ describe('<AmountInput/>', () => {
             expect(component).toMatchSnapshot()
         })
 
-        it('should render with currency symbol on right', () => {
-            const component = shallow(
-                <AmountInput
-                    currencyCode="EUR"
-                    onChange={onChange}
-                    value="9.99"
-                />
-            )
-
-            expect(component).toMatchSnapshot()
-        })
-
         it('should render with percentage symbol on right', () => {
             const component = shallow(
                 <AmountInput
@@ -63,7 +51,39 @@ describe('<AmountInput/>', () => {
             )
 
             component.find({id: 'amount'}).simulate('change', {target: {value: '10'}})
-            expect(onChange).toHaveBeenCalledWith({target: {value: '10'}})
+            expect(onChange).toHaveBeenCalledWith('10')
+        })
+    })
+
+    describe('_onBlur()', () => {
+        it('should update value with formatted price', () => {
+            const component = shallow(
+                <AmountInput
+                    currencyCode="USD"
+                    onChange={onChange}
+                    value="9.99"
+                />
+            )
+
+            const target = {value: '10'}
+            component.find({id: 'amount'}).simulate('blur', {target})
+            expect(target.value).toBe('10.00')
+            expect(onChange).toHaveBeenCalledWith('10.00')
+        })
+
+        it('should update value with formatted price when input is empty', () => {
+            const component = shallow(
+                <AmountInput
+                    currencyCode="USD"
+                    onChange={onChange}
+                    value="9.99"
+                />
+            )
+
+            const target = {value: ''}
+            component.find({id: 'amount'}).simulate('blur', {target})
+            expect(target.value).toBe('0.00')
+            expect(onChange).toHaveBeenCalledWith('0.00')
         })
     })
 })

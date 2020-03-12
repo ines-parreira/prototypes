@@ -6,6 +6,8 @@ import {fromJS} from 'immutable'
 import classnames from 'classnames'
 import {Button, Card, CardBody} from 'reactstrap'
 import _capitalize from 'lodash/capitalize'
+import _isObject from 'lodash/isObject'
+import JSONPretty from 'react-json-pretty'
 
 import {getActionByName} from '../../../../config/actions'
 import {AgentLabel, DatetimeLabel} from '../../../common/utils/labels'
@@ -89,16 +91,25 @@ export default class Event extends React.Component {
                     <div>
                         {
                             payload.map((value, key) => {
-                                let stringValue = value
+                                let formattedValue
 
                                 // Necessary to display correctly booleans
-                                if (value !== undefined && value !== null) {
-                                    stringValue = value.toString()
+                                if (typeof value === 'boolean') {
+                                    formattedValue = value.toString()
+                                } else if (_isObject(value)) {
+                                    formattedValue = (
+                                        <JSONPretty
+                                            data={value.toJS()}
+                                            className="d-inline-flex"
+                                        />
+                                    )
+                                } else {
+                                    formattedValue = value
                                 }
 
                                 return (
                                     <div key={key}>
-                                        <b>{humanizeString(key)}</b>: {stringValue}
+                                        <b>{humanizeString(key)}</b>: {formattedValue}
                                     </div>
                                 )
                             }).toList()

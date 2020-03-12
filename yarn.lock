@@ -1191,11 +1191,6 @@
     universal-user-agent "^2.0.0"
     url-template "^2.0.8"
 
-"@shopify/theme-currency@3.0.3":
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/@shopify/theme-currency/-/theme-currency-3.0.3.tgz#01d284e692d1e13f2e086b93b26d80a3eca43636"
-  integrity sha512-2VFK9IDBlKdYjhEvEEJnI3XO2pAP4jlVt5rtEvY9WKaAaoo0aPRlfPav4zw1ymvJq87OacRaGry1753tYiEvsA==
-
 "@shopify/theme-images@3.0.3":
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/@shopify/theme-images/-/theme-images-3.0.3.tgz#b99cce4f95a65ff84371f717a5cc2821515345b5"
@@ -8362,6 +8357,13 @@ react-is@^16.8.6:
   version "16.8.6"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.6.tgz#5bbc1e2d29141c9fbdfed456343fe2bc430a6a16"
   integrity sha512-aUk3bHfZ2bRSVFFbbeVS4i+lNPZr3/WM5jT2J5omUVV1zzcs1nAaf3l51ctA5FFvCRbhrH0bdAsRRQddFJZPtA==
+
+react-json-pretty@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/react-json-pretty/-/react-json-pretty-2.2.0.tgz#9ba907d2b08d87e90456d87b6025feeceb8f63cf"
+  integrity sha512-3UMzlAXkJ4R8S4vmkRKtvJHTewG4/rn1Q18n0zqdu/ipZbUPLVZD+QwC7uVcD/IAY3s8iNVHlgR2dMzIUS0n1A==
+  dependencies:
+    prop-types "^15.6.2"
 
 react-paginate@6.3.0:
   version "6.3.0"

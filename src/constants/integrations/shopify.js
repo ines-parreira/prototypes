@@ -1,9 +1,11 @@
 // @flow
 
-// Symbol is displayed on right of amount for the following currencies (e.g. "1 €" instead of "$1")
+// List of non-fractional currencies (zero-decimal currencies). Source: https://stripe.com/docs/currencies#zero-decimal
 // Supported currencies on Shopify:
 // https://help.shopify.com/en/manual/payments/shopify-payments/multi-currency#supported-currencies
-export const RIGHT_SYMBOL_CURRENCY_CODES = ['DKK', 'EUR', 'SEK']
+export const NON_FRACTIONAL_CURRENCIES = [
+    'BIF', 'CLP', 'DJF', 'GNF', 'JPY', 'KMF', 'KRW', 'MGA', 'PYG', 'RWF', 'UGX', 'VND', 'VUV', 'XAF', 'XOF', 'XPF',
+]
 
 export const FinancialStatus = Object.freeze({
     PENDING: 'pending',
@@ -59,6 +61,7 @@ export type LineItem = {
     grams: number,
     tax_lines: TaxLine[],
     applied_discount?: AppliedDiscount,
+    total_discount?: string,
     name: string,
     properties: Properties[],
     custom?: boolean,
@@ -114,7 +117,7 @@ export type Customer = {
     accepts_marketing_updated_at: string,
     marketing_opt_in_level: 'single_opt_in' | 'confirmed_opt_in' | 'unknown' | null,
     admin_graphql_api_id: string,
-    default_address: Address
+    default_address: Address,
 }
 
 export type DraftOrder = {
@@ -152,9 +155,30 @@ export type PollingConfig = {
     location: string,
 }
 
+export type DiscountAllocation = {
+    amount: string,
+    discount_application_index: number,
+}
+
+export type OrderLineItem = LineItem & {
+    total_discounts: string,
+    discount_allocations: DiscountAllocation[],
+}
+
+export type DiscountApplication = {
+    type: 'manual' | 'script' | 'discount_code',
+    title: string,
+    description: string,
+    value: string,
+    value_type: DiscountType,
+    allocation_method: 'across' | 'each' | 'one',
+    target_selection: 'all' | 'entitled' | 'explicit',
+    target_type: 'line_item' | 'shipping_line',
+}
+
 export type Order = {
     id: number,
-    line_items: LineItem[],
+    line_items: OrderLineItem[],
     financial_status: FinancialStatusType,
     note: string,
     tags: string,
@@ -169,6 +193,8 @@ export type Order = {
     total_tax: string,
     total_price: string,
     taxes_included: boolean,
+    discount_applications: DiscountApplication[],
+    refunds: Refund[],
 }
 
 export type Image = {
@@ -206,4 +232,100 @@ export type DraftOrderInvoice = {
     bcc?: string[],
     subject?: string,
     custom_message?: string,
+}
+
+export type RefundLineItem = {
+    id: number,
+    quantity: number,
+    line_item_id: number,
+    location_id: number,
+    restock_type: 'legacy_restock' | 'no_restock' | 'cancel' | 'return',
+    subtotal: number,
+    total_tax: number,
+}
+
+export type Transaction = {
+    id: number,
+    order_id: number,
+    kind: 'authorization' | 'capture' | 'sale' | 'void' | 'refund' | 'suggested_refund',
+    gateway: string,
+    status: 'pending' | 'failure' | 'success' | 'error',
+    message: ?string,
+    created_at: string,
+    test: boolean,
+    authorization: string,
+    location_id: ?number,
+    user_id: ?number,
+    parent_id: number,
+    processed_at: string,
+    device_id: ?number,
+    receipt: ?{
+        testcase: boolean,
+        authorization: string,
+    },
+    error_code: 'incorrect_number' | 'invalid_number' | 'invalid_expiry_date' | 'invalid_cvc' | 'expired_card'
+        | 'incorrect_cvc' | 'incorrect_zip' | 'incorrect_address' | 'card_declined' | 'processing_error'
+        | 'call_issuer' | 'pick_up_card',
+    source_name: string,
+    amount: string,
+    currency: string,
+    admin_graphql_api_id: string,
+}
+
+export type OrderAdjustment = {
+    id: number,
+    order_id: number,
+    refund_id: number,
+    amount: string,
+    tax_amount: string,
+    kind: string,
+    reason: string,
+}
+
+export type Refund = {
+    id: number,
+    order_id: number,
+    created_at: string,
+    note: string,
+    user_id: number,
+    processed_at: string,
+    restock: boolean,
+    admin_graphql_api_id: string,
+    refund_line_items: RefundLineItem[],
+    transactions: Transaction[],
+    order_adjustments: OrderAdjustment[],
+}
+
+export type RefundOrderPayload = {
+    restock: boolean,
+    notify: boolean,
+    note?: string,
+    discrepancy_reason: 'restock' | 'damage' | 'customer' | 'other',
+    shipping?: {
+        full_refund?: boolean,
+        amount: string,
+        tax: string,
+        maximum_refundable: string,
+    },
+    refund_line_items: RefundLineItem[],
+    transactions?: Transaction[],
+    currency?: string,
+}
+
+export type CancelOrderPayload = {
+    amount?: string,
+    currency?: string,
+    reason?: 'customer' | 'inventory' | 'fraud' | 'declined' | 'other',
+    email?: boolean,
+    refund?: RefundOrderPayload,
+}
+
+export type PriceSet = {
+    shop_money: MoneyAmount,
+    presentment_money: MoneyAmount,
+}
+
+export type MoneyAmount = {
+    amount: string,
+    currency_code: string,
 }

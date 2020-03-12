@@ -305,4 +305,22 @@ export default class GorgiasApi {
             },
         })
     }
+
+    async calculateRefund(
+        integrationId: number,
+        orderId: number,
+        payload: Record<$Shape<Shopify.Refund>>
+    ): Promise<Record<Shopify.Refund>> {
+        const response = await this._api.post(
+            `/integrations/shopify/order/${orderId}/refunds/calculate/`,
+            payload.toJS(),
+            {
+                params: {
+                    integration_id: integrationId,
+                },
+            },
+        )
+
+        return fromJS(response.data.refund)
+    }
 }

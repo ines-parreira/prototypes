@@ -462,6 +462,15 @@ export const ACTION_TEMPLATES = [
                     return _get(shopifyIntegration, ['orders', '0', 'financial_status']) !== 'fulfilled'
                 },
                 error: 'The last order has already been fulfilled, it\'s not cancellable.'
+            },
+            {
+                validate: (customer: Object) => {
+                    const shopifyIntegration = _find(customer.integrations,
+                        {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
+
+                    return _get(shopifyIntegration, ['orders', '0', 'financial_status']) !== 'partial'
+                },
+                error: 'The last order has already been partially fulfilled, it\'s not cancellable.'
             }
         ]
     },

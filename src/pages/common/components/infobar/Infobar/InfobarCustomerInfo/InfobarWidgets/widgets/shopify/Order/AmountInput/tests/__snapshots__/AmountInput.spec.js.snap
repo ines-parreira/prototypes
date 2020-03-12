@@ -14,43 +14,18 @@ exports[`<AmountInput/> render() should render with currency symbol on left 1`] 
   </span>
   <Input
     className="input hasLeftLabel"
+    disabled={false}
     id="amount"
     innerRef={[Function]}
     max={null}
     min={0}
-    onChange={[MockFunction]}
+    onBlur={[Function]}
+    onChange={[Function]}
     required={true}
     step={0.01}
     type="number"
     value="9.99"
   />
-</div>
-`;
-
-exports[`<AmountInput/> render() should render with currency symbol on right 1`] = `
-<div
-  className="container"
->
-  <Input
-    className="input hasRightLabel"
-    id="amount"
-    innerRef={[Function]}
-    max={null}
-    min={0}
-    onChange={[MockFunction]}
-    required={true}
-    step={0.01}
-    type="number"
-    value="9.99"
-  />
-  <span
-    className="rightLabel"
-  >
-    <ShopifyMoneySymbol
-      currencyCode="EUR"
-      short={true}
-    />
-  </span>
 </div>
 `;
 
@@ -60,11 +35,13 @@ exports[`<AmountInput/> render() should render with percentage symbol on right 1
 >
   <Input
     className="input hasRightLabel"
+    disabled={false}
     id="amount"
     innerRef={[Function]}
     max={100}
     min={0}
-    onChange={[MockFunction]}
+    onBlur={[Function]}
+    onChange={[Function]}
     required={true}
     step={0.01}
     type="number"

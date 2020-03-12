@@ -18,6 +18,7 @@ import {
     onCleanUp,
     onEmailInvoice,
     onInit,
+    onPayloadChange,
     onReset,
 } from '../../../../../../../../../../../state/infobarActions/shopify/duplicateOrder/actions'
 import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager'
@@ -29,13 +30,14 @@ import * as Shopify from '../../../../../../../../../../../constants/integration
 import ProductSearchInput from '../../../../../../../../../forms/ProductSearchInput'
 import {DatetimeLabel} from '../../../../../../../../../utils/labels'
 import Loader from '../../../../../../../../Loader/Loader'
-import AddCustomItemPopover from '../AddCustomItemPopover'
 import EmailInvoicePopover from '../EmailInvoicePopover'
 import type {InfobarModalProps} from '../../../types'
 import Modal from '../../../../../../../../Modal'
-import OrderFooter from '../OrderFooter'
-import OrderTable from '../OrderTable'
+import type {ShopifyActionType} from '../types'
 
+import AddCustomItemPopover from './AddCustomItemPopover'
+import DuplicateOrderFooter from './OrderFooter'
+import DraftOrderTable from './DraftOrderTable'
 import css from './DuplicateOrderModal.less'
 
 type Props = InfobarModalProps & {
@@ -46,7 +48,7 @@ type Props = InfobarModalProps & {
     draftOrder: ?Record<Shopify.DraftOrder>,
     products: Map<number, Record<Shopify.Product>>,
     data: {
-        actionName: ?string,
+        actionName: ?ShopifyActionType,
         order: Record<Shopify.Order>,
     },
     addCustomRow: (integrationId: number, lineItem: Record<$Shape<Shopify.LineItem>>) => void,
@@ -61,6 +63,7 @@ type Props = InfobarModalProps & {
         onDone: () => void,
     ) => void,
     onInit: (integrationId: number, order: Record<Shopify.Order>, onError: () => void) => void,
+    onPayloadChange: (integrationId: number, payload: Record<$Shape<Shopify.DraftOrder>>) => void,
     onReset: () => void,
 }
 
@@ -143,6 +146,14 @@ export class DuplicateOrderModalComponent extends React.PureComponent<Props> {
         addCustomRow(integrationId, lineItem)
     }
 
+    _onLineItemsChange = (lineItems: List<$Shape<Shopify.LineItem>>) => {
+        const {payload, onPayloadChange} = this.props
+        const {integrationId} = this.context
+        const newPayload = payload.set('line_items', lineItems)
+
+        onPayloadChange(integrationId, newPayload)
+    }
+
     _onEmailInvoice = (invoicePayload: Record<Shopify.DraftOrderInvoice>) => {
         const {onEmailInvoice, onClose, data: {order}} = this.props
         const {integrationId, customerId} = this.context
@@ -212,7 +223,7 @@ export class DuplicateOrderModalComponent extends React.PureComponent<Props> {
     }
 
     render() {
-        const {header, isOpen, payload, draftOrder, loading, loadingMessage, data: {order}} = this.props
+        const {header, isOpen, payload, products, draftOrder, loading, loadingMessage, data: {order}} = this.props
         const {integrationId} = this.context
 
         const integration = this._getIntegration()
@@ -268,12 +279,14 @@ export class DuplicateOrderModalComponent extends React.PureComponent<Props> {
                 {payload && draftOrder
                     ? (
                         <div>
-                            <OrderTable
-                                editable
+                            <DraftOrderTable
                                 shopName={shopName}
                                 currencyCode={currencyCode}
+                                lineItems={payload.get('line_items', [])}
+                                products={products}
+                                onChange={this._onLineItemsChange}
                             />
-                            <OrderFooter
+                            <DuplicateOrderFooter
                                 editable
                                 currencyCode={currencyCode}
                             />
@@ -377,6 +390,7 @@ const mapDispatchToProps = {
     onCleanUp,
     onEmailInvoice,
     onInit,
+    onPayloadChange,
     onReset,
 }
 

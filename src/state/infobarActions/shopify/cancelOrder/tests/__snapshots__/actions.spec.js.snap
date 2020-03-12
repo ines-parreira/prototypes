@@ -1,0 +1,413 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`infobarActions.shopify.cancelOrder actions on error onInit() should notify that an error occurred 1`] = `
+Array [
+  Object {
+    "orderId": 1894175539223,
+    "type": "infobarActions/shopify/cancelOrder/SET_ORDER_ID",
+  },
+  Object {
+    "payload": Immutable.Map {
+      "reason": "customer",
+      "email": true,
+      "refund": Immutable.Map {
+        "currency": "USD",
+        "restock": true,
+        "notify": false,
+        "refund_line_items": Immutable.List [
+          Immutable.Map {
+            "line_item_id": 4193100136471,
+            "restock_type": "cancel",
+            "quantity": 1,
+          },
+          Immutable.Map {
+            "line_item_id": 4193100169239,
+            "restock_type": "cancel",
+            "quantity": 4,
+          },
+        ],
+        "shipping": Immutable.Map {
+          "amount": "0.00",
+        },
+      },
+    },
+    "type": "infobarActions/shopify/cancelOrder/SET_PAYLOAD",
+  },
+  Object {
+    "loading": true,
+    "message": "Calculating refund...",
+    "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
+  },
+  Object {
+    "loading": true,
+    "message": "Calculating refund...",
+    "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
+  },
+  Object {
+    "lineItems": Immutable.List [
+      Immutable.Map {
+        "price": "1.00",
+        "quantity": 1,
+        "product_id": 8345093387,
+        "variant_id": 31128766316567,
+        "title": "Acidulous candy",
+        "id": 4193100136471,
+        "total_discount": "0.00",
+        "sku": "0987654321-1",
+        "variant_title": "Red / A",
+      },
+      Immutable.Map {
+        "price": "1.00",
+        "quantity": 4,
+        "product_id": 8345093387,
+        "variant_id": 31128766349335,
+        "title": "Acidulous candy",
+        "id": 4193100169239,
+        "total_discount": "0.00",
+        "sku": "0987654321-2",
+        "variant_title": "Red / B",
+      },
+    ],
+    "type": "infobarActions/shopify/cancelOrder/SET_LINE_ITEMS",
+  },
+  Object {
+    "loading": false,
+    "message": null,
+    "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
+  },
+  Object {
+    "payload": Object {
+      "allowHTML": true,
+      "buttons": Array [],
+      "closeButton": false,
+      "dismissAfter": 3000,
+      "dismissible": true,
+      "id": 1,
+      "message": "foo",
+      "position": "tc",
+      "status": "error",
+      "style": "alert",
+    },
+    "type": "ADD_NOTIFICATION",
+  },
+]
+`;
+
+exports[`infobarActions.shopify.cancelOrder actions on success onInit() should init the state 1`] = `
+Array [
+  Object {
+    "orderId": 1894175539223,
+    "type": "infobarActions/shopify/cancelOrder/SET_ORDER_ID",
+  },
+  Object {
+    "payload": Immutable.Map {
+      "reason": "customer",
+      "email": true,
+      "refund": Immutable.Map {
+        "currency": "USD",
+        "restock": true,
+        "notify": false,
+        "refund_line_items": Immutable.List [
+          Immutable.Map {
+            "line_item_id": 4193100136471,
+            "restock_type": "cancel",
+            "quantity": 1,
+          },
+          Immutable.Map {
+            "line_item_id": 4193100169239,
+            "restock_type": "cancel",
+            "quantity": 4,
+          },
+        ],
+        "shipping": Immutable.Map {
+          "amount": "0.00",
+        },
+      },
+    },
+    "type": "infobarActions/shopify/cancelOrder/SET_PAYLOAD",
+  },
+  Object {
+    "loading": true,
+    "message": "Calculating refund...",
+    "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
+  },
+  Object {
+    "loading": true,
+    "message": "Calculating refund...",
+    "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
+  },
+  Object {
+    "lineItems": Immutable.List [
+      Immutable.Map {
+        "price": "1.00",
+        "quantity": 1,
+        "product_id": 8345093387,
+        "variant_id": 31128766316567,
+        "title": "Acidulous candy",
+        "id": 4193100136471,
+        "total_discount": "0.00",
+        "sku": "0987654321-1",
+        "variant_title": "Red / A",
+      },
+      Immutable.Map {
+        "price": "1.00",
+        "quantity": 4,
+        "product_id": 8345093387,
+        "variant_id": 31128766349335,
+        "title": "Acidulous candy",
+        "id": 4193100169239,
+        "total_discount": "0.00",
+        "sku": "0987654321-2",
+        "variant_title": "Red / B",
+      },
+    ],
+    "type": "infobarActions/shopify/cancelOrder/SET_LINE_ITEMS",
+  },
+  Object {
+    "refund": Immutable.Map {
+      "shipping": Immutable.Map {
+        "amount": "0.00",
+        "tax": "0.00",
+        "maximum_refundable": "0.00",
+      },
+      "refund_line_items": Immutable.List [
+        Immutable.Map {
+          "subtotal": "1.00",
+          "location_id": 123,
+          "price": "1.00",
+          "discounted_price": "1.00",
+          "quantity": 1,
+          "discounted_total_price": "1.00",
+          "total_tax": "0.20",
+          "total_cart_discount_amount": "0.00",
+          "restock_type": "no_restock",
+          "line_item_id": 4193100136471,
+        },
+      ],
+      "transactions": Immutable.List [
+        Immutable.Map {
+          "order_id": 1894175539223,
+          "kind": "suggested_refund",
+          "gateway": "manual",
+          "parent_id": 2521452118039,
+          "amount": "1.20",
+          "currency": "USD",
+          "maximum_refundable": "1.20",
+        },
+      ],
+      "currency": "USD",
+    },
+    "type": "infobarActions/shopify/cancelOrder/SET_REFUND",
+  },
+  Object {
+    "amount": "1.20",
+    "type": "infobarActions/shopify/cancelOrder/SET_REFUND_AMOUNT",
+  },
+  Object {
+    "loading": false,
+    "message": null,
+    "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
+  },
+]
+`;
+
+exports[`infobarActions.shopify.cancelOrder actions on success onLineItemsChange() should set line items and calculate refund 1`] = `
+Array [
+  Object {
+    "lineItems": Immutable.List [
+      Immutable.Map {
+        "price": "1.00",
+        "quantity": 1,
+        "product_id": 8345093387,
+        "variant_id": 31128766316567,
+        "title": "Acidulous candy",
+        "id": 4193100136471,
+        "total_discount": "0.00",
+        "sku": "0987654321-1",
+        "variant_title": "Red / A",
+      },
+      Immutable.Map {
+        "price": "1.00",
+        "quantity": 4,
+        "product_id": 8345093387,
+        "variant_id": 31128766349335,
+        "title": "Acidulous candy",
+        "id": 4193100169239,
+        "total_discount": "0.00",
+        "sku": "0987654321-2",
+        "variant_title": "Red / B",
+      },
+    ],
+    "type": "infobarActions/shopify/cancelOrder/SET_LINE_ITEMS",
+  },
+  Object {
+    "payload": Immutable.Map {
+      "reason": "customer",
+      "email": true,
+      "refund": Immutable.Map {
+        "currency": "USD",
+        "restock": true,
+        "notify": false,
+        "refund_line_items": Immutable.List [
+          Immutable.Map {
+            "line_item_id": 4193100136471,
+            "restock_type": "cancel",
+            "quantity": 1,
+          },
+        ],
+        "shipping": Immutable.Map {
+          "amount": "0.00",
+        },
+      },
+      "amount": "1.00",
+    },
+    "type": "infobarActions/shopify/cancelOrder/SET_PAYLOAD",
+  },
+  Object {
+    "loading": true,
+    "message": "Calculating refund...",
+    "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
+  },
+  Object {
+    "loading": true,
+    "message": "Calculating refund...",
+    "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
+  },
+  Object {
+    "refund": Immutable.Map {
+      "shipping": Immutable.Map {
+        "amount": "0.00",
+        "tax": "0.00",
+        "maximum_refundable": "0.00",
+      },
+      "refund_line_items": Immutable.List [
+        Immutable.Map {
+          "subtotal": "1.00",
+          "location_id": 123,
+          "price": "1.00",
+          "discounted_price": "1.00",
+          "quantity": 1,
+          "discounted_total_price": "1.00",
+          "total_tax": "0.20",
+          "total_cart_discount_amount": "0.00",
+          "restock_type": "no_restock",
+          "line_item_id": 4193100136471,
+        },
+      ],
+      "transactions": Immutable.List [
+        Immutable.Map {
+          "order_id": 1894175539223,
+          "kind": "suggested_refund",
+          "gateway": "manual",
+          "parent_id": 2521452118039,
+          "amount": "1.20",
+          "currency": "USD",
+          "maximum_refundable": "1.20",
+        },
+      ],
+      "currency": "USD",
+    },
+    "type": "infobarActions/shopify/cancelOrder/SET_REFUND",
+  },
+  Object {
+    "amount": "1.20",
+    "type": "infobarActions/shopify/cancelOrder/SET_REFUND_AMOUNT",
+  },
+  Object {
+    "loading": false,
+    "message": null,
+    "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
+  },
+]
+`;
+
+exports[`infobarActions.shopify.cancelOrder actions on success onPayloadChange() should set payload and calculate refund 1`] = `
+Array [
+  Object {
+    "payload": Immutable.Map {
+      "reason": "customer",
+      "email": true,
+      "refund": Immutable.Map {
+        "currency": "USD",
+        "restock": true,
+        "notify": false,
+        "refund_line_items": Immutable.List [
+          Immutable.Map {
+            "line_item_id": 4193100136471,
+            "restock_type": "cancel",
+            "quantity": 1,
+          },
+        ],
+        "shipping": Immutable.Map {
+          "amount": "0.00",
+        },
+      },
+      "amount": "1.00",
+    },
+    "type": "infobarActions/shopify/cancelOrder/SET_PAYLOAD",
+  },
+  Object {
+    "loading": true,
+    "message": "Calculating refund...",
+    "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
+  },
+  Object {
+    "loading": true,
+    "message": "Calculating refund...",
+    "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
+  },
+  Object {
+    "refund": Immutable.Map {
+      "shipping": Immutable.Map {
+        "amount": "0.00",
+        "tax": "0.00",
+        "maximum_refundable": "0.00",
+      },
+      "refund_line_items": Immutable.List [
+        Immutable.Map {
+          "subtotal": "1.00",
+          "location_id": 123,
+          "price": "1.00",
+          "discounted_price": "1.00",
+          "quantity": 1,
+          "discounted_total_price": "1.00",
+          "total_tax": "0.20",
+          "total_cart_discount_amount": "0.00",
+          "restock_type": "no_restock",
+          "line_item_id": 4193100136471,
+        },
+      ],
+      "transactions": Immutable.List [
+        Immutable.Map {
+          "order_id": 1894175539223,
+          "kind": "suggested_refund",
+          "gateway": "manual",
+          "parent_id": 2521452118039,
+          "amount": "1.20",
+          "currency": "USD",
+          "maximum_refundable": "1.20",
+        },
+      ],
+      "currency": "USD",
+    },
+    "type": "infobarActions/shopify/cancelOrder/SET_REFUND",
+  },
+  Object {
+    "amount": "1.20",
+    "type": "infobarActions/shopify/cancelOrder/SET_REFUND_AMOUNT",
+  },
+  Object {
+    "loading": false,
+    "message": null,
+    "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
+  },
+]
+`;
+
+exports[`infobarActions.shopify.cancelOrder actions onReset() should reset state 1`] = `
+Array [
+  Object {
+    "type": "infobarActions/shopify/cancelOrder/SET_INITIAL_STATE",
+  },
+]
+`;

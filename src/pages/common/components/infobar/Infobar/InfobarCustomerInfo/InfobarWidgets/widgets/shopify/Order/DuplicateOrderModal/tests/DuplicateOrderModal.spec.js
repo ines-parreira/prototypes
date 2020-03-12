@@ -25,7 +25,7 @@ import {
 } from '../../../../../../../../../../../../fixtures/shopify'
 import DuplicateOrderModal, {DuplicateOrderModalComponent} from '../DuplicateOrderModal'
 import {ShopifyAction} from '../../constants'
-import {initDraftOrderPayload} from '../../../../../../../../../../../../business/shopify/order'
+import {initDraftOrderPayload} from '../../../../../../../../../../../../business/shopify/draftOrder'
 import * as Shopify from '../../../../../../../../../../../../constants/integrations/shopify'
 
 function initActions() {
@@ -56,6 +56,7 @@ function initActions() {
         ),
         onInit: jest.fn(),
         onOpen: jest.fn(),
+        onPayloadChange: jest.fn(),
         onReset: jest.fn(),
         onSubmit: jest.fn(),
     }
@@ -198,7 +199,7 @@ describe('<DuplicateOrderModalComponent/>', () => {
 
             const store = mockStore({
                 integrations: integrationsStateWithShopify,
-                infobarActions: infobarActionsStateFixture(duplicateOrderState),
+                infobarActions: infobarActionsStateFixture({duplicateOrderState}),
             })
 
             const state = store.getState()
@@ -237,7 +238,7 @@ describe('<DuplicateOrderModalComponent/>', () => {
 
             const store = mockStore({
                 integrations: integrationsStateWithShopify,
-                infobarActions: infobarActionsStateFixture(duplicateOrderState),
+                infobarActions: infobarActionsStateFixture({duplicateOrderState}),
             })
 
             const state = store.getState()
@@ -280,7 +281,7 @@ describe('<DuplicateOrderModalComponent/>', () => {
 
             const store = mockStore({
                 integrations: integrationsStateWithShopify,
-                infobarActions: infobarActionsStateFixture(duplicateOrderState),
+                infobarActions: infobarActionsStateFixture({duplicateOrderState}),
             })
 
             const state = store.getState()

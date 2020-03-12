@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<OrderTable/> render() should render 1`] = `
+<Table
+  className="table"
+  hover={true}
+  responsiveTag="div"
+  tag="table"
+>
+  <thead>
+    <tr>
+      <th>
+        Product
+      </th>
+      <th>
+        Item price
+      </th>
+      <th>
+        Qty
+      </th>
+      <th>
+        Item total
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <OrderLineItemRow
+      currencyCode="USD"
+      key="94356bebf609af551809118ec1fbd6c7d8cfab97"
+      lineItem={
+        Immutable.Map {
+          "applied_discount": null,
+          "taxable": true,
+          "price": "1.00",
+          "quantity": 1,
+          "product_id": 8345093387,
+          "product_exists": true,
+          "properties": Immutable.List [],
+          "variant_id": 31128766316567,
+          "title": "Acidulous candy",
+          "sku": "0987654321-1",
+          "variant_title": "Red / A",
+          "requires_shipping": true,
+        }
+      }
+      onChange={[Function]}
+      shopName="storegorgias3"
+    />
+    <OrderLineItemRow
+      currencyCode="USD"
+      key="bc618f53fda1b87e4292b3b71d5aae3b8730fbb0"
+      lineItem={
+        Immutable.Map {
+          "applied_discount": null,
+          "taxable": true,
+          "price": "1.00",
+          "quantity": 4,
+          "product_id": 8345093387,
+          "product_exists": true,
+          "properties": Immutable.List [],
+          "variant_id": 31128766349335,
+          "title": "Acidulous candy",
+          "sku": "0987654321-2",
+          "variant_title": "Red / B",
+          "requires_shipping": true,
+        }
+      }
+      onChange={[Function]}
+      shopName="storegorgias3"
+    />
+  </tbody>
+</Table>
+`;

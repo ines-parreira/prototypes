@@ -28,7 +28,6 @@
   "author": "Alex Plugaru <alex@gorgias.com>",
   "license": "UNLICENSED",
   "dependencies": {
-    "@shopify/theme-currency": "3.0.3",
     "@shopify/theme-images": "3.0.3",
     "array-includes": "3.1.1",
     "axios": "0.19.2",
@@ -72,6 +71,7 @@
     "react-dom": "16.8.5",
     "react-images": "0.5.5",
     "react-immutable-proptypes": "2.1.0",
+    "react-json-pretty": "^2.2.0",
     "react-paginate": "6.3.0",
     "react-redux": "4.4.9",
     "react-router": "3.2.1",

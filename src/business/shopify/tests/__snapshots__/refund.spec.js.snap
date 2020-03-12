@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getRefundAmount() should return refund amount 1`] = `1.2`;
+
+exports[`getSubtotal() should return subtotal 1`] = `1`;
+
+exports[`getTotalAvailableToRefund() should return maximum refund amount 1`] = `1.2`;
+
+exports[`getTotalCartDiscountAmount() should return total discount 1`] = `0`;
+
+exports[`getTotalQuantities() should return total quantities 1`] = `1`;
+
+exports[`getTotalTax() should return total tax 1`] = `0.2`;

@@ -45,10 +45,12 @@ Array [
         "address1": null,
         "address2": null,
       },
+      "currency": "USD",
       "note": "ahahah??",
       "tax_exempt": false,
       "line_items": Immutable.List [
         Immutable.Map {
+          "applied_discount": null,
           "taxable": true,
           "price": "1.00",
           "quantity": 1,
@@ -62,6 +64,7 @@ Array [
           "requires_shipping": true,
         },
         Immutable.Map {
+          "applied_discount": null,
           "taxable": true,
           "price": "1.00",
           "quantity": 4,
@@ -75,6 +78,7 @@ Array [
           "requires_shipping": true,
         },
         Immutable.Map {
+          "applied_discount": null,
           "taxable": true,
           "price": "1.00",
           "quantity": 1,
@@ -165,10 +169,12 @@ Array [
         "address1": null,
         "address2": null,
       },
+      "currency": "USD",
       "note": "ahahah??",
       "tax_exempt": false,
       "line_items": Immutable.List [
         Immutable.Map {
+          "applied_discount": null,
           "taxable": true,
           "price": "1.00",
           "quantity": 1,
@@ -182,6 +188,7 @@ Array [
           "requires_shipping": true,
         },
         Immutable.Map {
+          "applied_discount": null,
           "taxable": true,
           "price": "1.00",
           "quantity": 4,
@@ -509,10 +516,12 @@ Array [
         "address1": null,
         "address2": null,
       },
+      "currency": "USD",
       "note": "ahahah??",
       "tax_exempt": false,
       "line_items": Immutable.List [
         Immutable.Map {
+          "applied_discount": null,
           "taxable": true,
           "price": "1.00",
           "quantity": 1,
@@ -526,6 +535,7 @@ Array [
           "requires_shipping": true,
         },
         Immutable.Map {
+          "applied_discount": null,
           "taxable": true,
           "price": "1.00",
           "quantity": 4,
@@ -589,10 +599,12 @@ Array [
         "address1": null,
         "address2": null,
       },
+      "currency": "USD",
       "note": "ahahah??",
       "tax_exempt": false,
       "line_items": Immutable.List [
         Immutable.Map {
+          "applied_discount": null,
           "taxable": true,
           "price": "1.00",
           "quantity": 1,
@@ -606,6 +618,7 @@ Array [
           "requires_shipping": true,
         },
         Immutable.Map {
+          "applied_discount": null,
           "taxable": true,
           "price": "1.00",
           "quantity": 4,
@@ -756,10 +769,12 @@ Array [
         "address1": null,
         "address2": null,
       },
+      "currency": "USD",
       "note": "ahahah??",
       "tax_exempt": false,
       "line_items": Immutable.List [
         Immutable.Map {
+          "applied_discount": null,
           "taxable": true,
           "price": "1.00",
           "quantity": 1,
@@ -773,6 +788,7 @@ Array [
           "requires_shipping": true,
         },
         Immutable.Map {
+          "applied_discount": null,
           "taxable": true,
           "price": "1.00",
           "quantity": 4,
@@ -836,10 +852,12 @@ Array [
         "address1": null,
         "address2": null,
       },
+      "currency": "USD",
       "note": "ahahah??",
       "tax_exempt": false,
       "line_items": Immutable.List [
         Immutable.Map {
+          "applied_discount": null,
           "taxable": true,
           "price": "1.00",
           "quantity": 1,
@@ -853,6 +871,7 @@ Array [
           "requires_shipping": true,
         },
         Immutable.Map {
+          "applied_discount": null,
           "taxable": true,
           "price": "1.00",
           "quantity": 4,
@@ -1002,10 +1021,12 @@ Array [
         "address1": null,
         "address2": null,
       },
+      "currency": "USD",
       "note": "ahahah??",
       "tax_exempt": false,
       "line_items": Immutable.List [
         Immutable.Map {
+          "applied_discount": null,
           "taxable": true,
           "price": "1.00",
           "quantity": 1,
@@ -1019,6 +1040,7 @@ Array [
           "requires_shipping": true,
         },
         Immutable.Map {
+          "applied_discount": null,
           "taxable": true,
           "price": "1.00",
           "quantity": 4,
@@ -1082,10 +1104,12 @@ Array [
         "address1": null,
         "address2": null,
       },
+      "currency": "USD",
       "note": "ahahah??",
       "tax_exempt": false,
       "line_items": Immutable.List [
         Immutable.Map {
+          "applied_discount": null,
           "taxable": true,
           "price": "1.00",
           "quantity": 1,
@@ -1099,6 +1123,7 @@ Array [
           "requires_shipping": true,
         },
         Immutable.Map {
+          "applied_discount": null,
           "taxable": true,
           "price": "1.00",
           "quantity": 4,
@@ -1227,6 +1252,16 @@ Array [
         "code": "custom",
         "price": "0.00",
         "title": "Test",
+        "price_set": Immutable.Map {
+          "shop_money": Immutable.Map {
+            "amount": "12.00",
+            "currency_code": "USD",
+          },
+          "presentment_money": Immutable.Map {
+            "amount": "12.00",
+            "currency_code": "USD",
+          },
+        },
       },
       "billing_address": Immutable.Map {
         "zip": null,
@@ -1245,10 +1280,12 @@ Array [
         "address1": null,
         "address2": null,
       },
+      "currency": "USD",
       "note": "ahahah??",
       "tax_exempt": false,
       "line_items": Immutable.List [
         Immutable.Map {
+          "applied_discount": null,
           "taxable": true,
           "price": "1.00",
           "quantity": 1,
@@ -1262,6 +1299,7 @@ Array [
           "requires_shipping": true,
         },
         Immutable.Map {
+          "applied_discount": null,
           "taxable": true,
           "price": "1.00",
           "quantity": 4,
@@ -1311,6 +1349,16 @@ Array [
         "code": "custom",
         "price": "0.00",
         "title": "Test",
+        "price_set": Immutable.Map {
+          "shop_money": Immutable.Map {
+            "amount": "12.00",
+            "currency_code": "USD",
+          },
+          "presentment_money": Immutable.Map {
+            "amount": "12.00",
+            "currency_code": "USD",
+          },
+        },
       },
       "billing_address": Immutable.Map {
         "zip": null,
@@ -1329,10 +1377,12 @@ Array [
         "address1": null,
         "address2": null,
       },
+      "currency": "USD",
       "note": "ahahah??",
       "tax_exempt": false,
       "line_items": Immutable.List [
         Immutable.Map {
+          "applied_discount": null,
           "taxable": true,
           "price": "1.00",
           "quantity": 1,
@@ -1346,6 +1396,7 @@ Array [
           "requires_shipping": true,
         },
         Immutable.Map {
+          "applied_discount": null,
           "taxable": true,
           "price": "1.00",
           "quantity": 4,
@@ -1424,6 +1475,16 @@ Array [
       "code": "custom",
       "price": "12.00",
       "title": "Test",
+      "price_set": Immutable.Map {
+        "shop_money": Immutable.Map {
+          "amount": "12.00",
+          "currency_code": "USD",
+        },
+        "presentment_money": Immutable.Map {
+          "amount": "12.00",
+          "currency_code": "USD",
+        },
+      },
     },
     "type": "infobarActions/shopify/duplicateOrder/SET_DEFAULT_SHIPPING_LINE",
   },
@@ -1487,10 +1548,12 @@ Array [
         "address1": null,
         "address2": null,
       },
+      "currency": "USD",
       "note": "ahahah??",
       "tax_exempt": false,
       "line_items": Immutable.List [
         Immutable.Map {
+          "applied_discount": null,
           "taxable": true,
           "price": "1.00",
           "quantity": 1,
@@ -1504,6 +1567,7 @@ Array [
           "requires_shipping": true,
         },
         Immutable.Map {
+          "applied_discount": null,
           "taxable": true,
           "price": "1.00",
           "quantity": 4,
@@ -1601,10 +1665,12 @@ Array [
         "address1": null,
         "address2": null,
       },
+      "currency": "USD",
       "note": "ahahah??",
       "tax_exempt": false,
       "line_items": Immutable.List [
         Immutable.Map {
+          "applied_discount": null,
           "taxable": true,
           "price": "1.00",
           "quantity": 1,
@@ -1618,6 +1684,7 @@ Array [
           "requires_shipping": true,
         },
         Immutable.Map {
+          "applied_discount": null,
           "taxable": true,
           "price": "1.00",
           "quantity": 4,

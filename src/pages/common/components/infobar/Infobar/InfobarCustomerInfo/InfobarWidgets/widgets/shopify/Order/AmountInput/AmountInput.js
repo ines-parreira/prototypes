@@ -5,7 +5,8 @@ import {Input} from 'reactstrap'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
 
-import {RIGHT_SYMBOL_CURRENCY_CODES} from '../../../../../../../../../../../constants/integrations/shopify'
+import {NON_FRACTIONAL_CURRENCIES} from '../../../../../../../../../../../constants/integrations/shopify'
+import {formatPrice} from '../../../../../../../../../../../business/shopify/number'
 import ShopifyMoneySymbol from '../MoneySymbol'
 
 import css from './AmountInput.less'
@@ -17,10 +18,11 @@ type Props = {
     max: ?number,
     className: ?string,
     required: boolean,
+    disabled: boolean,
     currencyCode: string,
     symbol: ?string,
     saveInputRef: (inputRef: HTMLInputElement) => void,
-    onChange: (event: SyntheticInputEvent<HTMLInputElement>) => void,
+    onChange: (value: string) => void,
 }
 
 export default class AmountInput extends React.PureComponent<Props> {
@@ -30,13 +32,33 @@ export default class AmountInput extends React.PureComponent<Props> {
         max: null,
         className: null,
         required: true,
+        disabled: false,
         symbol: null,
         saveInputRef: _noop,
     }
 
+    _onBlur = (event: SyntheticInputEvent<HTMLInputElement>) => {
+        const {currencyCode, onChange} = this.props
+        const {value} = event.target
+        const formattedValue = formatPrice(value || 0, currencyCode)
+
+        if (value !== formattedValue) {
+            event.target.value = formattedValue
+            onChange(formattedValue)
+        }
+    }
+
+    _onChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
+        const {onChange} = this.props
+        const {value} = event.target
+
+        onChange(value)
+    }
+
     render() {
-        const {id, value, min, max, symbol, currencyCode, required, className, saveInputRef, onChange} = this.props
-        const hasRightLabel = RIGHT_SYMBOL_CURRENCY_CODES.includes(currencyCode) || symbol === '%'
+        const {id, value, min, max, symbol, currencyCode, required, disabled, className, saveInputRef} = this.props
+        const step = symbol !== '%' && NON_FRACTIONAL_CURRENCIES.includes(currencyCode) ? 1 : 0.01
+        const hasRightLabel = symbol === '%'
         const label = symbol || (
             <ShopifyMoneySymbol
                 currencyCode={currencyCode}
@@ -53,9 +75,11 @@ export default class AmountInput extends React.PureComponent<Props> {
                     value={value}
                     min={min}
                     max={max}
-                    step={0.01}
+                    step={step}
                     required={required}
-                    onChange={onChange}
+                    disabled={disabled}
+                    onChange={this._onChange}
+                    onBlur={this._onBlur}
                     innerRef={saveInputRef}
                     className={classnames(css.input, {
                         [css.hasLeftLabel]: !hasRightLabel,

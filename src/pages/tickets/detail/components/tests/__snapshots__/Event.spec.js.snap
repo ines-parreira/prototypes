@@ -969,3 +969,132 @@ exports[`Event component should display correctly a successful event for a Shopi
   </Card>
 </div>
 `;
+
+exports[`Event component should display correctly a successful event for a Shopify Order action with custom payload 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon success"
+        title="Success"
+      >
+        <i
+          className="material-icons"
+        >
+          check
+        </i>
+      </div>
+      <span
+        className="actionName"
+      >
+        Cancel order
+         
+         
+        <a
+          href="https://my-store.myshopify.com/admin/orders/3"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          #1234
+        </a>
+      </span>
+      <span
+        className="equalFiller"
+      >
+        on
+      </span>
+      <span
+        className="actionName"
+      >
+        Shopify
+         (
+        my-store
+        )
+      </span>
+      <span
+        className="filler"
+      >
+        by
+      </span>
+      <AgentLabel
+        className=""
+        name="Acme Support"
+        profilePictureUrl=""
+        shouldDisplayAvatar={false}
+      />
+      <Button
+        className="more"
+        color="link"
+        onClick={[Function]}
+        tag="button"
+        title="More details"
+      >
+        <i
+          className="material-icons md-2"
+        >
+          expand_more
+        </i>
+      </Button>
+    </div>
+    <Connect(DatetimeLabel)
+      className="date text-faded"
+      dateTime="2017-12-07T01:01:34.502206+00:00"
+      settings={
+        Object {
+          "position": "top left",
+        }
+      }
+    />
+  </div>
+  <Card
+    className="details d-none"
+    tag="div"
+  >
+    <CardBody
+      tag="div"
+    >
+      <div
+        key="payload"
+      >
+        <div>
+          <div
+            key="order_id"
+          >
+            <b>
+              Order id
+            </b>
+            : 
+            3
+          </div>
+          <div
+            key="payload"
+          >
+            <b>
+              Payload
+            </b>
+            : 
+            <JSONPretty
+              className="d-inline-flex"
+              data={
+                Object {
+                  "foo": "bar",
+                }
+              }
+              json=""
+              silent={true}
+              space={2}
+              themeClassName="__json-pretty__"
+            />
+          </div>
+        </div>
+      </div>
+    </CardBody>
+  </Card>
+</div>
+`;

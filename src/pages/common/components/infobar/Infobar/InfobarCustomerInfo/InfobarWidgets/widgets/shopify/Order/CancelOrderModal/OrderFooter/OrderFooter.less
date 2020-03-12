@@ -1,0 +1,25 @@
+@import '~css/new/colors';
+
+:local {
+  .container {
+    font-family: 'Inter UI', sans-serif;
+
+    padding-left: 22px;
+    padding-right: 22px;
+    padding-bottom: 22px;
+  }
+
+  .amountInput {
+    display: block;
+
+    input {
+      width: 100%;
+    }
+  }
+
+  .discrepancyReasonInput {
+    @media (min-width: 992px) {
+      width: ~"calc(50% - 15px)";
+    }
+  }
+}
