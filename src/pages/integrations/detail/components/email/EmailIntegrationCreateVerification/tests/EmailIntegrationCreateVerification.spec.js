@@ -6,6 +6,7 @@ import {EmailIntegrationCreateVerification} from '../EmailIntegrationCreateVerif
 
 
 const commonProps = {
+    forwardingEmailAddress: 'hmq29fh29zfmh29fzq2f3@emails-acme.gorgi.us',
     integration: fromJS({
         id: 1,
         name: 'my integration',

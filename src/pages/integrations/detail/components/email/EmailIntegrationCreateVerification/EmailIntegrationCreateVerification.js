@@ -11,10 +11,12 @@ import socketManager from '../../../../../../services/socketManager'
 import * as accountActions from '../../../../../../state/currentAccount/actions'
 import * as integrationActions from '../../../../../../state/integrations/actions'
 import * as notificationActions from '../../../../../../state/notifications/actions'
+import {getForwardingEmailAddress} from '../../../../../../state/integrations/selectors'
 
 type Props = {
     integration: Object,
     deleteIntegration: (Object, string) => void,
+    forwardingEmailAddress: string,
     sendVerificationEmail: () => Promise<void>,
     notify: ({status: string, message: string}) => Promise<void>,
     resendAccountVerificationEmail: () => Promise<void>
@@ -63,7 +65,7 @@ export class EmailIntegrationCreateVerification extends React.Component<Props, S
     }
 
     _renderInstructions = () => {
-        const {integration, deleteIntegration} = this.props
+        const {integration, deleteIntegration, forwardingEmailAddress} = this.props
         const isLoading = this.state.loading
 
         return (
@@ -75,7 +77,7 @@ export class EmailIntegrationCreateVerification extends React.Component<Props, S
                     <i className="material-icons md-spin mr-2">
                         autorenew
                     </i>
-                    We're waiting to receive your verification email on {integration.getIn(['meta', 'address'])}.
+                  We're waiting to receive your verification email on <strong>{forwardingEmailAddress}</strong>.
                 </Alert>
                 <p>
                     If you haven't set up the forwarding yet, you'll find the instructions{' '}
@@ -180,7 +182,9 @@ export class EmailIntegrationCreateVerification extends React.Component<Props, S
     }
 }
 
-export default connect(null, {
+export default connect((state) => ({
+    forwardingEmailAddress: getForwardingEmailAddress(state)
+}), {
     sendVerificationEmail: integrationActions.sendVerificationEmail,
     notify: notificationActions.notify,
     deleteIntegration: integrationActions.deleteIntegration,

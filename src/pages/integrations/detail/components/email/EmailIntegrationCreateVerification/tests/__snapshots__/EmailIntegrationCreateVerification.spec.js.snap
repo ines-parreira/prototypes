@@ -197,7 +197,9 @@ exports[`<EmailIntegrationCreateVerification/> render() should render the regula
           autorenew
         </i>
         We're waiting to receive your verification email on 
-        myintegration@gorgias.io
+        <strong>
+          hmq29fh29zfmh29fzq2f3@emails-acme.gorgi.us
+        </strong>
         .
       </Alert>
       <p>
