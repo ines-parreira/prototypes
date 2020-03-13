@@ -93,7 +93,7 @@ export class CustomerNote extends React.Component<Props, State> {
                             value={note || ''}
                             onChange={this._updateNote}
                             onBlur={this._submitNote}
-                            rows={noteRowsCount > 2 ? noteRowsCount : 2}
+                            rows={noteRowsCount || 1}
                         />
                         {
                             isError && (

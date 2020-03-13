@@ -261,6 +261,7 @@ export default class Form extends Component<Props, State> {
                                                 <ConfirmButton
                                                     type="button"
                                                     color="danger"
+                                                    id="set-owner"
                                                     outline
                                                     className={'ml-2'}
                                                     confirm={() => this.props.updateAccountOwner(this.props.agentId)}
@@ -274,6 +275,7 @@ export default class Form extends Component<Props, State> {
                                             action={this._delete}
                                             className="float-right"
                                             color="danger"
+                                            id="delete-user"
                                             outline
                                         >
                                             <i className="material-icons">delete</i> Delete user

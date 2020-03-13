@@ -6,15 +6,17 @@ import {CustomerNote} from '../CustomerNote'
 
 
 describe('CustomerNote component', () => {
-    it('should display passed note', () => {
+    it.each([
+        null,
+        'this customer is nice\n and happy'
+    ])('should display passed note', (note) => {
         const component = mount(
             <CustomerNote
-                customer={fromJS({id: 1, note: 'this customer is nice'})}
+                customer={fromJS({id: 1, note: note})}
                 submitCustomer={jest.fn()}
                 mergeTicketCustomer={jest.fn()}
             />
         )
-
         expect(component.children()).toMatchSnapshot()
     })
 

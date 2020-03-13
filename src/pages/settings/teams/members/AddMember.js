@@ -9,6 +9,8 @@ import {AgentLabel} from '../../../common/utils/labels'
 import type {teamType} from '../../../../state/teams/types'
 import * as agentSelectors from '../../../../state/agents/selectors'
 
+import css from './AddMember.less'
+
 type Props = {
     team: teamType,
     users: List<Map<*, *>>,
@@ -89,32 +91,34 @@ class AddMember extends Component<Props, State> {
                         }
                     </DropdownItem>
                     <DropdownItem divider/>
-                    {
-                        availableUsers.size
-                            ? availableUsers.map((user) => {
-                                const userId = user.get('id')
-                                return (
+                    <div className={css.content}>
+                        {
+                            availableUsers.size
+                                ? availableUsers.map((user) => {
+                                    const userId = user.get('id')
+                                    return (
+                                        <DropdownItem
+                                            key={userId}
+                                            onClick={() => this._addTeamMember(userId)}
+                                        >
+                                            <AgentLabel
+                                                name={user.get('name')}
+                                                profilePictureUrl={user.getIn(['meta', 'profile_picture_url'])}
+                                                shouldDisplayAvatar
+                                            />
+                                        </DropdownItem>
+                                    )
+                                })
+                                : (
                                     <DropdownItem
-                                        key={userId}
-                                        onClick={() => this._addTeamMember(userId)}
+                                        key="noUser"
+                                        header
                                     >
-                                        <AgentLabel
-                                            name={user.get('name')}
-                                            profilePictureUrl={user.getIn(['meta', 'profile_picture_url'])}
-                                            shouldDisplayAvatar
-                                        />
+                                        Could not find any user to add
                                     </DropdownItem>
                                 )
-                            })
-                            : (
-                                <DropdownItem
-                                    key="noUser"
-                                    header
-                                >
-                                    Could not find any user to add
-                                </DropdownItem>
-                            )
-                    }
+                        }
+                    </div>
                 </DropdownMenu>
             </Dropdown>
         )

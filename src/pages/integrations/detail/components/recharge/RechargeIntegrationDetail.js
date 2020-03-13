@@ -140,7 +140,7 @@ class RechargeIntegrationDetail extends React.Component<Props, State> {
                                                 <p>
                                                     We're currently importing all your Recharge customers. This way, you'll see
                                                     customer info & orders next to tickets. We'll notify you via email when the
-                                                    import is done. <Link to="/app/customers">Review imported customers.</Link>
+                                                    import is done.{' '}<Link to="/app/customers">Review imported customers.</Link>
                                                 </p>
                                             </Alert>
                                         )

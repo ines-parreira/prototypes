@@ -19,7 +19,7 @@ exports[`CustomerNote component should display error message because the note fa
         onBlur={[Function]}
         onChange={[Function]}
         placeholder="This customer has no note."
-        rows={2}
+        rows={1}
         value="this customer is nice"
       />
       <p
@@ -51,7 +51,7 @@ exports[`CustomerNote component should display loading state because the note is
         onBlur={[Function]}
         onChange={[Function]}
         placeholder="This customer has no note."
-        rows={2}
+        rows={1}
         value="this customer is nice"
       />
       <i
@@ -81,8 +81,36 @@ exports[`CustomerNote component should display passed note 1`] = `
         onBlur={[Function]}
         onChange={[Function]}
         placeholder="This customer has no note."
+        rows={1}
+        value=""
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`CustomerNote component should display passed note 2`] = `
+<div>
+  <div
+    className="customerNote"
+  >
+    <i
+      className="material-icons noteIcon"
+    >
+      note
+    </i>
+    <div
+      className="noteInputContainer"
+    >
+      <textarea
+        className="noteInput"
+        disabled={false}
+        onBlur={[Function]}
+        onChange={[Function]}
+        placeholder="This customer has no note."
         rows={2}
-        value="this customer is nice"
+        value="this customer is nice
+ and happy"
       />
     </div>
   </div>
