@@ -20,6 +20,9 @@ export const RECENT_VIEWS_COUNTS_TIMEOUT = 10
 // View counts will only be calculated periodically for these views.
 export const MAX_RECENT_VIEWS = 8
 
+// Maximum number of tickets we count per view
+export const MAX_TICKET_COUNT_PER_VIEW = 10000
+
 export const defaultCell = (fieldName, item) => {
     const value = item.get(fieldName)
 

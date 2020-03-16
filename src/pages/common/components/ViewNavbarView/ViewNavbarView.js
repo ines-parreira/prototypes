@@ -5,6 +5,7 @@ import {Link, browserHistory} from 'react-router'
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
 
+import {MAX_TICKET_COUNT_PER_VIEW} from '../../../../config/views'
 import {compactInteger, getPluralObjectName} from '../../../../utils'
 import Tooltip from '../Tooltip'
 import shortcutManager from '../../../../services/shortcutManager'
@@ -177,9 +178,15 @@ class ViewNavbarView extends Component {
                                         const viewCount = this.props.getViewCount(view.get('id'))
                                         let count = ''
                                         let compactCount = ''
+                                        let isMoreThanMaxCount = false
 
                                         if (viewCount !== null) {
-                                            count = `(${viewCount})`
+                                            isMoreThanMaxCount = viewCount >= MAX_TICKET_COUNT_PER_VIEW
+                                            count = `(${
+                                                isMoreThanMaxCount
+                                                    ? `${MAX_TICKET_COUNT_PER_VIEW - 1}+`
+                                                    : viewCount
+                                            })`
                                             compactCount = compactInteger(viewCount, 1)
                                         }
 
@@ -196,7 +203,13 @@ class ViewNavbarView extends Component {
                                                 <span className="item-name">
                                                     <ViewName view={view}/>
                                                 </span>
-                                                <span className="item-count">{compactCount}</span>
+                                                <span className="item-count">
+                                                    {
+                                                        isMoreThanMaxCount
+                                                            ? `${compactCount}+`
+                                                            : compactCount
+                                                    }
+                                                </span>
                                             </Link>
                                         )
                                     })
