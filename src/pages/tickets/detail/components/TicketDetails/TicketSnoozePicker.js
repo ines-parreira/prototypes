@@ -15,7 +15,8 @@ type Props = {
 export default class TicketSnoozePicker extends Component<Props> {
     render() {
         const {datetime, isOpen, onApply, toggle} = this.props
-        const snoozeDatetime = datetime ? moment(datetime) : moment()
+        const formattedDate = moment(datetime)
+        const snoozeDatetime = formattedDate.isValid() ? formattedDate : moment()
         const ranges = {
             'In 3 hours': [moment().add(3, 'hours'), moment().add(3, 'hours')],
             'In 6 hours': [moment().add(6, 'hours'), moment().add(6, 'hours')],
@@ -24,6 +25,9 @@ export default class TicketSnoozePicker extends Component<Props> {
             'in 1 week': [moment().add(7, 'days'), moment().add(7, 'days')],
         }
 
+        if (datetime && !formattedDate.isValid()) {
+            console.error('Received invalid datetime', datetime)
+        }
         return (
             <DatePicker
                 applyClass="btn-success mr-2"
