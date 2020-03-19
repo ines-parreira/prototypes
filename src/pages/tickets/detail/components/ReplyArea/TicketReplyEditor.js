@@ -97,27 +97,11 @@ export class TicketReplyEditor extends React.Component<Props, State> {
         if (shouldUpdate) {
             this._updateEditorState(this._getEditorStateFromReducer(nextProps))
         }
-
-        // only focus if focus changed
-        const prevForceFocus = this.props.newMessage.getIn(['state', 'forceFocus'])
-        const nextForceFocus = nextProps.newMessage.getIn(['state', 'forceFocus'])
-        const shouldFocus = nextForceFocus && prevForceFocus !== nextForceFocus
-
-        if (shouldFocus && this.richArea) {
-            // wait for the next tick to focus
-            setTimeout(() => {
-                // it's rare, but sometimes the richArea disappears after the tick
-                if (this.richArea) {
-                    this.richArea.focusEditor()
-                }
-            }, 1)
-        }
     }
 
     _getEditorStateFromReducer = (props: Props) => {
         const state = props.newMessage.get('state')
         const contentState = state.get('contentState')
-        const selectionState = state.get('selectionState')
 
         let editorState = this._getEditorState()
 
@@ -130,13 +114,6 @@ export class TicketReplyEditor extends React.Component<Props, State> {
         } else {
             // empty editor state (triggered after message is sent, textarea needs to be emptied)
             editorState = EditorState.push(editorState, ContentState.createFromText(''))
-        }
-
-        if (selectionState) {
-            // hasFocus:false is important here because otherwise the editor will have a very strange behavior
-            editorState = EditorState.forceSelection(editorState, selectionState.merge({
-                hasFocus: false
-            }))
         }
 
         return editorState

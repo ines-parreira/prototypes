@@ -1,8 +1,9 @@
 import React from 'react'
-import {mount} from 'enzyme'
+import {mount, shallow} from 'enzyme'
 import _noop from 'lodash/noop'
 import {EditorState} from 'draft-js'
 import {convertToHTML} from 'draft-convert'
+import Editor from 'draft-js-plugins-editor'
 
 import {RichFieldEditor} from '../RichFieldEditor'
 import createToolbarPlugin from '../../../draftjs/plugins/toolbar'
@@ -75,5 +76,30 @@ describe('RichFieldEditor', () => {
         const convertedHTML = convertToHTML(newContentState.getCurrentContent())
         // we can't simulate the paste event, so we test for unmodified content
         expect(convertedHTML).toBe('<p>html</p>')
+    })
+
+    it('should focus the end of input on initial focus', () => {
+        const contentState = convertFromHTML('<p>foo</p>')
+        let editorState = EditorState.createWithContent(contentState)
+        const onChange = jest.fn()
+        const onFocus = jest.fn()
+        const component = shallow(
+            <RichFieldEditor
+                {...defaultProps}
+                editorKey="editor"
+                editorState={editorState}
+                onChange={onChange}
+                onFocus={onFocus}
+            />)
+
+        expect(component).toMatchSnapshot()
+        expect(component.state('wasEverFocused')).toBe(false)
+        component.find(Editor).simulate('focus')
+        expect(onFocus).toBeCalled()
+        component.setProps({isFocused: true})
+        expect(component.state('wasEverFocused')).toBe(true)
+        expect(onChange).toBeCalledWith(
+            expect.objectContaining(EditorState.moveFocusToEnd(editorState))
+        )
     })
 })

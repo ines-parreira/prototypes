@@ -169,10 +169,19 @@ export class RichFieldEditor extends InputField<Props, State> {
     _getCanInsertInlineImages = () => this.props.canInsertInlineImages
 
     _focusEditor = () => {
-        if (this.editor) {
-            this.editor.focus()
-            scrollToReactNode(this.editor)
+        const {editorState} = this.props
+        const {wasEverFocused} = this.state
+
+        if (!wasEverFocused) {
+            this.setState({wasEverFocused: true})
+            this._onChange(EditorState.moveFocusToEnd(editorState))
         }
+        setTimeout(() => {
+            if (this.editor) {
+                this.editor.focus()
+                scrollToReactNode(this.editor)
+            }
+        }, 0)
     }
 
     // This is for handling things like Bold, Italic, etc..
@@ -247,13 +256,8 @@ export class RichFieldEditor extends InputField<Props, State> {
         this.setState({isDragging: false})
     }
 
-    _onFocus = () => {
-        this.setState({wasEverFocused: true})
-        this.props.onFocus()
-    }
-
     _getField = () => {
-        const {required, displayOnly, signature, ticket} = this.props
+        const {required, displayOnly, onFocus, signature, ticket} = this.props
         const {MentionSuggestions} = this.mentionPlugin
         return (
             <div
@@ -266,7 +270,7 @@ export class RichFieldEditor extends InputField<Props, State> {
                         drop: this.state.isDragging,
                     })}
                     style={{paddingBottom: '26px'}}
-                    onClick={this._onFocus}
+                    onClick={onFocus}
                     onDragOver={this._onDragOver}
                     onDragLeave={this._onDragLeave}
                     onDrop={this._onDrop}
@@ -274,7 +278,7 @@ export class RichFieldEditor extends InputField<Props, State> {
                     <Editor
                         editorState={this.props.editorState}
                         onChange={this._onChange}
-                        onFocus={this._onFocus}
+                        onFocus={onFocus}
                         onBlur={this.props.onBlur}
                         plugins={this.plugins}
                         handleKeyCommand={this._handleKeyCommand}
