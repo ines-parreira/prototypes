@@ -5,6 +5,7 @@ import classnames from 'classnames'
 import _max from 'lodash/max'
 
 import * as layoutSelectors from '../../../../state/layout/selectors'
+import {ErrorBoundary} from '../../../ErrorBoundary'
 
 import css from './Infobar.less'
 
@@ -101,9 +102,9 @@ export default class InfobarLayout extends React.Component {
                 style={style}
             >
                 <div className="infobar-drag-handle" />
-                {
-                    this.props.children
-                }
+                <ErrorBoundary>
+                    {this.props.children}
+                </ErrorBoundary>
             </div>
         )
     }

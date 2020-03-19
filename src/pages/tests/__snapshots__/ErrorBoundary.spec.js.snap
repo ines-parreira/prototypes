@@ -1,0 +1,146 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ErrorBoundary/> should render an error message because an error occurred 1`] = `
+<ErrorBoundary>
+  <div
+    className="container"
+  >
+    <h1>
+      Oops
+       
+      <Emoji
+        backgroundImageFn={[Function]}
+        emoji="white_frowning_face"
+        forceSize={true}
+        native={false}
+        onClick={[Function]}
+        onLeave={[Function]}
+        onOver={[Function]}
+        set="apple"
+        sheetSize={32}
+        size={16}
+        skin={1}
+      >
+        <span
+          className="emoji-mart-emoji"
+          key="white_frowning_face"
+          onClick={[Function]}
+          onMouseEnter={[Function]}
+          onMouseLeave={[Function]}
+        >
+          <span
+            style={
+              Object {
+                "backgroundImage": "url(https://unpkg.com/emoji-datasource-apple@^3.0.0/img/apple/sheets/32.png)",
+                "backgroundPosition": "2.0833333333333335% 33.333333333333336%",
+                "backgroundSize": "4900%",
+                "display": "inline-block",
+                "height": 16,
+                "width": 16,
+              }
+            }
+          />
+        </span>
+      </Emoji>
+    </h1>
+    <h4>
+      An error occurred!
+    </h4>
+    <Button
+      className="mr-2 mb-2"
+      color="primary"
+      onClick={[Function]}
+      tag="button"
+    >
+      <button
+        className="mr-2 mb-2 btn btn-primary"
+        onClick={[Function]}
+        type="button"
+      >
+        Reload the page
+      </button>
+    </Button>
+    <Button
+      className="mr-2 mb-2"
+      color="secondary"
+      onClick={[Function]}
+      tag="button"
+    >
+      <button
+        className="mr-2 mb-2 btn btn-secondary"
+        onClick={[Function]}
+        type="button"
+      >
+        Show details
+      </button>
+    </Button>
+    <Collapse
+      appear={false}
+      enter={true}
+      exit={true}
+      in={false}
+      isOpen={false}
+      mountOnEnter={false}
+      onEnter={[Function]}
+      onEntered={[Function]}
+      onEntering={[Function]}
+      onExit={[Function]}
+      onExited={[Function]}
+      onExiting={[Function]}
+      tag="div"
+      timeout={350}
+      unmountOnExit={false}
+    >
+      <Transition
+        appear={false}
+        enter={true}
+        exit={true}
+        in={false}
+        mountOnEnter={false}
+        onEnter={[Function]}
+        onEntered={[Function]}
+        onEntering={[Function]}
+        onExit={[Function]}
+        onExited={[Function]}
+        onExiting={[Function]}
+        timeout={350}
+        unmountOnExit={false}
+      >
+        <div
+          className="collapse"
+          style={Object {}}
+        >
+          <Card
+            className="mb-2"
+            tag="div"
+          >
+            <div
+              className="mb-2 card"
+            >
+              <CardBody
+                tag="div"
+              >
+                <div
+                  className="card-body"
+                >
+                  Error: Fake error
+                </div>
+              </CardBody>
+            </div>
+          </Card>
+        </div>
+      </Transition>
+    </Collapse>
+  </div>
+</ErrorBoundary>
+`;
+
+exports[`<ErrorBoundary/> should render children when there is no error 1`] = `
+<ErrorBoundary>
+  <Foo>
+    <div>
+      foo
+    </div>
+  </Foo>
+</ErrorBoundary>
+`;

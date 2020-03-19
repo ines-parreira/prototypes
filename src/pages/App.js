@@ -1,7 +1,6 @@
 // @flow
 import classnames from 'classnames'
-import type {Node} from 'react'
-import React from 'react'
+import React, {type Node} from 'react'
 import DocumentTitle from 'react-document-title'
 import {connect} from 'react-redux'
 import {Button, Container} from 'reactstrap'
@@ -28,6 +27,7 @@ import FullPage from './common/components/FullPage'
 import KeyboardHelp from './common/components/KeyboardHelp'
 import ModalNotification from './common/components/ModalNotification'
 import notificationsTheme from './common/components/Notifications'
+import {ErrorBoundary} from './ErrorBoundary'
 
 type Props = {
     // current logged in user
@@ -47,7 +47,7 @@ type Props = {
     openedPanel?: string,
 
     // Injected by React Router
-    children?: any,
+    children: Node,
     params?: {},
     location: reactRouterLocation,
 
@@ -56,7 +56,7 @@ type Props = {
     infobar: Node,
     activeContent: {},
 
-    content: any,
+    content: Node,
     notifications: Array<*>,
 }
 
@@ -112,79 +112,85 @@ class App extends React.Component<Props> {
 
         return (
             <DocumentTitle title="Gorgias">
-                <div className={classnames(css.page)}>
-                    <BannerNotifications notifications={bannerNotifications}/>
+                <ErrorBoundary>
+                    <div className={classnames(css.page)}>
+                        <BannerNotifications notifications={bannerNotifications}/>
 
-                    {
-                        modalNotifications.map((notification) => (
-                            <ModalNotification
-                                key={notification.id}
-                                {...notification}
-                            />
-                        ))
-                    }
+                        {
+                            modalNotifications.map((notification) => (
+                                <ModalNotification
+                                    key={notification.id}
+                                    {...notification}
+                                />
+                            ))
+                        }
 
-                    <div className={css.app}>
-                        {this.props.navbar}
+                        <div className={css.app}>
+                            {this.props.navbar}
 
-                        <div className={classnames('app-content', css.content)}>
-                            <div className="mobile-nav d-md-none d-flex justify-content-between align-items-center">
-                                <Button
-                                    className="mr-3"
-                                    type="button"
-                                    color="link"
-                                    onClick={() => this.props.openPanel('navbar')}
-                                >
-                                    <i className="material-icons">
-                                        menu
-                                    </i>
-                                </Button>
+                            <div className={classnames('app-content', css.content)}>
+                                <div className="mobile-nav d-md-none d-flex justify-content-between align-items-center">
+                                    <Button
+                                        className="mr-3"
+                                        type="button"
+                                        color="link"
+                                        onClick={() => this.props.openPanel('navbar')}
+                                    >
+                                        <i className="material-icons">
+                                            menu
+                                        </i>
+                                    </Button>
+                                    {
+                                        currentRoute.infobarOnMobile && (
+                                            <Button
+                                                className="ml-3"
+                                                type="button"
+                                                color="link"
+                                                onClick={() => this.props.openPanel('infobar')}
+                                            >
+                                                More info
+                                            </Button>
+                                        )
+                                    }
+                                </div>
                                 {
-                                    currentRoute.infobarOnMobile && (
-                                        <Button
-                                            className="ml-3"
-                                            type="button"
-                                            color="link"
-                                            onClick={() => this.props.openPanel('infobar')}
+                                    currentRoute.containerPadding ? (
+                                        <FullPage>
+                                            <ErrorBoundary>
+                                                {this.props.content || this.props.children}
+                                            </ErrorBoundary>
+                                        </FullPage>
+                                    ) : (
+                                        <Container
+                                            fluid
+                                            className={classnames(css['main-content'])}
                                         >
-                                            More info
-                                        </Button>
+                                            <ErrorBoundary>
+                                                {this.props.content || this.props.children}
+                                            </ErrorBoundary>
+                                        </Container>
                                     )
                                 }
                             </div>
-                            {
-                                currentRoute.containerPadding ? (
-                                    <FullPage>
-                                        {this.props.content || this.props.children}
-                                    </FullPage>
-                                ) : (
-                                    <Container
-                                        fluid
-                                        className={classnames(css['main-content'])}
-                                    >
-                                        {this.props.content || this.props.children}
-                                    </Container>
-                                )
-                            }
+
+                            {this.props.infobar}
+
+                            <div
+                                className={classnames(css.backdrop, {
+                                    [css.hidden]: !hasOpenedPanel,
+                                })}
+                                onClick={this.props.closePanels}
+                            />
                         </div>
 
-                        {this.props.infobar}
+                        <KeyboardHelp/>
 
-                        <div
-                            className={classnames(css.backdrop, {
-                                [css.hidden]: !hasOpenedPanel,
-                            })}
-                            onClick={this.props.closePanels}
+                        <NotificationsSystem
+                            theme={notificationsTheme}
+                            filter={(n) => n.style === 'alert'}
                         />
                     </div>
-
-                    <KeyboardHelp/>
-
-                    <NotificationsSystem
-                        theme={notificationsTheme}
-                        filter={(n) => n.style === 'alert'}
-                    />
-                </div>
+                </ErrorBoundary>
             </DocumentTitle>
         )
     }

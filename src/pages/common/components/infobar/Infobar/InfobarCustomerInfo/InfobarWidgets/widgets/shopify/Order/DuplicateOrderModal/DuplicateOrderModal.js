@@ -232,7 +232,7 @@ export class DuplicateOrderModalComponent extends React.PureComponent<Props> {
         }
 
         const shopName = integration.getIn(['meta', 'shop_name'])
-        const currencyCode = integration.getIn(['meta', 'currency'])
+        const currencyCode = integration.getIn(['meta', 'currency'], 'USD')
         const hasScope = this._hasScope()
 
         // TODO(@samy): remove when all Shopify integrations have draft order permissions

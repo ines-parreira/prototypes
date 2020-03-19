@@ -226,6 +226,43 @@ describe('<DuplicateOrderModalComponent/>', () => {
             expect(component).toMatchSnapshot()
         })
 
+        it('should render as open, with order table and default currency, when it\s missing', () => {
+            const order = fromJS(shopifyOrderFixture())
+            const product = fromJS(shopifyProductFixture())
+            const products = new Map([[product.get('id'), product]])
+            const draftOrder = initDraftOrderPayload(order, products)
+            const payload = getDuplicateOrderPayload(draftOrder)
+            const duplicateOrderState = duplicateOrderStateFixture({payload, draftOrder})
+
+            const store = mockStore({
+                integrations: integrationsStateWithShopify.removeIn(['integrations', 0, 'meta', 'currency']),
+                infobarActions: infobarActionsStateFixture({duplicateOrderState}),
+            })
+
+            const state = store.getState()
+
+            const component = shallow(
+                <DuplicateOrderModalComponent
+                    integrations={getIntegrationsByTypes([SHOPIFY_INTEGRATION_TYPE])(state)}
+                    loading={getDuplicateOrderState(state).get('loading')}
+                    loadingMessage={getDuplicateOrderState(state).get('loadingMessage')}
+                    payload={getDuplicateOrderState(state).get('payload')}
+                    draftOrder={getDuplicateOrderState(state).get('draftOrder')}
+                    products={getDuplicateOrderState(state).get('products')}
+                    header="Duplicate order"
+                    isOpen
+                    data={{
+                        actionName: ShopifyAction.DUPLICATE_ORDER,
+                        order,
+                    }}
+                    {...actions}
+                />,
+                {context}
+            )
+
+            expect(component).toMatchSnapshot()
+        })
+
         it('should render as open, with invoice sent', () => {
             const order = fromJS(shopifyOrderFixture())
             const product = fromJS(shopifyProductFixture())

@@ -1272,6 +1272,133 @@ exports[`<DuplicateOrderModalComponent/> render() should render as open, with or
 </Modal>
 `;
 
+exports[`<DuplicateOrderModalComponent/> render() should render as open, with order table and default currency, when its missing 1`] = `
+<Modal
+  backdrop="static"
+  bodyClassName="p-0"
+  dismissible={true}
+  header="Duplicate order"
+  isOpen={true}
+  keyboard={false}
+  onClose={[Function]}
+  size="xl"
+>
+  <div
+    className="formHeader"
+  >
+    <ProductSearchInput
+      autoFocus={true}
+      className="searchInput"
+      onVariantClicked={[Function]}
+    />
+    <AddCustomItemPopover
+      className="headerButton"
+      currencyCode="USD"
+      id="add-custom-item"
+      onSubmit={[Function]}
+      placement="bottom"
+    />
+  </div>
+  <div>
+    <DraftOrderTable
+      currencyCode="USD"
+      lineItems={
+        Immutable.List [
+          Immutable.Map {
+            "applied_discount": null,
+            "taxable": true,
+            "price": "1.00",
+            "quantity": 1,
+            "product_id": null,
+            "product_exists": false,
+            "properties": Immutable.List [],
+            "variant_id": null,
+            "title": "Acidulous candy",
+            "sku": "0987654321-1",
+            "variant_title": "Red / A",
+            "requires_shipping": true,
+          },
+          Immutable.Map {
+            "applied_discount": null,
+            "taxable": true,
+            "price": "1.00",
+            "quantity": 4,
+            "product_id": null,
+            "product_exists": false,
+            "properties": Immutable.List [],
+            "variant_id": null,
+            "title": "Acidulous candy",
+            "sku": "0987654321-2",
+            "variant_title": "Red / B",
+            "requires_shipping": true,
+          },
+        ]
+      }
+      onChange={[Function]}
+      products={Map {}}
+      shopName="gorgiastest"
+    />
+    <Connect(DuplicateOrderFooterComponent)
+      currencyCode="USD"
+      editable={true}
+    />
+    <div
+      className="emailInvoiceContainer"
+    >
+      <h4
+        className="mr-auto"
+      >
+        Email invoice
+      </h4>
+      <EmailInvoicePopover
+        color="primary"
+        customerEmail="apu@gorgias.com"
+        disabled={false}
+        id="email-invoice"
+        onSubmit={[Function]}
+        placement="bottom"
+      >
+        Email invoice
+      </EmailInvoicePopover>
+    </div>
+  </div>
+  <ModalFooter
+    className="formFooter"
+    tag="div"
+  >
+    <Button
+      className="focusable"
+      color="secondary"
+      onClick={[Function]}
+      tabIndex={0}
+      tag="button"
+    >
+      Cancel
+    </Button>
+    <Button
+      className="focusable ml-auto"
+      color="primary"
+      disabled={false}
+      onClick={[Function]}
+      tabIndex={0}
+      tag="button"
+    >
+      Create order as paid
+    </Button>
+    <Button
+      className="focusable"
+      color="primary"
+      disabled={false}
+      onClick={[Function]}
+      tabIndex={0}
+      tag="button"
+    >
+      Create order as pending
+    </Button>
+  </ModalFooter>
+</Modal>
+`;
+
 exports[`<DuplicateOrderModalComponent/> render() should render as open, without order table 1`] = `
 <Modal
   backdrop="static"
