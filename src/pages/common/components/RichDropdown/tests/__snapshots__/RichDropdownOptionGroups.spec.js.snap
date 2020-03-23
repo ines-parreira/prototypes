@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RichDropdownOptionGroups/> should render a dropdown with nested options 1`] = `
+<Fragment>
+  <DropdownItem
+    divider={true}
+    tag="button"
+    toggle={true}
+  />
+  <DropdownItem
+    header={true}
+    tag="button"
+    toggle={true}
+  >
+    FOO
+  </DropdownItem>
+  <RichDropdownOptions
+    onClick={[MockFunction]}
+    options={
+      Array [
+        Object {
+          "key": "foo",
+          "label": "Foo",
+        },
+        Object {
+          "description": "foobar",
+          "key": "bar",
+          "label": "Bar",
+        },
+      ]
+    }
+  />
+  <DropdownItem
+    divider={true}
+    tag="button"
+    toggle={true}
+  />
+  <DropdownItem
+    header={true}
+    tag="button"
+    toggle={true}
+  >
+    BAR
+  </DropdownItem>
+  <RichDropdownOptions
+    onClick={[MockFunction]}
+    options={
+      Array [
+        Object {
+          "key": "foo",
+          "label": "Foo",
+        },
+        Object {
+          "description": "foobar",
+          "key": "bar",
+          "label": "Bar",
+        },
+      ]
+    }
+  />
+</Fragment>
+`;

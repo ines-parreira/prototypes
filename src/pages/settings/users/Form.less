@@ -1,0 +1,18 @@
+@import '~css/new/colors';
+
+:local {
+    .required {
+        &::after {
+            content: ' *';
+            color: @red;
+        }
+    }
+
+    .roleLabel {
+        display: block;
+    }
+
+    .roleDropdown {
+        margin-bottom: 14px;
+    }
+}

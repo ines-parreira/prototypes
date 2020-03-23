@@ -1,4 +1,5 @@
 //@flow
+import _memoize from 'lodash/memoize'
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fromJS, Map} from 'immutable'
@@ -13,12 +14,14 @@ import {
     Container,
     Form as BootstrapForm,
     FormGroup,
+    Label,
 } from 'reactstrap'
 
 import {toJS} from '../../../utils'
 import Loader from '../../common/components/Loader'
 import ConfirmButton from '../../common/components/ConfirmButton'
-import {ADMIN_ROLE, AGENT_ROLE, BASIC_AGENT_ROLE, LITE_AGENT_ROLE, OBSERVER_AGENT_ROLE} from '../../../config/user'
+import RichDropdown, {type Option} from '../../common/components/RichDropdown'
+import {BASIC_AGENT_ROLE, ORDERED_ROLES_META_BY_USER_ROLE, type MetaByAgentRole} from '../../../config/user'
 
 import InputField from '../../common/forms/InputField'
 
@@ -28,6 +31,7 @@ import * as helpers from '../../../state/agents/helpers'
 import PageHeader from '../../common/components/PageHeader'
 
 import DeleteUser from './DeleteUser'
+import css from './Form.less'
 
 
 type Props = {
@@ -38,6 +42,7 @@ type Props = {
     deleteAgent: (number) => Promise<Object>,
     fetchAgent: (number) => Promise<Object>,
     inviteAgent: Function,
+    orderedRoleMetaByUserRole: MetaByAgentRole,
     updateAgent: (number, Object) => Promise<Object>,
     updateAccountOwner: Function,
 }
@@ -68,6 +73,10 @@ type State = {
     updateAccountOwner
 })
 export default class Form extends Component<Props, State> {
+    static defaultProps = {
+        orderedRoleMetaByUserRole: ORDERED_ROLES_META_BY_USER_ROLE,
+    }
+
     state = {
         agent: fromJS({}),
         email: '',
@@ -144,13 +153,20 @@ export default class Form extends Component<Props, State> {
             })
     }
 
+    getRolesOptionsFromRoles = _memoize((roles: MetaByAgentRole): Option[] => Object.keys(roles).map((key) => ({
+        key,
+        ...roles[key]
+    })))
+
     render() {
-        const {agent} = this.state
+        const {orderedRoleMetaByUserRole} = this.props
+        const {agent, role} = this.state
 
         if (this.state.isFetching) {
             return <Loader/>
         }
 
+        const currentRoleMeta = role && ORDERED_ROLES_META_BY_USER_ROLE[role]
         const isUpdate = this._isUpdate()
         const isCurrentUserAccountOwner = this.props.accountOwnerId === this.props.currentUserId
         const isAgentAccountOwner = this.props.agentId === this.props.accountOwnerId
@@ -211,28 +227,16 @@ export default class Form extends Component<Props, State> {
                             placeholder="john@doe.com"
                             required
                         />
-                        <InputField
-                            type="select"
-                            name="role"
-                            label="Role"
-                            value={this.state.role}
-                            onChange={(value) => this.setState({role: value})}
-                            required
-                            help={
-                                <div style={{paddingLeft: '10px'}}>
-                                    <li><b>Observer agent</b>: Able to view customers, tickets and send internal notes.</li>
-                                    <li><b>Lite agent</b>: Able to modify customers, tickets and send messages.</li>
-                                    <li><b>Basic agent</b>: Able to modify customers, tickets, send messages and perform integrations-related actions.</li>
-                                    <li><b>Lead agent</b>: Able to manage customers, tickets, tags, send messages and perform integrations-related actions.</li>
-                                    <li><b>Admin</b>: Able to manage everything. (billing info, users, integrations, rules, tickets, customers, etc...)</li>
-                                </div>}
+                        <RichDropdown
+                            className={css.roleDropdown}
+                            options={this.getRolesOptionsFromRoles(orderedRoleMetaByUserRole)}
+                            onClick={(role) => this.setState({role})}
+                            value={currentRoleMeta ? currentRoleMeta.label : 'Choose a role'}
                         >
-                            <option value={OBSERVER_AGENT_ROLE}>Observer agent</option>
-                            <option value={LITE_AGENT_ROLE}>Lite agent</option>
-                            <option value={BASIC_AGENT_ROLE}>Basic agent</option>
-                            <option value={AGENT_ROLE}>Lead agent</option>
-                            <option value={ADMIN_ROLE}>Admin</option>
-                        </InputField>
+                            <Label className={classnames('control-label', css.roleLabel, css.required)}>
+                                Role
+                            </Label>
+                        </RichDropdown>
                         <FormGroup>
                             <Button
                                 type="submit"

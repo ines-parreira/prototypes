@@ -1,4 +1,5 @@
-import React, {Fragment} from 'react'
+import _memoize from 'lodash/memoize'
+import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
@@ -11,6 +12,7 @@ import * as ticketTypes from '../../../../../state/ticket/constants'
 import * as newMessageTypes from '../../../../../state/newMessage/constants'
 import * as integrationsSelectors from '../../../../../state/integrations/selectors'
 import {ACTION_TEMPLATES} from '../../../../../config'
+import RichDropdown, {type OptionGroup} from '../../../../common/components/RichDropdown/RichDropdown'
 import InputField from '../../../../common/forms/InputField'
 
 import SetStatusAction from './actions/SetStatusAction'
@@ -29,8 +31,25 @@ import css from './MacroEdit.less'
 
 import {getActionTemplate, humanizeString} from './../../../../../utils'
 
+type Intents = {[key: string]: string}
 
-export class MacroEdit extends React.Component {
+type Props = {
+    actions: Map<*, *>,
+    agents: Object,
+    currentMacro: Map<*, *>,
+    hasIntegrationOfTypes: (type: Array<string> | string) => any,
+    intents: Intents,
+    name: string,
+    setActions: (actions: Map<*, *>) => void,
+    setIntent: (intent?: string) => void,
+    setName: (name: string) => void,
+}
+
+export class MacroEdit extends React.Component<Props> {
+    static defaultProps = {
+        intents: (window.GORGIAS_CONSTANTS || {}).INTENTS,
+    }
+
     _updateActionArguments = (index, args = fromJS({})) => {
         const actions = this.props.actions.setIn([index, 'arguments'], args)
         this.props.setActions(actions)
@@ -60,6 +79,32 @@ export class MacroEdit extends React.Component {
         const actions = this.props.actions.updateIn([actionIndex, 'arguments', 'attachments'], (attachments) => attachments.delete(fileIndex))
         this.props.setActions(actions)
     }
+
+    getIntentOptionsFromGlobal = _memoize((intents: Intents): OptionGroup[] =>
+        Object.values(Object.keys(intents)
+            .reduce((acc: {[key: string]: OptionGroup}, intent) => {
+                const [intentCategory, intentName] = intent.split('/')
+
+                if (acc[intentCategory]) {
+                    acc[intentCategory].options.push({
+                        description: intents[intent],
+                        key: intent,
+                        label: humanizeString(intentName),
+                    })
+                } else {
+                    acc[intentCategory] = {
+                        key: intentCategory,
+                        label: intentCategory.toUpperCase(),
+                        options: [{
+                            description: intents[intent],
+                            key: intent,
+                            label: humanizeString(intentName),
+                        }],
+                    }
+                }
+                return acc
+            }, {}))
+    )
 
     renderNewActionMenu = () => {
         // front actions executed on client
@@ -113,56 +158,8 @@ export class MacroEdit extends React.Component {
         )
     }
 
-    renderIntentMenu = () => {
-        let intents = fromJS(window.GORGIAS_CONSTANTS.INTENTS)
-        intents = intents.reduce((newIntents, intentDesc, intentName) => {
-            return newIntents.setIn(intentName.split('/'), intentDesc)
-        }, fromJS({}))
-
-        return (
-            <DropdownMenu className={css.dropdown}>
-                <DropdownItem
-                    type="button"
-                    onClick={() => this.props.setIntent(null)}>
-                    <i className="icon material-icons">
-                        clear
-                    </i>
-                    { humanizeString('clear intent') }
-                </DropdownItem>
-                {
-                    intents.entrySeq().sort().map(([category, subIntents]) => {
-                        return (
-                            <Fragment key={category}>
-                                <DropdownItem divider/>
-                                <DropdownItem header>{category.toUpperCase()}</DropdownItem>
-                                {
-                                    subIntents.entrySeq().sort().map(([intentName, intentDescription]) => {
-                                        const intentValue = `${category}/${intentName}`
-                                        return (
-                                            <DropdownItem
-                                                key={intentName}
-                                                type="button"
-                                                onClick={() => this.props.setIntent(intentValue)}
-                                            >
-                                                {humanizeString(intentName)}
-                                                <br/>
-                                                <span className={css.intentDescription}>
-                                                    {intentDescription}
-                                                </span>
-                                            </DropdownItem>
-                                        )
-                                    })
-                                }
-                            </Fragment>
-                        )
-                    })
-                }
-            </DropdownMenu>
-        )
-    }
-
     render() {
-        const {currentMacro, hasIntegrationOfTypes} = this.props
+        const {currentMacro, hasIntegrationOfTypes, intent, intents, setIntent} = this.props
 
         if (!currentMacro) {
             return null
@@ -193,21 +190,35 @@ export class MacroEdit extends React.Component {
                         />
                     </div>
 
-                    <div>
+                    <RichDropdown
+                        options={this.getIntentOptionsFromGlobal(intents)}
+                        onClick={setIntent}
+                        renderMenuItems={(menuItems) =>
+                            <>
+                                <DropdownItem
+                                    onClick={() => setIntent(null)}
+                                    type="button"
+                                >
+                                    <i className="icon material-icons">
+                                        clear
+                                    </i>
+                                    {humanizeString('clear intent')}
+                                </DropdownItem>
+                                {menuItems}
+                            </>
+                        }
+                        value={
+                            (intent && humanizeString(intent.replace('/', ' - ')))
+                            || 'Choose intent'
+                        }
+                    >
                         <div className={classnames('mb-2', css.title)}>
                             Intent
                         </div>
                         <div className={css.description}>
                             Choose an intent to describe in which cases this macro will be used.
                         </div>
-                        <UncontrolledButtonDropdown>
-                            <DropdownToggle caret>
-                                {(this.props.intent && humanizeString(this.props.intent.replace('/', ' - '))) ||
-                                'Choose intent'}
-                            </DropdownToggle>
-                            {this.renderIntentMenu()}
-                        </UncontrolledButtonDropdown>
-                    </div>
+                    </RichDropdown>
 
                     {
                         this.props.actions.map((action, index) => {

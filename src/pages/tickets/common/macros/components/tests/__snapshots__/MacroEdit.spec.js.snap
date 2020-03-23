@@ -10,6 +10,13 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
     }
   }
   hasIntegrationOfTypes={[Function]}
+  intents={
+    Object {
+      "catOne/intentOne": "description one",
+      "catOne/intentTwo": "description two",
+      "catTwo/intentTWo": "description three",
+    }
+  }
   name="Pizza Pepperoni"
   setActions={[Function]}
   setIntent={[Function]}
@@ -66,228 +73,333 @@ exports[`MacroEdit component should render the macro edit form 1`] = `
           </FormGroup>
         </InputField>
       </div>
-      <div>
+      <RichDropdown
+        onClick={[Function]}
+        options={
+          Array [
+            Object {
+              "key": "catOne",
+              "label": "CATONE",
+              "options": Array [
+                Object {
+                  "description": "description one",
+                  "key": "catOne/intentOne",
+                  "label": "Intent one",
+                },
+                Object {
+                  "description": "description two",
+                  "key": "catOne/intentTwo",
+                  "label": "Intent two",
+                },
+              ],
+            },
+            Object {
+              "key": "catTwo",
+              "label": "CATTWO",
+              "options": Array [
+                Object {
+                  "description": "description three",
+                  "key": "catTwo/intentTWo",
+                  "label": "Intent t wo",
+                },
+              ],
+            },
+          ]
+        }
+        renderMenuItems={[Function]}
+        value="Choose intent"
+      >
         <div
-          className="mb-2 title"
+          className=""
         >
-          Intent
-        </div>
-        <div
-          className="description"
-        >
-          Choose an intent to describe in which cases this macro will be used.
-        </div>
-        <UncontrolledButtonDropdown>
-          <ButtonDropdown
-            isOpen={false}
-            toggle={[Function]}
+          <div
+            className="mb-2 title"
           >
-            <Dropdown
-              active={false}
-              addonType={false}
-              direction="down"
-              group={true}
-              inNavbar={false}
+            Intent
+          </div>
+          <div
+            className="description"
+          >
+            Choose an intent to describe in which cases this macro will be used.
+          </div>
+          <UncontrolledButtonDropdown>
+            <ButtonDropdown
               isOpen={false}
-              nav={false}
               toggle={[Function]}
             >
-              <Manager
-                className="btn-group"
-                onKeyDown={[Function]}
-                tag="div"
+              <Dropdown
+                active={false}
+                addonType={false}
+                direction="down"
+                group={true}
+                inNavbar={false}
+                isOpen={false}
+                nav={false}
+                toggle={[Function]}
               >
-                <div
+                <Manager
                   className="btn-group"
                   onKeyDown={[Function]}
+                  tag="div"
                 >
-                  <DropdownToggle
-                    aria-haspopup={true}
-                    caret={true}
-                    color="secondary"
+                  <div
+                    className="btn-group"
+                    onKeyDown={[Function]}
                   >
-                    <Target
-                      aria-expanded={false}
+                    <DropdownToggle
                       aria-haspopup={true}
-                      className="dropdown-toggle"
+                      caret={true}
                       color="secondary"
-                      component={[Function]}
-                      onClick={[Function]}
                     >
-                      <Button
+                      <Target
                         aria-expanded={false}
                         aria-haspopup={true}
                         className="dropdown-toggle"
                         color="secondary"
-                        innerRef={[Function]}
+                        component={[Function]}
                         onClick={[Function]}
-                        tag="button"
                       >
-                        <button
+                        <Button
                           aria-expanded={false}
                           aria-haspopup={true}
-                          className="dropdown-toggle btn btn-secondary"
+                          className="dropdown-toggle"
+                          color="secondary"
+                          innerRef={[Function]}
                           onClick={[Function]}
-                          type="button"
+                          tag="button"
                         >
-                          Choose intent
-                        </button>
-                      </Button>
-                    </Target>
-                  </DropdownToggle>
-                  <DropdownMenu
-                    className="dropdown"
-                    flip={true}
-                    tag="div"
-                  >
-                    <div
-                      aria-hidden={true}
-                      className="dropdown dropdown-menu"
-                      role="menu"
-                      tabIndex="-1"
+                          <button
+                            aria-expanded={false}
+                            aria-haspopup={true}
+                            className="dropdown-toggle btn btn-secondary"
+                            onClick={[Function]}
+                            type="button"
+                          >
+                            Choose intent
+                          </button>
+                        </Button>
+                      </Target>
+                    </DropdownToggle>
+                    <DropdownMenu
+                      className="dropdown"
+                      flip={true}
+                      tag="div"
                     >
-                      <DropdownItem
-                        onClick={[Function]}
-                        tag="button"
-                        toggle={true}
-                        type="button"
+                      <div
+                        aria-hidden={true}
+                        className="dropdown dropdown-menu"
+                        role="menu"
+                        tabIndex="-1"
                       >
-                        <button
-                          className="dropdown-item"
+                        <DropdownItem
                           onClick={[Function]}
-                          tabIndex="0"
+                          tag="button"
+                          toggle={true}
                           type="button"
                         >
-                          <i
-                            className="icon material-icons"
+                          <button
+                            className="dropdown-item"
+                            onClick={[Function]}
+                            tabIndex="0"
+                            type="button"
                           >
-                            clear
-                          </i>
-                          Clear intent
-                        </button>
-                      </DropdownItem>
-                      <DropdownItem
-                        divider={true}
-                        tag="button"
-                        toggle={true}
-                      >
-                        <div
-                          className="dropdown-divider"
+                            <i
+                              className="icon material-icons"
+                            >
+                              clear
+                            </i>
+                            Clear intent
+                          </button>
+                        </DropdownItem>
+                        <RichDropdownOptionGroups
                           onClick={[Function]}
-                          tabIndex="-1"
-                        />
-                      </DropdownItem>
-                      <DropdownItem
-                        header={true}
-                        tag="button"
-                        toggle={true}
-                      >
-                        <h6
-                          className="dropdown-header"
-                          onClick={[Function]}
-                          tabIndex="-1"
+                          options={
+                            Array [
+                              Object {
+                                "key": "catOne",
+                                "label": "CATONE",
+                                "options": Array [
+                                  Object {
+                                    "description": "description one",
+                                    "key": "catOne/intentOne",
+                                    "label": "Intent one",
+                                  },
+                                  Object {
+                                    "description": "description two",
+                                    "key": "catOne/intentTwo",
+                                    "label": "Intent two",
+                                  },
+                                ],
+                              },
+                              Object {
+                                "key": "catTwo",
+                                "label": "CATTWO",
+                                "options": Array [
+                                  Object {
+                                    "description": "description three",
+                                    "key": "catTwo/intentTWo",
+                                    "label": "Intent t wo",
+                                  },
+                                ],
+                              },
+                            ]
+                          }
                         >
-                          CATONE
-                        </h6>
-                      </DropdownItem>
-                      <DropdownItem
-                        key="intentOne"
-                        onClick={[Function]}
-                        tag="button"
-                        toggle={true}
-                        type="button"
-                      >
-                        <button
-                          className="dropdown-item"
-                          onClick={[Function]}
-                          tabIndex="0"
-                          type="button"
-                        >
-                          Intent one
-                          <br />
-                          <span
-                            className="intentDescription"
+                          <DropdownItem
+                            divider={true}
+                            tag="button"
+                            toggle={true}
                           >
-                            description one
-                          </span>
-                        </button>
-                      </DropdownItem>
-                      <DropdownItem
-                        key="intentTwo"
-                        onClick={[Function]}
-                        tag="button"
-                        toggle={true}
-                        type="button"
-                      >
-                        <button
-                          className="dropdown-item"
-                          onClick={[Function]}
-                          tabIndex="0"
-                          type="button"
-                        >
-                          Intent two
-                          <br />
-                          <span
-                            className="intentDescription"
+                            <div
+                              className="dropdown-divider"
+                              onClick={[Function]}
+                              tabIndex="-1"
+                            />
+                          </DropdownItem>
+                          <DropdownItem
+                            header={true}
+                            tag="button"
+                            toggle={true}
                           >
-                            description two
-                          </span>
-                        </button>
-                      </DropdownItem>
-                      <DropdownItem
-                        divider={true}
-                        tag="button"
-                        toggle={true}
-                      >
-                        <div
-                          className="dropdown-divider"
-                          onClick={[Function]}
-                          tabIndex="-1"
-                        />
-                      </DropdownItem>
-                      <DropdownItem
-                        header={true}
-                        tag="button"
-                        toggle={true}
-                      >
-                        <h6
-                          className="dropdown-header"
-                          onClick={[Function]}
-                          tabIndex="-1"
-                        >
-                          CATTWO
-                        </h6>
-                      </DropdownItem>
-                      <DropdownItem
-                        key="intentTWo"
-                        onClick={[Function]}
-                        tag="button"
-                        toggle={true}
-                        type="button"
-                      >
-                        <button
-                          className="dropdown-item"
-                          onClick={[Function]}
-                          tabIndex="0"
-                          type="button"
-                        >
-                          Intent t wo
-                          <br />
-                          <span
-                            className="intentDescription"
+                            <h6
+                              className="dropdown-header"
+                              onClick={[Function]}
+                              tabIndex="-1"
+                            >
+                              CATONE
+                            </h6>
+                          </DropdownItem>
+                          <RichDropdownOptions
+                            onClick={[Function]}
+                            options={
+                              Array [
+                                Object {
+                                  "description": "description one",
+                                  "key": "catOne/intentOne",
+                                  "label": "Intent one",
+                                },
+                                Object {
+                                  "description": "description two",
+                                  "key": "catOne/intentTwo",
+                                  "label": "Intent two",
+                                },
+                              ]
+                            }
                           >
-                            description three
-                          </span>
-                        </button>
-                      </DropdownItem>
-                    </div>
-                  </DropdownMenu>
-                </div>
-              </Manager>
-            </Dropdown>
-          </ButtonDropdown>
-        </UncontrolledButtonDropdown>
-      </div>
+                            <DropdownItem
+                              key="catOne/intentOne"
+                              onClick={[Function]}
+                              tag="button"
+                              toggle={true}
+                              type="button"
+                            >
+                              <button
+                                className="dropdown-item"
+                                onClick={[Function]}
+                                tabIndex="0"
+                                type="button"
+                              >
+                                Intent one
+                                <br />
+                                <span
+                                  className="description"
+                                >
+                                  description one
+                                </span>
+                              </button>
+                            </DropdownItem>
+                            <DropdownItem
+                              key="catOne/intentTwo"
+                              onClick={[Function]}
+                              tag="button"
+                              toggle={true}
+                              type="button"
+                            >
+                              <button
+                                className="dropdown-item"
+                                onClick={[Function]}
+                                tabIndex="0"
+                                type="button"
+                              >
+                                Intent two
+                                <br />
+                                <span
+                                  className="description"
+                                >
+                                  description two
+                                </span>
+                              </button>
+                            </DropdownItem>
+                          </RichDropdownOptions>
+                          <DropdownItem
+                            divider={true}
+                            tag="button"
+                            toggle={true}
+                          >
+                            <div
+                              className="dropdown-divider"
+                              onClick={[Function]}
+                              tabIndex="-1"
+                            />
+                          </DropdownItem>
+                          <DropdownItem
+                            header={true}
+                            tag="button"
+                            toggle={true}
+                          >
+                            <h6
+                              className="dropdown-header"
+                              onClick={[Function]}
+                              tabIndex="-1"
+                            >
+                              CATTWO
+                            </h6>
+                          </DropdownItem>
+                          <RichDropdownOptions
+                            onClick={[Function]}
+                            options={
+                              Array [
+                                Object {
+                                  "description": "description three",
+                                  "key": "catTwo/intentTWo",
+                                  "label": "Intent t wo",
+                                },
+                              ]
+                            }
+                          >
+                            <DropdownItem
+                              key="catTwo/intentTWo"
+                              onClick={[Function]}
+                              tag="button"
+                              toggle={true}
+                              type="button"
+                            >
+                              <button
+                                className="dropdown-item"
+                                onClick={[Function]}
+                                tabIndex="0"
+                                type="button"
+                              >
+                                Intent t wo
+                                <br />
+                                <span
+                                  className="description"
+                                >
+                                  description three
+                                </span>
+                              </button>
+                            </DropdownItem>
+                          </RichDropdownOptions>
+                        </RichDropdownOptionGroups>
+                      </div>
+                    </DropdownMenu>
+                  </div>
+                </Manager>
+              </Dropdown>
+            </ButtonDropdown>
+          </UncontrolledButtonDropdown>
+        </div>
+      </RichDropdown>
       <div
         className="mt-3"
       >

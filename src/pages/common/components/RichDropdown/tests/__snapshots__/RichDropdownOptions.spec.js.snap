@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RichDropdownOptions/> should render a dropdown with options 1`] = `
+<Fragment>
+  <DropdownItem
+    key="foo"
+    onClick={[Function]}
+    tag="button"
+    toggle={true}
+    type="button"
+  >
+    Foo
+    <br />
+  </DropdownItem>
+  <DropdownItem
+    key="bar"
+    onClick={[Function]}
+    tag="button"
+    toggle={true}
+    type="button"
+  >
+    Bar
+    <br />
+    <span
+      className="description"
+    >
+      foobar
+    </span>
+  </DropdownItem>
+</Fragment>
+`;

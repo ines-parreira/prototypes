@@ -7,30 +7,24 @@ import {MacroEdit} from '../MacroEdit'
 
 describe('MacroEdit component', () => {
     let component
-    const macro = fromJS({
-        id: 1,
-    })
-    const agents = fromJS({})
-    const actions = fromJS([])
-
-    beforeEach(() => {
-        window.GORGIAS_CONSTANTS = {'INTENTS': {
+    const defaultProps = {
+        actions: fromJS([]),
+        agents: fromJS({}),
+        currentMacro: fromJS({id: 1}),
+        hasIntegrationOfTypes: _noop,
+        intents: {
             'catOne/intentOne': 'description one',
             'catOne/intentTwo': 'description two',
             'catTwo/intentTWo': 'description three'
-        }}
-        component = mount(
-            <MacroEdit
-                currentMacro={macro}
-                agents={agents}
-                actions={actions}
-                setActions={_noop}
-                hasIntegrationOfTypes={_noop}
-                name="Pizza Pepperoni"
-                setName={_noop}
-                setIntent={_noop}
-            />
-        )
+        },
+        name: 'Pizza Pepperoni',
+        setActions: _noop,
+        setIntent: _noop,
+        setName: _noop,
+    }
+
+    beforeEach(() => {
+        component = mount(<MacroEdit {...defaultProps}/>)
     })
 
     it('should render the macro edit form', () => {
