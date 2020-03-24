@@ -51,7 +51,7 @@ type Props = {
 }
 
 
-class ViewTable extends React.Component<Props> {
+export class ViewTableContainer extends React.Component<Props> {
     static defaultProps = {
         items: fromJS([]),
         type: 'ticket',
@@ -68,7 +68,7 @@ class ViewTable extends React.Component<Props> {
         } else if (activeView.isEmpty() || urlViewId) {
             const suggestedViewId = getViewIdToDisplay(config.get('type'), urlViewId)
 
-            const viewMissing = !suggestedViewId || (suggestedViewId && suggestedViewId.toString() !== urlViewId)
+            const viewMissing = suggestedViewId && urlViewId && suggestedViewId.toString() !== urlViewId
             if (viewMissing) {
                 browserHistory.push('/app')
             }
@@ -245,4 +245,4 @@ export default withRouter(connect((state, ownProps) => {
     fetchViewItems: viewsActions.fetchViewItems,
     setViewActive: viewsActions.setViewActive,
     updateView: viewsActions.updateView,
-})(ViewTable))
+})(ViewTableContainer))

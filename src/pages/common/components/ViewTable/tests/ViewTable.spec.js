@@ -2,6 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
+import _identity from 'lodash/identity'
 import _merge from 'lodash/merge'
 import {browserHistory} from 'react-router'
 import configureMockStore from 'redux-mock-store'
@@ -12,7 +13,7 @@ import * as ticketFixtures from '../../../../../fixtures/ticket'
 import * as viewsActions from '../../../../../state/views/actions'
 import * as viewsConfig from '../../../../../config/views'
 import * as viewsFixtures from '../../../../../fixtures/views'
-import ViewTable from '../ViewTable'
+import ViewTable, {ViewTableContainer} from '../ViewTable'
 
 const mockStore = configureMockStore([thunk])
 
@@ -28,6 +29,7 @@ jest.mock('../../../../../state/views/actions', () => {
     }
 })
 
+browserHistory.push = jest.fn()
 
 describe('ViewTable::ViewTable', () => {
     const fixtureView = viewsFixtures.view
@@ -46,6 +48,16 @@ describe('ViewTable::ViewTable', () => {
                 }
             }
         })
+    }
+
+    const minContainerProps = {
+        activeView: fromJS({}),
+        config: fromJS({}),
+        fetchViewItems: jest.fn(),
+        getViewIdToDisplay: jest.fn(),
+        getView: jest.fn(),
+        location: {query: {}},
+        setViewActive: jest.fn(),
     }
 
     const minProps = {
@@ -198,7 +210,6 @@ describe('ViewTable::ViewTable', () => {
 
         it('should remove cursor from the URL if loading of the page just finished, stored cursor is different ' +
             'of URL cursor, and there is no previous items', () => {
-            const storedPush = browserHistory.push
             const cursor = '1234'
             const component = shallow(<ViewTable {...minProps}/>).dive().dive()
 
@@ -208,9 +219,6 @@ describe('ViewTable::ViewTable', () => {
                 isLoading: () => true,
             })
 
-            // Only start tracking once props have been set above
-            browserHistory.push = jest.fn()
-
             component.setProps({
                 location: {query: {cursor: '1256'}},
                 navigation: fromJS({current_cursor: cursor}),
@@ -218,8 +226,6 @@ describe('ViewTable::ViewTable', () => {
             })
 
             expect(browserHistory.push).toBeCalledWith({...minProps.location, query: {}})
-
-            browserHistory.push = storedPush
         })
 
         it('should call fetchViewItems with the URL cursor when URL cursor changes', () => {
@@ -380,6 +386,19 @@ describe('ViewTable::ViewTable', () => {
             })
             expect(viewsActions.setViewActive).toBeCalled()
             expect(viewsActions.fetchViewItems).toBeCalledWith()
+        })
+
+        it('should handle /app/customers selecting the right view and without redirecting', () => {
+            shallow(
+                <ViewTableContainer
+                    {...minContainerProps}
+                    getViewIdToDisplay={jest.fn(() => 42)}
+                    getView={jest.fn(_identity)}
+                />
+            )
+
+            expect(browserHistory.push).not.toHaveBeenCalled()
+            expect(minContainerProps.setViewActive).toHaveBeenCalledWith(42)
         })
     })
 })
