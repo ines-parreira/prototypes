@@ -1,17 +1,19 @@
+//@flow
 import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS, Map} from 'immutable'
 
 import {Infobar} from '../Infobar'
 import { FETCH_PREVIEW_CUSTOMER_ERROR, FETCH_PREVIEW_CUSTOMER_SUCCESS } from '../../../../../../state/infobar/constants'
+import {startEditionMode, stopEditionMode, submitWidgets} from '../../../../../../state/widgets/actions'
 
 
 const commonProps = {
     actions: {
         widgets: {
-            startEditionMode: jest.fn(() => Promise.resolve()),
-            stopEditionMode: jest.fn(() => Promise.resolve()),
-            submitWidgets: jest.fn(() => Promise.resolve()),
+            startEditionMode: jest.fn(startEditionMode),
+            stopEditionMode: jest.fn(stopEditionMode),
+            submitWidgets: jest.fn(submitWidgets),
         },
         infobar: {
             fetchPreviewCustomer: jest.fn(() => Promise.resolve({resp: {}}))
@@ -39,7 +41,7 @@ const commonProps = {
             isEditing: false
         }
     }),
-    fetchCustomerHistory: jest.fn(() => Promise.resolve()),
+    fetchCustomerHistory: jest.fn(() => () => Promise.resolve()),
     search: jest.fn(() => Promise.resolve({resp: {data: []}})),
     searchSimilarCustomer: jest.fn(() => Promise.resolve({customer: {id: 4}})),
     setCustomer: jest.fn(() => Promise.resolve()),
@@ -49,6 +51,10 @@ const commonProps = {
 }
 
 describe('<Infobar/>', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
     it('should render ticket context', () => {
         const component = shallow(
             <Infobar
@@ -199,6 +205,32 @@ describe('<Infobar/>', () => {
 
             expect(component.state().isFetchingCustomer).toEqual(false)
             expect(component.state().selectedCustomer.get('id')).toBeUndefined()
+        })
+
+        it('should start edition mode, because it is mounting in edition mode and the widgets state is not in edit mode', () => {
+            shallow(
+                <Infobar
+                    {...commonProps}
+                    isRouteEditingWidgets={true}
+                />
+            )
+
+            expect(commonProps.actions.widgets.startEditionMode).toHaveBeenNthCalledWith(1, commonProps.context)
+        })
+
+        it('should stop edition mode, because it is mounting in read mode and the widgets state is in edit mode', () => {
+            shallow(
+                <Infobar
+                    {...commonProps}
+                    widgets={fromJS({
+                        _internal: {
+                            isEditing: true,
+                        },
+                    })}
+                />
+            )
+
+            expect(commonProps.actions.widgets.stopEditionMode).toHaveBeenNthCalledWith(1)
         })
     })
 })

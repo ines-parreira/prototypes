@@ -91,7 +91,14 @@ export class Infobar extends React.Component<Props, State> {
     }
 
     componentWillMount() {
+        const {actions: {widgets: widgetsActions}, context, isRouteEditingWidgets, widgets} = this.props
+
         this._updateSimilarCustomer(this.props)
+        if (isRouteEditingWidgets && !widgets.getIn(['_internal', 'isEditing'])) {
+            widgetsActions.startEditionMode(context)
+        } else if (!isRouteEditingWidgets && widgets.getIn(['_internal', 'isEditing'])) {
+            widgetsActions.stopEditionMode()
+        }
     }
 
     componentWillReceiveProps(nextProps: Props) {
