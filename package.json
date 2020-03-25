@@ -73,7 +73,7 @@
     "react-hot-loader": "4.12.20",
     "react-images": "0.5.5",
     "react-immutable-proptypes": "2.1.0",
-    "react-json-pretty": "^2.2.0",
+    "react-json-pretty": "2.2.0",
     "react-paginate": "6.3.0",
     "react-redux": "4.4.9",
     "react-router": "3.2.1",
