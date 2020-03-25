@@ -21,13 +21,14 @@
     "dll": "webpack --env.dll",
     "postinstall": "run-s dll",
     "build": "(export NODE_ENV=production; run-s dll; webpack; webpack --config webpack.sharedWorker.config.js)",
-    "serve": "webpack --config webpack.sharedWorker.config.js; webpack-dev-server --progress --debug",
+    "serve": "webpack --config webpack.sharedWorker.config.js; webpack-dev-server --inline --hot --progress --debug",
     "serve:sharedWorker": "webpack -w --config webpack.sharedWorker.config.js",
     "uglify-file": "terser --compress --mangle --"
   },
   "author": "Alex Plugaru <alex@gorgias.com>",
   "license": "UNLICENSED",
   "dependencies": {
+    "@hot-loader/react-dom": "16.13.0",
     "@shopify/theme-images": "3.0.3",
     "array-includes": "3.1.1",
     "axios": "0.19.2",
@@ -69,6 +70,7 @@
     "react-chartjs-2": "2.6.1",
     "react-document-title": "2.0.3",
     "react-dom": "16.8.5",
+    "react-hot-loader": "4.12.20",
     "react-images": "0.5.5",
     "react-immutable-proptypes": "2.1.0",
     "react-json-pretty": "^2.2.0",

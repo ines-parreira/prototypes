@@ -10,6 +10,7 @@ const pkg = require('./package.json')
 const __PRODUCTION__ = process.env.NODE_ENV === 'production'
 const HASH = process.env.RELEASE ? process.env.RELEASE : '[hash]'
 const GORGIAS_ASSETS_URL = __PRODUCTION__ ? 'https://gorgias-assets.gorgias.io' : ''
+const BUNDLE_PUBLIC_PATH = 'http://acme.gorgias.docker:8080/'
 
 const srcDir = path.join(__dirname, 'g/static/private')
 const buildDir = path.join(srcDir, '_build')
@@ -67,6 +68,9 @@ const fontExtRegex = /\.(ttf|eot|svg|woff(2)?)$/i
 const cssOnlyPackages = ['bootstrap']
 const vendors = Object.keys(pkg.dependencies).filter(m => !cssOnlyPackages.includes(m))
 
+const outputOptions = __PRODUCTION__? {} : {publicPath: BUNDLE_PUBLIC_PATH}
+const aliasOptions = __PRODUCTION__ ? {} : {'react-dom': '@hot-loader/react-dom'}
+
 module.exports = (env = {}) => {
     if (env.dll) {
         return {
@@ -115,8 +119,9 @@ module.exports = (env = {}) => {
             build: `${srcDir}/js/main.js`,
         },
         output: {
+            ...outputOptions,
             path: buildDir,
-            filename: jsBundleFile
+            filename: jsBundleFile,
         },
         module: {
             rules: [
@@ -138,7 +143,13 @@ module.exports = (env = {}) => {
                 {
                     test: /\.less$/i,
                     use: [
-                        MiniCssExtractPlugin.loader,
+                        {
+                            loader: MiniCssExtractPlugin.loader,
+                            options: {
+                                hmr: !__PRODUCTION__,
+                                reloadAll: false,
+                            }
+                        },
                         {
                             loader: 'css-loader',
                             options: cssLoaderOptions
@@ -194,7 +205,8 @@ module.exports = (env = {}) => {
         ],
         resolve: {
             alias: {
-                css: `${srcDir}/css/`
+                ...aliasOptions,
+                css: `${srcDir}/css/`,
             }
         }
     }
