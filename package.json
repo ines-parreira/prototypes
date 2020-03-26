@@ -105,7 +105,7 @@
     "@babel/preset-flow": "7.9.0",
     "@babel/preset-react": "7.9.4",
     "@babel/register": "7.9.0",
-    "axios-mock-adapter": "1.17.0",
+    "axios-mock-adapter": "1.18.1",
     "babel-eslint": "10.1.0",
     "babel-jest": "24.7.1",
     "babel-loader": "8.1.0",
