@@ -13,7 +13,7 @@ import {
     getFinalCancelOrderPayload,
     getLineItemQuantity,
     getRefundableShippingAmount,
-    initCancelOrderLineItems,
+    initRefundOrderLineItems,
     initCancelOrderPayload
 } from '../order'
 
@@ -29,7 +29,7 @@ describe('initCancelOrderPayload()', () => {
 describe('initCancelOrderLineItems()', () => {
     it('should return line items used to render the cancel order modal', () => {
         const order = fromJS(shopifyOrderFixture())
-        const payload = initCancelOrderLineItems(order)
+        const payload = initRefundOrderLineItems(order)
 
         expect(payload).toMatchSnapshot()
     })

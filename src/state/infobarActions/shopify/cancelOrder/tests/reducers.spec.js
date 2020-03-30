@@ -7,7 +7,7 @@ import {
     shopifyOrderFixture,
     shopifySuggestedRefundFixture
 } from '../../../../../fixtures/shopify'
-import {initCancelOrderLineItems} from '../../../../../business/shopify/order'
+import {initRefundOrderLineItems} from '../../../../../business/shopify/order'
 import reducer, {initialState} from '../reducers'
 import * as constants from '../constants'
 
@@ -50,7 +50,7 @@ describe('infobarActions.shopify.cancelOrder reducer', () => {
     describe('SET_LINE_ITEMS', () => {
         it('should set line items', () => {
             const order = fromJS(shopifyOrderFixture())
-            const lineItems = initCancelOrderLineItems(order)
+            const lineItems = initRefundOrderLineItems(order)
             const action = {type: constants.SET_LINE_ITEMS, lineItems}
             const nextState = reducer(initialState, action)
             expect(nextState.get('lineItems')).toEqualImmutable(lineItems)
@@ -73,7 +73,7 @@ describe('infobarActions.shopify.cancelOrder reducer', () => {
             const state = initialState.set('payload', payload)
             const action = {type: constants.SET_REFUND_AMOUNT, amount}
             const nextState = reducer(state, action)
-            expect(nextState.getIn(['payload', 'amount'])).toEqual(amount)
+            expect(nextState.getIn(['payload', 'refund', 'transactions', 0, 'amount'])).toEqual(amount)
         })
     })
 

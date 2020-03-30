@@ -10,7 +10,7 @@ import {
     shopifyOrderFixture,
     shopifyProductFixture
 } from '../../../../../../../../../../../../../fixtures/shopify'
-import {initCancelOrderLineItems} from '../../../../../../../../../../../../../business/shopify/order'
+import {initRefundOrderLineItems} from '../../../../../../../../../../../../../business/shopify/order'
 import {DraftOrderLineItemRow} from '../DraftOrderLineItemRow'
 
 jest.mock('lodash/debounce', () => (fn) => fn)
@@ -87,7 +87,7 @@ describe('<DraftOrderLineItemRow/>', () => {
 
         it('should render without quantity and without price', () => {
             const order = fromJS(shopifyOrderFixture())
-            const lineItems = initCancelOrderLineItems(order)
+            const lineItems = initRefundOrderLineItems(order)
             const lineItem = lineItems.get(0).set('quantity', 0)
 
             const component = shallow(

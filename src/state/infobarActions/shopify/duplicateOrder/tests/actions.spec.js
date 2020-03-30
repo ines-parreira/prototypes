@@ -19,7 +19,11 @@ import localStorageManager from '../../../../../services/localStorageManager'
 import {executeAction} from '../../../../infobar/actions'
 import * as actions from '../actions'
 
-jest.mock('lodash/debounce', () => (fn) => fn)
+jest.mock('lodash/debounce', () => (fn) => {
+    fn.cancel = jest.fn()
+    return fn
+})
+
 jest.mock('../../../../infobar/actions')
 jest.useFakeTimers()
 
@@ -330,6 +334,7 @@ describe('infobarActions.shopify.duplicateOrder actions', () => {
 
             await store.dispatch(actions.onCancel())
             expect(mockServer.history).toMatchSnapshot()
+            expect(actions.updateDraftOrder.cancel).toHaveBeenCalled()
         })
     })
 

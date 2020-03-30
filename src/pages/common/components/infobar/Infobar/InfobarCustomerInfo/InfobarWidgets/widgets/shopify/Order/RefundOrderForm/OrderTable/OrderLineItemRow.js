@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react'
-import {Input} from 'reactstrap'
+import {Button, Input, InputGroup, InputGroupAddon} from 'reactstrap'
 import {type Record} from 'immutable'
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
@@ -33,9 +33,31 @@ export class OrderLineItemRow extends React.PureComponent<Props, State> {
 
     _onQuantityChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
         const value = parseInt(event.target.value)
-        const quantity = isNaN(value) ? this._maxQuantity : value
+        let quantity = isNaN(value) ? 0 : value
+
+        if (quantity < 0) {
+            quantity = 0
+        } else if (quantity > this._maxQuantity) {
+            quantity = this._maxQuantity
+        }
 
         this.setState({quantity})
+        this._updateLineItem()
+    }
+
+    _onQuantityUp = () => {
+        const {quantity} = this.state
+        const newQuantity = quantity + 1
+
+        this.setState({quantity: newQuantity})
+        this._updateLineItem()
+    }
+
+    _onQuantityDown = () => {
+        const {quantity} = this.state
+        const newQuantity = quantity - 1
+
+        this.setState({quantity: newQuantity})
         this._updateLineItem()
     }
 
@@ -149,13 +171,42 @@ export class OrderLineItemRow extends React.PureComponent<Props, State> {
 
         return (
             <td className={css.quantityCol}>
-                <Input
-                    type="number"
-                    min={0}
-                    max={this._maxQuantity}
-                    value={quantity}
-                    onChange={this._onQuantityChange}
-                />
+                <InputGroup>
+                    <span className={css.quantityContainer}>
+                        <Input
+                            pattern="\d+"
+                            value={quantity}
+                            className={css.quantityInput}
+                            onChange={this._onQuantityChange}
+                        />
+                        <span className={css.quantityMax}>
+                            / {this._maxQuantity}
+                        </span>
+                    </span>
+                    <InputGroupAddon
+                        addonType="append"
+                        className={css.quantityButtonsContainer}
+                    >
+                        <Button
+                            type="button"
+                            tabIndex={0}
+                            className={classnames(css.focusable, css.quantityBtn, css.quantityBtnUp)}
+                            disabled={quantity === this._maxQuantity}
+                            onClick={this._onQuantityUp}
+                        >
+                            &#9650;
+                        </Button>
+                        <Button
+                            type="button"
+                            tabIndex={0}
+                            className={classnames(css.focusable, css.quantityBtn, css.quantityBtnDown)}
+                            disabled={quantity === 0}
+                            onClick={this._onQuantityDown}
+                        >
+                            &#9660;
+                        </Button>
+                    </InputGroupAddon>
+                </InputGroup>
             </td>
         )
     }

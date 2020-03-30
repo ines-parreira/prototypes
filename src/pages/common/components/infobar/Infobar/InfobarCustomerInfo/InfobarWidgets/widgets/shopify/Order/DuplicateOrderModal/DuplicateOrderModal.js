@@ -23,7 +23,6 @@ import {
 } from '../../../../../../../../../../../state/infobarActions/shopify/duplicateOrder/actions'
 import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager'
 import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors'
-import * as segmentTracker from '../../../../../../../../../../../store/middlewares/segmentTracker'
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../constants/integration'
 import type {IntegrationDataItem} from '../../../../../../../../../../../models/integration'
 import * as Shopify from '../../../../../../../../../../../constants/integrations/shopify'
@@ -172,10 +171,6 @@ export class DuplicateOrderModalComponent extends React.PureComponent<Props> {
             onSubmit()
             this._onClose()
         })
-
-        segmentTracker.logEvent(segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_SUBMIT, {
-            payment_pending: false,
-        })
     }
 
     _onSubmitPending = () => {
@@ -184,10 +179,6 @@ export class DuplicateOrderModalComponent extends React.PureComponent<Props> {
         onChange('payment_pending', true, () => {
             onSubmit()
             this._onClose()
-        })
-
-        segmentTracker.logEvent(segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_SUBMIT, {
-            payment_pending: true,
         })
     }
 

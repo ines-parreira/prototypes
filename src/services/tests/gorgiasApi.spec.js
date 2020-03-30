@@ -303,8 +303,9 @@ describe('services', () => {
 
                 const gorgiasApi = new GorgiasApi()
                 const integrationId = 1
+                const orderId = 2
                 const payload = fromJS({line_items: []})
-                const draftOrder = await gorgiasApi.createDraftOrder(integrationId, payload)
+                const draftOrder = await gorgiasApi.createDraftOrder(integrationId, payload, orderId)
 
                 expect(draftOrder).toEqual([fromJS(data.draft_order), null])
             })
@@ -315,8 +316,9 @@ describe('services', () => {
 
                 const gorgiasApi = new GorgiasApi()
                 const integrationId = 1
+                const orderId = 2
                 const payload = fromJS({line_items: []})
-                const draftOrder = await gorgiasApi.createDraftOrder(integrationId, payload)
+                const draftOrder = await gorgiasApi.createDraftOrder(integrationId, payload, orderId)
 
                 expect(draftOrder).toEqual([
                     fromJS(data.draft_order),

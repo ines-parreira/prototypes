@@ -12,6 +12,7 @@ import type {ActionType} from '../../types'
 
 import DuplicateOrderModal from './DuplicateOrderModal'
 import CancelOrderModal from './CancelOrderModal'
+import RefundOrderModal from './RefundOrderModal'
 import {ShopifyAction} from './constants'
 
 export default function OrderWidget() {
@@ -47,58 +48,33 @@ class AfterTitle extends React.Component<AfterTitleProps> {
             isOrderPartiallyFulfilled,
         } = this.context
 
-        const orderTotalPrice: number = parseFloat(source.get('total_price') || '0')
-
         const actions: Array<ActionType> = [
             {
                 key: 'refund',
                 options: [
                     {
-                        value: ShopifyAction.PARTIAL_REFUND_ORDER,
-                        label: 'Partial refund',
+                        value: ShopifyAction.REFUND_ORDER,
+                        label: 'Refund order',
                         parameters: [
-                            {
-                                name: 'amount',
-                                type: 'number',
-                                defaultValue: orderTotalPrice,
-                                label: 'Amount',
-                                placeholder: 'Amount',
-                                required: true,
-                                step: 0.01,
-                                min: 0.01,
-                                max: orderTotalPrice
-                            }
-                        ],
-                    },
-                    {
-                        value: ShopifyAction.PARTIAL_REFUND_ORDER,
-                        label: 'Full refund',
-                        parameters: [
-                            {name: 'restock', type: 'checkbox', defaultValue: true, label: 'Restock all items'}
+                            {name: 'order_id', type: 'hidden'},
+                            {name: 'payload', type: 'hidden'},
                         ]
-                    },
-                    {
-                        value: ShopifyAction.REFUND_SHIPPING_COST_OF_ORDER,
-                        label: 'Refund shipping only'
-                    },
+                    }
                 ],
-                tooltip: 'This will refund the order in Shopify.',
-                title: (
-                    <div>
-                        <i className="material-icons mr-2">
-                            refresh
-                        </i>
-                        Refund order
-                    </div>
-                ),
+                title: 'Refund order',
                 child: (
                     <div>
-                        <i className="material-icons mr-2">
+                        <i className="material-icons mr-1">
                             refresh
                         </i>
                         Refund
                     </div>
-                )
+                ),
+                modal: RefundOrderModal,
+                modalData: {
+                    actionName: ShopifyAction.REFUND_ORDER,
+                    order: source,
+                },
             },
             {
                 key: 'cancel',

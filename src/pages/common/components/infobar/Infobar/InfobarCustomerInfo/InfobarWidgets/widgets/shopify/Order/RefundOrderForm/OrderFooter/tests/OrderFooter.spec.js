@@ -5,34 +5,61 @@ import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
 import {
-    shopifyCancelOrderPayloadFixture,
+    shopifyRefundOrderPayloadFixture,
     shopifySuggestedRefundFixture
 } from '../../../../../../../../../../../../../fixtures/shopify'
-import {CancelOrderFooterComponent} from '../OrderFooter'
+import {ShopifyAction} from '../../../constants'
+import OrderFooter from '../OrderFooter'
 
 jest.mock('lodash/debounce', () => (fn) => fn)
 
-describe('<CancelOrderFooterComponent/>', () => {
-    const context = {integrationId: 1}
+describe('<OrderFooter/>', () => {
+    let onPayloadChange
+    let onReasonChange
     let setPayload
 
     beforeEach(() => {
+        onPayloadChange = jest.fn()
+        onReasonChange = jest.fn()
         setPayload = jest.fn()
     })
 
     describe('render()', () => {
         it('should render', () => {
             const component = shallow(
-                <CancelOrderFooterComponent
+                <OrderFooter
                     editable
                     hasShippingLine
                     currencyCode="USD"
+                    actionName={ShopifyAction.CANCEL_ORDER}
+                    reason={null}
                     loading={false}
-                    payload={fromJS(shopifyCancelOrderPayloadFixture())}
+                    payload={fromJS(shopifyRefundOrderPayloadFixture())}
                     refund={fromJS(shopifySuggestedRefundFixture())}
                     setPayload={setPayload}
-                />,
-                {context}
+                    onReasonChange={onReasonChange}
+                    onPayloadChange={onPayloadChange}
+                />
+            )
+
+            expect(component).toMatchSnapshot()
+        })
+
+        it('should render for refund order action', () => {
+            const component = shallow(
+                <OrderFooter
+                    editable
+                    hasShippingLine
+                    currencyCode="USD"
+                    actionName={ShopifyAction.REFUND_ORDER}
+                    reason={null}
+                    loading={false}
+                    payload={fromJS(shopifyRefundOrderPayloadFixture())}
+                    refund={fromJS(shopifySuggestedRefundFixture())}
+                    setPayload={setPayload}
+                    onReasonChange={onReasonChange}
+                    onPayloadChange={onPayloadChange}
+                />
             )
 
             expect(component).toMatchSnapshot()
@@ -41,111 +68,72 @@ describe('<CancelOrderFooterComponent/>', () => {
 
     describe('_onAmountChange()', () => {
         it('should call setPayload() with updated payload', () => {
-            const payload = fromJS(shopifyCancelOrderPayloadFixture())
+            const payload = fromJS(shopifyRefundOrderPayloadFixture())
 
             const component = shallow(
-                <CancelOrderFooterComponent
+                <OrderFooter
                     editable
                     hasShippingLine
                     currencyCode="USD"
+                    actionName={ShopifyAction.CANCEL_ORDER}
+                    reason={null}
                     loading={false}
                     payload={payload}
                     refund={fromJS(shopifySuggestedRefundFixture())}
                     setPayload={setPayload}
-                />,
-                {context}
+                    onReasonChange={onReasonChange}
+                    onPayloadChange={onPayloadChange}
+                />
             )
 
             component.find({id: 'amount'}).simulate('change', '0.20')
 
-            expect(setPayload).toHaveBeenCalledWith(payload.set('amount', '0.20'))
+            expect(setPayload).toHaveBeenCalledWith(payload.setIn(['transactions', 0, 'amount'], '0.20'))
         })
 
         it('should call setPayload() with maximum amount', () => {
-            const payload = fromJS(shopifyCancelOrderPayloadFixture())
+            const payload = fromJS(shopifyRefundOrderPayloadFixture())
 
             const component = shallow(
-                <CancelOrderFooterComponent
+                <OrderFooter
                     editable
                     hasShippingLine
                     currencyCode="USD"
+                    actionName={ShopifyAction.CANCEL_ORDER}
+                    reason={null}
                     loading={false}
                     payload={payload}
                     refund={fromJS(shopifySuggestedRefundFixture())}
                     setPayload={setPayload}
-                />,
-                {context}
+                    onReasonChange={onReasonChange}
+                    onPayloadChange={onPayloadChange}
+                />
             )
 
             component.find({id: 'amount'}).simulate('change', '99.99')
 
-            expect(setPayload).toHaveBeenCalledWith(payload.set('amount', 1.2))
-        })
-    })
-
-    describe('_onReasonChange()', () => {
-        it('should call setPayload() with updated payload', () => {
-            const payload = fromJS(shopifyCancelOrderPayloadFixture())
-
-            const component = shallow(
-                <CancelOrderFooterComponent
-                    editable
-                    hasShippingLine
-                    currencyCode="USD"
-                    loading={false}
-                    payload={payload}
-                    refund={fromJS(shopifySuggestedRefundFixture())}
-                    setPayload={setPayload}
-                />,
-                {context}
-            )
-
-            component.find({id: 'reason'}).simulate('change', {target: {value: 'inventory'}})
-
-            expect(setPayload).toHaveBeenCalledWith(payload.set('reason', 'inventory'))
-        })
-
-        it('should call setPayload() with updated email value', () => {
-            const payload = fromJS(shopifyCancelOrderPayloadFixture())
-
-            const component = shallow(
-                <CancelOrderFooterComponent
-                    editable
-                    hasShippingLine
-                    currencyCode="USD"
-                    loading={false}
-                    payload={payload}
-                    refund={fromJS(shopifySuggestedRefundFixture())}
-                    setPayload={setPayload}
-                />,
-                {context}
-            )
-
-            component.find({id: 'reason'}).simulate('change', {target: {value: 'fraud'}})
-
-            expect(setPayload).toHaveBeenCalledWith(
-                payload
-                    .set('reason', 'fraud')
-                    .set('email', false)
-            )
+            expect(setPayload).toHaveBeenCalledWith(payload.setIn(['transactions', 0, 'amount'], 1.2))
         })
     })
 
     describe('_onDiscrepancyReasonChange()', () => {
         it('should call setPayload() with updated payload', () => {
-            const payload = fromJS(shopifyCancelOrderPayloadFixture())
+            const payload = fromJS(shopifyRefundOrderPayloadFixture())
 
             const component = shallow(
-                <CancelOrderFooterComponent
+                <OrderFooter
                     editable
                     hasShippingLine
                     currencyCode="USD"
+                    actionName={ShopifyAction.CANCEL_ORDER}
+                    reason={null}
                     loading={false}
                     payload={payload}
                     refund={fromJS(shopifySuggestedRefundFixture())}
                     setPayload={setPayload}
-                />,
-                {context}
+                    onReasonChange={onReasonChange}
+                    onPayloadChange={onPayloadChange}
+                />
             )
 
             // Use custom amount to display discrepancy field
@@ -153,33 +141,36 @@ describe('<CancelOrderFooterComponent/>', () => {
 
             component.find({id: 'discrepancy-reason'}).simulate('change', {target: {value: 'damage'}})
 
-            expect(setPayload).toHaveBeenCalledWith(payload.setIn(['refund', 'discrepancy_reason'], 'damage'))
+            expect(setPayload).toHaveBeenCalledWith(payload.set('discrepancy_reason', 'damage'))
         })
     })
 
     describe('_onRestockItemsChange()', () => {
         it('should call setPayload() with updated payload', () => {
-            const payload = fromJS(shopifyCancelOrderPayloadFixture())
+            const payload = fromJS(shopifyRefundOrderPayloadFixture())
 
             const component = shallow(
-                <CancelOrderFooterComponent
+                <OrderFooter
                     editable
                     hasShippingLine
                     currencyCode="USD"
+                    actionName={ShopifyAction.CANCEL_ORDER}
+                    reason={null}
                     loading={false}
                     payload={payload}
                     refund={fromJS(shopifySuggestedRefundFixture())}
                     setPayload={setPayload}
-                />,
-                {context}
+                    onReasonChange={onReasonChange}
+                    onPayloadChange={onPayloadChange}
+                />
             )
 
             component.find({type: 'checkbox'}).at(0).simulate('change', {target: {checked: false}})
 
             expect(setPayload).toHaveBeenCalledWith(
                 payload
-                    .setIn(['refund', 'restock'], false)
-                    .updateIn(['refund', 'refund_line_items'], (refundLineItems) =>
+                    .set('restock', false)
+                    .update('refund_line_items', (refundLineItems) =>
                         refundLineItems.map((refundLineItem) => refundLineItem.set('restock_type', 'no_restock'))
                     )
             )
@@ -188,19 +179,22 @@ describe('<CancelOrderFooterComponent/>', () => {
 
     describe('_onEmailChange()', () => {
         it('should call setPayload() with updated payload', () => {
-            const payload = fromJS(shopifyCancelOrderPayloadFixture())
+            const payload = fromJS(shopifyRefundOrderPayloadFixture())
 
             const component = shallow(
-                <CancelOrderFooterComponent
+                <OrderFooter
                     editable
                     hasShippingLine
                     currencyCode="USD"
+                    actionName={ShopifyAction.CANCEL_ORDER}
+                    reason={null}
                     loading={false}
                     payload={payload}
                     refund={fromJS(shopifySuggestedRefundFixture())}
                     setPayload={setPayload}
-                />,
-                {context}
+                    onReasonChange={onReasonChange}
+                    onPayloadChange={onPayloadChange}
+                />
             )
 
             component.find({type: 'checkbox'}).at(1).simulate('change', {target: {checked: false}})

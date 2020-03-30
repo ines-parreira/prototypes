@@ -672,22 +672,31 @@ export const shopifyRefundLineItemFixture = (): Shopify.RefundLineItem => ({
 export const shopifyCancelOrderPayloadFixture = (): Shopify.CancelOrderPayload => ({
     reason: 'customer',
     email: true,
-    refund: {
-        currency: 'USD',
-        restock: true,
-        notify: false,
-        refund_line_items: [
-            {
-                line_item_id: 4193100136471,
-                restock_type: 'cancel',
-                quantity: 1
-            }
-        ],
-        shipping: {
-            amount: '0.00'
-        }
+    refund: shopifyRefundOrderPayloadFixture({notify: false}),
+})
+
+export const shopifyRefundOrderPayloadFixture = (
+    {
+        notify = true,
+    } = {}
+): Shopify.RefundOrderPayload => ({
+    currency: 'USD',
+    restock: true,
+    notify,
+    refund_line_items: [
+        {
+            line_item_id: 4193100136471,
+            restock_type: 'cancel',
+            fulfillment_status: null,
+            quantity: 1,
+        },
+    ],
+    shipping: {
+        amount: '0.00',
     },
-    amount: '1.00'
+    transactions: [
+        {amount: '1.00'},
+    ],
 })
 
 export const shopifySuggestedRefundFixture = (): Shopify.Refund => ({

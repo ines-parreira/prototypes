@@ -2,16 +2,10 @@
 
 import React from 'react'
 import {Label} from 'reactstrap'
-import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
 import {type Record} from 'immutable'
 
-import {
-    getCancelOrderState
-} from '../../../../../../../../../../../../../state/infobarActions/shopify/cancelOrder/selectors'
-import {onPayloadChange} from '../../../../../../../../../../../../../state/infobarActions/shopify/cancelOrder/actions'
 import * as Shopify from '../../../../../../../../../../../../../constants/integrations/shopify'
 import {formatPrice} from '../../../../../../../../../../../../../business/shopify/number'
 import {
@@ -30,41 +24,41 @@ type Props = {
     hasShippingLine: boolean,
     currencyCode: string,
     loading: boolean,
-    payload: Record<$Shape<Shopify.CancelOrderPayload>>,
+    payload: Record<$Shape<Shopify.RefundOrderPayload>>,
     refund: Record<Shopify.Refund>,
-    onPayloadChange: (integrationId: number, Record<$Shape<Shopify.CancelOrderPayload>>) => void,
+    onPayloadChange: (Record<$Shape<Shopify.RefundOrderPayload>>) => void,
 }
 
 type State = {
     shipping: string,
 }
 
-export class OrderTotalsComponent extends React.PureComponent<Props, State> {
-    static contextTypes = {
-        integrationId: PropTypes.number.isRequired,
-    }
-
+export default class OrderTotals extends React.PureComponent<Props, State> {
     state = {
-        shipping: this.props.payload.getIn(['refund', 'shipping', 'amount']),
+        shipping: this.props.payload.getIn(['shipping', 'amount']),
     }
 
     _onShippingChange = (value: string) => {
         const {refund, currencyCode} = this.props
+        const {shipping} = this.state
         const max = parseFloat(refund.getIn(['shipping', 'maximum_refundable']))
-        const shipping = parseFloat(value) > max ? max : value
+        const newValue = parseFloat(value) > max ? max : value
+        const newShipping = newValue.toString() || formatPrice(0, currencyCode)
 
-        this.setState({shipping: shipping.toString() || formatPrice(0, currencyCode)})
-        this._updatePayload()
+        this.setState({shipping: newShipping})
+
+        if (parseFloat(shipping) !== parseFloat(newShipping)) {
+            this._updatePayload()
+        }
     }
 
     _updatePayload = _debounce(() => {
         const {onPayloadChange, currencyCode, payload} = this.props
-        const {integrationId} = this.context
         const {shipping} = this.state
 
-        const newPayload = payload.setIn(['refund', 'shipping', 'amount'], formatPrice(shipping, currencyCode))
+        const newPayload = payload.setIn(['shipping', 'amount'], formatPrice(shipping, currencyCode))
 
-        onPayloadChange(integrationId, newPayload)
+        onPayloadChange(newPayload)
     }, 250)
 
     render() {
@@ -167,15 +161,3 @@ export class OrderTotalsComponent extends React.PureComponent<Props, State> {
         )
     }
 }
-
-const mapStateToProps = (state) => ({
-    loading: getCancelOrderState(state).get('loading'),
-    payload: getCancelOrderState(state).get('payload'),
-    refund: getCancelOrderState(state).get('refund'),
-})
-
-const mapDispatchToProps = {
-    onPayloadChange,
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(OrderTotalsComponent)

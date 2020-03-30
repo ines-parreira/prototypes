@@ -230,7 +230,7 @@ export default class GorgiasApi {
     async _upsertDraftOder(
         integrationId: number,
         payload: Record<$Shape<Shopify.DraftOrder>>,
-        draftOrderId?: number,
+        {draftOrderId, params = {}}: {draftOrderId?: number, params?: Object} = {},
     ): Promise<[Record<Shopify.DraftOrder>, ?Shopify.PollingConfig]> {
         let method
         let url
@@ -245,6 +245,7 @@ export default class GorgiasApi {
 
         const response = await method(url, payload.toJS(), {
             params: {
+                ...params,
                 integration_id: integrationId,
             },
         })
@@ -257,9 +258,11 @@ export default class GorgiasApi {
 
     async createDraftOrder(
         integrationId: number,
-        payload: Record<$Shape<Shopify.DraftOrder>>
+        payload: Record<$Shape<Shopify.DraftOrder>>,
+        orderId?: number,
     ): Promise<[Record<Shopify.DraftOrder>, ?Shopify.PollingConfig]> {
-        return await this._upsertDraftOder(integrationId, payload)
+        const params = orderId ? {order_id: orderId} : {}
+        return await this._upsertDraftOder(integrationId, payload, {params})
     }
 
     async updateDraftOrder(
@@ -267,7 +270,7 @@ export default class GorgiasApi {
         payload: Record<$Shape<Shopify.DraftOrder>>,
         draftOrderId: number,
     ): Promise<[Record<Shopify.DraftOrder>, ?Shopify.PollingConfig]> {
-        return await this._upsertDraftOder(integrationId, payload, draftOrderId)
+        return await this._upsertDraftOder(integrationId, payload, {draftOrderId})
     }
 
     async getDraftOrder(

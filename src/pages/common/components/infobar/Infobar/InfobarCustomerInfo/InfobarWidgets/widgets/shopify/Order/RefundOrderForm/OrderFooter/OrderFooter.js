@@ -3,19 +3,15 @@
 import React from 'react'
 import {Col, Container, FormGroup, FormText, Input, Label, Row} from 'reactstrap'
 import {type Record} from 'immutable'
-import {connect} from 'react-redux'
-import PropTypes from 'prop-types'
 
 import {
-    getCancelOrderState
-} from '../../../../../../../../../../../../state/infobarActions/shopify/cancelOrder/selectors'
-import {
     getRefundAmount,
+    getRestockType,
     getTotalAvailableToRefund,
     getTotalQuantities
 } from '../../../../../../../../../../../../business/shopify/refund'
-import {setPayload} from '../../../../../../../../../../../../state/infobarActions/shopify/cancelOrder/actions'
 import * as Shopify from '../../../../../../../../../../../../constants/integrations/shopify'
+import {ShopifyAction} from '../../constants'
 import AmountInput from '../../AmountInput'
 
 import OrderTotals from './OrderTotals'
@@ -23,34 +19,29 @@ import css from './OrderFooter.less'
 
 type Props = {
     editable: boolean,
+    actionName: ?string,
     hasShippingLine: boolean,
     currencyCode: string,
+    reason: ?string,
     loading: boolean,
-    payload: Record<$Shape<Shopify.CancelOrderPayload>>,
+    payload: Record<$Shape<Shopify.RefundOrderPayload>>,
     refund: Record<Shopify.Refund>,
-    setPayload: (integrationId: number, Record<$Shape<Shopify.CancelOrderPayload>>) => void,
+    setPayload: (Record<$Shape<Shopify.RefundOrderPayload>>) => void,
+    onPayloadChange: (Record<$Shape<Shopify.RefundOrderPayload>>) => void,
+    onReasonChange: (event: SyntheticInputEvent<HTMLInputElement>) => void,
 }
 
-export class CancelOrderFooterComponent extends React.PureComponent<Props> {
-    static contextTypes = {
-        integrationId: PropTypes.number.isRequired,
+export default class OrderFooter extends React.PureComponent<Props> {
+    _getNotifyAttribute(): string {
+        const {actionName} = this.props
+        return actionName === ShopifyAction.CANCEL_ORDER ? 'email' : 'notify'
     }
 
     _onAmountChange = (value: string) => {
         const {refund, payload, setPayload} = this.props
         const max = getTotalAvailableToRefund(refund)
         const newAmount = parseFloat(value) > max ? max : value
-        const newPayload = payload.set('amount', newAmount)
-
-        setPayload(newPayload)
-    }
-
-    _onReasonChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
-        const {payload, setPayload} = this.props
-        const {value} = event.target
-        const newPayload = payload
-            .set('reason', value)
-            .set('email', value !== 'fraud')
+        const newPayload = payload.setIn(['transactions', 0, 'amount'], newAmount)
 
         setPayload(newPayload)
     }
@@ -58,7 +49,7 @@ export class CancelOrderFooterComponent extends React.PureComponent<Props> {
     _onDiscrepancyReasonChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
         const {payload, setPayload} = this.props
         const {value} = event.target
-        const newPayload = payload.setIn(['refund', 'discrepancy_reason'], value)
+        const newPayload = payload.set('discrepancy_reason', value)
 
         setPayload(newPayload)
     }
@@ -67,10 +58,10 @@ export class CancelOrderFooterComponent extends React.PureComponent<Props> {
         const {payload, setPayload} = this.props
         const restock = event.target.checked
         const newPayload = payload
-            .setIn(['refund', 'restock'], restock)
-            .updateIn(['refund', 'refund_line_items'], (refundLineItems) =>
+            .set('restock', restock)
+            .update('refund_line_items', (refundLineItems) =>
                 refundLineItems.map((refundLineItem) =>
-                    refundLineItem.set('restock_type', restock ? 'cancel' : 'no_restock')
+                    refundLineItem.set('restock_type', getRestockType(refundLineItem, restock))
                 )
             )
 
@@ -79,18 +70,57 @@ export class CancelOrderFooterComponent extends React.PureComponent<Props> {
 
     _onEmailChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
         const {payload, setPayload} = this.props
-        const email = event.target.checked
-        const newPayload = payload.set('email', email)
+        const {checked} = event.target
+        const newPayload = payload.set(this._getNotifyAttribute(), checked)
 
         setPayload(newPayload)
     }
 
+    _renderReason() {
+        const {actionName, reason, onReasonChange} = this.props
+
+        if (actionName === ShopifyAction.CANCEL_ORDER) {
+            return (
+                <FormGroup>
+                    <Label for="reason">Reason for canceling this order</Label>
+                    <Input
+                        type="select"
+                        id="reason"
+                        value={reason || 'customer'}
+                        onChange={onReasonChange}
+                    >
+                        <option value="customer">Customer changed/canceled order</option>
+                        <option value="fraud">Fraudulent order</option>
+                        <option value="inventory">Items unavailable</option>
+                        <option value="declined">Payment declined</option>
+                        <option value="other">Other</option>
+                    </Input>
+                </FormGroup>
+            )
+        }
+
+        return (
+            <FormGroup>
+                <Label for="reason">Reason for refund</Label>
+                <Input
+                    id="reason"
+                    value={reason || ''}
+                    onChange={onReasonChange}
+                />
+                <FormText color="muted">
+                    Only you and other staff can see this reason.
+                </FormText>
+            </FormGroup>
+        )
+    }
+
     render() {
-        const {editable, hasShippingLine, loading, payload, refund, currencyCode} = this.props
+        const {editable, hasShippingLine, loading, payload, refund, currencyCode, onPayloadChange} = this.props
+        const amount = payload.getIn(['transactions', 0, 'amount'], '')
         const amountMax = refund.isEmpty() ? null : getTotalAvailableToRefund(refund)
-        const totalQuantities = getTotalQuantities(payload.get('refund'))
+        const totalQuantities = getTotalQuantities(payload)
         const discrepancyLimit = getRefundAmount(refund)
-        const hasDiscrepancy = !loading && parseFloat(payload.get('amount')) !== parseFloat(discrepancyLimit)
+        const hasDiscrepancy = !loading && parseFloat(amount) !== discrepancyLimit
 
         return (
             <Container
@@ -113,7 +143,7 @@ export class CancelOrderFooterComponent extends React.PureComponent<Props> {
                                         id="amount"
                                         required
                                         disabled={loading}
-                                        value={payload.get('amount', '')}
+                                        value={amount}
                                         max={amountMax}
                                         currencyCode={currencyCode}
                                         className={css.amountInput}
@@ -125,21 +155,7 @@ export class CancelOrderFooterComponent extends React.PureComponent<Props> {
                                 xs={12}
                                 lg={6}
                             >
-                                <FormGroup>
-                                    <Label for="reason">Reason for canceling this order</Label>
-                                    <Input
-                                        type="select"
-                                        id="reason"
-                                        value={payload.get('reason', 'customer')}
-                                        onChange={this._onReasonChange}
-                                    >
-                                        <option value="customer">Customer changed/canceled order</option>
-                                        <option value="fraud">Fraudulent order</option>
-                                        <option value="inventory">Items unavailable</option>
-                                        <option value="declined">Payment declined</option>
-                                        <option value="other">Other</option>
-                                    </Input>
-                                </FormGroup>
+                                {this._renderReason()}
                             </Col>
                         </Row>
                         <Row>
@@ -150,7 +166,7 @@ export class CancelOrderFooterComponent extends React.PureComponent<Props> {
                                         <Input
                                             type="select"
                                             id="discrepancy-reason"
-                                            value={payload.getIn(['refund', 'discrepancy_reason'], 'other')}
+                                            value={payload.get('discrepancy_reason', 'other')}
                                             className={css.discrepancyReasonInput}
                                             onChange={this._onDiscrepancyReasonChange}
                                         >
@@ -172,7 +188,7 @@ export class CancelOrderFooterComponent extends React.PureComponent<Props> {
                                     <Label check>
                                         <Input
                                             type="checkbox"
-                                            checked={payload.getIn(['refund', 'restock'], true)}
+                                            checked={payload.get('restock', true)}
                                             disabled={totalQuantities === 0}
                                             onChange={this._onRestockItemsChange}
                                         />
@@ -190,7 +206,7 @@ export class CancelOrderFooterComponent extends React.PureComponent<Props> {
                                     <Label check>
                                         <Input
                                             type="checkbox"
-                                            checked={payload.get('email', true)}
+                                            checked={payload.get(this._getNotifyAttribute(), true)}
                                             onChange={this._onEmailChange}
                                         />
                                         <span className="ml-1">Send notification to customer</span>
@@ -208,6 +224,10 @@ export class CancelOrderFooterComponent extends React.PureComponent<Props> {
                             editable={editable}
                             hasShippingLine={hasShippingLine}
                             currencyCode={currencyCode}
+                            loading={loading}
+                            payload={payload}
+                            refund={refund}
+                            onPayloadChange={onPayloadChange}
                         />
                     </Col>
                 </Row>
@@ -215,15 +235,3 @@ export class CancelOrderFooterComponent extends React.PureComponent<Props> {
         )
     }
 }
-
-const mapStateToProps = (state) => ({
-    loading: getCancelOrderState(state).get('loading'),
-    payload: getCancelOrderState(state).get('payload'),
-    refund: getCancelOrderState(state).get('refund'),
-})
-
-const mapDispatchToProps = {
-    setPayload,
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(CancelOrderFooterComponent)

@@ -1,0 +1,99 @@
+@import '~css/new/colors';
+@import "~css/new/shopify";
+
+:local {
+  .container {
+    display: flex;
+  }
+
+  .focusable {
+    &:focus {
+      outline: auto 5px -webkit-focus-ring-color;
+    }
+  }
+
+  .legend {
+    flex: 1;
+    font-family: 'Inter UI', sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .title {
+    font-weight: bold;
+    display: inline;
+  }
+
+  .subtitle {
+    font-weight: normal;
+  }
+
+  .numberCol {
+    width: 170px;
+  }
+
+  .quantityCol {
+    width: 130px;
+  }
+
+  .quantityContainer {
+    display: inline-block;
+    position: relative;
+    z-index: 4;
+  }
+
+  .quantityInput {
+    width: 70px;
+    padding-right: 2rem;
+    z-index: 4;
+  }
+
+  .quantityMax {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    padding: .36rem .75rem;
+    color: #95a7b7;
+    right: 0;
+  }
+
+  .quantityButtonsContainer {
+    flex-direction: column;
+    max-height: calc(~"1.5em + .75rem + 2px");
+  }
+
+  .quantityBtn {
+    height: 50%;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-left: 0 !important;
+    font-size: .5rem;
+    z-index: 0;
+
+    &:focus {
+      z-index: 5 !important;
+    }
+  }
+
+  .quantityBtnUp {
+    margin-bottom: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .quantityBtnDown {
+    border-top: 0;
+    border-top-right-radius: 0;
+    padding-top: 1px;
+  }
+
+  .times {
+    color: @shopifyGrey;
+    font-size: 14px;
+    line-height: 133%;
+    align-self: center;
+    margin-left: auto;
+  }
+}

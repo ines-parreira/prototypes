@@ -11,6 +11,10 @@ export const actions = [{
     label: 'Cancel order',
     objectType: 'order',
 }, {
+    name: ShopifyAction.REFUND_ORDER,
+    label: 'Refund order',
+    objectType: 'order',
+}, {
     name: ShopifyAction.FULL_REFUND_ORDER,
     label: 'Full refund order',
     objectType: 'order',

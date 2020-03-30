@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<OrderTotalsComponent/> render() should render as loading 1`] = `
+exports[`<OrderTotals/> render() should render as loading 1`] = `
 <dl
   className="row text-right mb-0"
 >
@@ -67,7 +67,7 @@ exports[`<OrderTotalsComponent/> render() should render as loading 1`] = `
 </dl>
 `;
 
-exports[`<OrderTotalsComponent/> render() should render as not loading 1`] = `
+exports[`<OrderTotals/> render() should render as not loading 1`] = `
 <dl
   className="row text-right mb-0"
 >
@@ -134,7 +134,7 @@ exports[`<OrderTotalsComponent/> render() should render as not loading 1`] = `
 </dl>
 `;
 
-exports[`<OrderTotalsComponent/> render() should render with shipping line 1`] = `
+exports[`<OrderTotals/> render() should render with shipping line 1`] = `
 <dl
   className="row text-right mb-0"
 >

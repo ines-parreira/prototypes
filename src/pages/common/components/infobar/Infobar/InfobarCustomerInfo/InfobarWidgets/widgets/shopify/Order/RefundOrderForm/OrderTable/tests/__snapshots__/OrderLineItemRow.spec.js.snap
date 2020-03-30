@@ -57,13 +57,55 @@ exports[`<LineItemRow/> render() should render 1`] = `
   <td
     className="quantityCol"
   >
-    <Input
-      max={1}
-      min={0}
-      onChange={[Function]}
-      type="number"
-      value={1}
-    />
+    <InputGroup
+      tag="div"
+    >
+      <span
+        className="quantityContainer"
+      >
+        <Input
+          className="quantityInput"
+          onChange={[Function]}
+          pattern="\\\\d+"
+          type="text"
+          value={1}
+        />
+        <span
+          className="quantityMax"
+        >
+          / 
+          1
+        </span>
+      </span>
+      <InputGroupAddon
+        addonType="append"
+        className="quantityButtonsContainer"
+        tag="div"
+      >
+        <Button
+          className="focusable quantityBtn quantityBtnUp"
+          color="secondary"
+          disabled={true}
+          onClick={[Function]}
+          tabIndex={0}
+          tag="button"
+          type="button"
+        >
+          ▲
+        </Button>
+        <Button
+          className="focusable quantityBtn quantityBtnDown"
+          color="secondary"
+          disabled={false}
+          onClick={[Function]}
+          tabIndex={0}
+          tag="button"
+          type="button"
+        >
+          ▼
+        </Button>
+      </InputGroupAddon>
+    </InputGroup>
   </td>
   <td
     className="numberCol"
@@ -155,13 +197,55 @@ exports[`<LineItemRow/> render() should render with discounted price 1`] = `
   <td
     className="quantityCol"
   >
-    <Input
-      max={1}
-      min={0}
-      onChange={[Function]}
-      type="number"
-      value={1}
-    />
+    <InputGroup
+      tag="div"
+    >
+      <span
+        className="quantityContainer"
+      >
+        <Input
+          className="quantityInput"
+          onChange={[Function]}
+          pattern="\\\\d+"
+          type="text"
+          value={1}
+        />
+        <span
+          className="quantityMax"
+        >
+          / 
+          1
+        </span>
+      </span>
+      <InputGroupAddon
+        addonType="append"
+        className="quantityButtonsContainer"
+        tag="div"
+      >
+        <Button
+          className="focusable quantityBtn quantityBtnUp"
+          color="secondary"
+          disabled={true}
+          onClick={[Function]}
+          tabIndex={0}
+          tag="button"
+          type="button"
+        >
+          ▲
+        </Button>
+        <Button
+          className="focusable quantityBtn quantityBtnDown"
+          color="secondary"
+          disabled={false}
+          onClick={[Function]}
+          tabIndex={0}
+          tag="button"
+          type="button"
+        >
+          ▼
+        </Button>
+      </InputGroupAddon>
+    </InputGroup>
   </td>
   <td
     className="numberCol"

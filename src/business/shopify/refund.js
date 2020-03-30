@@ -37,3 +37,12 @@ export function getTotalAvailableToRefund(refund: Record<Shopify.Refund>): numbe
 export function getTotalQuantities(refund: Record<Shopify.Refund>): number {
     return refund.get('refund_line_items', []).reduce((total, lineItem) => total + lineItem.get('quantity'), 0)
 }
+
+export function getRestockType(lineItem: Record<$Shape<Shopify.LineItem>>, restock: boolean = true): string {
+    if (restock) {
+        const isFulfilled = lineItem.get('fulfillment_status') === 'fulfilled'
+        return isFulfilled ? 'return' : 'cancel'
+    }
+
+    return 'no_restock'
+}

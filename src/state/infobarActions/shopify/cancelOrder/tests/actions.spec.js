@@ -12,9 +12,13 @@ import {
 } from '../../../../../fixtures/shopify'
 import {initialState} from '../../cancelOrder/reducers'
 import * as actions from '../../cancelOrder/actions'
-import {initCancelOrderLineItems} from '../../../../../business/shopify/order'
+import {initRefundOrderLineItems} from '../../../../../business/shopify/order'
 
-jest.mock('lodash/debounce', () => (fn) => fn)
+jest.mock('lodash/debounce', () => (fn) => {
+    fn.cancel = jest.fn()
+    return fn
+})
+
 jest.useFakeTimers()
 
 describe('infobarActions.shopify.cancelOrder actions', () => {
@@ -71,7 +75,7 @@ describe('infobarActions.shopify.cancelOrder actions', () => {
 
         describe('onLineItemsChange()', () => {
             it('should set line items and calculate refund', async () => {
-                const lineItems = initCancelOrderLineItems(order)
+                const lineItems = initRefundOrderLineItems(order)
                 await store.dispatch(actions.onLineItemsChange(integrationId, lineItems))
                 expect(getActions()).toMatchSnapshot()
             })
@@ -101,6 +105,13 @@ describe('infobarActions.shopify.cancelOrder actions', () => {
                 await store.dispatch(actions.onInit(integrationId, order))
                 expect(getActions()).toMatchSnapshot()
             })
+        })
+    })
+
+    describe('onCancel()', () => {
+        it('should cancel debounced call to calculateRefund()', async () => {
+            await store.dispatch(actions.onCancel())
+            expect(actions.calculateRefund.cancel).toHaveBeenCalled()
         })
     })
 

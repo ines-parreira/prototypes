@@ -17,12 +17,16 @@ import {
     infobarActionsStateFixture
 } from '../../../../../../../../../../../../fixtures/infobarActions'
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../../constants/integration'
-import {shopifyOrderFixture, shopifySuggestedRefundFixture,} from '../../../../../../../../../../../../fixtures/shopify'
+import {
+    shopifyLineItemFixture,
+    shopifyOrderFixture, shopifyRefundOrderPayloadFixture,
+    shopifySuggestedRefundFixture,
+} from '../../../../../../../../../../../../fixtures/shopify'
 import CancelOrderModal, {CancelOrderModalComponent} from '../CancelOrderModal'
 import {ShopifyAction} from '../../constants'
 import {
     getFinalCancelOrderPayload,
-    initCancelOrderLineItems,
+    initRefundOrderLineItems,
     initCancelOrderPayload
 } from '../../../../../../../../../../../../business/shopify/order'
 
@@ -41,8 +45,10 @@ function initActions() {
         onInit: jest.fn(),
         onLineItemsChange: jest.fn(),
         onOpen: jest.fn(),
+        onPayloadChange: jest.fn(),
         onReset: jest.fn(),
         onSubmit: jest.fn(),
+        setPayload: jest.fn(),
     }
 }
 
@@ -176,7 +182,7 @@ describe('<CancelOrderModalComponent/>', () => {
         it('should render as open, with order table', () => {
             const order = fromJS(shopifyOrderFixture())
             const payload = initCancelOrderPayload(order)
-            const lineItems = initCancelOrderLineItems(order)
+            const lineItems = initRefundOrderLineItems(order)
             const cancelOrderState = cancelOrderStateFixture({payload, lineItems})
 
             const store = mockStore({
@@ -220,7 +226,7 @@ describe('<CancelOrderModalComponent/>', () => {
             payload = initCancelOrderPayload(order)
             refund = fromJS(shopifySuggestedRefundFixture())
 
-            const lineItems = initCancelOrderLineItems(order)
+            const lineItems = initRefundOrderLineItems(order)
             const cancelOrderState = cancelOrderStateFixture({payload, lineItems, refund})
 
             const store = mockStore({
@@ -248,6 +254,52 @@ describe('<CancelOrderModalComponent/>', () => {
                 />,
                 {context}
             )
+        })
+
+        describe('_onLineItemsChange()', () => {
+            it('should call onLineItemsChange()', () => {
+                const lineItems = fromJS([shopifyLineItemFixture()])
+                component.instance()._onLineItemsChange(lineItems)
+
+                expect(actions.onLineItemsChange).toHaveBeenCalledWith(context.integrationId, lineItems)
+            })
+        })
+
+        describe('_onRefundPayloadChange()', () => {
+            it('should call onPayloadChange()', () => {
+                const refundPayload = fromJS(shopifyRefundOrderPayloadFixture())
+                    .setIn(['transactions', 0, 'amount'], '9.99')
+
+                component.instance()._onRefundPayloadChange(refundPayload)
+
+                const newPayload = payload.set('refund', refundPayload)
+                expect(actions.onPayloadChange).toHaveBeenCalledWith(context.integrationId, newPayload)
+            })
+        })
+
+        describe('_setRefundPayload()', () => {
+            it('should call setPayload()', () => {
+                const refundPayload = fromJS(shopifyRefundOrderPayloadFixture())
+                    .setIn(['transactions', 0, 'amount'], '9.99')
+
+                component.instance()._setRefundPayload(refundPayload)
+
+                const newPayload = payload.set('refund', refundPayload)
+                expect(actions.setPayload).toHaveBeenCalledWith(newPayload)
+            })
+        })
+
+        describe('_onReasonChange()', () => {
+            it('should call setPayload()', () => {
+                const event = ({target: {value: 'fraud'}}: any)
+                component.instance()._onReasonChange(event)
+
+                const newPayload = payload
+                    .set('reason', 'fraud')
+                    .set('email', false)
+
+                expect(actions.setPayload).toHaveBeenCalledWith(newPayload)
+            })
         })
 
         describe('_onSubmit()', () => {

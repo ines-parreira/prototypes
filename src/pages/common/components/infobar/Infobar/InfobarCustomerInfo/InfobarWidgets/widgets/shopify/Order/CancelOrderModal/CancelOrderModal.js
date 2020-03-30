@@ -7,25 +7,25 @@ import {connect} from 'react-redux'
 import {Button, Form, ModalFooter} from 'reactstrap'
 import {fromJS, type List, type Record} from 'immutable'
 
-import {getCancelOrderState} from '../../../../../../../../../../../state/infobarActions/shopify/cancelOrder/selectors'
 import {
     onCancel,
     onInit,
     onLineItemsChange,
-    onReset
+    onPayloadChange,
+    onReset,
+    setPayload
 } from '../../../../../../../../../../../state/infobarActions/shopify/cancelOrder/actions'
+import {getCancelOrderState} from '../../../../../../../../../../../state/infobarActions/shopify/cancelOrder/selectors'
 import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager'
 import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors'
-import * as segmentTracker from '../../../../../../../../../../../store/middlewares/segmentTracker'
 import {getFinalCancelOrderPayload} from '../../../../../../../../../../../business/shopify/order'
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../constants/integration'
 import * as Shopify from '../../../../../../../../../../../constants/integrations/shopify'
 import Loader from '../../../../../../../../Loader/Loader'
 import type {InfobarModalProps} from '../../../types'
 import Modal from '../../../../../../../../Modal'
+import RefundOrderForm from '../RefundOrderForm'
 
-import CancelOrderFooter from './OrderFooter'
-import OrderTable from './OrderTable'
 import css from './CancelOrderModal.less'
 
 type Props = InfobarModalProps & {
@@ -43,6 +43,8 @@ type Props = InfobarModalProps & {
     onInit: (integrationId: number, order: Record<Shopify.Order>) => void,
     onLineItemsChange: (integrationId: number, lineItems: List<$Shape<Shopify.LineItem>>) => void,
     onReset: () => void,
+    onPayloadChange: (integrationId: number, payload: Record<$Shape<Shopify.CancelOrderPayload>>) => void,
+    setPayload: (integrationId: number, Record<$Shape<Shopify.RefundOrderPayload>>) => void,
 }
 
 export class CancelOrderModalComponent extends React.PureComponent<Props> {
@@ -83,6 +85,31 @@ export class CancelOrderModalComponent extends React.PureComponent<Props> {
         onLineItemsChange(integrationId, lineItems)
     }
 
+    _onRefundPayloadChange = (refundPayload: Record<$Shape<Shopify.RefundOrderPayload>>) => {
+        const {payload, onPayloadChange} = this.props
+        const {integrationId} = this.context
+        const newPayload = payload.set('refund', refundPayload)
+
+        onPayloadChange(integrationId, newPayload)
+    }
+
+    _setRefundPayload = (refundPayload: Record<$Shape<Shopify.RefundOrderPayload>>) => {
+        const {payload, setPayload} = this.props
+        const newPayload = payload.set('refund', refundPayload)
+
+        setPayload(newPayload)
+    }
+
+    _onReasonChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
+        const {payload, setPayload} = this.props
+        const {value} = event.target
+        const newPayload = payload
+            .set('reason', value)
+            .set('email', value !== 'fraud')
+
+        setPayload(newPayload)
+    }
+
     _onCancel(via: string) {
         const {onCancel, onClose} = this.props
 
@@ -116,12 +143,12 @@ export class CancelOrderModalComponent extends React.PureComponent<Props> {
             onSubmit()
             this._onClose()
         })
-
-        segmentTracker.logEvent(segmentTracker.EVENTS.SHOPIFY_CANCEL_ORDER_SUBMIT)
     }
 
     render() {
-        const {header, isOpen, payload, lineItems, loading, loadingMessage, data: {order}} = this.props
+        const {
+            header, isOpen, payload, refund, lineItems, loading, loadingMessage, data: {order, actionName},
+        } = this.props
 
         const integration = this._getIntegration()
         if (!integration) {
@@ -142,19 +169,20 @@ export class CancelOrderModalComponent extends React.PureComponent<Props> {
             >
                 <Form onSubmit={this._onSubmit}>
                     {payload && lineItems && (
-                        <div>
-                            <OrderTable
-                                shopName={shopName}
-                                currencyCode={payload.getIn(['refund', 'currency'])}
-                                lineItems={lineItems}
-                                onChange={this._onLineItemsChange}
-                            />
-                            <CancelOrderFooter
-                                editable
-                                hasShippingLine={!!order.getIn(['shipping_lines', 0])}
-                                currencyCode={payload.getIn(['refund', 'currency'])}
-                            />
-                        </div>
+                        <RefundOrderForm
+                            shopName={shopName}
+                            actionName={actionName}
+                            loading={loading}
+                            payload={payload.get('refund')}
+                            reason={payload.get('reason')}
+                            order={order}
+                            refund={refund}
+                            lineItems={lineItems}
+                            setPayload={this._setRefundPayload}
+                            onPayloadChange={this._onRefundPayloadChange}
+                            onLineItemsChange={this._onLineItemsChange}
+                            onReasonChange={this._onReasonChange}
+                        />
                     )}
                     <ModalFooter className={css.footer}>
                         <Button
@@ -203,8 +231,9 @@ const mapDispatchToProps = {
     onCancel,
     onInit,
     onLineItemsChange,
+    onPayloadChange,
     onReset,
+    setPayload,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CancelOrderModalComponent)
-

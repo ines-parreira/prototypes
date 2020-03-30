@@ -3,7 +3,7 @@
 import {type List, type Record} from 'immutable'
 import _debounce from 'lodash/debounce'
 
-import {initCancelOrderLineItems, initCancelOrderPayload} from '../../../../business/shopify/order'
+import {initCancelOrderPayload, initRefundOrderLineItems} from '../../../../business/shopify/order'
 import {getRefundAmount, getTotalQuantities} from '../../../../business/shopify/refund'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 import * as Shopify from '../../../../constants/integrations/shopify'
@@ -70,7 +70,7 @@ const setInitialState = () => ({
 
 export const onInit = (integrationId: number, order: Record<Shopify.Order>) => (dispatch: dispatchType) => {
     const payload = initCancelOrderPayload(order)
-    const lineItems = initCancelOrderLineItems(order)
+    const lineItems = initRefundOrderLineItems(order)
 
     segmentTracker.logEvent(segmentTracker.EVENTS.SHOPIFY_CANCEL_ORDER_OPEN, {
         orderId: order.get('id'),
@@ -121,28 +121,31 @@ export const onPayloadChange = (integrationId: number, payload: Record<$Shape<Sh
         return calculateRefund(integrationId, dispatch, getState)
     }
 
-const calculateRefund = _debounce(async (integrationId: number, dispatch: dispatchType, getState: getStateType) => {
-    try {
-        dispatch(setLoading(true, 'Calculating refund...'))
+export const calculateRefund = _debounce(
+    async (integrationId: number, dispatch: dispatchType, getState: getStateType) => {
+        try {
+            dispatch(setLoading(true, 'Calculating refund...'))
 
-        const state = getState()
-        const orderId = getCancelOrderState(state).get('orderId')
-        const cancelOrderPayload = getCancelOrderState(state).get('payload')
-        const refundPayload = cancelOrderPayload.get('refund')
-        const currencyCode = refundPayload.get('currency')
-        const suggestedRefund = await api().calculateRefund(integrationId, orderId, refundPayload)
-        const amount = formatPrice(getRefundAmount(suggestedRefund), currencyCode)
+            const state = getState()
+            const orderId = getCancelOrderState(state).get('orderId')
+            const cancelOrderPayload = getCancelOrderState(state).get('payload')
+            const refundPayload = cancelOrderPayload.get('refund').delete('transactions')
+            const currencyCode = refundPayload.get('currency')
+            const suggestedRefund = await api().calculateRefund(integrationId, orderId, refundPayload)
+            const amount = formatPrice(getRefundAmount(suggestedRefund), currencyCode)
 
-        return Promise.all([
-            dispatch(setRefund(suggestedRefund)),
-            dispatch(setRefundAmount(amount)),
-            dispatch(setLoading(false)),
-        ])
-    } catch (error) {
-        console.error(error)
-        return dispatch(onApiError(error, 'Error while calculating refund'))
-    }
-}, 500)
+            return Promise.all([
+                dispatch(setRefund(suggestedRefund)),
+                dispatch(setRefundAmount(amount)),
+                dispatch(setLoading(false)),
+            ])
+        } catch (error) {
+            console.error(error)
+            return dispatch(onApiError(error, 'Error while calculating refund'))
+        }
+    },
+    500
+)
 
 export const onApiError = (error: Object, defaultMessage: string) => (dispatch: dispatchType) => {
     const message = error.response && error.response.data && error.response.data.error
@@ -159,6 +162,7 @@ export const onApiError = (error: Object, defaultMessage: string) => (dispatch: 
 
 export const onCancel = (via: string) => () => {
     _gorgiasApi = null
+    calculateRefund.cancel()
 
     segmentTracker.logEvent(segmentTracker.EVENTS.SHOPIFY_CANCEL_ORDER_CANCEL, {
         via,

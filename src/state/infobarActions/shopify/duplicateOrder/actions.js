@@ -4,15 +4,9 @@ import {fromJS, type Record} from 'immutable'
 import _debounce from 'lodash/debounce'
 import {type AxiosResponse} from 'axios'
 
-import {
-    ShopifyAction
-} from '../../../../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/Order'
+import {ShopifyAction} from '../../../../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/Order'
 import {INTEGRATION_DATA_ITEM_TYPE_PRODUCT, SHOPIFY_INTEGRATION_TYPE} from '../../../../constants/integration'
-import {
-    addCustomLineItem,
-    addVariant,
-    initDraftOrderPayload
-} from '../../../../business/shopify/draftOrder'
+import {addCustomLineItem, addVariant, initDraftOrderPayload} from '../../../../business/shopify/draftOrder'
 import {getDiscountAmount, refreshAppliedDiscounts} from '../../../../business/shopify/discount'
 import {formatPercentage, formatPrice} from '../../../../business/shopify/number'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
@@ -107,19 +101,16 @@ export const onInit = (integrationId: number, order: Record<Shopify.Order>, onEr
     async (dispatch: dispatchType) => {
         dispatch(setLoading(true, 'Fetching products...'))
 
+        const orderId = order.get('id')
         const products = await loadProducts(integrationId, order)
         const draftOrderPayload = initDraftOrderPayload(order, products)
         const defaultShippingLine = draftOrderPayload.get('shipping_line') || null
         const payload = getDuplicateOrderPayload(draftOrderPayload)
 
-        segmentTracker.logEvent(segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_OPEN, {
-            orderId: order.get('id'),
-        })
-
         return Promise.all([
             dispatch(setPayload(payload)),
             dispatch(setDraftOrder(payload)),
-            dispatch(createDraftOrder(integrationId, payload, onError)),
+            dispatch(createDraftOrder(integrationId, orderId, payload, onError)),
             dispatch(setProducts(products)),
             dispatch(setDefaultShippingLine(defaultShippingLine)),
         ])
@@ -144,12 +135,12 @@ const deleteTemporaryDraftOrders = _debounce(async (integrationId: number) => {
 }, 1000)
 
 export const createDraftOrder =
-    (integrationId: number, payload: Record<$Shape<Shopify.DraftOrder>>, onError: () => void) =>
+    (integrationId: number, orderId: number, payload: Record<$Shape<Shopify.DraftOrder>>, onError: () => void) =>
         async (dispatch: dispatchType) => {
             try {
                 dispatch(setLoading(true, 'Creating draft order...'))
 
-                const [draftOrder, pollingConfig] = await api().createDraftOrder(integrationId, payload)
+                const [draftOrder, pollingConfig] = await api().createDraftOrder(integrationId, payload, orderId)
                 const draftOrderId = draftOrder.get('id')
 
                 shopifyLocalStorage.draftOrders.addListItem(draftOrderId)
@@ -228,26 +219,29 @@ export const onPayloadChange = (integrationId: number, payload: Record<$Shape<Sh
         return updateDraftOrder(integrationId, dispatch, getState)
     }
 
-const updateDraftOrder = _debounce(async (integrationId: number, dispatch: dispatchType, getState: getStateType) => {
-    try {
-        dispatch(setLoading(true, 'Updating draft order...'))
+export const updateDraftOrder = _debounce(
+    async (integrationId: number, dispatch: dispatchType, getState: getStateType) => {
+        try {
+            dispatch(setLoading(true, 'Updating draft order...'))
 
-        const state = getState()
-        const draftOrder = getDuplicateOrderState(state).get('draftOrder')
-        const payload = getDuplicateOrderState(state).get('payload')
-        const draftOrderId = draftOrder.get('id')
-        const [newDraftOrder, pollingConfig] = await api().updateDraftOrder(integrationId, payload, draftOrderId)
+            const state = getState()
+            const draftOrder = getDuplicateOrderState(state).get('draftOrder')
+            const payload = getDuplicateOrderState(state).get('payload')
+            const draftOrderId = draftOrder.get('id')
+            const [newDraftOrder, pollingConfig] = await api().updateDraftOrder(integrationId, payload, draftOrderId)
 
-        dispatch(setDraftOrder(newDraftOrder))
+            dispatch(setDraftOrder(newDraftOrder))
 
-        return pollingConfig
-            ? dispatch(pollDraftOrder(integrationId, draftOrderId, pollingConfig))
-            : dispatch(setLoading(false))
-    } catch (error) {
-        console.error(error)
-        return dispatch(onApiError(error, 'Error while updating draft order'))
-    }
-}, 500)
+            return pollingConfig
+                ? dispatch(pollDraftOrder(integrationId, draftOrderId, pollingConfig))
+                : dispatch(setLoading(false))
+        } catch (error) {
+            console.error(error)
+            return dispatch(onApiError(error, 'Error while updating draft order'))
+        }
+    },
+    500
+)
 
 export const addRow = (integrationId: number, product: Shopify.Product, variant: Shopify.Variant) =>
     (dispatch: dispatchType, getState: getStateType) => {
@@ -284,6 +278,7 @@ export const addCustomRow = (integrationId: number, lineItem: Record<$Shape<Shop
 export const onCancel = (integrationId: number, via: string) => () => {
     _gorgiasApi = null
     deleteTemporaryDraftOrders(integrationId)
+    updateDraftOrder.cancel()
 
     segmentTracker.logEvent(segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_CANCEL, {
         via,

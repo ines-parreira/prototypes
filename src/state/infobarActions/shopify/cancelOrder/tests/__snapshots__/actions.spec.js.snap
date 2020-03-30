@@ -17,11 +17,13 @@ Array [
         "refund_line_items": Immutable.List [
           Immutable.Map {
             "line_item_id": 4193100136471,
+            "fulfillment_status": null,
             "restock_type": "cancel",
             "quantity": 1,
           },
           Immutable.Map {
             "line_item_id": 4193100169239,
+            "fulfillment_status": null,
             "restock_type": "cancel",
             "quantity": 4,
           },
@@ -29,6 +31,11 @@ Array [
         "shipping": Immutable.Map {
           "amount": "0.00",
         },
+        "transactions": Immutable.List [
+          Immutable.Map {
+            "amount": "",
+          },
+        ],
       },
     },
     "type": "infobarActions/shopify/cancelOrder/SET_PAYLOAD",
@@ -110,11 +117,13 @@ Array [
         "refund_line_items": Immutable.List [
           Immutable.Map {
             "line_item_id": 4193100136471,
+            "fulfillment_status": null,
             "restock_type": "cancel",
             "quantity": 1,
           },
           Immutable.Map {
             "line_item_id": 4193100169239,
+            "fulfillment_status": null,
             "restock_type": "cancel",
             "quantity": 4,
           },
@@ -122,6 +131,11 @@ Array [
         "shipping": Immutable.Map {
           "amount": "0.00",
         },
+        "transactions": Immutable.List [
+          Immutable.Map {
+            "amount": "",
+          },
+        ],
       },
     },
     "type": "infobarActions/shopify/cancelOrder/SET_PAYLOAD",
@@ -252,14 +266,19 @@ Array [
           Immutable.Map {
             "line_item_id": 4193100136471,
             "restock_type": "cancel",
+            "fulfillment_status": null,
             "quantity": 1,
           },
         ],
         "shipping": Immutable.Map {
           "amount": "0.00",
         },
+        "transactions": Immutable.List [
+          Immutable.Map {
+            "amount": "1.00",
+          },
+        ],
       },
-      "amount": "1.00",
     },
     "type": "infobarActions/shopify/cancelOrder/SET_PAYLOAD",
   },
@@ -335,14 +354,19 @@ Array [
           Immutable.Map {
             "line_item_id": 4193100136471,
             "restock_type": "cancel",
+            "fulfillment_status": null,
             "quantity": 1,
           },
         ],
         "shipping": Immutable.Map {
           "amount": "0.00",
         },
+        "transactions": Immutable.List [
+          Immutable.Map {
+            "amount": "1.00",
+          },
+        ],
       },
-      "amount": "1.00",
     },
     "type": "infobarActions/shopify/cancelOrder/SET_PAYLOAD",
   },

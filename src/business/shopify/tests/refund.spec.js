@@ -1,11 +1,13 @@
 import {fromJS} from 'immutable'
 
-import {shopifySuggestedRefundFixture} from '../../../fixtures/shopify'
+import {shopifyLineItemFixture, shopifySuggestedRefundFixture} from '../../../fixtures/shopify'
 import {
     getRefundAmount,
+    getRestockType,
     getSubtotal,
     getTotalAvailableToRefund,
-    getTotalCartDiscountAmount, getTotalQuantities,
+    getTotalCartDiscountAmount,
+    getTotalQuantities,
     getTotalTax
 } from '../refund'
 
@@ -60,5 +62,31 @@ describe('getTotalQuantities()', () => {
         const total = getTotalQuantities(refund)
 
         expect(total).toMatchSnapshot()
+    })
+})
+
+describe('getRestockType()', () => {
+    it('should return `"no_restock"` because `restock` is `false`', () => {
+        const lineItem = fromJS(shopifyLineItemFixture())
+        const restock = false
+        const restockType = getRestockType(lineItem, restock)
+
+        expect(restockType).toBe('no_restock')
+    })
+
+    it('should return `"return"` because the line item has been fulfilled', () => {
+        const lineItem = fromJS(shopifyLineItemFixture()).set('fulfillment_status', 'fulfilled')
+        const restock = true
+        const restockType = getRestockType(lineItem, restock)
+
+        expect(restockType).toBe('return')
+    })
+
+    it('should return `"cancel"` because the line item has not been fulfilled', () => {
+        const lineItem = fromJS(shopifyLineItemFixture()).set('fulfillment_status', null)
+        const restock = true
+        const restockType = getRestockType(lineItem, restock)
+
+        expect(restockType).toBe('cancel')
     })
 })
