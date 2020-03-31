@@ -31,10 +31,6 @@ export const actions = [{
     label: 'Partial refund order',
     objectType: 'order',
 }, {
-    name: 'shopifyRefundOrderItem',
-    label: 'Refund item',
-    objectType: 'item',
-}, {
 //     name: 'shopifyCreateGiftCard',
 //     label: 'Create gift card',
 // }, {

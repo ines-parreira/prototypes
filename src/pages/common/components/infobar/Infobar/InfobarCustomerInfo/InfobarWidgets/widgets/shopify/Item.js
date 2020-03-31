@@ -1,106 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import {fromJS, type Map} from 'immutable'
+import {fromJS} from 'immutable'
 import {Badge} from 'reactstrap'
-
-import ActionButtonsGroup from '../ActionButtonsGroup'
 
 export default function Item() {
     return {
-        AfterTitle,
         BeforeContent,
         Wrapper,
-    }
-}
-
-type AfterTitleProps = {
-    isEditing: boolean,
-    source: Map<*, *>,
-}
-
-class AfterTitle extends React.Component<AfterTitleProps> {
-    static contextTypes = {
-        integrationId: PropTypes.number,
-        orderId: PropTypes.number,
-        refundedQuantity: PropTypes.number.isRequired,
-    }
-
-    render() {
-        const {source} = this.props
-
-        if (this.props.isEditing) {
-            return null
-        }
-
-        if (!this.context.integrationId) {
-            return null
-        }
-
-        const quantity = source.get('quantity') - this.context.refundedQuantity
-
-        const payload = {
-            item_id: source.get('id'),
-            order_id: this.context.orderId,
-            quantity,
-        }
-
-        if (quantity <= 0) {
-            return null
-        }
-
-        let actions = [
-            {
-                key: 'refund',
-                tooltip: 'This will send an email to the customer.',
-                options: [
-                    {
-                        value: 'shopifyRefundOrderItem',
-                        label: 'Refund item(s)',
-                        parameters: [
-                            {
-                                name: 'quantity',
-                                type: 'number',
-                                defaultValue: quantity,
-                                placeholder: 'Quantity',
-                                required: true,
-                                min: 1,
-                                max: quantity
-                            },
-                            {
-                                name: 'restock',
-                                type: 'checkbox',
-                                defaultValue: false,
-                                label: 'Restock items'
-                            }
-                        ]
-                    }
-                ],
-                title: (
-                    <div>
-                        <i className="material-icons mr-2">
-                            refresh
-                        </i>
-                        Refund item
-                    </div>
-                ),
-                child: (
-                    <div>
-                        <i className="material-icons mr-2">
-                            refresh
-                        </i>
-                        Refund
-                    </div>
-                )
-            }
-        ]
-
-        return (
-            <ActionButtonsGroup
-                actions={actions}
-                payload={payload}
-            />
-        )
     }
 }
 
