@@ -19,7 +19,7 @@ export const FinancialStatus = Object.freeze({
 
 export type FinancialStatusType = $Values<typeof FinancialStatus>
 
-export type DiscountType = 'percentage' | 'fixed_amount'
+export type DiscountType = 'percentage' | 'fixed_amount' | 'shipping'
 
 export type TaxLine = {
     title: string,

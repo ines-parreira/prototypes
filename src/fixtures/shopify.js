@@ -649,6 +649,17 @@ export const shopifyDiscountApplicationFixture = (
     allocation_method: 'one',
 })
 
+
+export const shopifyDiscountCodeFixture = (
+    {
+        amount = '5.00',
+    } = {}
+): Shopify.Discount => ({
+    code: 'FOO',
+    type: 'shipping',
+    amount,
+})
+
 export const shopifyRefundFixture = (
     {
         refundLineItems = [],
