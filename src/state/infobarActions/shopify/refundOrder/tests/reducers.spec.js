@@ -75,6 +75,13 @@ describe('infobarActions.shopify.refundOrder reducer', () => {
             const nextState = reducer(state, action)
             expect(nextState.getIn(['payload', 'transactions', 0, 'amount'])).toEqual(amount)
         })
+
+        it('should keep current state if the payload is not set', () => {
+            const amount = '9.99'
+            const action = {type: constants.SET_REFUND_AMOUNT, amount}
+            const nextState = reducer(initialState, action)
+            expect(nextState).toEqualImmutable(initialState)
+        })
     })
 
     describe('SET_INITIAL_STATE', () => {

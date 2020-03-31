@@ -50,21 +50,29 @@ export default class GorgiasApi {
         this._api = axios.create()
 
         if (requestsCancellation) {
-            this._requestCanceller = axios.CancelToken.source()
-            this._api.defaults.cancelToken = this._requestCanceller.token
+            this._refreshCancellationToken()
         }
+    }
+
+    _refreshCancellationToken() {
+        this._requestCanceller = axios.CancelToken.source()
+        this._api.defaults.cancelToken = this._requestCanceller.token
     }
 
     /**
      * Cancel all pending requests
      */
-    cancelPendingRequests() {
+    cancelPendingRequests(refreshToken: boolean = false) {
         if (!this._requestCanceller) {
             throw new Error('Cannot call `.cancelPendingRequests()` on this instance ' +
                 'because it was not created with this ability.')
         }
 
         this._requestCanceller.cancel()
+
+        if (refreshToken) {
+            this._refreshCancellationToken()
+        }
     }
 
     /**
@@ -270,6 +278,17 @@ export default class GorgiasApi {
         payload: Record<$Shape<Shopify.DraftOrder>>,
         draftOrderId: number,
     ): Promise<[Record<Shopify.DraftOrder>, ?Shopify.PollingConfig]> {
+        // TODO(@samy): remove warning if it never happens
+        const variantIds = payload.get('line_items', [])
+            .map((lineItem) => lineItem.get('variant_id'))
+            .filter((variantId) => !!variantId)
+
+        const uniqueVariantIds = new Set(variantIds)
+
+        if (variantIds.size !== uniqueVariantIds.size) {
+            console.warn('[SHOPIFY][duplicate-order] Updating draft order with duplicated rows', payload.toJS())
+        }
+
         return await this._upsertDraftOder(integrationId, payload, {draftOrderId})
     }
 

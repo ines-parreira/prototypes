@@ -57,6 +57,32 @@ describe('services', () => {
                 expect(axios.isCancel(errorCaught)).toEqual(true)
             })
 
+            it('should cancel pending requests and refresh token', async () => {
+                const expectedData = {foo: 'bar'}
+
+                apiMock = new MockAdapter(axios, {delayResponse: 500})
+                apiMock
+                    .onPost().reply(200, {})
+                    .onPost().reply(200, expectedData)
+
+                const gorgiasApi = new GorgiasApi({requestsCancellation: true})
+                let errorCaught = null
+
+                setTimeout(() => {
+                    gorgiasApi.cancelPendingRequests(true)
+                }, 1)
+
+                try {
+                    await gorgiasApi.getStatistic('overview', fromJS({}))
+                } catch (error) {
+                    errorCaught = error
+                }
+                expect(axios.isCancel(errorCaught)).toEqual(true)
+
+                const data = await gorgiasApi.getStatistic('overview', fromJS({}))
+                expect(data).toEqual(fromJS(expectedData))
+            })
+
         })
 
         describe('*paginate()', () => {

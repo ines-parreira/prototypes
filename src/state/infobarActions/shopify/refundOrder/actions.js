@@ -2,6 +2,7 @@
 
 import {type List, type Record} from 'immutable'
 import _debounce from 'lodash/debounce'
+import axios from 'axios'
 
 import {initRefundOrderLineItems, initRefundOrderPayload} from '../../../../business/shopify/order'
 import {getRefundAmount, getTotalQuantities} from '../../../../business/shopify/refund'
@@ -25,7 +26,7 @@ import {getRefundOrderState} from './selectors'
 
 let _gorgiasApi = null
 
-const api = (): GorgiasApi => {
+const getApi = (): GorgiasApi => {
     if (!_gorgiasApi) {
         _gorgiasApi = new GorgiasApi()
     }
@@ -126,11 +127,14 @@ export const calculateRefund = _debounce(
         try {
             dispatch(setLoading(true, 'Calculating refund...'))
 
+            const api = getApi()
+            api.cancelPendingRequests(true)
+
             const state = getState()
             const orderId = getRefundOrderState(state).get('orderId')
             const payload = getRefundOrderState(state).get('payload').delete('transactions')
             const currencyCode = payload.get('currency')
-            const suggestedRefund = await api().calculateRefund(integrationId, orderId, payload)
+            const suggestedRefund = await api.calculateRefund(integrationId, orderId, payload)
             const amount = formatPrice(getRefundAmount(suggestedRefund), currencyCode)
 
             return Promise.all([
@@ -139,6 +143,10 @@ export const calculateRefund = _debounce(
                 dispatch(setLoading(false)),
             ])
         } catch (error) {
+            if (axios.isCancel(error)) {
+                return
+            }
+
             console.error(error)
             return dispatch(onApiError(error, 'Error while calculating refund'))
         }
@@ -160,8 +168,9 @@ export const onApiError = (error: Object, defaultMessage: string) => (dispatch: 
 }
 
 export const onCancel = (via: string) => () => {
-    _gorgiasApi = null
+    getApi().cancelPendingRequests()
     calculateRefund.cancel()
+    _gorgiasApi = null
 
     segmentTracker.logEvent(segmentTracker.EVENTS.SHOPIFY_REFUND_ORDER_CANCEL, {
         via,

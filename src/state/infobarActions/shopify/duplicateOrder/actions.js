@@ -2,9 +2,11 @@
 
 import {fromJS, type Record} from 'immutable'
 import _debounce from 'lodash/debounce'
-import {type AxiosResponse} from 'axios'
+import axios, {type AxiosResponse} from 'axios'
 
-import {ShopifyAction} from '../../../../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/Order'
+import {
+    ShopifyAction
+} from '../../../../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/Order'
 import {INTEGRATION_DATA_ITEM_TYPE_PRODUCT, SHOPIFY_INTEGRATION_TYPE} from '../../../../constants/integration'
 import {addCustomLineItem, addVariant, initDraftOrderPayload} from '../../../../business/shopify/draftOrder'
 import {getDiscountAmount, refreshAppliedDiscounts} from '../../../../business/shopify/discount'
@@ -30,15 +32,18 @@ import {
 } from './constants'
 
 const shopifyLocalStorage = localStorageManager.integrations[SHOPIFY_INTEGRATION_TYPE]
-let _gorgiasApi = null
+let _apiInstances = {}
 
-const api = (): GorgiasApi => {
-    if (!_gorgiasApi) {
-        _gorgiasApi = new GorgiasApi()
+const getApiInstance = (key: string) => (): GorgiasApi => {
+    if (!_apiInstances[key]) {
+        _apiInstances[key] = new GorgiasApi()
     }
 
-    return _gorgiasApi
+    return _apiInstances[key]
 }
+
+const getPollApi = getApiInstance('poll')
+const getUpdateApi = getApiInstance('update')
 
 const setLoading = (loading: boolean, message: ?string = null) => ({
     type: SET_LOADING,
@@ -125,7 +130,8 @@ const deleteTemporaryDraftOrders = _debounce(async (integrationId: number) => {
 
     for (const draftOrderId of ids) {
         try {
-            await api().deleteDraftOrder(integrationId, draftOrderId)
+            const api = new GorgiasApi()
+            await api.deleteDraftOrder(integrationId, draftOrderId)
         } catch (error) {
             console.error(error)
         }
@@ -140,7 +146,8 @@ export const createDraftOrder =
             try {
                 dispatch(setLoading(true, 'Creating draft order...'))
 
-                const [draftOrder, pollingConfig] = await api().createDraftOrder(integrationId, payload, orderId)
+                const api = new GorgiasApi()
+                const [draftOrder, pollingConfig] = await api.createDraftOrder(integrationId, payload, orderId)
                 const draftOrderId = draftOrder.get('id')
 
                 shopifyLocalStorage.draftOrders.addListItem(draftOrderId)
@@ -174,7 +181,10 @@ export const pollDraftOrder = (integrationId: number, draftOrderId: number, poll
         return new Promise((resolve) => {
             setTimeout(async () => {
                 try {
-                    const [draftOrder, pollingConfig] = await api().getDraftOrder(integrationId, draftOrderId)
+                    const api = getPollApi()
+                    api.cancelPendingRequests(true)
+
+                    const [draftOrder, pollingConfig] = await api.getDraftOrder(integrationId, draftOrderId)
                     dispatch(setDraftOrder(draftOrder))
 
                     resolve(
@@ -183,6 +193,10 @@ export const pollDraftOrder = (integrationId: number, draftOrderId: number, poll
                             : dispatch(setLoading(false))
                     )
                 } catch (error) {
+                    if (axios.isCancel(error)) {
+                        return
+                    }
+
                     console.error(error)
                     resolve(dispatch(onApiError(error, 'Error while fetching draft order')))
                 }
@@ -196,7 +210,8 @@ export const loadProducts = async (
 ): Promise<Map<number, Record<Shopify.Product>>> => {
     const products = new Map()
     const productIds = oldOrder.get('line_items', []).map((lineItem) => lineItem.get('product_id'))
-    const generator = api().getIntegrationDataItems<Shopify.Product>(
+    const api = new GorgiasApi()
+    const generator = api.getIntegrationDataItems<Shopify.Product>(
         integrationId,
         INTEGRATION_DATA_ITEM_TYPE_PRODUCT,
         productIds,
@@ -224,11 +239,14 @@ export const updateDraftOrder = _debounce(
         try {
             dispatch(setLoading(true, 'Updating draft order...'))
 
+            const api = getUpdateApi()
+            api.cancelPendingRequests(true)
+
             const state = getState()
             const draftOrder = getDuplicateOrderState(state).get('draftOrder')
             const payload = getDuplicateOrderState(state).get('payload')
             const draftOrderId = draftOrder.get('id')
-            const [newDraftOrder, pollingConfig] = await api().updateDraftOrder(integrationId, payload, draftOrderId)
+            const [newDraftOrder, pollingConfig] = await api.updateDraftOrder(integrationId, payload, draftOrderId)
 
             dispatch(setDraftOrder(newDraftOrder))
 
@@ -236,6 +254,10 @@ export const updateDraftOrder = _debounce(
                 ? dispatch(pollDraftOrder(integrationId, draftOrderId, pollingConfig))
                 : dispatch(setLoading(false))
         } catch (error) {
+            if (axios.isCancel(error)) {
+                return
+            }
+
             console.error(error)
             return dispatch(onApiError(error, 'Error while updating draft order'))
         }
@@ -276,9 +298,11 @@ export const addCustomRow = (integrationId: number, lineItem: Record<$Shape<Shop
     }
 
 export const onCancel = (integrationId: number, via: string) => () => {
-    _gorgiasApi = null
     deleteTemporaryDraftOrders(integrationId)
+    getPollApi().cancelPendingRequests()
+    getUpdateApi().cancelPendingRequests()
     updateDraftOrder.cancel()
+    _apiInstances = {}
 
     segmentTracker.logEvent(segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_CANCEL, {
         via,

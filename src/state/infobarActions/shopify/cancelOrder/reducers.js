@@ -42,7 +42,9 @@ export default function reducer(
         case SET_REFUND:
             return state.set('refund', action.refund)
         case SET_REFUND_AMOUNT:
-            return state.setIn(['payload', 'refund', 'transactions', 0, 'amount'], action.amount)
+            return state.get('payload')
+                ? state.setIn(['payload', 'refund', 'transactions', 0, 'amount'], action.amount)
+                : state
         case SET_INITIAL_STATE:
             return initialState
         default:
