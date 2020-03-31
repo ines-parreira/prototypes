@@ -2,7 +2,7 @@
 import classnames from 'classnames'
 import {fromJS, type Map, type RecordOf} from 'immutable'
 import _debounce from 'lodash/debounce'
-import React from 'react'
+import React, {type ElementRef} from 'react'
 import {connect} from 'react-redux'
 import {Input} from 'reactstrap'
 
@@ -16,6 +16,7 @@ import {getCurrentMacro, getDefaultSelectedMacroId} from '../../../common/macros
 import {getPreferences} from '../../../../../state/currentUser/selectors'
 import {fetchMacros} from '../../../../../state/macro/actions'
 import {notify} from '../../../../../state/notifications/actions'
+import RichField from '../../../../common/forms/RichField'
 
 import TicketMacros from './TicketMacros'
 import TicketReply from './TicketReply'
@@ -49,11 +50,12 @@ type State = {
     macrosVisible: boolean,
     macroSearchQuery: string,
     selectedMacroId: ?number,
-    isInitialMacrosLoading: boolean
+    isInitialMacrosLoading: boolean,
+    shouldFocusEditor: boolean,
 }
 
 export class TicketReplyArea extends React.Component<Props, State> {
-    richArea = null
+    richArea: ?ElementRef<typeof RichField> = null
     macroInput = null
     cacheAdded = false
 
@@ -67,7 +69,8 @@ export class TicketReplyArea extends React.Component<Props, State> {
             macrosVisible: false,
             macroSearchQuery: '',
             selectedMacroId: null,
-            isInitialMacrosLoading: false
+            isInitialMacrosLoading: false,
+            shouldFocusEditor: false,
         }
     }
 
@@ -78,7 +81,9 @@ export class TicketReplyArea extends React.Component<Props, State> {
         this.setState({isInitialMacrosLoading: false})
     }
 
-    componentDidUpdate = (prevProps: Props) => {
+    componentDidUpdate = (prevProps: Props, prevState: State) => {
+        const {shouldFocusEditor} = this.state
+
         if (this.props.cacheAdded && this.cacheAdded !== true) {
             this._showMacrosDefault()
             // only run once
@@ -92,6 +97,13 @@ export class TicketReplyArea extends React.Component<Props, State> {
         ) {
             // hide macros on internal-note
             this._hideMacros()
+        }
+
+        if (shouldFocusEditor && !prevState.shouldFocusEditor) {
+            this.setState({shouldFocusEditor: false})
+            if (this.richArea) {
+                this.richArea.focusEditor()
+            }
         }
     }
 
@@ -193,7 +205,7 @@ export class TicketReplyArea extends React.Component<Props, State> {
             },
             BLUR_EVERYTHING: {
                 action: () => {
-                    this._hideMacros()
+                    this._hideMacrosAndFocusEditor()
 
                     if (document.activeElement) {
                         document.activeElement.blur()
@@ -203,7 +215,7 @@ export class TicketReplyArea extends React.Component<Props, State> {
             FOCUS_REPLY_AREA: {
                 action: (e) => {
                     e.preventDefault()
-                    this._hideMacros()
+                    this._hideMacrosAndFocusEditor()
                 }
             },
         })
@@ -216,7 +228,7 @@ export class TicketReplyArea extends React.Component<Props, State> {
 
         if (e.key === 'Escape' || e.key === 'Tab') {
             e.preventDefault()
-            this._hideMacros()
+            this._hideMacrosAndFocusEditor()
         }
 
         if (e.key === 'ArrowDown') {
@@ -256,11 +268,12 @@ export class TicketReplyArea extends React.Component<Props, State> {
     _showMacros = () => this.setState({macrosVisible: true})
 
     _hideMacros = () => {
-        this.setState({macrosVisible: false}, () => {
-            if (this.richArea) {
-                this.richArea.focusEditor()
-            }
-        })
+        this.setState({macrosVisible: false})
+    }
+
+    _hideMacrosAndFocusEditor = () => {
+        this._hideMacros()
+        this.setState({shouldFocusEditor: true})
     }
 
     _applyMacro = (macro: RecordOf<Macro>) => {
@@ -281,7 +294,7 @@ export class TicketReplyArea extends React.Component<Props, State> {
 
         applyMacro(clearingResult.macro, currentTicket.get('id'))
 
-        this._hideMacros()
+        this._hideMacrosAndFocusEditor()
     }
 
     render = () => {
@@ -319,7 +332,7 @@ export class TicketReplyArea extends React.Component<Props, State> {
                             selectMacro={this._setSelectedMacroId}
                             fetchMacros={this._loadMacros}
                             searchQuery={macroSearchQuery}
-                            hideMacros={this._hideMacros}
+                            onClearMacro={this._hideMacrosAndFocusEditor}
                             applyMacro={this._applyMacro}
                         />
                     ) : (

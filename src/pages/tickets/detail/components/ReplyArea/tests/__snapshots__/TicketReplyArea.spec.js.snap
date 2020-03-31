@@ -1,0 +1,131 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TicketReplyArea/> _hideMacrosAndFocusEditor() should hide macros and focus editor when called 1`] = `
+<TicketReplyArea
+  actions={
+    Object {
+      "customers": Object {},
+      "macro": Object {},
+      "newMessage": Object {},
+      "tag": Object {},
+      "ticket": Object {},
+      "views": Object {},
+    }
+  }
+  applyMacro={[Function]}
+  cacheAdded={false}
+  currentMacro={Object {}}
+  currentTicket={Object {}}
+  currentUser={Immutable.Map {}}
+  customers={Object {}}
+  fetchMacros={[Function]}
+  newMessage={Object {}}
+  newMessageType="email"
+  notify={[Function]}
+  page={1}
+  preferences={Object {}}
+  selectMacro={[Function]}
+  ticket={Immutable.Map {}}
+  totalPages={1}
+>
+  <div
+    className="component"
+  >
+    <div
+      className="search"
+    >
+      <i
+        className="searchIcon material-icons md-2 text-info"
+      >
+        flash_on
+      </i>
+      <Input
+        innerRef={[Function]}
+        onChange={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        placeholder="Search macros by name, tags or body..."
+        tabIndex="3"
+        type="text"
+      >
+        <input
+          className="form-control"
+          onChange={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          placeholder="Search macros by name, tags or body..."
+          tabIndex="3"
+          type="text"
+        />
+      </Input>
+    </div>
+    <div
+      className="content"
+    >
+      <TicketReplyMock
+        actions={
+          Object {
+            "customers": Object {},
+            "macro": Object {},
+            "newMessage": Object {},
+            "tag": Object {},
+            "ticket": Object {},
+            "views": Object {},
+          }
+        }
+        customers={Object {}}
+        richAreaRef={[Function]}
+        ticket={Immutable.Map {}}
+      >
+        <div>
+          hello
+        </div>
+      </TicketReplyMock>
+    </div>
+  </div>
+</TicketReplyArea>
+`;
+
+exports[`<TicketReplyArea/> should render 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="search"
+  >
+    <i
+      className="searchIcon material-icons md-2 text-info"
+    >
+      flash_on
+    </i>
+    <Input
+      innerRef={[Function]}
+      onChange={[Function]}
+      onFocus={[Function]}
+      onKeyDown={[Function]}
+      placeholder="Search macros by name, tags or body..."
+      tabIndex="3"
+      type="text"
+    />
+  </div>
+  <div
+    className="content"
+  >
+    <TicketReplyMock
+      actions={
+        Object {
+          "customers": Object {},
+          "macro": Object {},
+          "newMessage": Object {},
+          "tag": Object {},
+          "ticket": Object {},
+          "views": Object {},
+        }
+      }
+      customers={Object {}}
+      richAreaRef={[Function]}
+      ticket={Immutable.Map {}}
+    />
+  </div>
+</div>
+`;

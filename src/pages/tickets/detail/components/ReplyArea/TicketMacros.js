@@ -31,7 +31,7 @@ type Props = {
     applyMacro: () => void,
     notify: typeof notify,
     currentMacro: Map<*,*>,
-    hideMacros: (T?: boolean) => void,
+    onClearMacro: () => void,
     page: number,
     totalPages: number,
     selectMacro: () => void,
@@ -124,8 +124,8 @@ export class TicketMacros extends React.Component<Props, State> {
             macros,
             newMessageType,
             className,
-            hideMacros,
             fetchMacros,
+            onClearMacro,
             page,
             totalPages,
             currentMacro,
@@ -248,7 +248,7 @@ export class TicketMacros extends React.Component<Props, State> {
                 <a
                     id="clear-macro-button"
                     className={css.clearMacros}
-                    onClick={() => hideMacros(false)}
+                    onClick={onClearMacro}
                 >
                     <i className="material-icons d-none d-md-inline-block">
                         close

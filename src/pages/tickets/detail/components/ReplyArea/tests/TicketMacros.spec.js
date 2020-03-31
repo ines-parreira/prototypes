@@ -37,7 +37,7 @@ describe('TicketMacros component', () => {
             deleteMacro: _noop,
             applyMacro: _noop,
             notify: _noop,
-            hideMacros: _noop,
+            onClearMacro: _noop,
             selectMacro: _noop,
             store,
         }
