@@ -219,7 +219,7 @@ export default class YourProfileView extends React.Component<Props, State> {
                                     type="select"
                                     name="language"
                                     label="Language"
-                                    help="Changing the language also changes the time format"
+                                    help="Changing the language only changes the time format"
                                     value={this.state.language}
                                     onChange={(language) => this.setState({language})}
                                 >

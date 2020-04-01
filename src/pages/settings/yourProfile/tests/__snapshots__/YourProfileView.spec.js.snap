@@ -3698,7 +3698,7 @@ exports[`YourProfileView render should render current user profile form 1`] = `
             </option>
           </InputField>
           <InputField
-            help="Changing the language also changes the time format"
+            help="Changing the language only changes the time format"
             label="Language"
             name="language"
             onChange={[Function]}
