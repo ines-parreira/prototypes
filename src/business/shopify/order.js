@@ -70,7 +70,7 @@ export function getLineItemQuantity(order: Record<Shopify.Order>, lineItem: Reco
 }
 
 export function getRefundableShippingAmount(order: Record<Shopify.Order>): number {
-    let amount = parseFloat(order.getIn(['shipping_lines', 0, 'price_set', 'presentment_money', 'amount'], 0))
+    let amount = parseFloat(order.getIn(['shipping_lines', 0, 'discounted_price'], 0))
 
     // Subtract refunded amounts
     order.get('refunds', []).forEach((refund) => {
@@ -81,16 +81,7 @@ export function getRefundableShippingAmount(order: Record<Shopify.Order>): numbe
             })
     })
 
-    // Subtract discounts
-    const discountCodes = order.get('discount_codes', []).filter((discountCode) =>
-        discountCode.get('type') === 'shipping'
-    )
-
-    discountCodes.forEach((discountCode) => {
-        amount -= parseFloat(discountCode.get('amount'))
-    })
-
-    return amount < 0 ? 0 : amount
+    return amount
 }
 
 export function getFinalCancelOrderPayload(

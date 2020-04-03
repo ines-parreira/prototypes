@@ -579,13 +579,13 @@ export const shopifyAppliedDiscountFixture = (
 export const shopifyShippingLineFixture = (
     {
         price = '12.00',
-        priceSet = shopifyPriceSetFixture({amount: price}),
+        discountedPrice = '12.00',
     } = {}
 ): Shopify.ShippingLine => ({
     code: 'custom',
     price,
     title: 'Test',
-    price_set: priceSet,
+    discounted_price: discountedPrice,
 })
 
 export const shopifyOrderAdjustmentFixture = (
@@ -647,17 +647,6 @@ export const shopifyDiscountApplicationFixture = (
     target_type: 'line_item',
     target_selection: 'explicit',
     allocation_method: 'one',
-})
-
-
-export const shopifyDiscountCodeFixture = (
-    {
-        amount = '5.00',
-    } = {}
-): Shopify.Discount => ({
-    code: 'FOO',
-    type: 'shipping',
-    amount,
 })
 
 export const shopifyRefundFixture = (

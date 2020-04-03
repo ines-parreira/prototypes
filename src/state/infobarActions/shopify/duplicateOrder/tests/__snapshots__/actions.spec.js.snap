@@ -1252,16 +1252,7 @@ Array [
         "code": "custom",
         "price": "0.00",
         "title": "Test",
-        "price_set": Immutable.Map {
-          "shop_money": Immutable.Map {
-            "amount": "12.00",
-            "currency_code": "USD",
-          },
-          "presentment_money": Immutable.Map {
-            "amount": "12.00",
-            "currency_code": "USD",
-          },
-        },
+        "discounted_price": "12.00",
       },
       "billing_address": Immutable.Map {
         "zip": null,
@@ -1349,16 +1340,7 @@ Array [
         "code": "custom",
         "price": "0.00",
         "title": "Test",
-        "price_set": Immutable.Map {
-          "shop_money": Immutable.Map {
-            "amount": "12.00",
-            "currency_code": "USD",
-          },
-          "presentment_money": Immutable.Map {
-            "amount": "12.00",
-            "currency_code": "USD",
-          },
-        },
+        "discounted_price": "12.00",
       },
       "billing_address": Immutable.Map {
         "zip": null,
@@ -1475,16 +1457,7 @@ Array [
       "code": "custom",
       "price": "12.00",
       "title": "Test",
-      "price_set": Immutable.Map {
-        "shop_money": Immutable.Map {
-          "amount": "12.00",
-          "currency_code": "USD",
-        },
-        "presentment_money": Immutable.Map {
-          "amount": "12.00",
-          "currency_code": "USD",
-        },
-      },
+      "discounted_price": "12.00",
     },
     "type": "infobarActions/shopify/duplicateOrder/SET_DEFAULT_SHIPPING_LINE",
   },

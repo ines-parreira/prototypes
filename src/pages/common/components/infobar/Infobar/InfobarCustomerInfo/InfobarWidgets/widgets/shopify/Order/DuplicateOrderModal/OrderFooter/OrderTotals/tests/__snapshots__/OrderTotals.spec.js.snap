@@ -338,16 +338,7 @@ exports[`<OrderTotalsComponent/> render() should render with default shipping li
           "code": "custom",
           "price": "12.00",
           "title": "Test",
-          "price_set": Immutable.Map {
-            "shop_money": Immutable.Map {
-              "amount": "12.00",
-              "currency_code": "USD",
-            },
-            "presentment_money": Immutable.Map {
-              "amount": "12.00",
-              "currency_code": "USD",
-            },
-          },
+          "discounted_price": "12.00",
         }
       }
       editable={true}

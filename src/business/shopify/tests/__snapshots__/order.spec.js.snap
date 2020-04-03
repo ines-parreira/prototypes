@@ -37,10 +37,6 @@ exports[`getLineItemQuantity() should return adjusted quantity because there is 
 
 exports[`getLineItemQuantity() should return original quantity because there is no refund 1`] = `1`;
 
-exports[`getRefundableShippingAmount() should return 0 because the discount is greater than shipping price 1`] = `0`;
-
-exports[`getRefundableShippingAmount() should return adjusted amount because there is a discount 1`] = `7`;
-
 exports[`getRefundableShippingAmount() should return adjusted amount because there is a refund 1`] = `7`;
 
 exports[`getRefundableShippingAmount() should return original amount because there is no refund 1`] = `12`;
