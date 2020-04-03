@@ -2,7 +2,6 @@ import React from 'react'
 import type {List} from 'immutable'
 import {Link, withRouter} from 'react-router'
 import classNames from 'classnames'
-import _isEmpty from 'lodash/isEmpty'
 import {
     Alert,
     Breadcrumb,
@@ -48,33 +47,14 @@ class RechargeIntegrationDetail extends React.Component<Props, State> {
         store_name: ''
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (_isEmpty(this.props.integration.toJS()) && !_isEmpty(nextProps.integration.toJS())) {
-            const authenticationRequired = nextProps.integration.getIn(['meta', 'oauth', 'status']) === 'pending'
-            const isAuthenticating = nextProps.location.query.action === 'authentication'
-
-            if (isAuthenticating) {
-                if (authenticationRequired) {
-                    setTimeout(
-                        nextProps.actions.fetchIntegration(
-                            nextProps.integration.get('id'),
-                            nextProps.integration.get('type'),
-                            true)
-                        , 3000)
-                } else {
-                    nextProps.actions.triggerCreateSuccess(nextProps.integration.toJS())
-                }
-            }
-        }
-    }
-
     _updateAppPermissions = () => {
         const name = this.props.integration.getIn(['meta', 'store_name'])
         window.location.href = this.props.redirectUri.concat('?store_name=').concat(name)
     }
 
     _installForShopifyStore = (shopifyIntegration) => {
-        window.location.href = this.props.redirectUri.concat('?store_name=').concat(shopifyIntegration.get('name'))
+        const shopifyShopName = shopifyIntegration.getIn(['meta', 'shop_name'])
+        window.location.href = this.props.redirectUri.concat('?store_name=').concat(shopifyShopName)
     }
 
     render() {
@@ -83,8 +63,6 @@ class RechargeIntegrationDetail extends React.Component<Props, State> {
         const isUpdate = this.props.params.integrationId !== 'new'
         const isSubmitting = loading.get('updateIntegration')
         const isActive = !integration.get('deactivated_datetime')
-
-        const authenticationRequired = this.props.integration.getIn(['meta', 'oauth', 'status']) === 'pending'
 
         const needScopeUpdate = integration.getIn(['meta', 'need_scope_update'])
         const isSyncOver = integration.getIn(['meta', 'sync_state', 'is_initialized'])
@@ -208,7 +186,7 @@ class RechargeIntegrationDetail extends React.Component<Props, State> {
                                     )
                                 }
                                 {
-                                    isUpdate && !authenticationRequired && isActive && (
+                                    isUpdate && isActive && (
                                         <Button
                                             type="button"
                                             color="warning"
@@ -223,7 +201,7 @@ class RechargeIntegrationDetail extends React.Component<Props, State> {
                                     )
                                 }
                                 {
-                                    isUpdate && !authenticationRequired && !isActive && (
+                                    isUpdate && !isActive && (
                                         <Button
                                             type="button"
                                             color="success"
