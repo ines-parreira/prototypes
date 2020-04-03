@@ -1,41 +1,45 @@
-Gorgias JS App
-==============
+Gorgias JavaScript Application
+==============================
 
-> If you're looking for building JS look at the README.md in the root of the project.
+This js app is the frontend for the Gorgias helpdesk.
+It's built using ReactJS + Redux + many other smaller tools.
 
-This js app is the frontend for the Gorgias helpdesk. It's built using ReactJS + Redux + many other smaller tools.
+## Table of Contents
 
-If you're a total noob with React + Redux you should checkout this series about Redux: 
-    https://egghead.io/series/getting-started-with-redux 
-    (There is also a copy on the company's Drive if the URL doesn't work anymore - ask @xarg)
-    
-Structure
-----------
+* [Installation](#installation)
+* [Development](#development)
+* [Testing](#testing)
+* [Contributing](#contributing)
 
-The structure is inspired by this example here: https://github.com/rackt/redux/tree/master/examples/real-world
+## Installation
 
-    ├── actions - where the Redux actions are stored
-    ├── components - dumb components (no state handling - just presentation)
-    ├── containers - smart components (they handle state - used as wrappers for dump components)
-    ├── main.js - entry point
-    ├── reducers - reducers of Redux
-    ├── routes.js - all routes are here
-    └── store - combined stores of Redux
-    
-    
-The biggest takeaway is that there are 2 type of components:
+```sh
+git clone https://github.com/gorgias/gorgias
+cd gorgias
+yarn install
+```
 
- * `components` or `dumb components` - reusable components for presentation only.
- 
-    These components don't handle changing of the state, they are just there for presentation purposes only. 
-    The reason is to separate components that actions and application logic from the ones that are only views.
- 
- * `containers` or `wrapper components` - handle state and actions
- 
-    These ones handle the state and the actions on that state (redux state) and are wrapping dumb components.
-    Containers can also wrap other containers of course.
-  
- 
+## Development
 
+Start the development server with:
 
+```sh
+yarn serve
+```
 
+The [HMR](https://webpack.js.org/concepts/hot-module-replacement) should
+work out of the box.
+
+## Testing
+
+```
+yarn test
+yarn lint   # Only code linting
+yarn types  # Only type-check
+yarn jest   # Only unit tests
+```
+
+## Contributing
+
+* [Gorgias Style Guide](https://github.com/gorgias/gorgias-style-guide).
+* [Project Kaizen](./KAIZEN.md)
