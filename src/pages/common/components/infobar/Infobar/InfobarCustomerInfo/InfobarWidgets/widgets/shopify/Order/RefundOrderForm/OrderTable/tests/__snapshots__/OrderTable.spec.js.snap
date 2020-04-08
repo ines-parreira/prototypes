@@ -44,6 +44,41 @@ exports[`<OrderTable/> render() should render 1`] = `
         }
       }
       onChange={[Function]}
+      refund={
+        Immutable.Map {
+          "shipping": Immutable.Map {
+            "amount": "0.00",
+            "tax": "0.00",
+            "maximum_refundable": "0.00",
+          },
+          "refund_line_items": Immutable.List [
+            Immutable.Map {
+              "subtotal": "1.00",
+              "location_id": 123,
+              "price": "1.00",
+              "discounted_price": "1.00",
+              "quantity": 1,
+              "discounted_total_price": "1.00",
+              "total_tax": "0.20",
+              "total_cart_discount_amount": "0.00",
+              "restock_type": "no_restock",
+              "line_item_id": 4193100136471,
+            },
+          ],
+          "transactions": Immutable.List [
+            Immutable.Map {
+              "order_id": 1894175539223,
+              "kind": "suggested_refund",
+              "gateway": "manual",
+              "parent_id": 2521452118039,
+              "amount": "1.20",
+              "currency": "USD",
+              "maximum_refundable": "1.20",
+            },
+          ],
+          "currency": "USD",
+        }
+      }
       shopName="storegorgias3"
     />
     <OrderLineItemRow
@@ -66,6 +101,41 @@ exports[`<OrderTable/> render() should render 1`] = `
         }
       }
       onChange={[Function]}
+      refund={
+        Immutable.Map {
+          "shipping": Immutable.Map {
+            "amount": "0.00",
+            "tax": "0.00",
+            "maximum_refundable": "0.00",
+          },
+          "refund_line_items": Immutable.List [
+            Immutable.Map {
+              "subtotal": "1.00",
+              "location_id": 123,
+              "price": "1.00",
+              "discounted_price": "1.00",
+              "quantity": 1,
+              "discounted_total_price": "1.00",
+              "total_tax": "0.20",
+              "total_cart_discount_amount": "0.00",
+              "restock_type": "no_restock",
+              "line_item_id": 4193100136471,
+            },
+          ],
+          "transactions": Immutable.List [
+            Immutable.Map {
+              "order_id": 1894175539223,
+              "kind": "suggested_refund",
+              "gateway": "manual",
+              "parent_id": 2521452118039,
+              "amount": "1.20",
+              "currency": "USD",
+              "maximum_refundable": "1.20",
+            },
+          ],
+          "currency": "USD",
+        }
+      }
       shopName="storegorgias3"
     />
   </tbody>

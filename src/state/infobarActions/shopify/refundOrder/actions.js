@@ -21,6 +21,7 @@ import {
     SET_PAYLOAD,
     SET_REFUND,
     SET_REFUND_AMOUNT,
+    SET_RESTOCK,
 } from './constants'
 import {getRefundOrderState} from './selectors'
 
@@ -65,6 +66,11 @@ const setRefundAmount = (amount) => ({
     amount,
 })
 
+const setRestock = (restock) => ({
+    type: SET_RESTOCK,
+    restock,
+})
+
 const setInitialState = () => ({
     type: SET_INITIAL_STATE,
 })
@@ -89,6 +95,7 @@ export const onLineItemsChange = (integrationId: number, lineItems: List<$Shape<
         const state = getState()
         let newPayload = getRefundOrderState(state).get('payload')
 
+        // Ignore already refunded line items
         newPayload = newPayload.set(
             'refund_line_items',
             lineItems
@@ -110,14 +117,7 @@ export const onLineItemsChange = (integrationId: number, lineItems: List<$Shape<
 
 export const onPayloadChange = (integrationId: number, payload: Record<$Shape<Shopify.RefundOrderPayload>>) =>
     async (dispatch: dispatchType, getState: getStateType) => {
-        const totalQuantities = getTotalQuantities(payload)
-        let newPayload = payload
-
-        if (totalQuantities === 0) {
-            newPayload = newPayload.set('restock', false)
-        }
-
-        dispatch(setPayload(newPayload))
+        dispatch(setPayload(payload))
         dispatch(setLoading(true, 'Calculating refund...'))
         return calculateRefund(integrationId, dispatch, getState)
     }
@@ -137,11 +137,21 @@ export const calculateRefund = _debounce(
             const suggestedRefund = await api.calculateRefund(integrationId, orderId, payload)
             const amount = formatPrice(getRefundAmount(suggestedRefund), currencyCode)
 
-            return Promise.all([
+            const promises = [
                 dispatch(setRefund(suggestedRefund)),
                 dispatch(setRefundAmount(amount)),
                 dispatch(setLoading(false)),
-            ])
+            ]
+
+            // Check or uncheck the "Restock" checkbox
+            const totalQuantities = getTotalQuantities(payload, suggestedRefund)
+            const restock = totalQuantities > 0
+
+            if (restock !== payload.get('restock')) {
+                promises.push(dispatch(setRestock(restock)))
+            }
+
+            return Promise.all(promises)
         } catch (error) {
             if (axios.isCancel(error)) {
                 return

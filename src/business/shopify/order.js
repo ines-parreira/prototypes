@@ -112,20 +112,27 @@ export function getFinalRefundOrderPayload(
     }
 
     // Update line items
+    const restock = finalPayload.get('restock')
+
     finalPayload = finalPayload
         .delete('restock')
         .update('refund_line_items', (refundLineItems) =>
             refundLineItems
                 .filter((refundLineItem) => !!refundLineItem.get('quantity'))
                 .map((refundLineItem) => {
+                    let newLineItem = refundLineItem.set('restock_type', getRestockType(refundLineItem, restock))
+
                     const suggestedRefundLineItem = refund.get('refund_line_items', []).find((suggestedLineItem) =>
                         suggestedLineItem.get('line_item_id') === refundLineItem.get('line_item_id')
                     )
 
-                    let newLineItem = refundLineItem
-
                     if (suggestedRefundLineItem) {
-                        newLineItem = newLineItem.set('location_id', suggestedRefundLineItem.get('location_id'))
+                        const locationId = suggestedRefundLineItem.get('location_id')
+                        newLineItem = newLineItem.set('location_id', locationId)
+
+                        if (!locationId) {
+                            newLineItem = newLineItem.set('restock_type', 'no_restock')
+                        }
                     }
 
                     return newLineItem.remove('fulfillment_status')

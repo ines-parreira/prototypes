@@ -12,7 +12,8 @@ import {
     SET_ORDER_ID,
     SET_PAYLOAD,
     SET_REFUND,
-    SET_REFUND_AMOUNT
+    SET_REFUND_AMOUNT,
+    SET_RESTOCK
 } from './constants'
 
 export const initialState: CancelOrderState = fromJS({
@@ -44,6 +45,10 @@ export default function reducer(
         case SET_REFUND_AMOUNT:
             return state.get('payload')
                 ? state.setIn(['payload', 'refund', 'transactions', 0, 'amount'], action.amount)
+                : state
+        case SET_RESTOCK:
+            return state.get('payload')
+                ? state.setIn(['payload', 'refund', 'restock'], action.restock)
                 : state
         case SET_INITIAL_STATE:
             return initialState

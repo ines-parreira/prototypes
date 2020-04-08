@@ -6,7 +6,6 @@ import {type Record} from 'immutable'
 
 import {
     getRefundAmount,
-    getRestockType,
     getTotalAvailableToRefund,
     getTotalQuantities
 } from '../../../../../../../../../../../../business/shopify/refund'
@@ -57,13 +56,7 @@ export default class OrderFooter extends React.PureComponent<Props> {
     _onRestockItemsChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
         const {payload, setPayload} = this.props
         const restock = event.target.checked
-        const newPayload = payload
-            .set('restock', restock)
-            .update('refund_line_items', (refundLineItems) =>
-                refundLineItems.map((refundLineItem) =>
-                    refundLineItem.set('restock_type', getRestockType(refundLineItem, restock))
-                )
-            )
+        const newPayload = payload.set('restock', restock)
 
         setPayload(newPayload)
     }
@@ -118,7 +111,7 @@ export default class OrderFooter extends React.PureComponent<Props> {
         const {editable, hasShippingLine, loading, payload, refund, currencyCode, onPayloadChange} = this.props
         const amount = payload.getIn(['transactions', 0, 'amount'], '')
         const amountMax = refund.isEmpty() ? null : getTotalAvailableToRefund(refund)
-        const totalQuantities = getTotalQuantities(payload)
+        const totalQuantities = getTotalQuantities(payload, refund)
         const discrepancyLimit = getRefundAmount(refund)
         const hasDiscrepancy = !loading && parseFloat(amount) !== discrepancyLimit
 

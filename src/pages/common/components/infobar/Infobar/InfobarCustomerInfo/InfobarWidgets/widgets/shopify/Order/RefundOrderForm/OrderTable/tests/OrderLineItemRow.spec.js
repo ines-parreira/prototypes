@@ -6,7 +6,8 @@ import {fromJS} from 'immutable'
 
 import {
     shopifyDraftOrderPayloadFixture,
-    shopifyOrderFixture
+    shopifyOrderFixture,
+    shopifySuggestedRefundFixture
 } from '../../../../../../../../../../../../../fixtures/shopify'
 import {initRefundOrderLineItems} from '../../../../../../../../../../../../../business/shopify/order'
 import {OrderLineItemRow} from '../OrderLineItemRow'
@@ -24,10 +25,12 @@ describe('<LineItemRow/>', () => {
         it('should render', () => {
             const payload = fromJS(shopifyDraftOrderPayloadFixture())
             const lineItem = payload.getIn(['line_items', 0])
+            const refund = fromJS(shopifySuggestedRefundFixture())
 
             const component = shallow(
                 <OrderLineItemRow
                     lineItem={lineItem}
+                    refund={refund}
                     shopName="storegorgias3"
                     currencyCode="USD"
                     onChange={onChange}
@@ -40,10 +43,12 @@ describe('<LineItemRow/>', () => {
         it('should render with discounted price', () => {
             const payload = fromJS(shopifyDraftOrderPayloadFixture())
             const lineItem = payload.getIn(['line_items', 0]).set('total_discount', '0.50')
+            const refund = fromJS(shopifySuggestedRefundFixture())
 
             const component = shallow(
                 <OrderLineItemRow
                     lineItem={lineItem}
+                    refund={refund}
                     shopName="storegorgias3"
                     currencyCode="USD"
                     onChange={onChange}
@@ -57,15 +62,37 @@ describe('<LineItemRow/>', () => {
             const order = fromJS(shopifyOrderFixture())
             const lineItems = initRefundOrderLineItems(order)
             const lineItem = lineItems.get(0).set('quantity', 0)
+            const refund = fromJS(shopifySuggestedRefundFixture())
 
             const component = shallow(
                 <OrderLineItemRow
                     lineItem={lineItem}
+                    refund={refund}
                     shopName="storegorgias3"
                     currencyCode="USD"
                     onChange={onChange}
                 />
             )
+
+            expect(component).toMatchSnapshot()
+        })
+
+        it('should render with "not restockable" message', () => {
+            const payload = fromJS(shopifyDraftOrderPayloadFixture())
+            const lineItem = payload.getIn(['line_items', 0])
+            const refund = fromJS(shopifySuggestedRefundFixture())
+
+            const component = shallow(
+                <OrderLineItemRow
+                    lineItem={lineItem}
+                    refund={refund}
+                    shopName="storegorgias3"
+                    currencyCode="USD"
+                    onChange={onChange}
+                />
+            )
+
+            component.setState({restockable: false})
 
             expect(component).toMatchSnapshot()
         })
@@ -75,10 +102,12 @@ describe('<LineItemRow/>', () => {
         it('should call onChange() with updated line item', () => {
             const payload = fromJS(shopifyDraftOrderPayloadFixture())
             const lineItem = payload.getIn(['line_items', 0])
+            const refund = fromJS(shopifySuggestedRefundFixture())
 
             const component = shallow(
                 <OrderLineItemRow
                     lineItem={lineItem}
+                    refund={refund}
                     shopName="storegorgias3"
                     currencyCode="USD"
                     onChange={onChange}
@@ -93,10 +122,12 @@ describe('<LineItemRow/>', () => {
         it('should use minimum value if the input is empty', () => {
             const payload = fromJS(shopifyDraftOrderPayloadFixture())
             const lineItem = payload.getIn(['line_items', 0])
+            const refund = fromJS(shopifySuggestedRefundFixture())
 
             const component = shallow(
                 <OrderLineItemRow
                     lineItem={lineItem}
+                    refund={refund}
                     shopName="storegorgias3"
                     currencyCode="USD"
                     onChange={onChange}
@@ -111,10 +142,12 @@ describe('<LineItemRow/>', () => {
         it('should use maximum value if the value is too big', () => {
             const payload = fromJS(shopifyDraftOrderPayloadFixture())
             const lineItem = payload.getIn(['line_items', 0])
+            const refund = fromJS(shopifySuggestedRefundFixture())
 
             const component = shallow(
                 <OrderLineItemRow
                     lineItem={lineItem}
+                    refund={refund}
                     shopName="storegorgias3"
                     currencyCode="USD"
                     onChange={onChange}
@@ -131,10 +164,12 @@ describe('<LineItemRow/>', () => {
         it('should call onChange() with incremented quantity', () => {
             const payload = fromJS(shopifyDraftOrderPayloadFixture())
             const lineItem = payload.getIn(['line_items', 0]).set('quantity', 0)
+            const refund = fromJS(shopifySuggestedRefundFixture())
 
             const component = shallow(
                 <OrderLineItemRow
                     lineItem={lineItem}
+                    refund={refund}
                     shopName="storegorgias3"
                     currencyCode="USD"
                     onChange={onChange}
@@ -149,10 +184,12 @@ describe('<LineItemRow/>', () => {
         it('should call onChange() with decremented quantity', () => {
             const payload = fromJS(shopifyDraftOrderPayloadFixture())
             const lineItem = payload.getIn(['line_items', 0]).set('quantity', 1)
+            const refund = fromJS(shopifySuggestedRefundFixture())
 
             const component = shallow(
                 <OrderLineItemRow
                     lineItem={lineItem}
+                    refund={refund}
                     shopName="storegorgias3"
                     currencyCode="USD"
                     onChange={onChange}

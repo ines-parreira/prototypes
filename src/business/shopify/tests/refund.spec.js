@@ -1,6 +1,10 @@
 import {fromJS} from 'immutable'
 
-import {shopifyLineItemFixture, shopifySuggestedRefundFixture} from '../../../fixtures/shopify'
+import {
+    shopifyLineItemFixture,
+    shopifyRefundOrderPayloadFixture,
+    shopifySuggestedRefundFixture
+} from '../../../fixtures/shopify'
 import {
     getRefundAmount,
     getRestockType,
@@ -58,8 +62,25 @@ describe('getTotalAvailableToRefund()', () => {
 
 describe('getTotalQuantities()', () => {
     it('should return total quantities', () => {
+        const payload = fromJS(shopifyRefundOrderPayloadFixture())
         const refund = fromJS(shopifySuggestedRefundFixture())
-        const total = getTotalQuantities(refund)
+        const total = getTotalQuantities(payload, refund)
+
+        expect(total).toMatchSnapshot()
+    })
+
+    it('should return total quantities because the suggested refund is `null`', () => {
+        const payload = fromJS(shopifyRefundOrderPayloadFixture())
+        const refund = null
+        const total = getTotalQuantities(payload, refund)
+
+        expect(total).toMatchSnapshot()
+    })
+
+    it('should return `0` because `location_id` is `null` in the suggested refund', () => {
+        const payload = fromJS(shopifyRefundOrderPayloadFixture())
+        const refund = fromJS(shopifySuggestedRefundFixture({locationId: null}))
+        const total = getTotalQuantities(payload, refund)
 
         expect(total).toMatchSnapshot()
     })

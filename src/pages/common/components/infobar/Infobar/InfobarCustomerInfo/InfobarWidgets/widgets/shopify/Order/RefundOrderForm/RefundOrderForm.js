@@ -36,6 +36,7 @@ export default class RefundOrderForm extends React.PureComponent<Props> {
                     shopName={shopName}
                     currencyCode={payload.get('currency')}
                     lineItems={lineItems}
+                    refund={refund}
                     onChange={onLineItemsChange}
                 />
                 <OrderFooter

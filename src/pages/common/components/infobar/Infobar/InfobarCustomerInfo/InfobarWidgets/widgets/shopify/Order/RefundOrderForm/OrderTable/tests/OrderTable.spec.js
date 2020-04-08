@@ -4,13 +4,17 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 
-import {shopifyDraftOrderPayloadFixture} from '../../../../../../../../../../../../../fixtures/shopify'
+import {
+    shopifyDraftOrderPayloadFixture,
+    shopifySuggestedRefundFixture
+} from '../../../../../../../../../../../../../fixtures/shopify'
 import OrderTable from '../OrderTable'
 
 describe('<OrderTable/>', () => {
     let onChange
 
     const payload = fromJS(shopifyDraftOrderPayloadFixture())
+    const refund = fromJS(shopifySuggestedRefundFixture())
 
     beforeEach(() => {
         onChange = jest.fn()
@@ -23,6 +27,7 @@ describe('<OrderTable/>', () => {
                     shopName="storegorgias3"
                     currencyCode="USD"
                     lineItems={payload.get('line_items', [])}
+                    refund={refund}
                     onChange={onChange}
                 />
             )
@@ -38,6 +43,7 @@ describe('<OrderTable/>', () => {
                     shopName="storegorgias3"
                     currencyCode="USD"
                     lineItems={payload.get('line_items', [])}
+                    refund={refund}
                     onChange={onChange}
                 />
             )

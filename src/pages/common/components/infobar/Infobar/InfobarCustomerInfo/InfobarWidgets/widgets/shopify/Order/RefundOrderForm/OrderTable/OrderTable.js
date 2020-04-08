@@ -13,6 +13,7 @@ import css from './OrderTable.less'
 type Props = {
     shopName: string,
     currencyCode: string,
+    refund: ?Record<Shopify.Refund>,
     lineItems: List<$Shape<Shopify.LineItem>>,
     onChange: (lineItems: List<$Shape<Shopify.LineItem>>) => void,
 }
@@ -26,7 +27,7 @@ export default class OrderTable extends React.PureComponent<Props> {
     }
 
     render() {
-        const {lineItems, shopName, currencyCode} = this.props
+        const {lineItems, refund, shopName, currencyCode} = this.props
 
         return (
             <Table
@@ -50,6 +51,7 @@ export default class OrderTable extends React.PureComponent<Props> {
                             <OrderLineItemRow
                                 key={key}
                                 lineItem={lineItem}
+                                refund={refund}
                                 shopName={shopName}
                                 currencyCode={currencyCode}
                                 onChange={(updatedLineItem) => this._onLineItemChange(index, updatedLineItem)}

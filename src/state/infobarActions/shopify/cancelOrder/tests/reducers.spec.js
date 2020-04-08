@@ -84,6 +84,24 @@ describe('infobarActions.shopify.cancelOrder reducer', () => {
         })
     })
 
+    describe('SET_RESTOCK', () => {
+        it('should set restockable state', () => {
+            const restock = false
+            const payload = fromJS(shopifyCancelOrderPayloadFixture())
+            const state = initialState.set('payload', payload)
+            const action = {type: constants.SET_RESTOCK, restock}
+            const nextState = reducer(state, action)
+            expect(nextState.getIn(['payload', 'refund', 'restock'])).toEqual(restock)
+        })
+
+        it('should keep current state if the payload is not set', () => {
+            const restock = false
+            const action = {type: constants.SET_RESTOCK, restock}
+            const nextState = reducer(initialState, action)
+            expect(nextState).toEqualImmutable(initialState)
+        })
+    })
+
     describe('SET_INITIAL_STATE', () => {
         it('should set initial state', () => {
             const payload = fromJS(shopifyDraftOrderPayloadFixture())

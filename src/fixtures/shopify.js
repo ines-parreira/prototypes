@@ -699,7 +699,11 @@ export const shopifyRefundOrderPayloadFixture = (
     ],
 })
 
-export const shopifySuggestedRefundFixture = (): Shopify.Refund => ({
+export const shopifySuggestedRefundFixture = (
+    {
+        locationId = 123,
+    } = {}
+): Shopify.Refund => ({
     shipping: {
         amount: '0.00',
         tax: '0.00',
@@ -708,7 +712,7 @@ export const shopifySuggestedRefundFixture = (): Shopify.Refund => ({
     refund_line_items: [
         {
             subtotal: '1.00',
-            location_id: 123,
+            location_id: locationId,
             price: '1.00',
             discounted_price: '1.00',
             quantity: 1,

@@ -15,6 +15,7 @@ import css from './OrderLineItemRow.less'
 
 type Props = {
     lineItem: Record<$Shape<Shopify.LineItem>>,
+    refund: ?Record<$Shape<Shopify.Refund>>,
     shopName: string,
     currencyCode: string,
     onChange: (Record<$Shape<Shopify.LineItem>>) => void,
@@ -22,14 +23,32 @@ type Props = {
 
 type State = {
     quantity: number,
+    restockable: null | boolean,
 }
 
 export class OrderLineItemRow extends React.PureComponent<Props, State> {
     state = {
-        quantity: this.props.lineItem.get('quantity')
+        quantity: this.props.lineItem.get('quantity'),
+        restockable: null,
     }
 
     _maxQuantity = this.props.lineItem.get('quantity')
+
+    static getDerivedStateFromProps({refund, lineItem}: Props, state: State) {
+        // When we receive the "suggested refund" for the first time
+        if (!!refund && !refund.isEmpty() && state.restockable === null) {
+            const refundLineItem = refund.get('refund_line_items', []).find((refundLineItem) =>
+                refundLineItem.get('line_item_id') === lineItem.get('id')
+            )
+
+            return {
+                ...state,
+                restockable: refundLineItem ? !!refundLineItem.get('location_id') : true,
+            }
+        }
+
+        return null
+    }
 
     _onQuantityChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
         const value = parseInt(event.target.value)
@@ -101,9 +120,11 @@ export class OrderLineItemRow extends React.PureComponent<Props, State> {
 
     _renderProduct() {
         const {lineItem} = this.props
+        const {restockable} = this.state
         const variantTitle = lineItem.get('variant_title')
         const shouldRenderVariantTitle = !!variantTitle && variantTitle !== 'Default Title'
         const sku = lineItem.get('sku')
+        const cannotRestock = restockable === false
 
         return (
             <td className={css.container}>
@@ -111,6 +132,7 @@ export class OrderLineItemRow extends React.PureComponent<Props, State> {
                     {this._renderTitle()}
                     {shouldRenderVariantTitle && <div className={css.subtitle}>{variantTitle}</div>}
                     {!!sku && <div className={css.subtitle}>SKU: {sku}</div>}
+                    {cannotRestock && <div className="text-danger">This product can't be restocked.</div>}
                 </div>
             </td>
         )

@@ -167,13 +167,7 @@ describe('<OrderFooter/>', () => {
 
             component.find({type: 'checkbox'}).at(0).simulate('change', {target: {checked: false}})
 
-            expect(setPayload).toHaveBeenCalledWith(
-                payload
-                    .set('restock', false)
-                    .update('refund_line_items', (refundLineItems) =>
-                        refundLineItems.map((refundLineItem) => refundLineItem.set('restock_type', 'no_restock'))
-                    )
-            )
+            expect(setPayload).toHaveBeenCalledWith(payload.set('restock', false))
         })
     })
 

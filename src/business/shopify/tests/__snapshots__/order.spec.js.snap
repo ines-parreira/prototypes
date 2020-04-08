@@ -33,6 +33,64 @@ Immutable.Map {
 }
 `;
 
+exports[`getFinalRefundOrderPayload() should override \`restock_type\` to \`no_restock\` because \`location_id\` is \`null\` 1`] = `
+Immutable.Map {
+  "currency": "USD",
+  "transactions": Immutable.List [
+    Immutable.Map {
+      "order_id": 1894175539223,
+      "kind": "refund",
+      "gateway": "manual",
+      "parent_id": 2521452118039,
+      "amount": "1.00",
+      "currency": "USD",
+      "maximum_refundable": "1.20",
+    },
+  ],
+  "notify": true,
+  "refund_line_items": Immutable.List [
+    Immutable.Map {
+      "line_item_id": 4193100136471,
+      "restock_type": "no_restock",
+      "location_id": null,
+      "quantity": 1,
+    },
+  ],
+  "shipping": Immutable.Map {
+    "amount": "0.00",
+  },
+}
+`;
+
+exports[`getFinalRefundOrderPayload() should return final refund order payload 1`] = `
+Immutable.Map {
+  "currency": "USD",
+  "transactions": Immutable.List [
+    Immutable.Map {
+      "order_id": 1894175539223,
+      "kind": "refund",
+      "gateway": "manual",
+      "parent_id": 2521452118039,
+      "amount": "1.00",
+      "currency": "USD",
+      "maximum_refundable": "1.20",
+    },
+  ],
+  "notify": true,
+  "refund_line_items": Immutable.List [
+    Immutable.Map {
+      "line_item_id": 4193100136471,
+      "restock_type": "cancel",
+      "location_id": 123,
+      "quantity": 1,
+    },
+  ],
+  "shipping": Immutable.Map {
+    "amount": "0.00",
+  },
+}
+`;
+
 exports[`getLineItemQuantity() should return adjusted quantity because there is a refund 1`] = `0`;
 
 exports[`getLineItemQuantity() should return original quantity because there is no refund 1`] = `1`;

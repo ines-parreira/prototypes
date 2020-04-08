@@ -89,6 +89,50 @@ describe('infobarActions.shopify.cancelOrder actions', () => {
         })
     })
 
+    describe('on refundable', () => {
+        beforeEach(() => {
+            store = mockStore({
+                infobarActions: {
+                    [SHOPIFY_INTEGRATION_TYPE]: {
+                        cancelOrder: initialState
+                            .set('orderId', orderId)
+                            .set('payload', payload.setIn(['refund', 'restock'], false)),
+                    },
+                },
+            })
+
+            mockServer
+                .onPost(`/integrations/shopify/order/${orderId}/refunds/calculate/`)
+                .reply(200, {
+                    refund: shopifySuggestedRefundFixture(),
+                })
+        })
+
+        describe('onInit()', () => {
+            it('should set `restock` to `true` because the line item is restockable', async () => {
+                await store.dispatch(actions.onInit(integrationId, order))
+                expect(getActions()).toMatchSnapshot()
+            })
+        })
+    })
+
+    describe('on not refundable', () => {
+        beforeEach(() => {
+            mockServer
+                .onPost(`/integrations/shopify/order/${orderId}/refunds/calculate/`)
+                .reply(200, {
+                    refund: shopifySuggestedRefundFixture({locationId: null}),
+                })
+        })
+
+        describe('onInit()', () => {
+            it('should set `restock` to `false` because the line item is not restockable', async () => {
+                await store.dispatch(actions.onInit(integrationId, order))
+                expect(getActions()).toMatchSnapshot()
+            })
+        })
+    })
+
     describe('on error', () => {
         beforeEach(() => {
             mockServer

@@ -6,11 +6,13 @@ import {
     shopifyOrderFixture,
     shopifyRefundFixture,
     shopifyRefundLineItemFixture,
+    shopifyRefundOrderPayloadFixture,
     shopifyShippingLineFixture,
     shopifySuggestedRefundFixture
 } from '../../../fixtures/shopify'
 import {
     getFinalCancelOrderPayload,
+    getFinalRefundOrderPayload,
     getLineItemQuantity,
     getRefundableShippingAmount,
     initCancelOrderPayload,
@@ -80,6 +82,24 @@ describe('getFinalCancelOrderPayload()', () => {
         const payload = fromJS(shopifyCancelOrderPayloadFixture())
         const refund = fromJS(shopifySuggestedRefundFixture())
         const finalPayload = getFinalCancelOrderPayload(payload, refund)
+
+        expect(finalPayload).toMatchSnapshot()
+    })
+})
+
+describe('getFinalRefundOrderPayload()', () => {
+    it('should return final refund order payload', () => {
+        const payload = fromJS(shopifyRefundOrderPayloadFixture())
+        const refund = fromJS(shopifySuggestedRefundFixture())
+        const finalPayload = getFinalRefundOrderPayload(payload, refund)
+
+        expect(finalPayload).toMatchSnapshot()
+    })
+
+    it('should override `restock_type` to `no_restock` because `location_id` is `null`', () => {
+        const payload = fromJS(shopifyRefundOrderPayloadFixture())
+        const refund = fromJS(shopifySuggestedRefundFixture({locationId: null}))
+        const finalPayload = getFinalRefundOrderPayload(payload, refund)
 
         expect(finalPayload).toMatchSnapshot()
     })

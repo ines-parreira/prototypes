@@ -8,6 +8,10 @@ exports[`getTotalAvailableToRefund() should return maximum refund amount 1`] = `
 
 exports[`getTotalCartDiscountAmount() should return total discount 1`] = `0`;
 
+exports[`getTotalQuantities() should return \`0\` because \`location_id\` is \`null\` in the suggested refund 1`] = `0`;
+
 exports[`getTotalQuantities() should return total quantities 1`] = `1`;
+
+exports[`getTotalQuantities() should return total quantities because the suggested refund is \`null\` 1`] = `1`;
 
 exports[`getTotalTax() should return total tax 1`] = `0.2`;
