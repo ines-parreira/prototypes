@@ -378,6 +378,7 @@ Immutable.Map {
   "tags": null,
   "customer": Immutable.Map {
     "id": 2721145061399,
+    "email": "apu@gorgias.com",
   },
 }
 `;
@@ -455,6 +456,7 @@ Immutable.Map {
   "tags": null,
   "customer": Immutable.Map {
     "id": 2721145061399,
+    "email": "apu@gorgias.com",
   },
 }
 `;

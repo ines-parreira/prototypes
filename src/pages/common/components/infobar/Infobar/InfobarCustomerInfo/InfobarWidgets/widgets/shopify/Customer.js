@@ -1,25 +1,29 @@
 // @flow
 import React from 'react'
 import ImmutablePropTypes from 'react-immutable-proptypes'
+import {fromJS} from 'immutable'
 
 import ActionButtonsGroup from '../ActionButtonsGroup'
 import type {ActionType} from '../types'
 
+import DraftOrderModal from './DraftOrderModal'
+import {ShopifyAction} from './constants'
+
 export default function Customer() {
     return {
         editionHiddenFields: ['link'],
-        TitleWrapper, // eslint-disable-line,
-        AfterTitle, // eslint-disable-line
+        TitleWrapper,
+        AfterTitle,
     }
 }
 
 type AfterTitleProps = {
-    source: Map<string,*>
+    source: Map<string, *>
 }
 
 class AfterTitle extends React.Component<AfterTitleProps> {
     render() {
-        const {source}  = this.props
+        const {source} = this.props
 
         const actions: Array<ActionType> = [
             // {
@@ -58,6 +62,36 @@ class AfterTitle extends React.Component<AfterTitleProps> {
             //         </div>
             //     )
             // }
+            {
+                key: 'createOrder',
+                options: [
+                    {
+                        value: ShopifyAction.CREATE_ORDER,
+                        label: 'Create order',
+                        parameters: [
+                            {name: 'draft_order_id', type: 'hidden'},
+                            {name: 'payment_pending', type: 'hidden'},
+                        ],
+                    },
+                ],
+                title: 'Create order',
+                child: (
+                    <div>
+                        <i className="material-icons mr-2">
+                            add
+                        </i>
+                        Create order
+                    </div>
+                ),
+                modal: DraftOrderModal,
+                modalData: {
+                    actionName: ShopifyAction.CREATE_ORDER,
+                    customer: fromJS({
+                        id: source.get('id'),
+                        email: source.get('email'),
+                    }),
+                },
+            },
         ]
 
         const payload = {
@@ -76,7 +110,7 @@ class AfterTitle extends React.Component<AfterTitleProps> {
 
 type TitleWrapperProps = {
     children: Object,
-    source: Map<string,*>
+    source: Map<string, *>
 }
 
 class TitleWrapper extends React.Component<TitleWrapperProps> {

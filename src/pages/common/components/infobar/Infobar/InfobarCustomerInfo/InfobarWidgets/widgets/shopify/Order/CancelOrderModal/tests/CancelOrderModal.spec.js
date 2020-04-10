@@ -23,7 +23,7 @@ import {
     shopifySuggestedRefundFixture,
 } from '../../../../../../../../../../../../fixtures/shopify'
 import CancelOrderModal, {CancelOrderModalComponent} from '../CancelOrderModal'
-import {ShopifyAction} from '../../constants'
+import {ShopifyAction} from '../../../constants'
 import {
     getFinalCancelOrderPayload,
     initRefundOrderLineItems,

@@ -76,6 +76,11 @@ export const shopifyPriceSetFixture = (
     },
 })
 
+export const shopifyCustomerFixture = (): Shopify.Customer => ({
+    id: 2721145061399,
+    email: 'apu@gorgias.com',
+})
+
 export const shopifyOrderFixture = (
     {
         shippingLines = [],

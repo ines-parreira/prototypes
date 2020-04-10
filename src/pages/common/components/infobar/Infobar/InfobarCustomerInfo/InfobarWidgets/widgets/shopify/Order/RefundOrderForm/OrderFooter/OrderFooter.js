@@ -10,7 +10,7 @@ import {
     getTotalQuantities
 } from '../../../../../../../../../../../../business/shopify/refund'
 import * as Shopify from '../../../../../../../../../../../../constants/integrations/shopify'
-import {ShopifyAction} from '../../constants'
+import {ShopifyAction} from '../../../constants'
 import AmountInput from '../../AmountInput'
 
 import OrderTotals from './OrderTotals'

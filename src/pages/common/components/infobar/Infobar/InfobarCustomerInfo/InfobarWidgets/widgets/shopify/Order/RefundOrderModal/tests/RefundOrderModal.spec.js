@@ -29,7 +29,7 @@ import {getIntegrationsByTypes} from '../../../../../../../../../../../../state/
 import {integrationsStateWithShopify} from '../../../../../../../../../../../../fixtures/integrations'
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../../constants/integration'
 import RefundOrderModal, {RefundOrderModalComponent} from '../RefundOrderModal'
-import {ShopifyAction} from '../../constants'
+import {ShopifyAction} from '../../../constants'
 
 function initActions() {
     return {

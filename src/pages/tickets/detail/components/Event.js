@@ -155,18 +155,22 @@ export default class Event extends React.Component {
         if (hasIntegration) {
             if (integration.get('type') === 'shopify') {
                 const shopName = integration.getIn(['meta', 'shop_name'])
-                const order = this._getOrder(payload.get('order_id'))
+                const orderId = payload.get('order_id')
 
-                if (actionConfig.objectType === 'order') {
-                    objectLabel += order.get('name')
-                    objectLink = `https://${shopName}.myshopify.com/admin/orders/${order.get('id')}`
-                } else if (actionConfig.objectType === 'draftOrder') {
+                if (actionConfig.objectType === 'draftOrder') {
                     objectLabel += payload.get('draft_order_name')
                     objectLink = `https://${shopName}.myshopify.com/admin/draft_orders/${payload.get('draft_order_id')}`
-                } else if (actionConfig.objectType === 'item') {
-                    const item = this._getItem(payload.get('order_id'), payload.get('item_id'))
-                    objectLabel += `${payload.get('quantity')} × ${item.get('name')}`
-                    objectLink = `https://${shopName}.myshopify.com/admin/orders/${order.get('id')}`
+                } else if (orderId) {
+                    const order = this._getOrder(orderId)
+
+                    if (actionConfig.objectType === 'order') {
+                        objectLabel += order.get('name')
+                        objectLink = `https://${shopName}.myshopify.com/admin/orders/${order.get('id')}`
+                    } else if (actionConfig.objectType === 'item') {
+                        const item = this._getItem(payload.get('order_id'), payload.get('item_id'))
+                        objectLabel += `${payload.get('quantity')} × ${item.get('name')}`
+                        objectLink = `https://${shopName}.myshopify.com/admin/orders/${order.get('id')}`
+                    }
                 }
             } else if (integration.get('type') === 'recharge') {
                 const storeName = integration.getIn(['meta', 'store_name'])

@@ -11,6 +11,7 @@ exports[`<ProductSearchInput/> render() should render 1`] = `
   renderSubResult={[Function]}
   resultLabel="product"
   resultLabelPlural="products"
+  searchOnFocus={false}
   subResultLabel="variant"
   subResultLabelPlural="variants"
 />

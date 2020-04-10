@@ -56,7 +56,7 @@ describe('<SearchInput/>', () => {
             )
 
             const input = component.find(Input).dive().find('input')
-            input.simulate('focus')
+            input.simulate('focus', {target: {value: ''}})
 
             expect(component).toMatchSnapshot()
         })
@@ -73,7 +73,7 @@ describe('<SearchInput/>', () => {
             mockServer.onGet(endpoint).reply(200, {data: results})
 
             const input = component.find(Input).dive().find('input')
-            input.simulate('focus')
+            input.simulate('focus', {target: {value: ''}})
             input.simulate('change', {target: {value: 'foo'}})
 
             setTimeout(() => {
@@ -98,7 +98,7 @@ describe('<SearchInput/>', () => {
             mockServer.onGet(endpoint).reply(200, {data: results})
 
             const input = component.find(Input).dive().find('input')
-            input.simulate('focus')
+            input.simulate('focus', {target: {value: ''}})
             input.simulate('change', {target: {value: 'foo'}})
 
             setTimeout(() => {

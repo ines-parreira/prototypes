@@ -9,7 +9,7 @@ import {
     shopifySuggestedRefundFixture
 } from '../../../../../../../../../../../../fixtures/shopify'
 import RefundOrderForm from '../RefundOrderForm'
-import {ShopifyAction} from '../../constants'
+import {ShopifyAction} from '../../../constants'
 
 describe('<RefundOrderForm/>', () => {
     const order = fromJS(shopifyOrderFixture())

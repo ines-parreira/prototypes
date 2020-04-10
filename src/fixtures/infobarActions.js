@@ -1,9 +1,9 @@
 import {fromJS} from 'immutable'
 
-import {initialState as duplicateOrderInitialState} from '../state/infobarActions/shopify/duplicateOrder/reducers'
+import {initialState as createOrderInitialState} from '../state/infobarActions/shopify/createOrder/reducers'
 import {initialState as cancelOrderInitialState} from '../state/infobarActions/shopify/cancelOrder/reducers'
 import {initialState as refundOrderInitialState} from '../state/infobarActions/shopify/refundOrder/reducers'
-import type {DuplicateOrderState} from '../state/infobarActions/shopify/duplicateOrder/types'
+import type {CreateOrderState} from '../state/infobarActions/shopify/createOrder/types'
 import type {CancelOrderState} from '../state/infobarActions/shopify/cancelOrder/types'
 import type {RefundOrderState} from '../state/infobarActions/shopify/refundOrder/types'
 import type {InfobarActionsState} from '../state/infobarActions/types'
@@ -12,18 +12,18 @@ import {SHOPIFY_INTEGRATION_TYPE} from '../constants/integration'
 export const infobarActionsStateFixture = (
     {
         cancelOrderState = cancelOrderInitialState,
-        duplicateOrderState = duplicateOrderInitialState,
+        createOrderState = createOrderInitialState,
         refundOrderState = refundOrderInitialState,
     } = {}
 ): InfobarActionsState => ({
     [SHOPIFY_INTEGRATION_TYPE]: {
         cancelOrder: cancelOrderState,
-        duplicateOrder: duplicateOrderState,
+        createOrder: createOrderState,
         refundOrder: refundOrderState,
     },
 })
 
-export const duplicateOrderStateFixture = (
+export const createOrderStateFixture = (
     {
         loading = false,
         loadingMessage = null,
@@ -32,7 +32,7 @@ export const duplicateOrderStateFixture = (
         products = new Map(),
         defaultShippingLine = null,
     } = {}
-): DuplicateOrderState => fromJS({
+): CreateOrderState => fromJS({
     loading,
     loadingMessage,
     payload,

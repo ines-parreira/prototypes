@@ -1,6 +1,6 @@
 import {
     ShopifyAction
-} from '../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/Order/constants'
+} from '../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/constants'
 
 export const actions = [{
     name: ShopifyAction.REFUND_SHIPPING_COST_OF_ORDER,
@@ -17,6 +17,10 @@ export const actions = [{
 }, {
     name: ShopifyAction.FULL_REFUND_ORDER,
     label: 'Full refund order',
+    objectType: 'order',
+}, {
+    name: ShopifyAction.CREATE_ORDER,
+    label: 'Create order',
     objectType: 'order',
 }, {
     name: ShopifyAction.DUPLICATE_ORDER,

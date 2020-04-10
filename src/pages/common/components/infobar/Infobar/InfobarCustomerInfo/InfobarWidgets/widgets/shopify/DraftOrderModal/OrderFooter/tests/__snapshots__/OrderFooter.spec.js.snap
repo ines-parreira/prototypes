@@ -1,0 +1,227 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DuplicateOrderFooterComponent/> render() should render 1`] = `
+<Container
+  className="container"
+  fluid={true}
+  tag="div"
+>
+  <Row
+    tag="div"
+  >
+    <Col
+      lg={
+        Object {
+          "order": 1,
+          "size": 6,
+        }
+      }
+      tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
+      xs={
+        Object {
+          "order": 2,
+          "size": 12,
+        }
+      }
+    >
+      <div
+        className="mb-4"
+      >
+        <h4>
+          Notes
+        </h4>
+        <textarea
+          className="form-control"
+          onChange={[Function]}
+          placeholder="Add a note..."
+          rows="1"
+          value="ahahah??"
+        />
+      </div>
+      <div>
+        <h4>
+          Tags
+        </h4>
+        <MultiSelectOptionsField
+          allowCustomOptions={true}
+          matchInput={true}
+          onChange={[Function]}
+          options={Array []}
+          plural="tags"
+          selectedOptions={Array []}
+          singular="tag"
+          tagColor="#0275d8"
+        />
+      </div>
+    </Col>
+    <Col
+      className="mb-xs-4"
+      lg={
+        Object {
+          "order": 2,
+          "size": 6,
+        }
+      }
+      tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
+      xs={
+        Object {
+          "order": 1,
+          "size": 12,
+        }
+      }
+    >
+      <Connect(OrderTotalsComponent)
+        actionName="shopifyDuplicateOrder"
+        currencyCode="USD"
+        editable={true}
+      />
+    </Col>
+  </Row>
+</Container>
+`;
+
+exports[`<DuplicateOrderFooterComponent/> render() should render with tags 1`] = `
+<Container
+  className="container"
+  fluid={true}
+  tag="div"
+>
+  <Row
+    tag="div"
+  >
+    <Col
+      lg={
+        Object {
+          "order": 1,
+          "size": 6,
+        }
+      }
+      tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
+      xs={
+        Object {
+          "order": 2,
+          "size": 12,
+        }
+      }
+    >
+      <div
+        className="mb-4"
+      >
+        <h4>
+          Notes
+        </h4>
+        <textarea
+          className="form-control"
+          onChange={[Function]}
+          placeholder="Add a note..."
+          rows="1"
+          value="ahahah??"
+        />
+      </div>
+      <div>
+        <h4>
+          Tags
+        </h4>
+        <MultiSelectOptionsField
+          allowCustomOptions={true}
+          matchInput={true}
+          onChange={[Function]}
+          options={
+            Array [
+              Object {
+                "label": "tag1",
+                "value": "tag1",
+              },
+              Object {
+                "label": "tag2",
+                "value": "tag2",
+              },
+              Object {
+                "label": "tag3",
+                "value": "tag3",
+              },
+            ]
+          }
+          plural="tags"
+          selectedOptions={
+            Array [
+              Object {
+                "label": "tag1",
+                "value": "tag1",
+              },
+              Object {
+                "label": "tag2",
+                "value": "tag2",
+              },
+              Object {
+                "label": "tag3",
+                "value": "tag3",
+              },
+            ]
+          }
+          singular="tag"
+          tagColor="#0275d8"
+        />
+      </div>
+    </Col>
+    <Col
+      className="mb-xs-4"
+      lg={
+        Object {
+          "order": 2,
+          "size": 6,
+        }
+      }
+      tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
+      xs={
+        Object {
+          "order": 1,
+          "size": 12,
+        }
+      }
+    >
+      <Connect(OrderTotalsComponent)
+        actionName="shopifyDuplicateOrder"
+        currencyCode="USD"
+        editable={true}
+      />
+    </Col>
+  </Row>
+</Container>
+`;

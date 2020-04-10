@@ -362,7 +362,7 @@ describe('services', () => {
                 const gorgiasApi = new GorgiasApi()
                 const integrationId = 1
                 const payload = fromJS({line_items: []})
-                const draftOrder = await gorgiasApi.updateDraftOrder(integrationId, payload, draftOrderId)
+                const draftOrder = await gorgiasApi.upsertDraftOrder(integrationId, payload, draftOrderId)
 
                 expect(draftOrder).toEqual([fromJS(data.draft_order), null])
             })
@@ -375,7 +375,7 @@ describe('services', () => {
                 const gorgiasApi = new GorgiasApi()
                 const integrationId = 1
                 const payload = fromJS({line_items: []})
-                const draftOrder = await gorgiasApi.updateDraftOrder(integrationId, payload, draftOrderId)
+                const draftOrder = await gorgiasApi.upsertDraftOrder(integrationId, payload, draftOrderId)
 
                 expect(draftOrder).toEqual([
                     fromJS(data.draft_order),

@@ -14,6 +14,7 @@ import css from './SearchInput.less'
 type Props<ResultType, SubResultType> = {
     endpoint: string,
     autoFocus?: boolean,
+    searchOnFocus?: boolean,
     className?: string,
     placeholder?: string,
     renderResult: ComponentType<SearchInputResultProps<ResultType>>,
@@ -41,6 +42,7 @@ export default class SearchInput<ResultType, SubResultType = void>
 
     static defaultProps = {
         autoFocus: true,
+        searchOnFocus: false,
         placeholder: 'Search...',
         onResultClicked: _noop,
         onSubResultClicked: _noop,
@@ -146,6 +148,16 @@ export default class SearchInput<ResultType, SubResultType = void>
         }
     }
 
+    _onFocus = (event: SyntheticInputEvent<HTMLInputElement>) => {
+        const filter = event.target.value
+        const {searchOnFocus} = this.props
+        const {isLoading, results} = this.state
+
+        if (searchOnFocus && !isLoading && !results.length) {
+            this._fetchResults(filter)
+        }
+    }
+
     _scrollToItem(index: number) {
         const dropdown = this._inputElement.closest('.dropdown')
         if (!dropdown) {
@@ -173,6 +185,8 @@ export default class SearchInput<ResultType, SubResultType = void>
 
     _fetchResults = _debounce(async (filter) => {
         try {
+            this.setState({isOpen: false, isLoading: true})
+            this._gorgiasApi.cancelPendingRequests(true)
             const {endpoint} = this.props
             const results = await this._gorgiasApi.search(endpoint, filter)
             this.setState({results})
@@ -309,14 +323,14 @@ export default class SearchInput<ResultType, SubResultType = void>
 
         return (
             <Dropdown
-                isOpen={isOpen && !!filter.length}
+                isOpen={isOpen}
                 className={className}
                 toggle={this._toggle}
             >
                 <DropdownToggle
                     tag="div"
                     data-toggle="dropdown"
-                    aria-expanded={isOpen && !!filter.length}
+                    aria-expanded={isOpen}
                     className="input-icon input-icon-right"
                 >
                     <i className="icon material-icons md-2">
@@ -327,6 +341,7 @@ export default class SearchInput<ResultType, SubResultType = void>
                         value={filter}
                         onChange={this._onChange}
                         onKeyDown={this._onKeyDown}
+                        onFocus={this._onFocus}
                         placeholder={placeholder}
                         innerRef={this._saveInputRef}
                     />

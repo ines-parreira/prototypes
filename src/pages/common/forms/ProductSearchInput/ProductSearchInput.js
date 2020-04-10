@@ -15,12 +15,14 @@ import VariantResult from './VariantResult'
 type Props = {
     className?: string,
     autoFocus?: boolean,
+    searchOnFocus?: boolean,
     onVariantClicked: (item: IntegrationDataItem<Product>, variant: Variant) => void,
 }
 
 export default class ProductSearchInput extends React.PureComponent<Props> {
     static defaultProps = {
         autoFocus: true,
+        searchOnFocus: false,
         onVariantClicked: _noop,
     }
 
@@ -50,7 +52,7 @@ export default class ProductSearchInput extends React.PureComponent<Props> {
     }
 
     render() {
-        const {className, autoFocus} = this.props
+        const {className, autoFocus, searchOnFocus} = this.props
         const {integrationId} = this.context
 
         return (
@@ -61,6 +63,7 @@ export default class ProductSearchInput extends React.PureComponent<Props> {
                 renderSubResult={VariantResult}
                 className={className}
                 autoFocus={autoFocus}
+                searchOnFocus={searchOnFocus}
                 onResultClicked={this.onProductClicked}
                 onSubResultClicked={this.onVariantClicked}
                 resultLabel="product"

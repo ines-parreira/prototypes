@@ -8,11 +8,13 @@ import classnames from 'classnames'
 import * as segmentTracker from '../../../../../../../../../../../store/middlewares/segmentTracker'
 import * as Shopify from '../../../../../../../../../../../constants/integrations/shopify'
 import {focusElement} from '../../../../../../../../../../../utils/html'
+import {ShopifyAction} from '../../constants'
 
 import css from './EmailInvoicePopover.less'
 
 type Props = {
     id: string,
+    actionName: string,
     children: Node,
     placement: string,
     color: string,
@@ -42,6 +44,7 @@ export default class EmailInvoicePopover extends React.PureComponent<Props, Stat
     }
 
     componentDidUpdate(prevProps: Props, prevState: State) {
+        const {actionName} = this.props
         const {isOpen} = this.state
         const {isOpen: wasOpen} = prevState
 
@@ -50,7 +53,11 @@ export default class EmailInvoicePopover extends React.PureComponent<Props, Stat
 
         if (onOpen) {
             focusElement(() => this._inputElement)
-            segmentTracker.logEvent(segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_EMAIL_INVOICE_POPOVER_OPEN)
+            segmentTracker.logEvent(
+                actionName === ShopifyAction.CREATE_ORDER
+                    ? segmentTracker.EVENTS.SHOPIFY_CREATE_ORDER_EMAIL_INVOICE_POPOVER_OPEN
+                    : segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_EMAIL_INVOICE_POPOVER_OPEN
+            )
         } else if (onClose) {
             focusElement(() => this._buttonElement)
         }
@@ -89,7 +96,7 @@ export default class EmailInvoicePopover extends React.PureComponent<Props, Stat
     }
 
     _onSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
-        const {onSubmit} = this.props
+        const {actionName, onSubmit} = this.props
         const {to, customMessage} = this.state
 
         event.preventDefault()
@@ -102,12 +109,23 @@ export default class EmailInvoicePopover extends React.PureComponent<Props, Stat
 
         onSubmit(fromJS(newValue))
 
-        segmentTracker.logEvent(segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_EMAIL_INVOICE_POPOVER_SEND)
+        segmentTracker.logEvent(
+            actionName === ShopifyAction.CREATE_ORDER
+                ? segmentTracker.EVENTS.SHOPIFY_CREATE_ORDER_EMAIL_INVOICE_POPOVER_SEND
+                : segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_EMAIL_INVOICE_POPOVER_SEND
+        )
     }
 
     _onCancel = () => {
+        const {actionName} = this.props
+
         this._toggle()
-        segmentTracker.logEvent(segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_EMAIL_INVOICE_POPOVER_CANCEL)
+
+        segmentTracker.logEvent(
+            actionName === ShopifyAction.CREATE_ORDER
+                ? segmentTracker.EVENTS.SHOPIFY_CREATE_ORDER_EMAIL_INVOICE_POPOVER_CANCEL
+                : segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_EMAIL_INVOICE_POPOVER_CANCEL
+        )
     }
 
     render() {

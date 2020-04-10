@@ -1,0 +1,265 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DraftOrderTable/> render() should render 1`] = `
+<Table
+  className="table"
+  hover={true}
+  responsiveTag="div"
+  tag="table"
+>
+  <thead>
+    <tr>
+      <th>
+        Product
+      </th>
+      <th>
+        Item price
+      </th>
+      <th>
+        Qty
+      </th>
+      <th>
+        Item total
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <DraftOrderLineItemRow
+      actionName="shopifyDuplicateOrder"
+      currencyCode="USD"
+      id="4f93eb74e9ec2d79401da8b7a8fce088108a01fb"
+      key="4f93eb74e9ec2d79401da8b7a8fce088108a01fb"
+      lineItem={
+        Immutable.Map {
+          "applied_discount": null,
+          "taxable": true,
+          "price": "1.00",
+          "quantity": 1,
+          "product_id": 1,
+          "product_exists": true,
+          "properties": Immutable.List [],
+          "variant_id": 31128766316567,
+          "title": "Acidulous candy",
+          "sku": "0987654321-1",
+          "variant_title": "Red / A",
+          "requires_shipping": true,
+        }
+      }
+      onChange={[Function]}
+      onDelete={[Function]}
+      product={
+        Object {
+          "created_at": "2020-01-01 00:00:00.000000",
+          "id": 1,
+          "image": Object {
+            "alt": "Alt",
+            "id": 1,
+            "src": "src",
+          },
+          "images": Array [
+            Object {
+              "alt": "Alt",
+              "id": 1,
+              "src": "src",
+            },
+          ],
+          "title": "Product 1",
+          "variants": Array [
+            Object {
+              "id": 1,
+              "image_id": 1,
+              "option1": null,
+              "option2": null,
+              "option3": null,
+              "price": "9.99",
+              "requires_shipping": true,
+              "sku": "11111",
+              "taxable": true,
+              "title": "Variant 1",
+            },
+          ],
+        }
+      }
+      removable={true}
+      shopName="storegorgias3"
+    />
+    <DraftOrderLineItemRow
+      actionName="shopifyDuplicateOrder"
+      currencyCode="USD"
+      id="b391dcbebcc4eac57e66e9b2fec677c45018e15d"
+      key="b391dcbebcc4eac57e66e9b2fec677c45018e15d"
+      lineItem={
+        Immutable.Map {
+          "applied_discount": null,
+          "taxable": true,
+          "price": "1.00",
+          "quantity": 4,
+          "product_id": 2,
+          "product_exists": true,
+          "properties": Immutable.List [],
+          "variant_id": 31128766349335,
+          "title": "Acidulous candy",
+          "sku": "0987654321-2",
+          "variant_title": "Red / B",
+          "requires_shipping": true,
+        }
+      }
+      onChange={[Function]}
+      onDelete={[Function]}
+      product={
+        Object {
+          "created_at": "2020-01-01 00:00:00.000000",
+          "id": 2,
+          "image": Object {
+            "alt": "Alt",
+            "id": 1,
+            "src": "src",
+          },
+          "images": Array [
+            Object {
+              "alt": "Alt",
+              "id": 1,
+              "src": "src",
+            },
+          ],
+          "title": "Product 2",
+          "variants": Array [
+            Object {
+              "id": 1,
+              "image_id": 1,
+              "option1": null,
+              "option2": null,
+              "option3": null,
+              "price": "9.99",
+              "requires_shipping": true,
+              "sku": "11111",
+              "taxable": true,
+              "title": "Variant 1",
+            },
+          ],
+        }
+      }
+      removable={true}
+      shopName="storegorgias3"
+    />
+  </tbody>
+</Table>
+`;
+
+exports[`<DraftOrderTable/> render() should render without line items 1`] = `
+<Table
+  className="table"
+  hover={false}
+  responsiveTag="div"
+  tag="table"
+>
+  <thead>
+    <tr>
+      <th>
+        Product
+      </th>
+      <th>
+        Item price
+      </th>
+      <th>
+        Qty
+      </th>
+      <th>
+        Item total
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td
+        className="text-center text-muted"
+        colSpan={4}
+      >
+        <small>
+          No items
+        </small>
+      </td>
+    </tr>
+  </tbody>
+</Table>
+`;
+
+exports[`<DraftOrderTable/> render() should render without products 1`] = `
+<Table
+  className="table"
+  hover={true}
+  responsiveTag="div"
+  tag="table"
+>
+  <thead>
+    <tr>
+      <th>
+        Product
+      </th>
+      <th>
+        Item price
+      </th>
+      <th>
+        Qty
+      </th>
+      <th>
+        Item total
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <DraftOrderLineItemRow
+      actionName="shopifyDuplicateOrder"
+      currencyCode="USD"
+      id="4f93eb74e9ec2d79401da8b7a8fce088108a01fb"
+      key="4f93eb74e9ec2d79401da8b7a8fce088108a01fb"
+      lineItem={
+        Immutable.Map {
+          "applied_discount": null,
+          "taxable": true,
+          "price": "1.00",
+          "quantity": 1,
+          "product_id": 1,
+          "product_exists": true,
+          "properties": Immutable.List [],
+          "variant_id": 31128766316567,
+          "title": "Acidulous candy",
+          "sku": "0987654321-1",
+          "variant_title": "Red / A",
+          "requires_shipping": true,
+        }
+      }
+      onChange={[Function]}
+      onDelete={[Function]}
+      removable={true}
+      shopName="storegorgias3"
+    />
+    <DraftOrderLineItemRow
+      actionName="shopifyDuplicateOrder"
+      currencyCode="USD"
+      id="b391dcbebcc4eac57e66e9b2fec677c45018e15d"
+      key="b391dcbebcc4eac57e66e9b2fec677c45018e15d"
+      lineItem={
+        Immutable.Map {
+          "applied_discount": null,
+          "taxable": true,
+          "price": "1.00",
+          "quantity": 4,
+          "product_id": 2,
+          "product_exists": true,
+          "properties": Immutable.List [],
+          "variant_id": 31128766349335,
+          "title": "Acidulous candy",
+          "sku": "0987654321-2",
+          "variant_title": "Red / B",
+          "requires_shipping": true,
+        }
+      }
+      onChange={[Function]}
+      onDelete={[Function]}
+      removable={true}
+      shopName="storegorgias3"
+    />
+  </tbody>
+</Table>
+`;

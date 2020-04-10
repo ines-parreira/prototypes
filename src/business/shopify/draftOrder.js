@@ -9,8 +9,9 @@ import {getDraftOrderTotalLineItemsPrice, initLineItemAppliedDiscount} from './l
 import {getTotalDiscountAmount, refreshAppliedDiscounts} from './discount'
 
 export function initDraftOrderPayload(
-    order: Record<Shopify.Order>,
-    products: Map<number, Record<Shopify.Product>>,
+    customer: Record<$Shape<Shopify.Customer>>,
+    order: Record<Shopify.Order> = fromJS({}),
+    products: Map<number, Record<Shopify.Product>> = new Map(),
 ): Record<$Shape<Shopify.DraftOrder>> {
     const draftOrder = fromJS({
         line_items: order.get('line_items', []).map((lineItem) => {
@@ -41,9 +42,7 @@ export function initDraftOrderPayload(
         tags: order.get('tags') || null,
         shipping_line: order.getIn(['shipping_lines', 0]) || null,
         tax_exempt: false,
-        customer: order.getIn(['customer', 'id'])
-            ? {id: order.getIn(['customer', 'id'])}
-            : null,
+        customer,
         billing_address: order.get('billing_address'),
         shipping_address: order.get('shipping_address'),
         currency: order.get('currency'),

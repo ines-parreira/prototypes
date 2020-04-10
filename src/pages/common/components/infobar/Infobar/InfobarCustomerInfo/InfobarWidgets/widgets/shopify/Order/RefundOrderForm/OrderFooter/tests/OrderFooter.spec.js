@@ -8,7 +8,7 @@ import {
     shopifyRefundOrderPayloadFixture,
     shopifySuggestedRefundFixture
 } from '../../../../../../../../../../../../../fixtures/shopify'
-import {ShopifyAction} from '../../../constants'
+import {ShopifyAction} from '../../../../constants'
 import OrderFooter from '../OrderFooter'
 
 jest.mock('lodash/debounce', () => (fn) => fn)

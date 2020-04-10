@@ -3,6 +3,7 @@
 import {fromJS} from 'immutable'
 
 import {
+    shopifyCustomerFixture,
     shopifyCustomLineItemFixture,
     shopifyDraftOrderFixture,
     shopifyDraftOrderPayloadFixture,
@@ -47,14 +48,16 @@ describe('initDraftOrderPayload()', () => {
 
         const products = new Map([[product.get('id'), product]])
         const order = fromJS(shopifyOrderFixture())
-        const payload = initDraftOrderPayload(order, products)
+        const customer = fromJS(shopifyCustomerFixture())
+        const payload = initDraftOrderPayload(customer, order, products)
         expect(payload).toMatchSnapshot()
     })
 
     it('should return draft order payload for the given order when products are missing', () => {
         const order = fromJS(shopifyOrderFixture())
+        const customer = fromJS(shopifyCustomerFixture())
         const products = new Map()
-        const payload = initDraftOrderPayload(order, products)
+        const payload = initDraftOrderPayload(customer, order, products)
         expect(payload).toMatchSnapshot()
     })
 })

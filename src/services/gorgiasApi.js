@@ -202,11 +202,8 @@ export default class GorgiasApi {
      * @returns {Promise<Array<SearchResultType>>}
      */
     async search(endpoint: string, filter: string): Promise<Array<SearchResultType>> {
-        const response = await this._api.get(endpoint, {
-            params: {
-                filter,
-            },
-        })
+        const params = filter.length ? {filter} : {}
+        const response = await this._api.get(endpoint, {params})
 
         return response.data.data
     }
@@ -238,7 +235,7 @@ export default class GorgiasApi {
     async _upsertDraftOder(
         integrationId: number,
         payload: Record<$Shape<Shopify.DraftOrder>>,
-        {draftOrderId, params = {}}: {draftOrderId?: number, params?: Object} = {},
+        {draftOrderId, params = {}}: {draftOrderId?: ?number, params?: Object} = {},
     ): Promise<[Record<Shopify.DraftOrder>, ?Shopify.PollingConfig]> {
         let method
         let url
@@ -267,16 +264,16 @@ export default class GorgiasApi {
     async createDraftOrder(
         integrationId: number,
         payload: Record<$Shape<Shopify.DraftOrder>>,
-        orderId?: number,
+        orderId?: ?number,
     ): Promise<[Record<Shopify.DraftOrder>, ?Shopify.PollingConfig]> {
         const params = orderId ? {order_id: orderId} : {}
         return await this._upsertDraftOder(integrationId, payload, {params})
     }
 
-    async updateDraftOrder(
+    async upsertDraftOrder(
         integrationId: number,
         payload: Record<$Shape<Shopify.DraftOrder>>,
-        draftOrderId: number,
+        draftOrderId: ?number,
     ): Promise<[Record<Shopify.DraftOrder>, ?Shopify.PollingConfig]> {
         // TODO(@samy): remove warning if it never happens
         const variantIds = payload.get('line_items', [])

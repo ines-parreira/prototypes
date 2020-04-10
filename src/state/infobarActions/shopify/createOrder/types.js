@@ -1,0 +1,14 @@
+// @flow
+
+import {type Record} from 'immutable'
+
+import * as Shopify from '../../../../constants/integrations/shopify'
+
+export type CreateOrderState = Record<{
+    loading: boolean,
+    loadingMessage: ?string,
+    payload: ?$Shape<Shopify.DraftOrder>,
+    draftOrder: ?Record<Shopify.DraftOrder>,
+    products: Map<number, Record<Shopify.Product>>,
+    defaultShippingLine: ?Record<Shopify.ShippingLine>,
+}>

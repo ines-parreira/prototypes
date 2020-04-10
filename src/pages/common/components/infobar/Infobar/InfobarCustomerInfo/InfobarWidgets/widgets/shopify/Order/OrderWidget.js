@@ -10,10 +10,11 @@ import {humanizeString} from '../../../../../../../../../../utils'
 import ActionButtonsGroup from '../../ActionButtonsGroup'
 import type {ActionType} from '../../types'
 
-import DuplicateOrderModal from './DuplicateOrderModal'
+import DraftOrderModal from '../DraftOrderModal'
+import {ShopifyAction} from '../constants'
+
 import CancelOrderModal from './CancelOrderModal'
 import RefundOrderModal from './RefundOrderModal'
-import {ShopifyAction} from './constants'
 
 export default function OrderWidget() {
     return {
@@ -125,10 +126,14 @@ class AfterTitle extends React.Component<AfterTitleProps> {
                         Duplicate
                     </div>
                 ),
-                modal: DuplicateOrderModal,
+                modal: DraftOrderModal,
                 modalData: {
                     actionName: ShopifyAction.DUPLICATE_ORDER,
                     order: source,
+                    customer: fromJS({
+                        id: source.getIn(['customer', 'id']),
+                        email: source.getIn(['customer', 'email']),
+                    }),
                 },
             },
         ]
