@@ -60,6 +60,12 @@ describe('initDraftOrderPayload()', () => {
         const payload = initDraftOrderPayload(customer, order, products)
         expect(payload).toMatchSnapshot()
     })
+
+    it('should return draft order payload for order creation from scratch', () => {
+        const customer = fromJS(shopifyCustomerFixture())
+        const payload = initDraftOrderPayload(customer)
+        expect(payload).toMatchSnapshot()
+    })
 })
 
 describe('addVariant()', () => {

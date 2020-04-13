@@ -305,6 +305,79 @@ exports[`getTotalShippingPrice() should return the total shipping price when it 
 
 exports[`getTotalTaxes() should return the total taxes 1`] = `3`;
 
+exports[`initDraftOrderPayload() should return draft order payload for order creation from scratch 1`] = `
+Immutable.Map {
+  "shipping_address": Immutable.Map {
+    "default": true,
+    "zip": "",
+    "city": "",
+    "name": "Apu Nahasapeemapetilon",
+    "phone": "",
+    "province": "",
+    "country_name": "France",
+    "last_name": "Nahasapeemapetilon",
+    "country_code": "FR",
+    "country": "France",
+    "first_name": "Apu",
+    "id": 2888869838871,
+    "customer_id": 2721145061399,
+    "province_code": null,
+    "company": "",
+    "address1": "",
+    "address2": "",
+  },
+  "shipping_line": null,
+  "billing_address": Immutable.Map {
+    "default": true,
+    "zip": "",
+    "city": "",
+    "name": "Apu Nahasapeemapetilon",
+    "phone": "",
+    "province": "",
+    "country_name": "France",
+    "last_name": "Nahasapeemapetilon",
+    "country_code": "FR",
+    "country": "France",
+    "first_name": "Apu",
+    "id": 2888869838871,
+    "customer_id": 2721145061399,
+    "province_code": null,
+    "company": "",
+    "address1": "",
+    "address2": "",
+  },
+  "currency": "USD",
+  "note": "",
+  "tax_exempt": false,
+  "line_items": Immutable.List [],
+  "tags": null,
+  "customer": Immutable.Map {
+    "id": 2721145061399,
+    "email": "apu@gorgias.com",
+    "default_address": Immutable.Map {
+      "default": true,
+      "zip": "",
+      "city": "",
+      "name": "Apu Nahasapeemapetilon",
+      "phone": "",
+      "province": "",
+      "country_name": "France",
+      "last_name": "Nahasapeemapetilon",
+      "country_code": "FR",
+      "country": "France",
+      "first_name": "Apu",
+      "id": 2888869838871,
+      "customer_id": 2721145061399,
+      "province_code": null,
+      "company": "",
+      "address1": "",
+      "address2": "",
+    },
+    "currency": "USD",
+  },
+}
+`;
+
 exports[`initDraftOrderPayload() should return draft order payload for the given order 1`] = `
 Immutable.Map {
   "shipping_address": Immutable.Map {
@@ -379,6 +452,26 @@ Immutable.Map {
   "customer": Immutable.Map {
     "id": 2721145061399,
     "email": "apu@gorgias.com",
+    "default_address": Immutable.Map {
+      "default": true,
+      "zip": "",
+      "city": "",
+      "name": "Apu Nahasapeemapetilon",
+      "phone": "",
+      "province": "",
+      "country_name": "France",
+      "last_name": "Nahasapeemapetilon",
+      "country_code": "FR",
+      "country": "France",
+      "first_name": "Apu",
+      "id": 2888869838871,
+      "customer_id": 2721145061399,
+      "province_code": null,
+      "company": "",
+      "address1": "",
+      "address2": "",
+    },
+    "currency": "USD",
   },
 }
 `;
@@ -457,6 +550,26 @@ Immutable.Map {
   "customer": Immutable.Map {
     "id": 2721145061399,
     "email": "apu@gorgias.com",
+    "default_address": Immutable.Map {
+      "default": true,
+      "zip": "",
+      "city": "",
+      "name": "Apu Nahasapeemapetilon",
+      "phone": "",
+      "province": "",
+      "country_name": "France",
+      "last_name": "Nahasapeemapetilon",
+      "country_code": "FR",
+      "country": "France",
+      "first_name": "Apu",
+      "id": 2888869838871,
+      "customer_id": 2721145061399,
+      "province_code": null,
+      "company": "",
+      "address1": "",
+      "address2": "",
+    },
+    "currency": "USD",
   },
 }
 `;

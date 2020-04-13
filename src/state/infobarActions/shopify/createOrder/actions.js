@@ -130,7 +130,11 @@ export const onInit = (
         }
 
         // Create order from scratch:
-        const payload = initDraftOrderPayload(customer).set('currency', currencyCode)
+        let payload = initDraftOrderPayload(customer)
+
+        if (!payload.get('currency')) {
+            payload = payload.set('currency', currencyCode)
+        }
 
         return Promise.all([
             dispatch(setPayload(payload)),
@@ -268,8 +272,8 @@ export const upsertDraftOrder = _debounce(
             const state = getState()
             const draftOrder = getCreateOrderState(state).get('draftOrder')
             const payload = getCreateOrderState(state).get('payload')
-            const draftOrderId = draftOrder.get('id')
             const loadingMessage = getLoadingMessage(draftOrder)
+            let draftOrderId = draftOrder.get('id')
 
             dispatch(setLoading(true, loadingMessage))
 
@@ -277,6 +281,7 @@ export const upsertDraftOrder = _debounce(
             api.cancelPendingRequests(true)
 
             const [newDraftOrder, pollingConfig] = await api.upsertDraftOrder(integrationId, payload, draftOrderId)
+            draftOrderId = newDraftOrder.get('id')
             dispatch(setDraftOrder(newDraftOrder))
 
             return pollingConfig

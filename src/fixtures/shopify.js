@@ -79,6 +79,8 @@ export const shopifyPriceSetFixture = (
 export const shopifyCustomerFixture = (): Shopify.Customer => ({
     id: 2721145061399,
     email: 'apu@gorgias.com',
+    default_address: shopifyAddressFixture(),
+    currency: 'USD',
 })
 
 export const shopifyOrderFixture = (
@@ -117,25 +119,7 @@ export const shopifyOrderFixture = (
         orders_count: 1,
         last_order_id: 1894175539223,
         verified_email: true,
-        default_address: {
-            id: 2888869838871,
-            zip: '',
-            city: '',
-            name: 'Apu Nahasapeemapetilon',
-            phone: '',
-            company: '',
-            country: 'France',
-            default: true,
-            address1: '',
-            address2: '',
-            province: '',
-            last_name: 'Nahasapeemapetilon',
-            first_name: 'Apu',
-            customer_id: 2721145061399,
-            country_code: 'FR',
-            country_name: 'France',
-            province_code: null
-        },
+        default_address: shopifyAddressFixture(),
         last_order_name: '#1684',
         accepts_marketing: false,
         admin_graphql_api_id: 'gid://shopify/Customer/2721145061399',
@@ -316,6 +300,26 @@ export const shopifyOrderFixture = (
     buyer_accepts_marketing: false,
     total_shipping_price_set: shopifyPriceSetFixture({amount: '0.00'}),
     total_line_items_price_set: shopifyPriceSetFixture({amount: '5.00'}),
+})
+
+export const shopifyAddressFixture = (): Shopify.Address => ({
+    id: 2888869838871,
+    zip: '',
+    city: '',
+    name: 'Apu Nahasapeemapetilon',
+    phone: '',
+    company: '',
+    country: 'France',
+    default: true,
+    address1: '',
+    address2: '',
+    province: '',
+    last_name: 'Nahasapeemapetilon',
+    first_name: 'Apu',
+    customer_id: 2721145061399,
+    country_code: 'FR',
+    country_name: 'France',
+    province_code: null
 })
 
 export const shopifyDraftOrderPayloadFixture = (): Shopify.DraftOrder => ({

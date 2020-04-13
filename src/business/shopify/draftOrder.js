@@ -43,9 +43,9 @@ export function initDraftOrderPayload(
         shipping_line: order.getIn(['shipping_lines', 0]) || null,
         tax_exempt: false,
         customer,
-        billing_address: order.get('billing_address'),
-        shipping_address: order.get('shipping_address'),
-        currency: order.get('currency'),
+        billing_address: order.get('billing_address') || customer.get('default_address'),
+        shipping_address: order.get('shipping_address') || customer.get('default_address'),
+        currency: order.get('currency') || customer.get('currency'),
     })
 
     return refreshAppliedDiscounts(draftOrder)

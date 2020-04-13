@@ -131,6 +131,14 @@ describe('infobarActions.shopify.createOrder actions', () => {
                 expect(getActions()).toMatchSnapshot()
                 expect(onError).not.toHaveBeenCalled()
             })
+
+            it('should init the state when the customer has no currency', async () => {
+                await store.dispatch(
+                    actions.onInit(integrationId, null, customer.delete('currency'), 'AUD', onError)
+                )
+                expect(getActions()).toMatchSnapshot()
+                expect(onError).not.toHaveBeenCalled()
+            })
         })
 
         describe('on polling', () => {

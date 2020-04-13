@@ -89,6 +89,8 @@ class AfterTitle extends React.Component<AfterTitleProps> {
                     customer: fromJS({
                         id: source.get('id'),
                         email: source.get('email'),
+                        default_address: source.get('default_address'),
+                        currency: source.get('currency'),
                     }),
                 },
             },
