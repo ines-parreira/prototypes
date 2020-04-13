@@ -106,6 +106,7 @@ export const onInit = (
     integrationId: number,
     order: ?Record<Shopify.Order>,
     customer: Record<$Shape<Shopify.Customer>>,
+    currencyCode: string,
     onError: () => void,
 ) =>
     async (dispatch: dispatchType) => {
@@ -129,7 +130,7 @@ export const onInit = (
         }
 
         // Create order from scratch:
-        const payload = initDraftOrderPayload(customer)
+        const payload = initDraftOrderPayload(customer).set('currency', currencyCode)
 
         return Promise.all([
             dispatch(setPayload(payload)),

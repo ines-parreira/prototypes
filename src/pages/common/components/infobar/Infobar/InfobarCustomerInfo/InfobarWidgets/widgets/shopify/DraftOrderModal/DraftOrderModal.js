@@ -8,9 +8,7 @@ import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import {Link} from 'react-router'
 
-import {
-    getCreateOrderState
-} from '../../../../../../../../../../state/infobarActions/shopify/createOrder/selectors'
+import {getCreateOrderState} from '../../../../../../../../../../state/infobarActions/shopify/createOrder/selectors'
 import {
     addCustomRow,
     addRow,
@@ -66,6 +64,7 @@ type Props = InfobarModalProps & {
         integrationId: number,
         order: ?Record<Shopify.Order>,
         customer: Record<$Shape<Shopify.Customer>>,
+        currencyCode: string,
         onError: () => void,
     ) => void,
     onPayloadChange: (integrationId: number, payload: Record<$Shape<Shopify.DraftOrder>>) => void,
@@ -73,6 +72,8 @@ type Props = InfobarModalProps & {
 }
 
 export class DraftOrderModalComponent extends React.PureComponent<Props> {
+    static _DEFAULT_CURRENCY = 'USD'
+
     static contextTypes = {
         integrationId: PropTypes.number.isRequired,
         customerId: PropTypes.number.isRequired,
@@ -98,8 +99,13 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
         const hasScope = this._hasScope()
 
         if (!isOpen && nextProps.isOpen) {
+            const integration = this._getIntegration()
+            const currencyCode = integration
+                ? integration.getIn(['meta', 'currency'], DraftOrderModalComponent._DEFAULT_CURRENCY)
+                : DraftOrderModalComponent._DEFAULT_CURRENCY
+
             onOpen(actionName)
-            hasScope && onInit(integrationId, order, customer, this._onInitError)
+            hasScope && onInit(integrationId, order, customer, currencyCode, this._onInitError)
             shortcutManager.pause()
         }
 
@@ -236,7 +242,7 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
         }
 
         const shopName = integration.getIn(['meta', 'shop_name'])
-        const currencyCode = integration.getIn(['meta', 'currency'], 'USD')
+        const currencyCode = integration.getIn(['meta', 'currency'], DraftOrderModalComponent._DEFAULT_CURRENCY)
         const hasScope = this._hasScope()
 
         // TODO(@samy): remove when all Shopify integrations have draft order permissions

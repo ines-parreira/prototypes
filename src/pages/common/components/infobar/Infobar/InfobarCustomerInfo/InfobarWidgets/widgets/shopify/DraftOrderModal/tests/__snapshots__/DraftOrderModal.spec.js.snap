@@ -7,6 +7,10 @@ exports[`<DraftOrderModal/> render() should render as closed 1`] = `
   data={
     Object {
       "actionName": "shopifyDuplicateOrder",
+      "customer": Immutable.Map {
+        "id": 2721145061399,
+        "email": "apu@gorgias.com",
+      },
       "order": Immutable.Map {
         "checkout_token": null,
         "total_tip_received": "0.0",
@@ -476,6 +480,10 @@ exports[`<DraftOrderModal/> render() should render as open 1`] = `
   data={
     Object {
       "actionName": "shopifyDuplicateOrder",
+      "customer": Immutable.Map {
+        "id": 2721145061399,
+        "email": "apu@gorgias.com",
+      },
       "order": Immutable.Map {
         "checkout_token": null,
         "total_tip_received": "0.0",

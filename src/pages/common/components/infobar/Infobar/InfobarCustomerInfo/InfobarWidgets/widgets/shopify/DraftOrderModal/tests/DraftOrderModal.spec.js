@@ -88,6 +88,7 @@ describe('<DraftOrderModal/>', () => {
                     data={{
                         actionName: ShopifyAction.DUPLICATE_ORDER,
                         order: fromJS(shopifyOrderFixture()),
+                        customer: fromJS(shopifyCustomerFixture()),
                     }}
                     {...actions}
                 />
@@ -110,6 +111,7 @@ describe('<DraftOrderModal/>', () => {
                     data={{
                         actionName: ShopifyAction.DUPLICATE_ORDER,
                         order: fromJS(shopifyOrderFixture()),
+                        customer: fromJS(shopifyCustomerFixture()),
                     }}
                     {...actions}
                 />
@@ -152,6 +154,7 @@ describe('<DraftOrderModalComponent/>', () => {
                     data={{
                         actionName: ShopifyAction.DUPLICATE_ORDER,
                         order: fromJS(shopifyOrderFixture()),
+                        customer: fromJS(shopifyCustomerFixture()),
                     }}
                     {...actions}
                 />,
@@ -182,6 +185,7 @@ describe('<DraftOrderModalComponent/>', () => {
                     data={{
                         actionName: ShopifyAction.DUPLICATE_ORDER,
                         order: fromJS(shopifyOrderFixture()),
+                        customer: fromJS(shopifyCustomerFixture()),
                     }}
                     {...actions}
                 />,
@@ -220,6 +224,7 @@ describe('<DraftOrderModalComponent/>', () => {
                     data={{
                         actionName: ShopifyAction.DUPLICATE_ORDER,
                         order,
+                        customer,
                     }}
                     {...actions}
                 />,
@@ -257,6 +262,7 @@ describe('<DraftOrderModalComponent/>', () => {
                     data={{
                         actionName: ShopifyAction.DUPLICATE_ORDER,
                         order,
+                        customer,
                     }}
                     {...actions}
                 />,
@@ -295,6 +301,7 @@ describe('<DraftOrderModalComponent/>', () => {
                     data={{
                         actionName: ShopifyAction.DUPLICATE_ORDER,
                         order,
+                        customer,
                     }}
                     {...actions}
                 />,
@@ -335,6 +342,7 @@ describe('<DraftOrderModalComponent/>', () => {
                     data={{
                         actionName: ShopifyAction.DUPLICATE_ORDER,
                         order,
+                        customer,
                     }}
                     {...actions}
                 />,
@@ -342,6 +350,56 @@ describe('<DraftOrderModalComponent/>', () => {
             )
 
             expect(component).toMatchSnapshot()
+        })
+    })
+
+    describe('on open', () => {
+        describe('componentWillReceiveProps()', () => {
+            it.each([
+                [ShopifyAction.CREATE_ORDER, undefined],
+                [ShopifyAction.DUPLICATE_ORDER, fromJS(shopifyOrderFixture())],
+            ])('should call onInit()', (actionName, order) => {
+                const currencyCode = 'USD'
+                const customer = fromJS(shopifyCustomerFixture())
+                const createOrderState = createOrderStateFixture()
+
+                const store = mockStore({
+                    integrations: integrationsStateWithShopify,
+                    infobarActions: infobarActionsStateFixture({createOrderState}),
+                })
+
+                const state = store.getState()
+
+                const component = shallow(
+                    <DraftOrderModalComponent
+                        integrations={getIntegrationsByTypes([SHOPIFY_INTEGRATION_TYPE])(state)}
+                        loading={getCreateOrderState(state).get('loading')}
+                        loadingMessage={getCreateOrderState(state).get('loadingMessage')}
+                        payload={getCreateOrderState(state).get('payload')}
+                        draftOrder={getCreateOrderState(state).get('draftOrder')}
+                        products={getCreateOrderState(state).get('products')}
+                        header="Duplicate order"
+                        isOpen={false}
+                        data={{
+                            actionName,
+                            order,
+                            customer,
+                        }}
+                        {...actions}
+                    />,
+                    {context}
+                )
+
+                component.setProps({isOpen: true})
+
+                expect(actions.onInit).toBeCalledWith(
+                    context.integrationId,
+                    order,
+                    customer,
+                    currencyCode,
+                    component.instance()._onInitError,
+                )
+            })
         })
     })
 
@@ -379,6 +437,7 @@ describe('<DraftOrderModalComponent/>', () => {
                     data={{
                         actionName: ShopifyAction.DUPLICATE_ORDER,
                         order,
+                        customer,
                     }}
                     {...actions}
                 />,

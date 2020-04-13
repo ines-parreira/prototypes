@@ -37,6 +37,7 @@ describe('infobarActions.shopify.createOrder actions', () => {
     const integrationId = 1
     const draftOrderId = 1
     const integrationDataItemType = INTEGRATION_DATA_ITEM_TYPE_PRODUCT
+    const currencyCode = 'USD'
     const order = fromJS(shopifyOrderFixture())
     const customer = fromJS(shopifyCustomerFixture())
     const mockServer = new MockAdapter(axios)
@@ -116,7 +117,7 @@ describe('infobarActions.shopify.createOrder actions', () => {
             })
 
             it('should init the state', async () => {
-                await store.dispatch(actions.onInit(integrationId, order, customer, onError))
+                await store.dispatch(actions.onInit(integrationId, order, customer, currencyCode, onError))
                 expect(getActions()).toMatchSnapshot()
                 expect(onError).not.toHaveBeenCalled()
             })
@@ -124,7 +125,9 @@ describe('infobarActions.shopify.createOrder actions', () => {
             it('should init the state when there is a shipping line', async () => {
                 const shippingLines = fromJS([shopifyShippingLineFixture()])
                 const orderWithShippingLine = order.set('shipping_lines', shippingLines)
-                await store.dispatch(actions.onInit(integrationId, orderWithShippingLine, customer, onError))
+                await store.dispatch(
+                    actions.onInit(integrationId, orderWithShippingLine, customer, currencyCode, onError)
+                )
                 expect(getActions()).toMatchSnapshot()
                 expect(onError).not.toHaveBeenCalled()
             })
@@ -151,7 +154,7 @@ describe('infobarActions.shopify.createOrder actions', () => {
                         },
                     })
 
-                const promise = store.dispatch(actions.onInit(integrationId, order, customer, onError))
+                const promise = store.dispatch(actions.onInit(integrationId, order, customer, currencyCode, onError))
 
                 process.nextTick(async () => {
                     jest.runAllTimers()
@@ -173,7 +176,7 @@ describe('infobarActions.shopify.createOrder actions', () => {
                         },
                     })
 
-                await store.dispatch(actions.onInit(integrationId, order, customer, onError))
+                await store.dispatch(actions.onInit(integrationId, order, customer, currencyCode, onError))
                 expect(getActions()).toMatchSnapshot()
                 expect(onError).toHaveBeenCalled()
             })
