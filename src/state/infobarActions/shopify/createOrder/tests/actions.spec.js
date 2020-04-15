@@ -3,6 +3,7 @@ import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import MockAdapter from 'axios-mock-adapter'
 import axios from 'axios'
+import moment from 'moment'
 
 import {
     shopifyCustomerFixture,
@@ -18,9 +19,10 @@ import {
     ShopifyAction
 } from '../../../../../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/constants'
 import {INTEGRATION_DATA_ITEM_TYPE_PRODUCT, SHOPIFY_INTEGRATION_TYPE} from '../../../../../constants/integration'
-import {initialState} from '../reducers'
+import {DRAFT_ORDER_DELETE_AFTER} from '../../../../../config/integrations/shopify'
 import localStorageManager from '../../../../../services/localStorageManager'
 import {executeAction} from '../../../../infobar/actions'
+import {initialState} from '../reducers'
 import * as actions from '../actions'
 
 jest.mock('lodash/debounce', () => (fn) => {
@@ -43,6 +45,9 @@ describe('infobarActions.shopify.createOrder actions', () => {
     const mockServer = new MockAdapter(axios)
     let store
 
+    const now = moment().format()
+    const oneHourAgo = moment(now).subtract(...DRAFT_ORDER_DELETE_AFTER).format()
+
     const getActions = () => store.getActions().map((action) => {
         if (action.type === 'ADD_NOTIFICATION') {
             action.payload.id = 1
@@ -61,10 +66,12 @@ describe('infobarActions.shopify.createOrder actions', () => {
         })
 
         mockServer.reset()
+        window.localStorage.clear()
     })
 
     afterEach(() => {
         jest.clearAllTimers()
+        window.localStorage.clear()
     })
 
     describe('onInit()', () => {
@@ -191,20 +198,26 @@ describe('infobarActions.shopify.createOrder actions', () => {
         })
     })
 
-    describe('onCleanUp()', () => {
-        it('should delete temporary draft orders', async () => {
+    describe('onInitCleanUp()', () => {
+        it('should delete old temporary draft orders', async () => {
             const shopifyLocalStorage = localStorageManager.integrations[SHOPIFY_INTEGRATION_TYPE]
-            const ids = [1, 2, 3]
-            shopifyLocalStorage.draftOrders.setList(ids)
+            const oldId = 1
+            const recentId = 2
 
-            ids.forEach((id) => {
-                mockServer
-                    .onDelete(`/integrations/${SHOPIFY_INTEGRATION_TYPE}/order/draft/${id}/`)
-                    .reply(204)
-            })
+            shopifyLocalStorage.draftOrders.setMapItem(oldId, oneHourAgo)
+            shopifyLocalStorage.draftOrders.setMapItem(recentId, now)
 
-            await store.dispatch(actions.onCleanUp())
+            mockServer
+                .onDelete(`/integrations/${SHOPIFY_INTEGRATION_TYPE}/order/draft/${oldId}/`)
+                .reply(204)
+
+            await store.dispatch(actions.onInitCleanUp(integrationId))
             expect(mockServer.history).toMatchSnapshot()
+
+            const values = shopifyLocalStorage.draftOrders.getMap()
+            const expected = new Map([[recentId, now]])
+
+            expect(values).toEqual(expected)
         })
     })
 
@@ -343,22 +356,36 @@ describe('infobarActions.shopify.createOrder actions', () => {
     describe('onCancel()', () => {
         it('should delete temporary draft order', async () => {
             const shopifyLocalStorage = localStorageManager.integrations[SHOPIFY_INTEGRATION_TYPE]
-            shopifyLocalStorage.draftOrders.setList([draftOrderId])
+            shopifyLocalStorage.draftOrders.setMapItem(draftOrderId, now)
 
             mockServer
                 .onDelete(`/integrations/${SHOPIFY_INTEGRATION_TYPE}/order/draft/${draftOrderId}/`)
                 .reply(204)
 
-            await store.dispatch(actions.onCancel())
+            store = mockStore({
+                infobarActions: {
+                    [SHOPIFY_INTEGRATION_TYPE]: {
+                        createOrder: initialState
+                            .set('draftOrder', fromJS({
+                                id: draftOrderId,
+                            })),
+                    },
+                },
+            })
+
+            await store.dispatch(actions.onCancel(ShopifyAction.CREATE_ORDER, integrationId, 'footer'))
             expect(mockServer.history).toMatchSnapshot()
             expect(actions.upsertDraftOrder.cancel).toHaveBeenCalled()
+
+            const values = shopifyLocalStorage.draftOrders.getMap()
+            expect(values).toEqual(new Map())
         })
     })
 
-    describe('onSubmit()', () => {
+    describe('onSubmitCleanup()', () => {
         it('should remove ID of the draft order from temporary list', async () => {
             const shopifyLocalStorage = localStorageManager.integrations[SHOPIFY_INTEGRATION_TYPE]
-            shopifyLocalStorage.draftOrders.setList([draftOrderId])
+            shopifyLocalStorage.draftOrders.setMapItem(draftOrderId, now)
 
             store = mockStore({
                 infobarActions: {
@@ -370,9 +397,12 @@ describe('infobarActions.shopify.createOrder actions', () => {
                 },
             })
 
-            await store.dispatch(actions.onSubmit())
-            const ids = shopifyLocalStorage.draftOrders.getList()
-            expect(ids).toEqual(new Set())
+            await store.dispatch(actions.onSubmitCleanUp())
+
+            expect(mockServer.history).toMatchSnapshot()
+
+            const values = shopifyLocalStorage.draftOrders.getMap()
+            expect(values).toEqual(new Map())
         })
     })
 

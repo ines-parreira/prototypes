@@ -18,9 +18,7 @@ import {
     createOrderStateFixture,
     infobarActionsStateFixture
 } from '../../../../../../../../../../../fixtures/infobarActions'
-import {
-    getDuplicateOrderPayload
-} from '../../../../../../../../../../../state/infobarActions/shopify/createOrder/actions'
+import {getDuplicateOrderPayload} from '../../../../../../../../../../../state/infobarActions/shopify/createOrder/actions'
 import {getCreateOrderState} from '../../../../../../../../../../../state/infobarActions/shopify/createOrder/selectors'
 import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors'
 import {integrationsStateWithShopify} from '../../../../../../../../../../../fixtures/integrations'
@@ -43,7 +41,6 @@ function initActions() {
                 }
             }
         ),
-        onCleanUp: jest.fn(),
         onClose: jest.fn(),
         onEmailInvoice: jest.fn().mockImplementation(
             (
@@ -57,10 +54,12 @@ function initActions() {
             }
         ),
         onInit: jest.fn(),
+        onInitCleanUp: jest.fn(),
         onOpen: jest.fn(),
         onPayloadChange: jest.fn(),
         onReset: jest.fn(),
         onSubmit: jest.fn(),
+        onSubmitCleanUp: jest.fn(),
     }
 }
 
@@ -493,6 +492,7 @@ describe('<DraftOrderModalComponent/>', () => {
 
                 expect(actions.onChange).toHaveBeenCalledWith('payment_pending', false, expect.any(Function))
                 expect(actions.onSubmit).toHaveBeenCalled()
+                expect(actions.onSubmitCleanUp).toHaveBeenCalled()
                 expect(actions.onReset).toHaveBeenCalled()
             })
         })
@@ -503,6 +503,7 @@ describe('<DraftOrderModalComponent/>', () => {
 
                 expect(actions.onChange).toHaveBeenCalledWith('payment_pending', true, expect.any(Function))
                 expect(actions.onSubmit).toHaveBeenCalled()
+                expect(actions.onSubmitCleanUp).toHaveBeenCalled()
                 expect(actions.onReset).toHaveBeenCalled()
             })
         })

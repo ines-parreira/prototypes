@@ -2,47 +2,48 @@
 
 import {SHOPIFY_INTEGRATION_TYPE} from '../constants/integration'
 
+type Key = number | string
+
 class LocalStorageManager {
     integrations = {
         [SHOPIFY_INTEGRATION_TYPE]: {
             draftOrders: {
-                _key: 'infobar/actions/shopify/duplicate-order/draft-order-ids',
-                getList() {
-                    return LocalStorageManager._getList(this._key)
+                _key: 'infobar/actions/shopify/draft-orders',
+                getMap() {
+                    return LocalStorageManager._getMap(this._key)
                 },
-                setList(values: Iterable<number>) {
-                    LocalStorageManager._setList(this._key, values)
+                setMapItem(key: number, value: string) {
+                    LocalStorageManager._setMapItem(this._key, key, value)
                 },
-                addListItem(value: number) {
-                    LocalStorageManager._addListItem(this._key, value)
+                deleteMapItem(key: number) {
+                    LocalStorageManager._deleteMapItem(this._key, key)
                 },
-                removeListItem(value: number) {
-                    LocalStorageManager._removeListItem(this._key, value)
-                }
             },
         },
     }
 
-    static _getList(key: string): Set<any> {
-        const value = window.localStorage.getItem(key)
-        return new Set(value ? JSON.parse(value) : [])
+    static _getMap(key: Key): Map<Key, any> {
+        const rawData = window.localStorage.getItem(key)
+        const entries = rawData ? JSON.parse(rawData) : []
+
+        return new Map(entries)
     }
 
-    static _setList(key: string, values: Iterable<any>) {
-        const newValue = JSON.stringify(Array.from(values))
+    static _setMap(key: Key, map: Map<Key, any>) {
+        const newValue = JSON.stringify(Array.from(map.entries()))
         window.localStorage.setItem(key, newValue)
     }
 
-    static _addListItem(key: string, value: any) {
-        const values = LocalStorageManager._getList(key)
-        values.add(value)
-        LocalStorageManager._setList(key, values)
+    static _setMapItem(key: string, mapKey: Key, value: any) {
+        const map = LocalStorageManager._getMap(key)
+        map.set(mapKey, value)
+        LocalStorageManager._setMap(key, map)
     }
 
-    static _removeListItem(key: string, value: any) {
-        const values = LocalStorageManager._getList(key)
-        values.delete(value)
-        LocalStorageManager._setList(key, values)
+    static _deleteMapItem(key: string, mapKey: Key) {
+        const map = LocalStorageManager._getMap(key)
+        map.delete(mapKey)
+        LocalStorageManager._setMap(key, map)
     }
 }
 

@@ -13,11 +13,12 @@ import {
     addCustomRow,
     addRow,
     onCancel,
-    onCleanUp,
     onEmailInvoice,
     onInit,
+    onInitCleanUp,
     onPayloadChange,
     onReset,
+    onSubmitCleanUp,
 } from '../../../../../../../../../../state/infobarActions/shopify/createOrder/actions'
 import shortcutManager from '../../../../../../../../../../services/shortcutManager/shortcutManager'
 import {getIntegrationsByTypes} from '../../../../../../../../../../state/integrations/selectors'
@@ -52,7 +53,7 @@ type Props = InfobarModalProps & {
     addCustomRow: (integrationId: number, lineItem: Record<$Shape<Shopify.LineItem>>) => void,
     addRow: (actionName: string, integrationId: number, product: Shopify.Product, variant: Shopify.Variant) => void,
     onCancel: (actionName: string, integrationId: number, via: string) => void,
-    onCleanUp: (integrationId: number) => void,
+    onInitCleanUp: (integrationId: number) => void,
     onEmailInvoice: (
         integrationId: number,
         customerId: number,
@@ -69,6 +70,7 @@ type Props = InfobarModalProps & {
     ) => void,
     onPayloadChange: (integrationId: number, payload: Record<$Shape<Shopify.DraftOrder>>) => void,
     onReset: () => void,
+    onSubmitCleanUp: () => void,
 }
 
 export class DraftOrderModalComponent extends React.PureComponent<Props> {
@@ -87,10 +89,10 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
     }
 
     componentWillMount() {
-        const {onCleanUp} = this.props
+        const {onInitCleanUp} = this.props
         const {integrationId} = this.context
 
-        onCleanUp(integrationId)
+        onInitCleanUp(integrationId)
     }
 
     componentWillReceiveProps(nextProps: Props) {
@@ -180,19 +182,21 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
     }
 
     _onSubmitPaid = () => {
-        const {onChange, onSubmit} = this.props
+        const {onChange, onSubmit, onSubmitCleanUp} = this.props
 
         onChange('payment_pending', false, () => {
             onSubmit()
+            onSubmitCleanUp()
             this._onClose()
         })
     }
 
     _onSubmitPending = () => {
-        const {onChange, onSubmit} = this.props
+        const {onChange, onSubmit, onSubmitCleanUp} = this.props
 
         onChange('payment_pending', true, () => {
             onSubmit()
+            onSubmitCleanUp()
             this._onClose()
         })
     }
@@ -403,7 +407,8 @@ const mapDispatchToProps = {
     addCustomRow,
     addRow,
     onCancel,
-    onCleanUp,
+    onInitCleanUp,
+    onSubmitCleanUp,
     onEmailInvoice,
     onInit,
     onPayloadChange,

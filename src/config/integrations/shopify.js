@@ -92,3 +92,5 @@ export const MACRO_PREVIOUS_VARIABLES = {
         value: '{{ticket.customer.integrations.shopify.orders[0].fulfillments[0].created_at|datetime_format("MMMM Do YYYY")}}'
     }],
 }
+
+export const DRAFT_ORDER_DELETE_AFTER = [1, 'hour']

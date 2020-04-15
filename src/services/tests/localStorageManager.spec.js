@@ -1,9 +1,14 @@
 // @flow
 
+import moment from 'moment'
+
 import localStorageManager from '../localStorageManager'
 import {SHOPIFY_INTEGRATION_TYPE} from '../../constants/integration'
 
 describe('localStorageManager', () => {
+    const now = moment().format()
+    const soon = moment(now).add(5, 'minutes').format()
+
     beforeAll(() => {
         window.localStorage.clear()
     })
@@ -18,62 +23,71 @@ describe('localStorageManager', () => {
                 const methods = localStorageManager.integrations[SHOPIFY_INTEGRATION_TYPE].draftOrders
                 const key = methods._key
 
-                describe('getList()', () => {
-                    it('should get list of IDs when list is not defined', () => {
-                        const ids = methods.getList()
-                        expect(ids).toEqual(new Set())
+                describe('getMap()', () => {
+                    it('should get values when it is not defined', () => {
+                        // When
+                        const values = methods.getMap()
+
+                        // Then
+                        expect(values).toEqual(new Map())
                     })
 
-                    it('should get list of IDs when list is defined', () => {
-                        window.localStorage.setItem(key, JSON.stringify([1, 2, 3]))
-                        const ids = methods.getList()
-                        expect(ids).toEqual(new Set([1, 2, 3]))
-                    })
-                })
+                    it('should get values when it is defined', () => {
+                        // Given
+                        const entries = [[1, now], [2, soon]]
+                        window.localStorage.setItem(key, JSON.stringify(entries))
 
-                describe('setList()', () => {
-                    it('should set list of IDs when list is empty', () => {
-                        methods.setList([])
-                        const ids = JSON.parse(window.localStorage.getItem(key))
-                        expect(ids).toEqual([])
-                    })
+                        // When
+                        const values = methods.getMap()
 
-                    it('should set list of IDs when list is not empty', () => {
-                        methods.setList([1, 2, 3])
-                        const ids = JSON.parse(window.localStorage.getItem(key))
-                        expect(ids).toEqual([1, 2, 3])
+                        // Then
+                        expect(values).toEqual(new Map(entries))
                     })
                 })
 
-                describe('addListItem()', () => {
-                    it('should add ID when list is not defined', () => {
-                        methods.addListItem(1)
-                        const ids = JSON.parse(window.localStorage.getItem(key))
-                        expect(ids).toEqual([1])
+                describe('setMapItem()', () => {
+                    it('should set value when map is not defined', () => {
+                        // When
+                        methods.setMapItem(1, now)
+
+                        // Then
+                        const values = JSON.parse(window.localStorage.getItem(key))
+                        expect(values).toEqual([[1, now]])
                     })
 
-                    it('should add ID when list is defined', () => {
-                        window.localStorage.setItem(key, JSON.stringify([1]))
+                    it('should set value when map is defined', () => {
+                        // Given
+                        window.localStorage.setItem(key, JSON.stringify([[1, now]]))
 
-                        methods.addListItem(2)
-                        const ids = JSON.parse(window.localStorage.getItem(key))
-                        expect(ids).toEqual([1, 2])
+                        // When
+                        methods.setMapItem(2, soon)
+
+                        // Then
+                        const values = JSON.parse(window.localStorage.getItem(key))
+                        expect(values).toEqual([[1, now], [2, soon]])
                     })
                 })
 
-                describe('removeListItem()', () => {
-                    it('should remove ID when list is not defined', () => {
-                        methods.removeListItem(1)
-                        const ids = JSON.parse(window.localStorage.getItem(key))
-                        expect(ids).toEqual([])
+                describe('deleteMapItem()', () => {
+                    it('should remove value when map is not defined', () => {
+                        // When
+                        methods.deleteMapItem(1)
+
+                        // Then
+                        const values = JSON.parse(window.localStorage.getItem(key))
+                        expect(values).toEqual([])
                     })
 
-                    it('should remove ID when list is defined', () => {
-                        window.localStorage.setItem(key, JSON.stringify([1, 2, 3]))
+                    it('should remove value when map is defined', () => {
+                        // Given
+                        window.localStorage.setItem(key, JSON.stringify([[1, now], [2, soon]]))
 
-                        methods.removeListItem(1)
-                        const ids = JSON.parse(window.localStorage.getItem(key))
-                        expect(ids).toEqual([2, 3])
+                        // When
+                        methods.deleteMapItem(1)
+
+                        // Then
+                        const values = JSON.parse(window.localStorage.getItem(key))
+                        expect(values).toEqual([[2, soon]])
                     })
                 })
             })

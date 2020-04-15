@@ -298,7 +298,7 @@ Object {
       "maxContentLength": -1,
       "method": "delete",
       "params": Object {
-        "integration_id": undefined,
+        "integration_id": 1,
       },
       "timeout": 0,
       "transformRequest": Array [
@@ -323,7 +323,7 @@ Object {
 }
 `;
 
-exports[`infobarActions.shopify.createOrder actions onCleanUp() should delete temporary draft orders 1`] = `
+exports[`infobarActions.shopify.createOrder actions onInitCleanUp() should delete old temporary draft orders 1`] = `
 Object {
   "delete": Array [
     Object {
@@ -338,7 +338,7 @@ Object {
       "maxContentLength": -1,
       "method": "delete",
       "params": Object {
-        "integration_id": undefined,
+        "integration_id": 1,
       },
       "timeout": 0,
       "transformRequest": Array [
@@ -2026,4 +2026,17 @@ Array [
     "type": "infobarActions/shopify/createOrder/SET_INITIAL_STATE",
   },
 ]
+`;
+
+exports[`infobarActions.shopify.createOrder actions onSubmitCleanup() should remove ID of the draft order from temporary list 1`] = `
+Object {
+  "delete": Array [],
+  "get": Array [],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [],
+  "put": Array [],
+}
 `;

@@ -305,7 +305,7 @@ export default class GorgiasApi {
         ]
     }
 
-    async deleteDraftOrder(integrationId: number, draftOrderId: number): Promise<void> {
+    async deleteDraftOrder(integrationId: number, draftOrderId: string | number): Promise<void> {
         await this._api.delete(`/integrations/shopify/order/draft/${draftOrderId}/`, {
             params: {
                 integration_id: integrationId,
