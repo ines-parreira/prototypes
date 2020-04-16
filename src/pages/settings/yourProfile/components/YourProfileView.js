@@ -3,10 +3,9 @@ import React from 'react'
 import classnames from 'classnames'
 import _merge from 'lodash/merge'
 import _pick from 'lodash/pick'
+import _sortBy from 'lodash/sortBy'
 import moment from 'moment-timezone'
-import {
-    Container, Form, FormGroup, FormText, Button, Label, Row, Col
-} from 'reactstrap'
+import {Button, Col, Container, Form, FormGroup, FormText, Label, Row} from 'reactstrap'
 
 import {Link} from 'react-router'
 
@@ -16,6 +15,7 @@ import BooleanField from '../../../common/forms/BooleanField'
 import InputField from '../../../common/forms/InputField'
 import Avatar from '../../../common/components/Avatar'
 import FileField from '../../../common/forms/FileField'
+import SelectField from '../../../common/forms/SelectField'
 import PageHeader from '../../../common/components/PageHeader'
 
 import {AVAILABLE_LANGUAGES} from './../../../../config'
@@ -197,43 +197,42 @@ export default class YourProfileView extends React.Component<Props, State> {
                                     value={this.state.bio}
                                     onChange={(bio) => this.setState({bio})}
                                 />
-                                <InputField
-                                    type="select"
-                                    name="timezone"
-                                    label="Timezone"
-                                    value={this.state.timezone}
-                                    onChange={(timezone) => this.setState({timezone})}
-                                >
-                                    {
-                                        moment.tz.names().map((name, idx) => (
-                                            <option
-                                                key={idx}
-                                                value={name}
-                                            >
-                                                {name}
-                                            </option>
-                                        ))
-                                    }
-                                </InputField>
-                                <InputField
-                                    type="select"
-                                    name="language"
-                                    label="Language"
-                                    help="Changing the language only changes the time format"
-                                    value={this.state.language}
-                                    onChange={(language) => this.setState({language})}
-                                >
-                                    {
-                                        AVAILABLE_LANGUAGES.map((locale, idx) => (
-                                            <option
-                                                key={idx}
-                                                value={locale.localeName}
-                                            >
-                                                {locale.displayName}
-                                            </option>
-                                        ))
-                                    }
-                                </InputField>
+                                <FormGroup>
+                                    <Label className="control-label">Timezone</Label>
+                                    <SelectField
+                                        name="timezone"
+                                        label="Timezone"
+                                        value={this.state.timezone}
+                                        options={_sortBy(moment.tz.names().filter((name) => name !== 'US/Pacific-New')
+                                            /*
+                                            US/Pacific-New is not supposed to be a valid timezone and as such, pytz
+                                            (the validator on backend) doesn't allow it, so we skip it.
+                                            More info at: https://github.com/moment/moment-timezone/issues/498
+                                            */
+                                            .map((name) => ({
+                                                value: name,
+                                                label: `(UTC${moment.tz(name).format('Z')}) ${name}`
+                                            })), (item) => moment.tz(item.value).utcOffset())}
+                                        onChange={(value) => this.setState({timezone: value.toString()})}
+                                        fullWidth
+                                    />
+                                </FormGroup>
+                                <FormGroup>
+                                    <Label className="control-label">Language</Label>
+                                    <SelectField
+                                        name="language"
+                                        value={this.state.language}
+                                        onChange={(value) => this.setState({language: value.toString()})}
+                                        options={AVAILABLE_LANGUAGES.map((locale) => ({
+                                            value: locale.localeName,
+                                            label: locale.displayName
+                                        }))}
+                                        fullWidth
+                                    />
+                                    <FormText color="muted">
+                                        Changing the language only changes the time format
+                                    </FormText>
+                                </FormGroup>
                             </Col>
                             <Col
                                 md="3"
