@@ -52,7 +52,21 @@ const HTTPEventWithEmptyBodies = fromJS({
     }
 })
 
-describe('HTTPIntegrationEvent', () => {
+const HTTPEventWithErrorInResponse = fromJS({
+    created_datetime: getMomentNow(),
+    request: {
+        method: 'GET',
+        url: 'https://api.gorgias.io',
+        status: null,
+        headers: {headersKey1: 'headersValue1'},
+    },
+    response: {
+        headers: {headersKey1: 'headersValue1'},
+        error: 'There is an error'
+    }
+})
+
+describe('<HTTPIntegrationEvent/>', () => {
     describe('component', () => {
         it('should fetch an event when the component will mount', (done) => {
             const fetchHTTPIntegrationEvent = jest.fn(() => Promise.resolve())
@@ -143,6 +157,17 @@ describe('HTTPIntegrationEvent', () => {
                     eventId="2"
                     integationId="1"
                     event={HTTPEventWithEmptyBodies}
+                />
+            )
+            expect(component).toMatchSnapshot()
+        })
+
+        it('should render the data of the HTTP request when there was an error making the request', () => {
+            const component = shallow(
+                <HTTPIntegrationEvent
+                    eventId="2"
+                    integationId="1"
+                    event={HTTPEventWithErrorInResponse}
                 />
             )
             expect(component).toMatchSnapshot()

@@ -65,6 +65,7 @@ export class HTTPIntegrationEvent extends Component<Props, State> {
         const requestParams = request.get('params') || null
         const requestBody = request.get('body')
         let responseBody = response.get('body') || null
+        let responseError = response.get('error')
         let requestJSONBody = null
         let requestFormBody = null
 
@@ -164,6 +165,13 @@ export class HTTPIntegrationEvent extends Component<Props, State> {
                                     null
                                 }
                             </HTTPItem>
+                            {
+                                responseError ? (
+                                    <HTTPItem name="Error">
+                                        <pre>{responseError}</pre>
+                                    </HTTPItem>
+                                ) : null
+                            }
                         </Container>
                     </Col>
                 </Row>
