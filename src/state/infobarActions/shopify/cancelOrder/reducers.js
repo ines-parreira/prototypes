@@ -7,6 +7,7 @@ import type {actionType} from '../../../types'
 import type {CancelOrderState} from './types'
 import {
     SET_INITIAL_STATE,
+    SET_INITIALIZED,
     SET_LINE_ITEMS,
     SET_LOADING,
     SET_ORDER_ID,
@@ -17,6 +18,7 @@ import {
 } from './constants'
 
 export const initialState: CancelOrderState = fromJS({
+    initialized: false,
     loading: false,
     loadingMessage: null,
     orderId: null,
@@ -30,6 +32,8 @@ export default function reducer(
     action: actionType
 ): CancelOrderState {
     switch (action.type) {
+        case SET_INITIALIZED:
+            return state.set('initialized', true)
         case SET_LOADING:
             return state
                 .set('loading', action.loading)

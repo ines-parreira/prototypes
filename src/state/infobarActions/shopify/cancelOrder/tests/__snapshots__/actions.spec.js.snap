@@ -53,26 +53,62 @@ Array [
   Object {
     "lineItems": Immutable.List [
       Immutable.Map {
-        "price": "1.00",
         "quantity": 1,
         "product_id": 8345093387,
+        "price_set": Immutable.Map {
+          "shop_money": Immutable.Map {
+            "amount": "1.0",
+            "currency_code": "USD",
+          },
+          "presentment_money": Immutable.Map {
+            "amount": "1.0",
+            "currency_code": "USD",
+          },
+        },
         "variant_id": 31128766316567,
         "title": "Acidulous candy",
         "id": 4193100136471,
-        "total_discount": "0.00",
         "sku": "0987654321-1",
         "variant_title": "Red / A",
+        "total_discount_set": Immutable.Map {
+          "shop_money": Immutable.Map {
+            "amount": "0.0",
+            "currency_code": "USD",
+          },
+          "presentment_money": Immutable.Map {
+            "amount": "0.0",
+            "currency_code": "USD",
+          },
+        },
       },
       Immutable.Map {
-        "price": "1.00",
         "quantity": 4,
         "product_id": 8345093387,
+        "price_set": Immutable.Map {
+          "shop_money": Immutable.Map {
+            "amount": "1.0",
+            "currency_code": "USD",
+          },
+          "presentment_money": Immutable.Map {
+            "amount": "1.0",
+            "currency_code": "USD",
+          },
+        },
         "variant_id": 31128766349335,
         "title": "Acidulous candy",
         "id": 4193100169239,
-        "total_discount": "0.00",
         "sku": "0987654321-2",
         "variant_title": "Red / B",
+        "total_discount_set": Immutable.Map {
+          "shop_money": Immutable.Map {
+            "amount": "0.0",
+            "currency_code": "USD",
+          },
+          "presentment_money": Immutable.Map {
+            "amount": "0.0",
+            "currency_code": "USD",
+          },
+        },
       },
     ],
     "type": "infobarActions/shopify/cancelOrder/SET_LINE_ITEMS",
@@ -153,26 +189,62 @@ Array [
   Object {
     "lineItems": Immutable.List [
       Immutable.Map {
-        "price": "1.00",
         "quantity": 1,
         "product_id": 8345093387,
+        "price_set": Immutable.Map {
+          "shop_money": Immutable.Map {
+            "amount": "1.0",
+            "currency_code": "USD",
+          },
+          "presentment_money": Immutable.Map {
+            "amount": "1.0",
+            "currency_code": "USD",
+          },
+        },
         "variant_id": 31128766316567,
         "title": "Acidulous candy",
         "id": 4193100136471,
-        "total_discount": "0.00",
         "sku": "0987654321-1",
         "variant_title": "Red / A",
+        "total_discount_set": Immutable.Map {
+          "shop_money": Immutable.Map {
+            "amount": "0.0",
+            "currency_code": "USD",
+          },
+          "presentment_money": Immutable.Map {
+            "amount": "0.0",
+            "currency_code": "USD",
+          },
+        },
       },
       Immutable.Map {
-        "price": "1.00",
         "quantity": 4,
         "product_id": 8345093387,
+        "price_set": Immutable.Map {
+          "shop_money": Immutable.Map {
+            "amount": "1.0",
+            "currency_code": "USD",
+          },
+          "presentment_money": Immutable.Map {
+            "amount": "1.0",
+            "currency_code": "USD",
+          },
+        },
         "variant_id": 31128766349335,
         "title": "Acidulous candy",
         "id": 4193100169239,
-        "total_discount": "0.00",
         "sku": "0987654321-2",
         "variant_title": "Red / B",
+        "total_discount_set": Immutable.Map {
+          "shop_money": Immutable.Map {
+            "amount": "0.0",
+            "currency_code": "USD",
+          },
+          "presentment_money": Immutable.Map {
+            "amount": "0.0",
+            "currency_code": "USD",
+          },
+        },
       },
     ],
     "type": "infobarActions/shopify/cancelOrder/SET_LINE_ITEMS",
@@ -221,6 +293,9 @@ Array [
     "loading": false,
     "message": null,
     "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
+  },
+  Object {
+    "type": "infobarActions/shopify/cancelOrder/SET_INITIALIZED",
   },
   Object {
     "restock": false,
@@ -282,26 +357,62 @@ Array [
   Object {
     "lineItems": Immutable.List [
       Immutable.Map {
-        "price": "1.00",
         "quantity": 1,
         "product_id": 8345093387,
+        "price_set": Immutable.Map {
+          "shop_money": Immutable.Map {
+            "amount": "1.0",
+            "currency_code": "USD",
+          },
+          "presentment_money": Immutable.Map {
+            "amount": "1.0",
+            "currency_code": "USD",
+          },
+        },
         "variant_id": 31128766316567,
         "title": "Acidulous candy",
         "id": 4193100136471,
-        "total_discount": "0.00",
         "sku": "0987654321-1",
         "variant_title": "Red / A",
+        "total_discount_set": Immutable.Map {
+          "shop_money": Immutable.Map {
+            "amount": "0.0",
+            "currency_code": "USD",
+          },
+          "presentment_money": Immutable.Map {
+            "amount": "0.0",
+            "currency_code": "USD",
+          },
+        },
       },
       Immutable.Map {
-        "price": "1.00",
         "quantity": 4,
         "product_id": 8345093387,
+        "price_set": Immutable.Map {
+          "shop_money": Immutable.Map {
+            "amount": "1.0",
+            "currency_code": "USD",
+          },
+          "presentment_money": Immutable.Map {
+            "amount": "1.0",
+            "currency_code": "USD",
+          },
+        },
         "variant_id": 31128766349335,
         "title": "Acidulous candy",
         "id": 4193100169239,
-        "total_discount": "0.00",
         "sku": "0987654321-2",
         "variant_title": "Red / B",
+        "total_discount_set": Immutable.Map {
+          "shop_money": Immutable.Map {
+            "amount": "0.0",
+            "currency_code": "USD",
+          },
+          "presentment_money": Immutable.Map {
+            "amount": "0.0",
+            "currency_code": "USD",
+          },
+        },
       },
     ],
     "type": "infobarActions/shopify/cancelOrder/SET_LINE_ITEMS",
@@ -350,6 +461,9 @@ Array [
     "loading": false,
     "message": null,
     "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
+  },
+  Object {
+    "type": "infobarActions/shopify/cancelOrder/SET_INITIALIZED",
   },
   Object {
     "restock": true,
@@ -411,26 +525,62 @@ Array [
   Object {
     "lineItems": Immutable.List [
       Immutable.Map {
-        "price": "1.00",
         "quantity": 1,
         "product_id": 8345093387,
+        "price_set": Immutable.Map {
+          "shop_money": Immutable.Map {
+            "amount": "1.0",
+            "currency_code": "USD",
+          },
+          "presentment_money": Immutable.Map {
+            "amount": "1.0",
+            "currency_code": "USD",
+          },
+        },
         "variant_id": 31128766316567,
         "title": "Acidulous candy",
         "id": 4193100136471,
-        "total_discount": "0.00",
         "sku": "0987654321-1",
         "variant_title": "Red / A",
+        "total_discount_set": Immutable.Map {
+          "shop_money": Immutable.Map {
+            "amount": "0.0",
+            "currency_code": "USD",
+          },
+          "presentment_money": Immutable.Map {
+            "amount": "0.0",
+            "currency_code": "USD",
+          },
+        },
       },
       Immutable.Map {
-        "price": "1.00",
         "quantity": 4,
         "product_id": 8345093387,
+        "price_set": Immutable.Map {
+          "shop_money": Immutable.Map {
+            "amount": "1.0",
+            "currency_code": "USD",
+          },
+          "presentment_money": Immutable.Map {
+            "amount": "1.0",
+            "currency_code": "USD",
+          },
+        },
         "variant_id": 31128766349335,
         "title": "Acidulous candy",
         "id": 4193100169239,
-        "total_discount": "0.00",
         "sku": "0987654321-2",
         "variant_title": "Red / B",
+        "total_discount_set": Immutable.Map {
+          "shop_money": Immutable.Map {
+            "amount": "0.0",
+            "currency_code": "USD",
+          },
+          "presentment_money": Immutable.Map {
+            "amount": "0.0",
+            "currency_code": "USD",
+          },
+        },
       },
     ],
     "type": "infobarActions/shopify/cancelOrder/SET_LINE_ITEMS",
@@ -480,6 +630,9 @@ Array [
     "message": null,
     "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
   },
+  Object {
+    "type": "infobarActions/shopify/cancelOrder/SET_INITIALIZED",
+  },
 ]
 `;
 
@@ -488,26 +641,62 @@ Array [
   Object {
     "lineItems": Immutable.List [
       Immutable.Map {
-        "price": "1.00",
         "quantity": 1,
         "product_id": 8345093387,
+        "price_set": Immutable.Map {
+          "shop_money": Immutable.Map {
+            "amount": "1.0",
+            "currency_code": "USD",
+          },
+          "presentment_money": Immutable.Map {
+            "amount": "1.0",
+            "currency_code": "USD",
+          },
+        },
         "variant_id": 31128766316567,
         "title": "Acidulous candy",
         "id": 4193100136471,
-        "total_discount": "0.00",
         "sku": "0987654321-1",
         "variant_title": "Red / A",
+        "total_discount_set": Immutable.Map {
+          "shop_money": Immutable.Map {
+            "amount": "0.0",
+            "currency_code": "USD",
+          },
+          "presentment_money": Immutable.Map {
+            "amount": "0.0",
+            "currency_code": "USD",
+          },
+        },
       },
       Immutable.Map {
-        "price": "1.00",
         "quantity": 4,
         "product_id": 8345093387,
+        "price_set": Immutable.Map {
+          "shop_money": Immutable.Map {
+            "amount": "1.0",
+            "currency_code": "USD",
+          },
+          "presentment_money": Immutable.Map {
+            "amount": "1.0",
+            "currency_code": "USD",
+          },
+        },
         "variant_id": 31128766349335,
         "title": "Acidulous candy",
         "id": 4193100169239,
-        "total_discount": "0.00",
         "sku": "0987654321-2",
         "variant_title": "Red / B",
+        "total_discount_set": Immutable.Map {
+          "shop_money": Immutable.Map {
+            "amount": "0.0",
+            "currency_code": "USD",
+          },
+          "presentment_money": Immutable.Map {
+            "amount": "0.0",
+            "currency_code": "USD",
+          },
+        },
       },
     ],
     "type": "infobarActions/shopify/cancelOrder/SET_LINE_ITEMS",
@@ -594,6 +783,9 @@ Array [
     "loading": false,
     "message": null,
     "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
+  },
+  Object {
+    "type": "infobarActions/shopify/cancelOrder/SET_INITIALIZED",
   },
 ]
 `;
@@ -682,6 +874,9 @@ Array [
     "loading": false,
     "message": null,
     "type": "infobarActions/shopify/cancelOrder/SET_LOADING",
+  },
+  Object {
+    "type": "infobarActions/shopify/cancelOrder/SET_INITIALIZED",
   },
 ]
 `;

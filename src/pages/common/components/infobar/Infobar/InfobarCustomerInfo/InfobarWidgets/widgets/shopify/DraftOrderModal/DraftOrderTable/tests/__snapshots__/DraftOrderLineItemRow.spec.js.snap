@@ -438,6 +438,7 @@ exports[`<DraftOrderLineItemRow/> render() should render without quantity and wi
           max={1}
           onChange={[Function]}
           placement="bottom"
+          value={null}
         >
           <ShopifyMoneyAmount
             amount="1.00"

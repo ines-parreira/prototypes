@@ -6,7 +6,10 @@ import {type Record} from 'immutable'
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
 
-import {getOrderLineItemDiscountedPrice} from '../../../../../../../../../../../../business/shopify/lineItem'
+import {
+    getOrderLineItemDiscountedPrice,
+    getOrderLineItemPrice
+} from '../../../../../../../../../../../../business/shopify/lineItem'
 import * as Shopify from '../../../../../../../../../../../../constants/integrations/shopify'
 import {formatPrice} from '../../../../../../../../../../../../business/shopify/number'
 import ShopifyMoneyAmount from '../../MoneyAmount'
@@ -18,6 +21,7 @@ type Props = {
     refund: ?Record<$Shape<Shopify.Refund>>,
     shopName: string,
     currencyCode: string,
+    shopCurrencyCode: string,
     onChange: (Record<$Shape<Shopify.LineItem>>) => void,
 }
 
@@ -139,7 +143,7 @@ export class OrderLineItemRow extends React.PureComponent<Props, State> {
     }
 
     _renderPrice() {
-        const {lineItem, currencyCode} = this.props
+        const {lineItem, shopCurrencyCode} = this.props
 
         if (this._maxQuantity === 0) {
             return (
@@ -152,9 +156,9 @@ export class OrderLineItemRow extends React.PureComponent<Props, State> {
             )
         }
 
-        const price = lineItem.get('price')
-        const discountedPrice = getOrderLineItemDiscountedPrice(lineItem, currencyCode, this._maxQuantity)
-        const formattedDiscountedPrice = formatPrice(discountedPrice, currencyCode)
+        const price = getOrderLineItemPrice(lineItem, shopCurrencyCode)
+        const discountedPrice = getOrderLineItemDiscountedPrice(lineItem, shopCurrencyCode, this._maxQuantity)
+        const formattedDiscountedPrice = formatPrice(discountedPrice, shopCurrencyCode)
         const hasDiscount = price !== formattedDiscountedPrice
 
         return (
@@ -167,7 +171,7 @@ export class OrderLineItemRow extends React.PureComponent<Props, State> {
                                     <ShopifyMoneyAmount
                                         renderIfZero
                                         amount={price}
-                                        currencyCode={currencyCode}
+                                        currencyCode={shopCurrencyCode}
                                     />
                                 </del>
                             </small>
@@ -175,7 +179,7 @@ export class OrderLineItemRow extends React.PureComponent<Props, State> {
                         <ShopifyMoneyAmount
                             renderIfZero
                             amount={formattedDiscountedPrice}
-                            currencyCode={currencyCode}
+                            currencyCode={shopCurrencyCode}
                         />
                     </div>
                     <span className={css.times}>x</span>

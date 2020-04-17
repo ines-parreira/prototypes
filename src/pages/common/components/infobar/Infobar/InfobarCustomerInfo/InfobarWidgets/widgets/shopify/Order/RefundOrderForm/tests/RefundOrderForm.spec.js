@@ -4,6 +4,7 @@ import {fromJS} from 'immutable'
 
 import {
     shopifyLineItemFixture,
+    shopifyMultiCurrencyOrderFixture,
     shopifyOrderFixture,
     shopifyRefundOrderPayloadFixture,
     shopifySuggestedRefundFixture
@@ -38,6 +39,29 @@ describe('<RefundOrderForm/>', () => {
                     loading={false}
                     reason=""
                     order={order}
+                    refund={refund}
+                    payload={payload}
+                    lineItems={lineItems}
+                    setPayload={setPayload}
+                    onPayloadChange={onPayloadChange}
+                    onLineItemsChange={onLineItemsChange}
+                    onReasonChange={onReasonChange}
+                />
+            )
+
+            expect(component).toMatchSnapshot()
+        })
+
+        it('should render for multi-currency order', () => {
+            const multiCurrencyOrder = fromJS(shopifyMultiCurrencyOrderFixture())
+
+            const component = shallow(
+                <RefundOrderForm
+                    shopName="storegorgias3"
+                    actionName={ShopifyAction.CANCEL_ORDER}
+                    loading={false}
+                    reason=""
+                    order={multiCurrencyOrder}
                     refund={refund}
                     payload={payload}
                     lineItems={lineItems}

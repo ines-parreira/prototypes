@@ -10,7 +10,7 @@ import {
     shopifyRefundOrderPayloadFixture,
     shopifySuggestedRefundFixture
 } from '../../../../../fixtures/shopify'
-import {initialState} from '../../refundOrder/reducers'
+import {initialState} from '../reducers'
 import * as actions from '../../refundOrder/actions'
 import {initRefundOrderLineItems} from '../../../../../business/shopify/order'
 

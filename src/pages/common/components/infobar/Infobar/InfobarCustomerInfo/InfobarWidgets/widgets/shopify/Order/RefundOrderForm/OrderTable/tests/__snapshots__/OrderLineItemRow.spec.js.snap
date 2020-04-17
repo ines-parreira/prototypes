@@ -128,6 +128,134 @@ exports[`<LineItemRow/> render() should render 1`] = `
 </tr>
 `;
 
+exports[`<LineItemRow/> render() should render for multi-currency order 1`] = `
+<tr>
+  <td
+    className="container"
+  >
+    <div
+      className="legend"
+    >
+      <div>
+        <a
+          className="title"
+          href="https://storegorgias3.myshopify.com/admin/products/8345093387/variants/31128766316567"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Acidulous candy
+        </a>
+      </div>
+      <div
+        className="subtitle"
+      >
+        Red / A
+      </div>
+      <div
+        className="subtitle"
+      >
+        SKU: 
+        0987654321-1
+      </div>
+    </div>
+  </td>
+  <td
+    className="numberCol"
+  >
+    <div
+      className="d-flex"
+    >
+      <div
+        className="d-inline-block text-center"
+      >
+        <ShopifyMoneyAmount
+          amount="1.00"
+          currencyCode="USD"
+          negative={false}
+          renderIfZero={true}
+        />
+      </div>
+      <span
+        className="times"
+      >
+        x
+      </span>
+    </div>
+  </td>
+  <td
+    className="quantityCol"
+  >
+    <InputGroup
+      tag="div"
+    >
+      <span
+        className="quantityContainer"
+      >
+        <Input
+          className="quantityInput"
+          onChange={[Function]}
+          pattern="\\\\d+"
+          type="text"
+          value={1}
+        />
+        <span
+          className="quantityMax"
+        >
+          / 
+          1
+        </span>
+      </span>
+      <InputGroupAddon
+        addonType="append"
+        className="quantityButtonsContainer"
+        tag="div"
+      >
+        <Button
+          className="focusable quantityBtn quantityBtnUp"
+          color="secondary"
+          disabled={true}
+          onClick={[Function]}
+          tabIndex={0}
+          tag="button"
+          type="button"
+        >
+          ▲
+        </Button>
+        <Button
+          className="focusable quantityBtn quantityBtnDown"
+          color="secondary"
+          disabled={false}
+          onClick={[Function]}
+          tabIndex={0}
+          tag="button"
+          type="button"
+        >
+          ▼
+        </Button>
+      </InputGroupAddon>
+    </InputGroup>
+  </td>
+  <td
+    className="numberCol"
+  >
+    <div
+      className="d-flex"
+    >
+      <strong
+        className="mt-auto mb-auto ml-auto"
+      >
+        <ShopifyMoneyAmount
+          amount="100"
+          currencyCode="JPY"
+          negative={false}
+          renderIfZero={true}
+        />
+      </strong>
+    </div>
+  </td>
+</tr>
+`;
+
 exports[`<LineItemRow/> render() should render with "not restockable" message 1`] = `
 <tr>
   <td

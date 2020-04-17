@@ -30,11 +30,15 @@ export default class RefundOrderForm extends React.PureComponent<Props> {
             onPayloadChange, onReasonChange,
         } = this.props
 
+        const currencyCode = payload.get('currency')
+        const shopCurrencyCode = order.getIn(['total_price_set', 'shop_money', 'currency_code'])
+
         return (
             <React.Fragment>
                 <OrderTable
                     shopName={shopName}
-                    currencyCode={payload.get('currency')}
+                    currencyCode={currencyCode}
+                    shopCurrencyCode={shopCurrencyCode}
                     lineItems={lineItems}
                     refund={refund}
                     onChange={onLineItemsChange}
@@ -44,7 +48,7 @@ export default class RefundOrderForm extends React.PureComponent<Props> {
                     reason={reason}
                     actionName={actionName}
                     hasShippingLine={!!order.getIn(['shipping_lines', 0])}
-                    currencyCode={payload.get('currency')}
+                    currencyCode={currencyCode}
                     payload={payload}
                     refund={refund}
                     loading={loading}

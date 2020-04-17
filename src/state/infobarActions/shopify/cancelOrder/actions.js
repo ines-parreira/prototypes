@@ -15,6 +15,7 @@ import {notify} from '../../../notifications/actions'
 
 import {
     SET_INITIAL_STATE,
+    SET_INITIALIZED,
     SET_LINE_ITEMS,
     SET_LOADING,
     SET_ORDER_ID,
@@ -34,6 +35,10 @@ const getApi = (): GorgiasApi => {
 
     return _gorgiasApi
 }
+
+const setInitialized = () => ({
+    type: SET_INITIALIZED,
+})
 
 const setLoading = (loading: boolean, message: ?string = null) => ({
     type: SET_LOADING,
@@ -131,18 +136,32 @@ export const calculateRefund = _debounce(
             api.cancelPendingRequests(true)
 
             const state = getState()
+            const initialized = getCancelOrderState(state).get('initialized')
             const orderId = getCancelOrderState(state).get('orderId')
             const cancelOrderPayload = getCancelOrderState(state).get('payload')
             const refundPayload = cancelOrderPayload.get('refund').delete('transactions')
             const currencyCode = refundPayload.get('currency')
-            const suggestedRefund = await api.calculateRefund(integrationId, orderId, refundPayload)
-            const amount = formatPrice(getRefundAmount(suggestedRefund), currencyCode)
+            let suggestedRefund = await api.calculateRefund(integrationId, orderId, refundPayload)
+            const shippingMaximumRefundable = suggestedRefund.getIn(['shipping', 'maximum_refundable'])
+            let amount = getRefundAmount(suggestedRefund)
+
+            if (!initialized) {
+                amount += parseFloat(shippingMaximumRefundable)
+
+                suggestedRefund = suggestedRefund
+                    .setIn(['shipping', 'amount'], shippingMaximumRefundable)
+                    .setIn(['transactions', 0, 'amount'], formatPrice(amount, currencyCode))
+            }
 
             const promises = [
                 dispatch(setRefund(suggestedRefund)),
-                dispatch(setRefundAmount(amount)),
+                dispatch(setRefundAmount(formatPrice(amount, currencyCode))),
                 dispatch(setLoading(false)),
             ]
+
+            if (!initialized) {
+                promises.push(dispatch(setInitialized()))
+            }
 
             // Check or uncheck the "Restock" checkbox
             const totalQuantities = getTotalQuantities(refundPayload, suggestedRefund)

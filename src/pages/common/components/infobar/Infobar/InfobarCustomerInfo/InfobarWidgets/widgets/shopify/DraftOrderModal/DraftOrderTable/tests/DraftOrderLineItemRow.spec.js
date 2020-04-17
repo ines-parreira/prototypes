@@ -7,11 +7,9 @@ import {fromJS} from 'immutable'
 import {
     shopifyAppliedDiscountFixture,
     shopifyDraftOrderPayloadFixture,
-    shopifyOrderFixture,
     shopifyProductFixture
 } from '../../../../../../../../../../../../fixtures/shopify'
 import {EVENTS, logEvent} from '../../../../../../../../../../../../store/middlewares/segmentTracker'
-import {initRefundOrderLineItems} from '../../../../../../../../../../../../business/shopify/order'
 import {DraftOrderLineItemRow} from '../DraftOrderLineItemRow'
 import {ShopifyAction} from '../../../constants'
 
@@ -98,9 +96,8 @@ describe('<DraftOrderLineItemRow/>', () => {
         })
 
         it('should render without quantity and without price', () => {
-            const order = fromJS(shopifyOrderFixture())
-            const lineItems = initRefundOrderLineItems(order)
-            const lineItem = lineItems.get(0).set('quantity', 0)
+            const payload = fromJS(shopifyDraftOrderPayloadFixture())
+            const lineItem = payload.getIn(['line_items', 0]).set('quantity', 0)
 
             const component = shallow(
                 <DraftOrderLineItemRow

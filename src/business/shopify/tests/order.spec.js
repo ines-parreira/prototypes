@@ -2,20 +2,17 @@ import {fromJS} from 'immutable'
 
 import {
     shopifyCancelOrderPayloadFixture,
-    shopifyDiscountCodeFixture,
-    shopifyOrderAdjustmentFixture,
+    shopifyMultiCurrencyOrderFixture,
     shopifyOrderFixture,
     shopifyRefundFixture,
     shopifyRefundLineItemFixture,
     shopifyRefundOrderPayloadFixture,
-    shopifyShippingLineFixture,
     shopifySuggestedRefundFixture
 } from '../../../fixtures/shopify'
 import {
     getFinalCancelOrderPayload,
     getFinalRefundOrderPayload,
     getLineItemQuantity,
-    getRefundableShippingAmount,
     initCancelOrderPayload,
     initRefundOrderLineItems
 } from '../order'
@@ -32,6 +29,13 @@ describe('initCancelOrderPayload()', () => {
 describe('initCancelOrderLineItems()', () => {
     it('should return line items used to render the cancel order modal', () => {
         const order = fromJS(shopifyOrderFixture())
+        const payload = initRefundOrderLineItems(order)
+
+        expect(payload).toMatchSnapshot()
+    })
+
+    it('should return line items used to render the cancel order modal for multi-currency order', () => {
+        const order = fromJS(shopifyMultiCurrencyOrderFixture())
         const payload = initRefundOrderLineItems(order)
 
         expect(payload).toMatchSnapshot()
@@ -55,44 +59,6 @@ describe('getLineItemQuantity()', () => {
         const quantity = getLineItemQuantity(order, lineItem)
 
         expect(quantity).toMatchSnapshot()
-    })
-})
-
-describe('getRefundableShippingAmount()', () => {
-    it('should return original amount because there is no refund', () => {
-        const shippingLines = fromJS([shopifyShippingLineFixture()])
-        const order = fromJS(shopifyOrderFixture({shippingLines}))
-        const amount = getRefundableShippingAmount(order)
-
-        expect(amount).toMatchSnapshot()
-    })
-
-    it('should return adjusted amount because there is a refund', () => {
-        const shippingLines = fromJS([shopifyShippingLineFixture()])
-        const orderAdjustments = fromJS([shopifyOrderAdjustmentFixture()])
-        const refund = fromJS(shopifyRefundFixture({orderAdjustments}))
-        const order = fromJS(shopifyOrderFixture({shippingLines})).setIn(['refunds', 0], refund)
-        const amount = getRefundableShippingAmount(order)
-
-        expect(amount).toMatchSnapshot()
-    })
-
-    it('should return adjusted amount because there is a discount code', () => {
-        const shippingLines = fromJS([shopifyShippingLineFixture()])
-        const discountCodes = fromJS([shopifyDiscountCodeFixture()])
-        const order = fromJS(shopifyOrderFixture({shippingLines})).set('discount_codes', discountCodes)
-        const amount = getRefundableShippingAmount(order)
-
-        expect(amount).toMatchSnapshot()
-    })
-
-    it('should return 0 because the value of the discount code is greater than shipping price', () => {
-        const shippingLines = fromJS([shopifyShippingLineFixture()])
-        const discountCodes = fromJS([shopifyDiscountCodeFixture({amount: '100'})])
-        const order = fromJS(shopifyOrderFixture({shippingLines})).set('discount_codes', discountCodes)
-        const amount = getRefundableShippingAmount(order)
-
-        expect(amount).toMatchSnapshot()
     })
 })
 

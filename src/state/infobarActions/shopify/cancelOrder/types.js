@@ -5,6 +5,7 @@ import {type List, type Record} from 'immutable'
 import * as Shopify from '../../../../constants/integrations/shopify'
 
 export type CancelOrderState = Record<{
+    initialized: boolean,
     loading: boolean,
     loadingMessage: ?string,
     orderId: ?number,

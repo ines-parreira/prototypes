@@ -64,6 +64,8 @@ export const shopifyPriceSetFixture = (
     {
         amount = '1.00',
         currencyCode = 'USD',
+        presentmentAmount = null,
+        presentmentCurrencyCode = null,
     } = {}
 ): Shopify.PriceSet => ({
     shop_money: {
@@ -71,8 +73,8 @@ export const shopifyPriceSetFixture = (
         currency_code: currencyCode,
     },
     presentment_money: {
-        amount,
-        currency_code: currencyCode,
+        amount: presentmentAmount || amount,
+        currency_code: presentmentCurrencyCode || currencyCode,
     },
 })
 
@@ -302,6 +304,379 @@ export const shopifyOrderFixture = (
     total_line_items_price_set: shopifyPriceSetFixture({amount: '5.00'}),
 })
 
+export const shopifyMultiCurrencyOrderFixture = (): Shopify.Order => ({
+    id: 2177984102539,
+    name: '#1012',
+    note: null,
+    tags: '',
+    test: true,
+    email: 'samy+lumine@gorgias.com',
+    phone: null,
+    token: '02bb19dc21bf27e8f9763c5261019872',
+    app_id: 580111,
+    number: 12,
+    gateway: 'bogus',
+    refunds: [],
+    user_id: null,
+    currency: 'JPY',
+    customer: {
+        id: 3344481681547,
+        note: null,
+        tags: '',
+        email: 'samy+lumine@gorgias.com',
+        phone: null,
+        state: 'disabled',
+        currency: 'JPY',
+        last_name: 'Lumine',
+        created_at: '2020-04-14T20:14:42-04:00',
+        first_name: 'Samy',
+        tax_exempt: false,
+        updated_at: '2020-04-14T20:15:11-04:00',
+        total_spent: '0.00',
+        orders_count: 0,
+        last_order_id: null,
+        tax_exemptions: [],
+        verified_email: true,
+        default_address: {
+            id: 3337870934155,
+            zip: '94103',
+            city: 'SF',
+            name: 'Samy Lumine',
+            phone: null,
+            company: null,
+            country: 'United States',
+            default: true,
+            address1: '1188 Mission St',
+            address2: '',
+            province: 'California',
+            last_name: 'Lumine',
+            first_name: 'Samy',
+            customer_id: 3344481681547,
+            country_code: 'US',
+            country_name: 'United States',
+            province_code: 'CA'
+        },
+        last_order_name: null,
+        accepts_marketing: false,
+        admin_graphql_api_id: 'gid://shopify/Customer/3344481681547',
+        multipass_identifier: null,
+        marketing_opt_in_level: null,
+        accepts_marketing_updated_at: '2020-04-14T20:14:42-04:00'
+    },
+    closed_at: null,
+    confirmed: true,
+    device_id: null,
+    reference: null,
+    tax_lines: [
+        {
+            rate: 0.0725,
+            price: '6987',
+            title: 'CA State Tax',
+            price_set: {
+                shop_money: {
+                    amount: '6987',
+                    currency_code: 'JPY'
+                },
+                presentment_money: {
+                    amount: '65.11',
+                    currency_code: 'USD'
+                }
+            }
+        },
+        {
+            rate: 0.0125,
+            price: '1205',
+            title: 'San Francisco County Tax',
+            price_set: {
+                shop_money: {
+                    amount: '1205',
+                    currency_code: 'JPY'
+                },
+                presentment_money: {
+                    amount: '11.23',
+                    currency_code: 'USD'
+                }
+            }
+        }
+    ],
+    total_tax: '8192',
+    browser_ip: '24.5.175.157',
+    cart_token: '',
+    created_at: '2020-04-14T20:15:11-04:00',
+    line_items: [
+        {
+            id: 4692703838347,
+            sku: '',
+            name: 'Smartphone',
+            grams: 2240,
+            price: '96377',
+            title: 'Smartphone',
+            vendor: 'samy-test2',
+            taxable: true,
+            quantity: 1,
+            gift_card: false,
+            price_set: {
+                shop_money: {
+                    amount: '96377',
+                    currency_code: 'JPY'
+                },
+                presentment_money: {
+                    amount: '898.10',
+                    currency_code: 'USD'
+                }
+            },
+            tax_lines: [
+                {
+                    rate: 0.0725,
+                    price: '6987',
+                    title: 'CA State Tax',
+                    price_set: {
+                        shop_money: {
+                            amount: '6987',
+                            currency_code: 'JPY'
+                        },
+                        presentment_money: {
+                            amount: '65.11',
+                            currency_code: 'USD'
+                        }
+                    }
+                },
+                {
+                    rate: 0.0125,
+                    price: '1205',
+                    title: 'San Francisco County Tax',
+                    price_set: {
+                        shop_money: {
+                            amount: '1205',
+                            currency_code: 'JPY'
+                        },
+                        presentment_money: {
+                            amount: '11.23',
+                            currency_code: 'USD'
+                        }
+                    }
+                }
+            ],
+            product_id: 4624387440779,
+            properties: [],
+            variant_id: 32685678362763,
+            variant_title: '',
+            product_exists: true,
+            total_discount: '0',
+            origin_location: {
+                id: 1861907775627,
+                zip: '94103',
+                city: 'San Francisco',
+                name: 'samy-test2',
+                address1: '34 Harriet St',
+                address2: '',
+                country_code: 'US',
+                province_code: 'CA'
+            },
+            requires_shipping: true,
+            fulfillment_status: null,
+            total_discount_set: {
+                shop_money: {
+                    amount: '0',
+                    currency_code: 'JPY'
+                },
+                presentment_money: {
+                    amount: '0.00',
+                    currency_code: 'USD'
+                }
+            },
+            fulfillment_service: 'manual',
+            admin_graphql_api_id: 'gid://shopify/LineItem/4692703838347',
+            discount_allocations: [],
+            fulfillable_quantity: 1,
+            variant_inventory_management: 'shopify'
+        }
+    ],
+    source_url: null,
+    updated_at: '2020-04-14T20:16:23-04:00',
+    checkout_id: 12632339939467,
+    location_id: null,
+    source_name: 'web',
+    total_price: '105646',
+    cancelled_at: null,
+    fulfillments: [],
+    landing_site: '/wallets/checkouts.json',
+    order_number: 1012,
+    processed_at: '2020-04-14T20:15:10-04:00',
+    total_weight: 2240,
+    cancel_reason: null,
+    contact_email: 'samy+lumine@gorgias.com',
+    total_tax_set: {
+        shop_money: {
+            amount: '8192',
+            currency_code: 'JPY'
+        },
+        presentment_money: {
+            amount: '76.34',
+            currency_code: 'USD'
+        }
+    },
+    checkout_token: 'bc493ee2aeb737e5dea6a8edf950369f',
+    client_details: {
+        browser_ip: '24.5.175.157',
+        user_agent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_3) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36',
+        session_hash: null,
+        browser_width: 2560,
+        browser_height: 1306,
+        accept_language: 'en-US,en;q=0.9,fr;q=0.8'
+    },
+    discount_codes: [],
+    referring_site: 'https://samy-test2.myshopify.com/collections/frontpage/products/smartphone',
+    shipping_lines: [
+        {
+            id: 1776909615243,
+            code: 'Expedited',
+            phone: null,
+            price: '1077',
+            title: 'Expedited',
+            source: 'shopify',
+            price_set: {
+                shop_money: {
+                    amount: '1077',
+                    currency_code: 'JPY'
+                },
+                presentment_money: {
+                    amount: '10.04',
+                    currency_code: 'USD'
+                }
+            },
+            tax_lines: [],
+            discounted_price: '1077',
+            delivery_category: null,
+            carrier_identifier: null,
+            discount_allocations: [],
+            discounted_price_set: {
+                shop_money: {
+                    amount: '1077',
+                    currency_code: 'JPY'
+                },
+                presentment_money: {
+                    amount: '10.04',
+                    currency_code: 'USD'
+                }
+            },
+            requested_fulfillment_service_id: null
+        }
+    ],
+    subtotal_price: '96377',
+    taxes_included: false,
+    billing_address: {
+        zip: '94103',
+        city: 'SF',
+        name: 'Samy Lumine',
+        phone: null,
+        company: null,
+        country: 'United States',
+        address1: '1188 Mission St',
+        address2: '',
+        latitude: 37.7783923,
+        province: 'California',
+        last_name: 'Lumine',
+        longitude: -122.41288,
+        first_name: 'Samy',
+        country_code: 'US',
+        province_code: 'CA'
+    },
+    customer_locale: 'en',
+    note_attributes: [],
+    payment_details: {
+        avs_result_code: null,
+        credit_card_bin: '1',
+        cvv_result_code: null,
+        credit_card_number: '•••• •••• •••• 1',
+        credit_card_company: 'Bogus'
+    },
+    total_discounts: '0',
+    total_price_set: {
+        shop_money: {
+            amount: '105646',
+            currency_code: 'JPY'
+        },
+        presentment_money: {
+            amount: '984.48',
+            currency_code: 'USD'
+        }
+    },
+    total_price_usd: '981.62',
+    financial_status: 'paid',
+    landing_site_ref: null,
+    order_status_url: 'https://samy-test2.myshopify.com/35156820107/orders/02bb19dc21bf27e8f9763c5261019872/authenticate?key=e50cf6d29745c7b7c3a3d992e097d4d4',
+    shipping_address: {
+        zip: '94103',
+        city: 'SF',
+        name: 'Samy Lumine',
+        phone: null,
+        company: null,
+        country: 'United States',
+        address1: '1188 Mission St',
+        address2: '',
+        latitude: 37.7783923,
+        province: 'California',
+        last_name: 'Lumine',
+        longitude: -122.41288,
+        first_name: 'Samy',
+        country_code: 'US',
+        province_code: 'CA'
+    },
+    processing_method: 'direct',
+    source_identifier: null,
+    fulfillment_status: null,
+    subtotal_price_set: {
+        shop_money: {
+            amount: '96377',
+            currency_code: 'JPY'
+        },
+        presentment_money: {
+            amount: '898.10',
+            currency_code: 'USD'
+        }
+    },
+    total_tip_received: '0.0',
+    total_discounts_set: {
+        shop_money: {
+            amount: '0',
+            currency_code: 'JPY'
+        },
+        presentment_money: {
+            amount: '0.00',
+            currency_code: 'USD'
+        }
+    },
+    admin_graphql_api_id: 'gid://shopify/Order/2177984102539',
+    presentment_currency: 'USD',
+    discount_applications: [],
+    payment_gateway_names: [
+        'bogus'
+    ],
+    total_line_items_price: '96377',
+    buyer_accepts_marketing: false,
+    total_shipping_price_set: {
+        shop_money: {
+            amount: '1077',
+            currency_code: 'JPY'
+        },
+        presentment_money: {
+            amount: '10.04',
+            currency_code: 'USD'
+        }
+    },
+    total_line_items_price_set: {
+        shop_money: {
+            amount: '96377',
+            currency_code: 'JPY'
+        },
+        presentment_money: {
+            amount: '898.10',
+            currency_code: 'USD'
+        }
+    }
+})
+
 export const shopifyAddressFixture = (): Shopify.Address => ({
     id: 2888869838871,
     zip: '',
@@ -392,21 +767,37 @@ export const shopifyLineItemFixture = (
         variantTitle = 'Red / A',
         price = '1.00',
         appliedDiscount = null,
+        currencyCode = null,
+        presentmentPrice = null,
+        presentmentCurrencyCode = null,
     } = {}
-): Shopify.LineItem => ({
-    taxable: true,
-    price,
-    quantity,
-    product_id: productId,
-    product_exists: true,
-    properties: [],
-    variant_id: variantId,
-    title,
-    sku,
-    variant_title: variantTitle,
-    requires_shipping: true,
-    applied_discount: appliedDiscount,
-})
+): Shopify.LineItem => {
+    const lineItem = {
+        taxable: true,
+        price,
+        quantity,
+        product_id: productId,
+        product_exists: true,
+        properties: [],
+        variant_id: variantId,
+        title,
+        sku,
+        variant_title: variantTitle,
+        requires_shipping: true,
+        applied_discount: appliedDiscount,
+    }
+
+    if (currencyCode) {
+        lineItem.price_set = shopifyPriceSetFixture({
+            amount: price,
+            currencyCode,
+            presentmentAmount: presentmentPrice || price,
+            presentmentCurrencyCode: presentmentCurrencyCode || currencyCode,
+        })
+    }
+
+    return lineItem
+}
 
 export const shopifyDraftOrderFixture = (): Shopify.DraftOrder => ({
     taxes_included: false,
@@ -589,23 +980,37 @@ export const shopifyShippingLineFixture = (
     {
         price = '12.00',
         discountedPrice = '12.00',
+        currencyCode = null,
+        presentmentPrice = null,
+        presentmentDiscountedPrice = null,
+        presentmentCurrencyCode = null,
     } = {}
-): Shopify.ShippingLine => ({
-    code: 'custom',
-    price,
-    title: 'Test',
-    discounted_price: discountedPrice,
-})
+): Shopify.ShippingLine => {
+    const shippingLine = {
+        code: 'custom',
+        price,
+        title: 'Test',
+        discounted_price: discountedPrice,
+    }
 
-export const shopifyOrderAdjustmentFixture = (
-    {
-        kind = 'shipping_refund',
-        amount = '-5.00',
-    } = {}
-): Shopify.OrderAdjustment => ({
-    kind,
-    amount,
-})
+    if (currencyCode) {
+        shippingLine.price_set = shopifyPriceSetFixture({
+            amount: price,
+            currencyCode,
+            presentmentAmount: presentmentPrice || price,
+            presentmentCurrencyCode: presentmentCurrencyCode || currencyCode,
+        })
+
+        shippingLine.discounted_price_set = shopifyPriceSetFixture({
+            amount: discountedPrice,
+            currencyCode,
+            presentmentAmount: presentmentDiscountedPrice || discountedPrice,
+            presentmentCurrencyCode: presentmentCurrencyCode || currencyCode,
+        })
+    }
+
+    return shippingLine
+}
 
 export const shopifyCustomLineItemFixture = (): Shopify.LineItem => ({
     title: 'Custom item',
@@ -656,16 +1061,6 @@ export const shopifyDiscountApplicationFixture = (
     target_type: 'line_item',
     target_selection: 'explicit',
     allocation_method: 'one',
-})
-
-export const shopifyDiscountCodeFixture = (
-    {
-        amount = '5.00',
-    } = {}
-): Shopify.Discount => ({
-    code: 'FOO',
-    type: 'shipping',
-    amount,
 })
 
 export const shopifyRefundFixture = (

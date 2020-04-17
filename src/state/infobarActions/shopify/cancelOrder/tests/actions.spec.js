@@ -10,7 +10,7 @@ import {
     shopifyOrderFixture,
     shopifySuggestedRefundFixture
 } from '../../../../../fixtures/shopify'
-import {initialState} from '../../cancelOrder/reducers'
+import {initialState} from '../reducers'
 import * as actions from '../../cancelOrder/actions'
 import {initRefundOrderLineItems} from '../../../../../business/shopify/order'
 

@@ -95,37 +95,99 @@ exports[`getLineItemQuantity() should return adjusted quantity because there is 
 
 exports[`getLineItemQuantity() should return original quantity because there is no refund 1`] = `1`;
 
-exports[`getRefundableShippingAmount() should return 0 because the value of the discount code is greater than shipping price 1`] = `0`;
-
-exports[`getRefundableShippingAmount() should return adjusted amount because there is a discount code 1`] = `7`;
-
-exports[`getRefundableShippingAmount() should return adjusted amount because there is a refund 1`] = `7`;
-
-exports[`getRefundableShippingAmount() should return original amount because there is no refund 1`] = `12`;
-
 exports[`initCancelOrderLineItems() should return line items used to render the cancel order modal 1`] = `
 Immutable.List [
   Immutable.Map {
-    "price": "1.00",
     "quantity": 1,
     "product_id": 8345093387,
+    "price_set": Immutable.Map {
+      "shop_money": Immutable.Map {
+        "amount": "1.0",
+        "currency_code": "USD",
+      },
+      "presentment_money": Immutable.Map {
+        "amount": "1.0",
+        "currency_code": "USD",
+      },
+    },
     "variant_id": 31128766316567,
     "title": "Acidulous candy",
     "id": 4193100136471,
-    "total_discount": "0.00",
     "sku": "0987654321-1",
     "variant_title": "Red / A",
+    "total_discount_set": Immutable.Map {
+      "shop_money": Immutable.Map {
+        "amount": "0.0",
+        "currency_code": "USD",
+      },
+      "presentment_money": Immutable.Map {
+        "amount": "0.0",
+        "currency_code": "USD",
+      },
+    },
   },
   Immutable.Map {
-    "price": "1.00",
     "quantity": 4,
     "product_id": 8345093387,
+    "price_set": Immutable.Map {
+      "shop_money": Immutable.Map {
+        "amount": "1.0",
+        "currency_code": "USD",
+      },
+      "presentment_money": Immutable.Map {
+        "amount": "1.0",
+        "currency_code": "USD",
+      },
+    },
     "variant_id": 31128766349335,
     "title": "Acidulous candy",
     "id": 4193100169239,
-    "total_discount": "0.00",
     "sku": "0987654321-2",
     "variant_title": "Red / B",
+    "total_discount_set": Immutable.Map {
+      "shop_money": Immutable.Map {
+        "amount": "0.0",
+        "currency_code": "USD",
+      },
+      "presentment_money": Immutable.Map {
+        "amount": "0.0",
+        "currency_code": "USD",
+      },
+    },
+  },
+]
+`;
+
+exports[`initCancelOrderLineItems() should return line items used to render the cancel order modal for multi-currency order 1`] = `
+Immutable.List [
+  Immutable.Map {
+    "quantity": 1,
+    "product_id": 4624387440779,
+    "price_set": Immutable.Map {
+      "shop_money": Immutable.Map {
+        "amount": "96377",
+        "currency_code": "JPY",
+      },
+      "presentment_money": Immutable.Map {
+        "amount": "898.10",
+        "currency_code": "USD",
+      },
+    },
+    "variant_id": 32685678362763,
+    "title": "Smartphone",
+    "id": 4692703838347,
+    "sku": "",
+    "variant_title": "",
+    "total_discount_set": Immutable.Map {
+      "shop_money": Immutable.Map {
+        "amount": "0",
+        "currency_code": "JPY",
+      },
+      "presentment_money": Immutable.Map {
+        "amount": "0.00",
+        "currency_code": "USD",
+      },
+    },
   },
 ]
 `;

@@ -20,7 +20,6 @@ export function initRefundOrderPayload(
     notify: boolean = true,
 ): Record<$Shape<Shopify.RefundOrderPayload>> {
     const currency = order.getIn(['total_price_set', 'presentment_money', 'currency_code'])
-    const shippingAmount = formatPrice(getRefundableShippingAmount(order), currency)
 
     return fromJS({
         currency,
@@ -33,7 +32,7 @@ export function initRefundOrderPayload(
             quantity: getLineItemQuantity(order, lineItem),
         })),
         shipping: {
-            amount: shippingAmount,
+            amount: '0.00',
         },
         transactions: [
             {amount: ''},
@@ -47,11 +46,11 @@ export function initRefundOrderLineItems(order: Record<Shopify.Order>): List<$Sh
         id: lineItem.get('id'),
         product_id: lineItem.get('product_id'),
         variant_id: lineItem.get('variant_id'),
-        price: lineItem.get('price'),
+        price_set: lineItem.get('price_set'),
         title: lineItem.get('title'),
         variant_title: lineItem.get('variant_title'),
         sku: lineItem.get('sku'),
-        total_discount: lineItem.get('total_discount'),
+        total_discount_set: lineItem.get('total_discount_set'),
     }))
 }
 
@@ -67,28 +66,6 @@ export function getLineItemQuantity(order: Record<Shopify.Order>, lineItem: Reco
     })
 
     return quantity
-}
-
-export function getRefundableShippingAmount(order: Record<Shopify.Order>): number {
-    let amount = parseFloat(order.getIn(['shipping_lines', 0, 'discounted_price'], 0))
-
-    // Subtract discount codes
-    order.get('discount_codes', [])
-        .filter((discountCode) => discountCode.get('type') === 'shipping')
-        .forEach((discountCode) => {
-            amount -= parseFloat(discountCode.get('amount'))
-        })
-
-    // Subtract refunded amounts
-    order.get('refunds', []).forEach((refund) => {
-        refund.get('order_adjustments', [])
-            .filter((orderAdjustment) => orderAdjustment.get('kind') === 'shipping_refund')
-            .forEach((orderAdjustment) => {
-                amount += parseFloat(orderAdjustment.get('amount'))
-            })
-    })
-
-    return amount < 0 ? 0 : amount
 }
 
 export function getFinalCancelOrderPayload(

@@ -90,6 +90,20 @@ export function getDraftOrderTotalLineItemsPrice(draftOrder: Record<$Shape<Shopi
     return draftOrder.get('line_items', []).reduce((total, lineItem) => total + getDraftOrderLineItemTotal(lineItem), 0)
 }
 
+export function getPriceSetAmount(priceSet: Record<Shopify.PriceSet>, currencyCode: string): string {
+    return priceSet.getIn(['presentment_money', 'currency_code']) === currencyCode
+        ? priceSet.getIn(['presentment_money', 'amount'])
+        : priceSet.getIn(['shop_money', 'amount'])
+}
+
+export function getOrderLineItemPrice(lineItem: Record<Shopify.LineItem>, currencyCode: string): string {
+    return getPriceSetAmount(lineItem.get('price_set'), currencyCode)
+}
+
+export function getOrderLineItemTotalDiscount(lineItem: Record<Shopify.LineItem>, currencyCode: string): string {
+    return getPriceSetAmount(lineItem.get('total_discount_set'), currencyCode)
+}
+
 export function getOrderLineItemDiscountedPrice(
     lineItem: Record<Shopify.LineItem>,
     currencyCode: string,
@@ -99,8 +113,8 @@ export function getOrderLineItemDiscountedPrice(
         return 0
     }
 
-    const price = parseFloat(lineItem.get('price'))
-    const totalDiscount = parseFloat(lineItem.get('total_discount', 0))
+    const price = parseFloat(getOrderLineItemPrice(lineItem, currencyCode))
+    const totalDiscount = parseFloat(getOrderLineItemTotalDiscount(lineItem, currencyCode))
     const discountAmount = totalDiscount / quantity
     const isNonFractional = Shopify.NON_FRACTIONAL_CURRENCIES.includes(currencyCode)
     const decimals = isNonFractional ? 0 : 2

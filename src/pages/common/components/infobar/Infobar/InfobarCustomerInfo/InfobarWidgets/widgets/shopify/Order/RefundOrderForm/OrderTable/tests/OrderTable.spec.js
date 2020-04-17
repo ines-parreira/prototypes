@@ -26,6 +26,22 @@ describe('<OrderTable/>', () => {
                 <OrderTable
                     shopName="storegorgias3"
                     currencyCode="USD"
+                    shopCurrencyCode="USD"
+                    lineItems={payload.get('line_items', [])}
+                    refund={refund}
+                    onChange={onChange}
+                />
+            )
+
+            expect(component).toMatchSnapshot()
+        })
+
+        it('should render for multi-currency order', () => {
+            const component = shallow(
+                <OrderTable
+                    shopName="storegorgias3"
+                    currencyCode="USD"
+                    shopCurrencyCode="JPY"
                     lineItems={payload.get('line_items', [])}
                     refund={refund}
                     onChange={onChange}
@@ -42,6 +58,7 @@ describe('<OrderTable/>', () => {
                 <OrderTable
                     shopName="storegorgias3"
                     currencyCode="USD"
+                    shopCurrencyCode="USD"
                     lineItems={payload.get('line_items', [])}
                     refund={refund}
                     onChange={onChange}
