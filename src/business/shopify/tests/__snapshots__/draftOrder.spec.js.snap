@@ -291,13 +291,7 @@ exports[`getTaxLineLabel() should return the correct label without rounding erro
 
 exports[`getTaxLineLabel() should return the label of the given tax line 1`] = `"TVA 20.00%"`;
 
-exports[`getTotal() should return the total of the given draft order when there are taxes 1`] = `8`;
-
-exports[`getTotal() should return the total of the given draft order when there is a shipping line 1`] = `17`;
-
-exports[`getTotal() should return the total of the given draft order when there is an applied discount 1`] = `0`;
-
-exports[`getTotal() should return the total of the given draft order when there is no applied discount 1`] = `5`;
+exports[`getTaxLineLabel() should return the label of the given tax line when taxes are included 1`] = `"TVA 20.00% (included)"`;
 
 exports[`getTotalShippingPrice() should return the total shipping price when it is not set 1`] = `0`;
 

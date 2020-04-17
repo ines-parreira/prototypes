@@ -6,7 +6,7 @@ import {fromJS} from 'immutable'
 import ActionButtonsGroup from '../ActionButtonsGroup'
 import type {ActionType} from '../types'
 
-import DraftOrderModal from './DraftOrderModal'
+import DraftOrderModal from './shared/DraftOrderModal'
 import {ShopifyAction} from './constants'
 
 export default function Customer() {

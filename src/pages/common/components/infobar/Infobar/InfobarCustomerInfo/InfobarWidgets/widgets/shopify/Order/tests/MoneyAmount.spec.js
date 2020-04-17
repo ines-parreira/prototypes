@@ -3,7 +3,7 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 
-import ShopifyMoneyAmount from '../MoneyAmount'
+import ShopifyMoneyAmount from '../../shared/MoneyAmount'
 
 describe('<ShopifyMoneyAmount/>', () => {
     describe('render()', () => {

@@ -5,7 +5,6 @@ import {fromJS} from 'immutable'
 import {
     shopifyCustomerFixture,
     shopifyCustomLineItemFixture,
-    shopifyDraftOrderFixture,
     shopifyDraftOrderPayloadFixture,
     shopifyOrderFixture,
     shopifyProductFixture,
@@ -19,7 +18,6 @@ import {
     getSubtotal,
     getTaxLineLabel,
     getTaxLinesTotals,
-    getTotal,
     getTotalShippingPrice,
     getTotalTaxes,
     initDraftOrderPayload
@@ -136,13 +134,19 @@ describe('getTotalShippingPrice()', () => {
 describe('getTaxLineLabel()', () => {
     it('should return the label of the given tax line', () => {
         const taxLine = fromJS(shopifyTaxLineFixture())
-        const label = getTaxLineLabel(taxLine)
+        const label = getTaxLineLabel(taxLine, false)
+        expect(label).toMatchSnapshot()
+    })
+
+    it('should return the label of the given tax line when taxes are included', () => {
+        const taxLine = fromJS(shopifyTaxLineFixture())
+        const label = getTaxLineLabel(taxLine, true)
         expect(label).toMatchSnapshot()
     })
 
     it('should return the correct label without rounding errors', () => {
         const taxLine = fromJS(shopifyTaxLineFixture({rate: 0.0725}))
-        const label = getTaxLineLabel(taxLine)
+        const label = getTaxLineLabel(taxLine, false)
         expect(label).toMatchSnapshot()
     })
 })
@@ -181,6 +185,23 @@ describe('getTaxLinesTotals()', () => {
         ])
     })
 
+    it('should return tax lines when several lines have the same label and taxes are included', () => {
+        const taxLines = fromJS([
+            shopifyTaxLineFixture({price: '1.00'}),
+            shopifyTaxLineFixture({price: '2.00'}),
+        ])
+
+        const payload = fromJS(shopifyDraftOrderPayloadFixture())
+            .set('tax_lines', taxLines)
+            .set('taxes_included', true)
+
+        const results = getTaxLinesTotals(payload)
+
+        expect(results).toEqual([
+            {label: 'TVA 20.00% (included)', total: 3},
+        ])
+    })
+
     it('should return tax lines when lines have different labels', () => {
         const taxLines = fromJS([
             shopifyTaxLineFixture({rate: 0.1, title: 'Tax X', price: '1.00'}),
@@ -199,42 +220,26 @@ describe('getTaxLinesTotals()', () => {
             {label: 'Tax Y 10.00%', total: 3},
         ])
     })
-})
 
-describe('getTotal()', () => {
-    it('should return the total of the given draft order when there is an applied discount', () => {
-        const draftOrder = fromJS(shopifyDraftOrderFixture())
-        const total = getTotal(draftOrder)
-        expect(total).toMatchSnapshot()
-    })
-
-    it('should return the total of the given draft order when there is no applied discount', () => {
-        const draftOrder = fromJS(shopifyDraftOrderFixture()).set('applied_discount', null)
-        const total = getTotal(draftOrder)
-        expect(total).toMatchSnapshot()
-    })
-
-    it('should return the total of the given draft order when there is a shipping line', () => {
-        const shippingLine = fromJS(shopifyShippingLineFixture())
-        const draftOrder = fromJS(shopifyDraftOrderFixture())
-            .set('applied_discount', null)
-            .set('shipping_line', shippingLine)
-
-        const total = getTotal(draftOrder)
-        expect(total).toMatchSnapshot()
-    })
-
-    it('should return the total of the given draft order when there are taxes', () => {
+    it('should return tax lines when lines have different labels and taxes are included', () => {
         const taxLines = fromJS([
-            shopifyTaxLineFixture({price: '1.00'}),
-            shopifyTaxLineFixture({price: '2.00'}),
+            shopifyTaxLineFixture({rate: 0.1, title: 'Tax X', price: '1.00'}),
+            shopifyTaxLineFixture({rate: 0.2, title: 'Tax X', price: '2.00'}),
+            shopifyTaxLineFixture({rate: 0.1, title: 'Tax Y', price: '3.00'}),
+            shopifyTaxLineFixture({rate: 0.3, title: 'Tax Z', price: '4.00'}),
         ])
 
-        const draftOrder = fromJS(shopifyDraftOrderFixture())
-            .set('applied_discount', null)
+        const payload = fromJS(shopifyDraftOrderPayloadFixture())
             .set('tax_lines', taxLines)
+            .set('taxes_included', true)
 
-        const total = getTotal(draftOrder)
-        expect(total).toMatchSnapshot()
+        const results = getTaxLinesTotals(payload)
+
+        expect(results).toEqual([
+            {label: 'Tax Z 30.00% (included)', total: 4},
+            {label: 'Tax X 20.00% (included)', total: 2},
+            {label: 'Tax X 10.00% (included)', total: 1},
+            {label: 'Tax Y 10.00% (included)', total: 3},
+        ])
     })
 })

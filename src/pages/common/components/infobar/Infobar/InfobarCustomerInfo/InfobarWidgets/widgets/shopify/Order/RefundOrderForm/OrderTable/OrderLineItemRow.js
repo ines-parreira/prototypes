@@ -12,7 +12,7 @@ import {
 } from '../../../../../../../../../../../../business/shopify/lineItem'
 import * as Shopify from '../../../../../../../../../../../../constants/integrations/shopify'
 import {formatPrice} from '../../../../../../../../../../../../business/shopify/number'
-import ShopifyMoneyAmount from '../../MoneyAmount'
+import ShopifyMoneyAmount from '../../../shared/MoneyAmount'
 
 import css from './OrderLineItemRow.less'
 

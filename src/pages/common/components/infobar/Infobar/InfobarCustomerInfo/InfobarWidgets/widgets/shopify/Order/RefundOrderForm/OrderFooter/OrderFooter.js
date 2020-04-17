@@ -11,7 +11,7 @@ import {
 } from '../../../../../../../../../../../../business/shopify/refund'
 import * as Shopify from '../../../../../../../../../../../../constants/integrations/shopify'
 import {ShopifyAction} from '../../../constants'
-import AmountInput from '../../AmountInput'
+import AmountInput from '../../../shared/AmountInput'
 
 import OrderTotals from './OrderTotals'
 import css from './OrderFooter.less'

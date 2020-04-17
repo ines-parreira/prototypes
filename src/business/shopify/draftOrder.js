@@ -98,8 +98,9 @@ export function getTotalShippingPrice(draftOrder: Record<$Shape<Shopify.DraftOrd
     return parseFloat(draftOrder.getIn(['shipping_line', 'price'], 0))
 }
 
-export function getTaxLineLabel(taxLine: Record<Shopify.TaxLine>): string {
-    return `${taxLine.get('title')} ${formatPercentage(taxLine.get('rate') * 100)}%`
+export function getTaxLineLabel(taxLine: Record<Shopify.TaxLine>, taxesIncluded: boolean): string {
+    const label = `${taxLine.get('title')} ${formatPercentage(taxLine.get('rate') * 100)}%`
+    return taxesIncluded ? `${label} (included)` : label
 }
 
 export function getTotalTaxes(taxLines: List<Shopify.TaxLine>): number {
@@ -110,10 +111,11 @@ export function getTaxLinesTotals(
     draftOrder: Record<$Shape<Shopify.DraftOrder>>
 ): Array<{ label: string, total: number }> {
     const taxLines = draftOrder.get('tax_lines') || []
+    const taxesIncluded = draftOrder.get('taxes_included')
     const taxLinesByLabel = new Map()
 
     taxLines.forEach((taxLine) => {
-        const label = getTaxLineLabel(taxLine)
+        const label = getTaxLineLabel(taxLine, taxesIncluded)
         const values = taxLinesByLabel.get(label) || []
         values.push(taxLine)
         taxLinesByLabel.set(label, values)
@@ -134,9 +136,4 @@ export function getTaxLinesTotals(
             label,
             total: getTotalTaxes(values),
         }))
-}
-
-export function getTotal(draftOrder: Record<$Shape<Shopify.DraftOrder>>): number {
-    const taxLines = draftOrder.get('tax_lines', [])
-    return getSubtotal(draftOrder) + getTotalShippingPrice(draftOrder) + getTotalTaxes(taxLines)
 }
