@@ -8,8 +8,14 @@ import {currentUser} from '../../../../fixtures/users'
 const mockUpdateCurrentUser = jest.fn()
 
 describe('YourProfileView', () => {
+    const realDateNow = Date.now.bind(global.Date)
     beforeEach(() => {
+        global.Date.now = jest.fn(() => 1587000000000)
         jest.clearAllMocks()
+    })
+
+    afterEach(() => {
+        global.Date.now = realDateNow
     })
 
     describe('render', () => {
