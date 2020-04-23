@@ -1,0 +1,132 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`statusPageManager processComponents() should dispatch notification with the highest error level 1`] = `
+Array [
+  Array [
+    Object {
+      "allowHTML": true,
+      "dismissible": false,
+      "id": "status-page-components",
+      "message": "
+Currently experiencing a major outage in our API affecting
+REST API, GraphQL API components.
+Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a></u>.",
+      "status": "error",
+      "style": "banner",
+    },
+  ],
+]
+`;
+
+exports[`statusPageManager processComponents() should dispatch notify with degraded_performance status 1`] = `
+Array [
+  Array [
+    Object {
+      "allowHTML": true,
+      "dismissible": false,
+      "id": "status-page-components",
+      "message": "
+Currently experiencing degraded performance in our API affecting
+REST API, GraphQL API components.
+Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a></u>.",
+      "status": "warning",
+      "style": "banner",
+    },
+  ],
+]
+`;
+
+exports[`statusPageManager processComponents() should dispatch notify with major_outage status 1`] = `
+Array [
+  Array [
+    Object {
+      "allowHTML": true,
+      "dismissible": false,
+      "id": "status-page-components",
+      "message": "
+Currently experiencing a major outage in our API affecting
+REST API, GraphQL API components.
+Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a></u>.",
+      "status": "error",
+      "style": "banner",
+    },
+  ],
+]
+`;
+
+exports[`statusPageManager processComponents() should dispatch notify with partial_outage status 1`] = `
+Array [
+  Array [
+    Object {
+      "allowHTML": true,
+      "dismissible": false,
+      "id": "status-page-components",
+      "message": "
+Currently experiencing a partial outage in our API affecting
+REST API, GraphQL API components.
+Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a></u>.",
+      "status": "error",
+      "style": "banner",
+    },
+  ],
+]
+`;
+
+exports[`statusPageManager processScheduledMaintenances() should dispatch notify with completed status 1`] = `Array []`;
+
+exports[`statusPageManager processScheduledMaintenances() should dispatch notify with in_progress status 1`] = `
+Array [
+  Array [
+    Object {
+      "allowHTML": true,
+      "dismissible": false,
+      "id": "status-page-maintenance",
+      "message": "A scheduled maintenance for
+API affecting
+REST API, GraphQL API will start <em>in 2 minutes</em>.
+
+Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a></u>.",
+      "status": "warning",
+      "style": "banner",
+    },
+  ],
+]
+`;
+
+exports[`statusPageManager processScheduledMaintenances() should dispatch notify with scheduled status 1`] = `
+Array [
+  Array [
+    Object {
+      "allowHTML": true,
+      "dismissible": false,
+      "id": "status-page-maintenance",
+      "message": "A scheduled maintenance for
+API affecting
+REST API, GraphQL API will start <em>in 2 minutes</em>.
+
+Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a></u>.",
+      "status": "info",
+      "style": "banner",
+    },
+  ],
+]
+`;
+
+exports[`statusPageManager processScheduledMaintenances() should dispatch notify with verifying status 1`] = `
+Array [
+  Array [
+    Object {
+      "allowHTML": true,
+      "dismissible": false,
+      "id": "status-page-maintenance",
+      "message": "A scheduled maintenance for
+API affecting
+REST API, GraphQL API will start <em>in 2 minutes</em>.
+
+Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a></u>.",
+      "status": "warning",
+      "style": "banner",
+    },
+  ],
+]
+`;

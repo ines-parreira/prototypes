@@ -10,6 +10,7 @@ import '../../css/main.less'
 import pollingManager from '../services/pollingManager'
 import shortcutManager from '../services/shortcutManager'
 import userActivityManager from '../services/userActivityManager'
+import statusPageManager from '../services/statusPageManager'
 import * as currentAccountActions from '../state/currentAccount/actions'
 import * as layoutActions from '../state/layout/actions'
 import * as layoutSelectors from '../state/layout/selectors'
@@ -68,6 +69,7 @@ class App extends React.Component<Props> {
         this.props.updateAccountSuccess(this.props.currentAccount)
         userActivityManager.watch()
         pollingManager.start()
+        statusPageManager.startPolling()
 
         // ask for the newest view counts
         this.props.fetchVisibleViewsCounts()
@@ -88,6 +90,7 @@ class App extends React.Component<Props> {
     componentWillUnmount() {
         shortcutManager.unbind('App')
         pollingManager.stop()
+        statusPageManager.stopPolling()
     }
 
     componentWillReceiveProps(nextProps) {

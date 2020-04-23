@@ -25,6 +25,7 @@ const devServer = {
         buildDir,
         path.join(__dirname, 'g')
     ],
+    clientLogLevel: 'error',
     host: '0.0.0.0',
     // disable host check for dev env (if using proxy)
     disableHostCheck: !__PRODUCTION__,
