@@ -129,7 +129,7 @@ exports[`RichFieldEditor should focus the end of input on initial focus 1`] = `
           handleKeyCommand={[Function]}
           handlePastedText={[Function]}
           onChange={[Function]}
-          onFocus={[MockFunction]}
+          onFocus={[Function]}
           plugins={
             Array [
               Object {
@@ -206,6 +206,7 @@ exports[`RichFieldEditor should focus the end of input on initial focus 1`] = `
         canDropFiles={false}
         canInsertInlineImages={true}
         createToolbarPlugin={[Function]}
+        detectGrammarly={[Function]}
         editorKey="editor"
         editorState={
           EditorState {

@@ -111,4 +111,5 @@ export const EVENTS = {
     USER_HISTORY_TOGGLED: 'user-history-toggled',
     USER_MERGE_CLICKED: 'user-merge-clicked',
     VIEW_FILTER_ADD_CLICKED: 'view-filter-add-clicked',
+    GRAMMARLY_ENABLED: 'grammarly-enabled',
 }

@@ -27,6 +27,7 @@ import {contentStateFromTextOrHTML, isValidSelectionKey, refreshEditor, removeMe
 import Signature from './Signature'
 import provideToolbarPlugin, {type InjectedProps as ToolbarPluginProps} from './provideToolbarPlugin'
 import provideMentionFilteredSuggestions, {type InjectedProps as MentionFilteredSuggestionsProps} from './provideMentionSearchResults'
+import withGrammarlyUsageTracking, {type InjectedProps as GrammarlyUsageTrackingProps} from './withGrammarlyUsageTracking'
 import Toolbar from './Toolbar'
 
 type suggestionsType = List<*>
@@ -55,12 +56,13 @@ export type Props = {
     tabIndex?: string,
     readOnly?: boolean,
     spellCheck?: boolean,
-} & ToolbarPluginProps & MentionFilteredSuggestionsProps
+} & ToolbarPluginProps & MentionFilteredSuggestionsProps & GrammarlyUsageTrackingProps
 
 type State = {
     isDragging: boolean,
     wasEverFocused: boolean
 }
+
 
 export class RichFieldEditor extends InputField<Props, State> {
     static defaultProps = {
@@ -256,6 +258,12 @@ export class RichFieldEditor extends InputField<Props, State> {
         this.setState({isDragging: false})
     }
 
+    _onEditorFocus = (event: Event) => {
+        const { onFocus, detectGrammarly } = this.props
+        onFocus(event)
+        detectGrammarly()
+    }
+
     _getField = () => {
         const {required, displayOnly, onFocus, signature, ticket} = this.props
         const {MentionSuggestions} = this.mentionPlugin
@@ -278,7 +286,7 @@ export class RichFieldEditor extends InputField<Props, State> {
                     <Editor
                         editorState={this.props.editorState}
                         onChange={this._onChange}
-                        onFocus={onFocus}
+                        onFocus={this._onEditorFocus}
                         onBlur={this.props.onBlur}
                         plugins={this.plugins}
                         handleKeyCommand={this._handleKeyCommand}
@@ -330,6 +338,8 @@ export class RichFieldEditor extends InputField<Props, State> {
     }
 }
 
-export default provideToolbarPlugin(
-    provideMentionFilteredSuggestions(RichFieldEditor),
+export default withGrammarlyUsageTracking(
+    provideToolbarPlugin(
+        provideMentionFilteredSuggestions(RichFieldEditor)
+    )
 )

@@ -12,9 +12,11 @@ import {convertFromHTML} from '../../../../../utils/editor'
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
 
+
 describe('RichFieldEditor', () => {
     const defaultProps = {
         createToolbarPlugin,
+        detectGrammarly: _noop,
         onChange: _noop,
         linkIsOpen: false,
         linkText: '',
@@ -24,6 +26,10 @@ describe('RichFieldEditor', () => {
         onLinkOpen: _noop,
         onLinkClose: _noop,
     }
+
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
 
     // Note: functional test candidate
     it('should keep existing content and newlines when pasting text', () => {
@@ -101,5 +107,27 @@ describe('RichFieldEditor', () => {
         expect(onChange).toBeCalledWith(
             expect.objectContaining(EditorState.moveFocusToEnd(editorState))
         )
+    })
+
+    describe('should call detect grammarly when editor is focused', () => {
+        const contentState = convertFromHTML('<p>foo</p>')
+        let editorState = EditorState.createWithContent(contentState)
+        const onChange = jest.fn()
+        const onFocus = jest.fn()
+        const detectGrammarly = jest.fn()
+
+        const component = shallow(
+            <RichFieldEditor
+                {...defaultProps}
+                editorKey="editor"
+                editorState={editorState}
+                onChange={onChange}
+                onFocus={onFocus}
+                detectGrammarly={detectGrammarly}
+            />
+        )
+
+        component.find(Editor).simulate('focus')
+        expect(detectGrammarly).toBeCalledTimes(1)
     })
 })
