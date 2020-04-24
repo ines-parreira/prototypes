@@ -57,18 +57,17 @@ export default function Meta(props: Props) {
     ]
 
     if (source && source.type && source.extra && GO_TO_WIDGET_SOURCES.includes(source.type)) {
-        const fullPostId = source.extra.post_id
+        const postId = source.extra.post_id
         const parentId = source.extra.parent_id
         const permalink = source.extra.permalink
-        const [, postId] = fullPostId.split('_')
 
         const isFacebookPost = source.type === FACEBOOK_POST_SOURCE
-        const isFacebookComment = parentId === fullPostId
+        const isFacebookComment = parentId === postId
         const isInstagramMedia = source.type === INSTAGRAM_MEDIA_SOURCE
         const isInstagramAdMedia = source.type === INSTAGRAM_AD_MEDIA_SOURCE
 
-        let type
-        let link
+        let type = 'reply'
+        let link = `https://facebook.com/${messageId || ''}`
 
         if (isFacebookPost) {
             type = 'post'
@@ -76,15 +75,9 @@ export default function Meta(props: Props) {
         } else if (isInstagramMedia || isInstagramAdMedia) {
             type = 'media'
             link = permalink
-        } else if (!!messageId && isFacebookComment) {
-            const [, commentId] = messageId.split('_')
+        } else if (isFacebookComment) {
             type = 'comment'
-            link = `https://facebook.com/${postId}?comment_id=${commentId}`
-        } else if (!!messageId) {
-            const [, commentId] = parentId.split('_')
-            const [, replyId] = messageId.split('_')
-            type = 'reply'
-            link = `https://facebook.com/${postId}?comment_id=${commentId}&reply_comment_id=${replyId}`
+            link = `https://facebook.com/${messageId || ''}`
         }
 
         widgets.push(
