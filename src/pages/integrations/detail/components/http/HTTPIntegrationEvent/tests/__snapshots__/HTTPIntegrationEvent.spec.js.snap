@@ -591,7 +591,151 @@ exports[`<HTTPIntegrationEvent/> component should render the data of the HTTP re
           name="Error"
         >
           <pre>
-            There is an error
+            There was an error while making this request. This can happen for multiple reasons:
+- there is a typo in the request URL
+- the server you're trying to reach is not running right now
+- the server you're trying to reach is not returning a response fast enough (timeout)
+- the DNS records for this URL are not propagated yet
+- ...
+
+Please double check that the request you're trying to make should work, using tools like cURL or Postman for example, and if it is the case please reach out to us at "support@gorgias.com". Details:
+
+There is an error
+          </pre>
+        </HTTPIntegrationEventItem>
+      </Container>
+    </Col>
+  </Row>
+</Container>
+`;
+
+exports[`<HTTPIntegrationEvent/> component should render the data of the HTTP request when there was an error making the request and the default message is already in the event 1`] = `
+<Container
+  className="page-container"
+  fluid={true}
+  tag="div"
+>
+  <Row
+    tag="div"
+  >
+    <Col
+      className="request mb-4"
+      lg="6"
+      md="12"
+      tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
+    >
+      <Container
+        fluid={true}
+        tag="div"
+      >
+        <h2
+          className="mb-4"
+        >
+          Request
+        </h2>
+        <HTTPIntegrationEventItem
+          name="Method"
+          value="GET"
+        />
+        <HTTPIntegrationEventItem
+          name="URL"
+          value="https://api.gorgias.io"
+        />
+        <HTTPIntegrationEventItem
+          name="Sent"
+        >
+          <Connect(DatetimeLabel)
+            dateTime="nowTimestamp"
+          />
+        </HTTPIntegrationEventItem>
+        <HTTPIntegrationEventItem
+          name="Headers"
+          value={
+            Immutable.Map {
+              "headersKey1": "headersValue1",
+            }
+          }
+        >
+          <HTTPIntegrationEventParams
+            params={
+              Immutable.Map {
+                "headersKey1": "headersValue1",
+              }
+            }
+          />
+        </HTTPIntegrationEventItem>
+        <HTTPIntegrationEventItem
+          name="Params"
+          value={null}
+        >
+          <HTTPIntegrationEventParams
+            params={null}
+          />
+        </HTTPIntegrationEventItem>
+        <HTTPIntegrationEventItem
+          name="Body"
+          value={null}
+        />
+      </Container>
+    </Col>
+    <Col
+      className="response"
+      lg="6"
+      md="12"
+      tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
+    >
+      <Container
+        fluid={true}
+        tag="div"
+      >
+        <h2
+          className="mb-4"
+        >
+          Response
+        </h2>
+        <HTTPIntegrationEventItem
+          name="Status code"
+        >
+          <HTTPStatusLabel />
+        </HTTPIntegrationEventItem>
+        <HTTPIntegrationEventItem
+          name="Headers"
+        >
+          <HTTPIntegrationEventParams
+            params={
+              Immutable.Map {
+                "headersKey1": "headersValue1",
+              }
+            }
+          />
+        </HTTPIntegrationEventItem>
+        <HTTPIntegrationEventItem
+          name="Body"
+          value={null}
+        />
+        <HTTPIntegrationEventItem
+          name="Error"
+        >
+          <pre>
+            There was an error while making this request. Foo bar. There is an error.
           </pre>
         </HTTPIntegrationEventItem>
       </Container>
@@ -605,6 +749,7 @@ exports[`<HTTPIntegrationEvent/> container should render a HTTPIntegrationEvent 
   event={
     Immutable.Map {
       "created_datetime": "nowTimestamp",
+      "status": 200,
       "request": Immutable.Map {
         "method": "GET",
         "url": "https://api.gorgias.io",

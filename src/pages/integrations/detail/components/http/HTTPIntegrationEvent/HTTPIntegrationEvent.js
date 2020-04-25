@@ -28,6 +28,16 @@ type State = {
     isFetching?: boolean
 }
 
+const DEFAULT_ERROR_MESSAGE = 'There was an error while making this request. This can happen for multiple reasons:\n'
+    + '- there is a typo in the request URL\n'
+    + '- the server you\'re trying to reach is not running right now\n'
+    + '- the server you\'re trying to reach is not returning a response fast enough (timeout)\n'
+    + '- the DNS records for this URL are not propagated yet\n'
+    + '- ...\n\n'
+    + 'Please double check that the request you\'re trying to make should work, using tools like cURL or '
+    + 'Postman for example, and if it is the case please reach out to us at "support@gorgias.com". Details:\n\n'
+
+
 export class HTTPIntegrationEvent extends Component<Props, State> {
     state = {}
 
@@ -80,6 +90,13 @@ export class HTTPIntegrationEvent extends Component<Props, State> {
                 responseBody = JSON.stringify(JSON.parse(responseBody), undefined, 4)
             } catch (err) {
                 // ignore parsing error
+            }
+        }
+
+        if (!!responseError && !event.get('status_code')) {
+            // Previously, a similar default message (not exactly the same) was stored in database, along with the error
+            if (!responseError.startsWith('There was an error while making this request.')) {
+                responseError = DEFAULT_ERROR_MESSAGE + responseError
             }
         }
 

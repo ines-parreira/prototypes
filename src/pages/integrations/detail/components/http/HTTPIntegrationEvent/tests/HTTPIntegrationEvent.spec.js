@@ -9,6 +9,7 @@ import {getMomentNow} from '../../../../../../../utils/date'
 
 const HTTPEventWithHTMLResp = fromJS({
     created_datetime: getMomentNow(),
+    status: 200,
     request: {
         method: 'GET',
         url: 'https://api.gorgias.io',
@@ -25,6 +26,7 @@ const HTTPEventWithHTMLResp = fromJS({
 
 const HTTPEventWithJSONResp = fromJS({
     created_datetime: getMomentNow(),
+    status: 200,
     request: {
         method: 'GET',
         url: 'https://api.gorgias.io',
@@ -41,6 +43,7 @@ const HTTPEventWithJSONResp = fromJS({
 
 const HTTPEventWithEmptyBodies = fromJS({
     created_datetime: getMomentNow(),
+    status: 200,
     request: {
         method: 'GET',
         url: 'https://api.gorgias.io',
@@ -54,6 +57,7 @@ const HTTPEventWithEmptyBodies = fromJS({
 
 const HTTPEventWithErrorInResponse = fromJS({
     created_datetime: getMomentNow(),
+    status: null,
     request: {
         method: 'GET',
         url: 'https://api.gorgias.io',
@@ -172,6 +176,23 @@ describe('<HTTPIntegrationEvent/>', () => {
             )
             expect(component).toMatchSnapshot()
         })
+
+        it(
+            'should render the data of the HTTP request when there was an error making the request and the default ' +
+            'message is already in the event',
+            () => {
+                const error = 'There was an error while making this request. Foo bar. There is an error.'
+
+                const component = shallow(
+                    <HTTPIntegrationEvent
+                        eventId="2"
+                        integationId="1"
+                        event={HTTPEventWithErrorInResponse.setIn(['response', 'error'], error)}
+                    />
+                )
+                expect(component).toMatchSnapshot()
+            }
+        )
     })
 
     describe('container', () => {
