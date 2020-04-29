@@ -1,11 +1,8 @@
 import _isString from 'lodash/isString'
 
 export const canUseNewRevenueStats = (accountId: number): boolean => {
-    // `19447`: The ID of the most recent account created
-    // when the new revenue statistics feature has been deployed.
-    // Accounts with an ID superior to this one have data to be displayed
-    // so they can use this new feature.
-    return accountId && accountId > 19447
+    // `15333`: The ID of the first account created on the new cluster: us-east4.
+    return accountId && accountId >= 15333
 }
 
 /**

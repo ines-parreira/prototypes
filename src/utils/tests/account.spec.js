@@ -1,12 +1,12 @@
 import {canUseNewRevenueStats, getCurrentAccountId} from '../account'
 
 describe('canUseNewRevenueStats()', () => {
-    it('should return `true` because the ID is higher than 19447', () => {
-        const accountId = 19448
+    it('should return `true` because the ID is higher or equal to 15333', () => {
+        const accountId = 15333
         expect(canUseNewRevenueStats(accountId)).toEqual(true)
     })
-    it('should return `false` because the ID is lower or equal to 19447', () => {
-        const accountId = 19447
+    it('should return `false` because the ID is lower or equal to 15332', () => {
+        const accountId = 12421
         expect(canUseNewRevenueStats(accountId)).toEqual(false)
     })
 })
