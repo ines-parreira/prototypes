@@ -60,10 +60,12 @@ type State = {
     cvc: string
 }
 
-class CreditCard extends Component<Props, State> {
+export class CreditCard extends Component<Props, State> {
     gorgiasApi = new GorgiasApi()
 
     static defaultProps = {
+        currentSubscription: fromJS({}),
+        currentPlan: fromJS({}),
         number: '',
         name: '',
         expDate: '',
@@ -93,6 +95,16 @@ class CreditCard extends Component<Props, State> {
         }
     }
 
+    componentDidUpdate(prevProps: Props, prevState: State) {
+        const {currentPlan, currentSubscription} = this.props
+        const {isStripeLoaded} = this.state
+        const noSubscriptionNorPlan = currentSubscription.isEmpty() || currentPlan.isEmpty()
+
+        if (isStripeLoaded && !prevState.isStripeLoaded && noSubscriptionNorPlan) {
+            browserHistory.push('/app/settings/billing/')
+        }
+    }
+
     /**
      * Update the credit card of the account,
      * and start the subscription if this one is trialing or incomplete.
@@ -116,7 +128,7 @@ class CreditCard extends Component<Props, State> {
             account_domain: currentAccount.get('domain')
         })
 
-        return new Promise(async(resolve) => {
+        return new Promise(async (resolve) => {
             let creditCard = null
             let subscription = currentSubscription
             let payment = null
@@ -196,7 +208,7 @@ class CreditCard extends Component<Props, State> {
         })
     }
 
-    _validate(values) {
+    _validate(values: Object) {
         const errors = {}
 
         if (typeof Stripe === 'undefined') {
@@ -224,7 +236,7 @@ class CreditCard extends Component<Props, State> {
         return errors
     }
 
-    _updateField = (value) => {
+    _updateField = (value: Object) => {
         const newState = Object.assign({}, this.state, value)
 
         this.setState(Object.assign({}, newState, {
@@ -237,14 +249,16 @@ class CreditCard extends Component<Props, State> {
         const {
             currentPlan,
             currentSubscription,
+            location,
         } = this.props
-        const invalid = Object.keys(this.state.errors).length > 0
-        const isUpdating = /update-credit-card/.test(this.props.location.pathname)
+        const {isStripeLoaded, errors} = this.state
+
+        const invalid = Object.keys(errors).length > 0
+        const isUpdating = /update-credit-card/.test(location? location.pathname : '')
         const action = isUpdating ? 'Update' : 'Add'
         const payment = (isUpdating || currentPlan.isEmpty() || currentPlan.get('amount') === 0) ? '' :
             ` and pay ${currentPlan.get('currencySign')}${currentPlan.get('amount')}`
 
-        const {isStripeLoaded} = this.state
         if (!isStripeLoaded) {
             return <Loader/>
         }
@@ -270,7 +284,7 @@ class CreditCard extends Component<Props, State> {
                     <p>Enter the information of the card you'd like to use.</p>
 
                     <Row>
-                        {currentSubscription.get('status') !== 'active' && (
+                        {currentSubscription.get('status') !== 'active' && !currentPlan.isEmpty() && (
                             <Col sm={3}>
                                 <Plan
                                     plan={currentPlan}
@@ -291,7 +305,7 @@ class CreditCard extends Component<Props, State> {
                                     onChange={(number) => this._updateField({
                                         number: creditCardNormalizer(number, this.state.number)
                                     })}
-                                    error={this.state.errors.number}
+                                    error={errors.number}
                                 />
                                 <InputField
                                     type="text"
@@ -301,7 +315,7 @@ class CreditCard extends Component<Props, State> {
                                     required
                                     value={this.state.name}
                                     onChange={(name) => this._updateField({name})}
-                                    error={this.state.errors.name}
+                                    error={errors.name}
                                 />
                                 <Row>
                                     <Col>
@@ -315,7 +329,7 @@ class CreditCard extends Component<Props, State> {
                                             onChange={(expDate) => this._updateField({
                                                 expDate: creditCardExpDateNormalizer(expDate, this.state.expDate)
                                             })}
-                                            error={this.state.errors.expDate}
+                                            error={errors.expDate}
                                         />
                                     </Col>
                                     <Col>
@@ -329,7 +343,7 @@ class CreditCard extends Component<Props, State> {
                                             onChange={(cvc) => this._updateField({
                                                 cvc: creditCardCVCNormalizer(cvc, this.state.cvc)
                                             })}
-                                            error={this.state.errors.cvc}
+                                            error={errors.cvc}
                                         />
                                     </Col>
                                 </Row>

@@ -1,0 +1,312 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CreditCard component should display credit card form 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            className="section"
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/billing/"
+          >
+            Billing & Usage
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          Add
+           credit card
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <p>
+      Enter the information of the card you'd like to use.
+    </p>
+    <Row
+      tag="div"
+    >
+      <Col
+        sm={4}
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <Form
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <InputField
+            help="You will be charged for the current period of your plan once you add your Credit Card"
+            label="Card number"
+            name="number"
+            onChange={[Function]}
+            placeholder="4657 7894 1234 7895"
+            required={true}
+            type="text"
+            value=""
+          />
+          <InputField
+            label="Name on the card"
+            name="name"
+            onChange={[Function]}
+            placeholder="Marie Curie"
+            required={true}
+            type="text"
+            value=""
+          />
+          <Row
+            tag="div"
+          >
+            <Col
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              <InputField
+                label="Expiration date"
+                name="expDate"
+                onChange={[Function]}
+                placeholder="05 / 21"
+                required={true}
+                type="text"
+                value=""
+              />
+            </Col>
+            <Col
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              <InputField
+                label="CVC"
+                name="cvc"
+                onChange={[Function]}
+                placeholder="693"
+                required={true}
+                type="text"
+                value=""
+              />
+            </Col>
+          </Row>
+          <div>
+            <FormGroup
+              color="danger"
+              tag="div"
+            >
+              <Errors
+                tag={[Function]}
+              />
+            </FormGroup>
+            <Button
+              className=""
+              color="success"
+              disabled={true}
+              tag="button"
+            >
+              Add
+               credit card 
+               and pay $1000
+            </Button>
+          </div>
+        </Form>
+      </Col>
+    </Row>
+  </Container>
+</div>
+`;
+
+exports[`CreditCard component should display loader while fetching stripe SDK 1`] = `
+<Loader
+  inline={false}
+  minHeight="500px"
+  size="40px"
+/>
+`;
+
+exports[`CreditCard component should render nothing if loaded, but no current subscription is set 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            className="section"
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/billing/"
+          >
+            Billing & Usage
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          Add
+           credit card
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <p>
+      Enter the information of the card you'd like to use.
+    </p>
+    <Row
+      tag="div"
+    >
+      <Col
+        sm={4}
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <Form
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <InputField
+            help="You will be charged for the current period of your plan once you add your Credit Card"
+            label="Card number"
+            name="number"
+            onChange={[Function]}
+            placeholder="4657 7894 1234 7895"
+            required={true}
+            type="text"
+            value=""
+          />
+          <InputField
+            label="Name on the card"
+            name="name"
+            onChange={[Function]}
+            placeholder="Marie Curie"
+            required={true}
+            type="text"
+            value=""
+          />
+          <Row
+            tag="div"
+          >
+            <Col
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              <InputField
+                label="Expiration date"
+                name="expDate"
+                onChange={[Function]}
+                placeholder="05 / 21"
+                required={true}
+                type="text"
+                value=""
+              />
+            </Col>
+            <Col
+              tag="div"
+              widths={
+                Array [
+                  "xs",
+                  "sm",
+                  "md",
+                  "lg",
+                  "xl",
+                ]
+              }
+            >
+              <InputField
+                label="CVC"
+                name="cvc"
+                onChange={[Function]}
+                placeholder="693"
+                required={true}
+                type="text"
+                value=""
+              />
+            </Col>
+          </Row>
+          <div>
+            <FormGroup
+              color="danger"
+              tag="div"
+            >
+              <Errors
+                tag={[Function]}
+              />
+            </FormGroup>
+            <Button
+              className=""
+              color="success"
+              disabled={true}
+              tag="button"
+            >
+              Add
+               credit card 
+            </Button>
+          </div>
+        </Form>
+      </Col>
+    </Row>
+  </Container>
+</div>
+`;
