@@ -5,8 +5,7 @@ export const canUseNewRevenueStats = (accountId: number): boolean => {
     // when the new revenue statistics feature has been deployed.
     // Accounts with an ID superior to this one have data to be displayed
     // so they can use this new feature.
-    // `15513`: louistestaccount
-    return accountId && [15513, 10637].includes(accountId)
+    return accountId && accountId > 19447
 }
 
 /**
