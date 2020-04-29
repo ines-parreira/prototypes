@@ -8,7 +8,9 @@ import {defaults} from 'react-chartjs-2'
 import {formatDuration} from '../pages/stats/common/utils'
 import {TagLabel} from '../pages/common/utils/labels'
 
-import {EMAIL_CHANNEL, CHAT_CHANNEL, AIRCALL_CHANNEL, API_CHANNEL, SMS_CHANNEL} from './ticket'
+import {SHOPIFY_INTEGRATION_TYPE} from '../constants/integration'
+
+import {EMAIL_CHANNEL, CHAT_CHANNEL, SMS_CHANNEL, AIRCALL_CHANNEL, API_CHANNEL} from './ticket'
 
 // Available Stats. These names should match names in `g/stats/config`
 export const OVERVIEW = 'overview'
@@ -23,10 +25,16 @@ export const TICKETS_CLOSED_PER_AGENT_PER_DAY = 'tickets-closed-per-agent-per-da
 export const MESSAGES_SENT_PER_MACRO = 'messages-sent-per-macro'
 export const SATISFACTION_SURVEYS = 'satisfaction-surveys'
 export const LATEST_SATISFACTION_SURVEYS = 'latest-satisfaction-surveys'
-export const REVENUE_OVERVIEW = 'revenue-overview'
-export const SALES_PER_AGENT = 'sales-per-agent'
-export const PRE_SALE_CONVERTED_TICKETS_PER_DAY = 'pre-sale-converted-tickets-per-day'
-export const PRE_SALE_TICKETS = 'pre-sale-tickets'
+
+export const OLD_REVENUE_OVERVIEW = 'revenue-overview'
+export const OLD_SALES_PER_AGENT = 'sales-per-agent'
+export const OLD_PRE_SALE_CONVERTED_TICKETS_PER_DAY = 'pre-sale-converted-tickets-per-day'
+export const OLD_PRE_SALE_TICKETS = 'pre-sale-tickets'
+
+export const REVENUE_OVERVIEW = 'revenue-overview-v2'
+export const REVENUE_PER_AGENT = 'revenue-per-agent-v2'
+export const REVENUE_PER_DAY = 'revenue-per-day-v2'
+export const REVENUE_PER_TICKET = 'revenue-per-ticket-v2'
 
 const mainBlue = '#152065'
 export const colors = [
@@ -60,6 +68,8 @@ export const SATISFACTION_SURVEY_MAX_SCORE = 5
 export const SATISFACTION_SURVEY_MAX_COMMENT_LENGTH = 80
 
 export const TICKET_MAX_SUBJECT_LENGTH = 100
+
+export const STORE_INTEGRATION_TYPES = [SHOPIFY_INTEGRATION_TYPE]
 
 // Default configuration for Chart.js
 _merge(defaults, {
@@ -530,6 +540,79 @@ export const stats = fromJS({
     },
     [REVENUE_OVERVIEW]: {
         style: 'key-metrics',
+        api_resource_name: REVENUE_OVERVIEW,
+        metrics: [{
+            name: 'tickets_created',
+            label: 'Tickets created',
+            tooltip: 'Number of tickets created during the selected period.'
+        }, {
+            name: 'tickets_converted',
+            label: 'Tickets converted',
+            tooltip: 'Number of tickets converted during the selected period.',
+        }, {
+            name: 'conversion_ratio',
+            label: 'Conversion ratio',
+            tooltip: 'Ratio between created vs converted tickets.'
+        }, {
+            name: 'total_sales_from_support',
+            label: 'Total sales from support',
+            tooltip: 'Sum of the order amount for each converted ticket.'
+        }]
+    },
+    [REVENUE_PER_AGENT]: {
+        helpText: 'Breakdown of sales metrics per agent.',
+        style: 'table',
+        downloadable: true,
+    },
+    [REVENUE_PER_DAY]: {
+        helpText: 'Number of converted and created tickets per day.',
+        style: 'bar',
+        downloadable: true,
+        lines: {
+            tickets_created: {
+                label: 'Tickets Created',
+                color: '#8892f2'
+            },
+            tickets_converted: {
+                label: 'Tickets Converted',
+                color: '#ffb584',
+            },
+        },
+        options: (legend) => ({
+            scales: {
+                xAxes: [{
+                    scaleLabel: _merge({}, defaultScaleLabel, {
+                        labelString: legend.getIn(['axes', 'x']),
+                        display: !!legend.getIn(['axes', 'x']),
+                    }),
+                    stacked: false,
+                    gridLines: defaultXAxeGridLines,
+                    ticks: _merge({}, defaultTicks, {
+                        callback: formatDateAxeCb
+                    })
+                }],
+                yAxes: [{
+                    scaleLabel: _merge({}, defaultScaleLabel, {
+                        labelString: legend.getIn(['axes', 'y']),
+                        display: !!legend.getIn(['axes', 'y']),
+                    }),
+                    ticks: _merge({}, defaultTicks, {
+                        min: 0,
+                        suggestedMax: 1,
+                        callback: formatTicketAxeCb
+                    }),
+                    gridLines: defaultYAxeGridLines
+                }]
+            }
+        })
+    },
+    [REVENUE_PER_TICKET]: {
+        helpText: 'Tickets Converted',
+        style: 'table',
+        downloadable: true,
+    },
+    [OLD_REVENUE_OVERVIEW]: {
+        style: 'key-metrics',
         api_resource_name: 'revenue-overview',
         metrics: [{
             name: 'pre_sale_tickets',
@@ -550,12 +633,12 @@ export const stats = fromJS({
             tooltip: 'Sum of the order amount for each converted ticket.'
         }]
     },
-    [SALES_PER_AGENT]: {
+    [OLD_SALES_PER_AGENT]: {
         helpText: 'Breakdown of sales metrics per agent.',
         style: 'table',
         downloadable: true,
     },
-    [PRE_SALE_CONVERTED_TICKETS_PER_DAY]: {
+    [OLD_PRE_SALE_CONVERTED_TICKETS_PER_DAY]: {
         helpText: 'Number of pre-sale and converted tickets per day.',
         style: 'bar',
         downloadable: true,
@@ -597,7 +680,7 @@ export const stats = fromJS({
             }
         })
     },
-    [PRE_SALE_TICKETS]: {
+    [OLD_PRE_SALE_TICKETS]: {
         helpText: 'Pre-sale and converted tickets',
         style: 'table',
         downloadable: true,
@@ -626,96 +709,12 @@ const formatDurationTooltipCb = (item, data) => {
  * filters: filters available on the view applied on statistics
  * stats: statistics displayed on the view
  */
-export const views = fromJS({
-    overview: {
-        name: 'Overview',
-        description: `Get an overview of the most important statistics about your customer service.
-Metrics such as volume of tickets, first response time and resolution time are key when it comes to
-providing excellent customer support.
-<a href="https://docs.gorgias.com/statistics/statistics#overview" target="_blank">Learn more</a>.`,
-        filters: [{type: 'channels'}, {type: 'agents'}, {type: 'tags'}, {type: 'period'}],
-        // default view available at `app/stats/`
-        link: 'overview',
-        stats: [
-            OVERVIEW,
-            SUPPORT_VOLUME,
-            RESOLUTION_TIME,
-            FIRST_RESPONSE_TIME,
-        ]
-    },
-    tags: {
-        name: 'Tags',
-        description: `Tags statistics will show you how many tickets were created during this time period and have a
-tag attached to them. <a href="https://docs.gorgias.com/statistics/statistics#tags" target="_blank">Learn more</a>.`,
-        filters: [{type: 'channels'}, {type: 'tags'}, {type: 'period'}],
-        link: 'tags',
-        stats: [
-            TICKETS_PER_TAG,
-        ]
-    },
-    channels: {
-        name: 'Channels',
-        description: `Channel statistics to get a clear view of your ticket volume based on the different communication
-channels such as Facebook Messenger, Instagram Comments, Email, Chat, etc...
-<a href="https://docs.gorgias.com/statistics/statistics#channels" target="_blank">Learn more</a>.`,
-        filters: [{type: 'channels'}, {type: 'period'}],
-        link: 'channels',
-        stats: [
-            TICKETS_CREATED_PER_CHANNEL_PER_DAY,
-            TICKETS_CREATED_PER_CHANNEL,
-        ]
-    },
-    agents: {
-        name: 'Agents',
-        description: `Agents statistics will show you how many tickets were closed by each agent during this period.
-<a href="https://docs.gorgias.com/statistics/statistics#agents" target="_blank">Learn more</a>.`,
-        filters: [{type: 'channels'}, {type: 'period'}],
-        link: 'agents',
-        stats: [
-            TICKETS_CLOSED_PER_AGENT_PER_DAY,
-            TICKETS_CLOSED_PER_AGENT
-        ]
-    },
-    macros: {
-        name: 'Macros',
-        description: `Macro statistics is an excellent way to ensure your agents are very efficient by using macros.
-It also shows what macros are being used the most often so you can you can provide this information elsewhere in order
-to help reduce your support inquiries.
-<a href="https://docs.gorgias.com/statistics/statistics#macros" target="_blank">Learn more</a>.`,
-        filters: [{type: 'channels'}, {type: 'period'}],
-        link: 'macros',
-        stats: [
-            MESSAGES_SENT_PER_MACRO
-        ]
-    },
-    satisfaction: {
-        name: 'Satisfaction',
-        description: `Satisfaction survey statistics allow you to measure how good is the support your team is providing over time.
-How many surveys have been sent, response rate, average scores and more. <a href="https://docs.gorgias.com/statistics/statistics#satisfaction" target="_blank">Learn more</a>.`,
-        filters: [
-            {
-                type: 'channels',
-                options: [EMAIL_CHANNEL, CHAT_CHANNEL]
-            },
-            {
-                type: 'score',
-                minValue: SATISFACTION_SURVEY_MIN_SCORE,
-                maxValue: SATISFACTION_SURVEY_MAX_SCORE,
-                variant: 'star',
-                reverse: true
-            },
-            {type: 'agents'}, {type: 'tags'}, {type: 'period'},
-        ],
-        link: 'satisfaction',
-        stats: [
-            SATISFACTION_SURVEYS, LATEST_SATISFACTION_SURVEYS
-        ]
-    },
-    revenue: {
+export const views = (newRevenueStat: boolean) => {
+    const revenueView = {
         name: 'Revenue (Beta)',
         description: `Revenue statistics allow you to measure how much money your support team is generating by
-helping customers through the purchasing journey.<br/>
-<a href="https://docs.gorgias.com/statistics/revenue-statistics" target="_blank">Learn how it works</a>.`,
+    helping customers through the purchasing journey.<br/>
+    <a href="https://docs.gorgias.com/statistics/revenue-statistics" target="_blank">Learn how it works</a>.`,
         filters: [
             {
                 type: 'channels',
@@ -726,7 +725,107 @@ helping customers through the purchasing journey.<br/>
             }],
         link: 'revenue',
         stats: [
-            REVENUE_OVERVIEW, SALES_PER_AGENT, PRE_SALE_CONVERTED_TICKETS_PER_DAY, PRE_SALE_TICKETS
+            OLD_REVENUE_OVERVIEW, OLD_SALES_PER_AGENT, OLD_PRE_SALE_CONVERTED_TICKETS_PER_DAY, OLD_PRE_SALE_TICKETS
         ]
-    },
-})
+    }
+
+    if (newRevenueStat) {
+        revenueView.name = 'Revenue'
+        revenueView.filters = [
+            {type: 'integrations', options: STORE_INTEGRATION_TYPES},
+            {type: 'channels'},
+            {type: 'period'}
+        ]
+        revenueView.stats = [
+            REVENUE_OVERVIEW, REVENUE_PER_AGENT, REVENUE_PER_DAY, REVENUE_PER_TICKET
+        ]
+    }
+
+    return fromJS({
+        overview: {
+            name: 'Overview',
+            description: `Get an overview of the most important statistics about your customer service.
+Metrics such as volume of tickets, first response time and resolution time are key when it comes to
+providing excellent customer support.
+<a href="https://docs.gorgias.com/statistics/statistics#overview" target="_blank">Learn more</a>.`,
+            filters: [{type: 'channels'}, {type: 'agents'}, {type: 'tags'}, {type: 'period'}],
+            // default view available at `app/stats/`
+            link: 'overview',
+            stats: [
+                OVERVIEW,
+                SUPPORT_VOLUME,
+                RESOLUTION_TIME,
+                FIRST_RESPONSE_TIME,
+            ]
+        },
+        tags: {
+            name: 'Tags',
+            description: `Tags statistics will show you how many tickets were created during this time period and have a
+tag attached to them. <a href="https://docs.gorgias.com/statistics/statistics#tags" target="_blank">Learn more</a>.`,
+            filters: [{type: 'channels'}, {type: 'tags'}, {type: 'period'}],
+            link: 'tags',
+            stats: [
+                TICKETS_PER_TAG,
+            ]
+        },
+        channels: {
+            name: 'Channels',
+            description: `Channel statistics to get a clear view of your ticket volume based on the different communication
+channels such as Facebook Messenger, Instagram Comments, Email, Chat, etc...
+<a href="https://docs.gorgias.com/statistics/statistics#channels" target="_blank">Learn more</a>.`,
+            filters: [{type: 'channels'}, {type: 'period'}],
+            link: 'channels',
+            stats: [
+                TICKETS_CREATED_PER_CHANNEL_PER_DAY,
+                TICKETS_CREATED_PER_CHANNEL,
+            ]
+        },
+        agents: {
+            name: 'Agents',
+            description: `Agents statistics will show you how many tickets were closed by each agent during this period.
+<a href="https://docs.gorgias.com/statistics/statistics#agents" target="_blank">Learn more</a>.`,
+            filters: [{type: 'channels'}, {type: 'period'}],
+            link: 'agents',
+            stats: [
+                TICKETS_CLOSED_PER_AGENT_PER_DAY,
+                TICKETS_CLOSED_PER_AGENT
+            ]
+        },
+        macros: {
+            name: 'Macros',
+            description: `Macro statistics is an excellent way to ensure your agents are very efficient by using macros.
+It also shows what macros are being used the most often so you can you can provide this information elsewhere in order
+to help reduce your support inquiries.
+<a href="https://docs.gorgias.com/statistics/statistics#macros" target="_blank">Learn more</a>.`,
+            filters: [{type: 'channels'}, {type: 'period'}],
+            link: 'macros',
+            stats: [
+                MESSAGES_SENT_PER_MACRO
+            ]
+        },
+        satisfaction: {
+            name: 'Satisfaction',
+            description: `Satisfaction survey statistics allow you to measure how good is the support your team is providing over time.
+How many surveys have been sent, response rate, average scores and more. <a href="https://docs.gorgias.com/statistics/statistics#satisfaction" target="_blank">Learn more</a>.`,
+            filters: [
+                {
+                    type: 'channels',
+                    options: [EMAIL_CHANNEL, CHAT_CHANNEL]
+                },
+                {
+                    type: 'score',
+                    minValue: SATISFACTION_SURVEY_MIN_SCORE,
+                    maxValue: SATISFACTION_SURVEY_MAX_SCORE,
+                    variant: 'star',
+                    reverse: true
+                },
+                {type: 'agents'}, {type: 'tags'}, {type: 'period'},
+            ],
+            link: 'satisfaction',
+            stats: [
+                SATISFACTION_SURVEYS, LATEST_SATISFACTION_SURVEYS
+            ]
+        },
+        revenue: revenueView
+    })
+}

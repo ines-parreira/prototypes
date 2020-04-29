@@ -1,4 +1,5 @@
 // @flow
+import _capitalize from 'lodash/capitalize'
 import classnames from 'classnames'
 import React, {type ComponentType} from 'react'
 import {DropdownItem, DropdownMenu, DropdownToggle, Input, Label, UncontrolledDropdown} from 'reactstrap'
@@ -20,7 +21,9 @@ type Props = {
     singular: string,
     isDisabled: boolean,
     onSearch?: string => void,
-    dropdownMenu: ComponentType<*>
+    dropdownMenu: ComponentType<*>,
+    multiple: boolean,
+    required: boolean
 }
 
 type State = {
@@ -38,7 +41,9 @@ class SearchableSelectField extends React.Component<Props, State> {
                 {...props}
                 className={css.dropdown}
             />
-        )
+        ),
+        multiple: true,
+        required: false
     }
 
     state = {
@@ -56,27 +61,30 @@ class SearchableSelectField extends React.Component<Props, State> {
     }
 
     _handleOptionClick = (value: string) => {
-        const input = this.props.input
+        const {input, isDisabled, multiple, required} = this.props
 
-        if (this.props.isDisabled) {
+        if (isDisabled) {
             return
         }
 
-        const newValue = input.value
+        const isRemoving = !!input.value.includes(value)
+        let newValue
 
-        if (newValue.includes(value)) {
-            // if value already present, remove it
-            newValue.splice(newValue.indexOf(value), 1)
-        } else {
-            // otherwise add it
-            newValue.push(value)
+        if (isRemoving && (!required || input.value.length > 1)) {
+            newValue = input.value.filter((item) => item !== value)
+        } else if (!isRemoving && multiple) {
+            newValue = input.value.concat([value])
+        } else if (!isRemoving) {
+            newValue = [value]
         }
 
-        input.onChange(newValue)
+        if (newValue) {
+            input.onChange(newValue)
+        }
     }
 
     _deselectAll = () => {
-        if (this.props.isDisabled) {
+        if (this.props.isDisabled || this.props.required) {
             return
         }
 
@@ -84,7 +92,9 @@ class SearchableSelectField extends React.Component<Props, State> {
     }
 
     render() {
-        const {items, input, plural, singular, isDisabled, dropdownMenu: DropdownMenuComponent} = this.props
+        const {
+            items, input, plural, singular, isDisabled, dropdownMenu: DropdownMenuComponent, multiple, required
+        } = this.props
         const {search} = this.state
 
         const hasSelectedItems = !!input.value.length
@@ -93,6 +103,20 @@ class SearchableSelectField extends React.Component<Props, State> {
         const filteredItems = items.filter((item) => {
             return item.label && item.label.toLowerCase().includes(search.toLowerCase())
         })
+
+        let dropdownLabel = ''
+        if (multiple && hasSelectedItems) {
+            dropdownLabel = input.value.length + ' ' + (input.value.length > 1 ? plural : singular)
+        } else if (multiple && !hasSelectedItems) {
+            dropdownLabel = 'All ' + plural
+        } else if (!multiple && input.value.length === 1) {
+            const selectedItem = items.find((item) => (item.value === input.value[0]))
+            if (selectedItem) {
+                dropdownLabel = selectedItem.label
+            }
+        } else if (!multiple) {
+            dropdownLabel = _capitalize(singular)
+        }
 
         return (
             <UncontrolledDropdown
@@ -106,17 +130,7 @@ class SearchableSelectField extends React.Component<Props, State> {
                     type="button"
                     disabled={isDisabled}
                 >
-                    {
-                        hasSelectedItems ? (
-                            <span>
-                                {input.value.length} {input.value.length > 1 ? plural : singular}
-                            </span>
-                        ) : (
-                            <span>
-                                All {plural}
-                            </span>
-                        )
-                    }
+                    <span>{dropdownLabel}</span>
                 </DropdownToggle>
                 <DropdownMenuComponent right>
                     <DropdownItem
@@ -172,7 +186,7 @@ class SearchableSelectField extends React.Component<Props, State> {
                         }
                     </div>
                     {
-                        hasSelectedItems && [
+                        (hasSelectedItems && !required) && [
                             <DropdownItem
                                 key="divider"
                                 divider
@@ -182,7 +196,9 @@ class SearchableSelectField extends React.Component<Props, State> {
                                 type="button"
                                 onClick={this._deselectAll}
                             >
-                                <span className="text-warning">Deselect all</span>
+                                <span className="text-warning">
+                                    {input.value.length === 1 ? 'Deselect' : 'Deselect all'}
+                                </span>
                             </DropdownItem>
                         ]
                     }

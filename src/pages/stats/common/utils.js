@@ -76,7 +76,7 @@ export const formatCurrency = (value, currency) => {
     return value.toLocaleString('en-us', {
         style: 'currency',
         currency: currency,
-        maximumFractionDigits: 0,
+        maximumFractionDigits: 2,
         minimumFractionDigits: 0
     })
 }

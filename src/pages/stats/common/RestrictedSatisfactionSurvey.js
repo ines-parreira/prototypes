@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router'
 
 import RestrictedFeature from '../../common/components/RestrictedFeature'
 
@@ -12,6 +13,12 @@ const imagesURL = [
 
 const RestrictedSatisfactionSurvey = () => (
     <RestrictedFeature
+        alertMsg={
+            <>
+                This feature is only available for Pro and above plans.
+                <Link to="/app/settings/billing/plans"> Upgrade here.</Link>
+            </>
+        }
         imagesURL={imagesURL}
         info="Keep track of the performance of your support team by sending a satisfaction survey after a
                  ticket is closed."

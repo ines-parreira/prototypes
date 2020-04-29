@@ -20,7 +20,9 @@ exports[`UserAuditList component mounts correctly 1`] = `
         }
         isDisabled={false}
         items={Immutable.List []}
+        multiple={true}
         plural="team members"
+        required={false}
         singular="team member"
       />
       <SearchableSelectField
@@ -44,7 +46,9 @@ exports[`UserAuditList component mounts correctly 1`] = `
             },
           ]
         }
+        multiple={true}
         plural="objects"
+        required={false}
         singular="object"
       />
       <SearchableSelectField
@@ -76,7 +80,9 @@ exports[`UserAuditList component mounts correctly 1`] = `
             },
           ]
         }
+        multiple={true}
         plural="events"
+        required={false}
         singular="event"
       />
       <DatePicker

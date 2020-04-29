@@ -11,7 +11,7 @@ import {views as statsViewsConfig} from '../../../config/stats'
 import {firstResponseTimeStat} from '../../../fixtures/stats'
 
 describe('<Stats/>', () => {
-    const channelsStatView = statsViewsConfig.getIn(['channels', 'link'])
+    const channelsStatView = statsViewsConfig(true).getIn(['channels', 'link'])
     const defaultProps = {
         notify: jest.fn(),
         filters: fromJS({
@@ -129,7 +129,7 @@ describe('<Stats/>', () => {
                     params={{view: channelsStatView}}
                 />
             )
-            const statNames = statsViewsConfig.getIn(['channels', 'stats'])
+            const statNames = statsViewsConfig(true).getIn(['channels', 'stats'])
             const component = componentWrapper.instance()
             component.setState({
                 fetchingStates: statNames.reduce((loaders, statName) => loaders.set(statName, true), fromJS({})),

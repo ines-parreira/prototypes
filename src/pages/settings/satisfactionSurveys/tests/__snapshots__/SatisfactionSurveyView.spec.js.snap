@@ -3212,6 +3212,18 @@ exports[`SatisfactionSurveyView render should render the upgrade to pro componen
         >
           <RestrictedSatisfactionSurvey>
             <RestrictedFeature
+              alertMsg={
+                <React.Fragment>
+                  This feature is only available for Pro and above plans.
+                  <Link
+                    onlyActiveOnIndex={false}
+                    style={Object {}}
+                    to="/app/settings/billing/plans"
+                  >
+                     Upgrade here.
+                  </Link>
+                </React.Fragment>
+              }
               imagesURL={
                 Array [
                   "/static/private/img/presentationals/satisfaction-survey-stats.png",
@@ -3289,7 +3301,6 @@ exports[`SatisfactionSurveyView render should render the upgrade to pro componen
                         role="alert"
                       >
                         This feature is only available for Pro and above plans.
-                         
                         <Link
                           onlyActiveOnIndex={false}
                           style={Object {}}
@@ -3299,7 +3310,7 @@ exports[`SatisfactionSurveyView render should render the upgrade to pro componen
                             onClick={[Function]}
                             style={Object {}}
                           >
-                            Upgrade here.
+                             Upgrade here.
                           </a>
                         </Link>
                       </div>

@@ -13,6 +13,63 @@ exports[`StatsPage should render "Overview" statistics 1`] = `
 </div>
 `;
 
-exports[`StatsPage should render a component used to restrict access to revenue statistics 1`] = `<RevenueUpgrade />`;
-
 exports[`StatsPage should render a component used to restrict access to satisfaction survey statistics 1`] = `<RestrictedSatisfactionSurvey />`;
+
+exports[`StatsPage should restrict access to revenue stats because the account doesn't have a store integration 1`] = `
+<RestrictedRevenue
+  hasFeature={true}
+  hasRequiredIntegration={false}
+/>
+`;
+
+exports[`StatsPage should restrict access to revenue stats because the account doesn't have this feature 1`] = `
+<RestrictedRevenue
+  hasFeature={false}
+  hasRequiredIntegration={true}
+/>
+`;
+
+exports[`StatsPage testing default filters should ensure that the filters contain a store integration when possible 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      Immutable.Map {
+        "period": Immutable.Map {
+          "start_datetime": "2019-08-28T00:00:00-07:00",
+          "end_datetime": "2019-09-03T23:59:59-07:00",
+        },
+        "integrations": Immutable.List [
+          1,
+        ],
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`StatsPage testing default filters should ensure the default value 1`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      Immutable.Map {
+        "period": Immutable.Map {
+          "start_datetime": "2019-08-28T00:00:00-07:00",
+          "end_datetime": "2019-09-03T23:59:59-07:00",
+        },
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;

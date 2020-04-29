@@ -6,25 +6,25 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
 >
   <div
     className="metric"
-    key="pre_sale_tickets"
+    key="tickets_created"
   >
     <div
       className="label"
     >
-      Pre-sale tickets
+      Tickets created
       <span>
         <i
           className="info-icon help-icon material-icons ml-2"
-          id="title-pre_sale_tickets"
+          id="title-tickets_created"
         >
           info_outline
         </i>
         <Tooltip
           delay={0}
           placement="top"
-          target="title-pre_sale_tickets"
+          target="title-tickets_created"
         >
-          All tickets excluding post-sale tickets. Post-sale tickets are tickets that had an order within 45 days before being created, and no order within 7 days after being created.
+          Number of tickets created during the selected period.
         </Tooltip>
       </span>
     </div>
@@ -39,7 +39,7 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
         </div>
         <span
           className="diff"
-          id="value-pre_sale_tickets"
+          id="value-tickets_created"
         >
           <span>
             <i
@@ -58,7 +58,7 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
           <Tooltip
             delay={0}
             placement="top"
-            target="value-pre_sale_tickets"
+            target="value-tickets_created"
           >
             Compared to : Apr 07, 2019 - Jul 06, 2019
           </Tooltip>
@@ -68,25 +68,25 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
   </div>
   <div
     className="metric"
-    key="converted_tickets"
+    key="tickets_converted"
   >
     <div
       className="label"
     >
-      Converted tickets
+      Tickets converted
       <span>
         <i
           className="info-icon help-icon material-icons ml-2"
-          id="title-converted_tickets"
+          id="title-tickets_converted"
         >
           info_outline
         </i>
         <Tooltip
           delay={0}
           placement="top"
-          target="title-converted_tickets"
+          target="title-tickets_converted"
         >
-          Pre-sale that were followed by a sale within 7 days.
+          Number of tickets converted during the selected period.
         </Tooltip>
       </span>
     </div>
@@ -101,7 +101,7 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
         </div>
         <span
           className="diff"
-          id="value-converted_tickets"
+          id="value-tickets_converted"
         >
           <span>
             <i
@@ -120,7 +120,7 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
           <Tooltip
             delay={0}
             placement="top"
-            target="value-converted_tickets"
+            target="value-tickets_converted"
           >
             Compared to : Apr 07, 2019 - Jul 06, 2019
           </Tooltip>
@@ -130,32 +130,64 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
   </div>
   <div
     className="metric"
-    key="conversion_rate"
+    key="conversion_ratio"
   >
     <div
       className="label"
     >
-      Conversion rate
+      Conversion ratio
       <span>
         <i
           className="info-icon help-icon material-icons ml-2"
-          id="title-conversion_rate"
+          id="title-conversion_ratio"
         >
           info_outline
         </i>
         <Tooltip
           delay={0}
           placement="top"
-          target="title-conversion_rate"
+          target="title-conversion_ratio"
         >
-          Ratio between pre-sale tickets vs converted tickets.
+          Ratio between created vs converted tickets.
         </Tooltip>
       </span>
     </div>
     <div
       className="mt-3 statsDisplay"
     >
-      -
+      <div>
+        <div
+          className="value"
+        >
+          50%
+        </div>
+        <span
+          className="diff"
+          id="value-conversion_ratio"
+        >
+          <span>
+            <i
+              className="stats-difference positive material-icons font-weight-bold mr-1"
+              style={
+                Object {
+                  "fontSize": "15px",
+                }
+              }
+            >
+              arrow_upward
+            </i>
+            10
+            %
+          </span>
+          <Tooltip
+            delay={0}
+            placement="top"
+            target="value-conversion_ratio"
+          >
+            Compared to : Apr 07, 2019 - Jul 06, 2019
+          </Tooltip>
+        </span>
+      </div>
     </div>
   </div>
   <div
@@ -185,7 +217,39 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
     <div
       className="mt-3 statsDisplay"
     >
-      -
+      <div>
+        <div
+          className="value"
+        >
+          €42
+        </div>
+        <span
+          className="diff"
+          id="value-total_sales_from_support"
+        >
+          <span>
+            <i
+              className="stats-difference positive material-icons font-weight-bold mr-1"
+              style={
+                Object {
+                  "fontSize": "15px",
+                }
+              }
+            >
+              arrow_upward
+            </i>
+            21
+            %
+          </span>
+          <Tooltip
+            delay={0}
+            placement="top"
+            target="value-total_sales_from_support"
+          >
+            Compared to : Apr 07, 2019 - Jul 06, 2019
+          </Tooltip>
+        </span>
+      </div>
     </div>
   </div>
 </div>

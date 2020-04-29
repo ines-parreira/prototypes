@@ -4,26 +4,30 @@ import _debounce from 'lodash/debounce'
 import moment from 'moment'
 import React from 'react'
 import {connect} from 'react-redux'
-import {Button, Popover, PopoverBody} from 'reactstrap'
+import { Button, Popover, PopoverBody } from 'reactstrap'
 
 import _upperFirst from 'lodash/upperFirst'
 
 import {withRouter} from 'react-router'
 
 import {views as statViewsConfig} from '../../config/stats'
-import {resetStatsFilters, mergeStatsFilters} from '../../state/stats/actions'
+import {mergeStatsFilters} from '../../state/stats/actions'
 import {fieldEnumSearch} from '../../state/views/actions'
 import PageHeader from '../common/components/PageHeader'
 import TagDropdownMenu from '../common/components/TagDropdownMenu/TagDropdownMenu'
 
 import {getViewFilters} from '../../state/stats/selectors'
 import {getTags} from '../../state/tags/selectors'
+import {getIntegrations} from '../../state/integrations/selectors'
 import {CHANNELS} from '../../config/ticket'
 import {getAgents} from '../../state/agents/selectors'
 import {getDisplayName} from '../../state/customers/helpers'
 
+import {canUseNewRevenueStats, getCurrentAccountId} from '../../utils/account'
+
 import PeriodPicker from './common/PeriodPicker'
 import SearchableSelectField from './common/SearchableSelectField'
+
 
 type Props = {
     params: Object,
@@ -31,16 +35,17 @@ type Props = {
     channels: any[],
     agents: any[],
     tags: any[],
+    integrations: any[],
     stats: Object,
     filters: Object,
     fetchStat: (any, any, any) => Promise<*>,
     fieldEnumSearch: typeof fieldEnumSearch,
-    resetStatsFilters: typeof resetStatsFilters,
     mergeStatsFilters: typeof mergeStatsFilters,
 }
 
 type State = {
     tags: any[],
+    integrations: any[],
     descriptionPopoverOpen: boolean,
 }
 
@@ -49,12 +54,9 @@ export class StatsFilters extends React.Component<Props, State> {
         super(props)
         this.state = {
             tags: props.tags,
+            integrations: props.integrations,
             descriptionPopoverOpen: false
         }
-    }
-
-    componentWillUnmount() {
-        this.props.resetStatsFilters()
     }
 
     _handleFilterChange = (filterName: string) => {
@@ -164,6 +166,26 @@ export class StatsFilters extends React.Component<Props, State> {
                         input={this._makeInputControl('agents')}
                     />
                 )
+            case 'integrations': {
+                const options = filterConfig.get('options')
+                const integrations = (
+                    options
+                        ? this.props.integrations.filter((integration) => options.includes(integration.type))
+                        : this.props.integrations
+                )
+
+                return (
+                    <SearchableSelectField
+                        key={filterType}
+                        plural="integrations"
+                        singular="integration"
+                        items={integrations.map((integration) => ({label: integration.name, value: integration.id}))}
+                        input={this._makeInputControl('integrations')}
+                        multiple={false}
+                        required
+                    />
+                )
+            }
             case 'period':
                 return (
                     <PeriodPicker
@@ -222,10 +244,12 @@ export class StatsFilters extends React.Component<Props, State> {
 
 const mapStateToProps = (state: Object, props: Props) => {
     const view = props.params.view
-    const config = statViewsConfig.get(view)
+    const accountId = getCurrentAccountId(window)
+    const config = statViewsConfig(canUseNewRevenueStats(accountId)).get(view)
 
     return {
         tags: getTags(state).toJS(),
+        integrations: getIntegrations(state).toJS(),
         channels: CHANNELS.map((channel) => ({
             label: _upperFirst(channel.replace('-', ' ')),
             value: channel,
@@ -241,7 +265,6 @@ const mapStateToProps = (state: Object, props: Props) => {
 
 const actions = {
     mergeStatsFilters,
-    resetStatsFilters,
     fieldEnumSearch
 }
 

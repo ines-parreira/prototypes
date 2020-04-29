@@ -109,22 +109,28 @@ export class UserAuditList extends React.Component<Props, State> {
                     <div className="d-flex flex-wrap float-right">
                         <SearchableSelectField
                             plural="team members"
+                            required={false}
                             singular="team member"
                             items={userIdOptions}
                             input={this._makeInputControl('user_ids')}
+                            multiple
                         />
 
                         <SearchableSelectField
                             plural="objects"
+                            required={false}
                             singular="object"
                             items={objectTypeOptions}
                             input={this._makeInputControl('object_types')}
+                            multiple
                         />
                         <SearchableSelectField
                             plural="events"
+                            required={false}
                             singular="event"
                             items={eventTypeOptions}
                             input={this._makeInputControl('event_types')}
+                            multiple
                         />
                         <DatePicker
                             isOpen={isDatePickerOpen}

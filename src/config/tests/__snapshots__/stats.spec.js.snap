@@ -1,0 +1,344 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`views() should return views with the new revenue view 1`] = `
+Immutable.Map {
+  "overview": Immutable.Map {
+    "name": "Overview",
+    "description": "Get an overview of the most important statistics about your customer service.
+Metrics such as volume of tickets, first response time and resolution time are key when it comes to
+providing excellent customer support.
+<a href=\\"https://docs.gorgias.com/statistics/statistics#overview\\" target=\\"_blank\\">Learn more</a>.",
+    "filters": Immutable.List [
+      Immutable.Map {
+        "type": "channels",
+      },
+      Immutable.Map {
+        "type": "agents",
+      },
+      Immutable.Map {
+        "type": "tags",
+      },
+      Immutable.Map {
+        "type": "period",
+      },
+    ],
+    "link": "overview",
+    "stats": Immutable.List [
+      "overview",
+      "support-volume",
+      "resolution-time",
+      "first-response-time",
+    ],
+  },
+  "tags": Immutable.Map {
+    "name": "Tags",
+    "description": "Tags statistics will show you how many tickets were created during this time period and have a
+tag attached to them. <a href=\\"https://docs.gorgias.com/statistics/statistics#tags\\" target=\\"_blank\\">Learn more</a>.",
+    "filters": Immutable.List [
+      Immutable.Map {
+        "type": "channels",
+      },
+      Immutable.Map {
+        "type": "tags",
+      },
+      Immutable.Map {
+        "type": "period",
+      },
+    ],
+    "link": "tags",
+    "stats": Immutable.List [
+      "tickets-per-tag",
+    ],
+  },
+  "channels": Immutable.Map {
+    "name": "Channels",
+    "description": "Channel statistics to get a clear view of your ticket volume based on the different communication
+channels such as Facebook Messenger, Instagram Comments, Email, Chat, etc...
+<a href=\\"https://docs.gorgias.com/statistics/statistics#channels\\" target=\\"_blank\\">Learn more</a>.",
+    "filters": Immutable.List [
+      Immutable.Map {
+        "type": "channels",
+      },
+      Immutable.Map {
+        "type": "period",
+      },
+    ],
+    "link": "channels",
+    "stats": Immutable.List [
+      "tickets-created-per-channel-per-day",
+      "tickets-created-per-channel",
+    ],
+  },
+  "agents": Immutable.Map {
+    "name": "Agents",
+    "description": "Agents statistics will show you how many tickets were closed by each agent during this period.
+<a href=\\"https://docs.gorgias.com/statistics/statistics#agents\\" target=\\"_blank\\">Learn more</a>.",
+    "filters": Immutable.List [
+      Immutable.Map {
+        "type": "channels",
+      },
+      Immutable.Map {
+        "type": "period",
+      },
+    ],
+    "link": "agents",
+    "stats": Immutable.List [
+      "tickets-closed-per-agent-per-day",
+      "tickets-closed-per-agent",
+    ],
+  },
+  "macros": Immutable.Map {
+    "name": "Macros",
+    "description": "Macro statistics is an excellent way to ensure your agents are very efficient by using macros.
+It also shows what macros are being used the most often so you can you can provide this information elsewhere in order
+to help reduce your support inquiries.
+<a href=\\"https://docs.gorgias.com/statistics/statistics#macros\\" target=\\"_blank\\">Learn more</a>.",
+    "filters": Immutable.List [
+      Immutable.Map {
+        "type": "channels",
+      },
+      Immutable.Map {
+        "type": "period",
+      },
+    ],
+    "link": "macros",
+    "stats": Immutable.List [
+      "messages-sent-per-macro",
+    ],
+  },
+  "satisfaction": Immutable.Map {
+    "name": "Satisfaction",
+    "description": "Satisfaction survey statistics allow you to measure how good is the support your team is providing over time.
+How many surveys have been sent, response rate, average scores and more. <a href=\\"https://docs.gorgias.com/statistics/statistics#satisfaction\\" target=\\"_blank\\">Learn more</a>.",
+    "filters": Immutable.List [
+      Immutable.Map {
+        "type": "channels",
+        "options": Immutable.List [
+          "email",
+          "chat",
+        ],
+      },
+      Immutable.Map {
+        "type": "score",
+        "minValue": 1,
+        "maxValue": 5,
+        "variant": "star",
+        "reverse": true,
+      },
+      Immutable.Map {
+        "type": "agents",
+      },
+      Immutable.Map {
+        "type": "tags",
+      },
+      Immutable.Map {
+        "type": "period",
+      },
+    ],
+    "link": "satisfaction",
+    "stats": Immutable.List [
+      "satisfaction-surveys",
+      "latest-satisfaction-surveys",
+    ],
+  },
+  "revenue": Immutable.Map {
+    "name": "Revenue",
+    "description": "Revenue statistics allow you to measure how much money your support team is generating by
+    helping customers through the purchasing journey.<br/>
+    <a href=\\"https://docs.gorgias.com/statistics/revenue-statistics\\" target=\\"_blank\\">Learn how it works</a>.",
+    "filters": Immutable.List [
+      Immutable.Map {
+        "type": "integrations",
+        "options": Immutable.List [
+          "shopify",
+        ],
+      },
+      Immutable.Map {
+        "type": "channels",
+      },
+      Immutable.Map {
+        "type": "period",
+      },
+    ],
+    "link": "revenue",
+    "stats": Immutable.List [
+      "revenue-overview-v2",
+      "revenue-per-agent-v2",
+      "revenue-per-day-v2",
+      "revenue-per-ticket-v2",
+    ],
+  },
+}
+`;
+
+exports[`views() should return views with the old revenue view 1`] = `
+Immutable.Map {
+  "overview": Immutable.Map {
+    "name": "Overview",
+    "description": "Get an overview of the most important statistics about your customer service.
+Metrics such as volume of tickets, first response time and resolution time are key when it comes to
+providing excellent customer support.
+<a href=\\"https://docs.gorgias.com/statistics/statistics#overview\\" target=\\"_blank\\">Learn more</a>.",
+    "filters": Immutable.List [
+      Immutable.Map {
+        "type": "channels",
+      },
+      Immutable.Map {
+        "type": "agents",
+      },
+      Immutable.Map {
+        "type": "tags",
+      },
+      Immutable.Map {
+        "type": "period",
+      },
+    ],
+    "link": "overview",
+    "stats": Immutable.List [
+      "overview",
+      "support-volume",
+      "resolution-time",
+      "first-response-time",
+    ],
+  },
+  "tags": Immutable.Map {
+    "name": "Tags",
+    "description": "Tags statistics will show you how many tickets were created during this time period and have a
+tag attached to them. <a href=\\"https://docs.gorgias.com/statistics/statistics#tags\\" target=\\"_blank\\">Learn more</a>.",
+    "filters": Immutable.List [
+      Immutable.Map {
+        "type": "channels",
+      },
+      Immutable.Map {
+        "type": "tags",
+      },
+      Immutable.Map {
+        "type": "period",
+      },
+    ],
+    "link": "tags",
+    "stats": Immutable.List [
+      "tickets-per-tag",
+    ],
+  },
+  "channels": Immutable.Map {
+    "name": "Channels",
+    "description": "Channel statistics to get a clear view of your ticket volume based on the different communication
+channels such as Facebook Messenger, Instagram Comments, Email, Chat, etc...
+<a href=\\"https://docs.gorgias.com/statistics/statistics#channels\\" target=\\"_blank\\">Learn more</a>.",
+    "filters": Immutable.List [
+      Immutable.Map {
+        "type": "channels",
+      },
+      Immutable.Map {
+        "type": "period",
+      },
+    ],
+    "link": "channels",
+    "stats": Immutable.List [
+      "tickets-created-per-channel-per-day",
+      "tickets-created-per-channel",
+    ],
+  },
+  "agents": Immutable.Map {
+    "name": "Agents",
+    "description": "Agents statistics will show you how many tickets were closed by each agent during this period.
+<a href=\\"https://docs.gorgias.com/statistics/statistics#agents\\" target=\\"_blank\\">Learn more</a>.",
+    "filters": Immutable.List [
+      Immutable.Map {
+        "type": "channels",
+      },
+      Immutable.Map {
+        "type": "period",
+      },
+    ],
+    "link": "agents",
+    "stats": Immutable.List [
+      "tickets-closed-per-agent-per-day",
+      "tickets-closed-per-agent",
+    ],
+  },
+  "macros": Immutable.Map {
+    "name": "Macros",
+    "description": "Macro statistics is an excellent way to ensure your agents are very efficient by using macros.
+It also shows what macros are being used the most often so you can you can provide this information elsewhere in order
+to help reduce your support inquiries.
+<a href=\\"https://docs.gorgias.com/statistics/statistics#macros\\" target=\\"_blank\\">Learn more</a>.",
+    "filters": Immutable.List [
+      Immutable.Map {
+        "type": "channels",
+      },
+      Immutable.Map {
+        "type": "period",
+      },
+    ],
+    "link": "macros",
+    "stats": Immutable.List [
+      "messages-sent-per-macro",
+    ],
+  },
+  "satisfaction": Immutable.Map {
+    "name": "Satisfaction",
+    "description": "Satisfaction survey statistics allow you to measure how good is the support your team is providing over time.
+How many surveys have been sent, response rate, average scores and more. <a href=\\"https://docs.gorgias.com/statistics/statistics#satisfaction\\" target=\\"_blank\\">Learn more</a>.",
+    "filters": Immutable.List [
+      Immutable.Map {
+        "type": "channels",
+        "options": Immutable.List [
+          "email",
+          "chat",
+        ],
+      },
+      Immutable.Map {
+        "type": "score",
+        "minValue": 1,
+        "maxValue": 5,
+        "variant": "star",
+        "reverse": true,
+      },
+      Immutable.Map {
+        "type": "agents",
+      },
+      Immutable.Map {
+        "type": "tags",
+      },
+      Immutable.Map {
+        "type": "period",
+      },
+    ],
+    "link": "satisfaction",
+    "stats": Immutable.List [
+      "satisfaction-surveys",
+      "latest-satisfaction-surveys",
+    ],
+  },
+  "revenue": Immutable.Map {
+    "name": "Revenue (Beta)",
+    "description": "Revenue statistics allow you to measure how much money your support team is generating by
+    helping customers through the purchasing journey.<br/>
+    <a href=\\"https://docs.gorgias.com/statistics/revenue-statistics\\" target=\\"_blank\\">Learn how it works</a>.",
+    "filters": Immutable.List [
+      Immutable.Map {
+        "type": "channels",
+        "options": Immutable.List [
+          "email",
+          "chat",
+          "sms",
+          "aircall",
+          "api",
+        ],
+      },
+      Immutable.Map {
+        "type": "period",
+      },
+    ],
+    "link": "revenue",
+    "stats": Immutable.List [
+      "revenue-overview",
+      "sales-per-agent",
+      "pre-sale-converted-tickets-per-day",
+      "pre-sale-tickets",
+    ],
+  },
+}
+`;

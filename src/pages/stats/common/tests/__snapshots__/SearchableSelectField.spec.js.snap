@@ -1,0 +1,247 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SearchableSelectField should render the component with selectable items 1`] = `
+<UncontrolledDropdown
+  className="component"
+  disabled={false}
+>
+  <DropdownToggle
+    aria-haspopup={true}
+    caret={true}
+    className="mr-2"
+    color="secondary"
+    disabled={false}
+    type="button"
+  >
+    <span>
+      All items
+    </span>
+  </DropdownToggle>
+  <dropdownMenu
+    right={true}
+  >
+    <DropdownItem
+      className="dropdown-item-input"
+      header={true}
+      tag="button"
+      toggle={true}
+    >
+      <Input
+        autoFocus={true}
+        className="mb-2"
+        onChange={[Function]}
+        placeholder="Search items..."
+        type="text"
+        value=""
+      />
+    </DropdownItem>
+    <div
+      className="content"
+    >
+      <DropdownItem
+        className="dropdownItem"
+        key="1"
+        tag={[Function]}
+        toggle={false}
+      >
+        <input
+          checked={false}
+          className="mr-2 checkbox"
+          onChange={[Function]}
+          type="checkbox"
+        />
+         
+        Api
+      </DropdownItem>
+      <DropdownItem
+        className="dropdownItem"
+        key="2"
+        tag={[Function]}
+        toggle={false}
+      >
+        <input
+          checked={false}
+          className="mr-2 checkbox"
+          onChange={[Function]}
+          type="checkbox"
+        />
+         
+        Chat
+      </DropdownItem>
+      <DropdownItem
+        className="dropdownItem"
+        key="3"
+        tag={[Function]}
+        toggle={false}
+      >
+        <input
+          checked={false}
+          className="mr-2 checkbox"
+          onChange={[Function]}
+          type="checkbox"
+        />
+         
+        Email
+      </DropdownItem>
+    </div>
+  </dropdownMenu>
+</UncontrolledDropdown>
+`;
+
+exports[`SearchableSelectField should render the component with selected items 1`] = `
+<UncontrolledDropdown
+  className="component"
+  disabled={false}
+>
+  <DropdownToggle
+    aria-haspopup={true}
+    caret={true}
+    className="mr-2"
+    color="secondary"
+    disabled={false}
+    type="button"
+  >
+    <span>
+      2 items
+    </span>
+  </DropdownToggle>
+  <dropdownMenu
+    right={true}
+  >
+    <DropdownItem
+      className="dropdown-item-input"
+      header={true}
+      tag="button"
+      toggle={true}
+    >
+      <Input
+        autoFocus={true}
+        className="mb-2"
+        onChange={[Function]}
+        placeholder="Search items..."
+        type="text"
+        value=""
+      />
+    </DropdownItem>
+    <div
+      className="content"
+    >
+      <DropdownItem
+        className="dropdownItem"
+        key="1"
+        tag={[Function]}
+        toggle={false}
+      >
+        <input
+          checked={false}
+          className="mr-2 checkbox"
+          onChange={[Function]}
+          type="checkbox"
+        />
+         
+        Api
+      </DropdownItem>
+      <DropdownItem
+        className="dropdownItem"
+        key="2"
+        tag={[Function]}
+        toggle={false}
+      >
+        <input
+          checked={true}
+          className="mr-2 checkbox"
+          onChange={[Function]}
+          type="checkbox"
+        />
+         
+        Chat
+      </DropdownItem>
+      <DropdownItem
+        className="dropdownItem"
+        key="3"
+        tag={[Function]}
+        toggle={false}
+      >
+        <input
+          checked={true}
+          className="mr-2 checkbox"
+          onChange={[Function]}
+          type="checkbox"
+        />
+         
+        Email
+      </DropdownItem>
+    </div>
+    <DropdownItem
+      divider={true}
+      key="divider"
+      tag="button"
+      toggle={true}
+    />
+    <DropdownItem
+      key="deselect"
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      <span
+        className="text-warning"
+      >
+        Deselect all
+      </span>
+    </DropdownItem>
+  </dropdownMenu>
+</UncontrolledDropdown>
+`;
+
+exports[`SearchableSelectField should render the component without any item 1`] = `
+<UncontrolledDropdown
+  className="component"
+  disabled={false}
+>
+  <DropdownToggle
+    aria-haspopup={true}
+    caret={true}
+    className="mr-2"
+    color="secondary"
+    disabled={false}
+    type="button"
+  >
+    <span>
+      All items
+    </span>
+  </DropdownToggle>
+  <dropdownMenu
+    right={true}
+  >
+    <DropdownItem
+      className="dropdown-item-input"
+      header={true}
+      tag="button"
+      toggle={true}
+    >
+      <Input
+        autoFocus={true}
+        className="mb-2"
+        onChange={[Function]}
+        placeholder="Search items..."
+        type="text"
+        value=""
+      />
+    </DropdownItem>
+    <div
+      className="content"
+    >
+      <DropdownItem
+        header={true}
+        tag="button"
+        toggle={true}
+      >
+        Could not find any 
+        item
+      </DropdownItem>
+    </div>
+  </dropdownMenu>
+</UncontrolledDropdown>
+`;

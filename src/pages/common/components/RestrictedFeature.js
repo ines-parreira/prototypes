@@ -2,14 +2,14 @@ import React from 'react'
 
 import {Alert} from 'reactstrap'
 import Lightbox from 'react-images'
-import {Link} from 'react-router'
 
 import Carousel from './../../integrations/common/Carousel'
 
 
 type Props = {
     imagesURL: Array,
-    info: string
+    info: string,
+    alertMsg: Node
 }
 
 
@@ -35,12 +35,11 @@ export default class RestrictedFeature extends React.Component<Props> {
     }
 
     render() {
-        const {imagesURL, info} = this.props
+        const {imagesURL, info, alertMsg} = this.props
 
         return <div className="col mt-2">
             <Alert color="danger">
-                This feature is only available for Pro and above plans.{' '}
-                <Link to="/app/settings/billing/plans">Upgrade here.</Link>
+                {alertMsg}
             </Alert>
 
             <p>{info}</p>

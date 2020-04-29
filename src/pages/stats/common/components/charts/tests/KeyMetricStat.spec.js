@@ -54,16 +54,29 @@ describe('KeyMetricStat', () => {
         const config = statsConfig.find((config, key) => key === REVENUE_OVERVIEW)
         const groupedKeyMetricsStat = fromJS({
             data: [{
-                name: 'pre_sale_tickets',
+                name: 'tickets_created',
                 type: 'number',
                 value: 833,
                 delta: 52,
                 more_is_better: true
             }, {
-                name: 'converted_tickets',
+                name: 'tickets_converted',
                 type: 'number',
                 value: 153,
                 delta: 43,
+                more_is_better: true
+            }, {
+                name: 'conversion_ratio',
+                type: 'percent',
+                value: 50.0,
+                delta: 10,
+                more_is_better: true
+            }, {
+                name: 'total_sales_from_support',
+                type: 'currency',
+                currency: 'EUR',
+                value: 42.0,
+                delta: 21,
                 more_is_better: true
             }],
             meta: {
