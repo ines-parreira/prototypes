@@ -66,44 +66,48 @@ export default function Meta(props: Props) {
         const isInstagramMedia = source.type === INSTAGRAM_MEDIA_SOURCE
         const isInstagramAdMedia = source.type === INSTAGRAM_AD_MEDIA_SOURCE
 
+        const getId = (input) => input && input.includes('_') ? input.split('_')[1] : ''
+
         let type
         let link
 
         if (isFacebookPost) {
-            const [, postId] = fullPostId.split('_')
+            const postId = getId(fullPostId)
             type = 'post'
             link = `https://facebook.com/${postId}`
         } else if (isInstagramMedia || isInstagramAdMedia) {
             type = 'media'
             link = permalink
         } else if (!!messageId && isFacebookComment) {
-            const [, postId] = fullPostId.split('_')
-            const [, commentId] = messageId.split('_')
+            const postId = getId(fullPostId)
+            const commentId = getId(messageId)
             type = 'comment'
             link = `https://facebook.com/${postId}?comment_id=${commentId}`
         } else if (!!messageId) {
-            const [, postId] = fullPostId.split('_')
-            const [, commentId] = parentId.split('_')
-            const [, replyId] = messageId.split('_')
+            const postId = getId(fullPostId)
+            const commentId = getId(parentId)
+            const replyId = getId(messageId)
             type = 'reply'
             link = `https://facebook.com/${postId}?comment_id=${commentId}&reply_comment_id=${replyId}`
         }
 
-        widgets.push(
-            <From
-                label="go to"
-                key="ref-widget"
-            >
-                <a
-                    target="_blank"
-                    href={link}
-                    title={link}
-                    rel="noopener noreferrer"
+        if (type && link) {
+            widgets.push(
+                <From
+                    label="go to"
+                    key="ref-widget"
                 >
-                    {type}
-                </a>
-            </From>,
-        )
+                    <a
+                        target="_blank"
+                        href={link}
+                        title={link}
+                        rel="noopener noreferrer"
+                    >
+                        {type}
+                    </a>
+                </From>,
+            )
+        }
     }
 
     let sentViaLabel

@@ -115,6 +115,27 @@ describe('ticket message meta', () => {
             expect(from.find('a').prop('href'))
                 .toEqual(`https://facebook.com/${postId}?comment_id=${commentId}&reply_comment_id=${replyId}`)
         })
+
+        it('should not display link when IDs are missing', () => {
+            const pageId = '2022935111288280'
+            const userId = '1940476102688095'
+            const source = {
+                extra: {page_id: pageId, post_id: null, parent_id: null},
+                from: {address: `${pageId}-${userId}`, name: 'A Virk'},
+                type: 'facebook-comment',
+                to: [{address: `${pageId}-${pageId}-${pageId}`, name: 'IQ²'}]
+            }
+
+            const component = shallow(
+                <Meta
+                    via="facebook"
+                    integrationId="118"
+                    source={source}
+                />
+            )
+
+            expect(component).toMatchSnapshot()
+        })
     })
 
     describe('instagram', () => {
