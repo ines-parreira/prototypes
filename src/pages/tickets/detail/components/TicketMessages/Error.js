@@ -35,6 +35,7 @@ type Props = {
     retry?: boolean,
     force?: boolean,
     cancel?: boolean,
+    newMessage: any,
 }
 
 type State = {
@@ -59,6 +60,14 @@ class Error extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
         this.uid = Date.now()
+    }
+
+    componentDidUpdate() {
+        const {newMessage} = this.props
+        const {loading} = this.state
+        if (!newMessage.getIn(['_internal', 'loading', 'submitNewMessage']) && loading) {
+            this.setState({loading: ''})
+        }
     }
 
     retry = () => {
@@ -117,6 +126,7 @@ class Error extends React.Component<Props, State> {
     }
 
     render() {
+
         const {
             error,
             retryTooltipMessage,
@@ -285,4 +295,8 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(null, mapDispatchToProps)(Error)
+const mapStateToProps = (state) => ({
+    newMessage: state.newMessage,
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Error)

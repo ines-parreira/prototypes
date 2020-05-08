@@ -325,8 +325,17 @@ describe('ticket actions', () => {
     describe('handleMessageError()', () => {
         it('should fetch the ticket because the user is currently on it', () => {
             mockServer.onGet('/api/tickets/1/').reply(200, {id: 1, messages: []})
-
-            return store.dispatch(actions.handleMessageError(1))
+            let json = {
+                'ticket_id':1,
+                'event':{
+                    'data': {
+                        'error':{
+                            'message': 'test handling message error'
+                        }
+                    }
+                }
+            }
+            return store.dispatch(actions.handleMessageError(json))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
 
         })
@@ -334,7 +343,18 @@ describe('ticket actions', () => {
         it('should not fetch the ticket because the user is not currently on it', () => {
             mockServer.onGet('/api/tickets/2/').reply(200, {id: 2, messages: []})
 
-            return store.dispatch(actions.handleMessageError(2))
+            let json = {
+                'ticket_id':2,
+                'event':{
+                    'data': {
+                        'error':{
+                            'message': 'test handling message error'
+                        }
+                    }
+                }
+            }
+
+            return store.dispatch(actions.handleMessageError(json))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
     })

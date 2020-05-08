@@ -43,6 +43,7 @@ export type TicketElement = {
     isPending?: boolean,
     source?: Source,
     meta?: Meta,
+    last_sending_error?: LastSendingError,
     attachments?: Attachment[],
     actions?: Action[],
     created_datetime: string,
@@ -122,6 +123,10 @@ export type Meta = {
     post_id?: string,
     page_id?: string,
     parent_id?: string,
+}
+
+export type LastSendingError = {
+    error?: string,
 }
 
 export type FacebookCarouselTemplate = {

@@ -198,7 +198,7 @@ export const receivedEvents = [{
 }, {
     name: 'ticket-message-failed',
     onReceive: function (json: socketEventTypes.TicketMessageFailedEvent) {
-        reduxStore.dispatch(ticketActions.handleMessageError(json.ticket_id))
+        reduxStore.dispatch(ticketActions.handleMessageError(json))
     },
 }, {
     name: 'action-executed',

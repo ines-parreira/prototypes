@@ -27,8 +27,11 @@ import type {Action, Ticket, TicketMessage} from '../../models/ticket'
 import type {Macro} from '../macro/types'
 import type {dispatchType, getStateType, thunkActionType} from '../types'
 
+import * as socketEventTypes from '../../services/socketManager/types'
+
 import {buildPartialUpdateFromAction, getSourceTypeOfResponse, nestedReplace} from './utils'
 import * as types from './constants'
+
 
 export const mergeTicket = (ticket: Ticket) => (dispatch: dispatchType, getState: getStateType) => {
     const ticketRecord = fromJS(ticket)
@@ -370,6 +373,7 @@ export const clearAppliedMacro = (ticketId: number) => ({
  * Fetch a ticket from the API, and put it in the `ticket` store.
  *
  * @param ticketId: the id of the ticket to fetch
+ * @param error: the error message
  * @param discreetly: (default: false) whether or not the function should dispatch `FETCH_TICKET_START`
  */
 export const fetchTicket = (ticketId: string, discreetly: boolean = false) => (dispatch: dispatchType) => {
@@ -633,27 +637,27 @@ export const handleMessageActionError = (ticketId: string) => (dispatch: dispatc
     return fetchPromise || Promise.resolve()
 }
 
-export const handleMessageError = (ticketId: string) => (dispatch: dispatchType) => {
+export const handleMessageError = (json: socketEventTypes.TicketMessageFailedEvent) => (dispatch: dispatchType) => {
     let buttons = []
     let fetchPromise = null
 
-    if (!isCurrentlyOnTicket(ticketId)) {
+    if (!isCurrentlyOnTicket(json.ticket_id)) {
         buttons = [{
             primary: true,
             name: 'Review',
             onClick: () => {
-                browserHistory.push(`/app/ticket/${ticketId}`)
+                browserHistory.push(`/app/ticket/${json.ticket_id}`)
             }
         }]
     } else {
-        fetchPromise = dispatch(fetchTicket(ticketId, true))
+        fetchPromise = dispatch(fetchTicket(json.ticket_id, true))
     }
 
     dispatch(notify({
         status: 'error',
         dismissAfter: 0,
         allowHTML: true,
-        message: 'Your last message could not be sent, you should review it right now.',
+        message: 'Your last message could not be sent because ' + json.event.data.error.message,
         buttons
     }))
 

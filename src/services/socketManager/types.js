@@ -49,7 +49,12 @@ export type TicketMessageActionFailedEvent = {
 
 export type TicketMessageFailedEvent = {
     event: {
-        type: 'ticket-message-failed'
+        type: 'ticket-message-failed',
+        data: {
+            error: {
+                message: string,
+            },
+        },
     },
     ticket_id: number
 }
