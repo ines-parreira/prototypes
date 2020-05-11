@@ -4,9 +4,9 @@ import _pick from 'lodash/pick'
 import React, {useEffect, useState} from 'react'
 import {connect} from 'react-redux'
 import {browserHistory} from 'react-router'
+import {useAsyncFn} from 'react-use'
 import {Button, Container} from 'reactstrap'
 
-import useDelayedAsyncFn from '../../../hooks/useDelayedAsyncFn'
 import type {OrderDirection} from '../../../models/api'
 import {fetchMacros, type FetchMacrosOptions, type MacroSortableProperties} from '../../../models/macro'
 import {macrosFetched, type MacrosState} from '../../../state/entities/macros'
@@ -45,7 +45,7 @@ export function MacrosSettingsContentContainer({
         page: 1,
         nbPages: 1,
     })
-    const [{loading: isFetchPending}, handleFetchMacros] = useDelayedAsyncFn(async () => {
+    const [{loading: isFetchPending}, handleFetchMacros] = useAsyncFn(async () => {
         try {
             const {data, meta: {page, nbPages}} = await fetchMacros(options)
             macrosFetched(data)
@@ -57,7 +57,7 @@ export function MacrosSettingsContentContainer({
                 status: 'error',
             })
         }
-    }, [options], 200)
+    }, [options])
     useEffect(() => {
         handleFetchMacros()
     }, [options])
@@ -119,7 +119,7 @@ export function MacrosSettingsContentContainer({
             </Container>
 
             <MacrosSettingsTable
-                isLoading={isFetchPending}
+                isLoading={isFetchPending && macroIds.length === 0}
                 macroIds={macroIds}
                 onSortOptionsChange={(orderBy: MacroSortableProperties, orderDir: OrderDirection) => !options.search && setOptions({
                     ...options,
