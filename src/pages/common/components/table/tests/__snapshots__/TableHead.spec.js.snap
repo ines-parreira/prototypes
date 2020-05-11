@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TableHead/> should render 1`] = `
+<thead
+  className="foo"
+>
+  <tr
+    className="headerRow"
+  >
+    Foo
+  </tr>
+</thead>
+`;

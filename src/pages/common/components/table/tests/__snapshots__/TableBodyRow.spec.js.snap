@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TableBodyRow/> should call onClick when clicked 1`] = `
+<tr
+  className="row isClickable"
+  onClick={[MockFunction]}
+>
+  Foo
+</tr>
+`;
+
+exports[`<TableBodyRow/> should render 1`] = `
+<tr
+  className="row foo"
+>
+  Foo
+</tr>
+`;

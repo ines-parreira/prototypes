@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<HeaderCellProperty/> should render 1`] = `
+<HeaderCell
+  className="foo"
+>
+  <div
+    className="content"
+  >
+    <div>
+      <span
+        className="title"
+      >
+        foo
+      </span>
+      <i
+        className="material-icons md-1 directionIcon"
+      >
+        arrow_drop_up
+      </i>
+    </div>
+  </div>
+</HeaderCell>
+`;
+
+exports[`<HeaderCellProperty/> should render children 1`] = `
+<HeaderCell
+  className=""
+>
+  <div
+    className="content"
+  >
+    Bar
+    <div>
+      <span
+        className="title"
+      >
+        foo
+      </span>
+      <i
+        className="material-icons md-1 directionIcon"
+      >
+        arrow_drop_up
+      </i>
+    </div>
+  </div>
+</HeaderCell>
+`;
+
+exports[`<HeaderCellProperty/> should render sorted property 1`] = `
+<HeaderCell
+  className=""
+>
+  <div
+    className="content"
+  >
+    <div>
+      <span
+        className="title"
+      >
+        foo
+      </span>
+      <i
+        className="material-icons md-1 directionIcon isVisible"
+      >
+        arrow_drop_down
+      </i>
+    </div>
+  </div>
+</HeaderCell>
+`;

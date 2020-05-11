@@ -1,5 +1,6 @@
 import type {Map} from 'immutable'
 
+import type {MacrosAction} from './entities/macros'
 import type {InfobarActionsState} from './infobarActions/types'
 
 export type stateType = {
@@ -27,6 +28,8 @@ export type stateType = {
     views: Map<*,*>,
     widgets: Map<*,*>,
 }
+export type StoreAction =
+    | MacrosAction
 
 export type currentUserType = Map<*,*>
 export type currentAccountType = Map<*,*>
@@ -38,4 +41,3 @@ export type actionType = {
 }
 export type dispatchType = (action: actionType) => void
 export type thunkActionType = (dispatch: dispatchType, getState?: getStateType) => any
-

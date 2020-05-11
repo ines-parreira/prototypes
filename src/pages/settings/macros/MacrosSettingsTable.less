@@ -1,0 +1,56 @@
+@import '~css/new/colors';
+
+:local {
+    .macroTitle {
+        font-weight: 500;
+    }
+
+    .dateCell {
+        color: @grey;
+    }
+
+    .tableHead td {
+        &:first-child {
+            padding-left: 30px;
+        }
+
+        &:last-child {
+            padding-right: 30px;
+        }
+    }
+
+    .tableBodyRow td {
+        &:first-child {
+            padding-left: 12px;
+        }
+
+        &:last-child {
+            padding-right: 12px;
+        }
+    }
+
+    .actions {
+        :global .btn {
+            box-shadow: none;
+
+            .material-icons,
+            .material-icons-outlined {
+                transition: .2s all;
+                opacity: .3;
+                color: @indigo;
+            }
+
+            &:hover .material-icons {
+                opacity: 1;
+            }
+
+            &.btn-loading .material-icons {
+                opacity: 0;
+            }
+        }
+    }
+
+    .deleteButton:hover :global(.material-icons) {
+        color: @lightRed;
+    }
+}

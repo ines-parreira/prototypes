@@ -1,0 +1,27 @@
+@import '~css/new/colors';
+
+:local {
+    .content {
+        align-items: center;
+        color: @lightGrey;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        width: max-content;
+    }
+
+    .title {
+        color: @grey;
+        font-size: 11px;
+        letter-spacing: .6px;
+        text-transform: uppercase;
+    }
+
+    .directionIcon {
+        opacity: 0;
+
+        &.isVisible {
+            opacity: 1;
+        }
+    }
+}

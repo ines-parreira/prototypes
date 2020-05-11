@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`client resources resources axios instance should resolve with formatted data 1`] = `
+Object {
+  "config": Object {
+    "data": undefined,
+    "headers": Object {
+      "Accept": "application/json, text/plain, */*",
+    },
+    "maxContentLength": -1,
+    "method": "get",
+    "timeout": 0,
+    "transformRequest": Array [
+      [Function],
+    ],
+    "transformResponse": Array [
+      [Function],
+    ],
+    "url": "/api",
+    "validateStatus": [Function],
+    "xsrfCookieName": "XSRF-TOKEN",
+    "xsrfHeaderName": "X-XSRF-TOKEN",
+  },
+  "data": Object {
+    "data": Object {
+      "fooBar": 1,
+    },
+  },
+  "headers": undefined,
+  "request": Object {
+    "responseUrl": "/api",
+  },
+  "status": 200,
+}
+`;
+
+exports[`client resources resources axios instance should send a request with formatted data 1`] = `
+Object {
+  "delete": Array [],
+  "get": Array [],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [
+    Object {
+      "data": "{\\"foo_bar\\":\\"foo\\",\\"foo\\":[{\\"foo_bar\\":\\"foo\\"}]}",
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      "maxContentLength": -1,
+      "method": "post",
+      "timeout": 0,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/api",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "put": Array [],
+}
+`;

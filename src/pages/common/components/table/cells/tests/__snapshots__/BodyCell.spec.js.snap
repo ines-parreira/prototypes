@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<BodyCell/> should render 1`] = `
+<td
+  className="foo"
+>
+  <div
+    className="cellContent"
+  >
+    Foo
+  </div>
+</td>
+`;

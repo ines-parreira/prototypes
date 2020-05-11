@@ -8,6 +8,7 @@ import chatsReducer from './chats/reducers'
 import currentAccountReducer from './currentAccount/reducers'
 import currentUserReducer from './currentUser/reducers'
 import customersReducer from './customers/reducers'
+import entities from './entities/reducers'
 import facebookAdsReducer from './facebookAds/reducers'
 import HTTPIntegrationEventsReducer from './HTTPIntegrationEvents/reducers'
 import infobarActionsReducer from './infobarActions/reducers'
@@ -35,6 +36,7 @@ const rootReducer = combineReducers({
     currentAccount: currentAccountReducer,
     currentUser: currentUserReducer,
     customers: customersReducer,
+    entities,
     facebookAds: facebookAdsReducer,
     HTTPIntegrationEvents: HTTPIntegrationEventsReducer,
     infobar: infobarReducer,

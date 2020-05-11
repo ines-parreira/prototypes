@@ -1,3 +1,4 @@
+//@flow
 import React from 'react'
 import {IndexRedirect, IndexRoute, Route} from 'react-router'
 
@@ -36,6 +37,8 @@ import ManageTagsContainer from './settings/tags/ManageTags'
 import ImportDataContainer from './settings/importData/ImportDataContainer'
 import ImportZendeskDetail from './settings/importData/zendesk/ImportZendeskDetail'
 import SatisfactionSurveyView from './settings/satisfactionSurveys/SatisfactionSurveyView'
+import MacrosSettingsContent from './settings/macros/MacrosSettingsContent'
+import MacrosSettingsForm from './settings/macros/MacrosSettingsForm'
 
 import * as Team from './settings/users'
 import * as Teams from './settings/teams'
@@ -245,6 +248,27 @@ export default (
                 <Route path=":integrationId(/:extra)"/>
                 <Route path=":integrationId/:extra/:subId"/>
             </Route>
+            <Route
+                path="macros"
+                components={{
+                    content: UserRoleRequired(MacrosSettingsContent, AGENT_ROLE),
+                    navbar: SettingsNavbarContainer
+                }}
+            />
+            <Route
+                path="macros/new"
+                components={{
+                    content: UserRoleRequired(MacrosSettingsForm, AGENT_ROLE),
+                    navbar: SettingsNavbarContainer,
+                }}
+            />
+            <Route
+                path="macros/:macroId"
+                components={{
+                    content: UserRoleRequired(MacrosSettingsForm, AGENT_ROLE),
+                    navbar: SettingsNavbarContainer,
+                }}
+            />
             <Route
                 path="rules"
                 components={{

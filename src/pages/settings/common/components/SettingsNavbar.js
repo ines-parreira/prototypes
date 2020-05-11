@@ -1,14 +1,32 @@
+//@flow
 import React from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import {Link} from 'react-router'
 
 import {hasRole} from '../../../../utils'
-import {ADMIN_ROLE, AGENT_ROLE} from '../../../../config/user'
+import {
+    ADMIN_ROLE,
+    AGENT_ROLE,
+    type UserRole,
+} from '../../../../config/user'
 
 type Props = {
     currentUser: Object,
     location: Object
+}
+
+type CategoryLink = {
+    className?: string,
+    requiredRole?: UserRole,
+    text: string,
+    to: string,
+}
+
+type Category = {
+    icon: string,
+    links: CategoryLink[],
+    name: string,
 }
 
 export default class SettingsNavbar extends React.Component<Props> {
@@ -23,7 +41,7 @@ export default class SettingsNavbar extends React.Component<Props> {
             location: {pathname}
         } = this.props
 
-        const categories = [{
+        const categories: Category[] = [{
             name: 'You',
             icon: 'person',
             links: [
@@ -58,6 +76,11 @@ export default class SettingsNavbar extends React.Component<Props> {
                     requiredRole: AGENT_ROLE,
                     to: 'manage-tags',
                     text: 'Tags',
+                    className: 'd-none d-md-block',
+                }, {
+                    requiredRole: AGENT_ROLE,
+                    to: 'macros',
+                    text: 'Macros',
                     className: 'd-none d-md-block',
                 }, {
                     requiredRole: ADMIN_ROLE,
