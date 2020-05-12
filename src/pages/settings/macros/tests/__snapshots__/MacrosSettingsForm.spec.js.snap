@@ -541,12 +541,36 @@ Sincerely,
             onSubmit={[Function]}
           >
             <Component
-              actions={Immutable.List []}
+              actions={
+                Immutable.List [
+                  Immutable.Map {
+                    "type": "user",
+                    "execution": "front",
+                    "name": "setResponseText",
+                    "title": "Add response text",
+                    "arguments": Immutable.Map {
+                      "body_text": "",
+                      "body_html": "",
+                    },
+                  },
+                ]
+              }
               agents={Immutable.Map {}}
               currentMacro={
                 Immutable.Map {
-                  "actions": Immutable.List [],
                   "name": "New macro",
+                  "actions": Immutable.List [
+                    Immutable.Map {
+                      "type": "user",
+                      "execution": "front",
+                      "name": "setResponseText",
+                      "title": "Add response text",
+                      "arguments": Immutable.Map {
+                        "body_text": "",
+                        "body_html": "",
+                      },
+                    },
+                  ],
                 }
               }
               name="New macro"
@@ -648,12 +672,36 @@ exports[`<MacrosSettingsForm/> should render an empty form when no macro id 1`] 
       tag="form"
     >
       <Component
-        actions={Immutable.List []}
+        actions={
+          Immutable.List [
+            Immutable.Map {
+              "type": "user",
+              "execution": "front",
+              "name": "setResponseText",
+              "title": "Add response text",
+              "arguments": Immutable.Map {
+                "body_text": "",
+                "body_html": "",
+              },
+            },
+          ]
+        }
         agents={Immutable.Map {}}
         currentMacro={
           Immutable.Map {
-            "actions": Immutable.List [],
             "name": "New macro",
+            "actions": Immutable.List [
+              Immutable.Map {
+                "type": "user",
+                "execution": "front",
+                "name": "setResponseText",
+                "title": "Add response text",
+                "arguments": Immutable.Map {
+                  "body_text": "",
+                  "body_html": "",
+                },
+              },
+            ],
           }
         }
         name="New macro"

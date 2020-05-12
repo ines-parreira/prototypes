@@ -22,6 +22,7 @@ import type {IntentName} from '../../../models/intent'
 import {createMacro, deleteMacro, fetchMacro, updateMacro, type MacroDraft} from '../../../models/macro'
 import {getAgents} from '../../../state/agents/selectors'
 import {macroCreated, macroDeleted, macroFetched, macroUpdated, type MacrosState} from '../../../state/entities/macros'
+import {getDefaultMacro} from '../../../state/macro/utils'
 import {notify} from '../../../state/notifications/actions'
 import ConfirmButton from '../../common/components/ConfirmButton'
 import Loader from '../../common/components/Loader'
@@ -56,10 +57,7 @@ export function MacrosSettingsFormContainer({
     notify,
     params: {macroId},
 }: Props) {
-    const [macroForm, setMacroForm] = useState<MacroDraft>({
-        actions: [],
-        name: 'New macro',
-    })
+    const [macroForm, setMacroForm] = useState<MacroDraft>(getDefaultMacro().toJS())
     const [{loading: isFetchPending}, handleMacroFetch] = useAsyncFn(async () => {
         try {
             const res = await fetchMacro(parseInt(macroId))

@@ -8,6 +8,7 @@ import {Button} from 'reactstrap'
 import {macros as macrosFixtures} from '../../../../fixtures/macro'
 import {deepMapKeysToCamelCase} from '../../../../models/api'
 import {createMacro, deleteMacro, fetchMacro, updateMacro} from '../../../../models/macro'
+import {getDefaultMacro} from '../../../../state/macro/utils'
 import ConfirmButton from '../../../common/components/ConfirmButton'
 import {MacrosSettingsFormContainer} from '../MacrosSettingsForm'
 
@@ -119,10 +120,7 @@ describe('<MacrosSettingsForm/>', () => {
         const component = mount(<MacrosSettingsFormContainer {...minProps}/>)
 
         component.find(Button).simulate('submit')
-        expect(mockCreateMacro).toHaveBeenNthCalledWith(1, {
-            actions: [],
-            name: 'New macro',
-        })
+        expect(mockCreateMacro).toHaveBeenNthCalledWith(1, getDefaultMacro().toJS())
         setImmediate(() => {
             expect(mockMacroCreated).toHaveBeenNthCalledWith(1, newMacroFixture)
             expect(mockNotify).toHaveBeenNthCalledWith(1, {
