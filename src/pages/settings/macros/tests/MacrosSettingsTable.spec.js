@@ -103,6 +103,12 @@ describe('<MacrosSettingsTable/>', () => {
         )
 
         component.find(Button).at(0).simulate('click', mockClickEvent)
+        const {actions, intent, name} = macrosState['1']
+        expect(mockCreateMacro).toHaveBeenNthCalledWith(1, {
+            actions,
+            intent,
+            name: `${name} (copy)`,
+        })
         setImmediate(() => {
             expect(mockMacroCreated).toHaveBeenNthCalledWith(1, {
                 ...macrosState['1'],

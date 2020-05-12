@@ -1,6 +1,5 @@
 //@flow
 import classnames from 'classnames'
-import _pick from 'lodash/pick'
 import moment from 'moment'
 //$FlowFixMe
 import React, {useState} from 'react'
@@ -85,8 +84,13 @@ export function MacrosSettingsTableContainer({
         if (!macro) {
             return
         }
+        const {actions, intent, name} = macro
         try {
-            const res = await createMacro(_pick(macro, ['actions', 'intent', 'name']))
+            const res = await createMacro({
+                actions,
+                intent,
+                name: `${name} (copy)`,
+            })
             macroCreated(res)
             browserHistory.push(`/app/settings/macros/${res.id}`)
         } catch (error) {
