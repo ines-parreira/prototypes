@@ -231,6 +231,10 @@ exports[`<Stats/> render() should render stats as loading 1`] = `
           "style": "bar",
           "downloadable": true,
           "lines": Immutable.Map {
+            "instagram-comment": Immutable.Map {
+              "label": "Instagram comment",
+              "color": "#5c9dbb",
+            },
             "facebook": Immutable.Map {
               "label": "Facebook",
               "color": "#4872db",
@@ -246,6 +250,10 @@ exports[`<Stats/> render() should render stats as loading 1`] = `
             "phone": Immutable.Map {
               "label": "Phone",
               "color": "#ffe03f",
+            },
+            "instagram-ad-comment": Immutable.Map {
+              "label": "Instagram ad comment",
+              "color": "#4ca4d9",
             },
             "twitter": Immutable.Map {
               "label": "Twitter",

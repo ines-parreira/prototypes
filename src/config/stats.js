@@ -168,6 +168,14 @@ export const stats = fromJS({
         style: 'bar',
         downloadable: true,
         lines: {
+            'instagram-comment': {
+                label: 'Instagram comment',
+                color: '#5c9dbb',
+            },
+            'instagram-ad-comment': {
+                label: 'Instagram ad comment',
+                color: '#4ca4d9',
+            },
             facebook: {
                 label: 'Facebook',
                 color: '#4872db',
