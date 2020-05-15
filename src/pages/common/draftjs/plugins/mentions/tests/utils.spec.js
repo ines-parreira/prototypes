@@ -50,11 +50,16 @@ describe('defaultSuggestionsFilter()', () => {
         {name: 'Severine Smith'},
         {name: 'Séverine Dupont'},
         {name: 'Jean Bon'},
+        {name: 'Πόπη Κουρούπη'},
     ])
 
     const expectedResults = fromJS([
         {name: 'Severine Smith'},
         {name: 'Séverine Dupont'},
+    ])
+
+    const greekResults = fromJS([
+        {name: 'Πόπη Κουρούπη'},
     ])
 
     describe('should return matching suggestions', () => {
@@ -66,6 +71,11 @@ describe('defaultSuggestionsFilter()', () => {
         it('when the search value does not contain diacritics', () => {
             const results = defaultSuggestionsFilter('severine', suggestions)
             expect(results).toEqual(expectedResults)
+        })
+
+        it('when the search value contains greek characters', () => {
+            const results = defaultSuggestionsFilter('Πόπη', suggestions)
+            expect(results).toEqual(greekResults)
         })
     })
 })
