@@ -1,14 +1,31 @@
+// @flow
 import React from 'react'
-import PropTypes from 'prop-types'
-import moment from 'moment'
+import moment from 'moment-timezone'
 import DateRangePicker from 'react-bootstrap-daterangepicker'
 import {Button} from 'reactstrap'
+
+type Props = {
+    isDisabled: boolean,
+    endDatetime: moment,
+    onChange: ({ start_datetime: string, end_datetime: string }) => void,
+    startDatetime: moment,
+}
+
+type State = {
+    startDate: moment,
+    endDate: moment,
+    ranges: { [string]: [moment, moment] },
+}
 
 /**
  * The period picker allows to select a period which will set a start and an end datetime
  */
-export default class PeriodPicker extends React.Component {
-    constructor(props) {
+export default class PeriodPicker extends React.Component<Props, State> {
+    static defaultProps = {
+        isDisabled: false,
+    }
+
+    constructor(props: Props) {
         super(props)
         const startOfToday = () => moment().startOf('day')
         const endOfToday = () => moment().endOf('day')
@@ -27,7 +44,7 @@ export default class PeriodPicker extends React.Component {
         }
     }
 
-    shouldComponentUpdate(nextProps) {
+    shouldComponentUpdate(nextProps: Props) {
         // because react-bootstrap-daterangepicker lib is based on weird DOM manipulation,
         // trigger redraw only when really needed
         return !this.props.startDatetime.isSame(nextProps.startDatetime)
@@ -35,7 +52,7 @@ export default class PeriodPicker extends React.Component {
             || this.props.isDisabled !== nextProps.isDisabled
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props) {
         if (nextProps.startDatetime && nextProps.endDatetime) {
             this.setState({
                 startDate: nextProps.startDatetime,
@@ -44,10 +61,10 @@ export default class PeriodPicker extends React.Component {
         }
     }
 
-    _handleEvent = (event, picker) => {
+    _handleEvent = (event: Event, picker: { startDate: moment, endDate: moment }) => {
         this.props.onChange({
-            start_datetime: picker.startDate.startOf('day').format(),
-            end_datetime: picker.endDate.endOf('day').format(),
+            start_datetime: moment(picker.startDate.startOf('day').format('YYYY-MM-DD HH:mm:ss')).format(),
+            end_datetime: moment(picker.endDate.endOf('day').format('YYYY-MM-DD HH:mm:ss')).format(),
         })
     }
 
@@ -99,15 +116,4 @@ export default class PeriodPicker extends React.Component {
             </DateRangePicker>
         )
     }
-}
-
-PeriodPicker.propTypes = {
-    isDisabled: PropTypes.bool.isRequired,
-    endDatetime: PropTypes.object.isRequired,
-    onChange: PropTypes.func.isRequired,
-    startDatetime: PropTypes.object.isRequired,
-}
-
-PeriodPicker.defaultProps = {
-    isDisabled: false,
 }
