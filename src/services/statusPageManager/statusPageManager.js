@@ -102,12 +102,12 @@ export class StatusPageManager {
             const componentStatus = COMPONENT_STATUS_LABEL[component.status]
 
             // filter out components that don't belong to our groups of interest
-            if (!groupName || component.status === COMPONENT_STATUSES.OPERATIONAL) {
+            if (!groupName || [COMPONENT_STATUSES.OPERATIONAL, COMPONENT_STATUSES.DEGRADED_PERFORMANCE].includes(component.status)) {
                 continue
             }
 
             // Find the highest status (Ex: major outage) and use it for display.
-            // Ex: if we have a 'major outage' and a simultaneous 'degraded performance' incident only show
+            // Ex: if we have a 'major outage' and a simultaneous 'partial outage' incident only show
             // 'major outage' since it's more important.
             if (componentStatus.level >= notification.level) {
                 notification.level = componentStatus.level
