@@ -12,8 +12,6 @@ import GorgiasApi from '../../services/gorgiasApi'
 import {notify} from '../../state/notifications/actions'
 import {getViewFilters} from '../../state/stats/selectors'
 
-import {canUseNewRevenueStats, getCurrentAccountId} from '../../utils/account'
-
 import Stat from './common/components/charts/Stat'
 
 type Props = {
@@ -28,7 +26,6 @@ type State = {
 }
 
 export class Stats extends React.Component<Props, State> {
-    useNewRevenueStats = canUseNewRevenueStats(getCurrentAccountId(window))
     gorgiasApi = new GorgiasApi()
     state = {
         fetchingStates: fromJS({}), // Store fetching state of each stat on the view.
@@ -37,7 +34,7 @@ export class Stats extends React.Component<Props, State> {
 
     componentDidMount() {
         const {params, filters} = this.props
-        const viewConfig = statViewsConfig(this.useNewRevenueStats).get(params.view)
+        const viewConfig = statViewsConfig.get(params.view)
         viewConfig.get('stats').forEach((statName) => this._fetchStat(statName, filters))
     }
 
@@ -100,7 +97,7 @@ export class Stats extends React.Component<Props, State> {
 
     render() {
         const {params, filters} = this.props
-        const viewConfig = statViewsConfig(this.useNewRevenueStats).get(params.view)
+        const viewConfig = statViewsConfig.get(params.view)
         const {stats} = this.state
         return (
             <Container

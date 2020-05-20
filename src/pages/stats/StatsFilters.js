@@ -23,11 +23,8 @@ import {CHANNELS} from '../../config/ticket'
 import {getAgents} from '../../state/agents/selectors'
 import {getDisplayName} from '../../state/customers/helpers'
 
-import {canUseNewRevenueStats, getCurrentAccountId} from '../../utils/account'
-
 import PeriodPicker from './common/PeriodPicker'
 import SearchableSelectField from './common/SearchableSelectField'
-
 
 type Props = {
     params: Object,
@@ -244,8 +241,7 @@ export class StatsFilters extends React.Component<Props, State> {
 
 const mapStateToProps = (state: Object, props: Props) => {
     const view = props.params.view
-    const accountId = getCurrentAccountId(window)
-    const config = statViewsConfig(canUseNewRevenueStats(accountId)).get(view)
+    const config = statViewsConfig.get(view)
 
     return {
         tags: getTags(state).toJS(),

@@ -5,11 +5,10 @@ import moment from 'moment'
 import {fromJS, List} from 'immutable'
 
 import {getHashOfObj} from '../../utils'
-import {views as viewsConfig, STORE_INTEGRATION_TYPES} from '../../config/stats'
+import {views, STORE_INTEGRATION_TYPES} from '../../config/stats'
 import {getIntegrations} from '../../state/integrations/selectors'
 import {resetStatsFilters, setStatsFilters} from '../../state/stats/actions'
 import {getFilters} from '../../state/stats/selectors'
-import {canUseNewRevenueStats, getCurrentAccountId} from '../../utils/account'
 
 import StatsFilters from './StatsFilters'
 import Stats from './Stats'
@@ -53,8 +52,6 @@ export class StatsPage extends Component<Props> {
             currentAccount,
             params: {view}
         } = this.props
-        const accountId = getCurrentAccountId(window)
-        const views = viewsConfig(canUseNewRevenueStats(accountId))
 
         const hasSatisfactionSurveyFeature = currentAccount.get('extra_features').includes('satisfaction-surveys')
         const hasRevenueStatFeature = currentAccount.get('extra_features').includes('revenue')

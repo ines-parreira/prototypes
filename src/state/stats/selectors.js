@@ -4,7 +4,6 @@ import {createSelector} from 'reselect'
 
 import type {stateType} from '../types'
 import {views as statViewsConfig} from '../../config/stats'
-import {canUseNewRevenueStats, getCurrentAccountId} from '../../utils/account'
 
 export const getStatsState = (state: stateType) => state.stats
 
@@ -16,8 +15,7 @@ export const getFilters = createSelector(
 export const getViewFilters = (viewName: string) => createSelector(
     [getFilters],
     (globalFilters: Map<*, *>): Map<*, *> | null => {
-        const accountId = getCurrentAccountId(window)
-        const viewConfig = statViewsConfig(canUseNewRevenueStats(accountId)).get(viewName)
+        const viewConfig = statViewsConfig.get(viewName)
         const viewFilterTypes = viewConfig.get('filters').map((filter) => filter.get('type'))
         if (!globalFilters) {
             return null

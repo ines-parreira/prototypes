@@ -90,7 +90,6 @@ describe('StatsPage', () => {
                 params={{view: 'revenue'}}
                 globalFilters={fromJS({'integrations': [1]})}
                 config={fromJS({
-                    name: 'Revenue (Beta)',
                     link: 'revenue',
                     stats: [],
                 })}
@@ -108,7 +107,6 @@ describe('StatsPage', () => {
                 params={{view: 'revenue'}}
                 globalFilters={fromJS({})}
                 config={fromJS({
-                    name: 'Revenue (Beta)',
                     link: 'revenue',
                     stats: [],
                 })}
