@@ -1,13 +1,9 @@
 import {fromJS} from 'immutable'
 
 import {
-    DANISH_LANGUAGE,
-    DUTCH_LANGUAGE,
+    DANISH_LANGUAGE, DUTCH_LANGUAGE,
     ENGLISH_US_LANGUAGE,
-    FRENCH_LANGUAGE,
-    GERMAN_LANGUAGE,
-    ITALIAN_LANGUAGE,
-    NORWEGIAN_LANGUAGE,
+    FRENCH_LANGUAGE, GERMAN_LANGUAGE, ITALIAN_LANGUAGE,
     SPANISH_LANGUAGE,
     SWEDISH_LANGUAGE
 } from '../../constants/languages'
@@ -23,5 +19,4 @@ export const SMOOCH_LANGUAGE_OPTIONS = fromJS([
     {value: ITALIAN_LANGUAGE, label: 'Italian'},
     {value: DUTCH_LANGUAGE, label: 'Dutch'},
     {value: GERMAN_LANGUAGE, label: 'German'},
-    {value: NORWEGIAN_LANGUAGE, label: 'Norwegian'},
 ])
