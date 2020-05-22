@@ -14,14 +14,6 @@ import * as constants from '../constants'
 jest.addMatchers(immutableMatchers)
 
 describe('infobarActions.shopify.cancelOrder reducer', () => {
-    describe('SET_INITIALIZED', () => {
-        it('should set initialized state to `true`', () => {
-            const action = {type: constants.SET_INITIALIZED}
-            const nextState = reducer(initialState, action)
-            expect(nextState.get('initialized')).toBe(true)
-        })
-    })
-
     describe('SET_LOADING', () => {
         it('should set loading state', () => {
             const action = {type: constants.SET_LOADING, loading: true, message: null}

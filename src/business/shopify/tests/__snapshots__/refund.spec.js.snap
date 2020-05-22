@@ -15,3 +15,5 @@ exports[`getTotalQuantities() should return total quantities 1`] = `1`;
 exports[`getTotalQuantities() should return total quantities because the suggested refund is \`null\` 1`] = `1`;
 
 exports[`getTotalTax() should return total tax 1`] = `0.2`;
+
+exports[`getTotalTax() should return total tax, including tax if shipping line 1`] = `1.1`;

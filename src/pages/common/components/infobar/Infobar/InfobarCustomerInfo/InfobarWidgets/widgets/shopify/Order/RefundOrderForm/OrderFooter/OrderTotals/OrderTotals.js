@@ -30,27 +30,12 @@ type Props = {
 }
 
 type State = {
-    initialized: boolean,
     shipping: string,
 }
 
 export default class OrderTotals extends React.PureComponent<Props, State> {
     state = {
-        initialized: false,
         shipping: this.props.payload.getIn(['shipping', 'amount']),
-    }
-
-    static getDerivedStateFromProps({refund}: Props, state: State) {
-        // When we receive the "suggested refund" for the first time
-        if (!state.initialized && !!refund && !refund.isEmpty()) {
-            return {
-                ...state,
-                initialized: true,
-                shipping: refund.getIn(['shipping', 'maximum_refundable']),
-            }
-        }
-
-        return null
     }
 
     _onShippingChange = (value: string) => {

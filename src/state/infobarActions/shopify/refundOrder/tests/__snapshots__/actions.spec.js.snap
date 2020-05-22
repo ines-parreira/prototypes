@@ -3,6 +3,11 @@
 exports[`infobarActions.shopify.refundOrder actions on error onInit() should notify that an error occurred 1`] = `
 Array [
   Object {
+    "loading": true,
+    "message": "Calculating refund...",
+    "type": "infobarActions/shopify/refundOrder/SET_LOADING",
+  },
+  Object {
     "orderId": 1894175539223,
     "type": "infobarActions/shopify/refundOrder/SET_ORDER_ID",
   },
@@ -26,7 +31,7 @@ Array [
         },
       ],
       "shipping": Immutable.Map {
-        "amount": "0.00",
+        "amount": "10.00",
       },
       "transactions": Immutable.List [
         Immutable.Map {
@@ -132,8 +137,13 @@ Array [
 ]
 `;
 
-exports[`infobarActions.shopify.refundOrder actions on not refundable onInit() should set \`restock\` to \`false\` because the line item is not restockable 1`] = `
+exports[`infobarActions.shopify.refundOrder actions on not restockable onInit() should set \`restock\` to \`false\` because the line item is not restockable 1`] = `
 Array [
+  Object {
+    "loading": true,
+    "message": "Calculating refund...",
+    "type": "infobarActions/shopify/refundOrder/SET_LOADING",
+  },
   Object {
     "orderId": 1894175539223,
     "type": "infobarActions/shopify/refundOrder/SET_ORDER_ID",
@@ -287,17 +297,19 @@ Array [
     "type": "infobarActions/shopify/refundOrder/SET_LOADING",
   },
   Object {
-    "type": "infobarActions/shopify/refundOrder/SET_INITIALIZED",
-  },
-  Object {
     "restock": false,
     "type": "infobarActions/shopify/refundOrder/SET_RESTOCK",
   },
 ]
 `;
 
-exports[`infobarActions.shopify.refundOrder actions on refundable onInit() should set \`restock\` to \`true\` because the line item is restockable 1`] = `
+exports[`infobarActions.shopify.refundOrder actions on restockable onInit() should set \`restock\` to \`true\` because the line item is restockable 1`] = `
 Array [
+  Object {
+    "loading": true,
+    "message": "Calculating refund...",
+    "type": "infobarActions/shopify/refundOrder/SET_LOADING",
+  },
   Object {
     "orderId": 1894175539223,
     "type": "infobarActions/shopify/refundOrder/SET_ORDER_ID",
@@ -449,9 +461,6 @@ Array [
     "loading": false,
     "message": null,
     "type": "infobarActions/shopify/refundOrder/SET_LOADING",
-  },
-  Object {
-    "type": "infobarActions/shopify/refundOrder/SET_INITIALIZED",
   },
   Object {
     "restock": true,
@@ -460,8 +469,244 @@ Array [
 ]
 `;
 
+exports[`infobarActions.shopify.refundOrder actions on success on initialized onLineItemsChange() should set line items and calculate refund 1`] = `
+Array [
+  Object {
+    "lineItems": Immutable.List [
+      Immutable.Map {
+        "quantity": 1,
+        "product_id": 8345093387,
+        "price_set": Immutable.Map {
+          "shop_money": Immutable.Map {
+            "amount": "1.0",
+            "currency_code": "USD",
+          },
+          "presentment_money": Immutable.Map {
+            "amount": "1.0",
+            "currency_code": "USD",
+          },
+        },
+        "variant_id": 31128766316567,
+        "title": "Acidulous candy",
+        "id": 4193100136471,
+        "sku": "0987654321-1",
+        "variant_title": "Red / A",
+        "total_discount_set": Immutable.Map {
+          "shop_money": Immutable.Map {
+            "amount": "0.0",
+            "currency_code": "USD",
+          },
+          "presentment_money": Immutable.Map {
+            "amount": "0.0",
+            "currency_code": "USD",
+          },
+        },
+      },
+      Immutable.Map {
+        "quantity": 4,
+        "product_id": 8345093387,
+        "price_set": Immutable.Map {
+          "shop_money": Immutable.Map {
+            "amount": "1.0",
+            "currency_code": "USD",
+          },
+          "presentment_money": Immutable.Map {
+            "amount": "1.0",
+            "currency_code": "USD",
+          },
+        },
+        "variant_id": 31128766349335,
+        "title": "Acidulous candy",
+        "id": 4193100169239,
+        "sku": "0987654321-2",
+        "variant_title": "Red / B",
+        "total_discount_set": Immutable.Map {
+          "shop_money": Immutable.Map {
+            "amount": "0.0",
+            "currency_code": "USD",
+          },
+          "presentment_money": Immutable.Map {
+            "amount": "0.0",
+            "currency_code": "USD",
+          },
+        },
+      },
+    ],
+    "type": "infobarActions/shopify/refundOrder/SET_LINE_ITEMS",
+  },
+  Object {
+    "payload": Immutable.Map {
+      "currency": "USD",
+      "restock": true,
+      "notify": true,
+      "refund_line_items": Immutable.List [
+        Immutable.Map {
+          "line_item_id": 4193100136471,
+          "restock_type": "cancel",
+          "fulfillment_status": null,
+          "quantity": 1,
+        },
+      ],
+      "shipping": Immutable.Map {
+        "amount": "0.00",
+      },
+      "transactions": Immutable.List [
+        Immutable.Map {
+          "amount": "1.00",
+        },
+      ],
+    },
+    "type": "infobarActions/shopify/refundOrder/SET_PAYLOAD",
+  },
+  Object {
+    "loading": true,
+    "message": "Calculating refund...",
+    "type": "infobarActions/shopify/refundOrder/SET_LOADING",
+  },
+  Object {
+    "loading": true,
+    "message": "Calculating refund...",
+    "type": "infobarActions/shopify/refundOrder/SET_LOADING",
+  },
+  Object {
+    "refund": Immutable.Map {
+      "shipping": Immutable.Map {
+        "amount": "10.00",
+        "tax": "00.90",
+        "maximum_refundable": "10.00",
+      },
+      "refund_line_items": Immutable.List [
+        Immutable.Map {
+          "subtotal": "1.00",
+          "location_id": 123,
+          "price": "1.00",
+          "discounted_price": "1.00",
+          "quantity": 1,
+          "discounted_total_price": "1.00",
+          "total_tax": "0.20",
+          "total_cart_discount_amount": "0.00",
+          "restock_type": "no_restock",
+          "line_item_id": 4193100136471,
+        },
+      ],
+      "transactions": Immutable.List [
+        Immutable.Map {
+          "order_id": 1894175539223,
+          "kind": "suggested_refund",
+          "gateway": "manual",
+          "parent_id": 2521452118039,
+          "amount": "1.20",
+          "currency": "USD",
+          "maximum_refundable": "1.20",
+        },
+      ],
+      "currency": "USD",
+    },
+    "type": "infobarActions/shopify/refundOrder/SET_REFUND",
+  },
+  Object {
+    "amount": "1.20",
+    "type": "infobarActions/shopify/refundOrder/SET_REFUND_AMOUNT",
+  },
+  Object {
+    "loading": false,
+    "message": null,
+    "type": "infobarActions/shopify/refundOrder/SET_LOADING",
+  },
+]
+`;
+
+exports[`infobarActions.shopify.refundOrder actions on success on initialized onPayloadChange() should set payload and calculate refund 1`] = `
+Array [
+  Object {
+    "payload": Immutable.Map {
+      "currency": "USD",
+      "restock": true,
+      "notify": true,
+      "refund_line_items": Immutable.List [
+        Immutable.Map {
+          "line_item_id": 4193100136471,
+          "restock_type": "cancel",
+          "fulfillment_status": null,
+          "quantity": 1,
+        },
+      ],
+      "shipping": Immutable.Map {
+        "amount": "0.00",
+      },
+      "transactions": Immutable.List [
+        Immutable.Map {
+          "amount": "1.00",
+        },
+      ],
+    },
+    "type": "infobarActions/shopify/refundOrder/SET_PAYLOAD",
+  },
+  Object {
+    "loading": true,
+    "message": "Calculating refund...",
+    "type": "infobarActions/shopify/refundOrder/SET_LOADING",
+  },
+  Object {
+    "loading": true,
+    "message": "Calculating refund...",
+    "type": "infobarActions/shopify/refundOrder/SET_LOADING",
+  },
+  Object {
+    "refund": Immutable.Map {
+      "shipping": Immutable.Map {
+        "amount": "10.00",
+        "tax": "00.90",
+        "maximum_refundable": "10.00",
+      },
+      "refund_line_items": Immutable.List [
+        Immutable.Map {
+          "subtotal": "1.00",
+          "location_id": 123,
+          "price": "1.00",
+          "discounted_price": "1.00",
+          "quantity": 1,
+          "discounted_total_price": "1.00",
+          "total_tax": "0.20",
+          "total_cart_discount_amount": "0.00",
+          "restock_type": "no_restock",
+          "line_item_id": 4193100136471,
+        },
+      ],
+      "transactions": Immutable.List [
+        Immutable.Map {
+          "order_id": 1894175539223,
+          "kind": "suggested_refund",
+          "gateway": "manual",
+          "parent_id": 2521452118039,
+          "amount": "1.20",
+          "currency": "USD",
+          "maximum_refundable": "1.20",
+        },
+      ],
+      "currency": "USD",
+    },
+    "type": "infobarActions/shopify/refundOrder/SET_REFUND",
+  },
+  Object {
+    "amount": "1.20",
+    "type": "infobarActions/shopify/refundOrder/SET_REFUND_AMOUNT",
+  },
+  Object {
+    "loading": false,
+    "message": null,
+    "type": "infobarActions/shopify/refundOrder/SET_LOADING",
+  },
+]
+`;
+
 exports[`infobarActions.shopify.refundOrder actions on success onInit() should init the state 1`] = `
 Array [
+  Object {
+    "loading": true,
+    "message": "Calculating refund...",
+    "type": "infobarActions/shopify/refundOrder/SET_LOADING",
+  },
   Object {
     "orderId": 1894175539223,
     "type": "infobarActions/shopify/refundOrder/SET_ORDER_ID",
@@ -486,7 +731,7 @@ Array [
         },
       ],
       "shipping": Immutable.Map {
-        "amount": "0.00",
+        "amount": "10.00",
       },
       "transactions": Immutable.List [
         Immutable.Map {
@@ -572,9 +817,9 @@ Array [
   Object {
     "refund": Immutable.Map {
       "shipping": Immutable.Map {
-        "amount": "0.00",
-        "tax": "0.00",
-        "maximum_refundable": "0.00",
+        "amount": "10.00",
+        "tax": "00.90",
+        "maximum_refundable": "10.00",
       },
       "refund_line_items": Immutable.List [
         Immutable.Map {
@@ -613,246 +858,6 @@ Array [
     "loading": false,
     "message": null,
     "type": "infobarActions/shopify/refundOrder/SET_LOADING",
-  },
-  Object {
-    "type": "infobarActions/shopify/refundOrder/SET_INITIALIZED",
-  },
-]
-`;
-
-exports[`infobarActions.shopify.refundOrder actions on success onLineItemsChange() should set line items and calculate refund 1`] = `
-Array [
-  Object {
-    "lineItems": Immutable.List [
-      Immutable.Map {
-        "quantity": 1,
-        "product_id": 8345093387,
-        "price_set": Immutable.Map {
-          "shop_money": Immutable.Map {
-            "amount": "1.0",
-            "currency_code": "USD",
-          },
-          "presentment_money": Immutable.Map {
-            "amount": "1.0",
-            "currency_code": "USD",
-          },
-        },
-        "variant_id": 31128766316567,
-        "title": "Acidulous candy",
-        "id": 4193100136471,
-        "sku": "0987654321-1",
-        "variant_title": "Red / A",
-        "total_discount_set": Immutable.Map {
-          "shop_money": Immutable.Map {
-            "amount": "0.0",
-            "currency_code": "USD",
-          },
-          "presentment_money": Immutable.Map {
-            "amount": "0.0",
-            "currency_code": "USD",
-          },
-        },
-      },
-      Immutable.Map {
-        "quantity": 4,
-        "product_id": 8345093387,
-        "price_set": Immutable.Map {
-          "shop_money": Immutable.Map {
-            "amount": "1.0",
-            "currency_code": "USD",
-          },
-          "presentment_money": Immutable.Map {
-            "amount": "1.0",
-            "currency_code": "USD",
-          },
-        },
-        "variant_id": 31128766349335,
-        "title": "Acidulous candy",
-        "id": 4193100169239,
-        "sku": "0987654321-2",
-        "variant_title": "Red / B",
-        "total_discount_set": Immutable.Map {
-          "shop_money": Immutable.Map {
-            "amount": "0.0",
-            "currency_code": "USD",
-          },
-          "presentment_money": Immutable.Map {
-            "amount": "0.0",
-            "currency_code": "USD",
-          },
-        },
-      },
-    ],
-    "type": "infobarActions/shopify/refundOrder/SET_LINE_ITEMS",
-  },
-  Object {
-    "payload": Immutable.Map {
-      "currency": "USD",
-      "restock": true,
-      "notify": true,
-      "refund_line_items": Immutable.List [
-        Immutable.Map {
-          "line_item_id": 4193100136471,
-          "restock_type": "cancel",
-          "fulfillment_status": null,
-          "quantity": 1,
-        },
-      ],
-      "shipping": Immutable.Map {
-        "amount": "0.00",
-      },
-      "transactions": Immutable.List [
-        Immutable.Map {
-          "amount": "1.00",
-        },
-      ],
-    },
-    "type": "infobarActions/shopify/refundOrder/SET_PAYLOAD",
-  },
-  Object {
-    "loading": true,
-    "message": "Calculating refund...",
-    "type": "infobarActions/shopify/refundOrder/SET_LOADING",
-  },
-  Object {
-    "loading": true,
-    "message": "Calculating refund...",
-    "type": "infobarActions/shopify/refundOrder/SET_LOADING",
-  },
-  Object {
-    "refund": Immutable.Map {
-      "shipping": Immutable.Map {
-        "amount": "0.00",
-        "tax": "0.00",
-        "maximum_refundable": "0.00",
-      },
-      "refund_line_items": Immutable.List [
-        Immutable.Map {
-          "subtotal": "1.00",
-          "location_id": 123,
-          "price": "1.00",
-          "discounted_price": "1.00",
-          "quantity": 1,
-          "discounted_total_price": "1.00",
-          "total_tax": "0.20",
-          "total_cart_discount_amount": "0.00",
-          "restock_type": "no_restock",
-          "line_item_id": 4193100136471,
-        },
-      ],
-      "transactions": Immutable.List [
-        Immutable.Map {
-          "order_id": 1894175539223,
-          "kind": "suggested_refund",
-          "gateway": "manual",
-          "parent_id": 2521452118039,
-          "amount": "1.20",
-          "currency": "USD",
-          "maximum_refundable": "1.20",
-        },
-      ],
-      "currency": "USD",
-    },
-    "type": "infobarActions/shopify/refundOrder/SET_REFUND",
-  },
-  Object {
-    "amount": "1.20",
-    "type": "infobarActions/shopify/refundOrder/SET_REFUND_AMOUNT",
-  },
-  Object {
-    "loading": false,
-    "message": null,
-    "type": "infobarActions/shopify/refundOrder/SET_LOADING",
-  },
-  Object {
-    "type": "infobarActions/shopify/refundOrder/SET_INITIALIZED",
-  },
-]
-`;
-
-exports[`infobarActions.shopify.refundOrder actions on success onPayloadChange() should set payload and calculate refund 1`] = `
-Array [
-  Object {
-    "payload": Immutable.Map {
-      "currency": "USD",
-      "restock": true,
-      "notify": true,
-      "refund_line_items": Immutable.List [
-        Immutable.Map {
-          "line_item_id": 4193100136471,
-          "restock_type": "cancel",
-          "fulfillment_status": null,
-          "quantity": 1,
-        },
-      ],
-      "shipping": Immutable.Map {
-        "amount": "0.00",
-      },
-      "transactions": Immutable.List [
-        Immutable.Map {
-          "amount": "1.00",
-        },
-      ],
-    },
-    "type": "infobarActions/shopify/refundOrder/SET_PAYLOAD",
-  },
-  Object {
-    "loading": true,
-    "message": "Calculating refund...",
-    "type": "infobarActions/shopify/refundOrder/SET_LOADING",
-  },
-  Object {
-    "loading": true,
-    "message": "Calculating refund...",
-    "type": "infobarActions/shopify/refundOrder/SET_LOADING",
-  },
-  Object {
-    "refund": Immutable.Map {
-      "shipping": Immutable.Map {
-        "amount": "0.00",
-        "tax": "0.00",
-        "maximum_refundable": "0.00",
-      },
-      "refund_line_items": Immutable.List [
-        Immutable.Map {
-          "subtotal": "1.00",
-          "location_id": 123,
-          "price": "1.00",
-          "discounted_price": "1.00",
-          "quantity": 1,
-          "discounted_total_price": "1.00",
-          "total_tax": "0.20",
-          "total_cart_discount_amount": "0.00",
-          "restock_type": "no_restock",
-          "line_item_id": 4193100136471,
-        },
-      ],
-      "transactions": Immutable.List [
-        Immutable.Map {
-          "order_id": 1894175539223,
-          "kind": "suggested_refund",
-          "gateway": "manual",
-          "parent_id": 2521452118039,
-          "amount": "1.20",
-          "currency": "USD",
-          "maximum_refundable": "1.20",
-        },
-      ],
-      "currency": "USD",
-    },
-    "type": "infobarActions/shopify/refundOrder/SET_REFUND",
-  },
-  Object {
-    "amount": "1.20",
-    "type": "infobarActions/shopify/refundOrder/SET_REFUND_AMOUNT",
-  },
-  Object {
-    "loading": false,
-    "message": null,
-    "type": "infobarActions/shopify/refundOrder/SET_LOADING",
-  },
-  Object {
-    "type": "infobarActions/shopify/refundOrder/SET_INITIALIZED",
   },
 ]
 `;

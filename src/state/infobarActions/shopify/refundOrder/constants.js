@@ -2,7 +2,6 @@
 
 const scope = 'infobarActions/shopify/refundOrder'
 
-export const SET_INITIALIZED = `${scope}/SET_INITIALIZED`
 export const SET_LOADING = `${scope}/SET_LOADING`
 export const SET_ORDER_ID = `${scope}/SET_ORDER_ID`
 export const SET_PAYLOAD = `${scope}/SET_PAYLOAD`

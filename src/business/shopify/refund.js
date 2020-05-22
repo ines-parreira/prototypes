@@ -22,7 +22,7 @@ export function getTotalCartDiscountAmount(refund: Record<Shopify.Refund>): numb
 export function getTotalTax(refund: Record<Shopify.Refund>): number {
     return refund.get('refund_line_items', []).reduce(
         (total, refundLineItem) => total + parseFloat(refundLineItem.get('total_tax')),
-        0
+        parseFloat(refund.getIn(['shipping', 'tax'], 0))
     )
 }
 

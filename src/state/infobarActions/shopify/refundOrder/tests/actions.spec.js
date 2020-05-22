@@ -29,6 +29,12 @@ describe('infobarActions.shopify.refundOrder actions', () => {
     const payload = fromJS(shopifyRefundOrderPayloadFixture())
     const orderId = order.get('id')
     const mockServer = new MockAdapter(axios)
+    const refundWithoutShipping = fromJS(shopifySuggestedRefundFixture())
+        .setIn(['shipping', 'maximum_refundable'], '10.00')
+    const refund = refundWithoutShipping
+        .setIn(['shipping', 'amount'], '10.00')
+        .setIn(['shipping', 'tax'], '00.90')
+
     let store
 
     const getActions = () => store.getActions().map((action) => {
@@ -58,38 +64,54 @@ describe('infobarActions.shopify.refundOrder actions', () => {
     })
 
     describe('on success', () => {
-        beforeEach(() => {
-            mockServer
-                .onPost(`/integrations/shopify/order/${orderId}/refunds/calculate/`)
-                .reply(200, {
-                    refund: shopifySuggestedRefundFixture(),
-                })
-        })
-
         describe('onInit()', () => {
+            beforeEach(() => {
+                mockServer
+                    // First call that fetches maximum refundable value
+                    .onPost(`/integrations/shopify/order/${orderId}/refunds/calculate/`)
+                    .replyOnce(200, {
+                        refund: refundWithoutShipping.toJS(),
+                    })
+                    // First call that fetches correct tax value for maximum refundable value
+                    .onPost(`/integrations/shopify/order/${orderId}/refunds/calculate/`)
+                    .replyOnce(200, {
+                        refund: refund.toJS(),
+                    })
+            })
+
             it('should init the state', async () => {
                 await store.dispatch(actions.onInit(integrationId, order))
                 expect(getActions()).toMatchSnapshot()
             })
         })
 
-        describe('onLineItemsChange()', () => {
-            it('should set line items and calculate refund', async () => {
-                const lineItems = initRefundOrderLineItems(order)
-                await store.dispatch(actions.onLineItemsChange(integrationId, lineItems))
-                expect(getActions()).toMatchSnapshot()
+        describe('on initialized', () => {
+            beforeEach(() => {
+                mockServer
+                    .onPost(`/integrations/shopify/order/${orderId}/refunds/calculate/`)
+                    .replyOnce(200, {
+                        refund: refund.toJS(),
+                    })
             })
-        })
 
-        describe('onPayloadChange()', () => {
-            it('should set payload and calculate refund', async () => {
-                await store.dispatch(actions.onPayloadChange(integrationId, payload))
-                expect(getActions()).toMatchSnapshot()
+            describe('onLineItemsChange()', () => {
+                it('should set line items and calculate refund', async () => {
+                    const lineItems = initRefundOrderLineItems(order)
+                    await store.dispatch(actions.onLineItemsChange(integrationId, lineItems))
+                    expect(getActions()).toMatchSnapshot()
+                })
+            })
+
+            describe('onPayloadChange()', () => {
+                it('should set payload and calculate refund', async () => {
+                    await store.dispatch(actions.onPayloadChange(integrationId, payload))
+                    expect(getActions()).toMatchSnapshot()
+                })
             })
         })
     })
 
-    describe('on refundable', () => {
+    describe('on restockable', () => {
         beforeEach(() => {
             store = mockStore({
                 infobarActions: {
@@ -116,7 +138,7 @@ describe('infobarActions.shopify.refundOrder actions', () => {
         })
     })
 
-    describe('on not refundable', () => {
+    describe('on not restockable', () => {
         beforeEach(() => {
             mockServer
                 .onPost(`/integrations/shopify/order/${orderId}/refunds/calculate/`)
@@ -136,8 +158,14 @@ describe('infobarActions.shopify.refundOrder actions', () => {
     describe('on error', () => {
         beforeEach(() => {
             mockServer
+                // First call that fetches maximum refundable value
                 .onPost(`/integrations/shopify/order/${orderId}/refunds/calculate/`)
-                .reply(500, {
+                .replyOnce(200, {
+                    refund: refundWithoutShipping.toJS(),
+                })
+                // First call that should fetch correct tax value for maximum refundable value
+                .onPost(`/integrations/shopify/order/${orderId}/refunds/calculate/`)
+                .replyOnce(500, {
                     error: {
                         msg: 'foo',
                     },

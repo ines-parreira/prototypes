@@ -15,7 +15,6 @@ import {notify} from '../../../notifications/actions'
 
 import {
     SET_INITIAL_STATE,
-    SET_INITIALIZED,
     SET_LINE_ITEMS,
     SET_LOADING,
     SET_ORDER_ID,
@@ -35,10 +34,6 @@ const getApi = (): GorgiasApi => {
 
     return _gorgiasApi
 }
-
-const setInitialized = () => ({
-    type: SET_INITIALIZED,
-})
 
 const setLoading = (loading: boolean, message: ?string = null) => ({
     type: SET_LOADING,
@@ -80,19 +75,37 @@ const setInitialState = () => ({
     type: SET_INITIAL_STATE,
 })
 
-export const onInit = (integrationId: number, order: Record<Shopify.Order>) => (dispatch: dispatchType) => {
-    const payload = initRefundOrderPayload(order)
-    const lineItems = initRefundOrderLineItems(order)
+export const onInit = (integrationId: number, order: Record<Shopify.Order>) => async (dispatch: dispatchType) => {
+    try {
+        let payload = initRefundOrderPayload(order)
+        const lineItems = initRefundOrderLineItems(order)
+        const api = getApi()
+        const orderId = order.get('id')
 
-    segmentTracker.logEvent(segmentTracker.EVENTS.SHOPIFY_REFUND_ORDER_OPEN, {
-        orderId: order.get('id'),
-    })
+        segmentTracker.logEvent(segmentTracker.EVENTS.SHOPIFY_REFUND_ORDER_OPEN, {
+            orderId,
+        })
 
-    return Promise.all([
-        dispatch(setOrderId(order.get('id'))),
-        dispatch(onPayloadChange(integrationId, payload)),
-        dispatch(setLineItems(lineItems)),
-    ])
+        // Fetch maximum refundable amount, and use it as default value
+        dispatch(setLoading(true, 'Calculating refund...'))
+
+        const suggestedRefund = await api.calculateRefund(integrationId, orderId, payload)
+        const shippingMaximumRefundable = suggestedRefund.getIn(['shipping', 'maximum_refundable'])
+        payload = payload.setIn(['shipping', 'amount'], shippingMaximumRefundable)
+
+        return Promise.all([
+            dispatch(setOrderId(orderId)),
+            dispatch(onPayloadChange(integrationId, payload)),
+            dispatch(setLineItems(lineItems)),
+        ])
+    } catch (error) {
+        if (axios.isCancel(error)) {
+            return
+        }
+
+        console.error(error)
+        return dispatch(onApiError(error, 'Error while calculating refund'))
+    }
 }
 
 export const onLineItemsChange = (integrationId: number, lineItems: List<$Shape<Shopify.LineItem>>) =>
@@ -136,31 +149,17 @@ export const calculateRefund = _debounce(
             api.cancelPendingRequests(true)
 
             const state = getState()
-            const initialized = getRefundOrderState(state).get('initialized')
             const orderId = getRefundOrderState(state).get('orderId')
             const payload = getRefundOrderState(state).get('payload').delete('transactions')
             const currencyCode = payload.get('currency')
-            let suggestedRefund = await api.calculateRefund(integrationId, orderId, payload)
-            const shippingMaximumRefundable = suggestedRefund.getIn(['shipping', 'maximum_refundable'])
-            let amount = getRefundAmount(suggestedRefund)
-
-            if (!initialized) {
-                amount += parseFloat(shippingMaximumRefundable)
-
-                suggestedRefund = suggestedRefund
-                    .setIn(['shipping', 'amount'], shippingMaximumRefundable)
-                    .setIn(['transactions', 0, 'amount'], formatPrice(amount, currencyCode))
-            }
+            const suggestedRefund = await api.calculateRefund(integrationId, orderId, payload)
+            const amount = getRefundAmount(suggestedRefund)
 
             const promises = [
                 dispatch(setRefund(suggestedRefund)),
                 dispatch(setRefundAmount(formatPrice(amount, currencyCode))),
                 dispatch(setLoading(false)),
             ]
-
-            if (!initialized) {
-                promises.push(dispatch(setInitialized()))
-            }
 
             // Check or uncheck the "Restock" checkbox
             const totalQuantities = getTotalQuantities(payload, suggestedRefund)

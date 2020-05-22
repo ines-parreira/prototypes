@@ -40,6 +40,13 @@ describe('getTotalTax()', () => {
 
         expect(total).toMatchSnapshot()
     })
+
+    it('should return total tax, including tax if shipping line', () => {
+        const refund = fromJS(shopifySuggestedRefundFixture()).setIn(['shipping', 'tax'], '00.90')
+        const total = getTotalTax(refund)
+
+        expect(total).toMatchSnapshot()
+    })
 })
 
 describe('getRefundAmount()', () => {
