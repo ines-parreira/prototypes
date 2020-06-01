@@ -56,7 +56,7 @@ describe('ticket actions', () => {
     let mockServer
 
     beforeEach(() => {
-        store = mockStore({ticket: initialState})
+        store = mockStore({ticket: initialState, newMessage: newMessageState})
         mockServer = new MockAdapter(axios)
     })
 
@@ -304,6 +304,7 @@ describe('ticket actions', () => {
         it('existing ticket', () => {
             mockServer.onGet('/api/tickets/1/').reply(200, {id: 1, messages: []})
             store = mockStore({
+                newMessage: newMessageState,
                 ticket: initialState.set('id', 1),
                 currentUser: fromJS({id: 1}),
             })
@@ -314,11 +315,32 @@ describe('ticket actions', () => {
         it('existing instagram ticket', () => {
             mockServer.onGet('/api/tickets/1/').reply(200, {id: 1, messages: [{source: {type: 'instagram-comment'}}]})
             store = mockStore({
+                newMessage: newMessageState,
                 ticket: initialState.set('id', 1),
                 currentUser: fromJS({id: 1}),
             })
             return store.dispatch(actions.fetchTicket(1))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
+        })
+
+        it('should not dispatch new message when existing new message', () => {
+            mockServer.onGet('/api/tickets/1/').reply(200, {id: 1, messages: [{source: {type: 'instagram-comment'}}]})
+            store = mockStore({
+                newMessage: newMessageState.mergeDeep({
+                    newMessage: {
+                        body_text: 'foo',
+                    },
+                }),
+                ticket: initialState.set('id', 1),
+                currentUser: fromJS({id: 1}),
+            })
+            return store
+                .dispatch(actions.fetchTicket(1))
+                .then(() =>
+                    expect(
+                        store.getActions().find((action) => action.type === 'NEW_MESSAGE_FETCH_TICKET_SUCCESS')
+                    ).toBeUndefined()
+                )
         })
     })
 
@@ -668,6 +690,13 @@ describe('ticket actions', () => {
         it('should dispatch REMOVE_TICKET_AUDIT_LOG_EVENTS action', () => {
             const ticketId = 123
             store.dispatch(actions.hideAuditLogEvents(ticketId))
+            expect(store.getActions()).toMatchSnapshot()
+        })
+    })
+
+    describe('messageDeleted()', () => {
+        it('should dispatch TICKET_MESSAGE_DELETED action', () => {
+            store.dispatch(actions.messageDeleted('123'))
             expect(store.getActions()).toMatchSnapshot()
         })
     })

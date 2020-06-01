@@ -19,7 +19,14 @@ export type notificationType = {
     id?: ?string,
     title?: string,
     dismissAfter?: number,
-    closeOnNext?: boolean
+    closeOnNext?: boolean,
+    buttons?: NotificationButton[],
+}
+
+type NotificationButton = {
+    name: string,
+    onClick: () => void,
+    primary: boolean,
 }
 
 export const AUTHORIZED_NOTIFICATION_TYPES = [

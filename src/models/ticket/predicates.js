@@ -24,6 +24,9 @@ export const hasPendingAction = (message: TicketMessage): boolean => {
 }
 
 export const isPending = (message: TicketMessage): boolean => {
+    if (message.source && message.source.type === 'email') {
+        return false
+    }
     return (hasPendingAction(message) && !hasFailedAction(message)) || message.isPending || false
 }
 

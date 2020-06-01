@@ -1,7 +1,8 @@
 // @flow
 import {browserHistory} from 'react-router'
-import {fromJS, type Map, type List} from 'immutable'
-import {ContentState} from 'draft-js'
+import {fromJS, type Map} from 'immutable'
+import {ContentState, type ContentState as ContentStateType} from 'draft-js'
+import {createAction} from '@reduxjs/toolkit'
 
 
 import _isNull from 'lodash/isNull'
@@ -42,7 +43,7 @@ import * as agentSelectors from '../agents/selectors'
 import {AGENT_TYPING_STARTED, AGENT_TYPING_STOPPED} from '../../config/socketConstants'
 
 import socketManager from '../../services/socketManager'
-import type {dispatchType, getStateType, currentUserType} from '../types'
+import type {dispatchType, getStateType, currentUserType, thunkActionType} from '../types'
 import type {attachmentType} from '../../types'
 import {getMomentNow} from '../../utils/date'
 
@@ -51,36 +52,11 @@ import {INSTAGRAM_AD_COMMENT_SOURCE, INSTAGRAM_COMMENT_SOURCE} from '../../confi
 import * as responseUtils from './responseUtils'
 import * as selectors from './selectors'
 import * as constants from './constants'
-
-type userType = {
-    id: string,
-    email?: string,
-    name?: string
-}
-type newMessageType = {
-    id?: string,
-    source: {
-        type: string,
-        extra: {}
-    },
-    channel: string,
-    sender: userType,
-    body_text: string,
-    attachments: Array<attachmentType>,
-    actions: Array<Map<*, *>>,
-    public?: boolean
-}
-type ticketType = {
-    state: {},
-    _internal: {},
-    newMessage: newMessageType,
-    status: string,
-    assignee_user: userType,
-    channel: string,
-    messages: Array<{}>
-}
-type macroActionsType = List<Map<*, *>>
-type submitTicketMessageType = dispatchType | Promise<dispatchType | {}>
+import type {
+    MacroActionsType,
+    NewMessageType,
+    TicketType,
+} from './types'
 
 export const addAttachments = (ticket: Map<*, *>, atts: Array<attachmentType>) => (dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
     dispatch({
@@ -438,10 +414,9 @@ export const initializeMessageDraft = () => (dispatch: dispatchType) => {
  * Adds the newMessage to the ticket's messages, attaches actions and sets some source elements on the message.
  * Also sets some properties on the ticket.
  */
-export function prepareTicketDataToSend(dispatch: dispatchType, getState: getStateType, ticket: Map<*, *>, newMessage: Map<*, *>, status: ?string, actionsForMacro: ?macroActionsType, currentUser: currentUserType): ?{ ticket: ticketType, newMessage: newMessageType } {
+export function prepareTicketDataToSend(dispatch: dispatchType, getState: getStateType, ticket: Map<*, *>, newMessage: Map<*, *>, status: ?string, actionsForMacro: ?MacroActionsType, currentUser: currentUserType): ?{ ticket: TicketType, newMessage: NewMessageType } {
     const data = toJS(ticket)
     data.newMessage = toJS(newMessage).newMessage
-
     data.status = status || data.status
     if (data.assignee_user) {
         data.assignee_user = {id: data.assignee_user.id}
@@ -581,16 +556,18 @@ function onMessageSent(dispatch: dispatchType) {
     })
 }
 
-/**
- * @param action: A parameter to decide on what to do when an action failed. (Retry/ignore/cancel, etc.)
- */
-export function submitTicketMessage(status: ?string, macroActions: ?macroActionsType, action: ?string,
-    resetMessage: boolean = true, retryMessage: Map<*, *>) {
-    return (dispatch: dispatchType, getState: getStateType): submitTicketMessageType => {
+export function prepareTicketMessage(
+    status: ?string,
+    macroActions: ?MacroActionsType,
+    action: ?string,
+    resetMessage: boolean = true,
+    retryMessage: Map<*, *>
+): thunkActionType {
+    return (dispatch: dispatchType, getState: getStateType): Promise<{messageId: number, messageToSend: NewMessageType}> => new Promise((resolve, reject) => {
         const {ticket, currentUser, newMessage} = getState()
         // temporary message id
         let messageId = getMomentNow()
-        let messageToSend: newMessageType
+        let messageToSend: NewMessageType
 
         // message already parsed
         if (!!retryMessage) {
@@ -601,11 +578,12 @@ export function submitTicketMessage(status: ?string, macroActions: ?macroActions
             const dataToSend = prepareTicketDataToSend(dispatch, getState, ticket, newMessage, status, macroActions, currentUser)
 
             if (!dataToSend || _isNull(dataToSend)) {
-                return dispatch({
+                dispatch({
                     type: constants.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR,
                     reason: 'Message was not sent. Sent data is invalid.',
                     messageId,
                 })
+                return reject()
             }
 
             messageToSend = dataToSend.newMessage
@@ -614,22 +592,23 @@ export function submitTicketMessage(status: ?string, macroActions: ?macroActions
         // Execute front-end validations for each action of the message
         if (messageToSend.actions) {
             for (const messageAction of messageToSend.actions) {
-                const template = getActionTemplate(messageAction.get('name'))
+                const template = getActionTemplate(fromJS(messageAction).get('name'))
 
-                if (template.validators) {
-                    // We can't just have a fallback in the get, in case ticket.customer.data === null
-                    const customer = (ticket.getIn(['customer']) || fromJS({})).toJS()
+                // We can't just have a fallback in the get, in case ticket.customer.data === null
+                const customer = (ticket.getIn(['customer']) || fromJS({})).toJS()
+                if (template && template.validators) {
                     for (const validator of template.validators) {
                         const res = validator.validate(customer)
 
                         if (!res) {
-                            return dispatch({
+                            dispatch({
                                 type: constants.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR,
                                 error: 'Action validation error.',
                                 reason: validator.error,
                                 message: messageToSend,
                                 messageId,
                             })
+                            return reject()
                         }
                     }
                 }
@@ -654,20 +633,28 @@ export function submitTicketMessage(status: ?string, macroActions: ?macroActions
         // clear the message (since it was just sent) but force the focus on the field
         dispatch(setResponseText(fromJS({forceFocus: true, forceUpdate: true})))
         dispatch(resetReceiversAndSender)
+        resolve({
+            messageId,
+            messageToSend,
+        })
+    })
+}
 
+export function sendTicketMessage(messageId: string, messageToSend: NewMessageType, action: ?string, resetMessage: boolean = true, ticketId: ?string) {
+    return (dispatch: dispatchType, getState: getStateType): Promise<dispatchType | {}> => new Promise((resolve) => {
+        const {ticket} = getState()
         let promise
 
         if (action) {
             promise = axios.put(
                 // $FlowFixMe
-                `/api/tickets/${ticket.get('id')}/messages/${messageToSend.id}/${action ? `?action=${action}` : ''}`,
+                `/api/tickets/${ticketId || ticket.get('id')}/messages/${messageToSend.id}/${action ? `?action=${action}` : ''}`,
                 messageToSend
             )
         } else {
-            promise = axios.post(`/api/tickets/${ticket.get('id')}/messages/`, messageToSend)
+            promise = axios.post(`/api/tickets/${ticketId || ticket.get('id')}/messages/`, messageToSend)
         }
-
-        return promise
+        promise
             .then((json = {}) => json.data)
             .then((resp) => {
                 let state = getState()
@@ -703,20 +690,25 @@ export function submitTicketMessage(status: ?string, macroActions: ?macroActions
                     messageId,
                 })
             })
+            .then(resolve)
+    })
+}
+
+export function retrySubmitTicketMessage(message: Map<*, *>): thunkActionType {
+    return (dispatch: dispatchType): Promise<dispatchType | {}> => {
+        return dispatch(prepareTicketMessage(
+            message.getIn(['_internal', 'status']),
+            null,
+            null,
+            false,
+            message
+        )).then(({messageId, messageToSend}) => {
+            return dispatch(sendTicketMessage(messageId, messageToSend, null, false))
+        })
     }
 }
 
-export function retrySubmitTicketMessage(message: Map<*, *>): () => submitTicketMessageType {
-    return submitTicketMessage(
-        message.getIn(['_internal', 'status']),
-        null,
-        null,
-        false,
-        message
-    )
-}
-
-export function submitTicket(ticket: Map<*, *>, status: ?string, macroActions: ?macroActionsType, currentUser: currentUserType, resetMessage: boolean = true) {
+export function submitTicket(ticket: Map<*, *>, status: ?string, macroActions: ?MacroActionsType, currentUser: currentUserType, resetMessage: boolean = true) {
     return (dispatch: dispatchType, getState: getStateType): ?Promise<dispatchType> => {
         const {newMessage} = getState()
 
@@ -797,3 +789,7 @@ export function resetReceiversAndSender(dispatch: dispatchType, getState: getSta
     // set sender according to last sent message
     return dispatch(setSender())
 }
+
+export const newMessageResetFromMessage = createAction<typeof constants.NEW_MESSAGE_RESET_FROM_MESSAGE, {contentState: ContentStateType, newMessage: NewMessageType}>(
+    constants.NEW_MESSAGE_RESET_FROM_MESSAGE
+)

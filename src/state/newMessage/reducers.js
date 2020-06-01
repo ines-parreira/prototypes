@@ -1,7 +1,6 @@
 // @flow
 import {fromJS} from 'immutable'
-import {convertToRaw, ContentState} from 'draft-js'
-
+import {convertToRaw, ContentState, SelectionState} from 'draft-js'
 
 
 import _pick from 'lodash/pick'
@@ -237,7 +236,6 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
             let contentState = action.args.get('contentState') || state.getIn(['state', 'contentState'])
             let selectionState = action.args.get('selectionState') || state.getIn(['state', 'selectionState'])
             const {appliedMacro, forceFocus, forceUpdate} = action
-
             const source = state.getIn(['newMessage', 'source'], fromJS({}))
 
             // email-forward uses email source type
@@ -347,6 +345,20 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
 
             // setting new receivers in source
             return state.setIn(['newMessage', 'source'], fromJS(_assign(sourceWithoutReceivers, newReceivers)))
+        }
+
+        case types.NEW_MESSAGE_RESET_FROM_MESSAGE: {
+            return resetContentState(state).mergeDeep({
+                state: {
+                    cacheAdded: true,
+                    dirty: false,
+                    forceUpdate: true,
+                    forceFocus: true,
+                },
+                newMessage: fromJS(action.payload.newMessage),
+            })
+                .setIn(['state', 'contentState'], action.payload.contentState)
+                .setIn(['state', 'selectionState'], SelectionState.createEmpty())
         }
 
         default:

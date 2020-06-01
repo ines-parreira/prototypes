@@ -5,6 +5,7 @@ import {browserHistory} from 'react-router'
 import _isEmpty from 'lodash/isEmpty'
 import _noop from 'lodash/noop'
 import axios from 'axios'
+import {createAction} from '@reduxjs/toolkit'
 
 import type Moment from 'moment'
 
@@ -204,7 +205,7 @@ export const setTeam = (assigneeTeam: ?Object) => (dispatch: dispatchType, getSt
     return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('setTeamAssignee', getState())))
 }
 
-export const setCustomer = (customer: Object): thunkActionType => (dispatch: dispatchType) => {
+export const setCustomer = (customer: ?Object): thunkActionType => (dispatch: dispatchType) => {
     dispatch({
         type: types.SET_CUSTOMER,
         args: fromJS({customer}),
@@ -231,11 +232,6 @@ export const setStatus = (status: string, callback: () => void = _noop) =>
         })
 
         if (status === 'closed') {
-            dispatch(notify({
-                status: 'success',
-                message: 'The ticket has been closed.'
-            }))
-
             // execute callback immediately, do not wait for server answer
             callback()
         }
@@ -327,7 +323,7 @@ export const applyMacroAction = (action: Record<Action>) => (dispatch: dispatchT
     })
 }
 
-export const applyMacro = (macro: Macro, ticketId: number) => (dispatch: dispatchType, getState: getStateType) => {
+export const applyMacro = (macro: Macro, ticketId: number, shouldUpdateNewMessage?: boolean = true) => (dispatch: dispatchType, getState: getStateType) => {
     // render macro action arguments
     let state = getState()
 
@@ -347,7 +343,12 @@ export const applyMacro = (macro: Macro, ticketId: number) => (dispatch: dispatc
 
     const actions = renderedMacro.get('actions', fromJS([]))
 
-    actions.forEach((action) => dispatch(applyMacroAction(action)))
+    actions.forEach((action) => {
+        if (!shouldUpdateNewMessage && ['addAttachments', 'setResponseText'].includes(action.get('name'))) {
+            return
+        }
+        dispatch(applyMacroAction(action))
+    })
 
     state = getState() // refetch state after macro actions has been applied
 
@@ -355,11 +356,12 @@ export const applyMacro = (macro: Macro, ticketId: number) => (dispatch: dispatc
     const partialUpdate = buildPartialUpdateFromAction(actionNames, state)
 
     dispatch(ticketPartialUpdate(partialUpdate))
-
-    dispatch({
-        type: newMessageTypes.NEW_MESSAGE_RECORD_MACRO,
-        macro
-    })
+    if (shouldUpdateNewMessage) {
+        dispatch({
+            type: newMessageTypes.NEW_MESSAGE_RECORD_MACRO,
+            macro
+        })
+    }
 
     return Promise.resolve()
 }
@@ -376,7 +378,7 @@ export const clearAppliedMacro = (ticketId: number) => ({
  * @param error: the error message
  * @param discreetly: (default: false) whether or not the function should dispatch `FETCH_TICKET_START`
  */
-export const fetchTicket = (ticketId: string, discreetly: boolean = false) => (dispatch: dispatchType) => {
+export const fetchTicket = (ticketId: string, discreetly: boolean = false) => (dispatch: dispatchType, getState: getStateType) => {
     if (ticketId === 'new') {
         return new Promise<thunkActionType>((resolve) => {
             // wait next tick before initializing the draft
@@ -429,10 +431,12 @@ export const fetchTicket = (ticketId: string, discreetly: boolean = false) => (d
             })
 
             // dispatch for newMessage reducer branch
-            dispatch({
-                type: newMessageTypes.NEW_MESSAGE_FETCH_TICKET_SUCCESS,
-                resp,
-            })
+            if (getState().newMessage.getIn(['newMessage', 'body_text'], '').length === 0) {
+                dispatch({
+                    type: newMessageTypes.NEW_MESSAGE_FETCH_TICKET_SUCCESS,
+                    resp,
+                })
+            }
 
             dispatch(newMessageActions.initializeMessageDraft())
 
@@ -470,7 +474,7 @@ export const fetchTicket = (ticketId: string, discreetly: boolean = false) => (d
  * @param {String} promise - promise to resolve before displaying the ticket fetched
  * @returns {Promise}
  */
-export const _goToNextOrPrevTicket = (ticketId: number, direction: string, promise: Promise<?dispatchType>) => {
+export const _goToNextOrPrevTicket = (ticketId: number, direction: string, promise?: Promise<?dispatchType>) => {
     return (dispatch: dispatchType, getState: getStateType) => {
         if (!promise) {
             // we do not display the loading state if there is a promise to resolve
@@ -498,7 +502,7 @@ export const _goToNextOrPrevTicket = (ticketId: number, direction: string, promi
             .then((json = {}) => json.data)
             .then((ticket) => {
                 // wait for the promise to be resolved to go to the ticket
-                return promise.then(() => {
+                return ((promise: any): Promise<?dispatchType>).then(() => {
                     if (!ticket) {
                         // there is no other ticket the user can handle so we go back to the view
                         browserHistory.push(`/app/tickets/${viewId}`)
@@ -554,7 +558,7 @@ export const _goToNextOrPrevTicket = (ticketId: number, direction: string, promi
  * Fetch the previous ticket immediately
  * but wait the Promise (`promise` argument) to be resolved to display it
  */
-export const goToPrevTicket = (ticketId: number, promise: Promise<?dispatchType>) => (dispatch: dispatchType) => {
+export const goToPrevTicket = (ticketId: number, promise?: Promise<?dispatchType>) => (dispatch: dispatchType) => {
     return dispatch(_goToNextOrPrevTicket(ticketId, 'prev', promise))
 }
 
@@ -562,7 +566,7 @@ export const goToPrevTicket = (ticketId: number, promise: Promise<?dispatchType>
  * Fetch the next ticket immediately
  * but wait the Promise (`promise` argument) to be resolved to display it
  */
-export const goToNextTicket = (ticketId: number, promise: Promise<?dispatchType>) => (dispatch: dispatchType) => {
+export const goToNextTicket = (ticketId: number, promise?: Promise<?dispatchType>) => (dispatch: dispatchType) => {
     return dispatch(_goToNextOrPrevTicket(ticketId, 'next', promise))
 }
 
@@ -776,3 +780,6 @@ export const findAndSetCustomer = (email: string) => (dispatch: dispatchType) =>
                 })
         })
 
+export const messageDeleted = createAction<typeof types.TICKET_MESSAGE_DELETED, string>(
+    types.TICKET_MESSAGE_DELETED
+)

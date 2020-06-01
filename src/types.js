@@ -1,3 +1,4 @@
+//@flow
 /* Reusable Flow types.
  */
 
@@ -20,7 +21,8 @@ export type attachmentType = {
     content_type: string,
     name: string,
     size: number,
-    url: string
+    url: string,
+    type: string,
 }
 
 export type schemasType = Map<*,*>
@@ -30,9 +32,11 @@ export type schemasType = Map<*,*>
 // react-router 3.x
 export type reactRouterLocation = {
     query: {
-        _activity_polling?: boolean
+        _activity_polling?: boolean,
+        customer?: string,
     },
-    pathname: string
+    pathname: string,
+    search: string,
 }
 
 type reactRouterSingleRoute = {
@@ -42,6 +46,10 @@ type reactRouterSingleRoute = {
 
 export type reactRouterRoute = reactRouterSingleRoute & {
   childRoutes?: Array<reactRouterSingleRoute>
+}
+
+export type ReactRouterInjectedRouter = {
+    setRouteLeaveHook: (route: any, callback: (nextLocation?: reactRouterLocation) => any) => void,
 }
 
 // esprima

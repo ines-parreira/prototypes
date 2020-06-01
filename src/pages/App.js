@@ -7,6 +7,7 @@ import {Button, Container} from 'reactstrap'
 import NotificationsSystem from 'reapop'
 
 import '../../css/main.less'
+import pendingMessageManager from '../services/pendingMessageManager'
 import pollingManager from '../services/pollingManager'
 import shortcutManager from '../services/shortcutManager'
 import userActivityManager from '../services/userActivityManager'
@@ -82,6 +83,9 @@ class App extends React.Component<Props> {
                     e.preventDefault()
                     this.props.gotoActiveView()
                 }
+            },
+            UNDO_MESSAGE: {
+                action: () => pendingMessageManager.undoMessage(),
             },
         })
         segmentTracker.identifyUser(this.props.currentUser.toJS())

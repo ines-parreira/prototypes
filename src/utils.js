@@ -32,6 +32,7 @@ import type {viewsStateType} from './state/views/types'
 import type {actionTemplateType, esprimaParse, reactRouterRoute, schemasType} from './types'
 import {ADMIN_ROLE, USER_ROLES_ORDERED_BY_PRIVILEGES} from './config/user'
 import {getHighestRole} from './state/agents/helpers'
+import type {attachmentType} from './state/types'
 
 type userType = Map<*, *>
 type messageType = {
@@ -173,7 +174,7 @@ export function getFirstExpressionOfAST(ast: esprimaParse): Map<*, *> {
     return fromJS(ast).getIn(['body', 0, 'expression'])
 }
 
-export function getCode(ast: { type: string }): string {
+export function getCode(ast: { type: 'Program' }): string {
     if (!_isString(ast.type)) {
         console.error('Not an AST:', ast)
     }
@@ -612,8 +613,8 @@ export function emoji(emojiContainer: string | {}): string | {} {
     })
 }
 
-export function getActionTemplate(actionName: string): actionTemplateType {
-    return ACTION_TEMPLATES.find((template) => template.name === actionName) || {}
+export function getActionTemplate(actionName: string): ?actionTemplateType {
+    return ACTION_TEMPLATES.find((template) => template.name === actionName)
 }
 
 export const createImmutableSelector = createSelectorCreator(defaultMemoize, Immutable.is)
@@ -637,7 +638,7 @@ export function loadScript(url: string, callback: () => void) {
  * @param params: the additional GET parameters to include in the query
  * @return {Array} - [{content_type, name, size, url}]
  */
-export const uploadFiles = (files: FileList | Array<File>, params: ?Object = null): Promise<*> => {
+export const uploadFiles = (files: FileList | Array<attachmentType>, params: ?Object = null): Promise<*> => {
     const formData = new window.FormData()
 
     for (let i = 0; i < files.length; i++) {

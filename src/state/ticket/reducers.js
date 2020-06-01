@@ -1,10 +1,12 @@
-import {fromJS} from 'immutable'
+//@flow
+import {fromJS, type Map} from 'immutable'
 
 import * as customerTypes from '../customers/constants'
 import ticketReplyCache from '../newMessage/ticketReplyCache'
 import * as newMessageTypes from '../newMessage/constants'
 import {TICKET_AUDIT_LOG_EVENTS} from '../../constants/event'
 import {compare} from '../../utils'
+import type {actionType} from '../types'
 
 import {getPendingMessageIndex} from './utils'
 import * as types from './constants'
@@ -46,7 +48,7 @@ export const initialState = fromJS({
     }
 })
 
-export default function reducer(state = initialState, action) {
+export default function reducer(state: Map<*, *> = initialState, action: actionType) {
     switch (action.type) {
         case newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START: {
             if (!action.retry) {
@@ -383,6 +385,17 @@ export default function reducer(state = initialState, action) {
             return state.updateIn(['events'], (events) =>
                 events.filter((event) => !TICKET_AUDIT_LOG_EVENTS.includes(event.get('type')))
             )
+
+        case types.TICKET_MESSAGE_DELETED:
+            return state
+                .updateIn(['_internal', 'pendingMessages'], (messages) => {
+                    const index = messages.findIndex((message) => message.getIn(['_internal', 'id']) === parseInt(action.payload))
+
+                    if (!~index) {
+                        return messages
+                    }
+                    return messages.delete(index)
+                })
 
         default:
             return state

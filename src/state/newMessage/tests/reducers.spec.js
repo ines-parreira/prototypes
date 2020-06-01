@@ -1,3 +1,4 @@
+//@flow
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 import {EditorState, ContentState} from 'draft-js'
@@ -9,13 +10,14 @@ import * as types from '../constants'
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => 'someRandomKey')
-
+//$FlowFixMe
 jest.addMatchers(immutableMatchers)
 
 describe('New message reducers', () => {
     it('should return the initial state', () => {
         expect(
             reducer(undefined, {})
+        //$FlowFixMe
         ).toEqualImmutable(
             initialState
         )
@@ -26,6 +28,7 @@ describe('New message reducers', () => {
 
         expect(
             reducer(initialState, {type: types.NEW_MESSAGE_ADD_ATTACHMENT_START})
+        //$FlowFixMe
         ).toEqualImmutable(
             expected
         )
@@ -44,6 +47,7 @@ describe('New message reducers', () => {
 
         expect(
             reducer(initialState, {type: types.NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS, resp: ['resp']})
+        //$FlowFixMe
         ).toEqualImmutable(
             expected
         )
@@ -62,6 +66,7 @@ describe('New message reducers', () => {
 
         expect(
             reducer(fakeAttachments, {type: types.NEW_MESSAGE_DELETE_ATTACHMENT, index: 0})
+        //$FlowFixMe
         ).toEqualImmutable(
             expected
         )
@@ -85,6 +90,7 @@ describe('New message reducers', () => {
 
         expect(
             reducer(initialState, {type: types.NEW_MESSAGE_SUBMIT_TICKET_ERROR})
+        //$FlowFixMe
         ).toEqualImmutable(
             expected
         )
@@ -94,6 +100,7 @@ describe('New message reducers', () => {
         const currentTicket = initialState.mergeDeep({id: 'toto', state: {forceUpdate: false}})
         expect(
             reducer(currentTicket, {type: types.NEW_MESSAGE_SUBMIT_TICKET_SUCCESS, resp: {id: 'fake'}})
+        //$FlowFixMe
         ).toEqualImmutable(
             currentTicket
         )
@@ -111,6 +118,7 @@ describe('New message reducers', () => {
 
         expect(
             reducer(initialState, {type: types.NEW_MESSAGE_SUBMIT_TICKET_SUCCESS, resp: {}, resetMessage: false})
+        //$FlowFixMe
         ).toEqualImmutable(
             expected
         )
@@ -134,6 +142,7 @@ describe('New message reducers', () => {
                 },
                 resetMessage: true
             })
+        //$FlowFixMe
         ).toEqualImmutable(
             expected
         )
@@ -147,6 +156,7 @@ describe('New message reducers', () => {
 
         expect(
             reducer(initialState, {type: types.NEW_MESSAGE_SET_SOURCE_TYPE, sourceType: 'facebook'})
+        //$FlowFixMe
         ).toEqualImmutable(
             expected
         )
@@ -168,6 +178,7 @@ describe('New message reducers', () => {
                 sourceType: 'internal-note',
                 messages: fromJS([initialState.get('newMessage').setIn(['source', 'type'], 'email')]),
             })
+        //$FlowFixMe
         ).toEqualImmutable(
             expected
         )
@@ -304,6 +315,7 @@ describe('New message reducers', () => {
                         to: [receiver],
                     }
                 })
+            //$FlowFixMe
             ).toEqualImmutable(
                 expected
             )
@@ -320,6 +332,7 @@ describe('New message reducers', () => {
         }
         expect(
             reducer(initialState, action)
+        //$FlowFixMe
         ).toEqualImmutable(
             initialState.setIn(['newMessage', 'source', 'from'], action.sender)
         )
@@ -350,6 +363,7 @@ describe('New message reducers', () => {
 
             expect(
                 reducer(initialState, action)
+            //$FlowFixMe
             ).toEqualImmutable(
                 initialState.setIn(['newMessage', 'attachments'], attachments)
             )
@@ -406,6 +420,7 @@ describe('New message reducers', () => {
 
             expect(
                 reducer(state, action)
+            //$FlowFixMe
             ).toEqualImmutable(
                 initialState.mergeDeep({
                     newMessage: {
@@ -428,6 +443,7 @@ describe('New message reducers', () => {
 
             expect(
                 reducer(state, action)
+            //$FlowFixMe
             ).toEqualImmutable(
                 initialState.mergeDeep({
                     newMessage: {
@@ -436,6 +452,31 @@ describe('New message reducers', () => {
                     }
                 })
             )
+        })
+
+        it('should reset the state from a message', () => {
+            const action = {
+                type: types.NEW_MESSAGE_RESET_FROM_MESSAGE,
+                payload: {
+                    contentState: ContentState.createFromText('foobar'),
+                    newMessage: {
+                        attachments: [],
+                        body_html: '<div>foobar</div>',
+                        body_text: 'foobar',
+                        channel: 'email',
+                        from_agent: true,
+                        macros: [],
+                        mention_ids: [],
+                        public: true,
+                        sender: fromJS({}),
+                        source: {},
+                        subject: 'foo',
+                        via: 'helpdesk',
+                    },
+                },
+            }
+
+            expect(reducer(initialState, action).toJS()).toMatchSnapshot()
         })
     })
 })

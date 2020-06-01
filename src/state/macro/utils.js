@@ -21,7 +21,7 @@ export function generateDefaultAction(actionType: string): ?Map<*,*> {
         arguments: {}
     })
 
-    _forEach(actionTemplate.arguments, (arg, key) => {
+    _forEach(actionTemplate.arguments || {}, (arg, key) => {
         let defaultValue = arg.default
 
         if (typeof arg.default === 'undefined') {

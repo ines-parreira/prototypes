@@ -55,7 +55,10 @@ export default class TicketReply extends React.Component<Props> {
 
         const backendActions = appliedMacro ?
             appliedMacro.get('actions').filter(
-                (action) => getActionTemplate(action.get('name')).execution === 'back'
+                (action) => {
+                    const actionTemplate = getActionTemplate(action.get('name'))
+                    return actionTemplate && actionTemplate.execution === 'back'
+                }
             ) : []
 
         if (!appliedMacro || !backendActions) {

@@ -215,6 +215,44 @@ Object {
 }
 `;
 
+exports[`ticket reducers action TICKET_MESSAGE_DELETED should remove message 1`] = `
+Object {
+  "_internal": Object {
+    "displayHistory": false,
+    "loading": Object {
+      "deleteMessage": false,
+      "fetchTicket": false,
+    },
+    "pendingMessages": Array [],
+    "shouldDisplayAuditLogEvents": false,
+    "shouldDisplayHistoryOnNextPage": false,
+  },
+  "assignee_team": null,
+  "assignee_user": null,
+  "channel": "email",
+  "customer": null,
+  "events": Array [],
+  "messages": Array [],
+  "priority": "normal",
+  "reply_options": Object {
+    "email": Object {
+      "answerable": true,
+    },
+  },
+  "spam": false,
+  "state": Object {
+    "appliedMacro": null,
+    "dirty": false,
+    "latestEventDatetime": null,
+  },
+  "status": "open",
+  "subject": "",
+  "tags": Array [],
+  "trashed_datetime": null,
+  "via": "helpdesk",
+}
+`;
+
 exports[`ticket reducers should handle ADD_TICKET_TAGS 1`] = `
 Object {
   "_internal": Object {

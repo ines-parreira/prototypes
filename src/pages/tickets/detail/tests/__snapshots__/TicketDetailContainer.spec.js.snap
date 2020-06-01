@@ -7,7 +7,7 @@ exports[`TicketDetailContainer component should render container for new ticket 
   <div
     className="TicketDetailContainer"
   >
-    <Connect(TicketView)
+    <Component
       actions={
         Object {
           "customers": Object {
@@ -22,10 +22,11 @@ exports[`TicketDetailContainer component should render container for new ticket 
             "updateMacro": [Function],
           },
           "newMessage": Object {
+            "prepareTicketMessage": [Function],
             "resetReceiversAndSender": [Function],
+            "sendTicketMessage": [Function],
             "setReceivers": [Function],
             "submitTicket": [Function],
-            "submitTicketMessage": [Function],
           },
           "tag": Object {
             "addTags": [Function],
@@ -46,6 +47,7 @@ exports[`TicketDetailContainer component should render container for new ticket 
             "fetchTicket": [Function],
             "findAndSetCustomer": [Function],
             "goToNextTicket": [Function],
+            "messageDeleted": [Function],
             "setCustomer": [Function],
             "setStatus": [Function],
           },

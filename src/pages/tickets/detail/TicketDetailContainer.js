@@ -1,9 +1,9 @@
+//@flow
 import React from 'react'
-import PropTypes from 'prop-types'
-import {withRouter} from 'react-router'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import {fromJS} from 'immutable'
+import {withRouter} from 'react-router'
+import {fromJS, type List, type Map} from 'immutable'
 
 import _merge from 'lodash/merge'
 import _pick from 'lodash/pick'
@@ -15,21 +15,62 @@ import Loader from '../../common/components/Loader'
 import * as ViewsActions from '../../../state/views/actions'
 import * as TicketActions from '../../../state/ticket/actions'
 import * as MacroActions from '../../../state/macro/actions'
+import {notify} from '../../../state/notifications/actions'
 import * as customersActions from '../../../state/customers/actions'
 import * as TagActions from '../../../state/tags/actions'
 import * as ticketsActions from '../../../state/tickets/actions'
 import socketManager from '../../../services/socketManager'
+import pendingMessageManager from '../../../services/pendingMessageManager'
 
 import * as newMessageActions from '../../../state/newMessage/actions'
 
+import {SOURCE_VALUE_PROP} from '../../../config'
 import * as currentAccountSelectors from '../../../state/currentAccount/selectors'
 import * as newMessageSelectors from '../../../state/newMessage/selectors'
 import * as viewsSelectors from '../../../state/views/selectors'
 import * as ticketSelectors from '../../../state/ticket/selectors'
 import * as customersSelectors from '../../../state/customers/selectors'
+import type {reactRouterLocation, reactRouterRoute} from '../../../types'
 
 import TicketView from './components/TicketView'
 import {updateMessageText} from './components/ReplyArea/TicketReplyEditor'
+
+
+type Props = {
+    params: {
+        view?: string,
+        page?: string,
+        ticketId?: string,
+    },
+    isTicketDirty: boolean,
+    canSendMessage: boolean,
+    actions: {
+        customers: typeof customersActions,
+        macro: typeof MacroActions,
+        newMessage: typeof newMessageActions,
+        tag: typeof TagActions,
+        ticket: typeof TicketActions,
+        views: typeof ViewsActions,
+    },
+    notify: typeof notify,
+    updateActiveViewCursor: typeof ticketsActions.updateActiveViewCursor,
+    submitTicket: typeof newMessageActions.submitTicket,
+    activeView: Map<*, *>,
+    currentUser: Map<*, *>,
+    ticket: Map<*, *>,
+    newMessage: Map<*, *>,
+    tickets: Map<*, *>,
+    customers: Map<*, *>,
+    activeCustomer: Map<*, *>,
+    newMessageSource: Map<*, *>,
+    routing: Map<*, *>,
+    route: reactRouterRoute,
+    location: reactRouterLocation,
+}
+
+type State = {
+    isTicketHidden: boolean,
+}
 
 @withRouter
 @connect((state) => {
@@ -56,42 +97,12 @@ import {updateMessageText} from './components/ReplyArea/TicketReplyEditor'
             views: bindActionCreators(ViewsActions, dispatch),
             newMessage: bindActionCreators(newMessageActions, dispatch),
         },
+        notify: bindActionCreators(notify, dispatch),
         updateActiveViewCursor: bindActionCreators(ticketsActions.updateCursor, dispatch),
         submitTicket: bindActionCreators(newMessageActions.submitTicket, dispatch),
-        submitTicketMessage: bindActionCreators(newMessageActions.submitTicketMessage, dispatch),
     }
 })
-export default class TicketDetailContainer extends React.Component {
-    static propTypes = {
-        params: PropTypes.shape({
-            view: PropTypes.string,
-            page: PropTypes.string,
-            ticketId: PropTypes.string,
-        }).isRequired,
-        isTicketDirty: PropTypes.bool.isRequired,
-        canSendMessage: PropTypes.bool.isRequired,
-
-        actions: PropTypes.object.isRequired,
-        submitTicket: PropTypes.func.isRequired,
-        submitTicketMessage: PropTypes.func.isRequired,
-        updateActiveViewCursor: PropTypes.func.isRequired,
-        activeView: PropTypes.object.isRequired,
-        currentUser: PropTypes.object,
-        ticket: PropTypes.object,
-        newMessage: PropTypes.object,
-        tickets: PropTypes.object,
-        customers: PropTypes.object,
-        activeCustomer: PropTypes.object,
-        newMessageSource: PropTypes.object,
-
-        routing: PropTypes.object,
-
-        // React Router
-        router: PropTypes.object.isRequired,
-        route: PropTypes.object.isRequired,
-        location: PropTypes.object.isRequired,
-    }
-
+class TicketDetailContainer extends React.Component<Props, State> {
     static defaultProps = {
         isTicketDirty: false,
     }
@@ -107,7 +118,7 @@ export default class TicketDetailContainer extends React.Component {
     }
 
     _hideTicket = () => {
-        return new Promise((resolve) => {
+        return new Promise<void>((resolve) => {
             this.setState({isTicketHidden: true})
             // 100ms to let the animation goes
             return setTimeout(resolve, 100)
@@ -115,17 +126,34 @@ export default class TicketDetailContainer extends React.Component {
     }
 
     componentWillMount() {
-        this.props.actions.tag.fetchTags()
-        this.props.actions.ticket.clearTicket()
-        this.props.actions.ticket.fetchTicket(this.props.params.ticketId)
+        const {
+            actions: {
+                customers: {
+                    fetchCustomer,
+                },
+                tag: {
+                    fetchTags,
+                },
+                ticket: {
+                    clearTicket,
+                    fetchTicket,
+                }
+            },
+            activeCustomer,
+            location: {
+                query: {customer},
+            },
+            params: {
+                ticketId,
+            }
+        } = this.props
+        fetchTags()
+        clearTicket()
+        fetchTicket(ticketId || '')
 
-        const customerId = parseInt(this.props.location.query.customer)
-        if (
-            this.props.params.ticketId === 'new' &&
-            this.props.location.query.customer &&
-            this.props.activeCustomer.get('id') !== customerId
-        ) {
-            this.props.actions.customers.fetchCustomer(customerId)
+        const customerId = parseInt(customer)
+        if (ticketId === 'new' && customer && activeCustomer.get('id') !== customerId) {
+            fetchCustomer(customerId)
         }
     }
 
@@ -133,18 +161,41 @@ export default class TicketDetailContainer extends React.Component {
         this._bindKeys()
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props) {
+        const {
+            actions: {
+                customers: {
+                    fetchCustomerHistory,
+                },
+                newMessage: {
+                    setReceivers,
+                },
+                ticket: {
+                    clearTicket,
+                    fetchTicket,
+                    findAndSetCustomer,
+                    setCustomer,
+                },
+            },
+            activeView,
+            newMessageSource,
+            params: {
+                ticketId,
+            },
+            ticket,
+            updateActiveViewCursor,
+        } = this.props
         const nextTicket = nextProps.ticket
         const nextCustomer = nextTicket.get('customer') || fromJS({})
         const nextParams = nextProps.params
         const nextCustomers = nextProps.customers
-        const prevRecipients = this.props.newMessageSource.get('to') || fromJS([])
+        const prevRecipients = newMessageSource.get('to') || fromJS([])
         const nextRecipients = nextProps.newMessageSource.get('to') || fromJS([])
 
-        const ticketIdParamChanged = nextParams.ticketId !== this.props.params.ticketId
+        const ticketIdParamChanged = nextParams.ticketId !== ticketId
         const nextTicketIsNew = nextParams.ticketId === 'new'
         const nextTicketIdParamMatchesNextTicket = nextTicket.get('id', '').toString() === nextParams.ticketId
-        const customerHasChanged = this.props.ticket.getIn(['customer', 'id']) !== nextCustomer.get('id')
+        const customerHasChanged = ticket.getIn(['customer', 'id']) !== nextCustomer.get('id')
 
         const hasCustomer = !nextCustomer.isEmpty()
 
@@ -161,7 +212,7 @@ export default class TicketDetailContainer extends React.Component {
             }
 
             // Fetch the ticket's customer history (tickets + events).
-            this.props.actions.customers.fetchCustomerHistory(customerId, {
+            fetchCustomerHistory(customerId, {
                 successCondition: (state) => {
                     return state.ticket.getIn(['customer', 'id']) === customerId
                 }
@@ -171,8 +222,8 @@ export default class TicketDetailContainer extends React.Component {
         if (ticketIdParamChanged) {
             // if the ticket in the reducer is not the one asked, we fetch it and display it
             if (!nextTicketIsNew && !nextTicketIdParamMatchesNextTicket) {
-                this.props.actions.ticket.clearTicket()
-                this.props.actions.ticket.fetchTicket(nextParams.ticketId)
+                clearTicket()
+                fetchTicket(nextParams.ticketId || '')
             }
 
             this._showTicket()
@@ -181,7 +232,7 @@ export default class TicketDetailContainer extends React.Component {
         // set customer and receiver from query
         // map default channel (email) to address, for the receivers select.
         const receiver = nextProps.activeCustomer.set('address', nextProps.activeCustomer.get('email'))
-        const customer = this.props.ticket.get('customer') || fromJS({})
+        const customer = ticket.get('customer') || fromJS({})
 
         if (
             nextTicketIsNew &&
@@ -191,9 +242,9 @@ export default class TicketDetailContainer extends React.Component {
         ) {
             // set customer on ticket
             // (to show in infobar and be used in macros)
-            this.props.actions.ticket.setCustomer(receiver).then(() => {
+            setCustomer(receiver).then(() => {
                 // set in receivers selector
-                return this.props.actions.newMessage.setReceivers({
+                return setReceivers({
                     to: [receiver.toJS()]
                 }, true)
             })
@@ -202,8 +253,8 @@ export default class TicketDetailContainer extends React.Component {
         // We update the cursor when we display the ticket for the first time.
         // If an attribute of the ticket changes, we don't want to update the cursor because
         // its position in the view has maybe changed.
-        if (nextTicket.get('id') && nextTicket.get('id') !== this.props.ticket.get('id')) {
-            this.props.updateActiveViewCursor(nextTicket.get(this.props.activeView.get('order_by')))
+        if (nextTicket.get('id') && nextTicket.get('id') !== ticket.get('id')) {
+            updateActiveViewCursor(nextTicket.get(activeView.get('order_by')))
         }
 
         // When we're on a new ticket, the recipients have changed, and there's now exactly one recipient,
@@ -227,14 +278,14 @@ export default class TicketDetailContainer extends React.Component {
             }
 
             if (shouldSetCustomer) {
-                this.props.actions.ticket.findAndSetCustomer(recipient.get('address'))
+                findAndSetCustomer(recipient.get('address'))
             }
         }
 
         // When we're on a new ticket and the agent has removed the receivers of the new message, empty the
         // customer of the ticket
         if (nextTicketIsNew && recipientsHaveBeenRemoved) {
-            this.props.actions.ticket.setCustomer(null)
+            setCustomer(null)
         }
 
         // When we're on a new ticket and the agent set a customer, set this customer's default email address
@@ -250,19 +301,27 @@ export default class TicketDetailContainer extends React.Component {
                 }
             )
 
-            this.props.actions.newMessage.setReceivers(newReceivers)
+            setReceivers(newReceivers)
         }
     }
 
     componentWillUnmount() {
         window.onbeforeunload = null
+        const {
+            actions: {
+                ticket: {
+                    clearTicket,
+                },
+            },
+            params: {
+                ticketId,
+            },
+            ticket,
+        } = this.props
+        const customerId = ticket.getIn(['customer', 'id'])
 
         shortcutManager.unbind('TicketDetailContainer')
-
         // leaving ticket and request customer from socket io
-        const ticketId = this.props.params.ticketId
-        const customerId = this.props.ticket.getIn(['customer', 'id'])
-
         if (ticketId && ticketId !== 'new') {
             socketManager.leave('ticket', ticketId)
         }
@@ -271,21 +330,35 @@ export default class TicketDetailContainer extends React.Component {
             socketManager.leave('customer', customerId)
         }
 
-        this.props.actions.ticket.clearTicket()
+        clearTicket()
     }
 
     _bindKeys() {
+        const {
+            actions: {
+                ticket: {
+                    clearTicket,
+                    goToNextTicket,
+                    goToPrevTicket,
+                },
+            }
+        } = this.props
+
         shortcutManager.bind('TicketDetailContainer', {
             GO_BACK: {
                 action: () => {
-                    this.props.actions.ticket.clearTicket()
-                    this.props.actions.ticket.goToPrevTicket(this.props.params.ticketId)
+                    const {params: {ticketId}} = this.props
+                    const ticketNumber = parseInt(ticketId)
+                    clearTicket()
+                    goToPrevTicket(ticketNumber)
                 }
             },
             GO_FORWARD: {
                 action: () => {
-                    this.props.actions.ticket.clearTicket()
-                    this.props.actions.ticket.goToNextTicket(this.props.params.ticketId)
+                    const {params: {ticketId}} = this.props
+                    const ticketNumber = parseInt(ticketId)
+                    clearTicket()
+                    goToNextTicket(ticketNumber)
                 }
             },
             SUBMIT_TICKET: {
@@ -307,19 +380,25 @@ export default class TicketDetailContainer extends React.Component {
 
                     this._submit('closed', true)
                 }
-            }
+            },
         })
     }
 
-    _submit = (status, next, action, resetMessage = true) => {
-        let {newMessage, ticket} = this.props
+    _submit = (status: ?string, next: any, action: ?List<Map<*, *>>, resetMessage: boolean = true) => {
+        let {
+            canSendMessage,
+            currentUser,
+            newMessage,
+            submitTicket,
+            ticket,
+        } = this.props
         if (newMessage.getIn(['_internal', 'loading', 'submitMessage'])) {
             // We're already submitting something, we dont want to POST twice.
             // Or the ticket isn't dirty, and we don't want to send an empty message.
             return
         }
 
-        if (!this.props.canSendMessage) {
+        if (!canSendMessage) {
             return
         }
 
@@ -331,7 +410,7 @@ export default class TicketDetailContainer extends React.Component {
         // The ticket does not exist yet.
         if (!ticket.get('id')) {
             const receiver = newMessage.getIn(['newMessage', 'receiver'])
-            const sender = {id: this.props.currentUser.get('id')}
+            const sender = {id: currentUser.get('id')}
             ticket = ticket.mergeDeep({
                 customer: receiver,
                 newMessage: {
@@ -339,64 +418,116 @@ export default class TicketDetailContainer extends React.Component {
                 }
             })
 
-            promise = this.props.submitTicket(
+            promise = submitTicket(
                 ticket,
                 status,
-                this.props.ticket.getIn(['state', 'appliedMacro', 'actions']),
-                this.props.currentUser,
+                ticket.getIn(['state', 'appliedMacro', 'actions']),
+                currentUser,
                 resetMessage
             )
         } else {
-            promise = this.props.submitTicketMessage(
-                status,
-                this.props.ticket.getIn(['state', 'appliedMacro', 'actions']),
-                action,
-                resetMessage
-            )
-
-            // clear applied action after submitting message
-            this.props.actions.ticket.clearAppliedMacro(ticket.get('id'))
+            promise = this.submitNewMessage(status, next, action, resetMessage)
         }
 
         if (status && promise) {
-            // set status
-            promise.then(() => {
-                return this._setStatus(status)
+            (promise: any).then(() => {
+                return this._setStatus(status || '', newMessage.getIn(['newMessage', 'source', 'type']))
             })
         }
 
         return promise
     }
 
-    _setStatus = (status) => {
-        const {ticket, actions} = this.props
-        return actions.ticket.setStatus(status, () => {
+    submitNewMessage = async (status: ?string, next: any, action: ?List<Map<*, *>>, resetMessage: boolean) => {
+        const {
+            actions: {
+                newMessage: {
+                    prepareTicketMessage,
+                    sendTicketMessage,
+                }
+            },
+            newMessage,
+            params: {
+                ticketId,
+            },
+            ticket,
+        } = this.props
+
+        const {messageId, messageToSend} = await prepareTicketMessage(
+            status,
+            ticket.getIn(['state', 'appliedMacro', 'actions']),
+            action,
+            resetMessage
+        )
+
+        if (messageToSend.source.type === 'email') {
+            pendingMessageManager.sendMessage(newMessage.getIn(['state', 'contentState']), messageId, messageToSend, action, resetMessage, ticketId)
+            return
+        }
+        pendingMessageManager.skipExistingTimer()
+        return sendTicketMessage(messageId, messageToSend, action, resetMessage)
+    }
+
+    _setStatus = (status: string, sourceType?: $Keys<typeof SOURCE_VALUE_PROP>) => {
+        const {
+            actions: {
+                ticket: {
+                    clearTicket,
+                    goToNextTicket,
+                    setStatus,
+                },
+            },
+            notify,
+            params: {
+                ticketId,
+            },
+            ticket,
+        } = this.props
+        return setStatus(status, () => {
+            if (status !== 'closed') {
+                return
+            }
             // If the history is open, we don't want to go to the next ticket
-            if (status === 'closed' && !ticket.getIn(['_internal', 'displayHistory'])) {
-                const promise = this._hideTicket().then(this.props.actions.ticket.clearTicket)
-                this.props.actions.ticket.goToNextTicket(this.props.params.ticketId, promise)
+            if (!ticket.getIn(['_internal', 'displayHistory'])) {
+                const promise = this._hideTicket().then(clearTicket)
+                goToNextTicket(parseInt(ticketId), promise)
+            }
+            if (!sourceType || sourceType !== 'email') {
+                notify({
+                    status: 'success',
+                    message: 'The ticket has been closed.',
+                })
             }
         })
     }
 
     render() {
+        const {
+            actions,
+            activeView,
+            params: {
+                ticketId,
+            },
+            ticket,
+        } = this.props
+        const {isTicketHidden} = this.state
         if (
-            (this.props.params.ticketId !== 'new' && !this.props.ticket.get('id'))
-            || (this.props.params.ticketId === 'new' && this.props.ticket.get('id'))
-            || this.props.ticket.getIn(['_internal', 'loading', 'fetchTicket'])
+            (ticketId !== 'new' && !ticket.get('id'))
+            || (ticketId === 'new' && ticket.get('id'))
+            || ticket.getIn(['_internal', 'loading', 'fetchTicket'])
         ) {
             return <Loader message="Loading ticket..."/>
         }
 
         return (
-            <DocumentTitle title={this.props.ticket.get('id') ? this.props.ticket.get('subject') : 'New ticket'}>
+            <DocumentTitle title={ticket.get('id') ? ticket.get('subject') : 'New ticket'}>
                 <div className="TicketDetailContainer">
                     <TicketView
-                        actions={this.props.actions}
+                        actions={actions}
                         hideTicket={this._hideTicket}
-                        isTicketHidden={this.state.isTicketHidden}
+                        isTicketHidden={isTicketHidden}
                         submit={this._submit}
-                        view={this.props.activeView}
+                        view={activeView}
                         setStatus={this._setStatus}
                     />
                 </div>
@@ -404,3 +535,5 @@ export default class TicketDetailContainer extends React.Component {
         )
     }
 }
+
+export default TicketDetailContainer

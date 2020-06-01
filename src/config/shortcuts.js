@@ -1,3 +1,4 @@
+//@flow
 import {browserHistory} from 'react-router'
 
 export default {
@@ -7,7 +8,7 @@ export default {
             GO_HOME: {
                 key: 'g h',
                 description: 'Go to the home view.',
-                action: (e) => {
+                action: (e: Event) => {
                     e.preventDefault()
                     browserHistory.push('/app')
                 }
@@ -15,7 +16,11 @@ export default {
             GO_VIEW: {
                 key: 'g v',
                 description: 'Go to the current view.',
-            }
+            },
+            UNDO_MESSAGE: {
+                key: 'z',
+                description: 'Undo message sent',
+            },
         }
     },
     View: {

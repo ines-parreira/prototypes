@@ -1,5 +1,120 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`New message reducers NEW_MESSAGE_RESET_FROM_TICKET action should reset the state from a message 1`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {
+      "addAttachment": false,
+      "submitMessage": false,
+    },
+  },
+  "newMessage": Object {
+    "attachments": Array [],
+    "body_html": "<div>foobar</div>",
+    "body_text": "foobar",
+    "channel": "email",
+    "from_agent": true,
+    "macros": Array [],
+    "mention_ids": Array [],
+    "public": true,
+    "sender": Object {},
+    "source": Object {
+      "bcc": Array [],
+      "cc": Array [],
+      "from": Object {},
+      "to": Array [],
+      "type": "email",
+    },
+    "subject": "foo",
+    "via": "helpdesk",
+  },
+  "state": Object {
+    "appliedMacro": null,
+    "cacheAdded": true,
+    "contentState": Object {
+      "blockMap": Object {
+        "someRandomKey": Object {
+          "characterList": Array [
+            Object {
+              "entity": null,
+              "style": Array [],
+            },
+            Object {
+              "entity": null,
+              "style": Array [],
+            },
+            Object {
+              "entity": null,
+              "style": Array [],
+            },
+            Object {
+              "entity": null,
+              "style": Array [],
+            },
+            Object {
+              "entity": null,
+              "style": Array [],
+            },
+            Object {
+              "entity": null,
+              "style": Array [],
+            },
+          ],
+          "data": Object {},
+          "depth": 0,
+          "key": "someRandomKey",
+          "text": "foobar",
+          "type": "unstyled",
+        },
+      },
+      "entityMap": Object {
+        "__add": [Function],
+        "__create": [Function],
+        "__get": [Function],
+        "__getLastCreatedEntityKey": [Function],
+        "__mergeData": [Function],
+        "__replaceData": [Function],
+        "add": [Function],
+        "create": [Function],
+        "get": [Function],
+        "getLastCreatedEntityKey": [Function],
+        "mergeData": [Function],
+        "replaceData": [Function],
+      },
+      "selectionAfter": Object {
+        "anchorKey": "someRandomKey",
+        "anchorOffset": 0,
+        "focusKey": "someRandomKey",
+        "focusOffset": 0,
+        "hasFocus": false,
+        "isBackward": false,
+      },
+      "selectionBefore": Object {
+        "anchorKey": "someRandomKey",
+        "anchorOffset": 0,
+        "focusKey": "someRandomKey",
+        "focusOffset": 0,
+        "hasFocus": false,
+        "isBackward": false,
+      },
+    },
+    "dirty": false,
+    "firstNewMessage": true,
+    "forceFocus": true,
+    "forceUpdate": true,
+    "selectionState": Object {
+      "anchorKey": undefined,
+      "anchorOffset": 0,
+      "focusKey": undefined,
+      "focusOffset": 0,
+      "hasFocus": false,
+      "isBackward": false,
+    },
+    "signatureAdded": false,
+  },
+}
+`;
+
 exports[`New message reducers should handle NEW_MESSAGE_SET_SUBJECT 1`] = `
 Immutable.Map {
   "state": Immutable.Map {

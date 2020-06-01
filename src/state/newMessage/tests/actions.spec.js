@@ -1,3 +1,4 @@
+//@flow
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {ContentState} from 'draft-js'
@@ -10,6 +11,7 @@ import * as actions from '../actions'
 import * as types from '../constants'
 import {initialState} from '../reducers'
 import {initialState as ticketInitialState} from '../../ticket/reducers'
+import type {StoreAction} from '../../types'
 
 import {integrationsState} from '../../../fixtures/integrations'
 import * as integrationSelectors from '../../integrations/selectors'
@@ -39,7 +41,7 @@ describe('actions', () => {
 
         describe('setSender action', () => {
             it('with address', () => {
-                store = mockStore({
+                store = mockStore<*, StoreAction>({
                     integrations: fromJS(integrationsState),
                     ticket: emailTicket,
                     newMessage: initialState,
@@ -55,7 +57,7 @@ describe('actions', () => {
                     name: from.get('name'),
                     address: from.get('address'),
                 })
-                store = mockStore({
+                store = mockStore<*, StoreAction>({
                     integrations: fromJS(integrationsState),
                     ticket: smoochTicket,
                     newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'chat'),
@@ -75,7 +77,7 @@ describe('actions', () => {
                     name: from.get('name'),
                     address: from.get('address'),
                 })
-                store = mockStore({
+                store = mockStore<*, StoreAction>({
                     integrations: fromJS(integrationsState),
                     ticket: _smoochTicket,
                     newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'chat'),
@@ -96,7 +98,7 @@ describe('actions', () => {
                     name: preferred.get('name'),
                     address: preferred.get('address'),
                 })
-                store = mockStore({
+                store = mockStore<*, StoreAction>({
                     integrations: fromJS(integrationsState),
                     ticket: _emailTicket,
                     newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
@@ -115,7 +117,7 @@ describe('actions', () => {
                     name: from.get('name'),
                     address: from.get('address'),
                 })
-                store = mockStore({
+                store = mockStore<*, StoreAction>({
                     integrations: fromJS(integrationsState),
                     ticket: emailTicket,
                     newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
@@ -136,7 +138,7 @@ describe('actions', () => {
                     name: from.get('name'),
                     address: from.get('address'),
                 })
-                store = mockStore({
+                store = mockStore<*, StoreAction>({
                     integrations: fromJS(integrationsState),
                     ticket: _emailTicket,
                     newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
@@ -162,7 +164,7 @@ describe('actions', () => {
                     name: from.get('name'),
                     address: from.get('address'),
                 })
-                store = mockStore({
+                store = mockStore<*, StoreAction>({
                     integrations: fromJS(integrationsState),
                     ticket: _emailTicket,
                     newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
@@ -183,7 +185,7 @@ describe('actions', () => {
                     name: from.get('name'),
                     address: from.get('address'),
                 })
-                store = mockStore({
+                store = mockStore<*, StoreAction>({
                     integrations: fromJS(integrationsState),
                     ticket: _emailTicket,
                     newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
@@ -197,7 +199,7 @@ describe('actions', () => {
             })
 
             it('empty name and address (internal-note)', () => {
-                store = mockStore({
+                store = mockStore<*, StoreAction>({
                     integrations: fromJS(integrationsState),
                     ticket: emailTicket,
                     newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'internal-note'),
@@ -224,7 +226,7 @@ describe('actions', () => {
                         address: unverifiedChannel.address
                     }))
 
-                store = mockStore({
+                store = mockStore<*, StoreAction>({
                     integrations: fromJS(integrationsState),
                     ticket: _emailTicket,
                     newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
@@ -259,7 +261,7 @@ describe('actions', () => {
                         address: unexistingChannel.address
                     }))
 
-                store = mockStore({
+                store = mockStore<*, StoreAction>({
                     integrations: fromJS(integrationsState),
                     ticket: _emailTicket,
                     newMessage: initialState.setIn(['newMessage', 'source', 'type'], 'email'),
@@ -280,7 +282,7 @@ describe('actions', () => {
             })
 
             it('should persist the sender channel in the localStorage', () => {
-                store = mockStore({
+                store = mockStore<*, StoreAction>({
                     integrations: fromJS(integrationsState),
                     ticket: emailTicket,
                     newMessage: initialState,
@@ -326,7 +328,7 @@ describe('actions', () => {
         describe('prepare()', () => {
             describe('email-forward', () => {
                 it('should prepare an email forward', () => {
-                    store = mockStore({
+                    store = mockStore<*, StoreAction>({
                         ticket: emailTicket,
                         newMessage: initialState,
                         integrations: fromJS(integrationsState)
@@ -340,7 +342,7 @@ describe('actions', () => {
                     const attachments = fromJS([{url: 'foo'}, {url: 'bar'}])
                     const attachments2 = fromJS([{url: 'baz'}, {url: 'far'}])
 
-                    store = mockStore({
+                    store = mockStore<*, StoreAction>({
                         ticket: emailTicket
                             .setIn(['messages', 0, 'attachments'], attachments)
                             .setIn(['messages', 1, 'attachments'], attachments2),
@@ -356,7 +358,7 @@ describe('actions', () => {
                     const attachments = fromJS([{url: 'foo'}, {url: 'bar'}])
                     const newMessageAttachments = fromJS([{url: 'foo'}])
 
-                    store = mockStore({
+                    store = mockStore<*, StoreAction>({
                         ticket: emailTicket.setIn(['messages', 0, 'attachments'], attachments),
                         newMessage: initialState.setIn(['newMessage', 'attachments'], newMessageAttachments),
                         integrations: fromJS(integrationsState)
@@ -369,7 +371,7 @@ describe('actions', () => {
 
             describe('instagram comment', () => {
                 it('should not add prefix if there is no receiver name', () => {
-                    store = mockStore({
+                    store = mockStore<*, StoreAction>({
                         ticket: instagramMedia,
                         newMessage: initialState
                             .setIn(['newMessage', 'source', 'type'], 'instagram-comment')
@@ -386,7 +388,7 @@ describe('actions', () => {
                         .setIn(['newMessage', 'source', 'to'], fromJS([{address: 'as6d5as', name: 'instauser'}]))
                         .setIn(['state', 'contentState'], ContentState.createFromText('foo'))
 
-                    store = mockStore({
+                    store = mockStore<*, StoreAction>({
                         ticket: instagramMedia,
                         newMessage
                     })
@@ -401,7 +403,7 @@ describe('actions', () => {
                         .setIn(['newMessage', 'source', 'type'], 'instagram-comment')
                         .setIn(['newMessage', 'source', 'to'], fromJS([{address: 'as6d5as', name: 'instauser'}]))
 
-                    store = mockStore({
+                    store = mockStore<*, StoreAction>({
                         ticket: instagramMedia,
                         newMessage
                     })
@@ -415,7 +417,7 @@ describe('actions', () => {
                 const sourceTypes = ['email', 'chat', 'facebook-comment', 'facebook-message']
 
                 sourceTypes.forEach((sourceType) => {
-                    store = mockStore({
+                    store = mockStore<*, StoreAction>({
                         ticket: emailTicket,
                         newMessage: initialState,
                         integrations: fromJS(integrationsState)
@@ -435,7 +437,7 @@ describe('actions', () => {
             })
 
             it('should always pass the args to the reducer', () => {
-                store = mockStore({
+                store = mockStore<*, StoreAction>({
                     ticket: emailTicket,
                     newMessage: initialState
                 })
@@ -447,7 +449,7 @@ describe('actions', () => {
             })
 
             it('should send typing event when the user is typing', () => {
-                store = mockStore({
+                store = mockStore<*, StoreAction>({
                     newMessage: initialState.setIn(['newMessage', 'source', 'type'], TicketMessageSourceTypes.CHAT),
                     ticket: fromJS({id: 1}),
                     agents: fromJS({
@@ -466,7 +468,7 @@ describe('actions', () => {
             })
 
             it('should not send a typing event when the user is typing in an internal note', () => {
-                store = mockStore({
+                store = mockStore<*, StoreAction>({
                     newMessage: initialState.setIn(['newMessage', 'source', 'type'], TicketMessageSourceTypes.INTERNAL_NOTE),
                     ticket: fromJS({id: 1})
                 })
@@ -480,7 +482,7 @@ describe('actions', () => {
             })
 
             it('should not send a typing event when the reply area only contains a signature', () => {
-                store = mockStore({
+                store = mockStore<*, StoreAction>({
                     newMessage: initialState,
                     ticket: fromJS({id: 1}),
                     agents: fromJS({
@@ -499,12 +501,12 @@ describe('actions', () => {
             })
 
             it('should send an end typing event on ticket when the user is not typing but is in the room', () => {
-                store = mockStore({
+                store = mockStore<*, StoreAction>({
                     newMessage: initialState,
                     ticket: fromJS({id: 1}),
                     agents: fromJS({
                         typingStatuses: {
-                            1: {
+                            '1': {
                                 Ticket: [1]
                             }
                         },
@@ -527,7 +529,7 @@ describe('actions', () => {
             })
 
             it('should not send an end typing event when the user is not typing and not in ticket', () => {
-                store = mockStore({
+                store = mockStore<*, StoreAction>({
                     newMessage: initialState,
                     ticket: fromJS({id: 1}),
                     agents: fromJS({
@@ -551,11 +553,11 @@ describe('actions', () => {
         })
 
         describe('prepareTicketDataToSend()', () => {
-            let data = {}
+            let data: ?Object = {}
 
             beforeEach(() => {
                 const contentState = ContentState.createFromText('Hi ')
-                store = mockStore({
+                store = mockStore<*, StoreAction>({
                     integrations: fromJS(integrationsState),
                     newMessage: fromJS({
                         state: {contentState},
@@ -593,12 +595,18 @@ describe('actions', () => {
 
             it('should add plain text signature to message', () => {
                 expect.assertions(1)
+                if (!data) {
+                    throw new Error('data should not be null or undefined')
+                }
                 // BUG because generateRandomKey is mocked newlines not added
                 expect(data.newMessage.body_text).toBe('Hi cheers, Steve')
             })
 
             it('should add html signature to message', () => {
                 expect.assertions(1)
+                if (!data) {
+                    throw new Error('data should not be null or undefined')
+                }
                 // BUG because generateRandomKey is mocked <br>s are not added
                 expect(data.newMessage.body_html).toBe('<div>Hi cheers, <strong>Steve</strong></div>')
             })
@@ -606,7 +614,7 @@ describe('actions', () => {
 
         describe('addSignature()', () => {
             it('should dispatch NEW_MESSAGE_ADD_SIGNATURE action', () => {
-                store = mockStore({
+                store = mockStore<*, StoreAction>({
                     newMessage: initialState
                 })
                 const contentState = ContentState.createFromText('foo')
@@ -621,7 +629,31 @@ describe('actions', () => {
             })
         })
 
-        describe('submitTicketMessage()', () => {
+        describe('prepareTicketMessage', () => {
+            it('should prepare next new message after we submitted an instagram comment', () => {
+                store = mockStore({
+                    ticket: instagramMedia.set('id', 12),
+                    newMessage: initialState
+                        .setIn(['newMessage', 'source'], fromJS({
+                            type: 'instagram-comment',
+                            to: [{
+                                name: 'messagereceiver'
+                            }]
+                        })),
+                    currentUser: fromJS({
+                        id: 1,
+                        name: 'foo'
+                    }),
+                    integrations: fromJS(integrationsState)
+                })
+
+                return store.dispatch(actions.prepareTicketMessage()).then(({messageToSend}) => {
+                    expect(messageToSend).toMatchSnapshot()
+                })
+            })
+        })
+
+        describe('sendTicketMessage', () => {
             let mockServer
 
             beforeEach(() => {
@@ -640,40 +672,21 @@ describe('actions', () => {
                     integrations: fromJS(integrationsState)
                 })
 
-                return store.dispatch(actions.submitTicketMessage()).then(() => {
+                return store.dispatch(actions.prepareTicketMessage()).then(({messageId, messageToSend}) =>
+                    actions.sendTicketMessage(messageId, messageToSend)
+                ).then(() => {
                     expect(store.getActions()).toMatchSnapshot()
                 })
             })
+        })
 
-            it('should prepare next new message after we submitted an instagram comment', () => {
-                mockServer.onPost('/api/tickets/12/messages/').reply(201, {
-                    ticket_id: 12,
-                    messages: [{
-                        source: {
-                            type: 'instagram-comment'
-                        }
-                    }]
-                })
-
+        describe('newMessageResetFromMessage', () => {
+            it('should send the message data to reset the state', () => {
                 store = mockStore({
-                    ticket: instagramMedia.set('id', 12),
                     newMessage: initialState
-                        .setIn(['newMessage', 'source'], fromJS({
-                            type: 'instagram-comment',
-                            to: [{
-                                name: 'messagereceiver'
-                            }]
-                        })),
-                    currentUser: fromJS({
-                        id: 1,
-                        name: 'foo'
-                    }),
-                    integrations: fromJS(integrationsState)
                 })
-
-                return store.dispatch(actions.submitTicketMessage()).then(() => {
-                    expect(store.getActions()).toMatchSnapshot()
-                })
+                store.dispatch(actions.newMessageResetFromMessage({body_text: 'foo'}))
+                expect(store.getActions()).toMatchSnapshot()
             })
         })
     })

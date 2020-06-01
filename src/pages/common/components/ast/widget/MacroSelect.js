@@ -53,7 +53,10 @@ const MacroSelect = (props: Props) => {
         }
         // Filter out macros with external actions
         return macroOptions.filter((macro) => macro.get('actions')
-            .filter((action) => getActionTemplate(action.get('name')).execution === 'back')
+            .filter((action) => {
+                const actionTemplate = getActionTemplate(action.get('name'))
+                return actionTemplate && actionTemplate.execution === 'back'
+            })
             .isEmpty()).map((macro) => fromJS({value: macro.get('id').toString(), label: macro.get('name')}))
             .toList()
             .sortBy((macro) => (macro.get('label') || '').toLowerCase())

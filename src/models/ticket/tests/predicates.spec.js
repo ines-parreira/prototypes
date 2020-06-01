@@ -104,6 +104,17 @@ describe('predicates', () => {
             }: any)
             expect(isPending(message)).toBe(true)
         })
+
+        it('should return false if message is an email and isPending', () => {
+            const message: TicketMessage = ({
+                ...defaultMessage,
+                isPending: true,
+                source: {
+                    type: 'email',
+                },
+            }: any)
+            expect(isPending(message)).toBe(false)
+        })
     })
 
     describe('isFailed', () => {

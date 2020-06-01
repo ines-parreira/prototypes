@@ -7,6 +7,7 @@ import classnames from 'classnames'
 import _isArray from 'lodash/isArray'
 
 
+import type {attachmentType} from '../../../state/types'
 import {uploadFiles} from '../../../utils'
 import {getFileTooLargeError} from '../../../utils/file'
 
@@ -43,7 +44,7 @@ export class FileField extends InputField<Props, State> {
         isUploading: false,
     }
 
-    _getFilesSize = (files: Array<File>) => {
+    _getFilesSize = (files: Array<attachmentType>) => {
         return files.reduce((sum, file) => sum + (file.size || 0), 0)
     }
 

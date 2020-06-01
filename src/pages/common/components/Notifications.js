@@ -1,3 +1,4 @@
+//@flow
 /* reapop notifications theme
  */
 
@@ -20,7 +21,8 @@ export default _merge({}, reapopThemeWybo, {
                 return `${reapopThemeWybo.notification.className[status]} ${css[status]}`
             },
             icon: 'material-icons ' + css['notification-icon'],
+            buttons: (count: number) => `${reapopThemeWybo.notification.className.buttons(count)} ${css.buttons}`,
+            button: `${reapopThemeWybo.notification.className.button} ${css.button}`,
         }
     }
 })
-

@@ -8,7 +8,7 @@ import moment from 'moment'
 
 import {Link} from 'react-router'
 
-import type {dispatchType} from '../../../types'
+import type {dispatchType} from '../../../state/types'
 
 import {SHOPIFY_PAYMENT_SERVICE} from '../../../constants/billing'
 import * as billingSelectors from '../../../state/billing/selectors'

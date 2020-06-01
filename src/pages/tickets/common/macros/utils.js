@@ -14,7 +14,10 @@ export const isMacroDisabled = (macro: Object, disableExternalActions?: boolean)
 
     return macro
         .get('actions', fromJS([]))
-        .some((action) => getActionTemplate(action.get('name')).execution === 'back')
+        .some((action) => {
+            const actionTemplate = getActionTemplate(action.get('name'))
+            return actionTemplate && actionTemplate.execution === 'back'
+        })
 }
 
 export const getDefaultSelectedMacroId = (macros: Map<*,*>, selectedMacroId: ?number, isCreatingMacro?: boolean) => {
@@ -35,4 +38,3 @@ export const getCurrentMacro = (macros: Map<*,*>, selectedMacroId: ?number, isCr
     }
     return macros.find((macro) => macro.get('id') === selectedMacroId) || fromJS({})
 }
-

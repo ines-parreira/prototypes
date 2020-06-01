@@ -19,6 +19,7 @@ import type {Map} from 'immutable'
 import shortcutManager from '../../../../services/shortcutManager'
 import EditableTitle from '../../../common/components/EditableTitle'
 import MergeTicketsContainer from '../../../common/components/MergeTickets/MergeTicketsContainer'
+import {notify} from '../../../../state/notifications/actions'
 import * as ticketActions from '../../../../state/ticket/actions'
 import {shouldDisplayAuditLogEvents} from '../../../../state/ticket/selectors'
 
@@ -47,6 +48,7 @@ type Props = {
     hideAuditLogEvents: () => void,
     hideTicket: () => Promise<*>,
     className: string,
+    notify: typeof notify,
 }
 
 type State = {
@@ -64,6 +66,7 @@ type State = {
     goToNextTicket: ticketActions.goToNextTicket,
     displayAuditLogEvents: ticketActions.displayAuditLogEvents,
     hideAuditLogEvents: ticketActions.hideAuditLogEvents,
+    notify,
 })
 export default class TicketHeader extends React.Component<Props, State> {
     state = {
@@ -99,7 +102,13 @@ export default class TicketHeader extends React.Component<Props, State> {
     }
 
     _setStatus = (status: string) => {
+        const {notify} = this.props
+
         return this.props.actions.ticket.setStatus(status, () => {
+            notify({
+                status: 'success',
+                message: 'The ticket has been closed.',
+            })
             this._goToNextTicket()
         })
     }

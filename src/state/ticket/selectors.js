@@ -1,12 +1,14 @@
+//@flow
 import {fromJS} from 'immutable'
 import {createSelector} from 'reselect'
 
 import {createImmutableSelector} from '../../utils'
 import {getNewMessageState} from '../newMessage/selectors'
+import type {stateType} from '../types'
 
-export const getTicketState = (state) => state.ticket || fromJS({})
+export const getTicketState = (state: stateType) => state.ticket || fromJS({})
 
-export const getProperty = (property) => createSelector(
+export const getProperty = (property: string) => createSelector(
     [getTicketState],
     (state) => state.get(property)
 )
@@ -23,7 +25,7 @@ export const getIntegrationsData = createSelector(
     (state) => state.getIn(['customer', 'integrations']) || fromJS({})
 )
 
-export const getIntegrationDataByIntegrationId = (integrationId) => createSelector(
+export const getIntegrationDataByIntegrationId = (integrationId: number) => createSelector(
     [getIntegrationsData],
     (state) => state.get(String(integrationId)) || fromJS({})
 )
@@ -45,14 +47,14 @@ export const shouldDisplayAuditLogEvents = createImmutableSelector(
 
 // in props usage
 // ex: isMerging: isLoading('merge')(state)
-export const isLoading = (name) => createSelector(
+export const isLoading = (name: string) => createSelector(
     [getLoading],
     (loading) => loading.get(name, false)
 )
 
 // in component usage
 // ex: isLoading: makeIsLoading(state)   then : const isMerging = isLoading('merge')
-export const makeIsLoading = (state) => (name) => isLoading(name)(state)
+export const makeIsLoading = (state: stateType) => (name: string) => isLoading(name)(state)
 
 export const isDirty = createSelector(
     [getTicketState, getNewMessageState],
@@ -116,6 +118,10 @@ export const getBody = createImmutableSelector(
                 .set('isPending', !message.get('failed_datetime'))
                 .set('isMessage', true)
         })
+        const failedPendingMessages = pendingMessages.filter((message) => message.get('failed_datetime'))
+        pendingMessages = pendingMessages
+            .filter((message) => !message.get('failed_datetime'))
+            .sortBy((message) => message.get('created_datetime'))
 
         events = events.map((event) => {
             return event.set('isEvent', true)
@@ -126,10 +132,11 @@ export const getBody = createImmutableSelector(
         })
 
         return messages
-            .concat(pendingMessages)
+            .concat(failedPendingMessages)
             .concat(events)
             .concat(satisfactionSurveys)
             .sortBy((element) => element.get('isSatisfactionSurvey') ?
                 element.get('scored_datetime') : element.get('created_datetime'))
+            .concat(pendingMessages)
     }
 )

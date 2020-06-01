@@ -70,7 +70,7 @@ export default class KeyboardHelp extends React.Component<{}, State> {
                                     <h3>{component.description}</h3>
 
                                     {
-                                        Object.keys(actions).map((actionName, j) => {
+                                        Object.keys(actions).map((actionName: string, j) => {
                                             const action = actions[actionName]
 
                                             if (!action.description) {

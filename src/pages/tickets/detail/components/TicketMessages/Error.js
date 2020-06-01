@@ -270,7 +270,7 @@ class Error extends React.Component<Props, State> {
                                             key={idx}
                                             className={css.actionError}
                                         >
-                                            The action <b>{template.title}</b> failed
+                                            The action <b>{template ? template.title : ''}</b> failed
                                             because <b>{transformedMsg}</b>.
                                         </li>
                                     )

@@ -1,3 +1,4 @@
+//@flow
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS, type Record} from 'immutable'
 
@@ -11,10 +12,11 @@ import {TICKET_CLOSED, TICKET_CREATED, TICKET_REOPENED} from '../../../constants
 
 // mock Date object
 const DATE_TO_USE = new Date('2017')
-global.Date = jest.fn(() => DATE_TO_USE)
-global.Date.toISOString = Date.toISOString
+global.Date = (jest.fn(() => DATE_TO_USE): any)
+global.Date.toISOString = (Date: any).toISOString
 
 jest.mock('../../newMessage/ticketReplyCache', () => {
+    //$FlowFixMe
     const Immutable = require.requireActual('immutable')
 
     return {
@@ -27,6 +29,7 @@ jest.mock('../../newMessage/ticketReplyCache', () => {
 })
 
 jest.mock('../helpers', () => {
+    //$FlowFixMe
     const helpers = require.requireActual('../helpers')
 
     return {
@@ -37,10 +40,12 @@ jest.mock('../helpers', () => {
 
 jest.mock('moment', () => (date) => date)
 
+//$FlowFixMe
 jest.addMatchers(immutableMatchers)
 
 describe('ticket reducers', () => {
     it('initial state', () => {
+        //$FlowFixMe
         expect(reducer(undefined, {})).toEqualImmutable(initialState)
     })
 
@@ -357,6 +362,7 @@ describe('ticket reducers', () => {
     it('should handle SET_TRASHED', () => {
         expect(
             reducer(initialState, {type: types.SET_TRASHED, trashed_datetime: 'trashed_datetime'})
+        //$FlowFixMe
         ).toEqualImmutable(
             initialState.set('trashed_datetime', 'trashed_datetime')
         )
@@ -370,6 +376,7 @@ describe('ticket reducers', () => {
         }
         expect(
             reducer(initialState, action)
+        //$FlowFixMe
         ).toEqualImmutable(
             initialState
                 .set('snooze_datetime', action.snooze_datetime)
@@ -945,6 +952,25 @@ describe('ticket reducers', () => {
             }
 
             const nextState = reducer(initialState.mergeDeep({events: [auditLogEvent, randomEvent]}), action)
+            expect(nextState.toJS()).toMatchSnapshot()
+        })
+    })
+
+    describe('action TICKET_MESSAGE_DELETED', () => {
+        it('should remove message', () => {
+            const action = {
+                type: types.TICKET_MESSAGE_DELETED,
+                payload: '123',
+            }
+            const nextState = reducer(initialState.mergeDeep({
+                _internal: {
+                    pendingMessages: [{
+                        _internal: {
+                            id: 123,
+                        },
+                    }],
+                },
+            }), action)
             expect(nextState.toJS()).toMatchSnapshot()
         })
     })

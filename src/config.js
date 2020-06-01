@@ -441,7 +441,7 @@ export const ACTION_TEMPLATES = [
         validators: [
             {
                 validate: (customer: Object) => {
-                    return _find(customer.integrations, {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
+                    return !!_find(customer.integrations, {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
                 },
                 error: 'This customer has no Shopify data.'
             },
@@ -518,7 +518,7 @@ export const ACTION_TEMPLATES = [
         validators: [
             {
                 validate: (customer: Object) => {
-                    return _find(customer.integrations, {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
+                    return !!_find(customer.integrations, {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
                 },
                 error: 'This customer has no Shopify data.'
             },
@@ -602,7 +602,7 @@ export const ACTION_TEMPLATES = [
         validators: [
             {
                 validate: (customer: Object) => {
-                    return _find(customer.integrations, {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
+                    return !!_find(customer.integrations, {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
                 },
                 error: 'This customer has no Shopify data.'
             },
@@ -638,7 +638,7 @@ export const ACTION_TEMPLATES = [
         validators: [
             {
                 validate: (customer: Object) => {
-                    return _find(customer.integrations, {'__integration_type__': 'shopify'})
+                    return !!_find(customer.integrations, {'__integration_type__': 'shopify'})
                 },
                 error: 'This customer has no Shopify data.'
             },
@@ -686,7 +686,7 @@ export const ACTION_TEMPLATES = [
         validators: [
             {
                 validate: (customer: Object) => {
-                    return _find(customer.integrations, {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
+                    return !!_find(customer.integrations, {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
                 },
                 error: 'This customer has no Shopify data.'
             },
@@ -734,7 +734,7 @@ export const ACTION_TEMPLATES = [
         validators: [
             {
                 validate: (customer: Object) => {
-                    return _find(customer.integrations, {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
+                    return !!_find(customer.integrations, {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
                 },
                 error: 'This customer has no Shopify data.'
             },
@@ -776,7 +776,7 @@ export const ACTION_TEMPLATES = [
         validators: [
             {
                 validate: (customer: Object) => {
-                    return _find(customer.integrations, {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
+                    return !!_find(customer.integrations, {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
                 },
                 error: 'This customer has no Shopify data.'
             },
@@ -814,7 +814,7 @@ export const ACTION_TEMPLATES = [
         validators: [
             {
                 validate: (customer: Object) => {
-                    return _find(customer.integrations, {'__integration_type__': RECHARGE_INTEGRATION_TYPE})
+                    return !!_find(customer.integrations, {'__integration_type__': RECHARGE_INTEGRATION_TYPE})
                 },
                 error: 'This customer has no Recharge data.'
             },
@@ -847,7 +847,7 @@ export const ACTION_TEMPLATES = [
         validators: [
             {
                 validate: (customer: Object) => {
-                    return _find(customer.integrations, {'__integration_type__': RECHARGE_INTEGRATION_TYPE})
+                    return !!_find(customer.integrations, {'__integration_type__': RECHARGE_INTEGRATION_TYPE})
                 },
                 error: 'This customer has no Recharge data.'
             },
@@ -892,7 +892,7 @@ export const ACTION_TEMPLATES = [
         validators: [
             {
                 validate: (customer: Object) => {
-                    return _find(customer.integrations, {'__integration_type__': RECHARGE_INTEGRATION_TYPE})
+                    return !!_find(customer.integrations, {'__integration_type__': RECHARGE_INTEGRATION_TYPE})
                 },
                 error: 'This customer has no Recharge data.'
             },
@@ -938,7 +938,7 @@ export const ACTION_TEMPLATES = [
         validators: [
             {
                 validate: (customer: Object) => {
-                    return _find(customer.integrations, {'__integration_type__': RECHARGE_INTEGRATION_TYPE})
+                    return !!_find(customer.integrations, {'__integration_type__': RECHARGE_INTEGRATION_TYPE})
                 },
                 error: 'This customer has no Recharge data.'
             },

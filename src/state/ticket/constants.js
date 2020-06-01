@@ -1,9 +1,12 @@
+//@flow
 // Update a message (retry failed actions or sending, or force sending)
 export const UPDATE_TICKET_MESSAGE_START = 'UPDATE_TICKET_MESSAGE_START'
 export const UPDATE_TICKET_MESSAGE_SUCCESS = 'UPDATE_TICKET_MESSAGE_SUCCESS'
 export const UPDATE_TICKET_MESSAGE_ERROR = 'UPDATE_TICKET_MESSAGE_ERROR'
 
 export const DELETE_TICKET_ERROR = 'DELETE_TICKET_ERROR'
+
+export const TICKET_MESSAGE_DELETED = 'TICKET_MESSAGE_DELETED'
 
 // Reply to a ticket
 export const SUBMIT_TICKET_SUCCESS = 'SUBMIT_TICKET_SUCCESS'

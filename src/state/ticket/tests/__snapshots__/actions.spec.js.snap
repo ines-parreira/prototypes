@@ -1572,6 +1572,15 @@ Array [
 ]
 `;
 
+exports[`ticket actions messageDeleted() should dispatch TICKET_MESSAGE_DELETED action 1`] = `
+Array [
+  Object {
+    "payload": "123",
+    "type": "TICKET_MESSAGE_DELETED",
+  },
+]
+`;
+
 exports[`ticket actions removeTag() 1`] = `
 Array [
   Object {

@@ -218,7 +218,7 @@ export class TicketReplyEditor extends React.Component<Props, State> {
         updateMessageText(this.props, editorState)
     }
 
-    _getFilesSize = (files: Array<File>) => {
+    _getFilesSize = (files: Array<attachmentType>) => {
         return files.reduce((sum, file) => sum + (file.size || 0), 0)
     }
 

@@ -44,6 +44,11 @@
 
     .notification--success {
       .notification--status(@green, 49%, 'check_circle');
+
+      .button {
+        border-color: @darkGreen;
+        color: @darkGreen;
+      }
     }
 
     .notification--info {
@@ -69,4 +74,16 @@
         }
     }
 
+    .buttons {
+      vertical-align: middle;
+    }
+
+    .button {
+      border-style: solid!important;
+      border-width: 1px!important;
+      border-radius: 3px;
+      height: 30px!important;
+      margin-right: 20px;
+      min-height: 30px!important;
+    }
 }

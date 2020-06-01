@@ -46,7 +46,9 @@ const commonProps = {
     searchSimilarCustomer: jest.fn(() => Promise.resolve({customer: {id: 4}})),
     setCustomer: jest.fn(() => Promise.resolve()),
     location: {
-        search: 'searchQuery'
+        search: 'searchQuery',
+        pathname: 'foo',
+        query: {},
     }
 }
 
