@@ -188,6 +188,10 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
             "label": "German",
             "value": "de",
           },
+          Object {
+            "label": "Norwegian",
+            "value": "no",
+          },
         ]
       }
       type="select"
@@ -240,6 +244,12 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         value="de"
       >
         German
+      </option>
+      <option
+        key="no"
+        value="no"
+      >
+        Norwegian
       </option>
     </InputField>
     <div>
@@ -493,6 +503,10 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
             "label": "German",
             "value": "de",
           },
+          Object {
+            "label": "Norwegian",
+            "value": "no",
+          },
         ]
       }
       type="select"
@@ -545,6 +559,12 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         value="de"
       >
         German
+      </option>
+      <option
+        key="no"
+        value="no"
+      >
+        Norwegian
       </option>
     </InputField>
     <div>
@@ -801,6 +821,10 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
             "label": "German",
             "value": "de",
           },
+          Object {
+            "label": "Norwegian",
+            "value": "no",
+          },
         ]
       }
       type="select"
@@ -853,6 +877,12 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         value="de"
       >
         German
+      </option>
+      <option
+        key="no"
+        value="no"
+      >
+        Norwegian
       </option>
     </InputField>
     <div>
@@ -1109,6 +1139,10 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
             "label": "German",
             "value": "de",
           },
+          Object {
+            "label": "Norwegian",
+            "value": "no",
+          },
         ]
       }
       type="select"
@@ -1161,6 +1195,12 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         value="de"
       >
         German
+      </option>
+      <option
+        key="no"
+        value="no"
+      >
+        Norwegian
       </option>
     </InputField>
     <div>
@@ -1417,6 +1457,10 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
             "label": "German",
             "value": "de",
           },
+          Object {
+            "label": "Norwegian",
+            "value": "no",
+          },
         ]
       }
       type="select"
@@ -1469,6 +1513,12 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         value="de"
       >
         German
+      </option>
+      <option
+        key="no"
+        value="no"
+      >
+        Norwegian
       </option>
     </InputField>
     <div>

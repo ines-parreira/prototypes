@@ -132,6 +132,10 @@ exports[`<SmoochIntegrationDetail/> render() should render an active integration
                   "label": "German",
                   "value": "de",
                 },
+                Object {
+                  "label": "Norwegian",
+                  "value": "no",
+                },
               ]
             }
             type="select"
@@ -184,6 +188,12 @@ exports[`<SmoochIntegrationDetail/> render() should render an active integration
               value="de"
             >
               German
+            </option>
+            <option
+              key="no"
+              value="no"
+            >
+              Norwegian
             </option>
           </InputField>
           <div>
@@ -367,6 +377,10 @@ exports[`<SmoochIntegrationDetail/> render() should render an inactive integrati
                   "label": "German",
                   "value": "de",
                 },
+                Object {
+                  "label": "Norwegian",
+                  "value": "no",
+                },
               ]
             }
             type="select"
@@ -419,6 +433,12 @@ exports[`<SmoochIntegrationDetail/> render() should render an inactive integrati
               value="de"
             >
               German
+            </option>
+            <option
+              key="no"
+              value="no"
+            >
+              Norwegian
             </option>
           </InputField>
           <div>
@@ -601,6 +621,10 @@ exports[`<SmoochIntegrationDetail/> render() should render an integration which 
                   "label": "German",
                   "value": "de",
                 },
+                Object {
+                  "label": "Norwegian",
+                  "value": "no",
+                },
               ]
             }
             type="select"
@@ -653,6 +677,12 @@ exports[`<SmoochIntegrationDetail/> render() should render an integration which 
               value="de"
             >
               German
+            </option>
+            <option
+              key="no"
+              value="no"
+            >
+              Norwegian
             </option>
           </InputField>
           <div>

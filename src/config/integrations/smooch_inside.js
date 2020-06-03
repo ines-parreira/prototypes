@@ -8,7 +8,8 @@ import {
     ITALIAN_LANGUAGE,
     SPANISH_LANGUAGE,
     SWEDISH_LANGUAGE,
-    GERMAN_LANGUAGE
+    GERMAN_LANGUAGE,
+    NORWEGIAN_LANGUAGE
 } from '../../constants/languages'
 
 
@@ -24,6 +25,7 @@ export const SMOOCH_INSIDE_WIDGET_LANGUAGE_OPTIONS = fromJS([
     {value: ITALIAN_LANGUAGE, label: 'Italian'},
     {value: DUTCH_LANGUAGE, label: 'Dutch'},
     {value: GERMAN_LANGUAGE, label: 'German'},
+    {value: NORWEGIAN_LANGUAGE, label: 'Norwegian'},
 ])
 
 export const SMOOCH_INSIDE_WIDGET_TEXTS = require('../../../../../integrations/smooch_inside/texts/widget_texts.json')
