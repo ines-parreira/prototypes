@@ -178,7 +178,7 @@ export const actionsConfig = {
     },
     facebookHideComment: {
         compact: true,
-        name: 'Hide FB comment',
+        name: 'Hide Facebook comment',
     }
 }
 
