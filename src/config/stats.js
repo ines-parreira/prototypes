@@ -1,3 +1,4 @@
+// @flow
 import React from 'react'
 import {fromJS} from 'immutable'
 import moment from 'moment'
@@ -102,7 +103,12 @@ _merge(defaults, {
             caretPadding: 5,
             backgroundColor: '#ffffff',
             borderColor: '#e2e3ec',
-            borderWidth: 1
+            borderWidth: 1,
+            callbacks: {
+                title: (tooltipItem) => {
+                    return formatDateAxeCb(tooltipItem[0].label)
+                }
+            }
         },
         hover: {
             mode: 'index',
@@ -136,6 +142,7 @@ const defaultYAxeGridLines = {
     color: '#dfe3f1',
     borderDash: [2, 4]
 }
+
 // configuration for each stat
 export const stats = fromJS({
     [MESSAGES_SENT_PER_MACRO]: {
@@ -628,7 +635,7 @@ const formatTicketAxeCb = (val) => {
 }
 
 const formatDurationTooltipCb = (item, data) => {
-    return `${data.datasets[item.datasetIndex].label}: ${formatDuration(item.yLabel, 2)}`
+    return `${data.datasets[item.datasetIndex].label}: ${formatDuration(item.yLabel, 2) || '0'}`
 }
 
 /**

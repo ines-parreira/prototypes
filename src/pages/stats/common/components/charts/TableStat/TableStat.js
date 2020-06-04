@@ -1,5 +1,6 @@
+// @flow
+import type {Map} from 'immutable'
 import React from 'react'
-import PropTypes from 'prop-types'
 import moment from 'moment'
 import _isFunction from 'lodash/isFunction'
 import _truncate from 'lodash/truncate'
@@ -15,32 +16,31 @@ import {
     TICKET_MAX_SUBJECT_LENGTH
 } from '../../../../../../config/stats'
 import {comparedPeriodString, formatCurrency, renderDifference} from '../../../utils'
-
 import DistributionVariantStat from '../DistributionVariantStat'
 
 import css from './TableStat.less'
 
-
-@withRouter
-export default class TableStat extends React.Component {
-    static propTypes = {
-        name: PropTypes.string,
-        data: PropTypes.object.isRequired,
-        meta: PropTypes.object.isRequired,
-        config: PropTypes.object.isRequired,
-        context: PropTypes.object
+type Props = {
+    data: Map<*, *>,
+    config: Map<*, *>,
+    meta: Map<*, *>,
+    name?: string,
+    context?: {
+        tagColors: Map<*, *>,
     }
+}
 
-    // render a value depending on its type (like a percent, a delta, etc.)
-    _renderCell = (line, metric, type, index) => {
+export class TableStat extends React.Component<Props> {
+    // Render a table cell depending on its value type (percent, date, delta, etc.)
+    _renderCell = (line: Map<*, *>, metric: Map<*, *>, type: string, index: number) => {
         const {meta, config, context} = this.props
-        let callback = config.getIn(['callbacks', 'cell'])
 
+        let callback = config.getIn(['callbacks', 'cell'])
         if (!_isFunction(callback)) {
-            callback = ((line, val) => val)
+            callback = ((line, val) => val: any)
         }
 
-        switch (metric.get('type')) {
+        switch (type) {
             case 'delta': {
                 const previousStartDatetime = moment(meta.get('previous_start_datetime'))
                 const previousEndDatetime = moment(meta.get('previous_end_datetime'))
@@ -100,7 +100,7 @@ export default class TableStat extends React.Component {
         }
     }
 
-    // render the table
+    // Render the table
     render() {
         const {data} = this.props
 
@@ -153,3 +153,5 @@ export default class TableStat extends React.Component {
         )
     }
 }
+
+export default withRouter(TableStat)

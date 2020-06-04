@@ -5,7 +5,7 @@ import {fromJS} from 'immutable'
 import BarStat from '../BarStat'
 import {stats as statsConfig, SUPPORT_VOLUME} from '../../../../../../config/stats'
 
-const barStat = fromJS({
+const barStatData = fromJS({
     name: 'stat_name',
     label: 'Stat label',
     legend: {
@@ -33,6 +33,11 @@ const barStat = fromJS({
         }]
     }
 })
+const barStatNoData = fromJS({
+    data: {
+        lines: []
+    }
+})
 
 describe('BarStat', () => {
     it('should render a bar chart', () => {
@@ -40,7 +45,18 @@ describe('BarStat', () => {
         const component = shallow(
             <BarStat
                 config={config}
-                {...barStat.toObject()}
+                {...barStatData.toObject()}
+            />
+        )
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should render a bar chart with "no data" message', () => {
+        const config = statsConfig.find((config, key) => key === SUPPORT_VOLUME)
+        const component = shallow(
+            <BarStat
+                config={config}
+                {...barStatNoData.toObject()}
             />
         )
         expect(component).toMatchSnapshot()

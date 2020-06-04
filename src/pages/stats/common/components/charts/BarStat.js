@@ -1,17 +1,18 @@
+// @flow
+import type {List, Map} from 'immutable'
 import React from 'react'
-import PropTypes from 'prop-types'
 import {Bar} from 'react-chartjs-2'
 
 import {colors as colorsConfig, chartMaxHeight} from '../../../../../config/stats'
 import Legend from '../Legend'
 
-export default class BarStat extends React.Component {
-    static propTypes = {
-        data: PropTypes.object.isRequired,
-        legend: PropTypes.object.isRequired,
-        config: PropTypes.object.isRequired,
-    }
+type Props = {
+    data: Map<*, *>,
+    config: Map<*, *>,
+    legend?: List<*>,
+}
 
+export default class BarStat extends React.Component<Props> {
     render() {
         const {data, config, legend} = this.props
         const datasets = data.get('lines').map((line, index) => {
@@ -29,25 +30,30 @@ export default class BarStat extends React.Component {
         }))
 
         return (
-            <div>
-                <div className="mb-4">
-                    <Legend labels={legendLabels}/>
+            data.get('lines').isEmpty() ?
+                <div className="text-muted">
+                    There is no data for this period.
                 </div>
-                {
-                    // Bar chart needs to be alone inside a div otherwise it grows
-                    // indefinitely when the window is resized
-                }
+                :
                 <div>
-                    <Bar
-                        height={chartMaxHeight}
-                        data={{
-                            labels: data.getIn(['axes', 'x']).toJS(),
-                            datasets: datasets
-                        }}
-                        options={config.get('options')(legend)}
-                    />
+                    <div className="mb-4">
+                        <Legend labels={legendLabels}/>
+                    </div>
+                    {
+                        // Bar chart needs to be alone inside a div otherwise it grows
+                        // indefinitely when the window is resized
+                    }
+                    <div>
+                        <Bar
+                            height={chartMaxHeight}
+                            data={{
+                                labels: data.getIn(['axes', 'x']).toJS(),
+                                datasets: datasets
+                            }}
+                            options={config.get('options')(legend)}
+                        />
+                    </div>
                 </div>
-            </div>
         )
     }
 }

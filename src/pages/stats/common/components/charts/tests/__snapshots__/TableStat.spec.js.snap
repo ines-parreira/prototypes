@@ -1,77 +1,205 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TableStat should render a table chart 1`] = `
-<TableStat
-  config={
-    Immutable.Map {
-      "helpText": "Number of tickets created per tag",
-      "style": "table",
-      "downloadable": true,
-      "callbacks": Immutable.Map {
-        "cell": [Function],
-      },
-    }
-  }
-  context={
-    Object {
-      "tagColors": null,
-    }
-  }
-  data={
-    Immutable.Map {
-      "axes": Immutable.Map {
-        "x": Immutable.List [
-          Immutable.Map {
-            "name": "Tags",
-            "type": "string",
-          },
-          Immutable.Map {
-            "name": "New tickets #",
-            "type": "number",
-          },
-          Immutable.Map {
-            "name": "Percent",
-            "type": "percent",
-          },
-          Immutable.Map {
-            "name": "Agent Score",
-            "type": "satisfaction-score",
-          },
-          Immutable.Map {
-            "name": "Survey Score",
-            "type": "satisfaction-score",
-          },
-          Immutable.Map {
-            "name": "Delta",
-            "type": "delta",
-          },
-          Immutable.Map {
-            "name": "Sales",
-            "type": "currency",
-            "currency": "AUD",
-          },
-        ],
-      },
-      "lines": Immutable.List [
-        Immutable.List [
-          "refund",
-          42,
-          12,
-          93,
-          3,
-          -1,
-          3.5,
-        ],
-      ],
-    }
-  }
-  label="Tickets per tag"
-  meta={
-    Immutable.Map {
-      "previous_start_datetime": "2018-10-22",
-      "previous_end_datetime": "2018-10-23",
-    }
-  }
-  name="tickets_per_tag"
-/>
+<Table
+  className="table"
+  hover={true}
+  responsiveTag="div"
+  tag="table"
+>
+  <thead>
+    <tr>
+      <th
+        className="string"
+        key="0"
+      >
+        <span
+          className="cell-wrapper"
+        >
+          TAGS
+        </span>
+      </th>
+      <th
+        className="number"
+        key="1"
+      >
+        <span
+          className="cell-wrapper"
+        >
+          NEW TICKETS #
+        </span>
+      </th>
+      <th
+        className="percent"
+        key="2"
+      >
+        <span
+          className="cell-wrapper"
+        >
+          PERCENT
+        </span>
+      </th>
+      <th
+        className="satisfaction-score"
+        key="3"
+      >
+        <span
+          className="cell-wrapper"
+        >
+          AGENT SCORE
+        </span>
+      </th>
+      <th
+        className="satisfaction-score"
+        key="4"
+      >
+        <span
+          className="cell-wrapper"
+        >
+          SURVEY SCORE
+        </span>
+      </th>
+      <th
+        className="delta"
+        key="5"
+      >
+        <span
+          className="cell-wrapper"
+        >
+          DELTA
+        </span>
+      </th>
+      <th
+        className="currency"
+        key="6"
+      >
+        <span
+          className="cell-wrapper"
+        >
+          SALES
+        </span>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr
+      key="0"
+    >
+      <td
+        className="string"
+        key="0"
+      >
+        <span
+          className="cell-wrapper"
+        >
+          refund
+        </span>
+      </td>
+      <td
+        className="number"
+        key="1"
+      >
+        <span
+          className="cell-wrapper"
+        >
+          42
+        </span>
+      </td>
+      <td
+        className="percent"
+        key="2"
+      >
+        <span
+          className="cell-wrapper"
+        >
+          12%
+        </span>
+      </td>
+      <td
+        className="satisfaction-score"
+        key="3"
+      >
+        <span
+          className="cell-wrapper"
+        >
+          <DistributionVariantStat
+            currentValue={93}
+            maxValue={5}
+            minValue={1}
+            variant="star"
+          />
+        </span>
+      </td>
+      <td
+        className="satisfaction-score"
+        key="4"
+      >
+        <span
+          className="cell-wrapper"
+        >
+          <DistributionVariantStat
+            currentValue={3}
+            maxValue={5}
+            minValue={1}
+            variant="star"
+          />
+        </span>
+      </td>
+      <td
+        className="delta"
+        key="5"
+      >
+        <span
+          className="cell-wrapper"
+        >
+          <span>
+            <span
+              id="difference-0"
+            >
+              <span>
+                <i
+                  className="stats-difference  material-icons font-weight-bold mr-1"
+                  style={
+                    Object {
+                      "fontSize": "15px",
+                    }
+                  }
+                >
+                  arrow_downward
+                </i>
+                -1
+                %
+              </span>
+            </span>
+            <Tooltip
+              delay={0}
+              placement="top"
+              target="difference-0"
+            >
+              Compared to : Oct 22, 2018 - Oct 23, 2018
+            </Tooltip>
+          </span>
+        </span>
+      </td>
+      <td
+        className="currency"
+        key="6"
+      >
+        <span
+          className="cell-wrapper"
+        >
+          3.5
+        </span>
+      </td>
+    </tr>
+  </tbody>
+</Table>
+`;
+
+exports[`TableStat should render a table chart with "no data" message 1`] = `
+<div
+  className="text-muted"
+>
+  There is no data for this period.
+</div>
 `;
