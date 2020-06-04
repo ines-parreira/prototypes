@@ -210,7 +210,7 @@ export default class TicketHeader extends React.Component<Props, State> {
 
                     <TicketTrash
                         className={css.headerIcon}
-                        trashed={isTrashed}
+                        trashed={isTrashed && !ticket.getIn(['_internal', 'loading', 'setTrash'])}
                     />
 
                     <TicketSpam

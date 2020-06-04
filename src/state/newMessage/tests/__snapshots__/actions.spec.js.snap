@@ -1160,6 +1160,7 @@ Array [
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
+          "setTrash": false,
         },
         "pendingMessages": Immutable.List [],
       },

@@ -7,6 +7,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -70,6 +71,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -120,6 +122,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -172,6 +175,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -222,6 +226,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -260,6 +265,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -305,6 +311,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -350,6 +357,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -392,6 +400,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -432,6 +441,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -472,6 +482,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -510,6 +521,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -548,6 +560,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -595,6 +608,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -637,6 +651,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [
       Object {
@@ -684,6 +699,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -722,6 +738,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -760,6 +777,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": true,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -798,6 +816,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -849,6 +868,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -887,6 +907,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -925,6 +946,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -963,6 +985,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -1001,6 +1024,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -1042,6 +1066,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -1080,6 +1105,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -1121,6 +1147,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -1180,6 +1207,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -1239,6 +1267,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -1311,6 +1340,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [
       Object {
@@ -1387,6 +1417,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [
       Object {
@@ -1464,6 +1495,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [
       Object {
@@ -1540,6 +1572,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -1579,6 +1612,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -1622,6 +1656,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -1664,6 +1699,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -1706,6 +1742,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -1746,6 +1783,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -1784,6 +1822,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -1827,6 +1866,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -1865,6 +1905,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -1903,6 +1944,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -1941,6 +1983,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -1979,6 +2022,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -2019,6 +2063,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -2057,6 +2102,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -2100,6 +2146,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -2138,6 +2185,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -2176,6 +2224,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -2214,6 +2263,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,
@@ -2261,6 +2311,7 @@ Object {
     "loading": Object {
       "deleteMessage": false,
       "fetchTicket": false,
+      "setTrash": false,
     },
     "pendingMessages": Array [],
     "shouldDisplayAuditLogEvents": false,

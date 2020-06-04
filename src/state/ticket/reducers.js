@@ -25,6 +25,7 @@ export const initialState = fromJS({
         loading: {
             fetchTicket: false,
             deleteMessage: false,
+            setTrash: false,
         },
         pendingMessages: [],
     },
@@ -182,8 +183,14 @@ export default function reducer(state: Map<*, *> = initialState, action: actionT
             return state.set('spam', action.spam)
         }
 
-        case types.SET_TRASHED: {
+        case types.SET_TRASHED_START: {
             return state.set('trashed_datetime', action.trashed_datetime)
+                .setIn(['_internal', 'loading', 'setTrash'], true)
+        }
+
+        case types.SET_TRASHED_SUCCESS: {
+            return state.set('trashed_datetime', null)
+                .setIn(['_internal', 'loading', 'setTrash'], false)
         }
 
         case types.SET_AGENT: {

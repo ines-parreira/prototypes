@@ -78,6 +78,7 @@ Array [
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
+          "setTrash": false,
         },
         "pendingMessages": Immutable.List [],
       },
@@ -126,6 +127,7 @@ Array [
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
+          "setTrash": false,
         },
         "pendingMessages": Immutable.List [],
       },
@@ -206,6 +208,7 @@ Object {
       "loading": Immutable.Map {
         "fetchTicket": false,
         "deleteMessage": false,
+        "setTrash": false,
       },
       "pendingMessages": Immutable.List [],
     },
@@ -375,6 +378,7 @@ Array [
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
+          "setTrash": false,
         },
         "pendingMessages": Immutable.List [],
       },
@@ -489,6 +493,7 @@ Array [
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
+          "setTrash": false,
         },
         "pendingMessages": Immutable.List [],
       },
@@ -554,6 +559,7 @@ Array [
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
+          "setTrash": false,
         },
         "pendingMessages": Immutable.List [],
       },
@@ -659,6 +665,7 @@ Array [
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
+          "setTrash": false,
         },
         "pendingMessages": Immutable.List [],
       },
@@ -756,6 +763,7 @@ Array [
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
+          "setTrash": false,
         },
         "pendingMessages": Immutable.List [],
       },
@@ -860,6 +868,7 @@ Array [
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
+          "setTrash": false,
         },
         "pendingMessages": Immutable.List [],
       },
@@ -961,6 +970,7 @@ Array [
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
+          "setTrash": false,
         },
         "pendingMessages": Immutable.List [],
       },
@@ -1058,6 +1068,7 @@ Array [
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
+          "setTrash": false,
         },
         "pendingMessages": Immutable.List [],
       },
@@ -1162,6 +1173,7 @@ Array [
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
+          "setTrash": false,
         },
         "pendingMessages": Immutable.List [],
       },
@@ -1254,6 +1266,7 @@ Array [
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
+          "setTrash": false,
         },
         "pendingMessages": Immutable.List [],
       },
@@ -1340,6 +1353,7 @@ Array [
         "loading": Immutable.Map {
           "fetchTicket": false,
           "deleteMessage": false,
+          "setTrash": false,
         },
         "pendingMessages": Immutable.List [],
       },
@@ -1622,7 +1636,7 @@ Array [
 exports[`ticket actions setSnooze() should snooze ticket 1`] = `
 Array [
   Object {
-    "snooze_datetime": "2017-12-21",
+    "snooze_datetime": "2017-12-21T07:00:00.000Z",
     "status": "closed",
     "type": "setSnooze",
   },
@@ -1632,7 +1646,7 @@ Array [
 exports[`ticket actions setSnooze() should snooze ticket and call the callback 1`] = `
 Array [
   Object {
-    "snooze_datetime": "2017-12-21",
+    "snooze_datetime": "2017-12-21T07:00:00.000Z",
     "status": "closed",
     "type": "setSnooze",
   },
@@ -1701,7 +1715,7 @@ exports[`ticket actions setTrashed() should dispatch actions (trash ticket) 1`] 
 Array [
   Object {
     "trashed_datetime": "2017-08-11T07:00:00.000Z",
-    "type": "setTrashed",
+    "type": "setTrashedStart",
   },
   Object {
     "args": Object {
@@ -1715,6 +1729,9 @@ Array [
     },
     "type": "TICKET_PARTIAL_UPDATE_SUCCESS",
   },
+  Object {
+    "type": "setTrashedSuccess",
+  },
 ]
 `;
 
@@ -1722,7 +1739,7 @@ exports[`ticket actions setTrashed() should dispatch actions (untrash ticket) 1`
 Array [
   Object {
     "trashed_datetime": null,
-    "type": "setTrashed",
+    "type": "setTrashedStart",
   },
   Object {
     "args": Object {
@@ -1735,6 +1752,55 @@ Array [
       "data": Object {},
     },
     "type": "TICKET_PARTIAL_UPDATE_SUCCESS",
+  },
+  Object {
+    "type": "setTrashedSuccess",
+  },
+]
+`;
+
+exports[`ticket actions setTrashed() should undo when clicking on notification button 1`] = `
+Array [
+  Object {
+    "trashed_datetime": "2017-08-11T07:00:00.000Z",
+    "type": "setTrashedStart",
+  },
+  Object {
+    "args": Object {
+      "trashed_datetime": "2017-08-11T07:00:00.000Z",
+    },
+    "type": "TICKET_PARTIAL_UPDATE_START",
+  },
+  Object {
+    "resp": Object {
+      "data": Object {},
+    },
+    "type": "TICKET_PARTIAL_UPDATE_SUCCESS",
+  },
+  Object {
+    "type": "setTrashedSuccess",
+  },
+  Object {
+    "type": "FETCH_TICKET_START",
+  },
+  Object {
+    "ticketId": 1,
+    "type": "MARK_CHAT_AS_READ",
+  },
+  Object {
+    "error": [Error: Request failed with status code 404],
+    "reason": "Failed to fetch ticket 1",
+    "type": "FETCH_TICKET_ERROR",
+  },
+  Object {
+    "trashed_datetime": null,
+    "type": "setTrashedStart",
+  },
+  Object {
+    "args": Object {
+      "trashed_datetime": null,
+    },
+    "type": "TICKET_PARTIAL_UPDATE_START",
   },
 ]
 `;

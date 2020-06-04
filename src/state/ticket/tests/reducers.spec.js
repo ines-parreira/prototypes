@@ -359,12 +359,22 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('should handle SET_TRASHED', () => {
+    it('should handle SET_TRASHED_START', () => {
         expect(
-            reducer(initialState, {type: types.SET_TRASHED, trashed_datetime: 'trashed_datetime'})
+            reducer(initialState, {type: types.SET_TRASHED_START, trashed_datetime: 'trashed_datetime'})
         //$FlowFixMe
         ).toEqualImmutable(
             initialState.set('trashed_datetime', 'trashed_datetime')
+                .setIn(['_internal', 'loading', 'setTrash'], true)
+        )
+    })
+
+    it('should handle SET_TRASHED_SUCCESS', () => {
+        expect(
+            reducer(initialState.setIn(['_internal', 'loading', 'setTrash'], true), {type: types.SET_TRASHED_SUCCESS})
+        //$FlowFixMe
+        ).toEqualImmutable(
+            initialState.setIn(['_internal', 'loading', 'setTrash'], false)
         )
     })
 

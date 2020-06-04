@@ -6,6 +6,7 @@ import _isEmpty from 'lodash/isEmpty'
 import _noop from 'lodash/noop'
 import axios from 'axios'
 import {createAction} from '@reduxjs/toolkit'
+import {removeNotification} from 'reapop'
 
 import type Moment from 'moment'
 
@@ -162,6 +163,7 @@ export const setSpam = (spam: boolean, callback: () => void = _noop) =>
 export const setTrashed = (datetime: ?Moment, callback: () => void = _noop): thunkActionType =>
     (dispatch: dispatchType, getState: getStateType) => {
         const {ticket} = getState()
+        const ticketId = ticket.get('id')
         const isTrashed = !!ticket.get('trashed_datetime')
 
         if (isTrashed && !!datetime) {
@@ -169,7 +171,7 @@ export const setTrashed = (datetime: ?Moment, callback: () => void = _noop): thu
         }
 
         dispatch({
-            type: types.SET_TRASHED,
+            type: types.SET_TRASHED_START,
             trashed_datetime: datetime
         })
 
@@ -177,11 +179,28 @@ export const setTrashed = (datetime: ?Moment, callback: () => void = _noop): thu
         callback()
 
         return dispatch(ticketPartialUpdate({trashed_datetime: datetime})).then(() => {
+            dispatch({
+                type: types.SET_TRASHED_SUCCESS,
+            })
             // display a notification when we trash a ticket
             if (datetime) {
                 return dispatch(notify({
+                    id: `trash-${ticketId}`,
+                    dismissAfter: 5000,
+                    buttons: [{
+                        name: 'Undo',
+                        onClick: () => {
+                            dispatch(removeNotification(`trash-${ticketId}`))
+                            browserHistory.push(`/app/ticket/${ticketId}`)
+                            return dispatch(fetchTicket(ticketId))
+                                .then(() => {
+                                    dispatch(setTrashed(null))
+                                })
+                        },
+                        primary: true,
+                    }],
                     status: 'success',
-                    message: 'Ticket deleted'
+                    message: 'Ticket has been deleted',
                 }))
             }
         })
