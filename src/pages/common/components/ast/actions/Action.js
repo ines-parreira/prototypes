@@ -175,6 +175,10 @@ export const actionsConfig = {
     trashTicket: {
         compact: true,
         name: 'Delete ticket',
+    },
+    facebookHideComment: {
+        compact: true,
+        name: 'Hide FB comment',
     }
 }
 
