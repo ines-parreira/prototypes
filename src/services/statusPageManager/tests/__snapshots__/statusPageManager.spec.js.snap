@@ -5,6 +5,7 @@ Array [
   Array [
     Object {
       "allowHTML": true,
+      "closable": true,
       "dismissible": false,
       "id": "status-page-components",
       "message": "
@@ -25,6 +26,7 @@ Array [
   Array [
     Object {
       "allowHTML": true,
+      "closable": true,
       "dismissible": false,
       "id": "status-page-components",
       "message": "
@@ -43,6 +45,7 @@ Array [
   Array [
     Object {
       "allowHTML": true,
+      "closable": true,
       "dismissible": false,
       "id": "status-page-components",
       "message": "

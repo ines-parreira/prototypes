@@ -134,6 +134,7 @@ ${Array.from(notification.componentNames).join(', ')} components.
 Find out more on our <u><a href="${data.page.url}" target="_blank" rel="noreferrer noopener">status page</a></u>.`,
                 allowHTML: true,
                 dismissible: false,
+                closable: true,
             }))
         }
     }

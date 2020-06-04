@@ -8,6 +8,7 @@ type Props = {
     onClick?: () => void,
     message: string | Node,
     dismissible: boolean,
+    closable: boolean,
     allowHtml: boolean,
     hide: (string | number) => void
 }
@@ -15,6 +16,7 @@ type Props = {
 class BannerNotification extends Component<Props> {
     static defaultProps = {
         allowHtml: true,
+        closable: false,
         dismissible: true
     }
 
@@ -30,8 +32,13 @@ class BannerNotification extends Component<Props> {
         }
     }
 
+    close = () => {
+        const {hide, id} = this.props
+        hide(id)
+    }
+
     render() {
-        const {status, message, allowHtml} = this.props
+        const {status, message, allowHtml, closable} = this.props
         const classnames = classNames(
             'banner-notification',
             `banner-notification--${status}`, {
@@ -52,6 +59,18 @@ class BannerNotification extends Component<Props> {
                         className="banner-notification-message"
                     >
                         {message}
+                    </span>
+                }
+                { closable &&
+                    <span className="banner-notification-message__close">
+                        <span>
+                            <i
+                                className="material-icons"
+                                onClick={this.close}
+                            >
+                                close
+                            </i>
+                        </span>
                     </span>
                 }
             </div>
