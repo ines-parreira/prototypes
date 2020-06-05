@@ -8,7 +8,7 @@ import {uploadFiles} from '../utils'
 import * as utils from '../utils'
 import TICKET_LANGUAGES from '../config/ticketLanguages'
 import schemasJSON from '../fixtures/openapi'
-import {ADMIN_ROLE, AGENT_ROLE, BASIC_AGENT_ROLE, LITE_AGENT_ROLE, OBSERVER_AGENT_ROLE, STAFF_ROLE} from '../config/user'
+import {ADMIN_ROLE, AGENT_ROLE, BASIC_AGENT_ROLE, LITE_AGENT_ROLE, OBSERVER_AGENT_ROLE} from '../config/user'
 
 describe('global utils', () => {
     describe('formatDatetime', () => {
@@ -255,7 +255,6 @@ describe('global utils', () => {
             expect(utils.hasRole(user, BASIC_AGENT_ROLE)).toEqual(false)
             expect(utils.hasRole(user, AGENT_ROLE)).toEqual(false)
             expect(utils.hasRole(user, ADMIN_ROLE)).toEqual(false)
-            expect(utils.hasRole(user, STAFF_ROLE)).toEqual(false)
         })
         it('should determine if user has required role (agent)', () => {
             const user = fromJS({
@@ -268,13 +267,12 @@ describe('global utils', () => {
             expect(utils.hasRole(user, BASIC_AGENT_ROLE)).toEqual(true)
             expect(utils.hasRole(user, AGENT_ROLE)).toEqual(true)
             expect(utils.hasRole(user, ADMIN_ROLE)).toEqual(false)
-            expect(utils.hasRole(user, STAFF_ROLE)).toEqual(false)
         })
 
-        it('should determine if user has required role (staff)', () => {
+        it('should determine if user has required role (admin)', () => {
             const user = fromJS({
                 roles: [{
-                    name: STAFF_ROLE,
+                    name: ADMIN_ROLE,
                 }],
             })
             expect(utils.hasRole(user, OBSERVER_AGENT_ROLE)).toEqual(true)
@@ -282,7 +280,6 @@ describe('global utils', () => {
             expect(utils.hasRole(user, BASIC_AGENT_ROLE)).toEqual(true)
             expect(utils.hasRole(user, AGENT_ROLE)).toEqual(true)
             expect(utils.hasRole(user, ADMIN_ROLE)).toEqual(true)
-            expect(utils.hasRole(user, STAFF_ROLE)).toEqual(true)
         })
     })
 

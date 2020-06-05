@@ -1,4 +1,4 @@
-import {ADMIN_ROLE, AGENT_ROLE, STAFF_ROLE} from '../config/user'
+import {ADMIN_ROLE, AGENT_ROLE} from '../config/user'
 
 export const currentUser = {
     lastname: 'Plugaru',
@@ -158,10 +158,6 @@ export const currentUser = {
         {
             id: 3,
             name: ADMIN_ROLE
-        },
-        {
-            id: 4,
-            name: STAFF_ROLE
         }
     ],
     customer: null,

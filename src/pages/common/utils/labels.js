@@ -17,8 +17,7 @@ import {
     AGENT_ROLE,
     BASIC_AGENT_ROLE,
     LITE_AGENT_ROLE,
-    OBSERVER_AGENT_ROLE,
-    STAFF_ROLE
+    OBSERVER_AGENT_ROLE
 } from '../../../config/user'
 import * as currentUserSelectors from '../../../state/currentUser/selectors'
 import Tooltip from '../components/Tooltip'
@@ -327,10 +326,7 @@ export const RoleLabel = ({roles = 'user'}: { roles: string }) => {
     let color = null
     let role = null
 
-    if (roles.includes(STAFF_ROLE)) {
-        color = 'dark'
-        role = _capitalize(STAFF_ROLE)
-    } else if (roles.includes(ADMIN_ROLE)) {
+    if (roles.includes(ADMIN_ROLE)) {
         color = 'danger'
         role = _capitalize(ADMIN_ROLE)
     } else if (roles.includes(AGENT_ROLE)) {

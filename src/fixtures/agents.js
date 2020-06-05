@@ -1,4 +1,4 @@
-import {ADMIN_ROLE, AGENT_ROLE, STAFF_ROLE} from '../config/user'
+import {ADMIN_ROLE, AGENT_ROLE} from '../config/user'
 
 export const agents = [
     {
@@ -19,10 +19,6 @@ export const agents = [
             {
                 name: ADMIN_ROLE,
                 id: 3
-            },
-            {
-                name: STAFF_ROLE,
-                id: 4
             }
         ],
         updated_datetime: '2017-07-31T21:43:05.502541+00:00'

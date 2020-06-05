@@ -7,14 +7,6 @@ import {USER_ROLES_ORDERED_BY_PRIVILEGES} from '../../config/user'
 
 type userType = Map<*, *>
 
-export const isStaff = (user: userType): boolean => {
-    if (!user) {
-        return false
-    }
-
-    return !!user.get('roles', fromJS([])).find((role) => role.get('name') === 'staff', null, false)
-}
-
 /**
  * Return highest role of user
  * Ex: Return 'admin' if user is 'admin' and 'agent'
