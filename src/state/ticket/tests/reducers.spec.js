@@ -332,13 +332,13 @@ describe('ticket reducers', () => {
         ).toMatchSnapshot()
     })
 
-    it('should handle SET_SPAM', () => {
+    it('should handle SET_SPAM_START', () => {
         // set true
         expect(
             reducer(
                 initialState,
                 {
-                    type: types.SET_SPAM,
+                    type: types.SET_SPAM_START,
                     spam: true,
                 }
             ).toJS()
@@ -352,8 +352,19 @@ describe('ticket reducers', () => {
                         spam: true,
                     }),
                 {
-                    type: types.SET_SPAM,
+                    type: types.SET_SPAM_SUCCESS,
                     spam: false,
+                }
+            ).toJS()
+        ).toMatchSnapshot()
+    })
+
+    it('should handle SET_SPAM_SUCCESS', () => {
+        expect(
+            reducer(
+                initialState,
+                {
+                    type: types.SET_SPAM_SUCCESS,
                 }
             ).toJS()
         ).toMatchSnapshot()

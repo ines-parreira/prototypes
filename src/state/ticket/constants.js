@@ -32,7 +32,8 @@ export const REMOVE_TICKET_AUDIT_LOG_EVENTS = 'REMOVE_TICKET_AUDIT_LOG_EVENTS'
 
 // Macro actions
 export const ADD_TICKET_TAGS = 'addTags'
-export const SET_SPAM = 'setSpam'
+export const SET_SPAM_START = 'setSpamStart'
+export const SET_SPAM_SUCCESS = 'setSpamSuccess'
 export const SET_TRASHED_START = 'setTrashedStart'
 export const SET_TRASHED_SUCCESS = 'setTrashedSuccess'
 export const SET_STATUS = 'setStatus'

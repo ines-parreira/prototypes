@@ -143,6 +143,7 @@ export const removeTag = (tag: string) => (dispatch: dispatchType, getState: get
 export const setSpam = (spam: boolean, callback: () => void = _noop) =>
     (dispatch: dispatchType, getState: getStateType) => {
         const {ticket} = getState()
+        const ticketId = ticket.get('id')
         const currentSpam = ticket.get('spam')
 
         if (currentSpam === spam) {
@@ -150,14 +151,38 @@ export const setSpam = (spam: boolean, callback: () => void = _noop) =>
         }
 
         dispatch({
-            type: types.SET_SPAM,
+            type: types.SET_SPAM_START,
             spam
         })
 
         // execute callback immediately, do not wait for server answer
         callback()
 
-        return dispatch(ticketPartialUpdate({spam}))
+        return dispatch(ticketPartialUpdate({spam})).then(() => {
+            dispatch({
+                type: types.SET_SPAM_SUCCESS,
+            })
+            if (spam) {
+                return dispatch(notify({
+                    id: `spam-${ticketId}`,
+                    dismissAfter: 5000,
+                    buttons: [{
+                        name: 'Undo',
+                        onClick: () => {
+                            dispatch(removeNotification(`spam-${ticketId}`))
+                            browserHistory.push(`/app/ticket/${ticketId}`)
+                            return dispatch(fetchTicket(ticketId))
+                                .then(() => {
+                                    dispatch(setSpam(false))
+                                })
+                        },
+                        primary: true,
+                    }],
+                    status: 'success',
+                    message: 'Ticket has been marked as spam',
+                }))
+            }
+        })
     }
 
 export const setTrashed = (datetime: ?Moment, callback: () => void = _noop): thunkActionType =>

@@ -70,6 +70,7 @@ describe('ticket actions', () => {
     beforeEach(() => {
         store = mockStore<*,any>({ticket: initialState, newMessage: newMessageState})
         mockServer = new MockAdapter(axios)
+        jest.clearAllMocks()
     })
 
     const ticket = {
@@ -163,6 +164,19 @@ describe('ticket actions', () => {
             return store.dispatch(actions.setSpam(true))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
+
+        it('should undo when clicking on notification button', () => {
+            store = mockStore<*, dispatchType>({ticket: initialState.set('id', 1)})
+            mockServer.onPut(/\/api\/tickets\/\d+\//).reply(202, {data: {}})
+
+            return store.dispatch(actions.setSpam(true)).then(() => {
+                (notify: any).mock.calls[0][0].buttons[0].onClick().then(() => {
+                    expect(removeNotification).toHaveBeenNthCalledWith(1, 'spam-1')
+                    expect(browserHistory.push).toHaveBeenNthCalledWith(1, '/app/ticket/1')
+                    expect(store.getActions()).toMatchSnapshot()
+                })
+            })
+        })
     })
 
     describe('setTrashed()', () => {
@@ -199,7 +213,7 @@ describe('ticket actions', () => {
             mockServer.onPut(/\/api\/tickets\/\d+\//).reply(202, {data: {}})
 
             return store.dispatch(actions.setTrashed(date)).then(() => {
-                (notify: any).mock.calls[1][0].buttons[0].onClick().then(() => {
+                (notify: any).mock.calls[0][0].buttons[0].onClick().then(() => {
                     expect(removeNotification).toHaveBeenNthCalledWith(1, 'trash-1')
                     expect(browserHistory.push).toHaveBeenNthCalledWith(1, '/app/ticket/1')
                     expect(store.getActions()).toMatchSnapshot()

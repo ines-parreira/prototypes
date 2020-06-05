@@ -215,7 +215,7 @@ export default class TicketHeader extends React.Component<Props, State> {
 
                     <TicketSpam
                         className={css.headerIcon}
-                        spam={ticket.get('spam')}
+                        spam={ticket.get('spam') && !ticket.getIn(['_internal', 'loading', 'setSpam'])}
                     />
 
 
