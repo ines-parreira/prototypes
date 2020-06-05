@@ -16,6 +16,7 @@ import {
     getChannelFromSourceType,
 } from '../ticket/utils'
 
+import type {TicketMessageSourceType} from '../../business/ticket'
 import * as ticketTypes from '../ticket/constants'
 import * as ticketConfig from '../../config/ticket'
 import {convertToHTML} from '../../utils/editor'
@@ -25,7 +26,7 @@ import {getReceiversProperties} from './selectors'
 import * as responseUtils from './responseUtils'
 import * as types from './constants'
 
-export const makeNewMessage = (channel: string, sourceType: string) => {
+export const makeNewMessage = (channel: string, sourceType: TicketMessageSourceType) => {
     return fromJS({
         via: 'helpdesk',
         public: ticketConfig.isPublic(sourceType),

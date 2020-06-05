@@ -1,3 +1,4 @@
+//@flow
 import _isString from 'lodash/isString'
 import _isArray from 'lodash/isArray'
 import _isObject from 'lodash/isObject'
@@ -63,7 +64,7 @@ describe('Config: ticket', () => {
             })
 
             it('structure of object\'s children', () => {
-                const child = value[0].children[0]
+                const child = value[0].children ? value[0].children[0] : {}
                 expect(child).toHaveProperty('name')
                 expect(child).toHaveProperty('value')
             })
@@ -101,7 +102,7 @@ describe('Config: ticket', () => {
     describe('isAnswerableType', () => {
         it('is correct', () => {
             const validTypes = ticketConfig.USABLE_SOURCE_TYPES
-            const invalidTypes = ['test', 123, undefined, null, {}, []]
+            const invalidTypes: any = ['test', 123, undefined, null, {}, []]
 
             validTypes.forEach((type) => {
                 expect(ticketConfig.isAnswerableType(type)).toEqual(true)
@@ -116,7 +117,7 @@ describe('Config: ticket', () => {
     describe('isSystemType', () => {
         it('is correct', () => {
             const validTypes = ticketConfig.SYSTEM_SOURCE_TYPES
-            const invalidTypes = ['test', 123, undefined, null, {}, []]
+            const invalidTypes: any = ['test', 123, undefined, null, {}, []]
 
             validTypes.forEach((type) => {
                 expect(ticketConfig.isSystemType(type)).toEqual(true)
@@ -138,35 +139,41 @@ describe('Config: ticket', () => {
         })
 
         it('is correct', () => {
-            const messages = [{
+            const lastMessage = ticketConfig.lastNonSystemTypeMessage([{
                 id: 1,
                 created_datetime: '2017-07-01T18:00:00',
             }, {
                 id: 2,
                 created_datetime: '2017-07-02T18:00:00',
-            }]
+            }])
 
+            if (!lastMessage) {
+                throw new Error('lastMessage is undefined')
+            }
             expect(
-                ticketConfig.lastNonSystemTypeMessage(messages).get('id')
+                lastMessage.get('id')
             ).toEqual(2)
 
-            const reversedMessages = [{
+            const lastReversedMessage = ticketConfig.lastNonSystemTypeMessage([{
                 id: 1,
                 created_datetime: '2017-07-02T18:00:00',
             }, {
                 id: 2,
                 created_datetime: '2017-07-01T18:00:00',
-            }]
+            }])
 
+            if (!lastReversedMessage) {
+                throw new Error('lastReversedMessages is undefined')
+            }
             expect(
-                ticketConfig.lastNonSystemTypeMessage(reversedMessages).get('id')
+                lastReversedMessage.get('id')
             ).toEqual(1)
         })
 
         it('ignores system messages', () => {
             const systemType = ticketConfig.SYSTEM_SOURCE_TYPES[0]
 
-            const messages = [{
+            const lastMessage = ticketConfig.lastNonSystemTypeMessage([{
                 id: 1,
                 created_datetime: '2017-07-01T18:00:00',
             }, {
@@ -178,17 +185,20 @@ describe('Config: ticket', () => {
                 source: {
                     type: systemType,
                 }
-            }]
+            }])
 
+            if (!lastMessage) {
+                throw new Error('lastMessage is undefined')
+            }
             expect(
-                ticketConfig.lastNonSystemTypeMessage(messages).get('id')
+                lastMessage.get('id')
             ).toEqual(2)
         })
     })
 
     describe('isPublic', () => {
         it('is boolean', () => {
-            const values = ['email', 'unknown-value', 1, undefined, null, []]
+            const values: any = ['email', 'unknown-value', 1, undefined, null, []]
 
             values.forEach((value) => {
                 expect(_isBoolean(ticketConfig.isPublic(value))).toBe(true)
@@ -198,7 +208,7 @@ describe('Config: ticket', () => {
 
     describe('isRichType', () => {
         it('is boolean', () => {
-            const values = ['email', 'unknown-value', 1, undefined, null, []]
+            const values: any = ['email', 'unknown-value', 1, undefined, null, []]
 
             values.forEach((value) => {
                 expect(_isBoolean(ticketConfig.isRichType(value))).toBe(true)
@@ -227,7 +237,7 @@ describe('Config: ticket', () => {
 
     describe('getVariableWithValue', () => {
         it('undefined if unknown value', () => {
-            const invalidValues = [undefined, null, 'unknown-variable']
+            const invalidValues: any = [undefined, null, 'unknown-variable']
 
             invalidValues.forEach((value) => {
                 expect(ticketConfig.getVariableWithValue(value)).toBe(undefined)
@@ -235,7 +245,10 @@ describe('Config: ticket', () => {
         })
 
         it('returns correct config object', () => {
-            const config = ticketConfig.VARIABLES[0].children[0]
+            const config = ticketConfig.VARIABLES[0].children && ticketConfig.VARIABLES[0].children[0]
+            if (!config) {
+                throw new Error('config is undefined')
+            }
             const result = ticketConfig.getVariableWithValue(config.value)
 
             expect(result).toHaveProperty('name', config.name)

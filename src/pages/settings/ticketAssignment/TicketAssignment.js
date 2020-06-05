@@ -6,6 +6,7 @@ import {connect} from 'react-redux'
 import {Button, Col, Container, Form, Label, Row} from 'reactstrap'
 import _isEqual from 'lodash/isEqual'
 
+import {type TicketChannel} from '../../../business/ticket'
 import UserActivityManager from '../../../services/userActivityManager'
 import * as chatsActions from '../../../state/chats/actions'
 import * as currentAccountActions from '../../../state/currentAccount/actions'
@@ -28,7 +29,7 @@ type State = {
     isLoading: boolean,
     unassignOnReply: boolean,
     autoAssignToTeams: boolean,
-    assignmentChannels: string[]
+    assignmentChannels: TicketChannel[],
 }
 
 export class TicketAssignment extends React.Component<Props, State> {
@@ -39,7 +40,7 @@ export class TicketAssignment extends React.Component<Props, State> {
         assignmentChannels: [CHAT_CHANNEL, FACEBOOK_MESSENGER_CHANNEL],
     }
 
-    static channelsToOptions(channels: string[]): Option[] {
+    static channelsToOptions(channels: TicketChannel[]): Option[] {
         return channels.map((channel) => ({
             value: channel,
             label: channel,

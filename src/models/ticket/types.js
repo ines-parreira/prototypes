@@ -1,13 +1,13 @@
 //@flow
 
-import {CHANNELS, CLOSED_STATUS, OPEN_STATUS, SOURCE_TYPES} from '../../config/ticket'
+import {TicketChannels, TicketMessageSourceTypes, TicketStatuses} from '../../business/ticket'
 
 export type Ticket = {
     id: number,
     assignee_user: TicketAssignee,
     messages: TicketElement[],
     messages_count: number,
-    status: OPEN_STATUS | CLOSED_STATUS,
+    status: $Values<typeof TicketStatuses>,
     subject: string,
 }
 
@@ -96,8 +96,8 @@ export type Action = {
 
 export type ActionStatus = 'error' | 'pending' | 'success'
 
-export type SourceType = $Values<SOURCE_TYPES>
-export type Channel = $Values<CHANNELS>
+export type SourceType = $Values<typeof TicketMessageSourceTypes>
+export type Channel = $Values<typeof TicketChannels>
 
 export type Source = {
     type: SourceType,

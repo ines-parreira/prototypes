@@ -1,3 +1,4 @@
+//@flow
 import _isArray from 'lodash/isArray'
 import _isObject from 'lodash/isObject'
 

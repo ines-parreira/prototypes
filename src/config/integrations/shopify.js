@@ -1,3 +1,4 @@
+//@flow
 import {SHOPIFY_INTEGRATION_TYPE} from '../../constants/integration'
 
 export const MACRO_VARIABLES = {

@@ -1,4 +1,4 @@
-// @flow
+//@flow
 import React from 'react'
 import {fromJS} from 'immutable'
 import moment from 'moment'

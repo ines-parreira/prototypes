@@ -25,15 +25,31 @@ import * as socketEventTypes from '../services/socketManager/types'
 import {MAX_RECENT_CHATS} from './recentChats'
 import * as socketConstants from './socketConstants'
 
+type SendEvent = {
+    name: string,
+    dataToSend: (value?: string | number[]) => ({
+        clientId?: string,
+        event?: string,
+        dataType?: string,
+        data?: any,
+    }),
+    onLeave?: (value?: string) => void,
+}
+
+type ReceivedEvent = {
+    name: string,
+    onReceive: (event: $Values<socketEventTypes>) => void,
+}
+
 /**
  * Events that can be sent to server via socket
  * @enum name name of config (used to send the event)
  * @enum dataToSend function returning data that is sent to server when sending this event (bound to SocketManager instance)
  */
-export const sendEvents = [
+export const sendEvents: SendEvent[] = [
     {
         name: socketConstants.TICKET_VIEWED,
-        dataToSend: function (id: string) {
+        dataToSend: function (id) {
             return {
                 clientId: window.CLIENT_ID,
                 event: socketConstants.TICKET_VIEWED,
@@ -44,7 +60,7 @@ export const sendEvents = [
     },
     {
         name: socketConstants.AGENT_TYPING_STARTED,
-        dataToSend: function (id: string) {
+        dataToSend: function (id) {
             return {
                 clientId: window.CLIENT_ID,
                 event: socketConstants.AGENT_TYPING_STARTED,
@@ -55,7 +71,7 @@ export const sendEvents = [
     },
     {
         name: socketConstants.AGENT_TYPING_STOPPED,
-        dataToSend: function (id: string) {
+        dataToSend: function (id) {
             return {
                 clientId: window.CLIENT_ID,
                 event: socketConstants.AGENT_TYPING_STOPPED,
@@ -66,7 +82,7 @@ export const sendEvents = [
     },
     {
         name: socketConstants.VIEWS_COUNTS_EXPIRED,
-        dataToSend: function (viewIds: Array<number>) {
+        dataToSend: function (viewIds) {
             return {
                 event: socketConstants.VIEWS_COUNTS_EXPIRED,
                 dataType: 'View',
@@ -110,21 +126,21 @@ export const sendEvents = [
  * @enum dataToSend function returning data that is sent to server when sending this event (bound to SocketManager instance)
  * @enum [onLeave] callback executed after leaving room (bound to SocketManager instance)
  */
-export const joinEvents = [{
+export const joinEvents: SendEvent[] = [{
     name: 'ticket',
-    dataToSend: function (id: string) {
+    dataToSend: function (id) {
         return {
             clientId: window.CLIENT_ID,
             dataType: 'Ticket',
             data: parseInt(id),
         }
     },
-    onLeave: function (id: string) {
+    onLeave: function (id) {
         return this.send(socketConstants.AGENT_TYPING_STOPPED, id)
     }
 }, {
     name:  'customer',
-    dataToSend: function (id: string) {
+    dataToSend: function (id) {
         return {
             clientId: window.CLIENT_ID,
             dataType: 'Customer',
@@ -133,7 +149,7 @@ export const joinEvents = [{
     },
 }, {
     name: 'view',
-    dataToSend: function (id: string) {
+    dataToSend: function (id) {
         return {
             clientId: window.CLIENT_ID,
             dataType: 'View',
@@ -142,7 +158,7 @@ export const joinEvents = [{
     },
 }, {
     name: 'integration',
-    dataToSend: function (id: string) {
+    dataToSend: function (id) {
         return {
             clientId: window.CLIENT_ID,
             dataType: 'Integration',
@@ -157,7 +173,7 @@ export const joinEvents = [{
  * @enum event name of event received
  * @enum onReceive function executed when this event is received (bound to SocketManager instance)
  */
-export const receivedEvents = [{
+export const receivedEvents: ReceivedEvent[] = [{
     name: 'customer-updated',
     onReceive: function (json: socketEventTypes.CustomerUpdatedEvent) {
         reduxStore.dispatch(ticketActions.mergeCustomer(json.customer))

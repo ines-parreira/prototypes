@@ -1,3 +1,4 @@
+//@flow
 import {
     ShopifyAction
 } from '../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/constants'
@@ -63,6 +64,6 @@ export const actions = [{
     objectType: 'order',
 }]
 
-export const getActionByName = (name) => {
+export const getActionByName = (name: string) => {
     return actions.find((action) => action.name === name)
 }

@@ -1,3 +1,6 @@
+//@flow
+import type {Map} from 'immutable'
+
 import {MAGENTO2_INTEGRATION_TYPE} from '../../constants/integration'
 import {LDMLToMomentFormat} from '../../pages/common/utils/template'
 import {formatDatetime} from '../../utils'

@@ -1,8 +1,27 @@
+//@flow
 import {fromJS} from 'immutable'
 
 import {shouldTicketBeDisplayedInRecentChats} from '../recentChats'
 import {TicketChannels, TicketStatuses} from '../ticket'
 
+const defaultTicket = {
+    id: 1,
+    status: TicketStatuses.OPEN,
+    channel: TicketChannels.CHAT,
+    spam: false,
+    trashed_datetime: '',
+    deleted_datetime: '',
+    assignee_user_id: null,
+    customer: {
+        id: 2,
+        name: 'foo',
+        email: 'bar',
+    },
+    last_message_datetime: '',
+    is_unread: true,
+    last_message_from_agent: null,
+    last_message_body_text: null,
+}
 
 describe('Business', () => {
     describe('recentChats', () => {
@@ -32,17 +51,8 @@ describe('Business', () => {
 
             it('should return true because the ticket is unassigned and the setting `auto_assign_to_teams` is disabled',
                 () => {
-                    const ticket = {
-                        status: TicketStatuses.OPEN,
-                        channel: TicketChannels.CHAT,
-                        spam: false,
-                        trashed_datetime: null,
-                        deleted_datetime: null,
-                        assignee_user_id: null
-                    }
-
                     const res = shouldTicketBeDisplayedInRecentChats(
-                        ticket,
+                        defaultTicket,
                         ticketAssignmentSettings.autoAssignDisabled,
                         currentUser,
                         true
@@ -53,17 +63,8 @@ describe('Business', () => {
 
             it('should return true because the ticket is unassigned and the setting `assignment_channels` does not ' +
                 'include the ticket\'s channel', () => {
-                const ticket = {
-                    status: TicketStatuses.OPEN,
-                    channel: TicketChannels.CHAT,
-                    spam: false,
-                    trashed_datetime: null,
-                    deleted_datetime: null,
-                    assignee_user_id: null
-                }
-
                 const res = shouldTicketBeDisplayedInRecentChats(
-                    ticket,
+                    defaultTicket,
                     ticketAssignmentSettings.channelsDontIncludeChat,
                     currentUser,
                     true
@@ -74,13 +75,8 @@ describe('Business', () => {
 
             it('should return false because the ticket is closed', () => {
                 const ticket = {
-                    id: 1,
+                    ...defaultTicket,
                     status: TicketStatuses.CLOSED,
-                    channel: TicketChannels.CHAT,
-                    spam: false,
-                    trashed_datetime: null,
-                    deleted_datetime: null,
-                    assignee_user_id: null
                 }
 
                 const res = shouldTicketBeDisplayedInRecentChats(
@@ -95,13 +91,8 @@ describe('Business', () => {
 
             it('should return false because the ticket is marked as spam', () => {
                 const ticket = {
-                    id: 1,
-                    status: TicketStatuses.OPEN,
-                    channel: TicketChannels.CHAT,
+                    ...defaultTicket,
                     spam: true,
-                    trashed_datetime: null,
-                    deleted_datetime: null,
-                    assignee_user_id: null
                 }
 
                 const res = shouldTicketBeDisplayedInRecentChats(
@@ -116,13 +107,8 @@ describe('Business', () => {
 
             it('should return false because the ticket is trashed', () => {
                 const ticket = {
-                    id: 1,
-                    status: TicketStatuses.OPEN,
-                    channel: TicketChannels.CHAT,
-                    spam: false,
+                    ...defaultTicket,
                     trashed_datetime: '2019-01-01 00:00:00',
-                    deleted_datetime: null,
-                    assignee_user_id: null
                 }
 
                 const res = shouldTicketBeDisplayedInRecentChats(
@@ -137,13 +123,8 @@ describe('Business', () => {
 
             it('should return false because the ticket is deleted', () => {
                 const ticket = {
-                    id: 1,
-                    status: TicketStatuses.OPEN,
-                    channel: TicketChannels.CHAT,
-                    spam: false,
-                    trashed_datetime: null,
+                    ...defaultTicket,
                     deleted_datetime: '2019-01-01 00:00:00',
-                    assignee_user_id: null
                 }
 
                 const res = shouldTicketBeDisplayedInRecentChats(
@@ -158,13 +139,8 @@ describe('Business', () => {
 
             it('should return false because the ticket has been reassigned', () => {
                 const ticket = {
-                    id: 1,
-                    status: TicketStatuses.OPEN,
-                    channel: TicketChannels.CHAT,
-                    spam: false,
-                    trashed_datetime: null,
-                    deleted_datetime: null,
-                    assignee_user_id: 123
+                    ...defaultTicket,
+                    assignee_user_id: 123,
                 }
 
                 const res = shouldTicketBeDisplayedInRecentChats(
@@ -180,18 +156,8 @@ describe('Business', () => {
 
             it('should return false because the ticket has been unassigned and the setting ' +
                 '"auto_assign_to_teams" is enabled', () => {
-                const ticket = {
-                    id: 1,
-                    status: TicketStatuses.OPEN,
-                    channel: TicketChannels.CHAT,
-                    spam: false,
-                    trashed_datetime: null,
-                    deleted_datetime: null,
-                    assignee_user_id: null
-                }
-
                 const res = shouldTicketBeDisplayedInRecentChats(
-                    ticket,
+                    defaultTicket,
                     ticketAssignmentSettings.autoAssignEnabled,
                     currentUser,
                     true

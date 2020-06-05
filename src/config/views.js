@@ -1,5 +1,6 @@
+//@flow
 import React from 'react'
-import {fromJS} from 'immutable'
+import {fromJS, type Map} from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
 
 import {EMAIL_INTEGRATION_TYPES} from '../constants/integration'
@@ -23,7 +24,7 @@ export const MAX_RECENT_VIEWS = 8
 // Maximum number of tickets we count per view
 export const MAX_TICKET_COUNT_PER_VIEW = 10000
 
-export const defaultCell = (fieldName, item) => {
+export const defaultCell = (fieldName: string, item: Map<*, *>) => {
     const value = item.get(fieldName)
 
     if (_isUndefined(value)) {
@@ -61,7 +62,7 @@ export const baseView = () => fromJS({
     }
 })
 
-export const defaultMergeTicketsView = (ticketId, searchQuery, customerId) => {
+export const defaultMergeTicketsView = (ticketId: number, searchQuery?: string, customerId: ?number) => {
     let filters = customerId
         ? `neq(ticket.id, ${ticketId}) && eq(ticket.customer.id, ${customerId})`
         : `neq(ticket.id, ${ticketId})`
@@ -252,7 +253,7 @@ export const views = fromJS([{
                 // Optionally show how many messages a ticket has in the subject
                 const messageCount = item.get('messages_count')
                 if (messageCount > 1) {
-                    subject = `(${messageCount}) ${subject}`
+                    subject = `(${messageCount}) ${subject || ''}`
                 }
 
                 const body = stripHTML(item.get('excerpt'))
@@ -401,7 +402,7 @@ export const views = fromJS([{
     },
 }])
 
-export const getConfigByName = (name) => {
+export const getConfigByName = (name: string) => {
     const config = views.find((item) => item.get('name') === name)
 
     if (!config) {
@@ -412,7 +413,7 @@ export const getConfigByName = (name) => {
     return config
 }
 
-export const getConfigByType = (type) => {
+export const getConfigByType = (type: string) => {
     const config = views.find((item) => item.get('type') === type)
 
     if (!config) {

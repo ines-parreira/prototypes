@@ -65,7 +65,9 @@ const getIntegrationTypesWithVariables = (): Array<string> => {
 
     allIntegrations.forEach((integration) => {
         const variableStore = integration.MACRO_VARIABLES
+            //$FlowFixMe
             || integration.MACRO_HIDDEN_VARIABLES
+            //$FlowFixMe
             || integration.MACRO_PREVIOUS_VARIABLES
 
         if (variableStore) {

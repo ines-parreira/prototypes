@@ -1,3 +1,4 @@
+//@flow
 import {RECHARGE_INTEGRATION_TYPE} from '../../constants/integration'
 
 export const RECHARGE_DEFAULT_CANCELLATION_REASON = 'Cancelled with Gorgias'

@@ -246,7 +246,7 @@ const mapStateToProps = (state: Object, props: Props) => {
     return {
         tags: getTags(state).toJS(),
         integrations: getIntegrations(state).toJS(),
-        channels: CHANNELS.map((channel) => ({
+        channels: (CHANNELS: any).map((channel) => ({
             label: _upperFirst(channel.replace('-', ' ')),
             value: channel,
         })),

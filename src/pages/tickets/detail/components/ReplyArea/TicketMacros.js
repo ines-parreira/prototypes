@@ -6,6 +6,7 @@ import classnames from 'classnames'
 import {connect} from 'react-redux'
 import {Button, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Popover, PopoverBody} from 'reactstrap'
 
+import type {TicketMessageSourceType} from '../../../../../business/ticket'
 import {isRichType} from '../../../../../config/ticket'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {deleteMacro, fetchMacros} from '../../../../../state/macro/actions'
@@ -25,7 +26,7 @@ type Props = {
     currentTicket: Map<*,*>,
     macros: Map<*, Map<*, *>>,
     isInitialMacrosLoading: boolean,
-    newMessageType: string,
+    newMessageType: TicketMessageSourceType,
     fetchMacros: typeof fetchMacros,
     deleteMacro: typeof deleteMacro,
     applyMacro: () => void,

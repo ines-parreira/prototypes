@@ -158,7 +158,7 @@ export default class ActionButton extends React.Component<Props, State> {
             event.preventDefault()
         }
 
-        const actionConfig: Object = getActionByName(this.state.actionName)
+        const actionConfig: ?Object = getActionByName(this.state.actionName)
 
         if (actionConfig) {
             segmentTracker.logEvent(segmentTracker.EVENTS.INFOBAR_ACTION_CLICKED, {

@@ -1,7 +1,8 @@
-import {fromJS} from 'immutable'
+//@flow
+import {fromJS, type Map} from 'immutable'
 import _find from 'lodash/find'
 
-import {TicketMessageSourceTypes, type TicketMessageSourceType, TicketStatuses, TicketChannels} from '../business/ticket'
+import {TicketMessageSourceTypes, type TicketMessageSourceType, TicketStatuses, TicketChannels, type TicketChannel} from '../business/ticket'
 import type {TicketMessage} from '../models/ticket'
 import {compare, getLastMessage, toImmutable} from '../utils'
 import {isForwardedMessage} from '../state/ticket/utils'
@@ -22,7 +23,7 @@ export const SMS_CHANNEL = TicketChannels.SMS
 
 export const DEFAULT_CHANNEL = EMAIL_CHANNEL
 
-export const CHANNELS = Object.values(TicketChannels)
+export const CHANNELS: TicketChannel[] = (Object.values(TicketChannels): any)
 
 // TODO(business-extract): Deprecated constants => Use directly Statuses.XXX in your code
 export const OPEN_STATUS = TicketStatuses.OPEN
@@ -61,8 +62,16 @@ export const USABLE_SOURCE_TYPES = [
 
 export const DEFAULT_SOURCE_TYPE = TicketMessageSourceTypes.EMAIL
 
+type Variable = {
+    type: string,
+    name: string,
+    children?: {name: string, fullName: string, value: string}[],
+    value?: string,
+    explicit?: boolean,
+}
+
 // available variables in macros
-export const VARIABLES = [{
+export const VARIABLES: Variable[] = [{
     type: 'ticket.customer',
     name: 'Ticket customer',
     children: [{
@@ -121,7 +130,7 @@ export const HIDDEN_VARIABLES = [
 ]
 
 // previously available variables in macros: still displayed as variables but are not available in dropdowns anymore
-export const PREVIOUS_VARIABLES = [{
+export const PREVIOUS_VARIABLES: Variable[] = [{
     name: 'Ticket Customer',
     type: 'ticket.requester',
     children: [{
@@ -149,7 +158,7 @@ export const PREVIOUS_VARIABLES = [{
  * Return passed messages ordered by created_datetime
  * @param messages
  */
-export function orderedMessages(messages: Array<TicketMessage>): Array<TicketMessage> {
+export function orderedMessages(messages: Array<TicketMessage>): Map<*, *> {
     return toImmutable(messages)
         .sort((a, b) => compare(a.get('created_datetime'), b.get('created_datetime')))
 }
@@ -177,7 +186,7 @@ export function isSystemType(sourceType: TicketMessageSourceType): boolean {
  * @param messages
  * @returns {?TicketMessage}
  */
-export function lastNonSystemTypeMessage(messages: Array<TicketMessage>): ?TicketMessage  {
+export function lastNonSystemTypeMessage(messages: Array<TicketMessage>): ?Map<*, *>  {
     const filteredMessages = orderedMessages(messages)
         .filter((message) => {
             return !isSystemType(message.getIn(['source', 'type'])) && !isForwardedMessage(message)
@@ -293,7 +302,7 @@ export function canLeaveInternalNote(sourceType: TicketMessageSourceType): boole
  * Return variables config
  * @returns {[*,*,*,*]}
  */
-export function getVariables(types: Array<string>): Array {
+export function getVariables(types: Array<string>): Array<Variable> {
     if (!types) {
         return VARIABLES.filter((variable) => !variable.explicit)
     }
@@ -345,7 +354,7 @@ export function getVariablesList(variablesList: Array<Object> = VARIABLES): Arra
  * @param value
  * @returns {*}
  */
-export function getVariableWithValue(value: string): Object {
+export function getVariableWithValue(value: string): ?Object {
     const variables = getVariablesList()
     const hiddenVariables = getVariablesList(HIDDEN_VARIABLES)
     const previousVariables = getVariablesList(PREVIOUS_VARIABLES)

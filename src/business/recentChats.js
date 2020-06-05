@@ -55,7 +55,7 @@ export type RecentChatTicket = {
     last_message_datetime: string,
     is_unread: boolean,
     status: TicketStatus,
-    assignee_user_id: number,
+    assignee_user_id: ?number,
     spam: boolean,
     trashed_datetime: string,
     deleted_datetime: string,
