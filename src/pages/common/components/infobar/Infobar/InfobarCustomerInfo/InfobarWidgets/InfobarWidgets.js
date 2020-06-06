@@ -13,9 +13,9 @@ import * as integrationsSelectors from '../../../../../../../state/integrations/
 
 import InfobarWidget from './InfobarWidget'
 import PlaceholderWidget from './widgets/PlaceholderWidget'
-
+import {infobarWidgetShouldRender} from './predicates'
 import css from './InfobarWidgets.less'
-
+import {InfobarTabs} from './InfobarTabs'
 
 class InfobarWidgets extends React.Component {
     shouldComponentUpdate(nextProps) {
@@ -24,15 +24,15 @@ class InfobarWidgets extends React.Component {
             || !_isEqual(this.props.editing, nextProps.editing)
     }
 
-    _generateWidgets = (displayList, integrations, genericSourcePath) => {
+    _getPreparedDisplayList = (displayList, integrations, genericSourcePath) => {
         const {source, widgets, editing} = this.props
         const isEditing = !!(editing && editing.isEditing)
 
         let preparedDisplayList = fromJS([])
 
         // Create a list `prepareDisplayList` of item containing enough data to generate widget components.
-        // For each widget OR customerIntegrationData found in displayList, prepare the widget OR retrieve the associated
-        // widget, set it's template `path`, `templatePath` when needed
+        // For each widget OR customerIntegrationData found in displayList, prepare the widget OR retrieve the
+        // associated widget, set it's template `path`, `templatePath` when needed
         displayList.forEach((item, idx) => {
             let widget = null
             let sourcePath = genericSourcePath.slice()
@@ -104,7 +104,7 @@ class InfobarWidgets extends React.Component {
                 .set('path', sourcePath)
                 .set('templatePath', `${widget.get('order')}.template`)
 
-            if (!canDisplayWidget(template, source) && !isEditing) {
+            if (!isEditing && !canDisplayWidget(template, source)) {
                 return
             }
 
@@ -114,7 +114,6 @@ class InfobarWidgets extends React.Component {
                 open: idx === 0
             }))
         })
-
 
         // Here we add the non-displayed widgets to the list.
         if (isEditing) {
@@ -138,20 +137,29 @@ class InfobarWidgets extends React.Component {
             preparedDisplayList = preparedDisplayList.concat(nonDisplayedItems)
         }
 
-        preparedDisplayList = preparedDisplayList.sort((a, b) => {
-            return compare(a.getIn(['widget', 'order']), b.getIn(['widget', 'order']))
-        })
+        return preparedDisplayList.sort((a, b) =>
+            compare(a.getIn(['widget', 'order']), b.getIn(['widget', 'order']))
+        )
+    }
+
+    _renderWidgets(preparedDisplayList) {
+        const {source, editing} = this.props
+        const isEditing = !!(editing && editing.isEditing)
+
+        if (!infobarWidgetShouldRender(source)) {
+            return null
+        }
 
         // We create the components separately from the rest of the function because we want to assign `templatePath`
         // AFTER having sorted the results by `widget.order`.
-        return preparedDisplayList.map((item, i) => {
+        return preparedDisplayList.map((item, index) => {
             const order = item.getIn(['widget', 'order'])
             const newItem = item.set('template', item.get('template').set('templatePath', `${order}.template`))
 
             if (item.get('type') === 'placeholder') {
-                return  (
+                return (
                     <PlaceholderWidget
-                        key={`${newItem.getIn(['template', 'path']).toString()}-${i}`}
+                        key={`${newItem.getIn(['template', 'path']).toString()}-${index}`}
                         source={source}
                         widget={newItem.get('widget')}
                         template={newItem.get('template')}
@@ -164,7 +172,7 @@ class InfobarWidgets extends React.Component {
 
             return (
                 <InfobarWidget
-                    key={`${newItem.getIn(['template', 'path']).toString()}-${i}`}
+                    key={`${newItem.getIn(['template', 'path']).toString()}-${index}`}
                     source={source}
                     widget={newItem.get('widget')}
                     template={newItem.get('template')}
@@ -182,7 +190,8 @@ class InfobarWidgets extends React.Component {
             source,
             widgets,
             editing,
-            integrations
+            integrations,
+            displayTabs,
         } = this.props
 
         if (!widgets) {
@@ -191,7 +200,7 @@ class InfobarWidgets extends React.Component {
 
         const isEditing = !!(editing && editing.isEditing)
 
-        const className = classnames('widgets-list', css.component, {
+        const className = classnames('widgets-list', css.container, {
             editing: isEditing,
             dragging: !!(editing && editing.isDragging)
         })
@@ -220,24 +229,27 @@ class InfobarWidgets extends React.Component {
             }))
         })
 
+        const preparedDisplayList = this._getPreparedDisplayList(displayList, integrations, genericSourcePath)
+
         return (
-            <div className={className}>
-                <DragWrapper
-                    actions={editing && editing.actions}
-                    sort
-                    group={{
-                        name: 'root',
-                        pull: false,
-                        put: true
-                    }}
-                    isEditing={isEditing}
-                    watchDrop
-                >
-                    {
-                        this._generateWidgets(displayList, integrations, genericSourcePath)
-                    }
-                </DragWrapper>
-            </div>
+            <>
+                {displayTabs && !isEditing && <InfobarTabs preparedDisplayList={preparedDisplayList}/>}
+                <div className={className}>
+                    <DragWrapper
+                        actions={editing && editing.actions}
+                        sort
+                        group={{
+                            name: 'root',
+                            pull: false,
+                            put: true
+                        }}
+                        isEditing={isEditing}
+                        watchDrop
+                    >
+                        {this._renderWidgets(preparedDisplayList)}
+                    </DragWrapper>
+                </div>
+            </>
         )
     }
 }
@@ -247,7 +259,8 @@ InfobarWidgets.propTypes = {
     editing: PropTypes.object,
     source: PropTypes.object.isRequired,
     widgets: PropTypes.object.isRequired,
-    integrations: PropTypes.object.isRequired
+    integrations: PropTypes.object.isRequired,
+    displayTabs: PropTypes.bool.isRequired,
 }
 
 InfobarWidgets.defaultProps = {

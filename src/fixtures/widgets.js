@@ -16,15 +16,10 @@ export const shopifyWidget = {
                         path: 'created_at',
                         type: 'date',
                         title: 'Created at'
-                    },
-                    {
-                        path: 'total_spent',
-                        type: 'text',
-                        title: 'Total spent'
                     }
                 ],
                 type: 'card',
-                title: '👤  {first_name} {last_name} | {orders_count} order(s)'
+                title: '{first_name} {last_name}'
             },
             {
                 path: 'orders',
@@ -71,7 +66,7 @@ export const shopifyWidget = {
                                             link: '{tracking_url}'
                                         },
                                         type: 'card',
-                                        title: '🚚   Shipment status: {shipment_status}'
+                                        title: ':shipment_status: Shipment'
                                     }
                                 ]
                             },
@@ -119,7 +114,7 @@ export const shopifyWidget = {
                                             link: ''
                                         },
                                         type: 'card',
-                                        title: '💸 Refund'
+                                        title: ':refund: Refund'
                                     }
                                 ]
                             },
@@ -161,7 +156,7 @@ export const shopifyWidget = {
                                     link: ''
                                 },
                                 type: 'card',
-                                title: '🏠   Shipping address'
+                                title: ':shipping_address: Shipping address'
                             },
                             {
                                 path: 'line_items',
@@ -188,7 +183,7 @@ export const shopifyWidget = {
                                             link: ''
                                         },
                                         type: 'card',
-                                        title: '🔖  {quantity} × {name}'
+                                        title: ':product: {quantity} × {name}'
                                     }
                                 ]
                             }
@@ -198,7 +193,7 @@ export const shopifyWidget = {
                             link: ''
                         },
                         type: 'card',
-                        title: '📦  Order {name} | {total_price} {currency} | {fulfillment_status} {financial_status}'
+                        title: 'Order {name}'
                     }
                 ]
             }

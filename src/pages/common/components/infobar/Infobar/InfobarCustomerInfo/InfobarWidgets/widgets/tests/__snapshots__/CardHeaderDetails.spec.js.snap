@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CardHeaderDetails/> render() should render children 1`] = `
+<div
+  className="container"
+>
+  <p>
+    foo
+  </p>
+  <p>
+    bar
+  </p>
+</div>
+`;

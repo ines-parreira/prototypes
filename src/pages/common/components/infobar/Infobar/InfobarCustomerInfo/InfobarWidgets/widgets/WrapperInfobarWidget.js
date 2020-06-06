@@ -7,12 +7,13 @@ import _last from 'lodash/last'
 import classnames from 'classnames'
 import {Card, CardBody} from 'reactstrap'
 
+import * as integrationsSelectors from '../../../../../../../../state/integrations/selectors'
 import DragWrapper from '../../../../../dragging/WidgetsDragWrapper'
+import {WIDGET_COLOR_SUPPORTED_TYPES} from '../constants'
 import InfobarWidget from '../InfobarWidget'
 
-import * as integrationsSelectors from '../../../../../../../../state/integrations/selectors'
-
-import css from './CardInfobarWidget.less'
+import cardCss from './CardInfobarWidget.less'
+import css from './WrapperInfobarWidget.less'
 
 @connect((state, ownProps) => {
     const {widget, template} = ownProps
@@ -76,62 +77,73 @@ class WrapperInfobarWidget extends React.Component {
             editing,
         } = this.props
 
+        const widgetType = widget.get('type')
+        const colorClassNames = WIDGET_COLOR_SUPPORTED_TYPES.includes(widgetType)
+            ? [css.colorContainer, css[widgetType]]
+            : []
+
         const ap = template.get('absolutePath')
         const tp = template.get('templatePath')
 
         return (
-            <Card className={classnames(css.component, 'wrapper transparent draggable')}>
-                {
-                    isEditing && (
-                        <CardBody className="header clearfix">
-                            <span className="tools">
-                                <i
-                                    className="material-icons text-danger clickable"
-                                    onClick={this._deleteWrapper}
-                                >
-                                    close
-                                </i>
-                            </span>
-                        </CardBody>
-                    )
-                }
+            <div className={classnames('infobar-wrapper', ...colorClassNames)}>
+                <div
+                    id={widgetType}
+                    className={css.anchor}
+                />
+                <Card className={classnames(cardCss.component, 'wrapper transparent draggable')}>
+                    {
+                        isEditing && (
+                            <CardBody className="header clearfix">
+                                <span className="tools">
+                                    <i
+                                        className="material-icons text-danger clickable"
+                                        onClick={this._deleteWrapper}
+                                    >
+                                        close
+                                    </i>
+                                </span>
+                            </CardBody>
+                        )
+                    }
 
-                <CardBody className="content">
-                    <DragWrapper
-                        actions={editing && editing.actions}
-                        sort
-                        group={{
-                            name: ap.join('.'),
-                            pull: false,
-                            put: true
-                        }}
-                        templatePath={tp}
-                        isEditing={isEditing}
-                        watchDrop
-                    >
-                        {
-                            template
-                                .get('widgets', fromJS([]))
-                                .map((w, i) => {
-                                    const passedTemplate = w
-                                        .set('templatePath', `${tp}.widgets.${i}`)
+                    <CardBody className="content">
+                        <DragWrapper
+                            actions={editing && editing.actions}
+                            sort
+                            group={{
+                                name: ap.join('.'),
+                                pull: false,
+                                put: true
+                            }}
+                            templatePath={tp}
+                            isEditing={isEditing}
+                            watchDrop
+                        >
+                            {
+                                template
+                                    .get('widgets', fromJS([]))
+                                    .map((w, i) => {
+                                        const passedTemplate = w
+                                            .set('templatePath', `${tp}.widgets.${i}`)
 
-                                    return (
-                                        <InfobarWidget
-                                            key={`${passedTemplate.get('path')}-${i}`}
-                                            source={source}
-                                            parent={template}
-                                            widget={widget}
-                                            template={passedTemplate}
-                                            editing={editing}
-                                            isEditing={isEditing}
-                                        />
-                                    )
-                                })
-                        }
-                    </DragWrapper>
-                </CardBody>
-            </Card>
+                                        return (
+                                            <InfobarWidget
+                                                key={`${passedTemplate.get('path')}-${i}`}
+                                                source={source}
+                                                parent={template}
+                                                widget={widget}
+                                                template={passedTemplate}
+                                                editing={editing}
+                                                isEditing={isEditing}
+                                            />
+                                        )
+                                    })
+                            }
+                        </DragWrapper>
+                    </CardBody>
+                </Card>
+            </div>
         )
     }
 }

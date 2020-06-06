@@ -151,6 +151,7 @@ describe('InfobarWidgets component', () => {
                     context="ticket"
                     editing={baseEditing}
                     source={baseSource}
+                    displayTabs={true}
                 />
             </Provider>,
             {attachTo: container}

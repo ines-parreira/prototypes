@@ -1,9 +1,19 @@
 // @flow
 import React from 'react'
+import {connect} from 'react-redux'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import {fromJS} from 'immutable'
+import {fromJS, type List, type Map} from 'immutable'
 
+import * as integrationsSelectors from '../../../../../../../../../state/integrations/selectors'
+import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../constants/integration'
+import logo from '../../../../../../../../../../img/infobar/shopify.svg'
+import {CardHeaderSubtitle} from '../CardHeaderSubtitle'
 import ActionButtonsGroup from '../ActionButtonsGroup'
+import {CardHeaderDetails} from '../CardHeaderDetails'
+import {CardHeaderValue} from '../CardHeaderValue'
+import {CardHeaderTitle} from '../CardHeaderTitle'
+import {CardHeaderIcon} from '../CardHeaderIcon'
+import ExpandAllButton from '../ExpandAllButton'
 import type {ActionType} from '../types'
 
 import DraftOrderModal from './shared/DraftOrderModal'
@@ -18,12 +28,20 @@ export default function Customer() {
 }
 
 type AfterTitleProps = {
-    source: Map<string, *>
+    source: Map<string, *>,
+    integrations: List<*>,
 }
 
+@connect((state) => ({
+    integrations: integrationsSelectors.getIntegrationsByTypes([SHOPIFY_INTEGRATION_TYPE])(state),
+}))
 class AfterTitle extends React.Component<AfterTitleProps> {
+    static contextTypes = {
+        integration: ImmutablePropTypes.map.isRequired,
+    }
+
     render() {
-        const {source} = this.props
+        const {source, integrations} = this.props
 
         const actions: Array<ActionType> = [
             // {
@@ -76,12 +94,12 @@ class AfterTitle extends React.Component<AfterTitleProps> {
                 ],
                 title: 'Create order',
                 child: (
-                    <div>
+                    <>
                         <i className="material-icons mr-2">
                             add
                         </i>
                         Create order
-                    </div>
+                    </>
                 ),
                 modal: DraftOrderModal,
                 modalData: {
@@ -96,15 +114,31 @@ class AfterTitle extends React.Component<AfterTitleProps> {
             },
         ]
 
+        const shopName: string = this.context.integration.getIn(['meta', 'shop_name'])
         const payload = {
             customer_id: source.get('id')
         }
 
         return (
-            <ActionButtonsGroup
-                actions={actions}
-                payload={payload}
-            />
+            <>
+                <ActionButtonsGroup
+                    actions={actions}
+                    payload={payload}
+                />
+                <CardHeaderDetails>
+                    <CardHeaderValue label="Total spent">
+                        {source.get('total_spent')} {source.get('currency')}
+                    </CardHeaderValue>
+                    <CardHeaderValue label="Orders">
+                        {source.get('orders_count')}
+                    </CardHeaderValue>
+                    {integrations.size > 1 && (
+                        <CardHeaderValue label="Store">
+                            {shopName}
+                        </CardHeaderValue>
+                    )}
+                </CardHeaderDetails>
+            </>
         )
     }
 }
@@ -123,15 +157,26 @@ class TitleWrapper extends React.Component<TitleWrapperProps> {
     render() {
         const {children, source} = this.props
         const shopName: string = this.context.integration.getIn(['meta', 'shop_name'])
+        const href = `https://${shopName}.myshopify.com/admin/customers/${(source.get('id') || '').toString()}`
 
         return (
-            <a
-                href={`https://${shopName}.myshopify.com/admin/customers/${(source.get('id') || '').toString()}`}
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-                {children}
-            </a>
+            <>
+                <CardHeaderIcon
+                    src={logo}
+                    alt="Shopify"
+                />
+                <CardHeaderTitle>Shopify</CardHeaderTitle>
+                <CardHeaderSubtitle>
+                    <a
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {children}
+                    </a>
+                </CardHeaderSubtitle>
+                <ExpandAllButton/>
+            </>
         )
     }
 }

@@ -2,10 +2,12 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import {List} from 'immutable'
-import {Button} from 'reactstrap'
 
 import {compare} from '../../../../../../../../utils'
 import InfobarWidget from '../InfobarWidget'
+import {ShowMore} from '../../ShowMore'
+
+import css from './ListInfobarWidget.less'
 
 class ListInfobarWidget extends React.Component {
     state = {
@@ -77,34 +79,31 @@ class ListInfobarWidget extends React.Component {
             const hasExcludedItems = excludedItems > 0
 
             if (hasExcludedItems) {
-                exclusionMessage = (
-                    <div className="d-flex align-items-center">
-                        {
-                            !isEditing && (
-                                <Button
-                                    type="button"
-                                    color="link"
-                                    className="p-0 mr-2"
-                                    onClick={() => {
-                                        this.setState({showMoreTimes: this.state.showMoreTimes + 1})
-                                    }}
-                                >
-                                    Show more
-                                    <i className="material-icons md-2 ml-2">
-                                        arrow_drop_down
-                                    </i>
-                                </Button>
-                            )
-                        }
-                        <div>{isEditing ? `${excludedItems} more items` : `(${excludedItems} remaining)`}</div>
-                    </div>
-                )
+                exclusionMessage = isEditing
+                    ? `${excludedItems} more items`
+                    : (
+                        <>
+                            <ShowMore
+                                className="pl-0"
+                                onClick={() => this.setState({showMoreTimes: this.state.showMoreTimes + 1})}
+                            >
+                                Show more
+                            </ShowMore>
+                            <span className={css.remaining}>
+                                {excludedItems} remaining
+                            </span>
+                        </>
+                    )
             }
         }
 
         const className = classnames('list', {
             draggable: !isParentList
         })
+
+        if (!isEditing && !sourceList.size) {
+            return null
+        }
 
         return (
             <div

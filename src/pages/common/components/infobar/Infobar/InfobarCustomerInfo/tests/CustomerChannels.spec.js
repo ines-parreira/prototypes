@@ -57,7 +57,7 @@ describe('CustomerChannels component', () => {
 
         expect(component.children()).toMatchSnapshot()
 
-        component.find('button.show-more').simulate('click')
+        component.find('button').simulate('click')
 
         expect(component.children()).toMatchSnapshot()
 

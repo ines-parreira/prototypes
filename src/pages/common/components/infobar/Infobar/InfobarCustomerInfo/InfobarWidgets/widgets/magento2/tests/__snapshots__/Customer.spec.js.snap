@@ -7,13 +7,25 @@ exports[`<TitleWrapper/> render() should not render link because there is no adm
 `;
 
 exports[`<TitleWrapper/> render() should render link 1`] = `
-<a
-  href="https://magento.gorgi.us/admin_12fg/customer/index/edit/id/1/"
-  rel="noopener noreferrer"
-  target="_blank"
->
-  <div>
-    foo bar
-  </div>
-</a>
+<Fragment>
+  <CardHeaderIcon
+    alt="Magento"
+    src="test-file-stub"
+  />
+  <CardHeaderTitle>
+    Magento
+  </CardHeaderTitle>
+  <CardHeaderSubtitle>
+    <a
+      href="https://magento.gorgi.us/admin_12fg/customer/index/edit/id/1/"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      <div>
+        foo bar
+      </div>
+    </a>
+  </CardHeaderSubtitle>
+  <ExpandAllButton />
+</Fragment>
 `;

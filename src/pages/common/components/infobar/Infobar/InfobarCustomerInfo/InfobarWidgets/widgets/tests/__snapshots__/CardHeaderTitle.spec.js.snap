@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CardHeaderTitle/> render() should render children 1`] = `
+<span
+  className="container"
+>
+  <p>
+    foo
+  </p>
+</span>
+`;

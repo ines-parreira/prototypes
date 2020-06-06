@@ -23,7 +23,7 @@ export default class AddIntegrationSuggestion extends React.Component<Props> {
                                 <Card className="blurred">
                                     <CardBody className="header clearfix">
                                         <span>
-                                            👤 {customer.get('name') || 'Nadia'} - 4 orders
+                                            {customer.get('name') || 'Nadia'}
                                         </span>
                                     </CardBody>
                                     <CardBody className="content">

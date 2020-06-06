@@ -5,11 +5,13 @@ import classnames from 'classnames'
 import _uniqueId from 'lodash/uniqueId'
 import {Card, CardBody, Popover, PopoverBody} from 'reactstrap'
 
+import expandUp from '../../../../../../../../../img/infobar/expand-up.svg'
+import {renderInfobarTemplate} from '../../../../../../utils/infobar'
 import {renderTemplate} from '../../../../../../utils/template'
 import DragWrapper from '../../../../../dragging/WidgetsDragWrapper'
 import InfobarWidget from '../InfobarWidget'
 
-import TooltipWidgetEditCard from './forms/TooltipWidgetEditCard'
+import PopoverWidgetEditCard from './forms/PopoverWidgetEditCard'
 import css from './CardInfobarWidget.less'
 
 
@@ -112,7 +114,7 @@ export default class CardInfobarWidget extends React.Component {
      * @returns {JSX}
      * @private
      */
-    _renderTooltip = () => {
+    _renderPopover = () => {
         const {editing} = this.props
 
         if (!editing) {
@@ -127,7 +129,7 @@ export default class CardInfobarWidget extends React.Component {
                 toggle={this._togglePopup}
             >
                 <PopoverBody>
-                    <TooltipWidgetEditCard
+                    <PopoverWidgetEditCard
                         {...this.props}
                         actions={editing.actions}
                     />
@@ -151,12 +153,12 @@ export default class CardInfobarWidget extends React.Component {
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        {renderTemplate(title, source)}
+                        {renderInfobarTemplate(title, source)}
                     </a>
                 )
             } else {
                 content = (
-                    <span>{renderTemplate(title, source)}</span>
+                    <span>{renderInfobarTemplate(title, source)}</span>
                 )
             }
         } else {
@@ -196,16 +198,18 @@ export default class CardInfobarWidget extends React.Component {
 
         const childWidgets = template.get('widgets', fromJS([]))
 
+        // display content (or at least space under card title) if we are in edition mode or if there is data to display
+        const shouldDisplayCardContent = editing || !childWidgets.isEmpty()
+
         const isTransparent = !template.getIn(['meta', 'displayCard'], true)
+        const isExpandable = !isEditing && shouldDisplayCardContent
         const className = classnames(css.component, {
             'can-drop': editing && editing.canDrop(ap),
             draggable: !isParentList,
             closed: !this.state.open && !isEditing,
-            transparent: isTransparent
+            transparent: isTransparent,
+            expandable: isExpandable && template.get('title') && !isTransparent,
         })
-
-        // display content (or at least space under card title) if we are in edition mode or if there is data to display
-        const shouldDisplayCardContent = editing || !childWidgets.isEmpty()
 
         // detect first non-text nested widget, to auto-expand
         let firstNonTextWidget = false
@@ -216,23 +220,21 @@ export default class CardInfobarWidget extends React.Component {
                 data-key={template.get('path')}
             >
                 {
-                    ((template.get('title') && !isTransparent) || isEditing)
-                    && (
+                    (template.get('title') && !isTransparent || isEditing) && (
                         <CardBody
                             id={this.uniqueId}
                             className="header clearfix"
                         >
                             {
-                                !isEditing
-                                && shouldDisplayCardContent
-                                && (
+                                isExpandable && (
                                     <span
                                         className="dropdown-icon clickable text-faded"
                                         onClick={this._toggleCardExpand}
                                     >
-                                        <i className="material-icons md-2">
-                                            keyboard_arrow_up
-                                        </i>
+                                        <img
+                                            src={expandUp}
+                                            alt="Expand"
+                                        />
                                     </span>
                                 )
                             }
@@ -263,7 +265,7 @@ export default class CardInfobarWidget extends React.Component {
                                     )
                                 }
                             </span>
-                            {this._renderTooltip()}
+                            {this._renderPopover()}
                             {!!AfterTitle && <AfterTitle {...this.props} />}
                         </CardBody>
                     )

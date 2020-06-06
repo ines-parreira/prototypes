@@ -4,18 +4,16 @@ import {fromJS, type Map} from 'immutable'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
-import {
-    Badge
-} from 'reactstrap'
-
-import {devLog, humanizeString, isCurrentlyOnTicket} from '../../../../../../../../../utils'
-import {renderTemplate} from '../../../../../../../utils/template'
+import {Badge} from 'reactstrap'
 
 import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../../../../state/customers/selectors'
-
-import ActionButtonsGroup from '../ActionButtonsGroup'
-
+import {devLog, humanizeString, isCurrentlyOnTicket} from '../../../../../../../../../utils'
 import * as ticketSelectors from '../../../../../../../../../state/ticket/selectors'
+import {renderTemplate} from '../../../../../../../utils/template'
+import {DatetimeLabel} from '../../../../../../../utils/labels'
+import ActionButtonsGroup from '../ActionButtonsGroup'
+import {CardHeaderDetails} from '../CardHeaderDetails'
+import {CardHeaderValue} from '../CardHeaderValue'
 import type {ActionType} from '../types'
 
 
@@ -50,8 +48,8 @@ export default function Order() {
 
 type AfterTitleProps = {
     isEditing: boolean,
-    source: Map<*,*>,
-    getIntegrationData: (number, number) => Map<*,*>
+    source: Map<*, *>,
+    getIntegrationData: (number, number) => Map<*, *>
 }
 
 export class AfterTitle extends React.Component<AfterTitleProps> {
@@ -105,7 +103,8 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                         ],
                     },
                 ],
-                tooltip: 'This will refund the order in Recharge.',
+                popover: 'This will refund the order in Recharge.',
+                tooltip: 'Refund order',
                 title: (
                     <div>
                         <i className="material-icons mr-2">
@@ -115,12 +114,9 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                     </div>
                 ),
                 child: (
-                    <div>
-                        <i className="material-icons mr-2">
-                            refresh
-                        </i>
-                        Refund
-                    </div>
+                    <i className="material-icons">
+                        refresh
+                    </i>
                 )
             },
         ]
@@ -136,7 +132,7 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
 
     render() {
         const {isEditing, source} = this.props
-        const {integrationId}: {integrationId: number} = this.context
+        const {integrationId}: { integrationId: number } = this.context
 
         if (isEditing || !integrationId) {
             return null
@@ -146,11 +142,33 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
             order_id: source.get('id'),
         }
 
+        const chargeStatus = (source.get('charge_status') || '').toLowerCase()
+
         return (
-            <ActionButtonsGroup
-                actions={this._getActions()}
-                payload={payload}
-            />
+            <>
+                <ActionButtonsGroup
+                    actions={this._getActions()}
+                    payload={payload}
+                    float
+                />
+                <CardHeaderDetails>
+                    <CardHeaderValue label="Created">
+                        <DatetimeLabel
+                            key="created-at"
+                            dateTime={source.get('created_at')}
+                        />
+                    </CardHeaderValue>
+                    <CardHeaderValue>
+                        <Badge
+                            key="status"
+                            pill
+                            color={chargeStatusColors[chargeStatus]}
+                        >
+                            {humanizeString(chargeStatus)}
+                        </Badge>
+                    </CardHeaderValue>
+                </CardHeaderDetails>
+            </>
         )
     }
 }
@@ -169,8 +187,8 @@ const chargeStatusColors = {
 }
 
 type BeforeContentProps = {
-    source: Map<*,*>,
-    getIntegrationData: (number, number) => Map<*,*>
+    source: Map<*, *>,
+    getIntegrationData: (number, number) => Map<*, *>
 }
 
 export class BeforeContent extends React.Component<BeforeContentProps> {
@@ -187,24 +205,7 @@ export class BeforeContent extends React.Component<BeforeContentProps> {
             : null
         const chargeTotalRefunds = associatedCharge ? associatedCharge.get('total_refunds') : '0'
 
-        const chargeStatus = (source.get('charge_status') || '').toLowerCase()
-
         return [
-            <div
-                key="charge-status"
-                className="simple-field"
-            >
-                <span className="field-label">
-                    Charge status:
-                </span>
-                <span className="field-value">
-                    <Badge
-                        color={chargeStatusColors[chargeStatus]}
-                    >
-                        {humanizeString(chargeStatus)}
-                    </Badge>
-                </span>
-            </div>,
             <div
                 key="charge-total-refunds"
                 className="simple-field"
@@ -226,9 +227,9 @@ const ConnectedBeforeContent = connect(makeGetIntegrationData)(BeforeContent)
 
 type TitleWrapperProps = {
     children: ?Node,
-    source: Map<*,*>,
-    template: Map<*,*>,
-    getIntegrationData: (number, number) => Map<*,*>
+    source: Map<*, *>,
+    template: Map<*, *>,
+    getIntegrationData: (number, number) => Map<*, *>
 }
 
 export class TitleWrapper extends React.Component<TitleWrapperProps> {
@@ -273,7 +274,7 @@ const ConnectedTitleWrapper = connect(makeGetIntegrationData)(TitleWrapper)
 
 type WrapperProps = {
     children: Node,
-    source: Map<*,*>
+    source: Map<*, *>
 }
 
 class Wrapper extends React.Component<WrapperProps> {

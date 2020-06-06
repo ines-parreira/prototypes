@@ -24,7 +24,7 @@ export default class InfobarSearchResultsList extends React.Component<Props> {
         }
 
         return (
-            <div>
+            <div className="m-3">
                 <CardTitle className={css.cardTitle}>
                     Customers found:
                 </CardTitle>

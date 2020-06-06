@@ -19,11 +19,7 @@ class DragWrapper extends React.Component {
         } = this.props
 
         if (!isEditing) {
-            return (
-                <div>
-                    {children}
-                </div>
-            )
+            return children
         }
 
         return (

@@ -6,7 +6,7 @@ import classnames from 'classnames'
 import {fromJS, type List, type Map} from 'immutable'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
-import {Button, Card, CardBody} from 'reactstrap'
+import {Button} from 'reactstrap'
 import Clipboard from 'clipboard'
 
 import {
@@ -23,7 +23,7 @@ import * as integrationsSelectors from '../../../../../../state/integrations/sel
 
 import Avatar from '../../../Avatar'
 import css from '../../Infobar.less'
-import {canDrop, areSourcesReady, jsonToWidgets} from '../../utils'
+import {areSourcesReady, canDrop, jsonToWidgets} from '../../utils'
 
 import CustomerChannels from './CustomerChannels'
 import CustomerNote from './CustomerNote'
@@ -32,10 +32,10 @@ import AddIntegrationSuggestion from './AddIntegrationSuggestion'
 
 
 type GenerateButtonProps = {
-    setEditedWidgets: (Array<Map<*,*>>) => void,
+    setEditedWidgets: (Array<Map<*, *>>) => void,
     setEditionAsDirty: () => void,
-    widgets: ?Map<*,*>,
-    sources: Map<*,*>
+    widgets: ?Map<*, *>,
+    sources: Map<*, *>
 }
 
 /**
@@ -74,21 +74,22 @@ class GenerateButton extends React.Component<GenerateButtonProps> {
 
 type Props = {
     actions: {
-        setEditedWidgets: (Array<Map<*,*>>) => void,
+        setEditedWidgets: (Array<Map<*, *>>) => void,
         setEditionAsDirty: () => void,
         resetWidgets: () => void,
-        generateAndSetWidgets: (Map<*,*>, string) => void,
+        generateAndSetWidgets: (Map<*, *>, string) => void,
     },
     hasIntegrations: boolean,
     isEditing: boolean,
     sources: Object,
     customer: Object,
-    widgets: Map<*,*>,
-    isRequired: boolean
+    widgets: Map<*, *>,
+    isRequired: boolean,
+    displayTabs: boolean,
 }
 
 type State = {
-    contextWidgets: List<Map<*,*>>
+    contextWidgets: List<Map<*, *>>
 }
 
 export class InfobarCustomerInfo extends React.Component<Props, State> {
@@ -100,6 +101,7 @@ export class InfobarCustomerInfo extends React.Component<Props, State> {
     static defaultProps = {
         isRequired: false,
         customer: fromJS({}),
+        displayTabs: true,
     }
 
     state = {
@@ -182,6 +184,7 @@ export class InfobarCustomerInfo extends React.Component<Props, State> {
             isEditing,
             widgets,
             sources,
+            displayTabs,
         } = this.props
 
         const contextWidgets = isEditing
@@ -221,6 +224,7 @@ export class InfobarCustomerInfo extends React.Component<Props, State> {
                 context={widgets.get('currentContext', '')}
                 source={sources}
                 widgets={contextWidgets}
+                displayTabs={displayTabs}
                 editing={
                     isEditing ? {
                         isEditing,
@@ -248,7 +252,7 @@ export class InfobarCustomerInfo extends React.Component<Props, State> {
         }
 
         return (
-            <AddIntegrationSuggestion customer={this.props.customer} />
+            <AddIntegrationSuggestion customer={this.props.customer}/>
         )
     }
 
@@ -265,28 +269,27 @@ export class InfobarCustomerInfo extends React.Component<Props, State> {
 
         return (
             <div className={classnames(css.widgetsList, 'd-flex flex-column')}>
-                <Card className={css.infobarCard}>
-                    <CardBody>
-                        <div className={css.customerProfile}>
-                            <Avatar
-                                className="mr-3 rounded"
-                                name={customer.get('name', '')}
-                                email={customer.get('email', '')}
-                                url={customer.getIn(['meta', 'profile_picture_url'])}
-                            />
-                            <Link
-                                to={`/app/customer/${customer.get('id')}`}
-                                className={css.displayName}
-                            >
-                                {getDisplayName(customer)}
-                            </Link>
-                        </div>
-                        <div className={css.detail}>
-                            <CustomerChannels channels={customer.get('channels') || fromJS([])}/>
+                <div className={css.customerInfo}>
+                    <div className={css.customerProfile}>
+                        <Avatar
+                            className="mr-3 rounded"
+                            name={customer.get('name', '')}
+                            email={customer.get('email', '')}
+                            url={customer.getIn(['meta', 'profile_picture_url'])}
+                        />
+                        <Link
+                            to={`/app/customer/${customer.get('id')}`}
+                            className={css.displayName}
+                        >
+                            {getDisplayName(customer)}
+                        </Link>
+                    </div>
+                    <div className={css.detail}>
+                        <CustomerChannels channels={customer.get('channels') || fromJS([])}>
                             <CustomerNote customer={customer}/>
-                        </div>
-                    </CardBody>
-                </Card>
+                        </CustomerChannels>
+                    </div>
+                </div>
                 {
                     areSourcesReady(sources, widgets.get('currentContext', ''))
                         ? this._renderWidgets()

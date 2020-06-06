@@ -323,52 +323,28 @@ Object {
 }
 `;
 
-exports[`infobarActions.shopify.createOrder actions onInitCleanUp() should delete old temporary draft orders 1`] = `
-Object {
-  "delete": Array [
-    Object {
-      "cancelToken": CancelToken {
-        "promise": Promise {},
-      },
-      "data": undefined,
-      "headers": Object {
-        "Accept": "application/json, text/plain, */*",
-        "X-CSRF-Token": undefined,
-      },
-      "maxContentLength": -1,
-      "method": "delete",
-      "params": Object {
-        "integration_id": 1,
-      },
-      "timeout": 0,
-      "transformRequest": Array [
-        [Function],
-      ],
-      "transformResponse": Array [
-        [Function],
-      ],
-      "url": "/integrations/shopify/order/draft/1/",
-      "validateStatus": [Function],
-      "xsrfCookieName": "XSRF-TOKEN",
-      "xsrfHeaderName": "X-XSRF-TOKEN",
-    },
-  ],
-  "get": Array [],
-  "head": Array [],
-  "list": Array [],
-  "options": Array [],
-  "patch": Array [],
-  "post": Array [],
-  "put": Array [],
-}
-`;
-
 exports[`infobarActions.shopify.createOrder actions onEmailInvoice() should display an error 1`] = `
 Array [
   Object {
     "loading": true,
     "message": "Sending invoice...",
     "type": "infobarActions/shopify/createOrder/SET_LOADING",
+  },
+  Object {
+    "payload": Object {
+      "allowHTML": false,
+      "buttons": Array [],
+      "closeButton": false,
+      "closeOnNext": true,
+      "dismissAfter": 3000,
+      "dismissible": true,
+      "id": 1,
+      "message": "Executing action...",
+      "position": "tc",
+      "status": "loading",
+      "style": "alert",
+    },
+    "type": "ADD_NOTIFICATION",
   },
   Object {
     "callback": [Function],
@@ -423,6 +399,22 @@ Array [
     "loading": true,
     "message": "Sending invoice...",
     "type": "infobarActions/shopify/createOrder/SET_LOADING",
+  },
+  Object {
+    "payload": Object {
+      "allowHTML": false,
+      "buttons": Array [],
+      "closeButton": false,
+      "closeOnNext": true,
+      "dismissAfter": 3000,
+      "dismissible": true,
+      "id": 1,
+      "message": "Executing action...",
+      "position": "tc",
+      "status": "loading",
+      "style": "alert",
+    },
+    "type": "ADD_NOTIFICATION",
   },
   Object {
     "callback": [Function],
@@ -1791,6 +1783,46 @@ Array [
     "type": "infobarActions/shopify/createOrder/SET_LOADING",
   },
 ]
+`;
+
+exports[`infobarActions.shopify.createOrder actions onInitCleanUp() should delete old temporary draft orders 1`] = `
+Object {
+  "delete": Array [
+    Object {
+      "cancelToken": CancelToken {
+        "promise": Promise {},
+      },
+      "data": undefined,
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+        "X-CSRF-Token": undefined,
+      },
+      "maxContentLength": -1,
+      "method": "delete",
+      "params": Object {
+        "integration_id": 1,
+      },
+      "timeout": 0,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/integrations/shopify/order/draft/1/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "get": Array [],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [],
+  "put": Array [],
+}
 `;
 
 exports[`infobarActions.shopify.createOrder actions onPayloadChange() on polling should update draft order and poll its values 1`] = `

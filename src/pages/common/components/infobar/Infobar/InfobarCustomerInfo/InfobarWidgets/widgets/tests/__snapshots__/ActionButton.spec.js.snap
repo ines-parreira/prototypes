@@ -1,890 +1,1002 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ActionButton component should display a single option with a checkbox parameter 1`] = `
-<Button
-  className="button action-button"
-  color="secondary"
-  disabled={false}
-  id="action-button-4"
-  onClick={[Function]}
-  size="sm"
-  tag="button"
->
-  <div>
-    <i
-      className="material-icons mr-2"
+<Fragment>
+  <Button
+    className="button action-button"
+    color="secondary"
+    disabled={false}
+    id="action-button-4"
+    onClick={[Function]}
+    size="sm"
+    tag="button"
+  >
+    <div>
+      <i
+        className="material-icons mr-2"
+      >
+        refresh
+      </i>
+      Little action
+    </div>
+    <Popover
+      delay={
+        Object {
+          "hide": 0,
+          "show": 0,
+        }
+      }
+      hideArrow={false}
+      isOpen={false}
+      placement="bottom"
+      placementPrefix="bs-popover"
+      target="action-button-4"
+      tether={
+        Object {
+          "constraints": Array [
+            Object {
+              "attachment": "together none",
+              "pin": true,
+              "to": "scrollParent",
+            },
+            Object {
+              "attachment": "together none",
+              "pin": true,
+              "to": "window",
+            },
+          ],
+        }
+      }
+      toggle={[Function]}
     >
-      refresh
-    </i>
-    Little action
-  </div>
-  <Popover
+      <PopoverHeader
+        tag="h3"
+      >
+        <div>
+          <i
+            className="material-icons mr-2"
+          >
+            refresh
+          </i>
+          Execute my little action
+        </div>
+      </PopoverHeader>
+      <PopoverBody
+        tag="div"
+      >
+        <p
+          className="popover"
+        >
+          This action is little, but it is powerful.
+        </p>
+        <Form
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <BooleanField
+            className="mb-2"
+            key="param"
+            label="Execute the action for real"
+            name="param"
+            onChange={[Function]}
+            type="checkbox"
+            value={true}
+          />
+          <Button
+            block={true}
+            color="success"
+            tag="button"
+          >
+            Confirm
+          </Button>
+        </Form>
+      </PopoverBody>
+    </Popover>
+  </Button>
+  <UncontrolledTooltip
     delay={
       Object {
         "hide": 0,
         "show": 0,
       }
     }
-    hideArrow={false}
-    isOpen={false}
-    placement="bottom"
-    placementPrefix="bs-popover"
+    placement="top"
     target="action-button-4"
-    tether={
-      Object {
-        "constraints": Array [
-          Object {
-            "attachment": "together none",
-            "pin": true,
-            "to": "scrollParent",
-          },
-          Object {
-            "attachment": "together none",
-            "pin": true,
-            "to": "window",
-          },
-        ],
-      }
-    }
-    toggle={[Function]}
   >
-    <PopoverHeader
-      tag="h3"
-    >
-      <div>
-        <i
-          className="material-icons mr-2"
-        >
-          refresh
-        </i>
-        Execute my little action
-      </div>
-    </PopoverHeader>
-    <PopoverBody
-      tag="div"
-    >
-      <p
-        className="tooltip"
-      >
-        This action is little, but it is powerful.
-      </p>
-      <Form
-        onSubmit={[Function]}
-        tag="form"
-      >
-        <BooleanField
-          className="mb-2"
-          key="param"
-          label="Execute the action for real"
-          name="param"
-          onChange={[Function]}
-          type="checkbox"
-          value={true}
-        />
-        <Button
-          block={true}
-          color="success"
-          tag="button"
-        >
-          Confirm
-        </Button>
-      </Form>
-    </PopoverBody>
-  </Popover>
-</Button>
+    Foo
+  </UncontrolledTooltip>
+</Fragment>
 `;
 
 exports[`ActionButton component should display a single option with a number parameter 1`] = `
-<Button
-  className="button action-button"
-  color="secondary"
-  disabled={false}
-  id="action-button-3"
-  onClick={[Function]}
-  size="sm"
-  tag="button"
->
-  <div>
-    <i
-      className="material-icons mr-2"
+<Fragment>
+  <Button
+    className="button action-button"
+    color="secondary"
+    disabled={false}
+    id="action-button-3"
+    onClick={[Function]}
+    size="sm"
+    tag="button"
+  >
+    <div>
+      <i
+        className="material-icons mr-2"
+      >
+        refresh
+      </i>
+      Little action
+    </div>
+    <Popover
+      delay={
+        Object {
+          "hide": 0,
+          "show": 0,
+        }
+      }
+      hideArrow={false}
+      isOpen={false}
+      placement="bottom"
+      placementPrefix="bs-popover"
+      target="action-button-3"
+      tether={
+        Object {
+          "constraints": Array [
+            Object {
+              "attachment": "together none",
+              "pin": true,
+              "to": "scrollParent",
+            },
+            Object {
+              "attachment": "together none",
+              "pin": true,
+              "to": "window",
+            },
+          ],
+        }
+      }
+      toggle={[Function]}
     >
-      refresh
-    </i>
-    Little action
-  </div>
-  <Popover
+      <PopoverHeader
+        tag="h3"
+      >
+        <div>
+          <i
+            className="material-icons mr-2"
+          >
+            refresh
+          </i>
+          Execute my little action
+        </div>
+      </PopoverHeader>
+      <PopoverBody
+        tag="div"
+      >
+        <p
+          className="popover"
+        >
+          This action is little, but it is powerful.
+        </p>
+        <Form
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <InputField
+            className="mb-2"
+            key="param"
+            max={9}
+            min={2}
+            name="param"
+            onChange={[Function]}
+            placeholder="Just a param"
+            required={true}
+            step={0.1}
+            type="number"
+            value={7}
+          />
+          <Button
+            block={true}
+            color="success"
+            tag="button"
+          >
+            Confirm
+          </Button>
+        </Form>
+      </PopoverBody>
+    </Popover>
+  </Button>
+  <UncontrolledTooltip
     delay={
       Object {
         "hide": 0,
         "show": 0,
       }
     }
-    hideArrow={false}
-    isOpen={false}
-    placement="bottom"
-    placementPrefix="bs-popover"
+    placement="top"
     target="action-button-3"
-    tether={
-      Object {
-        "constraints": Array [
-          Object {
-            "attachment": "together none",
-            "pin": true,
-            "to": "scrollParent",
-          },
-          Object {
-            "attachment": "together none",
-            "pin": true,
-            "to": "window",
-          },
-        ],
-      }
-    }
-    toggle={[Function]}
   >
-    <PopoverHeader
-      tag="h3"
-    >
-      <div>
-        <i
-          className="material-icons mr-2"
-        >
-          refresh
-        </i>
-        Execute my little action
-      </div>
-    </PopoverHeader>
-    <PopoverBody
-      tag="div"
-    >
-      <p
-        className="tooltip"
-      >
-        This action is little, but it is powerful.
-      </p>
-      <Form
-        onSubmit={[Function]}
-        tag="form"
-      >
-        <InputField
-          className="mb-2"
-          key="param"
-          max={9}
-          min={2}
-          name="param"
-          onChange={[Function]}
-          placeholder="Just a param"
-          required={true}
-          step={0.1}
-          type="number"
-          value={7}
-        />
-        <Button
-          block={true}
-          color="success"
-          tag="button"
-        >
-          Confirm
-        </Button>
-      </Form>
-    </PopoverBody>
-  </Popover>
-</Button>
+    Foo
+  </UncontrolledTooltip>
+</Fragment>
 `;
 
 exports[`ActionButton component should display a single option with a select parameter 1`] = `
-<Button
-  className="button action-button"
-  color="secondary"
-  disabled={false}
-  id="action-button-5"
-  onClick={[Function]}
-  size="sm"
-  tag="button"
->
-  <div>
-    <i
-      className="material-icons mr-2"
+<Fragment>
+  <Button
+    className="button action-button"
+    color="secondary"
+    disabled={false}
+    id="action-button-5"
+    onClick={[Function]}
+    size="sm"
+    tag="button"
+  >
+    <div>
+      <i
+        className="material-icons mr-2"
+      >
+        refresh
+      </i>
+      Little action
+    </div>
+    <Popover
+      delay={
+        Object {
+          "hide": 0,
+          "show": 0,
+        }
+      }
+      hideArrow={false}
+      isOpen={false}
+      placement="bottom"
+      placementPrefix="bs-popover"
+      target="action-button-5"
+      tether={
+        Object {
+          "constraints": Array [
+            Object {
+              "attachment": "together none",
+              "pin": true,
+              "to": "scrollParent",
+            },
+            Object {
+              "attachment": "together none",
+              "pin": true,
+              "to": "window",
+            },
+          ],
+        }
+      }
+      toggle={[Function]}
     >
-      refresh
-    </i>
-    Little action
-  </div>
-  <Popover
+      <PopoverHeader
+        tag="h3"
+      >
+        <div>
+          <i
+            className="material-icons mr-2"
+          >
+            refresh
+          </i>
+          Execute my little action
+        </div>
+      </PopoverHeader>
+      <PopoverBody
+        tag="div"
+      >
+        <p
+          className="popover"
+        >
+          This action is little, but it is powerful.
+        </p>
+        <Form
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <SelectField
+            allowCustomValue={false}
+            className="mb-2"
+            fixedWidth={false}
+            fullWidth={false}
+            key="param"
+            label="Execute the action for real"
+            name="param"
+            onChange={[Function]}
+            onSearchChange={[Function]}
+            options={
+              Array [
+                Object {
+                  "label": "Foo",
+                  "value": "foo",
+                },
+                Object {
+                  "label": "Bar",
+                  "value": "bar",
+                },
+              ]
+            }
+            placeholder="Select an option"
+            singular="option"
+            style={Object {}}
+            type="select"
+            value={true}
+          />
+          <Button
+            block={true}
+            color="success"
+            tag="button"
+          >
+            Confirm
+          </Button>
+        </Form>
+      </PopoverBody>
+    </Popover>
+  </Button>
+  <UncontrolledTooltip
     delay={
       Object {
         "hide": 0,
         "show": 0,
       }
     }
-    hideArrow={false}
-    isOpen={false}
-    placement="bottom"
-    placementPrefix="bs-popover"
+    placement="top"
     target="action-button-5"
-    tether={
-      Object {
-        "constraints": Array [
-          Object {
-            "attachment": "together none",
-            "pin": true,
-            "to": "scrollParent",
-          },
-          Object {
-            "attachment": "together none",
-            "pin": true,
-            "to": "window",
-          },
-        ],
-      }
-    }
-    toggle={[Function]}
   >
-    <PopoverHeader
-      tag="h3"
-    >
-      <div>
-        <i
-          className="material-icons mr-2"
-        >
-          refresh
-        </i>
-        Execute my little action
-      </div>
-    </PopoverHeader>
-    <PopoverBody
-      tag="div"
-    >
-      <p
-        className="tooltip"
-      >
-        This action is little, but it is powerful.
-      </p>
-      <Form
-        onSubmit={[Function]}
-        tag="form"
-      >
-        <SelectField
-          allowCustomValue={false}
-          className="mb-2"
-          fixedWidth={false}
-          fullWidth={false}
-          key="param"
-          label="Execute the action for real"
-          name="param"
-          onChange={[Function]}
-          onSearchChange={[Function]}
-          options={
-            Array [
-              Object {
-                "label": "Foo",
-                "value": "foo",
-              },
-              Object {
-                "label": "Bar",
-                "value": "bar",
-              },
-            ]
-          }
-          placeholder="Select an option"
-          singular="option"
-          style={Object {}}
-          type="select"
-          value={true}
-        />
-        <Button
-          block={true}
-          color="success"
-          tag="button"
-        >
-          Confirm
-        </Button>
-      </Form>
-    </PopoverBody>
-  </Popover>
-</Button>
+    Foo
+  </UncontrolledTooltip>
+</Fragment>
 `;
 
 exports[`ActionButton component should display a single option with a text parameter 1`] = `
-<Button
-  className="button action-button"
-  color="secondary"
-  disabled={false}
-  id="action-button-2"
-  onClick={[Function]}
-  size="sm"
-  tag="button"
->
-  <div>
-    <i
-      className="material-icons mr-2"
+<Fragment>
+  <Button
+    className="button action-button"
+    color="secondary"
+    disabled={false}
+    id="action-button-2"
+    onClick={[Function]}
+    size="sm"
+    tag="button"
+  >
+    <div>
+      <i
+        className="material-icons mr-2"
+      >
+        refresh
+      </i>
+      Little action
+    </div>
+    <Popover
+      delay={
+        Object {
+          "hide": 0,
+          "show": 0,
+        }
+      }
+      hideArrow={false}
+      isOpen={false}
+      placement="bottom"
+      placementPrefix="bs-popover"
+      target="action-button-2"
+      tether={
+        Object {
+          "constraints": Array [
+            Object {
+              "attachment": "together none",
+              "pin": true,
+              "to": "scrollParent",
+            },
+            Object {
+              "attachment": "together none",
+              "pin": true,
+              "to": "window",
+            },
+          ],
+        }
+      }
+      toggle={[Function]}
     >
-      refresh
-    </i>
-    Little action
-  </div>
-  <Popover
+      <PopoverHeader
+        tag="h3"
+      >
+        <div>
+          <i
+            className="material-icons mr-2"
+          >
+            refresh
+          </i>
+          Execute my little action
+        </div>
+      </PopoverHeader>
+      <PopoverBody
+        tag="div"
+      >
+        <p
+          className="popover"
+        >
+          This action is little, but it is powerful.
+        </p>
+        <Form
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <InputField
+            className="mb-2"
+            key="param"
+            name="param"
+            onChange={[Function]}
+            placeholder="Just a param"
+            required={true}
+            type="text"
+            value="hello"
+          />
+          <Button
+            block={true}
+            color="success"
+            tag="button"
+          >
+            Confirm
+          </Button>
+        </Form>
+      </PopoverBody>
+    </Popover>
+  </Button>
+  <UncontrolledTooltip
     delay={
       Object {
         "hide": 0,
         "show": 0,
       }
     }
-    hideArrow={false}
-    isOpen={false}
-    placement="bottom"
-    placementPrefix="bs-popover"
+    placement="top"
     target="action-button-2"
-    tether={
-      Object {
-        "constraints": Array [
-          Object {
-            "attachment": "together none",
-            "pin": true,
-            "to": "scrollParent",
-          },
-          Object {
-            "attachment": "together none",
-            "pin": true,
-            "to": "window",
-          },
-        ],
-      }
-    }
-    toggle={[Function]}
   >
-    <PopoverHeader
-      tag="h3"
-    >
-      <div>
-        <i
-          className="material-icons mr-2"
-        >
-          refresh
-        </i>
-        Execute my little action
-      </div>
-    </PopoverHeader>
-    <PopoverBody
-      tag="div"
-    >
-      <p
-        className="tooltip"
-      >
-        This action is little, but it is powerful.
-      </p>
-      <Form
-        onSubmit={[Function]}
-        tag="form"
-      >
-        <InputField
-          className="mb-2"
-          key="param"
-          name="param"
-          onChange={[Function]}
-          placeholder="Just a param"
-          required={true}
-          type="text"
-          value="hello"
-        />
-        <Button
-          block={true}
-          color="success"
-          tag="button"
-        >
-          Confirm
-        </Button>
-      </Form>
-    </PopoverBody>
-  </Popover>
-</Button>
+    Foo
+  </UncontrolledTooltip>
+</Fragment>
 `;
 
 exports[`ActionButton component should display a single option with no parameters 1`] = `
-<Button
-  className="button action-button"
-  color="secondary"
-  disabled={false}
-  id="action-button-1"
-  onClick={[Function]}
-  size="sm"
-  tag="button"
->
-  <div>
-    <i
-      className="material-icons mr-2"
+<Fragment>
+  <Button
+    className="button action-button"
+    color="secondary"
+    disabled={false}
+    id="action-button-1"
+    onClick={[Function]}
+    size="sm"
+    tag="button"
+  >
+    <div>
+      <i
+        className="material-icons mr-2"
+      >
+        refresh
+      </i>
+      Little action
+    </div>
+    <Popover
+      delay={
+        Object {
+          "hide": 0,
+          "show": 0,
+        }
+      }
+      hideArrow={false}
+      isOpen={false}
+      placement="bottom"
+      placementPrefix="bs-popover"
+      target="action-button-1"
+      tether={
+        Object {
+          "constraints": Array [
+            Object {
+              "attachment": "together none",
+              "pin": true,
+              "to": "scrollParent",
+            },
+            Object {
+              "attachment": "together none",
+              "pin": true,
+              "to": "window",
+            },
+          ],
+        }
+      }
+      toggle={[Function]}
     >
-      refresh
-    </i>
-    Little action
-  </div>
-  <Popover
+      <PopoverHeader
+        tag="h3"
+      >
+        <div>
+          <i
+            className="material-icons mr-2"
+          >
+            refresh
+          </i>
+          Execute my little action
+        </div>
+      </PopoverHeader>
+      <PopoverBody
+        tag="div"
+      >
+        <p
+          className="popover"
+        >
+          This action is little, but it is powerful.
+        </p>
+        <Form
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <Button
+            block={true}
+            color="success"
+            tag="button"
+          >
+            Confirm
+          </Button>
+        </Form>
+      </PopoverBody>
+    </Popover>
+  </Button>
+  <UncontrolledTooltip
     delay={
       Object {
         "hide": 0,
         "show": 0,
       }
     }
-    hideArrow={false}
-    isOpen={false}
-    placement="bottom"
-    placementPrefix="bs-popover"
+    placement="top"
     target="action-button-1"
-    tether={
-      Object {
-        "constraints": Array [
-          Object {
-            "attachment": "together none",
-            "pin": true,
-            "to": "scrollParent",
-          },
-          Object {
-            "attachment": "together none",
-            "pin": true,
-            "to": "window",
-          },
-        ],
-      }
-    }
-    toggle={[Function]}
   >
-    <PopoverHeader
-      tag="h3"
-    >
-      <div>
-        <i
-          className="material-icons mr-2"
-        >
-          refresh
-        </i>
-        Execute my little action
-      </div>
-    </PopoverHeader>
-    <PopoverBody
-      tag="div"
-    >
-      <p
-        className="tooltip"
-      >
-        This action is little, but it is powerful.
-      </p>
-      <Form
-        onSubmit={[Function]}
-        tag="form"
-      >
-        <Button
-          block={true}
-          color="success"
-          tag="button"
-        >
-          Confirm
-        </Button>
-      </Form>
-    </PopoverBody>
-  </Popover>
-</Button>
+    Foo
+  </UncontrolledTooltip>
+</Fragment>
 `;
 
 exports[`ActionButton component should display multiple options with a common parameter 1`] = `
-<Button
-  className="button action-button"
-  color="secondary"
-  disabled={false}
-  id="action-button-7"
-  onClick={[Function]}
-  size="sm"
-  tag="button"
->
-  <div>
-    <i
-      className="material-icons mr-2"
+<Fragment>
+  <Button
+    className="button action-button"
+    color="secondary"
+    disabled={false}
+    id="action-button-7"
+    onClick={[Function]}
+    size="sm"
+    tag="button"
+  >
+    <div>
+      <i
+        className="material-icons mr-2"
+      >
+        refresh
+      </i>
+      Little action
+    </div>
+    <Popover
+      delay={
+        Object {
+          "hide": 0,
+          "show": 0,
+        }
+      }
+      hideArrow={false}
+      isOpen={false}
+      placement="bottom"
+      placementPrefix="bs-popover"
+      target="action-button-7"
+      tether={
+        Object {
+          "constraints": Array [
+            Object {
+              "attachment": "together none",
+              "pin": true,
+              "to": "scrollParent",
+            },
+            Object {
+              "attachment": "together none",
+              "pin": true,
+              "to": "window",
+            },
+          ],
+        }
+      }
+      toggle={[Function]}
     >
-      refresh
-    </i>
-    Little action
-  </div>
-  <Popover
+      <PopoverHeader
+        tag="h3"
+      >
+        <div>
+          <i
+            className="material-icons mr-2"
+          >
+            refresh
+          </i>
+          Execute my little action
+        </div>
+      </PopoverHeader>
+      <PopoverBody
+        tag="div"
+      >
+        <p
+          className="popover"
+        >
+          This action is little, but it is powerful.
+        </p>
+        <Form
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <Label
+            key="label"
+            tag="label"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
+          >
+            Type
+          </Label>
+          <SelectField
+            allowCustomValue={false}
+            fixedWidth={false}
+            fullWidth={false}
+            key="input"
+            onChange={[Function]}
+            onSearchChange={[Function]}
+            options={
+              Array [
+                Object {
+                  "label": "My little action",
+                  "value": "myLittleAction",
+                },
+                Object {
+                  "label": "My big action",
+                  "value": "myBigAction",
+                },
+              ]
+            }
+            placeholder="Select an option"
+            singular="option"
+            style={
+              Object {
+                "marginBottom": "1rem",
+              }
+            }
+            value="myLittleAction"
+          />
+          <InputField
+            className="mb-2"
+            key="param"
+            name="param"
+            onChange={[Function]}
+            placeholder="Just a param"
+            required={true}
+            type="text"
+            value="hello"
+          />
+          <Button
+            block={true}
+            color="success"
+            tag="button"
+          >
+            Confirm
+          </Button>
+        </Form>
+      </PopoverBody>
+    </Popover>
+  </Button>
+  <UncontrolledTooltip
     delay={
       Object {
         "hide": 0,
         "show": 0,
       }
     }
-    hideArrow={false}
-    isOpen={false}
-    placement="bottom"
-    placementPrefix="bs-popover"
+    placement="top"
     target="action-button-7"
-    tether={
-      Object {
-        "constraints": Array [
-          Object {
-            "attachment": "together none",
-            "pin": true,
-            "to": "scrollParent",
-          },
-          Object {
-            "attachment": "together none",
-            "pin": true,
-            "to": "window",
-          },
-        ],
-      }
-    }
-    toggle={[Function]}
   >
-    <PopoverHeader
-      tag="h3"
-    >
-      <div>
-        <i
-          className="material-icons mr-2"
-        >
-          refresh
-        </i>
-        Execute my little action
-      </div>
-    </PopoverHeader>
-    <PopoverBody
-      tag="div"
-    >
-      <p
-        className="tooltip"
-      >
-        This action is little, but it is powerful.
-      </p>
-      <Form
-        onSubmit={[Function]}
-        tag="form"
-      >
-        <Label
-          key="label"
-          tag="label"
-          widths={
-            Array [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
-        >
-          Type
-        </Label>
-        <SelectField
-          allowCustomValue={false}
-          fixedWidth={false}
-          fullWidth={false}
-          key="input"
-          onChange={[Function]}
-          onSearchChange={[Function]}
-          options={
-            Array [
-              Object {
-                "label": "My little action",
-                "value": "myLittleAction",
-              },
-              Object {
-                "label": "My big action",
-                "value": "myBigAction",
-              },
-            ]
-          }
-          placeholder="Select an option"
-          singular="option"
-          style={
-            Object {
-              "marginBottom": "1rem",
-            }
-          }
-          value="myLittleAction"
-        />
-        <InputField
-          className="mb-2"
-          key="param"
-          name="param"
-          onChange={[Function]}
-          placeholder="Just a param"
-          required={true}
-          type="text"
-          value="hello"
-        />
-        <Button
-          block={true}
-          color="success"
-          tag="button"
-        >
-          Confirm
-        </Button>
-      </Form>
-    </PopoverBody>
-  </Popover>
-</Button>
+    Foo
+  </UncontrolledTooltip>
+</Fragment>
 `;
 
 exports[`ActionButton component should display multiple options with different parameter 1`] = `
-<Button
-  className="button action-button"
-  color="secondary"
-  disabled={false}
-  id="action-button-8"
-  onClick={[Function]}
-  size="sm"
-  tag="button"
->
-  <div>
-    <i
-      className="material-icons mr-2"
+<Fragment>
+  <Button
+    className="button action-button"
+    color="secondary"
+    disabled={false}
+    id="action-button-8"
+    onClick={[Function]}
+    size="sm"
+    tag="button"
+  >
+    <div>
+      <i
+        className="material-icons mr-2"
+      >
+        refresh
+      </i>
+      Little action
+    </div>
+    <Popover
+      delay={
+        Object {
+          "hide": 0,
+          "show": 0,
+        }
+      }
+      hideArrow={false}
+      isOpen={false}
+      placement="bottom"
+      placementPrefix="bs-popover"
+      target="action-button-8"
+      tether={
+        Object {
+          "constraints": Array [
+            Object {
+              "attachment": "together none",
+              "pin": true,
+              "to": "scrollParent",
+            },
+            Object {
+              "attachment": "together none",
+              "pin": true,
+              "to": "window",
+            },
+          ],
+        }
+      }
+      toggle={[Function]}
     >
-      refresh
-    </i>
-    Little action
-  </div>
-  <Popover
+      <PopoverHeader
+        tag="h3"
+      >
+        <div>
+          <i
+            className="material-icons mr-2"
+          >
+            refresh
+          </i>
+          Execute my little action
+        </div>
+      </PopoverHeader>
+      <PopoverBody
+        tag="div"
+      >
+        <p
+          className="popover"
+        >
+          This action is little, but it is powerful.
+        </p>
+        <Form
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <Label
+            key="label"
+            tag="label"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
+          >
+            Type
+          </Label>
+          <SelectField
+            allowCustomValue={false}
+            fixedWidth={false}
+            fullWidth={false}
+            key="input"
+            onChange={[Function]}
+            onSearchChange={[Function]}
+            options={
+              Array [
+                Object {
+                  "label": "My little action",
+                  "value": "myLittleAction",
+                },
+                Object {
+                  "label": "My big action",
+                  "value": "myBigAction",
+                },
+              ]
+            }
+            placeholder="Select an option"
+            singular="option"
+            style={
+              Object {
+                "marginBottom": "1rem",
+              }
+            }
+            value="myLittleAction"
+          />
+          <InputField
+            className="mb-2"
+            key="param"
+            name="param"
+            onChange={[Function]}
+            placeholder="Just a param"
+            required={true}
+            type="text"
+            value="hello"
+          />
+          <Button
+            block={true}
+            color="success"
+            tag="button"
+          >
+            Confirm
+          </Button>
+        </Form>
+      </PopoverBody>
+    </Popover>
+  </Button>
+  <UncontrolledTooltip
     delay={
       Object {
         "hide": 0,
         "show": 0,
       }
     }
-    hideArrow={false}
-    isOpen={false}
-    placement="bottom"
-    placementPrefix="bs-popover"
+    placement="top"
     target="action-button-8"
-    tether={
-      Object {
-        "constraints": Array [
-          Object {
-            "attachment": "together none",
-            "pin": true,
-            "to": "scrollParent",
-          },
-          Object {
-            "attachment": "together none",
-            "pin": true,
-            "to": "window",
-          },
-        ],
-      }
-    }
-    toggle={[Function]}
   >
-    <PopoverHeader
-      tag="h3"
-    >
-      <div>
-        <i
-          className="material-icons mr-2"
-        >
-          refresh
-        </i>
-        Execute my little action
-      </div>
-    </PopoverHeader>
-    <PopoverBody
-      tag="div"
-    >
-      <p
-        className="tooltip"
-      >
-        This action is little, but it is powerful.
-      </p>
-      <Form
-        onSubmit={[Function]}
-        tag="form"
-      >
-        <Label
-          key="label"
-          tag="label"
-          widths={
-            Array [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
-        >
-          Type
-        </Label>
-        <SelectField
-          allowCustomValue={false}
-          fixedWidth={false}
-          fullWidth={false}
-          key="input"
-          onChange={[Function]}
-          onSearchChange={[Function]}
-          options={
-            Array [
-              Object {
-                "label": "My little action",
-                "value": "myLittleAction",
-              },
-              Object {
-                "label": "My big action",
-                "value": "myBigAction",
-              },
-            ]
-          }
-          placeholder="Select an option"
-          singular="option"
-          style={
-            Object {
-              "marginBottom": "1rem",
-            }
-          }
-          value="myLittleAction"
-        />
-        <InputField
-          className="mb-2"
-          key="param"
-          name="param"
-          onChange={[Function]}
-          placeholder="Just a param"
-          required={true}
-          type="text"
-          value="hello"
-        />
-        <Button
-          block={true}
-          color="success"
-          tag="button"
-        >
-          Confirm
-        </Button>
-      </Form>
-    </PopoverBody>
-  </Popover>
-</Button>
+    Foo
+  </UncontrolledTooltip>
+</Fragment>
 `;
 
 exports[`ActionButton component should display multiple options without parameters 1`] = `
-<Button
-  className="button action-button"
-  color="secondary"
-  disabled={false}
-  id="action-button-6"
-  onClick={[Function]}
-  size="sm"
-  tag="button"
->
-  <div>
-    <i
-      className="material-icons mr-2"
+<Fragment>
+  <Button
+    className="button action-button"
+    color="secondary"
+    disabled={false}
+    id="action-button-6"
+    onClick={[Function]}
+    size="sm"
+    tag="button"
+  >
+    <div>
+      <i
+        className="material-icons mr-2"
+      >
+        refresh
+      </i>
+      Little action
+    </div>
+    <Popover
+      delay={
+        Object {
+          "hide": 0,
+          "show": 0,
+        }
+      }
+      hideArrow={false}
+      isOpen={false}
+      placement="bottom"
+      placementPrefix="bs-popover"
+      target="action-button-6"
+      tether={
+        Object {
+          "constraints": Array [
+            Object {
+              "attachment": "together none",
+              "pin": true,
+              "to": "scrollParent",
+            },
+            Object {
+              "attachment": "together none",
+              "pin": true,
+              "to": "window",
+            },
+          ],
+        }
+      }
+      toggle={[Function]}
     >
-      refresh
-    </i>
-    Little action
-  </div>
-  <Popover
+      <PopoverHeader
+        tag="h3"
+      >
+        <div>
+          <i
+            className="material-icons mr-2"
+          >
+            refresh
+          </i>
+          Execute my little action
+        </div>
+      </PopoverHeader>
+      <PopoverBody
+        tag="div"
+      >
+        <p
+          className="popover"
+        >
+          This action is little, but it is powerful.
+        </p>
+        <Form
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <Label
+            key="label"
+            tag="label"
+            widths={
+              Array [
+                "xs",
+                "sm",
+                "md",
+                "lg",
+                "xl",
+              ]
+            }
+          >
+            Type
+          </Label>
+          <SelectField
+            allowCustomValue={false}
+            fixedWidth={false}
+            fullWidth={false}
+            key="input"
+            onChange={[Function]}
+            onSearchChange={[Function]}
+            options={
+              Array [
+                Object {
+                  "label": "My little action",
+                  "value": "myLittleAction",
+                },
+                Object {
+                  "label": "My big action",
+                  "value": "myBigAction",
+                },
+              ]
+            }
+            placeholder="Select an option"
+            singular="option"
+            style={
+              Object {
+                "marginBottom": "1rem",
+              }
+            }
+            value="myLittleAction"
+          />
+          <Button
+            block={true}
+            color="success"
+            tag="button"
+          >
+            Confirm
+          </Button>
+        </Form>
+      </PopoverBody>
+    </Popover>
+  </Button>
+  <UncontrolledTooltip
     delay={
       Object {
         "hide": 0,
         "show": 0,
       }
     }
-    hideArrow={false}
-    isOpen={false}
-    placement="bottom"
-    placementPrefix="bs-popover"
+    placement="top"
     target="action-button-6"
-    tether={
-      Object {
-        "constraints": Array [
-          Object {
-            "attachment": "together none",
-            "pin": true,
-            "to": "scrollParent",
-          },
-          Object {
-            "attachment": "together none",
-            "pin": true,
-            "to": "window",
-          },
-        ],
-      }
-    }
-    toggle={[Function]}
   >
-    <PopoverHeader
-      tag="h3"
-    >
-      <div>
-        <i
-          className="material-icons mr-2"
-        >
-          refresh
-        </i>
-        Execute my little action
-      </div>
-    </PopoverHeader>
-    <PopoverBody
-      tag="div"
-    >
-      <p
-        className="tooltip"
-      >
-        This action is little, but it is powerful.
-      </p>
-      <Form
-        onSubmit={[Function]}
-        tag="form"
-      >
-        <Label
-          key="label"
-          tag="label"
-          widths={
-            Array [
-              "xs",
-              "sm",
-              "md",
-              "lg",
-              "xl",
-            ]
-          }
-        >
-          Type
-        </Label>
-        <SelectField
-          allowCustomValue={false}
-          fixedWidth={false}
-          fullWidth={false}
-          key="input"
-          onChange={[Function]}
-          onSearchChange={[Function]}
-          options={
-            Array [
-              Object {
-                "label": "My little action",
-                "value": "myLittleAction",
-              },
-              Object {
-                "label": "My big action",
-                "value": "myBigAction",
-              },
-            ]
-          }
-          placeholder="Select an option"
-          singular="option"
-          style={
-            Object {
-              "marginBottom": "1rem",
-            }
-          }
-          value="myLittleAction"
-        />
-        <Button
-          block={true}
-          color="success"
-          tag="button"
-        >
-          Confirm
-        </Button>
-      </Form>
-    </PopoverBody>
-  </Popover>
-</Button>
+    Foo
+  </UncontrolledTooltip>
+</Fragment>
 `;

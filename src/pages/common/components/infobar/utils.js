@@ -25,7 +25,7 @@ import _toLower from 'lodash/toLower'
 
 import {DatetimeLabel} from '../../utils/labels'
 import * as utils from '../../../../utils'
-import {getSourcePathFromContext, getContextFromSourcePath} from '../../../../state/widgets/utils'
+import {getContextFromSourcePath, getSourcePathFromContext} from '../../../../state/widgets/utils'
 
 const Raven = window.Raven
 
@@ -161,7 +161,7 @@ export function isBoolean(string) {
  * @param everySources
  * @returns {*|boolean}
  */
-export function areSourcesReady(sources: Map<*,*>, context: string, everySources: boolean = false): boolean {
+export function areSourcesReady(sources: Map<*, *>, context: string, everySources: boolean = false): boolean {
     // for every source
     const currentSource = sources.get(context)
 
@@ -206,9 +206,39 @@ export function canDisplayWidget(widget, source) {
     // ex : ticket, customer, etc.
     const initialSourceName = splitPath[0]
 
-    return areSourcesReady(fromJS({
+    const ready = areSourcesReady(fromJS({
         [initialSourceName]: source.get(initialSourceName, fromJS({}))
     }), initialSourceName)
+
+    return ready && !isWidgetEmpty(widget, source)
+}
+
+export function isWidgetEmpty(widget, source, path = []) {
+    switch (widget.get('type')) {
+        case 'wrapper': {
+            const subPath = widget.get('path')
+            return widget.get('widgets', []).every((subWidget) => isWidgetEmpty(subWidget, source, subPath))
+        }
+        case 'card': {
+            const subPath = widget.get('path') ? [...path, widget.get('path')] : path
+            return widget.get('widgets', []).every((subWidget) => isWidgetEmpty(subWidget, source, subPath))
+        }
+        case 'list': {
+            const subPath = widget.get('path') ? [...path, widget.get('path')] : path
+            const data = source.getIn(subPath, [])
+
+            return data.every((value, index) =>
+                widget.get('widgets', []).every((subWidget) =>
+                    isWidgetEmpty(subWidget, source, [...subPath, index])
+                )
+            )
+        }
+        default: {
+            const subPath = [...path, widget.get('path')]
+            const data = source.getIn(subPath, null)
+            return data === null || data === ''
+        }
+    }
 }
 
 export function makeWrapper({order, context, child, sourcePath, widgetType, integrationId}) {
@@ -522,7 +552,7 @@ export function guessFieldValueFromRawData(data, type) {
             break
         }
         case 'date': {
-            fieldValue = <DatetimeLabel dateTime={data} />
+            fieldValue = <DatetimeLabel dateTime={data}/>
             break
         }
         case 'age': {
@@ -575,9 +605,14 @@ export function guessFieldValueFromRawData(data, type) {
                 isTrue = data !== 0
             }
 
-            fieldValue = isTrue
-                ? <Badge color="success">True</Badge>
-                : <Badge color="danger">False</Badge>
+            fieldValue = (
+                <Badge
+                    pill
+                    color={isTrue ? 'success' : 'danger'}
+                >
+                    {isTrue ? 'True' : 'False'}
+                </Badge>
+            )
             break
         }
         case 'array': {

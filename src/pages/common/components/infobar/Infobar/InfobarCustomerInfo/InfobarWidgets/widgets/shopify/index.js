@@ -1,6 +1,7 @@
 import Customer from './Customer'
 import Item from './Item'
 import Order from './Order'
+import Fulfillment from './Fulfillment'
 
 const shopify = (args) => {
     const path = args.template.get('absolutePath', []).join('.')
@@ -15,6 +16,10 @@ const shopify = (args) => {
 
     if (path.match(/integrations\.\d+\.orders\.\[]\.line_items\.\[]$/)) {
         return Item()
+    }
+
+    if (path.match(/integrations\.\d+\.orders\.\[]\.fulfillments\.\[]$/)) {
+        return Fulfillment()
     }
 
     return {}

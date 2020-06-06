@@ -1,12 +1,7 @@
 // @flow
 import React from 'react'
-import {
-    ButtonGroup,
-    ButtonDropdown,
-    DropdownItem,
-    DropdownMenu,
-    DropdownToggle,
-} from 'reactstrap'
+import classnames from 'classnames'
+import {ButtonDropdown, ButtonGroup, DropdownItem, DropdownMenu, DropdownToggle,} from 'reactstrap'
 
 import ActionButton from './ActionButton'
 
@@ -14,7 +9,8 @@ import type {ActionType} from './types'
 
 type Props = {
     actions: Array<ActionType>,
-    payload: Object  // the arguments which need to be passed to execute any action
+    payload: Object,  // the arguments which need to be passed to execute any action
+    float: boolean,
 }
 
 type State = {
@@ -25,12 +21,16 @@ type State = {
 const NB_ACTIONS_DISPLAYED = 3
 
 export default class ActionButtonsGroup extends React.Component<Props, State> {
+    static defaultProps = {
+        float: false,
+    }
+
     state = {
         actionDropdownIsOpen: false
     }
 
     render() {
-        const {actions, payload} = this.props
+        const {actions, payload, float} = this.props
 
         const {actionDropdownIsOpen} = this.state
 
@@ -42,7 +42,7 @@ export default class ActionButtonsGroup extends React.Component<Props, State> {
         const dropdownOptions = actions.slice(NB_ACTIONS_DISPLAYED)
 
         return (
-            <ButtonGroup className="action-buttons">
+            <ButtonGroup className={classnames('action-buttons', {'action-buttons-float': float})}>
                 {
                     buttons.map((action) => {
                         return (
@@ -50,10 +50,12 @@ export default class ActionButtonsGroup extends React.Component<Props, State> {
                                 key={action.key}
                                 options={action.options}
                                 payload={payload}
+                                popover={action.popover}
                                 tooltip={action.tooltip}
                                 title={action.title}
                                 modal={action.modal}
                                 modalData={action.modalData}
+                                float={float}
                             >
                                 {action.child}
                             </ActionButton>
@@ -84,10 +86,12 @@ export default class ActionButtonsGroup extends React.Component<Props, State> {
                                                 payload={payload}
                                                 tag={DropdownItem}
                                                 tagOptions={{toggle: false}}
+                                                popover={action.popover}
                                                 tooltip={action.tooltip}
                                                 title={action.title}
                                                 modal={action.modal}
                                                 modalData={action.modalData}
+                                                float={float}
                                             >
                                                 {action.child}
                                             </ActionButton>

@@ -4,22 +4,22 @@ import React, {type Node} from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import {fromJS, type Map} from 'immutable'
-import {Badge} from 'reactstrap'
 
-import {humanizeString} from '../../../../../../../../../../utils'
+import {DatetimeLabel} from '../../../../../../../../utils/labels'
 import ActionButtonsGroup from '../../ActionButtonsGroup'
-import type {ActionType} from '../../types'
-
+import {CardHeaderDetails} from '../../CardHeaderDetails'
 import DraftOrderModal from '../shared/DraftOrderModal'
+import {CardHeaderValue} from '../../CardHeaderValue'
+import type {ActionType} from '../../types'
 import {ShopifyAction} from '../constants'
 
 import CancelOrderModal from './CancelOrderModal'
 import RefundOrderModal from './RefundOrderModal'
+import OrderStatus from './OrderStatus'
 
 export default function OrderWidget() {
     return {
         AfterTitle,
-        BeforeContent,
         editionHiddenFields: ['link'],
         TitleWrapper,
         Wrapper,
@@ -63,13 +63,11 @@ class AfterTitle extends React.Component<AfterTitleProps> {
                     }
                 ],
                 title: 'Refund order',
+                tooltip: 'Refund order',
                 child: (
-                    <div>
-                        <i className="material-icons mr-1">
-                            refresh
-                        </i>
-                        Refund
-                    </div>
+                    <i className="material-icons">
+                        refresh
+                    </i>
                 ),
                 modal: RefundOrderModal,
                 modalData: {
@@ -90,13 +88,11 @@ class AfterTitle extends React.Component<AfterTitleProps> {
                     }
                 ],
                 title: 'Cancel order',
+                tooltip: 'Cancel order',
                 child: (
-                    <div>
-                        <i className="material-icons mr-1">
-                            block
-                        </i>
-                        Cancel
-                    </div>
+                    <i className="material-icons">
+                        block
+                    </i>
                 ),
                 modal: CancelOrderModal,
                 modalData: {
@@ -118,13 +114,11 @@ class AfterTitle extends React.Component<AfterTitleProps> {
                     },
                 ],
                 title: 'Duplicate order',
+                tooltip: 'Duplicate order',
                 child: (
-                    <div>
-                        <i className="material-icons mr-2">
-                            filter_none
-                        </i>
-                        Duplicate
-                    </div>
+                    <i className="material-icons">
+                        filter_none
+                    </i>
                 ),
                 modal: DraftOrderModal,
                 modalData: {
@@ -156,7 +150,7 @@ class AfterTitle extends React.Component<AfterTitleProps> {
 
     render() {
         const {source}: AfterTitleProps = this.props
-        const {integrationId}: { integrationId: number } = this.context
+        const {integrationId, isOrderCancelled} = this.context
 
         if (this.props.isEditing) {
             return null
@@ -171,63 +165,34 @@ class AfterTitle extends React.Component<AfterTitleProps> {
         }
 
         return (
-            <ActionButtonsGroup
-                actions={this._getActions()}
-                payload={payload}
-            />
+            <>
+                <OrderStatus
+                    fulfillmentStatus={source.get('fulfillment_status')}
+                    financialStatus={source.get('financial_status')}
+                    isCancelled={isOrderCancelled}
+                />
+                <ActionButtonsGroup
+                    actions={this._getActions()}
+                    payload={payload}
+                    float
+                />
+                <CardHeaderDetails>
+                    <CardHeaderValue label="Created">
+                        <DatetimeLabel
+                            key="created-at"
+                            dateTime={source.get('created_at')}
+                        />
+                    </CardHeaderValue>
+                    <CardHeaderValue label="Total">
+                        {parseFloat(source.getIn(['total_price_set', 'presentment_money', 'amount']))}
+                        {' '}
+                        {source.getIn(['total_price_set', 'presentment_money', 'currency_code'])}
+                    </CardHeaderValue>
+                </CardHeaderDetails>
+            </>
         )
     }
 }
-
-const statusColors = {
-    pending: 'secondary',
-    partially_paid: 'success',
-    paid: 'success',
-    partially_refunded: 'warning',
-    refunded: 'warning',
-}
-
-
-type BeforeContentProps = {
-    source: Map<*, *>
-}
-
-class BeforeContent extends React.Component<BeforeContentProps> { // eslint-disable-line
-    static contextTypes = {
-        isOrderCancelled: PropTypes.bool.isRequired,
-    }
-
-    render() {
-        const {source} = this.props
-        const {isOrderCancelled}: { isOrderCancelled: boolean } = this.context
-
-        const status: string = source.get('financial_status') || ''
-
-        return (
-            <div className="simple-field">
-                <span className="field-label">
-                    Status:
-                </span>
-                <span className="field-value">
-                    <Badge color={statusColors[status] || 'secondary'}>
-                        {humanizeString(status)}
-                    </Badge>
-                    {
-                        isOrderCancelled && (
-                            <Badge
-                                color="danger"
-                                className="ml-2"
-                            >
-                                Cancelled
-                            </Badge>
-                        )
-                    }
-                </span>
-            </div>
-        )
-    }
-}
-
 
 type TitleWrapperProps = {
     children?: Node,

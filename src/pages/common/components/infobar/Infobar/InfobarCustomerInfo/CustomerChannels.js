@@ -1,7 +1,6 @@
-import React from 'react'
+import React, {type Node} from 'react'
 import {type List, type Map} from 'immutable'
 import classnames from 'classnames'
-import {Button} from 'reactstrap'
 
 import {
     CHAT_CUSTOMER_CHANNEL_TYPE, EMAIL_CUSTOMER_CHANNEL_TYPE,
@@ -12,12 +11,15 @@ import SourceIcon from '../../../SourceIcon'
 import Tooltip from '../../../Tooltip'
 import css from '../../Infobar.less'
 
+import {ShowMore} from './ShowMore'
+
 
 const DEFAULT_COUNT_DISPLAYED_CUSTOMER_CHANNELS = 2
 
 
 type Props = {
-    channels: List<Map<*,*>>
+    channels: List<Map<*,*>>,
+    children: Node,
 }
 
 type State = {
@@ -34,7 +36,7 @@ export default class CustomerChannels extends React.Component<Props, State> {
     }
 
     render() {
-        const {channels} = this.props
+        const {channels, children} = this.props
         const {displayAllCustomerChannels} = this.state
 
         let filteredChannels = channels
@@ -136,24 +138,20 @@ export default class CustomerChannels extends React.Component<Props, State> {
         })
 
         return (
-            <div>
+            <>
                 {list}
+                {children}
                 {
                     hasMoreChannels && (
-                        <Button
-                            type="button"
-                            color="link"
+                        <ShowMore
+                            className="pl-0"
                             onClick={this._displayAllCustomerChannels}
-                            className="pl-0 show-more"
                         >
-                            Show more
-                            <i className="material-icons md-2 ml-2">
-                                arrow_drop_down
-                            </i>
-                        </Button>
+                            More info
+                        </ShowMore>
                     )
                 }
-            </div>
+            </>
         )
     }
 }

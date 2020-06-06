@@ -5,10 +5,10 @@ exports[`<Infobar/> should render current customer with suggested customer 1`] =
   className=""
 >
   <div
-    className="infobar-content"
+    className="infobarContent"
   >
     <div
-      className="infobar-search-wrapper d-flex align-items-center justify-content-between"
+      className="infobarSearchWrapper d-flex align-items-center justify-content-between"
     >
       <Search
         bindKey={true}
@@ -50,129 +50,129 @@ exports[`<Infobar/> should render current customer with suggested customer 1`] =
     <div
       className="content"
     >
-      <div>
-        <Connect(InfobarCustomerInfo)
-          actions={
-            Object {
-              "startEditionMode": [MockFunction],
-              "stopEditionMode": [MockFunction],
-              "submitWidgets": [MockFunction],
-            }
+      <Connect(InfobarCustomerInfo)
+        actions={
+          Object {
+            "startEditionMode": [MockFunction],
+            "stopEditionMode": [MockFunction],
+            "submitWidgets": [MockFunction],
           }
-          customer={
-            Immutable.Map {
-              "id": 2,
-            }
+        }
+        customer={
+          Immutable.Map {
+            "id": 2,
           }
-          isEditing={false}
-          sources={
-            Immutable.Map {
-              "ticket": Immutable.Map {
-                "customer": Immutable.Map {
-                  "id": 2,
-                },
-              },
+        }
+        displayTabs={true}
+        isEditing={false}
+        sources={
+          Immutable.Map {
+            "ticket": Immutable.Map {
               "customer": Immutable.Map {
                 "id": 2,
               },
-            }
+            },
+            "customer": Immutable.Map {
+              "id": 2,
+            },
           }
-          widgets={
-            Immutable.Map {
-              "_internal": Immutable.Map {
-                "isEditing": false,
-              },
-            }
+        }
+        widgets={
+          Immutable.Map {
+            "_internal": Immutable.Map {
+              "isEditing": false,
+            },
           }
+        }
+      />
+      <div
+        className="d-none d-md-block"
+      >
+        <div
+          className="infobarSectionSeparator"
         />
         <div
-          className="d-none d-md-block"
+          className="suggestedCustomer"
         >
+          <h4>
+            Is this the same person?
+          </h4>
+          <p>
+            'We have found someone similar to the customer of this ticket. If it is the same person, merge them together to get a unified view of this customer.
+          </p>
           <div
-            className="infobar-section-separator"
-          />
-          <div
-            className="suggestedCustomer"
+            style={
+              Object {
+                "marginBottom": "30px",
+              }
+            }
           >
-            <h4>
-              Is this the same person?
-            </h4>
-            <p>
-              'We have found someone similar to the customer of this ticket. If it is the same person, merge them together to get a unified view of this customer.
-            </p>
-            <div
-              style={
-                Object {
-                  "marginBottom": "30px",
-                }
-              }
+            <Button
+              className="mr-2"
+              color="primary"
+              onClick={[Function]}
+              tag="button"
+              type="button"
             >
-              <Button
-                className="mr-2"
-                color="primary"
-                onClick={[Function]}
-                tag="button"
-                type="button"
+              <i
+                className="material-icons mr-1"
               >
-                <i
-                  className="material-icons mr-1"
-                >
-                  call_merge
-                </i>
-                Merge
-              </Button>
-            </div>
-            <Connect(InfobarCustomerInfo)
-              actions={
-                Object {
-                  "startEditionMode": [MockFunction],
-                  "stopEditionMode": [MockFunction],
-                  "submitWidgets": [MockFunction],
-                }
+                call_merge
+              </i>
+              Merge
+            </Button>
+          </div>
+          <Connect(InfobarCustomerInfo)
+            actions={
+              Object {
+                "startEditionMode": [MockFunction],
+                "stopEditionMode": [MockFunction],
+                "submitWidgets": [MockFunction],
               }
-              customer={
-                Immutable.Map {
-                  "id": 10,
-                }
+            }
+            customer={
+              Immutable.Map {
+                "id": 10,
               }
-              isEditing={false}
-              sources={
-                Immutable.Map {
-                  "ticket": Immutable.Map {
-                    "customer": Immutable.Map {
-                      "id": 10,
-                    },
-                  },
+            }
+            displayTabs={false}
+            isEditing={false}
+            sources={
+              Immutable.Map {
+                "ticket": Immutable.Map {
                   "customer": Immutable.Map {
                     "id": 10,
                   },
-                }
-              }
-              widgets={
-                Immutable.Map {
-                  "_internal": Immutable.Map {
-                    "isEditing": false,
-                  },
-                }
-              }
-            />
-            <Connect(MergeCustomersContainer)
-              destinationCustomer={
-                Immutable.Map {
-                  "id": 2,
-                }
-              }
-              display={false}
-              isTicketContext={true}
-              onClose={[Function]}
-              onSuccess={[Function]}
-              sourceCustomer={
-                Immutable.Map {
+                },
+                "customer": Immutable.Map {
                   "id": 10,
-                }
+                },
               }
-            />
-          </div>
+            }
+            widgets={
+              Immutable.Map {
+                "_internal": Immutable.Map {
+                  "isEditing": false,
+                },
+              }
+            }
+          />
+          <Connect(MergeCustomersContainer)
+            destinationCustomer={
+              Immutable.Map {
+                "id": 2,
+              }
+            }
+            display={false}
+            isTicketContext={true}
+            onClose={[Function]}
+            onSuccess={[Function]}
+            sourceCustomer={
+              Immutable.Map {
+                "id": 10,
+              }
+            }
+          />
         </div>
       </div>
     </div>
@@ -185,10 +185,10 @@ exports[`<Infobar/> should render customer context 1`] = `
   className=""
 >
   <div
-    className="infobar-content"
+    className="infobarContent"
   >
     <div
-      className="infobar-search-wrapper d-flex align-items-center justify-content-between"
+      className="infobarSearchWrapper d-flex align-items-center justify-content-between"
     >
       <Search
         bindKey={true}
@@ -230,42 +230,41 @@ exports[`<Infobar/> should render customer context 1`] = `
     <div
       className="content"
     >
-      <div>
-        <Connect(InfobarCustomerInfo)
-          actions={
-            Object {
-              "startEditionMode": [MockFunction],
-              "stopEditionMode": [MockFunction],
-              "submitWidgets": [MockFunction],
-            }
+      <Connect(InfobarCustomerInfo)
+        actions={
+          Object {
+            "startEditionMode": [MockFunction],
+            "stopEditionMode": [MockFunction],
+            "submitWidgets": [MockFunction],
           }
-          customer={
-            Immutable.Map {
-              "id": 2,
-            }
+        }
+        customer={
+          Immutable.Map {
+            "id": 2,
           }
-          isEditing={false}
-          sources={
-            Immutable.Map {
-              "ticket": Immutable.Map {
-                "customer": Immutable.Map {
-                  "id": 2,
-                },
-              },
+        }
+        displayTabs={true}
+        isEditing={false}
+        sources={
+          Immutable.Map {
+            "ticket": Immutable.Map {
               "customer": Immutable.Map {
                 "id": 2,
               },
-            }
+            },
+            "customer": Immutable.Map {
+              "id": 2,
+            },
           }
-          widgets={
-            Immutable.Map {
-              "_internal": Immutable.Map {
-                "isEditing": false,
-              },
-            }
+        }
+        widgets={
+          Immutable.Map {
+            "_internal": Immutable.Map {
+              "isEditing": false,
+            },
           }
-        />
-      </div>
+        }
+      />
     </div>
   </div>
 </Connect(InfobarLayout)>
@@ -276,10 +275,10 @@ exports[`<Infobar/> should render loading state because the customer is being fe
   className=""
 >
   <div
-    className="infobar-content"
+    className="infobarContent"
   >
     <div
-      className="infobar-search-wrapper d-flex align-items-center justify-content-between"
+      className="infobarSearchWrapper d-flex align-items-center justify-content-between"
     >
       <Search
         bindKey={true}
@@ -336,10 +335,10 @@ exports[`<Infobar/> should render loading state because the search is in progres
   className=""
 >
   <div
-    className="infobar-content"
+    className="infobarContent"
   >
     <div
-      className="infobar-search-wrapper d-flex align-items-center justify-content-between"
+      className="infobarSearchWrapper d-flex align-items-center justify-content-between"
     >
       <Search
         bindKey={true}
@@ -396,10 +395,10 @@ exports[`<Infobar/> should render search results 1`] = `
   className=""
 >
   <div
-    className="infobar-content"
+    className="infobarContent"
   >
     <div
-      className="infobar-search-wrapper d-flex align-items-center justify-content-between"
+      className="infobarSearchWrapper d-flex align-items-center justify-content-between"
     >
       <Search
         bindKey={true}
@@ -441,39 +440,37 @@ exports[`<Infobar/> should render search results 1`] = `
     <div
       className="content"
     >
-      <div>
-        <div
-          className="mb-3"
+      <div
+        className="m-3"
+      >
+        <Button
+          color="secondary"
+          onClick={[Function]}
+          tag="button"
+          type="button"
         >
-          <Button
-            color="secondary"
-            onClick={[Function]}
-            tag="button"
-            type="button"
+          <i
+            className="material-icons md-2 mr-2"
           >
-            <i
-              className="material-icons md-2 mr-2"
-            >
-              arrow_back
-            </i>
-            Back
-          </Button>
-        </div>
-        <InfobarSearchResultsList
-          defaultCustomerId={2}
-          onCustomerClick={[Function]}
-          searchResults={
-            Immutable.List [
-              Immutable.Map {
-                "id": 8,
-              },
-              Immutable.Map {
-                "id": 9,
-              },
-            ]
-          }
-        />
+            arrow_back
+          </i>
+          Back
+        </Button>
       </div>
+      <InfobarSearchResultsList
+        defaultCustomerId={2}
+        onCustomerClick={[Function]}
+        searchResults={
+          Immutable.List [
+            Immutable.Map {
+              "id": 8,
+            },
+            Immutable.Map {
+              "id": 9,
+            },
+          ]
+        }
+      />
     </div>
   </div>
 </Connect(InfobarLayout)>
@@ -484,10 +481,10 @@ exports[`<Infobar/> should render selected customer 1`] = `
   className=""
 >
   <div
-    className="infobar-content"
+    className="infobarContent"
   >
     <div
-      className="infobar-search-wrapper d-flex align-items-center justify-content-between"
+      className="infobarSearchWrapper d-flex align-items-center justify-content-between"
     >
       <Search
         bindKey={true}
@@ -529,101 +526,100 @@ exports[`<Infobar/> should render selected customer 1`] = `
     <div
       className="content"
     >
-      <div>
-        <div
-          className="mb-3"
+      <div
+        className="m-3"
+      >
+        <Button
+          color="secondary"
+          onClick={[Function]}
+          tag="button"
+          type="button"
         >
-          <Button
-            color="secondary"
-            onClick={[Function]}
-            tag="button"
-            type="button"
+          <i
+            className="material-icons md-2 mr-2"
           >
-            <i
-              className="material-icons md-2 mr-2"
-            >
-              arrow_back
-            </i>
-            Back
-          </Button>
-          <InfobarCustomerActions
-            customer={
-              Immutable.Map {
-                "id": 2,
-              }
-            }
-            selectedCustomer={
-              Immutable.Map {
-                "id": 7,
-              }
-            }
-            setCustomer={[Function]}
-            sources={
-              Immutable.Map {
-                "ticket": Immutable.Map {
-                  "customer": Immutable.Map {
-                    "id": 2,
-                  },
-                },
-                "customer": Immutable.Map {
-                  "id": 2,
-                },
-              }
-            }
-            toggleMergeCustomerModal={[Function]}
-          />
-        </div>
-        <Connect(InfobarCustomerInfo)
-          actions={
-            Object {
-              "startEditionMode": [MockFunction],
-              "stopEditionMode": [MockFunction],
-              "submitWidgets": [MockFunction],
-            }
-          }
+            arrow_back
+          </i>
+          Back
+        </Button>
+        <InfobarCustomerActions
           customer={
-            Immutable.Map {
-              "id": 7,
-            }
-          }
-          isEditing={false}
-          sources={
-            Immutable.Map {
-              "ticket": Immutable.Map {
-                "customer": Immutable.Map {
-                  "id": 7,
-                },
-              },
-              "customer": Immutable.Map {
-                "id": 7,
-              },
-            }
-          }
-          widgets={
-            Immutable.Map {
-              "_internal": Immutable.Map {
-                "isEditing": false,
-              },
-            }
-          }
-        />
-        <Connect(MergeCustomersContainer)
-          destinationCustomer={
             Immutable.Map {
               "id": 2,
             }
           }
-          display={false}
-          isTicketContext={true}
-          onClose={[Function]}
-          onSuccess={[Function]}
-          sourceCustomer={
+          selectedCustomer={
             Immutable.Map {
               "id": 7,
             }
           }
+          setCustomer={[Function]}
+          sources={
+            Immutable.Map {
+              "ticket": Immutable.Map {
+                "customer": Immutable.Map {
+                  "id": 2,
+                },
+              },
+              "customer": Immutable.Map {
+                "id": 2,
+              },
+            }
+          }
+          toggleMergeCustomerModal={[Function]}
         />
       </div>
+      <Connect(InfobarCustomerInfo)
+        actions={
+          Object {
+            "startEditionMode": [MockFunction],
+            "stopEditionMode": [MockFunction],
+            "submitWidgets": [MockFunction],
+          }
+        }
+        customer={
+          Immutable.Map {
+            "id": 7,
+          }
+        }
+        displayTabs={true}
+        isEditing={false}
+        sources={
+          Immutable.Map {
+            "ticket": Immutable.Map {
+              "customer": Immutable.Map {
+                "id": 7,
+              },
+            },
+            "customer": Immutable.Map {
+              "id": 7,
+            },
+          }
+        }
+        widgets={
+          Immutable.Map {
+            "_internal": Immutable.Map {
+              "isEditing": false,
+            },
+          }
+        }
+      />
+      <Connect(MergeCustomersContainer)
+        destinationCustomer={
+          Immutable.Map {
+            "id": 2,
+          }
+        }
+        display={false}
+        isTicketContext={true}
+        onClose={[Function]}
+        onSuccess={[Function]}
+        sourceCustomer={
+          Immutable.Map {
+            "id": 7,
+          }
+        }
+      />
     </div>
   </div>
 </Connect(InfobarLayout)>
@@ -634,10 +630,10 @@ exports[`<Infobar/> should render ticket context 1`] = `
   className=""
 >
   <div
-    className="infobar-content"
+    className="infobarContent"
   >
     <div
-      className="infobar-search-wrapper d-flex align-items-center justify-content-between"
+      className="infobarSearchWrapper d-flex align-items-center justify-content-between"
     >
       <Search
         bindKey={true}
@@ -679,42 +675,41 @@ exports[`<Infobar/> should render ticket context 1`] = `
     <div
       className="content"
     >
-      <div>
-        <Connect(InfobarCustomerInfo)
-          actions={
-            Object {
-              "startEditionMode": [MockFunction],
-              "stopEditionMode": [MockFunction],
-              "submitWidgets": [MockFunction],
-            }
+      <Connect(InfobarCustomerInfo)
+        actions={
+          Object {
+            "startEditionMode": [MockFunction],
+            "stopEditionMode": [MockFunction],
+            "submitWidgets": [MockFunction],
           }
-          customer={
-            Immutable.Map {
-              "id": 2,
-            }
+        }
+        customer={
+          Immutable.Map {
+            "id": 2,
           }
-          isEditing={false}
-          sources={
-            Immutable.Map {
-              "ticket": Immutable.Map {
-                "customer": Immutable.Map {
-                  "id": 2,
-                },
-              },
+        }
+        displayTabs={true}
+        isEditing={false}
+        sources={
+          Immutable.Map {
+            "ticket": Immutable.Map {
               "customer": Immutable.Map {
                 "id": 2,
               },
-            }
+            },
+            "customer": Immutable.Map {
+              "id": 2,
+            },
           }
-          widgets={
-            Immutable.Map {
-              "_internal": Immutable.Map {
-                "isEditing": false,
-              },
-            }
+        }
+        widgets={
+          Immutable.Map {
+            "_internal": Immutable.Map {
+              "isEditing": false,
+            },
           }
-        />
-      </div>
+        }
+      />
     </div>
   </div>
 </Connect(InfobarLayout)>
@@ -725,10 +720,10 @@ exports[`<Infobar/> should render widgets edition mode 1`] = `
   className="editing"
 >
   <div
-    className="infobar-content"
+    className="infobarContent"
   >
     <div
-      className="infobar-search-wrapper d-flex align-items-center justify-content-between"
+      className="infobarSearchWrapper d-flex align-items-center justify-content-between"
     >
       <Search
         bindKey={true}
@@ -770,42 +765,41 @@ exports[`<Infobar/> should render widgets edition mode 1`] = `
     <div
       className="content"
     >
-      <div>
-        <Connect(InfobarCustomerInfo)
-          actions={
-            Object {
-              "startEditionMode": [MockFunction],
-              "stopEditionMode": [MockFunction],
-              "submitWidgets": [MockFunction],
-            }
+      <Connect(InfobarCustomerInfo)
+        actions={
+          Object {
+            "startEditionMode": [MockFunction],
+            "stopEditionMode": [MockFunction],
+            "submitWidgets": [MockFunction],
           }
-          customer={
-            Immutable.Map {
-              "id": 2,
-            }
+        }
+        customer={
+          Immutable.Map {
+            "id": 2,
           }
-          isEditing={true}
-          sources={
-            Immutable.Map {
-              "ticket": Immutable.Map {
-                "customer": Immutable.Map {
-                  "id": 2,
-                },
-              },
+        }
+        displayTabs={true}
+        isEditing={true}
+        sources={
+          Immutable.Map {
+            "ticket": Immutable.Map {
               "customer": Immutable.Map {
                 "id": 2,
               },
-            }
+            },
+            "customer": Immutable.Map {
+              "id": 2,
+            },
           }
-          widgets={
-            Immutable.Map {
-              "_internal": Immutable.Map {
-                "isEditing": true,
-              },
-            }
+        }
+        widgets={
+          Immutable.Map {
+            "_internal": Immutable.Map {
+              "isEditing": true,
+            },
           }
-        />
-      </div>
+        }
+      />
     </div>
   </div>
   <InfobarWidgetsEditionTools

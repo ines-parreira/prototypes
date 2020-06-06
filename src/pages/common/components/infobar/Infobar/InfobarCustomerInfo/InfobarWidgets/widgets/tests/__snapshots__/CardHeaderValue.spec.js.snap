@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CardHeaderValue/> render() should render with label 1`] = `
+<span
+  className="container"
+>
+  <span
+    className="label"
+  >
+    Label
+    : 
+  </span>
+  <strong>
+    foo
+  </strong>
+</span>
+`;
+
+exports[`<CardHeaderValue/> render() should render without label 1`] = `
+<span
+  className="container"
+>
+  <strong>
+    foo
+  </strong>
+</span>
+`;

@@ -4,24 +4,27 @@ import {fromJS, type Map} from 'immutable'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
-import {
-    Badge
-} from 'reactstrap'
+import {Badge} from 'reactstrap'
 
 import {devLog, humanizeString, isCurrentlyOnTicket} from '../../../../../../../../../utils'
 import {renderTemplate} from '../../../../../../../utils/template'
 
-import {RECHARGE_CANCELLATION_REASONS, RECHARGE_DEFAULT_CANCELLATION_REASON} from '../../../../../../../../../config/integrations/recharge'
+import {
+    RECHARGE_CANCELLATION_REASONS,
+    RECHARGE_DEFAULT_CANCELLATION_REASON
+} from '../../../../../../../../../config/integrations/recharge'
 import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../../../../state/customers/selectors'
 import * as ticketSelectors from '../../../../../../../../../state/ticket/selectors'
 
+import {DatetimeLabel} from '../../../../../../../utils/labels'
 import ActionButtonsGroup from '../ActionButtonsGroup'
+import {CardHeaderDetails} from '../CardHeaderDetails'
+import {CardHeaderValue} from '../CardHeaderValue'
 
 
 export default function Subscription() {
     return {
         AfterTitle,
-        BeforeContent,
         TitleWrapper,
         Wrapper,
     }
@@ -30,7 +33,12 @@ export default function Subscription() {
 
 type AfterTitleProps = {
     isEditing: boolean,
-    source: Map<*,*>
+    source: Map<*, *>
+}
+
+const statusColors = {
+    active: 'success',
+    cancelled: 'danger',
 }
 
 export class AfterTitle extends React.Component<AfterTitleProps> {
@@ -62,7 +70,8 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                         required: true
                     }]
                 }],
-                tooltip: 'This will cancel the subscription in Recharge.',
+                popover: 'This will cancel the subscription in Recharge.',
+                tooltip: 'Cancel subscription',
                 title: (
                     <div>
                         <i className="material-icons mr-2">
@@ -72,18 +81,16 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                     </div>
                 ),
                 child: (
-                    <div>
-                        <i className="material-icons mr-2">
-                            refresh
-                        </i>
-                        Cancel
-                    </div>
+                    <i className="material-icons">
+                        refresh
+                    </i>
                 )
             },
             {
                 key: 'activate',
                 options: [{value: 'rechargeActivateSubscription'}],
-                tooltip: 'This will activate the subscription in Recharge.',
+                popover: 'This will activate the subscription in Recharge.',
+                tooltip: 'Activate subscription',
                 title: (
                     <div>
                         <i className="material-icons mr-2">
@@ -93,12 +100,9 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                     </div>
                 ),
                 child: (
-                    <div>
-                        <i className="material-icons mr-2">
-                            refresh
-                        </i>
-                        Activate
-                    </div>
+                    <i className="material-icons">
+                        refresh
+                    </i>
                 )
             },
         ]
@@ -111,44 +115,32 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
             subscription_id: source.get('id'),
         }
 
-        return (
-            <ActionButtonsGroup
-                actions={actions}
-                payload={payload}
-            />
-        )
-    }
-}
-
-
-const statusColors = {
-    active: 'success',
-    cancelled: 'danger',
-}
-
-type BeforeContentProps = {
-    source: Map<*,*>
-}
-
-class BeforeContent extends React.Component<BeforeContentProps> {
-    render() {
-        const {source} = this.props
-
         const status = (source.get('status') || '').toLowerCase()
 
         return (
-            <div className="simple-field">
-                <span className="field-label">
-                    Status:
-                </span>
-                <span className="field-value">
-                    <Badge
-                        color={statusColors[status]}
-                    >
-                        {humanizeString(status)}
-                    </Badge>
-                </span>
-            </div>
+            <>
+                <Badge
+                    key="status"
+                    pill
+                    color={statusColors[status]}
+                    className="ml-1"
+                >
+                    {humanizeString(status)}
+                </Badge>
+                <ActionButtonsGroup
+                    actions={actions}
+                    payload={payload}
+                    float
+                />
+                <CardHeaderDetails>
+                    <CardHeaderValue label="Created">
+                        <DatetimeLabel
+                            key="created-at"
+                            dateTime={source.get('created_at')}
+                        />
+                    </CardHeaderValue>
+                </CardHeaderDetails>
+            </>
         )
     }
 }
@@ -156,9 +148,9 @@ class BeforeContent extends React.Component<BeforeContentProps> {
 
 type TitleWrapperProps = {
     children: ?Node,
-    source: Map<*,*>,
-    template: Map<*,*>,
-    getIntegrationData: (number, number) => Map<*,*>
+    source: Map<*, *>,
+    template: Map<*, *>,
+    getIntegrationData: (number, number) => Map<*, *>
 }
 
 @connect((state) => {
@@ -218,7 +210,7 @@ export class TitleWrapper extends React.Component<TitleWrapperProps> {
 
 type WrapperProps = {
     children: Node,
-    source: Map<*,*>
+    source: Map<*, *>
 }
 
 class Wrapper extends React.Component<WrapperProps> {

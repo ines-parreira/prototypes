@@ -100,14 +100,11 @@ exports[`Charge AfterTitle should display the refund action when the status is S
   actions={
     Array [
       Object {
-        "child": <div>
-          <i
-            className="material-icons mr-2"
-          >
-            refresh
-          </i>
-          Refund
-        </div>,
+        "child": <i
+          className="material-icons"
+        >
+          refresh
+        </i>,
         "key": "refund",
         "options": Array [
           Object {
@@ -127,6 +124,7 @@ exports[`Charge AfterTitle should display the refund action when the status is S
             "value": "rechargeRefundCharge",
           },
         ],
+        "popover": "This will refund the charge in Recharge with the amount specified below.",
         "title": <div>
           <i
             className="material-icons mr-2"
@@ -135,10 +133,11 @@ exports[`Charge AfterTitle should display the refund action when the status is S
           </i>
           Refund charge
         </div>,
-        "tooltip": "This will refund the charge in Recharge with the amount specified below.",
+        "tooltip": "Refund charge",
       },
     ]
   }
+  float={true}
   payload={
     Object {
       "charge_id": undefined,
@@ -152,14 +151,11 @@ exports[`Charge AfterTitle should display the refund action when the status is S
   actions={
     Array [
       Object {
-        "child": <div>
-          <i
-            className="material-icons mr-2"
-          >
-            refresh
-          </i>
-          Refund
-        </div>,
+        "child": <i
+          className="material-icons"
+        >
+          refresh
+        </i>,
         "key": "refund",
         "options": Array [
           Object {
@@ -179,6 +175,7 @@ exports[`Charge AfterTitle should display the refund action when the status is S
             "value": "rechargeRefundCharge",
           },
         ],
+        "popover": "This will refund the charge in Recharge with the amount specified below.",
         "title": <div>
           <i
             className="material-icons mr-2"
@@ -187,10 +184,11 @@ exports[`Charge AfterTitle should display the refund action when the status is S
           </i>
           Refund charge
         </div>,
-        "tooltip": "This will refund the charge in Recharge with the amount specified below.",
+        "tooltip": "Refund charge",
       },
     ]
   }
+  float={true}
   payload={
     Object {
       "charge_id": undefined,
@@ -204,14 +202,11 @@ exports[`Charge AfterTitle should handle correctly if total_price or total_refun
   actions={
     Array [
       Object {
-        "child": <div>
-          <i
-            className="material-icons mr-2"
-          >
-            refresh
-          </i>
-          Refund
-        </div>,
+        "child": <i
+          className="material-icons"
+        >
+          refresh
+        </i>,
         "key": "refund",
         "options": Array [
           Object {
@@ -231,6 +226,7 @@ exports[`Charge AfterTitle should handle correctly if total_price or total_refun
             "value": "rechargeRefundCharge",
           },
         ],
+        "popover": "This will refund the charge in Recharge with the amount specified below.",
         "title": <div>
           <i
             className="material-icons mr-2"
@@ -239,10 +235,11 @@ exports[`Charge AfterTitle should handle correctly if total_price or total_refun
           </i>
           Refund charge
         </div>,
-        "tooltip": "This will refund the charge in Recharge with the amount specified below.",
+        "tooltip": "Refund charge",
       },
     ]
   }
+  float={true}
   payload={
     Object {
       "charge_id": undefined,
@@ -256,14 +253,11 @@ exports[`Charge AfterTitle should handle correctly if total_price or total_refun
   actions={
     Array [
       Object {
-        "child": <div>
-          <i
-            className="material-icons mr-2"
-          >
-            refresh
-          </i>
-          Refund
-        </div>,
+        "child": <i
+          className="material-icons"
+        >
+          refresh
+        </i>,
         "key": "refund",
         "options": Array [
           Object {
@@ -283,6 +277,7 @@ exports[`Charge AfterTitle should handle correctly if total_price or total_refun
             "value": "rechargeRefundCharge",
           },
         ],
+        "popover": "This will refund the charge in Recharge with the amount specified below.",
         "title": <div>
           <i
             className="material-icons mr-2"
@@ -291,10 +286,11 @@ exports[`Charge AfterTitle should handle correctly if total_price or total_refun
           </i>
           Refund charge
         </div>,
-        "tooltip": "This will refund the charge in Recharge with the amount specified below.",
+        "tooltip": "Refund charge",
       },
     ]
   }
+  float={true}
   payload={
     Object {
       "charge_id": undefined,
@@ -306,6 +302,7 @@ exports[`Charge AfterTitle should handle correctly if total_price or total_refun
 exports[`Charge AfterTitle should not display the refund action when the status is not SUCCESS or PARTIALLY_REFUNDED 1`] = `
 <ActionButtonsGroup
   actions={Array []}
+  float={true}
   payload={
     Object {
       "charge_id": undefined,
@@ -333,7 +330,7 @@ exports[`Charge BeforeContent should display default color if there's no matchin
     >
       <Badge
         color="secondary"
-        pill={false}
+        pill={true}
         tag="span"
       >
         Foobar
@@ -358,7 +355,7 @@ exports[`Charge BeforeContent should display the appropriate color if there's a 
     >
       <Badge
         color="danger"
-        pill={false}
+        pill={true}
         tag="span"
       >
         Error
@@ -387,6 +384,7 @@ exports[`Charge SubscriptionAfterTitle should display the skipCharge action if t
             "value": "rechargeSkipCharge",
           },
         ],
+        "popover": "Skip the charge for this subscription on Recharge. No order will be created and no item will be shipped.",
         "title": <div>
           <i
             className="material-icons mr-1"
@@ -395,10 +393,11 @@ exports[`Charge SubscriptionAfterTitle should display the skipCharge action if t
           </i>
           Skip charge on subscription
         </div>,
-        "tooltip": "Skip the charge for this subscription on Recharge. No order will be created and no item will be shipped.",
+        "tooltip": "Skip charge",
       },
     ]
   }
+  float={false}
   payload={
     Object {
       "charge_id": 2,
@@ -427,6 +426,7 @@ exports[`Charge SubscriptionAfterTitle should display the unskipCharge action if
             "value": "rechargeUnskipCharge",
           },
         ],
+        "popover": "Unskip the charge for this subscription on Recharge.",
         "title": <div>
           <i
             className="material-icons mr-1"
@@ -435,10 +435,11 @@ exports[`Charge SubscriptionAfterTitle should display the unskipCharge action if
           </i>
           Unskip charge on subscription
         </div>,
-        "tooltip": "Unskip the charge for this subscription on Recharge.",
+        "tooltip": "Unskip charge",
       },
     ]
   }
+  float={false}
   payload={
     Object {
       "charge_id": 2,
@@ -451,6 +452,7 @@ exports[`Charge SubscriptionAfterTitle should display the unskipCharge action if
 exports[`Charge SubscriptionAfterTitle should not display any action if the charge is nor queued nor skipped 1`] = `
 <ActionButtonsGroup
   actions={Array []}
+  float={false}
   payload={
     Object {
       "charge_id": undefined,

@@ -3,7 +3,7 @@
 exports[`widgets infobar utils guessFieldValueFromRawData() should render a danger badge because passed type is \`boolean\` and passed data is a \`false\` value 1`] = `
 <Badge
   color="danger"
-  pill={false}
+  pill={true}
   tag="span"
 >
   False
@@ -13,7 +13,7 @@ exports[`widgets infobar utils guessFieldValueFromRawData() should render a dang
 exports[`widgets infobar utils guessFieldValueFromRawData() should render a danger badge because passed type is \`boolean\` and passed data is a \`false\` value 2`] = `
 <Badge
   color="danger"
-  pill={false}
+  pill={true}
   tag="span"
 >
   False
@@ -23,7 +23,7 @@ exports[`widgets infobar utils guessFieldValueFromRawData() should render a dang
 exports[`widgets infobar utils guessFieldValueFromRawData() should render a danger badge because passed type is \`boolean\` and passed data is a \`false\` value 3`] = `
 <Badge
   color="danger"
-  pill={false}
+  pill={true}
   tag="span"
 >
   False
@@ -33,7 +33,7 @@ exports[`widgets infobar utils guessFieldValueFromRawData() should render a dang
 exports[`widgets infobar utils guessFieldValueFromRawData() should render a danger badge because passed type is \`boolean\` and passed data is a \`false\` value 4`] = `
 <Badge
   color="danger"
-  pill={false}
+  pill={true}
   tag="span"
 >
   False
@@ -43,7 +43,7 @@ exports[`widgets infobar utils guessFieldValueFromRawData() should render a dang
 exports[`widgets infobar utils guessFieldValueFromRawData() should render a success badge because passed type is \`boolean\` and passed data is a \`true\` value 1`] = `
 <Badge
   color="success"
-  pill={false}
+  pill={true}
   tag="span"
 >
   True
@@ -53,7 +53,7 @@ exports[`widgets infobar utils guessFieldValueFromRawData() should render a succ
 exports[`widgets infobar utils guessFieldValueFromRawData() should render a success badge because passed type is \`boolean\` and passed data is a \`true\` value 2`] = `
 <Badge
   color="success"
-  pill={false}
+  pill={true}
   tag="span"
 >
   True
@@ -63,7 +63,7 @@ exports[`widgets infobar utils guessFieldValueFromRawData() should render a succ
 exports[`widgets infobar utils guessFieldValueFromRawData() should render a success badge because passed type is \`boolean\` and passed data is a \`true\` value 3`] = `
 <Badge
   color="success"
-  pill={false}
+  pill={true}
   tag="span"
 >
   True
@@ -73,7 +73,7 @@ exports[`widgets infobar utils guessFieldValueFromRawData() should render a succ
 exports[`widgets infobar utils guessFieldValueFromRawData() should render a success badge because passed type is \`boolean\` and passed data is a \`true\` value 4`] = `
 <Badge
   color="success"
-  pill={false}
+  pill={true}
   tag="span"
 >
   True
@@ -83,7 +83,7 @@ exports[`widgets infobar utils guessFieldValueFromRawData() should render a succ
 exports[`widgets infobar utils guessFieldValueFromRawData() should render a success badge because passed type is \`boolean\` and passed data is a \`true\` value 5`] = `
 <Badge
   color="success"
-  pill={false}
+  pill={true}
   tag="span"
 >
   True

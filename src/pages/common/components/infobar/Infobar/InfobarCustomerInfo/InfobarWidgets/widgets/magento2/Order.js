@@ -54,6 +54,7 @@ class BeforeContent extends React.Component<BeforeContentProps> {
                     </span>
                     <span className="field-value">
                         <Badge
+                            pill
                             color={statusColors[state]}
                         >
                             {humanizeString(state)}

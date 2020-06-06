@@ -70,7 +70,7 @@ describe('InfobarWidget', () => {
             const component = shallow(
                 <InfobarWidget
                     {...defaultProps}
-                    isEditing={true}
+                    isEditing={false}
                     source={undefined}
                 />
             )
@@ -81,7 +81,7 @@ describe('InfobarWidget', () => {
             const component = shallow(
                 <InfobarWidget
                     {...defaultProps}
-                    isEditing={false}
+                    isEditing={true}
                     source={undefined}
                 />
             )

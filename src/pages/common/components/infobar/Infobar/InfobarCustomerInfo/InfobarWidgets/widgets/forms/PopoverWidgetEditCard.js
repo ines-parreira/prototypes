@@ -8,7 +8,7 @@ import {isSimpleTemplateWidget} from '../../../../../utils'
 import BooleanField from '../../../../../../../forms/BooleanField'
 import InputField from '../../../../../../../forms/InputField'
 
-class TooltipWidgetEditCard extends React.Component {
+class PopoverWidgetEditCard extends React.Component {
     state = {
         title: '',
         link: '',
@@ -191,7 +191,7 @@ class TooltipWidgetEditCard extends React.Component {
     }
 }
 
-TooltipWidgetEditCard.propTypes = {
+PopoverWidgetEditCard.propTypes = {
     editionHiddenFields: PropTypes.array.isRequired,
 
     template: PropTypes.object.isRequired,
@@ -200,9 +200,9 @@ TooltipWidgetEditCard.propTypes = {
     parent: PropTypes.object
 }
 
-TooltipWidgetEditCard.defaultProps = {
+PopoverWidgetEditCard.defaultProps = {
     editionHiddenFields: [],
     isParentList: false,
 }
 
-export default TooltipWidgetEditCard
+export default PopoverWidgetEditCard

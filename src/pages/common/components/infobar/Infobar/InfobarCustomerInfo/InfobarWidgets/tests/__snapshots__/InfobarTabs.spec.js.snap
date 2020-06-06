@@ -1,0 +1,107 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<InfobarTabs/> render() should not render when list is empty 1`] = `""`;
+
+exports[`<InfobarTabs/> render() should render 1`] = `
+<Navbar
+  className="container"
+  expand={false}
+  sticky="top"
+  tag="nav"
+>
+  <Nav
+    pills={true}
+    tag="ul"
+    vertical={false}
+  >
+    <NavItem
+      key="http"
+      tag="li"
+    >
+      <NavLink
+        className="tab"
+        href="#http"
+        tag="a"
+      >
+        HTTP
+      </NavLink>
+    </NavItem>
+    <NavItem
+      key="shopify"
+      tag="li"
+    >
+      <NavLink
+        className="tab"
+        href="#shopify"
+        tag="a"
+      >
+        Shopify
+      </NavLink>
+    </NavItem>
+    <NavItem
+      key="magento2"
+      tag="li"
+    >
+      <NavLink
+        className="tab"
+        href="#magento2"
+        tag="a"
+      >
+        Magento
+      </NavLink>
+    </NavItem>
+    <NavItem
+      key="smooch_inside"
+      tag="li"
+    >
+      <NavLink
+        className="tab"
+        href="#smooch_inside"
+        tag="a"
+      >
+        Chat
+      </NavLink>
+    </NavItem>
+    <NavItem
+      key="custom"
+      tag="li"
+    >
+      <NavLink
+        className="tab"
+        href="#custom"
+        tag="a"
+      >
+        Custom
+      </NavLink>
+    </NavItem>
+  </Nav>
+</Navbar>
+`;
+
+exports[`<InfobarTabs/> render() should render without duplicates 1`] = `
+<Navbar
+  className="container"
+  expand={false}
+  sticky="top"
+  tag="nav"
+>
+  <Nav
+    pills={true}
+    tag="ul"
+    vertical={false}
+  >
+    <NavItem
+      key="http"
+      tag="li"
+    >
+      <NavLink
+        className="tab"
+        href="#http"
+        tag="a"
+      >
+        HTTP
+      </NavLink>
+    </NavItem>
+  </Nav>
+</Navbar>
+`;

@@ -54,7 +54,8 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
         let actions = [
             {
                 key: 'refund',
-                tooltip: 'This will refund the charge in Recharge with the amount specified below.',
+                popover: 'This will refund the charge in Recharge with the amount specified below.',
+                tooltip: 'Refund charge',
                 options: [
                     {
                         value: 'rechargeRefundCharge',
@@ -82,12 +83,9 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                     </div>
                 ),
                 child: (
-                    <div>
-                        <i className="material-icons mr-2">
-                            refresh
-                        </i>
-                        Refund
-                    </div>
+                    <i className="material-icons">
+                        refresh
+                    </i>
                 )
             }
         ]
@@ -107,6 +105,7 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
             <ActionButtonsGroup
                 payload={payload}
                 actions={actions}
+                float
             />
         )
     }
@@ -136,8 +135,9 @@ export class SubscriptionAfterTitle extends React.Component<SubscriptionAfterTit
             {
                 key: 'skip',
                 options: [{value: 'rechargeSkipCharge'}],
-                tooltip: 'Skip the charge for this subscription on Recharge. ' +
+                popover: 'Skip the charge for this subscription on Recharge. ' +
                     'No order will be created and no item will be shipped.',
+                tooltip: 'Skip charge',
                 title: (
                     <div>
                         <i className="material-icons mr-1">
@@ -158,7 +158,8 @@ export class SubscriptionAfterTitle extends React.Component<SubscriptionAfterTit
             {
                 key: 'unskip',
                 options: [{value: 'rechargeUnskipCharge'}],
-                tooltip: 'Unskip the charge for this subscription on Recharge.',
+                popover: 'Unskip the charge for this subscription on Recharge.',
+                tooltip: 'Unskip charge',
                 title: (
                     <div>
                         <i className="material-icons mr-1">
@@ -232,6 +233,7 @@ class BeforeContent extends React.Component<BeforeContentProps> { // eslint-disa
                     </span>
                     <span className="field-value">
                         <Badge
+                            pill
                             color={statusColors[status]}
                         >
                             {humanizeString(status)}

@@ -1788,7 +1788,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the canc
     >
       <Badge
         color="danger"
-        pill={false}
+        pill={true}
         tag="span"
       >
         Canceled
@@ -1813,7 +1813,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the clos
     >
       <Badge
         color="danger"
-        pill={false}
+        pill={true}
         tag="span"
       >
         Closed
@@ -1838,7 +1838,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the comp
     >
       <Badge
         color="success"
-        pill={false}
+        pill={true}
         tag="span"
       >
         Complete
@@ -1863,7 +1863,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the new 
     >
       <Badge
         color="info"
-        pill={false}
+        pill={true}
         tag="span"
       >
         New
@@ -1888,7 +1888,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the on_h
     >
       <Badge
         color="warning"
-        pill={false}
+        pill={true}
         tag="span"
       >
         On hold
@@ -1913,7 +1913,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the pend
     >
       <Badge
         color="info"
-        pill={false}
+        pill={true}
         tag="span"
       >
         Pending
@@ -1938,7 +1938,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the proc
     >
       <Badge
         color="info"
-        pill={false}
+        pill={true}
         tag="span"
       >
         Processing

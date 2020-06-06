@@ -15,7 +15,8 @@ describe('ActionButton component', () => {
 
     const commonAttributes = {
         key: 'foo',
-        tooltip: 'This action is little, but it is powerful.',
+        popover: 'This action is little, but it is powerful.',
+        tooltip: 'Foo',
         title: (
             <div>
                 <i className="material-icons mr-2">
@@ -65,6 +66,7 @@ describe('ActionButton component', () => {
                 key={action.key}
                 options={action.options}
                 payload={payload}
+                popover={action.popover}
                 tooltip={action.tooltip}
                 title={action.title}
             >
@@ -103,6 +105,7 @@ describe('ActionButton component', () => {
                 key={action.key}
                 options={action.options}
                 payload={payload}
+                popover={action.popover}
                 tooltip={action.tooltip}
                 title={action.title}
             >
@@ -144,6 +147,7 @@ describe('ActionButton component', () => {
                 key={action.key}
                 options={action.options}
                 payload={payload}
+                popover={action.popover}
                 tooltip={action.tooltip}
                 title={action.title}
             >
@@ -181,6 +185,7 @@ describe('ActionButton component', () => {
                 key={action.key}
                 options={action.options}
                 payload={payload}
+                popover={action.popover}
                 tooltip={action.tooltip}
                 title={action.title}
             >
@@ -222,6 +227,7 @@ describe('ActionButton component', () => {
                 key={action.key}
                 options={action.options}
                 payload={payload}
+                popover={action.popover}
                 tooltip={action.tooltip}
                 title={action.title}
             >
@@ -256,6 +262,7 @@ describe('ActionButton component', () => {
                 key={action.key}
                 options={action.options}
                 payload={payload}
+                popover={action.popover}
                 tooltip={action.tooltip}
                 title={action.title}
             >
@@ -304,6 +311,7 @@ describe('ActionButton component', () => {
                 key={action.key}
                 options={action.options}
                 payload={payload}
+                popover={action.popover}
                 tooltip={action.tooltip}
                 title={action.title}
             >
@@ -351,6 +359,7 @@ describe('ActionButton component', () => {
                 key={action.key}
                 options={action.options}
                 payload={payload}
+                popover={action.popover}
                 tooltip={action.tooltip}
                 title={action.title}
             >

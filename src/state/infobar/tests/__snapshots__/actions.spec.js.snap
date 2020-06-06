@@ -3,6 +3,13 @@
 exports[`infobar actions execute action fail 1`] = `
 Array [
   Object {
+    "closeOnNext": true,
+    "dismissAfter": 0,
+    "message": "Executing action...",
+    "status": "loading",
+    "type": "NOTIFY-MOCK",
+  },
+  Object {
     "callback": [MockFunction],
     "data": Object {
       "action_name": "shopifyRefundShippingCostOfOrder",
@@ -34,6 +41,13 @@ Array [
 
 exports[`infobar actions execute action success 1`] = `
 Array [
+  Object {
+    "closeOnNext": true,
+    "dismissAfter": 0,
+    "message": "Executing action...",
+    "status": "loading",
+    "type": "NOTIFY-MOCK",
+  },
   Object {
     "callback": [MockFunction],
     "data": Object {
@@ -126,6 +140,11 @@ Array [
 
 exports[`infobar actions handle executed action success 1`] = `
 Array [
+  Object {
+    "status": "success",
+    "title": "Action successfully executed",
+    "type": "NOTIFY-MOCK",
+  },
   Object {
     "data": Object {
       "status": "success",

@@ -5,7 +5,7 @@ import _pick from 'lodash/pick'
 
 import InputField from '../../../../../../../forms/InputField'
 
-class TooltipWidgetEditField extends React.Component {
+class PopoverWidgetEditField extends React.Component {
     state = {
         title: '',
         type: ''
@@ -86,10 +86,10 @@ class TooltipWidgetEditField extends React.Component {
     }
 }
 
-TooltipWidgetEditField.propTypes = {
+PopoverWidgetEditField.propTypes = {
     template: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired
 }
 
-export default TooltipWidgetEditField
+export default PopoverWidgetEditField
 

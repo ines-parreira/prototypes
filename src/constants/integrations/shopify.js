@@ -17,7 +17,14 @@ export const FinancialStatus = Object.freeze({
     VOIDED: 'voided',
 })
 
+export const FulfillmentStatus = Object.freeze({
+    FULFILLED: 'fulfilled',
+    PARTIAL: 'partial',
+    RESTOCKED: 'restocked',
+})
+
 export type FinancialStatusType = $Values<typeof FinancialStatus>
+export type FulfillmentStatusType = $Values<typeof FulfillmentStatus> | null
 
 export type DiscountType = 'percentage' | 'fixed_amount' | 'shipping'
 
@@ -180,6 +187,7 @@ export type Order = {
     id: number,
     line_items: OrderLineItem[],
     financial_status: FinancialStatusType,
+    fulfillment_status: FulfillmentStatusType,
     note: string,
     tags: string,
     customer?: Customer,

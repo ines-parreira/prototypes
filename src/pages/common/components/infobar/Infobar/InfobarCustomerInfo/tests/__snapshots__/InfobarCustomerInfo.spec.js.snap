@@ -17,6 +17,7 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=false\` because th
     }
   }
   dispatch={[Function]}
+  displayTabs={true}
   hasIntegrations={false}
   isEditing={false}
   isRequired={false}
@@ -56,6 +57,7 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
     }
   }
   dispatch={[Function]}
+  displayTabs={true}
   hasIntegrations={true}
   isEditing={false}
   isRequired={false}
@@ -95,6 +97,7 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
     }
   }
   dispatch={[Function]}
+  displayTabs={true}
   hasIntegrations={true}
   isEditing={false}
   isRequired={false}
@@ -134,6 +137,7 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
     }
   }
   dispatch={[Function]}
+  displayTabs={true}
   hasIntegrations={true}
   isEditing={false}
   isRequired={false}
@@ -173,6 +177,7 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
     }
   }
   dispatch={[Function]}
+  displayTabs={true}
   hasIntegrations={true}
   isEditing={false}
   isRequired={false}
@@ -212,6 +217,7 @@ exports[`<InfobarCustomerInfo/> should pass \`hasIntegrations=true\` because the
     }
   }
   dispatch={[Function]}
+  displayTabs={true}
   hasIntegrations={true}
   isEditing={false}
   isRequired={false}
@@ -238,39 +244,35 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and a "generat
 <div
   className="widgetsList d-flex flex-column"
 >
-  <Card
-    className="infobarCard"
-    tag="div"
+  <div
+    className="customerInfo"
   >
-    <CardBody
-      tag="div"
+    <div
+      className="customerProfile"
     >
-      <div
-        className="customerProfile"
+      <Avatar
+        className="mr-3 rounded"
+        email=""
+        name="foo"
+        size={50}
+        style={Object {}}
+        url=""
+      />
+      <Link
+        className="displayName"
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/customer/1"
       >
-        <Avatar
-          className="mr-3 rounded"
-          email=""
-          name="foo"
-          size={50}
-          style={Object {}}
-          url=""
-        />
-        <Link
-          className="displayName"
-          onlyActiveOnIndex={false}
-          style={Object {}}
-          to="/app/customer/1"
-        >
-          foo
-        </Link>
-      </div>
-      <div
-        className="detail"
+        foo
+      </Link>
+    </div>
+    <div
+      className="detail"
+    >
+      <CustomerChannels
+        channels={Immutable.List []}
       >
-        <CustomerChannels
-          channels={Immutable.List []}
-        />
         <Connect(CustomerNote)
           customer={
             Immutable.Map {
@@ -279,9 +281,9 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and a "generat
             }
           }
         />
-      </div>
-    </CardBody>
-  </Card>
+      </CustomerChannels>
+    </div>
+  </div>
   <GenerateButton
     setEditedWidgets={[MockFunction]}
     setEditionAsDirty={[MockFunction]}
@@ -323,39 +325,35 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and empty widg
 <div
   className="widgetsList d-flex flex-column"
 >
-  <Card
-    className="infobarCard"
-    tag="div"
+  <div
+    className="customerInfo"
   >
-    <CardBody
-      tag="div"
+    <div
+      className="customerProfile"
     >
-      <div
-        className="customerProfile"
+      <Avatar
+        className="mr-3 rounded"
+        email=""
+        name="foo"
+        size={50}
+        style={Object {}}
+        url=""
+      />
+      <Link
+        className="displayName"
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/customer/1"
       >
-        <Avatar
-          className="mr-3 rounded"
-          email=""
-          name="foo"
-          size={50}
-          style={Object {}}
-          url=""
-        />
-        <Link
-          className="displayName"
-          onlyActiveOnIndex={false}
-          style={Object {}}
-          to="/app/customer/1"
-        >
-          foo
-        </Link>
-      </div>
-      <div
-        className="detail"
+        foo
+      </Link>
+    </div>
+    <div
+      className="detail"
+    >
+      <CustomerChannels
+        channels={Immutable.List []}
       >
-        <CustomerChannels
-          channels={Immutable.List []}
-        />
         <Connect(CustomerNote)
           customer={
             Immutable.Map {
@@ -364,11 +362,12 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and empty widg
             }
           }
         />
-      </div>
-    </CardBody>
-  </Card>
+      </CustomerChannels>
+    </div>
+  </div>
   <Connect(InfobarWidgets)
     context="ticket"
+    displayTabs={true}
     editing={
       Object {
         "actions": Object {
@@ -448,39 +447,35 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and the sugges
 <div
   className="widgetsList d-flex flex-column"
 >
-  <Card
-    className="infobarCard"
-    tag="div"
+  <div
+    className="customerInfo"
   >
-    <CardBody
-      tag="div"
+    <div
+      className="customerProfile"
     >
-      <div
-        className="customerProfile"
+      <Avatar
+        className="mr-3 rounded"
+        email=""
+        name="foo"
+        size={50}
+        style={Object {}}
+        url=""
+      />
+      <Link
+        className="displayName"
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/customer/1"
       >
-        <Avatar
-          className="mr-3 rounded"
-          email=""
-          name="foo"
-          size={50}
-          style={Object {}}
-          url=""
-        />
-        <Link
-          className="displayName"
-          onlyActiveOnIndex={false}
-          style={Object {}}
-          to="/app/customer/1"
-        >
-          foo
-        </Link>
-      </div>
-      <div
-        className="detail"
+        foo
+      </Link>
+    </div>
+    <div
+      className="detail"
+    >
+      <CustomerChannels
+        channels={Immutable.List []}
       >
-        <CustomerChannels
-          channels={Immutable.List []}
-        />
         <Connect(CustomerNote)
           customer={
             Immutable.Map {
@@ -489,9 +484,9 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and the sugges
             }
           }
         />
-      </div>
-    </CardBody>
-  </Card>
+      </CustomerChannels>
+    </div>
+  </div>
   <AddIntegrationSuggestion
     customer={
       Immutable.Map {
@@ -507,39 +502,35 @@ exports[`<InfobarCustomerInfo/> should render only basic customer info because c
 <div
   className="widgetsList d-flex flex-column"
 >
-  <Card
-    className="infobarCard"
-    tag="div"
+  <div
+    className="customerInfo"
   >
-    <CardBody
-      tag="div"
+    <div
+      className="customerProfile"
     >
-      <div
-        className="customerProfile"
+      <Avatar
+        className="mr-3 rounded"
+        email=""
+        name="foo"
+        size={50}
+        style={Object {}}
+        url=""
+      />
+      <Link
+        className="displayName"
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/customer/1"
       >
-        <Avatar
-          className="mr-3 rounded"
-          email=""
-          name="foo"
-          size={50}
-          style={Object {}}
-          url=""
-        />
-        <Link
-          className="displayName"
-          onlyActiveOnIndex={false}
-          style={Object {}}
-          to="/app/customer/1"
-        >
-          foo
-        </Link>
-      </div>
-      <div
-        className="detail"
+        foo
+      </Link>
+    </div>
+    <div
+      className="detail"
+    >
+      <CustomerChannels
+        channels={Immutable.List []}
       >
-        <CustomerChannels
-          channels={Immutable.List []}
-        />
         <Connect(CustomerNote)
           customer={
             Immutable.Map {
@@ -548,9 +539,9 @@ exports[`<InfobarCustomerInfo/> should render only basic customer info because c
             }
           }
         />
-      </div>
-    </CardBody>
-  </Card>
+      </CustomerChannels>
+    </div>
+  </div>
 </div>
 `;
 
@@ -558,39 +549,35 @@ exports[`<InfobarCustomerInfo/> should render only basic customer info because t
 <div
   className="widgetsList d-flex flex-column"
 >
-  <Card
-    className="infobarCard"
-    tag="div"
+  <div
+    className="customerInfo"
   >
-    <CardBody
-      tag="div"
+    <div
+      className="customerProfile"
     >
-      <div
-        className="customerProfile"
+      <Avatar
+        className="mr-3 rounded"
+        email=""
+        name="foo"
+        size={50}
+        style={Object {}}
+        url=""
+      />
+      <Link
+        className="displayName"
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/customer/1"
       >
-        <Avatar
-          className="mr-3 rounded"
-          email=""
-          name="foo"
-          size={50}
-          style={Object {}}
-          url=""
-        />
-        <Link
-          className="displayName"
-          onlyActiveOnIndex={false}
-          style={Object {}}
-          to="/app/customer/1"
-        >
-          foo
-        </Link>
-      </div>
-      <div
-        className="detail"
+        foo
+      </Link>
+    </div>
+    <div
+      className="detail"
+    >
+      <CustomerChannels
+        channels={Immutable.List []}
       >
-        <CustomerChannels
-          channels={Immutable.List []}
-        />
         <Connect(CustomerNote)
           customer={
             Immutable.Map {
@@ -599,9 +586,9 @@ exports[`<InfobarCustomerInfo/> should render only basic customer info because t
             }
           }
         />
-      </div>
-    </CardBody>
-  </Card>
+      </CustomerChannels>
+    </div>
+  </div>
 </div>
 `;
 
@@ -609,39 +596,35 @@ exports[`<InfobarCustomerInfo/> sources render basic customer info and widgets b
 <div
   className="widgetsList d-flex flex-column"
 >
-  <Card
-    className="infobarCard"
-    tag="div"
+  <div
+    className="customerInfo"
   >
-    <CardBody
-      tag="div"
+    <div
+      className="customerProfile"
     >
-      <div
-        className="customerProfile"
+      <Avatar
+        className="mr-3 rounded"
+        email=""
+        name="foo"
+        size={50}
+        style={Object {}}
+        url=""
+      />
+      <Link
+        className="displayName"
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/customer/1"
       >
-        <Avatar
-          className="mr-3 rounded"
-          email=""
-          name="foo"
-          size={50}
-          style={Object {}}
-          url=""
-        />
-        <Link
-          className="displayName"
-          onlyActiveOnIndex={false}
-          style={Object {}}
-          to="/app/customer/1"
-        >
-          foo
-        </Link>
-      </div>
-      <div
-        className="detail"
+        foo
+      </Link>
+    </div>
+    <div
+      className="detail"
+    >
+      <CustomerChannels
+        channels={Immutable.List []}
       >
-        <CustomerChannels
-          channels={Immutable.List []}
-        />
         <Connect(CustomerNote)
           customer={
             Immutable.Map {
@@ -650,11 +633,12 @@ exports[`<InfobarCustomerInfo/> sources render basic customer info and widgets b
             }
           }
         />
-      </div>
-    </CardBody>
-  </Card>
+      </CustomerChannels>
+    </div>
+  </div>
   <Connect(InfobarWidgets)
     context="ticket"
+    displayTabs={true}
     source={
       Immutable.Map {
         "ticket": Immutable.Map {

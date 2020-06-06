@@ -262,4 +262,116 @@ describe('widgets infobar utils', () => {
             expect(utils.guessFieldValueFromRawData(0, 'boolean')).toMatchSnapshot()
         })
     })
+
+    describe('isWidgetEmpty()', () => {
+        const emptyValues = [
+            [fromJS({type: 'wrapper', path: 'foo'}), fromJS({})],
+            [
+                fromJS({
+                    type: 'wrapper',
+                    path: 'foo',
+                    widgets: [
+                        fromJS({type: 'wrapper', path: 'bar'}),
+                        fromJS({type: 'card', path: 'baz'}),
+                    ],
+                }),
+                fromJS({}),
+            ],
+            [
+                fromJS({
+                    type: 'wrapper',
+                    path: 'foo',
+                    widgets: [
+                        fromJS({
+                            type: 'card',
+                            path: 'bar',
+                            widgets: [
+                                fromJS({type: 'text', path: 'baz'}),
+                            ],
+                        }),
+                    ],
+                }),
+                fromJS({foo: {bar: {baz: null}}}),
+            ],
+            [
+                fromJS({
+                    type: 'wrapper',
+                    path: 'foo',
+                    widgets: [
+                        fromJS({
+                            type: 'list',
+                            path: 'bar',
+                            widgets: [
+                                fromJS({type: 'text', path: 'baz'}),
+                            ],
+                        }),
+                    ],
+                }),
+                fromJS({foo: {bar: []}}),
+            ],
+            [
+                fromJS({
+                    type: 'wrapper',
+                    path: 'foo',
+                    widgets: [
+                        fromJS({
+                            type: 'list',
+                            path: 'bar',
+                            widgets: [
+                                fromJS({type: 'text', path: 'baz'}),
+                            ],
+                        }),
+                    ],
+                }),
+                fromJS({foo: {bar: [{baz: null}]}}),
+            ],
+        ]
+
+        it.each(emptyValues)('should return `true` because widget is empty', (widget, source) => {
+            const result = utils.isWidgetEmpty(widget, source)
+            expect(result).toBe(true)
+        })
+
+        const validValues = [
+            [
+                fromJS({
+                    type: 'wrapper',
+                    path: 'foo',
+                    widgets: [
+                        fromJS({
+                            type: 'card',
+                            path: 'bar',
+                            widgets: [
+                                fromJS({type: 'text', path: 'baz'}),
+                                fromJS({type: 'text', path: 'buz'}),
+                            ],
+                        }),
+                    ],
+                }),
+                fromJS({foo: {bar: {baz: 'baz!', buz: ''}}})
+            ],
+            [
+                fromJS({
+                    type: 'wrapper',
+                    path: 'foo',
+                    widgets: [
+                        fromJS({
+                            type: 'list',
+                            path: 'bar',
+                            widgets: [
+                                fromJS({type: 'text', path: 'baz'}),
+                                fromJS({type: 'text', path: 'buz'}),
+                            ],
+                        }),
+                    ],
+                }),
+                fromJS({foo: {bar: [{baz: 'baz!', buz: ''}]}})
+            ],
+        ]
+
+        it.each(validValues)('should return `false` because widget is not empty', (widget, source) => {
+            const result = utils.isWidgetEmpty(widget, source)
+            expect(result).toBe(false)
+        })
+    })
 })

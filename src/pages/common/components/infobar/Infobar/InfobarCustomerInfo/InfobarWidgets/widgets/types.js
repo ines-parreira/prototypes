@@ -25,6 +25,7 @@ export type ActionType = {
     options: Array<OptionType>,
     title: Node,
     child: Object,
+    popover?: string,
     tooltip?: string,
     modal?: ComponentType<InfobarModalProps>,
     modalData?: Object,

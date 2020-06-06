@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<CardHeaderIcon/> render() should render icon 1`] = `
+<img
+  alt="Foo"
+  className="container"
+  src="foo.png"
+/>
+`;

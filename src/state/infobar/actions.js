@@ -2,6 +2,7 @@
 
 import axios from 'axios'
 import {browserHistory} from 'react-router'
+import _noop from 'lodash/noop'
 
 import {notify} from '../notifications/actions'
 import {isCurrentlyOnTicket, stripErrorMessage} from '../../utils'
@@ -109,7 +110,7 @@ export const executeAction = (
     integrationId: string,
     customerId?: string,
     payload: {} = {},
-    callback: () => void = () => undefined,
+    callback: () => void = _noop,
 ) => ((dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
 
     const state = getState()
@@ -124,6 +125,13 @@ export const executeAction = (
         integration_id: integrationId,
         payload,
     }
+
+    dispatch(notify({
+        status: 'loading',
+        dismissAfter: 0,
+        closeOnNext: true,
+        message: 'Executing action...'
+    }))
 
     dispatch({
         type: constants.EXECUTE_ACTION_START,
@@ -183,6 +191,11 @@ export const handleExecutedAction = (response: responseType) => ((dispatch: disp
             data: response,
         })
     }
+
+    dispatch(notify({
+        status: 'success',
+        title: 'Action successfully executed',
+    }))
 
     return dispatch({
         type: constants.EXECUTE_ACTION_SUCCESS,

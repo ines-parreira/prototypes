@@ -1,37 +1,33 @@
-@import '~css/new/colors';
+:local {
+  .container {
+    &:global.editing {
+      &:last-child {
+        padding-bottom: 50px;
+      }
 
-:local .component {
-  &:global.editing {
-    &:last-child {
-      padding-bottom: 50px;
-    }
+      .wrapper {
+        @wrapper-padding: 12px;
+        margin-top: 14px;
+        background: white;
 
-    .wrapper {
-      @wrapper-padding: 12px;
-      padding: @wrapper-padding;
-      margin: 0 -@wrapper-padding;
-      margin-top: 14px;
-      background: #e5f0f8;
-
-      &:hover {
-        background: fade(@purple, 10%);
-
-        & > .content > .header > .tools {
-          opacity: 1;
+        &:hover {
+          & > .content > .header > .tools {
+            opacity: 1;
+          }
         }
       }
     }
-  }
 
-  &:global.dragging {
-    .card,
-    .message {
-      &:not(.wrapper):not(.can-drop) {
-        background-color: #eeeeee;
-      }
+    &:global.dragging {
+      .card,
+      .message {
+        &:not(.wrapper):not(.can-drop) {
+          background-color: #eeeeee;
+        }
 
-      .simple-field.draggable:hover {
-        border: 1px solid transparent !important;
+        .simple-field.draggable:hover {
+          border: 1px solid transparent !important;
+        }
       }
     }
   }

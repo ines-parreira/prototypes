@@ -11,8 +11,7 @@ import _isUndefined from 'lodash/isUndefined'
 import _omit from 'lodash/omit'
 import _uniqueId from 'lodash/uniqueId'
 import _noop from 'lodash/noop'
-
-import {Button, Form, Label, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
+import {Button, Form, Label, Popover, PopoverBody, PopoverHeader, UncontrolledTooltip} from 'reactstrap'
 
 import SelectField from '../../../../../../forms/SelectField'
 import BooleanField from '../../../../../../forms/BooleanField'
@@ -39,11 +38,13 @@ type Props = {
     modal?: ComponentType<InfobarModalProps>,
     modalData?: Object,
     tagOptions?: Object,
+    popover?: string,
     tooltip?: string,
     title: Node,
+    float: boolean,
 
     getPendingActionCallback: (string) => Map<*, *>,
-    executeAction: (string, number, number, Object, callback: (Object) => void) => void,
+    executeAction: (string, number, number, Object, callback?: () => void) => void,
 }
 
 type State = {
@@ -51,8 +52,6 @@ type State = {
     isLoading: boolean,
     actionName: string,
     parameters: Object,
-    showSuccess: boolean,
-    showError: boolean,
     actionId: ?string,
 }
 
@@ -70,8 +69,6 @@ export default class ActionButton extends React.Component<Props, State> {
         isLoading: false,
         actionName: '',
         parameters: {},
-        showSuccess: false,
-        showError: false,
         actionId: 'initialActionId'
     }
 
@@ -177,16 +174,7 @@ export default class ActionButton extends React.Component<Props, State> {
             this.context.integrationId,
             this.context.customerId,
             payload,
-            (response) => {
-                if (response.status === 'error') {
-                    this.setState({showError: true})
-                    setTimeout(() => this.setState({showError: false}), 4000)
-                    return
-                }
-
-                this.setState({showSuccess: true})
-                setTimeout(() => this.setState({showSuccess: false}), 4000)
-            })
+        )
 
         this._toggleUi()
     }
@@ -301,7 +289,7 @@ export default class ActionButton extends React.Component<Props, State> {
     }
 
     _renderPopover() {
-        const {options, tooltip, title} = this.props
+        const {options, popover, title} = this.props
         const {actionName, isUiOpen} = this.state
         const multipleOptions = options.length > 1
 
@@ -323,9 +311,9 @@ export default class ActionButton extends React.Component<Props, State> {
                 <PopoverHeader>{title}</PopoverHeader>
                 <PopoverBody>
                     {
-                        tooltip ? (
-                            <p className={css.tooltip}>
-                                {tooltip}
+                        popover ? (
+                            <p className={css.popover}>
+                                {popover}
                             </p>
                         ) : null
                     }
@@ -363,31 +351,34 @@ export default class ActionButton extends React.Component<Props, State> {
     }
 
     render() {
-        const {children, tag: Tag, tagOptions, modal} = this.props
-        const {showSuccess, showError, isLoading} = this.state
-        let buttonColor = 'secondary'
-
-        if (showSuccess) {
-            buttonColor = 'success'
-        } else if (showError) {
-            buttonColor = 'danger'
-        }
+        const {children, tag: Tag, tagOptions, tooltip, modal, float} = this.props
+        const {isLoading} = this.state
+        const buttonColor = float ? 'link' : 'secondary'
 
         return (
-            <Tag
-                id={this.id}
-                color={buttonColor}
-                size="sm"
-                className={classnames(css.button, 'action-button', {
-                    'loading btn-loading': isLoading
-                })}
-                disabled={isLoading}
-                onClick={this._toggleUi}
-                {...tagOptions}
-            >
-                {children}
-                {modal ? this._renderModal(modal) : this._renderPopover()}
-            </Tag>
+            <>
+                <Tag
+                    id={this.id}
+                    color={buttonColor}
+                    size={float ? 'lg' : 'sm'}
+                    className={classnames(css.button, 'action-button')}
+                    disabled={isLoading}
+                    onClick={this._toggleUi}
+                    {...tagOptions}
+                >
+                    {children}
+                    {modal ? this._renderModal(modal) : this._renderPopover()}
+                </Tag>
+                {tooltip && (
+                    <UncontrolledTooltip
+                        placement="top"
+                        target={this.id}
+                        delay={{show: 0, hide: 0}}
+                    >
+                        {tooltip}
+                    </UncontrolledTooltip>
+                )}
+            </>
         )
     }
 }

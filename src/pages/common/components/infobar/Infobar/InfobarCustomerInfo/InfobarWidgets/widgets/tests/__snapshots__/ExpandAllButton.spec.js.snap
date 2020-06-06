@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ExpandAllButton/> render() should render 1`] = `
+<span
+  className="container expand-all"
+  onClick={[Function]}
+>
+  <img
+    alt="Expand all"
+    src="test-file-stub"
+  />
+</span>
+`;

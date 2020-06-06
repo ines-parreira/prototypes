@@ -1,25 +1,29 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import _isObject from 'lodash/isObject'
-import _isFunction from 'lodash/isFunction'
 import {fromJS, Map} from 'immutable'
 
 import {
-    MAGENTO2_INTEGRATION_TYPE,
-    RECHARGE_INTEGRATION_TYPE,
-    SHOPIFY_INTEGRATION_TYPE
-} from '../../../../../../../constants/integration'
-
-import {prepareWidgetToDisplay, guessFieldValueFromRawData} from '../../../utils'
+    HTTP_WIDGET_TYPE,
+    MAGENTO2_WIDGET_TYPE,
+    RECHARGE_WIDGET_TYPE,
+    SHOPIFY_WIDGET_TYPE,
+    SMILE_WIDGET_TYPE,
+    SMOOCH_INSIDE_WIDGET_TYPE
+} from '../../../../../../../state/widgets/constants'
+import {guessFieldValueFromRawData, prepareWidgetToDisplay} from '../../../utils'
 
 import ListInfobarWidget from './widgets/ListInfobarWidget'
 import WrapperInfobarWidget from './widgets/WrapperInfobarWidget'
 import CardInfobarWidget from './widgets/CardInfobarWidget'
 import FieldInfobarWidget from './widgets/FieldInfobarWidget'
 
-import shopify from './widgets/shopify'
-import recharge from './widgets/recharge'
+import http from './widgets/http'
 import magento2 from './widgets/magento2'
+import recharge from './widgets/recharge'
+import shopify from './widgets/shopify'
+import smile from './widgets/smile'
+import smoochInside from './widgets/smoochInside'
+import {infobarWidgetShouldRender} from './predicates'
 
 
 export default class InfobarWidget extends React.Component {
@@ -48,24 +52,7 @@ export default class InfobarWidget extends React.Component {
             open
         } = this.props
 
-        // prevent buggy display if source...
-        // ... is empty
-        if (!source) {
-            return null
-        }
-
-        // ... is not an object
-        if (!_isObject(source)) {
-            return null
-        }
-
-        // ... is not immutable
-        if (!source.isEmpty || (source.isEmpty && !_isFunction(source.isEmpty))) {
-            return null
-        }
-
-        // ... is an empty Immutable
-        if (source.isEmpty()) {
+        if (!infobarWidgetShouldRender(source)) {
             return null
         }
 
@@ -74,6 +61,14 @@ export default class InfobarWidget extends React.Component {
         let {data} = preparedData
 
         const isParentList = parent && parent.get('type') === 'list'
+        const extensionMethodsByType = {
+            [SHOPIFY_WIDGET_TYPE]: shopify,
+            [RECHARGE_WIDGET_TYPE]: recharge,
+            [SMILE_WIDGET_TYPE]: smile,
+            [MAGENTO2_WIDGET_TYPE]: magento2,
+            [SMOOCH_INSIDE_WIDGET_TYPE]: smoochInside,
+            [HTTP_WIDGET_TYPE]: http,
+        }
 
         let extension = {}
         const passedData = {
@@ -82,20 +77,11 @@ export default class InfobarWidget extends React.Component {
             source: data || fromJS({}),
         }
 
-        if (widget.get('type') === SHOPIFY_INTEGRATION_TYPE) {
+        const extensionMethod = extensionMethodsByType[widget.get('type')]
+        if (extensionMethod) {
             extension = {
                 ...extension,
-                ...shopify(passedData),
-            }
-        } else if (widget.get('type') === RECHARGE_INTEGRATION_TYPE) {
-            extension = {
-                ...extension,
-                ...recharge(passedData),
-            }
-        } else if (widget.get('type') === MAGENTO2_INTEGRATION_TYPE) {
-            extension = {
-                ...extension,
-                ...magento2(passedData),
+                ...extensionMethod(passedData),
             }
         }
 
@@ -149,7 +135,7 @@ export default class InfobarWidget extends React.Component {
             }
             case 'divider': {
                 return (
-                    <div className="divider" />
+                    <div className="divider"/>
                 )
             }
             default:

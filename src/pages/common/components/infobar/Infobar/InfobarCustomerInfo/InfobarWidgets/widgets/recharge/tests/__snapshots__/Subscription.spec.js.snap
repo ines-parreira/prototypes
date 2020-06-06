@@ -1,121 +1,155 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Subscription AfterTitle should display only the activate action because the subscription is cancelled 1`] = `
-<ActionButtonsGroup
-  actions={
-    Array [
-      Object {
-        "child": <div>
-          <i
-            className="material-icons mr-2"
+<Fragment>
+  <Badge
+    className="ml-1"
+    color="secondary"
+    key="status"
+    pill={true}
+    tag="span"
+  />
+  <ActionButtonsGroup
+    actions={
+      Array [
+        Object {
+          "child": <i
+            className="material-icons"
           >
             refresh
-          </i>
-          Activate
-        </div>,
-        "key": "activate",
-        "options": Array [
-          Object {
-            "value": "rechargeActivateSubscription",
-          },
-        ],
-        "title": <div>
-          <i
-            className="material-icons mr-2"
-          >
-            refresh
-          </i>
-          Activate subscription
-        </div>,
-        "tooltip": "This will activate the subscription in Recharge.",
-      },
-    ]
-  }
-  payload={
-    Object {
-      "subscription_id": undefined,
+          </i>,
+          "key": "activate",
+          "options": Array [
+            Object {
+              "value": "rechargeActivateSubscription",
+            },
+          ],
+          "popover": "This will activate the subscription in Recharge.",
+          "title": <div>
+            <i
+              className="material-icons mr-2"
+            >
+              refresh
+            </i>
+            Activate subscription
+          </div>,
+          "tooltip": "Activate subscription",
+        },
+      ]
     }
-  }
-/>
+    float={true}
+    payload={
+      Object {
+        "subscription_id": undefined,
+      }
+    }
+  />
+  <CardHeaderDetails>
+    <CardHeaderValue
+      label="Created"
+    >
+      <Connect(DatetimeLabel)
+        key="created-at"
+      />
+    </CardHeaderValue>
+  </CardHeaderDetails>
+</Fragment>
 `;
 
 exports[`Subscription AfterTitle should display only the cancel action because the subscription is not cancelled 1`] = `
-<ActionButtonsGroup
-  actions={
-    Array [
-      Object {
-        "child": <div>
-          <i
-            className="material-icons mr-2"
+<Fragment>
+  <Badge
+    className="ml-1"
+    color="secondary"
+    key="status"
+    pill={true}
+    tag="span"
+  />
+  <ActionButtonsGroup
+    actions={
+      Array [
+        Object {
+          "child": <i
+            className="material-icons"
           >
             refresh
-          </i>
-          Cancel
-        </div>,
-        "key": "cancel",
-        "options": Array [
-          Object {
-            "parameters": Array [
-              Object {
-                "allowCustomValue": true,
-                "defaultValue": "Cancelled with Gorgias",
-                "label": "Cancellation reason",
-                "name": "cancellation_reason",
-                "options": Array [
-                  Object {
-                    "label": "This is too expensive",
-                    "value": "This is too expensive",
-                  },
-                  Object {
-                    "label": "This was created by accident",
-                    "value": "This was created by accident",
-                  },
-                  Object {
-                    "label": "I already have more than I need",
-                    "value": "I already have more than I need",
-                  },
-                  Object {
-                    "label": "I need it sooner",
-                    "value": "I need it sooner",
-                  },
-                  Object {
-                    "label": "I no longer use this product",
-                    "value": "I no longer use this product",
-                  },
-                  Object {
-                    "label": "I want a different product or variety",
-                    "value": "I want a different product or variety",
-                  },
-                  Object {
-                    "label": "Cancelled with Gorgias",
-                    "value": "Cancelled with Gorgias",
-                  },
-                ],
-                "required": true,
-                "type": "select",
-              },
-            ],
-            "value": "rechargeCancelSubscription",
-          },
-        ],
-        "title": <div>
-          <i
-            className="material-icons mr-2"
-          >
-            refresh
-          </i>
-          Cancel subscription
-        </div>,
-        "tooltip": "This will cancel the subscription in Recharge.",
-      },
-    ]
-  }
-  payload={
-    Object {
-      "subscription_id": undefined,
+          </i>,
+          "key": "cancel",
+          "options": Array [
+            Object {
+              "parameters": Array [
+                Object {
+                  "allowCustomValue": true,
+                  "defaultValue": "Cancelled with Gorgias",
+                  "label": "Cancellation reason",
+                  "name": "cancellation_reason",
+                  "options": Array [
+                    Object {
+                      "label": "This is too expensive",
+                      "value": "This is too expensive",
+                    },
+                    Object {
+                      "label": "This was created by accident",
+                      "value": "This was created by accident",
+                    },
+                    Object {
+                      "label": "I already have more than I need",
+                      "value": "I already have more than I need",
+                    },
+                    Object {
+                      "label": "I need it sooner",
+                      "value": "I need it sooner",
+                    },
+                    Object {
+                      "label": "I no longer use this product",
+                      "value": "I no longer use this product",
+                    },
+                    Object {
+                      "label": "I want a different product or variety",
+                      "value": "I want a different product or variety",
+                    },
+                    Object {
+                      "label": "Cancelled with Gorgias",
+                      "value": "Cancelled with Gorgias",
+                    },
+                  ],
+                  "required": true,
+                  "type": "select",
+                },
+              ],
+              "value": "rechargeCancelSubscription",
+            },
+          ],
+          "popover": "This will cancel the subscription in Recharge.",
+          "title": <div>
+            <i
+              className="material-icons mr-2"
+            >
+              refresh
+            </i>
+            Cancel subscription
+          </div>,
+          "tooltip": "Cancel subscription",
+        },
+      ]
     }
-  }
-/>
+    float={true}
+    payload={
+      Object {
+        "subscription_id": undefined,
+      }
+    }
+  />
+  <CardHeaderDetails>
+    <CardHeaderValue
+      label="Created"
+    >
+      <Connect(DatetimeLabel)
+        key="created-at"
+      />
+    </CardHeaderValue>
+  </CardHeaderDetails>
+</Fragment>
 `;
 
 exports[`Subscription TitleWrapper customer context should render custom link because it is set 1`] = `

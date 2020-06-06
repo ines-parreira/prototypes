@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`CustomerChannels component should display all passed channels and not display the button "show more" because there is only 1 passed channel 1`] = `
-<div>
+<Fragment>
   <p
     className="customerChannel"
     key="0"
@@ -40,11 +40,11 @@ exports[`CustomerChannels component should display all passed channels and not d
       </Tooltip>
     </span>
   </p>
-</div>
+</Fragment>
 `;
 
 exports[`CustomerChannels component should display all passed channels because the user clicked on "show more" 1`] = `
-<div>
+Array [
   <p
     className="customerChannel"
     key="0"
@@ -113,7 +113,7 @@ exports[`CustomerChannels component should display all passed channels because t
         </UncontrolledTooltip>
       </Tooltip>
     </span>
-  </p>
+  </p>,
   <p
     className="customerChannel"
     key="1"
@@ -182,32 +182,37 @@ exports[`CustomerChannels component should display all passed channels because t
         </UncontrolledTooltip>
       </Tooltip>
     </span>
-  </p>
-  <Button
-    className="pl-0 show-more"
-    color="link"
+  </p>,
+  <ShowMore
+    className="pl-0"
     onClick={[Function]}
-    tag="button"
-    type="button"
   >
-    <button
-      className="pl-0 show-more btn btn-link"
+    <Button
+      className="container pl-0"
+      color="link"
       onClick={[Function]}
+      tag="button"
       type="button"
     >
-      Show more
-      <i
-        className="material-icons md-2 ml-2"
+      <button
+        className="container pl-0 btn btn-link"
+        onClick={[Function]}
+        type="button"
       >
-        arrow_drop_down
-      </i>
-    </button>
-  </Button>
-</div>
+        <img
+          alt="Expand"
+          className="mr-3"
+          src="test-file-stub"
+        />
+        More info
+      </button>
+    </Button>
+  </ShowMore>,
+]
 `;
 
 exports[`CustomerChannels component should display all passed channels because the user clicked on "show more" 2`] = `
-<div>
+Array [
   <p
     className="customerChannel"
     key="0"
@@ -276,7 +281,7 @@ exports[`CustomerChannels component should display all passed channels because t
         </UncontrolledTooltip>
       </Tooltip>
     </span>
-  </p>
+  </p>,
   <p
     className="customerChannel"
     key="1"
@@ -345,7 +350,7 @@ exports[`CustomerChannels component should display all passed channels because t
         </UncontrolledTooltip>
       </Tooltip>
     </span>
-  </p>
+  </p>,
   <p
     className="customerChannel"
     key="2"
@@ -414,7 +419,7 @@ exports[`CustomerChannels component should display all passed channels because t
         </UncontrolledTooltip>
       </Tooltip>
     </span>
-  </p>
+  </p>,
   <p
     className="customerChannel"
     key="3"
@@ -483,7 +488,7 @@ exports[`CustomerChannels component should display all passed channels because t
         </UncontrolledTooltip>
       </Tooltip>
     </span>
-  </p>
+  </p>,
   <p
     className="customerChannel"
     key="4"
@@ -552,7 +557,7 @@ exports[`CustomerChannels component should display all passed channels because t
         </UncontrolledTooltip>
       </Tooltip>
     </span>
-  </p>
+  </p>,
   <p
     className="customerChannel"
     key="5"
@@ -621,12 +626,12 @@ exports[`CustomerChannels component should display all passed channels because t
         </UncontrolledTooltip>
       </Tooltip>
     </span>
-  </p>
-</div>
+  </p>,
+]
 `;
 
 exports[`CustomerChannels component should display first few passed channels and the button "show more" because there are more channels than those displayed 1`] = `
-<div>
+<Fragment>
   <p
     className="customerChannel"
     key="0"
@@ -703,19 +708,11 @@ exports[`CustomerChannels component should display first few passed channels and
       </Tooltip>
     </span>
   </p>
-  <Button
-    className="pl-0 show-more"
-    color="link"
+  <ShowMore
+    className="pl-0"
     onClick={[Function]}
-    tag="button"
-    type="button"
   >
-    Show more
-    <i
-      className="material-icons md-2 ml-2"
-    >
-      arrow_drop_down
-    </i>
-  </Button>
-</div>
+    More info
+  </ShowMore>
+</Fragment>
 `;

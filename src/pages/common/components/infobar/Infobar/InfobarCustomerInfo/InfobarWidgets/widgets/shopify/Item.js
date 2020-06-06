@@ -29,7 +29,10 @@ class BeforeContent extends React.Component { // eslint-disable-line
                     Refunded:
                 </span>
                 <span className="field-value">
-                    <Badge color="warning">
+                    <Badge
+                        pill
+                        color="warning"
+                    >
                         {refundedQuantity} item{refundedQuantity > 1 && 's'}
                     </Badge>
                 </span>

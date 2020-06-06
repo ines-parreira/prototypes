@@ -1,17 +1,41 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Customer TitleWrapper should custom link because it is set 1`] = `
-<a
-  href="https://gorgias.io/a8s4d86as54d/"
-  rel="noopener noreferrer"
-  target="_blank"
-/>
+<Fragment>
+  <CardHeaderIcon
+    alt="Recharge"
+    src="test-file-stub"
+  />
+  <CardHeaderTitle>
+    Recharge
+  </CardHeaderTitle>
+  <CardHeaderSubtitle>
+    <a
+      href="https://gorgias.io/a8s4d86as54d/"
+      rel="noopener noreferrer"
+      target="_blank"
+    />
+  </CardHeaderSubtitle>
+  <ExpandAllButton />
+</Fragment>
 `;
 
 exports[`Customer TitleWrapper should render default link because no custom link is set 1`] = `
-<a
-  href="https://mystore.myshopify.com/tools/recurring/customers/a8s4d86as54d/"
-  rel="noopener noreferrer"
-  target="_blank"
-/>
+<Fragment>
+  <CardHeaderIcon
+    alt="Recharge"
+    src="test-file-stub"
+  />
+  <CardHeaderTitle>
+    Recharge
+  </CardHeaderTitle>
+  <CardHeaderSubtitle>
+    <a
+      href="https://mystore.myshopify.com/tools/recurring/customers/a8s4d86as54d/"
+      rel="noopener noreferrer"
+      target="_blank"
+    />
+  </CardHeaderSubtitle>
+  <ExpandAllButton />
+</Fragment>
 `;

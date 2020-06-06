@@ -3,7 +3,7 @@ import React from 'react'
 import classnames from 'classnames'
 import {connect} from 'react-redux'
 import {browserHistory, withRouter} from 'react-router'
-import {fromJS, Map, List} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 import {Button} from 'reactstrap'
 import _noop from 'lodash/noop'
 
@@ -188,7 +188,7 @@ export class Infobar extends React.Component<Props, State> {
         }
     }
 
-    _onSearchResultClick = async (customer: Map<*,*>) => {
+    _onSearchResultClick = async (customer: Map<*, *>) => {
         this.setState({isFetchingCustomer: true})
         const result = await this.props.actions.infobar.fetchPreviewCustomer(customer.get('id'))
         if (result.type === infobarConstants.FETCH_PREVIEW_CUSTOMER_SUCCESS) {
@@ -263,7 +263,7 @@ export class Infobar extends React.Component<Props, State> {
             .then(this._returnToCurrentCustomerProfile)
     }
 
-    _renderCustomerInfo = (customer: Map<*,*>) => {
+    _renderCustomerInfo = (customer: Map<*, *>, displayTabs: boolean = true) => {
         const isEditing = this._isEditing()
 
         const sources = this.props.sources
@@ -277,6 +277,7 @@ export class Infobar extends React.Component<Props, State> {
                 sources={sources}
                 customer={customer}
                 widgets={this.props.widgets}
+                displayTabs={displayTabs}
             />
         )
     }
@@ -295,8 +296,8 @@ export class Infobar extends React.Component<Props, State> {
 
         if (mode === 'selected') {
             return (
-                <div>
-                    <div className="mb-3">
+                <>
+                    <div className="m-3">
                         <Button
                             type="button"
                             onClick={() => this._resetSelected()}
@@ -310,7 +311,8 @@ export class Infobar extends React.Component<Props, State> {
                             customer={customer}
                             sources={sources}
                             selectedCustomer={this.state.selectedCustomer}
-                            toggleMergeCustomerModal={(showMergeCustomerModal: boolean) => this.setState({showMergeCustomerModal})}
+                            toggleMergeCustomerModal={(showMergeCustomerModal: boolean) =>
+                                this.setState({showMergeCustomerModal})}
                             setCustomer={this._setCustomer}
                         />
                     </div>
@@ -328,7 +330,7 @@ export class Infobar extends React.Component<Props, State> {
                             this.setState({showMergeCustomerModal: false})
                         }}
                     />
-                </div>
+                </>
             )
         }
 
@@ -336,8 +338,8 @@ export class Infobar extends React.Component<Props, State> {
             const defaultCustomerId = sources.getIn(['ticket', 'customer', 'id']) || sources.getIn(['customer', 'id'])
 
             return (
-                <div>
-                    <div className="mb-3">
+                <>
+                    <div className="m-3">
                         <Button
                             type="button"
                             onClick={() => this._resetSearch()}
@@ -353,7 +355,7 @@ export class Infobar extends React.Component<Props, State> {
                         defaultCustomerId={defaultCustomerId}
                         onCustomerClick={this._onSearchResultClick}
                     />
-                </div>
+                </>
             )
         }
 
@@ -365,12 +367,12 @@ export class Infobar extends React.Component<Props, State> {
             && !this.props.widgets.getIn(['_internal', 'isEditing'])
 
         return (
-            <div>
+            <>
                 {this._renderCustomerInfo(customer)}
                 {
                     displaySuggestedCustomer && (
                         <div className="d-none d-md-block">
-                            <div className="infobar-section-separator"/>
+                            <div className={css.infobarSectionSeparator}/>
                             <div className={classnames(css.suggestedCustomer)}>
                                 <h4>Is this the same person?</h4>
                                 <p>
@@ -394,7 +396,7 @@ export class Infobar extends React.Component<Props, State> {
                                         <i className="material-icons mr-1">call_merge</i>Merge
                                     </Button>
                                 </div>
-                                {this._renderCustomerInfo(this.state.suggestedCustomer)}
+                                {this._renderCustomerInfo(this.state.suggestedCustomer, false)}
                                 <MergeCustomersContainer
                                     isTicketContext={!sources.get('ticket', fromJS({})).isEmpty()}
                                     display={this.state.showMergeCustomerModal}
@@ -409,7 +411,7 @@ export class Infobar extends React.Component<Props, State> {
                         </div>
                     )
                 }
-            </div>
+            </>
         )
     }
 
@@ -432,8 +434,13 @@ export class Infobar extends React.Component<Props, State> {
             <InfobarLayout className={classnames({
                 [css.editing]: isEditing
             })}>
-                <div className="infobar-content">
-                    <div className="infobar-search-wrapper d-flex align-items-center justify-content-between">
+                <div className={css.infobarContent}>
+                    <div
+                        className={classnames(
+                            css.infobarSearchWrapper,
+                            'd-flex align-items-center justify-content-between'
+                        )}
+                    >
                         <Search
                             tabIndex="10"
                             placeholder="Search for customers by email, order number, etc."

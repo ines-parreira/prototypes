@@ -6,7 +6,7 @@ import {Popover, PopoverBody} from 'reactstrap'
 
 import {displayLabel} from '../../../../utils'
 
-import TooltipWidgetEditField from './forms/TooltipWidgetEditField'
+import PopoverWidgetEditField from './forms/PopoverWidgetEditField'
 
 
 export default class FieldInfobarWidget extends React.Component {
@@ -102,7 +102,7 @@ export default class FieldInfobarWidget extends React.Component {
      * @returns {JSX}
      * @private
      */
-    _renderTooltip = () => {
+    _renderPopover = () => {
         const {editing, template} = this.props
 
         if (!editing) {
@@ -117,7 +117,7 @@ export default class FieldInfobarWidget extends React.Component {
                 toggle={this._togglePopup}
             >
                 <PopoverBody>
-                    <TooltipWidgetEditField
+                    <PopoverWidgetEditField
                         template={template}
                         actions={editing.actions}
                     />
@@ -146,7 +146,7 @@ export default class FieldInfobarWidget extends React.Component {
                     {displayLabel(value)}
                 </span>
                 {this._renderTools()}
-                {this._renderTooltip()}
+                {this._renderPopover()}
             </div>
         )
     }
