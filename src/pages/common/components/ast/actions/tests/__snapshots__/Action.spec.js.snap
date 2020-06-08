@@ -15,7 +15,12 @@ exports[`Action render() should render a warning about potential page deactivati
   />
   <span
     className="alert-warning"
-    inline={true}
+    style={
+      Object {
+        "paddingLeft": "5px",
+        "paddingRight": "5px",
+      }
+    }
   >
     An extensive use of comments hiding may deactivate your page on Facebook!
   </span>
