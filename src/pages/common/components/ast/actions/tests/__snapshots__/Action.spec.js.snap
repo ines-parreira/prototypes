@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Action render() should render a warning about potential page deactivation in Facebook 1`] = `
+<div
+  className="Action d-flex align-items-baseline"
+  style={
+    Object {
+      "paddingLeft": "NaNpx",
+    }
+  }
+>
+  <ActionSelect
+    parent={1}
+    value="facebookHideComment"
+  />
+  <span
+    className="alert-warning"
+    inline={true}
+  >
+    An extensive use of comments hiding may deactivate your page on Facebook!
+  </span>
+</div>
+`;
+
+exports[`Action render() should render an error saying an action cannot be empty 1`] = `
+<div
+  className="Action"
+  style={
+    Object {
+      "paddingLeft": "NaNpx",
+    }
+  }
+>
+  <ActionSelect
+    parent={2}
+    value=""
+  />
+  <Errors
+    belowInput={false}
+    inline={true}
+    tag="div"
+  >
+    An action cannot be empty
+  </Errors>
+</div>
+`;

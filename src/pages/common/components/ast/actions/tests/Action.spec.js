@@ -1,7 +1,11 @@
 import {fromJS} from 'immutable'
 
+import {shallow} from 'enzyme'
+
+import React from 'react'
+
 import schemasJSON from '../../../../../../fixtures/openapi.json'
-import {validateEmailList, validateBody, validateSendEmail, validateTags} from '../Action'
+import Action, {validateEmailList, validateBody, validateSendEmail, validateTags} from '../Action'
 const schemas = fromJS(schemasJSON)
 
 describe('Action', () => {
@@ -94,4 +98,35 @@ describe('Action', () => {
             expect(validateTags({tags: ''}, schemas)).toBeTruthy()
         })
     })
+
+    describe('render()', () => {
+        const minProps = {
+            parent: [],
+        }
+
+        it('should render a warning about potential page deactivation in Facebook', () => {
+            const props = Object.assign({}, minProps, {value:'facebookHideComment'})
+
+            const component = shallow(
+                <Action
+                    {...props}
+                />
+            )
+
+            expect(component).toMatchSnapshot()
+        })
+
+        it('should render an error saying an action cannot be empty', () => {
+            const props = Object.assign({}, minProps, {value:''})
+
+            const component = shallow(
+                <Action
+                    {...props}
+                />
+            )
+
+            expect(component).toMatchSnapshot()
+        })
+    })
+
 })

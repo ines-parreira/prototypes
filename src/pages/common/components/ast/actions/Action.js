@@ -202,6 +202,15 @@ export default class Action extends React.Component<Props> {
             )
         }
 
+        if (value==='facebookHideComment') {
+            return (
+                <span className="alert-warning"
+                    style={{paddingLeft: '5px', paddingRight:'5px'}}>
+                    An extensive use of comments hiding may deactivate your page on Facebook!
+                </span>
+            )
+        }
+
         // Determine the display mode
         const config = actionsConfig[value]
         if (!config) {
