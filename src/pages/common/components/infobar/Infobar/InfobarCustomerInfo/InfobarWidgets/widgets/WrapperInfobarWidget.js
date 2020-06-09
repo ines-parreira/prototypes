@@ -86,12 +86,14 @@ class WrapperInfobarWidget extends React.Component {
         const tp = template.get('templatePath')
 
         return (
-            <div className={classnames('infobar-wrapper', ...colorClassNames)}>
-                <div
-                    id={widgetType}
-                    className={css.anchor}
-                />
-                <Card className={classnames(cardCss.component, 'wrapper transparent draggable')}>
+            <div className={classnames('infobar-wrapper draggable', ...colorClassNames)}>
+                {!isEditing && (
+                    <div
+                        id={widgetType}
+                        className={css.anchor}
+                    />
+                )}
+                <Card className={classnames(cardCss.component, 'wrapper transparent')}>
                     {
                         isEditing && (
                             <CardBody className="header clearfix">

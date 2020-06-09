@@ -223,7 +223,7 @@ export default class CardInfobarWidget extends React.Component {
                     (template.get('title') && !isTransparent || isEditing) && (
                         <CardBody
                             id={this.uniqueId}
-                            className="header clearfix"
+                            className={classnames('header clearfix', {'pr-5': isExpandable})}
                         >
                             {
                                 isExpandable && (

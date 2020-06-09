@@ -690,18 +690,18 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                 }
               >
                 <div
-                  className="infobar-wrapper colorContainer http"
+                  className="infobar-wrapper draggable colorContainer http"
                 >
                   <div
                     className="anchor"
                     id="http"
                   />
                   <Card
-                    className="component wrapper transparent draggable"
+                    className="component wrapper transparent"
                     tag="div"
                   >
                     <div
-                      className="component wrapper transparent draggable card"
+                      className="component wrapper transparent card"
                     >
                       <CardBody
                         className="content"
@@ -941,12 +941,12 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                     data-key=""
                                   >
                                     <CardBody
-                                      className="header clearfix"
+                                      className="header clearfix pr-5"
                                       id="card-widget-1"
                                       tag="div"
                                     >
                                       <div
-                                        className="header clearfix card-body"
+                                        className="header clearfix pr-5 card-body"
                                         id="card-widget-1"
                                       >
                                         <span
@@ -1564,18 +1564,18 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                 }
               >
                 <div
-                  className="infobar-wrapper colorContainer shopify"
+                  className="infobar-wrapper draggable colorContainer shopify"
                 >
                   <div
                     className="anchor"
                     id="shopify"
                   />
                   <Card
-                    className="component wrapper transparent draggable"
+                    className="component wrapper transparent"
                     tag="div"
                   >
                     <div
-                      className="component wrapper transparent draggable card"
+                      className="component wrapper transparent card"
                     >
                       <CardBody
                         className="content"
@@ -1813,12 +1813,12 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                     data-key=""
                                   >
                                     <CardBody
-                                      className="header clearfix"
+                                      className="header clearfix pr-5"
                                       id="card-widget-3"
                                       tag="div"
                                     >
                                       <div
-                                        className="header clearfix card-body"
+                                        className="header clearfix pr-5 card-body"
                                         id="card-widget-3"
                                       >
                                         <span
@@ -2611,18 +2611,14 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                     }
                   >
                     <div
-                      className="infobar-wrapper colorContainer http"
+                      className="infobar-wrapper draggable colorContainer http"
                     >
-                      <div
-                        className="anchor"
-                        id="http"
-                      />
                       <Card
-                        className="component wrapper transparent draggable"
+                        className="component wrapper transparent"
                         tag="div"
                       >
                         <div
-                          className="component wrapper transparent draggable card"
+                          className="component wrapper transparent card"
                         >
                           <CardBody
                             className="header clearfix"
@@ -3580,18 +3576,14 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                     }
                   >
                     <div
-                      className="infobar-wrapper colorContainer shopify"
+                      className="infobar-wrapper draggable colorContainer shopify"
                     >
-                      <div
-                        className="anchor"
-                        id="shopify"
-                      />
                       <Card
-                        className="component wrapper transparent draggable"
+                        className="component wrapper transparent"
                         tag="div"
                       >
                         <div
-                          className="component wrapper transparent draggable card"
+                          className="component wrapper transparent card"
                         >
                           <CardBody
                             className="header clearfix"

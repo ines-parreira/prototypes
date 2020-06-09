@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<InfobarTabs/> render() should not render when list contains only one item 1`] = `""`;
+
 exports[`<InfobarTabs/> render() should not render when list is empty 1`] = `""`;
 
 exports[`<InfobarTabs/> render() should render 1`] = `
@@ -100,6 +102,18 @@ exports[`<InfobarTabs/> render() should render without duplicates 1`] = `
         tag="a"
       >
         HTTP
+      </NavLink>
+    </NavItem>
+    <NavItem
+      key="shopify"
+      tag="li"
+    >
+      <NavLink
+        className="tab"
+        href="#shopify"
+        tag="a"
+      >
+        Shopify
       </NavLink>
     </NavItem>
   </Nav>

@@ -16,7 +16,7 @@ export function InfobarTabs({preparedDisplayList}: Props) {
     const types = preparedDisplayList.map((item) => item.getIn(['widget', 'type']))
     const tabs = new Set(types)
 
-    if (!tabs.size) {
+    if (tabs.size < 2) {
         return null
     }
 

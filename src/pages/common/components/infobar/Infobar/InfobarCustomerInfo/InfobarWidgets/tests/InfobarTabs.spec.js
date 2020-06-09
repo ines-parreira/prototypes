@@ -33,6 +33,7 @@ describe('<InfobarTabs/>', () => {
             const preparedDisplayList = fromJS([
                 {widget: {type: HTTP_WIDGET_TYPE}},
                 {widget: {type: HTTP_WIDGET_TYPE}},
+                {widget: {type: SHOPIFY_WIDGET_TYPE}},
             ])
 
             const component = shallow(
@@ -44,6 +45,18 @@ describe('<InfobarTabs/>', () => {
 
         it('should not render when list is empty', () => {
             const preparedDisplayList = fromJS([])
+
+            const component = shallow(
+                <InfobarTabs preparedDisplayList={preparedDisplayList}/>
+            )
+
+            expect(component).toMatchSnapshot()
+        })
+
+        it('should not render when list contains only one item', () => {
+            const preparedDisplayList = fromJS([
+                {widget: {type: HTTP_WIDGET_TYPE}},
+            ])
 
             const component = shallow(
                 <InfobarTabs preparedDisplayList={preparedDisplayList}/>
