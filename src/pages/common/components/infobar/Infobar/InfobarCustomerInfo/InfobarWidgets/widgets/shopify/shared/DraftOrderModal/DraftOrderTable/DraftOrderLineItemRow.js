@@ -16,7 +16,7 @@ import * as segmentTracker from '../../../../../../../../../../../../store/middl
 import * as Shopify from '../../../../../../../../../../../../constants/integrations/shopify'
 import {formatPrice} from '../../../../../../../../../../../../business/shopify/number'
 import DiscountPopover from '../DiscountPopover'
-import ShopifyMoneyAmount from '../../MoneyAmount'
+import MoneyAmount from '../../../../MoneyAmount'
 import {ShopifyAction} from '../../../constants'
 
 import css from './DraftOrderLineItemRow.less'
@@ -156,7 +156,7 @@ export class DraftOrderLineItemRow extends React.PureComponent<Props, State> {
                         {hasDiscount && (
                             <small className="d-block text-muted">
                                 <del>
-                                    <ShopifyMoneyAmount
+                                    <MoneyAmount
                                         renderIfZero
                                         amount={price}
                                         currencyCode={currencyCode}
@@ -174,7 +174,7 @@ export class DraftOrderLineItemRow extends React.PureComponent<Props, State> {
                             max={parseFloat(price)}
                             onChange={this._onAppliedDiscountChange}
                         >
-                            <ShopifyMoneyAmount
+                            <MoneyAmount
                                 renderIfZero
                                 amount={formattedDiscountedPrice}
                                 currencyCode={currencyCode}
@@ -211,7 +211,7 @@ export class DraftOrderLineItemRow extends React.PureComponent<Props, State> {
                     <strong
                         className={classnames('mt-auto mb-auto', removable ? 'mr-auto' : 'ml-auto')}
                     >
-                        <ShopifyMoneyAmount
+                        <MoneyAmount
                             renderIfZero
                             amount={formatPrice(getDraftOrderLineItemTotal(lineItem), currencyCode)}
                             currencyCode={currencyCode}

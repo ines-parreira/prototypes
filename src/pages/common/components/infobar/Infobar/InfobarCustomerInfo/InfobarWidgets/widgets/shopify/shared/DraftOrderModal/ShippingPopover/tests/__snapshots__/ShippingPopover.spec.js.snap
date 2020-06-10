@@ -76,7 +76,7 @@ exports[`<ShippingPopover/> render() should render with default value 1`] = `
               >
                 Test
                 <br />
-                <ShopifyMoneyAmount
+                <MoneyAmount
                   amount="12.00"
                   currencyCode="USD"
                   negative={false}

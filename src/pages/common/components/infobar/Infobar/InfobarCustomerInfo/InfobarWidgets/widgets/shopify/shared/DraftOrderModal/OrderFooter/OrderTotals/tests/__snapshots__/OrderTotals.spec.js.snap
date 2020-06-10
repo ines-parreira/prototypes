@@ -31,7 +31,7 @@ exports[`<OrderTotalsComponent/> render() should render as loading 1`] = `
   <dd
     className="col-3 mb-2"
   >
-    <ShopifyMoneyAmount
+    <MoneyAmount
       amount="5.00"
       currencyCode="USD"
       negative={true}
@@ -46,7 +46,7 @@ exports[`<OrderTotalsComponent/> render() should render as loading 1`] = `
   <dd
     className="col-3 mb-2"
   >
-    <ShopifyMoneyAmount
+    <MoneyAmount
       amount="0.00"
       currencyCode="USD"
       negative={false}
@@ -72,7 +72,7 @@ exports[`<OrderTotalsComponent/> render() should render as loading 1`] = `
   <dd
     className="col-3 mb-2"
   >
-    <ShopifyMoneyAmount
+    <MoneyAmount
       amount="0.00"
       currencyCode="USD"
       negative={false}
@@ -111,7 +111,7 @@ exports[`<OrderTotalsComponent/> render() should render as loading 1`] = `
       className="d-block text-muted"
       key="d558e4cc94abbcce1ed2a9c9521b9d96fbe3d8e8"
     >
-      <ShopifyMoneyAmount
+      <MoneyAmount
         amount="0.00"
         currencyCode="USD"
         negative={false}
@@ -130,7 +130,7 @@ exports[`<OrderTotalsComponent/> render() should render as loading 1`] = `
     <strong
       className="text-muted"
     >
-      <ShopifyMoneyAmount
+      <MoneyAmount
         amount="0.00"
         currencyCode="USD"
         negative={false}
@@ -172,7 +172,7 @@ exports[`<OrderTotalsComponent/> render() should render as not loading 1`] = `
   <dd
     className="col-3 mb-2"
   >
-    <ShopifyMoneyAmount
+    <MoneyAmount
       amount="5.00"
       currencyCode="USD"
       negative={true}
@@ -187,7 +187,7 @@ exports[`<OrderTotalsComponent/> render() should render as not loading 1`] = `
   <dd
     className="col-3 mb-2"
   >
-    <ShopifyMoneyAmount
+    <MoneyAmount
       amount="0.00"
       currencyCode="USD"
       negative={false}
@@ -213,7 +213,7 @@ exports[`<OrderTotalsComponent/> render() should render as not loading 1`] = `
   <dd
     className="col-3 mb-2"
   >
-    <ShopifyMoneyAmount
+    <MoneyAmount
       amount="0.00"
       currencyCode="USD"
       negative={false}
@@ -252,7 +252,7 @@ exports[`<OrderTotalsComponent/> render() should render as not loading 1`] = `
       className="d-block"
       key="d558e4cc94abbcce1ed2a9c9521b9d96fbe3d8e8"
     >
-      <ShopifyMoneyAmount
+      <MoneyAmount
         amount="0.00"
         currencyCode="USD"
         negative={false}
@@ -271,7 +271,7 @@ exports[`<OrderTotalsComponent/> render() should render as not loading 1`] = `
     <strong
       className=""
     >
-      <ShopifyMoneyAmount
+      <MoneyAmount
         amount="0.00"
         currencyCode="USD"
         negative={false}
@@ -313,7 +313,7 @@ exports[`<OrderTotalsComponent/> render() should render with default shipping li
   <dd
     className="col-3 mb-2"
   >
-    <ShopifyMoneyAmount
+    <MoneyAmount
       amount="5.00"
       currencyCode="USD"
       negative={true}
@@ -328,7 +328,7 @@ exports[`<OrderTotalsComponent/> render() should render with default shipping li
   <dd
     className="col-3 mb-2"
   >
-    <ShopifyMoneyAmount
+    <MoneyAmount
       amount="0.00"
       currencyCode="USD"
       negative={false}
@@ -361,7 +361,7 @@ exports[`<OrderTotalsComponent/> render() should render with default shipping li
   <dd
     className="col-3 mb-2"
   >
-    <ShopifyMoneyAmount
+    <MoneyAmount
       amount="0.00"
       currencyCode="USD"
       negative={false}
@@ -400,7 +400,7 @@ exports[`<OrderTotalsComponent/> render() should render with default shipping li
       className="d-block"
       key="d558e4cc94abbcce1ed2a9c9521b9d96fbe3d8e8"
     >
-      <ShopifyMoneyAmount
+      <MoneyAmount
         amount="0.00"
         currencyCode="USD"
         negative={false}
@@ -419,7 +419,7 @@ exports[`<OrderTotalsComponent/> render() should render with default shipping li
     <strong
       className=""
     >
-      <ShopifyMoneyAmount
+      <MoneyAmount
         amount="0.00"
         currencyCode="USD"
         negative={false}
@@ -461,7 +461,7 @@ exports[`<OrderTotalsComponent/> render() should render with taxes included 1`] 
   <dd
     className="col-3 mb-2"
   >
-    <ShopifyMoneyAmount
+    <MoneyAmount
       amount="5.00"
       currencyCode="USD"
       negative={true}
@@ -476,7 +476,7 @@ exports[`<OrderTotalsComponent/> render() should render with taxes included 1`] 
   <dd
     className="col-3 mb-2"
   >
-    <ShopifyMoneyAmount
+    <MoneyAmount
       amount="0.00"
       currencyCode="USD"
       negative={false}
@@ -502,7 +502,7 @@ exports[`<OrderTotalsComponent/> render() should render with taxes included 1`] 
   <dd
     className="col-3 mb-2"
   >
-    <ShopifyMoneyAmount
+    <MoneyAmount
       amount="0.00"
       currencyCode="USD"
       negative={false}
@@ -541,7 +541,7 @@ exports[`<OrderTotalsComponent/> render() should render with taxes included 1`] 
       className="d-block text-muted"
       key="cbf9c9add6883bcda55423a89108197735767de9"
     >
-      <ShopifyMoneyAmount
+      <MoneyAmount
         amount="0.00"
         currencyCode="USD"
         negative={false}
@@ -560,7 +560,7 @@ exports[`<OrderTotalsComponent/> render() should render with taxes included 1`] 
     <strong
       className="text-muted"
     >
-      <ShopifyMoneyAmount
+      <MoneyAmount
         amount="9.99"
         currencyCode="USD"
         negative={false}

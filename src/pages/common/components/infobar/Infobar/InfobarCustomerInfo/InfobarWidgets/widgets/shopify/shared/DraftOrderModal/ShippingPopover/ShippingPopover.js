@@ -9,7 +9,7 @@ import * as segmentTracker from '../../../../../../../../../../../../store/middl
 import * as Shopify from '../../../../../../../../../../../../constants/integrations/shopify'
 import {formatPrice} from '../../../../../../../../../../../../business/shopify/number'
 import {focusElement} from '../../../../../../../../../../../../utils/html'
-import ShopifyMoneyAmount from '../../MoneyAmount'
+import MoneyAmount from '../../../../MoneyAmount'
 import AmountInput from '../../AmountInput'
 import {ShopifyAction} from '../../../constants'
 
@@ -279,7 +279,7 @@ export default class ShippingPopover extends React.PureComponent<Props, State> {
                                                 <span className="d-block">
                                                     {defaultValue.get('title')}
                                                     <br/>
-                                                    <ShopifyMoneyAmount
+                                                    <MoneyAmount
                                                         currencyCode={currencyCode}
                                                         amount={defaultValue.get('price')}
                                                     />

@@ -40,7 +40,7 @@ exports[`<LineItemRow/> render() should render 1`] = `
       <div
         className="d-inline-block text-center"
       >
-        <ShopifyMoneyAmount
+        <MoneyAmount
           amount="1.00"
           currencyCode="USD"
           negative={false}
@@ -116,7 +116,7 @@ exports[`<LineItemRow/> render() should render 1`] = `
       <strong
         className="mt-auto mb-auto ml-auto"
       >
-        <ShopifyMoneyAmount
+        <MoneyAmount
           amount="1.00"
           currencyCode="USD"
           negative={false}
@@ -168,7 +168,7 @@ exports[`<LineItemRow/> render() should render for multi-currency order 1`] = `
       <div
         className="d-inline-block text-center"
       >
-        <ShopifyMoneyAmount
+        <MoneyAmount
           amount="1.00"
           currencyCode="USD"
           negative={false}
@@ -244,7 +244,7 @@ exports[`<LineItemRow/> render() should render for multi-currency order 1`] = `
       <strong
         className="mt-auto mb-auto ml-auto"
       >
-        <ShopifyMoneyAmount
+        <MoneyAmount
           amount="100"
           currencyCode="JPY"
           negative={false}
@@ -301,7 +301,7 @@ exports[`<LineItemRow/> render() should render with "not restockable" message 1`
       <div
         className="d-inline-block text-center"
       >
-        <ShopifyMoneyAmount
+        <MoneyAmount
           amount="1.00"
           currencyCode="USD"
           negative={false}
@@ -377,7 +377,7 @@ exports[`<LineItemRow/> render() should render with "not restockable" message 1`
       <strong
         className="mt-auto mb-auto ml-auto"
       >
-        <ShopifyMoneyAmount
+        <MoneyAmount
           amount="1.00"
           currencyCode="USD"
           negative={false}
@@ -433,7 +433,7 @@ exports[`<LineItemRow/> render() should render with discounted price 1`] = `
           className="d-block text-muted"
         >
           <del>
-            <ShopifyMoneyAmount
+            <MoneyAmount
               amount="1.00"
               currencyCode="USD"
               negative={false}
@@ -441,7 +441,7 @@ exports[`<LineItemRow/> render() should render with discounted price 1`] = `
             />
           </del>
         </small>
-        <ShopifyMoneyAmount
+        <MoneyAmount
           amount="0.50"
           currencyCode="USD"
           negative={false}
@@ -517,7 +517,7 @@ exports[`<LineItemRow/> render() should render with discounted price 1`] = `
       <strong
         className="mt-auto mb-auto ml-auto"
       >
-        <ShopifyMoneyAmount
+        <MoneyAmount
           amount="0.50"
           currencyCode="USD"
           negative={false}
@@ -577,7 +577,7 @@ exports[`<LineItemRow/> render() should render without quantity and without pric
       <strong
         className="mt-auto mb-auto ml-auto"
       >
-        <ShopifyMoneyAmount
+        <MoneyAmount
           amount="0.00"
           currencyCode="USD"
           negative={false}

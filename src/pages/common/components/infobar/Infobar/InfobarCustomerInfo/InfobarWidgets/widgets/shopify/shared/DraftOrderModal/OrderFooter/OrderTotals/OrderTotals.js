@@ -20,7 +20,7 @@ import * as Shopify from '../../../../../../../../../../../../../constants/integ
 import {formatPrice} from '../../../../../../../../../../../../../business/shopify/number'
 import DiscountPopover from '../../DiscountPopover'
 import ShippingPopover from '../../ShippingPopover'
-import ShopifyMoneyAmount from '../../../MoneyAmount'
+import MoneyAmount from '../../../../../MoneyAmount'
 import TaxesPopover from '../../TaxesPopover'
 
 import css from './OrderTotals.less'
@@ -87,7 +87,7 @@ export class OrderTotalsComponent extends React.PureComponent<Props> {
                 </dt>
                 <dd className="col-3 mb-2">
                     {!!payload.getIn(['applied_discount', 'title']) && <br/>}
-                    <ShopifyMoneyAmount
+                    <MoneyAmount
                         amount={formatPrice(getTotalDiscountAmount(payload), currencyCode)}
                         currencyCode={currencyCode}
                         negative
@@ -96,7 +96,7 @@ export class OrderTotalsComponent extends React.PureComponent<Props> {
 
                 <dt className={classnames('col-9 mb-2', css.grey)}>Subtotal</dt>
                 <dd className="col-3 mb-2">
-                    <ShopifyMoneyAmount
+                    <MoneyAmount
                         renderIfZero
                         amount={formatPrice(getSubtotal(payload), currencyCode)}
                         currencyCode={currencyCode}
@@ -118,7 +118,7 @@ export class OrderTotalsComponent extends React.PureComponent<Props> {
                 </dt>
                 <dd className="col-3 mb-2">
                     {!!payload.get('shipping_line') && <br/>}
-                    <ShopifyMoneyAmount
+                    <MoneyAmount
                         renderIfZero={!!payload.get('shipping_line')}
                         amount={formatPrice(getTotalShippingPrice(payload), currencyCode)}
                         currencyCode={currencyCode}
@@ -153,7 +153,7 @@ export class OrderTotalsComponent extends React.PureComponent<Props> {
                             key={hash(uniqueTaxLine)}
                             className={classnames('d-block', {'text-muted': loading})}
                         >
-                            <ShopifyMoneyAmount
+                            <MoneyAmount
                                 renderIfZero
                                 amount={formatPrice(uniqueTaxLine.total, currencyCode)}
                                 currencyCode={currencyCode}
@@ -165,7 +165,7 @@ export class OrderTotalsComponent extends React.PureComponent<Props> {
                 <dt className="col-9 mb-2">Total</dt>
                 <dd className="col-3 mb-2">
                     <strong className={classnames({'text-muted': loading})}>
-                        <ShopifyMoneyAmount
+                        <MoneyAmount
                             renderIfZero
                             amount={draftOrder.get('total_price')}
                             currencyCode={currencyCode}

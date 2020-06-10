@@ -12,7 +12,7 @@ import {
 } from '../../../../../../../../../../../../business/shopify/lineItem'
 import * as Shopify from '../../../../../../../../../../../../constants/integrations/shopify'
 import {formatPrice} from '../../../../../../../../../../../../business/shopify/number'
-import ShopifyMoneyAmount from '../../../shared/MoneyAmount'
+import MoneyAmount from '../../../../MoneyAmount'
 
 import css from './OrderLineItemRow.less'
 
@@ -168,7 +168,7 @@ export class OrderLineItemRow extends React.PureComponent<Props, State> {
                         {hasDiscount && (
                             <small className="d-block text-muted">
                                 <del>
-                                    <ShopifyMoneyAmount
+                                    <MoneyAmount
                                         renderIfZero
                                         amount={price}
                                         currencyCode={shopCurrencyCode}
@@ -176,7 +176,7 @@ export class OrderLineItemRow extends React.PureComponent<Props, State> {
                                 </del>
                             </small>
                         )}
-                        <ShopifyMoneyAmount
+                        <MoneyAmount
                             renderIfZero
                             amount={formattedDiscountedPrice}
                             currencyCode={shopCurrencyCode}
@@ -249,7 +249,7 @@ export class OrderLineItemRow extends React.PureComponent<Props, State> {
                     <strong
                         className={classnames('mt-auto mb-auto ml-auto')}
                     >
-                        <ShopifyMoneyAmount
+                        <MoneyAmount
                             renderIfZero
                             amount={formatPrice(total, currencyCode)}
                             currencyCode={currencyCode}

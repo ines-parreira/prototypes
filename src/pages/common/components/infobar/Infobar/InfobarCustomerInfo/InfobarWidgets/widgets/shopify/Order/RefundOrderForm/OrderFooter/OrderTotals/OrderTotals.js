@@ -14,7 +14,7 @@ import {
     getTotalCartDiscountAmount,
     getTotalTax
 } from '../../../../../../../../../../../../../business/shopify/refund'
-import ShopifyMoneyAmount from '../../../../shared/MoneyAmount'
+import MoneyAmount from '../../../../../MoneyAmount'
 import AmountInput from '../../../../shared/AmountInput'
 
 import css from './OrderTotals.less'
@@ -72,7 +72,7 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
                     Subtotal
                 </dt>
                 <dd className={classnames('col-5 mb-2', {'text-muted': loading})}>
-                    <ShopifyMoneyAmount
+                    <MoneyAmount
                         renderIfZero
                         amount={formatPrice(getSubtotal(refund), currencyCode)}
                         currencyCode={currencyCode}
@@ -95,7 +95,7 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
                             {!!shippingMaximumRefundable && (
                                 <span>
                                     (
-                                    <ShopifyMoneyAmount
+                                    <MoneyAmount
                                         renderIfZero
                                         amount={shippingMaximumRefundable}
                                         currencyCode={currencyCode}
@@ -130,7 +130,7 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
                     Discounts
                 </dt>
                 <dd className={classnames('col-5 mb-2', {'text-muted': loading})}>
-                    <ShopifyMoneyAmount
+                    <MoneyAmount
                         amount={formatPrice(getTotalCartDiscountAmount(refund), currencyCode)}
                         currencyCode={currencyCode}
                         negative
@@ -141,7 +141,7 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
                     Tax
                 </dt>
                 <dd className={classnames('col-5 mb-2', {'text-muted': loading})}>
-                    <ShopifyMoneyAmount
+                    <MoneyAmount
                         amount={formatPrice(getTotalTax(refund), currencyCode)}
                         currencyCode={currencyCode}
                     />
@@ -151,7 +151,7 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
                     Total available to refund
                 </dt>
                 <dd className="col-5 mb-2">
-                    <ShopifyMoneyAmount
+                    <MoneyAmount
                         amount={formatPrice(getTotalAvailableToRefund(refund), currencyCode)}
                         currencyCode={currencyCode}
                         renderIfZero

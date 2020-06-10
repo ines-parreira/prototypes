@@ -12,6 +12,7 @@ import DraftOrderModal from '../shared/DraftOrderModal'
 import {CardHeaderValue} from '../../CardHeaderValue'
 import type {ActionType} from '../../types'
 import {ShopifyAction} from '../constants'
+import MoneyAmount from '../../MoneyAmount'
 
 import CancelOrderModal from './CancelOrderModal'
 import RefundOrderModal from './RefundOrderModal'
@@ -184,9 +185,10 @@ class AfterTitle extends React.Component<AfterTitleProps> {
                         />
                     </CardHeaderValue>
                     <CardHeaderValue label="Total">
-                        {parseFloat(source.getIn(['total_price_set', 'presentment_money', 'amount']))}
-                        {' '}
-                        {source.getIn(['total_price_set', 'presentment_money', 'currency_code'])}
+                        <MoneyAmount
+                            amount={source.getIn(['total_price_set', 'presentment_money', 'amount'])}
+                            currencyCode={source.getIn(['total_price_set', 'presentment_money', 'currency_code'])}
+                        />
                     </CardHeaderValue>
                 </CardHeaderDetails>
             </>

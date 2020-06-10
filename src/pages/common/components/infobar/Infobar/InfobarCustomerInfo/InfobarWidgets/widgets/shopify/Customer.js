@@ -15,6 +15,7 @@ import {CardHeaderTitle} from '../CardHeaderTitle'
 import {CardHeaderIcon} from '../CardHeaderIcon'
 import ExpandAllButton from '../ExpandAllButton'
 import type {ActionType} from '../types'
+import MoneyAmount from '../MoneyAmount'
 
 import DraftOrderModal from './shared/DraftOrderModal'
 import {ShopifyAction} from './constants'
@@ -127,7 +128,10 @@ class AfterTitle extends React.Component<AfterTitleProps> {
                 />
                 <CardHeaderDetails>
                     <CardHeaderValue label="Total spent">
-                        {source.get('total_spent')} {source.get('currency')}
+                        <MoneyAmount
+                            amount={source.get('total_spent')}
+                            currencyCode={source.get('currency')}
+                        />
                     </CardHeaderValue>
                     <CardHeaderValue label="Orders">
                         {source.get('orders_count')}

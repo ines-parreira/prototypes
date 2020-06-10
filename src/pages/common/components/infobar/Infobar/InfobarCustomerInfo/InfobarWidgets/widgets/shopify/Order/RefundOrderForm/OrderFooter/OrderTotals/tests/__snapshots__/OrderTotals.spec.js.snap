@@ -12,7 +12,7 @@ exports[`<OrderTotals/> render() should render as loading 1`] = `
   <dd
     className="col-5 mb-2 text-muted"
   >
-    <ShopifyMoneyAmount
+    <MoneyAmount
       amount="1.00"
       currencyCode="USD"
       negative={false}
@@ -27,7 +27,7 @@ exports[`<OrderTotals/> render() should render as loading 1`] = `
   <dd
     className="col-5 mb-2 text-muted"
   >
-    <ShopifyMoneyAmount
+    <MoneyAmount
       amount="0.00"
       currencyCode="USD"
       negative={true}
@@ -42,7 +42,7 @@ exports[`<OrderTotals/> render() should render as loading 1`] = `
   <dd
     className="col-5 mb-2 text-muted"
   >
-    <ShopifyMoneyAmount
+    <MoneyAmount
       amount="0.20"
       currencyCode="USD"
       negative={false}
@@ -57,7 +57,7 @@ exports[`<OrderTotals/> render() should render as loading 1`] = `
   <dd
     className="col-5 mb-2"
   >
-    <ShopifyMoneyAmount
+    <MoneyAmount
       amount="1.20"
       currencyCode="USD"
       negative={false}
@@ -79,7 +79,7 @@ exports[`<OrderTotals/> render() should render as not loading 1`] = `
   <dd
     className="col-5 mb-2"
   >
-    <ShopifyMoneyAmount
+    <MoneyAmount
       amount="1.00"
       currencyCode="USD"
       negative={false}
@@ -94,7 +94,7 @@ exports[`<OrderTotals/> render() should render as not loading 1`] = `
   <dd
     className="col-5 mb-2"
   >
-    <ShopifyMoneyAmount
+    <MoneyAmount
       amount="0.00"
       currencyCode="USD"
       negative={true}
@@ -109,7 +109,7 @@ exports[`<OrderTotals/> render() should render as not loading 1`] = `
   <dd
     className="col-5 mb-2"
   >
-    <ShopifyMoneyAmount
+    <MoneyAmount
       amount="0.20"
       currencyCode="USD"
       negative={false}
@@ -124,7 +124,7 @@ exports[`<OrderTotals/> render() should render as not loading 1`] = `
   <dd
     className="col-5 mb-2"
   >
-    <ShopifyMoneyAmount
+    <MoneyAmount
       amount="1.20"
       currencyCode="USD"
       negative={false}
@@ -146,7 +146,7 @@ exports[`<OrderTotals/> render() should render with shipping line 1`] = `
   <dd
     className="col-5 mb-2"
   >
-    <ShopifyMoneyAmount
+    <MoneyAmount
       amount="1.00"
       currencyCode="USD"
       negative={false}
@@ -174,7 +174,7 @@ exports[`<OrderTotals/> render() should render with shipping line 1`] = `
        
       <span>
         (
-        <ShopifyMoneyAmount
+        <MoneyAmount
           amount="9.99"
           currencyCode="USD"
           negative={false}
@@ -210,7 +210,7 @@ exports[`<OrderTotals/> render() should render with shipping line 1`] = `
   <dd
     className="col-5 mb-2"
   >
-    <ShopifyMoneyAmount
+    <MoneyAmount
       amount="0.00"
       currencyCode="USD"
       negative={true}
@@ -225,7 +225,7 @@ exports[`<OrderTotals/> render() should render with shipping line 1`] = `
   <dd
     className="col-5 mb-2"
   >
-    <ShopifyMoneyAmount
+    <MoneyAmount
       amount="0.20"
       currencyCode="USD"
       negative={false}
@@ -240,7 +240,7 @@ exports[`<OrderTotals/> render() should render with shipping line 1`] = `
   <dd
     className="col-5 mb-2"
   >
-    <ShopifyMoneyAmount
+    <MoneyAmount
       amount="1.20"
       currencyCode="USD"
       negative={false}

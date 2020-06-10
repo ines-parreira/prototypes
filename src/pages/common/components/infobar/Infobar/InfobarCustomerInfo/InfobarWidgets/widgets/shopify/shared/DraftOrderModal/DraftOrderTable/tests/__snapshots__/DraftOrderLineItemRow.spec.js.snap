@@ -53,7 +53,7 @@ exports[`<DraftOrderLineItemRow/> render() should render with applied discount 1
           className="d-block text-muted"
         >
           <del>
-            <ShopifyMoneyAmount
+            <MoneyAmount
               amount="1.00"
               currencyCode="USD"
               negative={false}
@@ -80,7 +80,7 @@ exports[`<DraftOrderLineItemRow/> render() should render with applied discount 1
             }
           }
         >
-          <ShopifyMoneyAmount
+          <MoneyAmount
             amount="0.50"
             currencyCode="USD"
             negative={false}
@@ -114,7 +114,7 @@ exports[`<DraftOrderLineItemRow/> render() should render with applied discount 1
       <strong
         className="mt-auto mb-auto mr-auto"
       >
-        <ShopifyMoneyAmount
+        <MoneyAmount
           amount="0.50"
           currencyCode="USD"
           negative={false}
@@ -200,7 +200,7 @@ exports[`<DraftOrderLineItemRow/> render() should render with product image 1`] 
           placement="bottom"
           value={null}
         >
-          <ShopifyMoneyAmount
+          <MoneyAmount
             amount="1.00"
             currencyCode="USD"
             negative={false}
@@ -234,7 +234,7 @@ exports[`<DraftOrderLineItemRow/> render() should render with product image 1`] 
       <strong
         className="mt-auto mb-auto mr-auto"
       >
-        <ShopifyMoneyAmount
+        <MoneyAmount
           amount="1.00"
           currencyCode="USD"
           negative={false}
@@ -320,7 +320,7 @@ exports[`<DraftOrderLineItemRow/> render() should render without product image 1
           placement="bottom"
           value={null}
         >
-          <ShopifyMoneyAmount
+          <MoneyAmount
             amount="1.00"
             currencyCode="USD"
             negative={false}
@@ -354,7 +354,7 @@ exports[`<DraftOrderLineItemRow/> render() should render without product image 1
       <strong
         className="mt-auto mb-auto mr-auto"
       >
-        <ShopifyMoneyAmount
+        <MoneyAmount
           amount="1.00"
           currencyCode="USD"
           negative={false}
@@ -440,7 +440,7 @@ exports[`<DraftOrderLineItemRow/> render() should render without quantity and wi
           placement="bottom"
           value={null}
         >
-          <ShopifyMoneyAmount
+          <MoneyAmount
             amount="1.00"
             currencyCode="USD"
             negative={false}
@@ -474,7 +474,7 @@ exports[`<DraftOrderLineItemRow/> render() should render without quantity and wi
       <strong
         className="mt-auto mb-auto ml-auto"
       >
-        <ShopifyMoneyAmount
+        <MoneyAmount
           amount="0.00"
           currencyCode="USD"
           negative={false}
