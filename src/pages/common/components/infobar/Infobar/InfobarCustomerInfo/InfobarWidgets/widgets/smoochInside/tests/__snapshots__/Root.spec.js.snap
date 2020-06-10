@@ -1,0 +1,35 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TitleWrapper/> render() should render with a link 1`] = `
+<Fragment>
+  <CardHeaderIcon
+    alt="Chat"
+    src="test-file-stub"
+  />
+  <CardHeaderTitle>
+    <a
+      href="https://foo.bar/?baz=BAZ"
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      <span>
+        Chat
+      </span>
+    </a>
+  </CardHeaderTitle>
+</Fragment>
+`;
+
+exports[`<TitleWrapper/> render() should render without link 1`] = `
+<Fragment>
+  <CardHeaderIcon
+    alt="Chat"
+    src="test-file-stub"
+  />
+  <CardHeaderTitle>
+    <span>
+      Chat
+    </span>
+  </CardHeaderTitle>
+</Fragment>
+`;

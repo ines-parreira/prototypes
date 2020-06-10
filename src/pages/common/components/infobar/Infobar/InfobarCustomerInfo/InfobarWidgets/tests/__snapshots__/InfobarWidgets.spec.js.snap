@@ -1081,9 +1081,15 @@ exports[`InfobarWidgets component should display http and shopify data in non-ed
                                               HTTP
                                             </span>
                                           </CardHeaderTitle>
-                                          <span>
-                                            Foo container
-                                          </span>
+                                          <CardHeaderSubtitle>
+                                            <span
+                                              className="container"
+                                            >
+                                              <span>
+                                                Foo container
+                                              </span>
+                                            </span>
+                                          </CardHeaderSubtitle>
                                         </TitleWrapper>
                                         <span
                                           className="tools"
@@ -3036,9 +3042,15 @@ exports[`InfobarWidgets component should display http and shopify data, + rechar
                                                       HTTP
                                                     </span>
                                                   </CardHeaderTitle>
-                                                  <span>
-                                                    Foo container
-                                                  </span>
+                                                  <CardHeaderSubtitle>
+                                                    <span
+                                                      className="container"
+                                                    >
+                                                      <span>
+                                                        Foo container
+                                                      </span>
+                                                    </span>
+                                                  </CardHeaderSubtitle>
                                                 </TitleWrapper>
                                                 <span
                                                   className="tools"
