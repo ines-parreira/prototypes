@@ -1,4 +1,4 @@
-#### Related GitHub issue(s): 
+#### Related GitHub issue(s): closes #
 #### Related Sentry issue(s): 
 
 #### Changes:
