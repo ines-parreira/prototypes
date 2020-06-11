@@ -292,7 +292,7 @@ export const deleteViewSuccess = (viewId: number): thunkActionType => (dispatch:
  * @returns {Function}
  */
 export function fetchViewItems(
-    direction: ?$Values<VIEW_NAV_DIRECTIONS> = null,
+    direction: ?$Values<typeof VIEW_NAV_DIRECTIONS> = null,
     cursor: ?number,
     isPolling: ?boolean = false
 ): thunkActionType {
@@ -326,7 +326,6 @@ export function fetchViewItems(
             return Promise.resolve()
         }
 
-        //$FlowFixMe
         const filtersHash = getHashOfObj(viewsSelectors.getActiveViewFilters(state))
 
         dispatch({

@@ -1,3 +1,4 @@
+//@flow
 export const ENGLISH_US_LANGUAGE = 'en-US'
 export const FRENCH_LANGUAGE = 'fr'
 export const SPANISH_LANGUAGE = 'es'

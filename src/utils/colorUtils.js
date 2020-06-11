@@ -1,3 +1,4 @@
+//@flow
 // from https://codepen.io/WebSeed/full/pvgqEq
 function shouldFontBeDark(r, g, b) {
     // Counting the perceptive luminance
@@ -16,7 +17,7 @@ function hexToRgb(hex) {
     } : null
 }
 
-export function getFontColorFromBgColor(hexColor) {
+export function getFontColorFromBgColor(hexColor: string) {
     const rgb = hexToRgb(hexColor.replace('#', ''))
 
     if (!rgb) {

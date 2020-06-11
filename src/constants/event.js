@@ -1,3 +1,4 @@
+//@flow
 export const RULE_EXECUTED = 'rule-executed'
 export const TICKET_ASSIGNED = 'ticket-assigned'
 export const TICKET_CLOSED = 'ticket-closed'
@@ -18,7 +19,7 @@ export const TICKET_UNMARKED_SPAM = 'ticket-unmarked-spam'
 export const TICKET_UNTRASHED = 'ticket-untrashed'
 export const TICKET_UPDATED = 'ticket-updated'
 
-export const TICKET_AUDIT_LOG_EVENTS = [
+export const TICKET_AUDIT_LOG_EVENTS_MAP = Object.freeze({
     RULE_EXECUTED,
     TICKET_ASSIGNED,
     TICKET_CLOSED,
@@ -36,4 +37,6 @@ export const TICKET_AUDIT_LOG_EVENTS = [
     TICKET_UNASSIGNED,
     TICKET_UNMARKED_SPAM,
     TICKET_UNTRASHED,
-]
+})
+
+export const TICKET_AUDIT_LOG_EVENTS = Object.freeze(Object.values(TICKET_AUDIT_LOG_EVENTS_MAP))

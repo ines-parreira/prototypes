@@ -1,3 +1,4 @@
+//@flow
 import {buildJobMessage} from '../notificationUtils'
 import {APPLY_MACRO_JOB_TYPE, UPDATE_TICKET_JOB_TYPE, EXPORT_TICKET_JOB_TYPE} from '../../constants/job'
 

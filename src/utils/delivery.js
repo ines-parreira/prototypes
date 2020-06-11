@@ -1,3 +1,4 @@
+//@flow
 function getUSPSTrackingUrl(trackingNumber: string): string {
     return `https://tools.usps.com/go/TrackConfirmAction?qtc_tLabels1=${trackingNumber}`
 }

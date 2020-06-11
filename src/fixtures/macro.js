@@ -1,4 +1,7 @@
-export const macros = [
+//@flow
+import type {Macro} from '../models/macro/'
+
+export const macros: Macro[] = ([
     {
         id: 1,
         name: 'Waive Fee',
@@ -78,4 +81,4 @@ export const macros = [
         updated_datetime: '2017-08-01T17:56:51.220744+00:00',
         usage: 0
     }
-]
+]: any)

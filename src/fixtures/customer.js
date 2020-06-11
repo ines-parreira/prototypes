@@ -1,3 +1,4 @@
+//@flow
 import {USER_ROLE} from '../config/user'
 
 export const customer = {

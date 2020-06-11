@@ -1,3 +1,4 @@
+//@flow
 import * as Shopify from '../constants/integrations/shopify'
 import type {IntegrationDataItem} from '../models/integration'
 import {INTEGRATION_DATA_ITEM_TYPE_PRODUCT, SHOPIFY_INTEGRATION_TYPE} from '../constants/integration'
@@ -14,7 +15,7 @@ export const shopifyVariantFixture = (
         sku = '11111',
         title = 'Variant 1',
         price = '9.99',
-    } = {}
+    }: any = {}
 ): Shopify.Variant => ({
     id,
     sku,
@@ -33,7 +34,7 @@ export const shopifyProductFixture = (
         id = 1,
         title = 'Product 1',
         variants = [shopifyVariantFixture()],
-    } = {}
+    }: any = {}
 ): Shopify.Product => ({
     id,
     title,
@@ -46,7 +47,7 @@ export const shopifyProductFixture = (
 export const integrationDataItemProductFixture = (
     {
         data = shopifyProductFixture(),
-    } = {}
+    }: any = {}
 ): IntegrationDataItem<Shopify.Product> => ({
     id: 1,
     integration_id: 1,
@@ -66,7 +67,7 @@ export const shopifyPriceSetFixture = (
         currencyCode = 'USD',
         presentmentAmount = null,
         presentmentCurrencyCode = null,
-    } = {}
+    }: any = {}
 ): Shopify.PriceSet => ({
     shop_money: {
         amount,
@@ -83,12 +84,12 @@ export const shopifyCustomerFixture = (): Shopify.Customer => ({
     email: 'apu@gorgias.com',
     default_address: shopifyAddressFixture(),
     currency: 'USD',
-})
+}: any)
 
 export const shopifyOrderFixture = (
     {
         shippingLines = [],
-    } = {}
+    }: any = {}
 ): Shopify.Order => ({
     id: 1894175539223,
     name: '#1684',
@@ -145,7 +146,7 @@ export const shopifyOrderFixture = (
     browser_ip: null,
     cart_token: null,
     created_at: '2019-12-13T13:54:05-08:00',
-    line_items: [
+    line_items: ([
         {
             id: 4193100136471,
             sku: '0987654321-1',
@@ -222,7 +223,7 @@ export const shopifyOrderFixture = (
             fulfillable_quantity: 4,
             variant_inventory_management: 'shopify'
         }
-    ],
+    ]: any),
     source_url: null,
     updated_at: '2019-12-13T13:56:10-08:00',
     checkout_id: null,
@@ -403,7 +404,7 @@ export const shopifyMultiCurrencyOrderFixture = (): Shopify.Order => ({
     browser_ip: '24.5.175.157',
     cart_token: '',
     created_at: '2020-04-14T20:15:11-04:00',
-    line_items: [
+    line_items: ([
         {
             id: 4692703838347,
             sku: '',
@@ -491,7 +492,7 @@ export const shopifyMultiCurrencyOrderFixture = (): Shopify.Order => ({
             fulfillable_quantity: 1,
             variant_inventory_management: 'shopify'
         }
-    ],
+    ]: any),
     source_url: null,
     updated_at: '2020-04-14T20:16:23-04:00',
     checkout_id: 12632339939467,
@@ -527,7 +528,7 @@ export const shopifyMultiCurrencyOrderFixture = (): Shopify.Order => ({
     },
     discount_codes: [],
     referring_site: 'https://samy-test2.myshopify.com/collections/frontpage/products/smartphone',
-    shipping_lines: [
+    shipping_lines: ([
         {
             id: 1776909615243,
             code: 'Expedited',
@@ -562,7 +563,7 @@ export const shopifyMultiCurrencyOrderFixture = (): Shopify.Order => ({
             },
             requested_fulfillment_service_id: null
         }
-    ],
+    ]: any),
     subtotal_price: '96377',
     taxes_included: false,
     billing_address: {
@@ -675,7 +676,7 @@ export const shopifyMultiCurrencyOrderFixture = (): Shopify.Order => ({
             currency_code: 'USD'
         }
     }
-})
+}: any)
 
 export const shopifyAddressFixture = (): Shopify.Address => ({
     id: 2888869838871,
@@ -755,7 +756,7 @@ export const shopifyDraftOrderPayloadFixture = (): Shopify.DraftOrder => ({
         id: 2721145061399
     },
     currency: 'USD',
-})
+}: any)
 
 export const shopifyLineItemFixture = (
     {
@@ -770,7 +771,7 @@ export const shopifyLineItemFixture = (
         currencyCode = null,
         presentmentPrice = null,
         presentmentCurrencyCode = null,
-    } = {}
+    }: any = {}
 ): Shopify.LineItem => {
     const lineItem = {
         taxable: true,
@@ -788,7 +789,7 @@ export const shopifyLineItemFixture = (
     }
 
     if (currencyCode) {
-        lineItem.price_set = shopifyPriceSetFixture({
+        (lineItem: any).price_set = shopifyPriceSetFixture({
             amount: price,
             currencyCode,
             presentmentAmount: presentmentPrice || price,
@@ -796,7 +797,7 @@ export const shopifyLineItemFixture = (
         })
     }
 
-    return lineItem
+    return (lineItem: any)
 }
 
 export const shopifyDraftOrderFixture = (): Shopify.DraftOrder => ({
@@ -855,7 +856,7 @@ export const shopifyDraftOrderFixture = (): Shopify.DraftOrder => ({
     note: 'ahahah??',
     status: 'open',
     tax_exempt: false,
-    line_items: [
+    line_items: ([
         {
             applied_discount: null,
             taxable: true,
@@ -910,7 +911,7 @@ export const shopifyDraftOrderFixture = (): Shopify.DraftOrder => ({
             gift_card: false,
             requires_shipping: true
         }
-    ],
+    ]: any),
     updated_at: '2020-02-19T14:22:07-08:00',
     tags: '',
     id: 524819955735,
@@ -967,14 +968,14 @@ export const shopifyAppliedDiscountFixture = (
         value = '100.0',
         valueType = 'percentage',
         amount = '5.00',
-    } = {}
+    }: any = {}
 ): Shopify.AppliedDiscount => ({
     description: null,
     value,
     title: '',
     amount,
     value_type: valueType,
-})
+}: any)
 
 export const shopifyShippingLineFixture = (
     {
@@ -984,9 +985,9 @@ export const shopifyShippingLineFixture = (
         presentmentPrice = null,
         presentmentDiscountedPrice = null,
         presentmentCurrencyCode = null,
-    } = {}
+    }: any = {}
 ): Shopify.ShippingLine => {
-    const shippingLine = {
+    const shippingLine: any = {
         code: 'custom',
         price,
         title: 'Test',
@@ -1019,14 +1020,14 @@ export const shopifyCustomLineItemFixture = (): Shopify.LineItem => ({
     taxable: true,
     requires_shipping: true,
     product_exists: false,
-})
+}: any)
 
 export const shopifyTaxLineFixture = (
     {
         rate = 0.2,
         title = 'TVA',
         price = '0.00',
-    } = {}
+    }: any = {}
 ): Shopify.TaxLine => ({
     rate,
     title,
@@ -1041,7 +1042,7 @@ export const shopifyInvoicePayloadFixture = (): Shopify.DraftOrderInvoice => ({
 export const shopifyDiscountAllocationFixture = (
     {
         amount = '0.50',
-    } = {}
+    }: any = {}
 ): Shopify.DiscountAllocation => ({
     amount,
     discount_application_index: 0,
@@ -1051,7 +1052,7 @@ export const shopifyDiscountApplicationFixture = (
     {
         value = '50.00',
         type = 'percentage',
-    } = {}
+    }: any = {}
 ): Shopify.DiscountApplication => ({
     type: 'manual',
     title: '',
@@ -1067,11 +1068,11 @@ export const shopifyRefundFixture = (
     {
         refundLineItems = [],
         orderAdjustments = [],
-    } = {}
+    }: any = {}
 ): Shopify.Refund => ({
     refund_line_items: refundLineItems,
     order_adjustments: orderAdjustments,
-})
+}: any)
 
 export const shopifyRefundLineItemFixture = (): Shopify.RefundLineItem => ({
     id: 139749457943,
@@ -1092,7 +1093,7 @@ export const shopifyCancelOrderPayloadFixture = (): Shopify.CancelOrderPayload =
 export const shopifyRefundOrderPayloadFixture = (
     {
         notify = true,
-    } = {}
+    }: any = {}
 ): Shopify.RefundOrderPayload => ({
     currency: 'USD',
     restock: true,
@@ -1111,12 +1112,12 @@ export const shopifyRefundOrderPayloadFixture = (
     transactions: [
         {amount: '1.00'},
     ],
-})
+}: any)
 
 export const shopifySuggestedRefundFixture = (
     {
         locationId = 123,
-    } = {}
+    }: any = {}
 ): Shopify.Refund => ({
     shipping: {
         amount: '0.00',
@@ -1149,4 +1150,4 @@ export const shopifySuggestedRefundFixture = (
         }
     ],
     currency: 'USD',
-})
+}: any)

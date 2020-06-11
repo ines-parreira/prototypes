@@ -1,3 +1,4 @@
+//@flow
 import {ADMIN_ROLE, AGENT_ROLE} from '../config/user'
 
 export const agents = [
@@ -43,20 +44,20 @@ export const agents = [
     }
 ]
 export const locations = {
-    1: {
+    '1': {
         Ticket: [1, 2],
         Customer: [3]
     },
-    2: {
+    '2': {
         Ticket: [1],
         Customer: [2]
     }
 }
 export const typingStatuses = {
-    1: {
+    '1': {
         Ticket: [1, 2]
     },
-    2: {
+    '2': {
         Ticket: [1]
     }
 }

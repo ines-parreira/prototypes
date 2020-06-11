@@ -1,3 +1,4 @@
+//@flow
 import jsdom from 'jsdom'
 
 import {
@@ -70,21 +71,27 @@ describe('html util', () => {
                 </html>
             `
             const parsed = parseHtml(html, dom.window)
-
+            if (parsed.documentElement == null) {
+                throw new Error('parsed.documentElement is undefined')
+            }
             expect(parsed.documentElement.innerHTML).toMatchSnapshot()
         })
 
         it('should not remove invalid characters', () => {
             const html = 'Thank you <3 you are the best'
             const parsed = parseHtml(html, dom.window)
-
+            if (parsed.documentElement == null) {
+                throw new Error('parsed.documentElement is undefined')
+            }
             expect(parsed.documentElement.innerHTML).toMatchSnapshot()
         })
 
         it('should not remove quotes', () => {
             const html = 'these "quotes" here'
             const parsed = parseHtml(html, dom.window)
-
+            if (parsed.documentElement == null) {
+                throw new Error('parsed.documentElement is undefined')
+            }
             expect(parsed.documentElement.innerHTML).toMatchSnapshot()
         })
     })
@@ -138,9 +145,9 @@ describe('html util', () => {
 
     describe('sanitizeHtmlDefault', () => {
         it('should return entry parameter if it\'s not a string', () => {
-            expect(sanitizeHtmlDefault(undefined)).toBe(undefined)
-            expect(sanitizeHtmlDefault(null)).toBe(null)
-            expect(sanitizeHtmlDefault(12)).toBe(12)
+            expect(sanitizeHtmlDefault((undefined: any))).toBe(undefined)
+            expect(sanitizeHtmlDefault((null: any))).toBe(null)
+            expect(sanitizeHtmlDefault((12: any))).toBe(12)
         })
 
         it('should remove comments from html', () => {
@@ -158,7 +165,7 @@ describe('html util', () => {
     describe('focusElement()', () => {
         it('should focus given element', (done) => {
             const focus = jest.fn()
-            focusElement(() => ({focus}))
+            focusElement(() => ({focus}: any))
 
             setTimeout(() => {
                 expect(focus).toHaveBeenCalled()

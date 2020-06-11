@@ -12,10 +12,10 @@ class LocalStorageManager {
                 getMap() {
                     return LocalStorageManager._getMap(this._key)
                 },
-                setMapItem(key: number, value: string) {
+                setMapItem(key: Key, value: string) {
                     LocalStorageManager._setMapItem(this._key, key, value)
                 },
-                deleteMapItem(key: number) {
+                deleteMapItem(key: Key) {
                     LocalStorageManager._deleteMapItem(this._key, key)
                 },
             },

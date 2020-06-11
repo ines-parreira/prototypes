@@ -1,6 +1,7 @@
+//@flow
 import {fromJS} from 'immutable'
 
-export const integrationsState = {
+export const integrationsState: any = {
     authentication: {
         facebook: {
             redirect_uri: 'https://www.facebook.com/v2.12/dialog/oauth?scope=manage_pages%2Cpublish_pages%2Cread_page_mailboxes&client_id=1754623041419388&response_type=token&redirect_uri=https%3A%2F%2Facme-louis.ngrok.io%2Fintegrations%2Ffacebook%2Fauth%2Fcallback%2F29949774171f2ae73d6ad2c25119f8c9d879fa5dacee1bc4abe3806d7b2f144f%23'

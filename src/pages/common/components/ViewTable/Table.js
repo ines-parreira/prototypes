@@ -18,14 +18,13 @@ import {areAllActiveViewItemsSelected} from '../../../../state/views/selectors'
 
 import type {viewType} from '../../../../state/views/types'
 
+import type {MoveIndexDirection} from '../../utils/keyboard'
+
 import css from './Table.less'
 
 import HeaderCell from './Table/HeaderCell'
 import Row from './Table/Row'
 import ViewSelection from './Table/ViewSelection'
-
-
-type directionType = NEXT_VIEW_NAV_DIRECTION | PREV_VIEW_NAV_DIRECTION
 
 type Props = {
     view: viewType,
@@ -80,7 +79,6 @@ class Table extends React.Component<Props, State> {
             nextProps.toggleViewSelection()
         }
         // new items loaded
-        // $FlowFixMe
         if(!nextProps.items.equals(this.props.items)) {
             this.setState({rowCursor: 0})
             if (nextProps.viewSelected) {
@@ -131,7 +129,7 @@ class Table extends React.Component<Props, State> {
         })
     }
 
-    _moveCursor = (direction: directionType = NEXT_VIEW_NAV_DIRECTION) => {
+    _moveCursor = (direction: MoveIndexDirection = NEXT_VIEW_NAV_DIRECTION) => {
         this.setState({
             rowCursor: moveIndex(this.state.rowCursor, this.props.items.size, {direction})
         })
@@ -146,7 +144,7 @@ class Table extends React.Component<Props, State> {
         }
     }
 
-    _movePage = (direction: directionType = NEXT_VIEW_NAV_DIRECTION) => {
+    _movePage = (direction: MoveIndexDirection = NEXT_VIEW_NAV_DIRECTION) => {
         const {navigation, fetchViewItems, isLoading} = this.props
 
         if (
@@ -319,4 +317,3 @@ export default connect((state) => {
     toggleViewSelection: viewsActions.toggleViewSelection,
     resetView: viewsActions.resetView,
 })(Table)
-

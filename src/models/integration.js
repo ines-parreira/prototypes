@@ -1,11 +1,11 @@
 // @flow
 
-import {INTEGRATION_DATA_ITEM_TYPES, INTEGRATION_TYPES} from '../constants/integration'
+import {INTEGRATION_DATA_ITEM_TYPES_MAP, INTEGRATION_TYPES_MAP} from '../constants/integration'
 import * as Shopify from '../constants/integrations/shopify'
 
-export type IntegrationType = $Values<INTEGRATION_TYPES>
+export type IntegrationType = $Values<typeof INTEGRATION_TYPES_MAP>
 
-export type IntegrationDataItemType = $Values<INTEGRATION_DATA_ITEM_TYPES>
+export type IntegrationDataItemType = $Values<typeof INTEGRATION_DATA_ITEM_TYPES_MAP>
 
 export type Product = Shopify.Product
 export type Variant = Shopify.Variant

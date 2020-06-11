@@ -1,3 +1,4 @@
+//@flow
 export const billingState = {
     paymentMethod: 'stripe',
     plans: {

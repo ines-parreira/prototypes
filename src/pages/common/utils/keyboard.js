@@ -2,6 +2,8 @@
 import {findDOMNode} from 'react-dom'
 import scrollIntoView from 'scroll-into-view-if-needed'
 
+import {NEXT_VIEW_NAV_DIRECTION, PREV_VIEW_NAV_DIRECTION} from '../../../constants/view'
+
 /**
  * Scroll DOM node into view
  */
@@ -30,7 +32,7 @@ type optionsType = {
     rotate?: boolean
 }
 
-export type MoveIndexDirection = 'previous' | 'next'
+export type MoveIndexDirection = typeof NEXT_VIEW_NAV_DIRECTION | typeof PREV_VIEW_NAV_DIRECTION
 
 export function moveIndex(
     currentIndex: number = 0,
@@ -59,4 +61,3 @@ export function moveIndex(
 
     return newIndex
 }
-

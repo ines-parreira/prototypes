@@ -159,7 +159,7 @@ const deleteTemporaryDraftOrders = _debounce(async (integrationId: number) => {
             const now = moment()
             const limit = moment(createdAt).add(...DRAFT_ORDER_DELETE_AFTER)
 
-            if (now > limit) {
+            if (now.valueOf() > limit.valueOf()) {
                 await deleteTemporaryDraftOrder(integrationId, id)
             }
         } catch (error) {

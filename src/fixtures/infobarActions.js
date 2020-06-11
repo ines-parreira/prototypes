@@ -1,3 +1,4 @@
+//@flow
 import {fromJS} from 'immutable'
 
 import {initialState as createOrderInitialState} from '../state/infobarActions/shopify/createOrder/reducers'
@@ -14,6 +15,10 @@ export const infobarActionsStateFixture = (
         cancelOrderState = cancelOrderInitialState,
         createOrderState = createOrderInitialState,
         refundOrderState = refundOrderInitialState,
+    }: {
+        cancelOrderState?: typeof cancelOrderInitialState,
+        createOrderState?: typeof createOrderInitialState,
+        refundOrderState?: typeof refundOrderInitialState,
     } = {}
 ): InfobarActionsState => ({
     [SHOPIFY_INTEGRATION_TYPE]: {
@@ -31,7 +36,7 @@ export const createOrderStateFixture = (
         draftOrder = null,
         products = new Map(),
         defaultShippingLine = null,
-    } = {}
+    }: CreateOrderState = {}
 ): CreateOrderState => fromJS({
     loading,
     loadingMessage,
@@ -49,7 +54,7 @@ export const cancelOrderStateFixture = (
         payload = null,
         lineItems = null,
         refund = null,
-    } = {}
+    }: CreateOrderState = {}
 ): CancelOrderState => fromJS({
     loading,
     loadingMessage,
@@ -67,7 +72,7 @@ export const refundOrderStateFixture = (
         payload = null,
         lineItems = null,
         refund = null,
-    } = {}
+    }: CreateOrderState = {}
 ): RefundOrderState => fromJS({
     loading,
     loadingMessage,

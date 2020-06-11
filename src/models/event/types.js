@@ -1,6 +1,6 @@
 // @flow
 
-import {TICKET_AUDIT_LOG_EVENTS} from '../../constants/event'
+import {TICKET_AUDIT_LOG_EVENTS_MAP} from '../../constants/event'
 
 export type TicketTagsAddedEventData = {
     tags_added: Array<number>,
@@ -47,7 +47,7 @@ export type AuditLogEventObjectType =
     | 'Ticket'
     | 'User'
 
-export type AuditLogEventType = $Values<TICKET_AUDIT_LOG_EVENTS>
+export type AuditLogEventType = $Values<typeof TICKET_AUDIT_LOG_EVENTS_MAP>
 
 export type AuditLogEvent = {
     id: number,

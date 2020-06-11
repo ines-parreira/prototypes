@@ -36,7 +36,7 @@ export default class ProductSearchInput extends React.PureComponent<Props> {
 
     onProductClicked = (item: IntegrationDataItem<Product>): Array<Variant> => {
         const {integration_type: integrationType} = item
-        const variantsMapper = ProductSearchInput._variantsMapper[integrationType]
+        const variantsMapper = ProductSearchInput._variantsMapper[(integrationType: any)]
         const variants = variantsMapper ? variantsMapper(item) : []
 
         if (variants.length === 1) {

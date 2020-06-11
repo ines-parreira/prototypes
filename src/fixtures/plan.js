@@ -1,3 +1,4 @@
+//@flow
 export default {
     free_tickets: 300,
     limits: {
