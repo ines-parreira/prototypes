@@ -75,14 +75,14 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                 title: (
                     <div>
                         <i className="material-icons mr-2">
-                            refresh
+                            block
                         </i>
                         Cancel subscription
                     </div>
                 ),
                 child: (
                     <i className="material-icons">
-                        refresh
+                        block
                     </i>
                 )
             },

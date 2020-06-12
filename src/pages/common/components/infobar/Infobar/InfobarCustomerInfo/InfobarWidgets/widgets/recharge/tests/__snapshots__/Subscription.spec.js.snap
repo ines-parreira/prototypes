@@ -72,7 +72,7 @@ exports[`Subscription AfterTitle should display only the cancel action because t
           "child": <i
             className="material-icons"
           >
-            refresh
+            block
           </i>,
           "key": "cancel",
           "options": Array [
@@ -125,7 +125,7 @@ exports[`Subscription AfterTitle should display only the cancel action because t
             <i
               className="material-icons mr-2"
             >
-              refresh
+              block
             </i>
             Cancel subscription
           </div>,

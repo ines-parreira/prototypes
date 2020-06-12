@@ -136,8 +136,14 @@ exports[`Order <AfterContent/> render() should display both shipments and credit
                   rel="noopener noreferrer"
                   target="_blank"
                 >
+                  <i
+                    className="material-icons"
+                  >
+                    local_shipping
+                  </i>
+                   
                   <span>
-                    🚚 Shipment
+                    Shipment
                   </span>
                 </a>
               </div>
@@ -273,8 +279,14 @@ exports[`Order <AfterContent/> render() should display both shipments and credit
                   rel="noopener noreferrer"
                   target="_blank"
                 >
+                  <i
+                    className="material-icons"
+                  >
+                    local_shipping
+                  </i>
+                   
                   <span>
-                    🚚 Shipment
+                    Shipment
                   </span>
                 </a>
               </div>
@@ -436,7 +448,13 @@ exports[`Order <AfterContent/> render() should display both shipments and credit
                   target="_blank"
                 >
                   <span>
-                    💸 Credit memo: 
+                    <i
+                      className="material-icons"
+                    >
+                      redeem
+                    </i>
+                     
+                    Credit memo: 
                      
                   </span>
                 </a>
@@ -528,7 +546,13 @@ exports[`Order <AfterContent/> render() should display both shipments and credit
                   target="_blank"
                 >
                   <span>
-                    💸 Credit memo: 
+                    <i
+                      className="material-icons"
+                    >
+                      redeem
+                    </i>
+                     
+                    Credit memo: 
                      
                   </span>
                 </a>
@@ -672,7 +696,13 @@ exports[`Order <AfterContent/> render() should display credit memos with links b
                   target="_blank"
                 >
                   <span>
-                    💸 Credit memo: 
+                    <i
+                      className="material-icons"
+                    >
+                      redeem
+                    </i>
+                     
+                    Credit memo: 
                      
                   </span>
                 </a>
@@ -764,7 +794,13 @@ exports[`Order <AfterContent/> render() should display credit memos with links b
                   target="_blank"
                 >
                   <span>
-                    💸 Credit memo: 
+                    <i
+                      className="material-icons"
+                    >
+                      redeem
+                    </i>
+                     
+                    Credit memo: 
                      
                   </span>
                 </a>
@@ -908,7 +944,13 @@ exports[`Order <AfterContent/> render() should display credit memos without link
                   target="_blank"
                 >
                   <span>
-                    💸 Credit memo: 
+                    <i
+                      className="material-icons"
+                    >
+                      redeem
+                    </i>
+                     
+                    Credit memo: 
                      
                   </span>
                 </a>
@@ -1000,7 +1042,13 @@ exports[`Order <AfterContent/> render() should display credit memos without link
                   target="_blank"
                 >
                   <span>
-                    💸 Credit memo: 
+                    <i
+                      className="material-icons"
+                    >
+                      redeem
+                    </i>
+                     
+                    Credit memo: 
                      
                   </span>
                 </a>
@@ -1181,8 +1229,14 @@ exports[`Order <AfterContent/> render() should display shipments with links beca
                   rel="noopener noreferrer"
                   target="_blank"
                 >
+                  <i
+                    className="material-icons"
+                  >
+                    local_shipping
+                  </i>
+                   
                   <span>
-                    🚚 Shipment
+                    Shipment
                   </span>
                 </a>
               </div>
@@ -1318,8 +1372,14 @@ exports[`Order <AfterContent/> render() should display shipments with links beca
                   rel="noopener noreferrer"
                   target="_blank"
                 >
+                  <i
+                    className="material-icons"
+                  >
+                    local_shipping
+                  </i>
+                   
                   <span>
-                    🚚 Shipment
+                    Shipment
                   </span>
                 </a>
               </div>
@@ -1545,8 +1605,14 @@ exports[`Order <AfterContent/> render() should display shipments without links b
                   rel="noopener noreferrer"
                   target="_blank"
                 >
+                  <i
+                    className="material-icons"
+                  >
+                    local_shipping
+                  </i>
+                   
                   <span>
-                    🚚 Shipment
+                    Shipment
                   </span>
                 </a>
               </div>
@@ -1682,8 +1748,14 @@ exports[`Order <AfterContent/> render() should display shipments without links b
                   rel="noopener noreferrer"
                   target="_blank"
                 >
+                  <i
+                    className="material-icons"
+                  >
+                    local_shipping
+                  </i>
+                   
                   <span>
-                    🚚 Shipment
+                    Shipment
                   </span>
                 </a>
               </div>

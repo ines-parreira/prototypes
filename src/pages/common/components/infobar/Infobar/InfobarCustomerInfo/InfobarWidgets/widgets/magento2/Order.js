@@ -1,12 +1,9 @@
 // @flow
 import React, {type Node} from 'react'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import {fromJS, type Map, type List} from 'immutable'
+import {fromJS, type List, type Map} from 'immutable'
 import {connect} from 'react-redux'
-import {
-    Badge,
-    CardBody,
-} from 'reactstrap'
+import {Badge, CardBody,} from 'reactstrap'
 
 import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../../../../state/customers/selectors'
 import * as currentUserSelectors from '../../../../../../../../../state/currentUser/selectors'
@@ -37,7 +34,7 @@ export const statusColors = {
 }
 
 type BeforeContentProps = {
-    source: Map<*,*>
+    source: Map<*, *>
 }
 
 class BeforeContent extends React.Component<BeforeContentProps> {
@@ -68,7 +65,7 @@ class BeforeContent extends React.Component<BeforeContentProps> {
 
 
 type ShipmentsProps = {
-    shipments: List<Map<*,*>>,
+    shipments: List<Map<*, *>>,
     currentUserTimezone: string
 }
 
@@ -147,7 +144,8 @@ class Shipments extends React.Component<ShipmentsProps> {
                             rel="noopener noreferrer"
                             href={adminUrlSuffix ? link : ''}
                         >
-                            <span>🚚 Shipment</span>
+                            <i className="material-icons">local_shipping</i>{' '}
+                            <span>Shipment</span>
                         </a>
                     </CardBody>
                     <CardBody className="content">
@@ -186,7 +184,7 @@ class Shipments extends React.Component<ShipmentsProps> {
 
 
 type CreditMemosProps = {
-    creditMemos: List<Map<*,*>>,
+    creditMemos: List<Map<*, *>>,
     currentUserTimezone: string
 }
 
@@ -225,7 +223,8 @@ class CreditMemos extends React.Component<CreditMemosProps> {
                             href={adminUrlSuffix ? link : ''}
                         >
                             <span>
-                                💸 Credit memo: {creditMemo.get('base_grand_total')}{' '}
+                                <i className="material-icons">redeem</i>{' '}
+                                Credit memo: {creditMemo.get('base_grand_total')}{' '}
                                 {creditMemo.get('base_currency_code')}
                             </span>
                         </a>
@@ -265,8 +264,8 @@ class CreditMemos extends React.Component<CreditMemosProps> {
 
 
 type AfterContentProps = {
-    source: Map<*,*>,
-    getIntegrationData: (number, number) => Map<*,*>
+    source: Map<*, *>,
+    getIntegrationData: (number, number) => Map<*, *>
 }
 
 @connect((state) => {
@@ -321,7 +320,7 @@ class AfterContent extends React.Component<AfterContentProps> {
 
 type TitleWrapperProps = {
     children: Node,
-    source: Map<*,*>
+    source: Map<*, *>
 }
 
 class TitleWrapper extends React.Component<TitleWrapperProps> {
