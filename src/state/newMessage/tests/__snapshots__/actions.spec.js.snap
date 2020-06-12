@@ -1,5 +1,123 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`actions new message addAttachments() should dispatch NEW_MESSAGE_ADD_ATTACHMENT_ERROR when adding more than 1 attachement in a facebook comment 1`] = `
+Array [
+  Object {
+    "type": "NEW_MESSAGE_ADD_ATTACHMENT_START",
+  },
+  Object {
+    "payload": Object {
+      "allowHTML": true,
+      "buttons": Array [],
+      "closeButton": false,
+      "dismissAfter": 9000,
+      "dismissible": true,
+      "id": "newMessageAddAttachmentsError",
+      "message": "
+                    Facebook comments have limitations on attachments:
+                    <ul>
+                        <li>You cannot send more than one attachment.</li>
+                        <li>You can only send images or videos.</li>
+                    </ul>
+                ",
+      "position": "tc",
+      "status": "error",
+      "style": "alert",
+      "title": "We could not add all of your attachments !",
+    },
+    "type": "ADD_NOTIFICATION",
+  },
+  Object {
+    "type": "NEW_MESSAGE_ADD_ATTACHMENT_ERROR",
+  },
+]
+`;
+
+exports[`actions new message addAttachments() should dispatch NEW_MESSAGE_ADD_ATTACHMENT_ERROR when failing to add attachment 1`] = `
+Array [
+  Object {
+    "type": "NEW_MESSAGE_ADD_ATTACHMENT_START",
+  },
+  Object {
+    "error": Object {
+      "response": Object {},
+    },
+    "reason": "Failed to upload files. Please try again later",
+    "type": "NEW_MESSAGE_ADD_ATTACHMENT_ERROR",
+  },
+]
+`;
+
+exports[`actions new message addAttachments() should dispatch NEW_MESSAGE_ADD_ATTACHMENT_ERROR when source is facebook comment and file has wrong type 1`] = `
+Array [
+  Object {
+    "type": "NEW_MESSAGE_ADD_ATTACHMENT_START",
+  },
+  Object {
+    "payload": Object {
+      "allowHTML": true,
+      "buttons": Array [],
+      "closeButton": false,
+      "dismissAfter": 9000,
+      "dismissible": true,
+      "id": "newMessageAddAttachmentsError",
+      "message": "
+                    Facebook comments have limitations on attachments:
+                    <ul>
+                        <li>You cannot send more than one attachment.</li>
+                        <li>You can only send images or videos.</li>
+                    </ul>
+                ",
+      "position": "tc",
+      "status": "error",
+      "style": "alert",
+      "title": "We could not add all of your attachments !",
+    },
+    "type": "ADD_NOTIFICATION",
+  },
+  Object {
+    "type": "NEW_MESSAGE_ADD_ATTACHMENT_ERROR",
+  },
+]
+`;
+
+exports[`actions new message addAttachments() should dispatch NEW_MESSAGE_ADD_ATTACHMENT_ERROR with a reason  when error code is 413 1`] = `
+Array [
+  Object {
+    "type": "NEW_MESSAGE_ADD_ATTACHMENT_START",
+  },
+  Object {
+    "error": Object {
+      "response": Object {
+        "status": 413,
+      },
+    },
+    "reason": "Failed to upload files. One or more files are larger than the size limit of 10MB.",
+    "type": "NEW_MESSAGE_ADD_ATTACHMENT_ERROR",
+  },
+]
+`;
+
+exports[`actions new message addAttachments() should dispatch NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS when successfully adding attachments 1`] = `
+Array [
+  Object {
+    "type": "NEW_MESSAGE_ADD_ATTACHMENT_START",
+  },
+  Object {
+    "resp": undefined,
+    "type": "NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS",
+  },
+]
+`;
+
+exports[`actions new message addAttachments() should not dispatch NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS when successfully adding attachments in another ticket 1`] = `
+Array [
+  Object {
+    "type": "NEW_MESSAGE_ADD_ATTACHMENT_START",
+  },
+]
+`;
+
 exports[`actions new message addSignature() should dispatch NEW_MESSAGE_ADD_SIGNATURE action 1`] = `
 Array [
   Object {

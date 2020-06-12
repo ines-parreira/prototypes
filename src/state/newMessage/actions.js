@@ -43,8 +43,8 @@ import * as agentSelectors from '../agents/selectors'
 import {AGENT_TYPING_STARTED, AGENT_TYPING_STOPPED} from '../../config/socketConstants'
 
 import socketManager from '../../services/socketManager'
-import type {dispatchType, getStateType, currentUserType, thunkActionType} from '../types'
 import type {attachmentType} from '../../types'
+import type {dispatchType, getStateType, currentUserType, thunkActionType} from '../types'
 import {getMomentNow} from '../../utils/date'
 
 import {INSTAGRAM_AD_COMMENT_SOURCE, INSTAGRAM_COMMENT_SOURCE} from '../../config/ticket'
@@ -58,23 +58,29 @@ import type {
     TicketType,
 } from './types'
 
-export const addAttachments = (ticket: Map<*, *>, atts: Array<attachmentType>) => (dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
+export const addAttachments = (ticket: Map<*, *>, atts: FileList | attachmentType[]) => (dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
     dispatch({
         type: constants.NEW_MESSAGE_ADD_ATTACHMENT_START
     })
+    const {newMessage} = getState()
 
     let attachments = atts
 
-    if (ticket.getIn(['newMessage', 'source', 'type']) === TicketMessageSourceTypes.FACEBOOK_COMMENT) {
+    if (newMessage.getIn(['newMessage', 'source', 'type']) === TicketMessageSourceTypes.FACEBOOK_COMMENT) {
         // We have specific constraints on attachments.
 
-        const attsFiltered = atts.filter(
-            (att) => (att.content_type.startsWith('image')) || (att.content_type.startsWith('video')))
+        const attachmentsFiltered = Object.values(atts).filter(
+            (att: any) => {
+                const type = att.type || att.content_type
+                return type.startsWith('image') || type.startsWith('video')
+            }
+        )
 
-        const previousAtts = ticket.getIn(['newMessage', 'attachments']) || fromJS([])
+        const previousAtts = newMessage.getIn(['newMessage', 'attachments']) || fromJS([])
 
-        if ((previousAtts.size > 0) || (atts.length > 1) || atts.length !== attsFiltered.length) {
+        if ((previousAtts.size > 0) || (atts.length > 1) || atts.length !== attachmentsFiltered.length) {
             dispatch(notify({
+                id: 'newMessageAddAttachmentsError',
                 dismissAfter: 0,
                 status: 'error',
                 title: 'We could not add all of your attachments !',
@@ -92,7 +98,7 @@ export const addAttachments = (ticket: Map<*, *>, atts: Array<attachmentType>) =
             })
         }
 
-        attachments = previousAtts.size > 0 ? [] : attsFiltered.slice(0, 1)
+        attachments = previousAtts.size > 0 ? [] : attachmentsFiltered.slice(0, 1)
     }
 
     return uploadFiles(attachments)

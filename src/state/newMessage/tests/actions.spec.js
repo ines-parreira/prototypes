@@ -7,6 +7,7 @@ import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
 import {TicketMessageSourceTypes} from '../../../business/ticket'
+import * as utils from '../../../utils'
 import * as actions from '../actions'
 import * as types from '../constants'
 import {initialState} from '../reducers'
@@ -20,6 +21,7 @@ import {smoochTicket, emailTicket, instagramMedia} from '../../ticket/tests/fixt
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
+const mockedUploadFiles = jest.spyOn(utils, 'uploadFiles')
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => 'someRandomKey')
@@ -687,6 +689,124 @@ describe('actions', () => {
                 })
                 store.dispatch(actions.newMessageResetFromMessage({body_text: 'foo'}))
                 expect(store.getActions()).toMatchSnapshot()
+            })
+        })
+
+        describe('addAttachments()', () => {
+            const createFile = (name: string, type: string): File => {
+                const blob: any = new Blob(['foo'], {type: 'any'})
+                blob.name = name
+                return blob.slice(0, blob.size, type)
+            }
+            const fileFoo = createFile('foo', 'image/png')
+            const fileBar = createFile('bar', 'video/mp4')
+            const fileList: FileList = ({
+                //$FlowFixMe
+                0: fileFoo,
+            }: any)
+            it('should dispatch NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS when successfully adding attachments', (done) => {
+                mockedUploadFiles.mockReturnValue(Promise.resolve())
+                store = mockStore<*, StoreAction>({
+                    newMessage: initialState,
+                    ticket: ticketInitialState.set('id', 1),
+                })
+                store.dispatch(actions.addAttachments(ticketInitialState.set('id', 1), (fileList: any)))
+
+                expect(mockedUploadFiles).toHaveBeenNthCalledWith(1, fileList)
+                setImmediate(() => {
+                    expect(store.getActions()).toMatchSnapshot()
+                    done()
+                })
+            })
+
+            it('should not dispatch NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS when successfully adding attachments in another ticket', (done) => {
+                mockedUploadFiles.mockReturnValue(Promise.resolve())
+                store = mockStore<*, StoreAction>({
+                    newMessage: initialState,
+                    ticket: ticketInitialState.set('id', 2),
+                })
+                store.dispatch(actions.addAttachments(ticketInitialState.set('id', 1), (fileList: any)))
+
+                expect(mockedUploadFiles).toHaveBeenNthCalledWith(1, fileList)
+                setImmediate(() => {
+                    expect(store.getActions()).toMatchSnapshot()
+                    done()
+                })
+            })
+
+            it('should dispatch NEW_MESSAGE_ADD_ATTACHMENT_ERROR when failing to add attachment', (done) => {
+                mockedUploadFiles.mockReturnValue(Promise.reject({
+                    response: {},
+                }))
+                store = mockStore<*, StoreAction>({
+                    newMessage: initialState,
+                    ticket: ticketInitialState.set('id', 1),
+                })
+                store.dispatch(actions.addAttachments(ticketInitialState.set('id', 1), (fileList: any)))
+
+                expect(mockedUploadFiles).toHaveBeenNthCalledWith(1, fileList)
+                setImmediate(() => {
+                    expect(store.getActions()).toMatchSnapshot()
+                    done()
+                })
+            })
+
+            it('should dispatch NEW_MESSAGE_ADD_ATTACHMENT_ERROR with a reason  when error code is 413', (done) => {
+                mockedUploadFiles.mockReturnValue(Promise.reject({
+                    response: {
+                        status: 413,
+                    },
+                }))
+                store = mockStore<*, StoreAction>({
+                    newMessage: initialState,
+                    ticket: ticketInitialState.set('id', 1),
+                })
+                store.dispatch(actions.addAttachments(ticketInitialState.set('id', 1), (fileList: any)))
+
+                expect(mockedUploadFiles).toHaveBeenNthCalledWith(1, fileList)
+                setImmediate(() => {
+                    expect(store.getActions()).toMatchSnapshot()
+                    done()
+                })
+            })
+
+            it('should dispatch NEW_MESSAGE_ADD_ATTACHMENT_ERROR when source is facebook comment and file has wrong type', (done) => {
+                const fileBaz = createFile('baz', 'baz')
+                mockedUploadFiles.mockReturnValue(Promise.resolve())
+                store = mockStore<*, StoreAction>({
+                    newMessage: initialState.setIn(['newMessage', 'source', 'type'], TicketMessageSourceTypes.FACEBOOK_COMMENT),
+                    ticket: ticketInitialState.set('id', 1),
+                })
+                store.dispatch(actions.addAttachments(ticketInitialState.set('id', 1), ({
+                    //$FlowFixMe
+                    0: fileBaz,
+                }: any)))
+
+                expect(mockedUploadFiles).toHaveBeenNthCalledWith(1, fileList)
+                setImmediate(() => {
+                    expect(store.getActions()).toMatchSnapshot()
+                    done()
+                })
+            })
+
+            it('should dispatch NEW_MESSAGE_ADD_ATTACHMENT_ERROR when adding more than 1 attachement in a facebook comment', (done) => {
+                mockedUploadFiles.mockReturnValue(Promise.resolve())
+                store = mockStore<*, StoreAction>({
+                    newMessage: initialState.setIn(['newMessage', 'source', 'type'], TicketMessageSourceTypes.FACEBOOK_COMMENT),
+                    ticket: ticketInitialState.set('id', 1),
+                })
+                store.dispatch(actions.addAttachments(ticketInitialState.set('id', 1), ({
+                    //$FlowFixMe
+                    0: fileFoo,
+                    //$FlowFixMe
+                    1: fileBar,
+                }: any)))
+
+                expect(mockedUploadFiles).toHaveBeenNthCalledWith(1, fileList)
+                setImmediate(() => {
+                    expect(store.getActions()).toMatchSnapshot()
+                    done()
+                })
             })
         })
     })
