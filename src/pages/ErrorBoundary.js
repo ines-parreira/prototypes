@@ -28,8 +28,14 @@ export class ErrorBoundary extends React.PureComponent<Props, State> {
         }
     }
 
-    componentDidCatch(error: Error, errorInfo: {componentStack: string}) {
+    componentDidCatch(error: Error, errorInfo: { componentStack: string }) {
         console.error(error, errorInfo)
+
+        if (window.Raven) {
+            window.Raven.captureException(error, {
+                extra: errorInfo,
+            })
+        }
     }
 
     _onToggle = () => {
