@@ -160,6 +160,26 @@ describe('html util', () => {
         it('should remove all `o` - outlook tags', () => {
             expect(sanitizeHtmlDefault('<o:PixelsPerInch>96</o:PixelsPerInch>')).toBe('')
         })
+        it('shouldn\'t remove valid table tags', () => {
+            const tablehtml = `
+                <table>
+                    <caption>caption</caption>
+                    <colgroup>
+                        <col width="123"></col>
+                    </colgroup>
+                    <thead>
+                        <tr><th>A</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>A</td></tr>
+                    </tbody>
+                    <tfoot>
+                        <tr><td>A</td></tr>
+                    </tfoot>
+                </table>
+            `
+            expect(sanitizeHtmlDefault(tablehtml)).toBe(tablehtml)
+        })
     })
 
     describe('focusElement()', () => {
