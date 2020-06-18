@@ -63,17 +63,12 @@ class Header extends React.Component<Props, State> {
     _search = (searchQuery: string) => {
         const {config} = this.props
 
-        if (searchQuery) {
-            // only if searchquery changed.
-            // Search triggers a change event on mount, because of forcedQuery,
-            // removing other querystrings from the url (eg. &page=1).
-            if (this._searchQuery() !== searchQuery) {
-                // add search to view and ask page of view (will return search result)
-                browserHistory.push(`/app/${config.get('routeList')}/search?q=${encodeURIComponent(searchQuery)}`)
-            }
-        } else {
-            // set the previous view back
-            browserHistory.push(this._goBackUrl())
+        // only if searchquery changed.
+        // Search triggers a change event on mount, because of forcedQuery,
+        // removing other querystrings from the url (eg. &page=1).
+        if (this._searchQuery() !== searchQuery) {
+            // add search to view and ask page of view (will return search result)
+            browserHistory.push(`/app/${config.get('routeList')}/search?q=${encodeURIComponent(searchQuery)}`)
         }
     }
 
@@ -99,6 +94,14 @@ class Header extends React.Component<Props, State> {
         const {updateView, activeView} = this.props
         if (Map.isMap(activeView.get('decoration'))) {
             updateView(activeView.deleteIn(['decoration', 'emoji']))
+        }
+    }
+
+    handleFocus = () => {
+        const {config} = this.props
+
+        if (!this._searchQuery()) {
+            browserHistory.push(`/app/${config.get('routeList')}/search?q=`)
         }
     }
 
@@ -183,6 +186,7 @@ class Header extends React.Component<Props, State> {
                             location={`${(activeView.get('id'): any)}${!!isSearch ? '(s)' : ''}`}
                             forcedQuery={this._searchQuery()}
                             className="mr-2"
+                            onFocus={this.handleFocus}
                         />
 
                         {viewButtons}
