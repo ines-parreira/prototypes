@@ -101,9 +101,25 @@ describe('ViewTable::Header', () => {
             expect(browserHistory.push).toBeCalled()
         })
 
-        it('go in search mode when focusing the search input', () => {
-            component.find(Search).props().onFocus()
-            expect(browserHistory.push).toHaveBeenNthCalledWith(1, '/app/tickets/search?q=')
+        it('go back to last or default view when deleting search in search input', () => {
+            const lastViewId = 123
+
+            const searchOnChange = component.instance()._search
+
+            expect(component.find(Search).props().onChange).toEqual(searchOnChange)
+
+            searchOnChange('')
+            expect(browserHistory.push).toBeCalled()
+            // redirect to default view
+            expect(browserHistory.push.mock.calls[0][0]).not.toContain(lastViewId.toString())
+
+            // reset mocks
+            jest.clearAllMocks()
+            component.setProps({lastViewId})
+            searchOnChange('')
+            expect(browserHistory.push).toBeCalled()
+            // redirect to last view
+            expect(browserHistory.push.mock.calls[0][0]).toContain(lastViewId.toString())
         })
 
         it('get search query from url', () => {
