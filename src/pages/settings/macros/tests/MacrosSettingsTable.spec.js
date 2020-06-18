@@ -6,7 +6,6 @@ import {Button} from 'reactstrap'
 
 import {createMacro, deleteMacro} from '../../../../models/macro'
 import {macros as macrosFixtures} from '../../../../fixtures/macro'
-import {deepMapKeysToCamelCase} from '../../../../models/api'
 import Loader from '../../../common/components/Loader'
 import HeaderCellProperty from '../../../common/components/table/cells/HeaderCellProperty'
 import TableBodyRow from '../../../common/components/table/TableBodyRow'
@@ -16,11 +15,11 @@ jest.mock('react-router')
 jest.mock('../../../../models/macro')
 
 describe('<MacrosSettingsTable/>', () => {
-    const macrosState = deepMapKeysToCamelCase(macrosFixtures)
+    const macrosState = (macrosFixtures
         .reduce((acc, macro) => ({
             ...acc,
             [macro.id]: macro,
-        }), {})
+        }), {}): any)
     const mockCreateMacro = (createMacro: any)
     const mockDeleteMacro = (deleteMacro: any)
     const mockMacroCreated = jest.fn()

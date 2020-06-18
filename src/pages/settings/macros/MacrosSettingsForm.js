@@ -17,7 +17,6 @@ import {
 } from 'reactstrap'
 
 import {DEFAULT_ACTIONS} from '../../../config'
-import {deepMapKeysToSnakeCase} from '../../../models/api'
 import type {IntentName} from '../../../models/intent'
 import {createMacro, deleteMacro, fetchMacro, updateMacro, type MacroDraft} from '../../../models/macro'
 import {getAgents} from '../../../state/agents/selectors'
@@ -179,9 +178,9 @@ export function MacrosSettingsFormContainer({
                         }}
                     >
                         <MacroEdit
-                            actions={fromJS(deepMapKeysToSnakeCase(macroForm.actions))}
+                            actions={fromJS(macroForm.actions)}
                             agents={agents}
-                            currentMacro={fromJS(deepMapKeysToSnakeCase(macroForm))}
+                            currentMacro={fromJS(macroForm)}
                             intent={macroForm.intent}
                             name={macroForm.name}
                             setActions={(actions) => !isActionDisabled && handleActionsChange(actions)}

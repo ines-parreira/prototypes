@@ -6,7 +6,6 @@ import {browserHistory} from 'react-router'
 import {Button} from 'reactstrap'
 
 import {macros as macrosFixtures} from '../../../../fixtures/macro'
-import {deepMapKeysToCamelCase} from '../../../../models/api'
 import {createMacro, deleteMacro, fetchMacro, updateMacro} from '../../../../models/macro'
 import {getDefaultMacro} from '../../../../state/macro/utils'
 import ConfirmButton from '../../../common/components/ConfirmButton'
@@ -20,7 +19,6 @@ jest.mock('../../../common/components/ConfirmButton',  () =>
 jest.mock('../../../tickets/common/macros/components/MacroEdit', () => () => 'MacroEdit')
 
 describe('<MacrosSettingsForm/>', () => {
-    const mappedMacrosFixtures = deepMapKeysToCamelCase(macrosFixtures)
     const newMacroFixture = {
         actions: [],
         id: 5,
@@ -48,8 +46,8 @@ describe('<MacrosSettingsForm/>', () => {
 
     mockCreateMacro.mockResolvedValue(newMacroFixture)
     mockDeleteMacro.mockResolvedValue()
-    mockFetchMacro.mockResolvedValue(mappedMacrosFixtures[0])
-    mockUpdateMacro.mockResolvedValue(mappedMacrosFixtures[0])
+    mockFetchMacro.mockResolvedValue(macrosFixtures[0])
+    mockUpdateMacro.mockResolvedValue(macrosFixtures[0])
 
     beforeEach(() => {
         jest.clearAllMocks()
@@ -86,8 +84,8 @@ describe('<MacrosSettingsForm/>', () => {
 
         expect(mockFetchMacro).toHaveBeenNthCalledWith(1, 1)
         setImmediate(() => {
-            expect(mockMacroFetched).toHaveBeenNthCalledWith(1, mappedMacrosFixtures[0])
-            component.setProps({macros: {'1': mappedMacrosFixtures[0]}})
+            expect(mockMacroFetched).toHaveBeenNthCalledWith(1, macrosFixtures[0])
+            component.setProps({macros: {'1': macrosFixtures[0]}})
             expect(component).toMatchSnapshot()
             done()
         })
@@ -137,7 +135,7 @@ describe('<MacrosSettingsForm/>', () => {
             <MacrosSettingsFormContainer
                 {...minProps}
                 macros={{
-                    '1': mappedMacrosFixtures[0],
+                    '1': macrosFixtures[0],
                 }}
                 params={{
                     macroId: '1',
@@ -149,8 +147,8 @@ describe('<MacrosSettingsForm/>', () => {
             component.update()
             component.find(Button).simulate('submit')
             setImmediate(() => {
-                expect(mockUpdateMacro).toHaveBeenNthCalledWith(1, mappedMacrosFixtures[0])
-                expect(mockMacroUpdated).toHaveBeenNthCalledWith(1, mappedMacrosFixtures[0])
+                expect(mockUpdateMacro).toHaveBeenNthCalledWith(1, macrosFixtures[0])
+                expect(mockMacroUpdated).toHaveBeenNthCalledWith(1, macrosFixtures[0])
                 expect(mockNotify).toHaveBeenNthCalledWith(2, {
                     message: 'Successfully updated macro.',
                     status: 'success',
@@ -181,7 +179,7 @@ describe('<MacrosSettingsForm/>', () => {
             <MacrosSettingsFormContainer
                 {...minProps}
                 macros={{
-                    '1': mappedMacrosFixtures[0],
+                    '1': macrosFixtures[0],
                 }}
                 params={{
                     macroId: '1',
@@ -215,7 +213,7 @@ describe('<MacrosSettingsForm/>', () => {
             <MacrosSettingsFormContainer
                 {...minProps}
                 macros={{
-                    '1': mappedMacrosFixtures[0],
+                    '1': macrosFixtures[0],
                 }}
                 params={{
                     macroId: '1',
@@ -245,7 +243,7 @@ describe('<MacrosSettingsForm/>', () => {
             <MacrosSettingsFormContainer
                 {...minProps}
                 macros={{
-                    '1': mappedMacrosFixtures[0],
+                    '1': macrosFixtures[0],
                 }}
                 params={{
                     macroId: '1',

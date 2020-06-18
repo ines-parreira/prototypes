@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`client resources resources axios instance should resolve with formatted data 1`] = `
+exports[`client resources resources axios instance should resolve with data 1`] = `
 Object {
   "config": Object {
     "data": undefined,
@@ -23,7 +23,7 @@ Object {
   },
   "data": Object {
     "data": Object {
-      "fooBar": 1,
+      "foo_bar": 1,
     },
   },
   "headers": undefined,
@@ -34,7 +34,7 @@ Object {
 }
 `;
 
-exports[`client resources resources axios instance should send a request with formatted data 1`] = `
+exports[`client resources resources axios instance should send a request with data 1`] = `
 Object {
   "delete": Array [],
   "get": Array [],

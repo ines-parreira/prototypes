@@ -12,7 +12,7 @@ describe('client resources', () => {
 
     describe('resources axios instance', () => {
 
-        it('should resolve with formatted data', async () => {
+        it('should resolve with data', async () => {
             mockedServer.onGet('/api').reply(200, {
                 data: {
                     foo_bar: 1,
@@ -22,12 +22,12 @@ describe('client resources', () => {
             expect(res).toMatchSnapshot()
         })
 
-        it('should send a request with formatted data', async () => {
+        it('should send a request with data', async () => {
             mockedServer.onPost('/api').reply(200)
             await client.post('/api', {
-                fooBar: 'foo',
+                foo_bar: 'foo',
                 foo: [{
-                    fooBar: 'foo',
+                    foo_bar: 'foo',
                 }],
             })
             expect(mockedServer.history).toMatchSnapshot()

@@ -3,7 +3,7 @@ import MockAdapter from 'axios-mock-adapter'
 import _pick from 'lodash/pick'
 
 import {macros as macrosFixtures} from '../../../fixtures/macro'
-import client, {deepMapKeysToCamelCase} from '../../api'
+import client from '../../api'
 import {
     fetchMacros,
     fetchMacro,
@@ -79,7 +79,7 @@ describe('macro resources', () => {
     })
 
     describe('createMacro', () => {
-        const macroDraftMock = deepMapKeysToCamelCase(_pick(macrosFixtures[0], ['actions', 'intent', 'name']))
+        const macroDraftMock = _pick(macrosFixtures[0], ['actions', 'intent', 'name'])
 
         it('should resolve with a new Macro on success', async () => {
             mockedServer.onPost('/api/macros/')
@@ -116,7 +116,7 @@ describe('macro resources', () => {
         it('should resolve with the updated macro on success', async () => {
             mockedServer.onPut(/\/api\/macros\/\d+\//)
                 .reply(200, macrosFixtures[0])
-            const res = await updateMacro(deepMapKeysToCamelCase(macrosFixtures[0]))
+            const res = await updateMacro(macrosFixtures[0])
             expect(res).toMatchSnapshot()
             expect(mockedServer.history).toMatchSnapshot()
         })

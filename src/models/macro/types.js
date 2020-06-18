@@ -6,12 +6,12 @@ import {MACRO_SORTABLE_PROPERTIES} from './constants'
 
 export type Macro = MacroDraft & {
     category: string,
-    createdDatetime: string,
-    deactivatedDatetime?: string,
-    deletedDatetime?: string,
-    externalId: string,
+    created_datetime: string,
+    deactivated_datetime?: string,
+    deleted_datetime?: string,
+    external_id: string,
     id: number,
-    updatedDatetime: string,
+    updated_datetime: string,
     uri: string,
     usage: number,
 }

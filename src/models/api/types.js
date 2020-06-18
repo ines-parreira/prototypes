@@ -11,11 +11,11 @@ export type ApiListResponse<T, Y> = {
 export type ApiListResponsePagination<T> = ApiListResponse<T, PaginationMeta>
 
 export type PaginationMeta = {
-    currentPage: string,
-    itemCount: number,
+    current_page: string,
+    item_count: number,
     page: number,
-    perPage: number,
-    nbPages: number,
+    per_page: number,
+    nb_pages: number,
 }
 
 export type OrderDirection = $Values<typeof ORDER_DIRECTION>

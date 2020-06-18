@@ -6,7 +6,6 @@ import {browserHistory} from 'react-router'
 import {Button} from 'reactstrap'
 
 import {macros as macrosFixtures} from '../../../../fixtures/macro'
-import {deepMapKeysToCamelCase} from '../../../../models/api'
 import {fetchMacros} from '../../../../models/macro'
 import Pagination from '../../../common/components/Pagination'
 import Search from '../../../common/components/Search'
@@ -26,7 +25,7 @@ jest.mock('../MacrosSettingsTable', () => ({onSortOptionsChange}: ElementProps<t
 )
 
 describe('<MacrosSettingsContent/>', () => {
-    const mappedMacrosFixtures = deepMapKeysToCamelCase(macrosFixtures)
+    const mappedMacrosFixtures = macrosFixtures
     const mockFetchMacros = (fetchMacros: any)
     const mockMacrosFetched = jest.fn()
     const mockNotify = jest.fn()
@@ -45,7 +44,7 @@ describe('<MacrosSettingsContent/>', () => {
         data: mappedMacrosFixtures,
         meta: {
             page: 1,
-            nbPages: 2,
+            nb_pages: 2,
         },
     })
 
@@ -120,7 +119,7 @@ describe('<MacrosSettingsContent/>', () => {
             data: [{id: 2}],
             meta: {
                 page: 2,
-                nbPages: 3,
+                nb_pages: 3,
             }
         })
         const component = mount(
@@ -148,7 +147,7 @@ describe('<MacrosSettingsContent/>', () => {
             data: [{id: 2}],
             meta: {
                 page: 2,
-                nbPages: 2,
+                nb_pages: 2,
             }
         })
         const component = mount(
@@ -176,7 +175,7 @@ describe('<MacrosSettingsContent/>', () => {
             data: [{id: 1}],
             meta: {
                 page: 1,
-                nbPages: 1,
+                nb_pages: 1,
             }
         })
         const component = mount(

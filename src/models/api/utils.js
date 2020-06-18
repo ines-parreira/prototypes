@@ -1,5 +1,4 @@
 //@flow
-import _camelCase from 'lodash/camelCase'
 import _snakeCase from 'lodash/snakeCase'
 
 const deepMapKeys = (formatter: (string) => string) => {
@@ -19,5 +18,3 @@ const deepMapKeys = (formatter: (string) => string) => {
 }
 
 export const deepMapKeysToSnakeCase = deepMapKeys(_snakeCase)
-
-export const deepMapKeysToCamelCase = deepMapKeys(_camelCase)

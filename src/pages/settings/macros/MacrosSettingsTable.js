@@ -149,7 +149,7 @@ export function MacrosSettingsTableContainer({
                         }
                         const {
                             name,
-                            updatedDatetime,
+                            updated_datetime,
                             usage,
                         } = macro
                         const deleteButtonId = `delete-button-${macroId}`
@@ -169,7 +169,7 @@ export function MacrosSettingsTableContainer({
                                     {usage}
                                 </BodyCell>
                                 <BodyCell className={css.dateCell}>
-                                    {moment(updatedDatetime).format('YYYY-MM-DD')}
+                                    {moment(updated_datetime).format('YYYY-MM-DD')}
                                 </BodyCell>
                                 <BodyCell className={classnames('smallest', css.actions)}>
                                     <Button

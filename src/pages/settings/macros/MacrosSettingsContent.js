@@ -47,10 +47,10 @@ export function MacrosSettingsContentContainer({
     })
     const [{loading: isFetchPending}, handleFetchMacros] = useDelayedAsyncFn(async () => {
         try {
-            const {data, meta: {page, nbPages}} = await fetchMacros(options)
+            const {data, meta: {page, nb_pages}} = await fetchMacros(options)
             macrosFetched(data)
             setMacroIds(data.map((macro) => macro.id))
-            setPagination({page, nbPages})
+            setPagination({page, nbPages: nb_pages})
         } catch (error) {
             notify({
                 message: 'Failed to fetch macros',
