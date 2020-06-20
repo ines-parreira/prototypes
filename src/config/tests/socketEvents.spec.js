@@ -78,6 +78,10 @@ jest.mock('../../utils', () => {
 })
 
 describe('Config: socketEvents', () => {
+    afterEach(() => {
+        jest.clearAllMocks()
+    })
+
     describe('sendEvents', () => {
         const {sendEvents} = socketEvents
 
@@ -389,7 +393,7 @@ describe('Config: socketEvents', () => {
             it('should fetch integrations', () => {
                 const spy = jest.spyOn(integrationActions, 'fetchIntegrations')
                 if (handler) {
-                    handler.onReceive({ event: { total: 1 }})
+                    handler.onReceive({event: {total: 1}})
                 }
                 expect(spy).toHaveBeenCalled()
             })
@@ -398,7 +402,7 @@ describe('Config: socketEvents', () => {
                 const spy = jest.spyOn(notificationActions, 'notify')
 
                 if (handler) {
-                    handler.onReceive({ event: { total: 1 }})
+                    handler.onReceive({event: {total: 1}})
                 }
                 expect(spy).toHaveBeenCalledWith({
                     status: 'success',
@@ -406,12 +410,26 @@ describe('Config: socketEvents', () => {
                 })
 
                 if (handler) {
-                    handler.onReceive({ event: { total: 2 }})
+                    handler.onReceive({event: {total: 2}})
                 }
                 expect(spy).toHaveBeenCalledWith({
                     status: 'success',
                     message: '2 Facebook pages have been reconnected.'
                 })
+            })
+        })
+
+        describe('VIEWS_DEACTIVATED handler', () => {
+            const handler = _find(receivedEvents, {name: socketConstants.VIEWS_DEACTIVATED})
+
+            it.each([[['Foo']], [['Foo', 'Bar']]])('should notify', (names) => {
+                const spy = jest.spyOn(notificationActions, 'notify')
+
+                if (handler) {
+                    handler.onReceive({event: {names}})
+                }
+
+                expect(spy.mock.calls).toMatchSnapshot()
             })
         })
     })

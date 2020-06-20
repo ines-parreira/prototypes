@@ -136,6 +136,13 @@ export type FacebookIntegrationsReconnected = {
     }
 }
 
+export type ViewsDeactivated = {
+    event: {
+        type: socketConstants.VIEWS_DEACTIVATED,
+        names: string[]
+    }
+}
+
 export type ServerMessage =
     CustomerUpdatedEvent |
     UserLocationUpdatedEvent |

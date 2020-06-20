@@ -6,7 +6,7 @@ import MockAdapter from 'axios-mock-adapter'
 import {fromJS} from 'immutable'
 
 import * as actions from '../actions'
-import {initialState} from '../../views/reducers'
+import {initialState} from '../reducers'
 import {ACTIVE_VIEW_COUNT_TIMEOUT, baseView, RECENT_VIEWS_COUNTS_TIMEOUT} from '../../../config/views'
 import socketManager from '../../../services/socketManager'
 import * as socketConstants from '../../../config/socketConstants'
@@ -502,6 +502,18 @@ describe('actions', () => {
             return store.dispatch(actions.fetchViewItems()).then(() => {
                 expect(mockServer.history.get.length).toBe(1)
                 expect(store.getActions()).toMatchSnapshot()
+            })
+        })
+
+        it('should not fetch because active view is deactivated', () => {
+            const store = mockStore({
+                views: fromJS({
+                    active: baseView().set('deactivated_datetime', '2020-06-15 22:56:32.708038')
+                })
+            })
+
+            return store.dispatch(actions.fetchViewItems()).then(() => {
+                expect(store.getActions()).toEqual([])
             })
         })
     })

@@ -86,6 +86,7 @@ export const deleteAgent = (id: string) => (dispatch: dispatchType): Promise<dis
                 type: constants.DELETE_AGENT_ERROR,
                 error,
                 reason: 'Failed to delete team member',
+                verbose: true,
             })
         })
 }

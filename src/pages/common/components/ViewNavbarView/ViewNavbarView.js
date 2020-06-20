@@ -1,18 +1,19 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import {Link, browserHistory} from 'react-router'
+import {browserHistory, Link} from 'react-router'
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
 
 import {MAX_TICKET_COUNT_PER_VIEW} from '../../../../config/views'
-import {compactInteger, getPluralObjectName} from '../../../../utils'
+import {getPluralObjectName} from '../../../../utils'
 import Tooltip from '../Tooltip'
 import shortcutManager from '../../../../services/shortcutManager'
-import {moveIndex} from '../../../common/utils/keyboard'
+import {moveIndex} from '../../utils/keyboard'
 import {getActiveView, makeGetView, makeGetViewCount, makeGetViewsByType} from '../../../../state/views/selectors'
 import {makeGetSettingsByType} from '../../../../state/currentUser/selectors'
 import ViewName from '../ViewName'
+import ViewCount from '../ViewCount'
 
 import ViewNavbarViewEditor from './ViewNavbarViewEditor'
 import css from './ViewNavbarView.less'
@@ -177,7 +178,6 @@ class ViewNavbarView extends Component {
 
                                         const viewCount = this.props.getViewCount(view.get('id'))
                                         let count = ''
-                                        let compactCount = ''
                                         let isMoreThanMaxCount = false
 
                                         if (viewCount !== null) {
@@ -187,7 +187,6 @@ class ViewNavbarView extends Component {
                                                     ? `${MAX_TICKET_COUNT_PER_VIEW - 1}+`
                                                     : viewCount
                                             })`
-                                            compactCount = compactInteger(viewCount, 1)
                                         }
 
                                         return (
@@ -204,11 +203,7 @@ class ViewNavbarView extends Component {
                                                     <ViewName view={view}/>
                                                 </span>
                                                 <span className="item-count">
-                                                    {
-                                                        isMoreThanMaxCount
-                                                            ? `${compactCount}+`
-                                                            : compactCount
-                                                    }
+                                                    <ViewCount view={view}/>
                                                 </span>
                                             </Link>
                                         )

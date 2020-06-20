@@ -185,10 +185,6 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
             return state.set('loading', true)
         }
 
-        case constants.UPDATE_VIEW_LIST: {
-            return state.set('items', fromJS(action.items))
-        }
-
         case constants.FETCH_VIEW_LIST_SUCCESS: {
             items = fromJS(action.resp.data)
 

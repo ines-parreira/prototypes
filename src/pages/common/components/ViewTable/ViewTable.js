@@ -1,6 +1,7 @@
 // @flow
 import React from 'react'
-import {fromJS, Map, List} from 'immutable'
+import {Alert} from 'reactstrap'
+import {fromJS, List, Map} from 'immutable'
 import {connect} from 'react-redux'
 import {browserHistory, withRouter} from 'react-router'
 import classnames from 'classnames'
@@ -17,14 +18,13 @@ import Table from './Table'
 import FilterTopbar from './FilterTopbar'
 
 
-
 import css from './ViewTable.less'
 
 
 type Props = {
     ActionsComponent: ?() => {},
     activeView: viewType,
-    config: Map<*,*>,
+    config: Map<*, *>,
     currentCursor: string,
     fetchViewItems: typeof viewsActions.fetchViewItems,
     getViewIdToDisplay: typeof viewsSelectors.getViewIdToDisplay,
@@ -33,7 +33,7 @@ type Props = {
 
     isLoading: (string) => boolean,
     isOnFirstPage: boolean,
-    navigation: Map<*,*>,
+    navigation: Map<*, *>,
     selectedItemsIds: List<*>,
 
     location: Object,
@@ -83,9 +83,9 @@ export class ViewTableContainer extends React.Component<Props> {
     componentWillReceiveProps(nextProps: Props) {
         const {
             getViewIdToDisplay, fetchViewItems, updateView, setViewActive, getView,
-            isLoading: wasLoading, isUpdate: wasUpdate, isSearch: wasSearch,
+            isLoading: wasLoading, isUpdate: wasUpdate, isSearch: wasSearch, activeView: previousView
         } = this.props
-        const {config, navigation, location, isLoading, isUpdate, isSearch, isOnFirstPage} = nextProps
+        const {config, navigation, location, isLoading, isUpdate, isSearch, isOnFirstPage, activeView} = nextProps
 
         const currentSuggestedViewId = getViewIdToDisplay(this.props.config.get('type'), this.props.urlViewId)
         const nextSuggestedViewId = getViewIdToDisplay(nextProps.config.get('type'), nextProps.urlViewId)
@@ -95,9 +95,15 @@ export class ViewTableContainer extends React.Component<Props> {
         const cursorAreDifferent = urlCursor !== storedCursor
 
         const justFinishedFetching = wasLoading('fetchList') && !isLoading('fetchList')
+        const wasDeactivated = previousView && !!previousView.get('deactivated_datetime')
+        const isDeactivated = activeView && !!activeView.get('deactivated_datetime')
+        const previousId = previousView ? previousView.get('id') : null
+        const currentId = activeView ? activeView.get('id') : null
+        const idChanged = previousId !== currentId
 
         const leavingSearchMode = wasSearch && !isSearch
         const leavingAddNewMode = !wasUpdate && isUpdate
+        const leavingDeactivatedMode = wasDeactivated && !isDeactivated
         const suggestedViewChanged = currentSuggestedViewId !== nextSuggestedViewId
         const noActiveView = !nextProps.hasActiveView
 
@@ -118,6 +124,8 @@ export class ViewTableContainer extends React.Component<Props> {
         } else if (leavingSearchMode || leavingAddNewMode || suggestedViewChanged || noActiveView) {
             //$FlowFixMe
             setViewActive(getView(nextSuggestedViewId))
+            shouldFetchViewItems = true
+        } else if (leavingDeactivatedMode && !idChanged) {
             shouldFetchViewItems = true
         }
 
@@ -151,7 +159,7 @@ export class ViewTableContainer extends React.Component<Props> {
         return _get(props, 'location.query.q', '')
     }
 
-    _getItemUrl = (item: Map<*,*>): string => {
+    _getItemUrl = (item: Map<*, *>): string => {
         const {config} = this.props
         if (!config) {
             return ''
@@ -176,6 +184,20 @@ export class ViewTableContainer extends React.Component<Props> {
                 return activeView.get('fields', fromJS([])).contains(field.get('name'))
             })
 
+        if (activeView.get('deactivated_datetime')) {
+            return (
+                <div className="d-flex h-100">
+                    <Alert
+                        color="danger"
+                        className="d-inline-block m-auto"
+                    >
+                        This view is deactivated because at least one of its filters is invalid.<br/>
+                        Please review its filters, and either fix them or delete the view.
+                    </Alert>
+                </div>
+            )
+        }
+
         return (
             <Table
                 view={activeView}
@@ -199,7 +221,7 @@ export class ViewTableContainer extends React.Component<Props> {
         const {activeView, isSearch, isUpdate, type, className} = this.props
 
         if (activeView.isEmpty()) {
-            return <Loader />
+            return <Loader/>
         }
 
         return (

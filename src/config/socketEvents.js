@@ -92,7 +92,7 @@ export const sendEvents: SendEvent[] = [
     },
     {
         name: socketConstants.AGENT_ACTIVE,
-        dataToSend: function() {
+        dataToSend: function () {
             return {
                 clientId: window.CLIENT_ID,
                 event: socketConstants.AGENT_ACTIVE,
@@ -102,7 +102,7 @@ export const sendEvents: SendEvent[] = [
     },
     {
         name: socketConstants.AGENT_INACTIVE,
-        dataToSend: function() {
+        dataToSend: function () {
             return {
                 clientId: window.CLIENT_ID,
                 event: socketConstants.AGENT_INACTIVE,
@@ -111,7 +111,7 @@ export const sendEvents: SendEvent[] = [
     },
     {
         name: socketConstants.SID_UPDATED,
-        dataToSend: function() {
+        dataToSend: function () {
             return {
                 clientId: window.CLIENT_ID,
                 event: socketConstants.SID_UPDATED
@@ -139,7 +139,7 @@ export const joinEvents: SendEvent[] = [{
         return this.send(socketConstants.AGENT_TYPING_STOPPED, id)
     }
 }, {
-    name:  'customer',
+    name: 'customer',
     dataToSend: function (id) {
         return {
             clientId: window.CLIENT_ID,
@@ -296,7 +296,7 @@ export const receivedEvents: ReceivedEvent[] = [{
     },
 }, {
     name: socketConstants.TICKET_MESSAGE_CHAT_CREATED,
-    onReceive: function(json: socketEventTypes.TicketMessageChatCreatedEvent) {
+    onReceive: function (json: socketEventTypes.TicketMessageChatCreatedEvent) {
         const ticket = json.data
         // send browser notifications only for new customer messages
         const shouldNotify = !ticket.last_message_from_agent
@@ -330,7 +330,7 @@ export const receivedEvents: ReceivedEvent[] = [{
     }
 }, {
     name: socketConstants.TICKET_CHAT_UPDATED,
-    onReceive: function(json: socketEventTypes.TicketChatUpdatedEvent) {
+    onReceive: function (json: socketEventTypes.TicketChatUpdatedEvent) {
         const ticket = json.data
         const state = reduxStore.getState()
         const {currentUser} = state
@@ -355,12 +355,12 @@ export const receivedEvents: ReceivedEvent[] = [{
     }
 }, {
     name: socketConstants.EMAIL_INTEGRATION_VERIFIED,
-    onReceive: function(json: socketEventTypes.EmailIntegrationVerifiedEvent) {
+    onReceive: function (json: socketEventTypes.EmailIntegrationVerifiedEvent) {
         integrationsActions.onVerify(reduxStore.dispatch, json.integration_id)
     }
 }, {
     name: socketConstants.FACEBOOK_INTEGRATIONS_RECONNECTED,
-    onReceive: function({ event }: socketEventTypes.FacebookIntegrationsReconnected) {
+    onReceive: function ({event}: socketEventTypes.FacebookIntegrationsReconnected) {
         reduxStore.dispatch(integrationsActions.fetchIntegrations())
 
         reduxStore.dispatch(notificationsActions.notify({
@@ -370,5 +370,18 @@ export const receivedEvents: ReceivedEvent[] = [{
                 : `${event.total} Facebook pages have been reconnected.`
         }))
     }
-}
-]
+}, {
+    name: socketConstants.VIEWS_DEACTIVATED,
+    onReceive: function ({event}: socketEventTypes.ViewsDeactivated) {
+        const namesList = `<ul>${event.names.map((name) => `<li>${name}</li>`).join('')}</ul>`
+        const message = event.names.length === 1
+            ? `View "${event.names[0]}" has been deactivated.`
+            : `${event.names.length} views have been deactivated: ${namesList}`
+
+        reduxStore.dispatch(notificationsActions.notify({
+            status: 'warning',
+            allowHTML: true,
+            message,
+        }))
+    }
+}]

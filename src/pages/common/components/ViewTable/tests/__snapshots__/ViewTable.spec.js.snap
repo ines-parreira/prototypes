@@ -968,3 +968,63 @@ exports[`ViewTable::ViewTable component empty view 1`] = `
   size="40px"
 />
 `;
+
+exports[`ViewTable::ViewTable component render() should render a warning because the view is deactivated 1`] = `
+<div
+  className="page"
+>
+  <div
+    className="container-padding"
+  >
+    <withRouter(Connect(Header))
+      isSearch={false}
+      isUpdate={true}
+      type="ticket"
+    />
+  </div>
+  <Connect(FilterTopbarComponent)
+    isSearch={false}
+    isUpdate={true}
+    type="ticket"
+  />
+  <div
+    className="table"
+  >
+    <div
+      className="d-flex h-100"
+    >
+      <Alert
+        className="d-inline-block m-auto"
+        closeAriaLabel="Close"
+        color="danger"
+        isOpen={true}
+        tag="div"
+        transition={
+          Object {
+            "appear": true,
+            "baseClass": "fade",
+            "baseClassActive": "show",
+            "enter": true,
+            "exit": true,
+            "in": true,
+            "mountOnEnter": false,
+            "onEnter": [Function],
+            "onEntered": [Function],
+            "onEntering": [Function],
+            "onExit": [Function],
+            "onExited": [Function],
+            "onExiting": [Function],
+            "tag": "div",
+            "timeout": 150,
+            "unmountOnExit": true,
+          }
+        }
+      >
+        This view is deactivated because at least one of its filters is invalid.
+        <br />
+        Please review its filters, and either fix them or delete the view.
+      </Alert>
+    </div>
+  </div>
+</div>
+`;

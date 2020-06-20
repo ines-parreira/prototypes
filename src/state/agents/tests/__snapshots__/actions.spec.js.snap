@@ -15,12 +15,23 @@ Array [
 ]
 `;
 
-exports[`agents actions delete agent 1`] = `
+exports[`agents actions deleteAgent() delete agent 1`] = `
 Array [
   Object {
     "id": 1,
     "resp": undefined,
     "type": "DELETE_AGENT_SUCCESS",
+  },
+]
+`;
+
+exports[`agents actions deleteAgent() display error 1`] = `
+Array [
+  Object {
+    "error": [Error: Request failed with status code 400],
+    "reason": "Failed to delete team member",
+    "type": "DELETE_AGENT_ERROR",
+    "verbose": true,
   },
 ]
 `;

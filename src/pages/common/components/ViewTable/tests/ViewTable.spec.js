@@ -388,6 +388,52 @@ describe('ViewTable::ViewTable', () => {
             expect(viewsActions.fetchViewItems).toBeCalledWith()
         })
 
+        it('should call fetchViewItems when the user fixes filters of deactivated view', () => {
+            const store = {
+                views: minStore.views.setIn(['active', 'deactivated_datetime'], '2020-06-15 22:56:32.708038')
+            }
+
+            const component = shallow(
+                <ViewTable
+                    {...minProps}
+                    store={mockStore(store)}
+                />
+            ).dive().dive()
+
+            expect(viewsActions.fetchViewItems).toBeCalledTimes(1)
+
+            component.setProps({
+                activeView: store.views.get('active').set('deactivated_datetime', null),
+            })
+
+            expect(viewsActions.fetchViewItems).toBeCalledTimes(2)
+        })
+
+        it('should not call fetchViewItems when the user goes from a deactivated view to a valid one', () => {
+            const store = {
+                views: minStore.views
+                    .setIn(['active', 'id'], 10)
+                    .setIn(['active', 'deactivated_datetime'], '2020-06-15 22:56:32.708038')
+            }
+
+            const component = shallow(
+                <ViewTable
+                    {...minProps}
+                    store={mockStore(store)}
+                />
+            ).dive().dive()
+
+            expect(viewsActions.fetchViewItems).toBeCalledTimes(1)
+
+            component.setProps({
+                activeView: store.views.get('active')
+                    .set('id', 20)
+                    .set('deactivated_datetime', null),
+            })
+
+            expect(viewsActions.fetchViewItems).toBeCalledTimes(1)
+        })
+
         it('should handle /app/customers selecting the right view and without redirecting', () => {
             shallow(
                 <ViewTableContainer
@@ -399,6 +445,23 @@ describe('ViewTable::ViewTable', () => {
 
             expect(browserHistory.push).not.toHaveBeenCalled()
             expect(minContainerProps.setViewActive).toHaveBeenCalledWith(42)
+        })
+
+        describe('render()', () => {
+            it('should render a warning because the view is deactivated', () => {
+                const store = {
+                    views: minStore.views.setIn(['active', 'deactivated_datetime'], '2020-06-15 22:56:32.708038')
+                }
+
+                const component = shallow(
+                    <ViewTable
+                        {...minProps}
+                        store={mockStore(store)}
+                    />
+                ).dive().dive()
+
+                expect(component).toMatchSnapshot()
+            })
         })
     })
 })

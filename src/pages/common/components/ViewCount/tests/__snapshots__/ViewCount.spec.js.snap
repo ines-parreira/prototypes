@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ViewCount/> should not render anything because view has no count 1`] = `""`;
+
+exports[`<ViewCount/> should render an error icon because view is deactivated 1`] = `
+<Fragment>
+  <span
+    id="deactivated-view-1"
+  >
+    <i
+      className="material-icons text-danger deactivated"
+    >
+      error
+    </i>
+  </span>
+  <UncontrolledTooltip
+    placement="top"
+    target="deactivated-view-1"
+  >
+    This view is deactivated.
+  </UncontrolledTooltip>
+</Fragment>
+`;
+
+exports[`<ViewCount/> should render compacted count 1`] = `"1.1k"`;
+
+exports[`<ViewCount/> should render max count 1`] = `"10k+"`;
+
+exports[`<ViewCount/> should render uncompacted count 1`] = `"111"`;

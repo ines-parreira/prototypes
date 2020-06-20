@@ -7,7 +7,7 @@ import {updateNotification} from 'reapop'
 import * as viewsConfig from '../../config/views'
 
 import {notify} from '../notifications/actions'
-import type {dispatchType, stateType, getStateType, thunkActionType} from '../types'
+import type {dispatchType, getStateType, stateType, thunkActionType} from '../types'
 
 import * as types from './constants'
 import {mergeChannels} from './helpers'
@@ -119,7 +119,6 @@ export function bulkDeleteCustomer(ids: List<*>): thunkActionType {
         const notification = dispatch(notify({
             status: 'info',
             dismissAfter: 0,
-            closeOnNext: true,
             message: `Deleting ${viewConfig.get('plural')}...`
         }))
 
@@ -142,7 +141,7 @@ export function bulkDeleteCustomer(ids: List<*>): thunkActionType {
 }
 
 
-export function fetchCustomerHistory(customerId: number, options: {successCondition?: (T: stateType) => boolean} = {}) {
+export function fetchCustomerHistory(customerId: number, options: { successCondition?: (T: stateType) => boolean } = {}) {
     return (dispatch: dispatchType, getState: getStateType) => {
         dispatch({
             type: types.FETCH_CUSTOMER_HISTORY_START

@@ -42,11 +42,25 @@ describe('agents actions', () => {
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
-    it('delete agent', () => {
-        mockServer.onDelete('/api/users/1/').reply(200)
+    describe('deleteAgent()', () => {
+        it('delete agent', () => {
+            mockServer.onDelete('/api/users/1/').reply(200)
 
-        return store.dispatch(actions.deleteAgent(1))
-            .then(() => expect(store.getActions()).toMatchSnapshot())
+            return store.dispatch(actions.deleteAgent(1))
+                .then(() => expect(store.getActions()).toMatchSnapshot())
+        })
+
+        it('display error', () => {
+            mockServer.onDelete('/api/users/1/').reply(400, {
+                error: {
+                    msg: 'Cannot delete user because it is used in the following places:',
+                    data: {'Rules': ['[Generic] Auto Reply: Auto-responder']}
+                }
+            })
+
+            return store.dispatch(actions.deleteAgent(1))
+                .then(() => expect(store.getActions()).toMatchSnapshot())
+        })
     })
 
     describe('fetchAgent', () => {

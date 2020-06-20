@@ -318,6 +318,10 @@ export function fetchViewItems(
 
         const isDirty = viewsSelectors.isDirty(state)
 
+        if (activeView.get('deactivated_datetime')) {
+            return Promise.resolve()
+        }
+
         if (!viewsSelectors.hasActiveView(state)) {
             return Promise.resolve()
         }
