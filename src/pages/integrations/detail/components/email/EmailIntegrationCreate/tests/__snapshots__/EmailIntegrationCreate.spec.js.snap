@@ -45,6 +45,7 @@ exports[`<EmailIntegrationCreate/> render() should render 1`] = `
         href="testGmail"
       >
         <img
+          alt="google logo"
           src="test-file-stub"
         />
         <span>
@@ -66,6 +67,7 @@ exports[`<EmailIntegrationCreate/> render() should render 1`] = `
         href="testOutlook"
       >
         <img
+          alt="office logo"
           src="test-file-stub"
         />
         <span>

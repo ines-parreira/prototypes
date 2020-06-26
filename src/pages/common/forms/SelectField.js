@@ -56,6 +56,7 @@ export default class SelectField extends Component<Props, State> {
         fixedWidth: false,
         fullWidth: false
     }
+    inputRef: ?HTMLInputElement
 
     constructor(props: Props) {
         super(props)
@@ -171,14 +172,14 @@ export default class SelectField extends Component<Props, State> {
     }
 
     _focusInput = () => {
-        if (this.refs.input) {
-            this.refs.input.focus()
+        if (this.inputRef) {
+            this.inputRef.focus()
         }
     }
 
     _blurInput = () => {
-        if (this.refs.input) {
-            this.refs.input.blur()
+        if (this.inputRef) {
+            this.inputRef.blur()
             this.setState(this._initialState(this.props))
         }
     }
@@ -257,7 +258,7 @@ export default class SelectField extends Component<Props, State> {
                                     minWidth: selectMinWidth
                                 }}
                                 className={css.input}
-                                ref="input"
+                                ref={(ref) => this.inputRef = ref}
                                 value={input}
                                 onChange={this._onSearchChange}
                                 onKeyDown={this._onSearchKeyDown}

@@ -12,13 +12,13 @@ export default class Pagination extends React.Component {
 
     _handlePageClick = ({selected}) => {
         // ReactPaginate works with indexes instead of page number, so page 1 for us is page 0 for the lib
-        selected++
+        const nextPageNumber = selected + 1
 
-        if (parseInt(this.props.currentPage) === selected) {
+        if (parseInt(this.props.currentPage) === nextPageNumber) {
             return
         }
 
-        return this.props.onChange(selected)
+        return this.props.onChange(nextPageNumber)
     }
 
     render() {

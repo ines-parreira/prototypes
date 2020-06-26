@@ -5,6 +5,7 @@ import classnames from 'classnames'
 // image render in draft js
 class Image extends React.Component {
     static propTypes = {
+        alt: PropTypes.string.isRequired,
         block: PropTypes.object.isRequired,
         contentState: PropTypes.object.isRequired,
         className: PropTypes.string.isRequired,
@@ -18,6 +19,7 @@ class Image extends React.Component {
 
     render() {
         const {
+            alt,
             block,
             className,
             theme,
@@ -45,6 +47,7 @@ class Image extends React.Component {
 
         return (
             <img
+                alt={alt}
                 {...elementProps}
                 src={src}
                 role="presentation"

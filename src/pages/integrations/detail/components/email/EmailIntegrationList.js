@@ -59,11 +59,13 @@ export default class EmailIntegrationList extends React.Component<Props> {
 
             if (isGmail) {
                 imgComponent = <img
+                    alt="gmail logo"
                     src={gmailImg}
                     width="22"
                 />
             } else if (isOutlook) {
                 imgComponent = <img
+                    alt="outlook logo"
                     src={outlookImg}
                     width="22"
                 />

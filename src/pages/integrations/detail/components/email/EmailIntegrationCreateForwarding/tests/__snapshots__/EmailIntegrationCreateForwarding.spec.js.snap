@@ -113,6 +113,7 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
             target="_blank"
           >
             <img
+              alt="Google Groups logo"
               src="test-file-stub"
             />
             <div>
@@ -129,6 +130,7 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
             target="_blank"
           >
             <img
+              alt="Outlook logo"
               src="test-file-stub"
             />
             <div>
@@ -145,6 +147,7 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
             target="_blank"
           >
             <img
+              alt="Office 365 logo"
               src="test-file-stub"
             />
             <div>
@@ -161,6 +164,7 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
             target="_blank"
           >
             <img
+              alt="Microsoft Exchange logo"
               src="test-file-stub"
             />
             <div>
@@ -177,6 +181,7 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
             target="_blank"
           >
             <img
+              alt="Zoho Mail logo"
               src="test-file-stub"
             />
             <div>
@@ -323,6 +328,7 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
             target="_blank"
           >
             <img
+              alt="Google Groups logo"
               src="test-file-stub"
             />
             <div>
@@ -339,6 +345,7 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
             target="_blank"
           >
             <img
+              alt="Outlook logo"
               src="test-file-stub"
             />
             <div>
@@ -355,6 +362,7 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
             target="_blank"
           >
             <img
+              alt="Office 365 logo"
               src="test-file-stub"
             />
             <div>
@@ -371,6 +379,7 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
             target="_blank"
           >
             <img
+              alt="Microsoft Exchange logo"
               src="test-file-stub"
             />
             <div>
@@ -387,6 +396,7 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
             target="_blank"
           >
             <img
+              alt="Zoho Mail logo"
               src="test-file-stub"
             />
             <div>

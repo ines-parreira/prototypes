@@ -109,34 +109,34 @@ export const getSatisfactionSurveys = createImmutableSelector(
 export const getBody = createImmutableSelector(
     [getMessages, getPendingMessages, getEvents, getSatisfactionSurveys],
     (messages, pendingMessages, events, satisfactionSurveys) => {
-        messages = messages.map((message) => {
+        const nextMessages = messages.map((message) => {
             return message.set('isMessage', true)
         })
 
-        pendingMessages = pendingMessages.map((message) => {
+        const nextPendingMessages = pendingMessages.map((message) => {
             return message
                 .set('isPending', !message.get('failed_datetime'))
                 .set('isMessage', true)
         })
-        const failedPendingMessages = pendingMessages.filter((message) => message.get('failed_datetime'))
-        pendingMessages = pendingMessages
+        const failedPendingMessages = nextPendingMessages.filter((message) => message.get('failed_datetime'))
+        const activePendingMessages = nextPendingMessages
             .filter((message) => !message.get('failed_datetime'))
             .sortBy((message) => message.get('created_datetime'))
 
-        events = events.map((event) => {
+        const nextEvents = events.map((event) => {
             return event.set('isEvent', true)
         })
 
-        satisfactionSurveys = satisfactionSurveys.map((satisfactionSurveys) => {
+        const nextSatisfactionSurveys = satisfactionSurveys.map((satisfactionSurveys) => {
             return satisfactionSurveys.set('isSatisfactionSurvey', true)
         })
 
-        return messages
+        return nextMessages
             .concat(failedPendingMessages)
-            .concat(events)
-            .concat(satisfactionSurveys)
+            .concat(nextEvents)
+            .concat(nextSatisfactionSurveys)
             .sortBy((element) => element.get('isSatisfactionSurvey') ?
                 element.get('scored_datetime') : element.get('created_datetime'))
-            .concat(pendingMessages)
+            .concat(activePendingMessages)
     }
 )

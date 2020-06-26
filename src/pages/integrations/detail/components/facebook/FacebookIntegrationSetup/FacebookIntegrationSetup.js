@@ -162,6 +162,7 @@ export default class FacebookIntegrationSetup extends React.Component<Props, Sta
                                         <div className="mr-auto">
                                             <div>
                                                 <img
+                                                    alt="facebook logo"
                                                     className={classnames('image rounded mr-3 mb-2 mb-md-0', css.icon)}
                                                     src={page.getIn(['picture', 'data', 'url'], pageIconDefault)}
                                                 />
@@ -318,4 +319,3 @@ export default class FacebookIntegrationSetup extends React.Component<Props, Sta
         )
     }
 }
-

@@ -1,6 +1,5 @@
 import React from 'react'
-import {mount} from 'enzyme'
-import {shallow} from 'enzyme'
+import {mount, shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'

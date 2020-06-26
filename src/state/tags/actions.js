@@ -40,13 +40,10 @@ export function fetchTags(page: ?number, sort: string = 'usage', reverse: boolea
         })
 
         const {tags} = getState()
-        if (tags) {
-            page = tags.getIn(['_internal', 'pagination', 'page'], 1)
-        }
 
         return axios.get('/api/tags/', {
             params: {
-                page,
+                page: tags ? tags.getIn(['_internal', 'pagination', 'page'], 1) : page,
                 order_by: sort,
                 order_dir: reverse ? 'desc' : 'asc',
                 search
@@ -250,4 +247,3 @@ export function setPage(page: number): actionType & { page: number } {
         page,
     }
 }
-

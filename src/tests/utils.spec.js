@@ -4,7 +4,6 @@ import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
 import plan from '../fixtures/plan'
-import {uploadFiles} from '../utils'
 import * as utils from '../utils'
 import TICKET_LANGUAGES from '../config/ticketLanguages'
 import schemasJSON from '../fixtures/openapi'
@@ -553,7 +552,7 @@ describe('global utils', () => {
             mockServer.onPost('/api/upload/').reply(200, uploadedFileData)
 
             const file = new File([''], name)
-            return uploadFiles(file).then((data) => {
+            return utils.uploadFiles(file).then((data) => {
                 expect(data).toEqual(uploadedFileData)
             })
         })
@@ -569,7 +568,7 @@ describe('global utils', () => {
             })
 
             const file = new File([''], name)
-            return uploadFiles(file, passedParams).then((data) => {
+            return utils.uploadFiles(file, passedParams).then((data) => {
                 expect(data).toEqual(uploadedFileData)
             })
         })

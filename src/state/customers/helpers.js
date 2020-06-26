@@ -11,21 +11,21 @@ import {EMAIL_CHANNEL} from '../../config/ticket'
  * @returns {string}
  */
 export const getDisplayName = (customer: { name: string, id: string }): string => {
-    customer = toImmutable(customer)
+    const immutableCustomer = toImmutable(customer)
 
     // TODO toImmutable should always return a map.
     // if not an immutable map
-    if (!isImmutable(customer)) {
-        return customer || 'Unknown customer'
+    if (!isImmutable(immutableCustomer)) {
+        return immutableCustomer || 'Unknown customer'
     }
 
-    customer = customer.set('name', _trim(customer.get('name')))
+    const formattedCustomer = immutableCustomer.set('name', _trim(immutableCustomer.get('name')))
 
-    return customer.get('name')
-        || customer.get('email')
+    return formattedCustomer.get('name')
+        || formattedCustomer.get('email')
         || (
-            customer.get('id')
-                ? `Customer #${customer.get('id')}`
+            formattedCustomer.get('id')
+                ? `Customer #${formattedCustomer.get('id')}`
                 : 'Unknown customer'
         )
 }

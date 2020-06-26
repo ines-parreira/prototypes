@@ -387,9 +387,9 @@ export class MacroEdit extends React.Component<Props> {
                                 }
 
                                 // remove actions that have already been used
-                                actions = actions.filter((action) => !this.props.actions.find((usedActions) => usedActions.get('name') === action))
+                                const filteredActions = actions.filter((action) => !this.props.actions.find((usedActions) => usedActions.get('name') === action))
 
-                                if (actions.isEmpty()) {
+                                if (filteredActions.isEmpty()) {
                                     return null
                                 }
 
@@ -407,7 +407,7 @@ export class MacroEdit extends React.Component<Props> {
                                         </DropdownToggle>
                                         <DropdownMenu>
                                             {
-                                                actions.map((actionName) => {
+                                                filteredActions.map((actionName) => {
                                                     return (
                                                         <DropdownItem
                                                             key={actionName}

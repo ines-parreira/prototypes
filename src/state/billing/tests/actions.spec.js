@@ -6,10 +6,7 @@ import MockAdapter from 'axios-mock-adapter'
 import {fromJS} from 'immutable'
 
 import * as actions from '../actions'
-import {setCreditCard} from '../actions'
 import {initialState} from '../reducers'
-import {setFutureSubscriptionPlan} from '../actions'
-import {updateInvoiceInList} from '../actions'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -163,13 +160,13 @@ describe('billing actions', () => {
                 exp_month: '12',
                 exp_year: '24'
             }
-            expect(setCreditCard(fromJS(card))).toMatchSnapshot()
+            expect(actions.setCreditCard(fromJS(card))).toMatchSnapshot()
         })
     })
 
     describe('setFutureSubscriptionPlan()', () => {
         it('should return a Redux action to set the future subscription plan.', () => {
-            expect(setFutureSubscriptionPlan('advanced-usd-1')).toMatchSnapshot()
+            expect(actions.setFutureSubscriptionPlan('advanced-usd-1')).toMatchSnapshot()
         })
     })
 
@@ -179,7 +176,7 @@ describe('billing actions', () => {
                 id: 'in_dnu3xd0i2n3f0',
                 paid: false,
             }
-            expect(updateInvoiceInList(fromJS(invoice))).toMatchSnapshot()
+            expect(actions.updateInvoiceInList(fromJS(invoice))).toMatchSnapshot()
         })
     })
 })

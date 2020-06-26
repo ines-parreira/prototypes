@@ -10,13 +10,13 @@ import {MAX_RECENT_VIEWS} from '../../config/views'
 import * as constants from './constants'
 import {
     addFilterAST,
+    addViewIfMissing,
     removeFilterAST,
     recentViewsStorage,
     updateFilterOperator,
     updateFilterValue
 } from './utils'
 import * as selectors from './selectors'
-import {addViewIfMissing} from './utils'
 
 export const initialState = fromJS({
     items: [],

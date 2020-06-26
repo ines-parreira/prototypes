@@ -31,7 +31,10 @@ export default class OptionalEmailCapture extends React.Component<Props> {
 
                 <div className={css.appMakerMessageWrapper}>
                     <div className={classnames(css.avatar, css.robotLogo)}>
-                        <img src={`${window.GORGIAS_ASSETS_URL || ''}/static/private/img/icons/robot-icon.svg`}/>
+                        <img
+                            alt="robot icon"
+                            src={`${window.GORGIAS_ASSETS_URL || ''}/static/private/img/icons/robot-icon.svg`}
+                        />
                     </div>
                     <div>
                         <div className={css.user}>

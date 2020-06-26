@@ -92,7 +92,7 @@ describe('DatePicker', () => {
         )
         const component = wrapper.instance()
         const showSpy = jest.fn()
-        component.refs.datepicker.$picker.click = showSpy
+        component.datePickerRef.$picker.click = showSpy
         component._show()
         expect(showSpy).toHaveBeenCalled()
 

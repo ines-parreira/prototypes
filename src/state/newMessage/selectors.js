@@ -134,11 +134,12 @@ export const getNewMessageRecipients = createImmutableSelector(
         return recipientProperties.filter((prop) => prop !== 'from')
             .reduce((result, prop) => {
                 const recipients = getFromSource(prop)
+                let nextResult = result
                 recipients.forEach((recipient) => {
                     //$FlowFixMe
-                    result = result.push(fromJS(recipient))
+                    nextResult = result.push(fromJS(recipient))
                 })
-                return result
+                return nextResult
             }, fromJS([]))
     }
 )

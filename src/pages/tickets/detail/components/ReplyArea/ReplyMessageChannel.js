@@ -68,6 +68,9 @@ export default class ReplyMessageChannel extends React.Component {
         isReceiversAreaOpen: false,
     }
 
+    channelPickerRef: ?HTMLDivElement
+    messageChannelRef: ?HTMLDivElement
+
     componentDidMount() {
         window.addEventListener('click', this._updateMessageSourceFieldsOpening)
     }
@@ -108,7 +111,7 @@ export default class ReplyMessageChannel extends React.Component {
         const {hasRecipients} = this.props
 
         // list of components on which the click does not change opening
-        const ignoredComponentsRefs = ['channelPicker']
+        const ignoredComponentsRefs = ['channelPickerRef']
 
         // open recipients area only for emails
         if (this._canChangeReceivers()) {
@@ -119,12 +122,12 @@ export default class ReplyMessageChannel extends React.Component {
 
                 // ignore click if clicked on ignored components (such as the channel picker dropdown)
                 const shouldBeIgnored = ignoredComponentsRefs.some((id) => {
-                    return !this.refs[id] || (this.refs[id] && this.refs[id].contains(e.target))
+                    return !this[id] || (this[id] && this[id].contains(e.target))
                 })
 
                 if (!shouldBeIgnored) {
-                    const hasClickedInComponent = this.refs.messageChannel
-                        && this.refs.messageChannel.contains(e.target)
+                    const hasClickedInComponent = this.messageChannelRef
+                        && this.messageChannelRef.contains(e.target)
 
                     this._toggleReceiversArea(hasClickedInComponent)
                 }
@@ -199,11 +202,11 @@ export default class ReplyMessageChannel extends React.Component {
 
         return (
             <div
-                ref="messageChannel"
+                ref={(ref) => this.messageChannelRef = ref}
                 className={classnames(css.component, className)}
             >
                 <div
-                    ref="channelPicker"
+                    ref={(ref) => this.channelPickerRef = ref}
                     className="mt-1 mr-2"
                 >
                     <UncontrolledDropdown>

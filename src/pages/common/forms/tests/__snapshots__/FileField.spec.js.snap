@@ -16,6 +16,7 @@ exports[`<FileField/> render() should display loading when loading 1`] = `
         className="preview"
       >
         <img
+          alt="file preview"
           src="value"
         />
       </div>
@@ -97,6 +98,7 @@ exports[`<FileField/> render() should render a basic file input 1`] = `
         className="preview"
       >
         <img
+          alt="file preview"
           src="value"
         />
       </div>
@@ -138,6 +140,7 @@ exports[`<FileField/> render() should render preview 1`] = `
         className="preview"
       >
         <img
+          alt="file preview"
           src="value"
         />
       </div>

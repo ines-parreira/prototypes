@@ -93,6 +93,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       className="d-flex align-items-center mb-3"
     >
       <img
+        alt="facebook logo"
         className="image rounded mr-3"
         src="test-file-stub"
         width="30"
@@ -365,6 +366,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       className="d-flex align-items-center mb-3"
     >
       <img
+        alt="facebook logo"
         className="image rounded mr-3"
         src="test-file-stub"
         width="30"
@@ -680,6 +682,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       className="d-flex align-items-center mb-3"
     >
       <img
+        alt="facebook logo"
         className="image rounded mr-3"
         src="test-file-stub"
         width="30"
@@ -998,6 +1001,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       className="d-flex align-items-center mb-3"
     >
       <img
+        alt="facebook logo"
         className="image rounded mr-3"
         src="test-file-stub"
         width="30"
@@ -1316,6 +1320,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
       className="d-flex align-items-center mb-3"
     >
       <img
+        alt="facebook logo"
         className="image rounded mr-3"
         src="test-file-stub"
         width="30"

@@ -41,6 +41,7 @@ class IntegrationListRow extends React.Component {
                     {
                         integrationConfig.get('image') ? (
                             <img
+                                alt={`${integrationConfig.get('title')} logo`}
                                 role="presentation"
                                 className="logo"
                                 src={getIconFromUrl(integrationConfig.get('image'))}

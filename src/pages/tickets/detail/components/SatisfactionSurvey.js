@@ -50,7 +50,10 @@ export default class SatisfactionSurvey extends React.Component<PropTypes> {
                 id='satisfactionSurvey'
             >
                 <div className={css.star}>
-                    <img src={fullStar} />
+                    <img
+                        alt="survey rating"
+                        src={fullStar}
+                    />
                 </div>
 
                 <div className={css.body}>

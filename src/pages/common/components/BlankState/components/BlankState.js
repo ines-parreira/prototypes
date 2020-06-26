@@ -26,7 +26,7 @@ const BlankState = ({message, totalClosedTickets}: Props) => {
         text: (
             <div>
                 You closed {totalClosedTickets} tickets this week, that's a good start
-                <span className="ml-2">👌</span>
+                <span className="ml-2" role="img" aria-label="ok emoji">👌</span>
             </div>
         )
     }, {
@@ -35,7 +35,7 @@ const BlankState = ({message, totalClosedTickets}: Props) => {
         text: (
             <div>
                 You've helped {totalClosedTickets} people this week, you deserve some
-                <span className="ml-2">🍪</span>
+                <span className="ml-2" role="img" aria-label="cookie emoji">🍪</span>
             </div>
         )
     }, {
@@ -44,7 +44,7 @@ const BlankState = ({message, totalClosedTickets}: Props) => {
         text: (
             <div>
                 You closed {totalClosedTickets} tickets this week, you're awesome
-                <span className="ml-2">🚀</span>
+                <span className="ml-2" role="img" aria-label="rocket emoji">🚀</span>
             </div>
         )
     }]

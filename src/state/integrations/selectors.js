@@ -47,12 +47,9 @@ export const makeGetIntegrationById = (state: stateType) => (id: number) => getI
 export const getIntegrationsByTypes = (types: typesType) => createSelector(
     [getIntegrations],
     (integrations) => {
-        if (!_isArray(types)) {
-            // $FlowFixMe
-            types = [types]
-        }
+        const formattedTypes = !_isArray(types) ? [types] : types
 
-        return integrations.filter((integration) => types.includes(integration.get('type')))
+        return integrations.filter((integration) => formattedTypes.includes(integration.get('type')))
     }
 )
 

@@ -30,6 +30,8 @@ export default class AddImage extends React.Component<Props, State> {
         isOpen: false
     }
 
+    inputRef: ?HTMLInputElement
+
     _updateMaxSize = () => {
         const editorState = this.props.getEditorState()
         const maxSize =  getMaxAttachmentSize(editorState, this.props.attachments)
@@ -127,7 +129,7 @@ export default class AddImage extends React.Component<Props, State> {
                             <input
                                 className="form-control"
                                 key="url"
-                                ref="input"
+                                ref={(ref) => this.inputRef = ref}
                                 type="text"
                                 placeholder="External image url..."
                                 onChange={(e) => this.setState({url: e.target.value})}

@@ -171,6 +171,7 @@ export default class TicketReplyAction extends React.Component {
                     {
                         !!type && (
                             <img
+                                alt={`${action.get('title')} icon`}
                                 className={css.actionLogo}
                                 role="presentation"
                                 src={icon}

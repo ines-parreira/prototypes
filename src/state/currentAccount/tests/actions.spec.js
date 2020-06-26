@@ -5,7 +5,6 @@ import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
 import * as actions from '../actions'
-import {setCurrentSubscription} from '../actions'
 import {initialState} from '../reducers'
 
 const middlewares = [thunk]
@@ -87,7 +86,7 @@ describe('current account actions', () => {
                 plan: 'basic-usd-1',
                 status: 'active',
             }
-            expect(setCurrentSubscription(fromJS(subscription))).toMatchSnapshot()
+            expect(actions.setCurrentSubscription(fromJS(subscription))).toMatchSnapshot()
         })
     })
 })

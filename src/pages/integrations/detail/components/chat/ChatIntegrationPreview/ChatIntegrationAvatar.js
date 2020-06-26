@@ -39,7 +39,10 @@ const ChatIntegrationAvatar = (props: Props) => {
                     className={classnames(css['team-picture'])}
                     style={{borderColor: isOnline ? mainColor : offlineColor}}
                 >
-                    <img src={avatarTeamPictureUrl}/>
+                    <img
+                        alt="team avatar"
+                        src={avatarTeamPictureUrl}
+                    />
                     {statusMarker}
                 </div>
             </div>

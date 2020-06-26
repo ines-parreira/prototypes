@@ -179,7 +179,6 @@ export function updateFilterOperator(ast: astType, index: number, operator: stri
 
 export function updateFilterValue(ast: astType, index: number, value: string | number | Array<any> | null ): nodeType {
     if (_isArray(value)) {
-        // $FlowFixMe
         let astLiterals = value.map((item) => ({
             type: 'Literal',
             value: item,
@@ -192,11 +191,10 @@ export function updateFilterValue(ast: astType, index: number, value: string | n
         }
 
         return setIn(ast, index, ['arguments', 1], arrayExpression)
-    } 
-    // $FlowFixMe
+    }
     const raw = rawify(value)
     return setIn(ast, index, ['arguments', 1], getFirstExpressionOfAST(getAST(raw)))
-    
+
 }
 
 /**
@@ -253,7 +251,7 @@ class RecentViewsStorage {
         try {
             recentViews = JSON.parse(this.storage.getItem(this.storageKey))
         } catch (error) {
-            console.log(error)
+            console.error(error)
             return
         }
 
@@ -281,7 +279,7 @@ class RecentViewsStorage {
             try {
                 localStorage.setItem(this.storageKey, JSON.stringify(views))
             } catch (error) {
-                console.log(error)
+                console.error(error)
             }
         }
     }

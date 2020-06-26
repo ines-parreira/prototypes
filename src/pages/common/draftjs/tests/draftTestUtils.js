@@ -98,10 +98,7 @@ export const createEditorStateFromHtml = (html: string) => {
 }
 
 export const createCompositeDecorator = (decorators?: any[] = []) => {
-    if (!_isArray(decorators)) {
-        decorators = [decorators]
-    }
-    return new CompositeDecorator(decorators)
+    return new CompositeDecorator(!_isArray(decorators) ? [decorators] : decorators)
 }
 
 export const getLastCreatedEntity = (contentState: ContentState): ?DraftEntityInstance => {

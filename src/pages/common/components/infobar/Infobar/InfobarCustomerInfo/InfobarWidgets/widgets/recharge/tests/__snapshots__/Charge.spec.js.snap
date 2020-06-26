@@ -16,7 +16,13 @@ exports[`Charge AfterContent should aggregate line_items by subscriptions 1`] = 
         target="_blank"
       >
         <span>
-          🔄 Subscription #
+          <span
+            aria-label="subscription emoji"
+            role="img"
+          >
+            🔄
+          </span>
+           Subscription #
           1
         </span>
       </a>
@@ -64,7 +70,13 @@ exports[`Charge AfterContent should aggregate line_items by subscriptions 1`] = 
         target="_blank"
       >
         <span>
-          🔄 Subscription #
+          <span
+            aria-label="subscription emoji"
+            role="img"
+          >
+            🔄
+          </span>
+           Subscription #
           2
         </span>
       </a>

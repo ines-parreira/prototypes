@@ -2,7 +2,7 @@ import React from 'react'
 import {Table} from 'reactstrap'
 import {Link} from 'react-router'
 
-const config = [
+const configs = [
     {
         img: `${window.GORGIAS_ASSETS_URL || ''}/static/private/img/integrations/zendesk.png`,
         title: 'Zendesk',
@@ -18,25 +18,26 @@ export default class ImportDataList extends React.Component {
             <Table hover>
                 <tbody>
                     {
-                        config.map((c, idx) => {
+                        configs.map((config, idx) => {
                             return (
                                 <tr key={idx}>
                                     <td className="smallest">
                                         <img
+                                            alt={`${config.title} logo`}
                                             style={{
                                                 maxWidth: '35px',
                                                 overflow: 'hidden',
                                             }}
                                             className="rounded"
-                                            src={c.img}
+                                            src={config.img}
                                         />
                                     </td>
                                     <td className="link-full-td">
-                                        <Link to={c.link}>
+                                        <Link to={config.link}>
                                             <div>
-                                                <b className="mr-2">{c.title}</b>
+                                                <b className="mr-2">{config.title}</b>
                                                 <span className="text-faded">
-                                                    {c.description}
+                                                    {config.description}
                                                 </span>
                                             </div>
                                         </Link>

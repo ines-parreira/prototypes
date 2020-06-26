@@ -25,6 +25,7 @@ export default class DistributionVariantStat extends Component<Props> {
             star: {
                 fill: (key) => (
                     <img
+                        alt="filled star"
                         key={key}
                         src={fullStar}
                         className={css.star}
@@ -32,6 +33,7 @@ export default class DistributionVariantStat extends Component<Props> {
                 ),
                 empty: (key) => (
                     <img
+                        alt="empty star"
                         key={key}
                         src={emptyStar}
                         className={css.star}

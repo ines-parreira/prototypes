@@ -9,6 +9,7 @@ exports[`SatisfactionSurvey should display satisfaction survey 1`] = `
     className="star"
   >
     <img
+      alt="survey rating"
       src="test-file-stub"
     />
   </div>

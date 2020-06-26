@@ -211,9 +211,7 @@ export const addCache = (context: contextType): contextType => {
         return _markCacheAdded(context)
     }
 
-    context = getCache(context)
-
-    return _markCacheAdded(context)
+    return _markCacheAdded(getCache(context))
 }
 
 /**

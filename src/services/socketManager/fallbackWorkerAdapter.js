@@ -23,9 +23,11 @@ export class FallbackWorker {
     sendDisconnectedNotificationTask = null
 
     incrementalReconnect = () => {
+        // eslint-disable-next-line no-console
         console.log(`Reconnecting in ${this.incrementalReconnectBackoff}`)
 
         this.incrementalReconnectTask = setTimeout(() => {
+            // eslint-disable-next-line no-console
             console.log('Reconnecting...')
             this.socket.connect()
 
@@ -43,6 +45,7 @@ export class FallbackWorker {
     }
 
     _onSocketConnect = () => {
+        // eslint-disable-next-line no-console
         console.log('WS connected!')
         fallbackBroadcastChannelAdapter.postMessage({type: BROADCAST_CHANNEL_EVENTS.WS_CONNECTED})
 
@@ -57,6 +60,7 @@ export class FallbackWorker {
     }
 
     _onSocketDisconnect = () => {
+        // eslint-disable-next-line no-console
         console.log('WS disconnected!')
 
         this.sendDisconnectedNotificationTask = setTimeout(
@@ -71,7 +75,7 @@ export class FallbackWorker {
 
     onConnect = () => {
         if (!this.socket) {
-            this.socket = io(window.WS_URL, {transports: ['websocket']}) // eslint-disable-line
+            this.socket = io(window.WS_URL, {transports: ['websocket']})
 
             this.socket.on('json', this._onSocketJson)
             this.socket.on('connect', this._onSocketConnect)
@@ -106,5 +110,3 @@ export const fallbackBroadcastChannelAdapter = {
     onmessage: () => {},
     postMessage: (message) => fallbackBroadcastChannelAdapter.onmessage({data: message}),
 }
-
-

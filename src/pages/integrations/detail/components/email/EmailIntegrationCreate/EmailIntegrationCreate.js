@@ -58,6 +58,7 @@ export class EmailIntegrationCreate extends React.Component<Props> {
                             className={classnames('mb-2', css.connectButton, css.gmailButton)}
                         >
                             <img
+                                alt="google logo"
                                 src={googleLogo}
                             />
                             <span>Connect Google email account</span>
@@ -77,6 +78,7 @@ export class EmailIntegrationCreate extends React.Component<Props> {
                             className={classnames('mb-2', css.connectButton, css.outlookButton)}
                         >
                             <img
+                                alt="office logo"
                                 src={officeLogo}
                             />
                             <span>Connect Office365 email account</span>

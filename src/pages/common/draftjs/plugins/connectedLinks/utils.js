@@ -11,21 +11,21 @@ const matchProtocols = [
 ]
 
 export const parseUrl = (url: string = '', target: string = ''): string => {
-    url = url.trim()
+    let formattedUrl = url.trim()
     // only parse in the browser
     if (typeof window.document === 'undefined') {
-        return url
+        return formattedUrl
     }
 
     // add http, if url doesn't include protocol.
     // required so we can change protocol with a.protocol = ''.
     // using // relative-protocol does not work.
-    if (!hasProtocol(url)) {
-        url = `http://${url}`
+    if (!hasProtocol(formattedUrl)) {
+        formattedUrl = `http://${formattedUrl}`
     }
 
     const a = document.createElement('a')
-    a.href = url
+    a.href = formattedUrl
 
     // mimic target url protocol and www subdomain,
     // so not-exact urls match (eg. google.com, www.google.com, http://google.com).

@@ -43,8 +43,7 @@ export function fetchUsers(roles: Array<string>) {
 }
 
 export const createAgent = (agent: agentType) => (dispatch: dispatchType): Promise<dispatchType> => {
-    agent = toJS(agent)
-    return axios.post('/api/users/', agent)
+    return axios.post('/api/users/', toJS(agent))
         .then((json = {}) => json.data)
         .then((data) => {
             const resp: Map<*,*> = toImmutable(data)
@@ -116,11 +115,9 @@ export const fetchPagination = (page: number = 1) => (dispatch: dispatchType): P
         }})
         .then((json = {}) => json.data)
         .then((resp) => {
-            resp = toImmutable(resp)
-
             return dispatch({
                 type: constants.FETCH_AGENTS_PAGINATION_SUCCESS,
-                resp,
+                resp: toImmutable(resp),
             })
         }, (error) => {
             return dispatch({
@@ -149,12 +146,9 @@ export const inviteAgent = (id: string) => (dispatch: dispatchType): Promise<dis
 }
 
 export const updateAgent = (id: string, agent: agentType) => (dispatch: dispatchType): Promise<dispatchType> => {
-    agent = toJS(agent)
-    return axios.put(`/api/users/${id}/`, agent)
+    return axios.put(`/api/users/${id}/`, toJS(agent))
         .then((json = {}) => json.data)
         .then((resp) => {
-            resp = toImmutable(resp)
-
             dispatch(notify({
                 status: 'success',
                 message: 'Team member updated',
@@ -162,7 +156,7 @@ export const updateAgent = (id: string, agent: agentType) => (dispatch: dispatch
 
             return dispatch({
                 type: constants.UPDATE_AGENT_SUCCESS,
-                resp,
+                resp: toImmutable(resp),
             })
         }, (error) => {
             return dispatch({

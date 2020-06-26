@@ -8,7 +8,7 @@ import Message from './Message'
 
 type Props = {
     id: string,
-    messages:  TicketMessage[],
+    messages: TicketMessage[],
     ticketId: number,
     timezone: string,
     isLastReadMessage: boolean,

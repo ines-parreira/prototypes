@@ -86,11 +86,12 @@ export const attachEntitiesToVariables = (editorState, immutable = false) => {
             // fixes bug with turning an immutable variable to editable,
             // when typing one char after it.
             const oldEntityKey = block.getEntityAt(start)
+            let isImmutable = immutable
             if (oldEntityKey) {
                 const oldEntity = newContentState.getEntity(oldEntityKey)
                 const entityData = oldEntity.get('data')
                 if (_get(entityData, 'result') === value) {
-                    immutable = _get(entityData, 'immutable')
+                    isImmutable = _get(entityData, 'immutable')
                 }
             }
 
@@ -99,7 +100,7 @@ export const attachEntitiesToVariables = (editorState, immutable = false) => {
                 'MUTABLE',
                 {
                     ...variable,
-                    immutable,
+                    immutable: isImmutable,
                     result: value,
                 }
             )

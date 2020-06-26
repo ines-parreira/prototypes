@@ -56,6 +56,7 @@ exports[`Avatar component should render avatar from cache 1`] = `
     <span />
   </div>
   <img
+    alt="avatar"
     className="gravatar"
     src="https://www.gravatar.com/avatar/b0603c6a6734698e0b93b1350c6c8286?d=404&s=50"
   />
@@ -117,6 +118,7 @@ exports[`Avatar component should render image in visible container 1`] = `
       <span />
     </div>
     <img
+      alt="avatar"
       className="gravatar"
       src="https://www.gravatar.com/avatar/b0603c6a6734698e0b93b1350c6c8286?d=404&s=50"
     />

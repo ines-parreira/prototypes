@@ -268,7 +268,7 @@ export class AfterContent extends React.Component<AfterContentProps> { // eslint
                             >
                                 <CardBody className="header clearfix">
                                     <a target="_blank">
-                                        <span>🔄 Subscription #{k}</span>
+                                        <span><span role="img" aria-label="subscription emoji">🔄</span> Subscription #{k}</span>
                                     </a>
                                     <SubscriptionAfterTitle
                                         isEditing={isEditing}

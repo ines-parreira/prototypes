@@ -304,21 +304,15 @@ IntegrationsDetailLabel.displayName = 'IntegrationsDetailLabel'
  * ROLE
  */
 export const RoleLabel = ({roles = 'user'}: { roles: string }) => {
-    roles = toJS(roles)
-
-    if (!_isArray(roles)) {
-        // flow discourages type detection
-        // $FlowFixMe
-        roles = [roles]
-    }
+    const rolesJS = toJS(roles)
+    let userRoles = !_isArray(rolesJS) ? [rolesJS] : rolesJS
 
     // if there are roles in the incoming array
-    if (roles.length) {
+    if (userRoles.length) {
         // if roles are objects (like {name: 'refund'})
-        if (_isObject(roles[0])) {
-            if (roles[0].name) {
-                // $FlowFixMe
-                roles = roles.map((v) => v.name)
+        if (_isObject(userRoles[0])) {
+            if (userRoles[0].name) {
+                userRoles = userRoles.map((v) => v.name)
             }
         }
     }
@@ -326,19 +320,19 @@ export const RoleLabel = ({roles = 'user'}: { roles: string }) => {
     let color = null
     let role = null
 
-    if (roles.includes(ADMIN_ROLE)) {
+    if (userRoles.includes(ADMIN_ROLE)) {
         color = 'danger'
         role = _capitalize(ADMIN_ROLE)
-    } else if (roles.includes(AGENT_ROLE)) {
+    } else if (userRoles.includes(AGENT_ROLE)) {
         color = 'warning'
         role = 'Lead agent'
-    } else if (roles.includes(BASIC_AGENT_ROLE)) {
+    } else if (userRoles.includes(BASIC_AGENT_ROLE)) {
         color = 'info'
         role = _capitalize(humanizeString(BASIC_AGENT_ROLE))
-    } else if (roles.includes(LITE_AGENT_ROLE)) {
+    } else if (userRoles.includes(LITE_AGENT_ROLE)) {
         color = 'primary'
         role = _capitalize(humanizeString(LITE_AGENT_ROLE))
-    } else if (roles.includes(OBSERVER_AGENT_ROLE)) {
+    } else if (userRoles.includes(OBSERVER_AGENT_ROLE)) {
         color = 'success'
         role = _capitalize(humanizeString(OBSERVER_AGENT_ROLE))
     }

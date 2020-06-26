@@ -82,9 +82,11 @@ export class WebsocketSharedWorker {
     }
 
     incrementalReconnect = () => {
+        // eslint-disable-next-line no-console
         console.log(`Reconnecting in ${this.incrementalReconnectBackoff}`)
 
         this.incrementalReconnectTask = setTimeout(() => {
+            // eslint-disable-next-line no-console
             console.log('Reconnecting...')
             this.socket.connect()
 
@@ -102,6 +104,7 @@ export class WebsocketSharedWorker {
     }
 
     _onSocketConnect = () => {
+        // eslint-disable-next-line no-console
         console.log('WS connected!')
         this.broadcastChannel.postMessage({type: BROADCAST_CHANNEL_EVENTS.WS_CONNECTED})
 
@@ -116,6 +119,7 @@ export class WebsocketSharedWorker {
     }
 
     _onSocketDisconnect = () => {
+        // eslint-disable-next-line no-console
         console.log('WS disconnected!')
 
         this.sendDisconnectedNotificationTask = setTimeout(
@@ -143,7 +147,7 @@ export class WebsocketSharedWorker {
     onClientConnected = (message, messagePort) => {
         if (!this.socket) {
             this.wsUrl = message.wsUrl
-            this.socket = io(this.wsUrl, {transports: ['websocket']}) // eslint-disable-line
+            this.socket = io(this.wsUrl, {transports: ['websocket']})
 
             this.socket.on('json', this._onSocketJson)
             this.socket.on('connect', this._onSocketConnect)

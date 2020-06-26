@@ -14,6 +14,7 @@ class IntegrationAction extends React.Component {
         return (
             <div className="d-flex align-items-center">
                 <img
+                    alt={`${integrationType} logo`}
                     role="presentation"
                     src={getIconFromType(integrationType)}
                     style={{maxWidth: '30px'}}

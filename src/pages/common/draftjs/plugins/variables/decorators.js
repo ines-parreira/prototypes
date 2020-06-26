@@ -13,6 +13,7 @@ const placeholderRender = (entity) => {
     if (entityIsIntegration) {
         return <span>
             <img
+                alt="integration icon"
                 className="badge-variable-icon"
                 src={integrationsHelpers.getIconFromType(type)}
             />

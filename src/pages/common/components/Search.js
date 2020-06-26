@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {type Element} from 'react'
 import PropTypes from 'prop-types'
 import ReactDOM from 'react-dom'
 import classnames from 'classnames'
@@ -28,6 +28,8 @@ export default class Search extends React.Component {
         style: PropTypes.object.isRequired,
     }
 
+    searchInputRef: ?Element<typeof Input>
+
     static defaultProps = {
         disabled: false,
         placeholder: 'Search...',
@@ -55,7 +57,7 @@ export default class Search extends React.Component {
                 FOCUS_SEARCH: {
                     action: (e) => {
                         e.preventDefault()
-                        ReactDOM.findDOMNode(this.refs.searchInput).focus()
+                        ReactDOM.findDOMNode(this.searchInputRef).focus()
                     }
                 }
             })
@@ -132,7 +134,7 @@ export default class Search extends React.Component {
                     search
                 </i>
                 <Input
-                    ref="searchInput"
+                    ref={(ref) => this.searchInputRef = ref}
                     type="text"
                     className={css.input}
                     value={this.state.search}

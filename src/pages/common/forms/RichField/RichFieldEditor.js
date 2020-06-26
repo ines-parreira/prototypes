@@ -232,21 +232,21 @@ export class RichFieldEditor extends InputField<Props, State> {
     _runPlugins = (editorState: EditorState) => {
         // run plugins onChange on the editor state
         // comes from Editor internal onChange function https://github.com/draft-js-plugins/draft-js-plugins/blob/55eb3b845d7e776a10def7f388624cf4c9879f5a/draft-js-plugins-editor/src/Editor/index.js#L92
+        let nextEditorState = editorState
         if (this.editor) {
             this.editor.resolvePlugins().forEach((plugin) => {
                 if (plugin.onChange && this.editor) {
-                    editorState = plugin.onChange(editorState, this.editor.getPluginMethods())
+                    nextEditorState = plugin.onChange(nextEditorState, this.editor.getPluginMethods())
                 }
             })
         }
 
-        return editorState
+        return nextEditorState
     }
 
     _onChange = (editorState: EditorState) => {
         // run plugins
-        editorState = this._runPlugins(editorState)
-        this.props.onChange(editorState)
+        this.props.onChange(this._runPlugins(editorState))
     }
 
     _onDragOver = () => this.setState({isDragging: true})

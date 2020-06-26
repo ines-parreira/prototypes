@@ -257,6 +257,7 @@ exports[`FacebookIntegrationSetup should render integrations because there is av
               >
                 <div>
                   <img
+                    alt="facebook logo"
                     className="image rounded mr-3 mb-2 mb-md-0 icon"
                     src="https://gorgias.io/page-image-link.png"
                   />
@@ -476,6 +477,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled and s
               >
                 <div>
                   <img
+                    alt="facebook logo"
                     className="image rounded mr-3 mb-2 mb-md-0 icon"
                     src="https://gorgias.io/page-image-link.png"
                   />
@@ -695,6 +697,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
               >
                 <div>
                   <img
+                    alt="facebook logo"
                     className="image rounded mr-3 mb-2 mb-md-0 icon"
                     src="https://gorgias.io/page-image-link.png"
                   />

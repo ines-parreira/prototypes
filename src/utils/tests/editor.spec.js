@@ -11,7 +11,6 @@ import {
 import React, {type Node} from 'react'
 
 import * as utils from '../editor'
-import {isValidSelectionKey} from '../editor'
 
 describe('editor utils', () => {
     describe('toHTML', () => {
@@ -301,22 +300,22 @@ describe('editor utils', () => {
         const editorState2 = EditorState.createWithContent(ContentState.createFromText('bar'))
 
         it('should return true for selection from the same editorState', () => {
-            expect(isValidSelectionKey(editorState1, editorState1.getSelection())).toBe(true)
+            expect(utils.isValidSelectionKey(editorState1, editorState1.getSelection())).toBe(true)
         })
 
         it('should return false for selection from some other editorState', () => {
-            expect(isValidSelectionKey(editorState1, editorState2.getSelection())).toBe(false)
+            expect(utils.isValidSelectionKey(editorState1, editorState2.getSelection())).toBe(false)
         })
 
         it('should return false if anchor key is valid but focus key is not', () => {
             const selection = editorState1.getSelection().set('focusKey', 'blabla')
-            expect(isValidSelectionKey(editorState1, selection)).toBe(false)
+            expect(utils.isValidSelectionKey(editorState1, selection)).toBe(false)
         })
 
         it('should return false for selection not updated after pushing new state', () => {
             const contentState = ContentState.createFromText('baz')
             const newEditorState = EditorState.push(editorState1, contentState)
-            expect(isValidSelectionKey(newEditorState, editorState1.getSelection())).toBe(false)
+            expect(utils.isValidSelectionKey(newEditorState, editorState1.getSelection())).toBe(false)
         })
     })
 

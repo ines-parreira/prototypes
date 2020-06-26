@@ -141,6 +141,7 @@ export default class Avatar extends React.Component<Props, State> {
                 {
                     this.state.imageUrl &&
                     <img
+                        alt="avatar"
                         src={this.state.imageUrl}
                         className={css.gravatar}
                     />

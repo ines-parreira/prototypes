@@ -152,7 +152,10 @@ export class FileField extends InputField<Props, State> {
                 {
                     !noPreview && previewUrl && (
                         <div className={css.preview}>
-                            <img src={previewUrl} />
+                            <img
+                                alt="file preview"
+                                src={previewUrl}
+                            />
                         </div>
                     )
                 }

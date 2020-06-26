@@ -22,6 +22,8 @@ export default class InfobarLayout extends React.Component {
         className: PropTypes.string,
     }
 
+    containerRef: ?HTMLDivElement
+
     constructor(props) {
         super(props)
 
@@ -57,7 +59,7 @@ export default class InfobarLayout extends React.Component {
         }
 
         this.cursorX = e.clientX
-        const computedStyle = window.getComputedStyle(this.refs.container)
+        const computedStyle = window.getComputedStyle(this.containerRef)
 
         this.originalWidth = parseInt(computedStyle.getPropertyValue('width'), 10)
 
@@ -98,7 +100,7 @@ export default class InfobarLayout extends React.Component {
                 className={classnames(css.component, 'infobar infobar-panel d-print-none', {
                     'hidden-panel': !this.props.isOpenedPanel,
                 }, this.props.className)}
-                ref="container"
+                ref={(ref) => this.containerRef = ref}
                 style={style}
             >
                 <div className="infobar-drag-handle" />

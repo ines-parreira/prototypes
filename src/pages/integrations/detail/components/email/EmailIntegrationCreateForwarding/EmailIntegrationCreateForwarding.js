@@ -149,7 +149,10 @@ export class EmailIntegrationCreateForwarding extends React.Component<Props, Sta
                                     target="_blank"
                                     className={css.forwardingCard}
                                 >
-                                    <img src={config.img} />
+                                    <img
+                                        alt={`${config.title} logo`}
+                                        src={config.img}
+                                    />
                                     <div>{config.title}</div>
                                 </Button>
                             ))

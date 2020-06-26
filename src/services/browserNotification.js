@@ -17,11 +17,7 @@ type NotificationType = {
 }
 
 class BrowserNotification {
-    newMessage = _throttle((notif: NotificationType) => {
-        if (!notif) {
-            notif = {}
-        }
-
+    newMessage = _throttle((notif: NotificationType = {}) => {
         if (!_isString(notif.title) || !notif.title) {
             notif.title = 'Gorgias'
         }

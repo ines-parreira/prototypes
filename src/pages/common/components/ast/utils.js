@@ -51,14 +51,14 @@ export const getSyntaxTreeLeaves = (syntaxTree) => {
 }
 
 export const updateCodeAst = (schemas, ast, path, value, operation) => {
-    ast = toImmutable(ast)
-    path = toImmutable(path)
+    const immutableAst = toImmutable(ast)
+    const immutablePath = toImmutable(path)
 
     let newAst
 
     if (operation === 'UPDATE') {
         // First set the value directly based on the full path
-        newAst = ast.setIn(path.toJS(), value)
+        newAst = immutableAst.setIn(immutablePath.toJS(), value)
 
         /* When we do an update for a node, the possible choices after that
          * node will be generated with a default value
@@ -68,21 +68,21 @@ export const updateCodeAst = (schemas, ast, path, value, operation) => {
          */
 
         // Do the updates only in the IfStatement.test
-        if (path.contains('test')) {
+        if (immutablePath.contains('test')) {
             // generate a new CallExpression based on changes and schemas
             newAst = updateCallExpression(
                 newAst,
-                path,
+                immutablePath,
                 schemas
             )
         } else {
             // Update the arguments for actions when action name is updated
-            const argumentsIndex = path.lastIndexOf('arguments')
-            const index2 = path.lastIndexOf(0)
+            const argumentsIndex = immutablePath.lastIndexOf('arguments')
+            const index2 = immutablePath.lastIndexOf(0)
 
             // We check if this update, edit the first argument of a CallExpression
             if (~argumentsIndex && ~index2 && (index2 - argumentsIndex) === 1) {
-                const pathParentCallExpression = path.setSize(argumentsIndex)
+                const pathParentCallExpression = immutablePath.setSize(argumentsIndex)
                 const calleeName = newAst.getIn(pathParentCallExpression.push('callee', 'name'))
 
                 if (calleeName === 'Action') {
@@ -98,7 +98,7 @@ export const updateCodeAst = (schemas, ast, path, value, operation) => {
     }
 
     if (operation === 'INSERT') {
-        const valueP = ast.getIn(path.toJS())
+        const valueP = immutableAst.getIn(immutablePath.toJS())
 
         /*
          * In the case of pathNew = ["code_ast", "body", 0, "alternate", "body"]
@@ -117,14 +117,14 @@ export const updateCodeAst = (schemas, ast, path, value, operation) => {
          *     }
          */
 
-        if ((valueP === undefined) && (path.get(path.size - 2) === 'alternate')) {
-            const pathElse = path.pop()
-            newAst = ast.setIn(pathElse.toJS(), fromJS({
+        if ((valueP === undefined) && (immutablePath.get(immutablePath.size - 2) === 'alternate')) {
+            const pathElse = immutablePath.pop()
+            newAst = immutableAst.setIn(pathElse.toJS(), fromJS({
                 type: 'BlockStatement',
                 body: [value],
             }))
         } else {
-            newAst = ast.updateIn(path.toJS(), (list) => {
+            newAst = immutableAst.updateIn(immutablePath.toJS(), (list) => {
                 // add action at the beginning of the body (more readable for users)
                 if (value.type === 'ExpressionStatement') {
                     return list.unshift(value)
@@ -136,16 +136,16 @@ export const updateCodeAst = (schemas, ast, path, value, operation) => {
         }
     }
     if (operation === 'DELETE') {
-        const lastIndex = path.last()
-        const pathNew = path.pop()
-        newAst = ast.updateIn(pathNew.toJS(), (list) => list.delete(lastIndex))
+        const lastIndex = immutablePath.last()
+        const pathNew = immutablePath.pop()
+        newAst = immutableAst.updateIn(pathNew.toJS(), (list) => list.delete(lastIndex))
     }
 
     // Add logical AND operation in TEST block of IFSTATEMENT.
     if (operation === 'UPDATE_LOGICAL_OPERATOR') {
-        const test = ast.getIn(path.toJS())
+        const test = immutableAst.getIn(immutablePath.toJS())
         value.left = test.toJS()
-        newAst = ast.setIn(path.toJS(), value)
+        newAst = immutableAst.setIn(immutablePath.toJS(), value)
     }
 
     /*
@@ -158,22 +158,22 @@ export const updateCodeAst = (schemas, ast, path, value, operation) => {
      */
 
     if (operation === 'DELETE_BINARY_EXPRESSION') {
-        const lastIndex = path.last()
-        const pathNew = path.pop()
+        const lastIndex = immutablePath.last()
+        const pathNew = immutablePath.pop()
 
         if (lastIndex === 'left') {
-            const right = ast.getIn(pathNew.push('right').toJS())
-            newAst = ast.setIn(pathNew.toJS(), right)
+            const right = immutableAst.getIn(pathNew.push('right').toJS())
+            newAst = immutableAst.setIn(pathNew.toJS(), right)
         } else if (lastIndex === 'right') {
-            const left = ast.getIn(pathNew.push('left').toJS())
-            newAst = ast.setIn(pathNew.toJS(), left)
+            const left = immutableAst.getIn(pathNew.push('left').toJS())
+            newAst = immutableAst.setIn(pathNew.toJS(), left)
         } else {
             newAst = getAST('')
         }
     }
 
     if (operation === 'UPDATE_IF_STATEMENT') {
-        newAst = ast.setIn(path, fromJS(Object.assign({}, ...ast.getIn(path).toJS(), value)))
+        newAst = immutableAst.setIn(immutablePath, fromJS(Object.assign({}, ...immutableAst.getIn(immutablePath).toJS(), value)))
     }
 
     // fallback if new ast is null/undefined

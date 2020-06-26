@@ -127,6 +127,7 @@ class FacebookIntegrationCustomerChat extends React.Component<Props, State> {
                             <div className={css.preview}>
                                 <div className={css.titlebar}/>
                                 <img
+                                    alt="facebook messenger logo"
                                     className={css.image}
                                     src={`${window.GORGIAS_ASSETS_URL || ''}/static/private/img/presentationals/messenger-preview.png`}
                                 />

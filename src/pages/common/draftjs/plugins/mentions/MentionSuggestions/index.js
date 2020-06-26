@@ -294,6 +294,7 @@ export default class MentionSuggestions extends Component<Props, State> {
     }
 
     onMentionFocus = (index: number) => {
+        // eslint-disable-next-line react/no-direct-mutation-state
         this.state.focusedOptionIndex = index
 
         // to force a re-render of the outer component to change the aria props

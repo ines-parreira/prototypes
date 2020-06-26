@@ -160,6 +160,7 @@ class Preview extends React.Component {
                             key={`integration-action-${idx}`}
                         >
                             <img
+                                alt={`${integrationType} logo`}
                                 src={getIconFromType(integrationType)}
                                 role="presentation"
                                 className={css.logo}

@@ -1,5 +1,5 @@
 // @flow
-import React, {Component, type Node} from 'react'
+import React, {Component, type Element, type Node} from 'react'
 import DateRangePicker from 'react-bootstrap-daterangepicker'
 import _pick from 'lodash/pick'
 
@@ -27,6 +27,8 @@ export default class DatePicker extends Component<Props> {
         showCustomRangeLabel: false
     }
 
+    datePickerRef: ?Element<typeof DateRangePicker>
+
     componentWillReceiveProps(nextProps: Props) {
         if (!this.props.isOpen && nextProps.isOpen) {
             this._show()
@@ -40,7 +42,7 @@ export default class DatePicker extends Component<Props> {
     }
 
     _show = () => {
-        if (!this.refs.datepicker) {
+        if (!this.datePickerRef) {
             return
         }
 
@@ -57,7 +59,8 @@ export default class DatePicker extends Component<Props> {
         // there are no API/attributes that enable us
         // to show and hide the date picker component,
         // so we simulate a click on it to open it
-        this.refs.datepicker.$picker.click()
+        // $FlowFixMe
+        this.datePickerRef.$picker.click()
     }
 
     _onEvent = (event: Object) => {
@@ -76,7 +79,7 @@ export default class DatePicker extends Component<Props> {
         const dateRangePickerProps = _pick(this.props, Object.keys(DateRangePicker.propTypes))
         return (
             <DateRangePicker
-                ref="datepicker"
+                ref={(ref) => this.datePickerRef = ref}
                 onEvent={this._onEvent}
                 {...dateRangePickerProps}
             >

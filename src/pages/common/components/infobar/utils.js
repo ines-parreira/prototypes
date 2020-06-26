@@ -297,13 +297,13 @@ export function jsonToWidget(value, key = '', isChildOfList = false) {
         // if object (and not an array, since Array is an Object in JS)
         if (isObject(value)) {
             // remove private keys from source
-            value = _omitBy(value, (v, k) => k.startsWith('_'))
+            const filteredValue = _omitBy(value, (v, k) => k.startsWith('_'))
 
             let enhancedValues = {}
 
             // order keys in alphabetical order
-            _sortBy(Object.keys(value), _toLower).forEach((v) => {
-                enhancedValues[v] = value[v]
+            _sortBy(Object.keys(filteredValue), _toLower).forEach((v) => {
+                enhancedValues[v] = filteredValue[v]
             })
 
             // order keys by simple fields, then objects and finally arrays

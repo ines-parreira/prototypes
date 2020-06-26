@@ -116,7 +116,6 @@ export class Infobar extends React.Component<Props, State> {
         }
 
         // if customer changed then try to find a suggestion of other customer to merge with it
-        // $FlowFixMe
         if (!this.props.customer.equals(nextProps.customer)) {
             this._updateSimilarCustomer(nextProps)
         }
@@ -133,15 +132,14 @@ export class Infobar extends React.Component<Props, State> {
             if (!suggestion) {
                 return
             }
+            const suggestionImmutable = fromJS(suggestion)
 
-            suggestion = fromJS(suggestion)
-
-            if (suggestion.isEmpty()) {
+            if (suggestionImmutable.isEmpty()) {
                 return
             }
 
             this.setState({
-                suggestedCustomer: suggestion,
+                suggestedCustomer: suggestionImmutable,
             })
         })
     }

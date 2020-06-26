@@ -157,6 +157,7 @@ class RechargeIntegrationDetail extends React.Component<Props, State> {
                                                             color="secondary"
                                                         >
                                                             <img
+                                                                alt="shopify logo"
                                                                 className="shopifyLogo"
                                                                 src={integrationHelpers.getIconFromType('shopify')}
                                                             />

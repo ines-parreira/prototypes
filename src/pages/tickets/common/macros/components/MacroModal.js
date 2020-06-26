@@ -214,10 +214,10 @@ export default class MacroModal extends React.Component<Props, State> {
 
     _setActions = (actions: Map<*, *>) => {
         // filter actions that exist in configuration
-        actions = actions.filter((action) => DEFAULT_ACTIONS.includes(action.get('name')))
+        const filteredActions = actions.filter((action) => DEFAULT_ACTIONS.includes(action.get('name')))
 
         // keep only one action by type
-        actions = fromJS(_uniqWith(actions.toJS(), (first, second) => {
+        const uniqActions = fromJS(_uniqWith(filteredActions.toJS(), (first, second) => {
             if (this.multipleActionsNames.includes(first.name)) {
                 return false
             }
@@ -225,7 +225,7 @@ export default class MacroModal extends React.Component<Props, State> {
             return first.name === second.name
         }))
 
-        this.setState({actions})
+        this.setState({actions: uniqActions})
     }
 
     _setName = (name: string) => {

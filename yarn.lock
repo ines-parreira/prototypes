@@ -1274,6 +1274,11 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
+"@gorgias/javascript-shared-config@0.0.1":
+  version "0.0.1"
+  resolved "https://npm.pkg.github.com/download/@gorgias/javascript-shared-config/0.0.1/e0da36e83be46a03307cf010795fb21a8e80764727fb7bdd22f5c0fc5f98f5fc#93c03db3a9b7a42420d4d2f1254f2884d4097bba"
+  integrity sha512-sjI/S3gTC62ekAz11zddgLAk6EQ7SfNyPGLFeiwiRsycHXZSvEP5ahKzmxLVfG2WPHNj7icCio2a3RXMghNVeA==
+
 "@hot-loader/react-dom@16.13.0":
   version "16.13.0"
   resolved "https://registry.yarnpkg.com/@hot-loader/react-dom/-/react-dom-16.13.0.tgz#de245b42358110baf80aaf47a0592153d4047997"
@@ -4207,10 +4212,10 @@ eslint-plugin-jsx-a11y@6.2.1:
     has "^1.0.3"
     jsx-ast-utils "^2.0.1"
 
-eslint-plugin-react-hooks@1.6.0:
-  version "1.6.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-1.6.0.tgz#348efcda8fb426399ac7b8609607c7b4025a6f5f"
-  integrity sha512-lHBVRIaz5ibnIgNG07JNiAuBUeKhEf8l4etNx5vfAEwqQ5tcuK3jV9yjmopPgQDagQb7HwIuQVsE3IVcGrRnag==
+eslint-plugin-react-hooks@4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react-hooks/-/eslint-plugin-react-hooks-4.0.2.tgz#03700ca761eacc1b6436074c456f90a8e331ff28"
+  integrity sha512-kAMRjNztrLW1rK+81X1NwMB2LqG+nc7Q8AibnG8/VyWhQK8SP6JotCFG+HL4u1EjziplxVz4jARdR8gGk8pLDA==
 
 eslint-plugin-react@7.12.4:
   version "7.12.4"

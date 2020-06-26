@@ -155,7 +155,7 @@ export class TicketReplyEditor extends React.Component<Props, State> {
         return true
     }
 
-    _handleFiles = (files: filesType, validationRegex:? validationRegexType = null) => {
+    _handleFiles = (files: filesType, validationRegex: ?validationRegexType = null) => {
         const {newMessageType} = this.props
         if (!this._canAddAttachments(files)) {
             return

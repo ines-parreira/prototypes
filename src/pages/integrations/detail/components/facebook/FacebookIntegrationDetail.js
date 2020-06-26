@@ -85,7 +85,6 @@ export default class FacebookIntegrationDetail extends React.Component<Props, St
     }
 
     componentWillReceiveProps(nextProps: Props) {
-        // $FlowFixMe
         if (!nextProps.integration.isEmpty() && !nextProps.integration.equals(this.props.integration)) {
             this._updateState(nextProps.integration)
         }
@@ -203,6 +202,7 @@ export default class FacebookIntegrationDetail extends React.Component<Props, St
                 >
                     <div className="d-flex align-items-center mb-3">
                         <img
+                            alt="facebook logo"
                             className="image rounded mr-3"
                             width="30"
                             src={integrationFacebook.getIn(['picture', 'data', 'url'], pageIconDefault)}

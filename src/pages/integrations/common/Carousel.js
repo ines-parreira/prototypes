@@ -44,6 +44,7 @@ export default class Carousel extends React.Component {
                                     rel="noopener noreferrer"
                                 >
                                     <img
+                                        alt="carousel content"
                                         src={url}
                                         onClick={(e) => {
                                             if (!onImageClick) {

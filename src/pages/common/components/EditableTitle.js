@@ -35,14 +35,18 @@ export default class EditableTitle extends React.Component {
     }
 
     _select = () => {
-        if (this.refs.title && this.refs.title.select) {
-            this.refs.title.select()
+        // eslint-disable-next-line react/no-string-refs
+        const titleRef = this.refs.title
+        if (titleRef && titleRef.select) {
+            titleRef.select()
         }
     }
 
     _blur = () => {
-        if (this.refs.title && this.refs.title.blur) {
-            this.refs.title.blur()
+        // eslint-disable-next-line react/no-string-refs
+        const titleRef = this.refs.title
+        if (titleRef && titleRef.blur) {
+            titleRef.blur()
         }
     }
 

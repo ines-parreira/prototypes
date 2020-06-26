@@ -61,6 +61,7 @@ export const isTabActive = () => activeTab
  */
 export const devLog = (...args: Array<any>) => {
     if (window.DEVELOPMENT || window.STAGING) {
+        // eslint-disable-next-line no-console
         console.log(...args)
     }
 }
@@ -195,12 +196,9 @@ export function getLastMessage(messages: Array<messageType>, options: any = null
     if (!messages || !messages.length) {
         return
     }
-    if (options) {
-        messages = _filter(messages, options) || []
-    }
 
     // most recent message sorted to first element of array
-    return messages.sort((a, b) => compare(b.created_datetime, a.created_datetime))[0]
+    return _filter(messages, options).sort((a, b) => compare(b.created_datetime, a.created_datetime))[0]
 }
 
 export function resolvePropertyName(name: string = ''): string {
@@ -307,7 +305,6 @@ export function resolveLiteral(value: {} | string, path: string): string {
 
 export function compactInteger(input: number, digits: number = 0): string {
     if (!_isNumber(input)) {
-        // $FlowFixMe
         return input
     }
 
@@ -507,9 +504,8 @@ export const toJS = (object: {} | Iterable<*, *> | void): any => isImmutable(obj
  * @returns {*|string|string|string}
  */
 export const fieldPath = (field: {} | Iterable<*, *> = {}): string => {
-    field = toJS(field)
-    // $FlowFixMe
-    return field.path || field.name
+    const formattedField = toJS(field)
+    return formattedField.path || formattedField.name
 }
 
 /**
@@ -657,9 +653,9 @@ export const uploadFiles = (files: FileList | Array<attachmentType>, params: ?Ob
 export const stripErrorMessage = (text: string): string => {
     // Match all tags like [SHOPIFY] [full-refund] [STUFF-FOO-bar]
     const regex = /\[[\w-]+]/g
-    text = text.replace(regex, '')
-    text = _trim(text, '. ')
-    return text
+    let result = text.replace(regex, '')
+    result = _trim(result, '. ')
+    return result
 }
 
 /**
@@ -891,8 +887,7 @@ export const openChat = (e: Event) => {
     }
 }
 
-export const transformSystemMessagesToNotifications = (systemMessages: Array<systemMessage>):
-    Array<notificationType> => {
+export const transformSystemMessagesToNotifications = (systemMessages: Array<systemMessage>): Array<notificationType> => {
     return systemMessages.map((systemMessage) => ({
         status: AUTHORIZED_NOTIFICATION_TYPES.indexOf(systemMessage[0]) > -1 ? systemMessage[0] : 'info',
         message: systemMessage[1],

@@ -41,6 +41,7 @@ export class APIViewComponent extends React.Component<Props, State> {
                 (p[t] || (p[t] = [])).push(arguments)
             })
             !o.getElementById(s + t) && o.getElementsByTagName('head')[0].appendChild((
+                // eslint-disable-next-line no-param-reassign
                 (n = o.createElement('script')),
                 (n.id = s + t), (n.async = 1), (n.src = m), n
             ))

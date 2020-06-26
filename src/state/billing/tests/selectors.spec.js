@@ -6,7 +6,6 @@ import {initialState} from '../reducers'
 import {initialState as initialCurrentAccountState} from '../../currentAccount/reducers'
 
 import * as billingFixtures from '../../../fixtures/billing'
-import {currentPlanId} from '../selectors'
 
 jest.addMatchers(immutableMatchers)
 
@@ -39,9 +38,9 @@ describe('billing selectors', () => {
         expect(state.billing.get('plans').size).toBe(plans.size)
 
         plans.forEach((plan) => {
-            plan = plan.toJS()
-            expect(plan).toHaveProperty('amount')
-            expect(plan).toHaveProperty('currencySign')
+            const planJS = plan.toJS()
+            expect(planJS).toHaveProperty('amount')
+            expect(planJS).toHaveProperty('currencySign')
         })
     })
 
@@ -103,7 +102,7 @@ describe('billing selectors', () => {
     describe('currentPlanId()', () => {
         it('should return plan of the current subscription', () => {
             const state = {}
-            expect(currentPlanId(state)).toEqual(undefined)
+            expect(selectors.currentPlanId(state)).toEqual(undefined)
         })
 
         it('should return plan of the current subscription', () => {
@@ -111,7 +110,7 @@ describe('billing selectors', () => {
                 currentAccount: fromJS({current_subscription: {plan: 'subscription-plan-123'}}),
                 billing: fromJS({futureSubscriptionPlan: 'future-plan-123'})
             }
-            expect(currentPlanId(state)).toEqual('subscription-plan-123')
+            expect(selectors.currentPlanId(state)).toEqual('subscription-plan-123')
         })
 
         it('should return the future subscription plan', () => {
@@ -119,7 +118,7 @@ describe('billing selectors', () => {
                 currentAccount: fromJS({current_subscription: null}),
                 billing: fromJS({futureSubscriptionPlan: 'future-plan-123'})
             }
-            expect(currentPlanId(state)).toEqual('future-plan-123')
+            expect(selectors.currentPlanId(state)).toEqual('future-plan-123')
         })
     })
 })

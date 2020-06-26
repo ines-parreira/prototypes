@@ -526,17 +526,15 @@ export const _goToNextOrPrevTicket = (ticketId: number, direction: string, promi
             dispatch({
                 type: types.FETCH_TICKET_START,
             })
-
-            // create a simple Promise resolved to go to the ticket as soon as it's fetched
-            promise = Promise.resolve()
         }
+        let returnedPromise: Promise<?dispatchType> = promise || Promise.resolve()
 
         const viewId = viewsSelectors.getActiveView(getState()).get('id')
         const viewCursor = ticketsSelectors.getCursor(getState())
         const url = `/api/views/${viewId}/tickets/${ticketId}/${direction}`
 
         if (!viewId) {
-            return promise.then(() => {
+            return returnedPromise.then(() => {
                 // there is no active view so we go to the first view
                 browserHistory.push('/app')
             })
@@ -546,7 +544,7 @@ export const _goToNextOrPrevTicket = (ticketId: number, direction: string, promi
             .then((json = {}) => json.data)
             .then((ticket) => {
                 // wait for the promise to be resolved to go to the ticket
-                return ((promise: any): Promise<?dispatchType>).then(() => {
+                return ((returnedPromise: any): Promise<?dispatchType>).then(() => {
                     if (!ticket) {
                         // there is no other ticket the user can handle so we go back to the view
                         browserHistory.push(`/app/tickets/${viewId}`)

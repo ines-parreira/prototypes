@@ -39,6 +39,7 @@ export default class Video extends React.Component<Props, State> {
                 >
                     <div className={css.screenshot}>
                         <img
+                            alt="video preview"
                             src={`https://img.youtube.com/vi/${videoId}/${previewIndex}.jpg`}
                         />
                         <i className={classnames('material-icons', css.playIcon)}>

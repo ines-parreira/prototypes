@@ -4,15 +4,13 @@ import {fromJS} from 'immutable'
 import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 
-import {EMAIL_CHANNEL} from '../../../../config/ticket'
-
 import {
     AIRCALL_INTEGRATION_TYPE,
     EMAIL_INTEGRATION_TYPE,
     FACEBOOK_INTEGRATION_TYPE,
     GMAIL_INTEGRATION_TYPE
 } from '../../../../constants/integration'
-import {OPEN_STATUS} from '../../../../config/ticket'
+import {EMAIL_CHANNEL, OPEN_STATUS} from '../../../../config/ticket'
 import * as labels from '../labels'
 
 /* DatetimeLabel uses Math.random.

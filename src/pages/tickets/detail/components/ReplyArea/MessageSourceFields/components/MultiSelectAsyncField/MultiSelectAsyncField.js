@@ -33,6 +33,8 @@ class MultiSelectAsyncField extends React.Component {
         required: false,
     }
 
+    inputRef: ?HTMLInputElement
+
     state = {
         inputValue: '',
         options: [], // displayed options when typing by async loading
@@ -78,7 +80,7 @@ class MultiSelectAsyncField extends React.Component {
     }
 
     focusInput = () => {
-        const input = ReactDOM.findDOMNode(this.refs.input)
+        const input = ReactDOM.findDOMNode(this.inputRef)
 
         if (input) {
             input.focus()
@@ -171,9 +173,10 @@ class MultiSelectAsyncField extends React.Component {
         if (!values) {
             return
         }
+        let formattedValues = values
 
-        if (!_isArray(values)) {
-            values = [values]
+        if (!_isArray(formattedValues)) {
+            formattedValues = [formattedValues]
         }
 
         const {allowCreate, allowCreateConstraint} = this.props
@@ -187,18 +190,18 @@ class MultiSelectAsyncField extends React.Component {
 
         // if there is a creation constraint, apply
         if (allowCreateConstraint) {
-            values = values.filter((value) => {
+            formattedValues = formattedValues.filter((value) => {
                 const item = this._itemFromInput(value)
                 return allowCreateConstraint(item.value)
             })
 
             // don't do anything if there is nothing to create
-            if (values.length === 0) {
+            if (formattedValues.length === 0) {
                 return
             }
         }
 
-        this._createItems(values)
+        this._createItems(formattedValues)
     }
 
     /**
@@ -419,7 +422,7 @@ class MultiSelectAsyncField extends React.Component {
                     }
                     <input
                         type="text"
-                        ref="input"
+                        ref={(ref) => this.inputRef = ref}
                         className={css.input}
                         value={this.state.inputValue}
                         onChange={this._onInputChange}

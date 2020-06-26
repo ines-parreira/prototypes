@@ -55,6 +55,7 @@ export class TicketMacros extends React.Component<Props, State> {
         macros: fromJS([]),
         searchQuery: '',
     }
+    previewContainerRef: ?HTMLDivElement
 
     constructor() {
         super()
@@ -71,7 +72,7 @@ export class TicketMacros extends React.Component<Props, State> {
     componentDidUpdate(prevProps: Props) {
         // brings the preview to top when previewing another macro
         if (this.props.currentMacro.get('id') !== prevProps.currentMacro.get('id')) {
-            const element: ?Node = ReactDOM.findDOMNode(this.refs.previewContainer)
+            const element: ?Node = ReactDOM.findDOMNode(this.previewContainerRef)
 
             if (element) {
                 // $FlowFixMe
@@ -167,7 +168,7 @@ export class TicketMacros extends React.Component<Props, State> {
                     />
                     <div
                         className={css.previewContainer}
-                        ref="previewContainer"
+                        ref={(ref) => this.previewContainerRef = ref}
                     >
                         <Dropdown
                             isOpen={this.state.macroDropdownOpen}

@@ -25,10 +25,10 @@ import {getProperty} from './selectors'
  * @returns {*}
  */
 export function getLastSameSourceTypeMessage(messages, sourceType) {
-    messages = ticketConfig
+    const msg = ticketConfig
         .orderedMessages(messages)
         .filter((m) => !isForwardedMessage(m))
-    const msg = messages.filter((m) => m.getIn(['source', 'type']) === sourceType).last()
+        .filter((m) => m.getIn(['source', 'type']) === sourceType).last()
 
     if (!msg && sourceType === 'facebook-comment') {
         return messages.filter((m) => m.getIn(['source', 'type']) === 'facebook-post').last()
@@ -42,15 +42,15 @@ export function getLastSameSourceTypeMessage(messages, sourceType) {
  * source type of the message we're responding to.
  */
 export function getSourceTypeOfResponse(messages) {
-    messages = toImmutable(messages)
-    const ticketId = messages.getIn([0, 'ticket_id'])
+    const immutableMessages = toImmutable(messages)
+    const ticketId = immutableMessages.getIn([0, 'ticket_id'])
     if (ticketId) {
         const cachedSourceType = responseUtils.getSourceTypeCache(ticketId)
         if (cachedSourceType) {
             return cachedSourceType
         }
     }
-    return ticketConfig.responseSourceType(messages)
+    return ticketConfig.responseSourceType(immutableMessages)
 }
 
 /**
@@ -58,24 +58,22 @@ export function getSourceTypeOfResponse(messages) {
  * Returns undefined for internal note as we dont have enough information to guess the channel.
  */
 export function getChannelFromSourceType(sourceType, messages) {
-    messages = toImmutable(messages)
-    return ticketConfig.sourceTypeToChannel(sourceType, messages)
+    return ticketConfig.sourceTypeToChannel(sourceType, toImmutable(messages))
 }
 
 export function isSupportAddress(addressToTest = '', supportAddresses = fromJS([])) {
     if (!addressToTest || !supportAddresses.size) {
         return false
     }
-
-    addressToTest = _toLower(addressToTest)
+    const formattedAddress = _toLower(addressToTest)
 
     for (const supportAddress of supportAddresses) {
         const splitSupportAddress = supportAddress.split('@')
 
         // ex: if support@acme.io is the support address, we search for it but also for support+something@acme.io
-        if (addressToTest === supportAddress ||
-            addressToTest.startsWith(`${splitSupportAddress[0]}+`) &&
-            addressToTest.endsWith(`@${splitSupportAddress[1]}`)) {
+        if (formattedAddress === supportAddress ||
+            formattedAddress.startsWith(`${splitSupportAddress[0]}+`) &&
+            formattedAddress.endsWith(`@${splitSupportAddress[1]}`)) {
             return true
         }
     }
@@ -219,12 +217,9 @@ export function buildPartialUpdateFromAction(actionNames, state) {
     if (!state) {
         return {}
     }
+    const formattedActionNames = !_isArray(actionNames) ? [actionNames] : actionNames
 
-    if (!_isArray(actionNames)) {
-        actionNames = [actionNames]
-    }
-
-    return actionNames
+    return formattedActionNames
         .map((actionName) => getActionTemplate(actionName))
         .filter((config) => !!config.partialUpdateKey)
         .reduce((result, config) => {

@@ -3458,6 +3458,7 @@ exports[`SatisfactionSurveyView render should render the upgrade to pro componen
                                     target="_blank"
                                   >
                                     <img
+                                      alt="carousel content"
                                       onClick={[Function]}
                                       src="/static/private/img/presentationals/satisfaction-survey-stats.png"
                                     />
@@ -3482,6 +3483,7 @@ exports[`SatisfactionSurveyView render should render the upgrade to pro componen
                                     target="_blank"
                                   >
                                     <img
+                                      alt="carousel content"
                                       onClick={[Function]}
                                       src="/static/private/img/presentationals/satisfaction-survey-ticket-details.png"
                                     />

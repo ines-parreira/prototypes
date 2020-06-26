@@ -680,6 +680,7 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
                       className="titlebar"
                     />
                     <img
+                      alt="facebook messenger logo"
                       className="image"
                       src="/static/private/img/presentationals/messenger-preview.png"
                     />

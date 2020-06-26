@@ -10,6 +10,7 @@ exports[`Video component should render with default videoPreviewIndex 1`] = `
       className="screenshot"
     >
       <img
+        alt="video preview"
         src="https://img.youtube.com/vi/8fDF546/0.jpg"
       />
       <i
@@ -56,6 +57,7 @@ exports[`Video component should render with passed videoPreviewIndex 1`] = `
       className="screenshot"
     >
       <img
+        alt="video preview"
         src="https://img.youtube.com/vi/8fDF546/2.jpg"
       />
       <i

@@ -22,22 +22,22 @@ export const getSettings = createSelector(
 )
 
 const _getSettingsByType = (views, settings, type) => {
-    (settings) = settings.find((setting) => setting.get('type') === type) || fromJS({type, data: {}})
+    let formattedSettings = settings.find((setting) => setting.get('type') === type) || fromJS({type, data: {}})
 
     // add vies and update settings according to views configuration
     views.forEach((view) => {
         const viewId = view.get('id')
-        const viewSetting = settings.getIn(['data', viewId.toString()], fromJS({}))
+        const viewSetting = formattedSettings.getIn(['data', viewId.toString()], fromJS({}))
 
         const hide = viewSetting.get('hide') || false
         const displayOrder = viewSetting.get('display_order', view.get('display_order', 0))
 
-        settings = settings
+        formattedSettings = formattedSettings
             .setIn(['data', viewId.toString(), 'hide'], hide)
             .setIn(['data', viewId.toString(), 'display_order'], displayOrder)
     })
 
-    return settings
+    return formattedSettings
 }
 
 export const makeGetSettingsByType = () => createImmutableSelector(

@@ -152,6 +152,7 @@ const completePrediction = (event: KeyboardEvent, plugin: PluginMethods, config:
     const editorState = plugin.getEditorState()
     sendFeedback(config.context, getPredictionText(predictionKey, editorState), editorState)
 
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const newEditorState = usePrediction(predictionKey, editorState)
     predictionKey = null
     plugin.setEditorState(newEditorState)

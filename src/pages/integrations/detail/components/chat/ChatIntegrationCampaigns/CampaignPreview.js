@@ -64,6 +64,7 @@ export default class CampaignPreview extends React.Component<Props> {
                     style={_bgColor(mainColor)}
                 >
                     <img
+                        alt="close icon"
                         className={css.icon}
                         src={`${window.GORGIAS_ASSETS_URL || ''}/static/private/img/icons/DefaultCloseIcon.svg`}
                     />
