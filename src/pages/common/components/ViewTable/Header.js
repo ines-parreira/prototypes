@@ -12,7 +12,9 @@ import {slugify} from '../../../../utils'
 import * as viewsActions from '../../../../state/views/actions'
 import * as viewsSelectors from '../../../../state/views/selectors'
 import * as viewsConfig from '../../../../config/views'
+import shortcutManager from '../../../../services/shortcutManager'
 import ViewName from '../ViewName'
+import Tooltip from '../Tooltip'
 
 import EmojiSelect from './EmojiSelect'
 import css from './Header.less'
@@ -44,6 +46,19 @@ class Header extends React.Component<Props, State> {
         askDeleteConfirmation: false,
     }
 
+    componentDidMount() {
+        shortcutManager.bind('Search', {
+            LEAVE_SEARCH: {
+                action: () => {
+                    const {isSearch} = this.props
+                    if (isSearch) {
+                        browserHistory.push(this._goBackUrl())
+                    }
+                }
+            }
+        })
+    }
+
     _goBackUrl = () => {
         const {config, lastViewId} = this.props
 
@@ -63,17 +78,12 @@ class Header extends React.Component<Props, State> {
     _search = (searchQuery: string) => {
         const {config} = this.props
 
-        if (searchQuery) {
-            // only if searchquery changed.
-            // Search triggers a change event on mount, because of forcedQuery,
-            // removing other querystrings from the url (eg. &page=1).
-            if (this._searchQuery() !== searchQuery) {
-                // add search to view and ask page of view (will return search result)
-                browserHistory.push(`/app/${config.get('routeList')}/search?q=${encodeURIComponent(searchQuery)}`)
-            }
-        } else {
-            // set the previous view back
-            browserHistory.push(this._goBackUrl())
+        // only if searchquery changed.
+        // Search triggers a change event on mount, because of forcedQuery,
+        // removing other querystrings from the url (eg. &page=1).
+        if (this._searchQuery() !== searchQuery) {
+            // add search to view and ask page of view (will return search result)
+            browserHistory.push(`/app/${config.get('routeList')}/search?q=${encodeURIComponent(searchQuery)}`)
         }
     }
 
@@ -102,6 +112,14 @@ class Header extends React.Component<Props, State> {
         }
     }
 
+    handleFocus = () => {
+        const {config} = this.props
+
+        if (!this._searchQuery()) {
+            browserHistory.push(`/app/${config.get('routeList')}/search?q=`)
+        }
+    }
+
     render() {
         const {
             activeView,
@@ -121,12 +139,19 @@ class Header extends React.Component<Props, State> {
                         {isSearch && (
                             <Link
                                 className="btn btn-secondary mr-2"
+                                id="go-back-link"
                                 to={this._goBackUrl()}
                             >
                                 <i className="material-icons mr-2">
                                     arrow_back
                                 </i>
                                 Back
+                                <Tooltip
+                                    placement="top"
+                                    target="go-back-link"
+                                >
+                                    <b>Esc</b> Leave search mode
+                                </Tooltip>
                             </Link>
                         )}
 
@@ -183,6 +208,7 @@ class Header extends React.Component<Props, State> {
                             location={`${(activeView.get('id'): any)}${!!isSearch ? '(s)' : ''}`}
                             forcedQuery={this._searchQuery()}
                             className="mr-2"
+                            onFocus={this.handleFocus}
                         />
 
                         {viewButtons}

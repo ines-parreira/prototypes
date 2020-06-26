@@ -114,7 +114,11 @@ export default {
             FOCUS_SEARCH: {
                 key: 's',
                 description: 'Focus the search field.'
-            }
+            },
+            LEAVE_SEARCH: {
+                key: 'esc',
+                description: 'Leave search mode',
+            },
         }
     },
     TicketDetailContainer: {
