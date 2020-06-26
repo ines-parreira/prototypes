@@ -22,7 +22,34 @@ exports[`Action render() should render a warning about potential page deactivati
       }
     }
   >
-    An extensive use of comments hiding may deactivate your page on Facebook!
+    An extensive use of automatic Facebook actions may deactivate your page on Facebook!
+  </span>
+</div>
+`;
+
+exports[`Action render() should render a warning about potential page deactivation in Facebook 2`] = `
+<div
+  className="Action d-flex align-items-baseline"
+  style={
+    Object {
+      "paddingLeft": "NaNpx",
+    }
+  }
+>
+  <ActionSelect
+    parent={2}
+    value="facebookLikeComment"
+  />
+  <span
+    className="alert-warning"
+    style={
+      Object {
+        "paddingLeft": "5px",
+        "paddingRight": "5px",
+      }
+    }
+  >
+    An extensive use of automatic Facebook actions may deactivate your page on Facebook!
   </span>
 </div>
 `;
@@ -37,7 +64,7 @@ exports[`Action render() should render an error saying an action cannot be empty
   }
 >
   <ActionSelect
-    parent={2}
+    parent={3}
     value=""
   />
   <Errors

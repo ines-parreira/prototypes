@@ -179,6 +179,10 @@ export const actionsConfig = {
     facebookHideComment: {
         compact: true,
         name: 'Hide Facebook comment',
+    },
+    facebookLikeComment: {
+        compact: true,
+        name: 'Like Facebook comment',
     }
 }
 
@@ -202,11 +206,11 @@ export default class Action extends React.Component<Props> {
             )
         }
 
-        if (value==='facebookHideComment') {
+        if (value==='facebookHideComment' || value==='facebookLikeComment') {
             return (
                 <span className="alert-warning"
                     style={{paddingLeft: '5px', paddingRight:'5px'}}>
-                    An extensive use of comments hiding may deactivate your page on Facebook!
+                    An extensive use of automatic Facebook actions may deactivate your page on Facebook!
                 </span>
             )
         }

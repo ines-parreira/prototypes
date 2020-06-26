@@ -6,6 +6,7 @@ import React from 'react'
 
 import schemasJSON from '../../../../../../fixtures/openapi.json'
 import Action, {validateEmailList, validateBody, validateSendEmail, validateTags} from '../Action'
+
 const schemas = fromJS(schemasJSON)
 
 describe('Action', () => {
@@ -104,9 +105,8 @@ describe('Action', () => {
             parent: [],
         }
 
-        it('should render a warning about potential page deactivation in Facebook', () => {
-            const props = Object.assign({}, minProps, {value:'facebookHideComment'})
-
+        it.each(['facebookHideComment', 'facebookLikeComment'])('should render a warning about potential page deactivation in Facebook', (actionValue) => {
+            const props = {...minProps, value: actionValue}
             const component = shallow(
                 <Action
                     {...props}
@@ -114,10 +114,11 @@ describe('Action', () => {
             )
 
             expect(component).toMatchSnapshot()
+
         })
 
         it('should render an error saying an action cannot be empty', () => {
-            const props = Object.assign({}, minProps, {value:''})
+            const props = Object.assign({}, minProps, {value: ''})
 
             const component = shallow(
                 <Action

@@ -125,6 +125,15 @@ exports[`ActionSelect component should render all actions for system rules 1`] =
     >
       Hide Facebook comment
     </DropdownItem>
+    <DropdownItem
+      key="12"
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Like Facebook comment
+    </DropdownItem>
   </DropdownMenu>
 </UncontrolledButtonDropdown>
 `;
@@ -244,6 +253,15 @@ exports[`ActionSelect component should render all non-system actions for non-sys
       type="button"
     >
       Hide Facebook comment
+    </DropdownItem>
+    <DropdownItem
+      key="12"
+      onClick={[Function]}
+      tag="button"
+      toggle={true}
+      type="button"
+    >
+      Like Facebook comment
     </DropdownItem>
   </DropdownMenu>
 </UncontrolledButtonDropdown>
