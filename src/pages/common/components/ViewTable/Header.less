@@ -29,4 +29,37 @@
   .titleWrapper {
     flex-grow: 1;
   }
+
+  .headerSearch.isSearching {
+    max-width: unset;
+
+    i {
+      font-size: 21px;
+      color: @indigo;
+    }
+    input {
+      border-width: 0;
+      color: @indigo;
+      font-size: 20px;
+      max-height: 34px;
+      padding-left: 2.2rem;
+
+      &:focus {
+        outline: 0;
+        box-shadow: unset;
+      }
+    }
+  }
+
+  .closeIcon {
+    cursor: pointer;
+    line-height: 34px;
+    font-size: 20px;
+    color: @neutral6;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: @indigo;
+    }
+  }
 }

@@ -170,7 +170,7 @@ exports[`ViewTable::Header default view displays 1`] = `
     >
       <Search
         bindKey={true}
-        className="mr-2"
+        className="headerSearch mr-2"
         disabled={false}
         forcedQuery=""
         location="7"
@@ -222,7 +222,7 @@ exports[`ViewTable::Header emoji picker .render() should not render emoji if dec
     >
       <Search
         bindKey={true}
-        className="mr-2"
+        className="headerSearch mr-2"
         disabled={false}
         forcedQuery=""
         location="7"
@@ -274,7 +274,7 @@ exports[`ViewTable::Header emoji picker .render() should not render emoji if dec
     >
       <Search
         bindKey={true}
-        className="mr-2"
+        className="headerSearch mr-2"
         disabled={false}
         forcedQuery=""
         location="7"
@@ -326,7 +326,7 @@ exports[`ViewTable::Header emoji picker .render() should render emoji if decorat
     >
       <Search
         bindKey={true}
-        className="mr-2"
+        className="headerSearch mr-2"
         disabled={false}
         forcedQuery=""
         location="7"
@@ -372,7 +372,7 @@ exports[`ViewTable::Header empty view 1`] = `
     >
       <Search
         bindKey={true}
-        className="mr-2"
+        className="headerSearch mr-2"
         disabled={false}
         forcedQuery=""
         location="undefined"
@@ -395,54 +395,11 @@ exports[`ViewTable::Header search view 1`] = `
     className="d-flex flex-grow"
   >
     <div
-      className="d-flex flex-grow mr-2 titleWrapper"
-    >
-      <Link
-        className="btn btn-secondary mr-2"
-        id="go-back-link"
-        onlyActiveOnIndex={false}
-        style={Object {}}
-        to="/app/tickets"
-      >
-        <i
-          className="material-icons mr-2"
-        >
-          arrow_back
-        </i>
-        Back
-        <Tooltip
-          delay={0}
-          placement="top"
-          target="go-back-link"
-        >
-          <b>
-            Esc
-          </b>
-           Leave search mode
-        </Tooltip>
-      </Link>
-      <div
-        className="titleWrapper"
-      >
-        <EditableTitle
-          className="title"
-          disabled={true}
-          forceEditMode={true}
-          placeholder="View name"
-          select={false}
-          size="xl"
-          style={Object {}}
-          title="New & Open Tickets"
-          update={[Function]}
-        />
-      </div>
-    </div>
-    <div
-      className="d-flex"
+      className="d-flex flex-grow"
     >
       <Search
         bindKey={true}
-        className="mr-2"
+        className="headerSearch mr-2 isSearching flex-grow"
         disabled={false}
         forcedQuery="term1"
         location="7(s)"
@@ -452,6 +409,28 @@ exports[`ViewTable::Header search view 1`] = `
         searchDebounceTime={400}
         style={Object {}}
       />
+      <Link
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/tickets"
+      >
+        <i
+          className="closeIcon material-icons d-none d-md-inline-block"
+          id="leave-search-mode"
+        >
+          close
+        </i>
+        <Tooltip
+          delay={0}
+          placement="top"
+          target="leave-search-mode"
+        >
+          <b>
+            Esc
+          </b>
+           Leave search mode
+        </Tooltip>
+      </Link>
     </div>
   </div>
 </div>

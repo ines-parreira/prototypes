@@ -269,7 +269,7 @@ exports[`<FilterTopbar/> render() should render correctly when creating a view (
     <p
       className="subtitle"
     >
-      VIEW CONFIGURATION
+      ADVANCED FILTERS
     </p>
     <Connect(ViewFilters)
       removeFieldFilter={[Function]}
@@ -476,7 +476,7 @@ exports[`<FilterTopbar/> render() should render correctly when updating a view (
     <p
       className="subtitle"
     >
-      VIEW CONFIGURATION
+      ADVANCED FILTERS
     </p>
     <Connect(ViewFilters)
       removeFieldFilter={[Function]}

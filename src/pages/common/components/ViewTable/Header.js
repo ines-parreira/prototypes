@@ -135,71 +135,58 @@ class Header extends React.Component<Props, State> {
         return (
             <div className={css.component}>
                 <div className="d-flex flex-grow">
-                    <div className={classnames('d-flex flex-grow mr-2', css.titleWrapper)}>
-                        {isSearch && (
-                            <Link
-                                className="btn btn-secondary mr-2"
-                                id="go-back-link"
-                                to={this._goBackUrl()}
-                            >
-                                <i className="material-icons mr-2">
-                                    arrow_back
-                                </i>
-                                Back
-                                <Tooltip
-                                    placement="top"
-                                    target="go-back-link"
-                                >
-                                    <b>Esc</b> Leave search mode
-                                </Tooltip>
-                            </Link>
-                        )}
-
-                        {(isEditMode || isSearch) ? (() => {
-                            const showEmojiPicker = !isSearch
-                            return (
-                                <div className={css.titleWrapper}>
-                                    {showEmojiPicker && (
-                                        <EmojiSelect
-                                            className={classnames(css.emojiPicker)}
-                                            emoji={typeof emoji === 'string' ? emoji : null}
-                                            onEmojiSelect={this._selectEmoji}
-                                            onEmojiClear={this._clearEmoji}
+                    {!isSearch &&
+                        <div className={classnames('d-flex flex-grow mr-2', css.titleWrapper)}>
+                            {isEditMode ? (() => {
+                                const showEmojiPicker = !isSearch
+                                return (
+                                    <div className={css.titleWrapper}>
+                                        {showEmojiPicker && (
+                                            <EmojiSelect
+                                                className={classnames(css.emojiPicker)}
+                                                emoji={typeof emoji === 'string' ? emoji : null}
+                                                onEmojiSelect={this._selectEmoji}
+                                                onEmojiClear={this._clearEmoji}
+                                            />
+                                        )}
+                                        <EditableTitle
+                                            className={classnames(css.title, {
+                                                [css.withEmojiPicker]: showEmojiPicker
+                                            })}
+                                            title={activeView.get('name', '')}
+                                            placeholder="View name"
+                                            disabled={isSearch}
+                                            select={!isUpdate}
+                                            update={(name) => {
+                                                if (name !== activeView.get('name')) {
+                                                    this._updateViewName(name)
+                                                }
+                                            }}
+                                            forceEditMode
                                         />
-                                    )}
-                                    <EditableTitle
-                                        className={classnames(css.title, {
-                                            [css.withEmojiPicker]: showEmojiPicker
-                                        })}
-                                        title={activeView.get('name', '')}
-                                        placeholder="View name"
-                                        disabled={isSearch}
-                                        select={!isUpdate}
-                                        update={(name) => {
-                                            if (name !== activeView.get('name')) {
-                                                this._updateViewName(name)
-                                            }
-                                        }}
-                                        forceEditMode
-                                    />
+                                    </div>
+                                )
+                            })() : (
+                                <div
+                                    id="settings-view-button"
+                                    className={classnames(css.title, 'mr-2 h-100 cursor-pointer')}
+                                    color="transparent"
+                                    onClick={() => this.props.setViewEditMode(activeView)}
+                                >
+                                    <ViewName view={activeView}/>
+                                    <i className="material-icons">
+                                        keyboard_arrow_down
+                                    </i>
                                 </div>
-                            )
-                        })() : (
-                            <div
-                                id="settings-view-button"
-                                className={classnames(css.title, 'mr-2 h-100 cursor-pointer')}
-                                color="transparent"
-                                onClick={() => this.props.setViewEditMode(activeView)}
-                            >
-                                <ViewName view={activeView}/>
-                                <i className="material-icons">
-                                    keyboard_arrow_down
-                                </i>
-                            </div>
-                        )}
-                    </div>
+                            )}
+                        </div>
+                    }
 
-                    <div className="d-flex">
+                    <div
+                        className={classnames('d-flex', {
+                            'flex-grow': isSearch,
+                        })}
+                    >
                         <Search
                             bindKey
                             onChange={this._search}
@@ -207,11 +194,30 @@ class Header extends React.Component<Props, State> {
                             searchDebounceTime={400}
                             location={`${(activeView.get('id'): any)}${!!isSearch ? '(s)' : ''}`}
                             forcedQuery={this._searchQuery()}
-                            className="mr-2"
+                            className={classnames(css.headerSearch, 'mr-2', {
+                                [css.isSearching]: isSearch,
+                                'flex-grow': isSearch,
+                            })}
                             onFocus={this.handleFocus}
                         />
 
-                        {viewButtons}
+                        {isSearch ?
+                            <Link to={this._goBackUrl()}>
+                                <i
+                                    className={classnames(css.closeIcon, 'material-icons d-none d-md-inline-block')}
+                                    id="leave-search-mode"
+                                >
+                                    close
+                                </i>
+                                <Tooltip
+                                    placement="top"
+                                    target="leave-search-mode"
+                                >
+                                    <b>Esc</b> Leave search mode
+                                </Tooltip>
+                            </Link>
+                            : viewButtons
+                        }
                     </div>
                 </div>
             </div>
