@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<DeactivatedViewMessage/> render() should render 1`] = `
+<div
+  class="d-flex h-100"
+>
+  <div
+    class="m-auto text-center"
+  >
+    <img
+      alt="Invalid filters"
+      src="test-file-stub"
+    />
+    <p
+      class="title"
+    >
+      Invalid filters
+    </p>
+    <p
+      class="text"
+    >
+      This view is deactivated because at least one of its filters is invalid.
+      <br />
+      Please review its filters, and either fix them or delete the view.
+    </p>
+  </div>
+</div>
+`;

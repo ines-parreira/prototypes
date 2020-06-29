@@ -1,6 +1,5 @@
 // @flow
 import React from 'react'
-import {Alert} from 'reactstrap'
 import {fromJS, List, Map} from 'immutable'
 import {connect} from 'react-redux'
 import {browserHistory, withRouter} from 'react-router'
@@ -16,7 +15,7 @@ import type {viewType} from '../../../../state/views/types'
 import Header from './Header'
 import Table from './Table'
 import FilterTopbar from './FilterTopbar'
-
+import DeactivatedViewMessage from './DeactivatedViewMessage'
 
 import css from './ViewTable.less'
 
@@ -185,17 +184,7 @@ export class ViewTableContainer extends React.Component<Props> {
             })
 
         if (activeView.get('deactivated_datetime')) {
-            return (
-                <div className="d-flex h-100">
-                    <Alert
-                        color="danger"
-                        className="d-inline-block m-auto"
-                    >
-                        This view is deactivated because at least one of its filters is invalid.<br/>
-                        Please review its filters, and either fix them or delete the view.
-                    </Alert>
-                </div>
-            )
+            return <DeactivatedViewMessage/>
         }
 
         return (

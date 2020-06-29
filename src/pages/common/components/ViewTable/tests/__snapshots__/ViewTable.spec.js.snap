@@ -990,41 +990,7 @@ exports[`ViewTable::ViewTable component render() should render a warning because
   <div
     className="table"
   >
-    <div
-      className="d-flex h-100"
-    >
-      <Alert
-        className="d-inline-block m-auto"
-        closeAriaLabel="Close"
-        color="danger"
-        isOpen={true}
-        tag="div"
-        transition={
-          Object {
-            "appear": true,
-            "baseClass": "fade",
-            "baseClassActive": "show",
-            "enter": true,
-            "exit": true,
-            "in": true,
-            "mountOnEnter": false,
-            "onEnter": [Function],
-            "onEntered": [Function],
-            "onEntering": [Function],
-            "onExit": [Function],
-            "onExited": [Function],
-            "onExiting": [Function],
-            "tag": "div",
-            "timeout": 150,
-            "unmountOnExit": true,
-          }
-        }
-      >
-        This view is deactivated because at least one of its filters is invalid.
-        <br />
-        Please review its filters, and either fix them or delete the view.
-      </Alert>
-    </div>
+    <DeactivatedViewMessage />
   </div>
 </div>
 `;
