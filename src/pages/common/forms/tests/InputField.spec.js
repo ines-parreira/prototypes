@@ -28,52 +28,28 @@ describe('InputField', () => {
     })
 
     it('should render a required text input', () => {
-        const component = shallow(
-            <InputField
-                {...minProps}
-                required
-            />
-        )
+        const component = shallow(<InputField {...minProps} required />)
         expect(component).toMatchSnapshot()
     })
 
     it('should render an inline text input', () => {
-        const component = shallow(
-            <InputField
-                {...minProps}
-                inline
-            />
-        )
+        const component = shallow(<InputField {...minProps} inline />)
         expect(component).toMatchSnapshot()
     })
 
     it('should render a help text', () => {
-        const component = shallow(
-            <InputField
-                {...minProps}
-                help="help text"
-            />
-        )
+        const component = shallow(<InputField {...minProps} help="help text" />)
         expect(component).toMatchSnapshot()
     })
 
     it('should render an inline required text input', () => {
-        const component = shallow(
-            <InputField
-                {...minProps}
-                required
-                inline
-            />
-        )
+        const component = shallow(<InputField {...minProps} required inline />)
         expect(component).toMatchSnapshot()
     })
 
     it('should render a text input with a right addon', () => {
         const component = shallow(
-            <InputField
-                {...minProps}
-                rightAddon="@rightaddon.io"
-            />
+            <InputField {...minProps} rightAddon="@rightaddon.io" />
         )
         expect(component).toMatchSnapshot()
     })
@@ -85,7 +61,9 @@ describe('InputField', () => {
             <InputField
                 {...minProps}
                 value={valueStorage}
-                onChange={(value) => {valueStorage = value}}
+                onChange={(value) => {
+                    valueStorage = value
+                }}
             />
         )
         expect(component).toMatchSnapshot()
@@ -116,21 +94,13 @@ describe('InputField', () => {
     })
 
     it('should render a hidden text input', () => {
-        const component = shallow(
-            <InputField
-                {...minProps}
-                hidden
-            />
-        )
+        const component = shallow(<InputField {...minProps} hidden />)
         expect(component).toMatchSnapshot()
     })
 
     it('should render the input with an error', () => {
         const component = shallow(
-            <InputField
-                {...minProps}
-                error="the value is wrong"
-            />
+            <InputField {...minProps} error="the value is wrong" />
         )
         expect(component).toMatchSnapshot()
     })
@@ -142,7 +112,9 @@ describe('InputField', () => {
             <InputField
                 {...minProps}
                 value={valueStorage}
-                onChange={(value) => {valueStorage = value}}
+                onChange={(value) => {
+                    valueStorage = value
+                }}
                 caseInsensitive
             />
         )

@@ -8,7 +8,7 @@ import type {State, Macro} from './types'
 
 export default function reducer(state: State = fromJS({}), action: actionType) {
     const {type, payload} = action
-    switch(type) {
+    switch (type) {
         case UPSERT_MACRO:
             return state.set(payload.get('id'), payload)
 

@@ -24,14 +24,16 @@ function ViewCount({view, getViewCount}: Props) {
         return (
             <>
                 <span id={id}>
-                    <i className={classnames('material-icons text-danger', css.deactivated)}>
+                    <i
+                        className={classnames(
+                            'material-icons text-danger',
+                            css.deactivated
+                        )}
+                    >
                         error
                     </i>
                 </span>
-                <UncontrolledTooltip
-                    placement="top"
-                    target={id}
-                >
+                <UncontrolledTooltip placement="top" target={id}>
                     This view is deactivated.
                 </UncontrolledTooltip>
             </>

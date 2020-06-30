@@ -6,22 +6,30 @@ import type {Map} from 'immutable'
 import {getActionTemplate} from '../../../../utils'
 import {getDefaultMacro} from '../../../../state/macro/utils'
 
-
-export const isMacroDisabled = (macro: Object, disableExternalActions?: boolean) => {
+export const isMacroDisabled = (
+    macro: Object,
+    disableExternalActions?: boolean
+) => {
     if (!disableExternalActions) {
         return false
     }
 
-    return macro
-        .get('actions', fromJS([]))
-        .some((action) => {
-            const actionTemplate = getActionTemplate(action.get('name'))
-            return actionTemplate && actionTemplate.execution === 'back'
-        })
+    return macro.get('actions', fromJS([])).some((action) => {
+        const actionTemplate = getActionTemplate(action.get('name'))
+        return actionTemplate && actionTemplate.execution === 'back'
+    })
 }
 
-export const getDefaultSelectedMacroId = (macros: Map<*,*>, selectedMacroId: ?number, isCreatingMacro?: boolean) => {
-    const currentMacro = getCurrentMacro(macros, selectedMacroId, isCreatingMacro)
+export const getDefaultSelectedMacroId = (
+    macros: Map<*, *>,
+    selectedMacroId: ?number,
+    isCreatingMacro?: boolean
+) => {
+    const currentMacro = getCurrentMacro(
+        macros,
+        selectedMacroId,
+        isCreatingMacro
+    )
     if (macros.isEmpty()) {
         return null
     }
@@ -32,9 +40,16 @@ export const getDefaultSelectedMacroId = (macros: Map<*,*>, selectedMacroId: ?nu
     return selectedMacroId
 }
 
-export const getCurrentMacro = (macros: Map<*,*>, selectedMacroId: ?number, isCreatingMacro?: boolean) => {
+export const getCurrentMacro = (
+    macros: Map<*, *>,
+    selectedMacroId: ?number,
+    isCreatingMacro?: boolean
+) => {
     if (isCreatingMacro) {
         return getDefaultMacro()
     }
-    return macros.find((macro) => macro.get('id') === selectedMacroId) || fromJS({})
+    return (
+        macros.find((macro) => macro.get('id') === selectedMacroId) ||
+        fromJS({})
+    )
 }

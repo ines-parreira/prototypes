@@ -49,11 +49,18 @@ type State = {
 }
 
 // filters we'll use to fetch from the API
-const filterStateProps = ['end_datetime', 'start_datetime', 'user_ids', 'event_types', 'object_types']
+const filterStateProps = [
+    'end_datetime',
+    'start_datetime',
+    'user_ids',
+    'event_types',
+    'object_types',
+]
 
 const _startOfToday = () => getMoment().startOf('day')
 const _endOfToday = () => getMoment().endOf('day')
-const _someDaysAgoStartOfDay = (days) => _startOfToday().subtract(days - 1, 'days')
+const _someDaysAgoStartOfDay = (days) =>
+    _startOfToday().subtract(days - 1, 'days')
 
 export class UserAuditList extends React.Component<Props, State> {
     state = {
@@ -69,16 +76,21 @@ export class UserAuditList extends React.Component<Props, State> {
 
     _fetchUsersAudit = (page: number = 1) => {
         this.setState({isFetching: true})
-        this.props.fetchUsersAudit({page, ..._pick(this.state, filterStateProps)}).then(() => {
-            this.setState({isFetching: false})
-        })
+        this.props
+            .fetchUsersAudit({page, ..._pick(this.state, filterStateProps)})
+            .then(() => {
+                this.setState({isFetching: false})
+            })
     }
 
     _onApplyDatePicker = (event: Object, picker: Object) => {
-        this.setState({
-            start_datetime: picker.startDate.format(),
-            end_datetime: picker.endDate.format(),
-        }, this._fetchUsersAudit)
+        this.setState(
+            {
+                start_datetime: picker.startDate.format(),
+                end_datetime: picker.endDate.format(),
+            },
+            this._fetchUsersAudit
+        )
     }
 
     _onFilterChange = (filterName: string, values: Array<string>) => {
@@ -96,11 +108,23 @@ export class UserAuditList extends React.Component<Props, State> {
     }
 
     render() {
-        const {events, eventsListMeta, userIdOptions, eventTypeOptions, objectTypeOptions, timezone} = this.props
-        const {isFetching, isDatePickerOpen, start_datetime, end_datetime} = this.state
+        const {
+            events,
+            eventsListMeta,
+            userIdOptions,
+            eventTypeOptions,
+            objectTypeOptions,
+            timezone,
+        } = this.props
+        const {
+            isFetching,
+            isDatePickerOpen,
+            start_datetime,
+            end_datetime,
+        } = this.state
 
         if (isFetching) {
-            return <Loader/>
+            return <Loader />
         }
 
         return (
@@ -145,22 +169,33 @@ export class UserAuditList extends React.Component<Props, State> {
                             endDate={moment(end_datetime)}
                             minDate={_someDaysAgoStartOfDay(7)}
                             ranges={{
-                                'Today': [_startOfToday(), _endOfToday()],
-                                'Last 3 days': [_someDaysAgoStartOfDay(3), _endOfToday()],
-                                'Last 7 days': [_someDaysAgoStartOfDay(7), _endOfToday()],
+                                Today: [_startOfToday(), _endOfToday()],
+                                'Last 3 days': [
+                                    _someDaysAgoStartOfDay(3),
+                                    _endOfToday(),
+                                ],
+                                'Last 7 days': [
+                                    _someDaysAgoStartOfDay(7),
+                                    _endOfToday(),
+                                ],
                             }}
                         >
-                            <Button
-                                type="button"
-                                disabled={false}
-                            >
+                            <Button type="button" disabled={false}>
                                 <i className="material-icons mr-2">
                                     calendar_today
                                 </i>
                                 <span>
-                                    {formatDatetime(start_datetime, timezone, DATETIME_LABEL_FORMAT)}
+                                    {formatDatetime(
+                                        start_datetime,
+                                        timezone,
+                                        DATETIME_LABEL_FORMAT
+                                    )}
                                     {' - '}
-                                    {formatDatetime(end_datetime, timezone, DATETIME_LABEL_FORMAT)}
+                                    {formatDatetime(
+                                        end_datetime,
+                                        timezone,
+                                        DATETIME_LABEL_FORMAT
+                                    )}
                                 </span>
                                 <i className="material-icons">
                                     arrow_drop_down
@@ -170,22 +205,22 @@ export class UserAuditList extends React.Component<Props, State> {
                     </div>
                 </PageHeader>
 
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <Container fluid className="page-container">
                     <div className="manage-requests-description">
                         <p>
-                            User audit logs display recent actions performed by users in
-                            Gorgias.
+                            User audit logs display recent actions performed by
+                            users in Gorgias.
                         </p>
                         <Alert color="info">
-                            This section is still under development, more details will be added to the list in the
-                            future. We'd love to hear your feedback!
+                            This section is still under development, more
+                            details will be added to the list in the future.
+                            We'd love to hear your feedback!
                         </Alert>
                     </div>
                     {events.isEmpty() ? (
-                        <div>There is no event recorded matching these filters.</div>
+                        <div>
+                            There is no event recorded matching these filters.
+                        </div>
                     ) : (
                         <div>
                             <Table>
@@ -198,12 +233,14 @@ export class UserAuditList extends React.Component<Props, State> {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {events.map((eventItem) => (
-                                        <UserAuditRow
-                                            key={eventItem.get('id')}
-                                            eventItem={eventItem}
-                                        />
-                                    )).toList()}
+                                    {events
+                                        .map((eventItem) => (
+                                            <UserAuditRow
+                                                key={eventItem.get('id')}
+                                                eventItem={eventItem}
+                                            />
+                                        ))
+                                        .toList()}
                                 </tbody>
                             </Table>
                             <Pagination
@@ -220,13 +257,16 @@ export class UserAuditList extends React.Component<Props, State> {
     }
 }
 
-export default connect((state) => ({
-    events: getUserAuditEvents(state),
-    eventsListMeta: getUserAuditPagination(state),
-    userIdOptions: getUserAuditUserIdOptions(state),
-    objectTypeOptions: getUserAuditObjectTypeOptions(state),
-    eventTypeOptions: getUserAuditEventTypeOptions(state),
-    timezone: currentUserSelectors.getTimezone(state)
-}), ({
-    fetchUsersAudit: fetchUsersAudit,
-}))(UserAuditList)
+export default connect(
+    (state) => ({
+        events: getUserAuditEvents(state),
+        eventsListMeta: getUserAuditPagination(state),
+        userIdOptions: getUserAuditUserIdOptions(state),
+        objectTypeOptions: getUserAuditObjectTypeOptions(state),
+        eventTypeOptions: getUserAuditEventTypeOptions(state),
+        timezone: currentUserSelectors.getTimezone(state),
+    }),
+    {
+        fetchUsersAudit: fetchUsersAudit,
+    }
+)(UserAuditList)

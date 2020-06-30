@@ -6,7 +6,7 @@ type Ad = {
 
 type Internal = {
     ads: {
-        [key: string]: Ad
+        [key: string]: Ad,
     },
 }
 

@@ -9,7 +9,8 @@ import {createImmutableSelector} from '../../utils'
 
 // types
 
-export const getCurrentUserState = (state: stateType) => state.currentUser || fromJS({})
+export const getCurrentUserState = (state: stateType) =>
+    state.currentUser || fromJS({})
 
 export const getCurrentUser = createSelector(
     [getCurrentUserState],
@@ -22,15 +23,23 @@ export const getSettings = createSelector(
 )
 
 const _getSettingsByType = (views, settings, type) => {
-    let formattedSettings = settings.find((setting) => setting.get('type') === type) || fromJS({type, data: {}})
+    let formattedSettings =
+        settings.find((setting) => setting.get('type') === type) ||
+        fromJS({type, data: {}})
 
     // add vies and update settings according to views configuration
     views.forEach((view) => {
         const viewId = view.get('id')
-        const viewSetting = formattedSettings.getIn(['data', viewId.toString()], fromJS({}))
+        const viewSetting = formattedSettings.getIn(
+            ['data', viewId.toString()],
+            fromJS({})
+        )
 
         const hide = viewSetting.get('hide') || false
-        const displayOrder = viewSetting.get('display_order', view.get('display_order', 0))
+        const displayOrder = viewSetting.get(
+            'display_order',
+            view.get('display_order', 0)
+        )
 
         formattedSettings = formattedSettings
             .setIn(['data', viewId.toString(), 'hide'], hide)
@@ -40,36 +49,35 @@ const _getSettingsByType = (views, settings, type) => {
     return formattedSettings
 }
 
-export const makeGetSettingsByType = () => createImmutableSelector(
-    [getViews, getSettings, (state, type) => type],
-    _getSettingsByType
-)
+export const makeGetSettingsByType = () =>
+    createImmutableSelector(
+        [getViews, getSettings, (state, type) => type],
+        _getSettingsByType
+    )
 
 // used to get ticket-views and customer-views user preferences
-export const getSettingsByType = (type: string) => createImmutableSelector(
-    [getViews, getSettings],
-    (views, settings) => _getSettingsByType(views, settings, type)
-)
+export const getSettingsByType = (type: string) =>
+    createImmutableSelector([getViews, getSettings], (views, settings) =>
+        _getSettingsByType(views, settings, type)
+    )
 
 export const getApiKey = createSelector(
     [getCurrentUserState],
     (state) => state.getIn(['auths', 0, 'data', 'token']) || ''
 )
 
-export const getPreferences = createSelector(
-    [getSettings],
-    (state) => {
-        return fromJS({
-            type: 'preferences',
-            data: DEFAULT_PREFERENCES
-        })
-            .mergeDeep(state.find((setting) => setting.get('type') === 'preferences') || fromJS({}))
-    }
-)
+export const getPreferences = createSelector([getSettings], (state) => {
+    return fromJS({
+        type: 'preferences',
+        data: DEFAULT_PREFERENCES,
+    }).mergeDeep(
+        state.find((setting) => setting.get('type') === 'preferences') ||
+            fromJS({})
+    )
+})
 
-export const isAvailable = createSelector(
-    [getPreferences],
-    (state) => state.getIn(['data', 'available'])
+export const isAvailable = createSelector([getPreferences], (state) =>
+    state.getIn(['data', 'available'])
 )
 
 export const isHidingTips = createSelector(

@@ -32,7 +32,7 @@ describe('InfiniteScroll component', () => {
                 scrollTop: 1,
                 clientHeight: 1,
                 scrollHeight: 2,
-            }
+            },
         }
         component.prop('onScroll')(event)
 
@@ -58,7 +58,7 @@ describe('InfiniteScroll component', () => {
                 clientHeight: 1,
                 // default threshold is 50
                 scrollHeight: 53,
-            }
+            },
         }
         component.prop('onScroll')(event)
 
@@ -87,7 +87,7 @@ describe('InfiniteScroll component', () => {
                 scrollTop: 1,
                 clientHeight: 1,
                 scrollHeight: 3,
-            }
+            },
         }
         component.prop('onScroll')(event)
 
@@ -112,7 +112,7 @@ describe('InfiniteScroll component', () => {
                 scrollTop: 1,
                 clientHeight: 1,
                 scrollHeight: 1,
-            }
+            },
         }
         component.prop('onScroll')(event)
 

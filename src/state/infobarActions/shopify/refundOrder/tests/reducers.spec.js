@@ -5,7 +5,7 @@ import {
     shopifyRefundOrderPayloadFixture,
     shopifyDraftOrderPayloadFixture,
     shopifyOrderFixture,
-    shopifySuggestedRefundFixture
+    shopifySuggestedRefundFixture,
 } from '../../../../../fixtures/shopify'
 import {initRefundOrderLineItems} from '../../../../../business/shopify/order'
 import reducer, {initialState} from '../reducers'
@@ -16,13 +16,21 @@ jest.addMatchers(immutableMatchers)
 describe('infobarActions.shopify.refundOrder reducer', () => {
     describe('SET_LOADING', () => {
         it('should set loading state', () => {
-            const action = {type: constants.SET_LOADING, loading: true, message: null}
+            const action = {
+                type: constants.SET_LOADING,
+                loading: true,
+                message: null,
+            }
             const nextState = reducer(initialState, action)
             expect(nextState.get('loading')).toBe(true)
         })
 
         it('should set loading state with given loading message', () => {
-            const action = {type: constants.SET_LOADING, loading: true, message: 'foo'}
+            const action = {
+                type: constants.SET_LOADING,
+                loading: true,
+                message: 'foo',
+            }
             const nextState = reducer(initialState, action)
             expect(nextState.get('loading')).toBe(true)
             expect(nextState.get('loadingMessage')).toBe('foo')
@@ -73,7 +81,9 @@ describe('infobarActions.shopify.refundOrder reducer', () => {
             const state = initialState.set('payload', payload)
             const action = {type: constants.SET_REFUND_AMOUNT, amount}
             const nextState = reducer(state, action)
-            expect(nextState.getIn(['payload', 'transactions', 0, 'amount'])).toEqual(amount)
+            expect(
+                nextState.getIn(['payload', 'transactions', 0, 'amount'])
+            ).toEqual(amount)
         })
 
         it('should keep current state if the payload is not set', () => {

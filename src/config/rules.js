@@ -1,19 +1,24 @@
 // @flow
 import {fromJS} from 'immutable'
 
-export const events = fromJS([{
-    label: 'ticket created',
-    value: 'ticket-created',
-}, {
-    label: 'ticket updated',
-    value: 'ticket-updated',
-}, {
-    label: 'ticket assigned',
-    value: 'ticket-assigned',
-}, {
-    label: 'new message in ticket',
-    value: 'ticket-message-created',
-}])
+export const events = fromJS([
+    {
+        label: 'ticket created',
+        value: 'ticket-created',
+    },
+    {
+        label: 'ticket updated',
+        value: 'ticket-updated',
+    },
+    {
+        label: 'ticket assigned',
+        value: 'ticket-assigned',
+    },
+    {
+        label: 'new message in ticket',
+        value: 'ticket-message-created',
+    },
+])
 
 // variables available in rules
 export const availableVariables = ['ticket', 'message', 'event']
@@ -26,25 +31,15 @@ export const collectionOperators = [
     'notContainsAny',
 ]
 
-export const deprecatedOperators = [
-    'contains',
-    'notContains'
-]
+export const deprecatedOperators = ['contains', 'notContains']
 
-export const timedeltaOperators = [
-    'gteTimedelta',
-    'lteTimedelta'
-]
+export const timedeltaOperators = ['gteTimedelta', 'lteTimedelta']
 
-export const datetimeOperators = [
-    'gte',
-    'lte',
-    ...timedeltaOperators
-]
+export const datetimeOperators = ['gte', 'lte', ...timedeltaOperators]
 
 export const caseInsensitiveOperators = [
     'endsWith',
     'startsWith',
     ...collectionOperators,
-    ...deprecatedOperators
+    ...deprecatedOperators,
 ]

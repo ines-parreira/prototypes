@@ -8,7 +8,10 @@ import Infobar from '../../common/components/infobar/Infobar'
 import * as WidgetActions from '../../../state/widgets/actions'
 import * as InfobarActions from '../../../state/infobar/actions'
 
-import {getActiveCustomer, getActiveCustomerId} from '../../../state/customers/selectors'
+import {
+    getActiveCustomer,
+    getActiveCustomerId,
+} from '../../../state/customers/selectors'
 import {getSources} from '../../../state/widgets/selectors'
 
 class CustomerInfobarContainer extends React.Component {
@@ -76,8 +79,11 @@ function mapDispatchToProps(dispatch) {
         actions: {
             infobar: bindActionCreators(InfobarActions, dispatch),
             widgets: bindActionCreators(WidgetActions, dispatch),
-        }
+        },
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CustomerInfobarContainer)
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(CustomerInfobarContainer)

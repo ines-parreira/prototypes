@@ -9,7 +9,7 @@ import {
     FACEBOOK_COMMENT_SOURCE,
     FACEBOOK_POST_SOURCE,
     INSTAGRAM_AD_MEDIA_SOURCE,
-    INSTAGRAM_MEDIA_SOURCE
+    INSTAGRAM_MEDIA_SOURCE,
 } from '../../../../../config/ticket'
 
 import css from './Meta.less'
@@ -20,10 +20,10 @@ type Props = {
     integrationId?: string,
     ruleId?: string,
     meta?: MetaType,
-    source?: Source
+    source?: Source,
 }
 
-const From = ({label, children}: { label: string, children?: Node }) => (
+const From = ({label, children}: {label: string, children?: Node}) => (
     <span className={classnames(css.from)}>
         <span className={css.fromLabel}>{label}</span>{' '}
         <span className={css.fromValue}>{children}</span>
@@ -36,10 +36,7 @@ export default function Meta(props: Props) {
 
     if (meta && meta.current_page) {
         widgets.push(
-            <From
-                label="from"
-                key="from-widget"
-            >
+            <From label="from" key="from-widget">
                 <a
                     target="_blank"
                     href={meta.current_page}
@@ -48,15 +45,23 @@ export default function Meta(props: Props) {
                 >
                     {meta.current_page}
                 </a>
-            </From>,
+            </From>
         )
     }
 
     const GO_TO_WIDGET_SOURCES = [
-        FACEBOOK_COMMENT_SOURCE, FACEBOOK_POST_SOURCE, INSTAGRAM_AD_MEDIA_SOURCE, INSTAGRAM_MEDIA_SOURCE
+        FACEBOOK_COMMENT_SOURCE,
+        FACEBOOK_POST_SOURCE,
+        INSTAGRAM_AD_MEDIA_SOURCE,
+        INSTAGRAM_MEDIA_SOURCE,
     ]
 
-    if (source && source.type && source.extra && GO_TO_WIDGET_SOURCES.includes(source.type)) {
+    if (
+        source &&
+        source.type &&
+        source.extra &&
+        GO_TO_WIDGET_SOURCES.includes(source.type)
+    ) {
         const fullPostId = source.extra.post_id
         const parentId = source.extra.parent_id
         const permalink = source.extra.permalink
@@ -66,7 +71,8 @@ export default function Meta(props: Props) {
         const isInstagramMedia = source.type === INSTAGRAM_MEDIA_SOURCE
         const isInstagramAdMedia = source.type === INSTAGRAM_AD_MEDIA_SOURCE
 
-        const getId = (input) => input && input.includes('_') ? input.split('_')[1] : ''
+        const getId = (input) =>
+            input && input.includes('_') ? input.split('_')[1] : ''
 
         let type
         let link
@@ -93,10 +99,7 @@ export default function Meta(props: Props) {
 
         if (type && link) {
             widgets.push(
-                <From
-                    label="go to"
-                    key="ref-widget"
-                >
+                <From label="go to" key="ref-widget">
                     <a
                         target="_blank"
                         href={link}
@@ -105,7 +108,7 @@ export default function Meta(props: Props) {
                     >
                         {type}
                     </a>
-                </From>,
+                </From>
             )
         }
     }
@@ -123,23 +126,14 @@ export default function Meta(props: Props) {
 
     if (sentViaLabel && sentViaLink) {
         widgets.push(
-            <From
-                key="via-widget"
-                label="sent via a"
-            >
+            <From key="via-widget" label="sent via a">
                 <b>
-                    <Link
-                        tag="a"
-                        to={sentViaLink}
-                        title={sentViaLabel}
-                    >
-                        <i className="material-icons mr-1">
-                            settings
-                        </i>
+                    <Link tag="a" to={sentViaLink} title={sentViaLabel}>
+                        <i className="material-icons mr-1">settings</i>
                         {sentViaLabel}
                     </Link>
                 </b>
-            </From>,
+            </From>
         )
     }
 

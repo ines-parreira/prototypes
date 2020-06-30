@@ -6,47 +6,41 @@ import SourceWidget from '../SourceWidget'
 
 class ListSourceWidget extends React.Component {
     render() {
-        const {
-            source,
-            widget,
-            template,
-            editing,
-            isParentList
-        } = this.props
+        const {source, widget, template, editing, isParentList} = this.props
 
-        const updatedTemplate = template
-            .set('absolutePath', template.get('absolutePath').concat(['[]']))
+        const updatedTemplate = template.set(
+            'absolutePath',
+            template.get('absolutePath').concat(['[]'])
+        )
 
         const passedTemplate = updatedTemplate
             .getIn(['widgets', '0'])
-            .set('templatePath', `${updatedTemplate.get('templatePath', '')}.widgets.0`)
+            .set(
+                'templatePath',
+                `${updatedTemplate.get('templatePath', '')}.widgets.0`
+            )
 
         const className = classnames('list', {
-            draggable: !isParentList
+            draggable: !isParentList,
         })
 
         return (
-            <div
-                className={className}
-                data-key={template.get('path')}
-            >
-                {
-                    source
-                        .toList()
-                        .take(1)
-                        .map((d, i) => {
-                            return (
-                                <SourceWidget
-                                    key={i}
-                                    source={d}
-                                    parent={updatedTemplate}
-                                    template={passedTemplate}
-                                    widget={widget}
-                                    editing={editing}
-                                />
-                            )
-                        })
-                }
+            <div className={className} data-key={template.get('path')}>
+                {source
+                    .toList()
+                    .take(1)
+                    .map((d, i) => {
+                        return (
+                            <SourceWidget
+                                key={i}
+                                source={d}
+                                parent={updatedTemplate}
+                                template={passedTemplate}
+                                widget={widget}
+                                editing={editing}
+                            />
+                        )
+                    })}
             </div>
         )
     }
@@ -57,11 +51,11 @@ ListSourceWidget.propTypes = {
     source: PropTypes.object.isRequired,
     widget: PropTypes.object.isRequired,
     template: PropTypes.object.isRequired,
-    isParentList: PropTypes.bool.isRequired
+    isParentList: PropTypes.bool.isRequired,
 }
 
 ListSourceWidget.defaultProps = {
-    isParentList: false
+    isParentList: false,
 }
 
 export default ListSourceWidget

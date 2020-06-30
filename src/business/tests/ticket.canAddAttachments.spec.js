@@ -1,5 +1,9 @@
 // @flow
-import { canAddAttachments, type TicketMessageSourceType, TicketMessageSourceTypes } from '../ticket'
+import {
+    canAddAttachments,
+    type TicketMessageSourceType,
+    TicketMessageSourceTypes,
+} from '../ticket'
 
 describe('Business', () => {
     describe('ticket', () => {
@@ -15,11 +19,17 @@ describe('Business', () => {
                 attachmentCount = 1
 
                 // When
-                const result = canAddAttachments(messageType, newMessage, attachmentCount)
+                const result = canAddAttachments(
+                    messageType,
+                    newMessage,
+                    attachmentCount
+                )
 
                 // Then
                 // $FlowFixMe
-                expect(result.message).toEqual('When using Facebook messenger, you can either send a text message, or an attachment, but not both at the same time.')
+                expect(result.message).toEqual(
+                    'When using Facebook messenger, you can either send a text message, or an attachment, but not both at the same time.'
+                )
             })
 
             describe('only one attachment allowed', () => {
@@ -33,11 +43,17 @@ describe('Business', () => {
                     messageType = TicketMessageSourceTypes.CHAT
 
                     // When
-                    const result = canAddAttachments(messageType, newMessage, attachmentCount)
+                    const result = canAddAttachments(
+                        messageType,
+                        newMessage,
+                        attachmentCount
+                    )
 
                     // Then
                     // $FlowFixMe
-                    expect(result.message).toEqual('When using Chat, you can only send attachments one by one.')
+                    expect(result.message).toEqual(
+                        'When using Chat, you can only send attachments one by one.'
+                    )
                 })
 
                 it('should not allow to add when facebook-comment', () => {
@@ -45,11 +61,17 @@ describe('Business', () => {
                     messageType = TicketMessageSourceTypes.FACEBOOK_COMMENT
 
                     // When
-                    const result = canAddAttachments(messageType, newMessage, attachmentCount)
+                    const result = canAddAttachments(
+                        messageType,
+                        newMessage,
+                        attachmentCount
+                    )
 
                     // Then
                     // $FlowFixMe
-                    expect(result.message).toEqual('When using Facebook comment, you can only send attachments one by one.')
+                    expect(result.message).toEqual(
+                        'When using Facebook comment, you can only send attachments one by one.'
+                    )
                 })
 
                 it('should not allow to add when facebook-messenger', () => {
@@ -57,11 +79,17 @@ describe('Business', () => {
                     messageType = TicketMessageSourceTypes.FACEBOOK_MESSENGER
 
                     // When
-                    const result = canAddAttachments(messageType, newMessage, attachmentCount)
+                    const result = canAddAttachments(
+                        messageType,
+                        newMessage,
+                        attachmentCount
+                    )
 
                     // Then
                     // $FlowFixMe
-                    expect(result.message).toEqual('When using Facebook messenger, you can only send attachments one by one.')
+                    expect(result.message).toEqual(
+                        'When using Facebook messenger, you can only send attachments one by one.'
+                    )
                 })
             })
         })

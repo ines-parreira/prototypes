@@ -10,16 +10,20 @@ import Input from '../Input'
 import Menu from '../Menu'
 
 describe('MultiSelectField Dropdown', () => {
-    const options = [{
-        value: 'foo',
-        label: 'foo'
-    }, {
-        value: 'bar',
-        label: 'bar'
-    }, {
-        value: 'baz',
-        label: 'baz'
-    }]
+    const options = [
+        {
+            value: 'foo',
+            label: 'foo',
+        },
+        {
+            value: 'bar',
+            label: 'bar',
+        },
+        {
+            value: 'baz',
+            label: 'baz',
+        },
+    ]
 
     const defaultProps = {
         options,
@@ -30,16 +34,12 @@ describe('MultiSelectField Dropdown', () => {
         onBlur: _noop,
         onSelect: _noop,
         onDelete: _noop,
-        isFocused: false
+        isFocused: false,
     }
 
     describe('input arrow up', () => {
         it('should move the selection up', () => {
-            const wrapper = mount(
-                <Dropdown
-                    {...defaultProps}
-                />
-            )
+            const wrapper = mount(<Dropdown {...defaultProps} />)
             wrapper.find(Menu).prop('onActivate')(2)
             wrapper.find(Input).prop('onUp')()
             wrapper.update()
@@ -48,10 +48,7 @@ describe('MultiSelectField Dropdown', () => {
 
         it('should not go below selected index 0', () => {
             const wrapper = mount(
-                <Dropdown
-                    {...defaultProps}
-                    options={options}
-                />
+                <Dropdown {...defaultProps} options={options} />
             )
             wrapper.find(Menu).prop('onActivate')(0)
             wrapper.find(Input).prop('onUp')()
@@ -62,11 +59,7 @@ describe('MultiSelectField Dropdown', () => {
 
     describe('input arrow down', () => {
         it('should move the selection down', () => {
-            const wrapper = mount(
-                <Dropdown
-                    {...defaultProps}
-                />
-            )
+            const wrapper = mount(<Dropdown {...defaultProps} />)
             wrapper.find(Menu).prop('onActivate')(1)
             wrapper.find(Input).prop('onDown')()
             wrapper.update()
@@ -75,10 +68,7 @@ describe('MultiSelectField Dropdown', () => {
 
         it('should not go up more than the number of options', () => {
             const wrapper = mount(
-                <Dropdown
-                    {...defaultProps}
-                    options={options}
-                />
+                <Dropdown {...defaultProps} options={options} />
             )
             wrapper.find(Menu).prop('onActivate')(2)
             wrapper.find(Input).prop('onDown')()
@@ -89,25 +79,17 @@ describe('MultiSelectField Dropdown', () => {
 
     describe('selection reset', () => {
         it('should reset selection if options change', () => {
-            const wrapper = mount(
-                <Dropdown
-                    {...defaultProps}
-                />
-            )
+            const wrapper = mount(<Dropdown {...defaultProps} />)
             wrapper.find(Menu).prop('onActivate')(2)
             wrapper.setProps({
-                options: [options[0]]
+                options: [options[0]],
             })
             wrapper.update()
             expect(wrapper.find(Menu).prop('activeIndex')).toBe(0)
         })
 
         it('should not reset selection if options did not change', () => {
-            const wrapper = mount(
-                <Dropdown
-                    {...defaultProps}
-                />
-            )
+            const wrapper = mount(<Dropdown {...defaultProps} />)
             wrapper.find(Menu).prop('onActivate')(2)
             wrapper.setProps({options})
             wrapper.update()
@@ -117,10 +99,7 @@ describe('MultiSelectField Dropdown', () => {
 
     it('should accept custom DropdownMenu', () => {
         const wrapper = mount(
-            <Dropdown
-                {...defaultProps}
-                menu={TagDropdownMenu}
-            />
+            <Dropdown {...defaultProps} menu={TagDropdownMenu} />
         )
         expect(wrapper.find(TagDropdownMenu)).toHaveLength(1)
     })

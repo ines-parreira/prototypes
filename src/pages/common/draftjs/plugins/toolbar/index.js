@@ -5,7 +5,10 @@ import type {Node} from 'react'
 
 import type {PluginMethods} from '../types'
 import {removeLink} from '../utils'
-import {getSelectedEntityKey, getSelectedText} from '../../../../../utils/editor'
+import {
+    getSelectedEntityKey,
+    getSelectedText,
+} from '../../../../../utils/editor'
 
 import {foundUrl, link} from './decorators'
 import Toolbar from './Toolbar'
@@ -16,26 +19,30 @@ import type {ActionName} from './types'
 // https://github.com/draft-js-plugins/draft-js-plugins/blob/master/HOW_TO_CREATE_A_PLUGIN.md
 
 export type Config = {
-    imageDecorator?: Node => Node,
+    imageDecorator?: (Node) => Node,
     theme?: any,
-    getDisplayedActions: () => ?ActionName[],
+    getDisplayedActions: () => ?(ActionName[]),
     onLinkEdit: (entityKey: string, text: string, url: string) => void,
-    onLinkCreate: (text: string) => void
+    onLinkCreate: (text: string) => void,
 }
 
 export default function toolbarPlugin(config: Config) {
-    const isLinkDisplayed = () => Toolbar.isDisplayedAction('LINK', config.getDisplayedActions())
+    const isLinkDisplayed = () =>
+        Toolbar.isDisplayedAction('LINK', config.getDisplayedActions())
 
-    return ({
+    return {
         decorators: [
             foundUrl(),
             link({
                 isActive: isLinkDisplayed,
-                onLinkEdit: config.onLinkEdit
-            })
+                onLinkEdit: config.onLinkEdit,
+            }),
         ],
 
-        blockRendererFn: (block: ContentBlock, { getEditorState }: PluginMethods) => {
+        blockRendererFn: (
+            block: ContentBlock,
+            {getEditorState}: PluginMethods
+        ) => {
             const contetState = getEditorState().getCurrentContent()
             // render img (atomic block)
             const entityKey = block.getEntityAt(0)
@@ -61,29 +68,42 @@ export default function toolbarPlugin(config: Config) {
 
         keyBindingFn: (e: SyntheticKeyboardEvent<*>) => {
             // Mod+K
-            if (isLinkDisplayed() && e.key === 'k' && KeyBindingUtil.hasCommandModifier(e)) {
+            if (
+                isLinkDisplayed() &&
+                e.key === 'k' &&
+                KeyBindingUtil.hasCommandModifier(e)
+            ) {
                 return 'insert-link'
             }
         },
 
-        handleKeyCommand: (command: string, editorState: EditorState, pluginMethods: PluginMethods) => {
-            const { setEditorState } = pluginMethods
+        handleKeyCommand: (
+            command: string,
+            editorState: EditorState,
+            pluginMethods: PluginMethods
+        ) => {
+            const {setEditorState} = pluginMethods
             const contentState = editorState.getCurrentContent()
             const selection = editorState.getSelection()
 
             if (command === 'insert-link') {
                 const entityKey = getSelectedEntityKey(contentState, selection)
 
-                if (entityKey && contentState.getEntity(entityKey).getType() === 'link') {
+                if (
+                    entityKey &&
+                    contentState.getEntity(entityKey).getType() === 'link'
+                ) {
                     setEditorState(removeLink(entityKey, editorState))
                 } else {
-                    config.onLinkCreate(getSelectedText(contentState, selection))
+                    config.onLinkCreate(
+                        getSelectedText(contentState, selection)
+                    )
                 }
 
                 return 'handled'
             }
 
             return 'not-handled'
-        }
-    })
+        },
+    }
 }

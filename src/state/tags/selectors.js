@@ -4,7 +4,8 @@ import {createSelector} from 'reselect'
 
 import type {stateType} from '../types'
 
-export const getTagsState = (state: stateType): Map<*,*> => state.tags || fromJS({})
+export const getTagsState = (state: stateType): Map<*, *> =>
+    state.tags || fromJS({})
 
 export const getTags = createSelector(
     [getTagsState],
@@ -36,9 +37,8 @@ export const getMeta = createSelector(
     (state) => state.get('meta') || fromJS({})
 )
 
-export const getSelectedTagMeta = (tagId: number) => createSelector(
-    [getMeta],
-    (state) => state.get(tagId) || fromJS({})
-)
+export const getSelectedTagMeta = (tagId: number) =>
+    createSelector([getMeta], (state) => state.get(tagId) || fromJS({}))
 
-export const makeGetSelectedTagMeta = (state: stateType) => (tagId: number) => getSelectedTagMeta(tagId)(state)
+export const makeGetSelectedTagMeta = (state: stateType) => (tagId: number) =>
+    getSelectedTagMeta(tagId)(state)

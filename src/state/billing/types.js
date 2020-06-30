@@ -6,5 +6,5 @@ export type creditCardType = {
     expDate: string,
     name: string,
     number: string,
-    cvc: string
+    cvc: string,
 }

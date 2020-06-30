@@ -6,26 +6,19 @@ import {fromJS} from 'immutable'
 import ViewName from '../ViewName'
 
 const defaultView = {
-    name: 'foo bar'
+    name: 'foo bar',
 }
 
 describe('<ViewName/>', () => {
     describe('.render()', () => {
         it('should display view name', () => {
-            const wrapper = shallow(
-                <ViewName
-                    view={fromJS(defaultView)}
-                />
-            )
+            const wrapper = shallow(<ViewName view={fromJS(defaultView)} />)
             expect(wrapper.render()).toMatchSnapshot()
         })
 
         it('should pass props to span', () => {
             const wrapper = shallow(
-                <ViewName
-                    view={fromJS(defaultView)}
-                    style={{color: 'red'}}
-                />
+                <ViewName view={fromJS(defaultView)} style={{color: 'red'}} />
             )
             expect(wrapper.render()).toMatchSnapshot()
         })
@@ -36,8 +29,8 @@ describe('<ViewName/>', () => {
                     view={fromJS({
                         ...defaultView,
                         decoration: {
-                            emoji: 'X'
-                        }
+                            emoji: 'X',
+                        },
                     })}
                 />
             )
@@ -49,7 +42,7 @@ describe('<ViewName/>', () => {
                 <ViewName
                     view={fromJS({
                         ...defaultView,
-                        decoration: 'foo'
+                        decoration: 'foo',
                     })}
                 />
             )

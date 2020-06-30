@@ -32,10 +32,13 @@ class CustomerForm extends React.Component {
     constructor(props) {
         super(props)
 
-        this.state = _merge({
-            submitting: false,
-            errors: {},
-        }, this._getForm())
+        this.state = _merge(
+            {
+                submitting: false,
+                errors: {},
+            },
+            this._getForm()
+        )
     }
 
     _validate = (values) => {
@@ -46,7 +49,9 @@ class CustomerForm extends React.Component {
             values.phone.forEach((phone, index) => {
                 if (phone.address && !/^\+[\d-\(\) ]+$/.test(phone.address)) {
                     errors['phone'] = errors['phone'] || {}
-                    errors['phone'][index] = {'address': 'Please enter an international phone number'}
+                    errors['phone'][index] = {
+                        address: 'Please enter an international phone number',
+                    }
                 }
             })
         }
@@ -57,9 +62,11 @@ class CustomerForm extends React.Component {
     _updateField = (value) => {
         const newState = Object.assign(_clone(this.state), value)
 
-        this.setState(Object.assign(value, {
-            errors: this._validate(newState)
-        }))
+        this.setState(
+            Object.assign(value, {
+                errors: this._validate(newState),
+            })
+        )
     }
 
     _getForm = () => {
@@ -90,14 +97,18 @@ class CustomerForm extends React.Component {
         // divide channels by their types in separated groups
         // ex: email, twitter, etc.
         updatableChannels.forEach((updatableChannel) => {
-            doc[updatableChannel] = channels.filter((channel) => channel.type === updatableChannel)
+            doc[updatableChannel] = channels.filter(
+                (channel) => channel.type === updatableChannel
+            )
 
             // if a type of channel has no address, add an empty one
             if (!doc[updatableChannel].length) {
-                doc[updatableChannel] = [{
-                    channel: updatableChannel,
-                    address: ''
-                }]
+                doc[updatableChannel] = [
+                    {
+                        channel: updatableChannel,
+                        address: '',
+                    },
+                ]
             }
         })
 
@@ -120,7 +131,10 @@ class CustomerForm extends React.Component {
             const addedChannels = formValues
                 .map((v) => v.set('type', type))
                 .filter((v) => v.get('address', '').length)
-            return previousChannels.toSet().union(addedChannels.toSet()).toList()
+            return previousChannels
+                .toSet()
+                .union(addedChannels.toSet())
+                .toList()
         }, initialChannels)
 
         // remove channels of currently edited types
@@ -145,18 +159,21 @@ class CustomerForm extends React.Component {
         if (this.props.isUpdate) {
             const {customer} = this.props
             doc = doc.set('id', customer.get('id'))
-            promise = this.props.onSubmit(this._formToDoc(doc).toJS(), customer.get('id'))
+            promise = this.props.onSubmit(
+                this._formToDoc(doc).toJS(),
+                customer.get('id')
+            )
         } else {
             promise = this.props.onSubmit(this._formToDoc(doc).toJS())
         }
 
         this.setState({
-            submitting: true
+            submitting: true,
         })
 
         return promise.then((response = {}) => {
             this.setState({
-                submitting: false
+                submitting: false,
             })
 
             if (response.error || _isError(response)) {
@@ -198,7 +215,10 @@ class CustomerForm extends React.Component {
                         onChange={(note) => this._updateField({note})}
                     />
                     <p>
-                        <b>Please set below at least one contact information for this customer :</b>
+                        <b>
+                            Please set below at least one contact information
+                            for this customer :
+                        </b>
                     </p>
                     <CustomerChannelFieldArray
                         name="email"
@@ -236,7 +256,7 @@ class CustomerForm extends React.Component {
                         type="submit"
                         color="primary"
                         className={classNames({
-                            'btn-loading': this.state.submitting
+                            'btn-loading': this.state.submitting,
                         })}
                         disabled={this.state.submitting || invalid}
                     >

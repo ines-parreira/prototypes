@@ -11,16 +11,13 @@ describe('MacroList component', () => {
         {
             id: 3,
             name: 'Pizza Margherita',
-            actions: [{name: 'http'}]
+            actions: [{name: 'http'}],
         },
     ])
 
     it('should render the macro list', () => {
         const component = shallow(
-            <MacroList
-                macros={macros}
-                currentMacro={macros.first()}
-            />
+            <MacroList macros={macros} currentMacro={macros.first()} />
         )
         expect(component).toMatchSnapshot()
     })
@@ -35,5 +32,4 @@ describe('MacroList component', () => {
         )
         expect(component).toMatchSnapshot()
     })
-
 })

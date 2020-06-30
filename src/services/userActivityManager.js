@@ -6,7 +6,6 @@ import * as socketConstants from '../config/socketConstants'
 
 import socketManager from './socketManager'
 
-
 class UserActivityManager {
     unavailabilityTimeout = 600000 // 10 minutes
     inactivityTimeout = 60000 // 1 min
@@ -48,6 +47,5 @@ class UserActivityManager {
         this.setCurrentUserActive()
     }
 }
-
 
 export default new UserActivityManager()

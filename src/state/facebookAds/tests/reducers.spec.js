@@ -13,7 +13,7 @@ describe('facebookAds reducer', () => {
     it('should set loading state', () => {
         const action = {
             type: types.SET_FACEBOOK_ADS_LOADING,
-            payload: false
+            payload: false,
         }
 
         const nextState = reducer(initialState, action)
@@ -26,15 +26,15 @@ describe('facebookAds reducer', () => {
                 ads: {
                     postid1: {
                         name: 'ad 1',
-                        is_active: true
-                    }
-                }
-            }
+                        is_active: true,
+                    },
+                },
+            },
         }
 
         const action = {
             type: types.SET_FACEBOOK_ADS_INTERNALS,
-            payload: internals
+            payload: internals,
         }
 
         const nextState = reducer(initialState, action)
@@ -44,7 +44,7 @@ describe('facebookAds reducer', () => {
     it('should add loading ad', () => {
         const action = {
             type: types.ADD_LOADING_FACEBOOK_AD,
-            payload: 'postid1'
+            payload: 'postid1',
         }
 
         const nextState = reducer(initialState, action)
@@ -58,7 +58,7 @@ describe('facebookAds reducer', () => {
 
         const action = {
             type: types.REMOVE_LOADING_FACEBOOK_AD,
-            payload: 'postid1'
+            payload: 'postid1',
         }
 
         const nextState = reducer(previousState, action)
@@ -72,11 +72,11 @@ describe('facebookAds reducer', () => {
                     ads: {
                         postid1: {
                             name: 'ad 1',
-                            is_active: false
-                        }
-                    }
-                }
-            }
+                            is_active: false,
+                        },
+                    },
+                },
+            },
         })
 
         const action = {
@@ -84,8 +84,8 @@ describe('facebookAds reducer', () => {
             payload: {
                 integrationId: 1,
                 id: 'postid1',
-                isActive: true
-            }
+                isActive: true,
+            },
         }
 
         const nextState = reducer(previousState, action)

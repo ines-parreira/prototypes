@@ -26,11 +26,17 @@ export default class SetAssigneeAction extends React.Component<Props> {
     }
 
     setUserAssignee(user: Object) {
-        this.props.updateActionArgs(this.props.index, fromJS({assignee_user: user}))
+        this.props.updateActionArgs(
+            this.props.index,
+            fromJS({assignee_user: user})
+        )
     }
 
     setTeamAssignee(team: Object) {
-        this.props.updateActionArgs(this.props.index, fromJS({assignee_team: team}))
+        this.props.updateActionArgs(
+            this.props.index,
+            fromJS({assignee_team: team})
+        )
     }
 
     render() {
@@ -38,8 +44,14 @@ export default class SetAssigneeAction extends React.Component<Props> {
         return (
             <TicketAssignee
                 className={css.assignee}
-                currentAssigneeUser={action.getIn(['arguments', 'assignee_user'])}
-                currentAssigneeTeam={action.getIn(['arguments', 'assignee_team'])}
+                currentAssigneeUser={action.getIn([
+                    'arguments',
+                    'assignee_user',
+                ])}
+                currentAssigneeTeam={action.getIn([
+                    'arguments',
+                    'assignee_team',
+                ])}
                 handleTeams={handleTeams}
                 handleUsers={handleUsers}
                 users={agents}

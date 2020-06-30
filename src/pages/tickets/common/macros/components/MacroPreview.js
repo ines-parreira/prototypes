@@ -11,7 +11,10 @@ export default class MacroPreview extends React.Component {
             return (
                 <div className="MacroPreview">
                     <div className="no-result-container">
-                        <p>You don't have any macro you can apply on a batch of tickets.</p>
+                        <p>
+                            You don't have any macro you can apply on a batch of
+                            tickets.
+                        </p>
                     </div>
                 </div>
             )
@@ -22,9 +25,7 @@ export default class MacroPreview extends React.Component {
                 <div className="mt-3 mb-3">
                     <h2>{currentMacro.get('name') || ''}</h2>
 
-                    <Preview
-                        macro={currentMacro}
-                    />
+                    <Preview macro={currentMacro} />
                 </div>
             </div>
         )

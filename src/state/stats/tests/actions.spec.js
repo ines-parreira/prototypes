@@ -6,7 +6,7 @@ describe('actions', () => {
     describe('stats', () => {
         describe('mergeStatsFilters()', () => {
             it('should return an action to merge stats filters', () => {
-                const filters = fromJS({'tags': [1, 2, 3]})
+                const filters = fromJS({tags: [1, 2, 3]})
                 expect(mergeStatsFilters(filters)).toMatchSnapshot()
             })
         })
@@ -19,7 +19,7 @@ describe('actions', () => {
 
         describe('setStatsFilters()', () => {
             it('should return an action to set stats filters', () => {
-                const filters = fromJS({'tags': [1, 2, 3]})
+                const filters = fromJS({tags: [1, 2, 3]})
                 expect(setStatsFilters(filters)).toMatchSnapshot()
             })
         })

@@ -1,6 +1,10 @@
 //@flow
 
-import {TicketChannels, TicketMessageSourceTypes, TicketStatuses} from '../../business/ticket'
+import {
+    TicketChannels,
+    TicketMessageSourceTypes,
+    TicketStatuses,
+} from '../../business/ticket'
 
 export type Ticket = {
     id: number,
@@ -51,20 +55,20 @@ export type TicketElement = {
     opened_datetime?: string,
     sent_datetime?: string,
     _internal?: {
-        id: number
-    }
+        id: number,
+    },
 }
 
 export type TicketEvent = TicketElement & {
-    isEvent: true
+    isEvent: true,
 }
 
 export type TicketSatisfactionSurvey = TicketElement & {
-    isSatisfactionSurvey: true
+    isSatisfactionSurvey: true,
 }
 
 export type TicketMessage = TicketElement & {
-    isMessage: true
+    isMessage: true,
 }
 
 export type Actor = {
@@ -105,12 +109,12 @@ export type Source = {
     to: SourceAddress[],
     cc?: SourceAddress[],
     bcc?: SourceAddress[],
-    extra?: any
+    extra?: any,
 }
 
 export type SourceAddress = {
     address: string,
-    name: string
+    name: string,
 }
 
 export type Meta = {
@@ -140,8 +144,8 @@ export type FacebookCarouselTemplate = {
             buttons?: Array<{
                 type: string,
                 title: string,
-                url: string
-            }>
-        }>
-    }
+                url: string,
+            }>,
+        }>,
+    },
 }

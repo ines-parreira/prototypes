@@ -53,7 +53,9 @@ describe('Avatar utils', () => {
         it('should return picture url from cache with a different sizes', () => {
             return getAvatar({email, size: 50})
                 .then(() => getAvatarFromCache(email, 100))
-                .then((res) => expect(res).toEqual(gravatarUrl.replace('s=50', 's=100')))
+                .then((res) =>
+                    expect(res).toEqual(gravatarUrl.replace('s=50', 's=100'))
+                )
         })
     })
 })

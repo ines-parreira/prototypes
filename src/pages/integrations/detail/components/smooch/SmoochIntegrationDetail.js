@@ -13,7 +13,10 @@ import {
     Col,
 } from 'reactstrap'
 
-import {SMOOCH_LANGUAGE_DEFAULT, SMOOCH_LANGUAGE_OPTIONS} from '../../../../../config/integrations/smooch'
+import {
+    SMOOCH_LANGUAGE_DEFAULT,
+    SMOOCH_LANGUAGE_OPTIONS,
+} from '../../../../../config/integrations/smooch'
 
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 import InputField from '../../../../common/forms/InputField'
@@ -22,18 +25,17 @@ import PageHeader from '../../../../common/components/PageHeader'
 
 import SmoochIntegrationNavigation from './SmoochIntegrationNavigation'
 
-
 type Props = {
-    integration: Map<*,*>,
+    integration: Map<*, *>,
     actions: Object,
-    loading: Map<*,*>,
+    loading: Map<*, *>,
 
-    location: Object
+    location: Object,
 }
 
 type State = {
     name: string,
-    language: string
+    language: string,
 }
 
 export class SmoochIntegrationDetail extends React.Component<Props, State> {
@@ -41,14 +43,16 @@ export class SmoochIntegrationDetail extends React.Component<Props, State> {
 
     state = {
         name: '',
-        language: SMOOCH_LANGUAGE_DEFAULT
+        language: SMOOCH_LANGUAGE_DEFAULT,
     }
 
     componentDidMount() {
         if (!this.props.integration.isEmpty()) {
             this.setState({
                 name: this.props.integration.get('name'),
-                language: this.props.integration.getIn(['meta', 'language']) || SMOOCH_LANGUAGE_DEFAULT
+                language:
+                    this.props.integration.getIn(['meta', 'language']) ||
+                    SMOOCH_LANGUAGE_DEFAULT,
             })
             this.isInitialized = true
         }
@@ -60,16 +64,23 @@ export class SmoochIntegrationDetail extends React.Component<Props, State> {
         if (!this.isInitialized && !integration.isEmpty()) {
             this.setState({
                 name: integration.get('name'),
-                language: integration.getIn(['meta', 'language']) || SMOOCH_LANGUAGE_DEFAULT
+                language:
+                    integration.getIn(['meta', 'language']) ||
+                    SMOOCH_LANGUAGE_DEFAULT,
             })
             this.isInitialized = true
         }
     }
 
     componentWillReceiveProps(nextProps: Props) {
-        const isAuthenticating = nextProps.location.query.action === 'authentication'
+        const isAuthenticating =
+            nextProps.location.query.action === 'authentication'
 
-        if (this.props.integration.isEmpty() && !nextProps.integration.isEmpty() && isAuthenticating) {
+        if (
+            this.props.integration.isEmpty() &&
+            !nextProps.integration.isEmpty() &&
+            isAuthenticating
+        ) {
             nextProps.actions.triggerCreateSuccess(nextProps.integration.toJS())
         }
     }
@@ -88,7 +99,9 @@ export class SmoochIntegrationDetail extends React.Component<Props, State> {
         const integrationData = fromJS({
             id: this.props.integration.get('id'),
             name: this.state.name,
-            meta: this.props.integration.get('meta').set('language', this.state.language)
+            meta: this.props.integration
+                .get('meta')
+                .set('language', this.state.language),
         })
 
         return this.props.actions.updateOrCreateIntegration(integrationData)
@@ -97,40 +110,42 @@ export class SmoochIntegrationDetail extends React.Component<Props, State> {
     render() {
         const {actions, integration, loading} = this.props
 
-        const isSubmitting = loading.get('updateIntegration') === integration.get('id')
+        const isSubmitting =
+            loading.get('updateIntegration') === integration.get('id')
         const isActive = !integration.get('deactivated_datetime')
 
         const ctaIsLoading = isSubmitting
 
         if (loading.get('integration')) {
-            return <Loader/>
+            return <Loader />
         }
 
         return (
             <div className="full-width">
-                <PageHeader title={(
-                    <Breadcrumb>
-                        <BreadcrumbItem>
-                            <Link to="/app/settings/integrations">Integrations</Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            <Link to="/app/settings/integrations/smooch">Smooch</Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            {integration.get('name')}
-                        </BreadcrumbItem>
-                        <BreadcrumbItem active>
-                            Overview
-                        </BreadcrumbItem>
-                    </Breadcrumb>
-                )}/>
+                <PageHeader
+                    title={
+                        <Breadcrumb>
+                            <BreadcrumbItem>
+                                <Link to="/app/settings/integrations">
+                                    Integrations
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                <Link to="/app/settings/integrations/smooch">
+                                    Smooch
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                {integration.get('name')}
+                            </BreadcrumbItem>
+                            <BreadcrumbItem active>Overview</BreadcrumbItem>
+                        </Breadcrumb>
+                    }
+                />
 
-                <SmoochIntegrationNavigation integration={integration}/>
+                <SmoochIntegrationNavigation integration={integration} />
 
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <Container fluid className="page-container">
                     <Row>
                         <Col md="8">
                             <Form onSubmit={this._handleSubmit}>
@@ -151,16 +166,14 @@ export class SmoochIntegrationDetail extends React.Component<Props, State> {
                                     onChange={this._setLanguage}
                                     label="Language"
                                 >
-                                    {
-                                        SMOOCH_LANGUAGE_OPTIONS.map((option) => (
-                                            <option
-                                                key={option.get('value')}
-                                                value={option.get('value')}
-                                            >
-                                                {option.get('label')}
-                                            </option>
-                                        ))
-                                    }
+                                    {SMOOCH_LANGUAGE_OPTIONS.map((option) => (
+                                        <option
+                                            key={option.get('value')}
+                                            value={option.get('value')}
+                                        >
+                                            {option.get('label')}
+                                        </option>
+                                    ))}
                                 </InputField>
 
                                 <div>
@@ -175,39 +188,49 @@ export class SmoochIntegrationDetail extends React.Component<Props, State> {
                                         Save changes
                                     </Button>
 
-                                    {
-                                        isActive ? (
-                                            <Button
-                                                type="button"
-                                                color="warning"
-                                                outline
-                                                className={classNames('ml-2', {
-                                                    'btn-loading': isSubmitting,
-                                                })}
-                                                disabled={isSubmitting}
-                                                onClick={() => actions.deactivateIntegration(integration.get('id'))}
-                                            >
-                                                Deactivate
-                                            </Button>
-                                        ) : (
-                                            <Button
-                                                type="button"
-                                                color="success"
-                                                className={classNames('ml-2', {
-                                                    'btn-loading': isSubmitting,
-                                                })}
-                                                disabled={isSubmitting}
-                                                onClick={() => actions.activateIntegration(integration.get('id'))}
-                                            >
-                                                Re-activate
-                                            </Button>
-                                        )
-                                    }
+                                    {isActive ? (
+                                        <Button
+                                            type="button"
+                                            color="warning"
+                                            outline
+                                            className={classNames('ml-2', {
+                                                'btn-loading': isSubmitting,
+                                            })}
+                                            disabled={isSubmitting}
+                                            onClick={() =>
+                                                actions.deactivateIntegration(
+                                                    integration.get('id')
+                                                )
+                                            }
+                                        >
+                                            Deactivate
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            type="button"
+                                            color="success"
+                                            className={classNames('ml-2', {
+                                                'btn-loading': isSubmitting,
+                                            })}
+                                            disabled={isSubmitting}
+                                            onClick={() =>
+                                                actions.activateIntegration(
+                                                    integration.get('id')
+                                                )
+                                            }
+                                        >
+                                            Re-activate
+                                        </Button>
+                                    )}
 
                                     <ConfirmButton
                                         className="float-right"
                                         color="secondary"
-                                        confirm={() => actions.deleteIntegration(integration)}
+                                        confirm={() =>
+                                            actions.deleteIntegration(
+                                                integration
+                                            )
+                                        }
                                         content="Are you sure you want to delete this integration?"
                                     >
                                         <i className="material-icons mr-1 text-danger">

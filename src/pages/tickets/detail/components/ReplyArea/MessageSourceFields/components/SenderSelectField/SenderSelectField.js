@@ -9,21 +9,12 @@ const SenderSelectField = ({value, onChange, channels}) => (
         <i className={classnames('material-icons', css.arrow)}>
             keyboard_arrow_down
         </i>
-        <select
-            className={css.select}
-            value={value}
-            onChange={onChange}
-        >
-            {
-                channels.map((channel, index) => (
-                    <option
-                        key={index}
-                        value={channel.get('address')}
-                    >
-                        {channel.get('name')} ({channel.get('address')})
-                    </option>
-                ))
-            }
+        <select className={css.select} value={value} onChange={onChange}>
+            {channels.map((channel, index) => (
+                <option key={index} value={channel.get('address')}>
+                    {channel.get('name')} ({channel.get('address')})
+                </option>
+            ))}
         </select>
     </div>
 )

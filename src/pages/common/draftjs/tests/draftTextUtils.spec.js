@@ -12,7 +12,7 @@ import {
     mockPluginMethods,
     pressBackspace,
     splitFirstBlock,
-    typeText
+    typeText,
 } from './draftTestUtils'
 
 describe('draftTestUtils', () => {
@@ -21,7 +21,9 @@ describe('draftTestUtils', () => {
             const plugin = mockPluginMethods()
             const newState = typeText(plugin.getEditorState(), 'foo')
             plugin.setEditorState(newState)
-            expect(plugin.getEditorState().getCurrentContent().getPlainText()).toBe('foo')
+            expect(
+                plugin.getEditorState().getCurrentContent().getPlainText()
+            ).toBe('foo')
         })
     })
 
@@ -45,7 +47,6 @@ describe('draftTestUtils', () => {
         })
     })
 
-
     describe('pressBackspace()', () => {
         it('should not change the empty state', () => {
             const state = EditorState.createEmpty()
@@ -68,7 +69,8 @@ describe('draftTestUtils', () => {
 
             state = EditorState.forceSelection(
                 state,
-                state.getSelection()
+                state
+                    .getSelection()
                     .set('anchorOffset', 0)
                     .set('focusOffset', 0)
             )
@@ -77,7 +79,10 @@ describe('draftTestUtils', () => {
             expect(state.getCurrentContent().getPlainText()).toBe('fo\nbar')
 
             const selection = state.getSelection()
-            const firstBlockKey = state.getCurrentContent().getFirstBlock().getKey()
+            const firstBlockKey = state
+                .getCurrentContent()
+                .getFirstBlock()
+                .getKey()
             expect(selection.getAnchorKey()).toBe(firstBlockKey)
             expect(selection.getFocusKey()).toBe(firstBlockKey)
             expect(selection.getStartOffset()).toBe(2)
@@ -87,10 +92,14 @@ describe('draftTestUtils', () => {
         it('should not change the state if cursor is at the beginning of the text', () => {
             let state = EditorState.createEmpty()
             state = typeText(state, 'foobar')
-            const firstBlockKey = state.getCurrentContent().getFirstBlock().getKey()
+            const firstBlockKey = state
+                .getCurrentContent()
+                .getFirstBlock()
+                .getKey()
             state = EditorState.forceSelection(
                 state,
-                state.getSelection()
+                state
+                    .getSelection()
                     .set('anchorOffset', 0)
                     .set('anchorKey', firstBlockKey)
                     .set('focusOffset', 0)
@@ -105,7 +114,8 @@ describe('draftTestUtils', () => {
 
             state = EditorState.forceSelection(
                 state,
-                state.getSelection()
+                state
+                    .getSelection()
                     .set('anchorOffset', 1)
                     .set('focusOffset', 5)
             )
@@ -123,18 +133,24 @@ describe('draftTestUtils', () => {
 
             state = EditorState.forceSelection(
                 state,
-                state.getSelection()
+                state
+                    .getSelection()
                     .set('anchorOffset', 1)
-                    .set('anchorKey', state.getCurrentContent().getFirstBlock().getKey())
+                    .set(
+                        'anchorKey',
+                        state.getCurrentContent().getFirstBlock().getKey()
+                    )
                     .set('focusOffset', 1)
-                    .set('focusKey', state.getCurrentContent().getLastBlock().getKey())
+                    .set(
+                        'focusKey',
+                        state.getCurrentContent().getLastBlock().getKey()
+                    )
             )
 
             state = pressBackspace(state)
             expect(state.getCurrentContent().getPlainText()).toBe('far')
             expect(state.getSelection().getStartOffset()).toBe(1)
             expect(state.getSelection().getEndOffset()).toBe(1)
-
         })
     })
 
@@ -151,10 +167,16 @@ describe('draftTestUtils', () => {
                 type: 'foo',
                 mutability: 'IMMUTABLE',
                 data: {
-                    foo: 'bar'
-                }
+                    foo: 'bar',
+                },
             }
-            state.getCurrentContent().createEntity(fooEntity.type, fooEntity.mutability, fooEntity.data)
+            state
+                .getCurrentContent()
+                .createEntity(
+                    fooEntity.type,
+                    fooEntity.mutability,
+                    fooEntity.data
+                )
             let lastEntity = getLastCreatedEntity(state.getCurrentContent())
             expect((lastEntity: any).toJS()).toEqual(fooEntity)
 
@@ -162,10 +184,16 @@ describe('draftTestUtils', () => {
                 type: 'bar',
                 mutability: 'IMMUTABLE',
                 data: {
-                    bar: 'baz'
-                }
+                    bar: 'baz',
+                },
             }
-            state.getCurrentContent().createEntity(barEntity.type, barEntity.mutability, barEntity.data)
+            state
+                .getCurrentContent()
+                .createEntity(
+                    barEntity.type,
+                    barEntity.mutability,
+                    barEntity.data
+                )
             lastEntity = getLastCreatedEntity(state.getCurrentContent())
             expect((lastEntity: any).toJS()).toEqual(barEntity)
         })
@@ -174,13 +202,19 @@ describe('draftTestUtils', () => {
     describe('getLastCreatedEntityRange()', () => {
         it('should return null for empty state', () => {
             const state = EditorState.createEmpty()
-            expect(getLastCreatedEntityRange(state.getCurrentContent())).toBeNull()
+            expect(
+                getLastCreatedEntityRange(state.getCurrentContent())
+            ).toBeNull()
         })
 
         it('should return null for state with unapplied entity', () => {
             const state = EditorState.createEmpty()
-            state.getCurrentContent().createEntity('foo', 'IMMUTABLE', {foo: 'bar'})
-            expect(getLastCreatedEntityRange(state.getCurrentContent())).toBeNull()
+            state
+                .getCurrentContent()
+                .createEntity('foo', 'IMMUTABLE', {foo: 'bar'})
+            expect(
+                getLastCreatedEntityRange(state.getCurrentContent())
+            ).toBeNull()
         })
 
         it('should return range for applied entity', () => {
@@ -193,12 +227,14 @@ describe('draftTestUtils', () => {
                 {
                     type: 'foo',
                     mutability: 'IMMUTABLE',
-                    data: {}
+                    data: {},
                 },
                 range
             )
 
-            expect(getLastCreatedEntityRange(state.getCurrentContent())).toEqual(range)
+            expect(
+                getLastCreatedEntityRange(state.getCurrentContent())
+            ).toEqual(range)
         })
     })
 
@@ -239,9 +275,11 @@ describe('draftTestUtils', () => {
             let state = EditorState.createEmpty()
             state = typeText(state, 'foobar')
             state = splitFirstBlock(state, 3)
-            expect(debugBlockMap(state.getCurrentContent().getBlockMap())).toEqual({
+            expect(
+                debugBlockMap(state.getCurrentContent().getBlockMap())
+            ).toEqual({
                 [state.getCurrentContent().getFirstBlock().getKey()]: 'foo',
-                [state.getCurrentContent().getLastBlock().getKey()]: 'bar'
+                [state.getCurrentContent().getLastBlock().getKey()]: 'bar',
             })
         })
     })
@@ -258,10 +296,16 @@ describe('draftTestUtils', () => {
                 type: 'foo',
                 mutability: 'IMMUTABLE',
                 data: {
-                    foo: 'bar'
-                }
+                    foo: 'bar',
+                },
             }
-            state.getCurrentContent().createEntity(fooEntity.type, fooEntity.mutability, fooEntity.data)
+            state
+                .getCurrentContent()
+                .createEntity(
+                    fooEntity.type,
+                    fooEntity.mutability,
+                    fooEntity.data
+                )
             expect(debugLastAppliedEntity(state.getCurrentContent())).toBeNull()
         })
 
@@ -273,19 +317,15 @@ describe('draftTestUtils', () => {
                 type: 'foo',
                 mutability: 'IMMUTABLE',
                 data: {
-                    foo: 'bar'
-                }
+                    foo: 'bar',
+                },
             }
             const range = [1, 2]
-            state = createEntityAndApplyToFirstBlockRange(
-                state,
-                entity,
-                range
-            )
+            state = createEntityAndApplyToFirstBlockRange(state, entity, range)
 
             expect(debugLastAppliedEntity(state.getCurrentContent())).toEqual({
                 ...entity,
-                range
+                range,
             })
         })
     })
@@ -295,7 +335,10 @@ describe('draftTestUtils', () => {
             const state = EditorState.createEmpty()
             const debug = debugEditorState(state)
             expect(debug).toHaveProperty('text', '')
-            expect(debug).toHaveProperty('selection', debugSelection(state.getSelection()))
+            expect(debug).toHaveProperty(
+                'selection',
+                debugSelection(state.getSelection())
+            )
             expect(debug).toHaveProperty('lastAppliedEntity', null)
             expect(debug).toHaveProperty('blocks')
         })

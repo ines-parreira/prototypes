@@ -12,12 +12,10 @@ exports[`TicketAttachments component private should display an error message if 
     >
       warning
     </i>
+     There is
      
-    There is 
     3
-     attachment(s) to this message which we
-     
-    couldn't download.
+     attachment(s) to this message which we couldn't download.
   </div>
   <Lightbox
     backdropClosesModal={true}
@@ -72,12 +70,10 @@ exports[`TicketAttachments component private should display both an error messag
     >
       warning
     </i>
+     There is
      
-    There is 
     1
-     attachment(s) to this message which we
-     
-    couldn't download.
+     attachment(s) to this message which we couldn't download.
   </div>
   <a
     className="item hasPreview"

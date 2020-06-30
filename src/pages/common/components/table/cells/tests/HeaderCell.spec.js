@@ -12,20 +12,14 @@ describe('<HeaderCell/>', () => {
     })
 
     it('should render', () => {
-        const component = shallow(
-            <HeaderCell className="foo">
-                Foo
-            </HeaderCell>
-        )
+        const component = shallow(<HeaderCell className="foo">Foo</HeaderCell>)
 
         expect(component).toMatchSnapshot()
     })
 
     it('should call onClick when clicked', () => {
         const component = shallow(
-            <HeaderCell onClick={mockOnClick}>
-                Foo
-            </HeaderCell>
+            <HeaderCell onClick={mockOnClick}>Foo</HeaderCell>
         )
 
         component.simulate('click')

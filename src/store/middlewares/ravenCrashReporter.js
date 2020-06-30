@@ -14,7 +14,7 @@ const crashReporter = () => (next) => (action) => {
         if (action.type) {
             Raven.captureBreadcrumb({
                 category: 'redux',
-                message: action.type
+                message: action.type,
             })
         }
 
@@ -27,12 +27,18 @@ const crashReporter = () => (next) => (action) => {
         // state: store.getState()
         // If the action holds error.response.headers object, send x-request-id to sentry
         let customTags = {}
-        if (action.error && action.error.response && action.error.response.headers) {
-            customTags = {'XRequestID' : action.error.response.headers['x-request-id']}
+        if (
+            action.error &&
+            action.error.response &&
+            action.error.response.headers
+        ) {
+            customTags = {
+                XRequestID: action.error.response.headers['x-request-id'],
+            }
         }
         Raven.captureException(err, {
             extra: action,
-            tags: customTags
+            tags: customTags,
         })
     }
 }

@@ -14,8 +14,8 @@ describe('shortcutManager', () => {
         const actions = {
             ACTION_NAME: {
                 key: 'p',
-                action: bump
-            }
+                action: bump,
+            },
         }
         sm.bind('pizza', actions)
         sm.trigger('p')
@@ -27,8 +27,8 @@ describe('shortcutManager', () => {
         const actions = {
             ACTION_NAME: {
                 key: 'p',
-                action: bump
-            }
+                action: bump,
+            },
         }
         sm.bind('pizza', actions)
         sm.unbind('pizza')
@@ -40,15 +40,15 @@ describe('shortcutManager', () => {
     it('support multiple events on combo', () => {
         const action = {
             key: 'p',
-            action: bump
+            action: bump,
         }
         const anotherAction = {
             key: 'p',
-            action: bump
+            action: bump,
         }
         sm.bind('pizza', {
             ACTION_NAME: action,
-            ANOTHER_ACTION_NAME: anotherAction
+            ANOTHER_ACTION_NAME: anotherAction,
         })
         sm.trigger('p')
 
@@ -58,17 +58,17 @@ describe('shortcutManager', () => {
     it('only unbind events from component', () => {
         const action = {
             key: 'p',
-            action: bump
+            action: bump,
         }
         const anotherAction = {
             key: 'p',
-            action: bump
+            action: bump,
         }
         sm.bind('pizza', {
             ACTION_NAME: action,
         })
         sm.bind('pepperoni', {
-            ANOTHER_ACTION_NAME: anotherAction
+            ANOTHER_ACTION_NAME: anotherAction,
         })
 
         sm.unbind('pizza')
@@ -80,13 +80,13 @@ describe('shortcutManager', () => {
     it('not duplicate actions', () => {
         const action = {
             key: 'p',
-            action: bump
+            action: bump,
         }
         sm.bind('pizza', {
-            ACTION_NAME: action
+            ACTION_NAME: action,
         })
         sm.bind('pizza', {
-            ACTION_NAME: action
+            ACTION_NAME: action,
         })
         sm.trigger('p')
 
@@ -96,7 +96,7 @@ describe('shortcutManager', () => {
     it('rebind actions defined in different component', () => {
         const action = {
             key: 'p',
-            action: bump
+            action: bump,
         }
         sm.bind('pizza', {
             ACTION_NAME: action,
@@ -111,7 +111,7 @@ describe('shortcutManager', () => {
     it('pause bound component', () => {
         const action = {
             key: 'p',
-            action: bump
+            action: bump,
         }
         sm.bind('pizza', {
             ACTION_NAME: action,
@@ -125,7 +125,7 @@ describe('shortcutManager', () => {
     it('pause unbound component', () => {
         const action = {
             key: 'p',
-            action: bump
+            action: bump,
         }
         sm.pause()
         sm.bind('pizza', {

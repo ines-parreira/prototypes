@@ -27,25 +27,18 @@ const icons = {
 export const renderInfobarTemplate = (body: string, context: {} = {}): Node => {
     return renderTemplate(body, context)
         .split(iconRegex)
-        .filter(part => !!part)
+        .filter((part) => !!part)
         .map((part) => {
             const key = hash(part)
 
             if (icons[part]) {
                 return (
-                    <i
-                        key={key}
-                        className="material-icons"
-                    >
+                    <i key={key} className="material-icons">
                         {icons[part]}
                     </i>
                 )
             }
 
-            return (
-                <Fragment key={key}>
-                    {part}
-                </Fragment>
-            )
+            return <Fragment key={key}>{part}</Fragment>
         })
 }

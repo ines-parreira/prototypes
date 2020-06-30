@@ -8,7 +8,7 @@ import {
     shopifyLineItemFixture,
     shopifyOrderFixture,
     shopifyPriceSetFixture,
-    shopifySuggestedRefundFixture
+    shopifySuggestedRefundFixture,
 } from '../../../../../../../../../../../../../fixtures/shopify'
 import {initRefundOrderLineItems} from '../../../../../../../../../../../../../business/shopify/order'
 import {OrderLineItemRow} from '../OrderLineItemRow'
@@ -24,9 +24,12 @@ describe('<LineItemRow/>', () => {
 
     describe('render()', () => {
         it('should render', () => {
-            const totalDiscountSet = fromJS(shopifyPriceSetFixture({amount: '0.00'}))
-            const lineItem = fromJS(shopifyLineItemFixture({currencyCode: 'USD'}))
-                .set('total_discount_set', totalDiscountSet)
+            const totalDiscountSet = fromJS(
+                shopifyPriceSetFixture({amount: '0.00'})
+            )
+            const lineItem = fromJS(
+                shopifyLineItemFixture({currencyCode: 'USD'})
+            ).set('total_discount_set', totalDiscountSet)
             const refund = fromJS(shopifySuggestedRefundFixture())
 
             const component = shallow(
@@ -44,18 +47,22 @@ describe('<LineItemRow/>', () => {
         })
 
         it('should render for multi-currency order', () => {
-            const totalDiscountSet = fromJS(shopifyPriceSetFixture({
-                amount: '0.00',
-                currencyCode: 'USD',
-                presentmentCurrencyCode: 'JPY',
-                presentmentAmount: '0',
-            }))
+            const totalDiscountSet = fromJS(
+                shopifyPriceSetFixture({
+                    amount: '0.00',
+                    currencyCode: 'USD',
+                    presentmentCurrencyCode: 'JPY',
+                    presentmentAmount: '0',
+                })
+            )
 
-            const lineItem = fromJS(shopifyLineItemFixture({
-                currencyCode: 'USD',
-                presentmentCurrencyCode: 'JPY',
-                presentmentPrice: '100',
-            })).set('total_discount_set', totalDiscountSet)
+            const lineItem = fromJS(
+                shopifyLineItemFixture({
+                    currencyCode: 'USD',
+                    presentmentCurrencyCode: 'JPY',
+                    presentmentPrice: '100',
+                })
+            ).set('total_discount_set', totalDiscountSet)
 
             const refund = fromJS(shopifySuggestedRefundFixture())
 
@@ -74,9 +81,12 @@ describe('<LineItemRow/>', () => {
         })
 
         it('should render with discounted price', () => {
-            const totalDiscountSet = fromJS(shopifyPriceSetFixture({amount: '0.50'}))
-            const lineItem = fromJS(shopifyLineItemFixture({currencyCode: 'USD'}))
-                .set('total_discount_set', totalDiscountSet)
+            const totalDiscountSet = fromJS(
+                shopifyPriceSetFixture({amount: '0.50'})
+            )
+            const lineItem = fromJS(
+                shopifyLineItemFixture({currencyCode: 'USD'})
+            ).set('total_discount_set', totalDiscountSet)
             const refund = fromJS(shopifySuggestedRefundFixture())
 
             const component = shallow(
@@ -114,9 +124,12 @@ describe('<LineItemRow/>', () => {
         })
 
         it('should render with "not restockable" message', () => {
-            const totalDiscountSet = fromJS(shopifyPriceSetFixture({amount: '0.00'}))
-            const lineItem = fromJS(shopifyLineItemFixture({currencyCode: 'USD'}))
-                .set('total_discount_set', totalDiscountSet)
+            const totalDiscountSet = fromJS(
+                shopifyPriceSetFixture({amount: '0.00'})
+            )
+            const lineItem = fromJS(
+                shopifyLineItemFixture({currencyCode: 'USD'})
+            ).set('total_discount_set', totalDiscountSet)
             const refund = fromJS(shopifySuggestedRefundFixture())
 
             const component = shallow(
@@ -138,9 +151,12 @@ describe('<LineItemRow/>', () => {
 
     describe('_onQuantityChange()', () => {
         it('should call onChange() with updated line item', () => {
-            const totalDiscountSet = fromJS(shopifyPriceSetFixture({amount: '0.00'}))
-            const lineItem = fromJS(shopifyLineItemFixture({currencyCode: 'USD'}))
-                .set('total_discount_set', totalDiscountSet)
+            const totalDiscountSet = fromJS(
+                shopifyPriceSetFixture({amount: '0.00'})
+            )
+            const lineItem = fromJS(
+                shopifyLineItemFixture({currencyCode: 'USD'})
+            ).set('total_discount_set', totalDiscountSet)
             const refund = fromJS(shopifySuggestedRefundFixture())
 
             const component = shallow(
@@ -154,15 +170,20 @@ describe('<LineItemRow/>', () => {
                 />
             )
 
-            component.find({type: 'text'}).simulate('change', {target: {value: '0'}})
+            component
+                .find({type: 'text'})
+                .simulate('change', {target: {value: '0'}})
 
             expect(onChange).toHaveBeenCalledWith(lineItem.set('quantity', 0))
         })
 
         it('should use minimum value if the input is empty', () => {
-            const totalDiscountSet = fromJS(shopifyPriceSetFixture({amount: '0.00'}))
-            const lineItem = fromJS(shopifyLineItemFixture({currencyCode: 'USD'}))
-                .set('total_discount_set', totalDiscountSet)
+            const totalDiscountSet = fromJS(
+                shopifyPriceSetFixture({amount: '0.00'})
+            )
+            const lineItem = fromJS(
+                shopifyLineItemFixture({currencyCode: 'USD'})
+            ).set('total_discount_set', totalDiscountSet)
             const refund = fromJS(shopifySuggestedRefundFixture())
 
             const component = shallow(
@@ -176,15 +197,20 @@ describe('<LineItemRow/>', () => {
                 />
             )
 
-            component.find({type: 'text'}).simulate('change', {target: {value: ''}})
+            component
+                .find({type: 'text'})
+                .simulate('change', {target: {value: ''}})
 
             expect(onChange).toHaveBeenCalledWith(lineItem.set('quantity', 0))
         })
 
         it('should use maximum value if the value is too big', () => {
-            const totalDiscountSet = fromJS(shopifyPriceSetFixture({amount: '0.00'}))
-            const lineItem = fromJS(shopifyLineItemFixture({currencyCode: 'USD'}))
-                .set('total_discount_set', totalDiscountSet)
+            const totalDiscountSet = fromJS(
+                shopifyPriceSetFixture({amount: '0.00'})
+            )
+            const lineItem = fromJS(
+                shopifyLineItemFixture({currencyCode: 'USD'})
+            ).set('total_discount_set', totalDiscountSet)
             const refund = fromJS(shopifySuggestedRefundFixture())
 
             const component = shallow(
@@ -198,7 +224,9 @@ describe('<LineItemRow/>', () => {
                 />
             )
 
-            component.find({type: 'text'}).simulate('change', {target: {value: '2'}})
+            component
+                .find({type: 'text'})
+                .simulate('change', {target: {value: '2'}})
 
             expect(onChange).toHaveBeenCalledWith(lineItem.set('quantity', 1))
         })
@@ -206,9 +234,12 @@ describe('<LineItemRow/>', () => {
 
     describe('_onQuantityUp()', () => {
         it('should call onChange() with incremented quantity', () => {
-            const totalDiscountSet = fromJS(shopifyPriceSetFixture({amount: '0.00'}))
-            const lineItem = fromJS(shopifyLineItemFixture({currencyCode: 'USD', quantity: 0}))
-                .set('total_discount_set', totalDiscountSet)
+            const totalDiscountSet = fromJS(
+                shopifyPriceSetFixture({amount: '0.00'})
+            )
+            const lineItem = fromJS(
+                shopifyLineItemFixture({currencyCode: 'USD', quantity: 0})
+            ).set('total_discount_set', totalDiscountSet)
             const refund = fromJS(shopifySuggestedRefundFixture())
 
             const component = shallow(
@@ -228,9 +259,12 @@ describe('<LineItemRow/>', () => {
         })
 
         it('should call onChange() with decremented quantity', () => {
-            const totalDiscountSet = fromJS(shopifyPriceSetFixture({amount: '0.00'}))
-            const lineItem = fromJS(shopifyLineItemFixture({currencyCode: 'USD'}))
-                .set('total_discount_set', totalDiscountSet)
+            const totalDiscountSet = fromJS(
+                shopifyPriceSetFixture({amount: '0.00'})
+            )
+            const lineItem = fromJS(
+                shopifyLineItemFixture({currencyCode: 'USD'})
+            ).set('total_discount_set', totalDiscountSet)
             const refund = fromJS(shopifySuggestedRefundFixture())
 
             const component = shallow(

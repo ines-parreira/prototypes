@@ -9,5 +9,5 @@ import type {CreateOrderState} from './types'
 
 export const getCreateOrderState = createSelector(
     [getShopifyActionsState],
-    (state: ShopifyActionsState): CreateOrderState => state.createOrder,
+    (state: ShopifyActionsState): CreateOrderState => state.createOrder
 )

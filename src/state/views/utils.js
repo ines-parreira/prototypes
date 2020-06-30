@@ -9,7 +9,11 @@ import {UNARY_OPERATORS, TIMEDELTA_OPERATOR_DEFAULT_VALUE} from '../../config'
 
 import type {agentsType} from '../agents/types'
 import {getAST, getFirstExpressionOfAST, toJS} from '../../utils'
-import {datetimeOperators, timedeltaOperators, collectionOperators} from '../../config/rules'
+import {
+    datetimeOperators,
+    timedeltaOperators,
+    collectionOperators,
+} from '../../config/rules'
 import {isTimedelta} from '../../utils/ast'
 
 import type {filterType} from './types'
@@ -21,22 +25,21 @@ type nodeType = Map<*, *>
 
 type currentLocationType = {
     pathname: string,
-    search: string
+    search: string,
 }
 
 export const rawify = (data: string | number | null): string => {
     if (typeof data === 'string') {
         // escape ' and \ chars so that it's a valid string
-        return `'${data.replace(/\\/g, '\\\\').replace(/'/g, '\\\'')}'`
+        return `'${data.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`
     }
 
     if (typeof data === 'number') {
         return `${data}`
     }
 
-    return '\'\''
+    return "''"
 }
-
 
 /**
  * Resolve the right argument of a filter being added or updated.
@@ -53,17 +56,25 @@ function resolveSecondArg(callee: string, rightValue: ?Object): string | null {
 
     if (isTimedeltaCallee && !isTimedelta(currentRawValue, true)) {
         return `\'${TIMEDELTA_OPERATOR_DEFAULT_VALUE}\'`
-    } else if (!isTimedeltaCallee && isDatetimeCallee && isTimedelta(currentRawValue, true)) {
-        return '\'\''
+    } else if (
+        !isTimedeltaCallee &&
+        isDatetimeCallee &&
+        isTimedelta(currentRawValue, true)
+    ) {
+        return "''"
     } else if (isUnaryCallee) {
         return null
     } else if (isCollectionOperator) {
         if (rightValue && rightValue.type === 'ArrayExpression') {
-            return '[' + rightValue.elements.map((elem) => elem.raw).join(', ') + ']'
+            return (
+                '[' +
+                rightValue.elements.map((elem) => elem.raw).join(', ') +
+                ']'
+            )
         }
         return '[]'
     }
-    return currentRawValue || '\'\''
+    return currentRawValue || "''"
 }
 
 function buildRawCallExpression(filter: filterType) {
@@ -94,20 +105,30 @@ export function removeFilterAST(view: viewType, index: number): ?Map<*, *> {
 }
 
 // Update a node (CallExpression) in the ast
-function setIn(ast: astType, index: number, path: pathType, value: any): nodeType {
+function setIn(
+    ast: astType,
+    index: number,
+    path: pathType,
+    value: any
+): nodeType {
     let count = 0
 
     function walker(node: nodeType): nodeType {
         switch (node.get('type')) {
             case 'Program':
-                return node.setIn(['body', 0], walker(node.getIn(['body', 0], fromJS({}))))
+                return node.setIn(
+                    ['body', 0],
+                    walker(node.getIn(['body', 0], fromJS({})))
+                )
             case 'ExpressionStatement':
                 return node.set('expression', walker(node.get('expression')))
             case 'LogicalExpression':
-                return node.set('left', walker(node.get('left'))).set('right', walker(node.get('right')))
+                return node
+                    .set('left', walker(node.get('left')))
+                    .set('right', walker(node.get('right')))
             case 'CallExpression':
                 count++
-                if ((count - 1) === index) {
+                if (count - 1 === index) {
                     return node.setIn(path, value)
                 }
 
@@ -131,7 +152,6 @@ function getIn(ast: astType, index: number, path: pathType): any {
             case 'ExpressionStatement':
                 return walker(node.get('expression'))
             case 'LogicalExpression': {
-
                 let _node = walker(node.get('left'))
                 if (_node) {
                     return _node
@@ -145,7 +165,7 @@ function getIn(ast: astType, index: number, path: pathType): any {
             }
             case 'CallExpression':
                 count++
-                if ((count - 1) === index) {
+                if (count - 1 === index) {
                     return node.getIn(path)
                 }
                 break
@@ -157,10 +177,13 @@ function getIn(ast: astType, index: number, path: pathType): any {
     return walker(ast)
 }
 
-
 // traverse filters_ast and replace the callee name of the CallExpression found at `index
 // once replaced, we return the new AST
-export function updateFilterOperator(ast: astType, index: number, operator: string): nodeType {
+export function updateFilterOperator(
+    ast: astType,
+    index: number,
+    operator: string
+): nodeType {
     let filter = getIn(ast, index, [])
     let rightArgs = filter.getIn(['arguments', 1])
     const rightRaw = resolveSecondArg(operator, toJS(rightArgs))
@@ -177,24 +200,32 @@ export function updateFilterOperator(ast: astType, index: number, operator: stri
     return setIn(ast, index, [], filter)
 }
 
-export function updateFilterValue(ast: astType, index: number, value: string | number | Array<any> | null ): nodeType {
+export function updateFilterValue(
+    ast: astType,
+    index: number,
+    value: string | number | Array<any> | null
+): nodeType {
     if (_isArray(value)) {
         let astLiterals = value.map((item) => ({
             type: 'Literal',
             value: item,
-            raw: rawify(item)
+            raw: rawify(item),
         }))
 
         let arrayExpression = {
             type: 'ArrayExpression',
-            elements: astLiterals
+            elements: astLiterals,
         }
 
         return setIn(ast, index, ['arguments', 1], arrayExpression)
     }
     const raw = rawify(value)
-    return setIn(ast, index, ['arguments', 1], getFirstExpressionOfAST(getAST(raw)))
-
+    return setIn(
+        ast,
+        index,
+        ['arguments', 1],
+        getFirstExpressionOfAST(getAST(raw))
+    )
 }
 
 /**
@@ -266,7 +297,7 @@ class RecentViewsStorage {
             if (_isInteger(viewId)) {
                 views[viewId] = {
                     inserted_datetime: now,
-                    updated_datetime: now
+                    updated_datetime: now,
                 }
             }
         })
@@ -287,7 +318,7 @@ class RecentViewsStorage {
 
 export const recentViewsStorage = new RecentViewsStorage()
 
-function getViewTypeUrl(viewType: string): ?{ detail: string, list: string } {
+function getViewTypeUrl(viewType: string): ?{detail: string, list: string} {
     const typeMap = {
         'ticket-list': {
             detail: 'ticket',
@@ -296,7 +327,7 @@ function getViewTypeUrl(viewType: string): ?{ detail: string, list: string } {
         'customer-list': {
             detail: 'customer',
             list: 'customers',
-        }
+        },
     }
 
     return typeMap[viewType] || null
@@ -309,7 +340,11 @@ function getViewTypeUrl(viewType: string): ?{ detail: string, list: string } {
  * @param navigation
  * @returns {string}
  */
-export function activeViewUrl(view: viewType, currentLocation: currentLocationType, navigation: Map<*, *>): string {
+export function activeViewUrl(
+    view: viewType,
+    currentLocation: currentLocationType,
+    navigation: Map<*, *>
+): string {
     const viewType = view.get('type', '')
     const viewId = view.get('id')
     const viewSearch = view.get('search')
@@ -349,7 +384,10 @@ export function activeViewUrl(view: viewType, currentLocation: currentLocationTy
     return url
 }
 
-export function addViewIfMissing(views: List<Map<*,*>>, newView: { id: number }): List<Map<*,*>> {
+export function addViewIfMissing(
+    views: List<Map<*, *>>,
+    newView: {id: number}
+): List<Map<*, *>> {
     const existing = views.find((view) => view.get('id') === newView.id)
     return existing ? views : views.push(fromJS(newView))
 }

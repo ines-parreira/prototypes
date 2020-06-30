@@ -30,45 +30,53 @@ type Props = {
     downloadable?: boolean,
     loading: boolean | Object,
     name: string,
-    notify: typeof notify
+    notify: typeof notify,
 }
 
 type State = {
-    isDownloading: boolean
+    isDownloading: boolean,
 }
 
 export class Stat extends Component<Props, State> {
     static defaultProps = {
         downloadable: false,
-        isLoading: false
+        isLoading: false,
     }
 
     gorgiasApi = new GorgiasApi()
     state = {
-        isDownloading: false
+        isDownloading: false,
     }
 
     componentWillUnmount() {
         this.gorgiasApi.cancelPendingRequests()
     }
 
-    _downloadStatistic = async() => {
+    _downloadStatistic = async () => {
         const {name, filters, notify} = this.props
 
         this.setState({isDownloading: true})
         try {
-            const file = await this.gorgiasApi.downloadStatistic(name, fromJS({filters}))
-            saveFileAsDownloaded(file.get('name'), file.get('contentType'), file.get('data'))
+            const file = await this.gorgiasApi.downloadStatistic(
+                name,
+                fromJS({filters})
+            )
+            saveFileAsDownloaded(
+                file.get('name'),
+                file.get('contentType'),
+                file.get('data')
+            )
         } catch (error) {
             if (axios.isCancel(error)) {
                 return
             }
 
-            const defaultError = 'Failed to download statistics. Please retry in a few seconds.'
+            const defaultError =
+                'Failed to download statistics. Please retry in a few seconds.'
             const serverError = error.response.data.error
             notify({
                 status: 'error',
-                title: serverError ? serverError.msg : defaultError
+                title: serverError ? serverError.msg : defaultError,
             })
         } finally {
             this.setState({isDownloading: false})
@@ -108,14 +116,11 @@ export class Stat extends Component<Props, State> {
 
         return (
             <div>
-                {this.props.label ?
+                {this.props.label ? (
                     <div className="mb-3 d-flex justify-content-between align-items-baseline">
-                        <h5
-                            className="mb-0 d-flex"
-                            style={{fontSize: '17px'}}
-                        >
+                        <h5 className="mb-0 d-flex" style={{fontSize: '17px'}}>
                             {label}
-                            {helpText ?
+                            {helpText ? (
                                 <span>
                                     <i
                                         id={name}
@@ -123,58 +128,62 @@ export class Stat extends Component<Props, State> {
                                     >
                                         info_outline
                                     </i>
-                                    <Tooltip
-                                        placement="top"
-                                        target={name}
-                                    >
+                                    <Tooltip placement="top" target={name}>
                                         {helpText}
                                     </Tooltip>
                                 </span>
-                                : null}
+                            ) : null}
                         </h5>
-                        {downloadable && !isLoading ?
+                        {downloadable && !isLoading ? (
                             <Button
                                 onClick={this._downloadStatistic}
                                 className="btn btn-secondary btn-transparent"
                                 disabled={isDownloading}
                             >
-                                {isDownloading
-                                    ? <i className="material-icons mr-1">refresh</i>
-                                    : <i className="material-icons mr-1">file_download</i>
-                                }
+                                {isDownloading ? (
+                                    <i className="material-icons mr-1">
+                                        refresh
+                                    </i>
+                                ) : (
+                                    <i className="material-icons mr-1">
+                                        file_download
+                                    </i>
+                                )}
                                 CSV
                             </Button>
-                            : null}
+                        ) : null}
                     </div>
-                    : null
-                }
+                ) : null}
                 <div>
-                    {isLoading ?
-                        <Loader minHeight={loaderHeight}/>
-                        :
+                    {isLoading ? (
+                        <Loader minHeight={loaderHeight} />
+                    ) : (
                         <StatComponent
                             context={context}
                             loading={loading}
                             {...this.props}
                         />
-                    }
+                    )}
                 </div>
             </div>
         )
     }
 }
 
-export default connect((state, props) => {
-    // Only `ticket-per-tags` stats needs colors of tags
-    if (props.name !== TICKETS_PER_TAG) {
-        return {
-            tagColors: null
+export default connect(
+    (state, props) => {
+        // Only `ticket-per-tags` stats needs colors of tags
+        if (props.name !== TICKETS_PER_TAG) {
+            return {
+                tagColors: null,
+            }
         }
-    }
 
-    return {
-        tagColors: tagsSelectors.getTags(state).reduce((tagColors, tag) => {
-            return tagColors.set(tag.get('name'), tag.get('decoration'))
-        }, fromJS({}))
-    }
-}, {notify})(Stat)
+        return {
+            tagColors: tagsSelectors.getTags(state).reduce((tagColors, tag) => {
+                return tagColors.set(tag.get('name'), tag.get('decoration'))
+            }, fromJS({})),
+        }
+    },
+    {notify}
+)(Stat)

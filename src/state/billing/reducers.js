@@ -7,7 +7,10 @@ import type {actionType} from '../types'
 
 import * as constants from './constants'
 
-export default function reducer(state: Map<*, *> = initialState, action: actionType): Map<*, *> {
+export default function reducer(
+    state: Map<*, *> = initialState,
+    action: actionType
+): Map<*, *> {
     switch (action.type) {
         case constants.SET_FUTURE_SUBSCRIPTION_PLAN:
             return state.set('futureSubscriptionPlan', action.planId)

@@ -7,11 +7,7 @@ import Meta from '../Meta'
 describe('ticket message meta', () => {
     it('should add a -sent via rule- label because the message was sent by a rule', () => {
         const component = shallow(
-            <Meta
-                messageId="some-id"
-                via="rule"
-                ruleId='4'
-            />
+            <Meta messageId="some-id" via="rule" ruleId="4" />
         )
         const fromVia = component.find('From')
 
@@ -27,7 +23,7 @@ describe('ticket message meta', () => {
                 via="something"
                 integrationId="118"
                 meta={{
-                    campaign_id: '123'
+                    campaign_id: '123',
                 }}
             />
         )
@@ -46,20 +42,18 @@ describe('ticket message meta', () => {
                 extra: {page_id: pageId, post_id: `${pageId}_${postId}`},
                 from: {address: `${pageId}-${pageId}`, name: 'Nulastin'},
                 type: 'facebook-post',
-                to: [{address: `${pageId}-${pageId}`, name: 'Nulastin'}]
+                to: [{address: `${pageId}-${pageId}`, name: 'Nulastin'}],
             }
 
             const component = shallow(
-                <Meta
-                    via="facebook"
-                    integrationId="118"
-                    source={source}
-                />
+                <Meta via="facebook" integrationId="118" source={source} />
             )
 
             const from = component.find('From').dive()
             expect(from.text()).toBe('go to post')
-            expect(from.find('a').prop('href')).toEqual(`https://facebook.com/${postId}`)
+            expect(from.find('a').prop('href')).toEqual(
+                `https://facebook.com/${postId}`
+            )
         })
 
         it('should display "go to comment" link', () => {
@@ -68,10 +62,14 @@ describe('ticket message meta', () => {
             const userId = '2941872749234184'
             const commentId = '2823237684438170'
             const source = {
-                extra: {page_id: pageId, post_id: `${pageId}_${postId}`, parent_id: `${pageId}_${postId}`},
+                extra: {
+                    page_id: pageId,
+                    post_id: `${pageId}_${postId}`,
+                    parent_id: `${pageId}_${postId}`,
+                },
                 from: {address: `${pageId}-${userId}`, name: 'Foo Bar'},
                 type: 'facebook-comment',
-                to: [{address: `${pageId}-${pageId}`, name: 'Nulastin'}]
+                to: [{address: `${pageId}-${pageId}`, name: 'Nulastin'}],
             }
 
             const component = shallow(
@@ -85,7 +83,9 @@ describe('ticket message meta', () => {
 
             const from = component.find('From').dive()
             expect(from.text()).toBe('go to comment')
-            expect(from.find('a').prop('href')).toEqual(`https://facebook.com/${postId}?comment_id=${commentId}`)
+            expect(from.find('a').prop('href')).toEqual(
+                `https://facebook.com/${postId}?comment_id=${commentId}`
+            )
         })
 
         it('should display "go to reply" link', () => {
@@ -95,10 +95,14 @@ describe('ticket message meta', () => {
             const commentId = '2823237684438170'
             const replyId = '2824439047651367'
             const source = {
-                extra: {page_id: pageId, post_id: `${pageId}_${postId}`, parent_id: `${pageId}_${commentId}`},
+                extra: {
+                    page_id: pageId,
+                    post_id: `${pageId}_${postId}`,
+                    parent_id: `${pageId}_${commentId}`,
+                },
                 from: {address: `${pageId}-${pageId}`, name: 'Nulastin'},
                 type: 'facebook-comment',
-                to: [{address: `${pageId}-${userId}`, name: 'Foo Bar'}]
+                to: [{address: `${pageId}-${userId}`, name: 'Foo Bar'}],
             }
 
             const component = shallow(
@@ -112,8 +116,9 @@ describe('ticket message meta', () => {
 
             const from = component.find('From').dive()
             expect(from.text()).toBe('go to reply')
-            expect(from.find('a').prop('href'))
-                .toEqual(`https://facebook.com/${postId}?comment_id=${commentId}&reply_comment_id=${replyId}`)
+            expect(from.find('a').prop('href')).toEqual(
+                `https://facebook.com/${postId}?comment_id=${commentId}&reply_comment_id=${replyId}`
+            )
         })
 
         it('should not display link when IDs are missing', () => {
@@ -123,15 +128,11 @@ describe('ticket message meta', () => {
                 extra: {page_id: pageId, post_id: null, parent_id: null},
                 from: {address: `${pageId}-${userId}`, name: 'A Virk'},
                 type: 'facebook-comment',
-                to: [{address: `${pageId}-${pageId}-${pageId}`, name: 'IQ²'}]
+                to: [{address: `${pageId}-${pageId}-${pageId}`, name: 'IQ²'}],
             }
 
             const component = shallow(
-                <Meta
-                    via="facebook"
-                    integrationId="118"
-                    source={source}
-                />
+                <Meta via="facebook" integrationId="118" source={source} />
             )
 
             expect(component).toMatchSnapshot()
@@ -149,11 +150,7 @@ describe('ticket message meta', () => {
             }
 
             const component = shallow(
-                <Meta
-                    via="instagram"
-                    integrationId="118"
-                    source={source}
-                />
+                <Meta via="instagram" integrationId="118" source={source} />
             )
 
             const from = component.find('From').dive()

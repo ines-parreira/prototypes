@@ -3,7 +3,7 @@ import mockMoment from 'moment'
 import Enzyme from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 
-Enzyme.configure({ adapter: new Adapter() })
+Enzyme.configure({adapter: new Adapter()})
 
 // Set default moment timezone
 const moment = jest.requireActual('moment-timezone')
@@ -15,9 +15,9 @@ Object.defineProperty(window, 'matchMedia', {
         return {
             matches: true,
             addListener: jest.fn(),
-            removeListener: jest.fn()
+            removeListener: jest.fn(),
         }
-    })
+    }),
 })
 
 // Mock of the localStorage API
@@ -45,7 +45,7 @@ class LocalStorageMock {
 }
 
 Object.defineProperty(window, 'localStorage', {
-    value: new LocalStorageMock
+    value: new LocalStorageMock(),
 })
 
 // Mock browserHistoryAPI
@@ -68,21 +68,19 @@ class mockPushJS {
     create(title, data) {
         this.notifications.push({
             title,
-            ...data
+            ...data,
         })
     }
 }
 
-
 class MockSharedWorker {
     port = {
         start: jest.fn(),
-        postMessage: jest.fn()
+        postMessage: jest.fn(),
     }
 }
 
 window.SharedWorker = MockSharedWorker
-
 
 class MockBroadcastChannel {
     addEventListener = jest.fn()
@@ -96,9 +94,8 @@ class MockBroadcastChannel {
 
 window.BroadcastChannel = MockBroadcastChannel
 
-
 jest.mock('push.js', () => {
-    return new mockPushJS
+    return new mockPushJS()
 })
 
 jest.mock('../utils/date', () => ({
@@ -106,15 +103,19 @@ jest.mock('../utils/date', () => ({
     getMoment: jest.fn(() => mockMoment('2018-10-01T00:00:00Z')),
     getMomentNow: jest.fn(() => 'nowTimestamp'),
     getMomentUtcISOString: jest.fn(() => '2018-05-07T18:02:46.039Z'),
-    getMomentTimezoneNames: jest.fn(() => ['UTC', 'US/Pacific', 'Australia/AUR'])
+    getMomentTimezoneNames: jest.fn(() => [
+        'UTC',
+        'US/Pacific',
+        'Australia/AUR',
+    ]),
 }))
 
 Object.defineProperty(window, 'requestAnimationFrame', {
-    value: jest.fn()
+    value: jest.fn(),
 })
 
 Object.defineProperty(window, 'cancelAnimationFrame', {
-    value: jest.fn()
+    value: jest.fn(),
 })
 
 // failed expect in timeouts require try/catch and done.fail
@@ -132,7 +133,7 @@ global.jestSetTimeout = (body, timeout, done) => {
 
 // offsetParent unsupported by jsdom
 // https://github.com/jsdom/jsdom/issues/1261
-function supportsOffsetParent () {
+function supportsOffsetParent() {
     let support = true
     const div = document.createElement('div')
     document.body.appendChild(div)
@@ -145,7 +146,7 @@ function supportsOffsetParent () {
 
 // offsetParent polyfill
 // WARNING does not support the complete spec (eg. position: fixed)
-function offsetParent () {
+function offsetParent() {
     let element = this
     let style
     let parent = null
@@ -153,21 +154,16 @@ function offsetParent () {
         return null
     }
 
-    while (
-        element
-        && element !== document.documentElement
-    ) {
+    while (element && element !== document.documentElement) {
         style = window.getComputedStyle(element)
         if (style.getPropertyValue('display') === 'none') {
             return null
         }
         if (
-            !parent
-            && element !== this
-            && (
-                style.getPropertyValue('position') !== 'static'
-                || element === document.body
-            )
+            !parent &&
+            element !== this &&
+            (style.getPropertyValue('position') !== 'static' ||
+                element === document.body)
         ) {
             parent = element
         }
@@ -179,7 +175,7 @@ function offsetParent () {
 
 if (!supportsOffsetParent()) {
     Object.defineProperty(HTMLElement.prototype, 'offsetParent', {
-        get: offsetParent
+        get: offsetParent,
     })
 }
 

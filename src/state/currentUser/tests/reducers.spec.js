@@ -18,73 +18,59 @@ describe('current user reducers', () => {
     it('submit current user', () => {
         // start
         expect(
-            reducer(
-                initialState,
-                {
-                    type: types.SUBMIT_CURRENT_USER_START,
-                }
-            ).toJS()
+            reducer(initialState, {
+                type: types.SUBMIT_CURRENT_USER_START,
+            }).toJS()
         ).toMatchSnapshot()
 
         // success
         expect(
-            reducer(
-                initialState,
-                {
-                    type: types.SUBMIT_CURRENT_USER_SUCCESS,
-                    resp: {
-                        id: 1,
-                        name: 'Alex',
-                        email: 'alex@gorgias.io',
-                    },
-                }
-            ).toJS()
+            reducer(initialState, {
+                type: types.SUBMIT_CURRENT_USER_SUCCESS,
+                resp: {
+                    id: 1,
+                    name: 'Alex',
+                    email: 'alex@gorgias.io',
+                },
+            }).toJS()
         ).toMatchSnapshot()
 
         // fail
         expect(
-            reducer(
-                initialState,
-                {
-                    type: types.SUBMIT_CURRENT_USER_ERROR,
-                }
-            ).toJS()
+            reducer(initialState, {
+                type: types.SUBMIT_CURRENT_USER_ERROR,
+            }).toJS()
         ).toMatchSnapshot()
     })
 
     it('submit setting', () => {
         // start
         expect(
-            reducer(
-                initialState,
-                {
-                    type: types.SUBMIT_SETTING_START,
-                    settingType: 'view',
-                }
-            ).toJS()
+            reducer(initialState, {
+                type: types.SUBMIT_SETTING_START,
+                settingType: 'view',
+            }).toJS()
         ).toMatchSnapshot()
 
         // success
         expect(
-            reducer(
-                initialState,
-                {
-                    type: types.SUBMIT_SETTING_SUCCESS,
-                    settingType: 'view',
-                    resp: {
-                        data: {value: 1},
-                    },
-                }
-            ).toJS()
+            reducer(initialState, {
+                type: types.SUBMIT_SETTING_SUCCESS,
+                settingType: 'view',
+                resp: {
+                    data: {value: 1},
+                },
+            }).toJS()
         ).toMatchSnapshot()
 
         // success update
         expect(
             reducer(
-                initialState
-                    .mergeDeep(fromJS({
+                initialState.mergeDeep(
+                    fromJS({
                         settings: [{id: 1, data: {value: 2}}],
-                    })),
+                    })
+                ),
                 {
                     type: types.SUBMIT_SETTING_SUCCESS,
                     settingType: 'view',
@@ -99,50 +85,38 @@ describe('current user reducers', () => {
 
         // fail
         expect(
-            reducer(
-                initialState,
-                {
-                    type: types.SUBMIT_SETTING_ERROR,
-                    settingType: 'view',
-                }
-            ).toJS()
+            reducer(initialState, {
+                type: types.SUBMIT_SETTING_ERROR,
+                settingType: 'view',
+            }).toJS()
         ).toMatchSnapshot()
     })
 
     it('change password', () => {
         // start
         expect(
-            reducer(
-                initialState,
-                {
-                    type: types.CHANGE_PASSWORD_START,
-                }
-            ).toJS()
+            reducer(initialState, {
+                type: types.CHANGE_PASSWORD_START,
+            }).toJS()
         ).toMatchSnapshot()
 
         // success
         expect(
-            reducer(
-                initialState,
-                {
-                    type: types.CHANGE_PASSWORD_SUCCESS,
-                    resp: {
-                        id: 1,
-                        name: 'Alex',
-                        email: 'alex@gorgias.io',
-                    },
-                }
-            ).toJS()
+            reducer(initialState, {
+                type: types.CHANGE_PASSWORD_SUCCESS,
+                resp: {
+                    id: 1,
+                    name: 'Alex',
+                    email: 'alex@gorgias.io',
+                },
+            }).toJS()
         ).toMatchSnapshot()
 
         // fail
         expect(
-            reducer(
-                initialState,
-                {
-                    type: types.CHANGE_PASSWORD_ERROR,
-                }
-            ).toJS()
+            reducer(initialState, {
+                type: types.CHANGE_PASSWORD_ERROR,
+            }).toJS()
         ).toMatchSnapshot()
     })
 
@@ -151,21 +125,25 @@ describe('current user reducers', () => {
             const action = {
                 type: types.TOGGLE_ACTIVE_STATUS,
             }
-            expect(reducer(initialState, action))
-                .toEqualImmutable(initialState.set('is_active', true))
-            expect(reducer(initialState.set('is_active', true), action))
-                .toEqualImmutable(initialState.set('is_active', false))
+            expect(reducer(initialState, action)).toEqualImmutable(
+                initialState.set('is_active', true)
+            )
+            expect(
+                reducer(initialState.set('is_active', true), action)
+            ).toEqualImmutable(initialState.set('is_active', false))
         })
 
         it('with status', () => {
             const action = {
                 type: types.TOGGLE_ACTIVE_STATUS,
-                status: false
+                status: false,
             }
-            expect(reducer(initialState, action))
-                .toEqualImmutable(initialState.set('is_active', false))
-            expect(reducer(initialState, {...action, status: true}))
-                .toEqualImmutable(initialState.set('is_active', true))
+            expect(reducer(initialState, action)).toEqualImmutable(
+                initialState.set('is_active', false)
+            )
+            expect(
+                reducer(initialState, {...action, status: true})
+            ).toEqualImmutable(initialState.set('is_active', true))
         })
     })
 })

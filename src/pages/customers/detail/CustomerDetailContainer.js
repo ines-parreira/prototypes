@@ -13,12 +13,16 @@ import CustomerForm from '../common/components/CustomerForm'
 import Timeline from '../../common/components/timeline/Timeline'
 import Modal from '../../common/components/Modal'
 
-import {getCustomerHistory, getActiveCustomer, makeIsLoading} from '../../../state/customers/selectors'
+import {
+    getCustomerHistory,
+    getActiveCustomer,
+    makeIsLoading,
+} from '../../../state/customers/selectors'
 import * as customersHelpers from '../../../state/customers/helpers'
 
 class CustomerDetailContainer extends React.Component {
     state = {
-        isCustomerFormOpen: false
+        isCustomerFormOpen: false,
     }
 
     componentWillMount() {
@@ -37,12 +41,17 @@ class CustomerDetailContainer extends React.Component {
     _fetchCustomer = (id) => {
         const {actions} = this.props
 
-        actions.fetchCustomer(id).then(() => actions.fetchCustomerHistory(id, {
-            successCondition(state) {
-                // its OK to be based on active customer since the history is fetched when the customer is already fetched
-                return getActiveCustomer(state).get('id', '').toString() === id.toString()
-            }
-        }))
+        actions.fetchCustomer(id).then(() =>
+            actions.fetchCustomerHistory(id, {
+                successCondition(state) {
+                    // its OK to be based on active customer since the history is fetched when the customer is already fetched
+                    return (
+                        getActiveCustomer(state).get('id', '').toString() ===
+                        id.toString()
+                    )
+                },
+            })
+        )
     }
 
     _renderTimeline = () => {
@@ -60,11 +69,7 @@ class CustomerDetailContainer extends React.Component {
 
         return (
             <div className="my-4">
-                <Timeline
-                    customerHistory={customerHistory}
-                    displayAll
-                    revert
-                />
+                <Timeline customerHistory={customerHistory} displayAll revert />
             </div>
         )
     }
@@ -80,8 +85,8 @@ class CustomerDetailContainer extends React.Component {
     render() {
         const {activeCustomer, customersIsLoading} = this.props
 
-        const shouldDisplayLoader = activeCustomer.isEmpty()
-            || customersIsLoading('active')
+        const shouldDisplayLoader =
+            activeCustomer.isEmpty() || customersIsLoading('active')
 
         if (shouldDisplayLoader) {
             return <Loader message="Loading customer..." />
@@ -95,7 +100,9 @@ class CustomerDetailContainer extends React.Component {
                     <div>
                         <Link
                             className="btn btn-secondary mr-2"
-                            to={`/app/ticket/new?customer=${activeCustomer.get('id')}`}
+                            to={`/app/ticket/new?customer=${activeCustomer.get(
+                                'id'
+                            )}`}
                         >
                             Create ticket
                         </Link>
@@ -129,7 +136,7 @@ class CustomerDetailContainer extends React.Component {
 
 CustomerDetailContainer.propTypes = {
     params: PropTypes.shape({
-        customerId: PropTypes.string
+        customerId: PropTypes.string,
     }).isRequired,
 
     activeCustomer: PropTypes.object.isRequired,
@@ -151,8 +158,11 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(customersActions, dispatch)
+        actions: bindActionCreators(customersActions, dispatch),
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CustomerDetailContainer)
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(CustomerDetailContainer)

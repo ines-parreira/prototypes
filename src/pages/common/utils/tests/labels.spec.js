@@ -8,7 +8,7 @@ import {
     AIRCALL_INTEGRATION_TYPE,
     EMAIL_INTEGRATION_TYPE,
     FACEBOOK_INTEGRATION_TYPE,
-    GMAIL_INTEGRATION_TYPE
+    GMAIL_INTEGRATION_TYPE,
 } from '../../../../constants/integration'
 import {EMAIL_CHANNEL, OPEN_STATUS} from '../../../../config/ticket'
 import * as labels from '../labels'
@@ -17,7 +17,11 @@ import * as labels from '../labels'
  * Mock it to always return the same data.
  */
 const mockMath = Object.create(global.Math)
-const integrationJsObject = {type: 'email', name: 'common', meta: {address: 'specific'}}
+const integrationJsObject = {
+    type: 'email',
+    name: 'common',
+    meta: {address: 'specific'},
+}
 const integrationMap = fromJS(integrationJsObject)
 mockMath.random = () => 1
 global.Math = mockMath
@@ -25,38 +29,35 @@ const mockStore = configureMockStore()
 
 jest.mock('../../components/Tooltip', () => 'TooltipMock')
 
-
 describe('components utils : labels', () => {
     describe('RenderLabel', () => {
         describe('distribution', () => {
-            [
+            ;[
                 {
                     type: 'tags',
                     value: 'help',
-                    expected: <labels.TagLabel>help</labels.TagLabel>
+                    expected: <labels.TagLabel>help</labels.TagLabel>,
                 },
                 {
                     type: 'created',
                     value: '2016-01-15',
-                    expected: (
-                        <labels.DatetimeLabel
-                            dateTime="2016-01-15"
-                        />
-                    ),
+                    expected: <labels.DatetimeLabel dateTime="2016-01-15" />,
                     toHTML: (comp) => {
                         return mount(
                             <Provider
-                                store={mockStore({currentUser: fromJS({timezone: 'utc'})})}
+                                store={mockStore({
+                                    currentUser: fromJS({timezone: 'utc'}),
+                                })}
                             >
                                 {comp}
                             </Provider>
                         ).html()
-                    }
+                    },
                 },
                 {
                     type: 'status',
                     value: OPEN_STATUS,
-                    expected: <labels.StatusLabel status={OPEN_STATUS}/>
+                    expected: <labels.StatusLabel status={OPEN_STATUS} />,
                 },
                 {
                     type: 'assignee',
@@ -64,8 +65,9 @@ describe('components utils : labels', () => {
                         name: 'Mario',
                         email: 'mario@gorgias.io',
                         meta: {
-                            profile_picture_url: 'https://gorgias.io/avatar.png'
-                        }
+                            profile_picture_url:
+                                'https://gorgias.io/avatar.png',
+                        },
                     },
                     expected: (
                         <labels.UserAssigneeLabel
@@ -73,8 +75,9 @@ describe('components utils : labels', () => {
                                 name: 'Mario',
                                 email: 'mario@gorgias.io',
                                 meta: {
-                                    profile_picture_url: 'https://gorgias.io/avatar.png'
-                                }
+                                    profile_picture_url:
+                                        'https://gorgias.io/avatar.png',
+                                },
                             })}
                         />
                     ),
@@ -82,23 +85,23 @@ describe('components utils : labels', () => {
                         return mount(
                             <Provider store={mockStore()}>{comp}</Provider>
                         ).html()
-                    }
+                    },
                 },
                 {
                     type: 'assignee_team',
                     value: {
                         name: 'Team 1',
                         decoration: {
-                            emoji: {}
-                        }
+                            emoji: {},
+                        },
                     },
                     expected: (
                         <labels.TeamAssigneeLabel
                             assigneeTeam={fromJS({
                                 name: 'Team 1',
                                 decoration: {
-                                    emoji: {}
-                                }
+                                    emoji: {},
+                                },
                             })}
                         />
                     ),
@@ -106,30 +109,34 @@ describe('components utils : labels', () => {
                         return mount(
                             <Provider store={mockStore()}>{comp}</Provider>
                         ).html()
-                    }
+                    },
                 },
                 {
                     type: 'customer',
                     value: {
-                        name: 'Luigi'
+                        name: 'Luigi',
                     },
-                    expected: <labels.CustomerLabel customer="Luigi"/>
+                    expected: <labels.CustomerLabel customer="Luigi" />,
                 },
                 {
                     type: 'channel',
                     value: EMAIL_CHANNEL,
-                    expected: <labels.ChannelLabel channel={EMAIL_CHANNEL}/>
+                    expected: <labels.ChannelLabel channel={EMAIL_CHANNEL} />,
                 },
                 {
                     type: 'thisshouldreturnnull',
                     value: undefined,
-                    expected: null
+                    expected: null,
                 },
                 {
                     type: 'integrations',
                     value: integrationJsObject,
-                    expected: <labels.IntegrationsDetailLabel integration={integrationMap}/>
-                }
+                    expected: (
+                        <labels.IntegrationsDetailLabel
+                            integration={integrationMap}
+                        />
+                    ),
+                },
             ].forEach((element) => {
                 const {type, value, expected, toHTML} = element
                 const render = (comp) => {
@@ -158,7 +165,7 @@ describe('components utils : labels', () => {
                         integration={fromJS({
                             type: EMAIL_INTEGRATION_TYPE,
                             name: 'common',
-                            meta: {address: 'specific'}
+                            meta: {address: 'specific'},
                         })}
                     />
                 )
@@ -171,11 +178,13 @@ describe('components utils : labels', () => {
                         integration={fromJS({
                             type: EMAIL_INTEGRATION_TYPE,
                             name: 'common',
-                            meta: {address: ''}
+                            meta: {address: ''},
                         })}
                     />
                 )
-                expect(componentRuleIntegrationListTypeEmailNoAddress).toMatchSnapshot()
+                expect(
+                    componentRuleIntegrationListTypeEmailNoAddress
+                ).toMatchSnapshot()
             })
 
             it('should display the name because the type is facebook', () => {
@@ -184,11 +193,13 @@ describe('components utils : labels', () => {
                         integration={fromJS({
                             type: FACEBOOK_INTEGRATION_TYPE,
                             name: 'common',
-                            meta: {address: 'specific'}
+                            meta: {address: 'specific'},
                         })}
                     />
                 )
-                expect(componentRuleIntegrationListTypeFacebook).toMatchSnapshot()
+                expect(
+                    componentRuleIntegrationListTypeFacebook
+                ).toMatchSnapshot()
             })
 
             it('should display name and address formatted in-lined', () => {
@@ -197,11 +208,13 @@ describe('components utils : labels', () => {
                         integration={fromJS({
                             type: GMAIL_INTEGRATION_TYPE,
                             name: 'common',
-                            address: 'inlined email'
+                            address: 'inlined email',
                         })}
                     />
                 )
-                expect(componentRuleIntegrationListTypeMailInline).toMatchSnapshot()
+                expect(
+                    componentRuleIntegrationListTypeMailInline
+                ).toMatchSnapshot()
             })
 
             it('should display name and address formatted as aircall eg: with address into parenthesis', () => {
@@ -210,11 +223,13 @@ describe('components utils : labels', () => {
                         integration={fromJS({
                             type: AIRCALL_INTEGRATION_TYPE,
                             name: 'common',
-                            address: 'aircall style'
+                            address: 'aircall style',
                         })}
                     />
                 )
-                expect(componentRuleIntegrationListTypeAircall).toMatchSnapshot()
+                expect(
+                    componentRuleIntegrationListTypeAircall
+                ).toMatchSnapshot()
             })
         })
     })
@@ -232,25 +247,17 @@ describe('components utils : labels', () => {
                 expect(component).toMatchSnapshot()
             })
 
-            it(
-                'should render the avatar because the `avatar` option is passed but no profile picture url is passed',
-                () => {
-                    const component = shallow(
-                        <labels.AgentLabel
-                            name="Marie Curie"
-                            shouldDisplayAvatar
-                        />
-                    )
+            it('should render the avatar because the `avatar` option is passed but no profile picture url is passed', () => {
+                const component = shallow(
+                    <labels.AgentLabel name="Marie Curie" shouldDisplayAvatar />
+                )
 
-                    expect(component).toMatchSnapshot()
-                }
-            )
+                expect(component).toMatchSnapshot()
+            })
 
             it('should render the agent icon because no profile picture url nor the `avatar` option are passed', () => {
                 const component = shallow(
-                    <labels.AgentLabel
-                        name="Marie Curie"
-                    />
+                    <labels.AgentLabel name="Marie Curie" />
                 )
 
                 expect(component).toMatchSnapshot()
@@ -258,9 +265,7 @@ describe('components utils : labels', () => {
 
             it('should not render the name of the agent because no name is passed', () => {
                 const component = shallow(
-                    <labels.AgentLabel
-                        profilePictureUrl="https://gorgias.io/profilepicture.png"
-                    />
+                    <labels.AgentLabel profilePictureUrl="https://gorgias.io/profilepicture.png" />
                 )
 
                 expect(component).toMatchSnapshot()
@@ -271,16 +276,13 @@ describe('components utils : labels', () => {
     describe('<TeamLabel/>', () => {
         describe('render()', () => {
             it('should render without avatar', () => {
-                const component = shallow(<labels.TeamLabel name="Team 1"/>)
+                const component = shallow(<labels.TeamLabel name="Team 1" />)
                 expect(component).toMatchSnapshot()
             })
 
             it('should render with default avatar', () => {
                 const component = shallow(
-                    <labels.TeamLabel
-                        name="Team 1"
-                        shouldDisplayAvatar
-                    />
+                    <labels.TeamLabel name="Team 1" shouldDisplayAvatar />
                 )
 
                 expect(component).toMatchSnapshot()
@@ -292,16 +294,13 @@ describe('components utils : labels', () => {
                         name="Team 1"
                         shouldDisplayAvatar
                         emoji={fromJS({
-                            'colons': ':wink:',
-                            'emoticons': [
-                                ';)',
-                                ';-)'
-                            ],
-                            'id': 'wink',
-                            'name': 'Winking Face',
-                            'native': '😉',
-                            'skin': null,
-                            'unified': '1f609'
+                            colons: ':wink:',
+                            emoticons: [';)', ';-)'],
+                            id: 'wink',
+                            name: 'Winking Face',
+                            native: '😉',
+                            skin: null,
+                            unified: '1f609',
                         })}
                     />
                 )

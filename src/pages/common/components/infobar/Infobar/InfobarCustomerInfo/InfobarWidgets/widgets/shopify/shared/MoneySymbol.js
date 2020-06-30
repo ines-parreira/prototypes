@@ -28,7 +28,9 @@ export default class ShopifyMoneySymbol extends React.PureComponent<Props> {
         //$FlowFixMe
         const parts = formatter.formatToParts(1)
         const currencyPart = parts.find((part) => part.type === 'currency')
-        const symbol = currencyPart ? currencyPart.value : ShopifyMoneySymbol._DEFAULT_SYMBOL
+        const symbol = currencyPart
+            ? currencyPart.value
+            : ShopifyMoneySymbol._DEFAULT_SYMBOL
 
         return short && symbol.includes(ShopifyMoneySymbol._DEFAULT_SYMBOL)
             ? ShopifyMoneySymbol._DEFAULT_SYMBOL

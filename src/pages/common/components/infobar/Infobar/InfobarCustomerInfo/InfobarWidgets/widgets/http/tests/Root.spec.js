@@ -8,10 +8,7 @@ describe('<TitleWrapper/>', () => {
     describe('render()', () => {
         it('should render without link', () => {
             const component = shallow(
-                <TitleWrapper
-                    source={fromJS({})}
-                    template={fromJS({})}
-                >
+                <TitleWrapper source={fromJS({})} template={fromJS({})}>
                     <span>Foo</span>
                 </TitleWrapper>
             )
@@ -23,7 +20,9 @@ describe('<TitleWrapper/>', () => {
             const component = shallow(
                 <TitleWrapper
                     source={fromJS({baz: 'BAZ'})}
-                    template={fromJS({meta: {link: 'https://foo.bar/?baz={{baz}}'}})}
+                    template={fromJS({
+                        meta: {link: 'https://foo.bar/?baz={{baz}}'},
+                    })}
                 >
                     <span>Foo</span>
                 </TitleWrapper>

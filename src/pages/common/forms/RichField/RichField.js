@@ -4,25 +4,33 @@ import 'draft-js/dist/Draft.css'
 import _isEqual from 'lodash/isEqual'
 import React from 'react'
 
-import {contentStateFromTextOrHTML, convertToHTML} from '../../../../utils/editor'
+import {
+    contentStateFromTextOrHTML,
+    convertToHTML,
+} from '../../../../utils/editor'
 import {attachEntitiesToVariables} from '../../draftjs/plugins/variables/utils'
 import InputField from '../InputField'
 
-import RichFieldEditor, {type Props as RichFieldEditorProps} from './RichFieldEditor'
+import RichFieldEditor, {
+    type Props as RichFieldEditorProps,
+} from './RichFieldEditor'
 
 type Props = {
     allowExternalChanges: boolean,
     value: {
         html?: string,
-        text: string
+        text: string,
+    },
+} & $Diff<
+    RichFieldEditorProps,
+    {
+        editorState: EditorState,
     }
-} & $Diff<RichFieldEditorProps, {
-    editorState: EditorState
-}>
+>
 
 type State = {
     editorState: EditorState,
-    isFocused: boolean
+    isFocused: boolean,
 }
 
 // Deprecated component, use RichFieldEditor instead
@@ -45,7 +53,10 @@ export default class RichField extends InputField<Props, State> {
 
     componentWillReceiveProps(nextProps: Props) {
         // when we do a preview we're changing the value directly and so we need to update the editor state
-        if (!_isEqual(nextProps.value, this.props.value) && (this.props.displayOnly || this.props.allowExternalChanges)) {
+        if (
+            !_isEqual(nextProps.value, this.props.value) &&
+            (this.props.displayOnly || this.props.allowExternalChanges)
+        ) {
             this._updateEditorState(nextProps.value)
         }
     }
@@ -66,10 +77,15 @@ export default class RichField extends InputField<Props, State> {
     }
 
     _didHTMLChanged = (html?: string) => {
-        return convertToHTML(this.state.editorState.getCurrentContent()) !== html
+        return (
+            convertToHTML(this.state.editorState.getCurrentContent()) !== html
+        )
     }
 
-    _updateEditorState = (value: { html?: string, text: string }, callback?: () => any) => {
+    _updateEditorState = (
+        value: {html?: string, text: string},
+        callback?: () => any
+    ) => {
         // if incoming value is the same as the current one, don't update the current one
         if (!this._didHTMLChanged(value.html)) {
             return
@@ -88,7 +104,6 @@ export default class RichField extends InputField<Props, State> {
 
         this.setState({editorState}, callback)
     }
-
 
     _onChange = (editorState: EditorState) => {
         this.setState({editorState}, () => {

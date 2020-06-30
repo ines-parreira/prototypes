@@ -10,7 +10,6 @@ import Magento2IntegrationDetail from '../Magento2IntegrationDetail'
 const mockStore = configureMockStore([thunk])
 const _noop = () => {}
 
-
 describe('<Magento2IntegrationDetail/>', () => {
     let store
 
@@ -20,7 +19,7 @@ describe('<Magento2IntegrationDetail/>', () => {
             query: {
                 message: '',
                 message_type: 'info',
-            }
+            },
         },
         notify: _noop,
         actions: {
@@ -44,31 +43,40 @@ describe('<Magento2IntegrationDetail/>', () => {
                     store={store}
                     {...commonProps}
                 />
-            ).dive().dive()
+            )
+                .dive()
+                .dive()
 
             expect(component).toMatchSnapshot()
         })
 
-        it('should render the page for an integration being created with the name of another existing integration',
-            () => {
-                const storeUrl = 'magento.gorgi.us'
-                store = mockStore({
-                    integrations: fromJS({
-                        integrations: [{type: MAGENTO2_INTEGRATION_TYPE, meta: {store_url: storeUrl}}]
-                    })
-                })
-
-                const component = shallow(
-                    <Magento2IntegrationDetail
-                        integration={fromJS({})}
-                        isUpdate={false}
-                        store={store}
-                        {...commonProps}
-                    />
-                ).dive().dive().setState({url: storeUrl})
-
-                expect(component).toMatchSnapshot()
+        it('should render the page for an integration being created with the name of another existing integration', () => {
+            const storeUrl = 'magento.gorgi.us'
+            store = mockStore({
+                integrations: fromJS({
+                    integrations: [
+                        {
+                            type: MAGENTO2_INTEGRATION_TYPE,
+                            meta: {store_url: storeUrl},
+                        },
+                    ],
+                }),
             })
+
+            const component = shallow(
+                <Magento2IntegrationDetail
+                    integration={fromJS({})}
+                    isUpdate={false}
+                    store={store}
+                    {...commonProps}
+                />
+            )
+                .dive()
+                .dive()
+                .setState({url: storeUrl})
+
+            expect(component).toMatchSnapshot()
+        })
 
         it('should render the page to update an existing integration', () => {
             const storeUrl = 'magento.gorgi.us'
@@ -79,15 +87,18 @@ describe('<Magento2IntegrationDetail/>', () => {
                         name: storeUrl,
                         meta: {
                             import_state: {
-                                is_over: true
-                            }
-                        }
+                                is_over: true,
+                            },
+                        },
                     })}
                     isUpdate={true}
                     store={store}
                     {...commonProps}
                 />
-            ).dive().dive().setState({url: storeUrl, adminUrlSuffix: 'admin_12fg'})
+            )
+                .dive()
+                .dive()
+                .setState({url: storeUrl, adminUrlSuffix: 'admin_12fg'})
 
             expect(component).toMatchSnapshot()
         })
@@ -101,16 +112,19 @@ describe('<Magento2IntegrationDetail/>', () => {
                         name: storeUrl,
                         meta: {
                             import_state: {
-                                is_over: true
-                            }
+                                is_over: true,
+                            },
                         },
-                        deactivated_datetime: '2018-01-01T18:52:17'
+                        deactivated_datetime: '2018-01-01T18:52:17',
                     })}
                     isUpdate={true}
                     store={store}
                     {...commonProps}
                 />
-            ).dive().dive().setState({url: storeUrl, adminUrlSuffix: 'admin_12fg'})
+            )
+                .dive()
+                .dive()
+                .setState({url: storeUrl, adminUrlSuffix: 'admin_12fg'})
 
             expect(component).toMatchSnapshot()
         })
@@ -124,15 +138,18 @@ describe('<Magento2IntegrationDetail/>', () => {
                         name: storeUrl,
                         meta: {
                             import_state: {
-                                is_over: false
-                            }
-                        }
+                                is_over: false,
+                            },
+                        },
                     })}
                     isUpdate={true}
                     store={store}
                     {...commonProps}
                 />
-            ).dive().dive().setState({url: storeUrl, adminUrlSuffix: 'admin_12fg'})
+            )
+                .dive()
+                .dive()
+                .setState({url: storeUrl, adminUrlSuffix: 'admin_12fg'})
 
             expect(component).toMatchSnapshot()
         })

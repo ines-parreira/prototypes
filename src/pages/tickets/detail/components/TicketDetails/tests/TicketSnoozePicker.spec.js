@@ -20,20 +20,18 @@ describe('<TicketSnoozePicker/>', () => {
     })
 
     it.each(['2018-10-26', null])('should render a DatePicker', (datetime) => {
-        const component = shallow(<TicketSnoozePicker
-            {...minProps}
-            datetime={datetime}
-        />)
+        const component = shallow(
+            <TicketSnoozePicker {...minProps} datetime={datetime} />
+        )
 
         expect(component).toMatchSnapshot()
         expect(errorSpy).not.toHaveBeenCalled()
     })
 
     it('should render a DatePicker and log error when datetime has a wrong format', () => {
-        const component = shallow(<TicketSnoozePicker
-            {...minProps}
-            datetime="foo"
-        />)
+        const component = shallow(
+            <TicketSnoozePicker {...minProps} datetime="foo" />
+        )
 
         expect(component).toMatchSnapshot()
         expect(errorSpy).toHaveBeenCalled()

@@ -12,9 +12,11 @@ export const getPendingActionsCallbacks = createImmutableSelector(
     (state) => state.get('pendingActionsCallbacks') || fromJS([])
 )
 
-export const getPendingActionCallbacks = (id: string) => createImmutableSelector(
-    [getPendingActionsCallbacks],
-    (state) => state.find((action) => action.get('id') === id)
-)
+export const getPendingActionCallbacks = (id: string) =>
+    createImmutableSelector([getPendingActionsCallbacks], (state) =>
+        state.find((action) => action.get('id') === id)
+    )
 
-export const makeGetPendingActionCallbacks = (state: stateType) => (id: string) => getPendingActionCallbacks(id)(state)
+export const makeGetPendingActionCallbacks = (state: stateType) => (
+    id: string
+) => getPendingActionCallbacks(id)(state)

@@ -7,7 +7,6 @@ import MockAdapter from 'axios-mock-adapter'
 import * as actions from '../actions'
 import {initialState} from '../reducers'
 
-
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
@@ -24,7 +23,6 @@ jest.mock('reapop', () => {
         updateNotification: jest.fn(() => (args) => args),
     }
 })
-
 
 describe('tickets actions', () => {
     let store
@@ -46,14 +44,16 @@ describe('tickets actions', () => {
     })
 
     describe('bulkUpdate()', () => {
-        it('should call the jobs api with the given parameters', async() => {
+        it('should call the jobs api with the given parameters', async () => {
             mockServer.onAny().reply(200)
 
             const idsList = fromJS([1, 2, 3, 4])
             const jobType = 'jobTypeExample'
             const jobPartialParams = {exampleKey: 'exampleValue'}
 
-            await store.dispatch(actions.createJob(idsList, jobType, jobPartialParams))
+            await store.dispatch(
+                actions.createJob(idsList, jobType, jobPartialParams)
+            )
             expect(mockServer.history).toMatchSnapshot()
         })
     })

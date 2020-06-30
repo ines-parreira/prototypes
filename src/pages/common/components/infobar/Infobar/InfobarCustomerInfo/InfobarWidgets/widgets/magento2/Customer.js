@@ -45,7 +45,7 @@ class AfterTitle extends React.Component<AfterTitleProps> {
 
 type TitleWrapperProps = {
     children: Object,
-    source: Map<string, *>
+    source: Map<string, *>,
 }
 
 class TitleWrapper extends React.Component<TitleWrapperProps> {
@@ -56,8 +56,14 @@ class TitleWrapper extends React.Component<TitleWrapperProps> {
     render() {
         const {children, source} = this.props
 
-        const storeUrl: string = this.context.integration.getIn(['meta', 'store_url'])
-        const adminUrlSuffix: string = this.context.integration.getIn(['meta', 'admin_url_suffix'])
+        const storeUrl: string = this.context.integration.getIn([
+            'meta',
+            'store_url',
+        ])
+        const adminUrlSuffix: string = this.context.integration.getIn([
+            'meta',
+            'admin_url_suffix',
+        ])
         const customerId = (source.get('id') || '').toString()
 
         const link = `https://${storeUrl}/${adminUrlSuffix}/customer/index/edit/id/${customerId}/`
@@ -68,21 +74,14 @@ class TitleWrapper extends React.Component<TitleWrapperProps> {
 
         return (
             <>
-                <CardHeaderIcon
-                    src={logo}
-                    alt="Magento"
-                />
+                <CardHeaderIcon src={logo} alt="Magento" />
                 <CardHeaderTitle>Magento</CardHeaderTitle>
                 <CardHeaderSubtitle>
-                    <a
-                        href={link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
+                    <a href={link} target="_blank" rel="noopener noreferrer">
                         {children}
                     </a>
                 </CardHeaderSubtitle>
-                <ExpandAllButton/>
+                <ExpandAllButton />
             </>
         )
     }

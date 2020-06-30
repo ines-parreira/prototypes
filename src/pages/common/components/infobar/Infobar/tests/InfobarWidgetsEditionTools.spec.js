@@ -4,29 +4,26 @@ import {fromJS} from 'immutable'
 
 import InfobarWidgetsEditionTools from '../InfobarWidgetsEditionTools'
 
-
 const commonProps = {
     widgets: fromJS({
         _internal: {
             isDirty: false,
             loading: {
-                saving: false
-            }
-        }
+                saving: false,
+            },
+        },
     }),
     actions: {
         submitWidgets: jest.fn(),
-        startEditionMode: jest.fn()
+        startEditionMode: jest.fn(),
     },
-    context: 'ticket'
+    context: 'ticket',
 }
 
 describe('InfobarWidgetsEditionTools component', () => {
     it('should render widgets edition tools disabled because the widgets are not dirty', () => {
         const component = shallow(
-            <InfobarWidgetsEditionTools
-                {...commonProps}
-            />
+            <InfobarWidgetsEditionTools {...commonProps} />
         )
 
         expect(component).toMatchSnapshot()
@@ -40,9 +37,9 @@ describe('InfobarWidgetsEditionTools component', () => {
                     _internal: {
                         isDirty: true,
                         loading: {
-                            saving: true
-                        }
-                    }
+                            saving: true,
+                        },
+                    },
                 })}
             />
         )
@@ -58,9 +55,9 @@ describe('InfobarWidgetsEditionTools component', () => {
                     _internal: {
                         isDirty: true,
                         loading: {
-                            saving: false
-                        }
-                    }
+                            saving: false,
+                        },
+                    },
                 })}
             />
         )

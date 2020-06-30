@@ -4,7 +4,7 @@ import {fromJS} from 'immutable'
 export const DEFAULT_BUSINESS_HOUR = fromJS({
     days: '1,2,3,4,5',
     from_time: '09:00',
-    to_time: '17:00'
+    to_time: '17:00',
 })
 
 export const DAYS_OPTIONS = fromJS([

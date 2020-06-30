@@ -6,7 +6,6 @@ import * as schemasSelectors from '../../../../../state/schemas/selectors'
 
 import CallExpression from './CallExpression'
 
-
 export class ViewFilters extends React.Component {
     removeCondition = (index) => {
         this.props.removeFieldFilter(index)
@@ -17,18 +16,24 @@ export class ViewFilters extends React.Component {
     }
 
     render() {
-        const {view, schemas, agents, teams, currentUser, updateFieldFilter} = this.props
+        const {
+            view,
+            schemas,
+            agents,
+            teams,
+            currentUser,
+            updateFieldFilter,
+        } = this.props
 
         if (!view || !schemas || schemas.isEmpty()) {
             return null
         }
 
-        if (!view.get('filters_ast') || !view.getIn(['filters_ast', 'body']).size) {
-            return (
-                <p className="text-muted mt-2">
-                    No filters selected
-                </p>
-            )
+        if (
+            !view.get('filters_ast') ||
+            !view.getIn(['filters_ast', 'body']).size
+        ) {
+            return <p className="text-muted mt-2">No filters selected</p>
         }
 
         const exp = view.get('filters_ast').toJS().body[0].expression
@@ -55,11 +60,13 @@ export class ViewFilters extends React.Component {
                         </div>
                     )
                 case 'LogicalExpression':
-                    return (<div className="view-filters-item">
-                        {walk(node.left, node)}
+                    return (
+                        <div className="view-filters-item">
+                            {walk(node.left, node)}
 
-                        {walk(node.right, node)}
-                    </div>)
+                            {walk(node.right, node)}
+                        </div>
+                    )
                 default:
                     throw Error('Unknown type', node)
             }

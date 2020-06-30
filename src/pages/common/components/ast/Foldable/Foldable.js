@@ -3,19 +3,18 @@ import classnames from 'classnames'
 
 import css from './Foldable.less'
 
-
 type Props = {
     children: Node,
-    label: Object
+    label: Object,
 }
 
 type State = {
-    isOpen: boolean
+    isOpen: boolean,
 }
 
 export default class Foldable extends React.Component<Props, State> {
     state = {
-        isOpen: true
+        isOpen: true,
     }
 
     _toggle = () => {
@@ -31,27 +30,22 @@ export default class Foldable extends React.Component<Props, State> {
         return (
             <div className={classnames(css.container, {[css.closed]: !isOpen})}>
                 <div
-                    className={classnames(css['icon-wrapper'], {[css.closed]: !isOpen})}
+                    className={classnames(css['icon-wrapper'], {
+                        [css.closed]: !isOpen,
+                    })}
                     onClick={this._toggle}
                 >
                     <i className="material-icons">{icon}</i>
                 </div>
                 {label}
-                {
-                    isOpen ? (
-                        <div>
-                            {children}
-                        </div>
-                    ) : (
-                        <div
-                            className={css['dots-wrapper']}
-                            onClick={this._toggle}
-                        >
-                            {/* black circle characters */}
-                            &bull;&bull;&bull;
-                        </div>
-                    )
-                }
+                {isOpen ? (
+                    <div>{children}</div>
+                ) : (
+                    <div className={css['dots-wrapper']} onClick={this._toggle}>
+                        {/* black circle characters */}
+                        &bull;&bull;&bull;
+                    </div>
+                )}
             </div>
         )
     }

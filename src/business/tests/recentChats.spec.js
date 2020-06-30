@@ -30,48 +30,56 @@ describe('Business', () => {
                 autoAssignEnabled: fromJS({
                     data: {
                         auto_assign_to_teams: true,
-                        assignment_channels: [TicketChannels.CHAT, TicketChannels.FACEBOOK_MESSENGER]
-                    }
+                        assignment_channels: [
+                            TicketChannels.CHAT,
+                            TicketChannels.FACEBOOK_MESSENGER,
+                        ],
+                    },
                 }),
                 autoAssignDisabled: fromJS({
                     data: {
                         auto_assign_to_teams: false,
-                        assignment_channels: [TicketChannels.CHAT, TicketChannels.FACEBOOK_MESSENGER]
-                    }
+                        assignment_channels: [
+                            TicketChannels.CHAT,
+                            TicketChannels.FACEBOOK_MESSENGER,
+                        ],
+                    },
                 }),
                 channelsDontIncludeChat: fromJS({
                     data: {
                         auto_assign_to_teams: true,
-                        assignment_channels: [TicketChannels.EMAIL]
-                    }
+                        assignment_channels: [TicketChannels.EMAIL],
+                    },
                 }),
             }
 
             const currentUser = fromJS({id: 1})
 
-            it('should return true because the ticket is unassigned and the setting `auto_assign_to_teams` is disabled',
-                () => {
-                    const res = shouldTicketBeDisplayedInRecentChats(
-                        defaultTicket,
-                        ticketAssignmentSettings.autoAssignDisabled,
-                        currentUser,
-                        true
-                    )
-
-                    expect(res).toEqual(true)
-                })
-
-            it('should return true because the ticket is unassigned and the setting `assignment_channels` does not ' +
-                'include the ticket\'s channel', () => {
+            it('should return true because the ticket is unassigned and the setting `auto_assign_to_teams` is disabled', () => {
                 const res = shouldTicketBeDisplayedInRecentChats(
                     defaultTicket,
-                    ticketAssignmentSettings.channelsDontIncludeChat,
+                    ticketAssignmentSettings.autoAssignDisabled,
                     currentUser,
                     true
                 )
 
                 expect(res).toEqual(true)
             })
+
+            it(
+                'should return true because the ticket is unassigned and the setting `assignment_channels` does not ' +
+                    "include the ticket's channel",
+                () => {
+                    const res = shouldTicketBeDisplayedInRecentChats(
+                        defaultTicket,
+                        ticketAssignmentSettings.channelsDontIncludeChat,
+                        currentUser,
+                        true
+                    )
+
+                    expect(res).toEqual(true)
+                }
+            )
 
             it('should return false because the ticket is closed', () => {
                 const ticket = {
@@ -153,18 +161,20 @@ describe('Business', () => {
                 expect(res).toEqual(false)
             })
 
+            it(
+                'should return false because the ticket has been unassigned and the setting ' +
+                    '"auto_assign_to_teams" is enabled',
+                () => {
+                    const res = shouldTicketBeDisplayedInRecentChats(
+                        defaultTicket,
+                        ticketAssignmentSettings.autoAssignEnabled,
+                        currentUser,
+                        true
+                    )
 
-            it('should return false because the ticket has been unassigned and the setting ' +
-                '"auto_assign_to_teams" is enabled', () => {
-                const res = shouldTicketBeDisplayedInRecentChats(
-                    defaultTicket,
-                    ticketAssignmentSettings.autoAssignEnabled,
-                    currentUser,
-                    true
-                )
-
-                expect(res).toEqual(false)
-            })
+                    expect(res).toEqual(false)
+                }
+            )
         })
     })
 })

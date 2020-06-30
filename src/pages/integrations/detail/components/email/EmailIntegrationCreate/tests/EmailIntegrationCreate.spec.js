@@ -3,7 +3,6 @@ import {render} from 'enzyme'
 
 import {EmailIntegrationCreate} from '../EmailIntegrationCreate'
 
-
 describe('<EmailIntegrationCreate/>', () => {
     describe('render()', () => {
         it('should render', () => {

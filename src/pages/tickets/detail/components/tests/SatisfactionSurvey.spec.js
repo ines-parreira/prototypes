@@ -11,10 +11,10 @@ describe('SatisfactionSurvey', () => {
                 satisfactionSurvey={fromJS({
                     body_text: 'test',
                     score: 3,
-                    scored_datetime: 'now'
+                    scored_datetime: 'now',
                 })}
                 customer={fromJS({
-                    name: 'test me'
+                    name: 'test me',
                 })}
                 timezone={'UTC'}
                 isLast

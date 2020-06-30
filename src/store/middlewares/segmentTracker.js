@@ -12,7 +12,11 @@ const analytics = window.analytics
 export const logEvent = (event, props = {}) => {
     devLog('Track Segment', event, props)
 
-    if (window.USER_IMPERSONATED || _isUndefined(analytics) || window.DEVELOPMENT) {
+    if (
+        window.USER_IMPERSONATED ||
+        _isUndefined(analytics) ||
+        window.DEVELOPMENT
+    ) {
         return
     }
 
@@ -59,49 +63,89 @@ export const EVENTS = {
     SHOPIFY_CANCEL_ORDER_CANCEL: 'shopify/cancel-order/cancel',
     SHOPIFY_CANCEL_ORDER_OPEN: 'shopify/cancel-order/open',
     SHOPIFY_CREATE_ORDER_CANCEL: 'shopify/create-order/cancel',
-    SHOPIFY_CREATE_ORDER_CUSTOM_ITEM_POPOVER_CANCEL: 'shopify/create-order/custom-item-popover/cancel',
-    SHOPIFY_CREATE_ORDER_CUSTOM_ITEM_POPOVER_OPEN: 'shopify/create-order/custom-item-popover/open',
-    SHOPIFY_CREATE_ORDER_CUSTOM_ITEM_POPOVER_SAVE: 'shopify/create-order/custom-item-popover/save',
-    SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_APPLY: 'shopify/create-order/discount-popover/apply',
-    SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_CLOSE: 'shopify/create-order/discount-popover/close',
-    SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_OPEN: 'shopify/create-order/discount-popover/open',
-    SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_REMOVE: 'shopify/create-order/discount-popover/remove',
-    SHOPIFY_CREATE_ORDER_EMAIL_INVOICE_POPOVER_CANCEL: 'shopify/create-order/email-invoice-popover/cancel',
-    SHOPIFY_CREATE_ORDER_EMAIL_INVOICE_POPOVER_OPEN: 'shopify/create-order/email-invoice-popover/open',
-    SHOPIFY_CREATE_ORDER_EMAIL_INVOICE_POPOVER_SEND: 'shopify/create-order/email-invoice-popover/send',
-    SHOPIFY_CREATE_ORDER_LINE_ITEM_ADDED: 'shopify/create-order/line-item/added',
-    SHOPIFY_CREATE_ORDER_LINE_ITEM_QUANTITY_CHANGED: 'shopify/create-order/line-item/quantity/changed',
+    SHOPIFY_CREATE_ORDER_CUSTOM_ITEM_POPOVER_CANCEL:
+        'shopify/create-order/custom-item-popover/cancel',
+    SHOPIFY_CREATE_ORDER_CUSTOM_ITEM_POPOVER_OPEN:
+        'shopify/create-order/custom-item-popover/open',
+    SHOPIFY_CREATE_ORDER_CUSTOM_ITEM_POPOVER_SAVE:
+        'shopify/create-order/custom-item-popover/save',
+    SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_APPLY:
+        'shopify/create-order/discount-popover/apply',
+    SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_CLOSE:
+        'shopify/create-order/discount-popover/close',
+    SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_OPEN:
+        'shopify/create-order/discount-popover/open',
+    SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_REMOVE:
+        'shopify/create-order/discount-popover/remove',
+    SHOPIFY_CREATE_ORDER_EMAIL_INVOICE_POPOVER_CANCEL:
+        'shopify/create-order/email-invoice-popover/cancel',
+    SHOPIFY_CREATE_ORDER_EMAIL_INVOICE_POPOVER_OPEN:
+        'shopify/create-order/email-invoice-popover/open',
+    SHOPIFY_CREATE_ORDER_EMAIL_INVOICE_POPOVER_SEND:
+        'shopify/create-order/email-invoice-popover/send',
+    SHOPIFY_CREATE_ORDER_LINE_ITEM_ADDED:
+        'shopify/create-order/line-item/added',
+    SHOPIFY_CREATE_ORDER_LINE_ITEM_QUANTITY_CHANGED:
+        'shopify/create-order/line-item/quantity/changed',
     SHOPIFY_CREATE_ORDER_NOTES_CHANGED: 'shopify/create-order/notes/changed',
-    SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_APPLY: 'shopify/create-order/shipping-popover/apply',
-    SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_CLOSE: 'shopify/create-order/shipping-popover/close',
-    SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_OPEN: 'shopify/create-order/shipping-popover/open',
-    SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_REMOVE: 'shopify/create-order/shipping-popover/remove',
+    SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_APPLY:
+        'shopify/create-order/shipping-popover/apply',
+    SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_CLOSE:
+        'shopify/create-order/shipping-popover/close',
+    SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_OPEN:
+        'shopify/create-order/shipping-popover/open',
+    SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_REMOVE:
+        'shopify/create-order/shipping-popover/remove',
     SHOPIFY_CREATE_ORDER_TAGS_CHANGED: 'shopify/create-order/tags/changed',
-    SHOPIFY_CREATE_ORDER_TAXES_POPOVER_APPLY: 'shopify/create-order/taxes-popover/apply',
-    SHOPIFY_CREATE_ORDER_TAXES_POPOVER_CLOSE: 'shopify/create-order/taxes-popover/close',
-    SHOPIFY_CREATE_ORDER_TAXES_POPOVER_OPEN: 'shopify/create-order/taxes-popover/open',
+    SHOPIFY_CREATE_ORDER_TAXES_POPOVER_APPLY:
+        'shopify/create-order/taxes-popover/apply',
+    SHOPIFY_CREATE_ORDER_TAXES_POPOVER_CLOSE:
+        'shopify/create-order/taxes-popover/close',
+    SHOPIFY_CREATE_ORDER_TAXES_POPOVER_OPEN:
+        'shopify/create-order/taxes-popover/open',
     SHOPIFY_DUPLICATE_ORDER_CANCEL: 'shopify/duplicate-order/cancel',
-    SHOPIFY_DUPLICATE_ORDER_CUSTOM_ITEM_POPOVER_CANCEL: 'shopify/duplicate-order/custom-item-popover/cancel',
-    SHOPIFY_DUPLICATE_ORDER_CUSTOM_ITEM_POPOVER_OPEN: 'shopify/duplicate-order/custom-item-popover/open',
-    SHOPIFY_DUPLICATE_ORDER_CUSTOM_ITEM_POPOVER_SAVE: 'shopify/duplicate-order/custom-item-popover/save',
-    SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_APPLY: 'shopify/duplicate-order/discount-popover/apply',
-    SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_CLOSE: 'shopify/duplicate-order/discount-popover/close',
-    SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_OPEN: 'shopify/duplicate-order/discount-popover/open',
-    SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_REMOVE: 'shopify/duplicate-order/discount-popover/remove',
-    SHOPIFY_DUPLICATE_ORDER_EMAIL_INVOICE_POPOVER_CANCEL: 'shopify/duplicate-order/email-invoice-popover/cancel',
-    SHOPIFY_DUPLICATE_ORDER_EMAIL_INVOICE_POPOVER_OPEN: 'shopify/duplicate-order/email-invoice-popover/open',
-    SHOPIFY_DUPLICATE_ORDER_EMAIL_INVOICE_POPOVER_SEND: 'shopify/duplicate-order/email-invoice-popover/send',
-    SHOPIFY_DUPLICATE_ORDER_LINE_ITEM_ADDED: 'shopify/duplicate-order/line-item/added',
-    SHOPIFY_DUPLICATE_ORDER_LINE_ITEM_QUANTITY_CHANGED: 'shopify/duplicate-order/line-item/quantity/changed',
-    SHOPIFY_DUPLICATE_ORDER_NOTES_CHANGED: 'shopify/duplicate-order/notes/changed',
-    SHOPIFY_DUPLICATE_ORDER_SHIPPING_POPOVER_APPLY: 'shopify/duplicate-order/shipping-popover/apply',
-    SHOPIFY_DUPLICATE_ORDER_SHIPPING_POPOVER_CLOSE: 'shopify/duplicate-order/shipping-popover/close',
-    SHOPIFY_DUPLICATE_ORDER_SHIPPING_POPOVER_OPEN: 'shopify/duplicate-order/shipping-popover/open',
-    SHOPIFY_DUPLICATE_ORDER_SHIPPING_POPOVER_REMOVE: 'shopify/duplicate-order/shipping-popover/remove',
-    SHOPIFY_DUPLICATE_ORDER_TAGS_CHANGED: 'shopify/duplicate-order/tags/changed',
-    SHOPIFY_DUPLICATE_ORDER_TAXES_POPOVER_APPLY: 'shopify/duplicate-order/taxes-popover/apply',
-    SHOPIFY_DUPLICATE_ORDER_TAXES_POPOVER_CLOSE: 'shopify/duplicate-order/taxes-popover/close',
-    SHOPIFY_DUPLICATE_ORDER_TAXES_POPOVER_OPEN: 'shopify/duplicate-order/taxes-popover/open',
+    SHOPIFY_DUPLICATE_ORDER_CUSTOM_ITEM_POPOVER_CANCEL:
+        'shopify/duplicate-order/custom-item-popover/cancel',
+    SHOPIFY_DUPLICATE_ORDER_CUSTOM_ITEM_POPOVER_OPEN:
+        'shopify/duplicate-order/custom-item-popover/open',
+    SHOPIFY_DUPLICATE_ORDER_CUSTOM_ITEM_POPOVER_SAVE:
+        'shopify/duplicate-order/custom-item-popover/save',
+    SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_APPLY:
+        'shopify/duplicate-order/discount-popover/apply',
+    SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_CLOSE:
+        'shopify/duplicate-order/discount-popover/close',
+    SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_OPEN:
+        'shopify/duplicate-order/discount-popover/open',
+    SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_REMOVE:
+        'shopify/duplicate-order/discount-popover/remove',
+    SHOPIFY_DUPLICATE_ORDER_EMAIL_INVOICE_POPOVER_CANCEL:
+        'shopify/duplicate-order/email-invoice-popover/cancel',
+    SHOPIFY_DUPLICATE_ORDER_EMAIL_INVOICE_POPOVER_OPEN:
+        'shopify/duplicate-order/email-invoice-popover/open',
+    SHOPIFY_DUPLICATE_ORDER_EMAIL_INVOICE_POPOVER_SEND:
+        'shopify/duplicate-order/email-invoice-popover/send',
+    SHOPIFY_DUPLICATE_ORDER_LINE_ITEM_ADDED:
+        'shopify/duplicate-order/line-item/added',
+    SHOPIFY_DUPLICATE_ORDER_LINE_ITEM_QUANTITY_CHANGED:
+        'shopify/duplicate-order/line-item/quantity/changed',
+    SHOPIFY_DUPLICATE_ORDER_NOTES_CHANGED:
+        'shopify/duplicate-order/notes/changed',
+    SHOPIFY_DUPLICATE_ORDER_SHIPPING_POPOVER_APPLY:
+        'shopify/duplicate-order/shipping-popover/apply',
+    SHOPIFY_DUPLICATE_ORDER_SHIPPING_POPOVER_CLOSE:
+        'shopify/duplicate-order/shipping-popover/close',
+    SHOPIFY_DUPLICATE_ORDER_SHIPPING_POPOVER_OPEN:
+        'shopify/duplicate-order/shipping-popover/open',
+    SHOPIFY_DUPLICATE_ORDER_SHIPPING_POPOVER_REMOVE:
+        'shopify/duplicate-order/shipping-popover/remove',
+    SHOPIFY_DUPLICATE_ORDER_TAGS_CHANGED:
+        'shopify/duplicate-order/tags/changed',
+    SHOPIFY_DUPLICATE_ORDER_TAXES_POPOVER_APPLY:
+        'shopify/duplicate-order/taxes-popover/apply',
+    SHOPIFY_DUPLICATE_ORDER_TAXES_POPOVER_CLOSE:
+        'shopify/duplicate-order/taxes-popover/close',
+    SHOPIFY_DUPLICATE_ORDER_TAXES_POPOVER_OPEN:
+        'shopify/duplicate-order/taxes-popover/open',
     SHOPIFY_REFUND_ORDER_CANCEL: 'shopify/refund-order/cancel',
     SHOPIFY_REFUND_ORDER_OPEN: 'shopify/refund-order/open',
     SHOW_MORE_FIELDS_CLICKED: 'show-more-fields-clicked',

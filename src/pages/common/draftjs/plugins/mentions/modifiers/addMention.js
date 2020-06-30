@@ -6,13 +6,23 @@ import {Modifier, EditorState} from 'draft-js'
 
 import {getSearchText, getTypeByTrigger} from '../utils'
 
-const addMention = (editorState, mention, mentionPrefix, mentionTrigger, entityMutability) => {
+const addMention = (
+    editorState,
+    mention,
+    mentionPrefix,
+    mentionTrigger,
+    entityMutability
+) => {
     const contentState = editorState.getCurrentContent()
-    const entityContentState = contentState.createEntity(getTypeByTrigger(mentionTrigger), entityMutability, {
-        // add mention as plain object,
-        // to be able to cache draftjs' convertToRaw
-        mention: mention.toJS()
-    })
+    const entityContentState = contentState.createEntity(
+        getTypeByTrigger(mentionTrigger),
+        entityMutability,
+        {
+            // add mention as plain object,
+            // to be able to cache draftjs' convertToRaw
+            mention: mention.toJS(),
+        }
+    )
     const entityKey = entityContentState.getLastCreatedEntityKey()
 
     const currentSelectionState = editorState.getSelection()
@@ -40,16 +50,19 @@ const addMention = (editorState, mention, mentionPrefix, mentionTrigger, entityM
         mentionReplacedContent = Modifier.insertText(
             mentionReplacedContent,
             mentionReplacedContent.getSelectionAfter(),
-            ' ',
+            ' '
         )
     }
 
     const newEditorState = EditorState.push(
         editorState,
         mentionReplacedContent,
-        'insert-mention',
+        'insert-mention'
     )
-    return EditorState.forceSelection(newEditorState, mentionReplacedContent.getSelectionAfter())
+    return EditorState.forceSelection(
+        newEditorState,
+        mentionReplacedContent.getSelectionAfter()
+    )
 }
 
 export default addMention

@@ -6,7 +6,6 @@ import Hoverable from '../../Hoverable'
 
 import Statement from './Statement'
 
-
 class _BlockStatementItem extends React.Component<BlockStatementItemProps> {
     render() {
         const {actions, body, rule, parent, schemas, depth} = this.props
@@ -32,11 +31,10 @@ type BlockStatementItemProps = {
     body: Object,
     parent: List<*>,
     schemas: Object,
-    depth: number
+    depth: number,
 }
 
 class BlockStatementItem extends Hoverable(_BlockStatementItem) {}
-
 
 export default class BlockStatement extends React.Component<BlockStatementProps> {
     _renderStatements = () => {
@@ -56,11 +54,7 @@ export default class BlockStatement extends React.Component<BlockStatementProps>
     }
 
     render() {
-        return (
-            <div className="BlockStatement">
-                {this._renderStatements()}
-            </div>
-        )
+        return <div className="BlockStatement">{this._renderStatements()}</div>
     }
 }
 
@@ -70,5 +64,5 @@ type BlockStatementProps = {
     body: Object,
     parent: List<*>,
     schemas: Object,
-    depth: number
+    depth: number,
 }

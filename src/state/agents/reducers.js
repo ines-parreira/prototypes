@@ -13,10 +13,12 @@ export const initialState = fromJS({
     pagination: {},
     locations: {},
     typingStatuses: {},
-
 })
 
-export default function reducer (state: Map<*,*> = initialState, action: actionType): Map<*,*> {
+export default function reducer(
+    state: Map<*, *> = initialState,
+    action: actionType
+): Map<*, *> {
     switch (action.type) {
         case agentsConstants.FETCH_AGENTS_PAGINATION_SUCCESS: {
             return state.set('pagination', fromJS(action.resp))
@@ -40,7 +42,9 @@ export default function reducer (state: Map<*,*> = initialState, action: actionT
         case agentsConstants.UPDATE_AGENT_SUCCESS: {
             const agent = action.resp
 
-            const existingAgentIndex = state.get('all').findIndex((user) => user.get('id') === agent.get('id'))
+            const existingAgentIndex = state
+                .get('all')
+                .findIndex((user) => user.get('id') === agent.get('id'))
 
             if (!~existingAgentIndex) {
                 return state
@@ -50,8 +54,11 @@ export default function reducer (state: Map<*,*> = initialState, action: actionT
         }
 
         case agentsConstants.DELETE_AGENT_SUCCESS: {
-            return state.update('all',
-                (agents) => agents.filter((user) => String(user.get('id')) !== String(action.id)))
+            return state.update('all', (agents) =>
+                agents.filter(
+                    (user) => String(user.get('id')) !== String(action.id)
+                )
+            )
         }
 
         case agentsConstants.SET_AGENTS_LOCATIONS: {
@@ -65,7 +72,9 @@ export default function reducer (state: Map<*,*> = initialState, action: actionT
         case currentUserConstants.SUBMIT_CURRENT_USER_SUCCESS: {
             const agent = fromJS(action.resp)
 
-            const existingAgentIndex = state.get('all').findIndex((user) => user.get('id') === agent.get('id'))
+            const existingAgentIndex = state
+                .get('all')
+                .findIndex((user) => user.get('id') === agent.get('id'))
 
             if (!~existingAgentIndex) {
                 return state

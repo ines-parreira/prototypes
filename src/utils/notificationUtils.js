@@ -1,10 +1,17 @@
 //@flow
-import {APPLY_MACRO_JOB_TYPE, EXPORT_TICKET_JOB_TYPE, UPDATE_TICKET_JOB_TYPE} from '../constants/job'
+import {
+    APPLY_MACRO_JOB_TYPE,
+    EXPORT_TICKET_JOB_TYPE,
+    UPDATE_TICKET_JOB_TYPE,
+} from '../constants/job'
 
-
-export function buildJobMessage(jobType: string, allViewItemsSelected: boolean, objectType: string, changes: Object,
-    changesCount: number = 0): string {
-
+export function buildJobMessage(
+    jobType: string,
+    allViewItemsSelected: boolean,
+    objectType: string,
+    changes: Object,
+    changesCount: number = 0
+): string {
     let message = ''
     if (allViewItemsSelected) {
         message += 'All the ' + objectType + ' in this view will be '
@@ -32,9 +39,10 @@ export function buildJobMessage(jobType: string, allViewItemsSelected: boolean, 
                         message += `marked as ${objectPropertyValue}`
                         break
                     case 'tags':
-                        message += objectPropertyValue.length === 1
-                            ? `tagged with the "${objectPropertyValue[0]}" tag`
-                            : `tagged with ${objectPropertyValue.length} tags`
+                        message +=
+                            objectPropertyValue.length === 1
+                                ? `tagged with the "${objectPropertyValue[0]}" tag`
+                                : `tagged with ${objectPropertyValue.length} tags`
                         break
                     case 'priority':
                         message += `marked as ${objectPropertyValue} priority`
@@ -54,13 +62,16 @@ export function buildJobMessage(jobType: string, allViewItemsSelected: boolean, 
             break
         case APPLY_MACRO_JOB_TYPE:
             if ('macro_id' in changes) {
-                message += 'updated with the macro' + (changes.apply_and_close ? ' and closed' : '')
+                message +=
+                    'updated with the macro' +
+                    (changes.apply_and_close ? ' and closed' : '')
                 message += allViewItemsSelected ? '.' : ' in a few seconds.'
                 return message
             }
             break
         case EXPORT_TICKET_JOB_TYPE:
-            message += 'exported. You will receive the download link via email once the export is done.'
+            message +=
+                'exported. You will receive the download link via email once the export is done.'
             return message
     }
     message += 'updated'

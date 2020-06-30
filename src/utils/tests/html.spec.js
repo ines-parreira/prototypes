@@ -16,7 +16,8 @@ describe('html util', () => {
             runScripts: 'dangerously',
             resources: 'usable',
         }
-        const htmlWithEvent = '<iframe src="/" onload="window._xss=true;"></iframe>'
+        const htmlWithEvent =
+            '<iframe src="/" onload="window._xss=true;"></iframe>'
         let dom
 
         beforeEach(() => {
@@ -29,21 +30,32 @@ describe('html util', () => {
             div.innerHTML = htmlWithEvent
             dom.window.document.body.appendChild(div)
             // timeout required for jsdom to trigger the event
-            global.jestSetTimeout(() => {
-                expect(dom.window._xss).toBe(true)
-            }, 100, done)
+            global.jestSetTimeout(
+                () => {
+                    expect(dom.window._xss).toBe(true)
+                },
+                100,
+                done
+            )
         })
 
         it('should not run inline event handlers', (done) => {
             parseHtml(htmlWithEvent, dom.window)
             // timeout required for jsdom to trigger the event
-            global.jestSetTimeout(() => {
-                expect(dom.window._xss).toBe(undefined)
-            }, 100, done)
+            global.jestSetTimeout(
+                () => {
+                    expect(dom.window._xss).toBe(undefined)
+                },
+                100,
+                done
+            )
         })
 
         it('should run script tags', () => {
-            const dom = new JSDOM('<body><script>window._xss=true;</script></body>', domOptions)
+            const dom = new JSDOM(
+                '<body><script>window._xss=true;</script></body>',
+                domOptions
+            )
             expect(dom.window._xss).toBe(true)
         })
 
@@ -98,12 +110,14 @@ describe('html util', () => {
 
     describe('linkifyHtml', () => {
         it('should linkify html with CDATA in head', () => {
-            const html = '<head><style><![CDATA[body{}]]></style></head><body>Website gorgias.io</body>'
+            const html =
+                '<head><style><![CDATA[body{}]]></style></head><body>Website gorgias.io</body>'
             expect(linkifyHtml(html)).toMatchSnapshot()
         })
 
         it('should linkify html with CDATA in body', () => {
-            const html = '<body><div><![CDATA[ - ]]></div>Website gorgias.io</body>'
+            const html =
+                '<body><div><![CDATA[ - ]]></div>Website gorgias.io</body>'
             expect(linkifyHtml(html)).toMatchSnapshot()
         })
 
@@ -113,7 +127,8 @@ describe('html util', () => {
         })
 
         it('should linkify nested links', () => {
-            const html = 'gorgias.io Pizza<div>Pepperoni<h1>gorgias.io Margherita</h1></div>'
+            const html =
+                'gorgias.io Pizza<div>Pepperoni<h1>gorgias.io Margherita</h1></div>'
             expect(linkifyHtml(html)).toMatchSnapshot()
         })
 
@@ -138,13 +153,14 @@ describe('html util', () => {
         })
 
         it('shoud linkify html with xml doctype', () => {
-            const html = '<?xml version="1.0" encoding="utf-16"?><html>Pizza gorgias.io'
+            const html =
+                '<?xml version="1.0" encoding="utf-16"?><html>Pizza gorgias.io'
             expect(linkifyHtml(html)).toMatchSnapshot()
         })
     })
 
     describe('sanitizeHtmlDefault', () => {
-        it('should return entry parameter if it\'s not a string', () => {
+        it("should return entry parameter if it's not a string", () => {
             expect(sanitizeHtmlDefault((undefined: any))).toBe(undefined)
             expect(sanitizeHtmlDefault((null: any))).toBe(null)
             expect(sanitizeHtmlDefault((12: any))).toBe(12)
@@ -152,15 +168,25 @@ describe('html util', () => {
 
         it('should remove comments from html', () => {
             expect(sanitizeHtmlDefault('<p><!-->hey</p>')).toBe('<p>hey</p>')
-            expect(sanitizeHtmlDefault('<p><!--[if IE9]>hey</p>')).toBe('<p></p>')
-            expect(sanitizeHtmlDefault('<p><!--[if IE9]>hey<![endif]--></p>')).toBe('<p></p>')
-            expect(sanitizeHtmlDefault('<p><!-- hola senor -->hey</p>')).toBe('<p>hey</p>')
-            expect(sanitizeHtmlDefault('<p><!-- hola senor -->--> hey</p>')).toBe('<p>--&gt; hey</p>')
+            expect(sanitizeHtmlDefault('<p><!--[if IE9]>hey</p>')).toBe(
+                '<p></p>'
+            )
+            expect(
+                sanitizeHtmlDefault('<p><!--[if IE9]>hey<![endif]--></p>')
+            ).toBe('<p></p>')
+            expect(sanitizeHtmlDefault('<p><!-- hola senor -->hey</p>')).toBe(
+                '<p>hey</p>'
+            )
+            expect(
+                sanitizeHtmlDefault('<p><!-- hola senor -->--> hey</p>')
+            ).toBe('<p>--&gt; hey</p>')
         })
         it('should remove all `o` - outlook tags', () => {
-            expect(sanitizeHtmlDefault('<o:PixelsPerInch>96</o:PixelsPerInch>')).toBe('')
+            expect(
+                sanitizeHtmlDefault('<o:PixelsPerInch>96</o:PixelsPerInch>')
+            ).toBe('')
         })
-        it('shouldn\'t remove valid table tags', () => {
+        it("shouldn't remove valid table tags", () => {
             const tablehtml = `
                 <table>
                     <caption>caption</caption>

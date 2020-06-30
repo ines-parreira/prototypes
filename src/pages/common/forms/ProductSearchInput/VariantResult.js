@@ -1,6 +1,10 @@
 import React from 'react'
 
-import type {IntegrationDataItem, Product, Variant} from '../../../../models/integration'
+import type {
+    IntegrationDataItem,
+    Product,
+    Variant,
+} from '../../../../models/integration'
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../../constants/integration'
 import * as Shopify from '../../../../constants/integrations/shopify'
 import type {SearchInputSubResultProps} from '../SearchInput'
@@ -14,14 +18,19 @@ export default class VariantResult extends React.PureComponent<Props> {
         [SHOPIFY_INTEGRATION_TYPE]: VariantResult._shopifyDataMapper,
     }
 
-    static _shopifyDataMapper(product: Shopify.Product, variant: Shopify.Variant): ResultProps {
-        const title = product.variants.length > 1 && variant.title
-            ? `${product.title} - ${variant.title}`
-            : product.title
+    static _shopifyDataMapper(
+        product: Shopify.Product,
+        variant: Shopify.Variant
+    ): ResultProps {
+        const title =
+            product.variants.length > 1 && variant.title
+                ? `${product.title} - ${variant.title}`
+                : product.title
 
-        const image = variant.image_id && product.images
-            ? product.images.find((image) => image.id === variant.image_id)
-            : product.image
+        const image =
+            variant.image_id && product.images
+                ? product.images.find((image) => image.id === variant.image_id)
+                : product.image
 
         return {
             image,

@@ -13,9 +13,7 @@ describe('<TableBodyRow/>', () => {
 
     it('should render', () => {
         const component = shallow(
-            <TableBodyRow className="foo">
-                Foo
-            </TableBodyRow>
+            <TableBodyRow className="foo">Foo</TableBodyRow>
         )
 
         expect(component).toMatchSnapshot()
@@ -23,9 +21,7 @@ describe('<TableBodyRow/>', () => {
 
     it('should call onClick when clicked', () => {
         const component = shallow(
-            <TableBodyRow onClick={mockOnClick}>
-                Foo
-            </TableBodyRow>
+            <TableBodyRow onClick={mockOnClick}>Foo</TableBodyRow>
         )
 
         expect(component).toMatchSnapshot()

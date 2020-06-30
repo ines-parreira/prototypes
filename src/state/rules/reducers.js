@@ -12,12 +12,14 @@ import type {actionType} from '../types'
 
 import * as constants from './constants'
 
-
 export const initialState = fromJS({
-    rules: {}
+    rules: {},
 })
 
-export default function reducer(state: Map<*,*> = initialState, action: actionType): Map<*,*> {
+export default function reducer(
+    state: Map<*, *> = initialState,
+    action: actionType
+): Map<*, *> {
     switch (action.type) {
         case constants.ADD_RULE_END: {
             const rule = action.rule
@@ -31,16 +33,14 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
         }
 
         case constants.ACTIVATE_RULE: {
-            return state.updateIn(
-                ['rules', action.id.toString()],
-                (rule) => rule.set('deactivated_datetime', null)
+            return state.updateIn(['rules', action.id.toString()], (rule) =>
+                rule.set('deactivated_datetime', null)
             )
         }
 
         case constants.DEACTIVATE_RULE: {
-            return state.updateIn(
-                ['rules', action.id.toString()],
-                (rule) => rule.set('deactivated_datetime', (new Date()).toISOString())
+            return state.updateIn(['rules', action.id.toString()], (rule) =>
+                rule.set('deactivated_datetime', new Date().toISOString())
             )
         }
 
@@ -48,7 +48,9 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
             const {priorities} = action
             return state.update('rules', (rules) => {
                 return rules.map((rule) => {
-                    const newPriorityData = _find(priorities, {id: rule.get('id')})
+                    const newPriorityData = _find(priorities, {
+                        id: rule.get('id'),
+                    })
 
                     if (!newPriorityData) {
                         return rule
@@ -78,7 +80,11 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
             return state.set(
                 'rules',
                 fromJS(_fromPairs(rules))
-                    .sort((a, b) => a.get('created_datetime') < b.get('created_datetime'))
+                    .sort(
+                        (a, b) =>
+                            a.get('created_datetime') <
+                            b.get('created_datetime')
+                    )
                     .sort((a, b) => a.get('type') < b.get('type')) // system rules at the end
             )
         }
@@ -103,7 +109,9 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
             const id = action.id.toString()
             const ast = state.getIn(['rules', id, 'code_ast'])
 
-            const updatedCodeAst = fromJS(updateCodeAst(schemas, ast, path, value, operation))
+            const updatedCodeAst = fromJS(
+                updateCodeAst(schemas, ast, path, value, operation)
+            )
 
             return state
                 .setIn(['rules', id, 'code'], updatedCodeAst.get('code'))
@@ -117,11 +125,16 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
         }
 
         case constants.UPDATE_RULE_SUCCESS: {
-            return state.update('rules', (rules) => rules.set(action.ruleId.toString(), action.rule))
+            return state.update('rules', (rules) =>
+                rules.set(action.ruleId.toString(), action.rule)
+            )
         }
 
         case constants.RESET_RULE_SUCCESS:
-            return state.setIn(['rules', action.rule.id.toString()], fromJS(action.rule))
+            return state.setIn(
+                ['rules', action.rule.id.toString()],
+                fromJS(action.rule)
+            )
 
         default:
             return state

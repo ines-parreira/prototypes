@@ -17,19 +17,15 @@ import {
 import configureStore from '../../../../../../store/configureStore'
 import ReplyMessageChannel from '../ReplyMessageChannel'
 
-
 const baseReply = {
     email: {answerable: true},
-    ['internal-note']: {answerable: true}
+    ['internal-note']: {answerable: true},
 }
 
 describe('ReplyMessageChannel component', () => {
     it('new ticket', () => {
         const component = shallow(
-            <ReplyMessageChannel
-                store={configureStore()}
-                ticket={fromJS({})}
-            />
+            <ReplyMessageChannel store={configureStore()} ticket={fromJS({})} />
         ).dive() // dive in connect()ed component
         expect(component).toMatchSnapshot()
     })
@@ -40,7 +36,7 @@ describe('ReplyMessageChannel component', () => {
                 store={configureStore({
                     ticket: fromJS({
                         id: 12,
-                    })
+                    }),
                 })}
             />
         ).dive() // dive in connect()ed component
@@ -51,9 +47,12 @@ describe('ReplyMessageChannel component', () => {
         CHAT_SOURCE,
         EMAIL_SOURCE,
         FACEBOOK_MESSENGER_SOURCE,
-        FACEBOOK_POST_SOURCE, FACEBOOK_COMMENT_SOURCE,
-        INSTAGRAM_AD_MEDIA_SOURCE, INSTAGRAM_AD_COMMENT_SOURCE,
-        INSTAGRAM_MEDIA_SOURCE, INSTAGRAM_COMMENT_SOURCE
+        FACEBOOK_POST_SOURCE,
+        FACEBOOK_COMMENT_SOURCE,
+        INSTAGRAM_AD_MEDIA_SOURCE,
+        INSTAGRAM_AD_COMMENT_SOURCE,
+        INSTAGRAM_MEDIA_SOURCE,
+        INSTAGRAM_COMMENT_SOURCE,
     ]
 
     types.forEach((type) => {
@@ -70,7 +69,7 @@ describe('ReplyMessageChannel component', () => {
 
             const replyOptions = {
                 ...baseReply,
-                [newMessageType]: {answerable: true}
+                [newMessageType]: {answerable: true},
             }
 
             const component = shallow(
@@ -79,20 +78,22 @@ describe('ReplyMessageChannel component', () => {
                         ticket: fromJS({
                             id: 12,
                             reply_options: replyOptions,
-                            messages: [{
-                                id: 1,
-                                source: {
-                                    type: type,
+                            messages: [
+                                {
+                                    id: 1,
+                                    source: {
+                                        type: type,
+                                    },
                                 },
-                            }],
+                            ],
                         }),
                         newMessage: fromJS({
                             newMessage: {
                                 source: {
                                     type: newMessageType,
                                 },
-                            }
-                        })
+                            },
+                        }),
                     })}
                 />
             ).dive() // dive in connect()ed component
@@ -110,27 +111,32 @@ describe('ReplyMessageChannel component', () => {
                             ...baseReply,
                             chat: {answerable: true},
                         },
-                        messages: [{
-                            id: 2,
-                            source: {
-                                type: 'chat',
+                        messages: [
+                            {
+                                id: 2,
+                                source: {
+                                    type: 'chat',
+                                },
+                                created_datetime:
+                                    '2017-07-27T22:03:30.656613+00:00',
                             },
-                            created_datetime: '2017-07-27T22:03:30.656613+00:00',
-                        }, {
-                            id: 1,
-                            source: {
-                                type: 'email',
+                            {
+                                id: 1,
+                                source: {
+                                    type: 'email',
+                                },
+                                created_datetime:
+                                    '2017-07-26T22:03:30.656613+00:00',
                             },
-                            created_datetime: '2017-07-26T22:03:30.656613+00:00',
-                        }],
+                        ],
                     }),
                     newMessage: fromJS({
                         newMessage: {
                             source: {
                                 type: 'chat',
                             },
-                        }
-                    })
+                        },
+                    }),
                 })}
             />
         ).dive() // dive in connect()ed component

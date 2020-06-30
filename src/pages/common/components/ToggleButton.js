@@ -8,7 +8,7 @@ type Props = {
     disabled?: boolean,
     onChange: (boolean) => ?Promise<*>,
     value: boolean,
-    loading?: boolean
+    loading?: boolean,
 }
 
 export default class ToggleButton extends React.Component<Props> {
@@ -26,7 +26,7 @@ export default class ToggleButton extends React.Component<Props> {
             <label
                 className={classnames(css.switch, {
                     [css.loading]: loading,
-                    [css.disabled]: disabled
+                    [css.disabled]: disabled,
                 })}
                 onClick={this._onChange}
             >

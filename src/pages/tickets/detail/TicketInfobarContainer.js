@@ -76,8 +76,10 @@ function mapDispatchToProps(dispatch) {
         actions: {
             infobar: bindActionCreators(InfobarActions, dispatch),
             widgets: bindActionCreators(WidgetActions, dispatch),
-        }
+        },
     }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TicketInfobarContainer))
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(TicketInfobarContainer)
+)

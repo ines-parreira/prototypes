@@ -9,19 +9,10 @@ type Props = $Exact<{
     className?: string,
 }>
 
-export default function BodyCell({
-    children,
-    className,
-    ...otherProps
-}: Props) {
+export default function BodyCell({children, className, ...otherProps}: Props) {
     return (
-        <td
-            {...otherProps}
-            className={className}
-        >
-            <div className={css.cellContent}>
-                {children}
-            </div>
+        <td {...otherProps} className={className}>
+            <div className={css.cellContent}>{children}</div>
         </td>
     )
 }

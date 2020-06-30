@@ -15,17 +15,17 @@ export const shopifyWidget = {
                     {
                         path: 'created_at',
                         type: 'date',
-                        title: 'Created at'
-                    }
+                        title: 'Created at',
+                    },
                 ],
                 type: 'card',
-                title: '{first_name} {last_name}'
+                title: '{first_name} {last_name}',
             },
             {
                 path: 'orders',
                 meta: {
                     limit: '2',
-                    orderBy: ''
+                    orderBy: '',
                 },
                 type: 'list',
                 widgets: [
@@ -34,18 +34,18 @@ export const shopifyWidget = {
                             {
                                 path: 'id',
                                 type: 'text',
-                                title: 'Id'
+                                title: 'Id',
                             },
                             {
                                 path: 'created_at',
                                 type: 'date',
-                                title: 'Created at'
+                                title: 'Created at',
                             },
                             {
                                 path: 'fulfillments',
                                 meta: {
                                     limit: '',
-                                    orderBy: ''
+                                    orderBy: '',
                                 },
                                 type: 'list',
                                 widgets: [
@@ -54,27 +54,27 @@ export const shopifyWidget = {
                                             {
                                                 path: 'tracking_url',
                                                 type: 'url',
-                                                title: 'Tracking url'
+                                                title: 'Tracking url',
                                             },
                                             {
                                                 path: 'tracking_number',
                                                 type: 'text',
-                                                title: 'Tracking number'
-                                            }
+                                                title: 'Tracking number',
+                                            },
                                         ],
                                         meta: {
-                                            link: '{tracking_url}'
+                                            link: '{tracking_url}',
                                         },
                                         type: 'card',
-                                        title: ':shipment_status: Shipment'
-                                    }
-                                ]
+                                        title: ':shipment_status: Shipment',
+                                    },
+                                ],
                             },
                             {
                                 path: 'refunds',
                                 meta: {
                                     limit: '',
-                                    orderBy: ''
+                                    orderBy: '',
                                 },
                                 type: 'list',
                                 widgets: [
@@ -83,40 +83,43 @@ export const shopifyWidget = {
                                             {
                                                 path: 'processed_at',
                                                 type: 'date',
-                                                title: 'Processed at'
+                                                title: 'Processed at',
                                             },
                                             {
                                                 path: 'refund_line_items',
                                                 meta: {
                                                     limit: '',
-                                                    orderBy: ''
+                                                    orderBy: '',
                                                 },
                                                 type: 'list',
                                                 widgets: [
                                                     {
                                                         widgets: [
                                                             {
-                                                                path: 'subtotal',
+                                                                path:
+                                                                    'subtotal',
                                                                 type: 'text',
-                                                                title: 'Subtotal'
-                                                            }
+                                                                title:
+                                                                    'Subtotal',
+                                                            },
                                                         ],
                                                         meta: {
-                                                            link: ''
+                                                            link: '',
                                                         },
                                                         type: 'card',
-                                                        title: '{quantity} × {line_item.name}'
-                                                    }
-                                                ]
-                                            }
+                                                        title:
+                                                            '{quantity} × {line_item.name}',
+                                                    },
+                                                ],
+                                            },
                                         ],
                                         meta: {
-                                            link: ''
+                                            link: '',
                                         },
                                         type: 'card',
-                                        title: ':refund: Refund'
-                                    }
-                                ]
+                                        title: ':refund: Refund',
+                                    },
+                                ],
                             },
                             {
                                 path: 'shipping_address',
@@ -124,45 +127,45 @@ export const shopifyWidget = {
                                     {
                                         path: 'address1',
                                         type: 'text',
-                                        title: 'Address1'
+                                        title: 'Address1',
                                     },
                                     {
                                         path: 'address2',
                                         type: 'text',
-                                        title: 'Address2'
+                                        title: 'Address2',
                                     },
                                     {
                                         path: 'city',
                                         type: 'text',
-                                        title: 'City'
+                                        title: 'City',
                                     },
                                     {
                                         path: 'country',
                                         type: 'text',
-                                        title: 'Country'
+                                        title: 'Country',
                                     },
                                     {
                                         path: 'province_code',
                                         type: 'text',
-                                        title: 'Province code'
+                                        title: 'Province code',
                                     },
                                     {
                                         path: 'zip',
                                         type: 'text',
-                                        title: 'Zip'
-                                    }
+                                        title: 'Zip',
+                                    },
                                 ],
                                 meta: {
-                                    link: ''
+                                    link: '',
                                 },
                                 type: 'card',
-                                title: ':shipping_address: Shipping address'
+                                title: ':shipping_address: Shipping address',
                             },
                             {
                                 path: 'line_items',
                                 meta: {
                                     limit: '',
-                                    orderBy: ''
+                                    orderBy: '',
                                 },
                                 type: 'list',
                                 widgets: [
@@ -171,35 +174,35 @@ export const shopifyWidget = {
                                             {
                                                 path: 'price',
                                                 type: 'text',
-                                                title: 'Price'
+                                                title: 'Price',
                                             },
                                             {
                                                 path: 'sku',
                                                 type: 'text',
-                                                title: 'Sku'
-                                            }
+                                                title: 'Sku',
+                                            },
                                         ],
                                         meta: {
-                                            link: ''
+                                            link: '',
                                         },
                                         type: 'card',
-                                        title: ':product: {quantity} × {name}'
-                                    }
-                                ]
-                            }
+                                        title: ':product: {quantity} × {name}',
+                                    },
+                                ],
+                            },
                         ],
                         meta: {
                             displayCard: true,
-                            link: ''
+                            link: '',
                         },
                         type: 'card',
-                        title: 'Order {name}'
-                    }
-                ]
-            }
-        ]
+                        title: 'Order {name}',
+                    },
+                ],
+            },
+        ],
     },
     type: 'shopify',
     id: 2,
-    updated_datetime: '2017-08-17T23:33:46.991886+00:00'
+    updated_datetime: '2017-08-17T23:33:46.991886+00:00',
 }

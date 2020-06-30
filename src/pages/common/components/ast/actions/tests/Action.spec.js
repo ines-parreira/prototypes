@@ -5,7 +5,12 @@ import {shallow} from 'enzyme'
 import React from 'react'
 
 import schemasJSON from '../../../../../../fixtures/openapi.json'
-import Action, {validateEmailList, validateBody, validateSendEmail, validateTags} from '../Action'
+import Action, {
+    validateEmailList,
+    validateBody,
+    validateSendEmail,
+    validateTags,
+} from '../Action'
 
 const schemas = fromJS(schemasJSON)
 
@@ -18,7 +23,7 @@ describe('Action', () => {
                 '{{ticket.customer.email}}',
                 'email@example.com, email2@example.com,',
                 'email@example.com, {{ticket.customer.email}}, email@example.com',
-                '{{ticket.assignee_user.email}}, {{ticket.customer.email}}, email2@example.com,'
+                '{{ticket.assignee_user.email}}, {{ticket.customer.email}}, email2@example.com,',
             ]
             valid.forEach((input) => {
                 expect(validateEmailList(input, schemas)).toBeFalsy()
@@ -31,7 +36,7 @@ describe('Action', () => {
                 '{{ticket.sender.name}}',
                 '{{ticket.tags.name}},',
                 'email@example.com, {{ticket.created_datetime}}, email2@example.com',
-                '{{message.from_agent}}, {{ticket.receiver.email}}, email2@example.com,'
+                '{{message.from_agent}}, {{ticket.receiver.email}}, email2@example.com,',
             ]
             invalid.forEach((input) => {
                 expect(validateEmailList(input, schemas)).toBeTruthy()
@@ -41,8 +46,7 @@ describe('Action', () => {
 
     describe('validateBody', () => {
         it('should validate body', () => {
-            expect(validateBody({body_text: 'hey'}, schemas))
-                .toBeFalsy()
+            expect(validateBody({body_text: 'hey'}, schemas)).toBeFalsy()
         })
 
         it('should return errors and not validate body', () => {
@@ -52,19 +56,24 @@ describe('Action', () => {
 
     describe('validateSendEmail', () => {
         it('should validate email', () => {
-            const emails = [{
-                body_text: 'hey',
-                to: 'email@example.com'
-            }, {
-                body_text: 'hey',
-                to: 'email@example.com'
-            }, {
-                body_text: 'hey',
-                cc: 'email@example.com'
-            }, {
-                body_text: 'hey',
-                bcc: 'emai@example.com'
-            }]
+            const emails = [
+                {
+                    body_text: 'hey',
+                    to: 'email@example.com',
+                },
+                {
+                    body_text: 'hey',
+                    to: 'email@example.com',
+                },
+                {
+                    body_text: 'hey',
+                    cc: 'email@example.com',
+                },
+                {
+                    body_text: 'hey',
+                    bcc: 'emai@example.com',
+                },
+            ]
 
             emails.forEach((email) => {
                 expect(validateSendEmail(email, schemas)).toEqual([])
@@ -72,15 +81,21 @@ describe('Action', () => {
         })
 
         it('should return errors and not validate email', () => {
-            const emails = [{}, {
-                body_text: 'hey',
-            }, {
-                to: 'email@example.com'
-            }, {
-                cc: 'email@example.com'
-            }, {
-                bcc: 'email@example.com'
-            }]
+            const emails = [
+                {},
+                {
+                    body_text: 'hey',
+                },
+                {
+                    to: 'email@example.com',
+                },
+                {
+                    cc: 'email@example.com',
+                },
+                {
+                    bcc: 'email@example.com',
+                },
+            ]
 
             emails.forEach((email) => {
                 const result = validateSendEmail(email, schemas)
@@ -105,29 +120,22 @@ describe('Action', () => {
             parent: [],
         }
 
-        it.each(['facebookHideComment', 'facebookLikeComment'])('should render a warning about potential page deactivation in Facebook', (actionValue) => {
-            const props = {...minProps, value: actionValue}
-            const component = shallow(
-                <Action
-                    {...props}
-                />
-            )
+        it.each(['facebookHideComment', 'facebookLikeComment'])(
+            'should render a warning about potential page deactivation in Facebook',
+            (actionValue) => {
+                const props = {...minProps, value: actionValue}
+                const component = shallow(<Action {...props} />)
 
-            expect(component).toMatchSnapshot()
-
-        })
+                expect(component).toMatchSnapshot()
+            }
+        )
 
         it('should render an error saying an action cannot be empty', () => {
             const props = Object.assign({}, minProps, {value: ''})
 
-            const component = shallow(
-                <Action
-                    {...props}
-                />
-            )
+            const component = shallow(<Action {...props} />)
 
             expect(component).toMatchSnapshot()
         })
     })
-
 })

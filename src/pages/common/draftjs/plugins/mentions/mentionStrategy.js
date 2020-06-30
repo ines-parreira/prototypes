@@ -6,10 +6,18 @@ import {getTypeByTrigger} from './utils'
 
 const findMention = (trigger, contentState) => (character) => {
     const entityKey = character.getEntity()
-    return (entityKey !== null && contentState.getEntity(entityKey).getType() === getTypeByTrigger(trigger))
+    return (
+        entityKey !== null &&
+        contentState.getEntity(entityKey).getType() ===
+            getTypeByTrigger(trigger)
+    )
 }
 
-const findMentionEntities = (trigger) => (contentBlock, callback, contentState) => {
+const findMentionEntities = (trigger) => (
+    contentBlock,
+    callback,
+    contentState
+) => {
     contentBlock.findEntityRanges(findMention(trigger, contentState), callback)
 }
 

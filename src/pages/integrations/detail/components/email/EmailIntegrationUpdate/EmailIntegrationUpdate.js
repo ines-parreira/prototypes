@@ -24,9 +24,12 @@ import {
     EMAIL_INTEGRATION_TYPE,
     GMAIL_INTEGRATION_TYPE,
     OUTLOOK_INTEGRATION_TYPE,
-    EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS
+    EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS,
 } from '../../../../../../constants/integration'
-import {getForwardingEmailAddress, getRedirectUri} from '../../../../../../state/integrations/selectors'
+import {
+    getForwardingEmailAddress,
+    getRedirectUri,
+} from '../../../../../../state/integrations/selectors'
 
 import {isGorgiasSupportAddress} from '../../../../../../utils'
 import {convertToHTML} from '../../../../../../utils/editor'
@@ -41,7 +44,6 @@ import BooleanField from '../../../../../common/forms/BooleanField'
 import RichFieldWithVariables from '../../../../../common/forms/RichFieldWithVariables'
 import PageHeader from '../../../../../common/components/PageHeader'
 
-
 type Props = {
     domain: string,
     forwardingEmailAddress: string,
@@ -50,7 +52,7 @@ type Props = {
     actions: Object,
     loading: Map<*, *>,
     location: Object,
-    gmailRedirectUri: string
+    gmailRedirectUri: string,
 }
 
 type State = {
@@ -61,9 +63,8 @@ type State = {
     import_spam: boolean,
     use_gmail_categories: boolean,
     signature_text: string,
-    signature_html: string
+    signature_html: string,
 }
-
 
 class EmailIntegrationUpdate extends React.Component<Props, State> {
     isInitialized: boolean = false
@@ -76,7 +77,7 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
         import_spam: false,
         use_gmail_categories: false,
         signature_text: '',
-        signature_html: ''
+        signature_html: '',
     }
 
     constructor(props: Props) {
@@ -84,7 +85,7 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
 
         this.state = {
             ...this.state,
-            ...this._getIntegrationValues(props.integration)
+            ...this._getIntegrationValues(props.integration),
         }
     }
 
@@ -102,9 +103,11 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
         return {
             name: integration.get('name', ''),
             import_spam: integration.getIn(['meta', 'import_spam']) || false,
-            use_gmail_categories: integration.get('type') === GMAIL_INTEGRATION_TYPE
-                ? integration.getIn(['meta', 'use_gmail_categories']) || false
-                : false
+            use_gmail_categories:
+                integration.get('type') === GMAIL_INTEGRATION_TYPE
+                    ? integration.getIn(['meta', 'use_gmail_categories']) ||
+                      false
+                    : false,
         }
     }
 
@@ -119,7 +122,10 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
             .setIn(['meta', 'signature', 'html'], this.state.signature_html)
 
         if (integration.get('type') === GMAIL_INTEGRATION_TYPE) {
-            form = form.setIn(['meta', 'use_gmail_categories'], this.state.use_gmail_categories)
+            form = form.setIn(
+                ['meta', 'use_gmail_categories'],
+                this.state.use_gmail_categories
+            )
         }
 
         return form
@@ -143,31 +149,36 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
         e.preventDefault()
         const {updateOrCreateIntegration} = this.props.actions
 
-        return updateOrCreateIntegration(this._getFormValues())
-            .then((res) => {
-                this.setState({dirty: false})
-                return res
-            })
+        return updateOrCreateIntegration(this._getFormValues()).then((res) => {
+            this.setState({dirty: false})
+            return res
+        })
     }
 
     _gmailImportEmails = () => {
         const {integration, importEmails} = this.props
 
-        return importEmails(fromJS({
-            id: integration.get('id'),
-            meta: {
-                import_activated: true
-            }
-        }))
+        return importEmails(
+            fromJS({
+                id: integration.get('id'),
+                meta: {
+                    import_activated: true,
+                },
+            })
+        )
     }
 
     _outlookImportEmails = () => {
         const {integration, importEmails} = this.props
 
-        return importEmails(fromJS({
-            id: integration.get('id'),
-            meta: integration.get('meta').setIn(['import_state', 'enabled'], true)
-        }))
+        return importEmails(
+            fromJS({
+                id: integration.get('id'),
+                meta: integration
+                    .get('meta')
+                    .setIn(['import_state', 'enabled'], true),
+            })
+        )
     }
 
     _renderImport = (
@@ -185,66 +196,102 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
 
         const statusSentence = isImporting ? (
             <span>
-                    We are currently importing emails from <strong>{email}</strong> into Gorgias.
-                    You can see it's progress here: <Link to="/app/tickets">All tickets</Link>
+                We are currently importing emails from <strong>{email}</strong>{' '}
+                into Gorgias. You can see it's progress here:{' '}
+                <Link to="/app/tickets">All tickets</Link>
             </span>
         ) : (
             <span>
-                    Completed: <b>{mailsImported}</b> emails have been imported.
+                Completed: <b>{mailsImported}</b> emails have been imported.
             </span>
         )
 
         return (
             <div>
                 <h2>
-                    {
-                        isImporting && (
-                            <i className="material-icons md-spin mr-2">
-                                autorenew
-                            </i>
-                        )
-                    }
+                    {isImporting && (
+                        <i className="material-icons md-spin mr-2">autorenew</i>
+                    )}
                     Import
                 </h2>
                 <p>
-                    {
-                        importActivated
-                            ? statusSentence
-                            : <span>We will import {importDescription} from <b>{email}</b> into Gorgias.</span>
-                    }
+                    {importActivated ? (
+                        statusSentence
+                    ) : (
+                        <span>
+                            We will import {importDescription} from{' '}
+                            <b>{email}</b> into Gorgias.
+                        </span>
+                    )}
                 </p>
-                {
-                    !importActivated && (
-                        <ConfirmButton
-                            color="primary"
-                            loading={isLoading}
-                            confirm={importMethod}
-                            content="Are you sure you want to import emails?"
-                        >
-                            Import emails
-                        </ConfirmButton>
-                    )
-                }
+                {!importActivated && (
+                    <ConfirmButton
+                        color="primary"
+                        loading={isLoading}
+                        confirm={importMethod}
+                        content="Are you sure you want to import emails?"
+                    >
+                        Import emails
+                    </ConfirmButton>
+                )}
             </div>
         )
     }
 
     _gmailRenderImport = () => {
         const {integration} = this.props
-        const importActivated = integration.getIn(['meta', 'import_activated'], false)
-        const status = integration.getIn(['meta', 'importation', 'status'], false)
-        const mailsImported = integration.getIn(['meta', 'importation', 'count'], 0)
-        const importDescription = <span>the last <b>{GMAIL_IMPORTED_THREADS}</b> emails</span>
-        return this._renderImport(importActivated, status, mailsImported, importDescription, this._gmailImportEmails)
+        const importActivated = integration.getIn(
+            ['meta', 'import_activated'],
+            false
+        )
+        const status = integration.getIn(
+            ['meta', 'importation', 'status'],
+            false
+        )
+        const mailsImported = integration.getIn(
+            ['meta', 'importation', 'count'],
+            0
+        )
+        const importDescription = (
+            <span>
+                the last <b>{GMAIL_IMPORTED_THREADS}</b> emails
+            </span>
+        )
+        return this._renderImport(
+            importActivated,
+            status,
+            mailsImported,
+            importDescription,
+            this._gmailImportEmails
+        )
     }
 
     _outlookRenderImport = () => {
         const {integration} = this.props
-        const importActivated = integration.getIn(['meta', 'import_state', 'enabled'], false)
-        const status = integration.getIn(['meta', 'import_state', 'is_over'], false)
-        const mailsImported = integration.getIn(['meta', 'import_state', 'count'], 0)
-        const importDescription = <span>the last <b>year</b> of emails</span>
-        return this._renderImport(importActivated, status, mailsImported, importDescription, this._outlookImportEmails)
+        const importActivated = integration.getIn(
+            ['meta', 'import_state', 'enabled'],
+            false
+        )
+        const status = integration.getIn(
+            ['meta', 'import_state', 'is_over'],
+            false
+        )
+        const mailsImported = integration.getIn(
+            ['meta', 'import_state', 'count'],
+            0
+        )
+        const importDescription = (
+            <span>
+                the last <b>year</b> of emails
+            </span>
+        )
+        return this._renderImport(
+            importActivated,
+            status,
+            mailsImported,
+            importDescription,
+            this._outlookImportEmails
+        )
     }
 
     _renderInstructions = () => {
@@ -255,29 +302,32 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
             // no need to display instructions for our own support address
             return (
                 <Alert color="info">
-                    Emails sent to <b>{address}</b> will arrive in the helpdesk, but we recommend
-                    using your own company support address.
+                    Emails sent to <b>{address}</b> will arrive in the helpdesk,
+                    but we recommend using your own company support address.
                 </Alert>
             )
         }
 
         return (
             <div>
-                <h3>
-                    Setup instructions
-                </h3>
+                <h3>Setup instructions</h3>
                 <p>
-                    Forward emails from <b>{address}</b> to the address below. Need help? Follow our
-                    {' '}
+                    Forward emails from <b>{address}</b> to the address below.
+                    Need help? Follow our{' '}
                     <a
                         target="_blank"
                         rel="noopener noreferrer"
                         href="https://docs.gorgias.com/email-integrations/email"
                         onClick={() => {
-                            segmentTracker.logEvent(segmentTracker.EVENTS.EXTERNAL_LINK_CLICKED, {
-                                name: 'Step by step instructions in add email integration',
-                                url: 'https://docs.gorgias.com/email-integrations/email',
-                            })
+                            segmentTracker.logEvent(
+                                segmentTracker.EVENTS.EXTERNAL_LINK_CLICKED,
+                                {
+                                    name:
+                                        'Step by step instructions in add email integration',
+                                    url:
+                                        'https://docs.gorgias.com/email-integrations/email',
+                                }
+                            )
                         }}
                     >
                         step by step tutorial
@@ -297,24 +347,23 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
                             data-clipboard-target="#forwarding-email"
                             innerRef={this._clipboardCopy}
                         >
-                            <i className="material-icons mr-2">
-                                file_copy
-                            </i>
+                            <i className="material-icons mr-2">file_copy</i>
                             {this.state.isCopied ? 'Copied!' : 'Copy'}
                         </Button>
                     </InputGroupAddon>
                 </InputGroup>
-                <br/>
+                <br />
                 <Alert color="info">
-                    We also <strong>highly recommend</strong> you
-                    {' '}
+                    We also <strong>highly recommend</strong> you{' '}
                     <a
                         target="_blank"
                         rel="noopener noreferrer"
                         href="https://docs.gorgias.com/email-integrations/email"
                     >
                         setup SPF
-                    </a> so your emails are not flagged as Spam when you send them from Gorgias.
+                    </a>{' '}
+                    so your emails are not flagged as Spam when you send them
+                    from Gorgias.
                 </Alert>
             </div>
         )
@@ -322,20 +371,22 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
 
     _setName = (name: string) => {
         const {errors} = this.state
-        const invalidNameRegexp = new RegExp(`[${EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS.join('')}]`)
+        const invalidNameRegexp = new RegExp(
+            `[${EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS.join('')}]`
+        )
 
         if (name && invalidNameRegexp.test(name)) {
-            errors.name = 'The name of your Email integration cannot contain these characters: ' +
-                          `${EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS.join(' ')}`
+            errors.name =
+                'The name of your Email integration cannot contain these characters: ' +
+                `${EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS.join(' ')}`
         } else {
             errors.name = null
         }
 
-
         this.setState({
             dirty: true,
             name,
-            errors
+            errors,
         })
     }
 
@@ -353,35 +404,30 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
             domain,
             integration,
             loading,
-            actions: {
-                deleteIntegration
-            },
-            gmailRedirectUri
+            actions: {deleteIntegration},
+            gmailRedirectUri,
         } = this.props
 
-        const isSubmitting = loading.get('updateIntegration') === integration.get('id')
+        const isSubmitting =
+            loading.get('updateIntegration') === integration.get('id')
         const isDeactivated = !!integration.get('deactivated_datetime')
         const isDeleting = loading.get('delete') === integration.get('id')
         const isGmail = integration.get('type') === GMAIL_INTEGRATION_TYPE
         const isOutlook = integration.get('type') === OUTLOOK_INTEGRATION_TYPE
 
-        const {
-            errors,
-            import_spam,
-            name,
-            use_gmail_categories,
-        } = this.state
+        const {errors, import_spam, name, use_gmail_categories} = this.state
 
         const hasErrors = Object.values(errors).some((val) => val != null)
 
-        const nameHelp = 'The name that customers will see when they receive emails from you. ' +
-                         `Cannot contain these characters: ${EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS.join(' ')}`
+        const nameHelp =
+            'The name that customers will see when they receive emails from you. ' +
+            `Cannot contain these characters: ${EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS.join(
+                ' '
+            )}`
 
         return (
             <div className="mt-4">
-                <h3>
-                    Settings
-                </h3>
+                <h3>Settings</h3>
                 <Form onSubmit={this._handleSubmit}>
                     <InputField
                         type="text"
@@ -391,88 +437,104 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
                         required
                         help={nameHelp}
                         error={errors.name}
-
                         value={name}
                         onChange={(name) => this._setName(name)}
                     />
-                    {
-                        isGmail && (
-                            <FormGroup>
-                                <BooleanField
-                                    name="use_gmail_categories"
-                                    type="checkbox"
-                                    label={
-                                        'Tag Gorgias tickets with Gmail categories (Social, Promotions, Updates, ' +
-                                        'Forums)'
-                                    }
-                                    value={use_gmail_categories}
-                                    onChange={(value) => this.setState({
+                    {isGmail && (
+                        <FormGroup>
+                            <BooleanField
+                                name="use_gmail_categories"
+                                type="checkbox"
+                                label={
+                                    'Tag Gorgias tickets with Gmail categories (Social, Promotions, Updates, ' +
+                                    'Forums)'
+                                }
+                                value={use_gmail_categories}
+                                onChange={(value) =>
+                                    this.setState({
                                         dirty: true,
-                                        use_gmail_categories: value
-                                    })}
-                                />
-                            </FormGroup>
-                        )
-                    }
+                                        use_gmail_categories: value,
+                                    })
+                                }
+                            />
+                        </FormGroup>
+                    )}
                     <FormGroup>
                         <RichFieldWithVariables
                             allowExternalChanges
                             name="signature"
                             label="Signature"
                             value={{
-                                text: integration.getIn(['meta', 'signature', 'text']) || '',
-                                html: integration.getIn(['meta', 'signature', 'html']) || '',
+                                text:
+                                    integration.getIn([
+                                        'meta',
+                                        'signature',
+                                        'text',
+                                    ]) || '',
+                                html:
+                                    integration.getIn([
+                                        'meta',
+                                        'signature',
+                                        'html',
+                                    ]) || '',
                             }}
                             variableTypes={['current_user']}
                             onChange={this._updateSignature}
                         />
                     </FormGroup>
-                    {
-                        !isOutlook && (
-                            <FormGroup>
-                                <BooleanField
-                                    name="import_spam"
-                                    type="checkbox"
-                                    label="Import spam emails"
-                                    help="Imported spam emails will be placed in the Spam ticket view and will not be
+                    {!isOutlook && (
+                        <FormGroup>
+                            <BooleanField
+                                name="import_spam"
+                                type="checkbox"
+                                label="Import spam emails"
+                                help="Imported spam emails will be placed in the Spam ticket view and will not be
                                     counted in statistics. Spam tickets are automatically deleted after 30 days."
-                                    value={import_spam}
-                                    onChange={(value) => this.setState({
+                                value={import_spam}
+                                onChange={(value) =>
+                                    this.setState({
                                         dirty: true,
-                                        import_spam: value
-                                    })}
-                                />
-                            </FormGroup>
-                        )
-                    }
+                                        import_spam: value,
+                                    })
+                                }
+                            />
+                        </FormGroup>
+                    )}
                     <div>
                         <Button
                             type="submit"
                             color="success"
-                            disabled={!this.state.dirty || isSubmitting || isDeleting || hasErrors}
+                            disabled={
+                                !this.state.dirty ||
+                                isSubmitting ||
+                                isDeleting ||
+                                hasErrors
+                            }
                             className={classNames({
                                 'btn-loading': isSubmitting,
                             })}
                         >
                             Save changes
                         </Button>
-                        {
-                            isDeactivated && isGmail && (
-                                <Button
-                                    className="ml-2"
-                                    tag="a"
-                                    color="success"
-                                    href={`${gmailRedirectUri}?integration_id=${integration.get('id')}`}
-                                >
-                                    Re-activate
-                                </Button>
-                            )
-                        }
+                        {isDeactivated && isGmail && (
+                            <Button
+                                className="ml-2"
+                                tag="a"
+                                color="success"
+                                href={`${gmailRedirectUri}?integration_id=${integration.get(
+                                    'id'
+                                )}`}
+                            >
+                                Re-activate
+                            </Button>
+                        )}
 
                         <ConfirmButton
                             className="float-right"
                             color="secondary"
-                            confirm={() => deleteIntegration(integration, 'email')}
+                            confirm={() =>
+                                deleteIntegration(integration, 'email')
+                            }
                             content="Are you sure you want to delete this integration?"
                         >
                             <i className="material-icons mr-1 text-danger">
@@ -490,37 +552,43 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
         const {integration, loading} = this.props
 
         if (loading.get('integration')) {
-            return <Loader/>
+            return <Loader />
         }
 
         return (
             <div className="full-width">
-                <PageHeader title={(
-                    <Breadcrumb>
-                        <BreadcrumbItem>
-                            <Link to="/app/settings/integrations">Integrations</Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            <Link to="/app/settings/integrations/email">Email</Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem active>
-                            {integration.get('name')}{' '}
-                            <span className="text-faded">
-                                {integration.getIn(['meta', 'address'])}
-                            </span>
-                        </BreadcrumbItem>
-                    </Breadcrumb>
-                )}/>
+                <PageHeader
+                    title={
+                        <Breadcrumb>
+                            <BreadcrumbItem>
+                                <Link to="/app/settings/integrations">
+                                    Integrations
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                <Link to="/app/settings/integrations/email">
+                                    Email
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem active>
+                                {integration.get('name')}{' '}
+                                <span className="text-faded">
+                                    {integration.getIn(['meta', 'address'])}
+                                </span>
+                            </BreadcrumbItem>
+                        </Breadcrumb>
+                    }
+                />
 
-                <Container
-                    fluid
-                    className="page-container"
-                >
-                    {integration.get('type') === EMAIL_INTEGRATION_TYPE && this._renderInstructions()}
+                <Container fluid className="page-container">
+                    {integration.get('type') === EMAIL_INTEGRATION_TYPE &&
+                        this._renderInstructions()}
 
-                    {integration.get('type') === GMAIL_INTEGRATION_TYPE && this._gmailRenderImport()}
+                    {integration.get('type') === GMAIL_INTEGRATION_TYPE &&
+                        this._gmailRenderImport()}
 
-                    {integration.get('type') === OUTLOOK_INTEGRATION_TYPE && this._outlookRenderImport()}
+                    {integration.get('type') === OUTLOOK_INTEGRATION_TYPE &&
+                        this._outlookRenderImport()}
 
                     {this._renderSettings()}
                 </Container>
@@ -536,7 +604,9 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = {
-    importEmails: integrationActions.importEmails
+    importEmails: integrationActions.importEmails,
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EmailIntegrationUpdate))
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(EmailIntegrationUpdate)
+)

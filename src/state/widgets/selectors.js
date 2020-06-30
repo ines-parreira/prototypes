@@ -9,8 +9,8 @@ import type {stateType} from '../types'
 import {itemsWithContext} from './utils'
 import type {contextType} from './types'
 
-
-export const getWidgetsState = (state: stateType): Map<*,*> => state.widgets || fromJS({})
+export const getWidgetsState = (state: stateType): Map<*, *> =>
+    state.widgets || fromJS({})
 
 export const getContext = createSelector(
     [getWidgetsState],
@@ -27,21 +27,24 @@ export const hasWidgets = createSelector(
     (widgets) => !widgets.isEmpty()
 )
 
-export const getWidgetsWithContext = (context: contextType) => createSelector(
-    [getWidgets, getContext],
-    // take current context by default
-    (widgets, currentContext) => itemsWithContext(widgets, context || currentContext)
-)
+export const getWidgetsWithContext = (context: contextType) =>
+    createSelector(
+        [getWidgets, getContext],
+        // take current context by default
+        (widgets, currentContext) =>
+            itemsWithContext(widgets, context || currentContext)
+    )
 
-export const hasWidgetsWithContext = (context: contextType) => createSelector(
-    [getWidgetsWithContext(context)],
-    (widgets) => !widgets.isEmpty()
-)
+export const hasWidgetsWithContext = (context: contextType) =>
+    createSelector(
+        [getWidgetsWithContext(context)],
+        (widgets) => !widgets.isEmpty()
+    )
 
 export const getSources = (state: stateType) => {
     return fromJS({
         ticket: state.ticket,
-        customer: getActiveCustomer(state)
+        customer: getActiveCustomer(state),
     })
 }
 
@@ -50,9 +53,14 @@ export const getSourcesWithCustomer = createSelector(
     (sources) => {
         // If there's no customer and ticket is not loading then use the one from sources.
         // Loading check prevents from content flashing: https://github.com/gorgias/gorgias/issues/2415
-        if (!sources.getIn(['ticket', 'customer']) &&
-            !sources.getIn(['ticket', '_internal', 'loading', 'fetchTicket'])) {
-            return sources.setIn(['ticket', 'customer'], sources.get('customer'))
+        if (
+            !sources.getIn(['ticket', 'customer']) &&
+            !sources.getIn(['ticket', '_internal', 'loading', 'fetchTicket'])
+        ) {
+            return sources.setIn(
+                ['ticket', 'customer'],
+                sources.get('customer')
+            )
         }
         return sources
     }

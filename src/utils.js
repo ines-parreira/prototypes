@@ -24,12 +24,20 @@ import moment from 'moment-timezone'
 import {createSelectorCreator, defaultMemoize} from 'reselect'
 import URLSafeBase64 from 'urlsafe-base64'
 
-import { humanize } from './business/format'
+import {humanize} from './business/format'
 import {ACTION_TEMPLATES} from './config'
 import TICKET_LANGUAGES from './config/ticketLanguages'
-import {AUTHORIZED_NOTIFICATION_TYPES, type notificationType} from './state/notifications/actions'
+import {
+    AUTHORIZED_NOTIFICATION_TYPES,
+    type notificationType,
+} from './state/notifications/actions'
 import type {viewsStateType} from './state/views/types'
-import type {actionTemplateType, esprimaParse, reactRouterRoute, schemasType} from './types'
+import type {
+    actionTemplateType,
+    esprimaParse,
+    reactRouterRoute,
+    schemasType,
+} from './types'
 import {ADMIN_ROLE, USER_ROLES_ORDERED_BY_PRIVILEGES} from './config/user'
 import {getHighestRole} from './state/agents/helpers'
 import type {attachmentType} from './state/types'
@@ -37,22 +45,25 @@ import type {attachmentType} from './state/types'
 type userType = Map<*, *>
 type messageType = {
     created_datetime: Date,
-    source: { type: string }
+    source: {type: string},
 }
 type propertyType = {
     type: string,
     format: 'email',
     meta: {},
-    items: { $ref: {} }
+    items: {$ref: {}},
 }
-type systemMessage = ['success' | 'error' | 'warning' | 'info' | 'loading', string]
+type systemMessage = [
+    'success' | 'error' | 'warning' | 'info' | 'loading',
+    string
+]
 
 type datetimeType = Date | number | string
 
 // monitor if tab is active or not
 let activeTab = true
-window.onfocus = () => activeTab = true
-window.onblur = () => activeTab = false
+window.onfocus = () => (activeTab = true)
+window.onblur = () => (activeTab = false)
 export const isTabActive = () => activeTab
 
 /**
@@ -137,7 +148,11 @@ export function isGorgiasSupportAddress(address: string): boolean {
     return /^support@[a-zA-Z0-9-]+.gorgias.io$/.test(address)
 }
 
-export function formatDatetime(datetime: datetimeType, timezone: ?string, format: string = 'calendar'): datetimeType {
+export function formatDatetime(
+    datetime: datetimeType,
+    timezone: ?string,
+    format: string = 'calendar'
+): datetimeType {
     try {
         let momentDate = moment.utc(datetime)
 
@@ -153,7 +168,7 @@ export function formatDatetime(datetime: datetimeType, timezone: ?string, format
 
         if (format === 'calendar') {
             return momentDate.calendar(null, {
-                lastWeek: 'dddd' // Tuesday, Friday, etc.. The default is: [Last] dddd
+                lastWeek: 'dddd', // Tuesday, Friday, etc.. The default is: [Last] dddd
             })
         }
 
@@ -175,14 +190,14 @@ export function getFirstExpressionOfAST(ast: esprimaParse): Map<*, *> {
     return fromJS(ast).getIn(['body', 0, 'expression'])
 }
 
-export function getCode(ast: { type: 'Program' }): string {
+export function getCode(ast: {type: 'Program'}): string {
     if (!_isString(ast.type)) {
         console.error('Not an AST:', ast)
     }
     return escodegen.generate(ast, {
         format: {
-            semicolons: false
-        }
+            semicolons: false,
+        },
     })
 }
 
@@ -192,13 +207,18 @@ export function getCode(ast: { type: 'Program' }): string {
  * @param {Object} options filters to apply on messages
  * @returns {Object|Array}
  */
-export function getLastMessage(messages: Array<messageType>, options: any = null): ?messageType {
+export function getLastMessage(
+    messages: Array<messageType>,
+    options: any = null
+): ?messageType {
     if (!messages || !messages.length) {
         return
     }
 
     // most recent message sorted to first element of array
-    return _filter(messages, options).sort((a, b) => compare(b.created_datetime, a.created_datetime))[0]
+    return _filter(messages, options).sort((a, b) =>
+        compare(b.created_datetime, a.created_datetime)
+    )[0]
 }
 
 export function resolvePropertyName(name: string = ''): string {
@@ -221,7 +241,11 @@ export function resolvePropertyName(name: string = ''): string {
  *      false: return properties of `ticket.customer.id` field
  * @returns {Object} API spec data of the last property
  */
-export function findProperty(field: string, schemas: schemasType, alwaysRef: boolean = false): ?propertyType {
+export function findProperty(
+    field: string,
+    schemas: schemasType,
+    alwaysRef: boolean = false
+): ?propertyType {
     const parts = field.split('.')
     const firstPart = resolvePropertyName(_upperFirst(parts.shift()))
     const definitions = schemas.get('definitions')
@@ -257,7 +281,10 @@ export function findProperty(field: string, schemas: schemasType, alwaysRef: boo
     return prop
 }
 
-export function getDefaultOperator(field: string, schemas: schemasType): ?string {
+export function getDefaultOperator(
+    field: string,
+    schemas: schemasType
+): ?string {
     const prop: ?Object = findProperty(field, schemas)
 
     if (!prop) {
@@ -270,7 +297,9 @@ export function getDefaultOperator(field: string, schemas: schemasType): ?string
 
         if (operators.length) {
             if (prop.meta.defaultOperator) {
-                return operators.find((operatorName) => operatorName === prop.meta.defaultOperator)
+                return operators.find(
+                    (operatorName) => operatorName === prop.meta.defaultOperator
+                )
             }
             return operators[0]
         }
@@ -302,31 +331,27 @@ export function resolveLiteral(value: {} | string, path: string): string {
     }
 }
 
-
 export function compactInteger(input: number, digits: number = 0): string {
     if (!_isNumber(input)) {
         return input
     }
 
     const si = [
-        {value: 1E18, symbol: 'E'},
-        {value: 1E15, symbol: 'P'},
-        {value: 1E12, symbol: 'T'},
-        {value: 1E9, symbol: 'G'},
-        {value: 1E6, symbol: 'M'},
-        {value: 1E3, symbol: 'k'}
+        {value: 1e18, symbol: 'E'},
+        {value: 1e15, symbol: 'P'},
+        {value: 1e12, symbol: 'T'},
+        {value: 1e9, symbol: 'G'},
+        {value: 1e6, symbol: 'M'},
+        {value: 1e3, symbol: 'k'},
     ]
     const rx = /\.0+$|(\.[0-9]*[1-9])0+$/
 
-    let result = input
-        .toFixed(digits)
-        .replace(rx, '$1')
+    let result = input.toFixed(digits).replace(rx, '$1')
 
     si.reverse().forEach((s) => {
         if (input >= s.value) {
-            result = (input / s.value)
-                .toFixed(digits)
-                .replace(rx, '$1') + s.symbol
+            result =
+                (input / s.value).toFixed(digits).replace(rx, '$1') + s.symbol
         }
     })
 
@@ -358,8 +383,14 @@ const _proxyImageSignedURL = (url: string): string => {
     //  The "s{signature}" option specifies an optional base64 encoded HMAC used to sign the remote URL in the request.
     // The HMAC key used to verify signatures is provided to the imageproxy server on startup.
     // https://godoc.org/willnorris.com/go/imageproxy#hdr-Signature
-    return 's' + URLSafeBase64.encode(
-        crypto.createHmac('sha256', window.IMAGE_PROXY_PUBLIC_SIGN_KEY).update(url).digest()
+    return (
+        's' +
+        URLSafeBase64.encode(
+            crypto
+                .createHmac('sha256', window.IMAGE_PROXY_PUBLIC_SIGN_KEY)
+                .update(url)
+                .digest()
+        )
     )
 }
 
@@ -374,7 +405,9 @@ const _proxyImageSignedURL = (url: string): string => {
 export const proxifyURL = (urlStr: string, format: string = 'cw-1'): string => {
     const url = new URL(urlStr)
     let escapedURL = `${url.origin}${url.pathname}${url.search}`
-    return `${window.IMAGE_PROXY_URL}${format},${_proxyImageSignedURL(escapedURL)}/${escapedURL}`
+    return `${window.IMAGE_PROXY_URL}${format},${_proxyImageSignedURL(
+        escapedURL
+    )}/${escapedURL}`
 }
 
 /**
@@ -383,7 +416,10 @@ export const proxifyURL = (urlStr: string, format: string = 'cw-1'): string => {
  * @param html - the html body that contains the images
  * @param format
  */
-export const proxifyImages = (html: string, format: string = '1000x'): string => {
+export const proxifyImages = (
+    html: string,
+    format: string = '1000x'
+): string => {
     if (html.indexOf('img') === -1) {
         return html
     }
@@ -392,8 +428,17 @@ export const proxifyImages = (html: string, format: string = '1000x'): string =>
         throw new Error('window.IMAGE_PROXY_URL is not defined')
     }
 
-
-    const selfClosing = ['img', 'br', 'hr', 'area', 'base', 'basefont', 'input', 'link', 'meta']
+    const selfClosing = [
+        'img',
+        'br',
+        'hr',
+        'area',
+        'base',
+        'basefont',
+        'input',
+        'link',
+        'meta',
+    ]
 
     let result = ''
     const parser = new htmlparser.Parser({
@@ -432,7 +477,7 @@ export const proxifyImages = (html: string, format: string = '1000x'): string =>
             if (selfClosing.indexOf(name) === -1) {
                 result += `</${name}>`
             }
-        }
+        },
     })
     parser.write(html)
     parser.end()
@@ -442,12 +487,10 @@ export const proxifyImages = (html: string, format: string = '1000x'): string =>
 /**
  * Convert camelCase text to Title Case text
  */
-export const camelCaseToTitleCase = (text: string): string => (
+export const camelCaseToTitleCase = (text: string): string =>
     text.replace(/^[a-z]|[A-Z]/g, (value, index) => {
         return index === 0 ? value.toUpperCase() : ` ${value.toUpperCase()}`
     })
-)
-
 
 /**
  * Slugify a string
@@ -459,11 +502,9 @@ export function slugify(string: string): string {
         return string
     }
 
-    return encodeURIComponent(string
-        .toLowerCase()
-        .trim()
-        .replace(/\//ig, '')
-        .replace(/[ ]/g, '-'))
+    return encodeURIComponent(
+        string.toLowerCase().trim().replace(/\//gi, '').replace(/[ ]/g, '-')
+    )
 }
 
 /**
@@ -472,7 +513,10 @@ export function slugify(string: string): string {
  * @param text
  * @returns {EditorState}
  */
-export function insertText(editorState: EditorState, text: string): EditorState {
+export function insertText(
+    editorState: EditorState,
+    text: string
+): EditorState {
     const selection = editorState.getSelection()
     const contentState = editorState.getCurrentContent()
     const modifier = Modifier.replaceText(contentState, selection, text)
@@ -482,13 +526,15 @@ export function insertText(editorState: EditorState, text: string): EditorState 
 /**
  * Return true if passed object is immutable (from Immutable JS)
  */
-export const isImmutable = (value: any): boolean => Immutable.Iterable.isIterable(value)
+export const isImmutable = (value: any): boolean =>
+    Immutable.Iterable.isIterable(value)
 
 /**
  * Return a passed object as immutable
  * @param object
  */
-export const toImmutable = (object: {} | Iterable<*, *>): any => isImmutable(object) ? object : fromJS(object)
+export const toImmutable = (object: {} | Iterable<*, *>): any =>
+    isImmutable(object) ? object : fromJS(object)
 
 /**
  * Return a passed object as plain JS (not Immutable)
@@ -496,7 +542,8 @@ export const toImmutable = (object: {} | Iterable<*, *>): any => isImmutable(obj
  */
 // throws error on missing toJS() for plain object.
 // $FlowFixMe
-export const toJS = (object: {} | Iterable<*, *> | void): any => isImmutable(object) ? object.toJS() : object
+export const toJS = (object: {} | Iterable<*, *> | void): any =>
+    isImmutable(object) ? object.toJS() : object
 
 /**
  * Return field path
@@ -520,7 +567,10 @@ export const isAdmin = (user: userType): boolean => {
 // Check if a user has a role
 export function hasRole(user: userType, requiredRole: string): boolean {
     const userRole = getHighestRole(user)
-    return USER_ROLES_ORDERED_BY_PRIVILEGES.indexOf(userRole) >= USER_ROLES_ORDERED_BY_PRIVILEGES.indexOf(requiredRole)
+    return (
+        USER_ROLES_ORDERED_BY_PRIVILEGES.indexOf(userRole) >=
+        USER_ROLES_ORDERED_BY_PRIVILEGES.indexOf(requiredRole)
+    )
 }
 
 /**
@@ -544,7 +594,10 @@ export const isCurrentlyOnTicket = (ticketId: ?(string | number)): boolean => {
  * @param viewsState - state branch "views"
  * @returns {boolean}
  */
-export const isCurrentlyOnView = (viewId: string = '', viewsState: viewsStateType = fromJS({})): boolean => {
+export const isCurrentlyOnView = (
+    viewId: string = '',
+    viewsState: viewsStateType = fromJS({})
+): boolean => {
     const prefix = [
         '/app/tickets',
         '/app/customers',
@@ -564,7 +617,10 @@ export const isCurrentlyOnView = (viewId: string = '', viewsState: viewsStateTyp
 
     // keep this syntax, no urls.some(url => currentUrl.includes(url)) since we want the pathname to be initiated on
     // each call of the parent function
-    return urls.some((url) => currentUrl.includes(url)) || ['/app', '/app/'].some((url) => currentUrl.endsWith(url))
+    return (
+        urls.some((url) => currentUrl.includes(url)) ||
+        ['/app', '/app/'].some((url) => currentUrl.endsWith(url))
+    )
 }
 
 /**
@@ -583,15 +639,19 @@ export function getPluralObjectName(viewType: string): string {
  * @param plan A plan in `config.py` - billing section
  * @returns {boolean}
  */
-export function hasReachedLimit(limit: string, tickets: number, plan: Iterable<*, *>): boolean {
+export function hasReachedLimit(
+    limit: string,
+    tickets: number,
+    plan: Iterable<*, *>
+): boolean {
     const freeTickets = plan.get('free_tickets', 0)
     return tickets >= plan.getIn(['limits', limit], freeTickets)
 }
 
 export function toQueryParams(obj: {}): string {
-    return Object.keys(obj).map((key) => (
-        `${key}=${encodeURIComponent(obj[key])}`
-    )).join('&')
+    return Object.keys(obj)
+        .map((key) => `${key}=${encodeURIComponent(obj[key])}`)
+        .join('&')
 }
 
 /**
@@ -605,7 +665,7 @@ export function emoji(emojiContainer: string | {}): string | {} {
     }
 
     return window.twemoji.parse(emojiContainer, {
-        base: `${window.GORGIAS_ASSETS_URL}/static/emoji/`
+        base: `${window.GORGIAS_ASSETS_URL}/static/emoji/`,
     })
 }
 
@@ -613,7 +673,10 @@ export function getActionTemplate(actionName: string): ?actionTemplateType {
     return ACTION_TEMPLATES.find((template) => template.name === actionName)
 }
 
-export const createImmutableSelector = createSelectorCreator(defaultMemoize, Immutable.is)
+export const createImmutableSelector = createSelectorCreator(
+    defaultMemoize,
+    Immutable.is
+)
 
 export function loadScript(url: string, callback: () => void) {
     const elem = document.createElement('script')
@@ -634,7 +697,10 @@ export function loadScript(url: string, callback: () => void) {
  * @param params: the additional GET parameters to include in the query
  * @return {Array} - [{content_type, name, size, url}]
  */
-export const uploadFiles = (files: FileList | Array<attachmentType>, params: ?Object = null): Promise<*> => {
+export const uploadFiles = (
+    files: FileList | Array<attachmentType>,
+    params: ?Object = null
+): Promise<*> => {
     const formData = new window.FormData()
 
     for (let i = 0; i < files.length; i++) {
@@ -642,7 +708,8 @@ export const uploadFiles = (files: FileList | Array<attachmentType>, params: ?Ob
         formData.append(file.name, file)
     }
 
-    return axios.post('/api/upload/', formData, {params: params || {}})
+    return axios
+        .post('/api/upload/', formData, {params: params || {}})
         .then((json = {}) => json.data)
 }
 
@@ -689,7 +756,9 @@ export const compare = (a: *, b: *): number => {
  * Return current route object from routes config
  * @param routes (this.props.routes in a component)
  */
-export const currentRoute = (routes: Array<reactRouterRoute>): reactRouterRoute => {
+export const currentRoute = (
+    routes: Array<reactRouterRoute>
+): reactRouterRoute => {
     return _last(routes)
 }
 
@@ -736,7 +805,9 @@ const _valuesDeep = (obj: {}): {} => {
  * "
  * @param incomingError server error
  */
-export const errorToChildren = (incomingError: { response: { data: { error: { data: {} } } } }): ?string => {
+export const errorToChildren = (incomingError: {
+    response: {data: {error: {data: {}}}},
+}): ?string => {
     const error = _get(incomingError, 'response.data.error', {})
     const {data} = error
     const hasErrors = !!data
@@ -748,14 +819,16 @@ export const errorToChildren = (incomingError: { response: { data: { error: { da
     return `
         <ul className="m-0">
             ${
-    //$FlowFixMe
-    _map(data, (fieldErrors, fieldName) => {
-    // $FlowFixMe
-        return _valuesDeep(fieldErrors).map((fieldError) => {
-            return `<li>${fieldName}: ${fieldError}</li>`
-        }).join('')
-    }).join('')
-}
+                //$FlowFixMe
+                _map(data, (fieldErrors, fieldName) => {
+                    // $FlowFixMe
+                    return _valuesDeep(fieldErrors)
+                        .map((fieldError) => {
+                            return `<li>${fieldName}: ${fieldError}</li>`
+                        })
+                        .join('')
+                }).join('')
+            }
         </ul>
     `
 }
@@ -784,7 +857,6 @@ export function daysToHours(days: number = 0): number {
     return 24 * days
 }
 
-
 /**
  * Function that wraps functionality for cheking webhook url and return a valid or invalid pattern
  * @param val - url string
@@ -807,19 +879,19 @@ export const validateWebhookURL = (val: string): ?string => {
     const rules = [
         {
             test: /^((?!(\..)).)*$/,
-            message: 'Invalid URL'
+            message: 'Invalid URL',
         },
         {
             test: /^(?!https:).*:/,
-            message: 'Only https protocol allowed'
+            message: 'Only https protocol allowed',
         },
         {
             test: /(\.internal(\/.*)?|\.local(\/.*)?)$/,
-            message: 'Invalid top level domain'
+            message: 'Invalid top level domain',
         },
         {
             test: /:\d/,
-            message: 'No port specifications allowed'
+            message: 'No port specifications allowed',
         },
     ]
 
@@ -848,7 +920,6 @@ export const validateWebhookURL = (val: string): ?string => {
  * @returns: displayName: string
  */
 export const getLanguageDisplayName = (locale: string): ?string => {
-
     if (!locale) {
         return null
     }
@@ -887,9 +958,14 @@ export const openChat = (e: Event) => {
     }
 }
 
-export const transformSystemMessagesToNotifications = (systemMessages: Array<systemMessage>): Array<notificationType> => {
+export const transformSystemMessagesToNotifications = (
+    systemMessages: Array<systemMessage>
+): Array<notificationType> => {
     return systemMessages.map((systemMessage) => ({
-        status: AUTHORIZED_NOTIFICATION_TYPES.indexOf(systemMessage[0]) > -1 ? systemMessage[0] : 'info',
+        status:
+            AUTHORIZED_NOTIFICATION_TYPES.indexOf(systemMessage[0]) > -1
+                ? systemMessage[0]
+                : 'info',
         message: systemMessage[1],
     }))
 }

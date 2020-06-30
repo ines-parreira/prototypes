@@ -9,7 +9,7 @@ import _debounce from 'lodash/debounce'
 
 import {
     getDraftOrderLineItemDiscountedPrice,
-    getDraftOrderLineItemTotal
+    getDraftOrderLineItemTotal,
 } from '../../../../../../../../../../../../business/shopify/lineItem'
 import defaultImage from '../../../../../../../../../../../../../img/presentationals/shopify-product-default-image.png'
 import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker'
@@ -39,10 +39,12 @@ type State = {
 
 export class DraftOrderLineItemRow extends React.PureComponent<Props, State> {
     state = {
-        quantity: this.props.lineItem.get('quantity')
+        quantity: this.props.lineItem.get('quantity'),
     }
 
-    _onAppliedDiscountChange = (appliedDiscount: Record<$Shape<Shopify.AppliedDiscount>> | null) => {
+    _onAppliedDiscountChange = (
+        appliedDiscount: Record<$Shape<Shopify.AppliedDiscount>> | null
+    ) => {
         const {onChange, lineItem} = this.props
         const newLineItem = lineItem.set('applied_discount', appliedDiscount)
 
@@ -71,25 +73,22 @@ export class DraftOrderLineItemRow extends React.PureComponent<Props, State> {
 
         segmentTracker.logEvent(
             actionName === ShopifyAction.CREATE_ORDER
-                ? segmentTracker.EVENTS.SHOPIFY_CREATE_ORDER_LINE_ITEM_QUANTITY_CHANGED
-                : segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_LINE_ITEM_QUANTITY_CHANGED
+                ? segmentTracker.EVENTS
+                      .SHOPIFY_CREATE_ORDER_LINE_ITEM_QUANTITY_CHANGED
+                : segmentTracker.EVENTS
+                      .SHOPIFY_DUPLICATE_ORDER_LINE_ITEM_QUANTITY_CHANGED
         )
     }, 1000)
 
     _renderImage() {
         const {product} = this.props
-        const src = !!product && product.get('image')
-            ? getSizedImageUrl(product.getIn(['image', 'src']), 'small')
-            : defaultImage
+        const src =
+            !!product && product.get('image')
+                ? getSizedImageUrl(product.getIn(['image', 'src']), 'small')
+                : defaultImage
         const alt = !!product ? product.getIn(['image', 'alt']) : ''
 
-        return (
-            <img
-                className={css.img}
-                src={src}
-                alt={alt}
-            />
-        )
+        return <img className={css.img} src={src} alt={alt} />
     }
 
     _renderTitle() {
@@ -98,9 +97,7 @@ export class DraftOrderLineItemRow extends React.PureComponent<Props, State> {
         if (!productId) {
             return (
                 <div>
-                    <span className={css.title}>
-                        {lineItem.get('title')}
-                    </span>
+                    <span className={css.title}>{lineItem.get('title')}</span>
                 </div>
             )
         }
@@ -125,17 +122,18 @@ export class DraftOrderLineItemRow extends React.PureComponent<Props, State> {
     _renderProduct() {
         const {lineItem} = this.props
         const variantTitle = lineItem.get('variant_title')
-        const shouldRenderVariantTitle = !!variantTitle && variantTitle !== 'Default Title'
+        const shouldRenderVariantTitle =
+            !!variantTitle && variantTitle !== 'Default Title'
         const sku = lineItem.get('sku')
 
         return (
             <td className={css.container}>
-                <div className={css.imgContainer}>
-                    {this._renderImage()}
-                </div>
+                <div className={css.imgContainer}>{this._renderImage()}</div>
                 <div className={css.legend}>
                     {this._renderTitle()}
-                    {shouldRenderVariantTitle && <div className={css.subtitle}>{variantTitle}</div>}
+                    {shouldRenderVariantTitle && (
+                        <div className={css.subtitle}>{variantTitle}</div>
+                    )}
                     {!!sku && <div className={css.subtitle}>SKU: {sku}</div>}
                 </div>
             </td>
@@ -145,8 +143,14 @@ export class DraftOrderLineItemRow extends React.PureComponent<Props, State> {
     _renderPrice() {
         const {lineItem, currencyCode, id, actionName} = this.props
         const price = lineItem.get('price')
-        const discountedPrice = getDraftOrderLineItemDiscountedPrice(lineItem, currencyCode)
-        const formattedDiscountedPrice = formatPrice(discountedPrice, currencyCode)
+        const discountedPrice = getDraftOrderLineItemDiscountedPrice(
+            lineItem,
+            currencyCode
+        )
+        const formattedDiscountedPrice = formatPrice(
+            discountedPrice,
+            currencyCode
+        )
         const hasDiscount = price !== formattedDiscountedPrice
 
         return (
@@ -209,11 +213,17 @@ export class DraftOrderLineItemRow extends React.PureComponent<Props, State> {
             <td className={css.numberCol}>
                 <div className="d-flex">
                     <strong
-                        className={classnames('mt-auto mb-auto', removable ? 'mr-auto' : 'ml-auto')}
+                        className={classnames(
+                            'mt-auto mb-auto',
+                            removable ? 'mr-auto' : 'ml-auto'
+                        )}
                     >
                         <MoneyAmount
                             renderIfZero
-                            amount={formatPrice(getDraftOrderLineItemTotal(lineItem), currencyCode)}
+                            amount={formatPrice(
+                                getDraftOrderLineItemTotal(lineItem),
+                                currencyCode
+                            )}
                             currencyCode={currencyCode}
                         />
                     </strong>
@@ -225,9 +235,7 @@ export class DraftOrderLineItemRow extends React.PureComponent<Props, State> {
                             className={classnames(css.delete, css.focusable)}
                             onClick={onDelete}
                         >
-                            <i className="material-icons">
-                                close
-                            </i>
+                            <i className="material-icons">close</i>
                         </Button>
                     )}
                 </div>

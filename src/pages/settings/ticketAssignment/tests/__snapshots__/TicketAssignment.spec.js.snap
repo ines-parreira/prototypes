@@ -190,7 +190,8 @@ exports[`<TicketAssignment/> render() should render selected channels 1`] = `
                 the user has been inactive on Gorgias for more than
                  
                 10
-                 minutes
+                 
+                minutes
               </li>
               <li>
                 the user is not on Gorgias on any device
@@ -401,7 +402,8 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox c
                 the user has been inactive on Gorgias for more than
                  
                 10
-                 minutes
+                 
+                minutes
               </li>
               <li>
                 the user is not on Gorgias on any device
@@ -612,7 +614,8 @@ exports[`<TicketAssignment/> render() should render the "Auto assign" checkbox u
                 the user has been inactive on Gorgias for more than
                  
                 10
-                 minutes
+                 
+                minutes
               </li>
               <li>
                 the user is not on Gorgias on any device
@@ -823,7 +826,8 @@ exports[`<TicketAssignment/> render() should render the "Save changes" button lo
                 the user has been inactive on Gorgias for more than
                  
                 10
-                 minutes
+                 
+                minutes
               </li>
               <li>
                 the user is not on Gorgias on any device
@@ -1034,7 +1038,8 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
                 the user has been inactive on Gorgias for more than
                  
                 10
-                 minutes
+                 
+                minutes
               </li>
               <li>
                 the user is not on Gorgias on any device
@@ -1245,7 +1250,8 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
                 the user has been inactive on Gorgias for more than
                  
                 10
-                 minutes
+                 
+                minutes
               </li>
               <li>
                 the user is not on Gorgias on any device
@@ -1456,7 +1462,8 @@ exports[`<TicketAssignment/> render() should render the "Unassign on replies" ch
                 the user has been inactive on Gorgias for more than
                  
                 10
-                 minutes
+                 
+                minutes
               </li>
               <li>
                 the user is not on Gorgias on any device

@@ -3,7 +3,14 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import classnames from 'classnames'
-import {Button, Container, Form, Popover, PopoverBody, PopoverHeader,} from 'reactstrap'
+import {
+    Button,
+    Container,
+    Form,
+    Popover,
+    PopoverBody,
+    PopoverHeader,
+} from 'reactstrap'
 
 import type {List, Map} from 'immutable'
 
@@ -56,10 +63,9 @@ export class ManageTags extends Component<Props, State> {
 
     componentDidMount() {
         this.setState({isFetching: true})
-        this.props.fetch()
-            .then(() => {
-                this.setState({isFetching: false})
-            })
+        this.props.fetch().then(() => {
+            this.setState({isFetching: false})
+        })
     }
 
     componentWillReceiveProps(nextProps: Props) {
@@ -71,12 +77,22 @@ export class ManageTags extends Component<Props, State> {
             // needed in case user deletes all tags on the last page. We want to now fetch tags for previous page
             this.props.setPage(nextNumPages)
         } else if (currentPage !== nextPage) {
-            this.props.fetch(nextPage, this.state.sort, this.state.reverse, this.state.search)
+            this.props.fetch(
+                nextPage,
+                this.state.sort,
+                this.state.reverse,
+                this.state.search
+            )
         }
     }
 
     _fetchPage = () => {
-        this.props.fetch(this.props.currentPage, this.state.sort, this.state.reverse, this.state.search)
+        this.props.fetch(
+            this.props.currentPage,
+            this.state.sort,
+            this.state.reverse,
+            this.state.search
+        )
     }
 
     _onSearch = (search: string) => {
@@ -86,7 +102,8 @@ export class ManageTags extends Component<Props, State> {
     }
 
     _onSort = (sort: string, reverse: boolean) => {
-        this.props.fetch(this.props.currentPage, sort, reverse, this.state.search)
+        this.props
+            .fetch(this.props.currentPage, sort, reverse, this.state.search)
             .then(() => {
                 this.setState({
                     sort,
@@ -98,15 +115,19 @@ export class ManageTags extends Component<Props, State> {
     _onCreate = (event: Object) => {
         event.preventDefault()
 
-        this.props.create({
-            name: this.state.newTag,
-        }).then(() => {
-            this._fetchPage()
-        }).then(() =>
-            this.setState({
-                newTag: '',
-                showCreationPopup: false,
-            }))
+        this.props
+            .create({
+                name: this.state.newTag,
+            })
+            .then(() => {
+                this._fetchPage()
+            })
+            .then(() =>
+                this.setState({
+                    newTag: '',
+                    showCreationPopup: false,
+                })
+            )
     }
 
     _bulkDelete = () => {
@@ -128,13 +149,10 @@ export class ManageTags extends Component<Props, State> {
 
         const selectedTagMeta = meta.filter((meta) => meta.get('selected'))
 
-        return merge(
-            selectedTagMeta.keySeq().toList()
-        ).then(() => {
+        return merge(selectedTagMeta.keySeq().toList()).then(() => {
             this._fetchPage()
         })
     }
-
 
     _toggleCreationPopup = () => {
         this.setState({showCreationPopup: !this.state.showCreationPopup})
@@ -145,16 +163,18 @@ export class ManageTags extends Component<Props, State> {
         const {sort, reverse, isFetching} = this.state
 
         if (isFetching) {
-            return <Loader/>
+            return <Loader />
         }
 
         // check if any items are selected
-        const selected = meta
-            .filter((meta) => meta.get('selected'))
-            .size
+        const selected = meta.filter((meta) => meta.get('selected')).size
 
         return (
-            <div className={classnames('full-width', {manageTagsClassName: selected > 0})}>
+            <div
+                className={classnames('full-width', {
+                    manageTagsClassName: selected > 0,
+                })}
+            >
                 <PageHeader title="Manage tags">
                     <div className="manage-tags-bulk-actions">
                         <div className="d-flex">
@@ -190,7 +210,11 @@ export class ManageTags extends Component<Props, State> {
                                                     placeholder="New tag name"
                                                     value={this.state.newTag}
                                                     autoFocus
-                                                    onChange={(value) => this.setState({newTag: value})}
+                                                    onChange={(value) =>
+                                                        this.setState({
+                                                            newTag: value,
+                                                        })
+                                                    }
                                                     required
                                                     inline
                                                 />
@@ -199,7 +223,10 @@ export class ManageTags extends Component<Props, State> {
                                                 color="success"
                                                 type="submit"
                                                 className={classnames({
-                                                    'btn-loading': tags.getIn(['_internal', 'creating']),
+                                                    'btn-loading': tags.getIn([
+                                                        '_internal',
+                                                        'creating',
+                                                    ]),
                                                 })}
                                             >
                                                 <i className="material-icons">
@@ -214,17 +241,16 @@ export class ManageTags extends Component<Props, State> {
                     </div>
                 </PageHeader>
 
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <Container fluid className="page-container">
                     <div className={css.description}>
                         <div>
                             <p>
-                                You can tag tickets to keep track of topics customers are contacting you about.
+                                You can tag tickets to keep track of topics
+                                customers are contacting you about.
                             </p>
                             <p>
-                                Check your tag statistics <Link to="/app/stats/tags">here</Link>.
+                                Check your tag statistics{' '}
+                                <Link to="/app/stats/tags">here</Link>.
                             </p>
                         </div>
                         <Video
@@ -255,19 +281,22 @@ export class ManageTags extends Component<Props, State> {
     }
 }
 
-export default connect((state) => {
-    return {
-        tags: tagsSelectors.getTags(state),
-        meta: tagsSelectors.getMeta(state),
-        currentPage: tagsSelectors.getCurrentPage(state),
-        numberPages: tagsSelectors.getNumberPages(state)
+export default connect(
+    (state) => {
+        return {
+            tags: tagsSelectors.getTags(state),
+            meta: tagsSelectors.getMeta(state),
+            currentPage: tagsSelectors.getCurrentPage(state),
+            numberPages: tagsSelectors.getNumberPages(state),
+        }
+    },
+    {
+        fetch: tagsActions.fetchTags,
+        create: tagsActions.create,
+        remove: tagsActions.remove,
+        selectAll: tagsActions.selectAll,
+        setPage: tagsActions.setPage,
+        merge: tagsActions.merge,
+        bulkDelete: tagsActions.bulkDelete,
     }
-}, {
-    fetch: tagsActions.fetchTags,
-    create: tagsActions.create,
-    remove: tagsActions.remove,
-    selectAll: tagsActions.selectAll,
-    setPage: tagsActions.setPage,
-    merge: tagsActions.merge,
-    bulkDelete: tagsActions.bulkDelete
-})(ManageTags)
+)(ManageTags)

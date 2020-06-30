@@ -26,9 +26,10 @@ export default class HTTPIntegrationList extends React.Component {
         const longTypeDescription = (
             <div>
                 <p>
-                    HTTP integrations allow you to connect any application to Gorgias. For example, when a customer
-                    creates a ticket, you can fetch their last orders from your back-office app, and display them
-                    next to the ticket.
+                    HTTP integrations allow you to connect any application to
+                    Gorgias. For example, when a customer creates a ticket, you
+                    can fetch their last orders from your back-office app, and
+                    display them next to the ticket.
                 </p>
                 <p>
                     <a
@@ -37,7 +38,9 @@ export default class HTTPIntegrationList extends React.Component {
                         rel="noopener noreferrer"
                     >
                         Learn more
-                    </a> about how to connect apps in our docs, or contact our support through the chat.
+                    </a>{' '}
+                    about how to connect apps in our docs, or contact our
+                    support through the chat.
                 </p>
             </div>
         )
@@ -45,7 +48,9 @@ export default class HTTPIntegrationList extends React.Component {
         const integrationToItemDisplay = (int) => {
             const toggleIntegration = (value) => {
                 const integrationId = int.get('id')
-                return value ? this.props.activate(integrationId) : this.props.deactivate(integrationId)
+                return value
+                    ? this.props.activate(integrationId)
+                    : this.props.deactivate(integrationId)
             }
 
             const isDisabled = int.get('deactivated_datetime')
@@ -59,7 +64,9 @@ export default class HTTPIntegrationList extends React.Component {
                             <div>
                                 <b className="mr-2">{int.get('name')}</b>
                                 <span className="text-faded d-none d-md-inline">
-                                    {_truncate(int.get('description'), {length: 100})}
+                                    {_truncate(int.get('description'), {
+                                        length: 100,
+                                    })}
                                 </span>
                             </div>
                         </Link>
@@ -80,9 +87,13 @@ export default class HTTPIntegrationList extends React.Component {
         return (
             <IntegrationList
                 integrationType="http"
-                integrations={integrations.filter((v) => v.get('type') === 'http')}
+                integrations={integrations.filter(
+                    (v) => v.get('type') === 'http'
+                )}
                 longTypeDescription={longTypeDescription}
-                createIntegration={() => browserHistory.push('/app/settings/integrations/http/new')}
+                createIntegration={() =>
+                    browserHistory.push('/app/settings/integrations/http/new')
+                }
                 createIntegrationButtonContent="Add HTTP integration"
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}

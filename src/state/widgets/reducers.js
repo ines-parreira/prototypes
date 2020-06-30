@@ -28,18 +28,21 @@ export const initialState = fromJS({
         currentlyEditedWidgetPath: '',
         drag: {
             group: '',
-            isDragging: false
+            isDragging: false,
         },
         editedItems: [],
         hasFetchedWidgets: false,
         hasGeneratedWidgets: false,
         isEditing: false,
         isDirty: false,
-        loading: {}
-    }
+        loading: {},
+    },
 })
 
-export default function reducer(state: Map<*,*> = initialState, action: actionType): Map<*,*> {
+export default function reducer(
+    state: Map<*, *> = initialState,
+    action: actionType
+): Map<*, *> {
     switch (action.type) {
         case types.FETCH_WIDGETS_SUCCESS: {
             const receivedItems = fromJS(action.items)
@@ -73,27 +76,37 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
         }
 
         case types.START_WIDGET_EDITION: {
-            return state
-                .setIn(['_internal', 'currentlyEditedWidgetPath'], action.path)
+            return state.setIn(
+                ['_internal', 'currentlyEditedWidgetPath'],
+                action.path
+            )
         }
 
         case types.STOP_WIDGET_EDITION: {
-            return state
-                .setIn(['_internal', 'currentlyEditedWidgetPath'], '')
+            return state.setIn(['_internal', 'currentlyEditedWidgetPath'], '')
         }
 
         case types.GENERATE_AND_SET_WIDGETS: {
             const items = state.get('items', fromJS([]))
 
             return state
-                .set('items', itemsWithUpdatedWidgets(items, action.context, fromJS(action.items)))
+                .set(
+                    'items',
+                    itemsWithUpdatedWidgets(
+                        items,
+                        action.context,
+                        fromJS(action.items)
+                    )
+                )
                 .setIn(['_internal', 'hasGeneratedWidgets'], true)
                 .setIn(['_internal', 'isDirty'], true)
         }
 
         case types.SET_EDITED_WIDGETS: {
-            return state
-                .setIn(['_internal', 'editedItems'], fromJS(action.items))
+            return state.setIn(
+                ['_internal', 'editedItems'],
+                fromJS(action.items)
+            )
         }
 
         case types.SET_EDITION_AS_DIRTY: {
@@ -125,10 +138,11 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
                 targetParentTemplatePath,
                 source,
                 widgetType,
-                integrationId
+                integrationId,
             } = action
 
-            const currentGroup = state.getIn(['_internal', 'drag', 'group']) || ''
+            const currentGroup =
+                state.getIn(['_internal', 'drag', 'group']) || ''
 
             const isDraggingARootSource = isRootSource(currentGroup)
 
@@ -141,7 +155,10 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
             }
 
             // get data from source path to generate a widget for it
-            const relativeSourcePath = sourceFlattenAbsolutePath.replace(/\[]/g, '0')
+            const relativeSourcePath = sourceFlattenAbsolutePath.replace(
+                /\[]/g,
+                '0'
+            )
             const sourceData = source.getIn(relativeSourcePath.split('.'))
 
             // drag is off
@@ -155,11 +172,15 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
             // prepare data to be transformed into widget
             const isSimpleField = !_isObject(sourceData)
             const preparedData = {
-                [strippedKey]: isSimpleField ? sourceData : sourceData.toJS()
+                [strippedKey]: isSimpleField ? sourceData : sourceData.toJS(),
             }
 
             // generate the widget we are going to put with the others
-            let widget = fromJS(jsonToWidget(isDraggingARootSource ? preparedData[key] : preparedData))
+            let widget = fromJS(
+                jsonToWidget(
+                    isDraggingARootSource ? preparedData[key] : preparedData
+                )
+            )
 
             // path where to put generated widgets
             // if dragging a root source, dragged items are real widgets items (coming from server)
@@ -167,20 +188,22 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
             const widgetsItems = isDraggingARootSource
                 ? ['_internal', 'editedItems']
                 : ['_internal', 'editedItems']
-                    .concat(targetParentTemplatePath.split('.'))
-                    .concat(['widgets'])
+                      .concat(targetParentTemplatePath.split('.'))
+                      .concat(['widgets'])
 
             // if is a dragging source, wrap it in a wrapper
             if (isDraggingARootSource) {
                 const context = state.get('currentContext', '')
-                const strippedSourceFlattenAbsolutePath = stripLastListsFromPath(sourceFlattenAbsolutePath)
+                const strippedSourceFlattenAbsolutePath = stripLastListsFromPath(
+                    sourceFlattenAbsolutePath
+                )
 
                 widget = makeWrapper({
                     order: widgetsItems.length,
                     context,
                     child: widget,
                     sourcePath: strippedSourceFlattenAbsolutePath.split('.'),
-                    widgetType
+                    widgetType,
                 })
 
                 if (integrationId) {
@@ -203,11 +226,17 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
                     newState.getIn(widgetsItems, []).forEach((widget) => {
                         const type = element.get('type')
                         const integrationId = element.get('integration_id')
-                        const typeIsAlreadyPresent = type !== 'http' && widget.get('type') === type
-                        const integrationIdIsAlreadyPresent = type === 'http' && widget.get('type') === type
-                            && widget.get('integration_id') === integrationId
+                        const typeIsAlreadyPresent =
+                            type !== 'http' && widget.get('type') === type
+                        const integrationIdIsAlreadyPresent =
+                            type === 'http' &&
+                            widget.get('type') === type &&
+                            widget.get('integration_id') === integrationId
 
-                        if (typeIsAlreadyPresent || integrationIdIsAlreadyPresent) {
+                        if (
+                            typeIsAlreadyPresent ||
+                            integrationIdIsAlreadyPresent
+                        ) {
                             shouldAddWidget = false
                         }
                     })
@@ -218,12 +247,15 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
                         .setIn(
                             widgetsItems,
                             reorderWidgets(currentList.insert(toIndex, element))
-                        ).setIn(['_internal', 'isDirty'], true)
+                        )
+                        .setIn(['_internal', 'isDirty'], true)
                 }
             } else if (eventType === 'update') {
                 // on update, move the element in previously calculated path
                 const oldItem = currentList.get(fromIndex)
-                const newList = reorderWidgets(currentList.delete(fromIndex).insert(toIndex, oldItem))
+                const newList = reorderWidgets(
+                    currentList.delete(fromIndex).insert(toIndex, oldItem)
+                )
 
                 newState = newState
                     .setIn(widgetsItems, newList)
@@ -234,10 +266,7 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
         }
 
         case types.REMOVE_EDITED_WIDGET: {
-            const {
-                templatePath,
-                absolutePath
-            } = action
+            const {templatePath, absolutePath} = action
 
             let newAbsolutePath = absolutePath
             let newTemplatePath = templatePath
@@ -253,7 +282,10 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
             // remove last lists from template path
             // if we remove something in an array, we remove the array
             for (let i = 0; i < listCounter; i++) {
-                newTemplatePath = newTemplatePath.replace(new RegExp('.widgets.0$'), '')
+                newTemplatePath = newTemplatePath.replace(
+                    new RegExp('.widgets.0$'),
+                    ''
+                )
             }
 
             // we guess the target is a root source if the template path never goes under as 'widgets' key
@@ -268,29 +300,32 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
 
             // remove the widget
             return state
-                .setIn(widgetsPath, reorderWidgets(
-                    state
-                        .getIn(widgetsPath, fromJS({}))
-                        .removeIn(newTemplatePath.split('.'))
-                )
+                .setIn(
+                    widgetsPath,
+                    reorderWidgets(
+                        state
+                            .getIn(widgetsPath, fromJS({}))
+                            .removeIn(newTemplatePath.split('.'))
+                    )
                 )
                 .setIn(['_internal', 'isDirty'], true)
         }
 
         case types.UPDATE_EDITED_WIDGET: {
-            const {
-                item
-            } = action
+            const {item} = action
 
             // get edited widget path
             const widgetsItems = ['_internal', 'editedItems']
-            let widgetPath = state.getIn(['_internal', 'currentlyEditedWidgetPath'], '')
+            let widgetPath = state.getIn(
+                ['_internal', 'currentlyEditedWidgetPath'],
+                ''
+            )
             widgetPath = widgetsItems.concat(widgetPath.split('.'))
 
             return state
-                .setIn(widgetPath, state
-                    .getIn(widgetPath, fromJS({}))
-                    .mergeDeep(item)
+                .setIn(
+                    widgetPath,
+                    state.getIn(widgetPath, fromJS({})).mergeDeep(item)
                 )
                 .setIn(['_internal', 'isDirty'], true)
         }
@@ -301,7 +336,11 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
 
         case types.SUBMIT_WIDGET_SUCCESS: {
             const items = state.get('items', fromJS([]))
-            let updatedItems = itemsWithUpdatedWidgets(items, action.context, fromJS(action.items))
+            let updatedItems = itemsWithUpdatedWidgets(
+                items,
+                action.context,
+                fromJS(action.items)
+            )
 
             return state
                 .set('items', updatedItems)

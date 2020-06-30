@@ -18,14 +18,16 @@ import * as ticketSelectors from '../../../../state/ticket/selectors'
 
 import css from './Event.less'
 
-
 @connect((state, ownProps) => {
     const {event} = ownProps
 
-    const integration = integrationsSelectors.getIntegrationById(event.getIn(['data', 'integration_id']))(state)
+    const integration = integrationsSelectors.getIntegrationById(
+        event.getIn(['data', 'integration_id'])
+    )(state)
 
-    const integrationData = ticketSelectors
-        .getIntegrationDataByIntegrationId(integration.get('id', '').toString())(state)
+    const integrationData = ticketSelectors.getIntegrationDataByIntegrationId(
+        integration.get('id', '').toString()
+    )(state)
 
     return {
         integrationData,
@@ -50,27 +52,40 @@ export default class Event extends React.Component {
 
     _getOrder = (orderId) => {
         const {integrationData: data} = this.props
-        return (data.get('orders') || fromJS([]))
-            .find((order) => order.get('id').toString() === orderId.toString()) || fromJS({})
+        return (
+            (data.get('orders') || fromJS([])).find(
+                (order) => order.get('id').toString() === orderId.toString()
+            ) || fromJS({})
+        )
     }
 
     _getItem = (orderId, itemId) => {
         const order = this._getOrder(orderId)
-        return (order.get('line_items') || fromJS([]))
-            .find((item) => item.get('id').toString() === itemId.toString()) || fromJS({})
+        return (
+            (order.get('line_items') || fromJS([])).find(
+                (item) => item.get('id').toString() === itemId.toString()
+            ) || fromJS({})
+        )
     }
 
     _getSubscription = (subscriptionId) => {
         const {integrationData: data} = this.props
-        return (data.get('subscriptions') || fromJS([]))
-            .find((subscription) => subscription.get('id').toString() === subscriptionId.toString())
-            || fromJS({})
+        return (
+            (data.get('subscriptions') || fromJS([])).find(
+                (subscription) =>
+                    subscription.get('id').toString() ===
+                    subscriptionId.toString()
+            ) || fromJS({})
+        )
     }
 
     _getCharge = (chargeId) => {
         const {integrationData: data} = this.props
-        return (data.get('charges') || fromJS([]))
-            .find((charge) => charge.get('id').toString() === chargeId.toString()) || fromJS({})
+        return (
+            (data.get('charges') || fromJS([])).find(
+                (charge) => charge.get('id').toString() === chargeId.toString()
+            ) || fromJS({})
+        )
     }
 
     _renderDetails = (isError, eventData) => {
@@ -80,7 +95,8 @@ export default class Event extends React.Component {
         if (isError) {
             content.push(
                 <div key="error">
-                    <b className="text-danger">Error:</b> {stripErrorMessage(eventData.get('msg'))}
+                    <b className="text-danger">Error:</b>{' '}
+                    {stripErrorMessage(eventData.get('msg'))}
                 </div>
             )
         }
@@ -89,8 +105,8 @@ export default class Event extends React.Component {
             content.push(
                 <div key="payload">
                     <div>
-                        {
-                            payload.map((value, key) => {
+                        {payload
+                            .map((value, key) => {
                                 let formattedValue
 
                                 // Necessary to display correctly booleans
@@ -109,11 +125,12 @@ export default class Event extends React.Component {
 
                                 return (
                                     <div key={key}>
-                                        <b>{humanizeString(key)}</b>: {formattedValue}
+                                        <b>{humanizeString(key)}</b>:{' '}
+                                        {formattedValue}
                                     </div>
                                 )
-                            }).toList()
-                        }
+                            })
+                            .toList()}
                     </div>
                 </div>
             )
@@ -159,17 +176,28 @@ export default class Event extends React.Component {
 
                 if (actionConfig.objectType === 'draftOrder') {
                     objectLabel += payload.get('draft_order_name')
-                    objectLink = `https://${shopName}.myshopify.com/admin/draft_orders/${payload.get('draft_order_id')}`
+                    objectLink = `https://${shopName}.myshopify.com/admin/draft_orders/${payload.get(
+                        'draft_order_id'
+                    )}`
                 } else if (orderId) {
                     const order = this._getOrder(orderId)
 
                     if (actionConfig.objectType === 'order') {
                         objectLabel += order.get('name')
-                        objectLink = `https://${shopName}.myshopify.com/admin/orders/${order.get('id')}`
+                        objectLink = `https://${shopName}.myshopify.com/admin/orders/${order.get(
+                            'id'
+                        )}`
                     } else if (actionConfig.objectType === 'item') {
-                        const item = this._getItem(payload.get('order_id'), payload.get('item_id'))
-                        objectLabel += `${payload.get('quantity')} × ${item.get('name')}`
-                        objectLink = `https://${shopName}.myshopify.com/admin/orders/${order.get('id')}`
+                        const item = this._getItem(
+                            payload.get('order_id'),
+                            payload.get('item_id')
+                        )
+                        objectLabel += `${payload.get('quantity')} × ${item.get(
+                            'name'
+                        )}`
+                        objectLink = `https://${shopName}.myshopify.com/admin/orders/${order.get(
+                            'id'
+                        )}`
                     }
                 }
             } else if (integration.get('type') === 'recharge') {
@@ -177,15 +205,18 @@ export default class Event extends React.Component {
                 const hash = integrationData.getIn(['customer', 'hash'])
 
                 if (actionConfig.objectType === 'subscription') {
-                    const subscription = this._getSubscription(payload.get('subscription_id'))
+                    const subscription = this._getSubscription(
+                        payload.get('subscription_id')
+                    )
                     objectLabel += subscription.get('id')
-                    objectLink = `https://${storeName}.myshopify.com/tools/recurring/customers/${hash}/subscriptions/${subscription.get('id')}`
+                    objectLink = `https://${storeName}.myshopify.com/tools/recurring/customers/${hash}/subscriptions/${subscription.get(
+                        'id'
+                    )}`
                 } else if (actionConfig.objectType === 'charge') {
                     const charge = this._getCharge(payload.get('charge_id'))
                     objectLabel += charge.get('id')
                     objectLink = `https://${storeName}.myshopify.com/tools/recurring/customers/${hash}/orders`
                 }
-
             }
         } else {
             actionLabel += ` #${payload.get('order_id')} (deleted integration)`
@@ -199,8 +230,6 @@ export default class Event extends React.Component {
             >
                 <div className={css.event}>
                     <div className={css.content}>
-
-
                         <div
                             className={classnames(css.icon, {
                                 [css.danger]: isError,
@@ -214,42 +243,45 @@ export default class Event extends React.Component {
                         </div>
 
                         <span className={css.actionName}>
-                            {actionLabel} {' '}
-                            {
-                                !!objectLabel && (
-                                    <a
-                                        href={objectLink}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                    >
-                                        {objectLabel}
-                                    </a>
-                                )
-                            }
+                            {actionLabel}{' '}
+                            {!!objectLabel && (
+                                <a
+                                    href={objectLink}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {objectLabel}
+                                </a>
+                            )}
                         </span>
 
-                        <span className={css.equalFiller}>
-                            on
-                        </span>
+                        <span className={css.equalFiller}>on</span>
 
                         <span className={css.actionName}>
-                            {_capitalize(this.getDisplayableType(integration.get('type')))} ({integration.get('name')})
+                            {_capitalize(
+                                this.getDisplayableType(integration.get('type'))
+                            )}{' '}
+                            ({integration.get('name')})
                         </span>
 
-                        <span className={css.filler}>
-                            by
-                        </span>
+                        <span className={css.filler}>by</span>
 
-                        <AgentLabel name={user.get('name')}/>
+                        <AgentLabel name={user.get('name')} />
 
                         <Button
                             color="link"
                             className={css.more}
-                            onClick={() => this.setState({showDetails: !this.state.showDetails})}
+                            onClick={() =>
+                                this.setState({
+                                    showDetails: !this.state.showDetails,
+                                })
+                            }
                             title="More details"
                         >
                             <i className="material-icons md-2">
-                                {this.state.showDetails ? 'expand_less' : 'expand_more'}
+                                {this.state.showDetails
+                                    ? 'expand_less'
+                                    : 'expand_more'}
                             </i>
                         </Button>
                     </div>
@@ -257,7 +289,7 @@ export default class Event extends React.Component {
                     <DatetimeLabel
                         dateTime={event.get('created_datetime')}
                         settings={{
-                            position: 'top left'
+                            position: 'top left',
                         }}
                         className={classnames(css.date, 'text-faded')}
                     />

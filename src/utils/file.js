@@ -14,11 +14,17 @@ import {MAX_ATTACHMENTS_SIZE} from '../config/editor'
  * @param {String} contentType - content type of the file to save
  * @param {String} data - Date to save
  */
-export const saveFileAsDownloaded = (name: string, contentType: string, data: string) => {
-    const blob = new Blob([data], {type: contentType || 'application/octet-stream'})
+export const saveFileAsDownloaded = (
+    name: string,
+    contentType: string,
+    data: string
+) => {
+    const blob = new Blob([data], {
+        type: contentType || 'application/octet-stream',
+    })
     const blobURL = window.URL.createObjectURL(blob)
     const link = document.createElement('a')
-    const { body } = document
+    const {body} = document
 
     link.style.display = 'none'
     link.href = blobURL
@@ -45,7 +51,7 @@ export const saveFileAsDownloaded = (name: string, contentType: string, data: st
  */
 const getFormattedSize = (size: number) => {
     let formattedSize = ''
-    if (size < (1000 * 1000)) {
+    if (size < 1000 * 1000) {
         formattedSize = `${parseInt(size / 1000)}kB.`
     } else {
         formattedSize = `${parseInt(size / (1000 * 1000))}MB.`
@@ -61,7 +67,9 @@ const getFormattedSize = (size: number) => {
  * @return {String} - Text message representing the error message for too large files
  */
 export const getFileTooLargeError = (size: number) => {
-    return `Failed to upload files. Attached files must be smaller than ${getFormattedSize(size)}`
+    return `Failed to upload files. Attached files must be smaller than ${getFormattedSize(
+        size
+    )}`
 }
 
 /*
@@ -72,20 +80,18 @@ const getInlineImagesSize = (editorState: EditorState): number => {
     const blocks = contentState.getBlockMap()
     let size = 0
     blocks.forEach((block) => {
-        block.findEntityRanges(
-            (character) => {
-                const key = character.getEntity()
-                if (!key) {
-                    return false
-                }
-                const entity = contentState.getEntity(key)
-                if (entity.get('type') === 'img') {
-                    const data = entity.get('data')
-                    size = size + _get(data, 'size', 0)
-                }
+        block.findEntityRanges((character) => {
+            const key = character.getEntity()
+            if (!key) {
                 return false
             }
-        )
+            const entity = contentState.getEntity(key)
+            if (entity.get('type') === 'img') {
+                const data = entity.get('data')
+                size = size + _get(data, 'size', 0)
+            }
+            return false
+        })
     })
     return size
 }
@@ -93,8 +99,14 @@ const getInlineImagesSize = (editorState: EditorState): number => {
 /*
  * Get remaining allowed upload size
  */
-export const getMaxAttachmentSize = (editorState: EditorState = EditorState.createEmpty(), attachments: Array<File> = []): number => {
-    const attachmentsSize = attachments.reduce((sum, file) => sum + (file.size || 0), 0)
+export const getMaxAttachmentSize = (
+    editorState: EditorState = EditorState.createEmpty(),
+    attachments: Array<File> = []
+): number => {
+    const attachmentsSize = attachments.reduce(
+        (sum, file) => sum + (file.size || 0),
+        0
+    )
     const inlineImagesSize = getInlineImagesSize(editorState)
     return MAX_ATTACHMENTS_SIZE - attachmentsSize - inlineImagesSize
 }

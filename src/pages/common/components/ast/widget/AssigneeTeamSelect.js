@@ -7,7 +7,6 @@ import * as selectors from '../../../../../state/teams/selectors'
 
 import Select from './ReactSelect'
 
-
 type Props = {
     onChange: (number) => void,
     value?: string | number,
@@ -24,13 +23,14 @@ class AssigneeTeamSelect extends React.Component<Props> {
     render() {
         const {teams, value, onChange, className, allowUnassign} = this.props
         let options: List<*> = fromJS(
-            allowUnassign
-                ? [{value: null, label: 'Unassigned'}]
-                : []
+            allowUnassign ? [{value: null, label: 'Unassigned'}] : []
         )
 
         teams.forEach((team) => {
-            options = options.push({value: team.get('id'), label: team.get('name')})
+            options = options.push({
+                value: team.get('id'),
+                label: team.get('name'),
+            })
         })
 
         return (
@@ -49,6 +49,4 @@ const mapStateToProps = (state) => ({
 })
 
 //$FlowFixMe
-export default connect(
-    mapStateToProps
-)(AssigneeTeamSelect)
+export default connect(mapStateToProps)(AssigneeTeamSelect)

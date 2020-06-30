@@ -6,7 +6,7 @@ import HTTPIntegrationEventParams from '../HTTPIntegrationEventParams'
 
 describe('HTTPIntegrationEventParams', () => {
     it('should not render the component because it has no params', () => {
-        const component = shallow(<HTTPIntegrationEventParams/>)
+        const component = shallow(<HTTPIntegrationEventParams />)
         expect(component).toMatchSnapshot()
     })
 

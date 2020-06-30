@@ -46,9 +46,11 @@ class MultiSelectBinaryChoiceField extends React.Component {
 
         const index = _findIndex(newVal, referenceValue)
 
-        if (index === -1) { // if property not in list, add
+        if (index === -1) {
+            // if property not in list, add
             newVal.push(value)
-        } else if (!forceAdd) { // if property is already in list, remove it
+        } else if (!forceAdd) {
+            // if property is already in list, remove it
             newVal.splice(index, 1)
         }
 
@@ -56,10 +58,14 @@ class MultiSelectBinaryChoiceField extends React.Component {
     }
 
     _expandOptionsSet = (optionSet) => {
-        const requiredValuesIds = this.props.requiredValues.map((requiredValue) => requiredValue.id)
+        const requiredValuesIds = this.props.requiredValues.map(
+            (requiredValue) => requiredValue.id
+        )
 
         return optionSet.map((option, idx) => {
-            const active = _find(this.props.value, (channel) => _isEqual(channel, option.value))
+            const active = _find(this.props.value, (channel) =>
+                _isEqual(channel, option.value)
+            )
             const disabled = requiredValuesIds.includes(option.value.id)
             const className = classNames({active, disabled}, 'option')
 
@@ -67,7 +73,9 @@ class MultiSelectBinaryChoiceField extends React.Component {
                 <div
                     key={idx}
                     className={className}
-                    onClick={disabled ? null : () => this._onChange(option.value)}
+                    onClick={
+                        disabled ? null : () => this._onChange(option.value)
+                    }
                 >
                     {option.label}
                 </div>
@@ -80,22 +88,18 @@ class MultiSelectBinaryChoiceField extends React.Component {
 
         return (
             <FormGroup className="multi-select-binary-choice">
-                {
-                    label && (
-                        <div className="label">{label}{tooltip}</div>
-                    )
-                }
+                {label && (
+                    <div className="label">
+                        {label}
+                        {tooltip}
+                    </div>
+                )}
                 <div className="options">
-                    {
-                        options.map((option, idx) => (
-                            <div
-                                className="option-container"
-                                key={idx}
-                            >
-                                {this._expandOptionsSet(option)}
-                            </div>
-                        ))
-                    }
+                    {options.map((option, idx) => (
+                        <div className="option-container" key={idx}>
+                            {this._expandOptionsSet(option)}
+                        </div>
+                    ))}
                 </div>
             </FormGroup>
         )
@@ -109,12 +113,12 @@ MultiSelectBinaryChoiceField.propTypes = {
     requiredValues: PropTypes.array,
     tooltip: PropTypes.object,
     propertiesToCompare: PropTypes.array.isRequired,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
 }
 
 MultiSelectBinaryChoiceField.defaultProps = {
     propertiesToCompare: [],
-    onChange: _noop
+    onChange: _noop,
 }
 
 export default MultiSelectBinaryChoiceField

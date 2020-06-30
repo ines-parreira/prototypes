@@ -2,11 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import {withRouter} from 'react-router'
-import {
-    Container,
-    Row,
-    Col,
-} from 'reactstrap'
+import {Container, Row, Col} from 'reactstrap'
 import _last from 'lodash/last'
 
 import appCss from '../../App.less'
@@ -26,16 +22,18 @@ export default class FullPage extends React.Component {
         return (
             <Container
                 fluid
-                className={classnames('container-padding', appCss['main-content'], css.container)}
+                className={classnames(
+                    'container-padding',
+                    appCss['main-content'],
+                    css.container
+                )}
             >
                 <Row
                     className={classnames(css.row, {
                         [css['no-limit']]: currentRoute.noContainerWidthLimit,
                     })}
                 >
-                    <Col className={css.col}>
-                        {this.props.children}
-                    </Col>
+                    <Col className={css.col}>{this.props.children}</Col>
                 </Row>
             </Container>
         )

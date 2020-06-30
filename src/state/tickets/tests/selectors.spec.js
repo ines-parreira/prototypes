@@ -12,28 +12,33 @@ describe('selectors', () => {
 
         beforeEach(() => {
             state = {
-                tickets: initialState
-                    .mergeDeep({
-                        items: [{id: 1}],
-                    })
+                tickets: initialState.mergeDeep({
+                    items: [{id: 1}],
+                }),
             }
         })
 
         it('getTicketsState', () => {
-            expect(selectors.getTicketsState(state)).toEqualImmutable(state.tickets)
+            expect(selectors.getTicketsState(state)).toEqualImmutable(
+                state.tickets
+            )
             expect(selectors.getTicketsState({})).toEqualImmutable(fromJS({}))
         })
 
         it('getTickets', () => {
-            expect(selectors.getTickets(state)).toEqualImmutable(state.tickets.get('items'))
+            expect(selectors.getTickets(state)).toEqualImmutable(
+                state.tickets.get('items')
+            )
             expect(selectors.getTickets({})).toEqualImmutable(fromJS([]))
         })
 
         describe('getCursor', () => {
             it('should get default cursor', () => {
-                expect(selectors.getCursor({tickets: initialState})).toEqual(null)
+                expect(selectors.getCursor({tickets: initialState})).toEqual(
+                    null
+                )
                 const newState = {
-                    ticket: fromJS({})
+                    ticket: fromJS({}),
                 }
                 expect(selectors.getCursor(newState)).toEqual(null)
             })
@@ -41,7 +46,7 @@ describe('selectors', () => {
             it('should get cursor value', () => {
                 const cursor = '2018-03-07T00:42:49.336025'
                 const newState = {
-                    tickets: fromJS({cursor})
+                    tickets: fromJS({cursor}),
                 }
                 expect(selectors.getCursor(newState)).toEqual(cursor)
             })

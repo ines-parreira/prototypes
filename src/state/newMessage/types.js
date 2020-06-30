@@ -6,14 +6,14 @@ import type {attachmentType} from '../../types'
 export type UserType = {
     id: string,
     email?: string,
-    name?: string
+    name?: string,
 }
 
 export type NewMessageType = {
     id?: string,
     source: {
         type: string,
-        extra: {}
+        extra: {},
     },
     channel: string,
     sender: UserType,
@@ -31,7 +31,7 @@ export type TicketType = {
     status: string,
     assignee_user: UserType,
     channel: string,
-    messages: Array<{}>
+    messages: Array<{}>,
 }
 
 export type MacroActionsType = List<Map<*, *>>

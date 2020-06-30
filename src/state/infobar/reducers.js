@@ -7,7 +7,6 @@ import type {actionType} from '../types'
 import * as constants from './constants'
 import * as utils from './utils'
 
-
 export const initialState = fromJS({
     _internal: {
         loading: {},
@@ -19,7 +18,10 @@ export const initialState = fromJS({
     pendingActionsCallbacks: [],
 })
 
-export default function reducer(state: Map<*,*> = initialState, action: actionType): Map<*,*> {
+export default function reducer(
+    state: Map<*, *> = initialState,
+    action: actionType
+): Map<*, *> {
     switch (action.type) {
         case constants.EXECUTE_ACTION_START: {
             if (!action.callback) {
@@ -29,10 +31,12 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
             const actionId = utils.actionButtonHashForData(action.data)
 
             return state.updateIn(['pendingActionsCallbacks'], (list) => {
-                return list.push(fromJS({
-                    id: actionId,
-                    callback: action.callback,
-                }))
+                return list.push(
+                    fromJS({
+                        id: actionId,
+                        callback: action.callback,
+                    })
+                )
             })
         }
 
@@ -42,7 +46,9 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
 
             const actionIndex = state
                 .get('pendingActionsCallbacks')
-                .findIndex((pendingAction) => pendingAction.get('id') === actionId)
+                .findIndex(
+                    (pendingAction) => pendingAction.get('id') === actionId
+                )
 
             if (!~actionIndex) {
                 return state

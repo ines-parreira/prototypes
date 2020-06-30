@@ -8,14 +8,15 @@ import configureMockStore from 'redux-mock-store'
 import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../../constants/integration'
 import FacebookIntegrationInstagramAds from '../'
 
-
 describe('<FacebookIntegrationInstagramAds/>', () => {
-    const integrations = [{
-        id: 1,
-        name: 'integration 1',
-        type: FACEBOOK_INTEGRATION_TYPE,
-        created_datetime: '2019-01-01 00:00:00'
-    }]
+    const integrations = [
+        {
+            id: 1,
+            name: 'integration 1',
+            type: FACEBOOK_INTEGRATION_TYPE,
+            created_datetime: '2019-01-01 00:00:00',
+        },
+    ]
 
     const props = {
         integrations: fromJS(integrations),
@@ -30,15 +31,15 @@ describe('<FacebookIntegrationInstagramAds/>', () => {
 
         return mockStore({
             currentUser: fromJS({
-                timezone: 'America/Los_Angeles'
+                timezone: 'America/Los_Angeles',
             }),
             integrations: fromJS({
                 integrations,
                 extra: {
                     facebook: {
-                        max_account_ads: maxAccountAds
-                    }
-                }
+                        max_account_ads: maxAccountAds,
+                    },
+                },
             }),
             facebookAds: fromJS({
                 loading: loading || false,
@@ -46,7 +47,7 @@ describe('<FacebookIntegrationInstagramAds/>', () => {
                     1: internal,
                 },
                 loadingAds: [],
-            })
+            }),
         })
     }
 
@@ -80,11 +81,11 @@ describe('<FacebookIntegrationInstagramAds/>', () => {
                         loading: true,
                         maxAccountAds: 100,
                         internal: {
-                            ads: {}
-                        }
+                            ads: {},
+                        },
                     })}
                 >
-                    <FacebookIntegrationInstagramAds {...props}/>
+                    <FacebookIntegrationInstagramAds {...props} />
                 </Provider>
             )
 
@@ -97,11 +98,11 @@ describe('<FacebookIntegrationInstagramAds/>', () => {
                     store={getStore({
                         maxAccountAds: 100,
                         internal: {
-                            ads: {}
-                        }
+                            ads: {},
+                        },
                     })}
                 >
-                    <FacebookIntegrationInstagramAds {...props}/>
+                    <FacebookIntegrationInstagramAds {...props} />
                 </Provider>
             )
 
@@ -120,13 +121,13 @@ describe('<FacebookIntegrationInstagramAds/>', () => {
                                     name: 'ad 1',
                                     is_active: true,
                                     permalink: 'http://fake.link.to/ad1',
-                                    ad_account_id: 'act_123'
-                                }
-                            }
-                        }
+                                    ad_account_id: 'act_123',
+                                },
+                            },
+                        },
                     })}
                 >
-                    <FacebookIntegrationInstagramAds {...props}/>
+                    <FacebookIntegrationInstagramAds {...props} />
                 </Provider>
             )
 
@@ -145,20 +146,20 @@ describe('<FacebookIntegrationInstagramAds/>', () => {
                                     name: 'ad 1',
                                     is_active: true,
                                     permalink: 'http://fake.link.to/ad1',
-                                    ad_account_id: 'act_123'
+                                    ad_account_id: 'act_123',
                                 },
                                 postid2: {
                                     created_datetime: '2019-01-01 10:30:00',
                                     name: 'ad 2',
                                     is_active: false,
                                     permalink: 'http://fake.link.to/ad2',
-                                    ad_account_id: 'act_123'
-                                }
-                            }
-                        }
+                                    ad_account_id: 'act_123',
+                                },
+                            },
+                        },
                     })}
                 >
-                    <FacebookIntegrationInstagramAds {...props}/>
+                    <FacebookIntegrationInstagramAds {...props} />
                 </Provider>
             )
 
@@ -177,27 +178,27 @@ describe('<FacebookIntegrationInstagramAds/>', () => {
                                     name: 'ad 1',
                                     is_active: true,
                                     permalink: 'http://fake.link.to/ad1',
-                                    ad_account_id: 'act_123'
+                                    ad_account_id: 'act_123',
                                 },
                                 postid2: {
                                     created_datetime: '2019-01-01 10:30:00',
                                     name: 'ad 2',
                                     is_active: true,
                                     permalink: 'http://fake.link.to/ad2',
-                                    ad_account_id: 'act_123'
+                                    ad_account_id: 'act_123',
                                 },
                                 postid3: {
                                     created_datetime: '2019-01-01 10:30:00',
                                     name: 'ad 3',
                                     is_active: false,
                                     permalink: 'http://fake.link.to/ad3',
-                                    ad_account_id: 'act_123'
-                                }
-                            }
-                        }
+                                    ad_account_id: 'act_123',
+                                },
+                            },
+                        },
                     })}
                 >
-                    <FacebookIntegrationInstagramAds {...props}/>
+                    <FacebookIntegrationInstagramAds {...props} />
                 </Provider>
             )
 

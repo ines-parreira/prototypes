@@ -12,7 +12,9 @@ import CustomersNavbarView from './components/CustomersNavbarView'
 class CustomerNavbarContainer extends React.Component {
     componentWillMount() {
         // fetch the list view only
-        const viewId = this.props.params.viewId ? this.props.params.viewId : this.props.location.query.viewId
+        const viewId = this.props.params.viewId
+            ? this.props.params.viewId
+            : this.props.location.query.viewId
         this.props.actions.fetchViews(viewId)
     }
 
@@ -33,21 +35,27 @@ CustomerNavbarContainer.propTypes = {
     actions: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired,
     location: PropTypes.shape({
-        query: PropTypes.object
+        query: PropTypes.object,
     }),
     setting: PropTypes.object,
-    isLoading: PropTypes.bool.isRequired
+    isLoading: PropTypes.bool.isRequired,
 }
 
 const mapStateToProps = (state) => {
     return {
         setting: getSettingsByType('customer-views')(state),
-        isLoading: state.currentUser.getIn(['_internal', 'loading', 'settings', 'customer-views'], false)
+        isLoading: state.currentUser.getIn(
+            ['_internal', 'loading', 'settings', 'customer-views'],
+            false
+        ),
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    actions: bindActionCreators(ViewsActions, dispatch)
+    actions: bindActionCreators(ViewsActions, dispatch),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(CustomerNavbarContainer)
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(CustomerNavbarContainer)

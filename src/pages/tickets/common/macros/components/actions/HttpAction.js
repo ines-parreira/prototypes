@@ -3,7 +3,12 @@ import PropTypes from 'prop-types'
 import {fromJS} from 'immutable'
 import {Row, Col, FormGroup, Label} from 'reactstrap'
 
-import {AVAILABLE_HTTP_METHODS, JSON_CONTENT_TYPE, FORM_CONTENT_TYPE, HTTP_METHOD_GET} from '../../../../../../config'
+import {
+    AVAILABLE_HTTP_METHODS,
+    JSON_CONTENT_TYPE,
+    FORM_CONTENT_TYPE,
+    HTTP_METHOD_GET,
+} from '../../../../../../config'
 
 import ParametersEditor from '../ParametersEditor'
 
@@ -11,14 +16,14 @@ import InputField from '../../../../../common/forms/InputField'
 import BooleanField from '../../../../../common/forms/BooleanField'
 import JsonField from '../../../../../common/forms/JsonField'
 
-import {validateWebhookURL, validateWebhookURLToPattern} from '../../../../../../utils'
+import {
+    validateWebhookURL,
+    validateWebhookURLToPattern,
+} from '../../../../../../utils'
 
 export default class HttpAction extends React.Component {
     _setTitle = (title) => {
-        this.props.updateActionTitle(
-            this.props.index,
-            title
-        )
+        this.props.updateActionTitle(this.props.index, title)
     }
 
     _setArgument = (name, value) => {
@@ -41,7 +46,8 @@ export default class HttpAction extends React.Component {
             />
         )
 
-        const isFormData = action.getIn(['arguments', 'content_type']) === FORM_CONTENT_TYPE
+        const isFormData =
+            action.getIn(['arguments', 'content_type']) === FORM_CONTENT_TYPE
 
         if (isFormData) {
             field = (
@@ -61,13 +67,17 @@ export default class HttpAction extends React.Component {
                     <BooleanField
                         type="radio"
                         value={isFormData}
-                        onChange={() => this._setArgument('content_type', FORM_CONTENT_TYPE)}
+                        onChange={() =>
+                            this._setArgument('content_type', FORM_CONTENT_TYPE)
+                        }
                         label={FORM_CONTENT_TYPE}
                     />
                     <BooleanField
                         type="radio"
                         value={!isFormData}
-                        onChange={() => this._setArgument('content_type', JSON_CONTENT_TYPE)}
+                        onChange={() =>
+                            this._setArgument('content_type', JSON_CONTENT_TYPE)
+                        }
                         label={JSON_CONTENT_TYPE}
                     />
                 </div>
@@ -98,35 +108,38 @@ export default class HttpAction extends React.Component {
                             name="method"
                             label="Method"
                             value={action.getIn(['arguments', 'method'])}
-                            onChange={(value) => this._setArgument('method', value)}
+                            onChange={(value) =>
+                                this._setArgument('method', value)
+                            }
                             required
                             form="macro_form"
                         >
-                            {
-                                AVAILABLE_HTTP_METHODS.map((method) =>
-                                    <option
-                                        key={method}
-                                        value={method}
-                                    >
-                                        {method}
-                                    </option>
-                                )
-                            }
+                            {AVAILABLE_HTTP_METHODS.map((method) => (
+                                <option key={method} value={method}>
+                                    {method}
+                                </option>
+                            ))}
                         </InputField>
                     </Col>
                     <Col xs="9">
                         <InputField
                             type="url"
-                            title='Example: https://company.com/api'
+                            title="Example: https://company.com/api"
                             name="url"
                             label="URL"
-                            error={validateWebhookURL(action.getIn(['arguments', 'url']))}
+                            error={validateWebhookURL(
+                                action.getIn(['arguments', 'url'])
+                            )}
                             value={action.getIn(['arguments', 'url'])}
-                            onChange={(value) => this._setArgument('url', value)}
+                            onChange={(value) =>
+                                this._setArgument('url', value)
+                            }
                             help="Example: https://company.com/api"
                             required
                             form="macro_form"
-                            pattern={validateWebhookURLToPattern(action.getIn(['arguments', 'url']))}
+                            pattern={validateWebhookURLToPattern(
+                                action.getIn(['arguments', 'url'])
+                            )}
                         />
                     </Col>
                 </Row>

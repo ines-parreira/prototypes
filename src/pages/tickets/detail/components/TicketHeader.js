@@ -33,9 +33,8 @@ import TicketTrash from './TicketDetails/TicketTrash'
 
 import css from './TicketHeader.less'
 
-
 type Props = {
-    ticket: Map<*,*>,
+    ticket: Map<*, *>,
     shouldDisplayAuditLogEvents: boolean,
     actions: {
         ticket: typeof ticketActions,
@@ -57,17 +56,20 @@ type State = {
     isMergeTicketModalOpen: boolean,
 }
 
-@connect((state) => ({
-    shouldDisplayAuditLogEvents: shouldDisplayAuditLogEvents(state),
-}), {
-    setTrashed: ticketActions.setTrashed,
-    setSpam: ticketActions.setSpam,
-    clearTicket: ticketActions.clearTicket,
-    goToNextTicket: ticketActions.goToNextTicket,
-    displayAuditLogEvents: ticketActions.displayAuditLogEvents,
-    hideAuditLogEvents: ticketActions.hideAuditLogEvents,
-    notify,
-})
+@connect(
+    (state) => ({
+        shouldDisplayAuditLogEvents: shouldDisplayAuditLogEvents(state),
+    }),
+    {
+        setTrashed: ticketActions.setTrashed,
+        setSpam: ticketActions.setSpam,
+        clearTicket: ticketActions.clearTicket,
+        goToNextTicket: ticketActions.goToNextTicket,
+        displayAuditLogEvents: ticketActions.displayAuditLogEvents,
+        hideAuditLogEvents: ticketActions.hideAuditLogEvents,
+        notify,
+    }
+)
 export default class TicketHeader extends React.Component<Props, State> {
     state = {
         askTrashConfirmation: false,
@@ -113,7 +115,9 @@ export default class TicketHeader extends React.Component<Props, State> {
         })
     }
 
-    _toggleTrashConfirmation = (status: boolean = !this.state.askTrashConfirmation) => {
+    _toggleTrashConfirmation = (
+        status: boolean = !this.state.askTrashConfirmation
+    ) => {
         this.setState({askTrashConfirmation: status})
     }
 
@@ -129,9 +133,12 @@ export default class TicketHeader extends React.Component<Props, State> {
     }
 
     _setSnooze = (event: Object, picker: Object) => {
-        return this.props.actions.ticket.setSnooze(picker.endDate.format(), () => {
-            this._goToNextTicket()
-        })
+        return this.props.actions.ticket.setSnooze(
+            picker.endDate.format(),
+            () => {
+                this._goToNextTicket()
+            }
+        )
     }
 
     _toggleSnoozePicker = () => {
@@ -148,12 +155,15 @@ export default class TicketHeader extends React.Component<Props, State> {
     }
 
     _toggleMergeTicketModal = () => {
-        this.setState({isMergeTicketModalOpen: !this.state.isMergeTicketModalOpen})
+        this.setState({
+            isMergeTicketModalOpen: !this.state.isMergeTicketModalOpen,
+        })
     }
 
     _toggleAuditLogEvents = () => {
         const {displayAuditLogEvents, hideAuditLogEvents, ticket} = this.props
-        const shouldDisplayAuditLogEvents = !this.props.shouldDisplayAuditLogEvents
+        const shouldDisplayAuditLogEvents = !this.props
+            .shouldDisplayAuditLogEvents
 
         if (shouldDisplayAuditLogEvents) {
             displayAuditLogEvents(ticket.get('id'))
@@ -167,27 +177,32 @@ export default class TicketHeader extends React.Component<Props, State> {
             CLOSE_TICKET: {
                 action: () => {
                     this._setStatus('closed')
-                }
+                },
             },
             OPEN_TICKET: {
                 action: () => {
                     this._setStatus('open')
-                }
+                },
             },
             DELETE_TICKET: {
                 action: () => {
                     this._toggleTrashConfirmation()
-                }
+                },
             },
             HIDE_POPOVER: {
                 key: 'esc',
-                action: () => this._toggleTrashConfirmation(false)
+                action: () => this._toggleTrashConfirmation(false),
             },
         })
     }
 
     render() {
-        const {ticket, actions, className, shouldDisplayAuditLogEvents} = this.props
+        const {
+            ticket,
+            actions,
+            className,
+            shouldDisplayAuditLogEvents,
+        } = this.props
         const {showSnoozePicker} = this.state
         const isUpdate = !!ticket.get('id')
         const isTrashed = !!ticket.get('trashed_datetime')
@@ -210,164 +225,167 @@ export default class TicketHeader extends React.Component<Props, State> {
 
                     <TicketTrash
                         className={css.headerIcon}
-                        trashed={isTrashed && !ticket.getIn(['_internal', 'loading', 'setTrash'])}
+                        trashed={
+                            isTrashed &&
+                            !ticket.getIn(['_internal', 'loading', 'setTrash'])
+                        }
                     />
 
                     <TicketSpam
                         className={css.headerIcon}
-                        spam={ticket.get('spam') && !ticket.getIn(['_internal', 'loading', 'setSpam'])}
+                        spam={
+                            ticket.get('spam') &&
+                            !ticket.getIn(['_internal', 'loading', 'setSpam'])
+                        }
                     />
 
-
-                    {
-                        isUpdate && (
-                            <UncontrolledDropdown>
-                                <DropdownToggle
-                                    color="secondary"
+                    {isUpdate && (
+                        <UncontrolledDropdown>
+                            <DropdownToggle
+                                color="secondary"
+                                type="button"
+                                size="sm"
+                                id="ticket-actions-button"
+                                className="btn-transparent"
+                            >
+                                <i className="material-icons md-2">more_vert</i>
+                            </DropdownToggle>
+                            <TicketSnoozePicker
+                                datetime={ticket.get('snooze_datetime')}
+                                isOpen={showSnoozePicker}
+                                toggle={this._toggleSnoozePicker}
+                                onApply={this._setSnooze}
+                            />
+                            <DropdownMenu right className={css.actionsDropdown}>
+                                <DropdownItem
                                     type="button"
-                                    size="sm"
-                                    id="ticket-actions-button"
-                                    className="btn-transparent"
+                                    onClick={this._toggleSnoozePicker}
                                 >
-                                    <i className="material-icons md-2">
-                                        more_vert
-                                    </i>
-                                </DropdownToggle>
-                                <TicketSnoozePicker
-                                    datetime={ticket.get('snooze_datetime')}
-                                    isOpen={showSnoozePicker}
-                                    toggle={this._toggleSnoozePicker}
-                                    onApply={this._setSnooze}
-                                />
-                                <DropdownMenu
-                                    right
-                                    className={css.actionsDropdown}
-                                >
-                                    <DropdownItem
-                                        type="button"
-                                        onClick={this._toggleSnoozePicker}
-                                    >
-                                        <i className="icon material-icons">
-                                            snooze
-                                        </i>
+                                    <i className="icon material-icons">
                                         snooze
-                                    </DropdownItem>
+                                    </i>
+                                    snooze
+                                </DropdownItem>
+                                <DropdownItem
+                                    type="button"
+                                    onClick={this._toggleMergeTicketModal}
+                                >
+                                    <i className="icon material-icons">
+                                        call_merge
+                                    </i>
+                                    merge ticket
+                                </DropdownItem>
+                                <DropdownItem
+                                    type="button"
+                                    onClick={this._toggleAuditLogEvents}
+                                >
+                                    <i className="icon material-icons">
+                                        event_note
+                                    </i>
+                                    {shouldDisplayAuditLogEvents
+                                        ? 'hide'
+                                        : 'display'}{' '}
+                                    all events
+                                </DropdownItem>
+                                <DropdownItem
+                                    type="button"
+                                    onClick={() => {
+                                        // setTimeout allows React to complete the current JS click event triggers
+                                        // before printing the page
+                                        setTimeout(() => {
+                                            window.print()
+                                        }, 1)
+                                    }}
+                                >
+                                    <i className="icon material-icons">print</i>
+                                    print ticket
+                                </DropdownItem>
+                                <DropdownItem
+                                    type="button"
+                                    onClick={this._toggleSpam}
+                                >
+                                    {ticket.get('spam') ? (
+                                        <span>
+                                            <i className="icon material-icons">
+                                                undo
+                                            </i>
+                                            unmark as spam
+                                        </span>
+                                    ) : (
+                                        <span>
+                                            <i className="icon material-icons">
+                                                not_interested
+                                            </i>
+                                            mark as spam
+                                        </span>
+                                    )}
+                                </DropdownItem>
+                                {isTrashed ? (
                                     <DropdownItem
                                         type="button"
-                                        onClick={this._toggleMergeTicketModal}
+                                        onClick={this._unTrashTicket}
                                     >
                                         <i className="icon material-icons">
-                                            call_merge
+                                            undo
                                         </i>
-                                        merge ticket
+                                        undelete
                                     </DropdownItem>
+                                ) : (
                                     <DropdownItem
                                         type="button"
-                                        onClick={this._toggleAuditLogEvents}
-                                    >
-                                        <i className="icon material-icons">
-                                            event_note
-                                        </i>
-                                        {shouldDisplayAuditLogEvents ? 'hide' : 'display'} all events
-                                    </DropdownItem>
-                                    <DropdownItem
-                                        type="button"
-                                        onClick={() => {
-                                            // setTimeout allows React to complete the current JS click event triggers
-                                            // before printing the page
-                                            setTimeout(() => {
-                                                window.print()
-                                            }, 1)
-                                        }}
-                                    >
-                                        <i className="icon material-icons">
-                                            print
-                                        </i>
-                                        print ticket
-                                    </DropdownItem>
-                                    <DropdownItem
-                                        type="button"
-                                        onClick={this._toggleSpam}
-                                    >
-                                        {
-                                            ticket.get('spam') ? (
-                                                <span>
-                                                    <i className="icon material-icons">
-                                                        undo
-                                                    </i>
-                                                    unmark as spam
-                                                </span>
-                                            ) : (
-                                                <span>
-                                                    <i className="icon material-icons">
-                                                        not_interested
-                                                    </i>
-                                                    mark as spam
-                                                </span>
-                                            )
+                                        onClick={() =>
+                                            this._toggleTrashConfirmation()
                                         }
-                                    </DropdownItem>
-                                    {
-                                        isTrashed ? (
-                                            <DropdownItem
-                                                type="button"
-                                                onClick={this._unTrashTicket}
-                                            >
-                                                <i className="icon material-icons">
-                                                    undo
-                                                </i>
-                                                undelete
-                                            </DropdownItem>
-                                        ) : (
-                                            <DropdownItem
-                                                type="button"
-                                                onClick={() => this._toggleTrashConfirmation()}
-                                            >
-                                                <div className="text-danger">
-                                                    <i className="icon material-icons">
-                                                        delete
-                                                    </i>
-                                                    delete
-                                                </div>
-                                                <Popover
-                                                    placement="bottom"
-                                                    isOpen={this.state.askTrashConfirmation}
-                                                    target="ticket-actions-button"
-                                                    toggle={() => this._toggleTrashConfirmation()}
+                                    >
+                                        <div className="text-danger">
+                                            <i className="icon material-icons">
+                                                delete
+                                            </i>
+                                            delete
+                                        </div>
+                                        <Popover
+                                            placement="bottom"
+                                            isOpen={
+                                                this.state.askTrashConfirmation
+                                            }
+                                            target="ticket-actions-button"
+                                            toggle={() =>
+                                                this._toggleTrashConfirmation()
+                                            }
+                                        >
+                                            <PopoverHeader>
+                                                Are you sure?
+                                            </PopoverHeader>
+                                            <PopoverBody>
+                                                <p>
+                                                    You are about to{' '}
+                                                    <b>delete</b> this ticket.
+                                                </p>
+                                                <Button
+                                                    type="submit"
+                                                    color="success"
+                                                    onClick={this._trashTicket}
+                                                    autoFocus
                                                 >
-                                                    <PopoverHeader>Are you sure?</PopoverHeader>
-                                                    <PopoverBody>
-                                                        <p>
-                                                            You are about to <b>delete</b> this ticket.
-                                                        </p>
-                                                        <Button
-                                                            type="submit"
-                                                            color="success"
-                                                            onClick={this._trashTicket}
-                                                            autoFocus
-                                                        >
-                                                            Confirm
-                                                        </Button>
-                                                    </PopoverBody>
-                                                </Popover>
-                                            </DropdownItem>
-                                        )}
-                                </DropdownMenu>
-                            </UncontrolledDropdown>
-                        )
-                    }
+                                                    Confirm
+                                                </Button>
+                                            </PopoverBody>
+                                        </Popover>
+                                    </DropdownItem>
+                                )}
+                            </DropdownMenu>
+                        </UncontrolledDropdown>
+                    )}
                 </div>
 
                 <div className="d-flex justify-content-between">
                     <div className="d-inline-flex">
-                        {
-                            isUpdate && (
-                                <TicketStatus
-                                    currentStatus={ticket.get('status')}
-                                    setQuickStatus={this._toggleStatus}
-                                />
-                            )
-                        }
+                        {isUpdate && (
+                            <TicketStatus
+                                currentStatus={ticket.get('status')}
+                                setQuickStatus={this._toggleStatus}
+                            />
+                        )}
 
                         <TicketTags
                             ticketTags={ticket.get('tags')}
@@ -381,7 +399,11 @@ export default class TicketHeader extends React.Component<Props, State> {
                             direction="right"
                             currentAssigneeUser={ticket.get('assignee_user')}
                             currentAssigneeTeam={ticket.get('assignee_team')}
-                            profilePictureUrl={ticket.getIn(['assignee_user', 'meta', 'profile_picture_url'])}
+                            profilePictureUrl={ticket.getIn([
+                                'assignee_user',
+                                'meta',
+                                'profile_picture_url',
+                            ])}
                             setUser={actions.ticket.setAgent}
                             setTeam={actions.ticket.setTeam}
                             className={css.assignee}

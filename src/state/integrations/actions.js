@@ -6,7 +6,10 @@ import {fromJS, type Map} from 'immutable'
 import _capitalize from 'lodash/capitalize'
 import _sortBy from 'lodash/sortBy'
 
-import {FACEBOOK_INTEGRATION_TYPE, OUTLOOK_INTEGRATION_TYPE} from '../../constants/integration'
+import {
+    FACEBOOK_INTEGRATION_TYPE,
+    OUTLOOK_INTEGRATION_TYPE,
+} from '../../constants/integration'
 
 import {notify} from '../notifications/actions'
 import type {dispatchType, getStateType} from '../types'
@@ -14,38 +17,43 @@ import type {dispatchType, getStateType} from '../types'
 import * as constants from './constants'
 import * as integrationSelectors from './selectors'
 
-
 type integrationType = {
     type: string,
-    id: string
+    id: string,
 }
 
 export function fetchIntegrations() {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
-            type: constants.FETCH_INTEGRATIONS_START
+            type: constants.FETCH_INTEGRATIONS_START,
         })
 
-        return axios.get('/api/integrations/')
+        return axios
+            .get('/api/integrations/')
             .then((json = {}) => json.data)
-            .then((resp) => {
-                const newResp = resp
+            .then(
+                (resp) => {
+                    const newResp = resp
 
-                if (newResp) {
-                    newResp.data = _sortBy(newResp.data, (integration) => integration.name.toLowerCase())
+                    if (newResp) {
+                        newResp.data = _sortBy(newResp.data, (integration) =>
+                            integration.name.toLowerCase()
+                        )
+                    }
+
+                    return dispatch({
+                        type: constants.FETCH_INTEGRATIONS_SUCCESS,
+                        resp: newResp,
+                    })
+                },
+                (error) => {
+                    return dispatch({
+                        type: constants.FETCH_INTEGRATIONS_ERROR,
+                        error,
+                        reason: 'Failed to fetch integrations',
+                    })
                 }
-
-                return dispatch({
-                    type: constants.FETCH_INTEGRATIONS_SUCCESS,
-                    resp: newResp
-                })
-            }, (error) => {
-                return dispatch({
-                    type: constants.FETCH_INTEGRATIONS_ERROR,
-                    error,
-                    reason: 'Failed to fetch integrations'
-                })
-            })
+            )
     }
 }
 
@@ -59,32 +67,41 @@ export function fetchIntegrations() {
  * @param filter: filter results that contain typed value
  */
 function fetchOnboardingIntegrations(
-    page: number = 1, integrationType: string, forceOverride: boolean = true, filter: string = ''
+    page: number = 1,
+    integrationType: string,
+    forceOverride: boolean = true,
+    filter: string = ''
 ) {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
-            type: constants.FETCH_ONBOARDING_INTEGRATIONS_START
+            type: constants.FETCH_ONBOARDING_INTEGRATIONS_START,
         })
 
         const params = filter ? {page, filter} : {page}
 
-        return axios.get(`/integrations/${integrationType}/onboarding-integrations/`, {params})
-            .then((json = {}) => json.data)
-            .then((resp) => {
-                return dispatch({
-                    type: constants.FETCH_ONBOARDING_INTEGRATIONS_SUCCESS,
-                    integrationType,
-                    resp,
-                    forceOverride
-                })
-            }, (error) => {
-                return dispatch({
-                    type: constants.FETCH_ONBOARDING_INTEGRATIONS_ERROR,
-                    integrationType,
-                    error,
-                    reason: 'Failed to fetch onboarding integrations'
-                })
+        return axios
+            .get(`/integrations/${integrationType}/onboarding-integrations/`, {
+                params,
             })
+            .then((json = {}) => json.data)
+            .then(
+                (resp) => {
+                    return dispatch({
+                        type: constants.FETCH_ONBOARDING_INTEGRATIONS_SUCCESS,
+                        integrationType,
+                        resp,
+                        forceOverride,
+                    })
+                },
+                (error) => {
+                    return dispatch({
+                        type: constants.FETCH_ONBOARDING_INTEGRATIONS_ERROR,
+                        integrationType,
+                        error,
+                        reason: 'Failed to fetch onboarding integrations',
+                    })
+                }
+            )
     }
 }
 
@@ -95,8 +112,15 @@ function fetchOnboardingIntegrations(
  * @param forceOverride: whether the result should be forcefully set in the reducer, or only set if the page of the
  *   response's meta matches the page currently set in the reducer
  */
-export function fetchFacebookOnboardingIntegrations(page: number = 1, forceOverride: boolean = true) {
-    return fetchOnboardingIntegrations(page, FACEBOOK_INTEGRATION_TYPE, forceOverride)
+export function fetchFacebookOnboardingIntegrations(
+    page: number = 1,
+    forceOverride: boolean = true
+) {
+    return fetchOnboardingIntegrations(
+        page,
+        FACEBOOK_INTEGRATION_TYPE,
+        forceOverride
+    )
 }
 
 /**
@@ -108,37 +132,61 @@ export function fetchFacebookOnboardingIntegrations(page: number = 1, forceOverr
  * @param filter: filter results that contain typed value
  */
 export function fetchOutlookOnboardingIntegrations(
-    page: number = 1, forceOverride: boolean = true, filter: string = ''
+    page: number = 1,
+    forceOverride: boolean = true,
+    filter: string = ''
 ) {
-    return fetchOnboardingIntegrations(page, OUTLOOK_INTEGRATION_TYPE, forceOverride, filter)
+    return fetchOnboardingIntegrations(
+        page,
+        OUTLOOK_INTEGRATION_TYPE,
+        forceOverride,
+        filter
+    )
 }
 
-export function activateOnboardingIntegrations(data: Array<{}>, integrationType: string) {
+export function activateOnboardingIntegrations(
+    data: Array<{}>,
+    integrationType: string
+) {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
-            type: constants.ACTIVATE_ONBOARDING_INTEGRATIONS_START
+            type: constants.ACTIVATE_ONBOARDING_INTEGRATIONS_START,
         })
 
-        return axios.put(`/integrations/${integrationType}/onboarding-integrations/`, data)
+        return axios
+            .put(
+                `/integrations/${integrationType}/onboarding-integrations/`,
+                data
+            )
             .then((json = {}) => json.data)
-            .then((resp) => {
-                const formattedType = `${_capitalize(integrationType)} integration${data.length > 1 ? 's' : ''}`
+            .then(
+                (resp) => {
+                    const formattedType = `${_capitalize(
+                        integrationType
+                    )} integration${data.length > 1 ? 's' : ''}`
 
-                dispatch(notify({
-                    status: 'success',
-                    message: `${formattedType} successfully activated.`
-                }))
-                return dispatch({
-                    type: constants.ACTIVATE_ONBOARDING_INTEGRATIONS_SUCCESS,
-                    resp
-                })
-            }, (error) => {
-                return dispatch({
-                    type: constants.ACTIVATE_ONBOARDING_INTEGRATIONS_ERROR,
-                    error,
-                    reason: `Failed to activate your ${_capitalize(integrationType)} integration`
-                })
-            })
+                    dispatch(
+                        notify({
+                            status: 'success',
+                            message: `${formattedType} successfully activated.`,
+                        })
+                    )
+                    return dispatch({
+                        type:
+                            constants.ACTIVATE_ONBOARDING_INTEGRATIONS_SUCCESS,
+                        resp,
+                    })
+                },
+                (error) => {
+                    return dispatch({
+                        type: constants.ACTIVATE_ONBOARDING_INTEGRATIONS_ERROR,
+                        error,
+                        reason: `Failed to activate your ${_capitalize(
+                            integrationType
+                        )} integration`,
+                    })
+                }
+            )
     }
 }
 
@@ -148,10 +196,13 @@ export function activateOnboardingIntegrations(data: Array<{}>, integrationType:
  * @param dispatch: the dispatch method
  * @param resp: the raw Integration data coming back from the server
  */
-export function onCreateSuccess(dispatch: dispatchType, resp: integrationType): dispatchType {
+export function onCreateSuccess(
+    dispatch: dispatchType,
+    resp: integrationType
+): dispatchType {
     dispatch({
         type: constants.CREATE_INTEGRATION_SUCCESS,
-        resp
+        resp,
     })
 
     fetchIntegrations()(dispatch)
@@ -166,12 +217,16 @@ export function onCreateSuccess(dispatch: dispatchType, resp: integrationType): 
         nextStep = '/overview'
     }
 
-    browserHistory.push(`/app/settings/integrations/${resp.type}/${resp.id || ''}${nextStep}`)
+    browserHistory.push(
+        `/app/settings/integrations/${resp.type}/${resp.id || ''}${nextStep}`
+    )
 
-    dispatch(notify({
-        status: 'success',
-        message: 'Integration successfully added'
-    }))
+    dispatch(
+        notify({
+            status: 'success',
+            message: 'Integration successfully added',
+        })
+    )
 }
 
 export function triggerCreateSuccess(integration: integrationType) {
@@ -187,11 +242,14 @@ export function triggerCreateSuccess(integration: integrationType) {
  * @param didInvalidateCache: whether this update invalidated the cache of this integration or not
  */
 export function onUpdateSuccess(
-    dispatch: dispatchType, resp: { type: string }, notificationId: ?string = null, didInvalidateCache: boolean = false
+    dispatch: dispatchType,
+    resp: {type: string},
+    notificationId: ?string = null,
+    didInvalidateCache: boolean = false
 ): dispatchType {
     dispatch({
         type: constants.UPDATE_INTEGRATION_SUCCESS,
-        resp
+        resp,
     })
 
     fetchIntegrations()(dispatch)
@@ -202,50 +260,74 @@ export function onUpdateSuccess(
         message = 'Integration successfully updated.'
     }
 
-    return dispatch(notify({
-        id: notificationId,
-        status: 'success',
-        message
-    }))
+    return dispatch(
+        notify({
+            id: notificationId,
+            status: 'success',
+            message,
+        })
+    )
 }
 
 export function fetchIntegration(
-    integrationId: string, integrationType: string, waitingForAuthentication: boolean = false
+    integrationId: string,
+    integrationType: string,
+    waitingForAuthentication: boolean = false
 ) {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         if (!waitingForAuthentication) {
             dispatch({
                 type: constants.FETCH_INTEGRATION_START,
-                id: integrationId
+                id: integrationId,
             })
         }
 
-        return axios.get(`/api/integrations/${integrationId}`)
+        return axios
+            .get(`/api/integrations/${integrationId}`)
             .then((json = {}) => json.data)
-            .then((resp) => {
-                dispatch({
-                    type: constants.FETCH_INTEGRATION_SUCCESS,
-                    integration: resp
-                })
+            .then(
+                (resp) => {
+                    dispatch({
+                        type: constants.FETCH_INTEGRATION_SUCCESS,
+                        integration: resp,
+                    })
 
-                if (waitingForAuthentication) {
-                    const isPending = fromJS(resp).getIn(['meta', 'oauth', 'status'], null) === 'pending'
+                    if (waitingForAuthentication) {
+                        const isPending =
+                            fromJS(resp).getIn(
+                                ['meta', 'oauth', 'status'],
+                                null
+                            ) === 'pending'
 
-                    if (isPending) {
-                        setTimeout(() => dispatch(fetchIntegration(integrationId, integrationType, true)), 3000)
-                    } else {
-                        onCreateSuccess(dispatch, resp)
+                        if (isPending) {
+                            setTimeout(
+                                () =>
+                                    dispatch(
+                                        fetchIntegration(
+                                            integrationId,
+                                            integrationType,
+                                            true
+                                        )
+                                    ),
+                                3000
+                            )
+                        } else {
+                            onCreateSuccess(dispatch, resp)
+                        }
                     }
+                },
+                (error) => {
+                    // We redirect to the integrations home page if we can't find the wanted integration on the server
+                    browserHistory.replace(
+                        `/app/settings/integrations/${integrationType}`
+                    )
+                    return dispatch({
+                        type: constants.FETCH_INTEGRATION_ERROR,
+                        error,
+                        reason: 'Failed to fetch integration',
+                    })
                 }
-            }, (error) => {
-                // We redirect to the integrations home page if we can't find the wanted integration on the server
-                browserHistory.replace(`/app/settings/integrations/${integrationType}`)
-                return dispatch({
-                    type: constants.FETCH_INTEGRATION_ERROR,
-                    error,
-                    reason: 'Failed to fetch integration'
-                })
-            })
+            )
     }
 }
 
@@ -253,47 +335,61 @@ export function deleteIntegration(integration: Map<*, *>) {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
             type: constants.DELETE_INTEGRATION_START,
-            id: integration.get('id')
+            id: integration.get('id'),
         })
 
-        return axios.delete(`/api/integrations/${integration.get('id')}/`)
+        return axios
+            .delete(`/api/integrations/${integration.get('id')}/`)
             .then((json = {}) => json.data)
-            .then(() => {
-                dispatch({
-                    type: constants.DELETE_INTEGRATION_SUCCESS,
-                    id: integration.get('id')
-                })
-                const currentUrl = window.location.pathname
-                const indexOfId = currentUrl.lastIndexOf(integration.get('id'))
+            .then(
+                () => {
+                    dispatch({
+                        type: constants.DELETE_INTEGRATION_SUCCESS,
+                        id: integration.get('id'),
+                    })
+                    const currentUrl = window.location.pathname
+                    const indexOfId = currentUrl.lastIndexOf(
+                        integration.get('id')
+                    )
 
-                if (~indexOfId) {
-                    const nextUrl = currentUrl.substr(0, indexOfId)
-                    browserHistory.push(nextUrl)
+                    if (~indexOfId) {
+                        const nextUrl = currentUrl.substr(0, indexOfId)
+                        browserHistory.push(nextUrl)
+                    }
+
+                    return dispatch(
+                        notify({
+                            status: 'success',
+                            message: 'Integration successfully deleted',
+                        })
+                    )
+                },
+                (error) => {
+                    return dispatch({
+                        type: constants.DELETE_INTEGRATION_ERROR,
+                        reason: 'Failed to delete the integration',
+                        verbose: true,
+                        error,
+                    })
                 }
-
-                return dispatch(notify({
-                    status: 'success',
-                    message: 'Integration successfully deleted'
-                }))
-            }, (error) => {
-                return dispatch({
-                    type: constants.DELETE_INTEGRATION_ERROR,
-                    reason: 'Failed to delete the integration',
-                    verbose: true,
-                    error,
-                })
-            })
+            )
     }
 }
 
-function updateOrCreateIntegrationRequest(integration: Map<*, *>, action: ?{}, notificationId: ?string = null) {
+function updateOrCreateIntegrationRequest(
+    integration: Map<*, *>,
+    action: ?{},
+    notificationId: ?string = null
+) {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         const isUpdate = integration.get('id')
         const oldDecoration = integration.get('decoration') || fromJS({})
 
         dispatch({
-            type: isUpdate ? constants.UPDATE_INTEGRATION_START : constants.CREATE_INTEGRATION_START,
-            integration
+            type: isUpdate
+                ? constants.UPDATE_INTEGRATION_START
+                : constants.CREATE_INTEGRATION_START,
+            integration,
         })
 
         let promise
@@ -316,20 +412,32 @@ function updateOrCreateIntegrationRequest(integration: Map<*, *>, action: ?{}, n
 
         return promise
             .then((json = {}) => json.data)
-            .then((resp) => {
-                if (isUpdate) {
-                    return onUpdateSuccess(dispatch, resp, notificationId, !oldDecoration.isEmpty())
-                }
+            .then(
+                (resp) => {
+                    if (isUpdate) {
+                        return onUpdateSuccess(
+                            dispatch,
+                            resp,
+                            notificationId,
+                            !oldDecoration.isEmpty()
+                        )
+                    }
 
-                return onCreateSuccess(dispatch, resp)
-            }, (error) => {
-                return dispatch({
-                    type: isUpdate ? constants.UPDATE_INTEGRATION_ERROR : constants.CREATE_INTEGRATION_ERROR,
-                    error,
-                    verbose: true,
-                    reason: isUpdate ? 'Failed to update integration' : 'Failed to add integration'
-                })
-            })
+                    return onCreateSuccess(dispatch, resp)
+                },
+                (error) => {
+                    return dispatch({
+                        type: isUpdate
+                            ? constants.UPDATE_INTEGRATION_ERROR
+                            : constants.CREATE_INTEGRATION_ERROR,
+                        error,
+                        verbose: true,
+                        reason: isUpdate
+                            ? 'Failed to update integration'
+                            : 'Failed to add integration',
+                    })
+                }
+            )
     }
 }
 
@@ -339,37 +447,49 @@ export function createImportIntegration(integration: Map<*, *>) {
 
         dispatch({
             type: constants.CREATE_INTEGRATION_START,
-            integration
+            integration,
         })
 
-        return axios.post('/api/integrations/', integration.toJS())
+        return axios
+            .post('/api/integrations/', integration.toJS())
             .then((json = {}) => json.data)
-            .then((resp) => {
-                browserHistory.push('/app/settings/import-data/')
+            .then(
+                (resp) => {
+                    browserHistory.push('/app/settings/import-data/')
 
-                dispatch(notify({
-                    status: 'success',
-                    message: 'Import successfully started'
-                }))
+                    dispatch(
+                        notify({
+                            status: 'success',
+                            message: 'Import successfully started',
+                        })
+                    )
 
-                return dispatch({
-                    type: constants.CREATE_INTEGRATION_SUCCESS,
-                    resp
-                })
-            }, (error) => {
-                return dispatch({
-                    type: isUpdate ? constants.UPDATE_INTEGRATION_ERROR : constants.CREATE_INTEGRATION_ERROR,
-                    error,
-                    reason: isUpdate ? 'Failed to update integration' : 'Failed to add integration',
-                    verbose: true
-                })
-            })
+                    return dispatch({
+                        type: constants.CREATE_INTEGRATION_SUCCESS,
+                        resp,
+                    })
+                },
+                (error) => {
+                    return dispatch({
+                        type: isUpdate
+                            ? constants.UPDATE_INTEGRATION_ERROR
+                            : constants.CREATE_INTEGRATION_ERROR,
+                        error,
+                        reason: isUpdate
+                            ? 'Failed to update integration'
+                            : 'Failed to add integration',
+                        verbose: true,
+                    })
+                }
+            )
     }
 }
 
 export function deactivateIntegration(id: number) {
     return (dispatch: dispatchType, getState: getStateType): dispatchType => {
-        const fullIntegration = integrationSelectors.getIntegrationById(id)(getState())
+        const fullIntegration = integrationSelectors.getIntegrationById(id)(
+            getState()
+        )
 
         const integration = fromJS({
             id,
@@ -379,21 +499,31 @@ export function deactivateIntegration(id: number) {
         let notificationId = null
 
         if (fullIntegration.getIn(['meta', 'shopify_integration_ids'])) {
-            const notification = dispatch(notify({
-                status: 'loading',
-                message: 'Removing the chat from your Shopify stores...'
-            }))
+            const notification = dispatch(
+                notify({
+                    status: 'loading',
+                    message: 'Removing the chat from your Shopify stores...',
+                })
+            )
 
             notificationId = notification.id
         }
 
-        return dispatch(updateOrCreateIntegrationRequest(integration, undefined, notificationId))
+        return dispatch(
+            updateOrCreateIntegrationRequest(
+                integration,
+                undefined,
+                notificationId
+            )
+        )
     }
 }
 
 export function activateIntegration(id: number) {
     return (dispatch: dispatchType, getState: getStateType): dispatchType => {
-        const fullIntegration = integrationSelectors.getIntegrationById(id)(getState())
+        const fullIntegration = integrationSelectors.getIntegrationById(id)(
+            getState()
+        )
 
         const integration = fromJS({
             id,
@@ -403,15 +533,23 @@ export function activateIntegration(id: number) {
         let notificationId = null
 
         if (fullIntegration.getIn(['meta', 'shopify_integration_ids'])) {
-            const notification = dispatch(notify({
-                status: 'loading',
-                message: 'Adding the chat on your Shopify stores...'
-            }))
+            const notification = dispatch(
+                notify({
+                    status: 'loading',
+                    message: 'Adding the chat on your Shopify stores...',
+                })
+            )
 
             notificationId = notification.id
         }
 
-        return dispatch(updateOrCreateIntegrationRequest(integration, undefined, notificationId))
+        return dispatch(
+            updateOrCreateIntegrationRequest(
+                integration,
+                undefined,
+                notificationId
+            )
+        )
     }
 }
 
@@ -431,77 +569,120 @@ export function importEmails(integration: Map<*, *>) {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
             type: constants.EMAIL_INTEGRATION_IMPORT_START,
-            id: integration.get('id')
+            id: integration.get('id'),
         })
 
-        return axios.put(
-            `/api/integrations/${integration.get('id')}/`,
-            integration.toJS()
-        )
+        return axios
+            .put(
+                `/api/integrations/${integration.get('id')}/`,
+                integration.toJS()
+            )
             .then((json = {}) => json.data)
-            .then((resp) => {
-                dispatch(notify({
-                    status: 'success',
-                    message: 'Import successfully started'
-                }))
-                return dispatch({
-                    type: constants.EMAIL_INTEGRATION_IMPORT_SUCCESS,
-                    resp
-                })
-            }, (error) => {
-                return dispatch({
-                    type: constants.EMAIL_INTEGRATION_IMPORT_ERROR,
-                    error,
-                    reason: 'Failed to start importation'
-                })
-            })
+            .then(
+                (resp) => {
+                    dispatch(
+                        notify({
+                            status: 'success',
+                            message: 'Import successfully started',
+                        })
+                    )
+                    return dispatch({
+                        type: constants.EMAIL_INTEGRATION_IMPORT_SUCCESS,
+                        resp,
+                    })
+                },
+                (error) => {
+                    return dispatch({
+                        type: constants.EMAIL_INTEGRATION_IMPORT_ERROR,
+                        error,
+                        reason: 'Failed to start importation',
+                    })
+                }
+            )
     }
 }
 
-export function onVerify(dispatch: dispatchType, integrationId: number): Promise<dispatchType> {
-    dispatch(notify({
-        status: 'success',
-        message: 'Integration verified successfully'
-    }))
+export function onVerify(
+    dispatch: dispatchType,
+    integrationId: number
+): Promise<dispatchType> {
+    dispatch(
+        notify({
+            status: 'success',
+            message: 'Integration verified successfully',
+        })
+    )
     return dispatch({
         type: constants.EMAIL_INTEGRATION_VERIFIED,
-        integrationId
+        integrationId,
     })
 }
 
 export function verifyEmailIntegration(token: string) {
-    return (dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
+    return (
+        dispatch: dispatchType,
+        getState: getStateType
+    ): Promise<dispatchType> => {
         const state = getState()
         const integration = integrationSelectors.getCurrentIntegration(state)
 
-        return axios.post(`/api/integrations/${integration.get('id')}/verify/`, {token})
-            .then(() => {
-                return onVerify(dispatch, integration.get('id'))
-            }, (error) => {
-                return dispatch(notify({
-                    status: 'error',
-                    message: fromJS(error.response).getIn(['data', 'error', 'msg'])
-                }))
-            })
+        return axios
+            .post(`/api/integrations/${integration.get('id')}/verify/`, {token})
+            .then(
+                () => {
+                    return onVerify(dispatch, integration.get('id'))
+                },
+                (error) => {
+                    return dispatch(
+                        notify({
+                            status: 'error',
+                            message: fromJS(error.response).getIn([
+                                'data',
+                                'error',
+                                'msg',
+                            ]),
+                        })
+                    )
+                }
+            )
     }
 }
 
 export function sendVerificationEmail() {
-    return (dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
+    return (
+        dispatch: dispatchType,
+        getState: getStateType
+    ): Promise<dispatchType> => {
         const state = getState()
         const integration = integrationSelectors.getCurrentIntegration(state)
 
-        return axios.post(`/api/integrations/${integration.get('id')}/send-verification-email/`)
-            .then(() => {
-                dispatch(notify({
-                    status: 'success',
-                    message: 'The verification email has been re-sent!'
-                }))
-            }, (error) => {
-                dispatch(notify({
-                    status: 'error',
-                    message: fromJS(error.response).getIn(['data', 'error', 'msg'])
-                }))
-            })
+        return axios
+            .post(
+                `/api/integrations/${integration.get(
+                    'id'
+                )}/send-verification-email/`
+            )
+            .then(
+                () => {
+                    dispatch(
+                        notify({
+                            status: 'success',
+                            message: 'The verification email has been re-sent!',
+                        })
+                    )
+                },
+                (error) => {
+                    dispatch(
+                        notify({
+                            status: 'error',
+                            message: fromJS(error.response).getIn([
+                                'data',
+                                'error',
+                                'msg',
+                            ]),
+                        })
+                    )
+                }
+            )
     }
 }

@@ -15,10 +15,7 @@ export default function SeenIndicator(props: Props) {
     const {openedDatetime, timezone} = props
     return (
         <span>
-            <i
-                id="read-status"
-                className="material-icons mr-2"
-            >
+            <i id="read-status" className="material-icons mr-2">
                 check
             </i>
             <Tooltip
@@ -32,7 +29,9 @@ export default function SeenIndicator(props: Props) {
                         return null
                     }
                     const datetime = formatDatetime(openedDatetime, timezone)
-                    return typeof datetime === 'string' ? datetime.toLowerCase() : null
+                    return typeof datetime === 'string'
+                        ? datetime.toLowerCase()
+                        : null
                 })()}
             </Tooltip>
         </span>

@@ -9,7 +9,6 @@ import ActionButton from '../ActionButton'
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
-
 describe('ActionButton component', () => {
     let store
 
@@ -19,45 +18,41 @@ describe('ActionButton component', () => {
         tooltip: 'Foo',
         title: (
             <div>
-                <i className="material-icons mr-2">
-                    refresh
-                </i>
+                <i className="material-icons mr-2">refresh</i>
                 Execute my little action
             </div>
         ),
         child: (
             <div>
-                <i className="material-icons mr-2">
-                    refresh
-                </i>
+                <i className="material-icons mr-2">refresh</i>
                 Little action
             </div>
-        )
+        ),
     }
 
     const defaultContext = {
         integration: fromJS({}),
         integrationId: 1,
-        customerId: 1
+        customerId: 1,
     }
 
     beforeEach(() => {
         // set execute action callbacks
         store = mockStore({
             infobar: fromJS({
-                pendingActionsCallbacks: []
-            })
+                pendingActionsCallbacks: [],
+            }),
         })
     })
 
     it('should display a single option with no parameters', () => {
         const action = {
             options: [{value: 'myLittleAction', label: 'My little action'}],
-            ...commonAttributes
+            ...commonAttributes,
         }
 
         const payload = {
-            little_id: 12
+            little_id: 12,
         }
 
         const component = shallow(
@@ -71,32 +66,37 @@ describe('ActionButton component', () => {
                 title={action.title}
             >
                 {action.child}
-            </ActionButton>
-            , {
-                context: defaultContext
-            }).dive()
+            </ActionButton>,
+            {
+                context: defaultContext,
+            }
+        ).dive()
 
         expect(component).toMatchSnapshot()
     })
 
     it('should display a single option with a text parameter', () => {
         const action = {
-            options: [{
-                value: 'myLittleAction',
-                label: 'My little action',
-                parameters: [{
-                    name: 'param',
-                    type: 'text',
-                    defaultValue: 'hello',
-                    placeholder: 'Just a param',
-                    required: true
-                }]
-            }],
-            ...commonAttributes
+            options: [
+                {
+                    value: 'myLittleAction',
+                    label: 'My little action',
+                    parameters: [
+                        {
+                            name: 'param',
+                            type: 'text',
+                            defaultValue: 'hello',
+                            placeholder: 'Just a param',
+                            required: true,
+                        },
+                    ],
+                },
+            ],
+            ...commonAttributes,
         }
 
         const payload = {
-            little_id: 12
+            little_id: 12,
         }
 
         const component = shallow(
@@ -110,35 +110,40 @@ describe('ActionButton component', () => {
                 title={action.title}
             >
                 {action.child}
-            </ActionButton>
-            , {
-                context: defaultContext
-            }).dive()
+            </ActionButton>,
+            {
+                context: defaultContext,
+            }
+        ).dive()
 
         expect(component).toMatchSnapshot()
     })
 
     it('should display a single option with a number parameter', () => {
         const action = {
-            options: [{
-                value: 'myLittleAction',
-                label: 'My little action',
-                parameters: [{
-                    name: 'param',
-                    type: 'number',
-                    defaultValue: 7,
-                    placeholder: 'Just a param',
-                    required: true,
-                    step: 0.1,
-                    min: 2,
-                    max: 9
-                }]
-            }],
-            ...commonAttributes
+            options: [
+                {
+                    value: 'myLittleAction',
+                    label: 'My little action',
+                    parameters: [
+                        {
+                            name: 'param',
+                            type: 'number',
+                            defaultValue: 7,
+                            placeholder: 'Just a param',
+                            required: true,
+                            step: 0.1,
+                            min: 2,
+                            max: 9,
+                        },
+                    ],
+                },
+            ],
+            ...commonAttributes,
         }
 
         const payload = {
-            little_id: 12
+            little_id: 12,
         }
 
         const component = shallow(
@@ -152,31 +157,36 @@ describe('ActionButton component', () => {
                 title={action.title}
             >
                 {action.child}
-            </ActionButton>
-            , {
-                context: defaultContext
-            }).dive()
+            </ActionButton>,
+            {
+                context: defaultContext,
+            }
+        ).dive()
 
         expect(component).toMatchSnapshot()
     })
 
     it('should display a single option with a checkbox parameter', () => {
         const action = {
-            options: [{
-                value: 'myLittleAction',
-                label: 'My little action',
-                parameters: [{
-                    name: 'param',
-                    type: 'checkbox',
-                    defaultValue: true,
-                    label: 'Execute the action for real'
-                }]
-            }],
-            ...commonAttributes
+            options: [
+                {
+                    value: 'myLittleAction',
+                    label: 'My little action',
+                    parameters: [
+                        {
+                            name: 'param',
+                            type: 'checkbox',
+                            defaultValue: true,
+                            label: 'Execute the action for real',
+                        },
+                    ],
+                },
+            ],
+            ...commonAttributes,
         }
 
         const payload = {
-            little_id: 12
+            little_id: 12,
         }
 
         const component = shallow(
@@ -190,35 +200,40 @@ describe('ActionButton component', () => {
                 title={action.title}
             >
                 {action.child}
-            </ActionButton>
-            , {
-                context: defaultContext
-            }).dive()
+            </ActionButton>,
+            {
+                context: defaultContext,
+            }
+        ).dive()
 
         expect(component).toMatchSnapshot()
     })
 
     it('should display a single option with a select parameter', () => {
         const action = {
-            options: [{
-                value: 'myLittleAction',
-                label: 'My little action',
-                parameters: [{
-                    name: 'param',
-                    type: 'select',
-                    defaultValue: true,
-                    label: 'Execute the action for real',
-                    options: [
-                        {label: 'Foo', value: 'foo'},
-                        {label: 'Bar', value: 'bar'},
-                    ]
-                }]
-            }],
-            ...commonAttributes
+            options: [
+                {
+                    value: 'myLittleAction',
+                    label: 'My little action',
+                    parameters: [
+                        {
+                            name: 'param',
+                            type: 'select',
+                            defaultValue: true,
+                            label: 'Execute the action for real',
+                            options: [
+                                {label: 'Foo', value: 'foo'},
+                                {label: 'Bar', value: 'bar'},
+                            ],
+                        },
+                    ],
+                },
+            ],
+            ...commonAttributes,
         }
 
         const payload = {
-            little_id: 12
+            little_id: 12,
         }
 
         const component = shallow(
@@ -232,28 +247,32 @@ describe('ActionButton component', () => {
                 title={action.title}
             >
                 {action.child}
-            </ActionButton>
-            , {
-                context: defaultContext
-            }).dive()
+            </ActionButton>,
+            {
+                context: defaultContext,
+            }
+        ).dive()
 
         expect(component).toMatchSnapshot()
     })
 
     it('should display multiple options without parameters', () => {
         const action = {
-            options: [{
-                value: 'myLittleAction',
-                label: 'My little action',
-            }, {
-                value: 'myBigAction',
-                label: 'My big action',
-            }],
-            ...commonAttributes
+            options: [
+                {
+                    value: 'myLittleAction',
+                    label: 'My little action',
+                },
+                {
+                    value: 'myBigAction',
+                    label: 'My big action',
+                },
+            ],
+            ...commonAttributes,
         }
 
         const payload = {
-            little_id: 12
+            little_id: 12,
         }
 
         const component = shallow(
@@ -267,42 +286,50 @@ describe('ActionButton component', () => {
                 title={action.title}
             >
                 {action.child}
-            </ActionButton>
-            , {
-                context: defaultContext
-            }).dive()
+            </ActionButton>,
+            {
+                context: defaultContext,
+            }
+        ).dive()
 
         expect(component).toMatchSnapshot()
     })
 
     it('should display multiple options with a common parameter', () => {
         const action = {
-            options: [{
-                value: 'myLittleAction',
-                label: 'My little action',
-                parameters: [{
-                    name: 'param',
-                    type: 'text',
-                    defaultValue: 'hello',
-                    placeholder: 'Just a param',
-                    required: true
-                }]
-            }, {
-                value: 'myBigAction',
-                label: 'My big action',
-                parameters: [{
-                    name: 'param',
-                    type: 'text',
-                    defaultValue: 'hello',
-                    placeholder: 'Just a param',
-                    required: true
-                }]
-            }],
-            ...commonAttributes
+            options: [
+                {
+                    value: 'myLittleAction',
+                    label: 'My little action',
+                    parameters: [
+                        {
+                            name: 'param',
+                            type: 'text',
+                            defaultValue: 'hello',
+                            placeholder: 'Just a param',
+                            required: true,
+                        },
+                    ],
+                },
+                {
+                    value: 'myBigAction',
+                    label: 'My big action',
+                    parameters: [
+                        {
+                            name: 'param',
+                            type: 'text',
+                            defaultValue: 'hello',
+                            placeholder: 'Just a param',
+                            required: true,
+                        },
+                    ],
+                },
+            ],
+            ...commonAttributes,
         }
 
         const payload = {
-            little_id: 12
+            little_id: 12,
         }
 
         const component = shallow(
@@ -316,41 +343,49 @@ describe('ActionButton component', () => {
                 title={action.title}
             >
                 {action.child}
-            </ActionButton>
-            , {
-                context: defaultContext
-            }).dive()
+            </ActionButton>,
+            {
+                context: defaultContext,
+            }
+        ).dive()
 
         expect(component).toMatchSnapshot()
     })
 
     it('should display multiple options with different parameter', () => {
         const action = {
-            options: [{
-                value: 'myLittleAction',
-                label: 'My little action',
-                parameters: [{
-                    name: 'param',
-                    type: 'text',
-                    defaultValue: 'hello',
-                    placeholder: 'Just a param',
-                    required: true
-                }]
-            }, {
-                value: 'myBigAction',
-                label: 'My big action',
-                parameters: [{
-                    name: 'param',
-                    type: 'checkbox',
-                    defaultValue: true,
-                    label: 'Execute the action for real'
-                }]
-            }],
-            ...commonAttributes
+            options: [
+                {
+                    value: 'myLittleAction',
+                    label: 'My little action',
+                    parameters: [
+                        {
+                            name: 'param',
+                            type: 'text',
+                            defaultValue: 'hello',
+                            placeholder: 'Just a param',
+                            required: true,
+                        },
+                    ],
+                },
+                {
+                    value: 'myBigAction',
+                    label: 'My big action',
+                    parameters: [
+                        {
+                            name: 'param',
+                            type: 'checkbox',
+                            defaultValue: true,
+                            label: 'Execute the action for real',
+                        },
+                    ],
+                },
+            ],
+            ...commonAttributes,
         }
 
         const payload = {
-            little_id: 12
+            little_id: 12,
         }
 
         const component = shallow(
@@ -364,10 +399,11 @@ describe('ActionButton component', () => {
                 title={action.title}
             >
                 {action.child}
-            </ActionButton>
-            , {
-                context: defaultContext
-            }).dive()
+            </ActionButton>,
+            {
+                context: defaultContext,
+            }
+        ).dive()
 
         expect(component).toMatchSnapshot()
     })

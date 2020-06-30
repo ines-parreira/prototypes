@@ -4,22 +4,29 @@ import {connect} from 'react-redux'
 
 import Select from './ReactSelect'
 
-
 type Props = {
     actions: ?Object,
     onChange: () => void,
     schemas: ?Object,
     value: ?string,
-    className: ?string
+    className: ?string,
 }
 
 class StatusSelect extends React.Component<Props> {
-    render () {
+    render() {
         const {onChange, schemas, value, className} = this.props
 
-        const options = schemas.getIn([
-            'definitions', 'Ticket', 'properties', 'status', 'meta', 'enum'
-        ]).toList().toJS()
+        const options = schemas
+            .getIn([
+                'definitions',
+                'Ticket',
+                'properties',
+                'status',
+                'meta',
+                'enum',
+            ])
+            .toList()
+            .toJS()
 
         return (
             <Select

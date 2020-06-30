@@ -4,7 +4,22 @@
 // Supported currencies on Shopify:
 // https://help.shopify.com/en/manual/payments/shopify-payments/multi-currency#supported-currencies
 export const NON_FRACTIONAL_CURRENCIES = [
-    'BIF', 'CLP', 'DJF', 'GNF', 'JPY', 'KMF', 'KRW', 'MGA', 'PYG', 'RWF', 'UGX', 'VND', 'VUV', 'XAF', 'XOF', 'XPF',
+    'BIF',
+    'CLP',
+    'DJF',
+    'GNF',
+    'JPY',
+    'KMF',
+    'KRW',
+    'MGA',
+    'PYG',
+    'RWF',
+    'UGX',
+    'VND',
+    'VUV',
+    'XAF',
+    'XOF',
+    'XPF',
 ]
 
 export const FinancialStatus = Object.freeze({
@@ -122,7 +137,11 @@ export type Customer = {
     last_order_name: ?string,
     currency: string,
     accepts_marketing_updated_at: string,
-    marketing_opt_in_level: 'single_opt_in' | 'confirmed_opt_in' | 'unknown' | null,
+    marketing_opt_in_level:
+        | 'single_opt_in'
+        | 'confirmed_opt_in'
+        | 'unknown'
+        | null,
     admin_graphql_api_id: string,
     default_address: Address,
 }
@@ -255,7 +274,13 @@ export type RefundLineItem = {
 export type Transaction = {
     id: number,
     order_id: number,
-    kind: 'authorization' | 'capture' | 'sale' | 'void' | 'refund' | 'suggested_refund',
+    kind:
+        | 'authorization'
+        | 'capture'
+        | 'sale'
+        | 'void'
+        | 'refund'
+        | 'suggested_refund',
     gateway: string,
     status: 'pending' | 'failure' | 'success' | 'error',
     message: ?string,
@@ -271,9 +296,19 @@ export type Transaction = {
         testcase: boolean,
         authorization: string,
     },
-    error_code: 'incorrect_number' | 'invalid_number' | 'invalid_expiry_date' | 'invalid_cvc' | 'expired_card'
-        | 'incorrect_cvc' | 'incorrect_zip' | 'incorrect_address' | 'card_declined' | 'processing_error'
-        | 'call_issuer' | 'pick_up_card',
+    error_code:
+        | 'incorrect_number'
+        | 'invalid_number'
+        | 'invalid_expiry_date'
+        | 'invalid_cvc'
+        | 'expired_card'
+        | 'incorrect_cvc'
+        | 'incorrect_zip'
+        | 'incorrect_address'
+        | 'card_declined'
+        | 'processing_error'
+        | 'call_issuer'
+        | 'pick_up_card',
     source_name: string,
     amount: string,
     currency: string,

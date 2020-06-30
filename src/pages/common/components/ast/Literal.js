@@ -20,10 +20,18 @@ type Props = {
     leftsiblings: Object,
     parent: Object,
     schemas: Object,
-    value: number | string | boolean
+    value: number | string | boolean,
 }
 
-const Literal = ({value, rule, actions, parent, leftsiblings, schemas, callee}: Props) => {
+const Literal = ({
+    value,
+    rule,
+    actions,
+    parent,
+    leftsiblings,
+    schemas,
+    callee,
+}: Props) => {
     const parentNew = parent.push('value')
     const operator = callee && callee.name ? callee.name : ''
     const hasUnaryOperator = Object.keys(UNARY_OPERATORS).includes(operator)
@@ -44,11 +52,7 @@ const Literal = ({value, rule, actions, parent, leftsiblings, schemas, callee}: 
                 className="LiteralWidget"
                 compact
             />
-            {
-                value === '' && (
-                    <Errors inline>This field cannot be empty</Errors>
-                )
-            }
+            {value === '' && <Errors inline>This field cannot be empty</Errors>}
         </span>
     )
 }

@@ -4,13 +4,13 @@ import Tooltip from '../../../../common/components/Tooltip'
 
 type Props = {
     className: ?string,
-    trashed: ?boolean
+    trashed: ?boolean,
 }
 
 export default class TicketTrash extends React.Component<Props> {
     static defaultProps = {
         className: null,
-        trashed: false
+        trashed: false,
     }
 
     render() {
@@ -20,14 +20,13 @@ export default class TicketTrash extends React.Component<Props> {
 
         return (
             <div className={this.props.className}>
-                <i id="ticket-header-trash-icon"
-                    className="icon material-icons text-danger">
+                <i
+                    id="ticket-header-trash-icon"
+                    className="icon material-icons text-danger"
+                >
                     delete
                 </i>
-                <Tooltip
-                    placement="bottom"
-                    target="ticket-header-trash-icon"
-                >
+                <Tooltip placement="bottom" target="ticket-header-trash-icon">
                     Deleted
                 </Tooltip>
             </div>

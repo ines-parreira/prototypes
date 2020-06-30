@@ -7,7 +7,11 @@ import {insertInlineImages, isImage} from '../utils'
 
 import type {PluginMethods, imagePluginConfigType} from '../types'
 
-const _handleDroppedFiles = (config) => (selection: SelectionState, files: Array<File>, pluginArgs: PluginMethods) => {
+const _handleDroppedFiles = (config) => (
+    selection: SelectionState,
+    files: Array<File>,
+    pluginArgs: PluginMethods
+) => {
     // filter images
     let others = []
     let images = []
@@ -35,12 +39,14 @@ const _handleDroppedFiles = (config) => (selection: SelectionState, files: Array
     return 'handled'
 }
 
-const dndUploadPlugin = (config: imagePluginConfigType = {
-    notify: _noop,
-    getAttachFiles: () => _noop,
-    getCanDropFiles: () => false,
-    getCanInsertInlineImages: () => false,
-}) => {
+const dndUploadPlugin = (
+    config: imagePluginConfigType = {
+        notify: _noop,
+        getAttachFiles: () => _noop,
+        getCanDropFiles: () => false,
+        getCanInsertInlineImages: () => false,
+    }
+) => {
     return {
         handleDroppedFiles: _handleDroppedFiles(config),
     }

@@ -11,7 +11,8 @@ export default function Item() {
     }
 }
 
-class BeforeContent extends React.Component { // eslint-disable-line
+class BeforeContent extends React.Component {
+    // eslint-disable-line
     static contextTypes = {
         refundedQuantity: PropTypes.number.isRequired,
     }
@@ -25,14 +26,9 @@ class BeforeContent extends React.Component { // eslint-disable-line
 
         return (
             <div className="simple-field">
-                <span className="field-label">
-                    Refunded:
-                </span>
+                <span className="field-label">Refunded:</span>
                 <span className="field-value">
-                    <Badge
-                        pill
-                        color="warning"
-                    >
+                    <Badge pill color="warning">
                         {refundedQuantity} item{refundedQuantity > 1 && 's'}
                     </Badge>
                 </span>
@@ -41,7 +37,8 @@ class BeforeContent extends React.Component { // eslint-disable-line
     }
 }
 
-class Wrapper extends React.Component { // eslint-disable-line
+class Wrapper extends React.Component {
+    // eslint-disable-line
     static propTypes = {
         children: PropTypes.node,
         source: ImmutablePropTypes.map.isRequired,
@@ -62,14 +59,20 @@ class Wrapper extends React.Component { // eslint-disable-line
         const refunds = this.context.order.get('refunds', fromJS([]))
 
         const refundedQuantity = refunds
-            .map((refund) => { // keep refund items information about current item
+            .map((refund) => {
+                // keep refund items information about current item
                 return refund
                     .get('refund_line_items', fromJS([]))
-                    .filter((lineItem) => lineItem.get('line_item_id').toString() === itemId.toString())
+                    .filter(
+                        (lineItem) =>
+                            lineItem.get('line_item_id').toString() ===
+                            itemId.toString()
+                    )
             })
             .filter((refundedItemInfo) => !refundedItemInfo.isEmpty()) // remove falsey data
             .flatten(true) // flatten all those refund info in one List
-            .reduce((total, refund) => { // sum all refunded quantities
+            .reduce((total, refund) => {
+                // sum all refunded quantities
                 return total + refund.get('quantity')
             }, 0)
 

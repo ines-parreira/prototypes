@@ -2,12 +2,15 @@ import {fromJS} from 'immutable'
 import * as immutableMatchers from 'jest-immutable-matchers'
 
 import {
-    getContext, getSources,
+    getContext,
+    getSources,
     getSourcesWithCustomer,
     getWidgets,
     getWidgetsState,
-    getWidgetsWithContext, hasWidgets,
-    hasWidgetsWithContext, isEditing
+    getWidgetsWithContext,
+    hasWidgets,
+    hasWidgetsWithContext,
+    isEditing,
 } from '../selectors'
 
 jest.addMatchers(immutableMatchers)
@@ -17,16 +20,18 @@ describe('widgets selectors', () => {
         it('should return widgets state because it exists', () => {
             const state = {
                 widgets: fromJS({
-                    foo: 'bar'
-                })
+                    foo: 'bar',
+                }),
             }
 
-            expect(getWidgetsState(state)).toEqualImmutable(fromJS({foo: 'bar'}))
+            expect(getWidgetsState(state)).toEqualImmutable(
+                fromJS({foo: 'bar'})
+            )
         })
 
         it('should return an empty Map because widgets state does not exist', () => {
             const state = {
-                foo: 'bar'
+                foo: 'bar',
             }
 
             expect(getWidgetsState(state)).toEqualImmutable(fromJS({}))
@@ -37,7 +42,7 @@ describe('widgets selectors', () => {
         it('should return current context because it is set', () => {
             const currentContext = 'foo'
             const state = {
-                widgets: fromJS({currentContext})
+                widgets: fromJS({currentContext}),
             }
 
             expect(getContext(state)).toEqual(currentContext)
@@ -45,7 +50,7 @@ describe('widgets selectors', () => {
 
         it('should return an empty string because current context is null', () => {
             const state = {
-                widgets: fromJS({currentContext: null})
+                widgets: fromJS({currentContext: null}),
             }
 
             expect(getContext(state)).toEqual('')
@@ -56,7 +61,7 @@ describe('widgets selectors', () => {
         it('should return items from the widgets state', () => {
             const items = [1, 2, 3]
             const state = {
-                widgets: fromJS({items})
+                widgets: fromJS({items}),
             }
 
             expect(getWidgets(state)).toEqualImmutable(fromJS(items))
@@ -65,7 +70,7 @@ describe('widgets selectors', () => {
         it('should return an empty immutable list because items is not set', () => {
             const items = [1, 2, 3]
             const state = {
-                widgets: fromJS({foo: items})
+                widgets: fromJS({foo: items}),
             }
 
             expect(getWidgets(state)).toEqualImmutable(fromJS([]))
@@ -76,7 +81,7 @@ describe('widgets selectors', () => {
         it('should return true because there is some widgets', () => {
             const items = [1, 2, 3]
             const state = {
-                widgets: fromJS({items})
+                widgets: fromJS({items}),
             }
 
             expect(hasWidgets(state)).toEqual(true)
@@ -85,7 +90,7 @@ describe('widgets selectors', () => {
         it('should return false because the widgets items list is empty', () => {
             const items = []
             const state = {
-                widgets: fromJS({items})
+                widgets: fromJS({items}),
             }
 
             expect(hasWidgets(state)).toEqual(false)
@@ -94,7 +99,7 @@ describe('widgets selectors', () => {
         it('should return false because the widgets items list does not exist', () => {
             const items = []
             const state = {
-                widgets: fromJS({foo: items})
+                widgets: fromJS({foo: items}),
             }
 
             expect(hasWidgets(state)).toEqual(false)
@@ -103,68 +108,98 @@ describe('widgets selectors', () => {
 
     describe('getWidgetsWithContext', () => {
         it('should return items with current context', () => {
-            const items = [{id: 1, context: 'ticket'}, {id: 2, context: 'customer'},  {id: 2, context: 'user'}]
+            const items = [
+                {id: 1, context: 'ticket'},
+                {id: 2, context: 'customer'},
+                {id: 2, context: 'user'},
+            ]
             const state = {
-                widgets: fromJS({items})
+                widgets: fromJS({items}),
             }
 
-            expect(getWidgetsWithContext('ticket')(state)).toEqualImmutable(fromJS([{id: 1, context: 'ticket'}]))
-            expect(getWidgetsWithContext('customer')(state)).toEqualImmutable(fromJS(items.slice(1)))
-            expect(getWidgetsWithContext('user')(state)).toEqualImmutable(fromJS(items.slice(1)))
+            expect(getWidgetsWithContext('ticket')(state)).toEqualImmutable(
+                fromJS([{id: 1, context: 'ticket'}])
+            )
+            expect(getWidgetsWithContext('customer')(state)).toEqualImmutable(
+                fromJS(items.slice(1))
+            )
+            expect(getWidgetsWithContext('user')(state)).toEqualImmutable(
+                fromJS(items.slice(1))
+            )
         })
 
         it('should return an empty list because there is no items with current context', () => {
-            const items = [{id: 1, context: 'customer'}, {id: 2, context: 'customer'}]
+            const items = [
+                {id: 1, context: 'customer'},
+                {id: 2, context: 'customer'},
+            ]
             const state = {
-                widgets: fromJS({items})
+                widgets: fromJS({items}),
             }
 
-            expect(getWidgetsWithContext('ticket')(state)).toEqualImmutable(fromJS([]))
+            expect(getWidgetsWithContext('ticket')(state)).toEqualImmutable(
+                fromJS([])
+            )
         })
 
         it('should return an empty list because there is no items at all', () => {
             const items = []
             const state = {
-                widgets: fromJS({items})
+                widgets: fromJS({items}),
             }
 
-            expect(getWidgetsWithContext('ticket')(state)).toEqualImmutable(fromJS([]))
+            expect(getWidgetsWithContext('ticket')(state)).toEqualImmutable(
+                fromJS([])
+            )
         })
 
         it('should return an empty list because the items key is not set', () => {
             const items = []
             const state = {
-                widgets: fromJS({foo: items})
+                widgets: fromJS({foo: items}),
             }
 
-            expect(getWidgetsWithContext('ticket')(state)).toEqualImmutable(fromJS([]))
+            expect(getWidgetsWithContext('ticket')(state)).toEqualImmutable(
+                fromJS([])
+            )
         })
 
         it('should default to current context if no context is passed', () => {
-            const items = [{id: 1, context: 'ticket'}, {id: 2, context: 'customer'}]
+            const items = [
+                {id: 1, context: 'ticket'},
+                {id: 2, context: 'customer'},
+            ]
             const currentContext = 'ticket'
             const state = {
-                widgets: fromJS({items, currentContext})
+                widgets: fromJS({items, currentContext}),
             }
 
-            expect(getWidgetsWithContext()(state)).toEqualImmutable(fromJS([{id: 1, context: 'ticket'}]))
+            expect(getWidgetsWithContext()(state)).toEqualImmutable(
+                fromJS([{id: 1, context: 'ticket'}])
+            )
         })
     })
 
     describe('hasWidgetsWithContext', () => {
         it('should return true because there are items matching the passed context', () => {
-            const items = [{id: 1, context: 'ticket'}, {id: 2, context: 'customer'}]
+            const items = [
+                {id: 1, context: 'ticket'},
+                {id: 2, context: 'customer'},
+            ]
             const state = {
-                widgets: fromJS({items})
+                widgets: fromJS({items}),
             }
 
             expect(hasWidgetsWithContext('ticket')(state)).toEqual(true)
         })
 
         it('should return false because there are no items with passed context', () => {
-            const items = [{id: 1, context: 'customer'}, {id: 2, context: 'customer'}]
+            const items = [
+                {id: 1, context: 'customer'},
+                {id: 2, context: 'customer'},
+            ]
             const state = {
-                widgets: fromJS({items})
+                widgets: fromJS({items}),
             }
 
             expect(hasWidgetsWithContext('ticket')(state)).toEqual(false)
@@ -173,7 +208,7 @@ describe('widgets selectors', () => {
         it('should return false because there are no items at all', () => {
             const items = []
             const state = {
-                widgets: fromJS({items})
+                widgets: fromJS({items}),
             }
 
             expect(hasWidgetsWithContext('ticket')(state)).toEqual(false)
@@ -182,17 +217,20 @@ describe('widgets selectors', () => {
         it('should return false because the items key is not set', () => {
             const items = []
             const state = {
-                widgets: fromJS({foo: items})
+                widgets: fromJS({foo: items}),
             }
 
             expect(hasWidgetsWithContext('ticket')(state)).toEqual(false)
         })
 
         it('should default to current context if no context is passed', () => {
-            const items = [{id: 1, context: 'ticket'}, {id: 2, context: 'customer'}]
+            const items = [
+                {id: 1, context: 'ticket'},
+                {id: 2, context: 'customer'},
+            ]
             const currentContext = 'ticket'
             const state = {
-                widgets: fromJS({items, currentContext})
+                widgets: fromJS({items, currentContext}),
             }
 
             expect(hasWidgetsWithContext()(state)).toEqual(true)
@@ -206,11 +244,13 @@ describe('widgets selectors', () => {
             const state = {
                 ticket: ticket,
                 customers: fromJS({
-                    active: customer
-                })
+                    active: customer,
+                }),
             }
 
-            expect(getSources(state)).toEqualImmutable(fromJS({ticket, customer}))
+            expect(getSources(state)).toEqualImmutable(
+                fromJS({ticket, customer})
+            )
         })
     })
 
@@ -220,15 +260,17 @@ describe('widgets selectors', () => {
                 ticket: {
                     customer: {
                         id: 1,
-                        name: 'foo'
-                    }
+                        name: 'foo',
+                    },
                 },
-                customer: {}
+                customer: {},
             })
 
             const ticket = expectedResult.get('ticket')
 
-            expect(getSourcesWithCustomer({ticket})).toEqualImmutable(expectedResult)
+            expect(getSourcesWithCustomer({ticket})).toEqualImmutable(
+                expectedResult
+            )
         })
 
         it('should set the customer in the ticket customer and return it because there is no ticket', () => {
@@ -237,39 +279,41 @@ describe('widgets selectors', () => {
                 customers: fromJS({
                     active: {
                         id: 1,
-                        name: 'foo'
-                    }
-                })
+                        name: 'foo',
+                    },
+                }),
             }
 
             const expectedResult = fromJS({
                 ticket: {
                     customer: {
                         id: 1,
-                        name: 'foo'
-                    }
+                        name: 'foo',
+                    },
                 },
                 customer: {
                     id: 1,
-                    name: 'foo'
-                }
+                    name: 'foo',
+                },
             })
 
-            expect(getSourcesWithCustomer(state)).toEqualImmutable(expectedResult)
+            expect(getSourcesWithCustomer(state)).toEqualImmutable(
+                expectedResult
+            )
         })
 
         it('should set the customer in the ticket customer and return it because the ticket has no customer', () => {
             const state = {
                 ticket: fromJS({
                     id: 1,
-                    subject: 'foo'
+                    subject: 'foo',
                 }),
                 customers: fromJS({
                     active: {
                         id: 2,
-                        name: 'bar'
-                    }
-                })
+                        name: 'bar',
+                    },
+                }),
             }
 
             const expectedResult = fromJS({
@@ -278,22 +322,24 @@ describe('widgets selectors', () => {
                     subject: 'foo',
                     customer: {
                         id: 2,
-                        name: 'bar'
-                    }
+                        name: 'bar',
+                    },
                 },
                 customer: {
                     id: 2,
-                    name: 'bar'
-                }
+                    name: 'bar',
+                },
             })
 
-            expect(getSourcesWithCustomer(state)).toEqualImmutable(expectedResult)
+            expect(getSourcesWithCustomer(state)).toEqualImmutable(
+                expectedResult
+            )
         })
 
         it('should not set the customer if ticket is loading', () => {
             const customer = {
                 id: 2,
-                name: 'bar'
+                name: 'bar',
             }
 
             const ticket = {
@@ -301,52 +347,60 @@ describe('widgets selectors', () => {
                 subject: 'foo',
                 _internal: {
                     loading: {
-                        fetchTicket: true
-                    }
-                }
+                        fetchTicket: true,
+                    },
+                },
             }
 
             const state = {
                 ticket: fromJS(ticket),
                 customers: fromJS({
-                    active: customer
-                })
+                    active: customer,
+                }),
             }
 
             const expectedResult = fromJS({
                 ticket,
-                customer
+                customer,
             })
 
-            expect(getSourcesWithCustomer(state)).toEqualImmutable(expectedResult)
+            expect(getSourcesWithCustomer(state)).toEqualImmutable(
+                expectedResult
+            )
         })
     })
 
     describe('isEditing', () => {
         it('should return isEditing from the state', () => {
-            expect(isEditing({
-                widgets: fromJS({
-                    _internal: {
-                        isEditing: true
-                    }
+            expect(
+                isEditing({
+                    widgets: fromJS({
+                        _internal: {
+                            isEditing: true,
+                        },
+                    }),
                 })
-            })).toEqual(true)
+            ).toEqual(true)
 
-            expect(isEditing({
-                widgets: fromJS({
-                    _internal: {
-                        isEditing: false
-                    }
+            expect(
+                isEditing({
+                    widgets: fromJS({
+                        _internal: {
+                            isEditing: false,
+                        },
+                    }),
                 })
-            })).toEqual(false)
+            ).toEqual(false)
         })
 
         it('should return false because isEditing is not set in the state', () => {
-            expect(isEditing({
-                widgets: fromJS({
-                    _internal: {}
+            expect(
+                isEditing({
+                    widgets: fromJS({
+                        _internal: {},
+                    }),
                 })
-            })).toEqual(false)
+            ).toEqual(false)
         })
     })
 })

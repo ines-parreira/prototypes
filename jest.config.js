@@ -26,7 +26,7 @@ module.exports = {
         '!**/node_modules/**',
         '!**/vendor/**',
         '!**/bower_components/**',
-        '!**/_build/**'
+        '!**/_build/**',
     ],
 
     // The directory where Jest should output its coverage files
@@ -62,7 +62,7 @@ module.exports = {
 
     // A set of global variables that need to be available in all test environments
     globals: {
-        'IMAGE_PROXY_URL': 'http://image-proxy/'
+        IMAGE_PROXY_URL: 'http://image-proxy/',
     },
 
     // An array of directory names to be searched recursively up from the requiring module's location
@@ -80,8 +80,9 @@ module.exports = {
 
     // A map from regular expressions to module names that allow to stub out resources with a single module
     moduleNameMapper: {
-        '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$': '<rootDir>/g/static/private/js/tests/__mocks__/fileMock.js',
-        '\\.(css|less)$': 'identity-obj-proxy'
+        '\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
+            '<rootDir>/g/static/private/js/tests/__mocks__/fileMock.js',
+        '\\.(css|less)$': 'identity-obj-proxy',
     },
 
     // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
@@ -126,14 +127,10 @@ module.exports = {
     // runner: "jest-runner",
 
     // The paths to modules that run some code to configure or set up the testing environment before each test
-    setupFiles: [
-        './g/static/private/js/tests/setup.js'
-    ],
+    setupFiles: ['./g/static/private/js/tests/setup.js'],
 
     // The path to a module that runs some code to configure or set up the testing framework before each test
-    setupFilesAfterEnv: [
-        '<rootDir>/node_modules/jest-enzyme/lib/index.js'
-    ],
+    setupFilesAfterEnv: ['<rootDir>/node_modules/jest-enzyme/lib/index.js'],
 
     // A list of paths to snapshot serializer modules Jest should use for snapshot testing
     // snapshotSerializers: [],

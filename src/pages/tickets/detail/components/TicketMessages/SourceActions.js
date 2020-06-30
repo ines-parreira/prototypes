@@ -9,7 +9,7 @@ import type {Meta, Source} from '../../../../../models/ticket/types'
 import {
     FACEBOOK_COMMENT_SOURCE,
     INSTAGRAM_AD_COMMENT_SOURCE,
-    INSTAGRAM_COMMENT_SOURCE
+    INSTAGRAM_COMMENT_SOURCE,
 } from '../../../../../config/ticket'
 
 import css from './SourceActions.less'
@@ -22,32 +22,35 @@ type Props = {
     integrationId?: string,
     messageId?: string,
     fromAgent: boolean,
-    executeAction: typeof infobarActions.executeAction
+    executeAction: typeof infobarActions.executeAction,
 }
 
 export class SourceActions extends React.Component<Props> {
     _executeAction = (name: string) => {
         const {integrationId, messageId, executeAction} = this.props
         if (integrationId) {
-            executeAction(
-                name,
-                integrationId,
-                undefined,
-                {'comment_id': messageId},
-            )
+            executeAction(name, integrationId, undefined, {
+                comment_id: messageId,
+            })
         }
     }
 
     _toggleInstagramHideComment = (hide: boolean) => {
-        this._executeAction(hide ? 'instagramHideComment' : 'instagramUnhideComment')
+        this._executeAction(
+            hide ? 'instagramHideComment' : 'instagramUnhideComment'
+        )
     }
 
     _toggleFacebookHideComment = (hide: boolean) => {
-        this._executeAction(hide ? 'facebookHideComment' : 'facebookUnhideComment')
+        this._executeAction(
+            hide ? 'facebookHideComment' : 'facebookUnhideComment'
+        )
     }
 
     _toggleLikeComment = (like: boolean) => {
-        this._executeAction(like ? 'facebookLikeComment' : 'facebookUnlikeComment')
+        this._executeAction(
+            like ? 'facebookLikeComment' : 'facebookUnlikeComment'
+        )
     }
 
     render() {
@@ -59,7 +62,10 @@ export class SourceActions extends React.Component<Props> {
             return widgets
         }
 
-        const isInstagramComment = [INSTAGRAM_COMMENT_SOURCE, INSTAGRAM_AD_COMMENT_SOURCE].includes(source.type)
+        const isInstagramComment = [
+            INSTAGRAM_COMMENT_SOURCE,
+            INSTAGRAM_AD_COMMENT_SOURCE,
+        ].includes(source.type)
         const isFacebookComment = source.type === FACEBOOK_COMMENT_SOURCE
 
         // If the comment is a Facebook comment, posted by the page, then the API will never allow us to hide it.
@@ -77,13 +83,14 @@ export class SourceActions extends React.Component<Props> {
                 <span
                     key="hide-action"
                     className={classNames('hidden-sm-down', css.actionButton)}
-                    onClick={() => isInstagramComment
-                        ? this._toggleInstagramHideComment(shouldHide)
-                        : this._toggleFacebookHideComment(shouldHide)
+                    onClick={() =>
+                        isInstagramComment
+                            ? this._toggleInstagramHideComment(shouldHide)
+                            : this._toggleFacebookHideComment(shouldHide)
                     }
                 >
                     {shouldHide ? 'Hide' : 'Unhide'}
-                </span>,
+                </span>
             )
         }
 
@@ -103,7 +110,7 @@ export class SourceActions extends React.Component<Props> {
                     onClick={() => this._toggleLikeComment(shouldHide)}
                 >
                     {shouldHide ? 'Like' : 'Unlike'}
-                </span>,
+                </span>
             )
         }
 
@@ -111,4 +118,6 @@ export class SourceActions extends React.Component<Props> {
     }
 }
 
-export default connect(null, {executeAction: infobarActions.executeAction})(SourceActions)
+export default connect(null, {executeAction: infobarActions.executeAction})(
+    SourceActions
+)

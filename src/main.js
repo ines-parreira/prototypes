@@ -12,15 +12,9 @@ import mobileScrollManager from './services/mobileScrollManager'
 const container = document.getElementById('App')
 
 if (container) {
-    render(
-        <Root
-            history={browserHistory}
-            store={store}
-        />,
-        container
-    )
+    render(<Root history={browserHistory} store={store} />, container)
 }
 
-if((module: any).hot) {
-    (module: any).hot.accept()
+if ((module: any).hot) {
+    ;(module: any).hot.accept()
 }

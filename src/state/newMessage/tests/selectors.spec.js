@@ -7,26 +7,30 @@ import {initialState} from '../reducers'
 
 jest.addMatchers(immutableMatchers)
 
-
 describe('selectors', () => {
     describe('new message', () => {
         let state
 
         beforeEach(() => {
             state = {
-                newMessage: initialState
+                newMessage: initialState,
             }
         })
 
         describe('isForwarded()', () => {
-
             it('should detect forwarded message', () => {
-                state.newMessage = state.newMessage.setIn(['newMessage', 'source', 'extra', 'forward'], true)
+                state.newMessage = state.newMessage.setIn(
+                    ['newMessage', 'source', 'extra', 'forward'],
+                    true
+                )
                 expect(selectors.isForward(state)).toEqual(true)
             })
 
             it('should not detect forwarded message', () => {
-                state.newMessage = state.newMessage.setIn(['newMessage', 'source', 'type'], 'email')
+                state.newMessage = state.newMessage.setIn(
+                    ['newMessage', 'source', 'type'],
+                    'email'
+                )
                 expect(selectors.isForward(state)).toEqual(false)
             })
         })
@@ -35,14 +39,20 @@ describe('selectors', () => {
             it('should be ready (reply with body)', () => {
                 state.newMessage = state.newMessage
                     .setIn(['newMessage', 'body_text'], 'Hello World')
-                    .setIn(['newMessage', 'source', 'to', 0], fromJS({'address': 'support@acme.gorgias.io'}))
+                    .setIn(
+                        ['newMessage', 'source', 'to', 0],
+                        fromJS({address: 'support@acme.gorgias.io'})
+                    )
                 expect(selectors.isReady(state)).toEqual(true)
             })
 
             it('should be ready (reply with attachments)', () => {
                 state.newMessage = state.newMessage
                     .setIn(['newMessage', 'attachments'], List([{}]))
-                    .setIn(['newMessage', 'source', 'to', 0], fromJS({'address': 'support@acme.gorgias.io'}))
+                    .setIn(
+                        ['newMessage', 'source', 'to', 0],
+                        fromJS({address: 'support@acme.gorgias.io'})
+                    )
                 expect(selectors.isReady(state)).toEqual(true)
             })
 
@@ -50,7 +60,10 @@ describe('selectors', () => {
                 state.newMessage = state.newMessage
                     .setIn(['newMessage', 'body_text'], 'Hello World')
                     .setIn(['newMessage', 'source', 'extra', 'forward'], true)
-                    .setIn(['newMessage', 'source', 'to', 0], fromJS({'address': 'support@acme.gorgias.io'}))
+                    .setIn(
+                        ['newMessage', 'source', 'to', 0],
+                        fromJS({address: 'support@acme.gorgias.io'})
+                    )
                 expect(selectors.isReady(state)).toEqual(true)
             })
 
@@ -58,7 +71,10 @@ describe('selectors', () => {
                 state.newMessage = state.newMessage
                     .setIn(['newMessage', 'body_text'], '')
                     .setIn(['newMessage', 'source', 'extra', 'forward'], true)
-                    .setIn(['newMessage', 'source', 'to', 0], fromJS({'address': 'support@acme.gorgias.io'}))
+                    .setIn(
+                        ['newMessage', 'source', 'to', 0],
+                        fromJS({address: 'support@acme.gorgias.io'})
+                    )
                 expect(selectors.isReady(state)).toEqual(true)
             })
 
@@ -71,26 +87,35 @@ describe('selectors', () => {
             })
 
             it('should not be ready (reply without recipients)', () => {
-                state.newMessage = state.newMessage
-                    .setIn(['newMessage', 'body_text'], 'Hello World')
+                state.newMessage = state.newMessage.setIn(
+                    ['newMessage', 'body_text'],
+                    'Hello World'
+                )
                 expect(selectors.isReady(state)).toEqual(false)
             })
 
             it('should not be ready (reply without message and attachments)', () => {
                 state.newMessage = state.newMessage
                     .setIn(['newMessage', 'attachments'], null)
-                    .setIn(['newMessage', 'source', 'to', 0], fromJS({'address': 'support@acme.gorgias.io'}))
+                    .setIn(
+                        ['newMessage', 'source', 'to', 0],
+                        fromJS({address: 'support@acme.gorgias.io'})
+                    )
                 expect(selectors.isReady(state)).toEqual(false)
             })
 
             it('should not be ready (forward without recipients)', () => {
-                state.newMessage = state.newMessage
-                    .setIn(['newMessage', 'subject'], 'Fwd: Hello world!')
+                state.newMessage = state.newMessage.setIn(
+                    ['newMessage', 'subject'],
+                    'Fwd: Hello world!'
+                )
                 expect(selectors.isReady(state)).toEqual(false)
             })
             it('should not be ready (private message without message)', () => {
-                state.newMessage = state.newMessage
-                    .setIn(['newMessage', 'source', 'type'], 'internal-note')
+                state.newMessage = state.newMessage.setIn(
+                    ['newMessage', 'source', 'type'],
+                    'internal-note'
+                )
                 expect(selectors.isReady(state)).toEqual(false)
             })
         })
@@ -98,16 +123,19 @@ describe('selectors', () => {
         describe('getNewMessageSignature()', () => {
             let emailAddress = 'support@acme.gorgias.io'
             let integrationsState = fromJS({
-                integrations: [{
-                    type: 'gmail',
-                    meta: {
-                        address: emailAddress,
-                        signature: {
-                            text: 'Cheers, {{current_user.first_name}}',
-                            html: 'Cheers, <strong>{{current_user.first_name}}</strong>'
-                        }
-                    }
-                }]
+                integrations: [
+                    {
+                        type: 'gmail',
+                        meta: {
+                            address: emailAddress,
+                            signature: {
+                                text: 'Cheers, {{current_user.first_name}}',
+                                html:
+                                    'Cheers, <strong>{{current_user.first_name}}</strong>',
+                            },
+                        },
+                    },
+                ],
             })
 
             beforeEach(() => {
@@ -115,30 +143,43 @@ describe('selectors', () => {
                     currentUser: fromJS({first_name: 'Steve'}),
                     integrations: integrationsState,
                     newMessage: initialState,
-                    ticket: fromJS({})
+                    ticket: fromJS({}),
                 }
             })
 
             it('should return a rendered signature (email address)', () => {
-                state.newMessage = state.newMessage
-                    .setIn(['newMessage', 'source', 'from'], fromJS({address: emailAddress}))
+                state.newMessage = state.newMessage.setIn(
+                    ['newMessage', 'source', 'from'],
+                    fromJS({address: emailAddress})
+                )
 
-                expect(selectors.getNewMessageSignature(state)).toMatchSnapshot()
+                expect(
+                    selectors.getNewMessageSignature(state)
+                ).toMatchSnapshot()
             })
 
             it('should not return a signature (chat message)', () => {
-                state.newMessage = state.newMessage
-                    .setIn(['newMessage', 'source', 'type'], 'chat')
+                state.newMessage = state.newMessage.setIn(
+                    ['newMessage', 'source', 'type'],
+                    'chat'
+                )
 
-                expect(selectors.getNewMessageSignature(state)).toEqualImmutable(fromJS({}))
+                expect(
+                    selectors.getNewMessageSignature(state)
+                ).toEqualImmutable(fromJS({}))
             })
 
             it('should not return a signature (unknown address)', () => {
                 state.newMessage = state.newMessage
-                    .setIn(['newMessage', 'source', 'from'], fromJS({'address': 'unknown@acme.gorgias.io'}))
+                    .setIn(
+                        ['newMessage', 'source', 'from'],
+                        fromJS({address: 'unknown@acme.gorgias.io'})
+                    )
                     .setIn(['newMessage', 'source', 'type'], 'email')
 
-                expect(selectors.getNewMessageSignature(state)).toEqualImmutable(fromJS({}))
+                expect(
+                    selectors.getNewMessageSignature(state)
+                ).toEqualImmutable(fromJS({}))
             })
         })
 
@@ -151,16 +192,26 @@ describe('selectors', () => {
 
             it('should return the attachments of the new message', () => {
                 const attachments = fromJS([{url: 'foo'}, {url: 'bar'}])
-                state.newMessage = state.newMessage.setIn(['newMessage', 'attachments'], attachments)
+                state.newMessage = state.newMessage.setIn(
+                    ['newMessage', 'attachments'],
+                    attachments
+                )
 
-                expect(selectors.getNewMessageAttachments(state)).toEqualImmutable(attachments)
+                expect(
+                    selectors.getNewMessageAttachments(state)
+                ).toEqualImmutable(attachments)
             })
 
             it('should return an empty immutable list because the new message has no attachments', () => {
                 const attachments = null
-                state.newMessage = state.newMessage.setIn(['newMessage', 'attachments'], attachments)
+                state.newMessage = state.newMessage.setIn(
+                    ['newMessage', 'attachments'],
+                    attachments
+                )
 
-                expect(selectors.getNewMessageAttachments(state)).toEqualImmutable(fromJS([]))
+                expect(
+                    selectors.getNewMessageAttachments(state)
+                ).toEqualImmutable(fromJS([]))
             })
         })
     })

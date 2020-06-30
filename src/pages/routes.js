@@ -48,12 +48,8 @@ import UserAuditList from './settings/audit/UserAuditList'
 import BusinessHours from './settings/businessHours'
 import TicketAssignment from './settings/ticketAssignment'
 
-
 export default (
-    <Route
-        path="/app"
-        component={App}
-    >
+    <Route path="/app" component={App}>
         <IndexRoute
             components={{
                 content: TicketListContainer,
@@ -65,28 +61,28 @@ export default (
             path="customers"
             components={{
                 content: CustomerListContainer,
-                navbar: CustomerNavbarContainer
+                navbar: CustomerNavbarContainer,
             }}
         />
         <Route
             path="customers/new"
             components={{
                 content: CustomerListContainer,
-                navbar: CustomerNavbarContainer
+                navbar: CustomerNavbarContainer,
             }}
         />
         <Route
             path="customers/search"
             components={{
                 content: CustomerListContainer,
-                navbar: CustomerNavbarContainer
+                navbar: CustomerNavbarContainer,
             }}
         />
         <Route
             path="customers/:viewId(/:viewSlug)"
             components={{
                 content: CustomerListContainer,
-                navbar: CustomerNavbarContainer
+                navbar: CustomerNavbarContainer,
             }}
         />
         <Route
@@ -94,7 +90,7 @@ export default (
             components={{
                 content: CustomerDetailContainer,
                 navbar: CustomerNavbarContainer,
-                infobar: CustomerInfobarContainer
+                infobar: CustomerInfobarContainer,
             }}
             noContainerWidthLimit // no width limit in App wrapper
             infobarOnMobile // show Infobar component on mobile
@@ -105,7 +101,7 @@ export default (
             components={{
                 content: CustomerSourceContainer,
                 navbar: CustomerNavbarContainer,
-                infobar: CustomerInfobarContainer
+                infobar: CustomerInfobarContainer,
             }}
             isEditingWidgets // is an edition mode route for widgets
             noContainerWidthLimit // no width limit in App wrapper
@@ -116,28 +112,28 @@ export default (
             path="users"
             components={{
                 content: CustomerListContainer,
-                navbar: CustomerNavbarContainer
+                navbar: CustomerNavbarContainer,
             }}
         />
         <Route
             path="users/new"
             components={{
                 content: CustomerListContainer,
-                navbar: CustomerNavbarContainer
+                navbar: CustomerNavbarContainer,
             }}
         />
         <Route
             path="users/search"
             components={{
                 content: CustomerListContainer,
-                navbar: CustomerNavbarContainer
+                navbar: CustomerNavbarContainer,
             }}
         />
         <Route
             path="users/:viewId(/:viewSlug)"
             components={{
                 content: CustomerListContainer,
-                navbar: CustomerNavbarContainer
+                navbar: CustomerNavbarContainer,
             }}
         />
         <Route
@@ -145,7 +141,7 @@ export default (
             components={{
                 content: CustomerDetailContainer,
                 navbar: CustomerNavbarContainer,
-                infobar: CustomerInfobarContainer
+                infobar: CustomerInfobarContainer,
             }}
             noContainerWidthLimit // no width limit in App wrapper
             infobarOnMobile // show Infobar component on mobile
@@ -156,7 +152,7 @@ export default (
             components={{
                 content: CustomerSourceContainer,
                 navbar: CustomerNavbarContainer,
-                infobar: CustomerInfobarContainer
+                infobar: CustomerInfobarContainer,
             }}
             isEditingWidgets // is an edition mode route for widgets
             noContainerWidthLimit // no width limit in App wrapper
@@ -167,7 +163,7 @@ export default (
             components={{
                 content: TicketDetailContainer,
                 navbar: TicketNavbarContainer,
-                infobar: TicketInfobarContainer
+                infobar: TicketInfobarContainer,
             }}
             infobarOnMobile // show Infobar component on mobile
         />
@@ -176,7 +172,7 @@ export default (
             components={{
                 content: TicketSourceContainer,
                 navbar: TicketNavbarContainer,
-                infobar: TicketInfobarContainer
+                infobar: TicketInfobarContainer,
             }}
             noContainerWidthLimit // no width limit in App wrapper
             isEditingWidgets // is an edition mode route for widgets
@@ -220,7 +216,7 @@ export default (
                 path=":view"
                 components={{
                     content: StatsPage,
-                    navbar: StatsNavbarContainer
+                    navbar: StatsNavbarContainer,
                 }}
             />
         </Route>
@@ -228,31 +224,40 @@ export default (
             <IndexRoute
                 components={{
                     content: YourProfileContainer,
-                    navbar: SettingsNavbarContainer
+                    navbar: SettingsNavbarContainer,
                 }}
             />
             <Route
                 path="integrations"
                 components={{
-                    content: UserRoleRequired(IntegrationListContainer, ADMIN_ROLE),
-                    navbar: SettingsNavbarContainer
+                    content: UserRoleRequired(
+                        IntegrationListContainer,
+                        ADMIN_ROLE
+                    ),
+                    navbar: SettingsNavbarContainer,
                 }}
             />
             <Route
                 path="integrations/:integrationType"
                 components={{
-                    content: UserRoleRequired(IntegrationDetailContainer, ADMIN_ROLE),
-                    navbar: SettingsNavbarContainer
+                    content: UserRoleRequired(
+                        IntegrationDetailContainer,
+                        ADMIN_ROLE
+                    ),
+                    navbar: SettingsNavbarContainer,
                 }}
             >
-                <Route path=":integrationId(/:extra)"/>
-                <Route path=":integrationId/:extra/:subId"/>
+                <Route path=":integrationId(/:extra)" />
+                <Route path=":integrationId/:extra/:subId" />
             </Route>
             <Route
                 path="macros"
                 components={{
-                    content: UserRoleRequired(MacrosSettingsContent, AGENT_ROLE),
-                    navbar: SettingsNavbarContainer
+                    content: UserRoleRequired(
+                        MacrosSettingsContent,
+                        AGENT_ROLE
+                    ),
+                    navbar: SettingsNavbarContainer,
                 }}
             />
             <Route
@@ -273,63 +278,63 @@ export default (
                 path="rules"
                 components={{
                     content: UserRoleRequired(RuleContainer, AGENT_ROLE),
-                    navbar: SettingsNavbarContainer
+                    navbar: SettingsNavbarContainer,
                 }}
             />
             <Route
                 path="profile"
                 components={{
                     content: YourProfileContainer,
-                    navbar: SettingsNavbarContainer
+                    navbar: SettingsNavbarContainer,
                 }}
             />
             <Route
                 path="change-password"
                 components={{
                     content: ChangePasswordContainer,
-                    navbar: SettingsNavbarContainer
+                    navbar: SettingsNavbarContainer,
                 }}
             />
             <Route
                 path="api"
                 components={{
                     content: APIView,
-                    navbar: SettingsNavbarContainer
+                    navbar: SettingsNavbarContainer,
                 }}
             />
             <Route
                 path="audit"
                 components={{
                     content: UserRoleRequired(UserAuditList, ADMIN_ROLE),
-                    navbar: SettingsNavbarContainer
+                    navbar: SettingsNavbarContainer,
                 }}
             />
             <Route path="teams">
                 <IndexRoute
                     components={{
                         content: UserRoleRequired(Teams.List, ADMIN_ROLE),
-                        navbar: SettingsNavbarContainer
+                        navbar: SettingsNavbarContainer,
                     }}
                 />
                 <Route
                     path="create"
                     components={{
                         content: UserRoleRequired(Teams.Form, ADMIN_ROLE),
-                        navbar: SettingsNavbarContainer
+                        navbar: SettingsNavbarContainer,
                     }}
                 />
                 <Route
                     path=":id"
                     components={{
                         content: UserRoleRequired(Teams.Form, ADMIN_ROLE),
-                        navbar: SettingsNavbarContainer
+                        navbar: SettingsNavbarContainer,
                     }}
                 />
                 <Route
                     path=":id/members"
                     components={{
                         content: UserRoleRequired(List, ADMIN_ROLE),
-                        navbar: SettingsNavbarContainer
+                        navbar: SettingsNavbarContainer,
                     }}
                 />
             </Route>
@@ -337,21 +342,21 @@ export default (
                 <IndexRoute
                     components={{
                         content: UserRoleRequired(Team.List, ADMIN_ROLE),
-                        navbar: SettingsNavbarContainer
+                        navbar: SettingsNavbarContainer,
                     }}
                 />
                 <Route
                     path="add"
                     components={{
                         content: UserRoleRequired(Team.Form, ADMIN_ROLE),
-                        navbar: SettingsNavbarContainer
+                        navbar: SettingsNavbarContainer,
                     }}
                 />
                 <Route
                     path=":id"
                     components={{
                         content: UserRoleRequired(Team.Form, ADMIN_ROLE),
-                        navbar: SettingsNavbarContainer
+                        navbar: SettingsNavbarContainer,
                     }}
                 />
             </Route>
@@ -359,35 +364,47 @@ export default (
                 <IndexRoute
                     components={{
                         content: UserRoleRequired(BillingContainer, ADMIN_ROLE),
-                        navbar: SettingsNavbarContainer
+                        navbar: SettingsNavbarContainer,
                     }}
                 />
                 <Route
                     path="add-credit-card"
                     components={{
-                        content: UserRoleRequired(CreditCardContainer, ADMIN_ROLE),
-                        navbar: SettingsNavbarContainer
+                        content: UserRoleRequired(
+                            CreditCardContainer,
+                            ADMIN_ROLE
+                        ),
+                        navbar: SettingsNavbarContainer,
                     }}
                 />
                 <Route
                     path="update-credit-card"
                     components={{
-                        content: UserRoleRequired(CreditCardContainer, ADMIN_ROLE),
-                        navbar: SettingsNavbarContainer
+                        content: UserRoleRequired(
+                            CreditCardContainer,
+                            ADMIN_ROLE
+                        ),
+                        navbar: SettingsNavbarContainer,
                     }}
                 />
                 <Route
                     path="update-billing-details"
                     components={{
-                        content: UserRoleRequired(BillingDetailsFormContainer, ADMIN_ROLE),
-                        navbar: SettingsNavbarContainer
+                        content: UserRoleRequired(
+                            BillingDetailsFormContainer,
+                            ADMIN_ROLE
+                        ),
+                        navbar: SettingsNavbarContainer,
                     }}
                 />
                 <Route
                     path="plans"
                     components={{
-                        content: UserRoleRequired(BillingPlansContainer, ADMIN_ROLE),
-                        navbar: SettingsNavbarContainer
+                        content: UserRoleRequired(
+                            BillingPlansContainer,
+                            ADMIN_ROLE
+                        ),
+                        navbar: SettingsNavbarContainer,
                     }}
                 />
             </Route>
@@ -395,50 +412,55 @@ export default (
                 path="manage-tags"
                 components={{
                     content: UserRoleRequired(ManageTagsContainer, AGENT_ROLE),
-                    navbar: SettingsNavbarContainer
+                    navbar: SettingsNavbarContainer,
                 }}
             />
             <Route path="import-data">
                 <IndexRoute
                     components={{
-                        content: UserRoleRequired(ImportDataContainer, ADMIN_ROLE),
-                        navbar: SettingsNavbarContainer
+                        content: UserRoleRequired(
+                            ImportDataContainer,
+                            ADMIN_ROLE
+                        ),
+                        navbar: SettingsNavbarContainer,
                     }}
                 />
                 <Route
                     path="zendesk"
                     components={{
-                        content: UserRoleRequired(ImportZendeskDetail, ADMIN_ROLE),
-                        navbar: SettingsNavbarContainer
+                        content: UserRoleRequired(
+                            ImportZendeskDetail,
+                            ADMIN_ROLE
+                        ),
+                        navbar: SettingsNavbarContainer,
                     }}
                 />
             </Route>
             <Route
                 path="satisfaction-surveys"
                 components={{
-                    content: UserRoleRequired(SatisfactionSurveyView, ADMIN_ROLE),
-                    navbar: SettingsNavbarContainer
+                    content: UserRoleRequired(
+                        SatisfactionSurveyView,
+                        ADMIN_ROLE
+                    ),
+                    navbar: SettingsNavbarContainer,
                 }}
             />
             <Route
                 path="business-hours"
                 components={{
                     content: UserRoleRequired(BusinessHours, ADMIN_ROLE),
-                    navbar: SettingsNavbarContainer
+                    navbar: SettingsNavbarContainer,
                 }}
             />
             <Route
                 path="ticket-assignment"
                 components={{
                     content: UserRoleRequired(TicketAssignment, ADMIN_ROLE),
-                    navbar: SettingsNavbarContainer
+                    navbar: SettingsNavbarContainer,
                 }}
             />
         </Route>
-        <Route
-            path="*"
-            component={NoMatch}
-            containerPadding
-        />
+        <Route path="*" component={NoMatch} containerPadding />
     </Route>
 )

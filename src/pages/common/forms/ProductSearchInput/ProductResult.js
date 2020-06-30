@@ -21,9 +21,10 @@ export default class ProductResult extends React.PureComponent<Props> {
         return {
             image: product.image,
             title: product.title,
-            subtitle: product.variants.length > 1
-                ? `${product.variants.length} variants`
-                : sku,
+            subtitle:
+                product.variants.length > 1
+                    ? `${product.variants.length} variants`
+                    : sku,
         }
     }
 

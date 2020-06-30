@@ -2,7 +2,11 @@
 
 import _capitalize from 'lodash/capitalize'
 
-import {HTTP_WIDGET_TYPE, MAGENTO2_WIDGET_TYPE, SMOOCH_INSIDE_WIDGET_TYPE} from './constants'
+import {
+    HTTP_WIDGET_TYPE,
+    MAGENTO2_WIDGET_TYPE,
+    SMOOCH_INSIDE_WIDGET_TYPE,
+} from './constants'
 
 const labels = {
     [HTTP_WIDGET_TYPE]: 'HTTP',

@@ -29,25 +29,28 @@ describe('actions', () => {
         describe('fetchChats()', () => {
             it('should fetch chats', () => {
                 const chats = {
-                    tickets: [{id: 123}, {id: 2}]
+                    tickets: [{id: 123}, {id: 2}],
                 }
 
                 mockServer.onGet('/api/activity/chats/').reply(200, chats)
 
-                return store.dispatch(actions.fetchChats())
+                return store
+                    .dispatch(actions.fetchChats())
                     .then(() => expect(store.getActions()).toMatchSnapshot())
             })
         })
 
         describe('setChats()', () => {
             it('should add chats with notifications', () => {
-                const chats = [{
-                    id: 1,
-                    customer: {
-                        name: 'Mark Frizeli'
+                const chats = [
+                    {
+                        id: 1,
+                        customer: {
+                            name: 'Mark Frizeli',
+                        },
+                        last_message_body_text: 'Hi',
                     },
-                    last_message_body_text: 'Hi'
-                }]
+                ]
                 store.dispatch(actions.setChats(chats))
                 expect(store.getActions()).toMatchSnapshot()
                 expect(browserNotification.getAll()).toMatchSnapshot()
@@ -62,9 +65,9 @@ describe('actions', () => {
             const chat = {
                 id: 1,
                 customer: {
-                    name: 'Mark Frizeli'
+                    name: 'Mark Frizeli',
                 },
-                last_message_body_text: 'Hi'
+                last_message_body_text: 'Hi',
             }
 
             it('should add chat with notifications', () => {
@@ -92,5 +95,4 @@ describe('actions', () => {
             })
         })
     })
-
 })

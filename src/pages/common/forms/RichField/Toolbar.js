@@ -8,18 +8,18 @@ import {AddImage, AddLink} from '../../draftjs/plugins/toolbar/components'
 type Props = {
     attachFiles: (T: Array<Blob>) => void,
     canDropFiles: boolean,
-    displayedActions: ?ActionName[],
+    displayedActions: ?(ActionName[]),
     buttons?: React.Node[],
     attachments?: File[],
     linkEntityKey?: string,
     linkIsOpen: boolean,
     linkUrl: string,
     linkText: string,
-    onLinkUrlChange: string => void,
-    onLinkTextChange: string => void,
+    onLinkUrlChange: (string) => void,
+    onLinkTextChange: (string) => void,
     onLinkOpen: () => void,
     onLinkClose: () => void,
-    pluginMethods?: PluginMethods
+    pluginMethods?: PluginMethods,
 }
 
 export default function RichFieldToolbar(props: Props) {
@@ -35,7 +35,7 @@ export default function RichFieldToolbar(props: Props) {
             canDropFiles={props.canDropFiles}
             displayedActions={props.displayedActions}
             buttons={props.buttons}
-            linkAction={(
+            linkAction={
                 <AddLink
                     entityKey={props.linkEntityKey}
                     isOpen={props.linkIsOpen}
@@ -47,13 +47,10 @@ export default function RichFieldToolbar(props: Props) {
                     onClose={props.onLinkClose}
                     {...pluginMethods}
                 />
-            )}
-            imageAction={(
-                <AddImage
-                    attachments={props.attachments}
-                    {...pluginMethods}
-                />
-            )}
+            }
+            imageAction={
+                <AddImage attachments={props.attachments} {...pluginMethods} />
+            }
             {...pluginMethods}
         />
     )

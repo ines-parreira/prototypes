@@ -16,7 +16,7 @@ import NoIntegration from './NoIntegration'
  * We can then have specific components for each integration type using this one.
  */
 @connect(null, {
-    notify
+    notify,
 })
 class IntegrationList extends React.Component {
     static propTypes = {
@@ -27,7 +27,7 @@ class IntegrationList extends React.Component {
         createIntegrationButtonContent: PropTypes.node.isRequired, // The content of the button to create a new integration
         createIntegrationButtonOnClick: PropTypes.func, // function executed when user click on button to create a new integration
         longTypeDescription: PropTypes.node,
-        loading: PropTypes.object.isRequired,  // A map for different loading status(es)
+        loading: PropTypes.object.isRequired, // A map for different loading status(es)
         // A function that takes an integration and returns the rendered individual integration. Used to display the list of integrations.
         integrationToItemDisplay: PropTypes.func.isRequired,
         createIntegrationButtonHidden: PropTypes.bool.isRequired,
@@ -37,7 +37,7 @@ class IntegrationList extends React.Component {
         params: PropTypes.object.isRequired,
 
         // Actions
-        notify: PropTypes.func.isRequired
+        notify: PropTypes.func.isRequired,
     }
 
     static defaultProps = {
@@ -55,8 +55,9 @@ class IntegrationList extends React.Component {
         if (this.props.location.query.status === 'create-error') {
             this.props.notify({
                 status: 'error',
-                message: 'Something went wrong while creating your integration. Please wait a few minutes and ' +
-                'try again. If the problem persists, contact us at support@gorgias.io.',
+                message:
+                    'Something went wrong while creating your integration. Please wait a few minutes and ' +
+                    'try again. If the problem persists, contact us at support@gorgias.io.',
             })
         }
     }
@@ -73,67 +74,63 @@ class IntegrationList extends React.Component {
         } = this.props
 
         const integrationTypes = fromJS(getIntegrationsList(integrations))
-        const integrationConfig = integrationTypes.find((i) => i.get('type', '') === integrationType, null, fromJS({}))
+        const integrationConfig = integrationTypes.find(
+            (i) => i.get('type', '') === integrationType,
+            null,
+            fromJS({})
+        )
         const integrationTitle = integrationConfig.get('title')
 
         return (
             <div className="w-100">
-                <PageHeader title={(
-                    <Breadcrumb>
-                        <BreadcrumbItem>
-                            <Link to="/app/settings/integrations">Integrations</Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem active>
-                            {integrationTitle}
-                        </BreadcrumbItem>
-                    </Breadcrumb>
-                )}>
-                    {
-                        !this.props.createIntegrationButtonHidden && (
-                            <Button
-                                type="submit"
-                                color="success"
-                                onClick={this.onButtonClick}
-                                className={createIntegrationButtonClassName}
-                            >
-                                {createIntegrationButtonContent}
-                            </Button>
-                        )
+                <PageHeader
+                    title={
+                        <Breadcrumb>
+                            <BreadcrumbItem>
+                                <Link to="/app/settings/integrations">
+                                    Integrations
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem active>
+                                {integrationTitle}
+                            </BreadcrumbItem>
+                        </Breadcrumb>
                     }
+                >
+                    {!this.props.createIntegrationButtonHidden && (
+                        <Button
+                            type="submit"
+                            color="success"
+                            onClick={this.onButtonClick}
+                            className={createIntegrationButtonClassName}
+                        >
+                            {createIntegrationButtonContent}
+                        </Button>
+                    )}
                 </PageHeader>
 
-                <Container
-                    className="page-container"
-                    fluid
-                >
-                    <div className="mb-3">
-                        {longTypeDescription}
-                    </div>
+                <Container className="page-container" fluid>
+                    <div className="mb-3">{longTypeDescription}</div>
 
-                    {
-                        integrations.isEmpty() && (
-                            <div className="mt-3">
-                                <NoIntegration
-                                    type={integrationType}
-                                    loading={loading.get('integrations', false)}
-                                />
-                            </div>
-                        )
-                    }
+                    {integrations.isEmpty() && (
+                        <div className="mt-3">
+                            <NoIntegration
+                                type={integrationType}
+                                loading={loading.get('integrations', false)}
+                            />
+                        </div>
+                    )}
                 </Container>
 
-                {
-                    !integrations.isEmpty() && (
-                        <Table
-                            className="table-integrations mt-3"
-                            hover
-                        >
-                            <tbody>
-                                {integrations.valueSeq().map(integrationToItemDisplay)}
-                            </tbody>
-                        </Table>
-                    )
-                }
+                {!integrations.isEmpty() && (
+                    <Table className="table-integrations mt-3" hover>
+                        <tbody>
+                            {integrations
+                                .valueSeq()
+                                .map(integrationToItemDisplay)}
+                        </tbody>
+                    </Table>
+                )}
             </div>
         )
     }

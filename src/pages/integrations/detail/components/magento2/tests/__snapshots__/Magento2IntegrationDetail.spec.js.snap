@@ -62,7 +62,8 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for a deac
         }
       >
         <p>
-          All your Magento 2 customers have been imported. You can now see their info in the sidebar. 
+          All your Magento 2 customers have been imported. You can now see their info in the sidebar.
+           
           <Link
             onlyActiveOnIndex={false}
             style={Object {}}
@@ -686,7 +687,8 @@ exports[`<Magento2IntegrationDetail/> render() should render the page to update 
         }
       >
         <p>
-          All your Magento 2 customers have been imported. You can now see their info in the sidebar. 
+          All your Magento 2 customers have been imported. You can now see their info in the sidebar.
+           
           <Link
             onlyActiveOnIndex={false}
             style={Object {}}

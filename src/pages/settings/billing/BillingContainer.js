@@ -26,16 +26,13 @@ export class BillingContainer extends Component {
 
     componentDidMount() {
         // display message from url
-        const {
-            notif_msg,
-            notif_type
-        } = this.props.location.query
+        const {notif_msg, notif_type} = this.props.location.query
 
         if (notif_msg) {
             this.props.notify({
                 status: notif_type,
                 title: notif_msg.replace(/\+/g, ' '),
-                allowHTML: false
+                allowHTML: false,
             })
             // remove notification from url
             browserHistory.push(window.location.pathname)
@@ -50,24 +47,26 @@ export class BillingContainer extends Component {
     render() {
         return (
             <div className="full-width">
-                <PageHeader title="Billing & Usage"/>
-                <Container
-                    fluid
-                    className="page-container"
-                >
-                    <BillingUsage/>
-                    <BillingPaymentMethod/>
-                    <BillingDetails/>
-                    <BillingInvoices/>
+                <PageHeader title="Billing & Usage" />
+                <Container fluid className="page-container">
+                    <BillingUsage />
+                    <BillingPaymentMethod />
+                    <BillingDetails />
+                    <BillingInvoices />
                 </Container>
             </div>
         )
     }
 }
 
-export default connect((state) => {
-    const currentSubscription = currentAccountSelectors.getCurrentSubscription(state)
-    return {
-        currentSubscription,
-    }
-}, {notify})(BillingContainer)
+export default connect(
+    (state) => {
+        const currentSubscription = currentAccountSelectors.getCurrentSubscription(
+            state
+        )
+        return {
+            currentSubscription,
+        }
+    },
+    {notify}
+)(BillingContainer)

@@ -5,7 +5,7 @@ import {
     FACEBOOK_INTEGRATION_TYPE,
     MAGENTO2_INTEGRATION_TYPE,
     OUTLOOK_INTEGRATION_TYPE,
-    SHOPIFY_INTEGRATION_TYPE
+    SHOPIFY_INTEGRATION_TYPE,
 } from '../../../constants/integration'
 
 import {
@@ -33,8 +33,8 @@ import {integrationsState} from '../../../fixtures/integrations'
 const state = {
     integrations: fromJS(integrationsState),
     currentUser: fromJS({
-        'first_name': 'Steve'
-    })
+        first_name: 'Steve',
+    }),
 }
 
 describe('integrations selectors', () => {
@@ -53,7 +53,9 @@ describe('integrations selectors', () => {
     describe('getEmailIntegrations()', () => {
         it('should get email integrations', () => {
             const integrations = getEmailIntegrations(state)
-            const expected = getIntegrations(state).filter((inte) => ['email', 'gmail'].includes(inte.get('type', '')))
+            const expected = getIntegrations(state).filter((inte) =>
+                ['email', 'gmail'].includes(inte.get('type', ''))
+            )
 
             expect(integrations.equals(expected)).toEqual(true)
         })
@@ -65,14 +67,14 @@ describe('integrations selectors', () => {
                 id: 1,
                 type: EMAIL_INTEGRATION_TYPE,
                 meta: {
-                    address: `asd48sa6d@${window.EMAIL_FORWARDING_DOMAIN}`
-                }
+                    address: `asd48sa6d@${window.EMAIL_FORWARDING_DOMAIN}`,
+                },
             })
 
             const result = getBaseEmailIntegration({
                 integrations: fromJS({
-                    integrations: [baseEmailIntegration]
-                })
+                    integrations: [baseEmailIntegration],
+                }),
             })
 
             expect(result).toEqual(baseEmailIntegration)
@@ -83,14 +85,14 @@ describe('integrations selectors', () => {
                 id: 1,
                 type: EMAIL_INTEGRATION_TYPE,
                 meta: {
-                    address: 'support@mycompany.com'
-                }
+                    address: 'support@mycompany.com',
+                },
             })
 
             const result = getBaseEmailIntegration({
                 integrations: fromJS({
-                    integrations: [baseEmailIntegration]
-                })
+                    integrations: [baseEmailIntegration],
+                }),
             })
 
             expect(result).toEqual(fromJS({}))
@@ -103,11 +105,18 @@ describe('integrations selectors', () => {
 
     it('should get channel by type and address', () => {
         expect(getChannelByTypeAndAddress()(state)).toEqual(fromJS({}))
-        expect(getChannelByTypeAndAddress('email', 'support@acme.gorgias.io')(state)).toMatchSnapshot()
+        expect(
+            getChannelByTypeAndAddress(
+                'email',
+                'support@acme.gorgias.io'
+            )(state)
+        ).toMatchSnapshot()
     })
 
     it('should get channels signature', () => {
-        expect(getChannelSignature('email', 'support@acme.gorgias.io')(state)).toMatchSnapshot()
+        expect(
+            getChannelSignature('email', 'support@acme.gorgias.io')(state)
+        ).toMatchSnapshot()
     })
 
     describe('getShopifyIntegrationsWithoutChat()', () => {
@@ -117,21 +126,21 @@ describe('integrations selectors', () => {
                     integrations: [
                         {
                             id: 1,
-                            type: 'shopify'
+                            type: 'shopify',
                         },
                         {
                             id: 2,
-                            type: 'shopify'
+                            type: 'shopify',
                         },
                         {
                             id: 3,
                             type: 'smooch_inside',
                             meta: {
-                                shopify_integration_ids: [1]
-                            }
-                        }
-                    ]
-                })
+                                shopify_integration_ids: [1],
+                            },
+                        },
+                    ],
+                }),
             }
 
             const res = getShopifyIntegrationsWithoutChat(state)
@@ -147,21 +156,21 @@ describe('integrations selectors', () => {
                     integrations: [
                         {
                             id: 1,
-                            type: 'shopify'
+                            type: 'shopify',
                         },
                         {
                             id: 2,
-                            type: 'shopify'
+                            type: 'shopify',
                         },
                         {
                             id: 3,
                             type: 'smooch_inside',
                             meta: {
-                                shopify_integration_ids: [1, 2]
-                            }
-                        }
-                    ]
-                })
+                                shopify_integration_ids: [1, 2],
+                            },
+                        },
+                    ],
+                }),
             }
 
             const res = getShopifyIntegrationsWithoutChat(state)
@@ -176,21 +185,21 @@ describe('integrations selectors', () => {
                     integrations: [
                         {
                             id: 1,
-                            type: 'shopify'
+                            type: 'shopify',
                         },
                         {
                             id: 2,
-                            type: 'shopify'
+                            type: 'shopify',
                         },
                         {
                             id: 3,
                             type: 'facebook',
                             meta: {
-                                shopify_integration_ids: [1]
-                            }
-                        }
-                    ]
-                })
+                                shopify_integration_ids: [1],
+                            },
+                        },
+                    ],
+                }),
             }
 
             const res = getShopifyIntegrationsWithoutFacebook(state)
@@ -206,21 +215,21 @@ describe('integrations selectors', () => {
                     integrations: [
                         {
                             id: 1,
-                            type: 'shopify'
+                            type: 'shopify',
                         },
                         {
                             id: 2,
-                            type: 'shopify'
+                            type: 'shopify',
                         },
                         {
                             id: 3,
                             type: 'facebook',
                             meta: {
-                                shopify_integration_ids: [1, 2]
-                            }
-                        }
-                    ]
-                })
+                                shopify_integration_ids: [1, 2],
+                            },
+                        },
+                    ],
+                }),
             }
 
             const res = getShopifyIntegrationsWithoutFacebook(state)
@@ -237,25 +246,25 @@ describe('integrations selectors', () => {
                             id: 1,
                             type: 'shopify',
                             meta: {
-                                shop_name: 'foo'
-                            }
+                                shop_name: 'foo',
+                            },
                         },
                         {
                             id: 2,
                             type: 'shopify',
                             meta: {
-                                shop_name: 'bar'
-                            }
+                                shop_name: 'bar',
+                            },
                         },
                         {
                             id: 3,
                             type: 'facebook',
                             meta: {
-                                shop_name: 'bar'
-                            }
-                        }
-                    ]
-                })
+                                shop_name: 'bar',
+                            },
+                        },
+                    ],
+                }),
             }
 
             const res = getShopifyIntegrationByShopName('bar')(state)
@@ -265,32 +274,41 @@ describe('integrations selectors', () => {
 
     describe('getChatIntegrationCampaigns()', () => {
         it('should return the campaigns of the correct chat integration', () => {
-            const expectedCampaigns = [{
-                name: 'una campagnita'
-            }, {
-                name: 'una otra campagnita'
-            }]
+            const expectedCampaigns = [
+                {
+                    name: 'una campagnita',
+                },
+                {
+                    name: 'una otra campagnita',
+                },
+            ]
 
             const state = {
                 integrations: fromJS({
-                    integrations: [{
-                        id: 1,
-                        type: 'smooch_inside',
-                        meta: {
-                            campaigns: [{
-                                name: 'some campaign'
-                            }, {
-                                name: 'another campaign'
-                            }]
-                        }
-                    }, {
-                        id: 3,
-                        type: 'smooch_inside',
-                        meta: {
-                            campaigns: expectedCampaigns
-                        }
-                    }]
-                })
+                    integrations: [
+                        {
+                            id: 1,
+                            type: 'smooch_inside',
+                            meta: {
+                                campaigns: [
+                                    {
+                                        name: 'some campaign',
+                                    },
+                                    {
+                                        name: 'another campaign',
+                                    },
+                                ],
+                            },
+                        },
+                        {
+                            id: 3,
+                            type: 'smooch_inside',
+                            meta: {
+                                campaigns: expectedCampaigns,
+                            },
+                        },
+                    ],
+                }),
             }
 
             const res = getChatIntegrationCampaigns(3)(state)
@@ -303,37 +321,49 @@ describe('integrations selectors', () => {
         it('should return the correct campaign of the correct chat integration', () => {
             const expectedCampaign = {
                 name: 'campaign inte 3',
-                id: 'una-campagnita-123'
+                id: 'una-campagnita-123',
             }
 
             const state = {
                 integrations: fromJS({
-                    integrations: [{
-                        id: 1,
-                        type: 'smooch_inside',
-                        meta: {
-                            campaigns: [{
-                                name: 'campaign inte 1',
-                                id: 'una-campagnita-123'
-                            }, {
-                                name: 'una otra campagnita',
-                                id: 'una-otra-campagnita-456'
-                            }]
-                        }
-                    }, {
-                        id: 3,
-                        type: 'smooch_inside',
-                        meta: {
-                            campaigns: [expectedCampaign, {
-                                name: 'una otra campagnita',
-                                id: 'una-otra-campagnita-456'
-                            }]
-                        }
-                    }]
-                })
+                    integrations: [
+                        {
+                            id: 1,
+                            type: 'smooch_inside',
+                            meta: {
+                                campaigns: [
+                                    {
+                                        name: 'campaign inte 1',
+                                        id: 'una-campagnita-123',
+                                    },
+                                    {
+                                        name: 'una otra campagnita',
+                                        id: 'una-otra-campagnita-456',
+                                    },
+                                ],
+                            },
+                        },
+                        {
+                            id: 3,
+                            type: 'smooch_inside',
+                            meta: {
+                                campaigns: [
+                                    expectedCampaign,
+                                    {
+                                        name: 'una otra campagnita',
+                                        id: 'una-otra-campagnita-456',
+                                    },
+                                ],
+                            },
+                        },
+                    ],
+                }),
             }
 
-            const res = getChatIntegrationCampaignById(3, 'una-campagnita-123')(state)
+            const res = getChatIntegrationCampaignById(
+                3,
+                'una-campagnita-123'
+            )(state)
 
             expect(res.toJS()).toEqual(expectedCampaign)
         })
@@ -344,8 +374,8 @@ describe('integrations selectors', () => {
             const state = {
                 integrations: fromJS({
                     integrations: [{id: 1}, {id: 2}],
-                    integration: null
-                })
+                    integration: null,
+                }),
             }
 
             expect(getCurrentIntegration(state).toJS()).toEqual({})
@@ -356,50 +386,72 @@ describe('integrations selectors', () => {
             const state = {
                 integrations: fromJS({
                     integrations: [{id: 1}, {id: 2}],
-                    integration: currentIntegration
-                })
+                    integration: currentIntegration,
+                }),
             }
 
-            expect(getCurrentIntegration(state).toJS()).toEqual(currentIntegration)
+            expect(getCurrentIntegration(state).toJS()).toEqual(
+                currentIntegration
+            )
         })
     })
 
     describe('getOnboardingIntegrations()', () => {
-        [FACEBOOK_INTEGRATION_TYPE, OUTLOOK_INTEGRATION_TYPE].forEach((integrationType) => {
-            it(`should return an empty list because there is no integrations in the state (${integrationType})`, () => {
-                expect(getOnboardingIntegrations(integrationType)({})).toEqual(fromJS([]))
-            })
+        ;[FACEBOOK_INTEGRATION_TYPE, OUTLOOK_INTEGRATION_TYPE].forEach(
+            (integrationType) => {
+                it(`should return an empty list because there is no integrations in the state (${integrationType})`, () => {
+                    expect(
+                        getOnboardingIntegrations(integrationType)({})
+                    ).toEqual(fromJS([]))
+                })
 
-            it(`should return the list of onboarding pages from the state (${integrationType})`, () => {
-                const page = {id: 1, name: 'foo'}
-                const state = {
-                    integrations: fromJS({
-                        extra: {[integrationType]: {onboardingIntegrations: {data: [page]}}}
-                    })
-                }
+                it(`should return the list of onboarding pages from the state (${integrationType})`, () => {
+                    const page = {id: 1, name: 'foo'}
+                    const state = {
+                        integrations: fromJS({
+                            extra: {
+                                [integrationType]: {
+                                    onboardingIntegrations: {data: [page]},
+                                },
+                            },
+                        }),
+                    }
 
-                expect(getOnboardingIntegrations(integrationType)(state).toJS()).toEqual([page])
-            })
-        })
+                    expect(
+                        getOnboardingIntegrations(integrationType)(state).toJS()
+                    ).toEqual([page])
+                })
+            }
+        )
     })
 
     describe('getOnboardingMeta()', () => {
-        [FACEBOOK_INTEGRATION_TYPE, OUTLOOK_INTEGRATION_TYPE].forEach((integrationType) => {
-            it(`should return an empty map because there is no meta in the state (${integrationType})`, () => {
-                expect(getOnboardingMeta(integrationType)({})).toEqual(fromJS({}))
-            })
+        ;[FACEBOOK_INTEGRATION_TYPE, OUTLOOK_INTEGRATION_TYPE].forEach(
+            (integrationType) => {
+                it(`should return an empty map because there is no meta in the state (${integrationType})`, () => {
+                    expect(getOnboardingMeta(integrationType)({})).toEqual(
+                        fromJS({})
+                    )
+                })
 
-            it('should return the meta of onboarding pages from the state', () => {
-                const meta = {page: 1}
-                const state = {
-                    integrations: fromJS({
-                        extra: {[integrationType]: {onboardingIntegrations: {meta}}}
-                    })
-                }
+                it('should return the meta of onboarding pages from the state', () => {
+                    const meta = {page: 1}
+                    const state = {
+                        integrations: fromJS({
+                            extra: {
+                                [integrationType]: {
+                                    onboardingIntegrations: {meta},
+                                },
+                            },
+                        }),
+                    }
 
-                expect(getOnboardingMeta(integrationType)(state).toJS()).toEqual(meta)
-            })
-        })
+                    expect(
+                        getOnboardingMeta(integrationType)(state).toJS()
+                    ).toEqual(meta)
+                })
+            }
+        )
     })
 
     describe('getFacebookRedirectUri()', () => {
@@ -413,10 +465,10 @@ describe('integrations selectors', () => {
                     authentication: {
                         facebook: {
                             redirect_uri_reconnect: FAKE_URI_RECONNECT,
-                            redirect_uri: FAKE_URI
-                        }
-                    }
-                })
+                            redirect_uri: FAKE_URI,
+                        },
+                    },
+                }),
             }
         })
 
@@ -440,47 +492,51 @@ describe('integrations selectors', () => {
                             id: 1,
                             type: SHOPIFY_INTEGRATION_TYPE,
                             meta: {
-                                store_url: 'magento.gorgi.us'
-                            }
+                                store_url: 'magento.gorgi.us',
+                            },
                         },
                         {
                             id: 2,
                             type: MAGENTO2_INTEGRATION_TYPE,
                             meta: {
-                                store_url: 'magento.gorgi.us'
-                            }
+                                store_url: 'magento.gorgi.us',
+                            },
                         },
                         {
                             id: 3,
                             type: MAGENTO2_INTEGRATION_TYPE,
                             meta: {
-                                store_url: 'bar'
-                            }
-                        }
-                    ]
-                })
+                                store_url: 'bar',
+                            },
+                        },
+                    ],
+                }),
             }
 
-            const res = getMagento2IntegrationByStoreUrl('magento.gorgi.us')(state)
+            const res = getMagento2IntegrationByStoreUrl('magento.gorgi.us')(
+                state
+            )
             expect(res.get('id')).toEqual(2)
         })
     })
 
     describe('getForwardingEmailAddress()', () => {
         it('should return the forwarding email address of the account', () => {
-            const forwardingEmailAddress ='forward@gorgias.io'
+            const forwardingEmailAddress = 'forward@gorgias.io'
 
             const state = {
                 integrations: fromJS({
                     authentication: {
                         [EMAIL_INTEGRATION_TYPE]: {
-                            forwarding_email_address: forwardingEmailAddress
-                        }
-                    }
-                })
+                            forwarding_email_address: forwardingEmailAddress,
+                        },
+                    },
+                }),
             }
 
-            expect(getForwardingEmailAddress(state)).toEqual(forwardingEmailAddress)
+            expect(getForwardingEmailAddress(state)).toEqual(
+                forwardingEmailAddress
+            )
         })
     })
 })

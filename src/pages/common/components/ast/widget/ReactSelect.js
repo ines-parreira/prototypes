@@ -8,7 +8,7 @@ import _noop from 'lodash/noop'
 import 'react-select/dist/react-select.css'
 import SelectField, {
     type Option as SelectOption,
-    type Value as SelectValue
+    type Value as SelectValue,
 } from '../../../forms/SelectField'
 
 type Props = {
@@ -18,7 +18,7 @@ type Props = {
     value: any,
     onSearchChange: (any) => void,
     placeholder?: string,
-    focusedPlaceholder?: string
+    focusedPlaceholder?: string,
 }
 
 export default class Select extends React.Component<Props> {
@@ -43,14 +43,20 @@ export default class Select extends React.Component<Props> {
                     }
                 })
             } else {
-                formattedOptions = Object.keys(options).map<SelectOption>((key) => ({
-                    value: key.toString(),
-                    label: options[key].label
-                }))
+                formattedOptions = Object.keys(options).map<SelectOption>(
+                    (key) => ({
+                        value: key.toString(),
+                        label: options[key].label,
+                    })
+                )
             }
         }
         // order alphabetically
-        return sortBy<SelectOption>(formattedOptions, (option: SelectOption) => typeof option.label === 'string' && option.label.toLowerCase())
+        return sortBy<SelectOption>(
+            formattedOptions,
+            (option: SelectOption) =>
+                typeof option.label === 'string' && option.label.toLowerCase()
+        )
     }
 
     _onChange = (value: SelectValue) => {
@@ -65,7 +71,13 @@ export default class Select extends React.Component<Props> {
     }
 
     render() {
-        const {className, value, onSearchChange, placeholder, focusedPlaceholder} = this.props
+        const {
+            className,
+            value,
+            onSearchChange,
+            placeholder,
+            focusedPlaceholder,
+        } = this.props
         let newValue = value
 
         if (value === true) {

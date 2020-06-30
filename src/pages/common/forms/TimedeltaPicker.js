@@ -1,23 +1,29 @@
 import React from 'react'
 import _find from 'lodash/find'
 import {
-    DropdownItem, DropdownMenu, DropdownToggle,
-    Input, InputGroup, InputGroupButtonDropdown
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    Input,
+    InputGroup,
+    InputGroupButtonDropdown,
 } from 'reactstrap'
 
 import {isTimedelta} from '../../../utils/ast'
-import {TIMEDELTA_OPERATOR_DEFAULT_QUANTITY, TIMEDELTA_OPERATOR_DEFAULT_UNIT} from '../../../config'
-
+import {
+    TIMEDELTA_OPERATOR_DEFAULT_QUANTITY,
+    TIMEDELTA_OPERATOR_DEFAULT_UNIT,
+} from '../../../config'
 
 type Props = {
     value: string,
-    onChange: (string) => null
+    onChange: (string) => null,
 }
 
 type State = {
     quantity: number,
     unit: string,
-    dropdownOpen: bool
+    dropdownOpen: boolean,
 }
 
 const UNITS = [
@@ -37,13 +43,13 @@ export default class TimedeltaPicker extends React.Component<Props, State> {
         if (isTimedelta(value)) {
             this.state = {
                 ...this._buildValue(value),
-                dropdownOpen: false
+                dropdownOpen: false,
             }
         } else {
             this.state = {
                 quantity: TIMEDELTA_OPERATOR_DEFAULT_QUANTITY,
                 unit: TIMEDELTA_OPERATOR_DEFAULT_UNIT,
-                dropdownOpen: false
+                dropdownOpen: false,
             }
         }
     }
@@ -55,8 +61,12 @@ export default class TimedeltaPicker extends React.Component<Props, State> {
     }
 
     _buildValue = (value) => {
-        const quantity = value ? parseInt(value.replace(/[^\d]/g, '')) : TIMEDELTA_OPERATOR_DEFAULT_QUANTITY
-        const unit = value ? value.replace(/[\d]/g, '') : TIMEDELTA_OPERATOR_DEFAULT_UNIT
+        const quantity = value
+            ? parseInt(value.replace(/[^\d]/g, ''))
+            : TIMEDELTA_OPERATOR_DEFAULT_QUANTITY
+        const unit = value
+            ? value.replace(/[\d]/g, '')
+            : TIMEDELTA_OPERATOR_DEFAULT_UNIT
 
         return {quantity, unit}
     }
@@ -84,7 +94,8 @@ export default class TimedeltaPicker extends React.Component<Props, State> {
     }
 
     render() {
-        const unitLabel = _find(UNITS, (unit) => unit.value === this.state.unit).label
+        const unitLabel = _find(UNITS, (unit) => unit.value === this.state.unit)
+            .label
 
         return (
             <div className="d-flex">
@@ -92,7 +103,9 @@ export default class TimedeltaPicker extends React.Component<Props, State> {
                     <Input
                         type="number"
                         value={this.state.quantity}
-                        onChange={(event) => this._onQuantityChange(event.target.value)}
+                        onChange={(event) =>
+                            this._onQuantityChange(event.target.value)
+                        }
                         style={{width: '62px'}}
                         min="0"
                         max={MAX_QUANTITY}
@@ -107,18 +120,18 @@ export default class TimedeltaPicker extends React.Component<Props, State> {
                             <span>{unitLabel}</span>
                         </DropdownToggle>
                         <DropdownMenu>
-                            {
-                                UNITS.map((unit) => {
-                                    return (
-                                        <DropdownItem
-                                            key={unit.value}
-                                            onClick={() => this._onUnitChange(unit.value)}
-                                        >
-                                            {unit.label}
-                                        </DropdownItem>
-                                    )
-                                })
-                            }
+                            {UNITS.map((unit) => {
+                                return (
+                                    <DropdownItem
+                                        key={unit.value}
+                                        onClick={() =>
+                                            this._onUnitChange(unit.value)
+                                        }
+                                    >
+                                        {unit.label}
+                                    </DropdownItem>
+                                )
+                            })}
                         </DropdownMenu>
                     </InputGroupButtonDropdown>
                 </InputGroup>

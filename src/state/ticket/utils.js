@@ -28,10 +28,13 @@ export function getLastSameSourceTypeMessage(messages, sourceType) {
     const msg = ticketConfig
         .orderedMessages(messages)
         .filter((m) => !isForwardedMessage(m))
-        .filter((m) => m.getIn(['source', 'type']) === sourceType).last()
+        .filter((m) => m.getIn(['source', 'type']) === sourceType)
+        .last()
 
     if (!msg && sourceType === 'facebook-comment') {
-        return messages.filter((m) => m.getIn(['source', 'type']) === 'facebook-post').last()
+        return messages
+            .filter((m) => m.getIn(['source', 'type']) === 'facebook-post')
+            .last()
     }
 
     return msg
@@ -61,7 +64,10 @@ export function getChannelFromSourceType(sourceType, messages) {
     return ticketConfig.sourceTypeToChannel(sourceType, toImmutable(messages))
 }
 
-export function isSupportAddress(addressToTest = '', supportAddresses = fromJS([])) {
+export function isSupportAddress(
+    addressToTest = '',
+    supportAddresses = fromJS([])
+) {
     if (!addressToTest || !supportAddresses.size) {
         return false
     }
@@ -71,9 +77,11 @@ export function isSupportAddress(addressToTest = '', supportAddresses = fromJS([
         const splitSupportAddress = supportAddress.split('@')
 
         // ex: if support@acme.io is the support address, we search for it but also for support+something@acme.io
-        if (formattedAddress === supportAddress ||
-            formattedAddress.startsWith(`${splitSupportAddress[0]}+`) &&
-            formattedAddress.endsWith(`@${splitSupportAddress[1]}`)) {
+        if (
+            formattedAddress === supportAddress ||
+            (formattedAddress.startsWith(`${splitSupportAddress[0]}+`) &&
+                formattedAddress.endsWith(`@${splitSupportAddress[1]}`))
+        ) {
             return true
         }
     }
@@ -94,43 +102,62 @@ export function getValuePropFromSourceType(sourceType) {
  * @param channels
  * @returns {*}
  */
-export function guessReceiversFromTicket(ticket, newMessageSourceType, channels = fromJS([])) {
+export function guessReceiversFromTicket(
+    ticket,
+    newMessageSourceType,
+    channels = fromJS([])
+) {
     let toReceivers = fromJS([])
     let ccReceivers = fromJS([])
     const messages = ticket.get('messages', fromJS([]))
 
     const supportAddresses = channels.map((channel) => channel.get('address'))
-    const lastMessage = getLastSameSourceTypeMessage(messages, newMessageSourceType)
+    const lastMessage = getLastSameSourceTypeMessage(
+        messages,
+        newMessageSourceType
+    )
 
     if (lastMessage) {
         if (lastMessage.get('from_agent')) {
-            toReceivers = toReceivers.concat(lastMessage.getIn(['source', 'to']))
+            toReceivers = toReceivers.concat(
+                lastMessage.getIn(['source', 'to'])
+            )
         } else {
-            toReceivers = toReceivers.push(lastMessage.getIn(['source', 'from']))
+            toReceivers = toReceivers.push(
+                lastMessage.getIn(['source', 'from'])
+            )
 
             // Related issue: https://github.com/gorgias/gorgias/issues/4620
             if (supportAddresses.size) {
-                toReceivers = toReceivers.concat(lastMessage.getIn(['source', 'to']))
+                toReceivers = toReceivers.concat(
+                    lastMessage.getIn(['source', 'to'])
+                )
             }
         }
         ccReceivers = lastMessage.getIn(['source', 'cc'], fromJS([]))
     }
 
-    const cleanReceivers = (receivers) => receivers
-        .filter((receiver) => !!receiver) // remove falsy values
-        .map((receiver) => { // set address to lowercase
-            if (receiver.get('address')) {
-                return receiver.update('address', _toLower)
-            }
+    const cleanReceivers = (receivers) =>
+        receivers
+            .filter((receiver) => !!receiver) // remove falsy values
+            .map((receiver) => {
+                // set address to lowercase
+                if (receiver.get('address')) {
+                    return receiver.update('address', _toLower)
+                }
 
-            return receiver
-        })
-        .filter((receiver) => { // remove support addresses
-            return !isSupportAddress(receiver.get('address'), supportAddresses)
-        })
+                return receiver
+            })
+            .filter((receiver) => {
+                // remove support addresses
+                return !isSupportAddress(
+                    receiver.get('address'),
+                    supportAddresses
+                )
+            })
 
     const ret = {
-        to: cleanReceivers(toReceivers).toJS()
+        to: cleanReceivers(toReceivers).toJS(),
     }
 
     const cc = cleanReceivers(ccReceivers).toJS()
@@ -144,20 +171,28 @@ export function guessReceiversFromTicket(ticket, newMessageSourceType, channels 
     if (ret.to.length === 0) {
         // if selected type needs a `to` field
         if (!ticketConfig.isSystemType(newMessageSourceType)) {
-            const newMessageChannel = ticketConfig.sourceTypeToChannel(newMessageSourceType, messages)
-            const customerChannel = ticket.getIn(['customer', 'channels'], fromJS([]))
+            const newMessageChannel = ticketConfig.sourceTypeToChannel(
+                newMessageSourceType,
+                messages
+            )
+            const customerChannel = ticket
+                .getIn(['customer', 'channels'], fromJS([]))
                 .filter((channel) => channel.get('type') === newMessageChannel) // keep only matching channels
                 .sortBy((channel) => !channel.get('preferred')) // preferred channel is now first of the list
                 .first()
 
             if (customerChannel) {
-                const receivers = fromJS([{
-                    name: ticket.getIn(['customer', 'name']) || '',
-                    address: customerChannel.get(getValuePropFromSourceType(newMessageSourceType)) || '',
-                }])
+                const receivers = fromJS([
+                    {
+                        name: ticket.getIn(['customer', 'name']) || '',
+                        address:
+                            customerChannel.get(
+                                getValuePropFromSourceType(newMessageSourceType)
+                            ) || '',
+                    },
+                ])
                 ret.to = cleanReceivers(receivers).toJS()
             }
-
         }
     }
 
@@ -217,13 +252,17 @@ export function buildPartialUpdateFromAction(actionNames, state) {
     if (!state) {
         return {}
     }
-    const formattedActionNames = !_isArray(actionNames) ? [actionNames] : actionNames
+    const formattedActionNames = !_isArray(actionNames)
+        ? [actionNames]
+        : actionNames
 
     return formattedActionNames
         .map((actionName) => getActionTemplate(actionName))
         .filter((config) => !!config.partialUpdateKey)
         .reduce((result, config) => {
-            result[config.partialUpdateKey] = getProperty(config.partialUpdateValue)(state)
+            result[config.partialUpdateKey] = getProperty(
+                config.partialUpdateValue
+            )(state)
             return result
         }, {})
 }
@@ -238,7 +277,10 @@ export function buildPartialUpdateFromAction(actionNames, state) {
 export function getPreferredChannel(channelType, channels) {
     // get the preferred channel
     let chan = channels.find((channel) => {
-        return channel.get('type') === channelType && channel.get('preferred', false)
+        return (
+            channel.get('type') === channelType &&
+            channel.get('preferred', false)
+        )
     })
 
     // get the first channel available
@@ -249,23 +291,30 @@ export function getPreferredChannel(channelType, channels) {
     return chan || fromJS({})
 }
 
-
 const LAST_SENDER_CHANNEL_KEY = 'lastSenderChannel'
 
 export const persistLastSenderChannel = (channel) => {
     if (window.localStorage) {
-        window.localStorage.setItem(LAST_SENDER_CHANNEL_KEY, JSON.stringify(channel.toJS()))
+        window.localStorage.setItem(
+            LAST_SENDER_CHANNEL_KEY,
+            JSON.stringify(channel.toJS())
+        )
     }
 }
 
 export const getLastSenderChannel = () => {
     if (window.localStorage) {
-        const lastSenderChannel = window.localStorage.getItem(LAST_SENDER_CHANNEL_KEY)
+        const lastSenderChannel = window.localStorage.getItem(
+            LAST_SENDER_CHANNEL_KEY
+        )
         if (lastSenderChannel) {
             try {
                 return fromJS(JSON.parse(lastSenderChannel))
             } catch (error) {
-                console.error(`Failed to decode window.localStorage."${LAST_SENDER_CHANNEL_KEY}"`, error)
+                console.error(
+                    `Failed to decode window.localStorage."${LAST_SENDER_CHANNEL_KEY}"`,
+                    error
+                )
             }
         }
     }
@@ -283,23 +332,23 @@ export function getNewMessageSender(ticket, newMessageSourceType, channels) {
     if (newMessageSourceType === 'internal-note') {
         return fromJS({
             name: '',
-            address: ''
+            address: '',
         })
     }
 
-    const preferredChannel = getPreferredChannel(newMessageSourceType, channels) || fromJS({})
-    const lastMessage = ticket.get('messages')
-        .findLast((message) => {
-            const type = message.getIn(['source', 'type'], '')
+    const preferredChannel =
+        getPreferredChannel(newMessageSourceType, channels) || fromJS({})
+    const lastMessage = ticket.get('messages').findLast((message) => {
+        const type = message.getIn(['source', 'type'], '')
 
-            // a message can be a facebook post
-            // or a comment but agent can only respond with a comment
-            if (newMessageSourceType === 'facebook-comment') {
-                return [newMessageSourceType, 'facebook-post'].includes(type)
-            }
+        // a message can be a facebook post
+        // or a comment but agent can only respond with a comment
+        if (newMessageSourceType === 'facebook-comment') {
+            return [newMessageSourceType, 'facebook-post'].includes(type)
+        }
 
-            return type === newMessageSourceType
-        })
+        return type === newMessageSourceType
+    })
 
     // smooch, messenger
     // because channels only list email addresses
@@ -319,7 +368,10 @@ export function getNewMessageSender(ticket, newMessageSourceType, channels) {
         const lastSender = getLastSenderChannel()
 
         // make sure the persisted sender is in the list of channels
-        if (lastSender && channels.find((c) => c.get('address') === lastSender.get('address'))) {
+        if (
+            lastSender &&
+            channels.find((c) => c.get('address') === lastSender.get('address'))
+        ) {
             return lastSender
         }
         return preferredChannel
@@ -334,10 +386,12 @@ export function getNewMessageSender(ticket, newMessageSourceType, channels) {
         sender = lastMessage.getIn(['source', 'from']) || preferredChannel
 
         if (!sender.isEmpty() && newMessageSourceType === 'email') {
-            sender = channels.find(
-                (channel) => channel.get('address') === sender.get('address')
-                    && EMAIL_INTEGRATION_TYPES.includes(channel.get('type'))
-            ) || preferredChannel
+            sender =
+                channels.find(
+                    (channel) =>
+                        channel.get('address') === sender.get('address') &&
+                        EMAIL_INTEGRATION_TYPES.includes(channel.get('type'))
+                ) || preferredChannel
         }
 
         return sender
@@ -345,7 +399,8 @@ export function getNewMessageSender(ticket, newMessageSourceType, channels) {
 
     // last message sent by an agent
     // search in recipients of `to` and `cc` fields to match with an email of account channels
-    const receivers = lastMessage.getIn(['source', 'to'], fromJS([]))
+    const receivers = lastMessage
+        .getIn(['source', 'to'], fromJS([]))
         .concat(lastMessage.getIn(['source', 'cc'], fromJS([])))
     for (const receiver of receivers) {
         for (const channel of channels) {
@@ -373,18 +428,14 @@ export function getPendingMessageIndex(pendingMessages, message) {
     }
 
     // props that are the same in the post body and the response
-    const props = [
-        'body_html',
-        'body_text',
-        'channel',
-        'from_agent',
-        'source',
-    ]
+    const props = ['body_html', 'body_text', 'channel', 'from_agent', 'source']
 
     const whitelist = (v, key) => props.includes(key)
 
     pendingMessages.some((pending, i) => {
-        if (_isEqual(_pickBy(pending, whitelist), _pickBy(message, whitelist))) {
+        if (
+            _isEqual(_pickBy(pending, whitelist), _pickBy(message, whitelist))
+        ) {
             index = i
             return true
         }
@@ -414,7 +465,13 @@ export const renderObject = (argument, context) => {
     return ret
 }
 
-export const replaceIntegrationVariables = (integrationType, ticketState, variable, newArgument, notify) => {
+export const replaceIntegrationVariables = (
+    integrationType,
+    ticketState,
+    variable,
+    newArgument,
+    notify
+) => {
     let integrations = ticketState
         .getIn(['customer', 'integrations'], fromJS([]))
         .filter((integration) => {
@@ -422,27 +479,44 @@ export const replaceIntegrationVariables = (integrationType, ticketState, variab
         })
 
     // if we have updated_at in customer, sort integrations by the update date so we use the most recent updates
-    if (!integrations.isEmpty() && integrations.first().getIn(['customer', 'updated_at'])) {
-        integrations = integrations.sortBy((integration) => integration.getIn(['customer', 'updated_at'])).reverse()
+    if (
+        !integrations.isEmpty() &&
+        integrations.first().getIn(['customer', 'updated_at'])
+    ) {
+        integrations = integrations
+            .sortBy((integration) =>
+                integration.getIn(['customer', 'updated_at'])
+            )
+            .reverse()
     }
 
-    const integrationIds = integrations.map((_, integrationId) => integrationId).toList()
+    const integrationIds = integrations
+        .map((_, integrationId) => integrationId)
+        .toList()
 
     const integrationId = integrationIds.first()
 
     if (!integrationId) {
         notify({
             type: 'warning',
-            title: `This customer does not have any ${_capitalize(integrationType)} information`,
+            title: `This customer does not have any ${_capitalize(
+                integrationType
+            )} information`,
         })
         return newArgument.replace(variable, '')
     }
 
     const variableConfig = ticketConfig.getVariableWithValue(variable)
-    let newVariable = variable.replace(`integrations.${integrationType}`, `integrations[${integrationId}]`)
+    let newVariable = variable.replace(
+        `integrations.${integrationType}`,
+        `integrations[${integrationId}]`
+    )
 
     if (variableConfig && variableConfig.replace) {
-        newVariable = variableConfig.replace(fromJS({ticket: ticketState}), integrationId)
+        newVariable = variableConfig.replace(
+            fromJS({ticket: ticketState}),
+            integrationId
+        )
     }
 
     return newArgument.replace(variable, newVariable)
@@ -452,7 +526,9 @@ export const replaceVariables = (argument, ticket, currentUser, notify) => {
     // If there's a var of format `ticket.customer.integrations.XXX`, then it's a dynamic variable.
     // Else, it would be `ticket.customer.integrations[XXX]`.
     let newArgument = argument
-    let variables = argument.match(/{{ticket\.customer\.integrations.[\w\d\]\[._-]+\|?([\w_]+\([^(]*\))?}}/g)
+    let variables = argument.match(
+        /{{ticket\.customer\.integrations.[\w\d\]\[._-]+\|?([\w_]+\([^(]*\))?}}/g
+    )
 
     if (variables) {
         // If a variable is a dynamic variable, we try to replace `integrations.{type}` with
@@ -460,7 +536,13 @@ export const replaceVariables = (argument, ticket, currentUser, notify) => {
         variables.forEach((variable) => {
             INTEGRATION_TYPE_WITH_VARIABLES.forEach((integrationType) => {
                 if (variable.includes('integrations.' + integrationType)) {
-                    newArgument = replaceIntegrationVariables(integrationType, ticket, variable, newArgument, notify)
+                    newArgument = replaceIntegrationVariables(
+                        integrationType,
+                        ticket,
+                        variable,
+                        newArgument,
+                        notify
+                    )
                 }
             })
         })
@@ -479,7 +561,9 @@ export const nestedReplace = (obj, ticketState, currentUserState, notify) => {
 
     // since typeof null === 'object', we also need to verify obj is not null
     if (typeof obj === 'object' && obj !== null) {
-        return obj.map((item) => nestedReplace(item, ticketState, currentUserState, notify))
+        return obj.map((item) =>
+            nestedReplace(item, ticketState, currentUserState, notify)
+        )
     }
 
     return obj

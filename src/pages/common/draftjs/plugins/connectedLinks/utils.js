@@ -5,10 +5,7 @@ const hasProtocol = (url: string): boolean => {
     return url.indexOf('//') === 0 || url.includes('://')
 }
 
-const matchProtocols = [
-    'http:',
-    'https:',
-]
+const matchProtocols = ['http:', 'https:']
 
 export const parseUrl = (url: string = '', target: string = ''): string => {
     let formattedUrl = url.trim()
@@ -37,10 +34,7 @@ export const parseUrl = (url: string = '', target: string = ''): string => {
         // target has www, but not url
         const targetParts = targetUrl.hostname.split('.')
         const urlParts = a.hostname.split('.')
-        if (
-            targetParts[0] === subdomain
-            && urlParts[0] !== subdomain
-        ) {
+        if (targetParts[0] === subdomain && urlParts[0] !== subdomain) {
             a.hostname = `www.${a.hostname}`
         }
 
@@ -98,7 +92,7 @@ export const setConnectedLinks = (editorState: EditorState): EditorState => {
         return EditorState.push(
             editorState,
             newContentState,
-            'set-connected-links',
+            'set-connected-links'
         )
     }
 

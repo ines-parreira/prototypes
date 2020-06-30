@@ -15,11 +15,11 @@ describe('FilterMultiSelectField', () => {
         onChange: _noop,
         field: new Map(),
         fieldEnumSearch: () => new Map(),
-        mapSearchResults: () => []
+        mapSearchResults: () => [],
     }
 
     it('should search for the values on mount', () => {
-        const fieldEnumSearchSpy= jest.fn()
+        const fieldEnumSearchSpy = jest.fn()
         mount(
             <FilterMultiSelectField
                 {...defaultProps}
@@ -29,10 +29,9 @@ describe('FilterMultiSelectField', () => {
         expect(fieldEnumSearchSpy).toBeCalled()
     })
 
-
     // https://github.com/facebook/jest/issues/3465
     it.skip('should debounce search on input change', () => {
-        const fieldEnumSearchSpy= jest.fn()
+        const fieldEnumSearchSpy = jest.fn()
         const wrapper = mount(
             <FilterMultiSelectField
                 {...defaultProps}
@@ -43,12 +42,12 @@ describe('FilterMultiSelectField', () => {
         wrapper.find(MultiSelectOptionsField).prop('onInputChange')('bar')
         wrapper.find(MultiSelectOptionsField).prop('onInputChange')('baz')
         jest.runAllTimers()
-        expect(fieldEnumSearchSpy).toHaveBeenCalledTimes(2)  // two times, because first time on mount
+        expect(fieldEnumSearchSpy).toHaveBeenCalledTimes(2) // two times, because first time on mount
         expect(fieldEnumSearchSpy).toHaveBeenLastCalledWith(new Map(), 'baz')
     })
 
     it('should reset search on change', () => {
-        const fieldEnumSearchSpy= jest.fn()
+        const fieldEnumSearchSpy = jest.fn()
         const wrapper = mount(
             <FilterMultiSelectField
                 {...defaultProps}

@@ -16,7 +16,7 @@ type Props = {
 }
 
 type State = {
-    forceHideButton: boolean
+    forceHideButton: boolean,
 }
 
 class Signature extends React.Component<Props, State> {
@@ -24,12 +24,13 @@ class Signature extends React.Component<Props, State> {
         super()
 
         this.state = {
-            forceHideButton: false
+            forceHideButton: false,
         }
     }
 
     _shouldShowBtn = (props) => {
-        const hasSignature = props.signature.get('text') || props.signature.get('html')
+        const hasSignature =
+            props.signature.get('text') || props.signature.get('html')
 
         if (!hasSignature) {
             return false
@@ -40,7 +41,13 @@ class Signature extends React.Component<Props, State> {
 
     _hasSignature(props) {
         const contentState = props.editorState.getCurrentContent()
-        return contentState && responseUtils.isSignatureAdded(contentState, props.signature.get('text'))
+        return (
+            contentState &&
+            responseUtils.isSignatureAdded(
+                contentState,
+                props.signature.get('text')
+            )
+        )
     }
 
     componentWillReceiveProps(nextProps) {
@@ -89,7 +96,7 @@ function mapStateToProps(state) {
 }
 
 const mapDispatchToProps = {
-    addSignature: newMessageActions.addSignature
+    addSignature: newMessageActions.addSignature,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Signature)

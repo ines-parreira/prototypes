@@ -8,7 +8,8 @@ import type {stateType} from '../types'
 
 export const getReceiversProperties = () => ['to', 'cc', 'bcc']
 
-export const getNewMessageState = (state: stateType): Map<*,*> => state.newMessage || fromJS({})
+export const getNewMessageState = (state: stateType): Map<*, *> =>
+    state.newMessage || fromJS({})
 
 export const getLoading = createImmutableSelector(
     [getNewMessageState],
@@ -17,23 +18,20 @@ export const getLoading = createImmutableSelector(
 
 // in props usage
 // ex: isMerging: isLoading('merge')(state)
-export const isLoading = (name: string) => createSelector(
-    [getLoading],
-    (loading) => loading.get(name, false)
-)
+export const isLoading = (name: string) =>
+    createSelector([getLoading], (loading) => loading.get(name, false))
 
 // in component usage
 // ex: isLoading: makeIsLoading(state)   then : const isMerging = isLoading('merge')
-export const makeIsLoading = (state: stateType) => (name: string): boolean => isLoading(name)(state)
+export const makeIsLoading = (state: stateType) => (name: string): boolean =>
+    isLoading(name)(state)
 
-export const isDirty = createSelector(
-    [getNewMessageState],
-    (state) => state.getIn(['state', 'dirty'], false)
+export const isDirty = createSelector([getNewMessageState], (state) =>
+    state.getIn(['state', 'dirty'], false)
 )
 
-export const isCacheAdded = createSelector(
-    [getNewMessageState],
-    (state) => state.getIn(['state', 'cacheAdded'], false)
+export const isCacheAdded = createSelector([getNewMessageState], (state) =>
+    state.getIn(['state', 'cacheAdded'], false)
 )
 
 export const getNewMessage = createImmutableSelector(
@@ -73,38 +71,48 @@ export const isNewMessagePublic = createImmutableSelector(
 
 export const isForward = (() => {
     const isForwardedMessage = require('../ticket/utils').isForwardedMessage
-    return createSelector(
-        [getNewMessage],
-        (message) => isForwardedMessage(message)
+    return createSelector([getNewMessage], (message) =>
+        isForwardedMessage(message)
     )
 })()
 
 // in props usage
 // property like 'to', 'from', 'cc', etc.
 // ex: newMessageTo: getNewMessageSourceProperty('to')(state)
-export const getNewMessageSourceProperty = (property: string) => createImmutableSelector(
-    [getNewMessageSource],
-    (state) => state.get(property) || fromJS({})
-)
+export const getNewMessageSourceProperty = (property: string) =>
+    createImmutableSelector(
+        [getNewMessageSource],
+        (state) => state.get(property) || fromJS({})
+    )
 
 // in component usage
 // ex: newMessageSourceProperty: makeGetNewMessageSourceProperty(state)
 // then : const newMessageTo = newMessageSourceProperty('to')
-export const makeGetNewMessageSourceProperty = (state: stateType) => (property: string): Map<*,*> => getNewMessageSourceProperty(property)(state)
+export const makeGetNewMessageSourceProperty = (state: stateType) => (
+    property: string
+): Map<*, *> => getNewMessageSourceProperty(property)(state)
 
-export const getMandatoryContactProperties = (sourceType: string) => (): Array<string> => { // eslint-disable-line no-unused-vars
+export const getMandatoryContactProperties = (
+    sourceType: string // eslint-disable-line no-unused-vars
+) => (): Array<string> => {
     return ['to']
 }
 
-export const getOptionalContactProperties = (sourceType: string) => (): Array<string> => {
+export const getOptionalContactProperties = (
+    sourceType: string
+) => (): Array<string> => {
     return sourceType === 'email' ? ['cc', 'bcc'] : []
 }
 
 // return all contact properties (mandatory + optional) for a source type
-export const getContactProperties = (sourceType: string) => createImmutableSelector(
-    [getMandatoryContactProperties(sourceType), getOptionalContactProperties(sourceType)],
-    (mandatory, optional) => mandatory.concat(optional)
-)
+export const getContactProperties = (sourceType: string) =>
+    createImmutableSelector(
+        [
+            getMandatoryContactProperties(sourceType),
+            getOptionalContactProperties(sourceType),
+        ],
+        (mandatory, optional) => mandatory.concat(optional)
+    )
 
 export const getNewMessageMandatoryContactProperties = createImmutableSelector(
     [getNewMessageType],
@@ -120,10 +128,10 @@ export const getNewMessageContactProperties = createImmutableSelector(
 export const areNewMessageContactPropertiesFulfilled = createImmutableSelector(
     [getNewMessageMandatoryContactProperties, makeGetNewMessageSourceProperty],
     (mandatoryProperties, getFromSource) => {
-        return mandatoryProperties.every(((property) => {
+        return mandatoryProperties.every((property) => {
             const value = getFromSource(property)
             return isImmutable(value) ? !value.isEmpty() : !!value
-        }))
+        })
     }
 )
 
@@ -131,7 +139,8 @@ export const areNewMessageContactPropertiesFulfilled = createImmutableSelector(
 export const getNewMessageRecipients = createImmutableSelector(
     [getNewMessageContactProperties, makeGetNewMessageSourceProperty],
     (recipientProperties, getFromSource) => {
-        return recipientProperties.filter((prop) => prop !== 'from')
+        return recipientProperties
+            .filter((prop) => prop !== 'from')
             .reduce((result, prop) => {
                 const recipients = getFromSource(prop)
                 let nextResult = result
@@ -157,16 +166,33 @@ export const hasAttachments = createSelector(
 
 // Determine if the new message is ready to be sent
 export const isReady = createSelector(
-    [getNewMessage, hasNewMessageRecipients, hasAttachments, isNewMessagePublic, isForward],
-    (newMessage, hasRecipients, hasAttachments, isNewMessagePublic, isForward) => {
+    [
+        getNewMessage,
+        hasNewMessageRecipients,
+        hasAttachments,
+        isNewMessagePublic,
+        isForward,
+    ],
+    (
+        newMessage,
+        hasRecipients,
+        hasAttachments,
+        isNewMessagePublic,
+        isForward
+    ) => {
         const hasText = /\S/.test(newMessage.get('body_text') || '')
-        return (hasText || hasAttachments || isForward)
-            && (hasRecipients || !isNewMessagePublic)
+        return (
+            (hasText || hasAttachments || isForward) &&
+            (hasRecipients || !isNewMessagePublic)
+        )
     }
 )
 
 export const getNewMessageSignature = (state: stateType) => {
     const sourceType = getNewMessageType(state)
     const sourceFrom = getNewMessageSourceProperty('from')(state)
-    return require('../integrations/selectors').getChannelSignature(sourceType, sourceFrom.get('address'))(state)
+    return require('../integrations/selectors').getChannelSignature(
+        sourceType,
+        sourceFrom.get('address')
+    )(state)
 }

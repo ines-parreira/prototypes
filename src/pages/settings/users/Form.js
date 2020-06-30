@@ -21,7 +21,11 @@ import {toJS} from '../../../utils'
 import Loader from '../../common/components/Loader'
 import ConfirmButton from '../../common/components/ConfirmButton'
 import RichDropdown, {type Option} from '../../common/components/RichDropdown'
-import {BASIC_AGENT_ROLE, ORDERED_ROLES_META_BY_USER_ROLE, type MetaByAgentRole} from '../../../config/user'
+import {
+    BASIC_AGENT_ROLE,
+    ORDERED_ROLES_META_BY_USER_ROLE,
+    type MetaByAgentRole,
+} from '../../../config/user'
 
 import InputField from '../../common/forms/InputField'
 
@@ -32,7 +36,6 @@ import PageHeader from '../../common/components/PageHeader'
 
 import DeleteUser from './DeleteUser'
 import css from './Form.less'
-
 
 type Props = {
     agentId: number,
@@ -58,20 +61,23 @@ type State = {
     role: ?string,
 }
 
-@connect((state, ownProps) => {
-    return {
-        agentId: parseInt(ownProps.params.id),
-        accountOwnerId: state.currentAccount.get('user_id'),
-        currentUserId: state.currentUser.get('id')
+@connect(
+    (state, ownProps) => {
+        return {
+            agentId: parseInt(ownProps.params.id),
+            accountOwnerId: state.currentAccount.get('user_id'),
+            currentUserId: state.currentUser.get('id'),
+        }
+    },
+    {
+        createAgent: actions.createAgent,
+        deleteAgent: actions.deleteAgent,
+        fetchAgent: actions.fetchAgent,
+        inviteAgent: actions.inviteAgent,
+        updateAgent: actions.updateAgent,
+        updateAccountOwner,
     }
-}, {
-    createAgent: actions.createAgent,
-    deleteAgent: actions.deleteAgent,
-    fetchAgent: actions.fetchAgent,
-    inviteAgent: actions.inviteAgent,
-    updateAgent: actions.updateAgent,
-    updateAccountOwner
-})
+)
 export default class Form extends Component<Props, State> {
     static defaultProps = {
         orderedRoleMetaByUserRole: ORDERED_ROLES_META_BY_USER_ROLE,
@@ -100,35 +106,32 @@ export default class Form extends Component<Props, State> {
 
     _fetchAgent = (id: number) => {
         this.setState({isFetching: true})
-        return this.props.fetchAgent(id)
-            .then((resp) => {
-                const agent = toJS(resp)
-                const role = helpers.getHighestRole(resp)
-                this.setState({
-                    agent: resp,
-                    email: agent.email,
-                    isFetching: false,
-                    name: agent.name,
-                    role
-                })
+        return this.props.fetchAgent(id).then((resp) => {
+            const agent = toJS(resp)
+            const role = helpers.getHighestRole(resp)
+            this.setState({
+                agent: resp,
+                email: agent.email,
+                isFetching: false,
+                name: agent.name,
+                role,
             })
+        })
     }
 
     _invite = () => {
         this.setState({isInviting: true})
-        return this.props.inviteAgent(this.props.agentId)
-            .then(() => {
-                this.setState({isInviting: false})
-            })
+        return this.props.inviteAgent(this.props.agentId).then(() => {
+            this.setState({isInviting: false})
+        })
     }
 
     _delete = () => {
-        return this.props.deleteAgent(this.props.agentId)
-            .then(({error}) => {
-                if (!error) {
-                    browserHistory.push('/app/settings/users')
-                }
-            })
+        return this.props.deleteAgent(this.props.agentId).then(({error}) => {
+            if (!error) {
+                browserHistory.push('/app/settings/users')
+            }
+        })
     }
 
     _onSubmit = (e: SyntheticEvent<*>) => {
@@ -136,77 +139,79 @@ export default class Form extends Component<Props, State> {
         const form = _pick(this.state, ['email', 'name'])
         form.roles = [{name: this.state.role}]
         this.setState({isSubmitting: true})
-        const promise = this._isUpdate() ? this.props.updateAgent(this.props.agentId, form) : this.props.createAgent(form)
-        return promise
-            .then(({error}) => {
-                this.setState({isSubmitting: false})
-                if (error) {
-                    if (error.data) {
-                        this.setState({errors: error.data})
-                    }
-                } else {
-                    this.setState({errors: {}})
-                    if (!this._isUpdate()) {
-                        browserHistory.push('/app/settings/users')
-                    }
+        const promise = this._isUpdate()
+            ? this.props.updateAgent(this.props.agentId, form)
+            : this.props.createAgent(form)
+        return promise.then(({error}) => {
+            this.setState({isSubmitting: false})
+            if (error) {
+                if (error.data) {
+                    this.setState({errors: error.data})
                 }
-            })
+            } else {
+                this.setState({errors: {}})
+                if (!this._isUpdate()) {
+                    browserHistory.push('/app/settings/users')
+                }
+            }
+        })
     }
 
-    getRolesOptionsFromRoles = _memoize((roles: MetaByAgentRole): Option[] => Object.keys(roles).map((key) => ({
-        key,
-        ...roles[key]
-    })))
+    getRolesOptionsFromRoles = _memoize((roles: MetaByAgentRole): Option[] =>
+        Object.keys(roles).map((key) => ({
+            key,
+            ...roles[key],
+        }))
+    )
 
     render() {
         const {orderedRoleMetaByUserRole} = this.props
         const {agent, role} = this.state
 
         if (this.state.isFetching) {
-            return <Loader/>
+            return <Loader />
         }
 
         const currentRoleMeta = role && ORDERED_ROLES_META_BY_USER_ROLE[role]
         const isUpdate = this._isUpdate()
-        const isCurrentUserAccountOwner = this.props.accountOwnerId === this.props.currentUserId
-        const isAgentAccountOwner = this.props.agentId === this.props.accountOwnerId
+        const isCurrentUserAccountOwner =
+            this.props.accountOwnerId === this.props.currentUserId
+        const isAgentAccountOwner =
+            this.props.agentId === this.props.accountOwnerId
 
         return (
             <div className="full-width">
-                <PageHeader title={(
-                    <Breadcrumb>
-                        <BreadcrumbItem>
-                            <Link to="/app/settings/users">Users</Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem active>
-                            {isUpdate ? `Edit ${agent.get('name')}` : 'Add user'}
-                            {
-                                isAgentAccountOwner && (
+                <PageHeader
+                    title={
+                        <Breadcrumb>
+                            <BreadcrumbItem>
+                                <Link to="/app/settings/users">Users</Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem active>
+                                {isUpdate
+                                    ? `Edit ${agent.get('name')}`
+                                    : 'Add user'}
+                                {isAgentAccountOwner && (
                                     <Badge
                                         className={'ml-2 align-middle'}
-                                        color='dark'
+                                        color="dark"
                                         pill
                                     >
                                         Account Owner
                                     </Badge>
-                                )
-                            }
-                        </BreadcrumbItem>
-                    </Breadcrumb>
-                )}/>
-
-
-                <Container
-                    fluid
-                    className="page-container"
-                >
-                    {
-                        !isUpdate && (
-                            <p>
-                                We'll send login instructions via email when you add this user.
-                            </p>
-                        )
+                                )}
+                            </BreadcrumbItem>
+                        </Breadcrumb>
                     }
+                />
+
+                <Container fluid className="page-container">
+                    {!isUpdate && (
+                        <p>
+                            We'll send login instructions via email when you add
+                            this user.
+                        </p>
+                    )}
 
                     <BootstrapForm onSubmit={this._onSubmit}>
                         <InputField
@@ -229,11 +234,23 @@ export default class Form extends Component<Props, State> {
                         />
                         <RichDropdown
                             className={css.roleDropdown}
-                            options={this.getRolesOptionsFromRoles(orderedRoleMetaByUserRole)}
+                            options={this.getRolesOptionsFromRoles(
+                                orderedRoleMetaByUserRole
+                            )}
                             onClick={(role) => this.setState({role})}
-                            value={currentRoleMeta ? currentRoleMeta.label : 'Choose a role'}
+                            value={
+                                currentRoleMeta
+                                    ? currentRoleMeta.label
+                                    : 'Choose a role'
+                            }
                         >
-                            <Label className={classnames('control-label', css.roleLabel, css.required)}>
+                            <Label
+                                className={classnames(
+                                    'control-label',
+                                    css.roleLabel,
+                                    css.required
+                                )}
+                            >
                                 Role
                             </Label>
                         </RichDropdown>
@@ -248,45 +265,51 @@ export default class Form extends Component<Props, State> {
                             >
                                 Save user
                             </Button>
-                            {
-                                isUpdate && (
-                                    <span>
-                                        <Button
-                                            type="button"
-                                            color="secondary"
-                                            onClick={this._invite}
-                                            className={classnames({'btn-loading': this.state.isInviting})}
-                                            disabled={this.state.isInviting}
-                                        >
-                                            <i className="material-icons">mail</i> Re-send invitation email
-                                        </Button>
-                                        {
-                                            isCurrentUserAccountOwner && !isAgentAccountOwner && (
-                                                <ConfirmButton
-                                                    type="button"
-                                                    color="danger"
-                                                    id="set-owner"
-                                                    outline
-                                                    className={'ml-2'}
-                                                    confirm={() => this.props.updateAccountOwner(this.props.agentId)}
-                                                    content={`Are you sure you want transfer ownership of this Gorgias account to ${this.state.name}?`}
-                                                >
-                                                    Set as account owner
-                                                </ConfirmButton>
-                                            )
-                                        }
-                                        <DeleteUser
-                                            action={this._delete}
-                                            className="float-right"
-                                            color="danger"
-                                            id="delete-user"
-                                            outline
-                                        >
-                                            <i className="material-icons">delete</i> Delete user
-                                        </DeleteUser>
-                                    </span>
-                                )
-                            }
+                            {isUpdate && (
+                                <span>
+                                    <Button
+                                        type="button"
+                                        color="secondary"
+                                        onClick={this._invite}
+                                        className={classnames({
+                                            'btn-loading': this.state
+                                                .isInviting,
+                                        })}
+                                        disabled={this.state.isInviting}
+                                    >
+                                        <i className="material-icons">mail</i>{' '}
+                                        Re-send invitation email
+                                    </Button>
+                                    {isCurrentUserAccountOwner &&
+                                        !isAgentAccountOwner && (
+                                            <ConfirmButton
+                                                type="button"
+                                                color="danger"
+                                                id="set-owner"
+                                                outline
+                                                className={'ml-2'}
+                                                confirm={() =>
+                                                    this.props.updateAccountOwner(
+                                                        this.props.agentId
+                                                    )
+                                                }
+                                                content={`Are you sure you want transfer ownership of this Gorgias account to ${this.state.name}?`}
+                                            >
+                                                Set as account owner
+                                            </ConfirmButton>
+                                        )}
+                                    <DeleteUser
+                                        action={this._delete}
+                                        className="float-right"
+                                        color="danger"
+                                        id="delete-user"
+                                        outline
+                                    >
+                                        <i className="material-icons">delete</i>{' '}
+                                        Delete user
+                                    </DeleteUser>
+                                </span>
+                            )}
                         </FormGroup>
                     </BootstrapForm>
                 </Container>

@@ -18,12 +18,7 @@ class CustomerSourceContainer extends React.Component {
     }
 
     render() {
-        const {
-            widgets,
-            actions,
-            activeCustomerId,
-            sources,
-        } = this.props
+        const {widgets, actions, activeCustomerId, sources} = this.props
 
         if (!activeCustomerId) {
             return null
@@ -63,9 +58,12 @@ function mapDispatchToProps(dispatch) {
     return {
         actions: {
             customers: bindActionCreators(customersActions, dispatch),
-            widgets: bindActionCreators(widgetsActions, dispatch)
-        }
+            widgets: bindActionCreators(widgetsActions, dispatch),
+        },
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CustomerSourceContainer)
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(CustomerSourceContainer)

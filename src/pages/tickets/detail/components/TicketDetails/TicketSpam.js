@@ -4,13 +4,13 @@ import Tooltip from '../../../../common/components/Tooltip'
 
 type Props = {
     className: ?string,
-    spam: ?boolean
+    spam: ?boolean,
 }
 
 export default class TicketSpam extends React.Component<Props> {
     static defaultProps = {
         className: null,
-        spam: false
+        spam: false,
     }
 
     render() {
@@ -20,14 +20,13 @@ export default class TicketSpam extends React.Component<Props> {
 
         return (
             <div className={this.props.className}>
-                <i id="ticket-header-spam-icon"
-                    className="icon material-icons text-danger">
+                <i
+                    id="ticket-header-spam-icon"
+                    className="icon material-icons text-danger"
+                >
                     flag
                 </i>
-                <Tooltip
-                    placement="bottom"
-                    target="ticket-header-spam-icon"
-                >
+                <Tooltip placement="bottom" target="ticket-header-spam-icon">
                     Marked as spam
                 </Tooltip>
             </div>

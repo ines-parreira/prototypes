@@ -17,11 +17,13 @@ export const templateRegex = /{{([a-zA-Z0-9.\[\]"'_]+)\|?([\w_]+\([^(]*\))?}}/g
  * @param pattern: the LDML pattern to transform
  */
 export function LDMLToMomentFormat(pattern: string): string {
-    return pattern
-        // Replace all `d` which are not immediately preceded or followed by another letter with `D`
-        .replace(/(\bd\b)/g, 'D')
-        // Replace all `dd` which are not immediately preceded or followed by another letter with `DD`
-        .replace(/(\bdd\b)/g, 'DD')
+    return (
+        pattern
+            // Replace all `d` which are not immediately preceded or followed by another letter with `D`
+            .replace(/(\bd\b)/g, 'D')
+            // Replace all `dd` which are not immediately preceded or followed by another letter with `DD`
+            .replace(/(\bdd\b)/g, 'DD')
+    )
 }
 
 const filters = {
@@ -51,27 +53,30 @@ export const renderTemplate = (body: string, context: {} = {}): string => {
         return ''
     }
 
-    return body.replace(templateRegex, (match: string, variable: string, filter: string): string => {
-        try {
-            let value = _get(context, variable, '')
-            value = _isNull(value) ? '' : value
+    return body.replace(
+        templateRegex,
+        (match: string, variable: string, filter: string): string => {
+            try {
+                let value = _get(context, variable, '')
+                value = _isNull(value) ? '' : value
 
-            if (filter) {
-                const filterMatch = filter.match(filterRegex)
-                if (!filterMatch) {
-                    return value
+                if (filter) {
+                    const filterMatch = filter.match(filterRegex)
+                    if (!filterMatch) {
+                        return value
+                    }
+                    const filterFunc = filterMatch[1]
+                    const filterArgs = eval(`[${_unescape(filterMatch[2])}]`)
+                    if (typeof filters[filterFunc] !== 'function') {
+                        return value
+                    }
+                    value = filters[filterFunc](value, filterArgs)
                 }
-                const filterFunc = filterMatch[1]
-                const filterArgs = eval(`[${_unescape(filterMatch[2])}]`)
-                if (typeof filters[filterFunc] !== 'function') {
-                    return value
-                }
-                value = filters[filterFunc](value, filterArgs)
+                return value
+            } catch (e) {
+                console.error('Failed to render template', match, variable, e)
+                return ''
             }
-            return value
-        } catch (e) {
-            console.error('Failed to render template', match, variable, e)
-            return ''
         }
-    })
+    )
 }

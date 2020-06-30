@@ -19,12 +19,17 @@ const astCodeReplyToTicket = fromJS(_astCodeReplyToTicket)
 describe('ast', () => {
     describe('Widget', () => {
         const parent = fromJS(['body', 0, 'test', 'arguments', 1, 'elements'])
-        let leftsiblings = fromJS(['definitions', 'Ticket', 'properties', 'subject'])
+        let leftsiblings = fromJS([
+            'definitions',
+            'Ticket',
+            'properties',
+            'subject',
+        ])
 
         it('should render case-insensitive MultiSelectField (containsAll operator)', () => {
-            const value = ['hello', 'world!',]
+            const value = ['hello', 'world!']
             const rule = fromJS({
-                code_ast: astCodeContains
+                code_ast: astCodeContains,
             })
 
             expect(
@@ -44,7 +49,7 @@ describe('ast', () => {
         it('should render InputField (eq operator)', () => {
             const value = 'hello world!'
             const rule = fromJS({
-                code_ast: astCodeEq
+                code_ast: astCodeEq,
             })
             expect(
                 shallow(
@@ -61,10 +66,15 @@ describe('ast', () => {
         })
 
         it('should render DatetimeSelect field', () => {
-            let leftsiblings = fromJS(['definitions', 'Ticket', 'properties', 'created_datetime'])
+            let leftsiblings = fromJS([
+                'definitions',
+                'Ticket',
+                'properties',
+                'created_datetime',
+            ])
             const value = '2018-03-28T21:59:32.580209'
             const rule = fromJS({
-                code_ast: astCodeEq
+                code_ast: astCodeEq,
             })
             expect(
                 shallow(
@@ -81,10 +91,15 @@ describe('ast', () => {
         })
 
         it('should render TimedeltaSelect field', () => {
-            let leftsiblings = fromJS(['definitions', 'Ticket', 'properties', 'created_datetime'])
+            let leftsiblings = fromJS([
+                'definitions',
+                'Ticket',
+                'properties',
+                'created_datetime',
+            ])
             const value = '1d'
             const rule = fromJS({
-                code_ast: astCodeGteTimedelta
+                code_ast: astCodeGteTimedelta,
             })
             expect(
                 shallow(
@@ -104,7 +119,17 @@ describe('ast', () => {
             let leftsiblings = fromJS(['actions', 'replyToTicket', 'body_html'])
             const value = 'hello my good lad'
             const rule = fromJS({code_ast: astCodeReplyToTicket})
-            const parent = fromJS(['body', 0, 'expression', 'arguments', 1, 'properties', 1, 'value', 'value'])
+            const parent = fromJS([
+                'body',
+                0,
+                'expression',
+                'arguments',
+                1,
+                'properties',
+                1,
+                'value',
+                'value',
+            ])
 
             expect(
                 shallow(
@@ -117,12 +142,14 @@ describe('ast', () => {
                         schemas={schemas}
                         config={{
                             widget: 'rich-field',
-                            textField: 'body_text'
+                            textField: 'body_text',
                         }}
-                        properties={[{
-                            key: {name: 'body_text'},
-                            value: {value: 'foo bar'}
-                        }]}
+                        properties={[
+                            {
+                                key: {name: 'body_text'},
+                                value: {value: 'foo bar'},
+                            },
+                        ]}
                         hasIntegrationOfTypes={() => true}
                     />
                 )
@@ -131,10 +158,16 @@ describe('ast', () => {
 
         describe('TagsSelect', () => {
             it('should render case sensitive TagsSelect field (tags properties)', () => {
-                let leftsiblings = fromJS(['definitions', 'Ticket', 'properties', 'tags', 'name'])
+                let leftsiblings = fromJS([
+                    'definitions',
+                    'Ticket',
+                    'properties',
+                    'tags',
+                    'name',
+                ])
                 const value = 'tag'
                 const rule = fromJS({
-                    code_ast: astCodeContains
+                    code_ast: astCodeContains,
                 })
                 expect(
                     shallow(
@@ -154,7 +187,7 @@ describe('ast', () => {
                 let leftsiblings = fromJS(['actions', 'addTags', 'tags'])
                 const value = 'hello, world, !'
                 const rule = fromJS({
-                    code_ast: astCodeEq
+                    code_ast: astCodeEq,
                 })
                 expect(
                     shallow(
@@ -173,7 +206,7 @@ describe('ast', () => {
             it('should render component AssigneeUserSelect', () => {
                 let leftsiblings = fromJS(['actions', 'assignee_user'])
                 const rule = fromJS({
-                    code_ast: astCodeEq
+                    code_ast: astCodeEq,
                 })
                 expect(
                     shallow(
@@ -191,7 +224,7 @@ describe('ast', () => {
             it('should render component AssigneeTeamSelect', () => {
                 let leftsiblings = fromJS(['actions', 'assignee_team'])
                 const rule = fromJS({
-                    code_ast: astCodeEq
+                    code_ast: astCodeEq,
                 })
                 expect(
                     shallow(
@@ -214,14 +247,14 @@ describe('ast', () => {
             beforeEach(() => {
                 modifyCodeASTSpy = jest.fn()
                 actions = {
-                    modifyCodeAST: modifyCodeASTSpy
+                    modifyCodeAST: modifyCodeASTSpy,
                 }
             })
 
             it('AST ExpressionArray value', () => {
-                const value = ['hello', 'world!',]
+                const value = ['hello', 'world!']
                 const rule = fromJS({
-                    code_ast: astCodeContains
+                    code_ast: astCodeContains,
                 })
                 const component = shallow(
                     <Widget
@@ -235,21 +268,25 @@ describe('ast', () => {
                 )
                 const newValue = ['hello', 'you!']
                 component.instance()._handleChange(newValue)
-                expect(modifyCodeASTSpy).toBeCalledWith(parent, newValue.map(val => ({
-                    type: 'Literal',
-                    raw: `'${val}'`,
-                    value: val
-                })), 'UPDATE')
+                expect(modifyCodeASTSpy).toBeCalledWith(
+                    parent,
+                    newValue.map((val) => ({
+                        type: 'Literal',
+                        raw: `'${val}'`,
+                        value: val,
+                    })),
+                    'UPDATE'
+                )
             })
 
             it('AST Literal value', () => {
                 const value = 'hello world!'
                 const rule = fromJS({
-                    code_ast: astCodeEq
+                    code_ast: astCodeEq,
                 })
                 const modifyCodeASTSpy = jest.fn()
                 const actions = {
-                    modifyCodeAST: modifyCodeASTSpy
+                    modifyCodeAST: modifyCodeASTSpy,
                 }
                 const component = shallow(
                     <Widget
@@ -263,7 +300,11 @@ describe('ast', () => {
                 )
                 const newValue = 'hello you!'
                 component.instance()._handleChange(newValue)
-                expect(modifyCodeASTSpy).toBeCalledWith(parent, newValue, 'UPDATE')
+                expect(modifyCodeASTSpy).toBeCalledWith(
+                    parent,
+                    newValue,
+                    'UPDATE'
+                )
             })
         })
     })

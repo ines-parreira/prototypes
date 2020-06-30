@@ -13,17 +13,8 @@ export default class Errors extends React.Component {
     }
 
     render() {
-        const {
-            children,
-            tag: Tag,
-            ...rest
-        } = this.props
+        const {children, tag: Tag, ...rest} = this.props
 
-        return (
-            <Tag {...rest}>
-                {children}
-            </Tag>
-        )
+        return <Tag {...rest}>{children}</Tag>
     }
 }
-

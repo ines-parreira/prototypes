@@ -17,12 +17,12 @@ describe('SelectTargetTicket component', () => {
         subject: 'foo',
         assignee_user: {
             id: 1,
-            name: 'John Smith'
+            name: 'John Smith',
         },
         customer: {
             id: 22,
-            name: 'Maria Curie'
-        }
+            name: 'Maria Curie',
+        },
     })
 
     beforeEach(() => {

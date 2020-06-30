@@ -5,13 +5,11 @@ import Lightbox from 'react-images'
 
 import Carousel from './../../integrations/common/Carousel'
 
-
 type Props = {
     imagesURL: Array,
     info: string,
-    alertMsg: Node
+    alertMsg: Node,
 }
-
 
 export default class RestrictedFeature extends React.Component<Props> {
     constructor(props) {
@@ -37,33 +35,37 @@ export default class RestrictedFeature extends React.Component<Props> {
     render() {
         const {imagesURL, info, alertMsg} = this.props
 
-        return <div className="col mt-2">
-            <Alert color="danger">
-                {alertMsg}
-            </Alert>
+        return (
+            <div className="col mt-2">
+                <Alert color="danger">{alertMsg}</Alert>
 
-            <p>{info}</p>
+                <p>{info}</p>
 
-            <Carousel
-                imagesUrl={imagesURL}
-                onImageClick={({index}) => this._toggleLightbox(index)}
-            />
+                <Carousel
+                    imagesUrl={imagesURL}
+                    onImageClick={({index}) => this._toggleLightbox(index)}
+                />
 
-            <Lightbox
-                images={imagesURL.map((imageURL) => {
-                    return {
-                        src: imageURL,
+                <Lightbox
+                    images={imagesURL.map((imageURL) => {
+                        return {
+                            src: imageURL,
+                        }
+                    })}
+                    isOpen={this.state.isLightboxOpen}
+                    onClose={() => this._toggleLightbox()}
+                    currentImage={this.state.currentImage}
+                    onClickPrev={() =>
+                        this._gotoImage(this.state.currentImage - 1)
                     }
-                })}
-                isOpen={this.state.isLightboxOpen}
-                onClose={() => this._toggleLightbox()}
-                currentImage={this.state.currentImage}
-                onClickPrev={() => this._gotoImage(this.state.currentImage - 1)}
-                onClickNext={() => this._gotoImage(this.state.currentImage + 1)}
-                onClickThumbnail={this._gotoImage}
-                showThumbnails
-                backdropClosesModal
-            />
-        </div>
+                    onClickNext={() =>
+                        this._gotoImage(this.state.currentImage + 1)
+                    }
+                    onClickThumbnail={this._gotoImage}
+                    showThumbnails
+                    backdropClosesModal
+                />
+            </div>
+        )
     }
 }

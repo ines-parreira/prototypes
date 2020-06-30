@@ -10,8 +10,8 @@ import css from './Notifications.less'
 export default _merge({}, reapopThemeWybo, {
     notificationsContainer: {
         className: {
-            main: `${reapopThemeWybo.notificationsContainer.className.main} ${css.container}`
-        }
+            main: `${reapopThemeWybo.notificationsContainer.className.main} ${css.container}`,
+        },
     },
     notification: {
         className: {
@@ -21,8 +21,11 @@ export default _merge({}, reapopThemeWybo, {
                 return `${reapopThemeWybo.notification.className[status]} ${css[status]}`
             },
             icon: 'material-icons ' + css['notification-icon'],
-            buttons: (count: number) => `${reapopThemeWybo.notification.className.buttons(count)} ${css.buttons}`,
+            buttons: (count: number) =>
+                `${reapopThemeWybo.notification.className.buttons(count)} ${
+                    css.buttons
+                }`,
             button: `${reapopThemeWybo.notification.className.button} ${css.button}`,
-        }
-    }
+        },
+    },
 })

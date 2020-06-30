@@ -11,7 +11,7 @@ type Props = {
     tags: List<*>,
     meta: Map<*, *>,
     onMerge: () => any,
-    onBulkDelete: () => any
+    onBulkDelete: () => any,
 }
 
 const TableActions = (props: Props) => {

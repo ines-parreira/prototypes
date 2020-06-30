@@ -11,15 +11,18 @@ import {proxifyURL} from '../../../../../../utils'
 
 describe('TicketAttachments component', () => {
     // attachments is an immutable list of pojos
-    const attachments = fromJS([{
-        name: 'foo',
-        content_type: 'image/png',
-        url: 'http://gorgias.io/bar'
-    }, {
-        name: 'bar',
-        content_type: 'text/html',
-        url: 'foo'
-    }])
+    const attachments = fromJS([
+        {
+            name: 'foo',
+            content_type: 'image/png',
+            url: 'http://gorgias.io/bar',
+        },
+        {
+            name: 'bar',
+            content_type: 'text/html',
+            url: 'foo',
+        },
+    ])
 
     window.IMAGE_PROXY_URL = 'http://proxy-url/'
     window.IMAGE_PROXY_PUBLIC_SIGN_KEY = 'test-key'
@@ -97,7 +100,7 @@ describe('TicketAttachments component', () => {
 
         it('should list images in lightbox', () => {
             component.setState({
-                isLightboxOpen: true
+                isLightboxOpen: true,
             })
 
             expect(document.body.querySelectorAll('figure').length).toBe(1)
@@ -105,15 +108,17 @@ describe('TicketAttachments component', () => {
 
         it('should set image src', () => {
             component.setState({
-                isLightboxOpen: true
+                isLightboxOpen: true,
             })
 
-            expect(document.body.querySelector('img').src).toBe(proxifyURL('http://gorgias.io/bar'))
+            expect(document.body.querySelector('img').src).toBe(
+                proxifyURL('http://gorgias.io/bar')
+            )
         })
 
         it('image should open the lightbox', () => {
             component.find('.item').at(0).simulate('click', {
-                preventDefault: _noop
+                preventDefault: _noop,
             })
 
             expect(component.state('isLightboxOpen')).toBe(true)
@@ -121,7 +126,7 @@ describe('TicketAttachments component', () => {
 
         it('not-image should not open the lightbox', () => {
             component.find('.item').at(1).simulate('click', {
-                preventDefault: _noop
+                preventDefault: _noop,
             })
 
             expect(component.state('isLightboxOpen')).toBe(false)
@@ -129,25 +134,29 @@ describe('TicketAttachments component', () => {
     })
 
     describe('private', () => {
-        it('should display an error message if there\'s private attachments', () => {
+        it("should display an error message if there's private attachments", () => {
             const component = shallow(
                 <TicketAttachments
-                    attachments={fromJS([{
-                        name: 'foo',
-                        content_type: 'image/png',
-                        url: 'http://gorgias.io/bar',
-                        public: false
-                    }, {
-                        name: 'bar',
-                        content_type: 'image/png',
-                        url: 'http://gorgias.io/baz',
-                        public: false
-                    }, {
-                        name: 'baz',
-                        content_type: 'image/png',
-                        url: 'http://gorgias.io/foo',
-                        public: false
-                    }])}
+                    attachments={fromJS([
+                        {
+                            name: 'foo',
+                            content_type: 'image/png',
+                            url: 'http://gorgias.io/bar',
+                            public: false,
+                        },
+                        {
+                            name: 'bar',
+                            content_type: 'image/png',
+                            url: 'http://gorgias.io/baz',
+                            public: false,
+                        },
+                        {
+                            name: 'baz',
+                            content_type: 'image/png',
+                            url: 'http://gorgias.io/foo',
+                            public: false,
+                        },
+                    ])}
                     deleteAttachment={_noop}
                 />
             )
@@ -158,22 +167,26 @@ describe('TicketAttachments component', () => {
         it('should display both an error message and attachments', () => {
             const component = shallow(
                 <TicketAttachments
-                    attachments={fromJS([{
-                        name: 'foo',
-                        content_type: 'image/png',
-                        url: 'http://gorgias.io/bar',
-                        public: true
-                    }, {
-                        name: 'bar',
-                        content_type: 'image/png',
-                        url: 'https://gorgias.io/baz',
-                        public: false
-                    }, {
-                        name: 'baz',
-                        content_type: 'image/png',
-                        url: 'http://gorgias.io/foo',
-                        public: true
-                    }])}
+                    attachments={fromJS([
+                        {
+                            name: 'foo',
+                            content_type: 'image/png',
+                            url: 'http://gorgias.io/bar',
+                            public: true,
+                        },
+                        {
+                            name: 'bar',
+                            content_type: 'image/png',
+                            url: 'https://gorgias.io/baz',
+                            public: false,
+                        },
+                        {
+                            name: 'baz',
+                            content_type: 'image/png',
+                            url: 'http://gorgias.io/foo',
+                            public: true,
+                        },
+                    ])}
                     deleteAttachment={_noop}
                 />
             )

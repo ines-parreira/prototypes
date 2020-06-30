@@ -4,26 +4,27 @@ import _find from 'lodash/find'
 
 import {INTEGRATION_TYPE_DESCRIPTIONS} from '../../config'
 
-type integrationsType = List<Map<*,*>>
+type integrationsType = List<Map<*, *>>
 
 /**
  * Compute the number of active integrations for each type
  */
-const getIntegrationsCountPerType = (integrations: integrationsType = fromJS([])): Object => {
-    return integrations
-        .reduce((accumulator, item) => {
-            const newAccumulator = accumulator
+const getIntegrationsCountPerType = (
+    integrations: integrationsType = fromJS([])
+): Object => {
+    return integrations.reduce((accumulator, item) => {
+        const newAccumulator = accumulator
 
-            if (!item.get('deactivated_datetime')) {
-                if (item.get('type') in accumulator) {
-                    newAccumulator[item.get('type')] += 1
-                } else {
-                    newAccumulator[item.get('type')] = 1
-                }
+        if (!item.get('deactivated_datetime')) {
+            if (item.get('type') in accumulator) {
+                newAccumulator[item.get('type')] += 1
+            } else {
+                newAccumulator[item.get('type')] = 1
             }
+        }
 
-            return newAccumulator
-        }, {})
+        return newAccumulator
+    }, {})
 }
 
 /**
@@ -32,34 +33,38 @@ const getIntegrationsCountPerType = (integrations: integrationsType = fromJS([])
  * @param integrations
  * @returns {*}
  */
-export const getIntegrationsList = (integrations: integrationsType = fromJS([])): Map<*,*> => {
+export const getIntegrationsList = (
+    integrations: integrationsType = fromJS([])
+): Map<*, *> => {
     const counts = getIntegrationsCountPerType(integrations)
-    return fromJS(INTEGRATION_TYPE_DESCRIPTIONS.map((typeDescription: Object) => {
-        let count = 0
+    return fromJS(
+        INTEGRATION_TYPE_DESCRIPTIONS.map((typeDescription: Object) => {
+            let count = 0
 
-        if (typeDescription.subTypes) {
-            // make sum of all count of sub types
-            typeDescription.subTypes.forEach((type) => {
-                if (counts[type]) {
-                    count += counts[type]
-                }
-            })
-        } else {
-            count += counts[typeDescription.type]
-        }
+            if (typeDescription.subTypes) {
+                // make sum of all count of sub types
+                typeDescription.subTypes.forEach((type) => {
+                    if (counts[type]) {
+                        count += counts[type]
+                    }
+                })
+            } else {
+                count += counts[typeDescription.type]
+            }
 
-        return {
-            ...typeDescription,
-            count
-        }
-    }))
+            return {
+                ...typeDescription,
+                count,
+            }
+        })
+    )
 }
 
 export const getIntegrationsByTypes = (
-    integrations: integrationsType = fromJS([]), types: Array<string> = []
-): integrationsType => (
+    integrations: integrationsType = fromJS([]),
+    types: Array<string> = []
+): integrationsType =>
     integrations.filter((inte) => types.includes(inte.get('type', '')))
-)
 
 export const getIntegrationConfig = (type: string): {image?: string} => {
     //$FlowFixMe
@@ -78,4 +83,3 @@ export const getIconFromUrl = (url: string): string => {
 export const getIconFromType = (type: string): string => {
     return getIconFromUrl(getIconUrl(type))
 }
-

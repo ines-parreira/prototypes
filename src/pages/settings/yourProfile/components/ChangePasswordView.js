@@ -13,7 +13,6 @@ const USER_PASSWORD_MIN_LENGTH = 8
 const USER_PASSWORD_MAX_LENGTH = 128
 const USER_PASSWORD_VALIDATION_PATTERN = `.{${USER_PASSWORD_MIN_LENGTH},${USER_PASSWORD_MAX_LENGTH}}`
 
-
 class ChangePasswordView extends React.Component {
     state = {
         dirty: true,
@@ -40,10 +39,12 @@ class ChangePasswordView extends React.Component {
     _updateField = (value) => {
         const newState = Object.assign({}, this.state, value)
 
-        this.setState(Object.assign({}, newState, {
-            dirty: true,
-            errors: this._validate(newState)
-        }))
+        this.setState(
+            Object.assign({}, newState, {
+                dirty: true,
+                errors: this._validate(newState),
+            })
+        )
     }
 
     _handleSubmit = (e) => {
@@ -59,7 +60,8 @@ class ChangePasswordView extends React.Component {
             .then(({error} = {}) => {
                 let errors = {}
 
-                if (error &&
+                if (
+                    error &&
                     error.response &&
                     error.response.data &&
                     error.response.data.error
@@ -84,14 +86,11 @@ class ChangePasswordView extends React.Component {
 
         return (
             <div className="full-width">
-                <PageHeader title="Change password"/>
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <PageHeader title="Change password" />
+                <Container fluid className="page-container">
                     <p>
-                        Enter your current password to confirm your identity, then the new password you would like to
-                        set instead.
+                        Enter your current password to confirm your identity,
+                        then the new password you would like to set instead.
                     </p>
 
                     <Form onSubmit={this._handleSubmit}>
@@ -102,7 +101,9 @@ class ChangePasswordView extends React.Component {
                             placeholder="Current password"
                             required
                             value={this.state.old_password}
-                            onChange={(old_password) => this._updateField({old_password})}
+                            onChange={(old_password) =>
+                                this._updateField({old_password})
+                            }
                             error={errors.old_password}
                         />
                         <InputField
@@ -114,7 +115,9 @@ class ChangePasswordView extends React.Component {
                             title={`Password must be between ${USER_PASSWORD_MIN_LENGTH} and ${USER_PASSWORD_MAX_LENGTH} characters long.`}
                             required
                             value={this.state.new_password}
-                            onChange={(new_password) => this._updateField({new_password})}
+                            onChange={(new_password) =>
+                                this._updateField({new_password})
+                            }
                             error={errors.new_password}
                         />
                         <InputField
@@ -126,7 +129,9 @@ class ChangePasswordView extends React.Component {
                             title={`Password must be between ${USER_PASSWORD_MIN_LENGTH} and ${USER_PASSWORD_MAX_LENGTH} characters long.`}
                             required
                             value={this.state.confirm_new_password}
-                            onChange={(confirm_new_password) => this._updateField({confirm_new_password})}
+                            onChange={(confirm_new_password) =>
+                                this._updateField({confirm_new_password})
+                            }
                             error={errors.confirm_new_password}
                         />
 
@@ -137,7 +142,9 @@ class ChangePasswordView extends React.Component {
                                 className={classnames({
                                     'btn-loading': isLoading,
                                 })}
-                                disabled={isLoading || invalid || !this.state.dirty}
+                                disabled={
+                                    isLoading || invalid || !this.state.dirty
+                                }
                             >
                                 Update your password
                             </Button>

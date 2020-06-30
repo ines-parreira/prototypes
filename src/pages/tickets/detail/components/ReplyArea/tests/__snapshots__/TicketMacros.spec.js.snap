@@ -113,7 +113,8 @@ exports[`TicketMacros component should display macros list, and selected macro 1
             >
               settings
             </i>
-             Manage macros
+             
+            Manage macros
           </DropdownItem>
           <DropdownItem
             className="cursor-pointer"
@@ -126,7 +127,8 @@ exports[`TicketMacros component should display macros list, and selected macro 1
             >
               mode_edit
             </i>
-             Edit macro
+             
+            Edit macro
           </DropdownItem>
           <DropdownItem
             className="cursor-pointer"
@@ -153,7 +155,8 @@ exports[`TicketMacros component should display macros list, and selected macro 1
             >
               delete
             </i>
-             Delete macro
+             
+            Delete macro
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>

@@ -1,6 +1,6 @@
 // @flow
 import classnames from 'classnames'
-import { fromJS, type Map } from 'immutable'
+import {fromJS, type Map} from 'immutable'
 import React from 'react'
 
 import css from './Timeline.less'
@@ -8,7 +8,7 @@ import TimelineTicket from './TimelineTicket'
 
 type Props = {
     actions: {},
-    customerHistory: Map<*,*>,
+    customerHistory: Map<*, *>,
     currentTicketId: number,
     displayAll: boolean,
     revert: boolean,
@@ -43,22 +43,24 @@ export default class Timeline extends React.Component<Props> {
 
         return (
             <div className={classnames(css.component)}>
-                {
-                    history.map((obj) => {
+                {history
+                    .map((obj) => {
                         const isTicket = obj.get('channel')
                         if (isTicket) {
                             return (
                                 <TimelineTicket
                                     actions={actions}
-                                    isCurrent={currentTicketId === obj.get('id')}
+                                    isCurrent={
+                                        currentTicketId === obj.get('id')
+                                    }
                                     key={obj.get('id')}
                                     ticket={obj}
                                 />
                             )
                         }
                         return null
-                    }).toList()
-                }
+                    })
+                    .toList()}
             </div>
         )
     }

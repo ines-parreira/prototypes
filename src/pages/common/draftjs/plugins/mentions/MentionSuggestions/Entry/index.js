@@ -9,12 +9,12 @@ import type {themeType} from '../types'
 type Props = {
     entryComponent: any,
     searchValue: string,
-    onMentionSelect: (T: Map<*,*>) => void,
-    mention: Map<*,*>,
+    onMentionSelect: (T: Map<*, *>) => void,
+    mention: Map<*, *>,
     index: number,
     onMentionFocus: (T: number) => void,
     theme: themeType,
-    isFocused?: boolean
+    isFocused?: boolean,
 }
 
 export default class Entry extends Component<Props> {
@@ -53,7 +53,8 @@ export default class Entry extends Component<Props> {
         return (
             <EntryComponent
                 className={classnames(theme.mentionSuggestionsEntry, {
-                    [theme.mentionSuggestionsEntryFocused]: this.props.isFocused
+                    [theme.mentionSuggestionsEntryFocused]: this.props
+                        .isFocused,
                 })}
                 onMouseDown={this.onMouseDown}
                 onMouseUp={this.onMouseUp}

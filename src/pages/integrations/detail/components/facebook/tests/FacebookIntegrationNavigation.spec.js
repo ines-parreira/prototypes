@@ -9,10 +9,12 @@ describe('<FacebookIntegrationNavigation/>', () => {
     it('should not display the Ads tab when ads are disabled', () => {
         const integration = fromJS({
             id: 1,
-            type: FACEBOOK_INTEGRATION_TYPE
+            type: FACEBOOK_INTEGRATION_TYPE,
         })
 
-        const component = mount(<FacebookIntegrationNavigation integration={integration}/>)
+        const component = mount(
+            <FacebookIntegrationNavigation integration={integration} />
+        )
         expect(component).toMatchSnapshot()
     })
 
@@ -27,7 +29,9 @@ describe('<FacebookIntegrationNavigation/>', () => {
             },
         })
 
-        const component = mount(<FacebookIntegrationNavigation integration={integration}/>)
+        const component = mount(
+            <FacebookIntegrationNavigation integration={integration} />
+        )
         expect(component).toMatchSnapshot()
     })
 })

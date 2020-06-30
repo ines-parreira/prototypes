@@ -20,14 +20,14 @@ describe('tags selectors', () => {
                             name: 'refund',
                             decoration: null,
                             usage: 60,
-                            created_datetime: '2017-08-16T16:54:49'
+                            created_datetime: '2017-08-16T16:54:49',
                         },
                         {
                             id: 2,
                             name: 'billing',
                             decoration: null,
                             usage: 30,
-                            created_datetime: '2017-08-16T16:54:49'
+                            created_datetime: '2017-08-16T16:54:49',
                         },
                     ],
                     meta: {},
@@ -37,12 +37,12 @@ describe('tags selectors', () => {
                             nb_pages: 1,
                             page: 1,
                             current_page: '/api/views/?page=1',
-                            per_page: 30
+                            per_page: 30,
                         },
-                        selectAll: true
-                    }
-                })  // We need to do that separately, else JS transforms the `int` key into a string
-                .setIn(['meta', selectedTagId], fromJS({selected: true}))
+                        selectAll: true,
+                    },
+                }) // We need to do that separately, else JS transforms the `int` key into a string
+                .setIn(['meta', selectedTagId], fromJS({selected: true})),
         }
     })
 
@@ -52,7 +52,9 @@ describe('tags selectors', () => {
     })
 
     it('getTags', () => {
-        expect(selectors.getTags(state)).toEqualImmutable(state.tags.get('items'))
+        expect(selectors.getTags(state)).toEqualImmutable(
+            state.tags.get('items')
+        )
         expect(selectors.getTags({})).toEqualImmutable(fromJS([]))
     })
 
@@ -62,17 +64,23 @@ describe('tags selectors', () => {
     })
 
     it('getNumberPages', () => {
-        expect(selectors.getNumberPages(state)).toBe(state.tags.getIn(['_internal', 'pagination', 'nb_pages']))
+        expect(selectors.getNumberPages(state)).toBe(
+            state.tags.getIn(['_internal', 'pagination', 'nb_pages'])
+        )
         expect(selectors.getNumberPages({})).toBe(1)
     })
 
     it('getCurrentPage', () => {
-        expect(selectors.getCurrentPage(state)).toBe(state.tags.getIn(['_internal', 'pagination', 'page']))
+        expect(selectors.getCurrentPage(state)).toBe(
+            state.tags.getIn(['_internal', 'pagination', 'page'])
+        )
         expect(selectors.getCurrentPage({})).toBe(1)
     })
 
     it('getSelectAll', () => {
-        expect(selectors.getSelectAll(state)).toBe(state.tags.getIn(['_internal', 'selectAll']))
+        expect(selectors.getSelectAll(state)).toBe(
+            state.tags.getIn(['_internal', 'selectAll'])
+        )
         expect(selectors.getSelectAll({})).toBe(false)
     })
 
@@ -82,7 +90,9 @@ describe('tags selectors', () => {
     })
 
     it('getSelectedTagMeta', () => {
-        expect(selectors.getSelectedTagMeta(selectedTagId)(state)).toBe(state.tags.getIn(['meta', selectedTagId]))
+        expect(selectors.getSelectedTagMeta(selectedTagId)(state)).toBe(
+            state.tags.getIn(['meta', selectedTagId])
+        )
         expect(selectors.getSelectedTagMeta(selectedTagId)({})).toBe(fromJS({}))
     })
 })

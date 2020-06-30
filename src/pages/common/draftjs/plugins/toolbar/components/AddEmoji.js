@@ -12,7 +12,7 @@ import Popover from './ButtonPopover'
 type Props = ActionInjectedProps
 
 type State = {
-    isOpen: boolean
+    isOpen: boolean,
 }
 
 // Emoji-mart object https://github.com/missive/emoji-mart#examples-of-emoji-object
@@ -28,7 +28,7 @@ type Emoji = {
 
 export default class AddEmoji extends React.Component<Props, State> {
     state: State = {
-        isOpen: false
+        isOpen: false,
     }
 
     _addEmoji = (emoji: Emoji) => {
@@ -36,15 +36,18 @@ export default class AddEmoji extends React.Component<Props, State> {
         let newEditorState = insertText(editorState, emoji.native)
 
         // forcing the current selection ensures that it will be at it's right place
-        newEditorState = EditorState.forceSelection(newEditorState, newEditorState.getSelection())
+        newEditorState = EditorState.forceSelection(
+            newEditorState,
+            newEditorState.getSelection()
+        )
 
         this.props.setEditorState(newEditorState)
-        this.setState({ isOpen: false })
+        this.setState({isOpen: false})
     }
 
-    _onPopoverOpen = () => this.setState({ isOpen: true })
+    _onPopoverOpen = () => this.setState({isOpen: true})
 
-    _onPopoverClose = () => this.setState({ isOpen: false })
+    _onPopoverClose = () => this.setState({isOpen: false})
 
     render() {
         return (
@@ -56,7 +59,7 @@ export default class AddEmoji extends React.Component<Props, State> {
                 onOpen={this._onPopoverOpen}
                 onClose={this._onPopoverClose}
             >
-                <EmojiPicker onClick={this._addEmoji}/>
+                <EmojiPicker onClick={this._addEmoji} />
             </Popover>
         )
     }

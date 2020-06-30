@@ -38,7 +38,7 @@ type Props = OptionProps & {
     value: string,
 }
 
-export default function RichDropdown ({
+export default function RichDropdown({
     children,
     className,
     renderMenuItems = _identity,
@@ -50,9 +50,7 @@ export default function RichDropdown ({
         <div className={classnames(className)}>
             {children}
             <UncontrolledButtonDropdown>
-                <DropdownToggle caret>
-                    {value}
-                </DropdownToggle>
+                <DropdownToggle caret>{value}</DropdownToggle>
                 <DropdownMenu className={css.dropdown}>
                     {renderMenuItems(renderOption(optionProps))}
                 </DropdownMenu>
@@ -62,16 +60,9 @@ export default function RichDropdown ({
 }
 
 function renderOptionDefault({options, onClick}: OptionProps) {
-    return (
-        options.length > 0 && options[0].options ?
-            <RichDropdownOptionGroups
-                onClick={onClick}
-                options={(options: any)}
-            />
-            :
-            <RichDropdownOptions
-                onClick={onClick}
-                options={(options: any)}
-            />
+    return options.length > 0 && options[0].options ? (
+        <RichDropdownOptionGroups onClick={onClick} options={(options: any)} />
+    ) : (
+        <RichDropdownOptions onClick={onClick} options={(options: any)} />
     )
 }

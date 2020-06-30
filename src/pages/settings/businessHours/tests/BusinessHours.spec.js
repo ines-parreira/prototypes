@@ -10,16 +10,12 @@ import {SETTING_TYPE_BUSINESS_HOURS} from '../../../../state/currentAccount/cons
 
 const mockStore = configureMockStore([thunk])
 
-
 describe('BusinessHours component', () => {
     let store = mockStore({})
 
     it('should render default values', () => {
         const component = shallow(
-            <BusinessHours
-                store={store}
-                submitSetting={_noop}
-            />
+            <BusinessHours store={store} submitSetting={_noop} />
         ).dive()
 
         expect(component).toMatchSnapshot()
@@ -30,17 +26,27 @@ describe('BusinessHours component', () => {
             <BusinessHours
                 store={mockStore({
                     currentAccount: fromJS({
-                        settings: [{
-                            type: SETTING_TYPE_BUSINESS_HOURS,
-                            data: {
-                                business_hours: [
-                                    {days: '2', from_time: '10:00', to_time: '17:00'},
-                                    {days: '4', from_time: '11:00', to_time: '17:00'},
-                                ],
-                                timezone: 'US/Pacific'
-                            }
-                        }]
-                    })
+                        settings: [
+                            {
+                                type: SETTING_TYPE_BUSINESS_HOURS,
+                                data: {
+                                    business_hours: [
+                                        {
+                                            days: '2',
+                                            from_time: '10:00',
+                                            to_time: '17:00',
+                                        },
+                                        {
+                                            days: '4',
+                                            from_time: '11:00',
+                                            to_time: '17:00',
+                                        },
+                                    ],
+                                    timezone: 'US/Pacific',
+                                },
+                            },
+                        ],
+                    }),
                 })}
                 submitSetting={_noop}
             />

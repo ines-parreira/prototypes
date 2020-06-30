@@ -20,7 +20,10 @@ export default class SetSubjectAction extends React.Component {
                 <Input
                     type="text"
                     onChange={(e) => this._updateSubject(e.target.value)}
-                    value={this.props.action.getIn(['arguments', 'subject'], '')}
+                    value={this.props.action.getIn(
+                        ['arguments', 'subject'],
+                        ''
+                    )}
                     required
                 />
             </div>

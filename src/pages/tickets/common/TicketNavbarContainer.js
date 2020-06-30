@@ -12,7 +12,9 @@ import TicketsNavbarView from './components/TicketsNavbarView'
 class TicketNavbarContainer extends React.Component {
     componentWillMount() {
         // fetch the list view only
-        const viewId = this.props.params.viewId ? this.props.params.viewId : this.props.location.query.viewId
+        const viewId = this.props.params.viewId
+            ? this.props.params.viewId
+            : this.props.location.query.viewId
         this.props.actions.fetchViews(viewId)
     }
 
@@ -33,20 +35,26 @@ TicketNavbarContainer.propTypes = {
     actions: PropTypes.object.isRequired,
     params: PropTypes.object.isRequired,
     location: PropTypes.shape({
-        query: PropTypes.object
+        query: PropTypes.object,
     }),
     setting: PropTypes.object,
-    isLoading: PropTypes.bool.isRequired
+    isLoading: PropTypes.bool.isRequired,
 }
 
 const mapStateToProps = (state) => {
     return {
-        isLoading: state.currentUser.getIn(['_internal', 'loading', 'settings', 'ticket-views'], false)
+        isLoading: state.currentUser.getIn(
+            ['_internal', 'loading', 'settings', 'ticket-views'],
+            false
+        ),
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    actions: bindActionCreators(ViewsActions, dispatch)
+    actions: bindActionCreators(ViewsActions, dispatch),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(TicketNavbarContainer)
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(TicketNavbarContainer)

@@ -11,10 +11,12 @@ import * as integrationsSelectors from './../../../../../state/integrations/sele
 import * as integrationsActions from './../../../../../state/integrations/actions'
 
 const mapStateToProps = (state) => ({
-    integrations: integrationsSelectors.getMessagingIntegrations(state)
+    integrations: integrationsSelectors.getMessagingIntegrations(state),
 })
 
-@connect(mapStateToProps, {fetchIntegrations: integrationsActions.fetchIntegrations})
+@connect(mapStateToProps, {
+    fetchIntegrations: integrationsActions.fetchIntegrations,
+})
 export default class IntegrationSelect extends Component {
     static propTypes = {
         actions: PropTypes.object,
@@ -40,12 +42,7 @@ export default class IntegrationSelect extends Component {
             options = options.push({
                 value: integration.get('id'),
                 text: integration.get('name'),
-                label: (
-                    <RenderLabel
-                        field={field}
-                        value={integration}
-                    />
-                ),
+                label: <RenderLabel field={field} value={integration} />,
             })
         })
 
@@ -63,7 +60,7 @@ export default class IntegrationSelect extends Component {
             <SelectField
                 style={{
                     display: 'inline-block',
-                    verticalAlign: 'top'
+                    verticalAlign: 'top',
                 }}
                 placeholder="Select an integration"
                 value={value}

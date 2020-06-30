@@ -16,11 +16,11 @@ import css from './BillingDetails.less'
 
 type Props = {
     contact: billingContactType | null,
-    fetchContact: () => Promise<billingContactType>
+    fetchContact: () => Promise<billingContactType>,
 }
 
 type State = {
-    isLoading: boolean
+    isLoading: boolean,
 }
 
 export class BillingDetails extends Component<Props, State> {
@@ -37,7 +37,7 @@ export class BillingDetails extends Component<Props, State> {
 
     render() {
         if (this.state.isLoading) {
-            return <Loader/>
+            return <Loader />
         }
 
         if (!this.props.contact) {
@@ -54,9 +54,7 @@ export class BillingDetails extends Component<Props, State> {
         let country = countries.find(
             (country) => country.value === address.get('country')
         )
-        country = country
-            ? country.label
-            : address.get('country')
+        country = country ? country.label : address.get('country')
 
         return (
             <div className="mb-5">
@@ -64,7 +62,8 @@ export class BillingDetails extends Component<Props, State> {
                     <i className="material-icons">notes</i> Billing details
                 </h4>
                 <p>
-                    This information will appear on your next invoice. Invoices are sent to the billing email address below.
+                    This information will appear on your next invoice. Invoices
+                    are sent to the billing email address below.
                 </p>
                 <Card>
                     <CardBody>
@@ -73,38 +72,34 @@ export class BillingDetails extends Component<Props, State> {
                                 <address className={css.address}>
                                     <dt>Billing email:</dt>
                                     <dd>{contact.get('email')}</dd>
-                                    <br/>
+                                    <br />
                                     <dt>Company:</dt>
                                     <dd>{shipping.get('name') || '-'}</dd>
-                                    <br/>
+                                    <br />
                                     <dt>Address:</dt>
-                                    {
-                                        hasAddress ? (
-                                            <dd>
-                                                <div>{address.get('line1')}</div>
-                                                <div>{address.get('line2')}</div>
-                                                <div>
-                                                    {
-                                                        [
-                                                            address.get('city'),
-                                                            address.get('state'),
-                                                            address.get('postal_code')
-                                                        ].join(' ')
-                                                    }
-                                                </div>
-                                                <div>{country}</div>
-                                            </dd>
-                                        ) : (
-                                            <dd>-</dd>
-                                        )
-                                    }
-                                    <br/>
+                                    {hasAddress ? (
+                                        <dd>
+                                            <div>{address.get('line1')}</div>
+                                            <div>{address.get('line2')}</div>
+                                            <div>
+                                                {[
+                                                    address.get('city'),
+                                                    address.get('state'),
+                                                    address.get('postal_code'),
+                                                ].join(' ')}
+                                            </div>
+                                            <div>{country}</div>
+                                        </dd>
+                                    ) : (
+                                        <dd>-</dd>
+                                    )}
+                                    <br />
                                     <dt>Phone:</dt>
                                     <dd>{shipping.get('phone') || '-'}</dd>
                                 </address>
                             </Col>
                             <Col
-                                sm={{ size: 4, offset: 4 }}
+                                sm={{size: 4, offset: 4}}
                                 className={'text-right'}
                             >
                                 <Button
@@ -122,6 +117,9 @@ export class BillingDetails extends Component<Props, State> {
     }
 }
 
-export default connect((state) => ({
-    contact: getContact(state)
-}), {fetchContact})(BillingDetails)
+export default connect(
+    (state) => ({
+        contact: getContact(state),
+    }),
+    {fetchContact}
+)(BillingDetails)

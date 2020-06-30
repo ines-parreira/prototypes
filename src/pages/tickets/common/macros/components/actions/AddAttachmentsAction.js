@@ -18,7 +18,8 @@ export default class AddAttachmentsAction extends Component {
 
     // Render uploaded attachments
     _renderAttachments() {
-        return this.props.action.getIn(['arguments', 'attachments'], fromJS([]))
+        return this.props.action
+            .getIn(['arguments', 'attachments'], fromJS([]))
             .map((file, index) => {
                 return (
                     <Badge
@@ -46,14 +47,12 @@ export default class AddAttachmentsAction extends Component {
             <div>
                 {this._renderAttachments()}
                 <FileField
-                    placeholder={(
+                    placeholder={
                         <span>
-                            <i className="material-icons mr-1">
-                                attach_file
-                            </i>
+                            <i className="material-icons mr-1">attach_file</i>
                             Select files...
                         </span>
-                    )}
+                    }
                     onChange={this._addAttachments}
                     inline
                     multiple

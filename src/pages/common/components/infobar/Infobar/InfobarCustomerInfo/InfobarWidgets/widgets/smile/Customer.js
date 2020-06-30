@@ -27,22 +27,18 @@ export class TitleWrapper extends React.Component<Props> {
         let link = template.getIn(['meta', 'link'])
 
         if (link) {
-            link = renderTemplate(link, source.set('customerHash', customerHash).toJS())
+            link = renderTemplate(
+                link,
+                source.set('customerHash', customerHash).toJS()
+            )
         }
 
         return (
             <>
-                <CardHeaderIcon
-                    src={logo}
-                    alt="Smile"
-                />
+                <CardHeaderIcon src={logo} alt="Smile" />
                 <CardHeaderTitle>Smile</CardHeaderTitle>
                 <CardHeaderSubtitle>
-                    <a
-                        href={link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
+                    <a href={link} target="_blank" rel="noopener noreferrer">
                         {children}
                     </a>
                 </CardHeaderSubtitle>

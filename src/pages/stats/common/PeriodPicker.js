@@ -7,14 +7,14 @@ import {Button} from 'reactstrap'
 type Props = {
     isDisabled: boolean,
     endDatetime: moment,
-    onChange: ({ start_datetime: string, end_datetime: string }) => void,
+    onChange: ({start_datetime: string, end_datetime: string}) => void,
     startDatetime: moment,
 }
 
 type State = {
     startDate: moment,
     endDate: moment,
-    ranges: { [string]: [moment, moment] },
+    ranges: {[string]: [moment, moment]},
 }
 
 /**
@@ -29,7 +29,8 @@ export default class PeriodPicker extends React.Component<Props, State> {
         super(props)
         const startOfToday = () => moment().startOf('day')
         const endOfToday = () => moment().endOf('day')
-        const someDaysAgoStartOfDay = (days) => startOfToday().subtract(days - 1, 'days')
+        const someDaysAgoStartOfDay = (days) =>
+            startOfToday().subtract(days - 1, 'days')
 
         this.state = {
             ranges: {
@@ -47,9 +48,11 @@ export default class PeriodPicker extends React.Component<Props, State> {
     shouldComponentUpdate(nextProps: Props) {
         // because react-bootstrap-daterangepicker lib is based on weird DOM manipulation,
         // trigger redraw only when really needed
-        return !this.props.startDatetime.isSame(nextProps.startDatetime)
-            || !this.props.endDatetime.isSame(nextProps.endDatetime)
-            || this.props.isDisabled !== nextProps.isDisabled
+        return (
+            !this.props.startDatetime.isSame(nextProps.startDatetime) ||
+            !this.props.endDatetime.isSame(nextProps.endDatetime) ||
+            this.props.isDisabled !== nextProps.isDisabled
+        )
     }
 
     componentWillReceiveProps(nextProps: Props) {
@@ -61,10 +64,17 @@ export default class PeriodPicker extends React.Component<Props, State> {
         }
     }
 
-    _handleEvent = (event: Event, picker: { startDate: moment, endDate: moment }) => {
+    _handleEvent = (
+        event: Event,
+        picker: {startDate: moment, endDate: moment}
+    ) => {
         this.props.onChange({
-            start_datetime: moment(picker.startDate.startOf('day').format('YYYY-MM-DD HH:mm:ss')).format(),
-            end_datetime: moment(picker.endDate.endOf('day').format('YYYY-MM-DD HH:mm:ss')).format(),
+            start_datetime: moment(
+                picker.startDate.startOf('day').format('YYYY-MM-DD HH:mm:ss')
+            ).format(),
+            end_datetime: moment(
+                picker.endDate.endOf('day').format('YYYY-MM-DD HH:mm:ss')
+            ).format(),
         })
     }
 
@@ -79,16 +89,9 @@ export default class PeriodPicker extends React.Component<Props, State> {
         }
 
         const button = (
-            <Button
-                type="button"
-                disabled={isDisabled}
-            >
-                <i className="material-icons mr-2">
-                    calendar_today
-                </i>
-                <span>
-                    {label}
-                </span>
+            <Button type="button" disabled={isDisabled}>
+                <i className="material-icons mr-2">calendar_today</i>
+                <span>{label}</span>
                 <i className="material-icons md-2 strong ml-1">
                     arrow_drop_down
                 </i>

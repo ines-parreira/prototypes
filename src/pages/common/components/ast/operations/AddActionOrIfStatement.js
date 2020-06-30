@@ -2,15 +2,19 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import type {List} from 'immutable'
-import {UncontrolledButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
+import {
+    UncontrolledButtonDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem,
+} from 'reactstrap'
 
 import Hoverable from '../../Hoverable'
 import {computeLeftPadding} from '../utils'
 
-
 export class AddActionOrIfStatement extends React.Component<Props> {
     static defaultProps = {
-        removable: false
+        removable: false,
     }
 
     _addAction = () => {
@@ -20,20 +24,20 @@ export class AddActionOrIfStatement extends React.Component<Props> {
                 type: 'CallExpression',
                 callee: {
                     type: 'Identifier',
-                    name: 'Action'
+                    name: 'Action',
                 },
                 arguments: [
                     {
                         type: 'Literal',
                         value: '',
-                        raw: '\'\''
+                        raw: "''",
                     },
                     {
                         type: 'ObjectExpression',
-                        properties: []
-                    }
-                ]
-            }
+                        properties: [],
+                    },
+                ],
+            },
         }
 
         const {actions, parent} = this.props
@@ -47,7 +51,7 @@ export class AddActionOrIfStatement extends React.Component<Props> {
                 type: 'CallExpression',
                 callee: {
                     type: 'Identifier',
-                    name: 'eq'
+                    name: 'eq',
                 },
                 arguments: [
                     {
@@ -55,23 +59,23 @@ export class AddActionOrIfStatement extends React.Component<Props> {
                         computed: false,
                         object: {
                             type: 'Identifier',
-                            name: 'ticket'
+                            name: 'ticket',
                         },
                         property: {
                             type: 'Identifier',
-                            name: 'status'
-                        }
+                            name: 'status',
+                        },
                     },
                     {
                         type: 'Literal',
                         value: 'open',
-                        raw: '\'open\''
-                    }
+                        raw: "'open'",
+                    },
                 ],
             },
             consequent: {
                 type: 'BlockStatement',
-                body: []
+                body: [],
             },
         }
 
@@ -92,7 +96,9 @@ export class AddActionOrIfStatement extends React.Component<Props> {
         const {title, depth, removable} = this.props
 
         return (
-            <UncontrolledButtonDropdown style={{paddingLeft: computeLeftPadding(depth)}}>
+            <UncontrolledButtonDropdown
+                style={{paddingLeft: computeLeftPadding(depth)}}
+            >
                 <DropdownToggle
                     className="ControlStructureButton"
                     type="button"
@@ -113,17 +119,15 @@ export class AddActionOrIfStatement extends React.Component<Props> {
                     >
                         "IF" statement
                     </DropdownItem>
-                    {
-                        removable ? (
-                            <DropdownItem
-                                type="button"
-                                onClick={() => this._deleteStatement()}
-                            >
-                                <i className="material-icons red mr-1">delete</i>
-                                Delete node
-                            </DropdownItem>
-                        ) : null
-                    }
+                    {removable ? (
+                        <DropdownItem
+                            type="button"
+                            onClick={() => this._deleteStatement()}
+                        >
+                            <i className="material-icons red mr-1">delete</i>
+                            Delete node
+                        </DropdownItem>
+                    ) : null}
                 </DropdownMenu>
             </UncontrolledButtonDropdown>
         )
@@ -136,7 +140,7 @@ type Props = {
     parent: List<*>,
     title: string,
     depth: number,
-    removable: boolean
+    removable: boolean,
 }
 
 AddActionOrIfStatement.contextTypes = {

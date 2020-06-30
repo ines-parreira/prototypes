@@ -13,7 +13,7 @@ import {DATETIME_LABEL_FORMAT} from './constants'
 type EventItem = Map<string, *>
 type Props = {
     agents: Object,
-    eventItem: EventItem
+    eventItem: EventItem,
 }
 
 export class UserAuditRow extends React.Component<Props> {
@@ -36,7 +36,8 @@ export class UserAuditRow extends React.Component<Props> {
                         url={user.getIn(['meta', 'profile_picture_url'])}
                         size={26}
                         className="d-inline-block"
-                    /> {user.get('name')}
+                    />{' '}
+                    {user.get('name')}
                 </Link>
             </div>
         )
@@ -44,19 +45,15 @@ export class UserAuditRow extends React.Component<Props> {
 
     _renderObject = (item: EventItem) => {
         const objectTypeRoutes = {
-            'Ticket': `/app/ticket/${item.get('object_id')}/`,
-            'Customer': `/app/customer/${item.get('object_id')}/`,
+            Ticket: `/app/ticket/${item.get('object_id')}/`,
+            Customer: `/app/customer/${item.get('object_id')}/`,
             // TODO(customers-migration): remove this when we updated the object type for customers-related events
-            'User': `/app/customer/${item.get('object_id')}/`
+            User: `/app/customer/${item.get('object_id')}/`,
         }
         const objectType = item.get('object_type')
         const text = `${objectType} #${item.get('object_id')}`
         if (objectTypeRoutes[objectType]) {
-            return (
-                <Link to={objectTypeRoutes[objectType]}>
-                    {text}
-                </Link>
-            )
+            return <Link to={objectTypeRoutes[objectType]}>{text}</Link>
         }
         return text
     }
@@ -70,15 +67,9 @@ export class UserAuditRow extends React.Component<Props> {
 
         return (
             <tr>
-                <td>
-                    {this._renderUser(eventItem)}
-                </td>
-                <td>
-                    {this._renderEventType(eventItem)}
-                </td>
-                <td>
-                    {this._renderObject(eventItem)}
-                </td>
+                <td>{this._renderUser(eventItem)}</td>
+                <td>{this._renderEventType(eventItem)}</td>
+                <td>{this._renderObject(eventItem)}</td>
                 <td className="smallest">
                     <DatetimeLabel
                         dateTime={eventItem.get('created_datetime')}
@@ -86,7 +77,6 @@ export class UserAuditRow extends React.Component<Props> {
                     />
                 </td>
             </tr>
-
         )
     }
 }

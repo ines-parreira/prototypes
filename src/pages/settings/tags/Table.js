@@ -28,16 +28,20 @@ type Props = {
 
 class Table extends Component<Props> {
     static defaultProps = {
-        columns: [{
-            title: 'Tag',
-            field: 'name',
-        }, {
-            title: 'Description',
-            field: 'description',
-        }, {
-            title: 'Tickets',
-            field: 'usage',
-        }]
+        columns: [
+            {
+                title: 'Tag',
+                field: 'name',
+            },
+            {
+                title: 'Description',
+                field: 'description',
+            },
+            {
+                title: 'Tickets',
+                field: 'usage',
+            },
+        ],
     }
 
     _getSort() {
@@ -73,12 +77,20 @@ class Table extends Component<Props> {
     }
 
     render() {
-        const {tags, getSelectedTagMeta, selectAll, columns, reverse, onSelectAll, meta, onMerge, onBulkDelete} = this.props
+        const {
+            tags,
+            getSelectedTagMeta,
+            selectAll,
+            columns,
+            reverse,
+            onSelectAll,
+            meta,
+            onMerge,
+            onBulkDelete,
+        } = this.props
         const sort = this._getSort()
 
-        const selectedNum = meta
-            .filter((meta) => meta.get('selected'))
-            .size
+        const selectedNum = meta.filter((meta) => meta.get('selected')).size
 
         return (
             <table className={classnames('view-table', css.table)}>
@@ -96,7 +108,12 @@ class Table extends Component<Props> {
                         </td>
                         {columns.map((column, i) => (
                             <td key={i}>
-                                <div className={classnames(css.headerCell, 'cell-wrapper')}>
+                                <div
+                                    className={classnames(
+                                        css.headerCell,
+                                        'cell-wrapper'
+                                    )}
+                                >
                                     {i === 0 && (
                                         <TableActions
                                             selectedNum={selectedNum}
@@ -108,12 +125,16 @@ class Table extends Component<Props> {
                                     )}
                                     <div onClick={this._onSort(column.field)}>
                                         <span>{column.title}</span>
-                                        {this._sortIcon(sort, reverse, column.field)}
+                                        {this._sortIcon(
+                                            sort,
+                                            reverse,
+                                            column.field
+                                        )}
                                     </div>
                                 </div>
                             </td>
                         ))}
-                        <td/>
+                        <td />
                     </tr>
                 </thead>
 
@@ -131,7 +152,6 @@ class Table extends Component<Props> {
         )
     }
 }
-
 
 export default connect((state) => {
     return {

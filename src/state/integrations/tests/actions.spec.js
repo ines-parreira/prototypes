@@ -13,7 +13,7 @@ const mockStore = configureMockStore(middlewares)
 
 jest.mock('../../notifications/actions', () => {
     return {
-        notify: jest.fn(() => (args) => (args)),
+        notify: jest.fn(() => (args) => args),
     }
 })
 
@@ -43,9 +43,12 @@ describe('integrations actions', () => {
     })
 
     it('fetch integrations', () => {
-        mockServer.onGet('/api/integrations/').reply(200, {data: [{id: 1, name: 'http'}]})
+        mockServer
+            .onGet('/api/integrations/')
+            .reply(200, {data: [{id: 1, name: 'http'}]})
 
-        return store.dispatch(actions.fetchIntegrations())
+        return store
+            .dispatch(actions.fetchIntegrations())
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
@@ -58,7 +61,7 @@ describe('integrations actions', () => {
         const p = browserHistory.push
         let logUrl = ''
 
-        browserHistory.push = (url) => logUrl = url
+        browserHistory.push = (url) => (logUrl = url)
 
         actions.onCreateSuccess(store.dispatch, integration)
         expect(store.getActions()).toMatchSnapshot()
@@ -76,7 +79,7 @@ describe('integrations actions', () => {
         const p = browserHistory.push
         let logUrl = ''
 
-        browserHistory.push = (url) => logUrl = url
+        browserHistory.push = (url) => (logUrl = url)
 
         actions.onCreateSuccess(store.dispatch, integration)
         expect(store.getActions()).toMatchSnapshot()
@@ -94,7 +97,7 @@ describe('integrations actions', () => {
         const p = browserHistory.push
         let logUrl = ''
 
-        browserHistory.push = (url) => logUrl = url
+        browserHistory.push = (url) => (logUrl = url)
 
         actions.onCreateSuccess(store.dispatch, integration)
         expect(store.getActions()).toMatchSnapshot()
@@ -115,23 +118,30 @@ describe('integrations actions', () => {
 
     describe('fetch integration', () => {
         it('success', () => {
-            mockServer.onGet('/api/integrations/1/').reply(200, {id: 1, name: 'http'})
+            mockServer
+                .onGet('/api/integrations/1/')
+                .reply(200, {id: 1, name: 'http'})
 
-            return store.dispatch(actions.fetchIntegration(1, 'http'))
+            return store
+                .dispatch(actions.fetchIntegration(1, 'http'))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
         it('success waiting for authentication', () => {
-            mockServer.onGet('/api/integrations/1/').reply(200, {id: 1, name: 'http'})
+            mockServer
+                .onGet('/api/integrations/1/')
+                .reply(200, {id: 1, name: 'http'})
 
-            return store.dispatch(actions.fetchIntegration(1, 'http', true))
+            return store
+                .dispatch(actions.fetchIntegration(1, 'http', true))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
         it('fails', () => {
             mockServer.onGet('/api/integrations/1/').reply(400)
 
-            return store.dispatch(actions.fetchIntegration(1, 'http'))
+            return store
+                .dispatch(actions.fetchIntegration(1, 'http'))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
     })
@@ -144,7 +154,8 @@ describe('integrations actions', () => {
 
         mockServer.onDelete('/api/integrations/1/').reply(200)
 
-        return store.dispatch(actions.deleteIntegration(integration))
+        return store
+            .dispatch(actions.deleteIntegration(integration))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
@@ -156,7 +167,8 @@ describe('integrations actions', () => {
 
         mockServer.onDelete('/api/integrations/1/').reply(400)
 
-        return store.dispatch(actions.deleteIntegration(integration))
+        return store
+            .dispatch(actions.deleteIntegration(integration))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
@@ -165,7 +177,8 @@ describe('integrations actions', () => {
             store = mockStore({integrations: fromJS({integration: {id: 1}})})
             mockServer.onPost('/api/integrations/1/verify/').reply(201)
 
-            return store.dispatch(actions.verifyEmailIntegration('foo'))
+            return store
+                .dispatch(actions.verifyEmailIntegration('foo'))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
@@ -173,7 +186,8 @@ describe('integrations actions', () => {
             store = mockStore({integrations: fromJS({integration: {id: 1}})})
             mockServer.onPost('/api/integrations/1/verify/').reply(400)
 
-            return store.dispatch(actions.verifyEmailIntegration('foo'))
+            return store
+                .dispatch(actions.verifyEmailIntegration('foo'))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
     })

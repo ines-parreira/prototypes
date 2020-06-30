@@ -12,39 +12,49 @@ export const initialState = fromJS({
 
 type defaultActionType = actionType & {
     ticketId: string,
-    tickets: Array<{}>
+    tickets: Array<{}>,
 }
 
 const sortChats = (ticket) => -moment(ticket.get('last_message_datetime'))
 
-
-export default function reducer(state: Map<*, *> = initialState, action: defaultActionType): Map<*, *> {
+export default function reducer(
+    state: Map<*, *> = initialState,
+    action: defaultActionType
+): Map<*, *> {
     switch (action.type) {
         case constants.SET_CHATS: {
-            return state.update('tickets', () => fromJS(action.tickets).sortBy(sortChats))
+            return state.update('tickets', () =>
+                fromJS(action.tickets).sortBy(sortChats)
+            )
         }
 
         case constants.ADD_CHAT: {
             const newTicket = fromJS(action.ticket)
             let newState = state
 
-            const index = newState.get('tickets', fromJS([])).findIndex(
-                (ticket) => ticket.get('id') === newTicket.get('id'))
+            const index = newState
+                .get('tickets', fromJS([]))
+                .findIndex((ticket) => ticket.get('id') === newTicket.get('id'))
 
             if (~index) {
                 // update the existing chat
                 newState = newState.mergeIn(['tickets', index], newTicket)
             } else {
                 // add the new chat
-                newState = newState.update('tickets', (tickets) => tickets.push(newTicket))
+                newState = newState.update('tickets', (tickets) =>
+                    tickets.push(newTicket)
+                )
             }
 
-            return newState.update('tickets', (tickets) => tickets.sortBy(sortChats))
+            return newState.update('tickets', (tickets) =>
+                tickets.sortBy(sortChats)
+            )
         }
 
         case constants.REMOVE_CHAT: {
-            return state.update('tickets',
-                (ticket) => ticket.filter((ticket) => ticket.get('id') !== action.ticketId))
+            return state.update('tickets', (ticket) =>
+                ticket.filter((ticket) => ticket.get('id') !== action.ticketId)
+            )
         }
 
         case constants.MARK_CHAT_AS_READ: {

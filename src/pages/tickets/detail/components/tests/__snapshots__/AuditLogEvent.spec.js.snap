@@ -26,13 +26,16 @@ exports[`<AuditLogEvent/> render() should render when the customer has changed -
         </i>
       </div>
       <ActionName>
-        Customer changed from 
+        Customer changed from
+         
         <a
           href="/app/customer/2"
         >
           Customer #2
         </a>
-         to 
+         
+        to
+         
         <a
           href="/app/customer/3"
         >
@@ -82,13 +85,16 @@ exports[`<AuditLogEvent/> render() should render when the customer has changed 1
         </i>
       </div>
       <ActionName>
-        Customer changed from 
+        Customer changed from
+         
         <a
           href="/app/customer/2"
         >
           customer 2
         </a>
-         to 
+         
+        to
+         
         <a
           href="/app/customer/3"
         >

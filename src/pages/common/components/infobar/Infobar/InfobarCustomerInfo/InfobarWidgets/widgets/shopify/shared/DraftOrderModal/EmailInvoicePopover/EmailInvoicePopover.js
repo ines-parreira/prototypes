@@ -1,7 +1,15 @@
 // @flow
 
 import React, {type Node} from 'react'
-import {Button, Form, FormGroup, Input, Label, Popover, PopoverBody} from 'reactstrap'
+import {
+    Button,
+    Form,
+    FormGroup,
+    Input,
+    Label,
+    Popover,
+    PopoverBody,
+} from 'reactstrap'
 import {fromJS, type Record} from 'immutable'
 import classnames from 'classnames'
 
@@ -29,7 +37,10 @@ type State = {
     customMessage: string,
 }
 
-export default class EmailInvoicePopover extends React.PureComponent<Props, State> {
+export default class EmailInvoicePopover extends React.PureComponent<
+    Props,
+    State
+> {
     static defaultProps = {
         placement: 'bottom',
     }
@@ -55,8 +66,10 @@ export default class EmailInvoicePopover extends React.PureComponent<Props, Stat
             focusElement(() => this._inputElement)
             segmentTracker.logEvent(
                 actionName === ShopifyAction.CREATE_ORDER
-                    ? segmentTracker.EVENTS.SHOPIFY_CREATE_ORDER_EMAIL_INVOICE_POPOVER_OPEN
-                    : segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_EMAIL_INVOICE_POPOVER_OPEN
+                    ? segmentTracker.EVENTS
+                          .SHOPIFY_CREATE_ORDER_EMAIL_INVOICE_POPOVER_OPEN
+                    : segmentTracker.EVENTS
+                          .SHOPIFY_DUPLICATE_ORDER_EMAIL_INVOICE_POPOVER_OPEN
             )
         } else if (onClose) {
             focusElement(() => this._buttonElement)
@@ -111,8 +124,10 @@ export default class EmailInvoicePopover extends React.PureComponent<Props, Stat
 
         segmentTracker.logEvent(
             actionName === ShopifyAction.CREATE_ORDER
-                ? segmentTracker.EVENTS.SHOPIFY_CREATE_ORDER_EMAIL_INVOICE_POPOVER_SEND
-                : segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_EMAIL_INVOICE_POPOVER_SEND
+                ? segmentTracker.EVENTS
+                      .SHOPIFY_CREATE_ORDER_EMAIL_INVOICE_POPOVER_SEND
+                : segmentTracker.EVENTS
+                      .SHOPIFY_DUPLICATE_ORDER_EMAIL_INVOICE_POPOVER_SEND
         )
     }
 
@@ -123,8 +138,10 @@ export default class EmailInvoicePopover extends React.PureComponent<Props, Stat
 
         segmentTracker.logEvent(
             actionName === ShopifyAction.CREATE_ORDER
-                ? segmentTracker.EVENTS.SHOPIFY_CREATE_ORDER_EMAIL_INVOICE_POPOVER_CANCEL
-                : segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_EMAIL_INVOICE_POPOVER_CANCEL
+                ? segmentTracker.EVENTS
+                      .SHOPIFY_CREATE_ORDER_EMAIL_INVOICE_POPOVER_CANCEL
+                : segmentTracker.EVENTS
+                      .SHOPIFY_DUPLICATE_ORDER_EMAIL_INVOICE_POPOVER_CANCEL
         )
     }
 
@@ -152,10 +169,7 @@ export default class EmailInvoicePopover extends React.PureComponent<Props, Stat
                     target={id}
                     toggle={this._toggle}
                 >
-                    <Form
-                        onKeyDown={this._onKeyDown}
-                        onSubmit={this._onSubmit}
-                    >
+                    <Form onKeyDown={this._onKeyDown} onSubmit={this._onSubmit}>
                         <PopoverBody className="pt-3">
                             <FormGroup>
                                 <Label for="to">To</Label>
@@ -170,7 +184,9 @@ export default class EmailInvoicePopover extends React.PureComponent<Props, Stat
                                 />
                             </FormGroup>
                             <FormGroup>
-                                <Label for="custom-message">Custom message for this customer</Label>
+                                <Label for="custom-message">
+                                    Custom message for this customer
+                                </Label>
                                 <Input
                                     type="textarea"
                                     id="custom-message"
@@ -182,7 +198,7 @@ export default class EmailInvoicePopover extends React.PureComponent<Props, Stat
                                 />
                             </FormGroup>
                         </PopoverBody>
-                        <hr className="m-0"/>
+                        <hr className="m-0" />
                         <PopoverBody className="d-flex">
                             <Button
                                 type="button"

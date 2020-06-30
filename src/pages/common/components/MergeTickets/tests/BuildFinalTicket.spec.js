@@ -4,7 +4,6 @@ import {fromJS} from 'immutable'
 
 import BuildFinalTicket from '../BuildFinalTicket'
 
-
 const _noop = () => {}
 
 describe('BuildFinalTicket component', () => {
@@ -12,12 +11,12 @@ describe('BuildFinalTicket component', () => {
         subject: 'foo',
         assignee_user: {
             id: 1,
-            name: 'John Smith'
+            name: 'John Smith',
         },
         customer: {
             id: 22,
-            name: 'Maria Curie'
-        }
+            name: 'Maria Curie',
+        },
     })
 
     it('should not display any fields because they are all identical', () => {
@@ -50,10 +49,13 @@ describe('BuildFinalTicket component', () => {
         const component = shallow(
             <BuildFinalTicket
                 sourceTicket={baseTicket}
-                targetTicket={baseTicket.set('customer', fromJS({
-                    id: 33,
-                    name: 'Pedro Curie'
-                }))}
+                targetTicket={baseTicket.set(
+                    'customer',
+                    fromJS({
+                        id: 33,
+                        name: 'Pedro Curie',
+                    })
+                )}
                 finalTicket={baseTicket}
                 updateFinalTicket={_noop}
             />
@@ -66,10 +68,13 @@ describe('BuildFinalTicket component', () => {
         const component = shallow(
             <BuildFinalTicket
                 sourceTicket={baseTicket}
-                targetTicket={baseTicket.set('assignee_user', fromJS({
-                    id: 2,
-                    name: 'Jack Ryan'
-                }))}
+                targetTicket={baseTicket.set(
+                    'assignee_user',
+                    fromJS({
+                        id: 2,
+                        name: 'Jack Ryan',
+                    })
+                )}
                 finalTicket={baseTicket}
                 updateFinalTicket={_noop}
             />
@@ -97,15 +102,20 @@ describe('BuildFinalTicket component', () => {
                 sourceTicket={baseTicket}
                 targetTicket={baseTicket
                     .set('subject', 'bar')
-                    .set('assignee_user', fromJS({
-                        id: 2,
-                        name: 'Jack Ryan'
-                    }))
-                    .set('customer', fromJS({
-                        id: 33,
-                        name: 'Pedro Curie'
-                    }))
-                }
+                    .set(
+                        'assignee_user',
+                        fromJS({
+                            id: 2,
+                            name: 'Jack Ryan',
+                        })
+                    )
+                    .set(
+                        'customer',
+                        fromJS({
+                            id: 33,
+                            name: 'Pedro Curie',
+                        })
+                    )}
                 finalTicket={baseTicket}
                 updateFinalTicket={_noop}
             />

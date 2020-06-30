@@ -106,7 +106,8 @@ exports[`ManageTags component mounts correctly 1`] = `
           You can tag tickets to keep track of topics customers are contacting you about.
         </p>
         <p>
-          Check your tag statistics 
+          Check your tag statistics
+           
           <Link
             onlyActiveOnIndex={false}
             style={Object {}}

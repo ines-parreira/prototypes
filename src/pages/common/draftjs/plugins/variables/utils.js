@@ -29,7 +29,8 @@ export const attachEntitiesToVariables = (editorState, immutable = false) => {
                 const entityKey = character.getEntity()
                 return (
                     entityKey !== null &&
-                    newContentState.getEntity(entityKey).get('type') === 'variable'
+                    newContentState.getEntity(entityKey).get('type') ===
+                        'variable'
                 )
             },
             (start, end) => {
@@ -40,14 +41,19 @@ export const attachEntitiesToVariables = (editorState, immutable = false) => {
 
                 // turn variable immutable
                 if (immutable && !_get(entityData, 'immutable')) {
-                    newContentState = newContentState.mergeEntityData(entityKey, {
-                        immutable: true
-                    })
+                    newContentState = newContentState.mergeEntityData(
+                        entityKey,
+                        {
+                            immutable: true,
+                        }
+                    )
                 }
 
                 // remove invalid variable
                 if (value !== _get(entityData, 'result')) {
-                    const entitySelection = SelectionState.createEmpty(block.getKey())
+                    const entitySelection = SelectionState.createEmpty(
+                        block.getKey()
+                    )
                         .set('anchorOffset', start)
                         .set('focusOffset', end)
 
@@ -110,7 +116,7 @@ export const attachEntitiesToVariables = (editorState, immutable = false) => {
                 selection,
                 value,
                 null,
-                entityKey,
+                entityKey
             )
         }
 
@@ -121,7 +127,7 @@ export const attachEntitiesToVariables = (editorState, immutable = false) => {
         const newEditorState = EditorState.push(
             editorState,
             newContentState,
-            'attach-entity-variables',
+            'attach-entity-variables'
         )
         const currentSelection = editorState.getSelection()
 
@@ -139,7 +145,12 @@ export const attachEntitiesToVariables = (editorState, immutable = false) => {
 }
 
 const KEY_SEPARATOR = '-'
-export const setVariableEditable = ({entityKey, offsetKey, getEditorState, setEditorState}) => {
+export const setVariableEditable = ({
+    entityKey,
+    offsetKey,
+    getEditorState,
+    setEditorState,
+}) => {
     const editorState = getEditorState()
     const contentState = editorState.getCurrentContent()
     let newContentState = contentState.mergeEntityData(entityKey, {
@@ -156,12 +167,17 @@ export const setVariableEditable = ({entityKey, offsetKey, getEditorState, setEd
 
     // find entity position in block
     const contentBlock = newContentState.getBlockForKey(blockKey)
-    contentBlock.findEntityRanges((character) => {
-        return entityKey === character.getEntity()
-    }, (start) => offset = start)
+    contentBlock.findEntityRanges(
+        (character) => {
+            return entityKey === character.getEntity()
+        },
+        (start) => (offset = start)
+    )
 
     // set selection at start of variable
-    const selection = SelectionState.createEmpty(blockKey).set('anchorOffset', offset).set('focusOffset', offset)
+    const selection = SelectionState.createEmpty(blockKey)
+        .set('anchorOffset', offset)
+        .set('focusOffset', offset)
 
     return setEditorState(
         // mergeEntityData doesn't trigger a re-render,
@@ -170,7 +186,7 @@ export const setVariableEditable = ({entityKey, offsetKey, getEditorState, setEd
             EditorState.push(
                 editorState,
                 newContentState,
-                'set-variable-editable',
+                'set-variable-editable'
             ),
             selection
         )

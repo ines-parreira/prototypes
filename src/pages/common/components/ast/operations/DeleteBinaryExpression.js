@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 class DeleteBinaryExpression extends React.Component {
-
     _handleClick = () => {
         const {actions, parent} = this.props
         actions.modifyCodeAST(parent, null, 'DELETE_BINARY_EXPRESSION')
@@ -18,7 +17,6 @@ class DeleteBinaryExpression extends React.Component {
             </i>
         )
     }
-
 }
 
 DeleteBinaryExpression.propTypes = {

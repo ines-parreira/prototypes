@@ -4,7 +4,16 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {browserHistory, Link} from 'react-router'
 import {fromJS} from 'immutable'
-import {Breadcrumb, BreadcrumbItem, Button, ButtonGroup, CardDeck, Col, Container, Row} from 'reactstrap'
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    Button,
+    ButtonGroup,
+    CardDeck,
+    Col,
+    Container,
+    Row,
+} from 'reactstrap'
 
 import classnames from 'classnames'
 
@@ -29,7 +38,7 @@ type Props = {
     notify: Function,
     isAllowedToChangePlan: Function,
     updateSubscription: Function,
-    setFutureSubscriptionPlan: (string) => void
+    setFutureSubscriptionPlan: (string) => void,
 }
 
 type State = {
@@ -38,7 +47,6 @@ type State = {
 }
 
 export class BillingPlans extends React.Component<Props, State> {
-
     constructor(props: Props) {
         super(props)
         const {currentPlan} = props
@@ -49,14 +57,19 @@ export class BillingPlans extends React.Component<Props, State> {
     }
 
     _updateSubscription = (planId: string) => {
-        const {subscription, updateSubscription, setFutureSubscriptionPlan} = this.props
+        const {
+            subscription,
+            updateSubscription,
+            setFutureSubscriptionPlan,
+        } = this.props
         const hasNoSubscription = !subscription.get('status')
 
         if (!this.props.isAllowedToChangePlan(planId)) {
             this.props.notify({
                 status: 'error',
-                message: 'You cannot change your current plan because you have too many active integrations. ' +
-                'Delete or deactivate a few integrations and try again.'
+                message:
+                    'You cannot change your current plan because you have too many active integrations. ' +
+                    'Delete or deactivate a few integrations and try again.',
             })
             return
         }
@@ -65,7 +78,7 @@ export class BillingPlans extends React.Component<Props, State> {
 
         setFutureSubscriptionPlan(planId)
         updateSubscription({
-            plan: planId
+            plan: planId,
         }).then(() => {
             this.setState({isUpdating: false})
 
@@ -81,15 +94,13 @@ export class BillingPlans extends React.Component<Props, State> {
 
     _toggleInterval = () => {
         this.setState({
-            selectedInterval: this.state.selectedInterval === 'month' ? 'year' : 'month'
+            selectedInterval:
+                this.state.selectedInterval === 'month' ? 'year' : 'month',
         })
     }
 
     _renderFAQ = () => (
-        <Container
-            fluid
-            className="page-container"
-        >
+        <Container fluid className="page-container">
             <div style={{maxWidth: 900}}>
                 <h3 className="mb-4">Frequently asked questions</h3>
                 <Row className={css.faq}>
@@ -97,56 +108,79 @@ export class BillingPlans extends React.Component<Props, State> {
                         <dl>
                             <dt>What's a ticket?</dt>
                             <dd>
-                                A ticket is a conversation with a customer, on any channel. It can be by email, phone,
-                                chat, etc.
-                                <br/>
-                                Usage only includes tickets that contain a response sent from Gorgias.
+                                A ticket is a conversation with a customer, on
+                                any channel. It can be by email, phone, chat,
+                                etc.
+                                <br />
+                                Usage only includes tickets that contain a
+                                response sent from Gorgias.
                             </dd>
 
                             <dt>Do I need to pay for all tickets received?</dt>
                             <dd>
-                                No! You only pay for tickets that contain a response sent from Gorgias.
+                                No! You only pay for tickets that contain a
+                                response sent from Gorgias.
                             </dd>
 
                             <dt>Do I need to pay extra for chat?</dt>
                             <dd>
-                                No, all channels are included. You can connect as many chat widgets, facebook pages,
-                                and email addresses as you want.
+                                No, all channels are included. You can connect
+                                as many chat widgets, facebook pages, and email
+                                addresses as you want.
                             </dd>
 
-                            <dt>What level of support is included in my plan?</dt>
+                            <dt>
+                                What level of support is included in my plan?
+                            </dt>
                             <dd>
-                                We provide all our customers with the same level of support.
-                                We're available 9am-7pm PST, over live chat & email.
+                                We provide all our customers with the same level
+                                of support. We're available 9am-7pm PST, over
+                                live chat & email.
                             </dd>
                         </dl>
                     </Col>
                     <Col sm={6}>
                         <dl>
-                            <dt>I don’t know how many tickets I get per month. Can you help?</dt>
+                            <dt>
+                                I don’t know how many tickets I get per month.
+                                Can you help?
+                            </dt>
                             <dd>
-                                Sure. You probably receive about 1,000 tickets for each user in your team.
-                                So if you’re paying for 5 seats with your current helpdesk, you’d pay for 5,000 tickets
-                                with Gorgias.
+                                Sure. You probably receive about 1,000 tickets
+                                for each user in your team. So if you’re paying
+                                for 5 seats with your current helpdesk, you’d
+                                pay for 5,000 tickets with Gorgias.
                             </dd>
 
                             <dt>Can I switch between plans?</dt>
                             <dd>
-                                Yes you can. Switching between monthly/yearly plans
-                                will <a target="_blank"
+                                Yes you can. Switching between monthly/yearly
+                                plans will{' '}
+                                <a
+                                    target="_blank"
                                     rel="noreferrer noopener"
                                     href="https://stripe.com/docs/subscriptions/upgrading-downgrading#understanding-proration"
-                                >prorate</a> your subscription. See the question below for switching from yearly to monthly
-                                plans.
+                                >
+                                    prorate
+                                </a>{' '}
+                                your subscription. See the question below for
+                                switching from yearly to monthly plans.
                             </dd>
 
-                            <dt>Can I switch from an yearly plan to a monthly plan?</dt>
+                            <dt>
+                                Can I switch from an yearly plan to a monthly
+                                plan?
+                            </dt>
                             <dd>
-                                Once you start using our annual plan, you will get a %17 discount (2 months for free).
-                                Given this discount, we don't allow switching to monthly plans until the next billing
-                                cycle begins. In practice, it means that if you subscribe to a yearly plan on 15 May,
-                                you will be able to switch to a monthly plan next year on 15 May. Make sure you send us
-                                a message before so we can make the switch for you.
+                                Once you start using our annual plan, you will
+                                get a %17 discount (2 months for free). Given
+                                this discount, we don't allow switching to
+                                monthly plans until the next billing cycle
+                                begins. In practice, it means that if you
+                                subscribe to a yearly plan on 15 May, you will
+                                be able to switch to a monthly plan next year on
+                                15 May. Make sure you send us a message before
+                                so we can make the switch for you.
                             </dd>
                         </dl>
                     </Col>
@@ -160,13 +194,18 @@ export class BillingPlans extends React.Component<Props, State> {
         const {selectedInterval} = this.state
 
         const isCustomPlan = currentPlan.get('custom', false)
-        let plans = this.props.plans.filter((plan) => (
-            plan.get('public') && !plan.get('custom') && plan.get('interval') === selectedInterval
-        ))
+        let plans = this.props.plans.filter(
+            (plan) =>
+                plan.get('public') &&
+                !plan.get('custom') &&
+                plan.get('interval') === selectedInterval
+        )
         let i = 0
 
         if (isCustomPlan) {
-            plans = this.props.plans.filter((plan, planId) => planId === subscription.get('plan'))
+            plans = this.props.plans.filter(
+                (plan, planId) => planId === subscription.get('plan')
+            )
         }
 
         const enterprisePlan = fromJS({
@@ -182,71 +221,86 @@ export class BillingPlans extends React.Component<Props, State> {
                     <ButtonGroup>
                         <Button
                             onClick={this._toggleInterval}
-                            color={selectedInterval === 'month' ? 'primary' : 'secondary'}
+                            color={
+                                selectedInterval === 'month'
+                                    ? 'primary'
+                                    : 'secondary'
+                            }
                         >
                             Monthly
                         </Button>
                         <Button
                             onClick={this._toggleInterval}
-                            color={selectedInterval === 'year' ? 'primary' : 'secondary'}
+                            color={
+                                selectedInterval === 'year'
+                                    ? 'primary'
+                                    : 'secondary'
+                            }
                         >
                             Yearly
                         </Button>
                     </ButtonGroup>
                 </div>
                 <CardDeck className={classnames('mb-5', css['plans-cards'])}>
-                    {plans.map((plan, planId) => {
-                        ++i
-                        return (
-                            <Plan
-                                className="mt-4"
-                                key={i}
-                                plan={plan}
-                                isCurrentPlan={planId === subscription.get('plan')}
-                                isUpdating={this.state.isUpdating}
-                                isTrialing={this.props.isTrialing}
-                                isFeatured={i === 2}
-                                onClick={() => this._updateSubscription(planId)}
-                            />
-                        )
-                    }).toList()}
+                    {plans
+                        .map((plan, planId) => {
+                            ++i
+                            return (
+                                <Plan
+                                    className="mt-4"
+                                    key={i}
+                                    plan={plan}
+                                    isCurrentPlan={
+                                        planId === subscription.get('plan')
+                                    }
+                                    isUpdating={this.state.isUpdating}
+                                    isTrialing={this.props.isTrialing}
+                                    isFeatured={i === 2}
+                                    onClick={() =>
+                                        this._updateSubscription(planId)
+                                    }
+                                />
+                            )
+                        })
+                        .toList()}
                     {isCustomPlan || (
                         <Plan
                             className="mt-4"
                             plan={enterprisePlan}
-                            features={(
+                            features={
                                 <ul>
                                     <li>
                                         <i className="material-icons feature-icon">
                                             all_inclusive
-                                        </i>
-                                        {' '}
+                                        </i>{' '}
                                         <strong>Unlimited</strong> users
                                     </li>
                                     <li>
                                         <i className="material-icons feature-icon">
                                             arrow_downward
-                                        </i>
-                                        {' '}
-                                        Discounted prices for volumes
-                                        of <strong>{selectedInterval === 'year' ? '100,000' : '10,000'}+</strong> tickets
+                                        </i>{' '}
+                                        Discounted prices for volumes of{' '}
+                                        <strong>
+                                            {selectedInterval === 'year'
+                                                ? '100,000'
+                                                : '10,000'}
+                                            +
+                                        </strong>{' '}
+                                        tickets
                                     </li>
                                     <li>
                                         <i className="material-icons feature-icon">
                                             beach_access
-                                        </i>
-                                        {' '}
+                                        </i>{' '}
                                         Premium support
                                     </li>
                                 </ul>
-                            )}
-                            callToAction={(
-                                <Button
-                                    color="link"
-                                    onClick={openChat}>
+                            }
+                            callToAction={
+                                <Button color="link" onClick={openChat}>
                                     Contact us
                                 </Button>
-                            )}
+                            }
                         />
                     )}
                 </CardDeck>
@@ -257,17 +311,21 @@ export class BillingPlans extends React.Component<Props, State> {
     render() {
         return (
             <div className="full-width">
-                <PageHeader title={(
-                    <Breadcrumb>
-                        <BreadcrumbItem>
-                            <Link
-                                className="section"
-                                to="/app/settings/billing"
-                            >Billing & Usage</Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>Plans</BreadcrumbItem>
-                    </Breadcrumb>
-                )}/>
+                <PageHeader
+                    title={
+                        <Breadcrumb>
+                            <BreadcrumbItem>
+                                <Link
+                                    className="section"
+                                    to="/app/settings/billing"
+                                >
+                                    Billing & Usage
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>Plans</BreadcrumbItem>
+                        </Breadcrumb>
+                    }
+                />
                 {this._renderPlans()}
                 {this._renderFAQ()}
             </div>
@@ -275,13 +333,20 @@ export class BillingPlans extends React.Component<Props, State> {
     }
 }
 
-export default connect((state) => {
-    return {
-        currentPlan: billingSelectors.currentPlan(state),
-        isAllowedToChangePlan: billingSelectors.makeIsAllowedToChangePlan(state),
-        isTrialing: currentAccountSelectors.isTrialing(state),
-        plans: billingSelectors.plans(state),
-        shouldPayWithShopify: currentAccountSelectors.shouldPayWithShopify(state),
-        subscription: currentAccountSelectors.getCurrentSubscription(state),
-    }
-}, {notify, updateSubscription, setFutureSubscriptionPlan})(BillingPlans)
+export default connect(
+    (state) => {
+        return {
+            currentPlan: billingSelectors.currentPlan(state),
+            isAllowedToChangePlan: billingSelectors.makeIsAllowedToChangePlan(
+                state
+            ),
+            isTrialing: currentAccountSelectors.isTrialing(state),
+            plans: billingSelectors.plans(state),
+            shouldPayWithShopify: currentAccountSelectors.shouldPayWithShopify(
+                state
+            ),
+            subscription: currentAccountSelectors.getCurrentSubscription(state),
+        }
+    },
+    {notify, updateSubscription, setFutureSubscriptionPlan}
+)(BillingPlans)

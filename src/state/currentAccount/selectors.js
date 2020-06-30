@@ -8,7 +8,8 @@ import * as constants from './constants'
 
 // types
 
-export const getCurrentAccountState = (state: stateType) => state.currentAccount || fromJS({})
+export const getCurrentAccountState = (state: stateType) =>
+    state.currentAccount || fromJS({})
 
 export const getCurrentAccountMeta = createSelector(
     [getCurrentAccountState],
@@ -35,9 +36,8 @@ export const isTrialing = createSelector(
     (state) => state.get('status') === 'trialing'
 )
 
-export const hasCreditCard = createSelector(
-    [getCurrentAccountMeta],
-    (state) => state.get('hasCreditCard', false)
+export const hasCreditCard = createSelector([getCurrentAccountMeta], (state) =>
+    state.get('hasCreditCard', false)
 )
 
 export const shouldPayWithShopify = createSelector(
@@ -59,7 +59,8 @@ export const getShopifyBillingStatus = createSelector(
     }
 )
 
-export const paymentMethod = (state: stateType) => shouldPayWithShopify(state) ? 'shopify' : 'stripe'
+export const paymentMethod = (state: stateType) =>
+    shouldPayWithShopify(state) ? 'shopify' : 'stripe'
 
 export const paymentIsActive = (state: stateType) => {
     const currentPaymentMethod = paymentMethod(state)
@@ -72,15 +73,21 @@ export const paymentIsActive = (state: stateType) => {
 }
 
 export const getSettingsByType = (type: string) => {
-    return createSelector(
-        [getCurrentAccountState],
-        (account) => {
-            const settings = account.get('settings') || fromJS([])
-            return settings.find((setting) => setting.get('type') === type) || fromJS({})
-        }
-    )
+    return createSelector([getCurrentAccountState], (account) => {
+        const settings = account.get('settings') || fromJS([])
+        return (
+            settings.find((setting) => setting.get('type') === type) ||
+            fromJS({})
+        )
+    })
 }
 
-export const getSurveysSettings = getSettingsByType(constants.SETTING_TYPE_SATISFACTION_SURVEYS)
-export const getBusinessHoursSettings = getSettingsByType(constants.SETTING_TYPE_BUSINESS_HOURS)
-export const getTicketAssignmentSettings = getSettingsByType(constants.SETTING_TYPE_TICKET_ASSIGNMENT)
+export const getSurveysSettings = getSettingsByType(
+    constants.SETTING_TYPE_SATISFACTION_SURVEYS
+)
+export const getBusinessHoursSettings = getSettingsByType(
+    constants.SETTING_TYPE_BUSINESS_HOURS
+)
+export const getTicketAssignmentSettings = getSettingsByType(
+    constants.SETTING_TYPE_TICKET_ASSIGNMENT
+)

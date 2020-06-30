@@ -11,9 +11,8 @@ type Props = {
     integration: Object,
     isUpdate: boolean,
     urlParams: Object,
-    children?: any
+    children?: any,
 }
-
 
 export default class HTTPIntegrationLayout extends Component<Props> {
     render() {
@@ -28,7 +27,7 @@ export default class HTTPIntegrationLayout extends Component<Props> {
         return (
             <div className="full-width">
                 <PageHeader
-                    title={(
+                    title={
                         <Breadcrumb>
                             <BreadcrumbItem>
                                 <Link to={integrationsUrl}>Integrations</Link>
@@ -37,38 +36,49 @@ export default class HTTPIntegrationLayout extends Component<Props> {
                                 <Link to={HTTPIntegrationUrl}>HTTP</Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem active={!isOnEventsPage}>
-                                {isUpdate
-                                    ? isOnEventsPage
-                                        ? <Link to={integrationUrl}>{integration.get('name')}</Link>
-                                        : integration.get('name')
-                                    : 'Add new HTTP integration'
-                                }
+                                {isUpdate ? (
+                                    isOnEventsPage ? (
+                                        <Link to={integrationUrl}>
+                                            {integration.get('name')}
+                                        </Link>
+                                    ) : (
+                                        integration.get('name')
+                                    )
+                                ) : (
+                                    'Add new HTTP integration'
+                                )}
                             </BreadcrumbItem>
-                            {isOnEventsPage
-                                ?
+                            {isOnEventsPage ? (
                                 <BreadcrumbItem active={!eventId}>
-                                    {eventId
-                                        ? <Link to={`${integrationUrl}/events`}>Logs</Link>
-                                        : 'Logs'
-                                    }
+                                    {eventId ? (
+                                        <Link to={`${integrationUrl}/events`}>
+                                            Logs
+                                        </Link>
+                                    ) : (
+                                        'Logs'
+                                    )}
                                 </BreadcrumbItem>
-                                : null
-                            }
-                            {eventId
-                                ? <BreadcrumbItem active>#{eventId}</BreadcrumbItem>
-                                : null
-                            }
+                            ) : null}
+                            {eventId ? (
+                                <BreadcrumbItem active>
+                                    #{eventId}
+                                </BreadcrumbItem>
+                            ) : null}
                         </Breadcrumb>
-                    )}
+                    }
                 />
-                {isUpdate ?
+                {isUpdate ? (
                     <SecondaryNavbar>
-                        <Link to={`${integrationsUrl}/http/${integrationId}`}>Settings</Link>
-                        <Link to={`${integrationsUrl}/http/${integrationId}/events`}>Logs</Link>
+                        <Link to={`${integrationsUrl}/http/${integrationId}`}>
+                            Settings
+                        </Link>
+                        <Link
+                            to={`${integrationsUrl}/http/${integrationId}/events`}
+                        >
+                            Logs
+                        </Link>
                     </SecondaryNavbar>
-                    :
-                    null
-                }
+                ) : null}
                 {children}
             </div>
         )

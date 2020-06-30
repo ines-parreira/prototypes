@@ -15,7 +15,7 @@ import {
     SHOPIFY_INTEGRATION_TYPE,
     SMILE_INTEGRATION_TYPE,
     SMOOCH_INSIDE_INTEGRATION_TYPE,
-    SMOOCH_INTEGRATION_TYPE
+    SMOOCH_INTEGRATION_TYPE,
 } from '../../../constants/integration'
 
 import {compare} from '../../../utils'
@@ -73,7 +73,6 @@ import HTTPIntegrationEvent from './components/http/HTTPIntegrationEvent'
 import HTTPIntegrationLayout from './components/http/HTTPIntegrationLayout/HTTPIntegrationLayout'
 import EmailIntegrationCreateCustom from './components/email/EmailIntegrationCreateCustom/EmailIntegrationCreateCustom'
 
-
 class IntegrationDetailContainer extends React.Component {
     componentWillMount() {
         const {actions, params} = this.props
@@ -81,8 +80,14 @@ class IntegrationDetailContainer extends React.Component {
 
         // We need this to allow the user to refresh the settings page.
         // If we don't fetch it, the state is empty on refresh.
-        if (params.integrationId && !['new', 'setup'].includes(params.integrationId)) {
-            actions.fetchIntegration(params.integrationId, params.integrationType)
+        if (
+            params.integrationId &&
+            !['new', 'setup'].includes(params.integrationId)
+        ) {
+            actions.fetchIntegration(
+                params.integrationId,
+                params.integrationType
+            )
         }
     }
 
@@ -90,7 +95,8 @@ class IntegrationDetailContainer extends React.Component {
         const {actions, params} = this.props
         const {params: nextParams} = nextProps
         if (
-            nextParams.integrationId && !['new', 'setup'].includes(nextParams.integrationId) &&
+            nextParams.integrationId &&
+            !['new', 'setup'].includes(nextParams.integrationId) &&
             params.integrationId !== nextParams.integrationId
         ) {
             actions.fetchIntegration(nextParams.integrationId)
@@ -104,7 +110,7 @@ class IntegrationDetailContainer extends React.Component {
             integrations,
             getEligibleShopifyIntegrationsFor,
             getRedirectUri,
-            params
+            params,
         } = this.props
 
         const isDetail = !!params.integrationId
@@ -119,8 +125,14 @@ class IntegrationDetailContainer extends React.Component {
 
         const commonProps = {
             integration: integration,
-            integrations: integrations.get('integrations', fromJS([]))
-                .sort((a, b) => compare((a.get('name') || '').toLowerCase(), (b.get('name') || '').toLowerCase())),
+            integrations: integrations
+                .get('integrations', fromJS([]))
+                .sort((a, b) =>
+                    compare(
+                        (a.get('name') || '').toLowerCase(),
+                        (b.get('name') || '').toLowerCase()
+                    )
+                ),
             loading: integrations.getIn(['state', 'loading'], fromJS({})),
         }
 
@@ -129,9 +141,7 @@ class IntegrationDetailContainer extends React.Component {
         switch (params.integrationType) {
             case AIRCALL_INTEGRATION_TYPE:
                 if (isDetail) {
-                    return (
-                        <AircallIntegrationCreate/>
-                    )
+                    return <AircallIntegrationCreate />
                 }
                 return (
                     <AircallIntegrationList
@@ -201,7 +211,9 @@ class IntegrationDetailContainer extends React.Component {
                         actions={actions}
                         integrations={commonProps.integrations}
                         loading={commonProps.loading}
-                        gmailRedirectUri={getRedirectUri(GMAIL_INTEGRATION_TYPE)}
+                        gmailRedirectUri={getRedirectUri(
+                            GMAIL_INTEGRATION_TYPE
+                        )}
                     />
                 )
 
@@ -286,9 +298,10 @@ class IntegrationDetailContainer extends React.Component {
                                 isUpdate={isUpdate}
                                 urlParams={params}
                             >
-                                <HTTPIntegrationEvents integrationId={params.integrationId}/>
+                                <HTTPIntegrationEvents
+                                    integrationId={params.integrationId}
+                                />
                             </HTTPIntegrationLayout>
-
                         )
                     }
 
@@ -348,11 +361,19 @@ class IntegrationDetailContainer extends React.Component {
                             )
                         }
 
-                        return <ChatIntegrationCampaigns integration={commonProps.integration}/>
+                        return (
+                            <ChatIntegrationCampaigns
+                                integration={commonProps.integration}
+                            />
+                        )
                     }
 
                     if (params.extra === 'quick-replies') {
-                        return <ChatIntegrationQuickReplies integration={commonProps.integration}/>
+                        return (
+                            <ChatIntegrationQuickReplies
+                                integration={commonProps.integration}
+                            />
+                        )
                     }
 
                     return (
@@ -431,7 +452,9 @@ class IntegrationDetailContainer extends React.Component {
                         <RechargeIntegrationDetail
                             actions={actions}
                             integration={commonProps.integration}
-                            shopifyIntegrations={getEligibleShopifyIntegrationsFor(RECHARGE_INTEGRATION_TYPE)}
+                            shopifyIntegrations={getEligibleShopifyIntegrationsFor(
+                                RECHARGE_INTEGRATION_TYPE
+                            )}
                             isUpdate={isUpdate}
                             loading={commonProps.loading}
                             redirectUri={redirectUri}
@@ -443,7 +466,9 @@ class IntegrationDetailContainer extends React.Component {
                     <RechargeIntegrationList
                         actions={actions}
                         integrations={commonProps.integrations}
-                        shopifyIntegrations={getEligibleShopifyIntegrationsFor(RECHARGE_INTEGRATION_TYPE)}
+                        shopifyIntegrations={getEligibleShopifyIntegrationsFor(
+                            RECHARGE_INTEGRATION_TYPE
+                        )}
                         loading={commonProps.loading}
                     />
                 )
@@ -501,17 +526,19 @@ IntegrationDetailContainer.propTypes = {
     getEligibleShopifyIntegrationsFor: PropTypes.func.isRequired,
     params: PropTypes.shape({
         integrationType: PropTypes.string.isRequired,
-        integrationId: PropTypes.string
+        integrationId: PropTypes.string,
     }).isRequired,
     getRedirectUri: PropTypes.func.isRequired,
-    currentUser: PropTypes.object.isRequired
+    currentUser: PropTypes.object.isRequired,
 }
 
 const mapStateToProps = (state) => ({
     integrations: state.integrations,
-    getEligibleShopifyIntegrationsFor: IntegrationsSelectors.getEligibleShopifyIntegrationsFor(state),
+    getEligibleShopifyIntegrationsFor: IntegrationsSelectors.getEligibleShopifyIntegrationsFor(
+        state
+    ),
     getRedirectUri: IntegrationsSelectors.makeGetRedirectUri(state),
-    currentUser: state.currentUser
+    currentUser: state.currentUser,
 })
 
 const mapDispatchToProps = (dispatch) => ({
@@ -520,5 +547,5 @@ const mapDispatchToProps = (dispatch) => ({
 
 export default connect(
     mapStateToProps,
-    mapDispatchToProps,
+    mapDispatchToProps
 )(IntegrationDetailContainer)

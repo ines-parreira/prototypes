@@ -12,7 +12,12 @@ describe('plugin utils', () => {
             const entityKey = contentState.getFirstBlock().getEntityAt(0)
             const editorState = EditorState.createWithContent(contentState)
             const newEditorState = removeLink(entityKey, editorState)
-            expect(newEditorState.getCurrentContent().getFirstBlock().getEntityAt(0)).toBeFalsy()
+            expect(
+                newEditorState
+                    .getCurrentContent()
+                    .getFirstBlock()
+                    .getEntityAt(0)
+            ).toBeFalsy()
         })
 
         it('should move the selection after the entity', () => {
@@ -31,7 +36,12 @@ describe('plugin utils', () => {
             const contentState = convertFromHTML(html)
             const editorState = EditorState.createWithContent(contentState)
             const newEditorState = removeLink('fooKey', editorState)
-            expect(newEditorState.getCurrentContent().getFirstBlock().getEntityAt(0)).not.toBeFalsy()
+            expect(
+                newEditorState
+                    .getCurrentContent()
+                    .getFirstBlock()
+                    .getEntityAt(0)
+            ).not.toBeFalsy()
         })
     })
 })

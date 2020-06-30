@@ -11,7 +11,10 @@ import {removeNotification} from 'reapop'
 import type Moment from 'moment'
 
 import {DEFAULT_ACTIONS} from '../../config'
-import {INSTAGRAM_AD_COMMENT_SOURCE, INSTAGRAM_COMMENT_SOURCE} from '../../config/ticket'
+import {
+    INSTAGRAM_AD_COMMENT_SOURCE,
+    INSTAGRAM_COMMENT_SOURCE,
+} from '../../config/ticket'
 import browserNotification from '../../services/browserNotification'
 import GorgiasApi from '../../services/gorgiasApi'
 import socketManager from '../../services/socketManager'
@@ -31,11 +34,17 @@ import type {dispatchType, getStateType, thunkActionType} from '../types'
 
 import * as socketEventTypes from '../../services/socketManager/types'
 
-import {buildPartialUpdateFromAction, getSourceTypeOfResponse, nestedReplace} from './utils'
+import {
+    buildPartialUpdateFromAction,
+    getSourceTypeOfResponse,
+    nestedReplace,
+} from './utils'
 import * as types from './constants'
 
-
-export const mergeTicket = (ticket: Ticket) => (dispatch: dispatchType, getState: getStateType) => {
+export const mergeTicket = (ticket: Ticket) => (
+    dispatch: dispatchType,
+    getState: getStateType
+) => {
     const ticketRecord = fromJS(ticket)
     const state = getState()
     const {ticket: ticketState} = state
@@ -50,11 +59,18 @@ export const mergeTicket = (ticket: Ticket) => (dispatch: dispatchType, getState
         const {ticket: previousTicket} = getState()
 
         const messagesLength = ticketRecord.get('messages', fromJS([])).size
-        const previousMessagesLength = previousTicket.get('messages', fromJS([])).size
+        const previousMessagesLength = previousTicket.get(
+            'messages',
+            fromJS([])
+        ).size
 
         const newMessage = ticketRecord.get('messages', fromJS([])).last()
 
-        if (messagesLength !== previousMessagesLength && newMessage && !newMessage.get('from_agent')) {
+        if (
+            messagesLength !== previousMessagesLength &&
+            newMessage &&
+            !newMessage.get('from_agent')
+        ) {
             const title = newMessage.getIn(['sender', 'name'])
             const body = newMessage.get('body_text')
             browserNotification.newMessage({title, body})
@@ -62,7 +78,8 @@ export const mergeTicket = (ticket: Ticket) => (dispatch: dispatchType, getState
     }
 
     const currentMessages = ticketState.get('messages', fromJS([]))
-    const messagesDifference = ticketRecord.get('messages', fromJS([])).size - currentMessages.size
+    const messagesDifference =
+        ticketRecord.get('messages', fromJS([])).size - currentMessages.size
 
     const mergeDispatch = dispatch({
         type: types.MERGE_TICKET,
@@ -85,10 +102,13 @@ export const mergeCustomer = (customer: Map<*, *>) => {
 }
 
 export const fetchTicketReplyMacro = () => ({
-    type: types.FETCH_TICKET_REPLY_MACRO
+    type: types.FETCH_TICKET_REPLY_MACRO,
 })
 
-export const ticketPartialUpdate = (args: Object) => (dispatch: dispatchType, getState: getStateType) => {
+export const ticketPartialUpdate = (args: Object) => (
+    dispatch: dispatchType,
+    getState: getStateType
+) => {
     if (_isEmpty(args)) {
         return Promise.resolve()
     }
@@ -106,150 +126,200 @@ export const ticketPartialUpdate = (args: Object) => (dispatch: dispatchType, ge
         args,
     })
 
-    return axios.put(`/api/tickets/${ticketId}/`, args)
+    return axios
+        .put(`/api/tickets/${ticketId}/`, args)
         .then((json = {}) => json.data)
-        .then((resp) => {
-            return dispatch({
-                type: types.TICKET_PARTIAL_UPDATE_SUCCESS,
-                resp
-            })
-        }, (error) => {
-            return dispatch({
-                type: types.TICKET_PARTIAL_UPDATE_ERROR,
-                error,
-                reason: `Failed to update ticket ${ticketId}`
-            })
-        })
+        .then(
+            (resp) => {
+                return dispatch({
+                    type: types.TICKET_PARTIAL_UPDATE_SUCCESS,
+                    resp,
+                })
+            },
+            (error) => {
+                return dispatch({
+                    type: types.TICKET_PARTIAL_UPDATE_ERROR,
+                    error,
+                    reason: `Failed to update ticket ${ticketId}`,
+                })
+            }
+        )
 }
 
-export const addTags = (tags: string) => (dispatch: dispatchType, getState: getStateType) => {
+export const addTags = (tags: string) => (
+    dispatch: dispatchType,
+    getState: getStateType
+) => {
     dispatch({
         type: types.ADD_TICKET_TAGS,
         args: fromJS({tags}),
     })
 
-    return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('addTags', getState())))
+    return dispatch(
+        ticketPartialUpdate(buildPartialUpdateFromAction('addTags', getState()))
+    )
 }
 
-export const removeTag = (tag: string) => (dispatch: dispatchType, getState: getStateType) => {
+export const removeTag = (tag: string) => (
+    dispatch: dispatchType,
+    getState: getStateType
+) => {
     dispatch({
         type: types.REMOVE_TICKET_TAG,
         args: fromJS({tag}),
     })
 
-    return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('addTags', getState())))
+    return dispatch(
+        ticketPartialUpdate(buildPartialUpdateFromAction('addTags', getState()))
+    )
 }
 
-export const setSpam = (spam: boolean, callback: () => void = _noop) =>
-    (dispatch: dispatchType, getState: getStateType) => {
-        const {ticket} = getState()
-        const ticketId = ticket.get('id')
-        const currentSpam = ticket.get('spam')
+export const setSpam = (spam: boolean, callback: () => void = _noop) => (
+    dispatch: dispatchType,
+    getState: getStateType
+) => {
+    const {ticket} = getState()
+    const ticketId = ticket.get('id')
+    const currentSpam = ticket.get('spam')
 
-        if (currentSpam === spam) {
-            return Promise.resolve()
-        }
-
-        dispatch({
-            type: types.SET_SPAM_START,
-            spam
-        })
-
-        // execute callback immediately, do not wait for server answer
-        callback()
-
-        return dispatch(ticketPartialUpdate({spam})).then(() => {
-            dispatch({
-                type: types.SET_SPAM_SUCCESS,
-            })
-            if (spam) {
-                return dispatch(notify({
-                    id: `spam-${ticketId}`,
-                    dismissAfter: 5000,
-                    buttons: [{
-                        name: 'Undo',
-                        onClick: () => {
-                            dispatch(removeNotification(`spam-${ticketId}`))
-                            browserHistory.push(`/app/ticket/${ticketId}`)
-                            return dispatch(fetchTicket(ticketId))
-                                .then(() => {
-                                    dispatch(setSpam(false))
-                                })
-                        },
-                        primary: true,
-                    }],
-                    status: 'success',
-                    message: 'Ticket has been marked as spam',
-                }))
-            }
-        })
+    if (currentSpam === spam) {
+        return Promise.resolve()
     }
 
-export const setTrashed = (datetime: ?Moment, callback: () => void = _noop): thunkActionType =>
-    (dispatch: dispatchType, getState: getStateType) => {
-        const {ticket} = getState()
-        const ticketId = ticket.get('id')
-        const isTrashed = !!ticket.get('trashed_datetime')
+    dispatch({
+        type: types.SET_SPAM_START,
+        spam,
+    })
 
-        if (isTrashed && !!datetime) {
-            return Promise.resolve()
-        }
+    // execute callback immediately, do not wait for server answer
+    callback()
 
+    return dispatch(ticketPartialUpdate({spam})).then(() => {
         dispatch({
-            type: types.SET_TRASHED_START,
-            trashed_datetime: datetime
+            type: types.SET_SPAM_SUCCESS,
         })
+        if (spam) {
+            return dispatch(
+                notify({
+                    id: `spam-${ticketId}`,
+                    dismissAfter: 5000,
+                    buttons: [
+                        {
+                            name: 'Undo',
+                            onClick: () => {
+                                dispatch(removeNotification(`spam-${ticketId}`))
+                                browserHistory.push(`/app/ticket/${ticketId}`)
+                                return dispatch(fetchTicket(ticketId)).then(
+                                    () => {
+                                        dispatch(setSpam(false))
+                                    }
+                                )
+                            },
+                            primary: true,
+                        },
+                    ],
+                    status: 'success',
+                    message: 'Ticket has been marked as spam',
+                })
+            )
+        }
+    })
+}
 
-        // execute callback immediately, do not wait for server answer
-        callback()
+export const setTrashed = (
+    datetime: ?Moment,
+    callback: () => void = _noop
+): thunkActionType => (dispatch: dispatchType, getState: getStateType) => {
+    const {ticket} = getState()
+    const ticketId = ticket.get('id')
+    const isTrashed = !!ticket.get('trashed_datetime')
 
-        return dispatch(ticketPartialUpdate({trashed_datetime: datetime})).then(() => {
+    if (isTrashed && !!datetime) {
+        return Promise.resolve()
+    }
+
+    dispatch({
+        type: types.SET_TRASHED_START,
+        trashed_datetime: datetime,
+    })
+
+    // execute callback immediately, do not wait for server answer
+    callback()
+
+    return dispatch(ticketPartialUpdate({trashed_datetime: datetime})).then(
+        () => {
             dispatch({
                 type: types.SET_TRASHED_SUCCESS,
             })
             // display a notification when we trash a ticket
             if (datetime) {
-                return dispatch(notify({
-                    id: `trash-${ticketId}`,
-                    dismissAfter: 5000,
-                    buttons: [{
-                        name: 'Undo',
-                        onClick: () => {
-                            dispatch(removeNotification(`trash-${ticketId}`))
-                            browserHistory.push(`/app/ticket/${ticketId}`)
-                            return dispatch(fetchTicket(ticketId))
-                                .then(() => {
-                                    dispatch(setTrashed(null))
-                                })
-                        },
-                        primary: true,
-                    }],
-                    status: 'success',
-                    message: 'Ticket has been deleted',
-                }))
+                return dispatch(
+                    notify({
+                        id: `trash-${ticketId}`,
+                        dismissAfter: 5000,
+                        buttons: [
+                            {
+                                name: 'Undo',
+                                onClick: () => {
+                                    dispatch(
+                                        removeNotification(`trash-${ticketId}`)
+                                    )
+                                    browserHistory.push(
+                                        `/app/ticket/${ticketId}`
+                                    )
+                                    return dispatch(fetchTicket(ticketId)).then(
+                                        () => {
+                                            dispatch(setTrashed(null))
+                                        }
+                                    )
+                                },
+                                primary: true,
+                            },
+                        ],
+                        status: 'success',
+                        message: 'Ticket has been deleted',
+                    })
+                )
             }
-        })
-    }
+        }
+    )
+}
 
-export const setAgent = (assigneeUser: ?Object) => (dispatch: dispatchType, getState: getStateType) => {
+export const setAgent = (assigneeUser: ?Object) => (
+    dispatch: dispatchType,
+    getState: getStateType
+) => {
     dispatch({
         type: types.SET_AGENT,
         args: fromJS({assignee_user: assigneeUser}),
     })
 
-    return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('setAssignee', getState())))
+    return dispatch(
+        ticketPartialUpdate(
+            buildPartialUpdateFromAction('setAssignee', getState())
+        )
+    )
 }
 
-export const setTeam = (assigneeTeam: ?Object) => (dispatch: dispatchType, getState: getStateType) => {
+export const setTeam = (assigneeTeam: ?Object) => (
+    dispatch: dispatchType,
+    getState: getStateType
+) => {
     dispatch({
         type: types.SET_TEAM,
         args: fromJS({assignee_team: assigneeTeam}),
     })
 
-    return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('setTeamAssignee', getState())))
+    return dispatch(
+        ticketPartialUpdate(
+            buildPartialUpdateFromAction('setTeamAssignee', getState())
+        )
+    )
 }
 
-export const setCustomer = (customer: ?Object): thunkActionType => (dispatch: dispatchType) => {
+export const setCustomer = (customer: ?Object): thunkActionType => (
+    dispatch: dispatchType
+) => {
     dispatch({
         type: types.SET_CUSTOMER,
         args: fromJS({customer}),
@@ -261,90 +331,125 @@ export const setCustomer = (customer: ?Object): thunkActionType => (dispatch: di
 
     socketManager.join('customer', customer.get('id'))
 
-    return dispatch(ticketPartialUpdate({
-        customer: fromJS({
-            id: customer.get('id')
+    return dispatch(
+        ticketPartialUpdate({
+            customer: fromJS({
+                id: customer.get('id'),
+            }),
         })
-    }))
+    )
 }
 
-export const setStatus = (status: string, callback: () => void = _noop) =>
-    (dispatch: dispatchType, getState: getStateType) => {
-        dispatch({
-            type: types.SET_STATUS,
-            args: fromJS({status}),
-        })
+export const setStatus = (status: string, callback: () => void = _noop) => (
+    dispatch: dispatchType,
+    getState: getStateType
+) => {
+    dispatch({
+        type: types.SET_STATUS,
+        args: fromJS({status}),
+    })
 
-        if (status === 'closed') {
-            // execute callback immediately, do not wait for server answer
-            callback()
-        }
-
-        return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('setStatus', getState())))
+    if (status === 'closed') {
+        // execute callback immediately, do not wait for server answer
+        callback()
     }
 
-export const setSubject = (subject: string) => (dispatch: dispatchType, getState: getStateType) => {
+    return dispatch(
+        ticketPartialUpdate(
+            buildPartialUpdateFromAction('setStatus', getState())
+        )
+    )
+}
+
+export const setSubject = (subject: string) => (
+    dispatch: dispatchType,
+    getState: getStateType
+) => {
     dispatch({
         type: types.SET_SUBJECT,
         args: fromJS({subject}),
     })
 
-    return dispatch(ticketPartialUpdate(buildPartialUpdateFromAction('setSubject', getState())))
+    return dispatch(
+        ticketPartialUpdate(
+            buildPartialUpdateFromAction('setSubject', getState())
+        )
+    )
 }
 
-export const setSnooze = (datetime: Moment, callback: () => void = _noop) => (dispatch: dispatchType) => {
+export const setSnooze = (datetime: Moment, callback: () => void = _noop) => (
+    dispatch: dispatchType
+) => {
     const data = {
         snooze_datetime: datetime,
-        status: 'closed'
+        status: 'closed',
     }
 
     dispatch({
         type: types.SET_SNOOZE,
-        ...data
+        ...data,
     })
 
     // execute callback immediately, do not wait for server answer
     callback()
 
     return dispatch(ticketPartialUpdate(data)).then(() => {
-        dispatch(notify({
-            status: 'success',
-            message: 'The ticket has been closed and snoozed.'
-        }))
+        dispatch(
+            notify({
+                status: 'success',
+                message: 'The ticket has been closed and snoozed.',
+            })
+        )
     })
 }
 
-export const deleteMessage = (ticketId: number, messageId: number) => (dispatch: dispatchType) => {
-    return axios.delete(`/api/tickets/${ticketId}/messages/${messageId}/`)
+export const deleteMessage = (ticketId: number, messageId: number) => (
+    dispatch: dispatchType
+) => {
+    return axios
+        .delete(`/api/tickets/${ticketId}/messages/${messageId}/`)
         .then((json = {}) => json.data)
-        .then(() => {
-            dispatch({
-                type: types.DELETE_TICKET_MESSAGE_SUCCESS,
-                messageId
-            })
-        }, (error) => {
-            return dispatch({
-                type: types.DELETE_TICKET_MESSAGE_ERROR,
-                error,
-                reason: `Failed to delete message ${messageId} from ticket ${ticketId}`
-            })
-        })
+        .then(
+            () => {
+                dispatch({
+                    type: types.DELETE_TICKET_MESSAGE_SUCCESS,
+                    messageId,
+                })
+            },
+            (error) => {
+                return dispatch({
+                    type: types.DELETE_TICKET_MESSAGE_ERROR,
+                    error,
+                    reason: `Failed to delete message ${messageId} from ticket ${ticketId}`,
+                })
+            }
+        )
 }
 
-export const deleteActionOnApplied = (actionIndex: number, ticketId: number) => ({
+export const deleteActionOnApplied = (
+    actionIndex: number,
+    ticketId: number
+) => ({
     type: types.DELETE_ACTION_ON_APPLIED,
     actionIndex,
-    ticketId
+    ticketId,
 })
 
-export const updateActionArgsOnApplied = (actionIndex: number, value: string, ticketId: number) => ({
+export const updateActionArgsOnApplied = (
+    actionIndex: number,
+    value: string,
+    ticketId: number
+) => ({
     type: types.UPDATE_ACTION_ARGS_ON_APPLIED,
     actionIndex,
     value,
-    ticketId
+    ticketId,
 })
 
-export const applyMacroAction = (action: Record<Action>) => (dispatch: dispatchType, getState: getStateType) => {
+export const applyMacroAction = (action: Record<Action>) => (
+    dispatch: dispatchType,
+    getState: getStateType
+) => {
     const state = getState()
     const {ticket, currentUser} = state
 
@@ -367,28 +472,37 @@ export const applyMacroAction = (action: Record<Action>) => (dispatch: dispatchT
     })
 }
 
-export const applyMacro = (macro: Macro, ticketId: number, shouldUpdateNewMessage?: boolean = true) => (dispatch: dispatchType, getState: getStateType) => {
+export const applyMacro = (
+    macro: Macro,
+    ticketId: number,
+    shouldUpdateNewMessage?: boolean = true
+) => (dispatch: dispatchType, getState: getStateType) => {
     // render macro action arguments
     let state = getState()
 
     const renderedMacro = macro.update('actions', (actions) => {
         return actions.map((action) => {
-            return action.update('arguments', (args) => nestedReplace(args, state.ticket, state.currentUser, (args) => {
-                return dispatch(notify(args))
-            }))
+            return action.update('arguments', (args) =>
+                nestedReplace(args, state.ticket, state.currentUser, (args) => {
+                    return dispatch(notify(args))
+                })
+            )
         })
     })
 
     dispatch({
         type: types.APPLY_MACRO,
         macro: renderedMacro,
-        ticketId
+        ticketId,
     })
 
     const actions = renderedMacro.get('actions', fromJS([]))
 
     actions.forEach((action) => {
-        if (!shouldUpdateNewMessage && ['addAttachments', 'setResponseText'].includes(action.get('name'))) {
+        if (
+            !shouldUpdateNewMessage &&
+            ['addAttachments', 'setResponseText'].includes(action.get('name'))
+        ) {
             return
         }
         dispatch(applyMacroAction(action))
@@ -403,7 +517,7 @@ export const applyMacro = (macro: Macro, ticketId: number, shouldUpdateNewMessag
     if (shouldUpdateNewMessage) {
         dispatch({
             type: newMessageTypes.NEW_MESSAGE_RECORD_MACRO,
-            macro
+            macro,
         })
     }
 
@@ -412,7 +526,7 @@ export const applyMacro = (macro: Macro, ticketId: number, shouldUpdateNewMessag
 
 export const clearAppliedMacro = (ticketId: number) => ({
     type: types.CLEAR_APPLIED_MACRO,
-    ticketId
+    ticketId,
 })
 
 /**
@@ -422,7 +536,10 @@ export const clearAppliedMacro = (ticketId: number) => ({
  * @param error: the error message
  * @param discreetly: (default: false) whether or not the function should dispatch `FETCH_TICKET_START`
  */
-export const fetchTicket = (ticketId: string, discreetly: boolean = false) => (dispatch: dispatchType, getState: getStateType) => {
+export const fetchTicket = (ticketId: string, discreetly: boolean = false) => (
+    dispatch: dispatchType,
+    getState: getStateType
+) => {
     if (ticketId === 'new') {
         return new Promise<thunkActionType>((resolve) => {
             // wait next tick before initializing the draft
@@ -446,67 +563,81 @@ export const fetchTicket = (ticketId: string, discreetly: boolean = false) => (d
 
     const url = `/api/tickets/${parsedTicketId}/`
 
-    return axios.get(url)
+    return axios
+        .get(url)
         .then((json = {}) => json.data)
-        .then((resp) => {
-            if (_isEmpty(resp)) {
-                console.error('No results for', url)
-            }
+        .then(
+            (resp) => {
+                if (_isEmpty(resp)) {
+                    console.error('No results for', url)
+                }
 
-            if (!isCurrentlyOnTicket(ticketId)) {
-                return Promise.resolve()
-            }
+                if (!isCurrentlyOnTicket(ticketId)) {
+                    return Promise.resolve()
+                }
 
-            const customerId = fromJS(resp).getIn(['customer', 'id'])
+                const customerId = fromJS(resp).getIn(['customer', 'id'])
 
-            if (parsedTicketId) {
-                socketManager.join('ticket', parsedTicketId)
-            }
+                if (parsedTicketId) {
+                    socketManager.join('ticket', parsedTicketId)
+                }
 
-            if (customerId) {
-                socketManager.join('customer', customerId)
-            }
+                if (customerId) {
+                    socketManager.join('customer', customerId)
+                }
 
-            // dispatch for ticket reducer branch
-            dispatch({
-                type: types.FETCH_TICKET_SUCCESS,
-                resp,
-                ticketId: parsedTicketId,
-            })
-
-            // dispatch for newMessage reducer branch
-            if (getState().newMessage.getIn(['newMessage', 'body_text'], '').length === 0) {
+                // dispatch for ticket reducer branch
                 dispatch({
-                    type: newMessageTypes.NEW_MESSAGE_FETCH_TICKET_SUCCESS,
+                    type: types.FETCH_TICKET_SUCCESS,
                     resp,
+                    ticketId: parsedTicketId,
+                })
+
+                // dispatch for newMessage reducer branch
+                if (
+                    getState().newMessage.getIn(['newMessage', 'body_text'], '')
+                        .length === 0
+                ) {
+                    dispatch({
+                        type: newMessageTypes.NEW_MESSAGE_FETCH_TICKET_SUCCESS,
+                        resp,
+                    })
+                }
+
+                dispatch(newMessageActions.initializeMessageDraft())
+
+                // trigger side effects for cached source type
+                const cachedSourceType = getSourceTypeCache(ticketId)
+                if (cachedSourceType) {
+                    dispatch(newMessageActions.prepare(cachedSourceType))
+                }
+
+                const sourceTypeOfResponse = getSourceTypeOfResponse(
+                    resp.messages
+                )
+
+                if (
+                    [
+                        INSTAGRAM_COMMENT_SOURCE,
+                        INSTAGRAM_AD_COMMENT_SOURCE,
+                    ].includes(sourceTypeOfResponse)
+                ) {
+                    dispatch(newMessageActions.prepare(sourceTypeOfResponse))
+                }
+
+                // Notify the server that we viewed this ticket
+                socketManager.send('ticket-viewed', parsedTicketId)
+
+                return dispatch(newMessageActions.resetReceiversAndSender)
+            },
+            (error) => {
+                return dispatch({
+                    type: types.FETCH_TICKET_ERROR,
+                    error,
+                    reason: `Failed to fetch ticket ${parsedTicketId}`,
                 })
             }
-
-            dispatch(newMessageActions.initializeMessageDraft())
-
-            // trigger side effects for cached source type
-            const cachedSourceType = getSourceTypeCache(ticketId)
-            if (cachedSourceType) {
-                dispatch(newMessageActions.prepare(cachedSourceType))
-            }
-
-            const sourceTypeOfResponse = getSourceTypeOfResponse(resp.messages)
-
-            if ([INSTAGRAM_COMMENT_SOURCE, INSTAGRAM_AD_COMMENT_SOURCE].includes(sourceTypeOfResponse)) {
-                dispatch(newMessageActions.prepare(sourceTypeOfResponse))
-            }
-
-            // Notify the server that we viewed this ticket
-            socketManager.send('ticket-viewed', parsedTicketId)
-
-            return dispatch(newMessageActions.resetReceiversAndSender)
-        }, (error) => {
-            return dispatch({
-                type: types.FETCH_TICKET_ERROR,
-                error,
-                reason: `Failed to fetch ticket ${parsedTicketId}`
-            })
-        })
+        )
 }
 
 /**
@@ -518,7 +649,11 @@ export const fetchTicket = (ticketId: string, discreetly: boolean = false) => (d
  * @param {String} promise - promise to resolve before displaying the ticket fetched
  * @returns {Promise}
  */
-export const _goToNextOrPrevTicket = (ticketId: number, direction: string, promise?: Promise<?dispatchType>) => {
+export const _goToNextOrPrevTicket = (
+    ticketId: number,
+    direction: string,
+    promise?: Promise<?dispatchType>
+) => {
     return (dispatch: dispatchType, getState: getStateType) => {
         if (!promise) {
             // we do not display the loading state if there is a promise to resolve
@@ -527,7 +662,8 @@ export const _goToNextOrPrevTicket = (ticketId: number, direction: string, promi
                 type: types.FETCH_TICKET_START,
             })
         }
-        let returnedPromise: Promise<?dispatchType> = promise || Promise.resolve()
+        let returnedPromise: Promise<?dispatchType> =
+            promise || Promise.resolve()
 
         const viewId = viewsSelectors.getActiveView(getState()).get('id')
         const viewCursor = ticketsSelectors.getCursor(getState())
@@ -540,59 +676,80 @@ export const _goToNextOrPrevTicket = (ticketId: number, direction: string, promi
             })
         }
 
-        return axios.put(url, {cursor: viewCursor})
+        return axios
+            .put(url, {cursor: viewCursor})
             .then((json = {}) => json.data)
-            .then((ticket) => {
-                // wait for the promise to be resolved to go to the ticket
-                return ((returnedPromise: any): Promise<?dispatchType>).then(() => {
-                    if (!ticket) {
-                        // there is no other ticket the user can handle so we go back to the view
-                        browserHistory.push(`/app/tickets/${viewId}`)
-                        return
-                    }
+            .then(
+                (ticket) => {
+                    // wait for the promise to be resolved to go to the ticket
+                    return ((returnedPromise: any): Promise<?dispatchType>).then(
+                        () => {
+                            if (!ticket) {
+                                // there is no other ticket the user can handle so we go back to the view
+                                browserHistory.push(`/app/tickets/${viewId}`)
+                                return
+                            }
 
-                    const customerId = fromJS(ticket).getIn(['customer', 'id'])
+                            const customerId = fromJS(ticket).getIn([
+                                'customer',
+                                'id',
+                            ])
 
-                    if (ticketId) {
-                        socketManager.join('ticket', ticket.id)
-                    }
+                            if (ticketId) {
+                                socketManager.join('ticket', ticket.id)
+                            }
 
-                    if (customerId) {
-                        socketManager.join('customer', customerId)
-                    }
+                            if (customerId) {
+                                socketManager.join('customer', customerId)
+                            }
 
-                    dispatch({
-                        type: types.FETCH_TICKET_SUCCESS,
-                        resp: ticket,
-                        ticketId: ticket.id,
+                            dispatch({
+                                type: types.FETCH_TICKET_SUCCESS,
+                                resp: ticket,
+                                ticketId: ticket.id,
+                            })
+
+                            dispatch({
+                                type:
+                                    newMessageTypes.NEW_MESSAGE_FETCH_TICKET_SUCCESS,
+                                resp: ticket,
+                            })
+
+                            dispatch(newMessageActions.initializeMessageDraft())
+
+                            const sourceTypeOfResponse = getSourceTypeOfResponse(
+                                ticket.messages
+                            )
+
+                            if (
+                                [
+                                    INSTAGRAM_COMMENT_SOURCE,
+                                    INSTAGRAM_AD_COMMENT_SOURCE,
+                                ].includes(sourceTypeOfResponse)
+                            ) {
+                                dispatch(
+                                    newMessageActions.prepare(
+                                        sourceTypeOfResponse
+                                    )
+                                )
+                            }
+
+                            // Notify the server that we viewed this ticket
+                            socketManager.send('ticket-viewed', ticket.id)
+                            dispatch(newMessageActions.resetReceiversAndSender)
+
+                            browserHistory.push(`/app/ticket/${ticket.id}`)
+                        }
+                    )
+                },
+                (error) => {
+                    return dispatch({
+                        type: types.FETCH_TICKET_ERROR,
+                        error,
+                        reason: 'Failed to fetch ticket',
                     })
-
-                    dispatch({
-                        type: newMessageTypes.NEW_MESSAGE_FETCH_TICKET_SUCCESS,
-                        resp: ticket,
-                    })
-
-                    dispatch(newMessageActions.initializeMessageDraft())
-
-                    const sourceTypeOfResponse = getSourceTypeOfResponse(ticket.messages)
-
-                    if ([INSTAGRAM_COMMENT_SOURCE, INSTAGRAM_AD_COMMENT_SOURCE].includes(sourceTypeOfResponse)) {
-                        dispatch(newMessageActions.prepare(sourceTypeOfResponse))
-                    }
-
-                    // Notify the server that we viewed this ticket
-                    socketManager.send('ticket-viewed', ticket.id)
-                    dispatch(newMessageActions.resetReceiversAndSender)
-
-                    browserHistory.push(`/app/ticket/${ticket.id}`)
-                })
-            }, (error) => {
-                return dispatch({
-                    type: types.FETCH_TICKET_ERROR,
-                    error,
-                    reason: 'Failed to fetch ticket'
-                })
-            })
+                }
+            )
     }
 }
 
@@ -600,7 +757,10 @@ export const _goToNextOrPrevTicket = (ticketId: number, direction: string, promi
  * Fetch the previous ticket immediately
  * but wait the Promise (`promise` argument) to be resolved to display it
  */
-export const goToPrevTicket = (ticketId: number, promise?: Promise<?dispatchType>) => (dispatch: dispatchType) => {
+export const goToPrevTicket = (
+    ticketId: number,
+    promise?: Promise<?dispatchType>
+) => (dispatch: dispatchType) => {
     return dispatch(_goToNextOrPrevTicket(ticketId, 'prev', promise))
 }
 
@@ -608,12 +768,19 @@ export const goToPrevTicket = (ticketId: number, promise?: Promise<?dispatchType
  * Fetch the next ticket immediately
  * but wait the Promise (`promise` argument) to be resolved to display it
  */
-export const goToNextTicket = (ticketId: number, promise?: Promise<?dispatchType>) => (dispatch: dispatchType) => {
+export const goToNextTicket = (
+    ticketId: number,
+    promise?: Promise<?dispatchType>
+) => (dispatch: dispatchType) => {
     return dispatch(_goToNextOrPrevTicket(ticketId, 'next', promise))
 }
 
-export const displayAuditLogEvents = (ticketId: number) => async (dispatch: dispatchType) => {
-    segmentTracker.logEvent(segmentTracker.EVENTS.DISPLAY_ALL_EVENTS_CLICKED, {ticketId})
+export const displayAuditLogEvents = (ticketId: number) => async (
+    dispatch: dispatchType
+) => {
+    segmentTracker.logEvent(segmentTracker.EVENTS.DISPLAY_ALL_EVENTS_CLICKED, {
+        ticketId,
+    })
 
     const client = new GorgiasApi()
     const generator = client.getTicketEvents(ticketId)
@@ -635,10 +802,12 @@ export const displayAuditLogEvents = (ticketId: number) => async (dispatch: disp
     }
 
     if (!total) {
-        dispatch(notify({
-            status: 'info',
-            message: 'No event for this ticket',
-        }))
+        dispatch(
+            notify({
+                status: 'info',
+                message: 'No event for this ticket',
+            })
+        )
 
         dispatch({
             type: types.HIDE_TICKET_AUDIT_LOG_EVENTS,
@@ -656,65 +825,85 @@ export const hideAuditLogEvents = () => (dispatch: dispatchType) => {
     })
 }
 
-export const handleMessageActionError = (ticketId: string) => (dispatch: dispatchType) => {
+export const handleMessageActionError = (ticketId: string) => (
+    dispatch: dispatchType
+) => {
     let buttons = []
     let fetchPromise = null
 
     if (!isCurrentlyOnTicket(ticketId)) {
-        buttons = [{
-            primary: true,
-            name: 'Review',
-            onClick: () => {
-                browserHistory.push(`/app/ticket/${ticketId}`)
-            }
-        }]
+        buttons = [
+            {
+                primary: true,
+                name: 'Review',
+                onClick: () => {
+                    browserHistory.push(`/app/ticket/${ticketId}`)
+                },
+            },
+        ]
     } else {
         fetchPromise = dispatch(fetchTicket(ticketId, true))
     }
 
-    dispatch(notify({
-        status: 'error',
-        dismissAfter: 0,
-        allowHTML: true,
-        message: 'Your last message could not be sent because an action broke on it, you should review it right now.',
-        buttons
-    }))
+    dispatch(
+        notify({
+            status: 'error',
+            dismissAfter: 0,
+            allowHTML: true,
+            message:
+                'Your last message could not be sent because an action broke on it, you should review it right now.',
+            buttons,
+        })
+    )
 
     return fetchPromise || Promise.resolve()
 }
 
-export const handleMessageError = (json: socketEventTypes.TicketMessageFailedEvent) => (dispatch: dispatchType) => {
+export const handleMessageError = (
+    json: socketEventTypes.TicketMessageFailedEvent
+) => (dispatch: dispatchType) => {
     let buttons = []
     let fetchPromise = null
 
     if (!isCurrentlyOnTicket(json.ticket_id)) {
-        buttons = [{
-            primary: true,
-            name: 'Review',
-            onClick: () => {
-                browserHistory.push(`/app/ticket/${json.ticket_id}`)
-            }
-        }]
+        buttons = [
+            {
+                primary: true,
+                name: 'Review',
+                onClick: () => {
+                    browserHistory.push(`/app/ticket/${json.ticket_id}`)
+                },
+            },
+        ]
     } else {
         fetchPromise = dispatch(fetchTicket(json.ticket_id, true))
     }
 
-    dispatch(notify({
-        status: 'error',
-        dismissAfter: 0,
-        allowHTML: true,
-        message: 'Your last message could not be sent because ' + json.event.data.error.message,
-        buttons
-    }))
+    dispatch(
+        notify({
+            status: 'error',
+            dismissAfter: 0,
+            allowHTML: true,
+            message:
+                'Your last message could not be sent because ' +
+                json.event.data.error.message,
+            buttons,
+        })
+    )
 
     return fetchPromise || Promise.resolve()
 }
 
-export function updateTicketMessage(ticketId: string, messageId: number, data: Object, action: ?string = null) {
+export function updateTicketMessage(
+    ticketId: string,
+    messageId: number,
+    data: Object,
+    action: ?string = null
+) {
     return (dispatch: dispatchType) => {
         dispatch({
             type: types.UPDATE_TICKET_MESSAGE_START,
-            messageId
+            messageId,
         })
 
         let url = `/api/tickets/${ticketId}/messages/${messageId}/`
@@ -723,23 +912,27 @@ export function updateTicketMessage(ticketId: string, messageId: number, data: O
             url = `${url}?action=${action}`
         }
 
-        return axios.put(url, data)
+        return axios
+            .put(url, data)
             .then((json = {}) => json.data)
-            .then((resp) => {
-                return dispatch({
-                    type: types.UPDATE_TICKET_MESSAGE_SUCCESS,
-                    messageId,
-                    resp
-                })
-            }, (error) => {
-                return dispatch({
-                    type: types.UPDATE_TICKET_MESSAGE_ERROR,
-                    messageId,
-                    error,
-                    reason:
-                        'Message was not sent. Please try again in a few moments. If the problem persists, contact us.'
-                })
-            })
+            .then(
+                (resp) => {
+                    return dispatch({
+                        type: types.UPDATE_TICKET_MESSAGE_SUCCESS,
+                        messageId,
+                        resp,
+                    })
+                },
+                (error) => {
+                    return dispatch({
+                        type: types.UPDATE_TICKET_MESSAGE_ERROR,
+                        messageId,
+                        error,
+                        reason:
+                            'Message was not sent. Please try again in a few moments. If the problem persists, contact us.',
+                    })
+                }
+            )
     }
 }
 
@@ -747,7 +940,10 @@ export function clearTicket() {
     return (dispatch: dispatchType, getState: getStateType) => {
         const state = getState()
 
-        const shouldDisplayHistoryOnNextPage = state.ticket.getIn(['_internal', 'shouldDisplayHistoryOnNextPage'])
+        const shouldDisplayHistoryOnNextPage = state.ticket.getIn([
+            '_internal',
+            'shouldDisplayHistoryOnNextPage',
+        ])
 
         dispatch({
             type: types.CLEAR_TICKET,
@@ -761,40 +957,46 @@ export function clearTicket() {
 export function toggleHistory(state: boolean) {
     return {
         type: types.TOGGLE_HISTORY,
-        state
+        state,
     }
 }
 
 export function displayHistoryOnNextPage(state: boolean = true) {
     return {
         type: types.DISPLAY_HISTORY_ON_NEXT_PAGE,
-        state
+        state,
     }
 }
 
 export function deleteTicket(id: number) {
     return (dispatch: dispatchType) => {
-        return axios.delete(`/api/tickets/${id}/`)
+        return axios
+            .delete(`/api/tickets/${id}/`)
             .then((json = {}) => json.data)
-            .then(() => {
-                return dispatch(notify({
-                    status: 'success',
-                    message: 'Ticket deleted'
-                }))
-            }, (error) => {
-                return dispatch({
-                    type: types.DELETE_TICKET_ERROR,
-                    error,
-                    reason: `Failed to delete the ticket ${id}`,
-                })
-            })
+            .then(
+                () => {
+                    return dispatch(
+                        notify({
+                            status: 'success',
+                            message: 'Ticket deleted',
+                        })
+                    )
+                },
+                (error) => {
+                    return dispatch({
+                        type: types.DELETE_TICKET_ERROR,
+                        error,
+                        reason: `Failed to delete the ticket ${id}`,
+                    })
+                }
+            )
     }
 }
 
 export function deleteTicketPendingMessage(message: Record<TicketMessage>) {
     return {
         type: types.DELETE_TICKET_PENDING_MESSAGE,
-        message
+        message,
     }
 }
 
@@ -803,7 +1005,8 @@ export function deleteTicketPendingMessage(message: Record<TicketMessage>) {
  * @param email: the email of the customer we want to set as customer
  */
 export const findAndSetCustomer = (email: string) => (dispatch: dispatchType) =>
-    axios.post('/api/search/', {type: 'user_channel_email', query: email})
+    axios
+        .post('/api/search/', {type: 'user_channel_email', query: email})
         .then((json = {}) => json.data)
         .then((resp) => {
             if (resp.data.length !== 1) {
@@ -815,13 +1018,15 @@ export const findAndSetCustomer = (email: string) => (dispatch: dispatchType) =>
 
             const channel = resp.data[0]
 
-            return axios.get(`/api/customers/${channel.user.id}/`)
+            return axios
+                .get(`/api/customers/${channel.user.id}/`)
                 .then((json = {}) => json.data)
                 .then((resp): Promise<dispatchType> => {
                     return dispatch(setCustomer(fromJS(resp)))
                 })
         })
 
-export const messageDeleted = createAction<typeof types.TICKET_MESSAGE_DELETED, string>(
-    types.TICKET_MESSAGE_DELETED
-)
+export const messageDeleted = createAction<
+    typeof types.TICKET_MESSAGE_DELETED,
+    string
+>(types.TICKET_MESSAGE_DELETED)

@@ -18,11 +18,7 @@ describe('Literal component', () => {
         const callee = {name: 'isEmpty'}
 
         const component = shallow(
-            <Literal
-                {...commonProps}
-                callee={callee}
-                value={value}
-            />
+            <Literal {...commonProps} callee={callee} value={value} />
         )
 
         expect(component).toMatchSnapshot()
@@ -32,11 +28,7 @@ describe('Literal component', () => {
         const callee = {name: 'eq'}
 
         const component = shallow(
-            <Literal
-                {...commonProps}
-                callee={callee}
-                value=""
-            />
+            <Literal {...commonProps} callee={callee} value="" />
         )
 
         expect(component).toMatchSnapshot()
@@ -46,11 +38,7 @@ describe('Literal component', () => {
         const callee = {name: 'eq'}
 
         const component = shallow(
-            <Literal
-                {...commonProps}
-                callee={callee}
-                value={value}
-            />
+            <Literal {...commonProps} callee={callee} value={value} />
         )
 
         expect(component).toMatchSnapshot()

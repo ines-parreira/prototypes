@@ -7,7 +7,7 @@ import {fromJS} from 'immutable'
 import {
     shopifyDraftOrderFixture,
     shopifyDraftOrderPayloadFixture,
-    shopifyShippingLineFixture
+    shopifyShippingLineFixture,
 } from '../../../../../../../../../../../../../../fixtures/shopify'
 import {OrderTotalsComponent} from '../OrderTotals'
 import {ShopifyAction} from '../../../../../constants'
@@ -123,7 +123,10 @@ describe('<OrderTotalsComponent/>', () => {
             component.instance()._onAppliedDiscountChange(null)
 
             const newPayload = payload.set('applied_discount', null)
-            expect(onPayloadChange).toHaveBeenCalledWith(context.integrationId, newPayload)
+            expect(onPayloadChange).toHaveBeenCalledWith(
+                context.integrationId,
+                newPayload
+            )
         })
     })
 
@@ -147,7 +150,10 @@ describe('<OrderTotalsComponent/>', () => {
             component.instance()._onShippingLinesChange(shippingLine)
 
             const newPayload = payload.set('shipping_line', shippingLine)
-            expect(onPayloadChange).toHaveBeenCalledWith(context.integrationId, newPayload)
+            expect(onPayloadChange).toHaveBeenCalledWith(
+                context.integrationId,
+                newPayload
+            )
         })
     })
 
@@ -170,7 +176,10 @@ describe('<OrderTotalsComponent/>', () => {
             component.instance()._onTaxExemptChange(true)
 
             const newPayload = payload.set('tax_exempt', true)
-            expect(onPayloadChange).toHaveBeenCalledWith(context.integrationId, newPayload)
+            expect(onPayloadChange).toHaveBeenCalledWith(
+                context.integrationId,
+                newPayload
+            )
         })
     })
 })

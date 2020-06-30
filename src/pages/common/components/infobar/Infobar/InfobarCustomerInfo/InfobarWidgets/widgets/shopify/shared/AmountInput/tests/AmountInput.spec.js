@@ -50,7 +50,9 @@ describe('<AmountInput/>', () => {
                 />
             )
 
-            component.find({id: 'amount'}).simulate('change', {target: {value: '10'}})
+            component
+                .find({id: 'amount'})
+                .simulate('change', {target: {value: '10'}})
             expect(onChange).toHaveBeenCalledWith('10')
         })
     })

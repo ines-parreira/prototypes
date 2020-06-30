@@ -6,17 +6,18 @@ import {fromJS} from 'immutable'
 
 import * as css from '../Infobar.less'
 
-
 type Props = {
     widgets: Object,
     actions: Object,
-    context: string
+    context: string,
 }
 
 export default class InfobarWidgetsEditionTools extends React.Component<Props> {
     _saveWidgets = () => {
         const {actions, widgets} = this.props
-        const editedItems = widgets.getIn(['_internal', 'editedItems'], fromJS([])).toJS()
+        const editedItems = widgets
+            .getIn(['_internal', 'editedItems'], fromJS([]))
+            .toJS()
         actions.submitWidgets(editedItems)
     }
 
@@ -29,7 +30,11 @@ export default class InfobarWidgetsEditionTools extends React.Component<Props> {
         const {widgets} = this.props
 
         const isDirty = widgets.getIn(['_internal', 'isDirty'])
-        const isSavingWidgets = widgets.getIn(['_internal', 'loading', 'saving'])
+        const isSavingWidgets = widgets.getIn([
+            '_internal',
+            'loading',
+            'saving',
+        ])
 
         return (
             <div className={css.footer}>

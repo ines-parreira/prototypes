@@ -11,7 +11,11 @@ import * as infobarActions from '../../../../../state/infobar/actions'
 import * as infobarConstants from '../../../../../state/infobar/constants'
 import * as customersActions from '../../../../../state/customers/actions'
 import * as ticketActions from '../../../../../state/ticket/actions'
-import {startEditionMode, stopEditionMode, submitWidgets} from '../../../../../state/widgets/actions'
+import {
+    startEditionMode,
+    stopEditionMode,
+    submitWidgets,
+} from '../../../../../state/widgets/actions'
 
 import type {reactRouterLocation} from '../../../../../types'
 import * as segmentTracker from '../../../../../store/middlewares/segmentTracker'
@@ -30,17 +34,16 @@ import InfobarCustomerInfo from './InfobarCustomerInfo'
 import InfobarWidgetsEditionTools from './InfobarWidgetsEditionTools'
 import InfobarCustomerActions from './InfobarCustomerActions'
 
-
 type Props = {
     actions: {
         widgets: {
             startEditionMode: typeof startEditionMode,
             stopEditionMode: typeof stopEditionMode,
-            submitWidgets: typeof submitWidgets
+            submitWidgets: typeof submitWidgets,
         },
         infobar: {
-            fetchPreviewCustomer: typeof infobarActions.fetchPreviewCustomer
-        }
+            fetchPreviewCustomer: typeof infobarActions.fetchPreviewCustomer,
+        },
     },
     context: string,
     identifier: string,
@@ -87,16 +90,27 @@ export class Infobar extends React.Component<Props, State> {
 
     // refs
     search = {
-        _reset: _noop
+        _reset: _noop,
     }
 
     componentWillMount() {
-        const {actions: {widgets: widgetsActions}, context, isRouteEditingWidgets, widgets} = this.props
+        const {
+            actions: {widgets: widgetsActions},
+            context,
+            isRouteEditingWidgets,
+            widgets,
+        } = this.props
 
         this._updateSimilarCustomer(this.props)
-        if (isRouteEditingWidgets && !widgets.getIn(['_internal', 'isEditing'])) {
+        if (
+            isRouteEditingWidgets &&
+            !widgets.getIn(['_internal', 'isEditing'])
+        ) {
             widgetsActions.startEditionMode(context)
-        } else if (!isRouteEditingWidgets && widgets.getIn(['_internal', 'isEditing'])) {
+        } else if (
+            !isRouteEditingWidgets &&
+            widgets.getIn(['_internal', 'isEditing'])
+        ) {
             widgetsActions.stopEditionMode()
         }
     }
@@ -128,20 +142,22 @@ export class Infobar extends React.Component<Props, State> {
             return
         }
 
-        this.props.searchSimilarCustomer(props.customer.get('id')).then(({customer: suggestion}) => {
-            if (!suggestion) {
-                return
-            }
-            const suggestionImmutable = fromJS(suggestion)
+        this.props
+            .searchSimilarCustomer(props.customer.get('id'))
+            .then(({customer: suggestion}) => {
+                if (!suggestion) {
+                    return
+                }
+                const suggestionImmutable = fromJS(suggestion)
 
-            if (suggestionImmutable.isEmpty()) {
-                return
-            }
+                if (suggestionImmutable.isEmpty()) {
+                    return
+                }
 
-            this.setState({
-                suggestedCustomer: suggestionImmutable,
+                this.setState({
+                    suggestedCustomer: suggestionImmutable,
+                })
             })
-        })
     }
 
     _mode = (state: State = this.state) => {
@@ -169,7 +185,10 @@ export class Infobar extends React.Component<Props, State> {
     }
 
     _isEditing = () => {
-        return this.props.widgets.getIn(['_internal', 'isEditing']) && this.props.isRouteEditingWidgets
+        return (
+            this.props.widgets.getIn(['_internal', 'isEditing']) &&
+            this.props.isRouteEditingWidgets
+        )
     }
 
     _toggleEditionMode = (isEditing: boolean) => {
@@ -180,15 +199,21 @@ export class Infobar extends React.Component<Props, State> {
         }
 
         if (isEditing) {
-            browserHistory.push(`/app/${context}/${identifier}/edit-widgets${location.search}`)
+            browserHistory.push(
+                `/app/${context}/${identifier}/edit-widgets${location.search}`
+            )
         } else {
-            browserHistory.push(`/app/${context}/${identifier}${location.search}`)
+            browserHistory.push(
+                `/app/${context}/${identifier}${location.search}`
+            )
         }
     }
 
     _onSearchResultClick = async (customer: Map<*, *>) => {
         this.setState({isFetchingCustomer: true})
-        const result = await this.props.actions.infobar.fetchPreviewCustomer(customer.get('id'))
+        const result = await this.props.actions.infobar.fetchPreviewCustomer(
+            customer.get('id')
+        )
         if (result.type === infobarConstants.FETCH_PREVIEW_CUSTOMER_SUCCESS) {
             this.setState({
                 displaySelectedCustomer: true,
@@ -227,8 +252,11 @@ export class Infobar extends React.Component<Props, State> {
         setTimeout(() => {
             this.props.fetchCustomerHistory(askedCustomerId, {
                 successCondition: () => {
-                    return this.props.customer.get('id').toString() === askedCustomerId.toString()
-                }
+                    return (
+                        this.props.customer.get('id').toString() ===
+                        askedCustomerId.toString()
+                    )
+                },
             })
         }, 1500)
     }
@@ -257,11 +285,15 @@ export class Infobar extends React.Component<Props, State> {
     }
 
     _setCustomer = () => {
-        return this.props.setCustomer(this.state.selectedCustomer)
+        return this.props
+            .setCustomer(this.state.selectedCustomer)
             .then(this._returnToCurrentCustomerProfile)
     }
 
-    _renderCustomerInfo = (customer: Map<*, *>, displayTabs: boolean = true) => {
+    _renderCustomerInfo = (
+        customer: Map<*, *>,
+        displayTabs: boolean = true
+    ) => {
         const isEditing = this._isEditing()
 
         const sources = this.props.sources
@@ -281,15 +313,12 @@ export class Infobar extends React.Component<Props, State> {
     }
 
     _renderContent = () => {
-        const {
-            sources,
-            customer
-        } = this.props
+        const {sources, customer} = this.props
 
         const mode = this._mode()
 
         if (mode === 'loading') {
-            return <Loader/>
+            return <Loader />
         }
 
         if (mode === 'selected') {
@@ -309,14 +338,17 @@ export class Infobar extends React.Component<Props, State> {
                             customer={customer}
                             sources={sources}
                             selectedCustomer={this.state.selectedCustomer}
-                            toggleMergeCustomerModal={(showMergeCustomerModal: boolean) =>
-                                this.setState({showMergeCustomerModal})}
+                            toggleMergeCustomerModal={(
+                                showMergeCustomerModal: boolean
+                            ) => this.setState({showMergeCustomerModal})}
                             setCustomer={this._setCustomer}
                         />
                     </div>
                     {this._renderCustomerInfo(this.state.selectedCustomer)}
                     <MergeCustomersContainer
-                        isTicketContext={!sources.get('ticket', fromJS({})).isEmpty()}
+                        isTicketContext={
+                            !sources.get('ticket', fromJS({})).isEmpty()
+                        }
                         display={this.state.showMergeCustomerModal}
                         destinationCustomer={customer}
                         sourceCustomer={this.state.selectedCustomer}
@@ -333,7 +365,9 @@ export class Infobar extends React.Component<Props, State> {
         }
 
         if (mode === 'results') {
-            const defaultCustomerId = sources.getIn(['ticket', 'customer', 'id']) || sources.getIn(['customer', 'id'])
+            const defaultCustomerId =
+                sources.getIn(['ticket', 'customer', 'id']) ||
+                sources.getIn(['customer', 'id'])
 
             return (
                 <>
@@ -361,77 +395,97 @@ export class Infobar extends React.Component<Props, State> {
             return null
         }
 
-        const displaySuggestedCustomer = !this.state.suggestedCustomer.isEmpty()
-            && !this.props.widgets.getIn(['_internal', 'isEditing'])
+        const displaySuggestedCustomer =
+            !this.state.suggestedCustomer.isEmpty() &&
+            !this.props.widgets.getIn(['_internal', 'isEditing'])
 
         return (
             <>
                 {this._renderCustomerInfo(customer)}
-                {
-                    displaySuggestedCustomer && (
-                        <div className="d-none d-md-block">
-                            <div className={css.infobarSectionSeparator}/>
-                            <div className={classnames(css.suggestedCustomer)}>
-                                <h4>Is this the same person?</h4>
-                                <p>
-                                    'We have found someone similar to the customer of this ticket. If it is the same
-                                    person, merge them together to get a unified view of this customer.
-                                </p>
-                                <div style={{marginBottom: '30px'}}>
-                                    <Button
-                                        className="mr-2"
-                                        type="button"
-                                        color="primary"
-                                        onClick={() => {
-                                            // TODO(customers-migration): ask confirmation to update this event
-                                            segmentTracker.logEvent(segmentTracker.EVENTS.USER_MERGE_CLICK, {
-                                                location: 'suggested user in infobar',
-                                            })
-                                            this.setState({showMergeCustomerModal: true})
-                                        }}
-                                    >
-
-                                        <i className="material-icons mr-1">call_merge</i>Merge
-                                    </Button>
-                                </div>
-                                {this._renderCustomerInfo(this.state.suggestedCustomer, false)}
-                                <MergeCustomersContainer
-                                    isTicketContext={!sources.get('ticket', fromJS({})).isEmpty()}
-                                    display={this.state.showMergeCustomerModal}
-                                    destinationCustomer={customer}
-                                    sourceCustomer={this.state.suggestedCustomer}
-                                    onSuccess={this._fetchCustomerHistory}
-                                    onClose={() => {
-                                        this.setState({showMergeCustomerModal: false})
+                {displaySuggestedCustomer && (
+                    <div className="d-none d-md-block">
+                        <div className={css.infobarSectionSeparator} />
+                        <div className={classnames(css.suggestedCustomer)}>
+                            <h4>Is this the same person?</h4>
+                            <p>
+                                'We have found someone similar to the customer
+                                of this ticket. If it is the same person, merge
+                                them together to get a unified view of this
+                                customer.
+                            </p>
+                            <div style={{marginBottom: '30px'}}>
+                                <Button
+                                    className="mr-2"
+                                    type="button"
+                                    color="primary"
+                                    onClick={() => {
+                                        // TODO(customers-migration): ask confirmation to update this event
+                                        segmentTracker.logEvent(
+                                            segmentTracker.EVENTS
+                                                .USER_MERGE_CLICK,
+                                            {
+                                                location:
+                                                    'suggested user in infobar',
+                                            }
+                                        )
+                                        this.setState({
+                                            showMergeCustomerModal: true,
+                                        })
                                     }}
-                                />
+                                >
+                                    <i className="material-icons mr-1">
+                                        call_merge
+                                    </i>
+                                    Merge
+                                </Button>
                             </div>
+                            {this._renderCustomerInfo(
+                                this.state.suggestedCustomer,
+                                false
+                            )}
+                            <MergeCustomersContainer
+                                isTicketContext={
+                                    !sources.get('ticket', fromJS({})).isEmpty()
+                                }
+                                display={this.state.showMergeCustomerModal}
+                                destinationCustomer={customer}
+                                sourceCustomer={this.state.suggestedCustomer}
+                                onSuccess={this._fetchCustomerHistory}
+                                onClose={() => {
+                                    this.setState({
+                                        showMergeCustomerModal: false,
+                                    })
+                                }}
+                            />
                         </div>
-                    )
-                }
+                    </div>
+                )}
             </>
         )
     }
 
     render() {
-        const {
-            widgets,
-            sources,
-        } = this.props
+        const {widgets, sources} = this.props
 
         const isEditing = this._isEditing()
-        const hasFetchedWidgets = widgets.getIn(['_internal', 'hasFetchedWidgets'])
+        const hasFetchedWidgets = widgets.getIn([
+            '_internal',
+            'hasFetchedWidgets',
+        ])
 
         const context = widgets.get('currentContext', '')
 
-        const canEditWidgets = hasFetchedWidgets
-            && areSourcesReady(sources, context)
-            && !this.state.displaySelectedCustomer
+        const canEditWidgets =
+            hasFetchedWidgets &&
+            areSourcesReady(sources, context) &&
+            !this.state.displaySelectedCustomer
 
         return (
-            <InfobarLayout className={classnames({
-                [css.editing]: isEditing
-            })}>
+            <InfobarLayout
+                className={classnames({
+                    [css.editing]: isEditing,
+                })}
+            >
                 <div className={css.infobarContent}>
                     <div
                         className={classnames(
@@ -452,7 +506,10 @@ export class Infobar extends React.Component<Props, State> {
                         />
 
                         <Button
-                            className={classnames(css.toggleWidgets, 'd-none d-md-inline-block ml-2 btn-transparent')}
+                            className={classnames(
+                                css.toggleWidgets,
+                                'd-none d-md-inline-block ml-2 btn-transparent'
+                            )}
                             type="button"
                             id="toggle-widgets-edition-button"
                             color="secondary"
@@ -462,20 +519,18 @@ export class Infobar extends React.Component<Props, State> {
                                 this._toggleEditionMode(!isEditing)
                             }}
                         >
-                            <i className="material-icons md-2">
-                                settings
-                            </i>
+                            <i className="material-icons md-2">settings</i>
                         </Button>
                         <Tooltip
                             placement="left"
                             target="toggle-widgets-edition-button"
                         >
-                            {isEditing ? 'Leave widgets edition' : 'Edit widgets'}
+                            {isEditing
+                                ? 'Leave widgets edition'
+                                : 'Edit widgets'}
                         </Tooltip>
                     </div>
-                    <div className={css.content}>
-                        {this._renderContent()}
-                    </div>
+                    <div className={css.content}>{this._renderContent()}</div>
                 </div>
                 {isEditing && (
                     <InfobarWidgetsEditionTools
@@ -489,9 +544,11 @@ export class Infobar extends React.Component<Props, State> {
     }
 }
 
-export default withRouter(connect(null, {
-    fetchCustomerHistory: customersActions.fetchCustomerHistory,
-    search: infobarActions.search,
-    searchSimilarCustomer: infobarActions.similarCustomer,
-    setCustomer: ticketActions.setCustomer,
-})(Infobar))
+export default withRouter(
+    connect(null, {
+        fetchCustomerHistory: customersActions.fetchCustomerHistory,
+        search: infobarActions.search,
+        searchSimilarCustomer: infobarActions.similarCustomer,
+        setCustomer: ticketActions.setCustomer,
+    })(Infobar)
+)

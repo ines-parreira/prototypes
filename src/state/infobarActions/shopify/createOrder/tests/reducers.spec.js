@@ -4,7 +4,7 @@ import * as immutableMatchers from 'jest-immutable-matchers'
 import {
     shopifyDraftOrderFixture,
     shopifyDraftOrderPayloadFixture,
-    shopifyShippingLineFixture
+    shopifyShippingLineFixture,
 } from '../../../../../fixtures/shopify'
 import reducer, {initialState} from '../reducers'
 import * as constants from '../constants'
@@ -14,13 +14,21 @@ jest.addMatchers(immutableMatchers)
 describe('infobarActions.shopify.createOrder reducer', () => {
     describe('SET_LOADING', () => {
         it('should set loading state', () => {
-            const action = {type: constants.SET_LOADING, loading: true, message: null}
+            const action = {
+                type: constants.SET_LOADING,
+                loading: true,
+                message: null,
+            }
             const nextState = reducer(initialState, action)
             expect(nextState.get('loading')).toBe(true)
         })
 
         it('should set loading state with given loading message', () => {
-            const action = {type: constants.SET_LOADING, loading: true, message: 'foo'}
+            const action = {
+                type: constants.SET_LOADING,
+                loading: true,
+                message: 'foo',
+            }
             const nextState = reducer(initialState, action)
             expect(nextState.get('loading')).toBe(true)
             expect(nextState.get('loadingMessage')).toBe('foo')
@@ -47,7 +55,10 @@ describe('infobarActions.shopify.createOrder reducer', () => {
 
     describe('SET_PRODUCTS', () => {
         it('should set products', () => {
-            const products = new Map([[1, {id: 1}], [2, {id: 2}]])
+            const products = new Map([
+                [1, {id: 1}],
+                [2, {id: 2}],
+            ])
             const action = {type: constants.SET_PRODUCTS, products}
             const nextState = reducer(initialState, action)
             expect(nextState.get('products')).toEqual(products)
@@ -57,9 +68,14 @@ describe('infobarActions.shopify.createOrder reducer', () => {
     describe('SET_DEFAULT_SHIPPING_LINE', () => {
         it('should set default shipping line', () => {
             const defaultShippingLine = fromJS(shopifyShippingLineFixture())
-            const action = {type: constants.SET_DEFAULT_SHIPPING_LINE, defaultShippingLine}
+            const action = {
+                type: constants.SET_DEFAULT_SHIPPING_LINE,
+                defaultShippingLine,
+            }
             const nextState = reducer(initialState, action)
-            expect(nextState.get('defaultShippingLine')).toEqualImmutable(defaultShippingLine)
+            expect(nextState.get('defaultShippingLine')).toEqualImmutable(
+                defaultShippingLine
+            )
         })
     })
 

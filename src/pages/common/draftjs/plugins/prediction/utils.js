@@ -15,20 +15,32 @@ export const createPrediction = (
     const entityContentState = currentContent.createEntity(
         PREDICTION_TYPE,
         'IMMUTABLE',
-        {text},
+        {text}
     )
     return entityContentState.getLastCreatedEntityKey()
 }
 
-export const insertPrediction = (entityKey: string, editorState: EditorState) => {
+export const insertPrediction = (
+    entityKey: string,
+    editorState: EditorState
+) => {
     const currentContent = editorState.getCurrentContent()
     const selection = editorState.getSelection()
-    const textWithEntity = Modifier.insertText(currentContent, selection, ' ', null, entityKey)
+    const textWithEntity = Modifier.insertText(
+        currentContent,
+        selection,
+        ' ',
+        null,
+        entityKey
+    )
 
     return EditorState.push(editorState, textWithEntity, 'insert-characters')
 }
 
-export const removePrediction = (entityKey: string, editorState: EditorState) => {
+export const removePrediction = (
+    entityKey: string,
+    editorState: EditorState
+) => {
     const selection = editorState.getSelection()
     const contentState = editorState.getCurrentContent()
     let entitySelection = getEntitySelectionState(contentState, entityKey)
@@ -37,12 +49,23 @@ export const removePrediction = (entityKey: string, editorState: EditorState) =>
         return editorState
     }
 
-    const newContentState = Modifier.removeRange(contentState, entitySelection, 'forward')
-    const newEditorState = EditorState.push(editorState, newContentState, 'remove-range')
+    const newContentState = Modifier.removeRange(
+        contentState,
+        entitySelection,
+        'forward'
+    )
+    const newEditorState = EditorState.push(
+        editorState,
+        newContentState,
+        'remove-range'
+    )
     return EditorState.acceptSelection(newEditorState, selection)
 }
 
-export const getPredictionText = (entityKey: string, editorState: EditorState) => {
+export const getPredictionText = (
+    entityKey: string,
+    editorState: EditorState
+) => {
     return editorState.getCurrentContent().getEntity(entityKey).getData().text
 }
 
@@ -63,10 +86,17 @@ export const usePrediction = (entityKey: string, editorState: EditorState) => {
     return EditorState.push(editorState, newContentState, 'insert-fragment')
 }
 
-export const removeFirstNCharsOfPrediction = (entityKey: string, editorState: EditorState, n: number): EditorState => {
+export const removeFirstNCharsOfPrediction = (
+    entityKey: string,
+    editorState: EditorState,
+    n: number
+): EditorState => {
     const selection = editorState.getSelection()
     const predictionText = getPredictionText(entityKey, editorState)
-    const newEntityKey = createPrediction(predictionText.substring(n), editorState)
+    const newEntityKey = createPrediction(
+        predictionText.substring(n),
+        editorState
+    )
 
     let newEditorState = removePrediction(entityKey, editorState)
     newEditorState = insertPrediction(newEntityKey, newEditorState)
@@ -78,7 +108,9 @@ export const removeFirstNCharsOfPrediction = (entityKey: string, editorState: Ed
 }
 
 // It returns plain text stripping the prediction artifacts
-export const getPlainTextFromStateWithPrediction = (editorState: EditorState): string => {
+export const getPlainTextFromStateWithPrediction = (
+    editorState: EditorState
+): string => {
     const text = editorState.getCurrentContent().getPlainText()
     return text.slice(0, -1)
 }

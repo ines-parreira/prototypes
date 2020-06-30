@@ -2,9 +2,7 @@
 import React from 'react'
 import classnames from 'classnames'
 
-import {
-    SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
-} from '../../../../../../config/integrations/smooch_inside'
+import {SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE} from '../../../../../../config/integrations/smooch_inside'
 
 import css from './ChatIntegrationPreview.less'
 
@@ -22,27 +20,29 @@ const ChatIntegrationAvatar = (props: Props) => {
         avatarTeamPictureUrl,
         isOnline,
         mainColor,
-        offlineColor
+        offlineColor,
     } = props
 
     const statusMarker = (
-        <div className={classnames({
-            [css.onlineMarker]: isOnline,
-            [css.offlineMarker]: !isOnline
-        })}/>
+        <div
+            className={classnames({
+                [css.onlineMarker]: isOnline,
+                [css.offlineMarker]: !isOnline,
+            })}
+        />
     )
 
-    if (avatarType === SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE && !!avatarTeamPictureUrl) {
+    if (
+        avatarType === SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE &&
+        !!avatarTeamPictureUrl
+    ) {
         return (
             <div className={css['team-picture-wrapper']}>
                 <div
                     className={classnames(css['team-picture'])}
                     style={{borderColor: isOnline ? mainColor : offlineColor}}
                 >
-                    <img
-                        alt="team avatar"
-                        src={avatarTeamPictureUrl}
-                    />
+                    <img alt="team avatar" src={avatarTeamPictureUrl} />
                     {statusMarker}
                 </div>
             </div>
@@ -57,9 +57,7 @@ const ChatIntegrationAvatar = (props: Props) => {
                     key={position}
                     style={{borderColor: isOnline ? mainColor : offlineColor}}
                 >
-                    <i className="material-icons">
-                        person
-                    </i>
+                    <i className="material-icons">person</i>
                     {statusMarker}
                 </div>
             ))}

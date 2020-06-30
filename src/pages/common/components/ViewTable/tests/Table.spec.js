@@ -23,7 +23,7 @@ describe('ViewTable::Table', () => {
     const minStore = {
         views: fromJS({
             active: viewsFixtures.view,
-        })
+        }),
     }
 
     const viewConfig = viewsConfig.views.first()
@@ -38,7 +38,7 @@ describe('ViewTable::Table', () => {
         store: configureStore(minStore),
         isLoading: () => false,
         navigation: fromJS({hasPrevItems: false, hasNextItems: false}),
-        fetchViewItems: jest.fn()
+        fetchViewItems: jest.fn(),
     }
 
     beforeEach(() => {
@@ -47,10 +47,7 @@ describe('ViewTable::Table', () => {
 
     it('should display a view with no fields', () => {
         const component = shallow(
-            <Table
-                {...minProps}
-                fields={fromJS([])}
-            />
+            <Table {...minProps} fields={fromJS([])} />
         ).dive()
         expect(component).toMatchSnapshot()
     })
@@ -62,20 +59,14 @@ describe('ViewTable::Table', () => {
 
     it('should display a default view with option selectable set to false', () => {
         const component = shallow(
-            <Table
-                {...minProps}
-                selectable={false}
-            />
+            <Table {...minProps} selectable={false} />
         ).dive()
         expect(component).toMatchSnapshot()
     })
 
     it('should display a default view with no items', () => {
         const component = shallow(
-            <Table
-                {...minProps}
-                items={fromJS([])}
-            />
+            <Table {...minProps} items={fromJS([])} />
         ).dive()
         expect(component).toMatchSnapshot()
     })
@@ -96,13 +87,18 @@ describe('ViewTable::Table', () => {
         expect(minProps.fetchViewItems).toBeCalledWith()
     })
 
-    it('should select all items on the current page of the active view when there is a click on the "select all"' +
-        ' checkbox', () => {
-        const component = shallow(<Table {...minProps} />).dive()
-        const selectAllButton = component.find('thead').find('td').first()
-        selectAllButton.simulate('click')
-        expect(viewsActions.updateSelectedItemsIds).toBeCalledWith(fromJS([ticketFixtures.ticket.id]))
-    })
+    it(
+        'should select all items on the current page of the active view when there is a click on the "select all"' +
+            ' checkbox',
+        () => {
+            const component = shallow(<Table {...minProps} />).dive()
+            const selectAllButton = component.find('thead').find('td').first()
+            selectAllButton.simulate('click')
+            expect(viewsActions.updateSelectedItemsIds).toBeCalledWith(
+                fromJS([ticketFixtures.ticket.id])
+            )
+        }
+    )
 
     it('should display all checkboxes as checked when all items are selected', () => {
         const component = shallow(
@@ -110,7 +106,7 @@ describe('ViewTable::Table', () => {
                 {...minProps}
                 selectedItemsIds={fromJS([ticketFixtures.ticket.id])}
                 store={configureStore({
-                    ...minStore
+                    ...minStore,
                 })}
             />
         ).dive()

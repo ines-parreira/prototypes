@@ -35,13 +35,16 @@ import type {teamsType} from '../../../../../state/teams/types'
 import type {agentsType} from '../../../../../state/agents/types'
 import type {viewType} from '../../../../../state/views/types'
 import {AGENT_ROLE} from '../../../../../config/user'
-import {DELETE_TICKET_JOB_TYPE, EXPORT_TICKET_JOB_TYPE, UPDATE_TICKET_JOB_TYPE} from '../../../../../constants/job'
+import {
+    DELETE_TICKET_JOB_TYPE,
+    EXPORT_TICKET_JOB_TYPE,
+    UPDATE_TICKET_JOB_TYPE,
+} from '../../../../../constants/job'
 import {AgentLabel, TeamLabel} from '../../../../common/utils/labels'
 import {hasRole} from '../../../../../utils'
 import TagDropdownMenu from '../../../../common/components/TagDropdownMenu/TagDropdownMenu'
 
 import css from './TicketListActions.less'
-
 
 type Props = {
     view: viewType,
@@ -102,13 +105,13 @@ class TicketListActions extends React.Component<Props, State> {
                 action: (e) => {
                     e.preventDefault()
                     browserHistory.push('/app/ticket/new')
-                }
+                },
             },
             OPEN_TICKET: {
-                action: () => this._bulkUpdate('status', 'open')
+                action: () => this._bulkUpdate('status', 'open'),
             },
             CLOSE_TICKET: {
-                action: () => this._bulkUpdate('status', 'closed')
+                action: () => this._bulkUpdate('status', 'closed'),
             },
             OPEN_ASSIGNEE: {
                 action: (e) => {
@@ -117,7 +120,7 @@ class TicketListActions extends React.Component<Props, State> {
                     }
                     e.preventDefault()
                     this._toggleAgentsDropdown()
-                }
+                },
             },
             OPEN_TAGS: {
                 action: (e) => {
@@ -126,7 +129,7 @@ class TicketListActions extends React.Component<Props, State> {
                     }
                     e.preventDefault()
                     this._toggleTagsDropdown()
-                }
+                },
             },
             OPEN_MACRO: {
                 action: (e) => {
@@ -135,7 +138,7 @@ class TicketListActions extends React.Component<Props, State> {
                     }
                     e.preventDefault()
                     this.props.openMacroModal()
-                }
+                },
             },
             DELETE_TICKET: {
                 action: () => {
@@ -143,13 +146,13 @@ class TicketListActions extends React.Component<Props, State> {
                         return
                     }
                     this._toggleTrashConfirmation()
-                }
+                },
             },
             HIDE_POPOVER: {
                 key: 'esc',
                 action: () => {
                     this._togglePopover()
-                }
+                },
             },
         })
     }
@@ -213,24 +216,27 @@ class TicketListActions extends React.Component<Props, State> {
         this.setState({isLoadingTags: true})
 
         const field = fromJS({
-            filter: {type: 'tag'}
+            filter: {type: 'tag'},
         })
 
-        this.props.fieldEnumSearch(field, search)
-            .then((data) => {
-                this.setState({
-                    tags: data,
-                    isLoadingTags: false,
-                })
+        this.props.fieldEnumSearch(field, search).then((data) => {
+            this.setState({
+                tags: data,
+                isLoadingTags: false,
             })
+        })
     }
 
     _queryTagsOnSearch = _debounce(this._queryTags, 300)
 
     _createJob = async (jobType: string, jobParams: Object) => {
         this.setState({isLaunchingJob: true})
-        const actionsToUse = this.props.allViewItemsSelected ? this.props.actions.views : this.props.actions.tickets
-        const actionsArgs = this.props.allViewItemsSelected ? this.props.activeView : this.props.selectedItemsIds
+        const actionsToUse = this.props.allViewItemsSelected
+            ? this.props.actions.views
+            : this.props.actions.tickets
+        const actionsArgs = this.props.allViewItemsSelected
+            ? this.props.activeView
+            : this.props.selectedItemsIds
 
         try {
             await actionsToUse.createJob(actionsArgs, jobType, jobParams)
@@ -255,11 +261,15 @@ class TicketListActions extends React.Component<Props, State> {
 
     _bulkTrash = () => {
         this._toggleTrashConfirmation(false)
-        this._createJob(UPDATE_TICKET_JOB_TYPE, {updates: {trashed_datetime: moment.utc()}})
+        this._createJob(UPDATE_TICKET_JOB_TYPE, {
+            updates: {trashed_datetime: moment.utc()},
+        })
     }
 
     _bulkUnTrash = () => {
-        this._createJob(UPDATE_TICKET_JOB_TYPE, {updates: {trashed_datetime: null}})
+        this._createJob(UPDATE_TICKET_JOB_TYPE, {
+            updates: {trashed_datetime: null},
+        })
     }
 
     _bulkDelete = () => {
@@ -273,9 +283,7 @@ class TicketListActions extends React.Component<Props, State> {
         if (this.state.isLoadingTags) {
             return (
                 <DropdownItem disabled>
-                    <i className="material-icons md-spin mr-2">
-                        refresh
-                    </i>
+                    <i className="material-icons md-spin mr-2">refresh</i>
                     Loading...
                 </DropdownItem>
             )
@@ -294,16 +302,13 @@ class TicketListActions extends React.Component<Props, State> {
             )
         })
 
-        const isInEnum = !!this.state.tags.find((tag) => tag.get('name') === tagsSearch)
+        const isInEnum = !!this.state.tags.find(
+            (tag) => tag.get('name') === tagsSearch
+        )
 
         if (!isInEnum && tagsSearch) {
             if (!this.state.tags.isEmpty()) {
-                options = options.push(
-                    <DropdownItem
-                        key="divider"
-                        divider
-                    />
-                )
+                options = options.push(<DropdownItem key="divider" divider />)
             }
 
             options = options.push(
@@ -321,12 +326,16 @@ class TicketListActions extends React.Component<Props, State> {
     }
 
     _toggleTrashConfirmation = (visible) => {
-        const opens = !_isUndefined(visible) ? visible : !this._isPopoverOpen('trash')
+        const opens = !_isUndefined(visible)
+            ? visible
+            : !this._isPopoverOpen('trash')
         this._togglePopover(opens ? 'trash' : '')
     }
 
     _toggleDeleteConfirmation = () => {
-        this.setState({askDeleteConfirmation: !this.state.askDeleteConfirmation})
+        this.setState({
+            askDeleteConfirmation: !this.state.askDeleteConfirmation,
+        })
     }
 
     _renderBulkActions = () => {
@@ -340,7 +349,7 @@ class TicketListActions extends React.Component<Props, State> {
             allViewItemsSelected,
             activeView,
             getViewCount,
-            areFiltersValid
+            areFiltersValid,
         } = this.props
 
         const {
@@ -353,26 +362,31 @@ class TicketListActions extends React.Component<Props, State> {
 
         const areItemsSelected = !selectedItemsIds.isEmpty()
 
-        const filteredTeams = teams.filter((team) => team.get('name').toLowerCase().includes(teamsSearch.toLowerCase()))
+        const filteredTeams = teams.filter((team) =>
+            team.get('name').toLowerCase().includes(teamsSearch.toLowerCase())
+        )
 
         const filteredAgents = agents.filter((agent) => {
             const agentLabel = agent.get('name') || agent.get('email')
             return agentLabel.toLowerCase().includes(agentsSearch.toLowerCase())
         })
 
-        const selectedCount = allViewItemsSelected ? getViewCount(activeView.get('id')) : selectedItemsIds.size
+        const selectedCount = allViewItemsSelected
+            ? getViewCount(activeView.get('id'))
+            : selectedItemsIds.size
 
         return (
             <div className="d-inline-flex align-items-center">
-                <UncontrolledButtonDropdown
-                    className="mr-2"
-                    size="sm"
-                >
+                <UncontrolledButtonDropdown className="mr-2" size="sm">
                     <Button
                         type="button"
                         color="secondary"
                         onClick={() => this._bulkUpdate('status', 'closed')}
-                        disabled={!areItemsSelected || isLaunchingJob || !areFiltersValid}
+                        disabled={
+                            !areItemsSelected ||
+                            isLaunchingJob ||
+                            !areFiltersValid
+                        }
                     >
                         Close
                     </Button>
@@ -380,12 +394,14 @@ class TicketListActions extends React.Component<Props, State> {
                         caret
                         type="button"
                         color="secondary"
-                        disabled={!areItemsSelected || isLaunchingJob || !areFiltersValid}
+                        disabled={
+                            !areItemsSelected ||
+                            isLaunchingJob ||
+                            !areFiltersValid
+                        }
                     />
                     <DropdownMenu right>
-                        <DropdownItem header>
-                            SET STATUS
-                        </DropdownItem>
+                        <DropdownItem header>SET STATUS</DropdownItem>
                         <DropdownItem
                             key="open"
                             type="button"
@@ -404,11 +420,17 @@ class TicketListActions extends React.Component<Props, State> {
                     <Button
                         type="button"
                         color="secondary"
-                        onClick={() => this._bulkUpdate('assignee_user', {
-                            id: currentUser.get('id'),
-                            name: currentUser.get('name'),
-                        })}
-                        disabled={!areItemsSelected || isLaunchingJob || !areFiltersValid}
+                        onClick={() =>
+                            this._bulkUpdate('assignee_user', {
+                                id: currentUser.get('id'),
+                                name: currentUser.get('name'),
+                            })
+                        }
+                        disabled={
+                            !areItemsSelected ||
+                            isLaunchingJob ||
+                            !areFiltersValid
+                        }
                     >
                         Assign to me
                     </Button>
@@ -416,70 +438,83 @@ class TicketListActions extends React.Component<Props, State> {
                         caret
                         type="button"
                         color="secondary"
-                        disabled={!areItemsSelected || isLaunchingJob || !areFiltersValid}
+                        disabled={
+                            !areItemsSelected ||
+                            isLaunchingJob ||
+                            !areFiltersValid
+                        }
                     />
                     <DropdownMenu
                         right
                         className={css['assignee-dropdown-list']}
                     >
-                        <DropdownItem
-                            header
-                            className="mb-2"
-                        >
+                        <DropdownItem header className="mb-2">
                             ASSIGN TO:
                         </DropdownItem>
                         <DropdownItem
                             className="dropdown-item-input"
                             toggle={false}
                         >
-                            {
-                                this._isPopoverOpen('agents') && ( // rebuild input on each opening so "autoFocus" works
-                                    <Input
-                                        placeholder="Search agents..."
-                                        autoFocus
-                                        value={agentsSearch}
-                                        onChange={(event) => this.setState({agentsSearch: event.target.value})}
-                                    />
-                                )
-                            }
+                            {this._isPopoverOpen('agents') && ( // rebuild input on each opening so "autoFocus" works
+                                <Input
+                                    placeholder="Search agents..."
+                                    autoFocus
+                                    value={agentsSearch}
+                                    onChange={(event) =>
+                                        this.setState({
+                                            agentsSearch: event.target.value,
+                                        })
+                                    }
+                                />
+                            )}
                         </DropdownItem>
-                        <DropdownItem divider/>
-                        {
-                            filteredAgents.isEmpty() ? (
-                                <DropdownItem header>
-                                    Could not find any agent
-                                </DropdownItem>
-                            ) : (
-                                <div className={css['agents-dropdown-list']}>
-                                    {filteredAgents.map((agent) => (
-                                        <DropdownItem
-                                            key={agent.get('id')}
-                                            type="button"
-                                            onClick={() => {
-                                                this._bulkUpdate('assignee_user', {
-                                                    id: agent.get('id'),
-                                                    name: agent.get('name'),
-                                                })
-                                            }}
-                                        >
-                                            <AgentLabel
-                                                name={agent.get('name') || agent.get('email')}
-                                                profilePictureUrl={agent.getIn(['meta', 'profile_picture_url'])}
-                                                shouldDisplayAvatar
-                                            />
-                                        </DropdownItem>
-                                    ))}
-                                </div>
-                            )
-
-                        }
-                        <DropdownItem divider/>
+                        <DropdownItem divider />
+                        {filteredAgents.isEmpty() ? (
+                            <DropdownItem header>
+                                Could not find any agent
+                            </DropdownItem>
+                        ) : (
+                            <div className={css['agents-dropdown-list']}>
+                                {filteredAgents.map((agent) => (
+                                    <DropdownItem
+                                        key={agent.get('id')}
+                                        type="button"
+                                        onClick={() => {
+                                            this._bulkUpdate('assignee_user', {
+                                                id: agent.get('id'),
+                                                name: agent.get('name'),
+                                            })
+                                        }}
+                                    >
+                                        <AgentLabel
+                                            name={
+                                                agent.get('name') ||
+                                                agent.get('email')
+                                            }
+                                            profilePictureUrl={agent.getIn([
+                                                'meta',
+                                                'profile_picture_url',
+                                            ])}
+                                            shouldDisplayAvatar
+                                        />
+                                    </DropdownItem>
+                                ))}
+                            </div>
+                        )}
+                        <DropdownItem divider />
                         <DropdownItem
                             key="clear"
                             type="button"
-                            onClick={() => this._bulkUpdate('assignee_user', null)}
+                            onClick={() =>
+                                this._bulkUpdate('assignee_user', null)
+                            }
                         >
-                            <span className={classnames('text-warning', css['clear-assignee'])}>
+                            <span
+                                className={classnames(
+                                    'text-warning',
+                                    css['clear-assignee']
+                                )}
+                            >
                                 Clear assignee
                             </span>
                         </DropdownItem>
@@ -495,7 +530,11 @@ class TicketListActions extends React.Component<Props, State> {
                         caret
                         type="button"
                         color="secondary"
-                        disabled={!areItemsSelected || isLaunchingJob || !areFiltersValid}
+                        disabled={
+                            !areItemsSelected ||
+                            isLaunchingJob ||
+                            !areFiltersValid
+                        }
                     >
                         Assign to team
                     </DropdownToggle>
@@ -503,62 +542,71 @@ class TicketListActions extends React.Component<Props, State> {
                         right
                         className={css['assignee-dropdown-list']}
                     >
-                        <DropdownItem
-                            header
-                            className="mb-2"
-                        >
+                        <DropdownItem header className="mb-2">
                             ASSIGN TO:
                         </DropdownItem>
                         <DropdownItem
                             className="dropdown-item-input"
                             toggle={false}
                         >
-                            {
-                                this._isPopoverOpen('teams') && ( // rebuild input on each opening so "autoFocus" works
-                                    <Input
-                                        placeholder="Search teams..."
-                                        autoFocus
-                                        value={teamsSearch}
-                                        onChange={(event) => this.setState({teamsSearch: event.target.value})}
-                                    />
-                                )
-                            }
+                            {this._isPopoverOpen('teams') && ( // rebuild input on each opening so "autoFocus" works
+                                <Input
+                                    placeholder="Search teams..."
+                                    autoFocus
+                                    value={teamsSearch}
+                                    onChange={(event) =>
+                                        this.setState({
+                                            teamsSearch: event.target.value,
+                                        })
+                                    }
+                                />
+                            )}
                         </DropdownItem>
-                        <DropdownItem divider/>
-                        {
-                            filteredTeams.isEmpty() ? (
-                                <DropdownItem header>
-                                    Could not find any team
-                                </DropdownItem>
-                            ) : (
-                                <div className={css['teams-dropdown-list']}>
-                                    {filteredTeams.map((team) => (
-                                        <DropdownItem
-                                            key={team.get('id')}
-                                            type="button"
-                                            className={css['teams-dropdown-item']}
-                                            onClick={() => {
-                                                this._bulkUpdate('assignee_team_id', team.get('id'))
-                                            }}
-                                        >
-                                            <TeamLabel
-                                                name={team.get('name')}
-                                                emoji={team.getIn(['decoration', 'emoji'])}
-                                                shouldDisplayAvatar
-                                            />
-                                        </DropdownItem>
-                                    ))}
-                                </div>
-                            )
-
-                        }
-                        <DropdownItem divider/>
+                        <DropdownItem divider />
+                        {filteredTeams.isEmpty() ? (
+                            <DropdownItem header>
+                                Could not find any team
+                            </DropdownItem>
+                        ) : (
+                            <div className={css['teams-dropdown-list']}>
+                                {filteredTeams.map((team) => (
+                                    <DropdownItem
+                                        key={team.get('id')}
+                                        type="button"
+                                        className={css['teams-dropdown-item']}
+                                        onClick={() => {
+                                            this._bulkUpdate(
+                                                'assignee_team_id',
+                                                team.get('id')
+                                            )
+                                        }}
+                                    >
+                                        <TeamLabel
+                                            name={team.get('name')}
+                                            emoji={team.getIn([
+                                                'decoration',
+                                                'emoji',
+                                            ])}
+                                            shouldDisplayAvatar
+                                        />
+                                    </DropdownItem>
+                                ))}
+                            </div>
+                        )}
+                        <DropdownItem divider />
                         <DropdownItem
                             key="clear"
                             type="button"
-                            onClick={() => this._bulkUpdate('assignee_team_id', null)}
+                            onClick={() =>
+                                this._bulkUpdate('assignee_team_id', null)
+                            }
                         >
-                            <span className={classnames('text-warning', css['clear-assignee'])}>
+                            <span
+                                className={classnames(
+                                    'text-warning',
+                                    css['clear-assignee']
+                                )}
+                            >
                                 Clear assignee
                             </span>
                         </DropdownItem>
@@ -574,71 +622,73 @@ class TicketListActions extends React.Component<Props, State> {
                         caret
                         type="button"
                         color="secondary"
-                        disabled={!areItemsSelected || isLaunchingJob || !areFiltersValid}
+                        disabled={
+                            !areItemsSelected ||
+                            isLaunchingJob ||
+                            !areFiltersValid
+                        }
                     >
                         Add tag
                     </DropdownToggle>
                     <TagDropdownMenu
                         right
-                        disabled={!areItemsSelected || isLaunchingJob || !areFiltersValid}
+                        disabled={
+                            !areItemsSelected ||
+                            isLaunchingJob ||
+                            !areFiltersValid
+                        }
                     >
-                        <DropdownItem
-                            header
-                            className="mb-2"
-                        >
+                        <DropdownItem header className="mb-2">
                             ADD TAG:
                         </DropdownItem>
                         <DropdownItem
                             className="dropdown-item-input"
                             toggle={false}
                         >
-                            {
-                                this._isPopoverOpen('tags') && ( // rebuild input on each opening so "autoFocus" works
-                                    <Input
-                                        placeholder="Search tags..."
-                                        autoFocus
-                                        value={tagsSearch}
-                                        onChange={(event) => this._searchTags(event.target.value)}
-                                    />
-                                )
-                            }
+                            {this._isPopoverOpen('tags') && ( // rebuild input on each opening so "autoFocus" works
+                                <Input
+                                    placeholder="Search tags..."
+                                    autoFocus
+                                    value={tagsSearch}
+                                    onChange={(event) =>
+                                        this._searchTags(event.target.value)
+                                    }
+                                />
+                            )}
                         </DropdownItem>
-                        <DropdownItem divider/>
+                        <DropdownItem divider />
                         {this._renderTagsMenu()}
                     </TagDropdownMenu>
                 </ButtonDropdown>
-                <UncontrolledButtonDropdown
-                    size="sm"
-                >
+                <UncontrolledButtonDropdown size="sm">
                     <DropdownToggle
                         id="bulk-more-button"
                         color="secondary"
                         type="button"
                         caret
-                        disabled={!areItemsSelected || isLaunchingJob || !areFiltersValid}
+                        disabled={
+                            !areItemsSelected ||
+                            isLaunchingJob ||
+                            !areFiltersValid
+                        }
                     >
                         More
                     </DropdownToggle>
                     <DropdownMenu right>
-                        <DropdownItem
-                            type="button"
-                            onClick={openMacroModal}
-                        >
+                        <DropdownItem type="button" onClick={openMacroModal}>
                             Apply macro
                         </DropdownItem>
-                        {
-                            hasRole(currentUser, AGENT_ROLE) && (
-                                <DropdownItem
-                                    type="button"
-                                    onClick={this._bulkExport}
-                                >
-                                    Export tickets
-                                </DropdownItem>
-                            )
-                        }
-                        <DropdownItem divider/>
-                        {isActiveViewTrashView ?
-                            ([
+                        {hasRole(currentUser, AGENT_ROLE) && (
+                            <DropdownItem
+                                type="button"
+                                onClick={this._bulkExport}
+                            >
+                                Export tickets
+                            </DropdownItem>
+                        )}
+                        <DropdownItem divider />
+                        {isActiveViewTrashView ? (
+                            [
                                 <DropdownItem
                                     key="undelete-button"
                                     type="button"
@@ -653,17 +703,17 @@ class TicketListActions extends React.Component<Props, State> {
                                     onClick={this._toggleDeleteConfirmation}
                                 >
                                     Delete forever
-                                </DropdownItem>
-                            ]) : (
-                                <DropdownItem
-                                    type="button"
-                                    className="text-danger"
-                                    onClick={this._toggleTrashConfirmation}
-                                >
-                                    Delete
-                                </DropdownItem>
-                            )
-                        }
+                                </DropdownItem>,
+                            ]
+                        ) : (
+                            <DropdownItem
+                                type="button"
+                                className="text-danger"
+                                onClick={this._toggleTrashConfirmation}
+                            >
+                                Delete
+                            </DropdownItem>
+                        )}
                     </DropdownMenu>
                 </UncontrolledButtonDropdown>
                 <Popover
@@ -728,7 +778,9 @@ function mapStateToProps(state) {
         teams: getTeams(state),
         agents: getAgents(state),
         isActiveViewTrashView: viewsSelectors.isActiveViewTrashView(state),
-        allViewItemsSelected: viewsSelectors.areAllActiveViewItemsSelected(state),
+        allViewItemsSelected: viewsSelectors.areAllActiveViewItemsSelected(
+            state
+        ),
         areFiltersValid: viewsSelectors.areFiltersValid(state),
         activeView: viewsSelectors.getActiveView(state),
         getViewCount: viewsSelectors.makeGetViewCount(state),
@@ -741,7 +793,10 @@ function mapDispatchToProps(dispatch) {
             views: bindActionCreators(viewsActions, dispatch),
             tickets: bindActionCreators(ticketsActions, dispatch),
         },
-        fieldEnumSearch: bindActionCreators(viewsActions.fieldEnumSearch, dispatch),
+        fieldEnumSearch: bindActionCreators(
+            viewsActions.fieldEnumSearch,
+            dispatch
+        ),
     }
 }
 

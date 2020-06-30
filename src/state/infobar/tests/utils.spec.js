@@ -8,8 +8,8 @@ describe('actionButtonHashForData', () => {
             integration_id: 8,
             payload: {
                 a: 1.12,
-                b: 2.78
-            }
+                b: 2.78,
+            },
         }
         expect(actionButtonHashForData(data)).toMatchSnapshot()
     })
@@ -21,8 +21,8 @@ describe('actionButtonHashForData', () => {
             integration_id: 8,
             payload: {
                 a: 1.12,
-                b: 2.78
-            }
+                b: 2.78,
+            },
         }
         expect(actionButtonHashForData(data)).toMatchSnapshot()
     })

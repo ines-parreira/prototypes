@@ -5,7 +5,7 @@ import {fromJS} from 'immutable'
 import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from '../../../../../../../config/integrations'
 import {
     SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
-    SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
+    SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
 } from '../../../../../../../config/integrations/smooch_inside'
 
 import AutoResponder from '../AutoResponder'
@@ -15,36 +15,33 @@ import OptionalEmailCapture from '../OptionalEmailCapture'
 import QuickReplies from '../QuickReplies'
 import RequiredEmailCapture from '../RequiredEmailCapture'
 
-
 const mainColor = '#123456'
 const conversationColor = '#456789'
 const currentUser = fromJS({name: 'Charles'})
 
-
 describe('<ChatIntegrationPreview/>', () => {
     describe('render()', () => {
-        it('should display the avatar team picture in the header because the URL is set and the option is enabled',
-            () => {
-                const component = shallow(
-                    <ChatIntegrationPreview
-                        name="My little chat integration"
+        it('should display the avatar team picture in the header because the URL is set and the option is enabled', () => {
+            const component = shallow(
+                <ChatIntegrationPreview
+                    name="My little chat integration"
+                    currentUser={currentUser}
+                    introductionText="intro"
+                    mainColor={mainColor}
+                    isOnline={true}
+                    language={SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT}
+                    avatarType={SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE}
+                    avatarTeamPictureUrl="https://gorgias.io/avatar.png"
+                >
+                    <MessageContent
+                        conversationColor={conversationColor}
                         currentUser={currentUser}
-                        introductionText="intro"
-                        mainColor={mainColor}
-                        isOnline={true}
-                        language={SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT}
-                        avatarType={SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE}
-                        avatarTeamPictureUrl="https://gorgias.io/avatar.png"
-                    >
-                        <MessageContent
-                            conversationColor={conversationColor}
-                            currentUser={currentUser}
-                        />
-                    </ChatIntegrationPreview>
-                )
+                    />
+                </ChatIntegrationPreview>
+            )
 
-                expect(component).toMatchSnapshot()
-            })
+            expect(component).toMatchSnapshot()
+        })
 
         it('should display the online status because chat is online', () => {
             const component = shallow(

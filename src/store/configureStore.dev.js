@@ -21,9 +21,5 @@ export default function configureStore(initialState = {}) {
         middlewares = compose(middlewares, window.devToolsExtension())
     }
 
-    return createStore(
-        rootReducer,
-        initialState,
-        middlewares
-    )
+    return createStore(rootReducer, initialState, middlewares)
 }

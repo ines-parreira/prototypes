@@ -91,7 +91,8 @@ exports[`TicketHeader component should render existing ticket 1`] = `
             event_note
           </i>
           display
-           all events
+           
+          all events
         </DropdownItem>
         <DropdownItem
           onClick={[Function]}
@@ -160,7 +161,8 @@ exports[`TicketHeader component should render existing ticket 1`] = `
               tag="div"
             >
               <p>
-                You are about to 
+                You are about to
+                 
                 <b>
                   delete
                 </b>
@@ -371,7 +373,8 @@ exports[`TicketHeader component should render spam ticket 1`] = `
             event_note
           </i>
           display
-           all events
+           
+          all events
         </DropdownItem>
         <DropdownItem
           onClick={[Function]}
@@ -440,7 +443,8 @@ exports[`TicketHeader component should render spam ticket 1`] = `
               tag="div"
             >
               <p>
-                You are about to 
+                You are about to
+                 
                 <b>
                   delete
                 </b>
@@ -591,7 +595,8 @@ exports[`TicketHeader component should render trashed ticket 1`] = `
             event_note
           </i>
           display
-           all events
+           
+          all events
         </DropdownItem>
         <DropdownItem
           onClick={[Function]}

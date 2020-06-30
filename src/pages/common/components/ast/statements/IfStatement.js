@@ -2,7 +2,11 @@ import React from 'react'
 
 import classnames from 'classnames'
 
-import {AddActionOrIfStatement, AddLogicalCondition, DeleteBlockStatementItem} from '../operations'
+import {
+    AddActionOrIfStatement,
+    AddLogicalCondition,
+    DeleteBlockStatementItem,
+} from '../operations'
 import Expression from '../expression/Expression'
 import {computeLeftPadding} from '../utils'
 import Foldable from '../Foldable'
@@ -14,7 +18,17 @@ import Statement from './Statement'
  */
 class TestExpression extends React.Component<TestExpressionProps> {
     render() {
-        const {actions, rule, parent, schemas, test, depth, isHovered, onMouseEnter, onMouseLeave} = this.props
+        const {
+            actions,
+            rule,
+            parent,
+            schemas,
+            test,
+            depth,
+            isHovered,
+            onMouseEnter,
+            onMouseLeave,
+        } = this.props
 
         return (
             <div
@@ -82,7 +96,7 @@ class ConsequentStatement extends React.Component<ConsequentStatementProps> {
         return (
             <div className="consequent">
                 <Foldable
-                    label={(
+                    label={
                         <AddActionOrIfStatement
                             actions={actions}
                             rule={rule}
@@ -91,7 +105,7 @@ class ConsequentStatement extends React.Component<ConsequentStatementProps> {
                             hoverableClassName="d-inline-flex"
                             depth={depth}
                         />
-                    )}
+                    }
                 >
                     <Statement
                         {...consequent}
@@ -118,7 +132,7 @@ class AlternateStatement extends React.Component<AlternateStatementProps> {
         return (
             <div className="alternate">
                 <Foldable
-                    label={(
+                    label={
                         <AddActionOrIfStatement
                             actions={actions}
                             rule={rule}
@@ -128,7 +142,7 @@ class AlternateStatement extends React.Component<AlternateStatementProps> {
                             depth={depth}
                             removable
                         />
-                    )}
+                    }
                 >
                     <Statement
                         {...alternate}
@@ -153,8 +167,6 @@ type AlternateStatementProps = {
     depth: number,
 }
 
-
-
 /**
  * IF Statement Component
  */
@@ -171,16 +183,28 @@ type IfStatementProps = {
 }
 
 type IfStatementState = {
-    isHovered: boolean
+    isHovered: boolean,
 }
 
-export default class IfStatement extends React.Component<IfStatementProps, IfStatementState> {
+export default class IfStatement extends React.Component<
+    IfStatementProps,
+    IfStatementState
+> {
     state = {
-        isHovered: false
+        isHovered: false,
     }
 
     render() {
-        const {actions, alternate, consequent, rule, parent, schemas, test, depth} = this.props
+        const {
+            actions,
+            alternate,
+            consequent,
+            rule,
+            parent,
+            schemas,
+            test,
+            depth,
+        } = this.props
         const {isHovered} = this.state
 
         return (
@@ -204,18 +228,16 @@ export default class IfStatement extends React.Component<IfStatementProps, IfSta
                     schemas={schemas}
                     depth={depth}
                 />
-                {
-                    alternate && (
-                        <AlternateStatement
-                            actions={actions}
-                            alternate={alternate}
-                            rule={rule}
-                            parent={parent}
-                            schemas={schemas}
-                            depth={depth}
-                        />
-                    )
-                }
+                {alternate && (
+                    <AlternateStatement
+                        actions={actions}
+                        alternate={alternate}
+                        rule={rule}
+                        parent={parent}
+                        schemas={schemas}
+                        depth={depth}
+                    />
+                )}
             </div>
         )
     }

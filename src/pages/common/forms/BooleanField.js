@@ -1,12 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
-import {
-    FormGroup,
-    Label,
-    Input as BootstrapInput,
-    FormText,
-} from 'reactstrap'
+import {FormGroup, Label, Input as BootstrapInput, FormText} from 'reactstrap'
 
 import {defined} from '../../../utils'
 
@@ -17,9 +12,12 @@ import InputField from './InputField'
 import css from './InputField.less'
 
 export default class BooleanField extends InputField {
-    static propTypes = Object.assign({
-        inline: PropTypes.bool,
-    }, InputField.propTypes)
+    static propTypes = Object.assign(
+        {
+            inline: PropTypes.bool,
+        },
+        InputField.propTypes
+    )
 
     static defaultProps = {
         type: 'checkbox',
@@ -59,7 +57,15 @@ export default class BooleanField extends InputField {
     }
 
     render() {
-        const {className, error, required, inline, label, help, disabled} = this.props
+        const {
+            className,
+            error,
+            required,
+            inline,
+            label,
+            help,
+            disabled,
+        } = this.props
         const color = error ? 'danger' : ''
 
         return (
@@ -67,35 +73,17 @@ export default class BooleanField extends InputField {
                 className={classnames(className, {
                     [css.required]: required,
                     'd-inline-block': inline,
-                    'text-muted': disabled
+                    'text-muted': disabled,
                 })}
                 color={color}
                 check
             >
-                <Label
-                    htmlFor={this.id}
-                    className="control-label"
-                    check
-                >
+                <Label htmlFor={this.id} className="control-label" check>
                     {this._getField()}
-                    <span style={{verticalAlign: 'middle'}}>
-                        {label}
-                    </span>
+                    <span style={{verticalAlign: 'middle'}}>{label}</span>
                 </Label>
-                {
-                    this.props.error && (
-                        <Errors>
-                            {error}
-                        </Errors>
-                    )
-                }
-                {
-                    defined(help) && (
-                        <FormText color="muted">
-                            {help}
-                        </FormText>
-                    )
-                }
+                {this.props.error && <Errors>{error}</Errors>}
+                {defined(help) && <FormText color="muted">{help}</FormText>}
             </FormGroup>
         )
     }

@@ -3,9 +3,11 @@ import {countLines, removeSuffix} from '../string'
 
 describe('string util', () => {
     describe('removeSuffix', () => {
-        it('should return the data if it\'s not a string', () => {
+        it("should return the data if it's not a string", () => {
             expect(removeSuffix((null: any), 'hey')).toEqual(null)
-            expect(removeSuffix(({foo: 'bar'}: any), 'hey')).toEqual({foo: 'bar'})
+            expect(removeSuffix(({foo: 'bar'}: any), 'hey')).toEqual({
+                foo: 'bar',
+            })
             expect(removeSuffix((1: any), 'hey')).toEqual(1)
         })
 

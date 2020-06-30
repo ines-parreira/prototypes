@@ -4,7 +4,10 @@ import type {List, Map} from 'immutable'
 import React from 'react'
 import {connect} from 'react-redux'
 
-import { canReply, type TicketMessageSourceType } from '../../../../../business/ticket'
+import {
+    canReply,
+    type TicketMessageSourceType,
+} from '../../../../../business/ticket'
 import * as newMessageActions from '../../../../../state/newMessage/actions'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {getActionTemplate} from '../../../../../utils'
@@ -16,25 +19,30 @@ import TicketReplyEditor from './TicketReplyEditor'
 
 type Props = {
     actions: Object,
-    deleteAttachment?: number => void,
+    deleteAttachment?: (number) => void,
     className?: string,
-    ticket: Map<*,*>,
+    ticket: Map<*, *>,
     newMessageType: TicketMessageSourceType,
     newMessageAttachments: List<*>,
-    appliedMacro: ?Map<*,*>,
+    appliedMacro: ?Map<*, *>,
     isNewMessagePublic: boolean,
-    richAreaRef: () => void
+    richAreaRef: () => void,
 }
 
-@connect((state) => {
-    return {
-        isNewMessagePublic: newMessageSelectors.isNewMessagePublic(state),
-        newMessageType: newMessageSelectors.getNewMessageType(state),
-        newMessageAttachments: newMessageSelectors.getNewMessageAttachments(state),
+@connect(
+    (state) => {
+        return {
+            isNewMessagePublic: newMessageSelectors.isNewMessagePublic(state),
+            newMessageType: newMessageSelectors.getNewMessageType(state),
+            newMessageAttachments: newMessageSelectors.getNewMessageAttachments(
+                state
+            ),
+        }
+    },
+    {
+        deleteAttachment: newMessageActions.deleteAttachment,
     }
-}, {
-    deleteAttachment: newMessageActions.deleteAttachment,
-})
+)
 // $FlowFixMe
 export default class TicketReply extends React.Component<Props> {
     _renderAttachments = () => {
@@ -53,13 +61,12 @@ export default class TicketReply extends React.Component<Props> {
     _renderActions = () => {
         const {ticket, appliedMacro, actions} = this.props
 
-        const backendActions = appliedMacro ?
-            appliedMacro.get('actions').filter(
-                (action) => {
-                    const actionTemplate = getActionTemplate(action.get('name'))
-                    return actionTemplate && actionTemplate.execution === 'back'
-                }
-            ) : []
+        const backendActions = appliedMacro
+            ? appliedMacro.get('actions').filter((action) => {
+                  const actionTemplate = getActionTemplate(action.get('name'))
+                  return actionTemplate && actionTemplate.execution === 'back'
+              })
+            : []
 
         if (!appliedMacro || !backendActions) {
             return null
@@ -67,18 +74,16 @@ export default class TicketReply extends React.Component<Props> {
 
         return (
             <div>
-                {
-                    backendActions.map((action, key) => (
-                        <TicketReplyAction
-                            key={key}
-                            index={appliedMacro.get('actions').indexOf(action)}
-                            action={action}
-                            update={actions.ticket.updateActionArgsOnApplied}
-                            remove={actions.ticket.deleteActionOnApplied}
-                            ticketId={ticket.get('id')}
-                        />
-                    ))
-                }
+                {backendActions.map((action, key) => (
+                    <TicketReplyAction
+                        key={key}
+                        index={appliedMacro.get('actions').indexOf(action)}
+                        action={action}
+                        update={actions.ticket.updateActionArgsOnApplied}
+                        remove={actions.ticket.deleteActionOnApplied}
+                        ticketId={ticket.get('id')}
+                    />
+                ))}
             </div>
         )
     }
@@ -91,7 +96,7 @@ export default class TicketReply extends React.Component<Props> {
             richAreaRef,
             className: passedClassName,
             newMessageType,
-            newMessageAttachments
+            newMessageAttachments,
         } = this.props
 
         const canReplyResult = canReply(
@@ -107,19 +112,15 @@ export default class TicketReply extends React.Component<Props> {
 
         return (
             <div className={className}>
-                {
-                    !!canReplyResult ? (
-                        <div className={css.alert}>
-                            {canReplyResult.message}
-                        </div>
-                    ) : (
-                        <TicketReplyEditor
-                            actions={actions}
-                            ticket={ticket}
-                            richAreaRef={richAreaRef}
-                        />
-                    )
-                }
+                {!!canReplyResult ? (
+                    <div className={css.alert}>{canReplyResult.message}</div>
+                ) : (
+                    <TicketReplyEditor
+                        actions={actions}
+                        ticket={ticket}
+                        richAreaRef={richAreaRef}
+                    />
+                )}
                 {this._renderAttachments()}
                 {this._renderActions()}
             </div>

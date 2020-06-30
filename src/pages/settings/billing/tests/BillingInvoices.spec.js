@@ -29,7 +29,7 @@ describe('BillingInvoices component', () => {
     it('should display invoices, without PDF download links if paid through Shopify', () => {
         const component = mount(
             <BillingInvoices
-                shopifyBillingStatus='inactive'
+                shopifyBillingStatus="inactive"
                 fetchInvoices={() => Promise.resolve()}
                 invoices={fromJS([
                     {
@@ -39,9 +39,10 @@ describe('BillingInvoices component', () => {
                         date: 1496701077,
                         metadata: {
                             tickets: 10,
-                            payment_service: 'shopify'
+                            payment_service: 'shopify',
                         },
-                        invoice_pdf: 'https://pay.stripe.com/invoice/example123/pdf'
+                        invoice_pdf:
+                            'https://pay.stripe.com/invoice/example123/pdf',
                     },
                     {
                         id: 125,
@@ -50,9 +51,10 @@ describe('BillingInvoices component', () => {
                         date: 1496701077,
                         metadata: {
                             tickets: 100,
-                            payment_service: 'stripe'
+                            payment_service: 'stripe',
                         },
-                        invoice_pdf: 'https://pay.stripe.com/invoice/example125/pdf'
+                        invoice_pdf:
+                            'https://pay.stripe.com/invoice/example125/pdf',
                     },
                 ])}
             />

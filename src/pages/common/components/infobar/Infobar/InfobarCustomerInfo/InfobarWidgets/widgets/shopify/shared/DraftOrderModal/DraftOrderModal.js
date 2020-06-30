@@ -50,8 +50,16 @@ type Props = InfobarModalProps & {
         order?: Record<Shopify.Order>,
         customer: Record<$Shape<Shopify.Customer>>,
     },
-    addCustomRow: (integrationId: number, lineItem: Record<$Shape<Shopify.LineItem>>) => void,
-    addRow: (actionName: string, integrationId: number, product: Shopify.Product, variant: Shopify.Variant) => void,
+    addCustomRow: (
+        integrationId: number,
+        lineItem: Record<$Shape<Shopify.LineItem>>
+    ) => void,
+    addRow: (
+        actionName: string,
+        integrationId: number,
+        product: Shopify.Product,
+        variant: Shopify.Variant
+    ) => void,
     onCancel: (actionName: string, integrationId: number, via: string) => void,
     onInitCleanUp: (integrationId: number) => void,
     onEmailInvoice: (
@@ -59,16 +67,19 @@ type Props = InfobarModalProps & {
         customerId: number,
         orderId: number | null,
         invoicePayload: Record<Shopify.DraftOrderInvoice>,
-        onDone: () => void,
+        onDone: () => void
     ) => void,
     onInit: (
         integrationId: number,
         order: ?Record<Shopify.Order>,
         customer: Record<$Shape<Shopify.Customer>>,
         currencyCode: string,
-        onError: () => void,
+        onError: () => void
     ) => void,
-    onPayloadChange: (integrationId: number, payload: Record<$Shape<Shopify.DraftOrder>>) => void,
+    onPayloadChange: (
+        integrationId: number,
+        payload: Record<$Shape<Shopify.DraftOrder>>
+    ) => void,
     onReset: () => void,
     onSubmitCleanUp: () => void,
 }
@@ -96,23 +107,42 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
     }
 
     componentWillReceiveProps(nextProps: Props) {
-        const {isOpen, data: {actionName, order, customer}, draftOrder, onOpen, onInit, onBulkChange} = this.props
+        const {
+            isOpen,
+            data: {actionName, order, customer},
+            draftOrder,
+            onOpen,
+            onInit,
+            onBulkChange,
+        } = this.props
         const {integrationId} = this.context
         const hasScope = this._hasScope()
 
         if (!isOpen && nextProps.isOpen) {
             const integration = this._getIntegration()
             const currencyCode = integration
-                ? integration.getIn(['meta', 'currency'], DraftOrderModalComponent._DEFAULT_CURRENCY)
+                ? integration.getIn(
+                      ['meta', 'currency'],
+                      DraftOrderModalComponent._DEFAULT_CURRENCY
+                  )
                 : DraftOrderModalComponent._DEFAULT_CURRENCY
 
             onOpen(actionName)
-            hasScope && onInit(integrationId, order, customer, currencyCode, this._onInitError)
+            hasScope &&
+                onInit(
+                    integrationId,
+                    order,
+                    customer,
+                    currencyCode,
+                    this._onInitError
+                )
             shortcutManager.pause()
         }
 
         const id = draftOrder ? draftOrder.get('id') : null
-        const nextId = nextProps.draftOrder ? nextProps.draftOrder.get('id') : null
+        const nextId = nextProps.draftOrder
+            ? nextProps.draftOrder.get('id')
+            : null
 
         if (nextId && nextId !== id) {
             const changes = [{name: 'draft_order_id', value: nextId}]
@@ -129,14 +159,18 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
         const {integrations} = this.props
         const {integrationId} = this.context
 
-        return integrations.find((integration) => integration.get('id') === integrationId)
+        return integrations.find(
+            (integration) => integration.get('id') === integrationId
+        )
     }
 
     _hasScope() {
         const integration = this._getIntegration()
 
         return !!integration
-            ? integration.getIn(['meta', 'oauth', 'scope']).includes('write_draft_orders')
+            ? integration
+                  .getIn(['meta', 'oauth', 'scope'])
+                  .includes('write_draft_orders')
             : false
     }
 
@@ -147,9 +181,15 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
         this._onClose()
     }
 
-    _onVariantClicked = (item: IntegrationDataItem<Shopify.Product>, variant: Shopify.Variant) => {
+    _onVariantClicked = (
+        item: IntegrationDataItem<Shopify.Product>,
+        variant: Shopify.Variant
+    ) => {
         const {integrationId} = this.context
-        const {addRow, data: {actionName}} = this.props
+        const {
+            addRow,
+            data: {actionName},
+        } = this.props
         const {data: product} = item
 
         addRow(actionName, integrationId, product, variant)
@@ -171,14 +211,24 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
     }
 
     _onEmailInvoice = (invoicePayload: Record<Shopify.DraftOrderInvoice>) => {
-        const {onEmailInvoice, onClose, data: {order}} = this.props
+        const {
+            onEmailInvoice,
+            onClose,
+            data: {order},
+        } = this.props
         const {integrationId, customerId} = this.context
         const orderId = order ? order.get('id') : null
 
-        onEmailInvoice(integrationId, customerId, orderId, invoicePayload, () => {
-            onClose()
-            this._onClose()
-        })
+        onEmailInvoice(
+            integrationId,
+            customerId,
+            orderId,
+            invoicePayload,
+            () => {
+                onClose()
+                this._onClose()
+            }
+        )
     }
 
     _onSubmitPaid = () => {
@@ -202,7 +252,11 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
     }
 
     _onCancel(via: string) {
-        const {onCancel, onClose, data: {actionName}} = this.props
+        const {
+            onCancel,
+            onClose,
+            data: {actionName},
+        } = this.props
         const {integrationId} = this.context
 
         onCancel(actionName, integrationId, via)
@@ -234,10 +288,19 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
 
     render() {
         const {
-            header, isOpen, payload, products, draftOrder, loading, loadingMessage, data: {order, actionName},
+            header,
+            isOpen,
+            payload,
+            products,
+            draftOrder,
+            loading,
+            loadingMessage,
+            data: {order, actionName},
         } = this.props
         const {integrationId} = this.context
-        const lineItems = payload ? payload.get('line_items', fromJS([])) : fromJS([])
+        const lineItems = payload
+            ? payload.get('line_items', fromJS([]))
+            : fromJS([])
         const empty = !lineItems.size
 
         const integration = this._getIntegration()
@@ -246,7 +309,10 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
         }
 
         const shopName = integration.getIn(['meta', 'shop_name'])
-        const currencyCode = integration.getIn(['meta', 'currency'], DraftOrderModalComponent._DEFAULT_CURRENCY)
+        const currencyCode = integration.getIn(
+            ['meta', 'currency'],
+            DraftOrderModalComponent._DEFAULT_CURRENCY
+        )
         const hasScope = this._hasScope()
 
         // TODO(@samy): remove when all Shopify integrations have draft order permissions
@@ -258,8 +324,11 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
                     onClose={this._onMissingScopeClose}
                 >
                     <Alert color="danger">
-                        Missing Shopify permissions. To use this new feature, please go to the{' '}
-                        <Link to={`/app/settings/integrations/shopify/${integrationId}`}>
+                        Missing Shopify permissions. To use this new feature,
+                        please go to the{' '}
+                        <Link
+                            to={`/app/settings/integrations/shopify/${integrationId}`}
+                        >
                             settings page of your Shopify integration
                         </Link>{' '}
                         and click on "Update app permissions".
@@ -292,66 +361,70 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
                         onSubmit={this._onAddCustomItem}
                     />
                 </div>
-                {payload && draftOrder
-                    ? (
-                        <div>
-                            <DraftOrderTable
-                                shopName={shopName}
-                                actionName={actionName}
-                                currencyCode={currencyCode}
-                                lineItems={lineItems}
-                                products={products}
-                                onChange={this._onLineItemsChange}
-                            />
-                            <DuplicateOrderFooter
-                                editable
-                                actionName={actionName}
-                                currencyCode={currencyCode}
-                            />
-                            {draftOrder.get('status') === 'invoice_sent'
-                                ? (
-                                    <div className={css.emailInvoiceContainer}>
-                                        <h4 className="mr-auto">Invoice sent</h4>
-                                        <span className="mr-4">
-                                            Sent on{' '}
-                                            <DatetimeLabel
-                                                dateTime={draftOrder.get('invoice_sent_at')}
-                                                labelFormat="L LT"
-                                                hasTooltip={false}
-                                            />
-                                        </span>
-                                        <EmailInvoicePopover
-                                            id="email-invoice"
-                                            actionName={actionName}
-                                            color="link"
-                                            customerEmail={draftOrder.getIn(['customer', 'email'])}
-                                            disabled={loading || empty}
-                                            onSubmit={this._onEmailInvoice}
-                                        >
-                                            Email new invoice
-                                        </EmailInvoicePopover>
-                                    </div>
-                                )
-                                : (
-                                    <div className={css.emailInvoiceContainer}>
-                                        <h4 className="mr-auto">Email invoice</h4>
-                                        <EmailInvoicePopover
-                                            id="email-invoice"
-                                            actionName={actionName}
-                                            color="primary"
-                                            customerEmail={draftOrder.getIn(['customer', 'email'])}
-                                            disabled={loading || empty}
-                                            onSubmit={this._onEmailInvoice}
-                                        >
-                                            Email invoice
-                                        </EmailInvoicePopover>
-                                    </div>
-                                )
-                            }
-                        </div>
-                    )
-                    : <Loader/>
-                }
+                {payload && draftOrder ? (
+                    <div>
+                        <DraftOrderTable
+                            shopName={shopName}
+                            actionName={actionName}
+                            currencyCode={currencyCode}
+                            lineItems={lineItems}
+                            products={products}
+                            onChange={this._onLineItemsChange}
+                        />
+                        <DuplicateOrderFooter
+                            editable
+                            actionName={actionName}
+                            currencyCode={currencyCode}
+                        />
+                        {draftOrder.get('status') === 'invoice_sent' ? (
+                            <div className={css.emailInvoiceContainer}>
+                                <h4 className="mr-auto">Invoice sent</h4>
+                                <span className="mr-4">
+                                    Sent on{' '}
+                                    <DatetimeLabel
+                                        dateTime={draftOrder.get(
+                                            'invoice_sent_at'
+                                        )}
+                                        labelFormat="L LT"
+                                        hasTooltip={false}
+                                    />
+                                </span>
+                                <EmailInvoicePopover
+                                    id="email-invoice"
+                                    actionName={actionName}
+                                    color="link"
+                                    customerEmail={draftOrder.getIn([
+                                        'customer',
+                                        'email',
+                                    ])}
+                                    disabled={loading || empty}
+                                    onSubmit={this._onEmailInvoice}
+                                >
+                                    Email new invoice
+                                </EmailInvoicePopover>
+                            </div>
+                        ) : (
+                            <div className={css.emailInvoiceContainer}>
+                                <h4 className="mr-auto">Email invoice</h4>
+                                <EmailInvoicePopover
+                                    id="email-invoice"
+                                    actionName={actionName}
+                                    color="primary"
+                                    customerEmail={draftOrder.getIn([
+                                        'customer',
+                                        'email',
+                                    ])}
+                                    disabled={loading || empty}
+                                    onSubmit={this._onEmailInvoice}
+                                >
+                                    Email invoice
+                                </EmailInvoicePopover>
+                            </div>
+                        )}
+                    </div>
+                ) : (
+                    <Loader />
+                )}
                 <ModalFooter className={css.formFooter}>
                     <Button
                         tabIndex={0}
@@ -415,5 +488,7 @@ const mapDispatchToProps = {
     onReset,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DraftOrderModalComponent)
-
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(DraftOrderModalComponent)

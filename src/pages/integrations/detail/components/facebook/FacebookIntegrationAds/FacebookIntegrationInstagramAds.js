@@ -1,7 +1,16 @@
 // @flow
 
 import React from 'react'
-import {Alert, Breadcrumb, BreadcrumbItem, Card, Container, Progress, Table, UncontrolledTooltip} from 'reactstrap'
+import {
+    Alert,
+    Breadcrumb,
+    BreadcrumbItem,
+    Card,
+    Container,
+    Progress,
+    Table,
+    UncontrolledTooltip,
+} from 'reactstrap'
 import {Link} from 'react-router'
 import type {Map} from 'immutable'
 import {connect} from 'react-redux'
@@ -14,7 +23,7 @@ import ToggleButton from '../../../../../common/components/ToggleButton'
 import {
     getFacebookIntegrationInternals,
     getFacebookIntegrationLoading,
-    getFacebookIntegrationLoadingAds
+    getFacebookIntegrationLoadingAds,
 } from '../../../../../../state/facebookAds/selectors'
 import type {dispatchType} from '../../../../../../state/types'
 
@@ -26,7 +35,6 @@ import {fetchAds, updateAd} from './actions'
 import css from './FacebookIntegrationInstagramAds.less'
 import colors from './colors.less'
 
-
 type Props = {
     loading: boolean,
     integrations: Map<*, *>,
@@ -35,7 +43,7 @@ type Props = {
     internals: Map<*, *>,
     loadingAds: Map<*, *>,
     fetchAds: () => void,
-    updateAd: (adId: string, isActive: boolean) => void
+    updateAd: (adId: string, isActive: boolean) => void,
 }
 
 class FacebookIntegrationInstagramAds extends React.Component<Props> {
@@ -46,7 +54,13 @@ class FacebookIntegrationInstagramAds extends React.Component<Props> {
 
     render() {
         const {
-            loading, integration, integrations, internals, maxAccountAds, loadingAds, updateAd
+            loading,
+            integration,
+            integrations,
+            internals,
+            maxAccountAds,
+            loadingAds,
+            updateAd,
         } = this.props
 
         const accountTotalAds = this._getAccountTotalAds()
@@ -54,34 +68,39 @@ class FacebookIntegrationInstagramAds extends React.Component<Props> {
 
         return (
             <div className="full-width">
-                <PageHeader title={(
-                    <Breadcrumb>
-                        <BreadcrumbItem>
-                            <Link to="/app/settings/integrations">Integrations</Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            <Link to="/app/settings/integrations/facebook">Facebook, Messenger & Instagram</Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            {integration.get('name')}
-                        </BreadcrumbItem>
-                        <BreadcrumbItem active>
-                            Instagram Ads
-                        </BreadcrumbItem>
-                    </Breadcrumb>
-                )}/>
+                <PageHeader
+                    title={
+                        <Breadcrumb>
+                            <BreadcrumbItem>
+                                <Link to="/app/settings/integrations">
+                                    Integrations
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                <Link to="/app/settings/integrations/facebook">
+                                    Facebook, Messenger & Instagram
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                {integration.get('name')}
+                            </BreadcrumbItem>
+                            <BreadcrumbItem active>
+                                Instagram Ads
+                            </BreadcrumbItem>
+                        </Breadcrumb>
+                    }
+                />
 
-                <FacebookIntegrationNavigation integration={integration}/>
+                <FacebookIntegrationNavigation integration={integration} />
 
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <Container fluid className="page-container">
                     <div className="mb-3">
                         <p>
-                            It can take up to 2 hours to synchronize new Instagram ads on Gorgias. Instagram ads {' '}
-                            comments are fetched every 20 minutes. Comments sent while an Instagram ad was not{' '}
-                            active on Gorgias will not be fetched. Learn more about{' '}
+                            It can take up to 2 hours to synchronize new
+                            Instagram ads on Gorgias. Instagram ads comments are
+                            fetched every 20 minutes. Comments sent while an
+                            Instagram ad was not active on Gorgias will not be
+                            fetched. Learn more about{' '}
                             <a
                                 href="https://docs.gorgias.com/social-media-integrations/instagram-ads-comments"
                                 rel="noopener noreferrer"
@@ -103,22 +122,19 @@ class FacebookIntegrationInstagramAds extends React.Component<Props> {
                     </div>
                 </Container>
 
-                {loading
-                    ? (
-                        <Container fluid>
-                            <Loader/>
-                        </Container>
-                    )
-                    : (
-                        <AdsTable
-                            ads={this._getInternal('ads')}
-                            loadingAds={loadingAds}
-                            maxAccountAds={maxAccountAds}
-                            accountTotalAds={accountTotalAds}
-                            updateAd={updateAd}
-                        />
-                    )
-                }
+                {loading ? (
+                    <Container fluid>
+                        <Loader />
+                    </Container>
+                ) : (
+                    <AdsTable
+                        ads={this._getInternal('ads')}
+                        loadingAds={loadingAds}
+                        maxAccountAds={maxAccountAds}
+                        accountTotalAds={accountTotalAds}
+                        updateAd={updateAd}
+                    />
+                )}
             </div>
         )
     }
@@ -127,7 +143,11 @@ class FacebookIntegrationInstagramAds extends React.Component<Props> {
         const {internals} = this.props
 
         return internals.reduce(
-            (total, internal) => total + FacebookIntegrationInstagramAds.getIntegrationTotalAds(internal),
+            (total, internal) =>
+                total +
+                FacebookIntegrationInstagramAds.getIntegrationTotalAds(
+                    internal
+                ),
             0
         )
     }
@@ -135,10 +155,14 @@ class FacebookIntegrationInstagramAds extends React.Component<Props> {
     static getIntegrationTotalAds(internal: Map<*, *>): number {
         return internal
             .get('ads', [])
-            .reduce((total, internal) => internal.get('is_active') ? total + 1 : total, 0)
+            .reduce(
+                (total, internal) =>
+                    internal.get('is_active') ? total + 1 : total,
+                0
+            )
     }
 
-    _getInternal(key: string): ? Map<*, *> {
+    _getInternal(key: string): ?Map<*, *> {
         const {integration} = this.props
 
         if (!integration || integration.isEmpty()) {
@@ -160,7 +184,7 @@ const mapStateToProps = (state: Object) => ({
     maxAccountAds: getFacebookMaxAccountAds(state),
     loading: getFacebookIntegrationLoading(state),
     internals: getFacebookIntegrationInternals(state),
-    loadingAds: getFacebookIntegrationLoadingAds(state)
+    loadingAds: getFacebookIntegrationLoadingAds(state),
 })
 
 const mapDispatchToProps = (dispatch: dispatchType, props: Props) => ({
@@ -179,10 +203,7 @@ function UpgradePlanAlert() {
     return (
         <Alert color="success">
             <strong>Need to synchronize more ads?</strong>{' '}
-            <Link
-                to="/app/settings/billing"
-                className="alert-link"
-            >
+            <Link to="/app/settings/billing" className="alert-link">
                 Upgrade your plan!
             </Link>
         </Alert>
@@ -199,12 +220,17 @@ type AdsOverviewCardProps = {
 
 class AdsOverviewCard extends React.Component<AdsOverviewCardProps> {
     render() {
-        const {integrations, maxAccountAds, internals, accountTotalAds} = this.props
+        const {
+            integrations,
+            maxAccountAds,
+            internals,
+            accountTotalAds,
+        } = this.props
 
         return (
             <Card body>
                 <h3>Active ads per integration</h3>
-                <UpgradePlanAlert/>
+                <UpgradePlanAlert />
                 <div className="text-center">
                     {`${accountTotalAds}/${maxAccountAds} ads `}
                     <a id="active-ads-tooltip">
@@ -213,49 +239,72 @@ class AdsOverviewCard extends React.Component<AdsOverviewCardProps> {
                         </i>
                     </a>
                     <UncontrolledTooltip target="active-ads-tooltip">
-                        Number of active ads VS total number of ads available for your current plan.
+                        Number of active ads VS total number of ads available
+                        for your current plan.
                     </UncontrolledTooltip>
                 </div>
                 <Progress multi>
-                    {internals.entrySeq().map(([integrationId, internal], index) =>
-                        <Progress
-                            key={`progress-${integrationId}`}
-                            id={`progress-${integrationId}`}
-                            bar
-                            striped
-                            value={FacebookIntegrationInstagramAds.getIntegrationTotalAds(internal)}
-                            max={maxAccountAds}
-                            className={colors[`color-${index % Object.keys(colors).length}`]}
-                        />
-                    )}
+                    {internals
+                        .entrySeq()
+                        .map(([integrationId, internal], index) => (
+                            <Progress
+                                key={`progress-${integrationId}`}
+                                id={`progress-${integrationId}`}
+                                bar
+                                striped
+                                value={FacebookIntegrationInstagramAds.getIntegrationTotalAds(
+                                    internal
+                                )}
+                                max={maxAccountAds}
+                                className={
+                                    colors[
+                                        `color-${
+                                            index % Object.keys(colors).length
+                                        }`
+                                    ]
+                                }
+                            />
+                        ))}
                 </Progress>
                 <div className={css.legendContainer}>
-                    {internals.entrySeq().map(([integrationId, internal], index) => {
-                        const integration = integrations
-                            .find((integration) => integration.get('id') === parseInt(integrationId))
+                    {internals
+                        .entrySeq()
+                        .map(([integrationId, internal], index) => {
+                            const integration = integrations.find(
+                                (integration) =>
+                                    integration.get('id') ===
+                                    parseInt(integrationId)
+                            )
 
-                        if (!integration) {
-                            return null
-                        }
+                            if (!integration) {
+                                return null
+                            }
 
-                        return (
-                            <div
-                                key={`legend-${integrationId}`}
-                                className={css.legend}
-                            >
+                            return (
                                 <div
-                                    className={classnames(
-                                        colors[`color-${index % Object.keys(colors).length}`],
-                                        'progress-bar-striped',
-                                        css.legendColor
-                                    )}
-                                />
-                                {integration.get('name')}
-                                {' '}
-                                ({FacebookIntegrationInstagramAds.getIntegrationTotalAds(internal)} active ads)
-                            </div>
-                        )
-                    })}
+                                    key={`legend-${integrationId}`}
+                                    className={css.legend}
+                                >
+                                    <div
+                                        className={classnames(
+                                            colors[
+                                                `color-${
+                                                    index %
+                                                    Object.keys(colors).length
+                                                }`
+                                            ],
+                                            'progress-bar-striped',
+                                            css.legendColor
+                                        )}
+                                    />
+                                    {integration.get('name')} (
+                                    {FacebookIntegrationInstagramAds.getIntegrationTotalAds(
+                                        internal
+                                    )}{' '}
+                                    active ads)
+                                </div>
+                            )
+                        })}
                 </div>
             </Card>
         )
@@ -264,7 +313,7 @@ class AdsOverviewCard extends React.Component<AdsOverviewCardProps> {
 
 // AdsTable
 type AdsTableProps = {
-    ads: ? Map<*, *>,
+    ads: ?Map<*, *>,
     loadingAds: Map<*, *>,
     maxAccountAds: number,
     accountTotalAds: number,
@@ -301,11 +350,8 @@ class AdsTable extends React.Component<AdsTableProps> {
                     </tr>
                 </thead>
                 <tbody>
-                    {sortedAds.map((ad) =>
-                        <tr
-                            key={ad.get('id')}
-                            className={css.row}
-                        >
+                    {sortedAds.map((ad) => (
+                        <tr key={ad.get('id')} className={css.row}>
                             <td>
                                 <a
                                     href={ad.get('permalink')}
@@ -316,27 +362,34 @@ class AdsTable extends React.Component<AdsTableProps> {
                                 </a>
                             </td>
                             <td>
-                                {
-                                    ad.get('created_datetime') && (
-                                        <DatetimeLabel
-                                            dateTime={ad.get('created_datetime')}
-                                        />
-                                    )
-                                }
+                                {ad.get('created_datetime') && (
+                                    <DatetimeLabel
+                                        dateTime={ad.get('created_datetime')}
+                                    />
+                                )}
                             </td>
                             <td className="smallest align-middle">
                                 <ToggleButton
                                     value={ad.get('is_active')}
-                                    onChange={ad.get('is_active')
-                                        ? () => this._deactivateAd(ad.get('id'))
-                                        : () => this._activateAd(ad.get('id'))
+                                    onChange={
+                                        ad.get('is_active')
+                                            ? () =>
+                                                  this._deactivateAd(
+                                                      ad.get('id')
+                                                  )
+                                            : () =>
+                                                  this._activateAd(ad.get('id'))
                                     }
                                     loading={loadingAds.includes(ad.get('id'))}
-                                    disabled={!ad.get('is_active') && limitReached || loadingAds.includes(ad.get('id'))}
+                                    disabled={
+                                        (!ad.get('is_active') &&
+                                            limitReached) ||
+                                        loadingAds.includes(ad.get('id'))
+                                    }
                                 />
                             </td>
                         </tr>
-                    )}
+                    ))}
                 </tbody>
             </Table>
         )

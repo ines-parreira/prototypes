@@ -38,7 +38,9 @@ describe('services', () => {
 
             setTimeout(() => {
                 expect(store.getActions()).toMatchSnapshot()
-                expect(sendSpy).toHaveBeenCalledWith(socketConstants.AGENT_INACTIVE)
+                expect(sendSpy).toHaveBeenCalledWith(
+                    socketConstants.AGENT_INACTIVE
+                )
                 socketManager.send = send
                 done()
             }, userActivityManager.unavailabilityTimeout + 1)
@@ -49,10 +51,18 @@ describe('services', () => {
             document.addEventListener = spy
             userActivityManager.watch()
             expect(spy).toHaveBeenCalledTimes(3)
-            expect(spy).toHaveBeenCalledWith('mousemove', userActivityManager.setCurrentUserActive)
-            expect(spy).toHaveBeenCalledWith('touchstart', userActivityManager.setCurrentUserActive)
-            expect(spy).toHaveBeenCalledWith('keydown', userActivityManager.setCurrentUserActive)
-
+            expect(spy).toHaveBeenCalledWith(
+                'mousemove',
+                userActivityManager.setCurrentUserActive
+            )
+            expect(spy).toHaveBeenCalledWith(
+                'touchstart',
+                userActivityManager.setCurrentUserActive
+            )
+            expect(spy).toHaveBeenCalledWith(
+                'keydown',
+                userActivityManager.setCurrentUserActive
+            )
         })
     })
 })

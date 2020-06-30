@@ -12,5 +12,6 @@ export const SID_UPDATED = 'sid-updated'
 export const TICKET_MESSAGE_CHAT_CREATED = 'ticket-message-chat-created'
 export const TICKET_CHAT_UPDATED = 'ticket-chat-updated'
 export const EMAIL_INTEGRATION_VERIFIED = 'email.integration-verified'
-export const FACEBOOK_INTEGRATIONS_RECONNECTED = 'facebook-integrations-reconnected'
+export const FACEBOOK_INTEGRATIONS_RECONNECTED =
+    'facebook-integrations-reconnected'
 export const VIEWS_DEACTIVATED = 'views-deactivated'

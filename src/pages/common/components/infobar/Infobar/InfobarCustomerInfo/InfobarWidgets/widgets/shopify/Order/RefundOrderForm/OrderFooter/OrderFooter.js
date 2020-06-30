@@ -1,13 +1,21 @@
 // @flow
 
 import React from 'react'
-import {Col, Container, FormGroup, FormText, Input, Label, Row} from 'reactstrap'
+import {
+    Col,
+    Container,
+    FormGroup,
+    FormText,
+    Input,
+    Label,
+    Row,
+} from 'reactstrap'
 import {type Record} from 'immutable'
 
 import {
     getRefundAmount,
     getTotalAvailableToRefund,
-    getTotalQuantities
+    getTotalQuantities,
 } from '../../../../../../../../../../../../business/shopify/refund'
 import * as Shopify from '../../../../../../../../../../../../constants/integrations/shopify'
 import {ShopifyAction} from '../../../constants'
@@ -40,12 +48,17 @@ export default class OrderFooter extends React.PureComponent<Props> {
         const {refund, payload, setPayload} = this.props
         const max = getTotalAvailableToRefund(refund)
         const newAmount = parseFloat(value) > max ? max : value
-        const newPayload = payload.setIn(['transactions', 0, 'amount'], newAmount)
+        const newPayload = payload.setIn(
+            ['transactions', 0, 'amount'],
+            newAmount
+        )
 
         setPayload(newPayload)
     }
 
-    _onDiscrepancyReasonChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
+    _onDiscrepancyReasonChange = (
+        event: SyntheticInputEvent<HTMLInputElement>
+    ) => {
         const {payload, setPayload} = this.props
         const {value} = event.target
         const newPayload = payload.set('discrepancy_reason', value)
@@ -82,7 +95,9 @@ export default class OrderFooter extends React.PureComponent<Props> {
                         value={reason || 'customer'}
                         onChange={onReasonChange}
                     >
-                        <option value="customer">Customer changed/canceled order</option>
+                        <option value="customer">
+                            Customer changed/canceled order
+                        </option>
                         <option value="fraud">Fraudulent order</option>
                         <option value="inventory">Items unavailable</option>
                         <option value="declined">Payment declined</option>
@@ -108,30 +123,34 @@ export default class OrderFooter extends React.PureComponent<Props> {
     }
 
     render() {
-        const {editable, hasShippingLine, loading, payload, refund, currencyCode, onPayloadChange} = this.props
+        const {
+            editable,
+            hasShippingLine,
+            loading,
+            payload,
+            refund,
+            currencyCode,
+            onPayloadChange,
+        } = this.props
         const amount = payload.getIn(['transactions', 0, 'amount'], '')
-        const amountMax = refund.isEmpty() ? null : getTotalAvailableToRefund(refund)
+        const amountMax = refund.isEmpty()
+            ? null
+            : getTotalAvailableToRefund(refund)
         const totalQuantities = getTotalQuantities(payload, refund)
         const discrepancyLimit = getRefundAmount(refund)
-        const hasDiscrepancy = !loading && parseFloat(amount) !== discrepancyLimit
+        const hasDiscrepancy =
+            !loading && parseFloat(amount) !== discrepancyLimit
 
         return (
-            <Container
-                fluid
-                className={css.container}
-            >
+            <Container fluid className={css.container}>
                 <Row>
-                    <Col
-                        xs={{size: 12, order: 2}}
-                        xl={{size: 8, order: 1}}
-                    >
+                    <Col xs={{size: 12, order: 2}} xl={{size: 8, order: 1}}>
                         <Row>
-                            <Col
-                                xs={12}
-                                lg={6}
-                            >
+                            <Col xs={12} lg={6}>
                                 <FormGroup>
-                                    <Label for="amount">Refund with: Manual</Label>
+                                    <Label for="amount">
+                                        Refund with: Manual
+                                    </Label>
                                     <AmountInput
                                         id="amount"
                                         required
@@ -144,10 +163,7 @@ export default class OrderFooter extends React.PureComponent<Props> {
                                     />
                                 </FormGroup>
                             </Col>
-                            <Col
-                                xs={12}
-                                lg={6}
-                            >
+                            <Col xs={12} lg={6}>
                                 {this._renderReason()}
                             </Col>
                         </Row>
@@ -155,54 +171,77 @@ export default class OrderFooter extends React.PureComponent<Props> {
                             <Col xs={12}>
                                 {hasDiscrepancy && (
                                     <FormGroup>
-                                        <Label for="discrepancy-reason">Reason for custom refund amount</Label>
+                                        <Label for="discrepancy-reason">
+                                            Reason for custom refund amount
+                                        </Label>
                                         <Input
                                             type="select"
                                             id="discrepancy-reason"
-                                            value={payload.get('discrepancy_reason', 'other')}
-                                            className={css.discrepancyReasonInput}
-                                            onChange={this._onDiscrepancyReasonChange}
+                                            value={payload.get(
+                                                'discrepancy_reason',
+                                                'other'
+                                            )}
+                                            className={
+                                                css.discrepancyReasonInput
+                                            }
+                                            onChange={
+                                                this._onDiscrepancyReasonChange
+                                            }
                                         >
-                                            <option value="restock">Restocking fee</option>
-                                            <option value="damage">Damaged goods</option>
-                                            <option value="customer">Customer satisfaction</option>
+                                            <option value="restock">
+                                                Restocking fee
+                                            </option>
+                                            <option value="damage">
+                                                Damaged goods
+                                            </option>
+                                            <option value="customer">
+                                                Customer satisfaction
+                                            </option>
                                             <option value="other">Other</option>
                                         </Input>
                                         <FormText color="muted">
-                                            The amount being refunded is different from the value of items being{' '}
-                                            returned.
+                                            The amount being refunded is
+                                            different from the value of items
+                                            being returned.
                                         </FormText>
                                     </FormGroup>
                                 )}
-                                <FormGroup
-                                    check
-                                    className="mb-3"
-                                >
+                                <FormGroup check className="mb-3">
                                     <Label check>
                                         <Input
                                             type="checkbox"
-                                            checked={payload.get('restock', true)}
+                                            checked={payload.get(
+                                                'restock',
+                                                true
+                                            )}
                                             disabled={totalQuantities === 0}
-                                            onChange={this._onRestockItemsChange}
+                                            onChange={
+                                                this._onRestockItemsChange
+                                            }
                                         />
-                                        <span className="ml-1">Restock items</span>
+                                        <span className="ml-1">
+                                            Restock items
+                                        </span>
                                     </Label>
                                     <FormText color="muted">
-                                        The claimed quantity for products in this order will be restocked back to {' '}
+                                        The claimed quantity for products in
+                                        this order will be restocked back to{' '}
                                         your store.
                                     </FormText>
                                 </FormGroup>
-                                <FormGroup
-                                    check
-                                    className="mb-3"
-                                >
+                                <FormGroup check className="mb-3">
                                     <Label check>
                                         <Input
                                             type="checkbox"
-                                            checked={payload.get(this._getNotifyAttribute(), true)}
+                                            checked={payload.get(
+                                                this._getNotifyAttribute(),
+                                                true
+                                            )}
                                             onChange={this._onEmailChange}
                                         />
-                                        <span className="ml-1">Send notification to customer</span>
+                                        <span className="ml-1">
+                                            Send notification to customer
+                                        </span>
                                     </Label>
                                 </FormGroup>
                             </Col>

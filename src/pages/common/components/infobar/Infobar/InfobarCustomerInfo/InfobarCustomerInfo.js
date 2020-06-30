@@ -14,7 +14,7 @@ import {
     MAGENTO2_INTEGRATION_TYPE,
     RECHARGE_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
-    SMILE_INTEGRATION_TYPE
+    SMILE_INTEGRATION_TYPE,
 } from '../../../../../../constants/integration'
 
 import {itemsWithContext} from '../../../../../../state/widgets/utils'
@@ -30,12 +30,11 @@ import CustomerNote from './CustomerNote'
 import InfobarWidgets from './InfobarWidgets'
 import AddIntegrationSuggestion from './AddIntegrationSuggestion'
 
-
 type GenerateButtonProps = {
     setEditedWidgets: (Array<Map<*, *>>) => void,
     setEditionAsDirty: () => void,
     widgets: ?Map<*, *>,
-    sources: Map<*, *>
+    sources: Map<*, *>,
 }
 
 /**
@@ -46,7 +45,12 @@ class GenerateButton extends React.Component<GenerateButtonProps> {
      * Generate widgets and set them in the state.
      */
     _generateWidgets = () => {
-        const {setEditedWidgets, setEditionAsDirty, widgets, sources} = this.props
+        const {
+            setEditedWidgets,
+            setEditionAsDirty,
+            widgets,
+            sources,
+        } = this.props
         const context = widgets ? widgets.get('currentContext', '') : ''
 
         const items = jsonToWidgets(sources.toJS(), context)
@@ -57,20 +61,14 @@ class GenerateButton extends React.Component<GenerateButtonProps> {
     render() {
         return (
             <div className="no-result-container mt-5">
-                <p>
-                    You're not showing any widgets here yet.
-                </p>
-                <Button
-                    color="info"
-                    onClick={this._generateWidgets}
-                >
+                <p>You're not showing any widgets here yet.</p>
+                <Button color="info" onClick={this._generateWidgets}>
                     Generate default widgets
                 </Button>
             </div>
         )
     }
 }
-
 
 type Props = {
     actions: {
@@ -89,7 +87,7 @@ type Props = {
 }
 
 type State = {
-    contextWidgets: List<Map<*, *>>
+    contextWidgets: List<Map<*, *>>,
 }
 
 export class InfobarCustomerInfo extends React.Component<Props, State> {
@@ -105,7 +103,7 @@ export class InfobarCustomerInfo extends React.Component<Props, State> {
     }
 
     state = {
-        contextWidgets: fromJS([])
+        contextWidgets: fromJS([]),
     }
 
     clipboard: ?Clipboard = null
@@ -147,7 +145,10 @@ export class InfobarCustomerInfo extends React.Component<Props, State> {
 
         const context = widgets.get('currentContext', '')
 
-        const currentItems = itemsWithContext(widgets.get('items', fromJS([])), context)
+        const currentItems = itemsWithContext(
+            widgets.get('items', fromJS([])),
+            context
+        )
 
         // null = should generate a new widgets template
         // empty array = user wanted no widgets
@@ -156,18 +157,18 @@ export class InfobarCustomerInfo extends React.Component<Props, State> {
         this.setState({contextWidgets: hasWidgets ? currentItems : fromJS([])})
 
         if (widgets.getIn(['_internal', 'hasFetchedWidgets'])) {
-            const shouldGenerateWidgets = areSourcesReady(sources, context)
-                && !hasWidgets
-                && !widgets.getIn(['_internal', 'hasGeneratedWidgets'])
+            const shouldGenerateWidgets =
+                areSourcesReady(sources, context) &&
+                !hasWidgets &&
+                !widgets.getIn(['_internal', 'hasGeneratedWidgets'])
 
             // if no widgets, generate them from incoming json
             if (shouldGenerateWidgets) {
                 actions.generateAndSetWidgets(sources, context)
             }
 
-            const shouldSetEditedItems = !this.isInitialized
-                && isEditing
-                && hasWidgets
+            const shouldSetEditedItems =
+                !this.isInitialized && isEditing && hasWidgets
 
             // if editing, set template to edit when ready
             if (shouldSetEditedItems) {
@@ -179,13 +180,7 @@ export class InfobarCustomerInfo extends React.Component<Props, State> {
     }
 
     _renderWidgets = () => {
-        const {
-            actions,
-            isEditing,
-            widgets,
-            sources,
-            displayTabs,
-        } = this.props
+        const {actions, isEditing, widgets, sources, displayTabs} = this.props
 
         const contextWidgets = isEditing
             ? widgets.getIn(['_internal', 'editedItems'])
@@ -193,12 +188,14 @@ export class InfobarCustomerInfo extends React.Component<Props, State> {
 
         const isDragging = widgets.getIn(['_internal', 'drag', 'isDragging'])
 
-        const shouldSuggestTemplateGeneration = isEditing && !isDragging && (
-            !contextWidgets || (
-                contextWidgets.size <= 1
-                && contextWidgets.getIn([0, 'template'], fromJS({})).isEmpty()
-            )
-        )
+        const shouldSuggestTemplateGeneration =
+            isEditing &&
+            !isDragging &&
+            (!contextWidgets ||
+                (contextWidgets.size <= 1 &&
+                    contextWidgets
+                        .getIn([0, 'template'], fromJS({}))
+                        .isEmpty()))
 
         if (shouldSuggestTemplateGeneration) {
             return (
@@ -211,9 +208,12 @@ export class InfobarCustomerInfo extends React.Component<Props, State> {
             )
         }
 
-        const allWidgetsTemplatesAreEmpty = !contextWidgets ||
+        const allWidgetsTemplatesAreEmpty =
+            !contextWidgets ||
             // $FlowFixMe
-            contextWidgets.every((widget) => widget.get('template', fromJS({})).isEmpty())
+            contextWidgets.every((widget) =>
+                widget.get('template', fromJS({})).isEmpty()
+            )
 
         if (!isEditing && allWidgetsTemplatesAreEmpty) {
             return null
@@ -226,16 +226,22 @@ export class InfobarCustomerInfo extends React.Component<Props, State> {
                 widgets={contextWidgets}
                 displayTabs={displayTabs}
                 editing={
-                    isEditing ? {
-                        isEditing,
-                        isDragging,
-                        actions,
-                        state: widgets,
-                        canDrop: (targetAbsolutePath) => {
-                            const group = widgets.getIn(['_internal', 'drag', 'group'])
-                            return canDrop(group, targetAbsolutePath)
-                        }
-                    } : undefined
+                    isEditing
+                        ? {
+                              isEditing,
+                              isDragging,
+                              actions,
+                              state: widgets,
+                              canDrop: (targetAbsolutePath) => {
+                                  const group = widgets.getIn([
+                                      '_internal',
+                                      'drag',
+                                      'group',
+                                  ])
+                                  return canDrop(group, targetAbsolutePath)
+                              },
+                          }
+                        : undefined
                 }
             />
         )
@@ -251,17 +257,11 @@ export class InfobarCustomerInfo extends React.Component<Props, State> {
             return null
         }
 
-        return (
-            <AddIntegrationSuggestion customer={this.props.customer}/>
-        )
+        return <AddIntegrationSuggestion customer={this.props.customer} />
     }
 
     render() {
-        const {
-            customer,
-            sources,
-            widgets
-        } = this.props
+        const {customer, sources, widgets} = this.props
 
         if (!customer || customer.isEmpty()) {
             return null
@@ -275,7 +275,10 @@ export class InfobarCustomerInfo extends React.Component<Props, State> {
                             className="mr-3 rounded"
                             name={customer.get('name', '')}
                             email={customer.get('email', '')}
-                            url={customer.getIn(['meta', 'profile_picture_url'])}
+                            url={customer.getIn([
+                                'meta',
+                                'profile_picture_url',
+                            ])}
                         />
                         <Link
                             to={`/app/customer/${customer.get('id')}`}
@@ -285,27 +288,29 @@ export class InfobarCustomerInfo extends React.Component<Props, State> {
                         </Link>
                     </div>
                     <div className={css.detail}>
-                        <CustomerChannels channels={customer.get('channels') || fromJS([])}>
-                            <CustomerNote customer={customer}/>
+                        <CustomerChannels
+                            channels={customer.get('channels') || fromJS([])}
+                        >
+                            <CustomerNote customer={customer} />
                         </CustomerChannels>
                     </div>
                 </div>
-                {
-                    areSourcesReady(sources, widgets.get('currentContext', ''))
-                        ? this._renderWidgets()
-                        : this._renderSuggestion()
-                }
+                {areSourcesReady(sources, widgets.get('currentContext', ''))
+                    ? this._renderWidgets()
+                    : this._renderSuggestion()}
             </div>
         )
     }
 }
 
 export default connect((state) => ({
-    hasIntegrations: !integrationsSelectors.getIntegrationsByTypes([
-        HTTP_INTEGRATION_TYPE,
-        MAGENTO2_INTEGRATION_TYPE,
-        RECHARGE_INTEGRATION_TYPE,
-        SHOPIFY_INTEGRATION_TYPE,
-        SMILE_INTEGRATION_TYPE,
-    ])(state).isEmpty(),
+    hasIntegrations: !integrationsSelectors
+        .getIntegrationsByTypes([
+            HTTP_INTEGRATION_TYPE,
+            MAGENTO2_INTEGRATION_TYPE,
+            RECHARGE_INTEGRATION_TYPE,
+            SHOPIFY_INTEGRATION_TYPE,
+            SMILE_INTEGRATION_TYPE,
+        ])(state)
+        .isEmpty(),
 }))(InfobarCustomerInfo)

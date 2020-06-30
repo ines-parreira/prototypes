@@ -12,14 +12,22 @@ type Props = {
     conversationColor: string,
     name?: string,
     language?: string,
-    autoResponderReply?: string
+    autoResponderReply?: string,
 }
 
 export default class OptionalEmailCapture extends React.Component<Props> {
     render() {
-        const {conversationColor, name, language, autoResponderReply} = this.props
+        const {
+            conversationColor,
+            name,
+            language,
+            autoResponderReply,
+        } = this.props
 
-        const translatedTexts = CHAT_AUTO_RESPONDER_TEXTS[language || SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT]
+        const translatedTexts =
+            CHAT_AUTO_RESPONDER_TEXTS[
+                language || SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
+            ]
 
         return (
             <div className={css.content}>
@@ -32,18 +40,23 @@ export default class OptionalEmailCapture extends React.Component<Props> {
                     <div className={classnames(css.avatar, css.robotLogo)}>
                         <img
                             alt="robot icon"
-                            src={`${window.GORGIAS_ASSETS_URL || ''}/static/private/img/icons/robot-icon.svg`}
+                            src={`${
+                                window.GORGIAS_ASSETS_URL || ''
+                            }/static/private/img/icons/robot-icon.svg`}
                         />
                     </div>
                     <div>
-                        <div className={css.user}>
-                            {name}
-                        </div>
+                        <div className={css.user}>{name}</div>
 
-                        <div className={classnames(css.bubble, css.firstMessageOfAppMaker, 'mb-2')}>
+                        <div
+                            className={classnames(
+                                css.bubble,
+                                css.firstMessageOfAppMaker,
+                                'mb-2'
+                            )}
+                        >
                             {translatedTexts[autoResponderReply]}
                         </div>
-
                     </div>
                 </div>
             </div>

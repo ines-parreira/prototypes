@@ -7,10 +7,20 @@ import {updateNotification} from 'reapop'
 
 import * as viewsConfig from '../../config/views'
 import * as socketConstants from '../../config/socketConstants'
-import {BASE_VIEW_ID, NEXT_VIEW_NAV_DIRECTION, PREV_VIEW_NAV_DIRECTION, VIEW_NAV_DIRECTIONS} from '../../constants/view'
+import {
+    BASE_VIEW_ID,
+    NEXT_VIEW_NAV_DIRECTION,
+    PREV_VIEW_NAV_DIRECTION,
+    VIEW_NAV_DIRECTIONS,
+} from '../../constants/view'
 import {notify} from '../notifications/actions'
 import socketManager from '../../services/socketManager'
-import {getHashOfObj, getPluralObjectName, isCurrentlyOnTicket, isCurrentlyOnView} from '../../utils'
+import {
+    getHashOfObj,
+    getPluralObjectName,
+    isCurrentlyOnTicket,
+    isCurrentlyOnView,
+} from '../../utils'
 import {buildJobMessage} from '../../utils/notificationUtils'
 import {getMoment} from '../../utils/date'
 import type {dispatchType, getStateType, thunkActionType} from '../types'
@@ -20,7 +30,9 @@ import * as viewsSelectors from './selectors'
 import * as types from './constants'
 import type {filterType, viewType} from './types'
 
-export const setViewActive = (view: viewType) => (dispatch: dispatchType): dispatchType => {
+export const setViewActive = (view: viewType) => (
+    dispatch: dispatchType
+): dispatchType => {
     if (view) {
         socketManager.join('view', view.get('id'))
     }
@@ -29,26 +41,29 @@ export const setViewActive = (view: viewType) => (dispatch: dispatchType): dispa
 
     return dispatch({
         type: types.SET_VIEW_ACTIVE,
-        view
+        view,
     })
 }
 
 export const updateView = (view: ?viewType, edit: boolean = true) => ({
     type: types.UPDATE_VIEW,
     view,
-    edit
+    edit,
 })
 
 export const setViewEditMode = (view: ?viewType) => ({
     type: types.ACTIVATE_VIEW_EDIT_MODE,
-    view
+    view,
 })
 
 export const toggleViewSelection = () => ({
     type: types.TOGGLE_VIEW_SELECTION,
 })
 
-export const setOrderDirection = (fieldPath: string, direction: 'asc' | 'desc' = 'asc') => (dispatch: dispatchType) => {
+export const setOrderDirection = (
+    fieldPath: string,
+    direction: 'asc' | 'desc' = 'asc'
+) => (dispatch: dispatchType) => {
     dispatch({
         type: types.SET_ORDER_DIRECTION,
         fieldPath,
@@ -58,7 +73,9 @@ export const setOrderDirection = (fieldPath: string, direction: 'asc' | 'desc' =
     dispatch(updateView())
 }
 
-export const setFieldVisibility = (name: string, state: boolean) => (dispatch: dispatchType) => {
+export const setFieldVisibility = (name: string, state: boolean) => (
+    dispatch: dispatchType
+) => {
     dispatch({
         type: types.SET_FIELD_VISIBILITY,
         name,
@@ -72,36 +89,42 @@ export const setFieldVisibility = (name: string, state: boolean) => (dispatch: d
 export const addFieldFilter = (field: string, filter: filterType) => ({
     type: types.ADD_VIEW_FIELD_FILTER,
     field,
-    filter
+    filter,
 })
 
 // remove a filter based on index
 export const removeFieldFilter = (index: number) => ({
     type: types.REMOVE_VIEW_FIELD_FILTER,
-    index
+    index,
 })
 
 // update a filter value
-export const updateFieldFilter = (index: number, value: string | number | Array<any>) => ({
+export const updateFieldFilter = (
+    index: number,
+    value: string | number | Array<any>
+) => ({
     type: types.UPDATE_VIEW_FIELD_FILTER,
     index,
-    value
+    value,
 })
 
 // remove a filter based on index
 export const updateFieldFilterOperator = (index: number, operator: string) => ({
     type: types.UPDATE_VIEW_FIELD_FILTER_OPERATOR,
     index,
-    operator
+    operator,
 })
 
 // not a real redux action, is used to return data, not to be used in the reducer
 let _cancelSearch = null
 
-export function fieldEnumSearch(field: Map<*, *>, query: string): thunkActionType {
+export function fieldEnumSearch(
+    field: Map<*, *>,
+    query: string
+): thunkActionType {
     return (dispatch: dispatchType): Promise<void> => {
         dispatch({
-            type: types.UPDATE_VIEW_FIELD_ENUM_START
+            type: types.UPDATE_VIEW_FIELD_ENUM_START,
         })
 
         const data = field.get('filter').toJS()
@@ -112,30 +135,34 @@ export function fieldEnumSearch(field: Map<*, *>, query: string): thunkActionTyp
             _cancelSearch = null
         }
 
-        return axios.post('/api/search/', data, {
-            cancelToken: new axios.CancelToken((cancel) => {
-                _cancelSearch = cancel
-            }),
-        })
-            .then((json = {}) => json.data)
-            .then((resp) => {
-                dispatch({
-                    type: types.UPDATE_VIEW_FIELD_ENUM_SUCCESS,
-                    field,
-                    resp
-                })
-                return fromJS(resp.data)
-            }, (error) => {
-                if (!axios.isCancel(error)) {
-                    dispatch({
-                        type: types.UPDATE_VIEW_FIELD_ENUM_ERROR,
-                        error,
-                        reason: 'Failed to select this filter'
-                    })
-                }
-
-                return Promise.reject()
+        return axios
+            .post('/api/search/', data, {
+                cancelToken: new axios.CancelToken((cancel) => {
+                    _cancelSearch = cancel
+                }),
             })
+            .then((json = {}) => json.data)
+            .then(
+                (resp) => {
+                    dispatch({
+                        type: types.UPDATE_VIEW_FIELD_ENUM_SUCCESS,
+                        field,
+                        resp,
+                    })
+                    return fromJS(resp.data)
+                },
+                (error) => {
+                    if (!axios.isCancel(error)) {
+                        dispatch({
+                            type: types.UPDATE_VIEW_FIELD_ENUM_ERROR,
+                            error,
+                            reason: 'Failed to select this filter',
+                        })
+                    }
+
+                    return Promise.reject()
+                }
+            )
     }
 }
 
@@ -149,36 +176,43 @@ export const resetView = (configName: string) => {
 export function fetchViews(currentViewId: string): thunkActionType {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
-            type: types.FETCH_VIEW_LIST_START
+            type: types.FETCH_VIEW_LIST_START,
         })
 
-        return axios.get('/api/views/')
+        return axios
+            .get('/api/views/')
             .then((json = {}) => json.data)
-            .then((resp) => {
-                dispatch({
-                    type: types.FETCH_VIEW_LIST_SUCCESS,
-                    resp,
-                    currentViewId
-                })
-            }, (error) => {
-                dispatch({
-                    type: types.FETCH_VIEW_LIST_ERROR,
-                    error,
-                    reason: 'Failed to fetch views'
-                })
-            })
+            .then(
+                (resp) => {
+                    dispatch({
+                        type: types.FETCH_VIEW_LIST_SUCCESS,
+                        resp,
+                        currentViewId,
+                    })
+                },
+                (error) => {
+                    dispatch({
+                        type: types.FETCH_VIEW_LIST_ERROR,
+                        error,
+                        reason: 'Failed to fetch views',
+                    })
+                }
+            )
     }
 }
 
 export function setPage(page: number) {
     return {
         type: types.SET_PAGE,
-        page
+        page,
     }
 }
 
 export function submitView(view: viewType): thunkActionType {
-    return (dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
+    return (
+        dispatch: dispatchType,
+        getState: getStateType
+    ): Promise<dispatchType> => {
         const {views} = getState()
         const isUpdate = !!view.get('id')
         const objectName = getPluralObjectName(view.get('type', ''))
@@ -190,99 +224,134 @@ export function submitView(view: viewType): thunkActionType {
         let promise
 
         if (isUpdate) {
-            promise = axios.put(`/api/views/${view.get('id')}/`, view.delete('dirty').delete('editMode')
-                .delete('allItemsSelected').toJS())
+            promise = axios.put(
+                `/api/views/${view.get('id')}/`,
+                view
+                    .delete('dirty')
+                    .delete('editMode')
+                    .delete('allItemsSelected')
+                    .toJS()
+            )
         } else {
-            const orders = views.get('items', fromJS([]))
+            const orders = views
+                .get('items', fromJS([]))
                 .filter((item) => item.get('type') === view.get('type'))
                 .map((item) => item.get('display_order', 0))
-                .toJS()
-                || [0]
+                .toJS() || [0]
             promise = axios.post(
                 '/api/views/',
-                view.set('display_order', _max(orders) + 1)
+                view
+                    .set('display_order', _max(orders) + 1)
                     .delete('id')
                     .delete('dirty')
                     .delete('editMode')
                     .delete('allItemsSelected')
-                    .toJS())
+                    .toJS()
+            )
         }
 
         return promise
             .then((json = {}) => json.data)
-            .then((resp) => {
-                // redirect to the view created
-                if (!isUpdate) {
-                    dispatch({
-                        type: types.SUBMIT_NEW_VIEW_SUCCESS,
-                        resp,
-                    })
+            .then(
+                (resp) => {
+                    // redirect to the view created
+                    if (!isUpdate) {
+                        dispatch({
+                            type: types.SUBMIT_NEW_VIEW_SUCCESS,
+                            resp,
+                        })
 
-                    browserHistory.push(`/app/${objectName}/${resp.id}/${resp.slug}`)
+                        browserHistory.push(
+                            `/app/${objectName}/${resp.id}/${resp.slug}`
+                        )
+                    }
+                    return Promise.resolve(resp)
+                },
+                (error) => {
+                    return dispatch({
+                        type: isUpdate
+                            ? types.SUBMIT_UPDATE_VIEW_ERROR
+                            : types.SUBMIT_NEW_VIEW_ERROR,
+                        error,
+                        reason: 'Failed to submit view. Please try again',
+                    })
                 }
-                return Promise.resolve(resp)
-            }, (error) => {
-                return dispatch({
-                    type: isUpdate ? types.SUBMIT_UPDATE_VIEW_ERROR : types.SUBMIT_NEW_VIEW_ERROR,
-                    error,
-                    reason: 'Failed to submit view. Please try again'
-                })
-            })
+            )
     }
 }
 
 export function deleteView(view: viewType): thunkActionType {
-    return (dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
+    return (
+        dispatch: dispatchType,
+        getState: getStateType
+    ): Promise<dispatchType> => {
         const vType = view.get('type', 'ticket-list')
-        const otherViewsOfType = getState().views
-            .get('items', fromJS([]))
-            .filter((v) => v.get('type', 'ticket-list') === vType && v.get('id') !== view.get('id'))
+        const otherViewsOfType = getState()
+            .views.get('items', fromJS([]))
+            .filter(
+                (v) =>
+                    v.get('type', 'ticket-list') === vType &&
+                    v.get('id') !== view.get('id')
+            )
 
         if (otherViewsOfType.size === 0) {
-            return dispatch(notify({
-                status: 'error',
-                title: 'This view cannot be deleted',
-                message: 'This is your last view, it needs to exist in order for the helpdesk to function correctly.'
-            }))
+            return dispatch(
+                notify({
+                    status: 'error',
+                    title: 'This view cannot be deleted',
+                    message:
+                        'This is your last view, it needs to exist in order for the helpdesk to function correctly.',
+                })
+            )
         }
 
-        return axios.delete(`/api/views/${view.get('id')}/`)
-            .then(() => {
+        return axios.delete(`/api/views/${view.get('id')}/`).then(
+            () => {
                 const viewConfig = viewsConfig.getConfigByType(vType)
                 const destinationView = otherViewsOfType.first()
-                const destinationRoute = `/app/${viewConfig.get('routeList')}/${destinationView.get('id')}/${destinationView.get('slug')}`
+                const destinationRoute = `/app/${viewConfig.get(
+                    'routeList'
+                )}/${destinationView.get('id')}/${destinationView.get('slug')}`
                 dispatch(setViewActive(destinationView))
                 browserHistory.push(destinationRoute)
                 return Promise.resolve()
-            }, (error) => {
+            },
+            (error) => {
                 return dispatch({
                     type: 'ERROR',
                     error,
-                    reason: `Failed to delete the view ${view.get('name')}`
+                    reason: `Failed to delete the view ${view.get('name')}`,
                 })
-            })
+            }
+        )
     }
 }
 
-export const deleteViewSuccess = (viewId: number): thunkActionType => (dispatch: dispatchType, getState: getStateType) => {
+export const deleteViewSuccess = (viewId: number): thunkActionType => (
+    dispatch: dispatchType,
+    getState: getStateType
+) => {
     dispatch({
         type: types.DELETE_VIEW_SUCCESS,
-        viewId
+        viewId,
     })
 
     // redirect to first view of the same type if it's the currently active view
     const state = getState().views
     if (state.getIn(['active', 'id']) === viewId) {
-        const viewConfig = viewsConfig.getConfigByType(state.getIn(['active', 'type']))
+        const viewConfig = viewsConfig.getConfigByType(
+            state.getIn(['active', 'type'])
+        )
         const destinationView = state.get('items').find((v) => {
             return v.get('type') === state.getIn(['active', 'type'])
         })
-        const destinationRoute = `/app/${viewConfig.get('routeList')}/${destinationView.get('id')}/${destinationView.get('slug')}`
+        const destinationRoute = `/app/${viewConfig.get(
+            'routeList'
+        )}/${destinationView.get('id')}/${destinationView.get('slug')}`
         dispatch(setViewActive(destinationView))
         browserHistory.push(destinationRoute)
     }
 }
-
 
 /** Fetch a page of items of a view (tickets or customers) based on the provided cursor and direction.
  *
@@ -296,7 +365,10 @@ export function fetchViewItems(
     cursor: ?number,
     isPolling: ?boolean = false
 ): thunkActionType {
-    return (dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
+    return (
+        dispatch: dispatchType,
+        getState: getStateType
+    ): Promise<dispatchType> => {
         let state = getState()
         const activeView = viewsSelectors.getActiveView(state)
         const activeViewType = activeView.get('type')
@@ -330,7 +402,9 @@ export function fetchViewItems(
             return Promise.resolve()
         }
 
-        const filtersHash = getHashOfObj(viewsSelectors.getActiveViewFilters(state))
+        const filtersHash = getHashOfObj(
+            viewsSelectors.getActiveViewFilters(state)
+        )
 
         dispatch({
             type: types.FETCH_LIST_VIEW_START,
@@ -348,7 +422,7 @@ export function fetchViewItems(
                     .delete('dirty')
                     .delete('editMode')
                     .delete('allItemsSelected')
-                    .toJS()
+                    .toJS(),
             })
         } else {
             promise = axios.get(url)
@@ -356,127 +430,178 @@ export function fetchViewItems(
 
         return promise
             .then((json = {}) => json.data)
-            .then((data) => {
-                state = getState()
+            .then(
+                (data) => {
+                    state = getState()
 
-                // If it's a background polling, or we're not on the first page, don't update displayed items because
-                // polling is only enabled on the first page.
-                if (isPolling && !viewsSelectors.isOnFirstPage(state)) {
-                    return
+                    // If it's a background polling, or we're not on the first page, don't update displayed items because
+                    // polling is only enabled on the first page.
+                    if (isPolling && !viewsSelectors.isOnFirstPage(state)) {
+                        return
+                    }
+
+                    const viewHasChanged =
+                        viewsSelectors.getActiveView(state).get('id') !==
+                            viewId ||
+                        filtersHash !==
+                            getHashOfObj(
+                                viewsSelectors.getActiveViewFilters(state)
+                            )
+
+                    if (viewHasChanged) {
+                        return
+                    }
+
+                    dispatch({
+                        type: types.FETCH_LIST_VIEW_SUCCESS,
+                        viewType: activeViewType,
+                        data,
+                    })
+                },
+                (error) => {
+                    return dispatch({
+                        type: types.FETCH_LIST_VIEW_ERROR,
+                        error,
+                        reason: `Failed to fetch list of ${viewConfig.get(
+                            'plural'
+                        )}`,
+                    })
                 }
-
-                const viewHasChanged = viewsSelectors.getActiveView(state).get('id') !== viewId
-                    || filtersHash !== getHashOfObj(viewsSelectors.getActiveViewFilters(state))
-
-                if (viewHasChanged) {
-                    return
-                }
-
-                dispatch({
-                    type: types.FETCH_LIST_VIEW_SUCCESS,
-                    viewType: activeViewType,
-                    data,
-                })
-            }, (error) => {
-                return dispatch({
-                    type: types.FETCH_LIST_VIEW_ERROR,
-                    error,
-                    reason: `Failed to fetch list of ${viewConfig.get('plural')}`
-                })
-            })
+            )
     }
 }
 
 export function updateSelectedItemsIds(ids: List<*>) {
     return {
         type: types.UPDATE_PAGE_SELECTION,
-        ids
+        ids,
     }
 }
 
 export function toggleIdInSelectedItemsIds(id: number) {
     return {
         type: types.TOGGLE_ID_IN_PAGE_SELECTION,
-        id
+        id,
     }
 }
 
-export function createJob(view: viewType, jobType: string, jobPartialParams: Object): thunkActionType {
+export function createJob(
+    view: viewType,
+    jobType: string,
+    jobPartialParams: Object
+): thunkActionType {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         let requestPayload
         if (view.get('dirty', false)) {
             requestPayload = {
-                'type': jobType,
-                'scheduled_datetime': getMoment().add(15, 'second'),
-                'params': Object.assign({},
+                type: jobType,
+                scheduled_datetime: getMoment().add(15, 'second'),
+                params: Object.assign(
+                    {},
                     {
-                        'view': view.remove('dirty').remove('editMode').remove('uri')
-                            .remove('allItemsSelected').remove('slug').remove('id').toJS()
-                    }, jobPartialParams)
+                        view: view
+                            .remove('dirty')
+                            .remove('editMode')
+                            .remove('uri')
+                            .remove('allItemsSelected')
+                            .remove('slug')
+                            .remove('id')
+                            .toJS(),
+                    },
+                    jobPartialParams
+                ),
             }
         } else {
             requestPayload = {
-                'type': jobType,
-                'scheduled_datetime': getMoment().add(15, 'second'),
-                'params': Object.assign({}, {'view_id': view.get('id')}, jobPartialParams)
+                type: jobType,
+                scheduled_datetime: getMoment().add(15, 'second'),
+                params: Object.assign(
+                    {},
+                    {view_id: view.get('id')},
+                    jobPartialParams
+                ),
             }
         }
 
-        const notification = dispatch(notify({
-            status: 'loading',
-            dismissAfter: 10000,
-            closeOnNext: true,
-            message: buildJobMessage(jobType, true,
-                viewsConfig.getConfigByType(view.get('type')).get('plural'),
-                jobPartialParams),
-            buttons: []
-        }))
-
-        return axios.post('/api/jobs/', requestPayload)
-            .then((json = {}) => json.data)
-            .then((job) => {
-                notification.status = 'success'
-                notification.buttons = [{
-                    name: 'Cancel',
-                    primary: true,
-                    onClick: () => {
-                        return axios.delete('/api/jobs/' + job.id)
-                            .then((json = {}) => {
-                                notification.buttons = []
-                                return json.data
-                            })
-                            .then(() => {
-                                notification.status = 'success'
-                                notification.message = 'The job has been canceled.'
-                                return dispatch(notify(notification))
-                            }, (error) => {
-                                notification.status = 'error'
-                                notification.message = error.response.data.error.msg
-                                return dispatch(notify(notification))
-                            })
-                    }
-                }]
-                return dispatch(updateNotification(notification))
-            }, (error) => {
-                notification.status = 'error'
-                if (error.response.status === 403) {
-                    notification.message = error.response.data.error.msg
-                } else {
-                    notification.message = 'Failed to apply action on ' +
-                        viewsConfig.getConfigByType(view.get('type')).get('plural') + ' view. Please try again.'
-                }
-                dispatch(updateNotification(notification))
-                throw error
+        const notification = dispatch(
+            notify({
+                status: 'loading',
+                dismissAfter: 10000,
+                closeOnNext: true,
+                message: buildJobMessage(
+                    jobType,
+                    true,
+                    viewsConfig.getConfigByType(view.get('type')).get('plural'),
+                    jobPartialParams
+                ),
+                buttons: [],
             })
+        )
+
+        return axios
+            .post('/api/jobs/', requestPayload)
+            .then((json = {}) => json.data)
+            .then(
+                (job) => {
+                    notification.status = 'success'
+                    notification.buttons = [
+                        {
+                            name: 'Cancel',
+                            primary: true,
+                            onClick: () => {
+                                return axios
+                                    .delete('/api/jobs/' + job.id)
+                                    .then((json = {}) => {
+                                        notification.buttons = []
+                                        return json.data
+                                    })
+                                    .then(
+                                        () => {
+                                            notification.status = 'success'
+                                            notification.message =
+                                                'The job has been canceled.'
+                                            return dispatch(
+                                                notify(notification)
+                                            )
+                                        },
+                                        (error) => {
+                                            notification.status = 'error'
+                                            notification.message =
+                                                error.response.data.error.msg
+                                            return dispatch(
+                                                notify(notification)
+                                            )
+                                        }
+                                    )
+                            },
+                        },
+                    ]
+                    return dispatch(updateNotification(notification))
+                },
+                (error) => {
+                    notification.status = 'error'
+                    if (error.response.status === 403) {
+                        notification.message = error.response.data.error.msg
+                    } else {
+                        notification.message =
+                            'Failed to apply action on ' +
+                            viewsConfig
+                                .getConfigByType(view.get('type'))
+                                .get('plural') +
+                            ' view. Please try again.'
+                    }
+                    dispatch(updateNotification(notification))
+                    throw error
+                }
+            )
     }
 }
-
 
 /**
  * Handle views item count update
  * @param response
  */
-export const handleViewsCount = (counts: { counts: number }): Object => ({
+export const handleViewsCount = (counts: {counts: number}): Object => ({
     type: types.UPDATE_COUNTS,
     counts,
 })
@@ -486,20 +611,25 @@ export const handleViewsCount = (counts: { counts: number }): Object => ({
  */
 export const addRecentView = (viewId: number): Object => ({
     type: types.ADD_RECENT_VIEW,
-    viewId
+    viewId,
 })
 
-export const fetchActiveViewTickets = () => (dispatch: dispatchType, getState: getStateType): ?Promise<dispatchType> => {
+export const fetchActiveViewTickets = () => (
+    dispatch: dispatchType,
+    getState: getStateType
+): ?Promise<dispatchType> => {
     const state = getState()
     const viewsState = viewsSelectors.getViewsState(state)
     const activeView = viewsSelectors.getActiveView(state)
-    const isFetchingView = viewsSelectors.isLoading('fetchList')(state)
-        || viewsSelectors.isLoading('fetchListDiscreet')(state)
+    const isFetchingView =
+        viewsSelectors.isLoading('fetchList')(state) ||
+        viewsSelectors.isLoading('fetchListDiscreet')(state)
     const isEditing = activeView.get('editMode') || false
 
-    const shouldUpdateView = activeView.get('id') !== BASE_VIEW_ID
-        && isCurrentlyOnView(activeView.get('id'), viewsState)
-        && viewsSelectors.isOnFirstPage(state)
+    const shouldUpdateView =
+        activeView.get('id') !== BASE_VIEW_ID &&
+        isCurrentlyOnView(activeView.get('id'), viewsState) &&
+        viewsSelectors.isOnFirstPage(state)
 
     if (!shouldUpdateView || isFetchingView || isEditing) {
         return
@@ -508,16 +638,22 @@ export const fetchActiveViewTickets = () => (dispatch: dispatchType, getState: g
     return dispatch(fetchViewItems(null, null, true))
 }
 
-export const fetchVisibleViewsCounts = () => (dispatch: dispatchType, getState: getStateType) => {
+export const fetchVisibleViewsCounts = () => (
+    dispatch: dispatchType,
+    getState: getStateType
+) => {
     const state = getState()
     const viewIds = viewsSelectors.getVisibleViewIds()(state).toJS()
     socketManager.send(socketConstants.VIEWS_COUNTS_EXPIRED, {
         viewIds,
-        all: true
+        all: true,
     })
 }
 
-export const fetchRecentViewsCounts = () => (dispatch: dispatchType, getState: getStateType) => {
+export const fetchRecentViewsCounts = () => (
+    dispatch: dispatchType,
+    getState: getStateType
+) => {
     // do not fetch views counts when the current user is not doing support
     if (!isCurrentlyOnTicket() && !isCurrentlyOnView()) {
         return
@@ -525,7 +661,9 @@ export const fetchRecentViewsCounts = () => (dispatch: dispatchType, getState: g
 
     const state = getState()
     const activeViewId = viewsSelectors.getActiveView(state).get('id')
-    let viewIds = viewsSelectors.getExpiredViewsCounts(viewsConfig.RECENT_VIEWS_COUNTS_TIMEOUT)(state)
+    let viewIds = viewsSelectors.getExpiredViewsCounts(
+        viewsConfig.RECENT_VIEWS_COUNTS_TIMEOUT
+    )(state)
 
     if (viewIds.isEmpty()) {
         return
@@ -542,20 +680,25 @@ export const fetchRecentViewsCounts = () => (dispatch: dispatchType, getState: g
     if (!viewIds.isEmpty()) {
         dispatch(updateRecentViews(viewIds.toJS()))
         socketManager.send(socketConstants.VIEWS_COUNTS_EXPIRED, {
-            viewIds: viewIds.toJS()
+            viewIds: viewIds.toJS(),
         })
     }
 }
 
-export const fetchActiveViewCount = () => (dispatch: dispatchType, getState: getStateType) => {
+export const fetchActiveViewCount = () => (
+    dispatch: dispatchType,
+    getState: getStateType
+) => {
     const state = getState()
     const activeViewId = viewsSelectors.getActiveView(state).get('id')
-    const viewIds = viewsSelectors.getExpiredViewsCounts(viewsConfig.ACTIVE_VIEW_COUNT_TIMEOUT)(state)
+    const viewIds = viewsSelectors.getExpiredViewsCounts(
+        viewsConfig.ACTIVE_VIEW_COUNT_TIMEOUT
+    )(state)
 
     if (viewIds.includes(activeViewId)) {
         dispatch(updateRecentViews([activeViewId]))
         socketManager.send(socketConstants.VIEWS_COUNTS_EXPIRED, {
-            viewIds: [activeViewId]
+            viewIds: [activeViewId],
         })
     }
 }
@@ -565,13 +708,16 @@ export const fetchActiveViewCount = () => (dispatch: dispatchType, getState: get
  */
 export const updateRecentViews = (viewIds) => ({
     type: types.UPDATE_RECENT_VIEWS,
-    viewIds
+    viewIds,
 })
 
 /**
  * Go to the parent view
  */
-export const gotoActiveView = () => (dispatch: dispatchType, getState: getStateType) => {
+export const gotoActiveView = () => (
+    dispatch: dispatchType,
+    getState: getStateType
+) => {
     const state = getState()
     const activeView = viewsSelectors.getActiveView(state)
     const navigation = viewsSelectors.getNavigation(state)

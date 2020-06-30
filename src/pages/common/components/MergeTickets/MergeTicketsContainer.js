@@ -17,27 +17,26 @@ import css from './MergeTicketsContainer.less'
 import BuildFinalTicket from './BuildFinalTicket'
 import SelectTargetTicket from './SelectTargetTicket'
 
-
 const EDITABLE_FIELDS = fromJS(['subject', 'customer', 'assignee_user'])
 
 type Props = {
-    sourceTicket: Map<*,*>,
+    sourceTicket: Map<*, *>,
     isOpen: boolean,
     toggleModal: () => null,
-    mergeTickets: (number, number, Map<*,*>) => Promise<*>,
+    mergeTickets: (number, number, Map<*, *>) => Promise<*>,
 }
 
 type State = {
-    targetTicket: ?Map<*,*>,
-    finalTicket: ?Map<*,*>,
-    isLoading: boolean
+    targetTicket: ?Map<*, *>,
+    finalTicket: ?Map<*, *>,
+    isLoading: boolean,
 }
 
 class MergeTicketsContainer extends React.Component<Props, State> {
     state = {
         targetTicket: null,
         finalTicket: null,
-        isLoading: false
+        isLoading: false,
     }
 
     componentDidUpdate(prevProps: Props) {
@@ -45,9 +44,12 @@ class MergeTicketsContainer extends React.Component<Props, State> {
             shortcutManager.bind('TicketDetailContainer')
         } else if (!prevProps.isOpen && this.props.isOpen) {
             shortcutManager.unbind('TicketDetailContainer')
-            segmentTracker.logEvent(segmentTracker.EVENTS.TICKET_MERGE_CLICKED, {
-                sourceTicketId: this.props.sourceTicket.get('id')
-            })
+            segmentTracker.logEvent(
+                segmentTracker.EVENTS.TICKET_MERGE_CLICKED,
+                {
+                    sourceTicketId: this.props.sourceTicket.get('id'),
+                }
+            )
         }
     }
 
@@ -68,7 +70,9 @@ class MergeTicketsContainer extends React.Component<Props, State> {
             }
         })
 
-        finalTicket = finalTicket.update('customer', (customer) => fromJS({id: customer.get('id')}))
+        finalTicket = finalTicket.update('customer', (customer) =>
+            fromJS({id: customer.get('id')})
+        )
 
         this.setState({targetTicket, finalTicket})
     }
@@ -84,11 +88,13 @@ class MergeTicketsContainer extends React.Component<Props, State> {
             return
         }
 
-        this.props.mergeTickets(
-            sourceTicket.get('id'),
-            targetTicket.get('id'),
-            finalTicket.toJS()
-        ).then((data) => browserHistory.push(`/app/ticket/${data.id}`))
+        this.props
+            .mergeTickets(
+                sourceTicket.get('id'),
+                targetTicket.get('id'),
+                finalTicket.toJS()
+            )
+            .then((data) => browserHistory.push(`/app/ticket/${data.id}`))
             .catch(() => this.setState({isLoading: false}))
     }
 
@@ -96,19 +102,25 @@ class MergeTicketsContainer extends React.Component<Props, State> {
         const {sourceTicket, isOpen} = this.props
         const {targetTicket, finalTicket, isLoading} = this.state
 
-        let content = <BuildFinalTicket
-            sourceTicket={sourceTicket}
-            targetTicket={targetTicket}
-            finalTicket={finalTicket}
-            updateFinalTicket={(finalTicket) => this.setState({finalTicket})}
-        />
-
-        if (!targetTicket){
-            content = <SelectTargetTicket
+        let content = (
+            <BuildFinalTicket
                 sourceTicket={sourceTicket}
-                updateTargetTicket={this._updateTargetTicket}
-                customerId={sourceTicket.getIn(['customer', 'id'])}
+                targetTicket={targetTicket}
+                finalTicket={finalTicket}
+                updateFinalTicket={(finalTicket) =>
+                    this.setState({finalTicket})
+                }
             />
+        )
+
+        if (!targetTicket) {
+            content = (
+                <SelectTargetTicket
+                    sourceTicket={sourceTicket}
+                    updateTargetTicket={this._updateTargetTicket}
+                    customerId={sourceTicket.getIn(['customer', 'id'])}
+                />
+            )
         }
 
         return (
@@ -120,44 +132,50 @@ class MergeTicketsContainer extends React.Component<Props, State> {
                 header="Merge tickets"
                 className={css.modal}
                 footerClassName={css.footer}
-                footer={targetTicket ? (
-                    <Form
-                        onSubmit={this._handleSubmit}
-                        style={{width: '100%'}}
-                    >
-                        <div className="float-left buttons-bar">
-                            <Button
-                                color="secondary"
-                                type="button"
-                                onClick={() => this.setState({targetTicket: null})}
-                                disabled={isLoading}
-                            >
-                                <i className="material-icons mr-2">arrow_back</i>
-                                Back
-                            </Button>
-                        </div>
-                        <div className="float-right buttons-bar">
-                            <Button
-                                color="secondary"
-                                type="button"
-                                className="mr-2"
-                                onClick={this.props.toggleModal}
-                                disabled={isLoading}
-                            >
-                                Cancel
-                            </Button>
-                            <ConfirmButton
-                                color="success"
-                                type="submit"
-                                content="This action is irreversible. Are you sure you want to merge these tickets?"
-                                loading={isLoading}
-                                disabled={isLoading}
-                            >
-                                Merge tickets
-                            </ConfirmButton>
-                        </div>
-                    </Form>
-                ) : null}
+                footer={
+                    targetTicket ? (
+                        <Form
+                            onSubmit={this._handleSubmit}
+                            style={{width: '100%'}}
+                        >
+                            <div className="float-left buttons-bar">
+                                <Button
+                                    color="secondary"
+                                    type="button"
+                                    onClick={() =>
+                                        this.setState({targetTicket: null})
+                                    }
+                                    disabled={isLoading}
+                                >
+                                    <i className="material-icons mr-2">
+                                        arrow_back
+                                    </i>
+                                    Back
+                                </Button>
+                            </div>
+                            <div className="float-right buttons-bar">
+                                <Button
+                                    color="secondary"
+                                    type="button"
+                                    className="mr-2"
+                                    onClick={this.props.toggleModal}
+                                    disabled={isLoading}
+                                >
+                                    Cancel
+                                </Button>
+                                <ConfirmButton
+                                    color="success"
+                                    type="submit"
+                                    content="This action is irreversible. Are you sure you want to merge these tickets?"
+                                    loading={isLoading}
+                                    disabled={isLoading}
+                                >
+                                    Merge tickets
+                                </ConfirmButton>
+                            </div>
+                        </Form>
+                    ) : null
+                }
             >
                 {content}
             </Modal>
@@ -166,5 +184,5 @@ class MergeTicketsContainer extends React.Component<Props, State> {
 }
 
 export default connect(null, {
-    mergeTickets
+    mergeTickets,
 })(MergeTicketsContainer)

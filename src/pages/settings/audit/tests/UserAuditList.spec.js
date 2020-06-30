@@ -8,10 +8,9 @@ import Pagination from '../../../common/components/Pagination'
 import {
     getUserAuditEventTypeOptions,
     getUserAuditObjectTypeOptions,
-    getUserAuditUserIdOptions
+    getUserAuditUserIdOptions,
 } from '../../../../state/usersAudit/selectors'
 import UserAuditRow from '../UserAuditRow'
-
 
 describe('UserAuditList component', () => {
     let component
@@ -19,15 +18,21 @@ describe('UserAuditList component', () => {
 
     beforeEach(() => {
         window.GORGIAS_CONSTANTS = {
-            'USER_AUDIT_OBJECTS_EVENTS': {
-                'Ticket': {'events': ['ticket-created', 'ticket-updated', 'ticket-deleted']},
-                'Macro': {'events': ['macro-created']},
-            }
+            USER_AUDIT_OBJECTS_EVENTS: {
+                Ticket: {
+                    events: [
+                        'ticket-created',
+                        'ticket-updated',
+                        'ticket-deleted',
+                    ],
+                },
+                Macro: {events: ['macro-created']},
+            },
         }
         const agents = fromJS([
-            {id: 1, name: 'agent 1', 'email': 'agent1@gorgias.io'},
-            {id: 2, name: 'agent 2', 'email': 'agent2@gorgias.io'},
-            {id: 3, name: 'agent 3', 'email': 'agent3@gorgias.io'},
+            {id: 1, name: 'agent 1', email: 'agent1@gorgias.io'},
+            {id: 2, name: 'agent 2', email: 'agent2@gorgias.io'},
+            {id: 3, name: 'agent 3', email: 'agent3@gorgias.io'},
         ])
         userAuditData = fromJS([
             {
@@ -36,7 +41,7 @@ describe('UserAuditList component', () => {
                 object_type: 'Ticket',
                 object_id: 111,
                 user_id: 1,
-                created_datetime: '2018-01-01T00:00:00.000Z'
+                created_datetime: '2018-01-01T00:00:00.000Z',
             },
             {
                 id: 2,
@@ -44,7 +49,7 @@ describe('UserAuditList component', () => {
                 object_type: 'Macro',
                 object_id: 11,
                 user_id: 1,
-                created_datetime: '2018-01-02T00:00:00.000Z'
+                created_datetime: '2018-01-02T00:00:00.000Z',
             },
             {
                 id: 3,
@@ -52,14 +57,13 @@ describe('UserAuditList component', () => {
                 object_type: 'Ticket',
                 object_id: 1,
                 user_id: 2,
-                created_datetime: '2018-01-03T00:00:00.000Z'
+                created_datetime: '2018-01-03T00:00:00.000Z',
             },
         ])
         const userAuditMeta = fromJS({
             per_page: 30,
             page: 1,
-            nb_pages: 1
-
+            nb_pages: 1,
         })
         component = shallow(
             <UserAuditList
@@ -74,7 +78,7 @@ describe('UserAuditList component', () => {
         )
         component.setState({
             start_datetime: '2017-12-30T00:00:00.000-08:00',
-            end_datetime: '2018-01-05T00:00:00.000-08:00'
+            end_datetime: '2018-01-05T00:00:00.000-08:00',
         })
     })
 
@@ -84,7 +88,7 @@ describe('UserAuditList component', () => {
 
     it('should display loader when fetching tags', () => {
         component.setState({isFetching: true})
-        expect(component.matchesElement(<Loader/>)).toEqual(true)
+        expect(component.matchesElement(<Loader />)).toEqual(true)
     })
 
     it('should not display pagination when there is one page of tags', () => {

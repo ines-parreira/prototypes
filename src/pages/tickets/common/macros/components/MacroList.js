@@ -12,13 +12,12 @@ import {fetchMacros} from '../../../../../state/macro/actions'
 
 import css from './MacroList.less'
 
-
 type Props = {
-    macros: Map<*,*>,
-    currentMacro: Map<*,*>,
+    macros: Map<*, *>,
+    currentMacro: Map<*, *>,
     fetchMacros: typeof fetchMacros,
-    onClickItem: (T: Map<*,*>) => void,
-    onHoverItem: (T: Map<*,*>) => void,
+    onClickItem: (T: Map<*, *>) => void,
+    onHoverItem: (T: Map<*, *>) => void,
     search: string,
     page: number,
     totalPages: number,
@@ -36,8 +35,9 @@ export default class MacroList extends React.Component<Props> {
 
     componentDidUpdate(prevProps: Props) {
         if (
-            prevProps.currentMacro.get('id') !== this.props.currentMacro.get('id')
-            && this._activeItem
+            prevProps.currentMacro.get('id') !==
+                this.props.currentMacro.get('id') &&
+            this._activeItem
         ) {
             scrollToReactNode(this._activeItem)
         }
@@ -46,7 +46,7 @@ export default class MacroList extends React.Component<Props> {
     _loadMacros = () => {
         return this.props.fetchMacros({
             search: this.props.search,
-            page: this.props.page + 1
+            page: this.props.page + 1,
         })
     }
 
@@ -76,8 +76,13 @@ export default class MacroList extends React.Component<Props> {
                 loadMore={page < totalPages}
             >
                 {macros.map((macro) => {
-                    const isDisabled = isMacroDisabled(macro, disableExternalActions)
-                    const isActive = currentMacro && macro.get('id') === currentMacro.get('id')
+                    const isDisabled = isMacroDisabled(
+                        macro,
+                        disableExternalActions
+                    )
+                    const isActive =
+                        currentMacro &&
+                        macro.get('id') === currentMacro.get('id')
                     return (
                         <div
                             key={macro.get('id')}

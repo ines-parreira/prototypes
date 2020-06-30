@@ -13,7 +13,7 @@ import {
     onLineItemsChange,
     onPayloadChange,
     onReset,
-    setPayload
+    setPayload,
 } from '../../../../../../../../../../../state/infobarActions/shopify/refundOrder/actions'
 import {getRefundOrderState} from '../../../../../../../../../../../state/infobarActions/shopify/refundOrder/selectors'
 import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager'
@@ -41,10 +41,19 @@ type Props = InfobarModalProps & {
     },
     onCancel: (via: string) => void,
     onInit: (integrationId: number, order: Record<Shopify.Order>) => void,
-    onLineItemsChange: (integrationId: number, lineItems: List<$Shape<Shopify.LineItem>>) => void,
+    onLineItemsChange: (
+        integrationId: number,
+        lineItems: List<$Shape<Shopify.LineItem>>
+    ) => void,
     onReset: () => void,
-    onPayloadChange: (integrationId: number, payload: Record<$Shape<Shopify.RefundOrderPayload>>) => void,
-    setPayload: (integrationId: number, Record<$Shape<Shopify.RefundOrderPayload>>) => void,
+    onPayloadChange: (
+        integrationId: number,
+        payload: Record<$Shape<Shopify.RefundOrderPayload>>
+    ) => void,
+    setPayload: (
+        integrationId: number,
+        Record<$Shape<Shopify.RefundOrderPayload>>
+    ) => void,
 }
 
 export class RefundOrderModalComponent extends React.PureComponent<Props> {
@@ -60,7 +69,13 @@ export class RefundOrderModalComponent extends React.PureComponent<Props> {
     }
 
     componentWillReceiveProps(nextProps: Props) {
-        const {isOpen, data: {actionName, order}, onOpen, onInit, onChange} = this.props
+        const {
+            isOpen,
+            data: {actionName, order},
+            onOpen,
+            onInit,
+            onChange,
+        } = this.props
         const {integrationId} = this.context
 
         if (!isOpen && nextProps.isOpen) {
@@ -75,7 +90,9 @@ export class RefundOrderModalComponent extends React.PureComponent<Props> {
         const {integrations} = this.props
         const {integrationId} = this.context
 
-        return integrations.find((integration) => integration.get('id') === integrationId)
+        return integrations.find(
+            (integration) => integration.get('id') === integrationId
+        )
     }
 
     _onLineItemsChange = (lineItems: List<$Shape<Shopify.LineItem>>) => {
@@ -85,7 +102,9 @@ export class RefundOrderModalComponent extends React.PureComponent<Props> {
         onLineItemsChange(integrationId, lineItems)
     }
 
-    _onPayloadChange = (payload: Record<$Shape<Shopify.RefundOrderPayload>>) => {
+    _onPayloadChange = (
+        payload: Record<$Shape<Shopify.RefundOrderPayload>>
+    ) => {
         const {onPayloadChange} = this.props
         const {integrationId} = this.context
 
@@ -137,7 +156,15 @@ export class RefundOrderModalComponent extends React.PureComponent<Props> {
 
     render() {
         const {
-            header, isOpen, payload, refund, lineItems, loading, loadingMessage, data: {order, actionName}, setPayload,
+            header,
+            isOpen,
+            payload,
+            refund,
+            lineItems,
+            loading,
+            loadingMessage,
+            data: {order, actionName},
+            setPayload,
         } = this.props
 
         const integration = this._getIntegration()
@@ -226,4 +253,7 @@ const mapDispatchToProps = {
     setPayload,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RefundOrderModalComponent)
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(RefundOrderModalComponent)

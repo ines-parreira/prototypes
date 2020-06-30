@@ -28,7 +28,7 @@ export class ErrorBoundary extends React.PureComponent<Props, State> {
         }
     }
 
-    componentDidCatch(error: Error, errorInfo: { componentStack: string }) {
+    componentDidCatch(error: Error, errorInfo: {componentStack: string}) {
         console.error(error, errorInfo)
 
         if (window.Raven) {
@@ -66,9 +66,7 @@ export class ErrorBoundary extends React.PureComponent<Props, State> {
                         forceSize
                     />
                 </h1>
-                <h4>
-                    An error occurred!
-                </h4>
+                <h4>An error occurred!</h4>
                 <Button
                     color="primary"
                     className="mr-2 mb-2"
@@ -85,9 +83,7 @@ export class ErrorBoundary extends React.PureComponent<Props, State> {
                 </Button>
                 <Collapse isOpen={areDetailsOpen}>
                     <Card className="mb-2">
-                        <CardBody>
-                            {error.toString()}
-                        </CardBody>
+                        <CardBody>{error.toString()}</CardBody>
                     </Card>
                 </Collapse>
             </div>

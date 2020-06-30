@@ -11,13 +11,12 @@ import Select from './ReactSelect'
 import * as userActions from './../../../../../state/agents/actions'
 import * as agentSelectors from './../../../../../state/agents/selectors'
 
-
 type Props = {
     actions: Object,
     onChange: (number) => void,
     value?: string | number,
-    agents: List<Map<*,*>>,
-    className?: string
+    agents: List<Map<*, *>>,
+    className?: string,
 }
 
 class AssigneeUserSelect extends React.Component<Props> {
@@ -33,17 +32,16 @@ class AssigneeUserSelect extends React.Component<Props> {
         const {value, onChange, agents, className} = this.props
 
         if (agents.isEmpty()) {
-            return (
-                <span className="text-muted ml-2">
-                    Loading agents...
-                </span>
-            )
+            return <span className="text-muted ml-2">Loading agents...</span>
         }
 
         let options: List<*> = fromJS([{value: null, label: 'Unassigned'}])
 
         agents.forEach((agent) => {
-            options = options.push({value: agent.get('id').toString(), label: agent.get('name')})
+            options = options.push({
+                value: agent.get('id').toString(),
+                label: agent.get('name'),
+            })
         })
 
         return (
@@ -58,15 +56,12 @@ class AssigneeUserSelect extends React.Component<Props> {
 }
 
 const mapStateToProps = (state) => ({
-    agents: agentSelectors.getAgents(state)
+    agents: agentSelectors.getAgents(state),
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    actions: bindActionCreators(userActions, dispatch)
+    actions: bindActionCreators(userActions, dispatch),
 })
 
 //$FlowFixMe
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(AssigneeUserSelect)
+export default connect(mapStateToProps, mapDispatchToProps)(AssigneeUserSelect)

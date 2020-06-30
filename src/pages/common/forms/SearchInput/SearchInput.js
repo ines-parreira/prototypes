@@ -1,12 +1,21 @@
 // @flow
 
 import React, {type ComponentType, type Node} from 'react'
-import {Button, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Input} from 'reactstrap'
+import {
+    Button,
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    Input,
+} from 'reactstrap'
 import _debounce from 'lodash/debounce'
 import _noop from 'lodash/noop'
 import classnames from 'classnames'
 
-import GorgiasApi, {type SearchResultType} from '../../../../services/gorgiasApi'
+import GorgiasApi, {
+    type SearchResultType,
+} from '../../../../services/gorgiasApi'
 
 import type {SearchInputResultProps, SearchInputSubResultProps} from './types'
 import css from './SearchInput.less'
@@ -18,8 +27,12 @@ type Props<ResultType, SubResultType> = {
     className?: string,
     placeholder?: string,
     renderResult: ComponentType<SearchInputResultProps<ResultType>>,
-    renderSubResult?: ComponentType<SearchInputSubResultProps<ResultType, SubResultType>>,
-    onResultClicked: (result: ResultType) => Array<SearchResultType & SubResultType> | void,
+    renderSubResult?: ComponentType<
+        SearchInputSubResultProps<ResultType, SubResultType>
+    >,
+    onResultClicked: (
+        result: ResultType
+    ) => Array<SearchResultType & SubResultType> | void,
     onSubResultClicked: (result: ResultType, subResult: SubResultType) => void,
     resultLabel: string,
     resultLabelPlural: string,
@@ -37,9 +50,10 @@ type State = {
     hoveredIndex: number,
 }
 
-export default class SearchInput<ResultType, SubResultType = void>
-    extends React.PureComponent<Props<ResultType, SubResultType>, State> {
-
+export default class SearchInput<
+    ResultType,
+    SubResultType = void
+> extends React.PureComponent<Props<ResultType, SubResultType>, State> {
     static defaultProps = {
         autoFocus: true,
         searchOnFocus: false,
@@ -88,7 +102,12 @@ export default class SearchInput<ResultType, SubResultType = void>
 
     _onChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
         const filter = event.target.value
-        this.setState({filter, isOpen: false, isLoading: true, hoveredIndex: -1})
+        this.setState({
+            filter,
+            isOpen: false,
+            isLoading: true,
+            hoveredIndex: -1,
+        })
         this._fetchResults(filter)
     }
 
@@ -169,13 +188,16 @@ export default class SearchInput<ResultType, SubResultType = void>
             return
         }
 
-        const item = dropdownMenu.querySelector(`.dropdown-item:nth-of-type(${index + 1})`)
+        const item = dropdownMenu.querySelector(
+            `.dropdown-item:nth-of-type(${index + 1})`
+        )
         if (!item) {
             return
         }
 
-        const shouldScroll = item.offsetTop + item.offsetHeight > dropdownMenu.offsetHeight
-            || dropdownMenu.scrollTop > item.offsetTop
+        const shouldScroll =
+            item.offsetTop + item.offsetHeight > dropdownMenu.offsetHeight ||
+            dropdownMenu.scrollTop > item.offsetTop
 
         if (shouldScroll) {
             const padding = 6
@@ -238,36 +260,38 @@ export default class SearchInput<ResultType, SubResultType = void>
     }
 
     _renderHeader() {
-        const {resultLabel, resultLabelPlural, subResultLabel, subResultLabelPlural} = this.props
+        const {
+            resultLabel,
+            resultLabelPlural,
+            subResultLabel,
+            subResultLabelPlural,
+        } = this.props
         const {results, subResults} = this.state
 
         return (
-            <DropdownItem
-                header
-                className={css.header}
-            >
-                {subResults.length
-                    ? (
-                        <Button
-                            className="mr-2"
-                            type="button"
-                            color="light"
-                            size="sm"
-                            onClick={this._onBackClicked}
-                        >
-                            <i className="icon material-icons mr-2">
-                                arrow_back
-                            </i>
-                            Back
-                        </Button>
-                    )
-                    : null
-                }
+            <DropdownItem header className={css.header}>
+                {subResults.length ? (
+                    <Button
+                        className="mr-2"
+                        type="button"
+                        color="light"
+                        size="sm"
+                        onClick={this._onBackClicked}
+                    >
+                        <i className="icon material-icons mr-2">arrow_back</i>
+                        Back
+                    </Button>
+                ) : null}
 
                 {subResults.length
-                    ? `${subResults.length} ${subResults.length > 1 ? subResultLabelPlural : subResultLabel}`
-                    : `${results.length} ${results.length > 1 ? resultLabelPlural : resultLabel}`
-                }
+                    ? `${subResults.length} ${
+                          subResults.length > 1
+                              ? subResultLabelPlural
+                              : subResultLabel
+                      }`
+                    : `${results.length} ${
+                          results.length > 1 ? resultLabelPlural : resultLabel
+                      }`}
             </DropdownItem>
         )
     }
@@ -278,18 +302,18 @@ export default class SearchInput<ResultType, SubResultType = void>
 
         return results.length
             ? results.map((result, index) => (
-                <DropdownItem
-                    key={`result-${result.id}`}
-                    onMouseEnter={() => this.setState({hoveredIndex: index})}
-                    onClick={() => this._onResultClicked(index)}
-                    className={classnames(css.dropdownItem, {
-                        [css.hoveredDropdownItem]: hoveredIndex === index,
-                    })}
-                    toggle={false}
-                >
-                    <Result result={result}/>
-                </DropdownItem>
-            ))
+                  <DropdownItem
+                      key={`result-${result.id}`}
+                      onMouseEnter={() => this.setState({hoveredIndex: index})}
+                      onClick={() => this._onResultClicked(index)}
+                      className={classnames(css.dropdownItem, {
+                          [css.hoveredDropdownItem]: hoveredIndex === index,
+                      })}
+                      toggle={false}
+                  >
+                      <Result result={result} />
+                  </DropdownItem>
+              ))
             : null
     }
 
@@ -299,21 +323,18 @@ export default class SearchInput<ResultType, SubResultType = void>
 
         return subResults.length && clickedResult && SubResult
             ? subResults.map<Node>((subResult, index) => (
-                <DropdownItem
-                    key={`sub-result-${subResult.id}`}
-                    onMouseEnter={() => this.setState({hoveredIndex: index})}
-                    onClick={() => this._onSubResultClicked(index)}
-                    className={classnames(css.dropdownItem, {
-                        [css.hoveredDropdownItem]: hoveredIndex === index,
-                    })}
-                    toggle={true}
-                >
-                    <SubResult
-                        result={clickedResult}
-                        subResult={subResult}
-                    />
-                </DropdownItem>
-            ))
+                  <DropdownItem
+                      key={`sub-result-${subResult.id}`}
+                      onMouseEnter={() => this.setState({hoveredIndex: index})}
+                      onClick={() => this._onSubResultClicked(index)}
+                      className={classnames(css.dropdownItem, {
+                          [css.hoveredDropdownItem]: hoveredIndex === index,
+                      })}
+                      toggle={true}
+                  >
+                      <SubResult result={clickedResult} subResult={subResult} />
+                  </DropdownItem>
+              ))
             : null
     }
 
@@ -348,7 +369,9 @@ export default class SearchInput<ResultType, SubResultType = void>
                 </DropdownToggle>
                 <DropdownMenu className={css.dropdown}>
                     {this._renderHeader()}
-                    {renderSubResult && subResults.length ? this._renderSubResults() : this._renderResults()}
+                    {renderSubResult && subResults.length
+                        ? this._renderSubResults()
+                        : this._renderResults()}
                 </DropdownMenu>
             </Dropdown>
         )

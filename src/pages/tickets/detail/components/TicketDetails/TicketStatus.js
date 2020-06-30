@@ -20,9 +20,13 @@ export default class TicketStatus extends React.Component {
                 <Button
                     type="button"
                     id="change-status-button"
-                    className={classnames(headerCss.headerButton, 'font-weight-medium', {
-                        [css.closed]: !toClose
-                    })}
+                    className={classnames(
+                        headerCss.headerButton,
+                        'font-weight-medium',
+                        {
+                            [css.closed]: !toClose,
+                        }
+                    )}
                     color={toClose ? 'secondary' : 'success'}
                     onClick={() => setQuickStatus(currentStatus)}
                 >
@@ -36,10 +40,7 @@ export default class TicketStatus extends React.Component {
                     </i>
                     {toClose && 'Close'}
                 </Button>
-                <Tooltip
-                    placement="bottom"
-                    target="change-status-button"
-                >
+                <Tooltip placement="bottom" target="change-status-button">
                     {toClose ? 'Close (press C)' : 'Reopen (press O)'}
                 </Tooltip>
             </div>

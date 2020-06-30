@@ -10,29 +10,25 @@ describe('multi select options field tag', () => {
     const option: Option = {
         value: 'foo',
         label: 'Foo',
-        displayLabel: (
-            <span>FooLabel</span>
-        )
+        displayLabel: <span>FooLabel</span>,
     }
 
     const defaultOptions = {
         option,
         color: '#f00',
-        onRemove: _noop
+        onRemove: _noop,
     }
 
     it('should display displayLabel first and label as a fallback', () => {
-        const wrapper = mount(
-            <Tag
-                {...defaultOptions}
-            />
+        const wrapper = mount(<Tag {...defaultOptions} />)
+        expect(render((wrapper.find('span').last(): any)).html()).toEqual(
+            render((option.displayLabel: any)).html()
         )
-        expect(render((wrapper.find('span').last(): any)).html()).toEqual(render((option.displayLabel: any)).html())
         wrapper.setProps({
             option: {
                 ...option,
-                displayLabel: undefined
-            }
+                displayLabel: undefined,
+            },
         })
         expect(wrapper.find('span').last().text()).toContain(option.label)
     })

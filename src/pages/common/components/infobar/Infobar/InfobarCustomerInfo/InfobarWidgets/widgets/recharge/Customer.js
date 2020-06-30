@@ -57,15 +57,15 @@ export class TitleWrapper extends React.Component<TitleWrapperProps> {
         let customLink = template.getIn(['meta', 'link'])
 
         if (customLink) {
-            customLink = renderTemplate(customLink, source.set('customerHash', customerHash).toJS())
+            customLink = renderTemplate(
+                customLink,
+                source.set('customerHash', customerHash).toJS()
+            )
         }
 
         return (
             <>
-                <CardHeaderIcon
-                    src={logo}
-                    alt="Recharge"
-                />
+                <CardHeaderIcon src={logo} alt="Recharge" />
                 <CardHeaderTitle>Recharge</CardHeaderTitle>
                 <CardHeaderSubtitle>
                     <a
@@ -76,7 +76,7 @@ export class TitleWrapper extends React.Component<TitleWrapperProps> {
                         {children}
                     </a>
                 </CardHeaderSubtitle>
-                <ExpandAllButton/>
+                <ExpandAllButton />
             </>
         )
     }

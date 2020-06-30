@@ -10,17 +10,15 @@ import type {RefundOrderState} from '../state/infobarActions/shopify/refundOrder
 import type {InfobarActionsState} from '../state/infobarActions/types'
 import {SHOPIFY_INTEGRATION_TYPE} from '../constants/integration'
 
-export const infobarActionsStateFixture = (
-    {
-        cancelOrderState = cancelOrderInitialState,
-        createOrderState = createOrderInitialState,
-        refundOrderState = refundOrderInitialState,
-    }: {
-        cancelOrderState?: typeof cancelOrderInitialState,
-        createOrderState?: typeof createOrderInitialState,
-        refundOrderState?: typeof refundOrderInitialState,
-    } = {}
-): InfobarActionsState => ({
+export const infobarActionsStateFixture = ({
+    cancelOrderState = cancelOrderInitialState,
+    createOrderState = createOrderInitialState,
+    refundOrderState = refundOrderInitialState,
+}: {
+    cancelOrderState?: typeof cancelOrderInitialState,
+    createOrderState?: typeof createOrderInitialState,
+    refundOrderState?: typeof refundOrderInitialState,
+} = {}): InfobarActionsState => ({
     [SHOPIFY_INTEGRATION_TYPE]: {
         cancelOrder: cancelOrderState,
         createOrder: createOrderState,
@@ -28,56 +26,53 @@ export const infobarActionsStateFixture = (
     },
 })
 
-export const createOrderStateFixture = (
-    {
-        loading = false,
-        loadingMessage = null,
-        payload = null,
-        draftOrder = null,
-        products = new Map(),
-        defaultShippingLine = null,
-    }: CreateOrderState = {}
-): CreateOrderState => fromJS({
-    loading,
-    loadingMessage,
-    payload,
-    draftOrder,
-    products,
-    defaultShippingLine,
-})
+export const createOrderStateFixture = ({
+    loading = false,
+    loadingMessage = null,
+    payload = null,
+    draftOrder = null,
+    products = new Map(),
+    defaultShippingLine = null,
+}: CreateOrderState = {}): CreateOrderState =>
+    fromJS({
+        loading,
+        loadingMessage,
+        payload,
+        draftOrder,
+        products,
+        defaultShippingLine,
+    })
 
-export const cancelOrderStateFixture = (
-    {
-        loading = false,
-        loadingMessage = null,
-        orderId = null,
-        payload = null,
-        lineItems = null,
-        refund = null,
-    }: CreateOrderState = {}
-): CancelOrderState => fromJS({
-    loading,
-    loadingMessage,
-    orderId,
-    payload,
-    lineItems,
-    refund,
-})
+export const cancelOrderStateFixture = ({
+    loading = false,
+    loadingMessage = null,
+    orderId = null,
+    payload = null,
+    lineItems = null,
+    refund = null,
+}: CreateOrderState = {}): CancelOrderState =>
+    fromJS({
+        loading,
+        loadingMessage,
+        orderId,
+        payload,
+        lineItems,
+        refund,
+    })
 
-export const refundOrderStateFixture = (
-    {
-        loading = false,
-        loadingMessage = null,
-        orderId = null,
-        payload = null,
-        lineItems = null,
-        refund = null,
-    }: CreateOrderState = {}
-): RefundOrderState => fromJS({
-    loading,
-    loadingMessage,
-    orderId,
-    payload,
-    lineItems,
-    refund,
-})
+export const refundOrderStateFixture = ({
+    loading = false,
+    loadingMessage = null,
+    orderId = null,
+    payload = null,
+    lineItems = null,
+    refund = null,
+}: CreateOrderState = {}): RefundOrderState =>
+    fromJS({
+        loading,
+        loadingMessage,
+        orderId,
+        payload,
+        lineItems,
+        refund,
+    })

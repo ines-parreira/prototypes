@@ -65,18 +65,24 @@ export const notifyDeprecatedTld = (url, reduxStore) => {
     const urlObject = new URL(url)
 
     if (urlObject.hostname.match(/.io$/)) {
-        const updatedUrl = `https://${urlObject.hostname.replace(/.io$/, '.com')}/`
-        reduxStore.dispatch(notify({
-            id: 'deprecated-tld-notification',
-            style: 'banner',
-            status: 'warning',
-            dismissible: false,
-            message: `We\'re now a dot-com 🎉 please update your helpdesk links and bookmarks to ${updatedUrl}. `
-            + 'This message will be hidden after you login there.',
-            onClick: () => {
-                window.location.href = updatedUrl
-            },
-        }))
+        const updatedUrl = `https://${urlObject.hostname.replace(
+            /.io$/,
+            '.com'
+        )}/`
+        reduxStore.dispatch(
+            notify({
+                id: 'deprecated-tld-notification',
+                style: 'banner',
+                status: 'warning',
+                dismissible: false,
+                message:
+                    `We\'re now a dot-com 🎉 please update your helpdesk links and bookmarks to ${updatedUrl}. ` +
+                    'This message will be hidden after you login there.',
+                onClick: () => {
+                    window.location.href = updatedUrl
+                },
+            })
+        )
     }
 }
 
@@ -86,19 +92,25 @@ export const notifyAccountNotVerified = (reduxStore) => {
     const baseEmailIntegration = getBaseEmailIntegration(reduxStore.getState())
 
     if (!baseEmailIntegration.getIn(['meta', 'verified'], true)) {
-        reduxStore.dispatch(notify({
-            id: 'account-not-verified-notification',
-            style: 'banner',
-            status: 'warning',
-            dismissible: false,
-            message: 'Your email address is not verified. <u>Click here to resend the verification email</u>',
-            onClick: () => resendVerificationEmail()(reduxStore.dispatch),
-        }))
+        reduxStore.dispatch(
+            notify({
+                id: 'account-not-verified-notification',
+                style: 'banner',
+                status: 'warning',
+                dismissible: false,
+                message:
+                    'Your email address is not verified. <u>Click here to resend the verification email</u>',
+                onClick: () => resendVerificationEmail()(reduxStore.dispatch),
+            })
+        )
     }
 }
 
 notifyAccountNotVerified(store)
 
 // Dispatch system messages as notifications
-transformSystemMessagesToNotifications(window.SYSTEM_MESSAGES || [])
-    .forEach((notification) => {store.dispatch(notify(notification))})
+transformSystemMessagesToNotifications(window.SYSTEM_MESSAGES || []).forEach(
+    (notification) => {
+        store.dispatch(notify(notification))
+    }
+)

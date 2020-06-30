@@ -19,7 +19,10 @@ function getDHLTrackingUrl(trackingNumber: string): string {
     return `https://www.dhl.com/en/express/tracking.html?AWB=${trackingNumber}&brand=DHL`
 }
 
-export function getTrackingUrl(trackingNumber: string, carrierCode: string): string {
+export function getTrackingUrl(
+    trackingNumber: string,
+    carrierCode: string
+): string {
     switch (carrierCode) {
         case 'usps':
             return getUSPSTrackingUrl(trackingNumber)

@@ -83,11 +83,12 @@ export default class JsonField extends InputField {
                     >
                         {children}
                     </Input>
-                    {
-                        isInvalid && (
-                            <Errors>Invalid JSON : changes will not be saved until the JSON is fixed</Errors>
-                        )
-                    }
+                    {isInvalid && (
+                        <Errors>
+                            Invalid JSON : changes will not be saved until the
+                            JSON is fixed
+                        </Errors>
+                    )}
                 </div>
             </FormGroup>
         )

@@ -15,15 +15,19 @@ type Props = {
     hasCursor: boolean,
     lastMessageDatetimeAfterMount: ?moment$Moment,
     setStatus: () => void,
-    lastReadMessageId?: number
+    lastReadMessageId?: number,
 }
 
 export default class TicketMessages extends React.Component<Props> {
     _isLastReadMessage = (message: TicketMessage): boolean => {
-        return !!(message.id && this.props.lastReadMessageId && message.id === this.props.lastReadMessageId)
+        return !!(
+            message.id &&
+            this.props.lastReadMessageId &&
+            message.id === this.props.lastReadMessageId
+        )
     }
 
-    render () {
+    render() {
         let {messages} = this.props
 
         if (!messages.length) {
@@ -35,7 +39,9 @@ export default class TicketMessages extends React.Component<Props> {
                 id={this.props.id}
                 message={messages[0]}
                 hasCursor={this.props.hasCursor}
-                lastMessageDatetimeAfterMount={this.props.lastMessageDatetimeAfterMount}
+                lastMessageDatetimeAfterMount={
+                    this.props.lastMessageDatetimeAfterMount
+                }
                 timezone={this.props.timezone}
                 isLastRead={this._isLastReadMessage(messages[0])}
             >

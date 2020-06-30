@@ -12,7 +12,7 @@ import {
     getSubtotal,
     getTotalAvailableToRefund,
     getTotalCartDiscountAmount,
-    getTotalTax
+    getTotalTax,
 } from '../../../../../../../../../../../../../business/shopify/refund'
 import MoneyAmount from '../../../../../MoneyAmount'
 import AmountInput from '../../../../shared/AmountInput'
@@ -56,22 +56,36 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
         const {onPayloadChange, currencyCode, payload} = this.props
         const {shipping} = this.state
 
-        const newPayload = payload.setIn(['shipping', 'amount'], formatPrice(shipping, currencyCode))
+        const newPayload = payload.setIn(
+            ['shipping', 'amount'],
+            formatPrice(shipping, currencyCode)
+        )
 
         onPayloadChange(newPayload)
     }, 250)
 
     render() {
-        const {editable, hasShippingLine, loading, refund, currencyCode} = this.props
+        const {
+            editable,
+            hasShippingLine,
+            loading,
+            refund,
+            currencyCode,
+        } = this.props
         const {shipping} = this.state
-        const shippingMaximumRefundable = refund.getIn(['shipping', 'maximum_refundable'])
+        const shippingMaximumRefundable = refund.getIn([
+            'shipping',
+            'maximum_refundable',
+        ])
 
         return (
             <dl className="row text-right mb-0">
-                <dt className={classnames('col-7 mb-2', css.grey)}>
-                    Subtotal
-                </dt>
-                <dd className={classnames('col-5 mb-2', {'text-muted': loading})}>
+                <dt className={classnames('col-7 mb-2', css.grey)}>Subtotal</dt>
+                <dd
+                    className={classnames('col-5 mb-2', {
+                        'text-muted': loading,
+                    })}
+                >
                     <MoneyAmount
                         renderIfZero
                         amount={formatPrice(getSubtotal(refund), currencyCode)}
@@ -84,13 +98,12 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
                         className={classnames(
                             'col-7',
                             css.grey,
-                            !!parseFloat(shippingMaximumRefundable) ? 'mt-2' : 'mb-2'
+                            !!parseFloat(shippingMaximumRefundable)
+                                ? 'mt-2'
+                                : 'mb-2'
                         )}
                     >
-                        <Label
-                            for="shipping"
-                            className="d-inline"
-                        >
+                        <Label for="shipping" className="d-inline">
                             Shipping{' '}
                             {!!shippingMaximumRefundable && (
                                 <span>
@@ -99,48 +112,61 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
                                         renderIfZero
                                         amount={shippingMaximumRefundable}
                                         currencyCode={currencyCode}
-                                    />
-                                    {' '}remaining)
+                                    />{' '}
+                                    remaining)
                                 </span>
                             )}
                         </Label>
                     </dt>
                 )}
                 {hasShippingLine && (
-                    <dd className={classnames('col-5 mb-2', {'text-muted': loading})}>
-                        {!shippingMaximumRefundable || parseFloat(shippingMaximumRefundable) === 0
-                            ? '—'
-                            : (
-                                <AmountInput
-                                    id="shipping"
-                                    required
-                                    disabled={!editable}
-                                    max={parseFloat(shippingMaximumRefundable)}
-                                    value={shipping}
-                                    currencyCode={currencyCode}
-                                    className="text-right"
-                                    onChange={this._onShippingChange}
-                                />
-                            )
-                        }
+                    <dd
+                        className={classnames('col-5 mb-2', {
+                            'text-muted': loading,
+                        })}
+                    >
+                        {!shippingMaximumRefundable ||
+                        parseFloat(shippingMaximumRefundable) === 0 ? (
+                            '—'
+                        ) : (
+                            <AmountInput
+                                id="shipping"
+                                required
+                                disabled={!editable}
+                                max={parseFloat(shippingMaximumRefundable)}
+                                value={shipping}
+                                currencyCode={currencyCode}
+                                className="text-right"
+                                onChange={this._onShippingChange}
+                            />
+                        )}
                     </dd>
                 )}
 
                 <dt className={classnames('col-7 mb-2', css.grey)}>
                     Discounts
                 </dt>
-                <dd className={classnames('col-5 mb-2', {'text-muted': loading})}>
+                <dd
+                    className={classnames('col-5 mb-2', {
+                        'text-muted': loading,
+                    })}
+                >
                     <MoneyAmount
-                        amount={formatPrice(getTotalCartDiscountAmount(refund), currencyCode)}
+                        amount={formatPrice(
+                            getTotalCartDiscountAmount(refund),
+                            currencyCode
+                        )}
                         currencyCode={currencyCode}
                         negative
                     />
                 </dd>
 
-                <dt className={classnames('col-7 mb-2', css.grey)}>
-                    Tax
-                </dt>
-                <dd className={classnames('col-5 mb-2', {'text-muted': loading})}>
+                <dt className={classnames('col-7 mb-2', css.grey)}>Tax</dt>
+                <dd
+                    className={classnames('col-5 mb-2', {
+                        'text-muted': loading,
+                    })}
+                >
                     <MoneyAmount
                         amount={formatPrice(getTotalTax(refund), currencyCode)}
                         currencyCode={currencyCode}
@@ -152,7 +178,10 @@ export default class OrderTotals extends React.PureComponent<Props, State> {
                 </dt>
                 <dd className="col-5 mb-2">
                     <MoneyAmount
-                        amount={formatPrice(getTotalAvailableToRefund(refund), currencyCode)}
+                        amount={formatPrice(
+                            getTotalAvailableToRefund(refund),
+                            currencyCode
+                        )}
                         currencyCode={currencyCode}
                         renderIfZero
                     />

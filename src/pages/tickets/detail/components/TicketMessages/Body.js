@@ -13,15 +13,17 @@ const classNames = classNamesBind.bind(css)
 type Props = {
     message: TicketMessage,
     className?: string,
-    hasError?: boolean
+    hasError?: boolean,
 }
 
 const Body = (props: Props) => {
     const {message, className} = props
     return (
-        <div className={classNames(css.component, className, {
-            hasError: props.hasError
-        })}>
+        <div
+            className={classNames(css.component, className, {
+                hasError: props.hasError,
+            })}
+        >
             <Content
                 html={message.body_html}
                 text={message.body_text}
@@ -29,7 +31,7 @@ const Body = (props: Props) => {
                 strippedText={message.stripped_text}
             />
             {message.meta && message.meta.facebook_carousel && (
-                <FacebookCarousel data={message.meta.facebook_carousel}/>
+                <FacebookCarousel data={message.meta.facebook_carousel} />
             )}
         </div>
     )

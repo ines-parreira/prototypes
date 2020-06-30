@@ -7,7 +7,6 @@ import * as types from '../constants'
 import * as utils from '../utils'
 import * as selectors from '../selectors'
 
-
 describe('reducers', () => {
     describe('views', () => {
         it('should set the edit mode to true on the view', () => {
@@ -15,178 +14,206 @@ describe('reducers', () => {
                 active: {
                     id: 1,
                     editMode: false,
-                    filter: {}
-                }
+                    filter: {},
+                },
             })
-            expect(reducers(state, {
-                type: types.ACTIVATE_VIEW_EDIT_MODE
-            })).toMatchSnapshot()
+            expect(
+                reducers(state, {
+                    type: types.ACTIVATE_VIEW_EDIT_MODE,
+                })
+            ).toMatchSnapshot()
         })
 
         it('should update field value of active view', () => {
             const state = fromJS({
                 active: {
                     dirty: false,
-                    filters: 'eq(ticket.assignee_user.id, \'2\')',
+                    filters: "eq(ticket.assignee_user.id, '2')",
                     filters_ast: {
                         type: 'Program',
                         sourceType: 'script',
-                        body: [{
-                            type: 'ExpressionStatement',
-                            expression: {
-                                type: 'CallExpression',
-                                callee: {
-                                    type: 'Identifier',
-                                    name: 'eq'
-                                },
-                                arguments: [{
-                                    type: 'MemberExpression',
-                                    computed: false,
-                                    property: {
+                        body: [
+                            {
+                                type: 'ExpressionStatement',
+                                expression: {
+                                    type: 'CallExpression',
+                                    callee: {
                                         type: 'Identifier',
-                                        name: 'id'
+                                        name: 'eq',
                                     },
-                                    object: {
-                                        type: 'MemberExpression',
-                                        computed: false,
-                                        object: {
-                                            type: 'Identifier',
-                                            name: 'ticket'
+                                    arguments: [
+                                        {
+                                            type: 'MemberExpression',
+                                            computed: false,
+                                            property: {
+                                                type: 'Identifier',
+                                                name: 'id',
+                                            },
+                                            object: {
+                                                type: 'MemberExpression',
+                                                computed: false,
+                                                object: {
+                                                    type: 'Identifier',
+                                                    name: 'ticket',
+                                                },
+                                                property: {
+                                                    type: 'Identifier',
+                                                    name: 'assignee_user',
+                                                },
+                                            },
                                         },
-                                        property: {
-                                            type: 'Identifier',
-                                            name: 'assignee_user'
-                                        }
-                                    }
-                                }, {
-                                    type: 'Literal',
-                                    value: '2',
-                                    raw: '\'2\''
-                                }]
-                            }
-                        }]
-                    }
-                }
+                                        {
+                                            type: 'Literal',
+                                            value: '2',
+                                            raw: "'2'",
+                                        },
+                                    ],
+                                },
+                            },
+                        ],
+                    },
+                },
             })
 
-            expect(reducers(state, {
-                type: types.UPDATE_VIEW_FIELD_FILTER,
-                index: 0,
-                value: '3'
-            })).toMatchSnapshot()
+            expect(
+                reducers(state, {
+                    type: types.UPDATE_VIEW_FIELD_FILTER,
+                    index: 0,
+                    value: '3',
+                })
+            ).toMatchSnapshot()
         })
 
         it('should update field operator of active view', () => {
             const state = fromJS({
                 active: {
                     dirty: false,
-                    filters: 'eq(ticket.assignee_user.id, \'2\')',
+                    filters: "eq(ticket.assignee_user.id, '2')",
                     filters_ast: {
                         type: 'Program',
                         sourceType: 'script',
-                        body: [{
-                            type: 'ExpressionStatement',
-                            expression: {
-                                type: 'CallExpression',
-                                callee: {
-                                    type: 'Identifier',
-                                    name: 'eq'
-                                },
-                                arguments: [{
-                                    type: 'MemberExpression',
-                                    computed: false,
-                                    property: {
+                        body: [
+                            {
+                                type: 'ExpressionStatement',
+                                expression: {
+                                    type: 'CallExpression',
+                                    callee: {
                                         type: 'Identifier',
-                                        name: 'id'
+                                        name: 'eq',
                                     },
-                                    object: {
-                                        type: 'MemberExpression',
-                                        computed: false,
-                                        object: {
-                                            type: 'Identifier',
-                                            name: 'ticket'
+                                    arguments: [
+                                        {
+                                            type: 'MemberExpression',
+                                            computed: false,
+                                            property: {
+                                                type: 'Identifier',
+                                                name: 'id',
+                                            },
+                                            object: {
+                                                type: 'MemberExpression',
+                                                computed: false,
+                                                object: {
+                                                    type: 'Identifier',
+                                                    name: 'ticket',
+                                                },
+                                                property: {
+                                                    type: 'Identifier',
+                                                    name: 'assignee_user',
+                                                },
+                                            },
                                         },
-                                        property: {
-                                            type: 'Identifier',
-                                            name: 'assignee_user'
-                                        }
-                                    }
-                                }, {
-                                    type: 'Literal',
-                                    value: '2',
-                                    raw: '\'2\''
-                                }]
-                            }
-                        }]
-                    }
-                }
+                                        {
+                                            type: 'Literal',
+                                            value: '2',
+                                            raw: "'2'",
+                                        },
+                                    ],
+                                },
+                            },
+                        ],
+                    },
+                },
             })
 
-            expect(reducers(state, {
-                type: types.UPDATE_VIEW_FIELD_FILTER_OPERATOR,
-                index: 0,
-                operator: 'neq'
-            })).toMatchSnapshot()
+            expect(
+                reducers(state, {
+                    type: types.UPDATE_VIEW_FIELD_FILTER_OPERATOR,
+                    index: 0,
+                    operator: 'neq',
+                })
+            ).toMatchSnapshot()
         })
 
         it('should submit a view', () => {
-            expect(reducers(initialState, {
-                type: types.SUBMIT_NEW_VIEW_SUCCESS,
-                resp: fixtures.view
-            })).toMatchSnapshot()
+            expect(
+                reducers(initialState, {
+                    type: types.SUBMIT_NEW_VIEW_SUCCESS,
+                    resp: fixtures.view,
+                })
+            ).toMatchSnapshot()
         })
 
         it('should not add submitted view if already present', () => {
             const state = reducers(initialState, {
                 type: types.SUBMIT_NEW_VIEW_SUCCESS,
-                resp: fixtures.view
+                resp: fixtures.view,
             })
 
-            expect(reducers(state, {
-                type: types.SUBMIT_NEW_VIEW_SUCCESS,
-                resp: fixtures.view
-            })).toMatchSnapshot()
+            expect(
+                reducers(state, {
+                    type: types.SUBMIT_NEW_VIEW_SUCCESS,
+                    resp: fixtures.view,
+                })
+            ).toMatchSnapshot()
         })
 
         it('should create a view', () => {
-            expect(reducers(initialState, {
-                type: types.CREATE_VIEW_SUCCESS,
-                resp: fixtures.view
-            })).toMatchSnapshot()
+            expect(
+                reducers(initialState, {
+                    type: types.CREATE_VIEW_SUCCESS,
+                    resp: fixtures.view,
+                })
+            ).toMatchSnapshot()
         })
 
         it('should not add created view if already present', () => {
             const state = reducers(initialState, {
                 type: types.CREATE_VIEW_SUCCESS,
-                resp: fixtures.view
+                resp: fixtures.view,
             })
 
-            expect(reducers(state, {
-                type: types.CREATE_VIEW_SUCCESS,
-                resp: fixtures.view
-            })).toMatchSnapshot()
+            expect(
+                reducers(state, {
+                    type: types.CREATE_VIEW_SUCCESS,
+                    resp: fixtures.view,
+                })
+            ).toMatchSnapshot()
         })
 
         it('should update a view', () => {
             const state = reducers(initialState, {
                 type: types.CREATE_VIEW_SUCCESS,
-                resp: fixtures.view
+                resp: fixtures.view,
             })
 
             fixtures.view.type = 'system'
 
-            expect(reducers(state, {
-                type: types.UPDATE_VIEW_SUCCESS,
-                resp: fixtures.view
-            })).toMatchSnapshot()
+            expect(
+                reducers(state, {
+                    type: types.UPDATE_VIEW_SUCCESS,
+                    resp: fixtures.view,
+                })
+            ).toMatchSnapshot()
         })
 
         describe('UPDATE_PAGE_SELECTION', () => {
             it('should update the selected ids of the view', () => {
-                expect(reducers(initialState, {
-                    type: types.UPDATE_PAGE_SELECTION,
-                    ids: [1, 2, 3, 4, 5]
-                })).toMatchSnapshot()
+                expect(
+                    reducers(initialState, {
+                        type: types.UPDATE_PAGE_SELECTION,
+                        ids: [1, 2, 3, 4, 5],
+                    })
+                ).toMatchSnapshot()
             })
         })
 
@@ -194,25 +221,29 @@ describe('reducers', () => {
             it('should add an id in the list of selected ids', () => {
                 const state = fromJS({
                     _internal: {
-                        selectedItemsIds: [1, 2, 3, 4, 5]
-                    }
+                        selectedItemsIds: [1, 2, 3, 4, 5],
+                    },
                 })
-                expect(reducers(state, {
-                    type: types.TOGGLE_ID_IN_PAGE_SELECTION,
-                    id: 12
-                })).toMatchSnapshot()
+                expect(
+                    reducers(state, {
+                        type: types.TOGGLE_ID_IN_PAGE_SELECTION,
+                        id: 12,
+                    })
+                ).toMatchSnapshot()
             })
 
             it('should remove an id in the list of selected ids', () => {
                 const state = fromJS({
                     _internal: {
-                        selectedItemsIds: [1, 3, 40]
-                    }
+                        selectedItemsIds: [1, 3, 40],
+                    },
                 })
-                expect(reducers(state, {
-                    type: types.TOGGLE_ID_IN_PAGE_SELECTION,
-                    id: 40
-                })).toMatchSnapshot()
+                expect(
+                    reducers(state, {
+                        type: types.TOGGLE_ID_IN_PAGE_SELECTION,
+                        id: 40,
+                    })
+                ).toMatchSnapshot()
             })
         })
 
@@ -220,42 +251,48 @@ describe('reducers', () => {
             it('should toggle the entire view selection from selected to not selected', () => {
                 const state = fromJS({
                     active: {
-                        allItemsSelected: true
-                    }
+                        allItemsSelected: true,
+                    },
                 })
-                expect(reducers(state, {
-                    type: types.TOGGLE_VIEW_SELECTION
-                })).toMatchSnapshot()
+                expect(
+                    reducers(state, {
+                        type: types.TOGGLE_VIEW_SELECTION,
+                    })
+                ).toMatchSnapshot()
             })
 
             it('should toggle the entire view selection from not selected to selected', () => {
                 const state = fromJS({
                     active: {
-                        allItemsSelected: false
-                    }
+                        allItemsSelected: false,
+                    },
                 })
-                expect(reducers(state, {
-                    type: types.TOGGLE_VIEW_SELECTION
-                })).toMatchSnapshot()
+                expect(
+                    reducers(state, {
+                        type: types.TOGGLE_VIEW_SELECTION,
+                    })
+                ).toMatchSnapshot()
             })
         })
 
         it('should delete a view ', () => {
             const state = reducers(initialState, {
                 type: types.CREATE_VIEW_SUCCESS,
-                resp: fixtures.view
+                resp: fixtures.view,
             })
-            expect(reducers(state, {
-                type: types.DELETE_VIEW_SUCCESS,
-                viewId: fixtures.view.id
-            })).toMatchSnapshot()
+            expect(
+                reducers(state, {
+                    type: types.DELETE_VIEW_SUCCESS,
+                    viewId: fixtures.view.id,
+                })
+            ).toMatchSnapshot()
         })
 
         it('should handle ADD_RECENT_VIEW', () => {
             const beforeActionDt = moment.utc()
             const state = reducers(initialState, {
                 type: types.ADD_RECENT_VIEW,
-                viewId: 1
+                viewId: 1,
             })
 
             const recentViews = selectors.getRecentViews({views: state}).toJS()
@@ -265,8 +302,12 @@ describe('reducers', () => {
             // should store new view id in the Redux state
             expect(viewIds).toEqual(['1'])
             for (let view in recentViews) {
-                expect(moment(view.insert_datetime).isBetween(beforeActionDt, now)).toBe(true)
-                expect(moment(view.updated_datetime).isBetween(beforeActionDt, now)).toBe(true)
+                expect(
+                    moment(view.insert_datetime).isBetween(beforeActionDt, now)
+                ).toBe(true)
+                expect(
+                    moment(view.updated_datetime).isBetween(beforeActionDt, now)
+                ).toBe(true)
             }
 
             // should store recent views in the localStorage
@@ -275,12 +316,14 @@ describe('reducers', () => {
         })
 
         it('should handle UPDATE_COUNTS', () => {
-            let state = initialState.mergeDeep(fromJS({
-                recent: {
-                    1: {},
-                    2: {}
-                }
-            }))
+            let state = initialState.mergeDeep(
+                fromJS({
+                    recent: {
+                        1: {},
+                        2: {},
+                    },
+                })
+            )
             const counts = {
                 1: 12,
                 2: 234,
@@ -290,7 +333,7 @@ describe('reducers', () => {
 
             state = reducers(state, {
                 type: types.UPDATE_COUNTS,
-                counts
+                counts,
             })
 
             // should update view counts
@@ -302,21 +345,25 @@ describe('reducers', () => {
             expect(recentViews).not.toEqual({})
 
             for (let view in recentViews) {
-                expect(moment(view.updated_datetime).isBetween(beforeActionDt, now)).toBe(true)
+                expect(
+                    moment(view.updated_datetime).isBetween(beforeActionDt, now)
+                ).toBe(true)
             }
         })
 
         it('should update updated datetime of recent views', () => {
             const beforeActionDt = moment.utc().subtract(10, 's')
-            let state = initialState.mergeDeep(fromJS({
-                recent: {
-                    1: {},
-                    2: {}
-                }
-            }))
+            let state = initialState.mergeDeep(
+                fromJS({
+                    recent: {
+                        1: {},
+                        2: {},
+                    },
+                })
+            )
             state = reducers(state, {
                 type: types.UPDATE_RECENT_VIEWS,
-                viewIds: [1, 2]
+                viewIds: [1, 2],
             })
 
             const now = moment.utc().add(10, 's')
@@ -325,7 +372,9 @@ describe('reducers', () => {
             expect(recentViews).not.toEqual({})
 
             for (let view in recentViews) {
-                expect(moment(view.updated_datetime).isBetween(beforeActionDt, now)).toBe(true)
+                expect(
+                    moment(view.updated_datetime).isBetween(beforeActionDt, now)
+                ).toBe(true)
             }
         })
     })

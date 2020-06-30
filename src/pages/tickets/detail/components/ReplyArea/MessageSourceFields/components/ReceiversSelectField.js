@@ -8,7 +8,7 @@ import {isEmail} from '../../../../../../../utils'
 import {
     getValuePropFromSourceType,
     receiversValueFromState,
-    receiversStateFromValue
+    receiversStateFromValue,
 } from '../../../../../../../state/ticket/utils'
 import {updatePotentialCustomers} from '../../../../../../../state/newMessage/actions'
 
@@ -36,7 +36,8 @@ class ReceiversSelectField extends React.Component {
         required: false,
     }
 
-    _valueFromState = (options) => receiversValueFromState({to: options}, this.props.sourceType).to
+    _valueFromState = (options) =>
+        receiversValueFromState({to: options}, this.props.sourceType).to
 
     _onChange = (value) => {
         const {onChange, sourceType} = this.props
@@ -50,16 +51,17 @@ class ReceiversSelectField extends React.Component {
             callback([])
         }
 
-        this.props.updatePotentialCustomers(queryText)
-            .then((data) => {
-                callback(this._valueFromState(data))
-            })
+        this.props.updatePotentialCustomers(queryText).then((data) => {
+            callback(this._valueFromState(data))
+        })
     }, 200)
 
     render() {
         const {sourceType, disabled, required, valueProp, value} = this.props
 
-        const placeholder = valueProp ? 'Search a customer...' : 'Sorry, no recipient for this type of message...'
+        const placeholder = valueProp
+            ? 'Search a customer...'
+            : 'Sorry, no recipient for this type of message...'
 
         return (
             <MultiSelectAsyncField
@@ -83,7 +85,13 @@ const mapStateToProps = (state, ownProps) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-    updatePotentialCustomers: bindActionCreators(updatePotentialCustomers, dispatch),
+    updatePotentialCustomers: bindActionCreators(
+        updatePotentialCustomers,
+        dispatch
+    ),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(ReceiversSelectField)
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ReceiversSelectField)

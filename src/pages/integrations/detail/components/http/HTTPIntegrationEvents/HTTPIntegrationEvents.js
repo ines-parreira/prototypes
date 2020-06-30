@@ -18,16 +18,16 @@ import {getHTTPIntegrationEvents} from '../../../../../../state/HTTPIntegrationE
 type Props = {
     events?: Object,
     fetchEvents: (number) => Promise<*>,
-    integrationId: number
+    integrationId: number,
 }
 
 type State = {
-    isFetching: boolean
+    isFetching: boolean,
 }
 
 export class HTTPIntegrationEvents extends Component<Props, State> {
     state = {
-        isFetching: false
+        isFetching: false,
     }
 
     componentWillMount() {
@@ -53,52 +53,51 @@ export class HTTPIntegrationEvents extends Component<Props, State> {
 
     _renderEvent = (event: Object) => {
         const {integrationId} = this.props
-        const editLink = `/app/settings/integrations/http/${integrationId}/events/${event.get('id')}`
+        const editLink = `/app/settings/integrations/http/${integrationId}/events/${event.get(
+            'id'
+        )}`
 
         return (
             <tr key={event.get('id')}>
                 <td className="link-full-td">
-                    <Link
-                        to={editLink}
-                        className="disabled"
-                    >
+                    <Link to={editLink} className="disabled">
                         <div>
-                            {event.getIn(['request', 'method'], HTTP_METHOD_GET)}
+                            {event.getIn(
+                                ['request', 'method'],
+                                HTTP_METHOD_GET
+                            )}
                         </div>
                     </Link>
                 </td>
                 <td className="link-full-td">
-                    <Link
-                        to={editLink}
-                        className="disabled"
-                    >
+                    <Link to={editLink} className="disabled">
                         <div>
-                            {_truncate(event.getIn(['request', 'url']), {length: 100})}
+                            {_truncate(event.getIn(['request', 'url']), {
+                                length: 100,
+                            })}
                         </div>
                     </Link>
                 </td>
                 <td className="link-full-td">
-                    <Link
-                        to={editLink}
-                        className="disabled"
-                    >
+                    <Link to={editLink} className="disabled">
                         <div>
-                            <HTTPStatusLabel statusCode={event.get('status_code')}/>
+                            <HTTPStatusLabel
+                                statusCode={event.get('status_code')}
+                            />
                         </div>
                     </Link>
                 </td>
                 <td className="link-full-td">
-                    <Link
-                        to={editLink}
-                        className="disabled"
-                    >
+                    <Link to={editLink} className="disabled">
                         <div>
-                            <DatetimeLabel dateTime={event.get('created_datetime')}/>
+                            <DatetimeLabel
+                                dateTime={event.get('created_datetime')}
+                            />
                         </div>
                     </Link>
                 </td>
                 <td className="smallest align-middle">
-                    <ForwardIcon href={editLink}/>
+                    <ForwardIcon href={editLink} />
                 </td>
             </tr>
         )
@@ -109,55 +108,51 @@ export class HTTPIntegrationEvents extends Component<Props, State> {
         const {isFetching} = this.state
 
         if (!events || isFetching) {
-            return <Loader/>
+            return <Loader />
         }
 
         return (
             <div>
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <Container fluid className="page-container">
                     <p>
-                        Shows the latest HTTP requests sent by this integration with their responses.
-                        This page is useful to see if this integration works correctly.
+                        Shows the latest HTTP requests sent by this integration
+                        with their responses. This page is useful to see if this
+                        integration works correctly.
                     </p>
-                    {events.isEmpty() ?
+                    {events.isEmpty() ? (
                         <p>
-                            <b>There is no logs because this integration has not been run yet.</b>
+                            <b>
+                                There is no logs because this integration has
+                                not been run yet.
+                            </b>
                         </p>
-                        : null
-                    }
+                    ) : null}
                 </Container>
-                <br/>
-                {events.isEmpty() ? null :
-                    <Table
-                        hover
-                        className="view-table table-integrations"
-                    >
+                <br />
+                {events.isEmpty() ? null : (
+                    <Table hover className="view-table table-integrations">
                         <thead>
                             <tr>
                                 <th>Method</th>
                                 <th>URL</th>
                                 <th>Status code</th>
                                 <th>Sent</th>
-                                <th/>
+                                <th />
                             </tr>
                         </thead>
-                        <tbody>
-                            {events.map(this._renderEvent)}
-                        </tbody>
+                        <tbody>{events.map(this._renderEvent)}</tbody>
                     </Table>
-                }
+                )}
             </div>
         )
     }
 }
 
-
 const mapStateToProps = (state) => {
     return {
-        events: getHTTPIntegrationEvents(state)
+        events: getHTTPIntegrationEvents(state),
     }
 }
-export default connect(mapStateToProps, {fetchEvents: fetchHTTPIntegrationEvents})(HTTPIntegrationEvents)
+export default connect(mapStateToProps, {
+    fetchEvents: fetchHTTPIntegrationEvents,
+})(HTTPIntegrationEvents)

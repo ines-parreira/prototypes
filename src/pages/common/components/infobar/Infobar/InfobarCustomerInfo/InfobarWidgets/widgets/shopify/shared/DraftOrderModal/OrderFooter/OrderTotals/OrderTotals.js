@@ -12,7 +12,7 @@ import {onPayloadChange} from '../../../../../../../../../../../../../state/info
 import {
     getSubtotal,
     getTaxLinesTotals,
-    getTotalShippingPrice
+    getTotalShippingPrice,
 } from '../../../../../../../../../../../../../business/shopify/draftOrder'
 import {getDraftOrderTotalLineItemsPrice} from '../../../../../../../../../../../../../business/shopify/lineItem'
 import {getTotalDiscountAmount} from '../../../../../../../../../../../../../business/shopify/discount'
@@ -33,7 +33,10 @@ type Props = {
     payload: Record<$Shape<Shopify.DraftOrder>>,
     draftOrder: Record<Shopify.DraftOrder>,
     defaultShippingLine: Record<Shopify.ShippingLine>,
-    onPayloadChange: (integrationId: number, Record<$Shape<Shopify.DraftOrder>>) => void,
+    onPayloadChange: (
+        integrationId: number,
+        Record<$Shape<Shopify.DraftOrder>>
+    ) => void,
 }
 
 export class OrderTotalsComponent extends React.PureComponent<Props> {
@@ -41,7 +44,9 @@ export class OrderTotalsComponent extends React.PureComponent<Props> {
         integrationId: PropTypes.number.isRequired,
     }
 
-    _onAppliedDiscountChange = (appliedDiscount: Record<$Shape<Shopify.AppliedDiscount>> | null) => {
+    _onAppliedDiscountChange = (
+        appliedDiscount: Record<$Shape<Shopify.AppliedDiscount>> | null
+    ) => {
         const {onPayloadChange, payload} = this.props
         const {integrationId} = this.context
         const newPayload = payload.set('applied_discount', appliedDiscount)
@@ -66,7 +71,15 @@ export class OrderTotalsComponent extends React.PureComponent<Props> {
     }
 
     render() {
-        const {editable, loading, payload, draftOrder, currencyCode, actionName, defaultShippingLine} = this.props
+        const {
+            editable,
+            loading,
+            payload,
+            draftOrder,
+            currencyCode,
+            actionName,
+            defaultShippingLine,
+        } = this.props
         const uniqueTaxLines = getTaxLinesTotals(draftOrder)
 
         return (
@@ -86,9 +99,12 @@ export class OrderTotalsComponent extends React.PureComponent<Props> {
                     </DiscountPopover>
                 </dt>
                 <dd className="col-3 mb-2">
-                    {!!payload.getIn(['applied_discount', 'title']) && <br/>}
+                    {!!payload.getIn(['applied_discount', 'title']) && <br />}
                     <MoneyAmount
-                        amount={formatPrice(getTotalDiscountAmount(payload), currencyCode)}
+                        amount={formatPrice(
+                            getTotalDiscountAmount(payload),
+                            currencyCode
+                        )}
                         currencyCode={currencyCode}
                         negative
                     />
@@ -113,14 +129,19 @@ export class OrderTotalsComponent extends React.PureComponent<Props> {
                         defaultValue={defaultShippingLine}
                         onChange={this._onShippingLinesChange}
                     >
-                        {!!payload.get('shipping_line') ? 'Shipping' : 'Add shipping'}
+                        {!!payload.get('shipping_line')
+                            ? 'Shipping'
+                            : 'Add shipping'}
                     </ShippingPopover>
                 </dt>
                 <dd className="col-3 mb-2">
-                    {!!payload.get('shipping_line') && <br/>}
+                    {!!payload.get('shipping_line') && <br />}
                     <MoneyAmount
                         renderIfZero={!!payload.get('shipping_line')}
-                        amount={formatPrice(getTotalShippingPrice(payload), currencyCode)}
+                        amount={formatPrice(
+                            getTotalShippingPrice(payload),
+                            currencyCode
+                        )}
                         currencyCode={currencyCode}
                     />
                 </dd>
@@ -147,15 +168,24 @@ export class OrderTotalsComponent extends React.PureComponent<Props> {
                     ))}
                 </dt>
                 <dd className="col-3 mb-2">
-                    {payload.get('tax_exempt') || !uniqueTaxLines.length ? '—' : <br/>}
+                    {payload.get('tax_exempt') || !uniqueTaxLines.length ? (
+                        '—'
+                    ) : (
+                        <br />
+                    )}
                     {uniqueTaxLines.map((uniqueTaxLine) => (
                         <span
                             key={hash(uniqueTaxLine)}
-                            className={classnames('d-block', {'text-muted': loading})}
+                            className={classnames('d-block', {
+                                'text-muted': loading,
+                            })}
                         >
                             <MoneyAmount
                                 renderIfZero
-                                amount={formatPrice(uniqueTaxLine.total, currencyCode)}
+                                amount={formatPrice(
+                                    uniqueTaxLine.total,
+                                    currencyCode
+                                )}
                                 currencyCode={currencyCode}
                             />
                         </span>
@@ -188,4 +218,7 @@ const mapDispatchToProps = {
     onPayloadChange,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(OrderTotalsComponent)
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(OrderTotalsComponent)

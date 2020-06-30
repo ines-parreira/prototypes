@@ -17,18 +17,22 @@ import css from './WrapperInfobarWidget.less'
 
 @connect((state, ownProps) => {
     const {widget, template} = ownProps
-    let integrations = integrationsSelectors.getIntegrationsByTypes(widget.get('type'))(state)
+    let integrations = integrationsSelectors.getIntegrationsByTypes(
+        widget.get('type')
+    )(state)
 
     const absolutePath = template.get('absolutePath')
     const integrationId = parseInt(_last(absolutePath))
 
     if (!isNaN(integrationId)) {
-        const integration = integrationsSelectors.getIntegrationById(integrationId)(state)
+        const integration = integrationsSelectors.getIntegrationById(
+            integrationId
+        )(state)
         integrations = integration ? fromJS([integration]) : fromJS([])
     }
 
     return {
-        integration: integrations.isEmpty() ? fromJS({}) : integrations.first()
+        integration: integrations.isEmpty() ? fromJS({}) : integrations.first(),
     }
 })
 class WrapperInfobarWidget extends React.Component {
@@ -39,7 +43,7 @@ class WrapperInfobarWidget extends React.Component {
         widget: PropTypes.object.isRequired,
         template: PropTypes.object.isRequired,
         isEditing: PropTypes.bool.isRequired,
-        open: PropTypes.bool
+        open: PropTypes.bool,
     }
 
     static childContextTypes = {
@@ -69,16 +73,12 @@ class WrapperInfobarWidget extends React.Component {
     }
 
     render() {
-        const {
-            widget,
-            template,
-            isEditing,
-            source,
-            editing,
-        } = this.props
+        const {widget, template, isEditing, source, editing} = this.props
 
         const widgetType = widget.get('type')
-        const colorClassNames = WIDGET_COLOR_SUPPORTED_TYPES.includes(widgetType)
+        const colorClassNames = WIDGET_COLOR_SUPPORTED_TYPES.includes(
+            widgetType
+        )
             ? [css.colorContainer, css[widgetType]]
             : []
 
@@ -86,28 +86,31 @@ class WrapperInfobarWidget extends React.Component {
         const tp = template.get('templatePath')
 
         return (
-            <div className={classnames('infobar-wrapper draggable', ...colorClassNames)}>
-                {!isEditing && (
-                    <div
-                        id={widgetType}
-                        className={css.anchor}
-                    />
+            <div
+                className={classnames(
+                    'infobar-wrapper draggable',
+                    ...colorClassNames
                 )}
-                <Card className={classnames(cardCss.component, 'wrapper transparent')}>
-                    {
-                        isEditing && (
-                            <CardBody className="header clearfix">
-                                <span className="tools">
-                                    <i
-                                        className="material-icons text-danger clickable"
-                                        onClick={this._deleteWrapper}
-                                    >
-                                        close
-                                    </i>
-                                </span>
-                            </CardBody>
-                        )
-                    }
+            >
+                {!isEditing && <div id={widgetType} className={css.anchor} />}
+                <Card
+                    className={classnames(
+                        cardCss.component,
+                        'wrapper transparent'
+                    )}
+                >
+                    {isEditing && (
+                        <CardBody className="header clearfix">
+                            <span className="tools">
+                                <i
+                                    className="material-icons text-danger clickable"
+                                    onClick={this._deleteWrapper}
+                                >
+                                    close
+                                </i>
+                            </span>
+                        </CardBody>
+                    )}
 
                     <CardBody className="content">
                         <DragWrapper
@@ -116,32 +119,32 @@ class WrapperInfobarWidget extends React.Component {
                             group={{
                                 name: ap.join('.'),
                                 pull: false,
-                                put: true
+                                put: true,
                             }}
                             templatePath={tp}
                             isEditing={isEditing}
                             watchDrop
                         >
-                            {
-                                template
-                                    .get('widgets', fromJS([]))
-                                    .map((w, i) => {
-                                        const passedTemplate = w
-                                            .set('templatePath', `${tp}.widgets.${i}`)
+                            {template.get('widgets', fromJS([])).map((w, i) => {
+                                const passedTemplate = w.set(
+                                    'templatePath',
+                                    `${tp}.widgets.${i}`
+                                )
 
-                                        return (
-                                            <InfobarWidget
-                                                key={`${passedTemplate.get('path')}-${i}`}
-                                                source={source}
-                                                parent={template}
-                                                widget={widget}
-                                                template={passedTemplate}
-                                                editing={editing}
-                                                isEditing={isEditing}
-                                            />
-                                        )
-                                    })
-                            }
+                                return (
+                                    <InfobarWidget
+                                        key={`${passedTemplate.get(
+                                            'path'
+                                        )}-${i}`}
+                                        source={source}
+                                        parent={template}
+                                        widget={widget}
+                                        template={passedTemplate}
+                                        editing={editing}
+                                        isEditing={isEditing}
+                                    />
+                                )
+                            })}
                         </DragWrapper>
                     </CardBody>
                 </Card>
@@ -151,4 +154,3 @@ class WrapperInfobarWidget extends React.Component {
 }
 
 export default WrapperInfobarWidget
-

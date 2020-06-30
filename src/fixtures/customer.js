@@ -16,7 +16,7 @@ export const customer = {
             id: 55,
             updated_datetime: '2017-07-31T21:45:03.399828+00:00',
             preferred: true,
-            created_datetime: '2017-07-31T21:45:03.399819+00:00'
+            created_datetime: '2017-07-31T21:45:03.399819+00:00',
         },
         {
             deleted_datetime: null,
@@ -25,8 +25,8 @@ export const customer = {
             id: 56,
             updated_datetime: '2017-07-31T21:45:03.416976+00:00',
             preferred: true,
-            created_datetime: '2017-07-31T21:45:03.416965+00:00'
-        }
+            created_datetime: '2017-07-31T21:45:03.416965+00:00',
+        },
     ],
     created_datetime: '2017-07-31T21:45:03.382498+00:00',
     id: 34,
@@ -35,8 +35,8 @@ export const customer = {
     roles: [
         {
             name: USER_ROLE,
-            id: 1
-        }
+            id: 1,
+        },
     ],
     customer: null,
     integrations: {
@@ -44,7 +44,7 @@ export const customer = {
             url: 'https://httpbin.org/get?name=Jean Bon',
             origin: '199.188.194.25',
             args: {
-                name: 'Jean Bon'
+                name: 'Jean Bon',
             },
             __integration_type__: 'http',
             headers: {
@@ -53,14 +53,14 @@ export const customer = {
                 Accept: '*/*',
                 'Accept-Encoding': 'gzip, deflate',
                 'User-Agent': 'python-requests/2.14.2',
-                Connection: 'close'
-            }
+                Connection: 'close',
+            },
         },
         '5': {
             customer: {
                 addresses: [
                     {
-                        'default': false,
+                        default: false,
                         zip: '75012',
                         city: 'Paris',
                         name: 'Jean Bon',
@@ -76,8 +76,8 @@ export const customer = {
                         province_code: null,
                         company: 'Fleury Michon',
                         address1: '3 rue des volailles',
-                        address2: ''
-                    }
+                        address2: '',
+                    },
                 ],
                 last_order_name: '#1202',
                 verified_email: true,
@@ -92,7 +92,7 @@ export const customer = {
                 orders_count: 80,
                 last_order_id: 4236385803,
                 default_address: {
-                    'default': true,
+                    default: true,
                     zip: '75012',
                     city: 'Paris',
                     name: 'Jean Bon',
@@ -108,14 +108,14 @@ export const customer = {
                     province_code: null,
                     company: 'Fleury Michon',
                     address1: '12 rue du poisson cru',
-                    address2: 'unit 3'
+                    address2: 'unit 3',
                 },
                 updated_at: '2017-07-12T20:44:14-04:00',
                 tags: 'Active Subscriber',
                 first_name: 'Jean',
                 id: 4279837195,
                 email: 'jeanbon@gorgias.io',
-                multipass_identifier: null
+                multipass_identifier: null,
             },
             orders: [
                 {
@@ -138,7 +138,7 @@ export const customer = {
                         province_code: null,
                         company: 'Fleury Michon',
                         address1: '12 rue du poisson cru',
-                        address2: 'unit 3'
+                        address2: 'unit 3',
                     },
                     gateway: 'manual',
                     processed_at: '2017-07-12T16:14:09-04:00',
@@ -156,8 +156,8 @@ export const customer = {
                         {
                             price: '1.50',
                             rate: 0.2,
-                            title: 'TVA'
-                        }
+                            title: 'TVA',
+                        },
                     ],
                     name: '#1202',
                     reference: null,
@@ -187,7 +187,7 @@ export const customer = {
                         province_code: null,
                         company: 'Fleury Michon',
                         address1: '12 rue du poisson cru',
-                        address2: 'unit 3'
+                        address2: 'unit 3',
                     },
                     currency: 'EUR',
                     test: false,
@@ -196,9 +196,7 @@ export const customer = {
                     fulfillment_status: null,
                     total_weight: 200,
                     checkout_id: null,
-                    payment_gateway_names: [
-                        'manual'
-                    ],
+                    payment_gateway_names: ['manual'],
                     total_price_usd: '10.33',
                     fulfillments: [],
                     line_items: [
@@ -212,8 +210,8 @@ export const customer = {
                                 {
                                     price: '1.50',
                                     rate: 0.2,
-                                    title: 'TVA'
-                                }
+                                    title: 'TVA',
+                                },
                             ],
                             product_id: 9211387275,
                             name: 'Baskets peu cheres  10.00% Off Auto renew',
@@ -230,8 +228,8 @@ export const customer = {
                             sku: '1234567890',
                             variant_title: null,
                             gift_card: false,
-                            requires_shipping: true
-                        }
+                            requires_shipping: true,
+                        },
                     ],
                     referring_site: null,
                     total_discounts: '0.00',
@@ -261,7 +259,7 @@ export const customer = {
                         orders_count: 80,
                         last_order_id: 4236385803,
                         default_address: {
-                            'default': true,
+                            default: true,
                             zip: '75012',
                             city: 'Paris',
                             name: 'Jean Bon',
@@ -277,16 +275,16 @@ export const customer = {
                             province_code: null,
                             company: 'Fleury Michon',
                             address1: '12 rue du poisson cru',
-                            address2: 'unit 3'
+                            address2: 'unit 3',
                         },
                         updated_at: '2017-07-12T20:44:14-04:00',
                         tags: 'Active Subscriber',
                         first_name: 'Jean',
                         id: 4279837195,
                         email: 'jeanbon@gorgias.io',
-                        multipass_identifier: null
+                        multipass_identifier: null,
                     },
-                    confirmed: true
+                    confirmed: true,
                 },
                 {
                     checkout_token: null,
@@ -308,7 +306,7 @@ export const customer = {
                         province_code: null,
                         company: 'Fleury Michon',
                         address1: '12 rue du poisson cru',
-                        address2: 'unit 3'
+                        address2: 'unit 3',
                     },
                     gateway: '',
                     processed_at: '2017-06-16T20:06:10-04:00',
@@ -369,8 +367,8 @@ export const customer = {
                             sku: '0987654321',
                             variant_title: null,
                             gift_card: false,
-                            requires_shipping: true
-                        }
+                            requires_shipping: true,
+                        },
                     ],
                     referring_site: null,
                     total_discounts: '0.00',
@@ -400,7 +398,7 @@ export const customer = {
                         orders_count: 80,
                         last_order_id: 4236385803,
                         default_address: {
-                            'default': true,
+                            default: true,
                             zip: '75012',
                             city: 'Paris',
                             name: 'Jean Bon',
@@ -416,20 +414,20 @@ export const customer = {
                             province_code: null,
                             company: 'Fleury Michon',
                             address1: '12 rue du poisson cru',
-                            address2: 'unit 3'
+                            address2: 'unit 3',
                         },
                         updated_at: '2017-07-12T20:44:14-04:00',
                         tags: 'Active Subscriber',
                         first_name: 'Jean',
                         id: 4279837195,
                         email: 'jeanbon@gorgias.io',
-                        multipass_identifier: null
+                        multipass_identifier: null,
                     },
-                    confirmed: true
-                }
+                    confirmed: true,
+                },
             ],
-            __integration_type__: 'shopify'
-        }
+            __integration_type__: 'shopify',
+        },
     },
-    updated_datetime: '2017-07-31T23:17:01.313273+00:00'
+    updated_datetime: '2017-07-31T23:17:01.313273+00:00',
 }

@@ -7,10 +7,7 @@ import ListField from '../ListField'
 describe('ListField component', () => {
     it('should render with no items and an "add" button', () => {
         const component = shallow(
-            <ListField
-                onChange={() => {}}
-                items={fromJS([])}
-            />
+            <ListField onChange={() => {}} items={fromJS([])} />
         )
 
         expect(component).toMatchSnapshot()
@@ -18,10 +15,7 @@ describe('ListField component', () => {
 
     it('should render with some items and an "add" button', () => {
         const component = shallow(
-            <ListField
-                onChange={() => {}}
-                items={fromJS(['foo', 'bar'])}
-            />
+            <ListField onChange={() => {}} items={fromJS(['foo', 'bar'])} />
         )
 
         expect(component).toMatchSnapshot()

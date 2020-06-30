@@ -18,18 +18,21 @@ export const initialState = fromJS({
         triedLoading: false,
         hasHistory: false,
         tickets: [],
-        events: []
+        events: [],
     },
     _internal: {
         loading: {
             history: false,
             active: false,
-            merge: false
-        }
-    }
+            merge: false,
+        },
+    },
 })
 
-export default function reducer(state: Map<*,*> = initialState, action: actionType): Map<*,*> {
+export default function reducer(
+    state: Map<*, *> = initialState,
+    action: actionType
+): Map<*, *> {
     const items = state.get('items', fromJS([]))
 
     switch (action.type) {
@@ -67,8 +70,14 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
                 const customerId = customer.get('id')
 
                 // if updated customer is in current items list, update it
-                newState = newState.set('items',
-                    items.set(items.findIndex((item) => item.get('id') === customerId), customer)
+                newState = newState.set(
+                    'items',
+                    items.set(
+                        items.findIndex(
+                            (item) => item.get('id') === customerId
+                        ),
+                        customer
+                    )
                 )
 
                 // if updated customer is the active one, update the active one
@@ -81,10 +90,11 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
         }
 
         case constants.DELETE_CUSTOMER_SUCCESS: {
-            return state
-                .merge({
-                    items: state.get('items').filter((item) => item.get('id') !== action.customerId),
-                })
+            return state.merge({
+                items: state
+                    .get('items')
+                    .filter((item) => item.get('id') !== action.customerId),
+            })
         }
 
         case constants.FETCH_CUSTOMER_HISTORY_START: {
@@ -120,12 +130,19 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
 
         case newMessageConstants.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_SUCCESS: {
             const updated: TicketElement = action.resp
-            const ticketIndex = state.getIn(['customerHistory', 'tickets'], fromJS([]))
+            const ticketIndex = state
+                .getIn(['customerHistory', 'tickets'], fromJS([]))
                 .findIndex((ticket) => ticket.get('id') === updated.ticket_id)
             if (~ticketIndex) {
-                return state.updateIn(['customerHistory', 'tickets', ticketIndex], (ticket) => ticket
-                    .set('messages_count', ticket.get('messages_count', 0) + 1)
-                    .set('excerpt', updated.body_text)
+                return state.updateIn(
+                    ['customerHistory', 'tickets', ticketIndex],
+                    (ticket) =>
+                        ticket
+                            .set(
+                                'messages_count',
+                                ticket.get('messages_count', 0) + 1
+                            )
+                            .set('excerpt', updated.body_text)
                 )
             }
             return state
@@ -133,21 +150,27 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
 
         case ticketConstants.TICKET_PARTIAL_UPDATE_SUCCESS: {
             const updated: Ticket = action.resp
-            const ticketIndex = state.getIn(['customerHistory', 'tickets'], fromJS([]))
+            const ticketIndex = state
+                .getIn(['customerHistory', 'tickets'], fromJS([]))
                 .findIndex((ticket) => ticket.get('id') === updated.id)
             if (~ticketIndex) {
-                return state.updateIn(['customerHistory', 'tickets', ticketIndex], (ticket) => ticket
-                    .set('assignee_user', fromJS(updated.assignee_user))
-                    .set('status', updated.status)
-                    .set('subject', updated.subject)
+                return state.updateIn(
+                    ['customerHistory', 'tickets', ticketIndex],
+                    (ticket) =>
+                        ticket
+                            .set('assignee_user', fromJS(updated.assignee_user))
+                            .set('status', updated.status)
+                            .set('subject', updated.subject)
                 )
             }
             return state
         }
 
         case constants.FETCH_CUSTOMER_HISTORY_ERROR: {
-            let newState = state
-                .setIn(['_internal', 'loading', 'history'], false)
+            let newState = state.setIn(
+                ['_internal', 'loading', 'history'],
+                false
+            )
 
             if (!action.shouldDisplayHistoryOnNextPage) {
                 newState = newState
@@ -178,7 +201,10 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
         case constants.MERGE_CUSTOMERS_SUCCESS: {
             let newState = state.setIn(['_internal', 'loading', 'merge'], false)
 
-            if (action.resp && state.getIn(['active', 'id']) === action.resp.id) {
+            if (
+                action.resp &&
+                state.getIn(['active', 'id']) === action.resp.id
+            ) {
                 newState = newState.set('active', fromJS(action.resp))
             }
 

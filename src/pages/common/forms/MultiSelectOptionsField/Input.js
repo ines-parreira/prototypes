@@ -13,7 +13,7 @@ type Props = {
     onDelete: () => void,
     onUp: () => void,
     onDown: () => void,
-    onChange: string => void
+    onChange: (string) => void,
 }
 
 export default class Input extends React.Component<Props> {
@@ -21,18 +21,18 @@ export default class Input extends React.Component<Props> {
     //$FlowFixMe
     inputRef: React.Ref<*>
 
-    constructor (props: Props) {
+    constructor(props: Props) {
         super(props)
         // TODO (@pwlmaciejewski): FlowFixing for now. Types should be fine after flow version bump
         //$FlowFixMe
         this.inputRef = React.createRef()
     }
 
-    componentDidMount () {
+    componentDidMount() {
         this._updateFocus()
     }
 
-    componentDidUpdate () {
+    componentDidUpdate() {
         this._updateFocus()
     }
 

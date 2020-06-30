@@ -47,7 +47,7 @@ describe('Config: views', () => {
 
         const fixtures = {
             ticket: ticketFixtures.ticket,
-            customer
+            customer,
         }
 
         views.forEach((viewConfig) => {
@@ -95,17 +95,20 @@ describe('Config: views', () => {
                     },
                     customer: {
                         name: 'string',
-                    }
+                    },
                 }
 
-                const fieldNames = viewConfig.get('fields').map((field) => field.get('name'))
+                const fieldNames = viewConfig
+                    .get('fields')
+                    .map((field) => field.get('name'))
                 const cellFunction = viewConfig.get('cell')
 
                 // check that each field renders the correct type once passed through the cell() function
                 fieldNames.forEach((fieldName) => {
                     expect(typeof fieldName).toBe('string')
                     const cellResult = cellFunction(fieldName, fixture)
-                    const expectedType = fieldNameToType[viewConfigName][fieldName] || 'string'
+                    const expectedType =
+                        fieldNameToType[viewConfigName][fieldName] || 'string'
                     expect(typeof cellResult).toBe(expectedType)
                 })
             })

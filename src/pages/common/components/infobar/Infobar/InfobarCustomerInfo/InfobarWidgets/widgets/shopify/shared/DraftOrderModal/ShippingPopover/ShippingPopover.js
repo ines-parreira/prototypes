@@ -1,7 +1,15 @@
 // @flow
 
 import React, {type Node} from 'react'
-import {Button, Form, FormGroup, Input, Label, Popover, PopoverBody} from 'reactstrap'
+import {
+    Button,
+    Form,
+    FormGroup,
+    Input,
+    Label,
+    Popover,
+    PopoverBody,
+} from 'reactstrap'
 import {fromJS, type Record} from 'immutable'
 import classnames from 'classnames'
 
@@ -59,11 +67,15 @@ export default class ShippingPopover extends React.PureComponent<Props, State> {
         const onClose = wasOpen && !isOpen
 
         if (onOpen) {
-            focusElement(() => this._originalInputElement || this._freeInputElement)
+            focusElement(
+                () => this._originalInputElement || this._freeInputElement
+            )
             segmentTracker.logEvent(
                 actionName === ShopifyAction.CREATE_ORDER
-                    ? segmentTracker.EVENTS.SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_OPEN
-                    : segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_SHIPPING_POPOVER_OPEN
+                    ? segmentTracker.EVENTS
+                          .SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_OPEN
+                    : segmentTracker.EVENTS
+                          .SHOPIFY_DUPLICATE_ORDER_SHIPPING_POPOVER_OPEN
             )
         } else if (onClose) {
             focusElement(() => this._buttonElement)
@@ -96,10 +108,10 @@ export default class ShippingPopover extends React.PureComponent<Props, State> {
         }
 
         if (
-            defaultValue
-            && value.get('code') === defaultValue.get('code')
-            && value.get('price') === defaultValue.get('price')
-            && value.get('title') === defaultValue.get('title')
+            defaultValue &&
+            value.get('code') === defaultValue.get('code') &&
+            value.get('price') === defaultValue.get('price') &&
+            value.get('title') === defaultValue.get('title')
         ) {
             return {
                 type: 'original',
@@ -127,9 +139,9 @@ export default class ShippingPopover extends React.PureComponent<Props, State> {
         const {currencyCode} = this.props
 
         return (
-            value.get('code') === 'custom'
-            && value.get('price') === formatPrice(0, currencyCode)
-            && value.get('title') === ShippingPopover._FREE_SHIPPING_TITLE
+            value.get('code') === 'custom' &&
+            value.get('price') === formatPrice(0, currencyCode) &&
+            value.get('title') === ShippingPopover._FREE_SHIPPING_TITLE
         )
     }
 
@@ -171,18 +183,22 @@ export default class ShippingPopover extends React.PureComponent<Props, State> {
                 onChange(defaultValue)
                 break
             case 'free':
-                onChange(fromJS({
-                    code: 'custom',
-                    price: formatPrice(0, currencyCode),
-                    title: ShippingPopover._FREE_SHIPPING_TITLE,
-                }))
+                onChange(
+                    fromJS({
+                        code: 'custom',
+                        price: formatPrice(0, currencyCode),
+                        title: ShippingPopover._FREE_SHIPPING_TITLE,
+                    })
+                )
                 break
             case 'custom':
-                onChange(fromJS({
-                    code: 'custom',
-                    price: formatPrice(price, currencyCode),
-                    title: title || 'Custom',
-                }))
+                onChange(
+                    fromJS({
+                        code: 'custom',
+                        price: formatPrice(price, currencyCode),
+                        title: title || 'Custom',
+                    })
+                )
                 break
             default:
                 break
@@ -190,8 +206,10 @@ export default class ShippingPopover extends React.PureComponent<Props, State> {
 
         segmentTracker.logEvent(
             actionName === ShopifyAction.CREATE_ORDER
-                ? segmentTracker.EVENTS.SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_APPLY
-                : segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_SHIPPING_POPOVER_APPLY,
+                ? segmentTracker.EVENTS
+                      .SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_APPLY
+                : segmentTracker.EVENTS
+                      .SHOPIFY_DUPLICATE_ORDER_SHIPPING_POPOVER_APPLY,
             {type}
         )
     }
@@ -210,8 +228,10 @@ export default class ShippingPopover extends React.PureComponent<Props, State> {
 
         segmentTracker.logEvent(
             actionName === ShopifyAction.CREATE_ORDER
-                ? segmentTracker.EVENTS.SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_REMOVE
-                : segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_SHIPPING_POPOVER_REMOVE
+                ? segmentTracker.EVENTS
+                      .SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_REMOVE
+                : segmentTracker.EVENTS
+                      .SHOPIFY_DUPLICATE_ORDER_SHIPPING_POPOVER_REMOVE
         )
     }
 
@@ -222,15 +242,26 @@ export default class ShippingPopover extends React.PureComponent<Props, State> {
 
         segmentTracker.logEvent(
             actionName === ShopifyAction.CREATE_ORDER
-                ? segmentTracker.EVENTS.SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_CLOSE
-                : segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_SHIPPING_POPOVER_CLOSE
+                ? segmentTracker.EVENTS
+                      .SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_CLOSE
+                : segmentTracker.EVENTS
+                      .SHOPIFY_DUPLICATE_ORDER_SHIPPING_POPOVER_CLOSE
         )
     }
 
     render() {
-        const {id, children, placement, editable, value, currencyCode, defaultValue} = this.props
+        const {
+            id,
+            children,
+            placement,
+            editable,
+            value,
+            currencyCode,
+            defaultValue,
+        } = this.props
         const {isOpen, type, title, price} = this.state
-        const shouldDisplayOriginalOption = !!defaultValue && !this._isFreeShipping(defaultValue)
+        const shouldDisplayOriginalOption =
+            !!defaultValue && !this._isFreeShipping(defaultValue)
 
         return (
             <div>
@@ -246,23 +277,19 @@ export default class ShippingPopover extends React.PureComponent<Props, State> {
                 >
                     <strong>{children}</strong>
                 </Button>
-                {value && <span className={css.title}>{value.get('title')}</span>}
+                {value && (
+                    <span className={css.title}>{value.get('title')}</span>
+                )}
                 <Popover
                     placement={placement}
                     isOpen={isOpen}
                     target={id}
                     toggle={this._toggle}
                 >
-                    <Form
-                        onKeyDown={this._onKeyDown}
-                        onSubmit={this._onSubmit}
-                    >
+                    <Form onKeyDown={this._onKeyDown} onSubmit={this._onSubmit}>
                         <PopoverBody className="pt-3">
                             {shouldDisplayOriginalOption && (
-                                <FormGroup
-                                    check
-                                    className="mb-3"
-                                >
+                                <FormGroup check className="mb-3">
                                     <Label check>
                                         <Input
                                             type="radio"
@@ -271,17 +298,23 @@ export default class ShippingPopover extends React.PureComponent<Props, State> {
                                             required
                                             checked={type === 'original'}
                                             tabIndex={0}
-                                            innerRef={this._saveOriginalInputRef}
+                                            innerRef={
+                                                this._saveOriginalInputRef
+                                            }
                                             onChange={this._onTypeChange}
                                         />
                                         <span className="d-inline-block ml-1">
                                             {defaultValue && (
                                                 <span className="d-block">
                                                     {defaultValue.get('title')}
-                                                    <br/>
+                                                    <br />
                                                     <MoneyAmount
-                                                        currencyCode={currencyCode}
-                                                        amount={defaultValue.get('price')}
+                                                        currencyCode={
+                                                            currencyCode
+                                                        }
+                                                        amount={defaultValue.get(
+                                                            'price'
+                                                        )}
                                                     />
                                                 </span>
                                             )}
@@ -289,10 +322,7 @@ export default class ShippingPopover extends React.PureComponent<Props, State> {
                                     </Label>
                                 </FormGroup>
                             )}
-                            <FormGroup
-                                check
-                                className="mb-3"
-                            >
+                            <FormGroup check className="mb-3">
                                 <Label check>
                                     <Input
                                         type="radio"
@@ -338,31 +368,28 @@ export default class ShippingPopover extends React.PureComponent<Props, State> {
                                 />
                             </div>
                         </PopoverBody>
-                        <hr className="mb-0"/>
+                        <hr className="mb-0" />
                         <PopoverBody className="d-flex">
-                            {!!value
-                                ? (
-                                    <Button
-                                        type="button"
-                                        color="danger"
-                                        tabIndex={0}
-                                        className={css.focusable}
-                                        onClick={this._onRemove}
-                                    >
-                                        Remove
-                                    </Button>
-                                )
-                                : (
-                                    <Button
-                                        type="button"
-                                        tabIndex={0}
-                                        className={css.focusable}
-                                        onClick={this._onClose}
-                                    >
-                                        Close
-                                    </Button>
-                                )
-                            }
+                            {!!value ? (
+                                <Button
+                                    type="button"
+                                    color="danger"
+                                    tabIndex={0}
+                                    className={css.focusable}
+                                    onClick={this._onRemove}
+                                >
+                                    Remove
+                                </Button>
+                            ) : (
+                                <Button
+                                    type="button"
+                                    tabIndex={0}
+                                    className={css.focusable}
+                                    onClick={this._onClose}
+                                >
+                                    Close
+                                </Button>
+                            )}
                             <Button
                                 color="primary"
                                 type="submit"

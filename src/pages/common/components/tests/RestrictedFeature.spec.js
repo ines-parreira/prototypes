@@ -4,7 +4,6 @@ import {shallow} from 'enzyme'
 
 import RestrictedFeature from '../RestrictedFeature'
 
-
 describe('RestrictedFeature component', () => {
     it('should render image carusel and Lightbox', () => {
         const component = shallow(
@@ -14,7 +13,10 @@ describe('RestrictedFeature component', () => {
                 alertMsg={
                     <>
                         This feature is only available for Pro and above plans.
-                        <Link to="/app/settings/billing/plans"> Upgrade here.</Link>
+                        <Link to="/app/settings/billing/plans">
+                            {' '}
+                            Upgrade here.
+                        </Link>
                     </>
                 }
             />

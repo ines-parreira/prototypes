@@ -2,12 +2,22 @@
 import {fromJS, type Map} from 'immutable'
 import _find from 'lodash/find'
 
-import {TicketMessageSourceTypes, type TicketMessageSourceType, TicketStatuses, TicketChannels, type TicketChannel} from '../business/ticket'
+import {
+    TicketMessageSourceTypes,
+    type TicketMessageSourceType,
+    TicketStatuses,
+    TicketChannels,
+    type TicketChannel,
+} from '../business/ticket'
 import type {TicketMessage} from '../models/ticket'
 import {compare, getLastMessage, toImmutable} from '../utils'
 import {isForwardedMessage} from '../state/ticket/utils'
 
-import {INTEGRATION_HIDDEN_VARIABLES, INTEGRATION_PREVIOUS_VARIABLES, INTEGRATION_VARIABLES} from './integrations'
+import {
+    INTEGRATION_HIDDEN_VARIABLES,
+    INTEGRATION_PREVIOUS_VARIABLES,
+    INTEGRATION_VARIABLES,
+} from './integrations'
 
 // TODO(business-extract): Deprecated constants => Use directly Channels.XXX in your code
 export const AIRCALL_CHANNEL = TicketChannels.AIRCALL
@@ -38,11 +48,15 @@ export const EMAIL_FORWARD_SOURCE = TicketMessageSourceTypes.EMAIL_FORWARD
 export const EMAIL_SOURCE = TicketMessageSourceTypes.EMAIL
 export const FACEBOOK_COMMENT_SOURCE = TicketMessageSourceTypes.FACEBOOK_COMMENT
 export const FACEBOOK_MESSAGE_SOURCE = TicketMessageSourceTypes.FACEBOOK_MESSAGE
-export const FACEBOOK_MESSENGER_SOURCE = TicketMessageSourceTypes.FACEBOOK_MESSENGER
+export const FACEBOOK_MESSENGER_SOURCE =
+    TicketMessageSourceTypes.FACEBOOK_MESSENGER
 export const FACEBOOK_POST_SOURCE = TicketMessageSourceTypes.FACEBOOK_POST
-export const INSTAGRAM_AD_COMMENT_SOURCE = TicketMessageSourceTypes.INSTAGRAM_AD_COMMENT
-export const INSTAGRAM_AD_MEDIA_SOURCE = TicketMessageSourceTypes.INSTAGRAM_AD_MEDIA
-export const INSTAGRAM_COMMENT_SOURCE = TicketMessageSourceTypes.INSTAGRAM_COMMENT
+export const INSTAGRAM_AD_COMMENT_SOURCE =
+    TicketMessageSourceTypes.INSTAGRAM_AD_COMMENT
+export const INSTAGRAM_AD_MEDIA_SOURCE =
+    TicketMessageSourceTypes.INSTAGRAM_AD_MEDIA
+export const INSTAGRAM_COMMENT_SOURCE =
+    TicketMessageSourceTypes.INSTAGRAM_COMMENT
 export const INSTAGRAM_MEDIA_SOURCE = TicketMessageSourceTypes.INSTAGRAM_MEDIA
 export const INTERNAL_NOTE_SOURCE = TicketMessageSourceTypes.INTERNAL_NOTE
 export const OTTSPOTT_CALL_SOURCE = TicketMessageSourceTypes.OTTSPOTT_CALL
@@ -56,8 +70,14 @@ export const SYSTEM_SOURCE_TYPES = [INTERNAL_NOTE_SOURCE, SYSTEM_MESSAGE_SOURCE]
 
 // source types that can be used to answer
 export const USABLE_SOURCE_TYPES = [
-    CHAT_SOURCE, EMAIL_SOURCE, FACEBOOK_COMMENT_SOURCE, FACEBOOK_MESSAGE_SOURCE, FACEBOOK_MESSENGER_SOURCE,
-    INSTAGRAM_AD_COMMENT_SOURCE, INSTAGRAM_COMMENT_SOURCE, INTERNAL_NOTE_SOURCE
+    CHAT_SOURCE,
+    EMAIL_SOURCE,
+    FACEBOOK_COMMENT_SOURCE,
+    FACEBOOK_MESSAGE_SOURCE,
+    FACEBOOK_MESSENGER_SOURCE,
+    INSTAGRAM_AD_COMMENT_SOURCE,
+    INSTAGRAM_COMMENT_SOURCE,
+    INTERNAL_NOTE_SOURCE,
 ]
 
 export const DEFAULT_SOURCE_TYPE = TicketMessageSourceTypes.EMAIL
@@ -71,87 +91,105 @@ type Variable = {
 }
 
 // available variables in macros
-export const VARIABLES: Variable[] = [{
-    type: 'ticket.customer',
-    name: 'Ticket customer',
-    children: [{
-        name: 'First name',
-        fullName: 'Customer first name',
-        value: '{{ticket.customer.firstname}}',
-    }, {
-        name: 'Last name',
-        fullName: 'Customer last name',
-        value: '{{ticket.customer.lastname}}',
-    }, {
-        name: 'Full name',
-        fullName: 'Customer full name',
-        value: '{{ticket.customer.name}}',
-    }, {
-        name: 'Email',
-        fullName: 'Customer email',
-        value: '{{ticket.customer.email}}',
-    }],
-}, {
-    type: 'current_user',
-    name: 'Current agent',
-    children: [{
-        name: 'First name',
-        fullName: 'Current agent first name',
-        value: '{{current_user.firstname}}',
-    }, {
-        name: 'Last name',
-        fullName: 'Current agent last name',
-        value: '{{current_user.lastname}}',
-    }, {
-        name: 'Full name',
-        fullName: 'Current agent full name',
-        value: '{{current_user.name}}',
-    }, {
-        name: 'Email',
-        fullName: 'Current agent email',
-        value: '{{current_user.email}}',
-    }, {
-        name: 'Bio',
-        fullName: 'Current agent bio',
-        value: '{{current_user.bio}}',
-    }],
-}, {
-    type: 'survey',
-    explicit: true,
-    name: 'Satisfaction Survey',
-    value: '{{satisfaction_survey_url}}',
-},
-...INTEGRATION_VARIABLES
+export const VARIABLES: Variable[] = [
+    {
+        type: 'ticket.customer',
+        name: 'Ticket customer',
+        children: [
+            {
+                name: 'First name',
+                fullName: 'Customer first name',
+                value: '{{ticket.customer.firstname}}',
+            },
+            {
+                name: 'Last name',
+                fullName: 'Customer last name',
+                value: '{{ticket.customer.lastname}}',
+            },
+            {
+                name: 'Full name',
+                fullName: 'Customer full name',
+                value: '{{ticket.customer.name}}',
+            },
+            {
+                name: 'Email',
+                fullName: 'Customer email',
+                value: '{{ticket.customer.email}}',
+            },
+        ],
+    },
+    {
+        type: 'current_user',
+        name: 'Current agent',
+        children: [
+            {
+                name: 'First name',
+                fullName: 'Current agent first name',
+                value: '{{current_user.firstname}}',
+            },
+            {
+                name: 'Last name',
+                fullName: 'Current agent last name',
+                value: '{{current_user.lastname}}',
+            },
+            {
+                name: 'Full name',
+                fullName: 'Current agent full name',
+                value: '{{current_user.name}}',
+            },
+            {
+                name: 'Email',
+                fullName: 'Current agent email',
+                value: '{{current_user.email}}',
+            },
+            {
+                name: 'Bio',
+                fullName: 'Current agent bio',
+                value: '{{current_user.bio}}',
+            },
+        ],
+    },
+    {
+        type: 'survey',
+        explicit: true,
+        name: 'Satisfaction Survey',
+        value: '{{satisfaction_survey_url}}',
+    },
+    ...INTEGRATION_VARIABLES,
 ]
 
 // variables used in some other variables, but which are never available to use on their own
-export const HIDDEN_VARIABLES = [
-    ...INTEGRATION_HIDDEN_VARIABLES
-]
+export const HIDDEN_VARIABLES = [...INTEGRATION_HIDDEN_VARIABLES]
 
 // previously available variables in macros: still displayed as variables but are not available in dropdowns anymore
-export const PREVIOUS_VARIABLES: Variable[] = [{
-    name: 'Ticket Customer',
-    type: 'ticket.requester',
-    children: [{
-        name: 'First name',
-        fullName: 'Customer first name',
-        value: '{{ticket.customer.firstname}}',
-    }, {
-        name: 'Last name',
-        fullName: 'Customer last name',
-        value: '{{ticket.customer.lastname}}',
-    }, {
-        name: 'Full name',
-        fullName: 'Customer full name',
-        value: '{{ticket.customer.name}}',
-    }, {
-        name: 'Email',
-        fullName: 'Customer email',
-        value: '{{ticket.customer.email}}',
-    }],
-},
-...INTEGRATION_PREVIOUS_VARIABLES
+export const PREVIOUS_VARIABLES: Variable[] = [
+    {
+        name: 'Ticket Customer',
+        type: 'ticket.requester',
+        children: [
+            {
+                name: 'First name',
+                fullName: 'Customer first name',
+                value: '{{ticket.customer.firstname}}',
+            },
+            {
+                name: 'Last name',
+                fullName: 'Customer last name',
+                value: '{{ticket.customer.lastname}}',
+            },
+            {
+                name: 'Full name',
+                fullName: 'Customer full name',
+                value: '{{ticket.customer.name}}',
+            },
+            {
+                name: 'Email',
+                fullName: 'Customer email',
+                value: '{{ticket.customer.email}}',
+            },
+        ],
+    },
+    ...INTEGRATION_PREVIOUS_VARIABLES,
 ]
 
 /**
@@ -159,8 +197,9 @@ export const PREVIOUS_VARIABLES: Variable[] = [{
  * @param messages
  */
 export function orderedMessages(messages: Array<TicketMessage>): Map<*, *> {
-    return toImmutable(messages)
-        .sort((a, b) => compare(a.get('created_datetime'), b.get('created_datetime')))
+    return toImmutable(messages).sort((a, b) =>
+        compare(a.get('created_datetime'), b.get('created_datetime'))
+    )
 }
 
 /**
@@ -186,12 +225,19 @@ export function isSystemType(sourceType: TicketMessageSourceType): boolean {
  * @param messages
  * @returns {?TicketMessage}
  */
-export function lastNonSystemTypeMessage(messages: Array<TicketMessage>): ?Map<*, *>  {
-    const filteredMessages = orderedMessages(messages)
-        .filter((message) => {
-            return !isSystemType(message.getIn(['source', 'type'])) && !isForwardedMessage(message)
-        })
-    return !filteredMessages.isEmpty() && fromJS(getLastMessage(filteredMessages.toJS()))
+export function lastNonSystemTypeMessage(
+    messages: Array<TicketMessage>
+): ?Map<*, *> {
+    const filteredMessages = orderedMessages(messages).filter((message) => {
+        return (
+            !isSystemType(message.getIn(['source', 'type'])) &&
+            !isForwardedMessage(message)
+        )
+    })
+    return (
+        !filteredMessages.isEmpty() &&
+        fromJS(getLastMessage(filteredMessages.toJS()))
+    )
 }
 
 /**
@@ -200,7 +246,10 @@ export function lastNonSystemTypeMessage(messages: Array<TicketMessage>): ?Map<*
  * @param messages: the messages for which we want to get a channel
  * @returns {string}: the channel corresponding to the passed source type
  */
-export function sourceTypeToChannel(sourceType: TicketMessageSourceType, messages: Array<TicketMessage> = []): string {
+export function sourceTypeToChannel(
+    sourceType: TicketMessageSourceType,
+    messages: Array<TicketMessage> = []
+): string {
     if (!sourceType) {
         return DEFAULT_CHANNEL
     }
@@ -216,7 +265,10 @@ export function sourceTypeToChannel(sourceType: TicketMessageSourceType, message
         return sourceTypeToChannel(lastSourceType, messages)
     }
 
-    if (sourceType.startsWith('facebook') && sourceType !== TicketMessageSourceTypes.FACEBOOK_MESSENGER) {
+    if (
+        sourceType.startsWith('facebook') &&
+        sourceType !== TicketMessageSourceTypes.FACEBOOK_MESSENGER
+    ) {
         return FACEBOOK_CHANNEL
     }
 
@@ -238,7 +290,9 @@ export function sourceTypeToChannel(sourceType: TicketMessageSourceType, message
 /**
  * Return source type we should set on a **new** message based on the source type of messages we're responding to
  */
-export function responseSourceType(messages: Array<TicketMessage>): TicketMessageSourceType {
+export function responseSourceType(
+    messages: Array<TicketMessage>
+): TicketMessageSourceType {
     if (!messages) {
         return DEFAULT_SOURCE_TYPE
     }
@@ -286,7 +340,10 @@ export function isPublic(sourceType: TicketMessageSourceType): boolean {
  * @returns {boolean}
  */
 export function isRichType(sourceType: TicketMessageSourceType): boolean {
-    return [TicketMessageSourceTypes.EMAIL, TicketMessageSourceTypes.INTERNAL_NOTE].includes(sourceType)
+    return [
+        TicketMessageSourceTypes.EMAIL,
+        TicketMessageSourceTypes.INTERNAL_NOTE,
+    ].includes(sourceType)
 }
 
 /**
@@ -294,7 +351,9 @@ export function isRichType(sourceType: TicketMessageSourceType): boolean {
  * @param sourceType
  * @returns {boolean}
  */
-export function canLeaveInternalNote(sourceType: TicketMessageSourceType): boolean {
+export function canLeaveInternalNote(
+    sourceType: TicketMessageSourceType
+): boolean {
     return sourceType === TicketMessageSourceTypes.INTERNAL_NOTE
 }
 
@@ -316,7 +375,9 @@ export function getVariables(types: Array<string>): Array<Variable> {
  * @param variablesList
  * @returns {Array}
  */
-export function getVariablesList(variablesList: Array<Object> = VARIABLES): Array<Object> {
+export function getVariablesList(
+    variablesList: Array<Object> = VARIABLES
+): Array<Object> {
     const variables = []
 
     variablesList.forEach((category) => {
@@ -359,7 +420,9 @@ export function getVariableWithValue(value: string): ?Object {
     const hiddenVariables = getVariablesList(HIDDEN_VARIABLES)
     const previousVariables = getVariablesList(PREVIOUS_VARIABLES)
 
-    return _find(variables, {value})
-        || _find(previousVariables, {value})
-        || _find(hiddenVariables, {value})
+    return (
+        _find(variables, {value}) ||
+        _find(previousVariables, {value}) ||
+        _find(hiddenVariables, {value})
+    )
 }

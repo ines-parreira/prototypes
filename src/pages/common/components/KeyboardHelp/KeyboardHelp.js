@@ -12,7 +12,7 @@ import keymap from '../../../../config/shortcuts'
 import css from './KeyboardHelp.less'
 
 type State = {
-    isOpen: boolean
+    isOpen: boolean,
 }
 
 export default class KeyboardHelp extends React.Component<{}, State> {
@@ -24,12 +24,12 @@ export default class KeyboardHelp extends React.Component<{}, State> {
         // bind keyboard shortcuts
         shortcutManager.bind('KeyboardHelp', {
             SHOW_HELP: {
-                action: () => this._toggle(true)
+                action: () => this._toggle(true),
             },
             HIDE_HELP: {
                 key: 'esc',
-                action: () => this._toggle(false)
-            }
+                action: () => this._toggle(false),
+            },
         })
     }
 
@@ -57,47 +57,47 @@ export default class KeyboardHelp extends React.Component<{}, State> {
                 className={css.component}
             >
                 <div className={css.content}>
-                    {
-                        Object.keys(keymap).map((componentName, i) => {
-                            const component = keymap[componentName]
-                            const actions = component.actions
+                    {Object.keys(keymap).map((componentName, i) => {
+                        const component = keymap[componentName]
+                        const actions = component.actions
 
-                            return (
-                                <div
-                                    key={i}
-                                    className={classnames(css.group, 'mb-4')}
-                                >
-                                    <h3>{component.description}</h3>
+                        return (
+                            <div
+                                key={i}
+                                className={classnames(css.group, 'mb-4')}
+                            >
+                                <h3>{component.description}</h3>
 
-                                    {
-                                        Object.keys(actions).map((actionName: string, j) => {
-                                            const action = actions[actionName]
+                                {Object.keys(actions).map(
+                                    (actionName: string, j) => {
+                                        const action = actions[actionName]
 
-                                            if (!action.description) {
-                                                return null
-                                            }
+                                        if (!action.description) {
+                                            return null
+                                        }
 
-                                            return (
-                                                <div
-                                                    key={j}
-                                                    className="mb-2"
+                                        return (
+                                            <div key={j} className="mb-2">
+                                                <Badge
+                                                    color="secondary"
+                                                    className={classnames(
+                                                        css.combo,
+                                                        'mr-2'
+                                                    )}
                                                 >
-                                                    <Badge
-                                                        color="secondary"
-                                                        className={classnames(css.combo, 'mr-2')}
-                                                    >
-                                                        {shortcutManager.getActionKeys(action)}
-                                                    </Badge>
+                                                    {shortcutManager.getActionKeys(
+                                                        action
+                                                    )}
+                                                </Badge>
 
-                                                    {action.description}
-                                                </div>
-                                            )
-                                        })
+                                                {action.description}
+                                            </div>
+                                        )
                                     }
-                                </div>
-                            )
-                        })
-                    }
+                                )}
+                            </div>
+                        )
+                    })}
                 </div>
             </Modal>
         )

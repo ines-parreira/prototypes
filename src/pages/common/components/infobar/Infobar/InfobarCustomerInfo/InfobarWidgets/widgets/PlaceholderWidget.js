@@ -12,20 +12,20 @@ import * as integrationSelectors from '../../../../../../../../state/integration
 
 import css from './CardInfobarWidget.less'
 
-
 type Props = {
     widget: Map<string, *>,
-    template: Map<string,*>,
+    template: Map<string, *>,
     editing: Object,
-    integration: ?Map<string, *>
+    integration: ?Map<string, *>,
 }
-
 
 @connect((state, ownProps) => {
     const integrationId = ownProps.widget.get('integration_id')
 
     return {
-        integration: integrationId ? integrationSelectors.getIntegrationById(integrationId)(state) : null
+        integration: integrationId
+            ? integrationSelectors.getIntegrationById(integrationId)(state)
+            : null,
     }
 })
 export default class PlaceholderWidget extends React.Component<Props> {
@@ -54,7 +54,13 @@ export default class PlaceholderWidget extends React.Component<Props> {
         const {widget, integration} = this.props
 
         return (
-            <Card className={classnames(css.component, css.placeholder, 'wrapper transparent draggable')}>
+            <Card
+                className={classnames(
+                    css.component,
+                    css.placeholder,
+                    'wrapper transparent draggable'
+                )}
+            >
                 <CardBody className="clearfix">
                     <span className="tools">
                         <i
@@ -65,11 +71,11 @@ export default class PlaceholderWidget extends React.Component<Props> {
                         </i>
                     </span>
                     <h5 className={classnames(css.title)}>
-                        {
-                            integration
-                                ? `Widget for ${integration.get('name')} data`
-                                : `Widget for ${_capitalize(this._renderWidgetType(widget.get('type')))} data`
-                        }
+                        {integration
+                            ? `Widget for ${integration.get('name')} data`
+                            : `Widget for ${_capitalize(
+                                  this._renderWidgetType(widget.get('type'))
+                              )} data`}
                     </h5>
                 </CardBody>
             </Card>

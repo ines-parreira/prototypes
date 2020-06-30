@@ -27,18 +27,17 @@ describe('CreditCard component', () => {
     }
 
     it('should display loader while fetching stripe SDK', () => {
-        const component = shallow(
-            <CreditCard {...minProps}/>
-        )
+        const component = shallow(<CreditCard {...minProps} />)
         expect(component).toMatchSnapshot()
     })
 
     it('should render nothing if loaded, but no current subscription is set', () => {
-        const component = shallow(
-            <CreditCard {...minProps}/>
-        )
+        const component = shallow(<CreditCard {...minProps} />)
         component.setState({isStripeLoaded: true})
-        expect(browserHistory.push).toHaveBeenNthCalledWith(1, '/app/settings/billing/')
+        expect(browserHistory.push).toHaveBeenNthCalledWith(
+            1,
+            '/app/settings/billing/'
+        )
         expect(component).toMatchSnapshot()
     })
 
@@ -49,7 +48,7 @@ describe('CreditCard component', () => {
                 currentPlan={fromJS({
                     name: 'basic',
                     currencySign: '$',
-                    amount: 1000
+                    amount: 1000,
                 })}
                 currentSubscription={fromJS({
                     status: 'active',

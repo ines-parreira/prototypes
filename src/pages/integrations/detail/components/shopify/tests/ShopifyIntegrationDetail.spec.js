@@ -18,7 +18,7 @@ describe('ShopifyIntegrationDetail', () => {
             query: {
                 message: '',
                 message_type: 'info',
-            }
+            },
         },
         notify: _noop,
         actions: {
@@ -41,7 +41,9 @@ describe('ShopifyIntegrationDetail', () => {
                 store={store}
                 {...commonProps}
             />
-        ).dive().dive()
+        )
+            .dive()
+            .dive()
 
         expect(component).toMatchSnapshot()
     })
@@ -49,7 +51,9 @@ describe('ShopifyIntegrationDetail', () => {
     it('should render the page for an integration being created with the name of another existing integration', () => {
         const name = 'foo'
         store = mockStore({
-            integrations: fromJS({integrations: [{type: 'shopify', meta: {shop_name: name}}]})
+            integrations: fromJS({
+                integrations: [{type: 'shopify', meta: {shop_name: name}}],
+            }),
         })
 
         const component = shallow(
@@ -59,7 +63,10 @@ describe('ShopifyIntegrationDetail', () => {
                 store={store}
                 {...commonProps}
             />
-        ).dive().dive().setState({name})
+        )
+            .dive()
+            .dive()
+            .setState({name})
 
         expect(component).toMatchSnapshot()
     })
@@ -74,16 +81,19 @@ describe('ShopifyIntegrationDetail', () => {
                     meta: {
                         import_state: {
                             customers: {
-                                is_over: true
-                            }
-                        }
-                    }
+                                is_over: true,
+                            },
+                        },
+                    },
                 })}
                 isUpdate={true}
                 store={store}
                 {...commonProps}
             />
-        ).dive().dive().setState({name})
+        )
+            .dive()
+            .dive()
+            .setState({name})
 
         expect(component).toMatchSnapshot()
     })
@@ -98,17 +108,20 @@ describe('ShopifyIntegrationDetail', () => {
                     meta: {
                         import_state: {
                             customers: {
-                                is_over: true
-                            }
-                        }
+                                is_over: true,
+                            },
+                        },
                     },
-                    deactivated_datetime: '2018-01-01T18:52:17'
+                    deactivated_datetime: '2018-01-01T18:52:17',
                 })}
                 isUpdate={true}
                 store={store}
                 {...commonProps}
             />
-        ).dive().dive().setState({name})
+        )
+            .dive()
+            .dive()
+            .setState({name})
 
         expect(component).toMatchSnapshot()
     })
@@ -123,17 +136,20 @@ describe('ShopifyIntegrationDetail', () => {
                     meta: {
                         import_state: {
                             customers: {
-                                is_over: true
-                            }
+                                is_over: true,
+                            },
                         },
-                        need_scope_update: true
-                    }
+                        need_scope_update: true,
+                    },
                 })}
                 isUpdate={true}
                 store={store}
                 {...commonProps}
             />
-        ).dive().dive().setState({name})
+        )
+            .dive()
+            .dive()
+            .setState({name})
 
         expect(component).toMatchSnapshot()
     })
@@ -148,16 +164,19 @@ describe('ShopifyIntegrationDetail', () => {
                     meta: {
                         import_state: {
                             customers: {
-                                is_over: false
-                            }
-                        }
-                    }
+                                is_over: false,
+                            },
+                        },
+                    },
                 })}
                 isUpdate={true}
                 store={store}
                 {...commonProps}
             />
-        ).dive().dive().setState({name})
+        )
+            .dive()
+            .dive()
+            .setState({name})
 
         expect(component).toMatchSnapshot()
     })
@@ -172,19 +191,22 @@ describe('ShopifyIntegrationDetail', () => {
                     meta: {
                         import_state: {
                             customers: {
-                                is_over: true
-                            }
-                        }
-                    }
+                                is_over: true,
+                            },
+                        },
+                    },
                 })}
                 isUpdate={true}
                 store={store}
                 {...commonProps}
                 loading={fromJS({
-                    updateIntegration: true
+                    updateIntegration: true,
                 })}
             />
-        ).dive().dive().setState({name})
+        )
+            .dive()
+            .dive()
+            .setState({name})
 
         expect(component).toMatchSnapshot()
     })
@@ -199,19 +221,22 @@ describe('ShopifyIntegrationDetail', () => {
                     meta: {
                         import_state: {
                             customers: {
-                                is_over: true
-                            }
+                                is_over: true,
+                            },
                         },
                         oauth: {
-                            status: 'pending'
-                        }
-                    }
+                            status: 'pending',
+                        },
+                    },
                 })}
                 isUpdate={true}
                 store={store}
                 {...commonProps}
             />
-        ).dive().dive().setState({name})
+        )
+            .dive()
+            .dive()
+            .setState({name})
 
         expect(component).toMatchSnapshot()
     })

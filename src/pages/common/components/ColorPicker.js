@@ -1,12 +1,7 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import _uniqueId from 'lodash/uniqueId'
-import {
-    Button,
-    Popover,
-    PopoverBody,
-    Input,
-} from 'reactstrap'
+import {Button, Popover, PopoverBody, Input} from 'reactstrap'
 
 import {DEFAULT_TAG_COLOR} from '../../../config'
 
@@ -90,20 +85,20 @@ export default class ColorPicker extends Component {
                 >
                     <PopoverBody className={css['popover-content']}>
                         <div className={css.popup}>
-                            {
-                                colors.map((color) => {
-                                    return (
-                                        <div
-                                            key={color}
-                                            className={css.choice}
-                                            style={{
-                                                backgroundColor: color,
-                                            }}
-                                            onClick={() => this._handleClickChoice(color)}
-                                        />
-                                    )
-                                })
-                            }
+                            {colors.map((color) => {
+                                return (
+                                    <div
+                                        key={color}
+                                        className={css.choice}
+                                        style={{
+                                            backgroundColor: color,
+                                        }}
+                                        onClick={() =>
+                                            this._handleClickChoice(color)
+                                        }
+                                    />
+                                )
+                            })}
                             <Input
                                 bsSize="sm"
                                 className={css.input}

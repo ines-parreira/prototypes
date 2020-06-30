@@ -16,16 +16,12 @@ describe('<AddLink />', () => {
         onTextChange: _noop,
         onUrlChange: _noop,
         text: '',
-        url: ''
+        url: '',
     }
 
     it('should allow to submit a valid url', () => {
         const component = shallow(
-            <AddLink
-                {...defaultProps}
-                text="foo"
-                url="http://gorgias.io"
-            />
+            <AddLink {...defaultProps} text="foo" url="http://gorgias.io" />
         )
         const button = component.find('Button')
         expect(button.props().disabled).toBe(false)

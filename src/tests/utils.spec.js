@@ -7,7 +7,13 @@ import plan from '../fixtures/plan'
 import * as utils from '../utils'
 import TICKET_LANGUAGES from '../config/ticketLanguages'
 import schemasJSON from '../fixtures/openapi'
-import {ADMIN_ROLE, AGENT_ROLE, BASIC_AGENT_ROLE, LITE_AGENT_ROLE, OBSERVER_AGENT_ROLE} from '../config/user'
+import {
+    ADMIN_ROLE,
+    AGENT_ROLE,
+    BASIC_AGENT_ROLE,
+    LITE_AGENT_ROLE,
+    OBSERVER_AGENT_ROLE,
+} from '../config/user'
 
 describe('global utils', () => {
     describe('formatDatetime', () => {
@@ -33,11 +39,17 @@ describe('global utils', () => {
         })
 
         it('invalid timezone defaults to UTC', () => {
-            expect(utils.formatDatetime('2013-05-10 12:00', 'xxx')).toBe('05/10/2013')
+            expect(utils.formatDatetime('2013-05-10 12:00', 'xxx')).toBe(
+                '05/10/2013'
+            )
         })
 
         it('iso format - with timezone', () => {
-            const time = utils.formatDatetime('2016-06-09T07:30:07+00:00', 'Europe/Paris', 'YYYY-DD-MM HH:mm')
+            const time = utils.formatDatetime(
+                '2016-06-09T07:30:07+00:00',
+                'Europe/Paris',
+                'YYYY-DD-MM HH:mm'
+            )
             expect(time).toBe('2016-09-06 09:30')
         })
 
@@ -187,23 +199,34 @@ describe('global utils', () => {
         const _plan = fromJS(plan)
 
         it('should determine if user has reached min limit', () => {
-            expect(utils.hasReachedLimit('min', plan.limits.min - 1, _plan)).toEqual(false)
-            expect(utils.hasReachedLimit('min', plan.limits.min, _plan)).toEqual(true)
+            expect(
+                utils.hasReachedLimit('min', plan.limits.min - 1, _plan)
+            ).toEqual(false)
+            expect(
+                utils.hasReachedLimit('min', plan.limits.min, _plan)
+            ).toEqual(true)
         })
 
         it('should determine if user has reached default limit', () => {
-            expect(utils.hasReachedLimit('default', plan.free_tickets - 1, _plan)).toEqual(false)
-            expect(utils.hasReachedLimit('default', plan.free_tickets, _plan)).toEqual(true)
+            expect(
+                utils.hasReachedLimit('default', plan.free_tickets - 1, _plan)
+            ).toEqual(false)
+            expect(
+                utils.hasReachedLimit('default', plan.free_tickets, _plan)
+            ).toEqual(true)
         })
 
         it('should determine if user has reached max limit', () => {
-            expect(utils.hasReachedLimit('max', plan.limits.max - 1, _plan)).toEqual(false)
-            expect(utils.hasReachedLimit('max', plan.limits.max, _plan)).toEqual(true)
+            expect(
+                utils.hasReachedLimit('max', plan.limits.max - 1, _plan)
+            ).toEqual(false)
+            expect(
+                utils.hasReachedLimit('max', plan.limits.max, _plan)
+            ).toEqual(true)
         })
     })
 
     describe('isGorgiasSupportAddress', () => {
-
         it('should find our base gorgias address', () => {
             const gorgiasSupportAddresses = [
                 'support@acme.gorgias.io',
@@ -229,7 +252,6 @@ describe('global utils', () => {
                 expect(utils.isGorgiasSupportAddress(address)).toEqual(false)
             })
         })
-
     })
 
     describe('toQueryParams', () => {
@@ -245,9 +267,11 @@ describe('global utils', () => {
     describe('hasRole', () => {
         it('should determine if user has required role (observer agent)', () => {
             const user = fromJS({
-                roles: [{
-                    name: OBSERVER_AGENT_ROLE,
-                }],
+                roles: [
+                    {
+                        name: OBSERVER_AGENT_ROLE,
+                    },
+                ],
             })
             expect(utils.hasRole(user, OBSERVER_AGENT_ROLE)).toEqual(true)
             expect(utils.hasRole(user, LITE_AGENT_ROLE)).toEqual(false)
@@ -257,9 +281,11 @@ describe('global utils', () => {
         })
         it('should determine if user has required role (agent)', () => {
             const user = fromJS({
-                roles: [{
-                    name: AGENT_ROLE,
-                }],
+                roles: [
+                    {
+                        name: AGENT_ROLE,
+                    },
+                ],
             })
             expect(utils.hasRole(user, OBSERVER_AGENT_ROLE)).toEqual(true)
             expect(utils.hasRole(user, LITE_AGENT_ROLE)).toEqual(true)
@@ -270,9 +296,11 @@ describe('global utils', () => {
 
         it('should determine if user has required role (admin)', () => {
             const user = fromJS({
-                roles: [{
-                    name: ADMIN_ROLE,
-                }],
+                roles: [
+                    {
+                        name: ADMIN_ROLE,
+                    },
+                ],
             })
             expect(utils.hasRole(user, OBSERVER_AGENT_ROLE)).toEqual(true)
             expect(utils.hasRole(user, LITE_AGENT_ROLE)).toEqual(true)
@@ -315,33 +343,57 @@ describe('global utils', () => {
 
     describe('resolvePropertyName', () => {
         it('should resolve property name', () => {
-            expect(utils.resolvePropertyName('Attachment')).toEqual('Attachment')
+            expect(utils.resolvePropertyName('Attachment')).toEqual(
+                'Attachment'
+            )
             expect(utils.resolvePropertyName('Widget')).toEqual('Widget')
             expect(utils.resolvePropertyName('View')).toEqual('View')
-            expect(utils.resolvePropertyName('UserSetting')).toEqual('UserSetting')
-            expect(utils.resolvePropertyName('UserConnection')).toEqual('UserConnection')
+            expect(utils.resolvePropertyName('UserSetting')).toEqual(
+                'UserSetting'
+            )
+            expect(utils.resolvePropertyName('UserConnection')).toEqual(
+                'UserConnection'
+            )
             expect(utils.resolvePropertyName('ViewCount')).toEqual('ViewCount')
             expect(utils.resolvePropertyName('User')).toEqual('User')
             expect(utils.resolvePropertyName('Ticket')).toEqual('Ticket')
             expect(utils.resolvePropertyName('Macro')).toEqual('Macro')
             expect(utils.resolvePropertyName('Account')).toEqual('Account')
             expect(utils.resolvePropertyName('UserAuth')).toEqual('UserAuth')
-            expect(utils.resolvePropertyName('IntegrationSmooch')).toEqual('IntegrationSmooch')
-            expect(utils.resolvePropertyName('Integration')).toEqual('Integration')
+            expect(utils.resolvePropertyName('IntegrationSmooch')).toEqual(
+                'IntegrationSmooch'
+            )
+            expect(utils.resolvePropertyName('Integration')).toEqual(
+                'Integration'
+            )
             expect(utils.resolvePropertyName('Role')).toEqual('Role')
             expect(utils.resolvePropertyName('Action')).toEqual('Action')
-            expect(utils.resolvePropertyName('UserChannel')).toEqual('UserChannel')
-            expect(utils.resolvePropertyName('SourceAddress')).toEqual('SourceAddress')
-            expect(utils.resolvePropertyName('IntegrationMapping')).toEqual('IntegrationMapping')
-            expect(utils.resolvePropertyName('IntegrationFacebook')).toEqual('IntegrationFacebook')
+            expect(utils.resolvePropertyName('UserChannel')).toEqual(
+                'UserChannel'
+            )
+            expect(utils.resolvePropertyName('SourceAddress')).toEqual(
+                'SourceAddress'
+            )
+            expect(utils.resolvePropertyName('IntegrationMapping')).toEqual(
+                'IntegrationMapping'
+            )
+            expect(utils.resolvePropertyName('IntegrationFacebook')).toEqual(
+                'IntegrationFacebook'
+            )
             expect(utils.resolvePropertyName('Event')).toEqual('Event')
             expect(utils.resolvePropertyName('Tag')).toEqual('Tag')
             expect(utils.resolvePropertyName('Source')).toEqual('Source')
-            expect(utils.resolvePropertyName('SatisfactionSurvey')).toEqual('SatisfactionSurvey')
-            expect(utils.resolvePropertyName('IntegrationHTTP')).toEqual('IntegrationHTTP')
+            expect(utils.resolvePropertyName('SatisfactionSurvey')).toEqual(
+                'SatisfactionSurvey'
+            )
+            expect(utils.resolvePropertyName('IntegrationHTTP')).toEqual(
+                'IntegrationHTTP'
+            )
             expect(utils.resolvePropertyName('Rule')).toEqual('Rule')
 
-            expect(utils.resolvePropertyName('Message')).toEqual('TicketMessage')
+            expect(utils.resolvePropertyName('Message')).toEqual(
+                'TicketMessage'
+            )
         })
     })
 
@@ -349,17 +401,38 @@ describe('global utils', () => {
         const schemas = fromJS(schemasJSON)
 
         it('should find property (always use ref)', () => {
-            expect(utils.findProperty('ticket.tags.name', schemas, true))
-                .toEqual(schemas.getIn(['definitions', 'Tag', 'properties', 'name']).toJS())
+            expect(
+                utils.findProperty('ticket.tags.name', schemas, true)
+            ).toEqual(
+                schemas
+                    .getIn(['definitions', 'Tag', 'properties', 'name'])
+                    .toJS()
+            )
         })
 
         it('should find property (not always use ref)', () => {
-            expect(utils.findProperty('ticket.customer.id', schemas))
-                .toEqual(schemas.getIn(['definitions', 'Ticket', 'properties', 'customer']).toJS())
-            expect(utils.findProperty('message.source.from.address', schemas))
-                .toEqual(schemas.getIn(['definitions', 'SourceAddress', 'properties', 'address']).toJS())
-            expect(utils.findProperty('ticket.tags.name', schemas))
-                .toEqual(schemas.getIn(['definitions', 'Ticket', 'properties', 'tags']).toJS())
+            expect(utils.findProperty('ticket.customer.id', schemas)).toEqual(
+                schemas
+                    .getIn(['definitions', 'Ticket', 'properties', 'customer'])
+                    .toJS()
+            )
+            expect(
+                utils.findProperty('message.source.from.address', schemas)
+            ).toEqual(
+                schemas
+                    .getIn([
+                        'definitions',
+                        'SourceAddress',
+                        'properties',
+                        'address',
+                    ])
+                    .toJS()
+            )
+            expect(utils.findProperty('ticket.tags.name', schemas)).toEqual(
+                schemas
+                    .getIn(['definitions', 'Ticket', 'properties', 'tags'])
+                    .toJS()
+            )
         })
     })
 
@@ -367,14 +440,24 @@ describe('global utils', () => {
         const schemas = fromJS(schemasJSON)
 
         it('should return first operator when there is no default', () => {
-            expect(['isEmpty', 'isNotEmpty']).toContain(utils.getDefaultOperator('ticket.snooze_datetime', schemas))
-            expect(['eq', 'neq']).toContain(utils.getDefaultOperator('ticket.language', schemas))
-            expect(['eq', 'neq']).toContain(utils.getDefaultOperator('ticket.channel', schemas))
+            expect(['isEmpty', 'isNotEmpty']).toContain(
+                utils.getDefaultOperator('ticket.snooze_datetime', schemas)
+            )
+            expect(['eq', 'neq']).toContain(
+                utils.getDefaultOperator('ticket.language', schemas)
+            )
+            expect(['eq', 'neq']).toContain(
+                utils.getDefaultOperator('ticket.channel', schemas)
+            )
         })
 
         it('should return default operator', () => {
-            expect(utils.getDefaultOperator('ticket.created_datetime', schemas)).toBe('gteTimedelta')
-            expect(utils.getDefaultOperator('ticket.tags', schemas)).toBe('containsAll')
+            expect(
+                utils.getDefaultOperator('ticket.created_datetime', schemas)
+            ).toBe('gteTimedelta')
+            expect(utils.getDefaultOperator('ticket.tags', schemas)).toBe(
+                'containsAll'
+            )
         })
     })
 
@@ -389,11 +472,18 @@ describe('global utils', () => {
         })
 
         it('should work with no format', () => {
-            expect(utils.proxifyImages('<img src="http://gorgias.io/hello" />')).toMatchSnapshot()
+            expect(
+                utils.proxifyImages('<img src="http://gorgias.io/hello" />')
+            ).toMatchSnapshot()
         })
 
         it('should work with format', () => {
-            expect(utils.proxifyImages('<img src="http://gorgias.io/hello" />', '100x100')).toMatchSnapshot()
+            expect(
+                utils.proxifyImages(
+                    '<img src="http://gorgias.io/hello" />',
+                    '100x100'
+                )
+            ).toMatchSnapshot()
         })
 
         it('should raise if IMAGE_PROXY_URL is not defined', () => {
@@ -402,19 +492,31 @@ describe('global utils', () => {
         })
 
         it('should work with no src', () => {
-            expect(utils.proxifyImages('<img alt="no-src" />')).toMatchSnapshot()
+            expect(
+                utils.proxifyImages('<img alt="no-src" />')
+            ).toMatchSnapshot()
         })
 
         it('should work with direct image', () => {
-            expect(utils.proxifyImages('<img src="http://gorgias.io/image.jpg" />')).toMatchSnapshot()
+            expect(
+                utils.proxifyImages('<img src="http://gorgias.io/image.jpg" />')
+            ).toMatchSnapshot()
         })
 
         it('should work with pathname', () => {
-            expect(utils.proxifyImages('<img src="http://gorgias.io/test/x.jpg" />')).toMatchSnapshot()
+            expect(
+                utils.proxifyImages(
+                    '<img src="http://gorgias.io/test/x.jpg" />'
+                )
+            ).toMatchSnapshot()
         })
 
         it('should work with search query but not uri-encode it', () => {
-            expect(utils.proxifyImages('<img src="http://gorgias.io/test/x.jpg?x=123&y=456#123" />')).toMatchSnapshot()
+            expect(
+                utils.proxifyImages(
+                    '<img src="http://gorgias.io/test/x.jpg?x=123&y=456#123" />'
+                )
+            ).toMatchSnapshot()
         })
 
         it('should work with self closing', () => {
@@ -422,7 +524,8 @@ describe('global utils', () => {
         })
 
         it('should work with richer complex html', () => {
-            expect(utils.proxifyImages(`<div class="something">
+            expect(
+                utils.proxifyImages(`<div class="something">
 <i>italic</i><b>bold</b><u>under</u>
 <span>xxxxxsp <span>inside <span>inside a span</span></span> </span>
 <uknown-tag>11233</uknown-tag>
@@ -430,7 +533,8 @@ describe('global utils', () => {
 <img src="http://some-image" alt="bla ">
 <strong><img src="https://image2"></strong>
 </div>
-`)).toMatchSnapshot()
+`)
+            ).toMatchSnapshot()
         })
     })
 
@@ -483,15 +587,16 @@ describe('global utils', () => {
     describe('getLanguageDisplayName', () => {
         it('should return the display name correctly from the locale name', () => {
             TICKET_LANGUAGES.forEach((lang) => {
-                expect(utils.getLanguageDisplayName(lang.localeName)).toEqual(lang.displayName)
+                expect(utils.getLanguageDisplayName(lang.localeName)).toEqual(
+                    lang.displayName
+                )
             })
         })
     })
 
     describe('errorToChildren', () => {
         it('should return null with no data', () => {
-            expect(utils.errorToChildren({}))
-                .toEqual(null)
+            expect(utils.errorToChildren({})).toEqual(null)
         })
 
         it('should return parsed markup', () => {
@@ -500,15 +605,17 @@ describe('global utils', () => {
                     data: {
                         error: {
                             data: {
-                                hello: ['world'], receiver: ['Missing data', 'Invalid value'],
+                                hello: ['world'],
+                                receiver: ['Missing data', 'Invalid value'],
                             },
                         },
                     },
                 },
             }
 
-            expect(utils.errorToChildren(error))
-                .toMatch('<li>hello: world</li><li>receiver: Missing data</li><li>receiver: Invalid value</li>')
+            expect(utils.errorToChildren(error)).toMatch(
+                '<li>hello: world</li><li>receiver: Missing data</li><li>receiver: Invalid value</li>'
+            )
         })
     })
 

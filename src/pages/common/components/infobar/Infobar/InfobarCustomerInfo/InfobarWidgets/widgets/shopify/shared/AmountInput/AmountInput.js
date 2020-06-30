@@ -56,19 +56,32 @@ export default class AmountInput extends React.PureComponent<Props> {
     }
 
     render() {
-        const {id, value, min, max, symbol, currencyCode, required, disabled, className, saveInputRef} = this.props
-        const step = symbol !== '%' && NON_FRACTIONAL_CURRENCIES.includes(currencyCode) ? 1 : 0.01
+        const {
+            id,
+            value,
+            min,
+            max,
+            symbol,
+            currencyCode,
+            required,
+            disabled,
+            className,
+            saveInputRef,
+        } = this.props
+        const step =
+            symbol !== '%' && NON_FRACTIONAL_CURRENCIES.includes(currencyCode)
+                ? 1
+                : 0.01
         const hasRightLabel = symbol === '%'
         const label = symbol || (
-            <ShopifyMoneySymbol
-                currencyCode={currencyCode}
-                short
-            />
+            <ShopifyMoneySymbol currencyCode={currencyCode} short />
         )
 
         return (
             <div className={classnames(css.container, className)}>
-                {!hasRightLabel && <span className={css.leftLabel}>{label}</span>}
+                {!hasRightLabel && (
+                    <span className={css.leftLabel}>{label}</span>
+                )}
                 <Input
                     type="number"
                     id={id}
@@ -86,7 +99,9 @@ export default class AmountInput extends React.PureComponent<Props> {
                         [css.hasRightLabel]: hasRightLabel,
                     })}
                 />
-                {hasRightLabel && <span className={css.rightLabel}>{label}</span>}
+                {hasRightLabel && (
+                    <span className={css.rightLabel}>{label}</span>
+                )}
             </div>
         )
     }

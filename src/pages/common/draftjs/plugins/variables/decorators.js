@@ -5,30 +5,33 @@ import * as integrationsHelpers from '../../../../../state/integrations/helpers'
 
 import {setVariableEditable} from './utils'
 
-
 const placeholderRender = (entity) => {
     const {fullName, type, integration} = entity
     const entityIsIntegration = type && integration
 
     if (entityIsIntegration) {
-        return <span>
-            <img
-                alt="integration icon"
-                className="badge-variable-icon"
-                src={integrationsHelpers.getIconFromType(type)}
-            />
-            {fullName}
-        </span>
+        return (
+            <span>
+                <img
+                    alt="integration icon"
+                    className="badge-variable-icon"
+                    src={integrationsHelpers.getIconFromType(type)}
+                />
+                {fullName}
+            </span>
+        )
     }
 
     if (type === 'survey') {
-        return <span>
-            <i className="material-icons">star_rate</i>
-            <i className="material-icons">star_rate</i>
-            <i className="material-icons">star_rate</i>
-            <i className="material-icons">star_rate</i>
-            <i className="material-icons">star_rate</i>
-        </span>
+        return (
+            <span>
+                <i className="material-icons">star_rate</i>
+                <i className="material-icons">star_rate</i>
+                <i className="material-icons">star_rate</i>
+                <i className="material-icons">star_rate</i>
+                <i className="material-icons">star_rate</i>
+            </span>
+        )
     }
 
     return fullName
@@ -37,14 +40,22 @@ const placeholderRender = (entity) => {
 // VARIABLE
 export const variable = {
     strategy: (contentBlock, callback, contentState) => {
-        contentBlock.findEntityRanges(
-            (character) => {
-                const entityKey = character.getEntity()
-                return entityKey !== null && contentState.getEntity(entityKey).getType() === 'variable'
-            }, callback
-        )
+        contentBlock.findEntityRanges((character) => {
+            const entityKey = character.getEntity()
+            return (
+                entityKey !== null &&
+                contentState.getEntity(entityKey).getType() === 'variable'
+            )
+        }, callback)
     },
-    component: ({offsetKey, children, entityKey, getEditorState, contentState, setEditorState}) => { // eslint-disable-line
+    component: ({
+        offsetKey, // eslint-disable-line react/prop-types
+        children, // eslint-disable-line react/prop-types
+        entityKey, // eslint-disable-line react/prop-types
+        getEditorState, // eslint-disable-line react/prop-types
+        contentState, // eslint-disable-line react/prop-types
+        setEditorState, // eslint-disable-line react/prop-types
+    }) => {
         const entity = contentState.getEntity(entityKey).getData()
         const {fullName, type, integration, immutable} = entity
         const entityIsIntegration = type && integration
@@ -67,25 +78,21 @@ export const variable = {
                 entityKey,
                 offsetKey,
                 getEditorState,
-                setEditorState
+                setEditorState,
             })
         }
 
         if (!immutable) {
-            return (
-                <span className="d-inline text-primary">
-                    {children}
-                </span>
-            )
+            return <span className="d-inline text-primary">{children}</span>
         }
 
         return (
-            <div
-                className="d-inline-block align-middle"
-                title={title}
-            >
+            <div className="d-inline-block align-middle" title={title}>
                 <div
-                    className={classnames('badge-variable', `badge-variable-type-${type}`)}
+                    className={classnames(
+                        'badge-variable',
+                        `badge-variable-type-${type}`
+                    )}
                     contentEditable={false}
                 >
                     <div onDoubleClick={_makeVariableEditable}>
@@ -103,11 +110,7 @@ export const variable = {
                         <i className="material-icons">create</i>
                     </button>
                 </div>
-                <div
-                    className="hidden"
-                >
-                    {children}
-                </div>
+                <div className="hidden">{children}</div>
             </div>
         )
     },

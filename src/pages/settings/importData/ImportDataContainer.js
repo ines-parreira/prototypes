@@ -12,17 +12,22 @@ import * as integrationSelectors from './../../../state/integrations/selectors'
 
 import * as integrationActions from './../../../state/integrations/actions'
 
-@connect((state) => {
-    return {
-        integrations: integrationSelectors.getIntegrationsByTypes('zendesk')(state),
+@connect(
+    (state) => {
+        return {
+            integrations: integrationSelectors.getIntegrationsByTypes(
+                'zendesk'
+            )(state),
+        }
+    },
+    {
+        fetchIntegrations: integrationActions.fetchIntegrations,
     }
-}, {
-    fetchIntegrations: integrationActions.fetchIntegrations
-})
+)
 export default class ImportDataContainer extends React.Component {
     static propTypes = {
         integrations: ImmutablePropTypes.list.isRequired,
-        fetchIntegrations: PropTypes.func.isRequired
+        fetchIntegrations: PropTypes.func.isRequired,
     }
 
     componentWillMount() {
@@ -37,10 +42,7 @@ export default class ImportDataContainer extends React.Component {
 
             if (integration.getIn(['meta', 'status']) === 'pending') {
                 return (
-                    <Alert
-                        color="info"
-                        className="mb-4"
-                    >
+                    <Alert color="info" className="mb-4">
                         <p>
                             <b className="alert-heading">
                                 <i className="material-icons md-spin mr-2">
@@ -50,32 +52,26 @@ export default class ImportDataContainer extends React.Component {
                             </b>
                         </p>
                         <p>
-                            We are currently importing all your Zendesk data (tickets, agents, admins, end-users and
-                            macros). We will notify you by email when the import is done.
+                            We are currently importing all your Zendesk data
+                            (tickets, agents, admins, end-users and macros). We
+                            will notify you by email when the import is done.
                         </p>
                     </Alert>
-
                 )
             } else if (integration.getIn(['meta', 'status']) === 'success') {
                 return (
-                    <Alert
-                        color="success"
-                        className="mb-4"
-                    >
+                    <Alert color="success" className="mb-4">
                         <p>
                             <b className="alert-heading">
-                                <i className="material-icons mr-2">
-                                    check
-                                </i>
+                                <i className="material-icons mr-2">check</i>
                                 Import from Zendesk completed
                             </b>
                         </p>
                         <p>
-                            We have finished importing all your Zendesk data (tickets, agents, admins, end-users and
-                            macros).
+                            We have finished importing all your Zendesk data
+                            (tickets, agents, admins, end-users and macros).
                         </p>
                     </Alert>
-
                 )
             }
         }
@@ -86,21 +82,17 @@ export default class ImportDataContainer extends React.Component {
     render() {
         return (
             <div className="full-width">
-                <PageHeader title="Import data"/>
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <PageHeader title="Import data" />
+                <Container fluid className="page-container">
                     <div className="mb-3">
                         <p>
-                            Import data (one way) from your current helpdesk into Gorgias.
-                            Note: The import is performed one time only and will not sync your tickets continuously.
+                            Import data (one way) from your current helpdesk
+                            into Gorgias. Note: The import is performed one time
+                            only and will not sync your tickets continuously.
                         </p>
-                        {
-                            this._renderIntegration()
-                        }
+                        {this._renderIntegration()}
                     </div>
-                    <ImportDataList/>
+                    <ImportDataList />
                 </Container>
             </div>
         )

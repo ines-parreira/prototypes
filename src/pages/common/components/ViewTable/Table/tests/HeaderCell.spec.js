@@ -32,10 +32,7 @@ describe('ViewTable::Table::HeaderCell', () => {
 
     it('not main field cell', () => {
         const component = shallow(
-            <HeaderCell
-                {...minProps}
-                field={viewConfig.get('fields').get(1)}
-            />
+            <HeaderCell {...minProps} field={viewConfig.get('fields').get(1)} />
         ).dive()
         expect(component).toMatchSnapshot()
     })
@@ -44,19 +41,16 @@ describe('ViewTable::Table::HeaderCell', () => {
         const component = shallow(
             <HeaderCell
                 {...minProps}
-                field={viewConfig.get('fields').find((field) => field.get('name') === 'created')}
+                field={viewConfig
+                    .get('fields')
+                    .find((field) => field.get('name') === 'created')}
             />
         ).dive()
         expect(component).toMatchSnapshot()
     })
 
     it('last cell', () => {
-        const component = shallow(
-            <HeaderCell
-                {...minProps}
-                isLast
-            />
-        ).dive()
+        const component = shallow(<HeaderCell {...minProps} isLast />).dive()
         expect(component).toMatchSnapshot()
     })
 })

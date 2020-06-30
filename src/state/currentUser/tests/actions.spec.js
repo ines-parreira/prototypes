@@ -34,7 +34,8 @@ describe('current user actions', () => {
 
         mockServer.onPut('/api/users/0/').reply(200, data)
 
-        return store.dispatch(actions.changePassword(data))
+        return store
+            .dispatch(actions.changePassword(data))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
@@ -44,7 +45,8 @@ describe('current user actions', () => {
 
             mockServer.onPost('/api/users/0/settings/').reply(200, data)
 
-            return store.dispatch(actions.submitSetting(data))
+            return store
+                .dispatch(actions.submitSetting(data))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
@@ -53,28 +55,32 @@ describe('current user actions', () => {
 
             mockServer.onPut('/api/users/0/settings/1/').reply(200, data)
 
-            return store.dispatch(actions.submitSetting(data))
+            return store
+                .dispatch(actions.submitSetting(data))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
         it('should update available status and fetch chats', (done) => {
             // the current user is available by default
-            const settings = fromJS([{
-                type: 'preferences',
-                data: {'available': true}
-            }])
+            const settings = fromJS([
+                {
+                    type: 'preferences',
+                    data: {available: true},
+                },
+            ])
             const state = initialState.set('settings', settings)
             store = mockStore({currentUser: state})
 
             // update his status
-            const newSetting = {type: 'preferences', data: {'available': false}}
+            const newSetting = {type: 'preferences', data: {available: false}}
             const chats = {
-                tickets: [{id: 1}]
+                tickets: [{id: 1}],
             }
             mockServer.onPost('/api/users/0/settings/').reply(200, newSetting)
             mockServer.onGet('/api/activity/chats/').reply(200, chats)
 
-            return store.dispatch(actions.submitSetting(newSetting))
+            return store
+                .dispatch(actions.submitSetting(newSetting))
                 .then(() => {
                     setTimeout(() => {
                         expect(store.getActions()).toMatchSnapshot()
@@ -86,25 +92,28 @@ describe('current user actions', () => {
 
     describe('toggleActiveStatus()', () => {
         it('should dispatch without status', () => {
-
-            const expectedActions = [{
-                type: types.TOGGLE_ACTIVE_STATUS,
-            }]
+            const expectedActions = [
+                {
+                    type: types.TOGGLE_ACTIVE_STATUS,
+                },
+            ]
             store.dispatch(actions.toggleActiveStatus())
             expect(store.getActions()).toEqual(expectedActions)
         })
         it('should dispatch with status', () => {
-            const expectedActions = [{
-                type: types.TOGGLE_ACTIVE_STATUS,
-                status: true
-            }]
+            const expectedActions = [
+                {
+                    type: types.TOGGLE_ACTIVE_STATUS,
+                    status: true,
+                },
+            ]
             store.dispatch(actions.toggleActiveStatus(true))
             expect(store.getActions()).toEqual(expectedActions)
         })
 
         it('should not dispatch when the status is the same', () => {
             store = mockStore({
-                currentUser: initialState.set('is_active', true)
+                currentUser: initialState.set('is_active', true),
             })
             store.dispatch(actions.toggleActiveStatus(true))
             expect(store.getActions()).toEqual([])

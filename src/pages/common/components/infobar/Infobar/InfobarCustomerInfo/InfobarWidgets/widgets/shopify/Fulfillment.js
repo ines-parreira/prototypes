@@ -16,15 +16,15 @@ type AfterTitleProps = {
 }
 
 const shipmentStatusColors = {
-    'label_printed': 'info',
-    'label_purchased': 'info',
-    'attempted_delivery': 'warning',
-    'ready_for_pickup': 'info',
-    'confirmed': 'info',
-    'in_transit': 'info',
-    'out_for_delivery': 'info',
-    'delivered': 'success',
-    'failure': 'danger',
+    label_printed: 'info',
+    label_purchased: 'info',
+    attempted_delivery: 'warning',
+    ready_for_pickup: 'info',
+    confirmed: 'info',
+    in_transit: 'info',
+    out_for_delivery: 'info',
+    delivered: 'success',
+    failure: 'danger',
 }
 
 function AfterTitle({source}: AfterTitleProps) {
@@ -34,11 +34,7 @@ function AfterTitle({source}: AfterTitleProps) {
     return (
         <>
             {shipmentStatus && (
-                <Badge
-                    className={classnames('ml-1')}
-                    color={color}
-                    pill
-                >
+                <Badge className={classnames('ml-1')} color={color} pill>
                     {humanizeString(shipmentStatus).replace(/_/g, ' ')}
                 </Badge>
             )}

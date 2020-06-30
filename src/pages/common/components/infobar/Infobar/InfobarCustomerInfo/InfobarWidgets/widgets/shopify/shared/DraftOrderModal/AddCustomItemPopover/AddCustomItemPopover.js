@@ -1,7 +1,15 @@
 // @flow
 
 import React from 'react'
-import {Button, Form, FormGroup, Input, Label, Popover, PopoverBody} from 'reactstrap'
+import {
+    Button,
+    Form,
+    FormGroup,
+    Input,
+    Label,
+    Popover,
+    PopoverBody,
+} from 'reactstrap'
 import {fromJS, type Record} from 'immutable'
 import classnames from 'classnames'
 
@@ -32,7 +40,10 @@ type State = {
     requiresShipping: boolean,
 }
 
-export default class AddCustomItemPopover extends React.PureComponent<Props, State> {
+export default class AddCustomItemPopover extends React.PureComponent<
+    Props,
+    State
+> {
     static defaultProps = {
         placement: 'bottom',
         className: null,
@@ -62,8 +73,10 @@ export default class AddCustomItemPopover extends React.PureComponent<Props, Sta
             focusElement(() => this._inputElement)
             segmentTracker.logEvent(
                 actionName === ShopifyAction.CREATE_ORDER
-                    ? segmentTracker.EVENTS.SHOPIFY_CREATE_ORDER_CUSTOM_ITEM_POPOVER_OPEN
-                    : segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_CUSTOM_ITEM_POPOVER_OPEN
+                    ? segmentTracker.EVENTS
+                          .SHOPIFY_CREATE_ORDER_CUSTOM_ITEM_POPOVER_OPEN
+                    : segmentTracker.EVENTS
+                          .SHOPIFY_DUPLICATE_ORDER_CUSTOM_ITEM_POPOVER_OPEN
             )
         } else if (onClose) {
             focusElement(() => this._buttonElement)
@@ -124,19 +137,23 @@ export default class AddCustomItemPopover extends React.PureComponent<Props, Sta
         this._toggle()
         this._resetValues()
 
-        onSubmit(fromJS({
-            title,
-            price: formatPrice(price, currencyCode),
-            quantity,
-            taxable,
-            requires_shipping: requiresShipping,
-            product_exists: false,
-        }))
+        onSubmit(
+            fromJS({
+                title,
+                price: formatPrice(price, currencyCode),
+                quantity,
+                taxable,
+                requires_shipping: requiresShipping,
+                product_exists: false,
+            })
+        )
 
         segmentTracker.logEvent(
             actionName === ShopifyAction.CREATE_ORDER
-                ? segmentTracker.EVENTS.SHOPIFY_CREATE_ORDER_CUSTOM_ITEM_POPOVER_SAVE
-                : segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_CUSTOM_ITEM_POPOVER_SAVE
+                ? segmentTracker.EVENTS
+                      .SHOPIFY_CREATE_ORDER_CUSTOM_ITEM_POPOVER_SAVE
+                : segmentTracker.EVENTS
+                      .SHOPIFY_DUPLICATE_ORDER_CUSTOM_ITEM_POPOVER_SAVE
         )
     }
 
@@ -148,8 +165,10 @@ export default class AddCustomItemPopover extends React.PureComponent<Props, Sta
 
         segmentTracker.logEvent(
             actionName === ShopifyAction.CREATE_ORDER
-                ? segmentTracker.EVENTS.SHOPIFY_CREATE_ORDER_CUSTOM_ITEM_POPOVER_CANCEL
-                : segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_CUSTOM_ITEM_POPOVER_CANCEL
+                ? segmentTracker.EVENTS
+                      .SHOPIFY_CREATE_ORDER_CUSTOM_ITEM_POPOVER_CANCEL
+                : segmentTracker.EVENTS
+                      .SHOPIFY_DUPLICATE_ORDER_CUSTOM_ITEM_POPOVER_CANCEL
         )
     }
 
@@ -163,7 +182,14 @@ export default class AddCustomItemPopover extends React.PureComponent<Props, Sta
 
     render() {
         const {id, placement, className, currencyCode} = this.props
-        const {isOpen, title, price, quantity, taxable, requiresShipping} = this.state
+        const {
+            isOpen,
+            title,
+            price,
+            quantity,
+            taxable,
+            requiresShipping,
+        } = this.state
 
         return (
             <div>
@@ -174,9 +200,7 @@ export default class AddCustomItemPopover extends React.PureComponent<Props, Sta
                     innerRef={this._saveButtonRef}
                     onClick={this._toggle}
                 >
-                    <i className="icon material-icons mr-2">
-                        add
-                    </i>
+                    <i className="icon material-icons mr-2">add</i>
                     Add custom item
                 </Button>
                 <Popover
@@ -185,10 +209,7 @@ export default class AddCustomItemPopover extends React.PureComponent<Props, Sta
                     target={id}
                     toggle={this._toggle}
                 >
-                    <Form
-                        onKeyDown={this._onKeyDown}
-                        onSubmit={this._onSubmit}
-                    >
+                    <Form onKeyDown={this._onKeyDown} onSubmit={this._onSubmit}>
                         <PopoverBody className="pt-3">
                             <FormGroup>
                                 <Label for="title">Line item name</Label>
@@ -228,34 +249,32 @@ export default class AddCustomItemPopover extends React.PureComponent<Props, Sta
                                     />
                                 </FormGroup>
                             </div>
-                            <FormGroup
-                                check
-                                className="mt-1 mb-3"
-                            >
+                            <FormGroup check className="mt-1 mb-3">
                                 <Label check>
                                     <Input
                                         type="checkbox"
                                         checked={taxable}
                                         onChange={this._onTaxableChange}
                                     />
-                                    <span className="ml-1">Item is taxable</span>
+                                    <span className="ml-1">
+                                        Item is taxable
+                                    </span>
                                 </Label>
                             </FormGroup>
-                            <FormGroup
-                                check
-                                className="mb-3"
-                            >
+                            <FormGroup check className="mb-3">
                                 <Label check>
                                     <Input
                                         type="checkbox"
                                         checked={requiresShipping}
                                         onChange={this._onShippingChange}
                                     />
-                                    <span className="ml-1">Item requires shipping</span>
+                                    <span className="ml-1">
+                                        Item requires shipping
+                                    </span>
                                 </Label>
                             </FormGroup>
                         </PopoverBody>
-                        <hr className="m-0"/>
+                        <hr className="m-0" />
                         <PopoverBody className="d-flex">
                             <Button
                                 type="button"

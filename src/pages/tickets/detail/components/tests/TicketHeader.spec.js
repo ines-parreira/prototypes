@@ -18,14 +18,14 @@ describe('TicketHeader component', () => {
     const commonProps = {
         actions: {
             ticket: {
-                setSubject: () => {}
-            }
-        }
+                setSubject: () => {},
+            },
+        },
     }
 
     const commonTicketProps = {
         subject: 'foo',
-        status: 'open'
+        status: 'open',
     }
 
     beforeEach(() => {
@@ -34,10 +34,7 @@ describe('TicketHeader component', () => {
 
     it('should render new ticket', () => {
         const component = shallow(
-            <TicketHeader
-                {...commonProps}
-                ticket={fromJS(commonTicketProps)}
-            />
+            <TicketHeader {...commonProps} ticket={fromJS(commonTicketProps)} />
         ).dive()
 
         expect(component).toMatchSnapshot()
@@ -49,7 +46,7 @@ describe('TicketHeader component', () => {
                 {...commonProps}
                 ticket={fromJS({
                     id: 1,
-                    ...commonTicketProps
+                    ...commonTicketProps,
                 })}
             />
         ).dive()
@@ -64,7 +61,7 @@ describe('TicketHeader component', () => {
                 ticket={fromJS({
                     id: 1,
                     spam: true,
-                    ...commonTicketProps
+                    ...commonTicketProps,
                 })}
             />
         ).dive()
@@ -79,7 +76,7 @@ describe('TicketHeader component', () => {
                 ticket={fromJS({
                     id: 1,
                     trashed_datetime: true,
-                    ...commonTicketProps
+                    ...commonTicketProps,
                 })}
             />
         ).dive()

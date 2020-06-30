@@ -1,7 +1,11 @@
 import {fromJS} from 'immutable'
 import * as immutableMatchers from 'jest-immutable-matchers'
 
-import {getHTTPIntegrationEvent, getHTTPIntegrationEvents, getHTTPIntegrationEventsState} from '../selectors'
+import {
+    getHTTPIntegrationEvent,
+    getHTTPIntegrationEvents,
+    getHTTPIntegrationEventsState,
+} from '../selectors'
 import {initialState} from '../reducers'
 
 jest.addMatchers(immutableMatchers)
@@ -14,7 +18,9 @@ describe('HTTPIntegrationEvents', () => {
             })
             it('should return the value from the state', () => {
                 const state = {HTTPIntegrationEvents: fromJS({foo: 'bar'})}
-                expect(getHTTPIntegrationEventsState(state)).toEqualImmutable(state.HTTPIntegrationEvents)
+                expect(getHTTPIntegrationEventsState(state)).toEqualImmutable(
+                    state.HTTPIntegrationEvents
+                )
             })
         })
 
@@ -23,8 +29,12 @@ describe('HTTPIntegrationEvents', () => {
                 expect(getHTTPIntegrationEvents({})).toEqual(fromJS([]))
             })
             it('should return the value from the state', () => {
-                const state = {HTTPIntegrationEvents: fromJS({events: {foo: 'bar'}})}
-                expect(getHTTPIntegrationEvents(state)).toEqualImmutable(state.HTTPIntegrationEvents.get('events'))
+                const state = {
+                    HTTPIntegrationEvents: fromJS({events: {foo: 'bar'}}),
+                }
+                expect(getHTTPIntegrationEvents(state)).toEqualImmutable(
+                    state.HTTPIntegrationEvents.get('events')
+                )
             })
         })
 
@@ -34,8 +44,12 @@ describe('HTTPIntegrationEvents', () => {
             })
 
             it('should return the value from the state', () => {
-                const state = {HTTPIntegrationEvents: fromJS({event: {foo: 'bar'}})}
-                expect(getHTTPIntegrationEvent(state)).toEqualImmutable(state.HTTPIntegrationEvents.get('event'))
+                const state = {
+                    HTTPIntegrationEvents: fromJS({event: {foo: 'bar'}}),
+                }
+                expect(getHTTPIntegrationEvent(state)).toEqualImmutable(
+                    state.HTTPIntegrationEvents.get('event')
+                )
             })
         })
     })

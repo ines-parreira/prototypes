@@ -11,15 +11,13 @@ describe('<ViewCount/>', () => {
     const mockStore = configureMockStore([thunk])
 
     it('should render an error icon because view is deactivated', () => {
-        const view = fromJS({id: 1, deactivated_datetime: '2020-06-15 22:56:32.708038'})
+        const view = fromJS({
+            id: 1,
+            deactivated_datetime: '2020-06-15 22:56:32.708038',
+        })
         const store = mockStore({})
 
-        const component = shallow(
-            <ViewCount
-                store={store}
-                view={view}
-            />
-        )
+        const component = shallow(<ViewCount store={store} view={view} />)
 
         expect(component.dive()).toMatchSnapshot()
     })
@@ -32,12 +30,7 @@ describe('<ViewCount/>', () => {
             }),
         })
 
-        const component = shallow(
-            <ViewCount
-                store={store}
-                view={view}
-            />
-        )
+        const component = shallow(<ViewCount store={store} view={view} />)
 
         expect(component.dive()).toMatchSnapshot()
     })
@@ -52,12 +45,7 @@ describe('<ViewCount/>', () => {
             }),
         })
 
-        const component = shallow(
-            <ViewCount
-                store={store}
-                view={view}
-            />
-        )
+        const component = shallow(<ViewCount store={store} view={view} />)
 
         expect(component.dive()).toMatchSnapshot()
     })
@@ -72,12 +60,7 @@ describe('<ViewCount/>', () => {
             }),
         })
 
-        const component = shallow(
-            <ViewCount
-                store={store}
-                view={view}
-            />
-        )
+        const component = shallow(<ViewCount store={store} view={view} />)
 
         expect(component.dive()).toMatchSnapshot()
     })
@@ -92,12 +75,7 @@ describe('<ViewCount/>', () => {
             }),
         })
 
-        const component = shallow(
-            <ViewCount
-                store={store}
-                view={view}
-            />
-        )
+        const component = shallow(<ViewCount store={store} view={view} />)
 
         expect(component.dive()).toMatchSnapshot()
     })

@@ -6,7 +6,7 @@ import type {Map} from 'immutable'
 
 import {getActionTemplate} from '../../utils'
 
-export function generateDefaultAction(actionType: string): ?Map<*,*> {
+export function generateDefaultAction(actionType: string): ?Map<*, *> {
     const actionTemplate = getActionTemplate(actionType)
 
     if (!actionTemplate) {
@@ -18,7 +18,7 @@ export function generateDefaultAction(actionType: string): ?Map<*,*> {
         execution: actionTemplate.execution,
         name: actionTemplate.name,
         title: actionTemplate.title,
-        arguments: {}
+        arguments: {},
     })
 
     _forEach(actionTemplate.arguments || {}, (arg, key) => {
@@ -52,8 +52,6 @@ export function generateDefaultAction(actionType: string): ?Map<*,*> {
 export function getDefaultMacro() {
     return fromJS({
         name: 'New macro',
-        actions: [
-            generateDefaultAction('setResponseText')
-        ]
+        actions: [generateDefaultAction('setResponseText')],
     })
 }

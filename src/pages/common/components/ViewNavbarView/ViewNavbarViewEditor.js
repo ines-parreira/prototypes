@@ -24,33 +24,33 @@ class ViewNavbarViewEditor extends Component {
         objectName: PropTypes.string.isRequired,
         submitSetting: PropTypes.func.isRequired,
         setting: PropTypes.object,
-        location: PropTypes.object.isRequired
+        location: PropTypes.object.isRequired,
     }
 
     static defaultProps = {
-        setting: fromJS({})
+        setting: fromJS({}),
     }
 
     constructor(props) {
         super(props)
 
-        this.state = _merge({
-            hide: {},
-            displayOrder: {},
-        }, this._getSettings(props.views))
+        this.state = _merge(
+            {
+                hide: {},
+                displayOrder: {},
+            },
+            this._getSettings(props.views)
+        )
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState(_merge(
-            this._getSettings(nextProps.views),
-            this.state
-        ))
+        this.setState(_merge(this._getSettings(nextProps.views), this.state))
     }
 
     _getSettings = (views) => {
         const newSettings = {
             hide: {},
-            displayOrder: {}
+            displayOrder: {},
         }
 
         views.forEach((view) => {
@@ -65,13 +65,16 @@ class ViewNavbarViewEditor extends Component {
     _submitSetting = () => {
         const oldSettings = {}
         this.props.views.forEach((view) => {
-            oldSettings[view.get('id')] = _pick(view.toJS(), ['hide', 'display_order'])
+            oldSettings[view.get('id')] = _pick(view.toJS(), [
+                'hide',
+                'display_order',
+            ])
         })
 
         const newSettings = {}
         const properties = [
             {local: 'hide', remote: 'hide'},
-            {local: 'displayOrder', remote: 'display_order'}
+            {local: 'displayOrder', remote: 'display_order'},
         ]
 
         properties.forEach(({local, remote}) => {
@@ -81,10 +84,11 @@ class ViewNavbarViewEditor extends Component {
             })
         })
 
-        return this.props.submitSetting(_merge(
-            this.props.setting.toJS(),
-            {data: _merge(oldSettings, newSettings)}
-        ))
+        return this.props.submitSetting(
+            _merge(this.props.setting.toJS(), {
+                data: _merge(oldSettings, newSettings),
+            })
+        )
     }
 
     _updateField = (value) => {
@@ -102,9 +106,11 @@ class ViewNavbarViewEditor extends Component {
             newDisplayOrder[id] = index
         })
 
-        this.setState(_merge(this.state, {
-            displayOrder: newDisplayOrder
-        }))
+        this.setState(
+            _merge(this.state, {
+                displayOrder: newDisplayOrder,
+            })
+        )
 
         this._submitSetting()
 
@@ -126,12 +132,14 @@ class ViewNavbarViewEditor extends Component {
 
         // re-sort views with `display_order` values of the form
         if (Object.keys(this.state.displayOrder).length > 0) {
-            newView = newView.map((view) => {
-                return view.set(
-                    'display_order',
-                    this._getDisplayOrder(view)
-                )
-            }).sort(sortViews)
+            newView = newView
+                .map((view) => {
+                    return view.set(
+                        'display_order',
+                        this._getDisplayOrder(view)
+                    )
+                })
+                .sort(sortViews)
         }
 
         return newView.map((view) => {
@@ -142,18 +150,20 @@ class ViewNavbarViewEditor extends Component {
                     key={viewId}
                     data-id={viewId}
                     className={classnames('item', css.viewItem, {
-                        [css.draggable]: !view.get('hide')
+                        [css.draggable]: !view.get('hide'),
                     })}
                 >
                     <BooleanField
                         label={view.get('name')}
                         name={`hide.${viewId}`}
                         value={!this.state.hide[viewId.toString()]}
-                        onChange={(value) => this._updateField({
-                            hide: {
-                                [`${viewId}`]: !value
-                            }
-                        })}
+                        onChange={(value) =>
+                            this._updateField({
+                                hide: {
+                                    [`${viewId}`]: !value,
+                                },
+                            })
+                        }
                         inline
                     />
                 </div>
@@ -165,10 +175,10 @@ class ViewNavbarViewEditor extends Component {
         const {
             views,
             objectName,
-            location: {pathname}
+            location: {pathname},
         } = this.props
         const createButtonClass = classnames('mt10 item', {
-            active: pathname.includes(`${objectName}/new`)
+            active: pathname.includes(`${objectName}/new`),
         })
 
         return (
@@ -179,7 +189,7 @@ class ViewNavbarViewEditor extends Component {
                         draggable: `.${css.draggable}`,
                         chosenClass: css.chosen,
                         ghostClass: css.ghost,
-                        animation: 150
+                        animation: 150,
                     }}
                     onChange={this._updateOrder}
                 >
@@ -190,9 +200,7 @@ class ViewNavbarViewEditor extends Component {
                     to={`/app/${objectName}/new`}
                 >
                     <div>
-                        <i className="material-icons mr-2">
-                            add
-                        </i>
+                        <i className="material-icons mr-2">add</i>
                         Create new view
                     </div>
                 </Link>
@@ -204,6 +212,5 @@ class ViewNavbarViewEditor extends Component {
 const ViewNavbarViewEditorWithRouter = withRouter(ViewNavbarViewEditor)
 
 export default connect(null, {
-    submitSetting
+    submitSetting,
 })(ViewNavbarViewEditorWithRouter)
-

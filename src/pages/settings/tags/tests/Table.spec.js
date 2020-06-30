@@ -17,24 +17,24 @@ describe('ManageTags Table component', () => {
                 items: [
                     {
                         id: 1,
-                        name: 'refund'
+                        name: 'refund',
                     },
                     {
                         id: 2,
-                        name: 'billing'
+                        name: 'billing',
                     },
                     {
                         id: 3,
-                        name: 'shipping'
-                    }
+                        name: 'shipping',
+                    },
                 ],
                 meta: {
                     1: {
-                        selected: true
+                        selected: true,
                     },
                     2: {
-                        selected: true
-                    }
+                        selected: true,
+                    },
                 },
                 _internal: {
                     pagination: {
@@ -42,10 +42,10 @@ describe('ManageTags Table component', () => {
                         page: 1,
                         nb_pages: 1,
                         item_count: 3,
-                        current_page: '/api/views/?page=1'
-                    }
-                }
-            })
+                        current_page: '/api/views/?page=1',
+                    },
+                },
+            }),
         })
     })
 

@@ -8,14 +8,14 @@ export const message: TicketMessage = {
         email: 'john.doe@example.com',
         name: 'John Doe',
         firstname: 'John',
-        lastname: 'Doe'
+        lastname: 'Doe',
     },
     receiver: {
         id: 2,
         email: 'mary.poppins@example.com',
         name: 'Mary Poppins',
         firstname: 'Mary',
-        lastname: 'Poppins'
+        lastname: 'Poppins',
     },
     subject: 'Some subject',
     channel: 'email',
@@ -24,12 +24,12 @@ export const message: TicketMessage = {
     public: true,
     from_agent: false,
     created_datetime: '',
-    isMessage: true
+    isMessage: true,
 }
 
 export const action: Action = {
     status: 'success',
     name: 'foo',
     title: '',
-    type: 'user'
+    type: 'user',
 }

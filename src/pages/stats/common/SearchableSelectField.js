@@ -2,32 +2,39 @@
 import _capitalize from 'lodash/capitalize'
 import classnames from 'classnames'
 import React, {type ComponentType} from 'react'
-import {DropdownItem, DropdownMenu, DropdownToggle, Input, Label, UncontrolledDropdown} from 'reactstrap'
+import {
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    Input,
+    Label,
+    UncontrolledDropdown,
+} from 'reactstrap'
 
 import css from './SearchableSelectField.less'
 
 type Item = {
     label?: string,
-    value?: string
+    value?: string,
 }
 
 type Props = {
     items: Item[],
     input: {
         value: string[],
-        onChange: string[] => void
+        onChange: (string[]) => void,
     },
     plural: string,
     singular: string,
     isDisabled: boolean,
-    onSearch?: string => void,
+    onSearch?: (string) => void,
     dropdownMenu: ComponentType<*>,
     multiple: boolean,
-    required: boolean
+    required: boolean,
 }
 
 type State = {
-    search: string
+    search: string,
 }
 
 class SearchableSelectField extends React.Component<Props, State> {
@@ -37,17 +44,14 @@ class SearchableSelectField extends React.Component<Props, State> {
         singular: 'item',
         isDisabled: false,
         dropdownMenu: (props: any) => (
-            <DropdownMenu
-                {...props}
-                className={css.dropdown}
-            />
+            <DropdownMenu {...props} className={css.dropdown} />
         ),
         multiple: true,
-        required: false
+        required: false,
     }
 
     state = {
-        search: ''
+        search: '',
     }
 
     _handleSearchChange = (text: string) => {
@@ -93,7 +97,14 @@ class SearchableSelectField extends React.Component<Props, State> {
 
     render() {
         const {
-            items, input, plural, singular, isDisabled, dropdownMenu: DropdownMenuComponent, multiple, required
+            items,
+            input,
+            plural,
+            singular,
+            isDisabled,
+            dropdownMenu: DropdownMenuComponent,
+            multiple,
+            required,
         } = this.props
         const {search} = this.state
 
@@ -101,16 +112,24 @@ class SearchableSelectField extends React.Component<Props, State> {
 
         // filter items by text search
         const filteredItems = items.filter((item) => {
-            return item.label && item.label.toLowerCase().includes(search.toLowerCase())
+            return (
+                item.label &&
+                item.label.toLowerCase().includes(search.toLowerCase())
+            )
         })
 
         let dropdownLabel = ''
         if (multiple && hasSelectedItems) {
-            dropdownLabel = input.value.length + ' ' + (input.value.length > 1 ? plural : singular)
+            dropdownLabel =
+                input.value.length +
+                ' ' +
+                (input.value.length > 1 ? plural : singular)
         } else if (multiple && !hasSelectedItems) {
             dropdownLabel = 'All ' + plural
         } else if (!multiple && input.value.length === 1) {
-            const selectedItem = items.find((item) => (item.value === input.value[0]))
+            const selectedItem = items.find(
+                (item) => item.value === input.value[0]
+            )
             if (selectedItem) {
                 dropdownLabel = selectedItem.label
             }
@@ -133,75 +152,73 @@ class SearchableSelectField extends React.Component<Props, State> {
                     <span>{dropdownLabel}</span>
                 </DropdownToggle>
                 <DropdownMenuComponent right>
-                    <DropdownItem
-                        header
-                        className="dropdown-item-input"
-                    >
+                    <DropdownItem header className="dropdown-item-input">
                         <Input
                             className="mb-2"
                             placeholder={`Search ${plural}...`}
                             autoFocus
                             value={search}
-                            onChange={(e) => this._handleSearchChange(e.target.value)}
+                            onChange={(e) =>
+                                this._handleSearchChange(e.target.value)
+                            }
                         />
                     </DropdownItem>
                     <div className={css.content}>
-                        {
-                            filteredItems.length === 0 ? (
-                                <DropdownItem header>
-                                    Could not find any {singular}
-                                </DropdownItem>
-                            ) : (
-                                filteredItems.map((item) => {
-                                    const isChecked = item.value ? input.value.includes(item.value) : false
+                        {filteredItems.length === 0 ? (
+                            <DropdownItem header>
+                                Could not find any {singular}
+                            </DropdownItem>
+                        ) : (
+                            filteredItems.map((item) => {
+                                const isChecked = item.value
+                                    ? input.value.includes(item.value)
+                                    : false
 
-                                    return (
-                                        <DropdownItem
-                                            key={item.value}
-                                            tag={(props) => (
-                                                <Label
-                                                    {...props}
-                                                    check
-                                                />
+                                return (
+                                    <DropdownItem
+                                        key={item.value}
+                                        tag={(props) => (
+                                            <Label {...props} check />
+                                        )}
+                                        toggle={false}
+                                        className={css.dropdownItem}
+                                    >
+                                        <input
+                                            className={classnames(
+                                                'mr-2',
+                                                css.checkbox
                                             )}
-                                            toggle={false}
-                                            className={css.dropdownItem}
-                                        >
-                                            <input
-                                                className={classnames('mr-2', css.checkbox)}
-                                                type="checkbox"
-                                                checked={isChecked}
-                                                onChange={() => {
-                                                    if (item.value) {
-                                                        this._handleOptionClick(item.value)
-                                                    }
-                                                }}
-                                            />
-                                            {' '}
-                                            {item.label}
-                                        </DropdownItem>
-                                    )
-                                })
-                            )
-                        }
+                                            type="checkbox"
+                                            checked={isChecked}
+                                            onChange={() => {
+                                                if (item.value) {
+                                                    this._handleOptionClick(
+                                                        item.value
+                                                    )
+                                                }
+                                            }}
+                                        />{' '}
+                                        {item.label}
+                                    </DropdownItem>
+                                )
+                            })
+                        )}
                     </div>
-                    {
-                        (hasSelectedItems && !required) && [
-                            <DropdownItem
-                                key="divider"
-                                divider
-                            />,
+                    {hasSelectedItems &&
+                        !required && [
+                            <DropdownItem key="divider" divider />,
                             <DropdownItem
                                 key="deselect"
                                 type="button"
                                 onClick={this._deselectAll}
                             >
                                 <span className="text-warning">
-                                    {input.value.length === 1 ? 'Deselect' : 'Deselect all'}
+                                    {input.value.length === 1
+                                        ? 'Deselect'
+                                        : 'Deselect all'}
                                 </span>
-                            </DropdownItem>
-                        ]
-                    }
+                            </DropdownItem>,
+                        ]}
                 </DropdownMenuComponent>
             </UncontrolledDropdown>
         )

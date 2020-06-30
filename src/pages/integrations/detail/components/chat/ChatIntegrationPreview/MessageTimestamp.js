@@ -8,9 +8,7 @@ import css from './ChatIntegrationPreview.less'
 const MessageTimestamp = () => (
     <div className={classnames(css.messageTimestamp)}>
         <span>{moment().subtract(6, 'minute').fromNow()}. </span>
-        <span className={classnames(css.messageStatus)}>
-            Delivered
-        </span>
+        <span className={classnames(css.messageStatus)}>Delivered</span>
     </div>
 )
 

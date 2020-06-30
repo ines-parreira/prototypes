@@ -6,7 +6,13 @@ import {fromJS} from 'immutable'
 import _isObject from 'lodash/isObject'
 
 import Tooltip from '../../../../../common/components/Tooltip'
-import {comparedPeriodString, formatCurrency, formatDuration, formatPercent, renderDifference} from '../../../utils'
+import {
+    comparedPeriodString,
+    formatCurrency,
+    formatDuration,
+    formatPercent,
+    renderDifference,
+} from '../../../utils'
 import Loader from '../../../../../common/components/Loader'
 
 import statsCss from '../../../../style.less'
@@ -20,39 +26,53 @@ type Props = {
     data: Object,
     config: Object,
     meta: Object,
-    loading: boolean | Object
+    loading: boolean | Object,
 }
 
 export default class KeyMetricStat extends Component<Props> {
-    _defaultWrapper = (formattedValue: number, metric: Object, valueTooltipId: string,
-        tooltipDelta: string) => {
-        return <div>
-            {
-                (formattedValue || formattedValue === 0) ?
-                    <div className={css.value}>{formattedValue}</div> : <div className={css.value}>n/a</div>
-            }
-            {this._renderDifference(valueTooltipId, metric, tooltipDelta)}
-        </div>
+    _defaultWrapper = (
+        formattedValue: number,
+        metric: Object,
+        valueTooltipId: string,
+        tooltipDelta: string
+    ) => {
+        return (
+            <div>
+                {formattedValue || formattedValue === 0 ? (
+                    <div className={css.value}>{formattedValue}</div>
+                ) : (
+                    <div className={css.value}>n/a</div>
+                )}
+                {this._renderDifference(valueTooltipId, metric, tooltipDelta)}
+            </div>
+        )
     }
 
-    _renderDifference = (valueTooltipId: string, metric: Object, tooltipDelta: string) => {
+    _renderDifference = (
+        valueTooltipId: string,
+        metric: Object,
+        tooltipDelta: string
+    ) => {
         return (
-            <span
-                id={valueTooltipId}
-                className={css.diff}
-            >
-                {renderDifference(metric.get('delta'), metric.get('delta'), metric.get('more_is_better'))}
-                <Tooltip
-                    placement="top"
-                    target={valueTooltipId}
-                >
+            <span id={valueTooltipId} className={css.diff}>
+                {renderDifference(
+                    metric.get('delta'),
+                    metric.get('delta'),
+                    metric.get('more_is_better')
+                )}
+                <Tooltip placement="top" target={valueTooltipId}>
                     {tooltipDelta}
                 </Tooltip>
             </span>
         )
     }
 
-    _renderValue = (config: Object, metric: ?Object, valueTooltipId: string, tooltipDelta: ?string) => {
+    _renderValue = (
+        config: Object,
+        metric: ?Object,
+        valueTooltipId: string,
+        tooltipDelta: ?string
+    ) => {
         if (!metric) {
             return '-'
         }
@@ -60,31 +80,51 @@ export default class KeyMetricStat extends Component<Props> {
         const value = metric.get('value')
 
         if (_isObject(value)) {
-            const formattedValue = fromJS(value.reduce((acc, value, key) => ({
-                ...acc,
-                // $FlowFixMe
-                [key]: this._formatValue(value, metric)
-            }), {}))
+            const formattedValue = fromJS(
+                value.reduce(
+                    (acc, value, key) => ({
+                        ...acc,
+                        // $FlowFixMe
+                        [key]: this._formatValue(value, metric),
+                    }),
+                    {}
+                )
+            )
 
-            return <DistributionKeyMetricStat
-                config={config}
-                formattedValue={formattedValue}
-            />
+            return (
+                <DistributionKeyMetricStat
+                    config={config}
+                    formattedValue={formattedValue}
+                />
+            )
         }
 
         const formattedValue = this._formatValue(value, metric)
 
-        return config.get('type') === 'donut' ? <DonutKeyMetricStat
-            value={parseFloat(value)}
-            maxValue={parseFloat(config.get('maxValue'))}
-            fill={config.get('fill')}
-            formattedValue={formattedValue}
-            label={`${metric.get('delta')}%`}
-            // $FlowFixMe
-            differenceComponent={this._renderDifference(valueTooltipId, metric, tooltipDelta)}
-        /> :
-            // $FlowFixMe
-            this._defaultWrapper(formattedValue, metric, valueTooltipId, tooltipDelta)
+        return config.get('type') === 'donut' ? (
+            <DonutKeyMetricStat
+                value={parseFloat(value)}
+                maxValue={parseFloat(config.get('maxValue'))}
+                fill={config.get('fill')}
+                formattedValue={formattedValue}
+                label={`${metric.get('delta')}%`}
+                differenceComponent={this._renderDifference(
+                    valueTooltipId,
+                    metric,
+                    // $FlowFixMe
+                    tooltipDelta
+                )}
+            />
+        ) : (
+            this._defaultWrapper(
+                // $FlowFixMe
+                formattedValue,
+                metric,
+                valueTooltipId,
+                // $FlowFixMe
+                tooltipDelta
+            )
+        )
     }
 
     _formatValue = (value: string, metric: Object) => {
@@ -106,7 +146,9 @@ export default class KeyMetricStat extends Component<Props> {
         return (
             <div className={css.metrics}>
                 {config.get('metrics').map((metricConfig) => {
-                    const metricName = metricConfig.get('api_resource_name') || metricConfig.get('name')
+                    const metricName =
+                        metricConfig.get('api_resource_name') ||
+                        metricConfig.get('name')
                     const metricTooltipId = `title-${metricName}`
                     const valueTooltipId = `value-${metricName}`
                     let isFetchingMetric = false
@@ -118,28 +160,50 @@ export default class KeyMetricStat extends Component<Props> {
 
                     if (metricConfig.get('api_resource_name')) {
                         // This metric has been fetched alone.
-                        // $FlowFixMe
-                        isFetchingMetric = isImmutable(loading) ? loading.get(metricConfig.get('api_resource_name')) : false
-                        metric = data ? data.getIn([metricConfig.get('api_resource_name'), 'data']) : null
-                        metricMeta = data ? data.getIn([metricConfig.get('api_resource_name'), 'meta']) : null
+                        isFetchingMetric = isImmutable(loading)
+                            ? // $FlowFixMe
+                              loading.get(metricConfig.get('api_resource_name'))
+                            : false
+                        metric = data
+                            ? data.getIn([
+                                  metricConfig.get('api_resource_name'),
+                                  'data',
+                              ])
+                            : null
+                        metricMeta = data
+                            ? data.getIn([
+                                  metricConfig.get('api_resource_name'),
+                                  'meta',
+                              ])
+                            : null
                     } else {
                         // This metric has been fetched with some other metrics.
                         isFetchingMetric = loading
-                        metric = data ? data.find((metric) => metric.get('name') === metricConfig.get('name')) : null
+                        metric = data
+                            ? data.find(
+                                  (metric) =>
+                                      metric.get('name') ===
+                                      metricConfig.get('name')
+                              )
+                            : null
                         metricMeta = this.props.meta
                     }
 
                     if (metricMeta) {
-                        previousStartDatetime = moment(metricMeta.get('previous_start_datetime'))
-                        previousEndDatetime = moment(metricMeta.get('previous_end_datetime'))
-                        tooltipDelta = comparedPeriodString(previousStartDatetime, previousEndDatetime)
+                        previousStartDatetime = moment(
+                            metricMeta.get('previous_start_datetime')
+                        )
+                        previousEndDatetime = moment(
+                            metricMeta.get('previous_end_datetime')
+                        )
+                        tooltipDelta = comparedPeriodString(
+                            previousStartDatetime,
+                            previousEndDatetime
+                        )
                     }
 
                     return (
-                        <div
-                            className={css.metric}
-                            key={metricName}
-                        >
+                        <div className={css.metric} key={metricName}>
                             <div className={css.label}>
                                 {metricConfig.get('label')}
                                 <span>
@@ -157,15 +221,19 @@ export default class KeyMetricStat extends Component<Props> {
                                     </Tooltip>
                                 </span>
                             </div>
-                            <div className={classnames('mt-3', css.statsDisplay)}>
-                                {isFetchingMetric
-                                    ?
-                                    <Loader
-                                        minHeight="90px"
-                                        size="20px"
-                                    />
-                                    : this._renderValue(metricConfig, metric, valueTooltipId, tooltipDelta)
-                                }
+                            <div
+                                className={classnames('mt-3', css.statsDisplay)}
+                            >
+                                {isFetchingMetric ? (
+                                    <Loader minHeight="90px" size="20px" />
+                                ) : (
+                                    this._renderValue(
+                                        metricConfig,
+                                        metric,
+                                        valueTooltipId,
+                                        tooltipDelta
+                                    )
+                                )}
                             </div>
                         </div>
                     )

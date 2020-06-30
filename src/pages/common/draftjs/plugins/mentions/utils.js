@@ -16,9 +16,11 @@ export const decodeOffsetKey = (offsetKey) => {
 // Get the first 5 suggestions that match
 export const defaultSuggestionsFilter = (searchValue, suggestions) => {
     const value = _deburr(searchValue.toLowerCase())
-    const filteredSuggestions = suggestions.filter((suggestion) => (
-        !value || _deburr(suggestion.get('name').toLowerCase()).indexOf(value) > -1
-    ))
+    const filteredSuggestions = suggestions.filter(
+        (suggestion) =>
+            !value ||
+            _deburr(suggestion.get('name').toLowerCase()).indexOf(value) > -1
+    )
     const size = filteredSuggestions.size < 5 ? filteredSuggestions.size : 5
     return filteredSuggestions.setSize(size)
 }
@@ -59,16 +61,17 @@ export const getSearchText = (editorState, selection) => {
     return getWordAt(blockText, anchorOffset)
 }
 
-export const getTypeByTrigger = (trigger) => (
+export const getTypeByTrigger = (trigger) =>
     trigger === '@' ? 'mention' : `${trigger}mention`
-)
 
 export const getRelativeParent = (element) => {
     if (!element) {
         return null
     }
 
-    const position = window.getComputedStyle(element).getPropertyValue('position')
+    const position = window
+        .getComputedStyle(element)
+        .getPropertyValue('position')
     if (position !== 'static') {
         return element
     }
@@ -88,8 +91,10 @@ export const positionSuggestions = ({decoratorRect, popover, state, props}) => {
         relativeRect.left = decoratorRect.left - relativeParentRect.left
         relativeRect.top = decoratorRect.top - relativeParentRect.top
     } else {
-        relativeRect.scrollTop = window.pageYOffset || document.documentElement.scrollTop
-        relativeRect.scrollLeft = window.pageXOffset || document.documentElement.scrollLeft
+        relativeRect.scrollTop =
+            window.pageYOffset || document.documentElement.scrollTop
+        relativeRect.scrollLeft =
+            window.pageXOffset || document.documentElement.scrollLeft
 
         relativeRect.top = decoratorRect.top
         relativeRect.left = decoratorRect.left
@@ -111,4 +116,3 @@ export const positionSuggestions = ({decoratorRect, popover, state, props}) => {
         transform,
     }
 }
-

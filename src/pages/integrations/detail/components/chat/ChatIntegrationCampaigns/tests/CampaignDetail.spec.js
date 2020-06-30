@@ -9,24 +9,27 @@ const chatIntegration = {
     type: 'smooch_inside',
     name: 'My new chat',
     decoration: {
-        main_color: '#fefefe'
+        main_color: '#fefefe',
     },
 }
 
 const commonProps = {
-    agents: fromJS([{
-        name: 'John',
-        email: 'john@gorgias.io',
-        id: 1
-    }, {
-        name: 'Doe',
-        email: 'doe@gorgias.io',
-        id: 2
-    }]),
+    agents: fromJS([
+        {
+            name: 'John',
+            email: 'john@gorgias.io',
+            id: 1,
+        },
+        {
+            name: 'Doe',
+            email: 'doe@gorgias.io',
+            id: 2,
+        },
+    ]),
     createCampaign: jest.fn(),
     updateCampaign: jest.fn(),
     deleteCampaign: jest.fn(),
-    notify: jest.fn()
+    notify: jest.fn(),
 }
 
 jest.mock('draft-js/lib/generateRandomKey', () => () => 'someRandomKey')
@@ -42,13 +45,13 @@ describe('CampaignDetail component', () => {
         jest.resetAllMocks()
     })
 
-    it('should display default value when it\'s a new campaign', () => {
+    it("should display default value when it's a new campaign", () => {
         const component = shallow(
             <CampaignDetail
                 {...commonProps}
                 campaign={fromJS({})}
                 integration={fromJS(chatIntegration)}
-                id='new'
+                id="new"
             />
         )
 
@@ -60,10 +63,12 @@ describe('CampaignDetail component', () => {
             author: {
                 name: 'John',
                 email: 'john@gorgias.io',
-                avatar_url: 'https://gravatar.docker/as74d6as4d86as4dasd/avatar.jpg'
+                avatar_url:
+                    'https://gravatar.docker/as74d6as4d86as4dasd/avatar.jpg',
             },
-            html: '<div><img onerror="alert(1)" src="#"/>My little message</div>',
-            text: 'My little message'
+            html:
+                '<div><img onerror="alert(1)" src="#"/>My little message</div>',
+            text: 'My little message',
         }
 
         const component = shallow(
@@ -73,18 +78,21 @@ describe('CampaignDetail component', () => {
                     name: 'My little campaign',
                     id: '789das-ds54f6s-asd64',
                     message,
-                    triggers: [{
-                        key: 'current_url',
-                        operator: 'contains',
-                        value: 'gorgias'
-                    }, {
-                        key: 'time_spent_on_page',
-                        operator: 'gt',
-                        value: 42
-                    }]
+                    triggers: [
+                        {
+                            key: 'current_url',
+                            operator: 'contains',
+                            value: 'gorgias',
+                        },
+                        {
+                            key: 'time_spent_on_page',
+                            operator: 'gt',
+                            value: 42,
+                        },
+                    ],
                 })}
                 integration={fromJS(chatIntegration)}
-                id='my-litte-campaign-789das-ds54f6s-asd64'
+                id="my-litte-campaign-789das-ds54f6s-asd64"
             />,
             {attachTo: container}
         ).setState({message: fromJS(message)})
@@ -97,10 +105,12 @@ describe('CampaignDetail component', () => {
             author: {
                 name: 'John',
                 email: 'john@gorgias.io',
-                avatar_url: 'https://gravatar.docker/as74d6as4d86as4dasd/avatar.jpg'
+                avatar_url:
+                    'https://gravatar.docker/as74d6as4d86as4dasd/avatar.jpg',
             },
-            html: '<div><img onerror="alert(1)" src="#"/>My little message</div>',
-            text: 'My little message'
+            html:
+                '<div><img onerror="alert(1)" src="#"/>My little message</div>',
+            text: 'My little message',
         }
 
         const component = shallow(
@@ -110,18 +120,21 @@ describe('CampaignDetail component', () => {
                     name: 'My little campaign',
                     id: '789das-ds54f6s-asd64',
                     message,
-                    triggers: [{
-                        key: 'current_url',
-                        operator: 'contains',
-                        value: 'gorgias'
-                    }, {
-                        key: 'time_spent_on_page',
-                        operator: 'gt',
-                        value: 42
-                    }]
+                    triggers: [
+                        {
+                            key: 'current_url',
+                            operator: 'contains',
+                            value: 'gorgias',
+                        },
+                        {
+                            key: 'time_spent_on_page',
+                            operator: 'gt',
+                            value: 42,
+                        },
+                    ],
                 })}
                 integration={fromJS(chatIntegration)}
-                id='my-litte-campaign-789das-ds54f6s-asd64'
+                id="my-litte-campaign-789das-ds54f6s-asd64"
             />,
             {attachTo: container}
         ).setState({message: fromJS(message)})

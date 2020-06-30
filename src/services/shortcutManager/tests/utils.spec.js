@@ -6,15 +6,20 @@ describe('shortcutManager utils', () => {
 
         beforeEach(() => {
             fragment = document.createElement('div')
-            fragment.innerHTML = '<div class="pizza"><div><div class="pepperoni"></div></div></div>'
+            fragment.innerHTML =
+                '<div class="pizza"><div><div class="pepperoni"></div></div></div>'
         })
 
         it('match parent', () => {
-            expect(utils.closest(fragment.querySelector('.pepperoni'), '.pizza')).toBe(fragment.querySelector('.pizza'))
+            expect(
+                utils.closest(fragment.querySelector('.pepperoni'), '.pizza')
+            ).toBe(fragment.querySelector('.pizza'))
         })
 
         it('not match anything', () => {
-            expect(utils.closest(fragment.querySelector('.pepperoni'), '.test')).toBe(null)
+            expect(
+                utils.closest(fragment.querySelector('.pepperoni'), '.test')
+            ).toBe(null)
         })
     })
 

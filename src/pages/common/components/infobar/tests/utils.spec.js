@@ -5,9 +5,11 @@ import * as utils from '../utils'
 describe('widgets infobar utils', () => {
     describe('is array of objects', () => {
         const correct = [
-            [{
-                hello: 'world'
-            }]
+            [
+                {
+                    hello: 'world',
+                },
+            ],
         ]
 
         const incorrect = [
@@ -19,7 +21,7 @@ describe('widgets infobar utils', () => {
             fromJS({}),
             'hello',
             [],
-            ['hello']
+            ['hello'],
         ]
 
         it('detection OK', () => {
@@ -38,21 +40,14 @@ describe('widgets infobar utils', () => {
     describe('is object', () => {
         const correct = [
             {
-                hello: 'world'
+                hello: 'world',
             },
             {},
             fromJS([]),
-            fromJS({})
+            fromJS({}),
         ]
 
-        const incorrect = [
-            undefined,
-            null,
-            '',
-            'hello',
-            [],
-            ['hello']
-        ]
+        const incorrect = [undefined, null, '', 'hello', [], ['hello']]
 
         it('detection OK', () => {
             correct.forEach((input) => {
@@ -73,47 +68,45 @@ describe('widgets infobar utils', () => {
                 ticket: {
                     customer: {
                         data: {
-                            name: 'hello'
-                        }
-                    }
-                }
+                            name: 'hello',
+                        },
+                    },
+                },
             }),
             fromJS({
                 ticket: {
                     customer: {
                         data: {
                             age: 33,
-                            list: [
-                                'hello'
-                            ]
-                        }
-                    }
-                }
-            })
+                            list: ['hello'],
+                        },
+                    },
+                },
+            }),
         ]
 
         const incorrect = [
             fromJS({
                 ticket: {
-                    customer: {}
-                }
+                    customer: {},
+                },
             }),
             fromJS({
                 ticket: {
-                    orders: []
-                }
+                    orders: [],
+                },
             }),
             fromJS({
-                imaginaryKey: {}
+                imaginaryKey: {},
             }),
             fromJS({
                 imaginaryKey: {
                     something: {
-                        really: 'yes'
-                    }
-                }
+                        really: 'yes',
+                    },
+                },
             }),
-            fromJS({})
+            fromJS({}),
         ]
 
         const context = 'ticket'
@@ -133,67 +126,88 @@ describe('widgets infobar utils', () => {
 
     describe('json to widgets', () => {
         const source = {
-            list: [{
-                name: 'Michael'
-            }, {
-                name: 'Julien'
-            }],
+            list: [
+                {
+                    name: 'Michael',
+                },
+                {
+                    name: 'Julien',
+                },
+            ],
             customer: {
                 name: 'Pedro',
                 url: 'http://google.com',
-                children: [{
-                    name: 'Sylvie'
-                }]
+                children: [
+                    {
+                        name: 'Sylvie',
+                    },
+                ],
             },
-            description: 'Best friend'
+            description: 'Best friend',
         }
 
         const result = {
             path: '',
             title: '',
             type: 'card',
-            widgets: [{
-                path: 'description',
-                title: 'Description',
-                type: 'text'
-            }, {
-                path: 'customer',
-                title: 'Customer',
-                type: 'card',
-                widgets: [{
-                    path: 'name',
-                    title: 'Name',
-                    type: 'text'
-                }, {
-                    path: 'url',
-                    title: 'Url',
-                    type: 'url'
-                }, {
-                    path: 'children',
-                    type: 'list',
-                    widgets: [{
-                        title: 'Children',
-                        type: 'card',
-                        widgets: [{
+            widgets: [
+                {
+                    path: 'description',
+                    title: 'Description',
+                    type: 'text',
+                },
+                {
+                    path: 'customer',
+                    title: 'Customer',
+                    type: 'card',
+                    widgets: [
+                        {
                             path: 'name',
                             title: 'Name',
-                            type: 'text'
-                        }]
-                    }]
-                }]
-            }, {
-                path: 'list',
-                type: 'list',
-                widgets: [{
-                    title: 'List',
-                    type: 'card',
-                    widgets: [{
-                        path: 'name',
-                        title: 'Name',
-                        type: 'text'
-                    }]
-                }]
-            }]
+                            type: 'text',
+                        },
+                        {
+                            path: 'url',
+                            title: 'Url',
+                            type: 'url',
+                        },
+                        {
+                            path: 'children',
+                            type: 'list',
+                            widgets: [
+                                {
+                                    title: 'Children',
+                                    type: 'card',
+                                    widgets: [
+                                        {
+                                            path: 'name',
+                                            title: 'Name',
+                                            type: 'text',
+                                        },
+                                    ],
+                                },
+                            ],
+                        },
+                    ],
+                },
+                {
+                    path: 'list',
+                    type: 'list',
+                    widgets: [
+                        {
+                            title: 'List',
+                            type: 'card',
+                            widgets: [
+                                {
+                                    path: 'name',
+                                    title: 'Name',
+                                    type: 'text',
+                                },
+                            ],
+                        },
+                    ],
+                },
+            ],
         }
 
         it('templating OK', () => {
@@ -212,54 +226,91 @@ describe('widgets infobar utils', () => {
 
         it('should return passed data because passed type is `text`', () => {
             const passedData = 'foo'
-            expect(utils.guessFieldValueFromRawData(passedData, 'text')).toEqual(passedData)
+            expect(
+                utils.guessFieldValueFromRawData(passedData, 'text')
+            ).toEqual(passedData)
         })
 
         it('should return a datetime label because passed type is `date`', () => {
-            expect(utils.guessFieldValueFromRawData('foo', 'date')).toMatchSnapshot()
+            expect(
+                utils.guessFieldValueFromRawData('foo', 'date')
+            ).toMatchSnapshot()
         })
 
         it('should return an age string because passed type is `age` and passed data is a valid datetime', () => {
             // @xarg: don't try to mock this (it's a pain) - just update the snapshot
-            expect(utils.guessFieldValueFromRawData('2018-01-01 00:05:00', 'age')).toMatchSnapshot()
+            expect(
+                utils.guessFieldValueFromRawData('2018-01-01 00:05:00', 'age')
+            ).toMatchSnapshot()
         })
 
         it('should return passed data because passed type is `age` and passed data is not a valid datetime', () => {
             const passedData = '20180101-05 00:'
-            expect(utils.guessFieldValueFromRawData(passedData, 'age')).toEqual(passedData)
+            expect(utils.guessFieldValueFromRawData(passedData, 'age')).toEqual(
+                passedData
+            )
         })
 
         it('should return a link because passed type is `url` and passed data is an url', () => {
-            expect(utils.guessFieldValueFromRawData('https://gorgias.io', 'url')).toMatchSnapshot()
+            expect(
+                utils.guessFieldValueFromRawData('https://gorgias.io', 'url')
+            ).toMatchSnapshot()
         })
 
         it('should return passed data because passed type is `url` and passed data is not an url', () => {
             const passedData = 'httpsgorgiasio'
-            expect(utils.guessFieldValueFromRawData(passedData, 'url')).toEqual(passedData)
+            expect(utils.guessFieldValueFromRawData(passedData, 'url')).toEqual(
+                passedData
+            )
         })
 
         it('should return a link because passed type is `email` and passed data is an email address', () => {
-            expect(utils.guessFieldValueFromRawData('developers@gorgias.io', 'email')).toMatchSnapshot()
+            expect(
+                utils.guessFieldValueFromRawData(
+                    'developers@gorgias.io',
+                    'email'
+                )
+            ).toMatchSnapshot()
         })
 
         it('should return passed data because passed type is `email` and passed data is not an email address', () => {
             const passedData = 'developersgorgias.io'
-            expect(utils.guessFieldValueFromRawData(passedData, 'email')).toEqual(passedData)
+            expect(
+                utils.guessFieldValueFromRawData(passedData, 'email')
+            ).toEqual(passedData)
         })
 
         it('should render a success badge because passed type is `boolean` and passed data is a `true` value', () => {
-            expect(utils.guessFieldValueFromRawData(true, 'boolean')).toMatchSnapshot()
-            expect(utils.guessFieldValueFromRawData('true', 'boolean')).toMatchSnapshot()
-            expect(utils.guessFieldValueFromRawData('1', 'boolean')).toMatchSnapshot()
-            expect(utils.guessFieldValueFromRawData(1, 'boolean')).toMatchSnapshot()
-            expect(utils.guessFieldValueFromRawData(42, 'boolean')).toMatchSnapshot()
+            expect(
+                utils.guessFieldValueFromRawData(true, 'boolean')
+            ).toMatchSnapshot()
+            expect(
+                utils.guessFieldValueFromRawData('true', 'boolean')
+            ).toMatchSnapshot()
+            expect(
+                utils.guessFieldValueFromRawData('1', 'boolean')
+            ).toMatchSnapshot()
+            expect(
+                utils.guessFieldValueFromRawData(1, 'boolean')
+            ).toMatchSnapshot()
+            expect(
+                utils.guessFieldValueFromRawData(42, 'boolean')
+            ).toMatchSnapshot()
         })
 
         it('should render a danger badge because passed type is `boolean` and passed data is a `false` value', () => {
-            expect(utils.guessFieldValueFromRawData(false, 'boolean')).toMatchSnapshot()
-            expect(utils.guessFieldValueFromRawData('false', 'boolean')).toMatchSnapshot()
-            expect(utils.guessFieldValueFromRawData('0', 'boolean')).toMatchSnapshot()
-            expect(utils.guessFieldValueFromRawData(0, 'boolean')).toMatchSnapshot()
+            expect(
+                utils.guessFieldValueFromRawData(false, 'boolean')
+            ).toMatchSnapshot()
+            expect(
+                utils.guessFieldValueFromRawData('false', 'boolean')
+            ).toMatchSnapshot()
+            expect(
+                utils.guessFieldValueFromRawData('0', 'boolean')
+            ).toMatchSnapshot()
+            expect(
+                utils.guessFieldValueFromRawData(0, 'boolean')
+            ).toMatchSnapshot()
         })
     })
 
@@ -285,9 +336,7 @@ describe('widgets infobar utils', () => {
                         fromJS({
                             type: 'card',
                             path: 'bar',
-                            widgets: [
-                                fromJS({type: 'text', path: 'baz'}),
-                            ],
+                            widgets: [fromJS({type: 'text', path: 'baz'})],
                         }),
                     ],
                 }),
@@ -301,9 +350,7 @@ describe('widgets infobar utils', () => {
                         fromJS({
                             type: 'list',
                             path: 'bar',
-                            widgets: [
-                                fromJS({type: 'text', path: 'baz'}),
-                            ],
+                            widgets: [fromJS({type: 'text', path: 'baz'})],
                         }),
                     ],
                 }),
@@ -317,9 +364,7 @@ describe('widgets infobar utils', () => {
                         fromJS({
                             type: 'list',
                             path: 'bar',
-                            widgets: [
-                                fromJS({type: 'text', path: 'baz'}),
-                            ],
+                            widgets: [fromJS({type: 'text', path: 'baz'})],
                         }),
                     ],
                 }),
@@ -327,10 +372,13 @@ describe('widgets infobar utils', () => {
             ],
         ]
 
-        it.each(emptyValues)('should return `true` because widget is empty', (widget, source) => {
-            const result = utils.isWidgetEmpty(widget, source)
-            expect(result).toBe(true)
-        })
+        it.each(emptyValues)(
+            'should return `true` because widget is empty',
+            (widget, source) => {
+                const result = utils.isWidgetEmpty(widget, source)
+                expect(result).toBe(true)
+            }
+        )
 
         const validValues = [
             [
@@ -348,7 +396,7 @@ describe('widgets infobar utils', () => {
                         }),
                     ],
                 }),
-                fromJS({foo: {bar: {baz: 'baz!', buz: ''}}})
+                fromJS({foo: {bar: {baz: 'baz!', buz: ''}}}),
             ],
             [
                 fromJS({
@@ -365,13 +413,16 @@ describe('widgets infobar utils', () => {
                         }),
                     ],
                 }),
-                fromJS({foo: {bar: [{baz: 'baz!', buz: ''}]}})
+                fromJS({foo: {bar: [{baz: 'baz!', buz: ''}]}}),
             ],
         ]
 
-        it.each(validValues)('should return `false` because widget is not empty', (widget, source) => {
-            const result = utils.isWidgetEmpty(widget, source)
-            expect(result).toBe(false)
-        })
+        it.each(validValues)(
+            'should return `false` because widget is not empty',
+            (widget, source) => {
+                const result = utils.isWidgetEmpty(widget, source)
+                expect(result).toBe(false)
+            }
+        )
     })
 })

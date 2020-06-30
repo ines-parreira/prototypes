@@ -5,17 +5,15 @@ import classnames from 'classnames'
 
 import {
     SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
-    SMOOCH_INSIDE_WIDGET_TEXTS
+    SMOOCH_INSIDE_WIDGET_TEXTS,
 } from '../../../../../../config/integrations/smooch_inside'
-
 
 import ChatIntegrationAvatar from './ChatIntegrationAvatar'
 import css from './ChatIntegrationPreview.less'
 
-
 type Props = {
     name: string,
-    currentUser?: Map<*,*>,
+    currentUser?: Map<*, *>,
     introductionText?: string,
     offlineIntroductionText?: string,
     headerText?: string,
@@ -27,13 +25,13 @@ type Props = {
     language?: string,
 
     children: Node,
-    renderFooter: boolean
+    renderFooter: boolean,
 }
 
 export default class ChatIntegrationPreview extends React.Component<Props> {
     static defaultProps = {
         language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
-        renderFooter: true
+        renderFooter: true,
     }
 
     render() {
@@ -47,7 +45,7 @@ export default class ChatIntegrationPreview extends React.Component<Props> {
             isOnline,
             language,
             children,
-            renderFooter
+            renderFooter,
         } = this.props
 
         // Preserve the space which should be occupied by a string when the string is empty
@@ -61,11 +59,15 @@ export default class ChatIntegrationPreview extends React.Component<Props> {
 
         return (
             <div className={css.preview}>
-                <div className={css.titlebar}/>
+                <div className={css.titlebar} />
                 <div className={css.dialog}>
                     <div
                         className={css.header}
-                        style={{backgroundColor: isOnline ? mainColor : offlineColor}}
+                        style={{
+                            backgroundColor: isOnline
+                                ? mainColor
+                                : offlineColor,
+                        }}
                     >
                         <ChatIntegrationAvatar
                             avatarType={avatarType}
@@ -76,39 +78,39 @@ export default class ChatIntegrationPreview extends React.Component<Props> {
                         />
 
                         <div className={css.details}>
-                            <div className={css.appName}>
-                                {nonbreak(name)}
-                            </div>
+                            <div className={css.appName}>{nonbreak(name)}</div>
                             <div className={css.introductionText}>
-                                {nonbreak(isOnline ? introductionText : offlineIntroductionText)}
+                                {nonbreak(
+                                    isOnline
+                                        ? introductionText
+                                        : offlineIntroductionText
+                                )}
                             </div>
-                            {
-                                !isOnline && (
-                                    <div className={css['business-hours-back-badge']}>
-                                        {translatedTexts.backLabelBackTomorrow}
-                                    </div>
-                                )
-                            }
+                            {!isOnline && (
+                                <div
+                                    className={css['business-hours-back-badge']}
+                                >
+                                    {translatedTexts.backLabelBackTomorrow}
+                                </div>
+                            )}
                         </div>
                     </div>
 
-                    { children }
+                    {children}
 
                     <div className={css.poweredby}>
                         {translatedTexts.poweredByGorgias}
                     </div>
 
-                    {
-                        renderFooter && (
-                            <div className={css.footer}>
-                                <div className={css.placeholder}>
-                                    {nonbreak(translatedTexts.inputPlaceholder)}
-                                </div>
-
-                                <i className={classnames(css.icon, css.camera)}/>
+                    {renderFooter && (
+                        <div className={css.footer}>
+                            <div className={css.placeholder}>
+                                {nonbreak(translatedTexts.inputPlaceholder)}
                             </div>
-                        )
-                    }
+
+                            <i className={classnames(css.icon, css.camera)} />
+                        </div>
+                    )}
                 </div>
 
                 <div
@@ -116,8 +118,8 @@ export default class ChatIntegrationPreview extends React.Component<Props> {
                     style={{backgroundColor: mainColor}}
                 >
                     <div className={css.iconWrapper}>
-                        <i className={css.icon}/>
-                        <div className={css.shadow}/>
+                        <i className={css.icon} />
+                        <div className={css.shadow} />
                     </div>
                 </div>
             </div>

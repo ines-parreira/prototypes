@@ -10,16 +10,9 @@ type Props = $Exact<{
     className?: string,
 }>
 
-export default function TableBody({
-    children,
-    className,
-    ...otherProps
-}: Props) {
+export default function TableBody({children, className, ...otherProps}: Props) {
     return (
-        <tbody
-            {...otherProps}
-            className={classnames(css.tableBody, className)}
-        >
+        <tbody {...otherProps} className={classnames(css.tableBody, className)}>
             {children}
         </tbody>
     )

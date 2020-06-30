@@ -11,7 +11,7 @@ const userRoleRequired = (Component, requiredRole, redirectTo) => {
     const UserRoleRequired = (props) => {
         // user has required role
         if (requiredRole && hasRole(props.currentUser, requiredRole)) {
-            return <Component {...props}/>
+            return <Component {...props} />
         }
 
         // user hasn't required role
@@ -19,16 +19,16 @@ const userRoleRequired = (Component, requiredRole, redirectTo) => {
             browserHistory.push(redirectTo)
             return null
         }
-        return <NotAllowed/>
+        return <NotAllowed />
     }
 
     UserRoleRequired.propTypes = {
-        currentUser: PropTypes.object.isRequired
+        currentUser: PropTypes.object.isRequired,
     }
 
     function mapStateToProps(state) {
         return {
-            currentUser: state.currentUser
+            currentUser: state.currentUser,
         }
     }
 

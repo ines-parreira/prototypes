@@ -30,7 +30,7 @@ describe('Event component', () => {
             firstname: 'Acme',
             lastname: 'Support',
             name: 'Acme Support',
-            email: 'support@acme.gorgias.io'
+            email: 'support@acme.gorgias.io',
         },
     }
 
@@ -38,51 +38,62 @@ describe('Event component', () => {
         const integrationsData = {}
 
         integrationsData[shopifyIntegrationId.toString()] = {
-            orders: [{
-                id: orderId,
-                name: '#1234',
-                line_items: [{
-                    id: itemId,
-                    name: 'Beautiful butterfly'
-                }]
-            }]
+            orders: [
+                {
+                    id: orderId,
+                    name: '#1234',
+                    line_items: [
+                        {
+                            id: itemId,
+                            name: 'Beautiful butterfly',
+                        },
+                    ],
+                },
+            ],
         }
 
         integrationsData[rechargeIntegrationId.toString()] = {
             customer: {
-                hash: rechargeCustomerHash
+                hash: rechargeCustomerHash,
             },
-            subscriptions: [{
-                id: subscriptionId
-            }],
-            charges: [{
-                id: chargeId
-            }]
+            subscriptions: [
+                {
+                    id: subscriptionId,
+                },
+            ],
+            charges: [
+                {
+                    id: chargeId,
+                },
+            ],
         }
 
         store = mockStore({
             ticket: fromJS({
                 customer: {
-                    integrations: integrationsData
-                }
+                    integrations: integrationsData,
+                },
             }),
             integrations: fromJS({
-                integrations: [{
-                    id: rechargeIntegrationId,
-                    type: 'recharge',
-                    name: 'my-store',
-                    meta: {
-                        store_name: 'my-store'
-                    }
-                }, {
-                    id: shopifyIntegrationId,
-                    type: 'shopify',
-                    name: 'my-store',
-                    meta: {
-                        shop_name: 'my-store'
-                    }
-                }]
-            })
+                integrations: [
+                    {
+                        id: rechargeIntegrationId,
+                        type: 'recharge',
+                        name: 'my-store',
+                        meta: {
+                            store_name: 'my-store',
+                        },
+                    },
+                    {
+                        id: shopifyIntegrationId,
+                        type: 'shopify',
+                        name: 'my-store',
+                        meta: {
+                            shop_name: 'my-store',
+                        },
+                    },
+                ],
+            }),
         })
     })
 
@@ -93,18 +104,14 @@ describe('Event component', () => {
                 action_name: 'rechargeCancelSubscription',
                 integration_id: rechargeIntegrationId,
                 payload: {
-                    subscription_id: subscriptionId
+                    subscription_id: subscriptionId,
                 },
-                status: 'success'
-            }
+                status: 'success',
+            },
         })
 
         const component = shallow(
-            <Event
-                store={store}
-                event={event}
-                isLast={false}
-            />
+            <Event store={store} event={event} isLast={false} />
         ).dive()
 
         expect(component).toMatchSnapshot()
@@ -117,19 +124,15 @@ describe('Event component', () => {
                 action_name: 'rechargeCancelSubscription',
                 integration_id: rechargeIntegrationId,
                 payload: {
-                    subscription_id: subscriptionId
+                    subscription_id: subscriptionId,
                 },
                 status: 'error',
-                msg: 'the error is real'
-            }
+                msg: 'the error is real',
+            },
         })
 
         const component = shallow(
-            <Event
-                store={store}
-                event={event}
-                isLast={false}
-            />
+            <Event store={store} event={event} isLast={false} />
         ).dive()
 
         expect(component).toMatchSnapshot()
@@ -143,18 +146,14 @@ describe('Event component', () => {
                 integration_id: rechargeIntegrationId,
                 payload: {
                     subscription_id: subscriptionId,
-                    charge_id: chargeId
+                    charge_id: chargeId,
                 },
-                status: 'success'
-            }
+                status: 'success',
+            },
         })
 
         const component = shallow(
-            <Event
-                store={store}
-                event={event}
-                isLast={false}
-            />
+            <Event store={store} event={event} isLast={false} />
         ).dive()
 
         expect(component).toMatchSnapshot()
@@ -168,19 +167,15 @@ describe('Event component', () => {
                 integration_id: rechargeIntegrationId,
                 payload: {
                     subscription_id: subscriptionId,
-                    charge_id: chargeId
+                    charge_id: chargeId,
                 },
                 status: 'error',
-                msg: 'the error is real'
-            }
+                msg: 'the error is real',
+            },
         })
 
         const component = shallow(
-            <Event
-                store={store}
-                event={event}
-                isLast={false}
-            />
+            <Event store={store} event={event} isLast={false} />
         ).dive()
 
         expect(component).toMatchSnapshot()
@@ -193,18 +188,14 @@ describe('Event component', () => {
                 action_name: 'shopifyFullRefundOrder',
                 integration_id: shopifyIntegrationId,
                 payload: {
-                    order_id: orderId
+                    order_id: orderId,
                 },
-                status: 'success'
-            }
+                status: 'success',
+            },
         })
 
         const component = shallow(
-            <Event
-                store={store}
-                event={event}
-                isLast={false}
-            />
+            <Event store={store} event={event} isLast={false} />
         ).dive()
 
         expect(component).toMatchSnapshot()
@@ -220,16 +211,12 @@ describe('Event component', () => {
                     order_id: orderId,
                     payload: {foo: 'bar'},
                 },
-                status: 'success'
-            }
+                status: 'success',
+            },
         })
 
         const component = shallow(
-            <Event
-                store={store}
-                event={event}
-                isLast={false}
-            />
+            <Event store={store} event={event} isLast={false} />
         ).dive()
 
         expect(component).toMatchSnapshot()
@@ -242,19 +229,15 @@ describe('Event component', () => {
                 action_name: 'shopifyFullRefundOrder',
                 integration_id: shopifyIntegrationId,
                 payload: {
-                    order_id: orderId
+                    order_id: orderId,
                 },
                 status: 'error',
-                msg: 'the error is real'
-            }
+                msg: 'the error is real',
+            },
         })
 
         const component = shallow(
-            <Event
-                store={store}
-                event={event}
-                isLast={false}
-            />
+            <Event store={store} event={event} isLast={false} />
         ).dive()
 
         expect(component).toMatchSnapshot()

@@ -12,11 +12,12 @@ export const ticket = {
             integration_id: 1,
             headers: {
                 'X-GORGIAS-TICKET-ID': 152,
-                'Message-Id': '<150154245609.11.10386011626513378232.152-182@worker>',
-                'reply-to': 'Acme Support <support@acme.gorgias.io>'
+                'Message-Id':
+                    '<150154245609.11.10386011626513378232.152-182@worker>',
+                'reply-to': 'Acme Support <support@acme.gorgias.io>',
             },
             body_html: '<div>Hi! How are <strong>you</strong>?</div>',
-            'public': true,
+            public: true,
             body_text: 'Hi! How are you?',
             subject: '',
             uri: '/api/tickets/1/messages/0/',
@@ -27,7 +28,7 @@ export const ticket = {
                 email: 'jeanbon@gorgias.io',
                 name: 'Jean Bon',
                 firstname: 'Jean',
-                lastname: 'Bon'
+                lastname: 'Bon',
             },
             external_id: null,
             stripped_signature: null,
@@ -43,27 +44,27 @@ export const ticket = {
                 email: 'alex@gorgias.io',
                 name: 'Alex Plugaru',
                 firstname: 'Alex',
-                lastname: 'Plugaru'
+                lastname: 'Plugaru',
             },
             source: {
                 type: 'email',
                 to: [
                     {
                         name: 'Jean Bon',
-                        address: 'jeanbon@gorgias.io'
-                    }
+                        address: 'jeanbon@gorgias.io',
+                    },
                 ],
                 from: {
                     name: 'Acme Support',
-                    address: 'support@acme.gorgias.io'
-                }
+                    address: 'support@acme.gorgias.io',
+                },
             },
             id: 182,
             actions: null,
             failed_datetime: null,
             internal: null,
-            rule_id: null
-        }
+            rule_id: null,
+        },
     ],
     uri: '/api/tickets/0/',
     via: 'helpdesk',
@@ -73,7 +74,7 @@ export const ticket = {
         email: 'jeanbon@gorgias.io',
         name: 'Jean Bon',
         firstname: 'Jean',
-        lastname: 'Bon'
+        lastname: 'Bon',
     },
     external_id: null,
     from_agent: true,
@@ -85,7 +86,7 @@ export const ticket = {
         email: 'alex@gorgias.io',
         name: 'Alex Plugaru',
         firstname: 'Alex',
-        lastname: 'Plugaru'
+        lastname: 'Plugaru',
     },
     tags: [
         {
@@ -93,8 +94,8 @@ export const ticket = {
             user_id: 2,
             name: 'refund',
             uri: '/api/tags/1/',
-            decoration: null
-        }
+            decoration: null,
+        },
     ],
     events: [],
     assignee_user: {
@@ -102,7 +103,7 @@ export const ticket = {
         email: 'alex@gorgias.io',
         name: 'Alex Plugaru',
         firstname: 'Alex',
-        lastname: 'Plugaru'
+        lastname: 'Plugaru',
     },
     id: 152,
     last_message_datetime: '2017-07-31T23:07:35.150000+00:00',
@@ -120,7 +121,7 @@ export const ticket = {
                 preferred: true,
                 created_datetime: '2017-07-31T21:45:03.399819+00:00',
                 updated_datetime: '2017-07-31T21:45:03.399828+00:00',
-                deleted_datetime: null
+                deleted_datetime: null,
             },
             {
                 id: 56,
@@ -129,14 +130,15 @@ export const ticket = {
                 preferred: true,
                 created_datetime: '2017-07-31T21:45:03.416965+00:00',
                 updated_datetime: '2017-07-31T21:45:03.416976+00:00',
-                deleted_datetime: null
-            }
+                deleted_datetime: null,
+            },
         ],
         data: null,
         integrations: {
-            '2': { // custom HTTP
+            '2': {
+                // custom HTTP
                 args: {
-                    name: 'Jean Bon'
+                    name: 'Jean Bon',
                 },
                 origin: '199.188.194.25',
                 url: 'https://httpbin.org/get?name=Jean Bon',
@@ -146,15 +148,16 @@ export const ticket = {
                     'Content-Type': 'application/json',
                     Accept: '*/*',
                     Host: 'httpbin.org',
-                    'Accept-Encoding': 'gzip, deflate'
+                    'Accept-Encoding': 'gzip, deflate',
                 },
-                __integration_type__: 'http'
+                __integration_type__: 'http',
             },
-            '5': { // shopify
+            '5': {
+                // shopify
                 customer: {
                     addresses: [
                         {
-                            'default': false,
+                            default: false,
                             zip: '75012',
                             city: 'Paris',
                             name: 'Jean Bon',
@@ -170,8 +173,8 @@ export const ticket = {
                             province_code: null,
                             company: 'Fleury Michon',
                             address1: '3 rue des volailles',
-                            address2: ''
-                        }
+                            address2: '',
+                        },
                     ],
                     last_order_name: '#1202',
                     verified_email: true,
@@ -186,7 +189,7 @@ export const ticket = {
                     orders_count: 80,
                     last_order_id: 4236385803,
                     default_address: {
-                        'default': true,
+                        default: true,
                         zip: '75012',
                         city: 'Paris',
                         name: 'Jean Bon',
@@ -202,14 +205,14 @@ export const ticket = {
                         province_code: null,
                         company: 'Fleury Michon',
                         address1: '12 rue du poisson cru',
-                        address2: 'unit 3'
+                        address2: 'unit 3',
                     },
                     updated_at: '2017-07-12T20:44:14-04:00',
                     tags: 'Active Subscriber',
                     first_name: 'Jean',
                     id: 4279837195,
                     email: 'jeanbon@gorgias.io',
-                    multipass_identifier: null
+                    multipass_identifier: null,
                 },
                 orders: [
                     {
@@ -232,7 +235,7 @@ export const ticket = {
                             province_code: null,
                             company: 'Fleury Michon',
                             address1: '12 rue du poisson cru',
-                            address2: 'unit 3'
+                            address2: 'unit 3',
                         },
                         gateway: 'manual',
                         processed_at: '2017-07-12T16:14:09-04:00',
@@ -250,8 +253,8 @@ export const ticket = {
                             {
                                 rate: 0.2,
                                 price: '1.50',
-                                title: 'TVA'
-                            }
+                                title: 'TVA',
+                            },
                         ],
                         name: '#1202',
                         reference: null,
@@ -281,7 +284,7 @@ export const ticket = {
                             province_code: null,
                             company: 'Fleury Michon',
                             address1: '12 rue du poisson cru',
-                            address2: 'unit 3'
+                            address2: 'unit 3',
                         },
                         currency: 'EUR',
                         test: false,
@@ -290,9 +293,7 @@ export const ticket = {
                         fulfillment_status: null,
                         total_weight: 200,
                         checkout_id: null,
-                        payment_gateway_names: [
-                            'manual'
-                        ],
+                        payment_gateway_names: ['manual'],
                         total_price_usd: '10.33',
                         fulfillments: [],
                         line_items: [
@@ -306,26 +307,28 @@ export const ticket = {
                                     {
                                         rate: 0.2,
                                         price: '1.50',
-                                        title: 'TVA'
-                                    }
+                                        title: 'TVA',
+                                    },
                                 ],
                                 product_id: 9211387275,
-                                name: 'Baskets peu cheres  10.00% Off Auto renew',
+                                name:
+                                    'Baskets peu cheres  10.00% Off Auto renew',
                                 product_exists: true,
                                 fulfillable_quantity: 1,
                                 properties: [],
                                 fulfillment_status: null,
                                 fulfillment_service: 'manual',
                                 variant_id: 32994232907,
-                                title: 'Baskets peu cheres  10.00% Off Auto renew',
+                                title:
+                                    'Baskets peu cheres  10.00% Off Auto renew',
                                 id: 8276448779,
                                 grams: 200,
                                 total_discount: '0.00',
                                 sku: '1234567890',
                                 variant_title: null,
                                 gift_card: false,
-                                requires_shipping: true
-                            }
+                                requires_shipping: true,
+                            },
                         ],
                         referring_site: null,
                         total_discounts: '0.00',
@@ -355,7 +358,7 @@ export const ticket = {
                             orders_count: 80,
                             last_order_id: 4236385803,
                             default_address: {
-                                'default': true,
+                                default: true,
                                 zip: '75012',
                                 city: 'Paris',
                                 name: 'Jean Bon',
@@ -371,16 +374,16 @@ export const ticket = {
                                 province_code: null,
                                 company: 'Fleury Michon',
                                 address1: '12 rue du poisson cru',
-                                address2: 'unit 3'
+                                address2: 'unit 3',
                             },
                             updated_at: '2017-07-12T20:44:14-04:00',
                             tags: 'Active Subscriber',
                             first_name: 'Jean',
                             id: 4279837195,
                             email: 'jeanbon@gorgias.io',
-                            multipass_identifier: null
+                            multipass_identifier: null,
                         },
-                        confirmed: true
+                        confirmed: true,
                     },
                     {
                         checkout_token: null,
@@ -402,7 +405,7 @@ export const ticket = {
                             province_code: null,
                             company: 'Fleury Michon',
                             address1: '12 rue du poisson cru',
-                            address2: 'unit 3'
+                            address2: 'unit 3',
                         },
                         gateway: '',
                         processed_at: '2017-06-16T20:06:10-04:00',
@@ -463,8 +466,8 @@ export const ticket = {
                                 sku: '0987654321',
                                 variant_title: null,
                                 gift_card: false,
-                                requires_shipping: true
-                            }
+                                requires_shipping: true,
+                            },
                         ],
                         referring_site: null,
                         total_discounts: '0.00',
@@ -494,7 +497,7 @@ export const ticket = {
                             orders_count: 80,
                             last_order_id: 4236385803,
                             default_address: {
-                                'default': true,
+                                default: true,
                                 zip: '75012',
                                 city: 'Paris',
                                 name: 'Jean Bon',
@@ -510,21 +513,21 @@ export const ticket = {
                                 province_code: null,
                                 company: 'Fleury Michon',
                                 address1: '12 rue du poisson cru',
-                                address2: 'unit 3'
+                                address2: 'unit 3',
                             },
                             updated_at: '2017-07-12T20:44:14-04:00',
                             tags: 'Active Subscriber',
                             first_name: 'Jean',
                             id: 4279837195,
                             email: 'jeanbon@gorgias.io',
-                            multipass_identifier: null
+                            multipass_identifier: null,
                         },
-                        confirmed: true
+                        confirmed: true,
                     },
                 ],
-                __integration_type__: 'shopify'
-            }
-        }
+                __integration_type__: 'shopify',
+            },
+        },
     },
-    updated_datetime: '2017-07-31T23:07:37.253131+00:00'
+    updated_datetime: '2017-07-31T23:07:37.253131+00:00',
 }

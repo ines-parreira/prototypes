@@ -13,7 +13,9 @@ type Props = {
 }
 
 export function InfobarTabs({preparedDisplayList}: Props) {
-    const types = preparedDisplayList.map((item) => item.getIn(['widget', 'type']))
+    const types = preparedDisplayList.map((item) =>
+        item.getIn(['widget', 'type'])
+    )
     const tabs = new Set(types)
 
     if (tabs.size < 2) {
@@ -21,17 +23,11 @@ export function InfobarTabs({preparedDisplayList}: Props) {
     }
 
     return (
-        <Navbar
-            className={css.container}
-            sticky="top"
-        >
+        <Navbar className={css.container} sticky="top">
             <Nav pills>
                 {Array.from(tabs).map((tab) => (
                     <NavItem key={tab}>
-                        <NavLink
-                            href={`#${tab}`}
-                            className={css.tab}
-                        >
+                        <NavLink href={`#${tab}`} className={css.tab}>
                             {getWidgetLabel(tab)}
                         </NavLink>
                     </NavItem>

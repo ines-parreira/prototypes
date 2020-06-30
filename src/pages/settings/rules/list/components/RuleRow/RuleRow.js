@@ -10,7 +10,6 @@ import RuleItem from '../../../detail/components/RuleItem'
 
 import css from './RuleRow.less'
 
-
 type Props = {
     actions: Object,
     currentUser: Object,
@@ -20,12 +19,12 @@ type Props = {
 }
 
 type State = {
-    showConfirmation: boolean
+    showConfirmation: boolean,
 }
 
 class RuleRow extends React.Component<Props, State> {
     state = {
-        showConfirmation: false
+        showConfirmation: false,
     }
 
     _toggleConfirmation = () => {
@@ -66,29 +65,31 @@ class RuleRow extends React.Component<Props, State> {
                 className={classnames('draggable', css.row)}
             >
                 <td className="smallest align-middle">
-                    <i className={classnames('material-icons text-faded drag-handle', css.dragHandle)}>
+                    <i
+                        className={classnames(
+                            'material-icons text-faded drag-handle',
+                            css.dragHandle
+                        )}
+                    >
                         drag_handle
                     </i>
                 </td>
 
-                <td className={classnames('link-full-td', css['middle-column'])}>
+                <td
+                    className={classnames('link-full-td', css['middle-column'])}
+                >
                     <a onClick={() => this.props.toggleOpening(rule.get('id'))}>
                         <div>
                             <span className="mr-2">
                                 <b>{rule.get('name')}</b>
-                                {
-                                    rule.get('type') === 'system' && (
-                                        <Badge
-                                            className="ml-2"
-                                            color="danger"
-                                        >
-                                            <i className="material-icons mr-2">
-                                                warning
-                                            </i>
-                                            SYSTEM
-                                        </Badge>
-                                    )
-                                }
+                                {rule.get('type') === 'system' && (
+                                    <Badge className="ml-2" color="danger">
+                                        <i className="material-icons mr-2">
+                                            warning
+                                        </i>
+                                        SYSTEM
+                                    </Badge>
+                                )}
                             </span>
                             <span className="text-faded">
                                 {rule.get('description')}
@@ -110,9 +111,7 @@ class RuleRow extends React.Component<Props, State> {
                         target={toggleId}
                         toggle={this._toggleConfirmation}
                     >
-                        <PopoverHeader>
-                            Are you sure?
-                        </PopoverHeader>
+                        <PopoverHeader>Are you sure?</PopoverHeader>
                         <PopoverBody>
                             <p>
                                 Are you sure you want to deactivate this rule?

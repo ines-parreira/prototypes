@@ -375,7 +375,8 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                               <p>
                                 Install the 
                                 chat
-                                 widget on your 
+                                 widget on your
+                                 
                                 Shopify
                                  store in one click
                               </p>
@@ -458,13 +459,12 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
 <!-- Gorgias Chat Widget End -->"
                     description={
                       <p>
-                        Copy the code below and paste it on your website
-                         
-                        above the 
+                        Copy the code below and paste it on your website above the 
                         <b>
                           &lt;/body&gt;
                         </b>
-                         tag:
+                         
+                        tag:
                       </p>
                     }
                     integrationType="smooch_inside"
@@ -499,13 +499,12 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                                 </h3>
                                 <p>
                                   <p>
-                                    Copy the code below and paste it on your website
-                                     
-                                    above the 
+                                    Copy the code below and paste it on your website above the 
                                     <b>
                                       &lt;/body&gt;
                                     </b>
-                                     tag:
+                                     
+                                    tag:
                                   </p>
                                 </p>
                               </div>

@@ -6,9 +6,8 @@ import {Link} from 'react-router'
 import SecondaryNavbar from '../../../../common/components/SecondaryNavbar/SecondaryNavbar'
 
 type Props = {
-    integration: Map<*,*>
+    integration: Map<*, *>,
 }
-
 
 export default class SmoochIntegrationNavigation extends React.Component<Props> {
     render() {
@@ -18,12 +17,8 @@ export default class SmoochIntegrationNavigation extends React.Component<Props> 
 
         return (
             <SecondaryNavbar>
-                <Link to={`${baseURL}/overview`}>
-                    Overview
-                </Link>
-                <Link to={`${baseURL}/preferences`}>
-                    Preferences
-                </Link>
+                <Link to={`${baseURL}/overview`}>Overview</Link>
+                <Link to={`${baseURL}/preferences`}>Preferences</Link>
             </SecondaryNavbar>
         )
     }

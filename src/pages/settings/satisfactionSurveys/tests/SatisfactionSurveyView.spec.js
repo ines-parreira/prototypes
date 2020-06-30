@@ -18,11 +18,13 @@ describe('SatisfactionSurveyView', () => {
         store = mockStore({
             currentAccount: fromJS({
                 extra_features: ['satisfaction-surveys'],
-                settings: [{
-                    data: {},
-                    type: 'satisfaction-surveys'
-                }]
-            })
+                settings: [
+                    {
+                        data: {},
+                        type: 'satisfaction-surveys',
+                    },
+                ],
+            }),
         })
         jest.clearAllMocks()
     })
@@ -43,11 +45,13 @@ describe('SatisfactionSurveyView', () => {
             store = mockStore({
                 currentAccount: fromJS({
                     extra_features: [],
-                    settings: [{
-                        data: {},
-                        type: 'satisfaction-surveys'
-                    }]
-                })
+                    settings: [
+                        {
+                            data: {},
+                            type: 'satisfaction-surveys',
+                        },
+                    ],
+                }),
             })
 
             const component = mount(

@@ -15,18 +15,18 @@ type Props = {
     id: string,
     isForwarded: boolean,
     createdDatetime: string,
-    source: SourceType
+    source: SourceType,
 }
 
 type State = {
-    isDropdownOpen: boolean
+    isDropdownOpen: boolean,
 }
 
 export default class Source extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
         this.state = {
-            isDropdownOpen: false
+            isDropdownOpen: false,
         }
     }
 
@@ -52,11 +52,11 @@ export default class Source extends React.Component<Props, State> {
             <li>
                 <span className="text-faded">{title}:</span>
                 <strong>
-                    {
-                        fieldSource.map((person) => {
+                    {fieldSource
+                        .map((person) => {
                             return getPersonLabelFromSource(person, source.type)
-                        }).join(', ')
-                    }
+                        })
+                        .join(', ')}
                 </strong>
             </li>
         )
@@ -74,7 +74,11 @@ export default class Source extends React.Component<Props, State> {
                 >
                     <SourceIcon
                         id={id}
-                        type={this.props.isForwarded ? 'email-forward' : source.type}
+                        type={
+                            this.props.isForwarded
+                                ? 'email-forward'
+                                : source.type
+                        }
                         className="uncolored"
                     />
                 </span>
@@ -92,17 +96,19 @@ export default class Source extends React.Component<Props, State> {
                                 {this._renderSourceList('Cc', 'cc')}
                                 {this._renderSourceList('Bcc', 'bcc')}
                                 <li>
-                                    <span className="text-faded">Send via:</span>
-                                    <strong>
-                                        {source.type}
-                                    </strong>
+                                    <span className="text-faded">
+                                        Send via:
+                                    </span>
+                                    <strong>{source.type}</strong>
                                 </li>
                                 <li>
                                     <span className="text-faded">Date:</span>
                                     <strong>
                                         <DatetimeLabel
-                                            dateTime={this.props.createdDatetime}
-                                            labelFormat='MM-DD-YYYY HH:mm'
+                                            dateTime={
+                                                this.props.createdDatetime
+                                            }
+                                            labelFormat="MM-DD-YYYY HH:mm"
                                         />
                                     </strong>
                                 </li>

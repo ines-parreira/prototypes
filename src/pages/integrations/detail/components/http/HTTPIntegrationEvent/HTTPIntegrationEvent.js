@@ -25,18 +25,18 @@ type Props = {
 }
 
 type State = {
-    isFetching?: boolean
+    isFetching?: boolean,
 }
 
-const DEFAULT_ERROR_MESSAGE = 'There was an error while making this request. This can happen for multiple reasons:\n'
-    + '- there is a typo in the request URL\n'
-    + '- the server you\'re trying to reach is not running right now\n'
-    + '- the server you\'re trying to reach is not returning a response fast enough (timeout)\n'
-    + '- the DNS records for this URL are not propagated yet\n'
-    + '- ...\n\n'
-    + 'Please double check that the request you\'re trying to make should work, using tools like cURL or '
-    + 'Postman for example, and if it is the case please reach out to us at "support@gorgias.com". Details:\n\n'
-
+const DEFAULT_ERROR_MESSAGE =
+    'There was an error while making this request. This can happen for multiple reasons:\n' +
+    '- there is a typo in the request URL\n' +
+    "- the server you're trying to reach is not running right now\n" +
+    "- the server you're trying to reach is not returning a response fast enough (timeout)\n" +
+    '- the DNS records for this URL are not propagated yet\n' +
+    '- ...\n\n' +
+    "Please double check that the request you're trying to make should work, using tools like cURL or " +
+    'Postman for example, and if it is the case please reach out to us at "support@gorgias.com". Details:\n\n'
 
 export class HTTPIntegrationEvent extends Component<Props, State> {
     state = {}
@@ -48,11 +48,14 @@ export class HTTPIntegrationEvent extends Component<Props, State> {
 
         this.setState({isFetching: true})
 
-        this.props.fetchHTTPIntegrationEvent(integrationId, eventId).then(() => {
-            this.setState({isFetching: false})
-        }).catch(() => {
-            this.setState({isFetching: false})
-        })
+        this.props
+            .fetchHTTPIntegrationEvent(integrationId, eventId)
+            .then(() => {
+                this.setState({isFetching: false})
+            })
+            .catch(() => {
+                this.setState({isFetching: false})
+            })
     }
 
     componentWillMount() {
@@ -65,7 +68,7 @@ export class HTTPIntegrationEvent extends Component<Props, State> {
         const {isFetching} = this.state
 
         if (!event || event.isEmpty() || isFetching) {
-            return <Loader/>
+            return <Loader />
         }
 
         const request = event.get('request')
@@ -80,14 +83,22 @@ export class HTTPIntegrationEvent extends Component<Props, State> {
         let requestFormBody = null
 
         try {
-            requestJSONBody = JSON.stringify(JSON.parse(requestBody), undefined, 4)
+            requestJSONBody = JSON.stringify(
+                JSON.parse(requestBody),
+                undefined,
+                4
+            )
         } catch (err) {
             requestFormBody = requestBody
         }
 
         if (responseBody) {
             try {
-                responseBody = JSON.stringify(JSON.parse(responseBody), undefined, 4)
+                responseBody = JSON.stringify(
+                    JSON.parse(responseBody),
+                    undefined,
+                    4
+                )
             } catch (err) {
                 // ignore parsing error
             }
@@ -95,100 +106,81 @@ export class HTTPIntegrationEvent extends Component<Props, State> {
 
         if (!!responseError && !event.get('status_code')) {
             // Previously, a similar default message (not exactly the same) was stored in database, along with the error
-            if (!responseError.startsWith('There was an error while making this request.')) {
+            if (
+                !responseError.startsWith(
+                    'There was an error while making this request.'
+                )
+            ) {
                 responseError = DEFAULT_ERROR_MESSAGE + responseError
             }
         }
 
         return (
-            <Container
-                fluid
-                className="page-container"
-            >
+            <Container fluid className="page-container">
                 <Row>
-                    <Col
-                        md="12"
-                        lg="6"
-                        className={`${css.request} mb-4`}
-                    >
+                    <Col md="12" lg="6" className={`${css.request} mb-4`}>
                         <Container fluid>
-                            <h2 className='mb-4'>Request</h2>
+                            <h2 className="mb-4">Request</h2>
                             <HTTPItem
                                 name="Method"
                                 value={request.get('method')}
                             />
-                            <HTTPItem
-                                name="URL"
-                                value={request.get('url')}
-                            />
+                            <HTTPItem name="URL" value={request.get('url')} />
                             <HTTPItem name="Sent">
-                                <DatetimeLabel dateTime={event.get('created_datetime')}/>
+                                <DatetimeLabel
+                                    dateTime={event.get('created_datetime')}
+                                />
                             </HTTPItem>
-                            <HTTPItem
-                                name="Headers"
-                                value={requestHeaders}
-                            >
-                                <HTTPParams params={requestHeaders}/>
+                            <HTTPItem name="Headers" value={requestHeaders}>
+                                <HTTPParams params={requestHeaders} />
                             </HTTPItem>
-                            <HTTPItem
-                                name="Params"
-                                value={requestParams}
-                            >
-                                <HTTPParams params={requestParams}/>
+                            <HTTPItem name="Params" value={requestParams}>
+                                <HTTPParams params={requestParams} />
                             </HTTPItem>
                             <HTTPItem
                                 name="Body"
                                 value={requestFormBody || requestJSONBody}
                             >
-                                {requestFormBody ? <HTTPParams params={requestFormBody}/> : null}
-                                {requestJSONBody ?
+                                {requestFormBody ? (
+                                    <HTTPParams params={requestFormBody} />
+                                ) : null}
+                                {requestJSONBody ? (
                                     <InputField
                                         type="textarea"
                                         value={requestJSONBody}
                                         rows={countLines(requestJSONBody)}
                                         readOnly
                                     />
-                                    :
-                                    null
-                                }
+                                ) : null}
                             </HTTPItem>
                         </Container>
                     </Col>
-                    <Col
-                        md="12"
-                        lg="6"
-                        className={css.response}
-                    >
+                    <Col md="12" lg="6" className={css.response}>
                         <Container fluid>
-                            <h2 className='mb-4'>Response</h2>
+                            <h2 className="mb-4">Response</h2>
                             <HTTPItem name="Status code">
-                                <HTTPStatusLabel statusCode={event.get('status_code')}/>
+                                <HTTPStatusLabel
+                                    statusCode={event.get('status_code')}
+                                />
                             </HTTPItem>
                             <HTTPItem name="Headers">
-                                <HTTPParams params={responseHeaders}/>
+                                <HTTPParams params={responseHeaders} />
                             </HTTPItem>
-                            <HTTPItem
-                                name="Body"
-                                value={responseBody}
-                            >
-                                {responseBody ?
+                            <HTTPItem name="Body" value={responseBody}>
+                                {responseBody ? (
                                     <InputField
                                         type="textarea"
                                         value={responseBody}
                                         rows={countLines(responseBody)}
                                         readOnly
                                     />
-                                    :
-                                    null
-                                }
+                                ) : null}
                             </HTTPItem>
-                            {
-                                responseError ? (
-                                    <HTTPItem name="Error">
-                                        <pre>{responseError}</pre>
-                                    </HTTPItem>
-                                ) : null
-                            }
+                            {responseError ? (
+                                <HTTPItem name="Error">
+                                    <pre>{responseError}</pre>
+                                </HTTPItem>
+                            ) : null}
                         </Container>
                     </Col>
                 </Row>
@@ -199,8 +191,10 @@ export class HTTPIntegrationEvent extends Component<Props, State> {
 
 const mapStateToProps = (state) => {
     return {
-        event: getHTTPIntegrationEvent(state)
+        event: getHTTPIntegrationEvent(state),
     }
 }
 
-export default connect(mapStateToProps, {fetchHTTPIntegrationEvent})(HTTPIntegrationEvent)
+export default connect(mapStateToProps, {fetchHTTPIntegrationEvent})(
+    HTTPIntegrationEvent
+)

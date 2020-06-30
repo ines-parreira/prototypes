@@ -4,7 +4,7 @@ import React, {Component} from 'react'
 type Props = {
     name: string,
     value: any,
-    children: any
+    children: any,
 }
 
 export default class HTTPIntegrationEventItem extends Component<Props> {
@@ -23,10 +23,11 @@ export default class HTTPIntegrationEventItem extends Component<Props> {
         return (
             <div className="mt-1">
                 <b className="mr-1">{name}:</b>
-                {children
-                    ? children
-                    : <span className="text-black">{value}</span>
-                }
+                {children ? (
+                    children
+                ) : (
+                    <span className="text-black">{value}</span>
+                )}
             </div>
         )
     }

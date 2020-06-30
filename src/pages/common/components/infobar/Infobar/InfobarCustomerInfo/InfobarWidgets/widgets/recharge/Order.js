@@ -7,7 +7,11 @@ import {connect} from 'react-redux'
 import {Badge} from 'reactstrap'
 
 import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../../../../state/customers/selectors'
-import {devLog, humanizeString, isCurrentlyOnTicket} from '../../../../../../../../../utils'
+import {
+    devLog,
+    humanizeString,
+    isCurrentlyOnTicket,
+} from '../../../../../../../../../utils'
 import * as ticketSelectors from '../../../../../../../../../state/ticket/selectors'
 import {renderTemplate} from '../../../../../../../utils/template'
 import {DatetimeLabel} from '../../../../../../../utils/labels'
@@ -16,23 +20,30 @@ import {CardHeaderDetails} from '../CardHeaderDetails'
 import {CardHeaderValue} from '../CardHeaderValue'
 import type {ActionType} from '../types'
 
-
 const makeGetIntegrationData = (state) => {
     return {
         getIntegrationData: (integrationId, customerId) => {
             const integrationData = isCurrentlyOnTicket()
-                ? ticketSelectors.getIntegrationDataByIntegrationId(integrationId)(state)
-                : getActiveCustomerIntegrationDataByIntegrationId(integrationId)(state)
+                ? ticketSelectors.getIntegrationDataByIntegrationId(
+                      integrationId
+                  )(state)
+                : getActiveCustomerIntegrationDataByIntegrationId(
+                      integrationId
+                  )(state)
 
             if (integrationData.getIn(['customer', 'id']) !== customerId) {
-                devLog('[INFOBAR][recharge][order] Could not find integration data for customer.', {
-                    customerId, integrationId
-                })
+                devLog(
+                    '[INFOBAR][recharge][order] Could not find integration data for customer.',
+                    {
+                        customerId,
+                        integrationId,
+                    }
+                )
                 return fromJS({})
             }
 
             return integrationData
-        }
+        },
     }
 }
 
@@ -45,11 +56,10 @@ export default function Order() {
     }
 }
 
-
 type AfterTitleProps = {
     isEditing: boolean,
     source: Map<*, *>,
-    getIntegrationData: (number, number) => Map<*, *>
+    getIntegrationData: (number, number) => Map<*, *>,
 }
 
 export class AfterTitle extends React.Component<AfterTitleProps> {
@@ -66,18 +76,27 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
             integrationId,
             isOrderCancelled,
             isOrderRefunded,
-            isChargeRefundable
+            isChargeRefundable,
         }: {
             integrationId: number,
             isOrderCancelled: boolean,
             isOrderRefunded: boolean,
-            isChargeRefundable: boolean
+            isChargeRefundable: boolean,
         } = this.context
 
-        const orderTotalPrice: number = parseFloat(source.get('total_price') || '0')
+        const orderTotalPrice: number = parseFloat(
+            source.get('total_price') || '0'
+        )
 
-        const charges = getIntegrationData(integrationId, source.get('customer_id')).get('charges')
-        const associatedCharge = charges ? charges.find((charge) => charge.get('id') === source.get('charge_id')) : null
+        const charges = getIntegrationData(
+            integrationId,
+            source.get('customer_id')
+        ).get('charges')
+        const associatedCharge = charges
+            ? charges.find(
+                  (charge) => charge.get('id') === source.get('charge_id')
+              )
+            : null
         const chargeTotalRefunds: number = associatedCharge
             ? parseFloat(associatedCharge.get('total_refunds') || '0')
             : 0
@@ -92,14 +111,22 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                             {
                                 name: 'amount',
                                 type: 'number',
-                                defaultValue: parseFloat((orderTotalPrice - chargeTotalRefunds).toFixed(2)),
+                                defaultValue: parseFloat(
+                                    (
+                                        orderTotalPrice - chargeTotalRefunds
+                                    ).toFixed(2)
+                                ),
                                 label: 'Amount',
                                 placeholder: 'Amount',
                                 required: true,
                                 step: 0.01,
                                 min: 0.01,
-                                max: parseFloat((orderTotalPrice - chargeTotalRefunds).toFixed(2))
-                            }
+                                max: parseFloat(
+                                    (
+                                        orderTotalPrice - chargeTotalRefunds
+                                    ).toFixed(2)
+                                ),
+                            },
                         ],
                     },
                 ],
@@ -107,17 +134,11 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                 tooltip: 'Refund order',
                 title: (
                     <div>
-                        <i className="material-icons mr-2">
-                            refresh
-                        </i>
+                        <i className="material-icons mr-2">refresh</i>
                         Refund order
                     </div>
                 ),
-                child: (
-                    <i className="material-icons">
-                        refresh
-                    </i>
-                )
+                child: <i className="material-icons">refresh</i>,
             },
         ]
 
@@ -132,7 +153,7 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
 
     render() {
         const {isEditing, source} = this.props
-        const {integrationId}: { integrationId: number } = this.context
+        const {integrationId}: {integrationId: number} = this.context
 
         if (isEditing || !integrationId) {
             return null
@@ -173,9 +194,7 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
     }
 }
 
-
 const ConnectedAfterTitle = connect(makeGetIntegrationData)(AfterTitle)
-
 
 const chargeStatusColors = {
     success: 'success',
@@ -183,12 +202,12 @@ const chargeStatusColors = {
     queued: 'default',
     partially_refunded: 'warning',
     refunded: 'warning',
-    skipped: 'info'
+    skipped: 'info',
 }
 
 type BeforeContentProps = {
     source: Map<*, *>,
-    getIntegrationData: (number, number) => Map<*, *>
+    getIntegrationData: (number, number) => Map<*, *>,
 }
 
 export class BeforeContent extends React.Component<BeforeContentProps> {
@@ -199,37 +218,37 @@ export class BeforeContent extends React.Component<BeforeContentProps> {
     render() {
         const {source, getIntegrationData} = this.props
         const {integrationId} = this.context
-        const charges = getIntegrationData(integrationId, source.get('customer_id')).get('charges')
+        const charges = getIntegrationData(
+            integrationId,
+            source.get('customer_id')
+        ).get('charges')
         const associatedCharge = charges
-            ? charges.find((charge) => charge.get('id') === source.get('charge_id'))
+            ? charges.find(
+                  (charge) => charge.get('id') === source.get('charge_id')
+              )
             : null
-        const chargeTotalRefunds = associatedCharge ? associatedCharge.get('total_refunds') : '0'
+        const chargeTotalRefunds = associatedCharge
+            ? associatedCharge.get('total_refunds')
+            : '0'
 
         return [
-            <div
-                key="charge-total-refunds"
-                className="simple-field"
-            >
-                <span className="field-label">
-                    Total refunds on charge:
-                </span>
+            <div key="charge-total-refunds" className="simple-field">
+                <span className="field-label">Total refunds on charge:</span>
                 <span className="field-value">
                     ${chargeTotalRefunds || '0.00'}
                 </span>
-
-            </div>
+            </div>,
         ]
     }
 }
 
 const ConnectedBeforeContent = connect(makeGetIntegrationData)(BeforeContent)
 
-
 type TitleWrapperProps = {
     children: ?Node,
     source: Map<*, *>,
     template: Map<*, *>,
-    getIntegrationData: (number, number) => Map<*, *>
+    getIntegrationData: (number, number) => Map<*, *>,
 }
 
 export class TitleWrapper extends React.Component<TitleWrapperProps> {
@@ -241,8 +260,10 @@ export class TitleWrapper extends React.Component<TitleWrapperProps> {
         const {children, source, getIntegrationData, template} = this.props
         const {integration} = this.context
         const storeName = integration.getIn(['meta', 'store_name'])
-        const customerHash = getIntegrationData(integration.get('id'), source.get('customer_id'))
-            .getIn(['customer', 'hash'])
+        const customerHash = getIntegrationData(
+            integration.get('id'),
+            source.get('customer_id')
+        ).getIn(['customer', 'hash'])
         const orderId = source.get('id')
 
         let link = null
@@ -253,16 +274,15 @@ export class TitleWrapper extends React.Component<TitleWrapperProps> {
             let customLink = template.getIn(['meta', 'link'])
 
             if (customLink) {
-                link = renderTemplate(customLink, source.set('customerHash', customerHash).toJS())
+                link = renderTemplate(
+                    customLink,
+                    source.set('customerHash', customerHash).toJS()
+                )
             }
         }
 
         return (
-            <a
-                href={link}
-                target="_blank"
-                rel="noopener noreferrer"
-            >
+            <a href={link} target="_blank" rel="noopener noreferrer">
                 {children}
             </a>
         )
@@ -271,10 +291,9 @@ export class TitleWrapper extends React.Component<TitleWrapperProps> {
 
 const ConnectedTitleWrapper = connect(makeGetIntegrationData)(TitleWrapper)
 
-
 type WrapperProps = {
     children: Node,
-    source: Map<*, *>
+    source: Map<*, *>,
 }
 
 class Wrapper extends React.Component<WrapperProps> {
@@ -292,15 +311,16 @@ class Wrapper extends React.Component<WrapperProps> {
         const isOrderRefunded = order.get('status') === 'refunded'
         const isOrderCancelled = order.get('status') === 'cancelled'
 
-        const isChargeRefundable = ['success', 'partially_refunded']
-            .includes((order.get('charge_status') || '').toLowerCase())
+        const isChargeRefundable = ['success', 'partially_refunded'].includes(
+            (order.get('charge_status') || '').toLowerCase()
+        )
 
         return {
             order,
             orderId: order.get('id'),
             isOrderCancelled,
             isOrderRefunded,
-            isChargeRefundable
+            isChargeRefundable,
         }
     }
 

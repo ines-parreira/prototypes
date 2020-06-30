@@ -12,15 +12,17 @@ export const getFilters = createSelector(
     (state: Map<*, *>): Map<*, *> => state.get('filters')
 )
 
-export const getViewFilters = (viewName: string) => createSelector(
-    [getFilters],
-    (globalFilters: Map<*, *>): Map<*, *> | null => {
+export const getViewFilters = (viewName: string) =>
+    createSelector([getFilters], (globalFilters: Map<*, *>) => {
         const viewConfig = statViewsConfig.get(viewName)
-        const viewFilterTypes = viewConfig.get('filters').map((filter) => filter.get('type'))
+        const viewFilterTypes = viewConfig
+            .get('filters')
+            .map((filter) => filter.get('type'))
         if (!globalFilters) {
             return null
         }
 
-        return globalFilters.filter((_, filterType) => viewFilterTypes.includes(filterType))
-    }
-)
+        return (globalFilters.filter((_, filterType) =>
+            viewFilterTypes.includes(filterType)
+        ): Map<*, *> | null)
+    })

@@ -9,7 +9,11 @@ describe('Mention', () => {
     it('can render when mention is an Object', () => {
         const mention = {}
         const contentState = ContentState.createFromText('')
-        const entityContentState = contentState.createEntity('mention', 'SEGMENTED', {mention})
+        const entityContentState = contentState.createEntity(
+            'mention',
+            'SEGMENTED',
+            {mention}
+        )
         const entityKey = entityContentState.getLastCreatedEntityKey()
         const result = render(
             <Mention

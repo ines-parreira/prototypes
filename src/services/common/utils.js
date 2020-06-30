@@ -12,15 +12,15 @@ const nonEditableInputTypes = [
     'radio',
     'range',
     'reset',
-    'submit'
+    'submit',
 ]
 
 export function isEditable(element: HTMLElement): boolean {
-    return (element.tagName === 'INPUT' && !nonEditableInputTypes.includes(element.getAttribute('type')))
-        || element.tagName === 'SELECT'
-        || element.tagName === 'TEXTAREA'
-        || (
-            !!element.contentEditable
-            && element.contentEditable === 'true'
-        )
+    return (
+        (element.tagName === 'INPUT' &&
+            !nonEditableInputTypes.includes(element.getAttribute('type'))) ||
+        element.tagName === 'SELECT' ||
+        element.tagName === 'TEXTAREA' ||
+        (!!element.contentEditable && element.contentEditable === 'true')
+    )
 }

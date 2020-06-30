@@ -19,7 +19,6 @@ import DeactivatedViewMessage from './DeactivatedViewMessage'
 
 import css from './ViewTable.less'
 
-
 type Props = {
     ActionsComponent: ?() => {},
     activeView: viewType,
@@ -49,7 +48,6 @@ type Props = {
     className: ?string,
 }
 
-
 export class ViewTableContainer extends React.Component<Props> {
     static defaultProps = {
         items: fromJS([]),
@@ -58,16 +56,33 @@ export class ViewTableContainer extends React.Component<Props> {
 
     componentDidMount() {
         const {
-            getViewIdToDisplay, config, urlViewId, setViewActive, getView, location, fetchViewItems, activeView,
-            updateView, isSearch
+            getViewIdToDisplay,
+            config,
+            urlViewId,
+            setViewActive,
+            getView,
+            location,
+            fetchViewItems,
+            activeView,
+            updateView,
+            isSearch,
         } = this.props
 
         if (isSearch) {
-            updateView(config.get('searchView')(this._searchQuery(this.props)), false)
+            updateView(
+                config.get('searchView')(this._searchQuery(this.props)),
+                false
+            )
         } else if (activeView.isEmpty() || urlViewId) {
-            const suggestedViewId = getViewIdToDisplay(config.get('type'), urlViewId)
+            const suggestedViewId = getViewIdToDisplay(
+                config.get('type'),
+                urlViewId
+            )
 
-            const viewMissing = suggestedViewId && urlViewId && suggestedViewId.toString() !== urlViewId
+            const viewMissing =
+                suggestedViewId &&
+                urlViewId &&
+                suggestedViewId.toString() !== urlViewId
             if (viewMissing) {
                 browserHistory.push('/app')
             }
@@ -81,21 +96,46 @@ export class ViewTableContainer extends React.Component<Props> {
 
     componentWillReceiveProps(nextProps: Props) {
         const {
-            getViewIdToDisplay, fetchViewItems, updateView, setViewActive, getView,
-            isLoading: wasLoading, isUpdate: wasUpdate, isSearch: wasSearch, activeView: previousView
+            getViewIdToDisplay,
+            fetchViewItems,
+            updateView,
+            setViewActive,
+            getView,
+            isLoading: wasLoading,
+            isUpdate: wasUpdate,
+            isSearch: wasSearch,
+            activeView: previousView,
         } = this.props
-        const {config, navigation, location, isLoading, isUpdate, isSearch, isOnFirstPage, activeView} = nextProps
+        const {
+            config,
+            navigation,
+            location,
+            isLoading,
+            isUpdate,
+            isSearch,
+            isOnFirstPage,
+            activeView,
+        } = nextProps
 
-        const currentSuggestedViewId = getViewIdToDisplay(this.props.config.get('type'), this.props.urlViewId)
-        const nextSuggestedViewId = getViewIdToDisplay(nextProps.config.get('type'), nextProps.urlViewId)
+        const currentSuggestedViewId = getViewIdToDisplay(
+            this.props.config.get('type'),
+            this.props.urlViewId
+        )
+        const nextSuggestedViewId = getViewIdToDisplay(
+            nextProps.config.get('type'),
+            nextProps.urlViewId
+        )
 
         const urlCursor = location.query.cursor || null
         const storedCursor = navigation.get('current_cursor') || null
         const cursorAreDifferent = urlCursor !== storedCursor
 
-        const justFinishedFetching = wasLoading('fetchList') && !isLoading('fetchList')
-        const wasDeactivated = previousView && !!previousView.get('deactivated_datetime')
-        const isDeactivated = activeView && !!activeView.get('deactivated_datetime')
+        const justFinishedFetching =
+            wasLoading('fetchList') && !isLoading('fetchList')
+        const wasDeactivated =
+            previousView && !!previousView.get('deactivated_datetime')
+        const isDeactivated =
+            activeView && !!activeView.get('deactivated_datetime')
         const previousId = previousView ? previousView.get('id') : null
         const currentId = activeView ? activeView.get('id') : null
         const idChanged = previousId !== currentId
@@ -103,24 +143,39 @@ export class ViewTableContainer extends React.Component<Props> {
         const leavingSearchMode = wasSearch && !isSearch
         const leavingAddNewMode = !wasUpdate && isUpdate
         const leavingDeactivatedMode = wasDeactivated && !isDeactivated
-        const suggestedViewChanged = currentSuggestedViewId !== nextSuggestedViewId
+        const suggestedViewChanged =
+            currentSuggestedViewId !== nextSuggestedViewId
         const noActiveView = !nextProps.hasActiveView
 
         let shouldFetchViewItems = false
 
         if (!wasSearch && isSearch) {
             // entering "search" mode
-            updateView(config.get('searchView')(this._searchQuery(nextProps)), false)
+            updateView(
+                config.get('searchView')(this._searchQuery(nextProps)),
+                false
+            )
             shouldFetchViewItems = true
         } else if (wasUpdate && !isUpdate) {
             // entering "add new" mode
             updateView(config.get('newView')())
             shouldFetchViewItems = true
-        } else if (isSearch && this._searchQuery(this.props) !== this._searchQuery(nextProps)) {
+        } else if (
+            isSearch &&
+            this._searchQuery(this.props) !== this._searchQuery(nextProps)
+        ) {
             // in "search" mode, if search query has changed, research again
-            updateView(config.get('searchView')(this._searchQuery(nextProps)), false)
+            updateView(
+                config.get('searchView')(this._searchQuery(nextProps)),
+                false
+            )
             shouldFetchViewItems = true
-        } else if (leavingSearchMode || leavingAddNewMode || suggestedViewChanged || noActiveView) {
+        } else if (
+            leavingSearchMode ||
+            leavingAddNewMode ||
+            suggestedViewChanged ||
+            noActiveView
+        ) {
             //$FlowFixMe
             setViewActive(getView(nextSuggestedViewId))
             shouldFetchViewItems = true
@@ -141,7 +196,10 @@ export class ViewTableContainer extends React.Component<Props> {
                     delete query.cursor
                     browserHistory.push({...location, query})
                 }
-            } else if (!isLoading('fetchList') && (urlCursor || !isOnFirstPage)) {
+            } else if (
+                !isLoading('fetchList') &&
+                (urlCursor || !isOnFirstPage)
+            ) {
                 // This happens when loading a page directly with a cursor in the URL.
                 // It can also happen when switching between two non-first pages, but in this case we don't want to
                 // trigger a fetch until the current fetch is over
@@ -169,22 +227,33 @@ export class ViewTableContainer extends React.Component<Props> {
 
     _renderTable = () => {
         const {
-            ActionsComponent, type, items, config, isSearch, activeView,
-            isLoading, selectedItemsIds, fetchViewItems, navigation
+            ActionsComponent,
+            type,
+            items,
+            config,
+            isSearch,
+            activeView,
+            isLoading,
+            selectedItemsIds,
+            fetchViewItems,
+            navigation,
         } = this.props
 
-        const displayedFields = config.get('fields', fromJS([]))
+        const displayedFields = config
+            .get('fields', fromJS([]))
             .filter((field) => {
                 // display field if mandatory from config
                 if (config.get('mainField') === field.get('name')) {
                     return true
                 }
 
-                return activeView.get('fields', fromJS([])).contains(field.get('name'))
+                return activeView
+                    .get('fields', fromJS([]))
+                    .contains(field.get('name'))
             })
 
         if (activeView.get('deactivated_datetime')) {
-            return <DeactivatedViewMessage/>
+            return <DeactivatedViewMessage />
         }
 
         return (
@@ -210,7 +279,7 @@ export class ViewTableContainer extends React.Component<Props> {
         const {activeView, isSearch, isUpdate, type, className} = this.props
 
         if (activeView.isEmpty()) {
-            return <Loader/>
+            return <Loader />
         }
 
         return (
@@ -228,32 +297,39 @@ export class ViewTableContainer extends React.Component<Props> {
                     isSearch={isSearch}
                     type={type}
                 />
-                <div className={css.table}>
-                    {this._renderTable()}
-                </div>
+                <div className={css.table}>{this._renderTable()}</div>
             </div>
         )
     }
 }
 
-export default withRouter(connect((state, ownProps) => {
-    const config = viewsConfig.getConfigByName(ownProps.type)
+export default withRouter(
+    connect(
+        (state, ownProps) => {
+            const config = viewsConfig.getConfigByName(ownProps.type)
 
-    return {
-        activeView: viewsSelectors.getActiveView(state),
-        config,
-        location: ownProps.location,
-        getView: viewsSelectors.makeGetView(state),
-        getViewIdToDisplay: viewsSelectors.makeGetViewIdToDisplay(state),
-        hasActiveView: viewsSelectors.hasActiveViewOfType(config.get('type'))(state),
+            return {
+                activeView: viewsSelectors.getActiveView(state),
+                config,
+                location: ownProps.location,
+                getView: viewsSelectors.makeGetView(state),
+                getViewIdToDisplay: viewsSelectors.makeGetViewIdToDisplay(
+                    state
+                ),
+                hasActiveView: viewsSelectors.hasActiveViewOfType(
+                    config.get('type')
+                )(state),
 
-        isLoading: viewsSelectors.makeIsLoading(state),
-        isOnFirstPage: viewsSelectors.isOnFirstPage(state),
-        navigation: viewsSelectors.getNavigation(state),
-        selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),
-    }
-}, {
-    fetchViewItems: viewsActions.fetchViewItems,
-    setViewActive: viewsActions.setViewActive,
-    updateView: viewsActions.updateView,
-})(ViewTableContainer))
+                isLoading: viewsSelectors.makeIsLoading(state),
+                isOnFirstPage: viewsSelectors.isOnFirstPage(state),
+                navigation: viewsSelectors.getNavigation(state),
+                selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),
+            }
+        },
+        {
+            fetchViewItems: viewsActions.fetchViewItems,
+            setViewActive: viewsActions.setViewActive,
+            updateView: viewsActions.updateView,
+        }
+    )(ViewTableContainer)
+)

@@ -9,10 +9,7 @@ describe('<MoneyAmount/>', () => {
     describe('render()', () => {
         it('should render', () => {
             const component = shallow(
-                <MoneyAmount
-                    amount="9.99"
-                    currencyCode="AUD"
-                />
+                <MoneyAmount amount="9.99" currencyCode="AUD" />
             )
 
             expect(component).toMatchSnapshot()
@@ -20,11 +17,7 @@ describe('<MoneyAmount/>', () => {
 
         it('should render as negative value', () => {
             const component = shallow(
-                <MoneyAmount
-                    amount="9.99"
-                    currencyCode="AUD"
-                    negative
-                />
+                <MoneyAmount amount="9.99" currencyCode="AUD" negative />
             )
 
             expect(component).toMatchSnapshot()
@@ -32,10 +25,7 @@ describe('<MoneyAmount/>', () => {
 
         it('should render 0 as an horizontal dash symbol', () => {
             const component = shallow(
-                <MoneyAmount
-                    amount="0.00"
-                    currencyCode="AUD"
-                />
+                <MoneyAmount amount="0.00" currencyCode="AUD" />
             )
 
             expect(component).toMatchSnapshot()
@@ -43,11 +33,7 @@ describe('<MoneyAmount/>', () => {
 
         it('should render 0 as a number', () => {
             const component = shallow(
-                <MoneyAmount
-                    amount="0.00"
-                    currencyCode="AUD"
-                    renderIfZero
-                />
+                <MoneyAmount amount="0.00" currencyCode="AUD" renderIfZero />
             )
 
             expect(component).toMatchSnapshot()

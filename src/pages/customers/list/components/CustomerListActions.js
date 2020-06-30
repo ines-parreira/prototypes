@@ -21,7 +21,7 @@ import * as viewsSelectors from '../../../../state/views/selectors'
 
 class CustomerListActions extends React.Component {
     state = {
-        popoverOpen: ''
+        popoverOpen: '',
     }
 
     componentDidMount() {
@@ -40,13 +40,13 @@ class CustomerListActions extends React.Component {
                         return
                     }
                     this._toggleDeleteConfirmation()
-                }
+                },
             },
             HIDE_POPOVER: {
                 key: 'esc',
                 action: () => {
                     this._togglePopover()
-                }
+                },
             },
         })
     }
@@ -70,22 +70,29 @@ class CustomerListActions extends React.Component {
     }
 
     _toggleDeleteConfirmation = (visible) => {
-        const opens = !_isUndefined(visible) ? visible : !this._isPopoverOpen('delete')
+        const opens = !_isUndefined(visible)
+            ? visible
+            : !this._isPopoverOpen('delete')
         this._togglePopover(opens ? 'delete' : '')
     }
 
     _renderBulkActions = () => {
-        const {allViewItemsSelected, getViewCount, view, selectedItemsIds} = this.props
+        const {
+            allViewItemsSelected,
+            getViewCount,
+            view,
+            selectedItemsIds,
+        } = this.props
 
         const areItemsSelected = this._hasChecked()
 
-        const selectedCount = allViewItemsSelected ? getViewCount(view.get('id')) : selectedItemsIds.size
+        const selectedCount = allViewItemsSelected
+            ? getViewCount(view.get('id'))
+            : selectedItemsIds.size
 
         return (
             <div className="d-inline-flex align-items-center">
-                <UncontrolledButtonDropdown
-                    size="sm"
-                >
+                <UncontrolledButtonDropdown size="sm">
                     <DropdownToggle
                         id="bulk-more-button"
                         color="secondary"
@@ -150,17 +157,18 @@ CustomerListActions.propTypes = {
 
 function mapStateToProps(state) {
     return {
-        allViewItemsSelected: viewsSelectors.areAllActiveViewItemsSelected(state),
+        allViewItemsSelected: viewsSelectors.areAllActiveViewItemsSelected(
+            state
+        ),
         getViewCount: viewsSelectors.makeGetViewCount(state),
     }
 }
-
 
 function mapDispatchToProps(dispatch) {
     return {
         actions: {
             customers: bindActionCreators(customersActions, dispatch),
-        }
+        },
     }
 }
 

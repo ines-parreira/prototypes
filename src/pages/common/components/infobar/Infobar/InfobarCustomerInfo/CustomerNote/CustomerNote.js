@@ -9,18 +9,17 @@ import {countLines} from '../../../../../../../utils/string'
 
 import css from './CustomerNote.less'
 
-
 type Props = {
-    customer: Map<*,*>,
+    customer: Map<*, *>,
     submitCustomer: (Object, ?number) => Promise<*>,
-    mergeTicketCustomer: (Object) => void
+    mergeTicketCustomer: (Object) => void,
 }
 
 type State = {
     note: string,
     isLoading: boolean,
     isError: boolean,
-    isDirty: boolean
+    isDirty: boolean,
 }
 
 export class CustomerNote extends React.Component<Props, State> {
@@ -28,7 +27,7 @@ export class CustomerNote extends React.Component<Props, State> {
         note: this.props.customer.get('note') || '',
         isLoading: false,
         isError: false,
-        isDirty: false
+        isDirty: false,
     }
 
     componentWillReceiveProps(nextProps: Props) {
@@ -36,14 +35,14 @@ export class CustomerNote extends React.Component<Props, State> {
         //  is modifying the note at the same time
         this.setState({
             note: nextProps.customer.get('note'),
-            isDirty: false
+            isDirty: false,
         })
     }
 
     _updateNote = async (event: SyntheticEvent<HTMLInputElement>) => {
         await this.setState({
             note: event.currentTarget.value,
-            isDirty: true
+            isDirty: true,
         })
     }
 
@@ -62,7 +61,7 @@ export class CustomerNote extends React.Component<Props, State> {
         try {
             // $FlowFixMe
             await submitCustomer({note}, customer.get('id'))
-        } catch(err) {
+        } catch (err) {
             this.setState({isLoading: false, isError: true})
             setTimeout(() => this.setState({isError: false}), 2000)
             return
@@ -86,7 +85,7 @@ export class CustomerNote extends React.Component<Props, State> {
                         <textarea
                             className={classnames(css.noteInput, {
                                 [css.loading]: isLoading,
-                                [css.error]: isError
+                                [css.error]: isError,
                             })}
                             disabled={isLoading}
                             placeholder="This customer has no note."
@@ -95,18 +94,25 @@ export class CustomerNote extends React.Component<Props, State> {
                             onBlur={this._submitNote}
                             rows={noteRowsCount || 1}
                         />
-                        {
-                            isError && (
-                                <p className={classnames(css.errorMessage, 'text-danger')}>
-                                    An error occurred while posting this note. Please try again in a few seconds.
-                                </p>
-                            )
-                        }
-                        {
-                            isLoading && (
-                                <i className={classnames('icon-custom icon-circle-o-notch md-spin', css.loaderIcon)}/>
-                            )
-                        }
+                        {isError && (
+                            <p
+                                className={classnames(
+                                    css.errorMessage,
+                                    'text-danger'
+                                )}
+                            >
+                                An error occurred while posting this note.
+                                Please try again in a few seconds.
+                            </p>
+                        )}
+                        {isLoading && (
+                            <i
+                                className={classnames(
+                                    'icon-custom icon-circle-o-notch md-spin',
+                                    css.loaderIcon
+                                )}
+                            />
+                        )}
                     </div>
                 </div>
             </div>
@@ -115,5 +121,5 @@ export class CustomerNote extends React.Component<Props, State> {
 }
 
 export default connect(null, {
-    submitCustomer: customerActions.submitCustomer
+    submitCustomer: customerActions.submitCustomer,
 })(CustomerNote)

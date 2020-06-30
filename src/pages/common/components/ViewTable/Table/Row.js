@@ -17,12 +17,11 @@ import * as viewsUtils from '../../../../../state/views/utils'
 
 import Cell from './Cell'
 
-
 type Props = {
     onItemClick: ?(number) => void,
     itemUrl: ?string,
     fields: List<*>,
-    item: Map<*,*>,
+    item: Map<*, *>,
     isSelected: boolean,
     hasCursor: boolean,
     selectable: ?boolean,
@@ -52,7 +51,15 @@ class Row extends React.Component<Props> {
 
     render() {
         const {
-            fields, getAgentsViewing, item, isSelected, selectable, type, hasCursor,onItemClick, itemUrl
+            fields,
+            getAgentsViewing,
+            item,
+            isSelected,
+            selectable,
+            type,
+            hasCursor,
+            onItemClick,
+            itemUrl,
         } = this.props
 
         const agentsViewing = getAgentsViewing(item.get('id'))
@@ -61,55 +68,54 @@ class Row extends React.Component<Props> {
             <tr
                 className={classnames({
                     highlighted: item.get('is_unread'),
-                    [css['has-cursor']]: hasCursor
+                    [css['has-cursor']]: hasCursor,
                 })}
             >
-                {
-                    selectable ? (
-                        <td
-                            className="cell-wrapper cell-short clickable d-none d-md-table-cell"
-                            onClick={this._toggleSelection}
-                        >
-                            {
-                                // display an eye on row if an agent is currently viewing this item
-                                agentsViewing.size > 0 && (
-                                    <div
-                                        className={css.viewers}
-                                        title={viewsUtils.agentsViewingMessage(agentsViewing)}
-                                    >
-                                        <i className="material-icons">remove_red_eye</i>
-                                    </div>
-                                )
-                            }
-                            <input
-                                type="checkbox"
-                                checked={isSelected}
-                                readOnly
-                            />
-                        </td>
-                    ) : null
-                }
-                {
-                    fields.map((field) => (
-                        <Cell
-                            key={`${item.get('id')}-${field.get('name')}`}
-                            item={item}
-                            field={field}
-                            type={type}
-                            onClick={onItemClick}
-                            itemUrl={itemUrl}
-                        />
-                    ))
-                }
+                {selectable ? (
+                    <td
+                        className="cell-wrapper cell-short clickable d-none d-md-table-cell"
+                        onClick={this._toggleSelection}
+                    >
+                        {
+                            // display an eye on row if an agent is currently viewing this item
+                            agentsViewing.size > 0 && (
+                                <div
+                                    className={css.viewers}
+                                    title={viewsUtils.agentsViewingMessage(
+                                        agentsViewing
+                                    )}
+                                >
+                                    <i className="material-icons">
+                                        remove_red_eye
+                                    </i>
+                                </div>
+                            )
+                        }
+                        <input type="checkbox" checked={isSelected} readOnly />
+                    </td>
+                ) : null}
+                {fields.map((field) => (
+                    <Cell
+                        key={`${item.get('id')}-${field.get('name')}`}
+                        item={item}
+                        field={field}
+                        type={type}
+                        onClick={onItemClick}
+                        itemUrl={itemUrl}
+                    />
+                ))}
             </tr>
         )
     }
 }
 
-export default connect((state) => {
-    return {
-        getAgentsViewing: agentSelectors.makeGetOtherAgentsOnTicket(state),
+export default connect(
+    (state) => {
+        return {
+            getAgentsViewing: agentSelectors.makeGetOtherAgentsOnTicket(state),
+        }
+    },
+    {
+        toggleIdInSelectedItemsIds: viewsActions.toggleIdInSelectedItemsIds,
     }
-}, {
-    toggleIdInSelectedItemsIds: viewsActions.toggleIdInSelectedItemsIds,
-})(Row)
+)(Row)

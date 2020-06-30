@@ -17,7 +17,12 @@ type dataType = {
  * @returns {string}
  */
 // TODO(customers-migration): update `user_id` when we update our REST API
-export const actionButtonHashForData = ({action_name, user_id, integration_id, payload}: dataType): string => {
+export const actionButtonHashForData = ({
+    action_name,
+    user_id,
+    integration_id,
+    payload,
+}: dataType): string => {
     const identifier = [action_name, user_id, integration_id, hash(payload)]
     return identifier.join('-').replace(/\./g, '_')
 }

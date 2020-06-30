@@ -27,12 +27,14 @@ import * as socketConstants from './socketConstants'
 
 type SendEvent = {
     name: string,
-    dataToSend: (value?: string | number[]) => ({
+    dataToSend: (
+        value?: string | number[]
+    ) => {
         clientId?: string,
         event?: string,
         dataType?: string,
         data?: any,
-    }),
+    },
     onLeave?: (value?: string) => void,
 }
 
@@ -96,7 +98,7 @@ export const sendEvents: SendEvent[] = [
             return {
                 clientId: window.CLIENT_ID,
                 event: socketConstants.AGENT_ACTIVE,
-                clientType: 'web'
+                clientType: 'web',
             }
         },
     },
@@ -114,10 +116,10 @@ export const sendEvents: SendEvent[] = [
         dataToSend: function () {
             return {
                 clientId: window.CLIENT_ID,
-                event: socketConstants.SID_UPDATED
+                event: socketConstants.SID_UPDATED,
             }
-        }
-    }
+        },
+    },
 ]
 
 /**
@@ -126,262 +128,358 @@ export const sendEvents: SendEvent[] = [
  * @enum dataToSend function returning data that is sent to server when sending this event (bound to SocketManager instance)
  * @enum [onLeave] callback executed after leaving room (bound to SocketManager instance)
  */
-export const joinEvents: SendEvent[] = [{
-    name: 'ticket',
-    dataToSend: function (id) {
-        return {
-            clientId: window.CLIENT_ID,
-            dataType: 'Ticket',
-            data: parseInt(id),
-        }
+export const joinEvents: SendEvent[] = [
+    {
+        name: 'ticket',
+        dataToSend: function (id) {
+            return {
+                clientId: window.CLIENT_ID,
+                dataType: 'Ticket',
+                data: parseInt(id),
+            }
+        },
+        onLeave: function (id) {
+            return this.send(socketConstants.AGENT_TYPING_STOPPED, id)
+        },
     },
-    onLeave: function (id) {
-        return this.send(socketConstants.AGENT_TYPING_STOPPED, id)
-    }
-}, {
-    name: 'customer',
-    dataToSend: function (id) {
-        return {
-            clientId: window.CLIENT_ID,
-            dataType: 'Customer',
-            data: parseInt(id),
-        }
+    {
+        name: 'customer',
+        dataToSend: function (id) {
+            return {
+                clientId: window.CLIENT_ID,
+                dataType: 'Customer',
+                data: parseInt(id),
+            }
+        },
     },
-}, {
-    name: 'view',
-    dataToSend: function (id) {
-        return {
-            clientId: window.CLIENT_ID,
-            dataType: 'View',
-            data: parseInt(id),
-        }
+    {
+        name: 'view',
+        dataToSend: function (id) {
+            return {
+                clientId: window.CLIENT_ID,
+                dataType: 'View',
+                data: parseInt(id),
+            }
+        },
     },
-}, {
-    name: 'integration',
-    dataToSend: function (id) {
-        return {
-            clientId: window.CLIENT_ID,
-            dataType: 'Integration',
-            data: parseInt(id),
-        }
+    {
+        name: 'integration',
+        dataToSend: function (id) {
+            return {
+                clientId: window.CLIENT_ID,
+                dataType: 'Integration',
+                data: parseInt(id),
+            }
+        },
     },
-}]
-
+]
 
 /**
  * Events that can be received from server via socket
  * @enum event name of event received
  * @enum onReceive function executed when this event is received (bound to SocketManager instance)
  */
-export const receivedEvents: ReceivedEvent[] = [{
-    name: 'customer-updated',
-    onReceive: function (json: socketEventTypes.CustomerUpdatedEvent) {
-        reduxStore.dispatch(ticketActions.mergeCustomer(json.customer))
+export const receivedEvents: ReceivedEvent[] = [
+    {
+        name: 'customer-updated',
+        onReceive: function (json: socketEventTypes.CustomerUpdatedEvent) {
+            reduxStore.dispatch(ticketActions.mergeCustomer(json.customer))
+        },
     },
-}, {
-    name: 'user-location-updated',
-    onReceive: function (json: socketEventTypes.UserLocationUpdatedEvent) {
-        reduxStore.dispatch(agentsActions.setAgentsLocations(json.locations))
+    {
+        name: 'user-location-updated',
+        onReceive: function (json: socketEventTypes.UserLocationUpdatedEvent) {
+            reduxStore.dispatch(
+                agentsActions.setAgentsLocations(json.locations)
+            )
+        },
     },
-}, {
-    name: 'user-typing-status-updated',
-    onReceive: function (json: socketEventTypes.UserTypingStatusUpdatedEvent) {
-        reduxStore.dispatch(agentsActions.setAgentsTypingStatuses(json.locations))
+    {
+        name: 'user-typing-status-updated',
+        onReceive: function (
+            json: socketEventTypes.UserTypingStatusUpdatedEvent
+        ) {
+            reduxStore.dispatch(
+                agentsActions.setAgentsTypingStatuses(json.locations)
+            )
+        },
     },
-}, {
-    name: 'ticket-updated',
-    onReceive: function (json: socketEventTypes.TicketUpdatedEvent) {
-        if (isCurrentlyOnTicket(json.ticket.id)) {
-            this.send(socketConstants.TICKET_VIEWED, json.ticket.id)
-        }
+    {
+        name: 'ticket-updated',
+        onReceive: function (json: socketEventTypes.TicketUpdatedEvent) {
+            if (isCurrentlyOnTicket(json.ticket.id)) {
+                this.send(socketConstants.TICKET_VIEWED, json.ticket.id)
+            }
 
-        reduxStore.dispatch(ticketActions.mergeTicket(json.ticket))
+            reduxStore.dispatch(ticketActions.mergeTicket(json.ticket))
+        },
     },
-}, {
-    name: 'ticket-message-created',
-    onReceive: function (json: socketEventTypes.TicketMessageCreatedEvent) {
-        if (isCurrentlyOnTicket(json.ticket.id)) {
-            this.send(socketConstants.TICKET_VIEWED, json.ticket.id)
-        }
+    {
+        name: 'ticket-message-created',
+        onReceive: function (json: socketEventTypes.TicketMessageCreatedEvent) {
+            if (isCurrentlyOnTicket(json.ticket.id)) {
+                this.send(socketConstants.TICKET_VIEWED, json.ticket.id)
+            }
 
-        reduxStore.dispatch(ticketActions.mergeTicket(json.ticket))
+            reduxStore.dispatch(ticketActions.mergeTicket(json.ticket))
+        },
     },
-}, {
-    name: 'ticket-message-action-failed',
-    onReceive: function (json: socketEventTypes.TicketMessageActionFailedEvent) {
-        reduxStore.dispatch(ticketActions.handleMessageActionError(json.ticket_id))
+    {
+        name: 'ticket-message-action-failed',
+        onReceive: function (
+            json: socketEventTypes.TicketMessageActionFailedEvent
+        ) {
+            reduxStore.dispatch(
+                ticketActions.handleMessageActionError(json.ticket_id)
+            )
+        },
     },
-}, {
-    name: 'ticket-message-failed',
-    onReceive: function (json: socketEventTypes.TicketMessageFailedEvent) {
-        reduxStore.dispatch(ticketActions.handleMessageError(json))
+    {
+        name: 'ticket-message-failed',
+        onReceive: function (json: socketEventTypes.TicketMessageFailedEvent) {
+            reduxStore.dispatch(ticketActions.handleMessageError(json))
+        },
     },
-}, {
-    name: 'action-executed',
-    onReceive: function (json: socketEventTypes.ActionExecutedEvent) {
-        reduxStore.dispatch(infobarActions.handleExecutedAction(json))
+    {
+        name: 'action-executed',
+        onReceive: function (json: socketEventTypes.ActionExecutedEvent) {
+            reduxStore.dispatch(infobarActions.handleExecutedAction(json))
+        },
     },
-}, {
-    name: 'view-created',
-    onReceive: function (json: socketEventTypes.ViewCreatedEvent) {
-        reduxStore.dispatch({
-            type: viewsConstants.CREATE_VIEW_SUCCESS,
-            resp: json.view,
-        })
+    {
+        name: 'view-created',
+        onReceive: function (json: socketEventTypes.ViewCreatedEvent) {
+            reduxStore.dispatch({
+                type: viewsConstants.CREATE_VIEW_SUCCESS,
+                resp: json.view,
+            })
+        },
     },
-}, {
-    name: 'view-updated',
-    onReceive: function (json: socketEventTypes.ViewUpdatedEvent) {
-        reduxStore.dispatch({
-            type: viewsConstants.UPDATE_VIEW_SUCCESS,
-            resp: json.view,
-        })
+    {
+        name: 'view-updated',
+        onReceive: function (json: socketEventTypes.ViewUpdatedEvent) {
+            reduxStore.dispatch({
+                type: viewsConstants.UPDATE_VIEW_SUCCESS,
+                resp: json.view,
+            })
+        },
     },
-}, {
-    name: 'view-deleted',
-    onReceive: function (json: socketEventTypes.ViewDeletedEvent) {
-        reduxStore.dispatch(viewsActions.deleteViewSuccess(json.view.id))
+    {
+        name: 'view-deleted',
+        onReceive: function (json: socketEventTypes.ViewDeletedEvent) {
+            reduxStore.dispatch(viewsActions.deleteViewSuccess(json.view.id))
+        },
     },
-}, {
-    name: 'views-count-updated',
-    onReceive: function (json: socketEventTypes.ViewCountUpdatedEvent) {
-        reduxStore.dispatch(viewsActions.handleViewsCount(json.counts))
+    {
+        name: 'views-count-updated',
+        onReceive: function (json: socketEventTypes.ViewCountUpdatedEvent) {
+            reduxStore.dispatch(viewsActions.handleViewsCount(json.counts))
+        },
     },
-}, {
-    name: socketConstants.ACCOUNT_UPDATED,
-    onReceive: function (json: socketEventTypes.AccountUpdatedEvent) {
-        const state = reduxStore.getState()
-        const oldTicketAssignmentSetting = currentAccountSelectors.getTicketAssignmentSettings(state)
+    {
+        name: socketConstants.ACCOUNT_UPDATED,
+        onReceive: function (json: socketEventTypes.AccountUpdatedEvent) {
+            const state = reduxStore.getState()
+            const oldTicketAssignmentSetting = currentAccountSelectors.getTicketAssignmentSettings(
+                state
+            )
 
-        const account = json.account
-        const newTicketAssignmentSetting = fromJS(
-            _find((account.settings || []),
-                (setting) => setting.type === currentAccountConstants.SETTING_TYPE_TICKET_ASSIGNMENT
-            ) || {}
-        )
+            const account = json.account
+            const newTicketAssignmentSetting = fromJS(
+                _find(
+                    account.settings || [],
+                    (setting) =>
+                        setting.type ===
+                        currentAccountConstants.SETTING_TYPE_TICKET_ASSIGNMENT
+                ) || {}
+            )
 
-        let shouldFetchChats = oldTicketAssignmentSetting.isEmpty() && !newTicketAssignmentSetting.isEmpty()
-
-        if (!oldTicketAssignmentSetting.isEmpty() && !newTicketAssignmentSetting.isEmpty()) {
-            const autoAssignToTeamSettingHasChanged = newTicketAssignmentSetting.getIn(['data', 'auto_assign_to_teams'])
-                !== oldTicketAssignmentSetting.getIn(['data', 'auto_assign_to_teams'])
-
-            const oldAssignmentChannels = oldTicketAssignmentSetting.getIn(['data', 'assignment_channels'], fromJS([]))
-            const newAssignmentChannels = newTicketAssignmentSetting.getIn(['data', 'assignment_channels'], fromJS([]))
-            const ticketAssignmentChannelsHaveChanged = !oldAssignmentChannels.equals(newAssignmentChannels)
+            let shouldFetchChats =
+                oldTicketAssignmentSetting.isEmpty() &&
+                !newTicketAssignmentSetting.isEmpty()
 
             if (
-                autoAssignToTeamSettingHasChanged || (
-                    newTicketAssignmentSetting.getIn(['data', 'auto_assign_to_teams']) &&
-                    ticketAssignmentChannelsHaveChanged
+                !oldTicketAssignmentSetting.isEmpty() &&
+                !newTicketAssignmentSetting.isEmpty()
+            ) {
+                const autoAssignToTeamSettingHasChanged =
+                    newTicketAssignmentSetting.getIn([
+                        'data',
+                        'auto_assign_to_teams',
+                    ]) !==
+                    oldTicketAssignmentSetting.getIn([
+                        'data',
+                        'auto_assign_to_teams',
+                    ])
+
+                const oldAssignmentChannels = oldTicketAssignmentSetting.getIn(
+                    ['data', 'assignment_channels'],
+                    fromJS([])
+                )
+                const newAssignmentChannels = newTicketAssignmentSetting.getIn(
+                    ['data', 'assignment_channels'],
+                    fromJS([])
+                )
+                const ticketAssignmentChannelsHaveChanged = !oldAssignmentChannels.equals(
+                    newAssignmentChannels
+                )
+
+                if (
+                    autoAssignToTeamSettingHasChanged ||
+                    (newTicketAssignmentSetting.getIn([
+                        'data',
+                        'auto_assign_to_teams',
+                    ]) &&
+                        ticketAssignmentChannelsHaveChanged)
+                ) {
+                    shouldFetchChats = true
+                }
+            }
+
+            if (shouldFetchChats) {
+                chatsActions.fetchChatsThrottled(reduxStore.dispatch)
+            }
+
+            reduxStore.dispatch({
+                type: currentAccountConstants.UPDATE_ACCOUNT_SUCCESS,
+                resp: account,
+            })
+        },
+    },
+    {
+        name: socketConstants.SID_UPDATED,
+        onReceive: function () {
+            this.send(socketConstants.SID_UPDATED)
+        },
+    },
+    {
+        name: socketConstants.TICKET_MESSAGE_CHAT_CREATED,
+        onReceive: function (
+            json: socketEventTypes.TicketMessageChatCreatedEvent
+        ) {
+            const ticket = json.data
+            // send browser notifications only for new customer messages
+            const shouldNotify = !ticket.last_message_from_agent
+
+            const state = reduxStore.getState()
+            const {currentUser} = state
+
+            const ticketAssignmentSetting = currentAccountSelectors.getTicketAssignmentSettings(
+                state
+            )
+            const currentUserIsAvailable = currentUserSelectors.isAvailable(
+                state
+            )
+
+            // mark the chat as read because the agent is viewing the ticket
+            if (isCurrentlyOnTicket(ticket.id)) {
+                this.send(socketConstants.TICKET_VIEWED, ticket.id)
+                ticket.is_unread = false
+            }
+
+            if (
+                shouldTicketBeDisplayedInRecentChats(
+                    ticket,
+                    ticketAssignmentSetting,
+                    currentUser,
+                    currentUserIsAvailable
                 )
             ) {
-                shouldFetchChats = true
+                reduxStore.dispatch(chatsActions.addChat(ticket, shouldNotify))
+                return
             }
-        }
 
-        if (shouldFetchChats) {
-            chatsActions.fetchChatsThrottled(reduxStore.dispatch)
-        }
+            reduxStore.dispatch(chatsActions.removeChat(ticket.id))
 
-        reduxStore.dispatch({
-            type: currentAccountConstants.UPDATE_ACCOUNT_SUCCESS,
-            resp: account,
-        })
+            let {chats} = reduxStore.getState()
+
+            if (chats.get('tickets').size < MAX_RECENT_CHATS) {
+                chatsActions.fetchChatsThrottled(reduxStore.dispatch)
+            }
+        },
     },
-}, {
-    name: socketConstants.SID_UPDATED,
-    onReceive: function () {
-        this.send(socketConstants.SID_UPDATED)
+    {
+        name: socketConstants.TICKET_CHAT_UPDATED,
+        onReceive: function (json: socketEventTypes.TicketChatUpdatedEvent) {
+            const ticket = json.data
+            const state = reduxStore.getState()
+            const {currentUser} = state
+
+            const ticketAssignmentSetting = currentAccountSelectors.getTicketAssignmentSettings(
+                state
+            )
+            const currentUserIsAvailable = currentUserSelectors.isAvailable(
+                state
+            )
+
+            if (
+                shouldTicketBeDisplayedInRecentChats(
+                    ticket,
+                    ticketAssignmentSetting,
+                    currentUser,
+                    currentUserIsAvailable
+                )
+            ) {
+                reduxStore.dispatch(chatsActions.addChat(ticket, false))
+                return
+            }
+
+            reduxStore.dispatch(chatsActions.removeChat(ticket.id))
+
+            let {chats} = reduxStore.getState()
+
+            if (chats.get('tickets').size < MAX_RECENT_CHATS) {
+                chatsActions.fetchChatsThrottled(reduxStore.dispatch)
+            }
+        },
     },
-}, {
-    name: socketConstants.TICKET_MESSAGE_CHAT_CREATED,
-    onReceive: function (json: socketEventTypes.TicketMessageChatCreatedEvent) {
-        const ticket = json.data
-        // send browser notifications only for new customer messages
-        const shouldNotify = !ticket.last_message_from_agent
-
-        const state = reduxStore.getState()
-        const {currentUser} = state
-
-        const ticketAssignmentSetting = currentAccountSelectors.getTicketAssignmentSettings(state)
-        const currentUserIsAvailable = currentUserSelectors.isAvailable(state)
-
-        // mark the chat as read because the agent is viewing the ticket
-        if (isCurrentlyOnTicket(ticket.id)) {
-            this.send(socketConstants.TICKET_VIEWED, ticket.id)
-            ticket.is_unread = false
-        }
-
-        if (
-            shouldTicketBeDisplayedInRecentChats(ticket, ticketAssignmentSetting, currentUser, currentUserIsAvailable)
+    {
+        name: socketConstants.EMAIL_INTEGRATION_VERIFIED,
+        onReceive: function (
+            json: socketEventTypes.EmailIntegrationVerifiedEvent
         ) {
-            reduxStore.dispatch(chatsActions.addChat(ticket, shouldNotify))
-            return
-        }
+            integrationsActions.onVerify(
+                reduxStore.dispatch,
+                json.integration_id
+            )
+        },
+    },
+    {
+        name: socketConstants.FACEBOOK_INTEGRATIONS_RECONNECTED,
+        onReceive: function ({
+            event,
+        }: socketEventTypes.FacebookIntegrationsReconnected) {
+            reduxStore.dispatch(integrationsActions.fetchIntegrations())
 
-        reduxStore.dispatch(chatsActions.removeChat(ticket.id))
+            reduxStore.dispatch(
+                notificationsActions.notify({
+                    status: 'success',
+                    message:
+                        event.total === 1
+                            ? 'One Facebook page has been reconnected.'
+                            : `${event.total} Facebook pages have been reconnected.`,
+                })
+            )
+        },
+    },
+    {
+        name: socketConstants.VIEWS_DEACTIVATED,
+        onReceive: function ({event}: socketEventTypes.ViewsDeactivated) {
+            const namesList = `<ul>${event.names
+                .map((name) => `<li>${name}</li>`)
+                .join('')}</ul>`
+            const message =
+                event.names.length === 1
+                    ? `View "${event.names[0]}" has been deactivated.`
+                    : `${event.names.length} views have been deactivated: ${namesList}`
 
-        let {chats} = reduxStore.getState()
-
-        if (chats.get('tickets').size < MAX_RECENT_CHATS) {
-            chatsActions.fetchChatsThrottled(reduxStore.dispatch)
-        }
-    }
-}, {
-    name: socketConstants.TICKET_CHAT_UPDATED,
-    onReceive: function (json: socketEventTypes.TicketChatUpdatedEvent) {
-        const ticket = json.data
-        const state = reduxStore.getState()
-        const {currentUser} = state
-
-        const ticketAssignmentSetting = currentAccountSelectors.getTicketAssignmentSettings(state)
-        const currentUserIsAvailable = currentUserSelectors.isAvailable(state)
-
-        if (
-            shouldTicketBeDisplayedInRecentChats(ticket, ticketAssignmentSetting, currentUser, currentUserIsAvailable)
-        ) {
-            reduxStore.dispatch(chatsActions.addChat(ticket, false))
-            return
-        }
-
-        reduxStore.dispatch(chatsActions.removeChat(ticket.id))
-
-        let {chats} = reduxStore.getState()
-
-        if (chats.get('tickets').size < MAX_RECENT_CHATS) {
-            chatsActions.fetchChatsThrottled(reduxStore.dispatch)
-        }
-    }
-}, {
-    name: socketConstants.EMAIL_INTEGRATION_VERIFIED,
-    onReceive: function (json: socketEventTypes.EmailIntegrationVerifiedEvent) {
-        integrationsActions.onVerify(reduxStore.dispatch, json.integration_id)
-    }
-}, {
-    name: socketConstants.FACEBOOK_INTEGRATIONS_RECONNECTED,
-    onReceive: function ({event}: socketEventTypes.FacebookIntegrationsReconnected) {
-        reduxStore.dispatch(integrationsActions.fetchIntegrations())
-
-        reduxStore.dispatch(notificationsActions.notify({
-            status: 'success',
-            message: event.total === 1
-                ? 'One Facebook page has been reconnected.'
-                : `${event.total} Facebook pages have been reconnected.`
-        }))
-    }
-}, {
-    name: socketConstants.VIEWS_DEACTIVATED,
-    onReceive: function ({event}: socketEventTypes.ViewsDeactivated) {
-        const namesList = `<ul>${event.names.map((name) => `<li>${name}</li>`).join('')}</ul>`
-        const message = event.names.length === 1
-            ? `View "${event.names[0]}" has been deactivated.`
-            : `${event.names.length} views have been deactivated: ${namesList}`
-
-        reduxStore.dispatch(notificationsActions.notify({
-            status: 'warning',
-            allowHTML: true,
-            message,
-        }))
-    }
-}]
+            reduxStore.dispatch(
+                notificationsActions.notify({
+                    status: 'warning',
+                    allowHTML: true,
+                    message,
+                })
+            )
+        },
+    },
+]

@@ -18,14 +18,14 @@ import * as integrationActions from './../../../../state/integrations/actions'
 })
 export default class ImportZendeskDetail extends React.Component {
     static propTypes = {
-        createIntegration: PropTypes.func.isRequired
+        createIntegration: PropTypes.func.isRequired,
     }
 
     state = {
         domain: '',
         email: '',
         apiKey: '',
-        isLoading: false
+        isLoading: false,
     }
 
     _onSubmit = (e) => {
@@ -37,15 +37,17 @@ export default class ImportZendeskDetail extends React.Component {
         const integration = fromJS({
             name: domain,
             type: 'zendesk',
-            connections: [{
-                type: 'zendesk_auth_data',
-                data: {
-                    domain,
-                    email: this.state.email,
-                    api_key: this.state.apiKey
-                }
-            }],
-            deactivated_datetime: new Date().toISOString()
+            connections: [
+                {
+                    type: 'zendesk_auth_data',
+                    data: {
+                        domain,
+                        email: this.state.email,
+                        api_key: this.state.apiKey,
+                    },
+                },
+            ],
+            deactivated_datetime: new Date().toISOString(),
         })
 
         return this.props.createIntegration(integration).then(() => {
@@ -56,25 +58,28 @@ export default class ImportZendeskDetail extends React.Component {
     render() {
         return (
             <div className="full-width">
-                <PageHeader title={(
-                    <Breadcrumb>
-                        <BreadcrumbItem>
-                            <Link to="/app/settings/import-data">Import data</Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem active>
-                            Zendesk import
-                        </BreadcrumbItem>
-                    </Breadcrumb>
-                )}/>
+                <PageHeader
+                    title={
+                        <Breadcrumb>
+                            <BreadcrumbItem>
+                                <Link to="/app/settings/import-data">
+                                    Import data
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem active>
+                                Zendesk import
+                            </BreadcrumbItem>
+                        </Breadcrumb>
+                    }
+                />
 
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <Container fluid className="page-container">
                     <p>
-                        Gorgias will import tickets (one way) up to 1 year of history from your Zendesk account.
-                        <br/>
-                        Note: The import is performed one time only it will not sync your tickets continuously.
+                        Gorgias will import tickets (one way) up to 1 year of
+                        history from your Zendesk account.
+                        <br />
+                        Note: The import is performed one time only it will not
+                        sync your tickets continuously.
                     </p>
 
                     <Form onSubmit={this._onSubmit}>
@@ -109,7 +114,9 @@ export default class ImportZendeskDetail extends React.Component {
                         <Button
                             type="submit"
                             color="success"
-                            className={classnames({'btn-loading': this.state.isLoading})}
+                            className={classnames({
+                                'btn-loading': this.state.isLoading,
+                            })}
                             disabled={this.state.isLoading}
                         >
                             Start import

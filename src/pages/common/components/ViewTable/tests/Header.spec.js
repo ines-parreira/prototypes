@@ -40,7 +40,7 @@ describe('ViewTable::Header', () => {
     const storeWithActiveView = (activeView) => ({
         views: fromJS({
             active: activeView,
-        })
+        }),
     })
 
     const minStore = storeWithActiveView(fixtureView)
@@ -66,7 +66,9 @@ describe('ViewTable::Header', () => {
                 })}
                 isUpdate={false}
             />
-        ).dive().dive()
+        )
+            .dive()
+            .dive()
         expect(component).toMatchSnapshot()
     })
 
@@ -78,17 +80,21 @@ describe('ViewTable::Header', () => {
                 location={{
                     query: {
                         q: 'term1',
-                    }
+                    },
                 }}
             />
-        ).dive().dive()
+        )
+            .dive()
+            .dive()
         expect(component).toMatchSnapshot()
     })
 
     describe('default view', () => {
         let component
         beforeEach(() => {
-            component = shallow(<Header {...minProps} />).dive().dive()
+            component = shallow(<Header {...minProps} />)
+                .dive()
+                .dive()
         })
 
         it('displays', () => {
@@ -103,7 +109,10 @@ describe('ViewTable::Header', () => {
 
         it('go in search mode when focusing the search input', () => {
             component.find(Search).props().onFocus()
-            expect(browserHistory.push).toHaveBeenNthCalledWith(1, '/app/tickets/search?q=')
+            expect(browserHistory.push).toHaveBeenNthCalledWith(
+                1,
+                '/app/tickets/search?q='
+            )
         })
 
         it('get search query from url', () => {
@@ -113,10 +122,12 @@ describe('ViewTable::Header', () => {
                     location={{
                         query: {
                             q: 'term1',
-                        }
+                        },
                     }}
                 />
-            ).dive().dive()
+            )
+                .dive()
+                .dive()
             expect(component.instance()._searchQuery()).toBe('term1')
         })
 
@@ -135,7 +146,7 @@ describe('ViewTable::Header', () => {
     describe('emoji picker', () => {
         const editModeActiveView = fromJS({
             ...fixtureView,
-            editMode: true
+            editMode: true,
         })
 
         const emoji = '1'
@@ -143,42 +154,48 @@ describe('ViewTable::Header', () => {
         describe('.render()', () => {
             it('should render emoji if decoration.emoji is a string', () => {
                 const activeView = editModeActiveView.merge({
-                    decoration: {emoji: 'foo'}
+                    decoration: {emoji: 'foo'},
                 })
                 const component = shallow(
                     <Header
                         {...minProps}
                         store={configureStore(storeWithActiveView(activeView))}
                     />
-                ).dive().dive()
+                )
+                    .dive()
+                    .dive()
                 expect(component).toMatchSnapshot()
             })
 
             it('should not render emoji if decoration is not an object', () => {
                 const activeView = editModeActiveView.merge({
-                    decoration: 'foo'
+                    decoration: 'foo',
                 })
                 const component = shallow(
                     <Header
                         {...minProps}
                         store={configureStore(storeWithActiveView(activeView))}
                     />
-                ).dive().dive()
+                )
+                    .dive()
+                    .dive()
                 expect(component).toMatchSnapshot()
             })
 
             it('should not render emoji if decoration.emoji is not a string', () => {
                 const activeView = editModeActiveView.merge({
                     decoration: {
-                        emoji: {}
-                    }
+                        emoji: {},
+                    },
                 })
                 const component = shallow(
                     <Header
                         {...minProps}
                         store={configureStore(storeWithActiveView(activeView))}
                     />
-                ).dive().dive()
+                )
+                    .dive()
+                    .dive()
                 expect(component).toMatchSnapshot()
             })
         })
@@ -186,19 +203,23 @@ describe('ViewTable::Header', () => {
         describe('emoji select', () => {
             it('should update decoration.emoji on emoji select', () => {
                 const activeView = editModeActiveView.merge({
-                    decoration: null
+                    decoration: null,
                 })
                 const component = shallow(
                     <Header
                         {...minProps}
                         store={configureStore(storeWithActiveView(activeView))}
                     />
-                ).dive().dive()
+                )
+                    .dive()
+                    .dive()
                 component.find(EmojiSelect).props().onEmojiSelect(emoji)
                 const expectedActiveView = activeView.merge({
-                    decoration: {emoji}
+                    decoration: {emoji},
                 })
-                expect(viewsActions.updateView).toHaveBeenLastCalledWith(expectedActiveView)
+                expect(viewsActions.updateView).toHaveBeenLastCalledWith(
+                    expectedActiveView
+                )
             })
 
             it('should not override existing decoration object properties', () => {
@@ -209,47 +230,57 @@ describe('ViewTable::Header', () => {
                         {...minProps}
                         store={configureStore(storeWithActiveView(activeView))}
                     />
-                ).dive().dive()
+                )
+                    .dive()
+                    .dive()
                 component.find(EmojiSelect).props().onEmojiSelect(emoji)
                 const expectedActiveView = activeView.merge({
                     decoration: {
                         ...decoration,
-                        emoji
-                    }
+                        emoji,
+                    },
                 })
-                expect(viewsActions.updateView).toHaveBeenLastCalledWith(expectedActiveView)
+                expect(viewsActions.updateView).toHaveBeenLastCalledWith(
+                    expectedActiveView
+                )
             })
         })
 
         describe('emoji clear', () => {
             it('should unset decoration.emoji view on emoji clear', () => {
                 const activeView = editModeActiveView.merge({
-                    decoration: {emoji}
+                    decoration: {emoji},
                 })
                 const component = shallow(
                     <Header
                         {...minProps}
                         store={configureStore(storeWithActiveView(activeView))}
                     />
-                ).dive().dive()
+                )
+                    .dive()
+                    .dive()
 
                 component.find(EmojiSelect).props().onEmojiClear()
                 const expectedActiveView = activeView.merge({
-                    decoration: {}
+                    decoration: {},
                 })
-                expect(viewsActions.updateView).toHaveBeenLastCalledWith(expectedActiveView)
+                expect(viewsActions.updateView).toHaveBeenLastCalledWith(
+                    expectedActiveView
+                )
             })
 
             it('should not change the active view on emoji clear if decoration is null', () => {
                 const activeView = editModeActiveView.merge({
-                    decoration: null
+                    decoration: null,
                 })
                 const component = shallow(
                     <Header
                         {...minProps}
                         store={configureStore(storeWithActiveView(activeView))}
                     />
-                ).dive().dive()
+                )
+                    .dive()
+                    .dive()
 
                 component.find(EmojiSelect).props().onEmojiClear()
                 expect(viewsActions.updateView).not.toHaveBeenCalled()

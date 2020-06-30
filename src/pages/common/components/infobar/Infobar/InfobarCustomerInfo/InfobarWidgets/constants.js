@@ -4,7 +4,7 @@ import {
     RECHARGE_WIDGET_TYPE,
     SHOPIFY_WIDGET_TYPE,
     SMILE_WIDGET_TYPE,
-    SMOOCH_INSIDE_WIDGET_TYPE
+    SMOOCH_INSIDE_WIDGET_TYPE,
 } from '../../../../../../../state/widgets/constants'
 
 export const WIDGET_COLOR_SUPPORTED_TYPES = [

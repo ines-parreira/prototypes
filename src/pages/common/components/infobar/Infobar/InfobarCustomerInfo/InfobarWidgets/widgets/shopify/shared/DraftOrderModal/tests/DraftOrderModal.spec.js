@@ -12,11 +12,11 @@ import {
     shopifyCustomLineItemFixture,
     shopifyInvoicePayloadFixture,
     shopifyOrderFixture,
-    shopifyProductFixture
+    shopifyProductFixture,
 } from '../../../../../../../../../../../../fixtures/shopify'
 import {
     createOrderStateFixture,
-    infobarActionsStateFixture
+    infobarActionsStateFixture,
 } from '../../../../../../../../../../../../fixtures/infobarActions'
 import {getDuplicateOrderPayload} from '../../../../../../../../../../../../state/infobarActions/shopify/createOrder/actions'
 import {getCreateOrderState} from '../../../../../../../../../../../../state/infobarActions/shopify/createOrder/selectors'
@@ -34,25 +34,33 @@ function initActions() {
         addRow: jest.fn(),
         onBulkChange: jest.fn(),
         onCancel: jest.fn(),
-        onChange: jest.fn().mockImplementation(
-            (name: string, value: string | number | boolean | Object, callback?: () => void) => {
-                if (callback) {
-                    callback()
+        onChange: jest
+            .fn()
+            .mockImplementation(
+                (
+                    name: string,
+                    value: string | number | boolean | Object,
+                    callback?: () => void
+                ) => {
+                    if (callback) {
+                        callback()
+                    }
                 }
-            }
-        ),
+            ),
         onClose: jest.fn(),
-        onEmailInvoice: jest.fn().mockImplementation(
-            (
-                integrationId: number,
-                customerId: number,
-                orderId: number | null,
-                invoicePayload: Record<Shopify.DraftOrderInvoice>,
-                onSuccess: () => void,
-            ) => {
-                onSuccess()
-            }
-        ),
+        onEmailInvoice: jest
+            .fn()
+            .mockImplementation(
+                (
+                    integrationId: number,
+                    customerId: number,
+                    orderId: number | null,
+                    invoicePayload: Record<Shopify.DraftOrderInvoice>,
+                    onSuccess: () => void
+                ) => {
+                    onSuccess()
+                }
+            ),
         onInit: jest.fn(),
         onInitCleanUp: jest.fn(),
         onOpen: jest.fn(),
@@ -142,9 +150,13 @@ describe('<DraftOrderModalComponent/>', () => {
 
             const component = shallow(
                 <DraftOrderModalComponent
-                    integrations={getIntegrationsByTypes([SHOPIFY_INTEGRATION_TYPE])(state)}
+                    integrations={getIntegrationsByTypes([
+                        SHOPIFY_INTEGRATION_TYPE,
+                    ])(state)}
                     loading={getCreateOrderState(state).get('loading')}
-                    loadingMessage={getCreateOrderState(state).get('loadingMessage')}
+                    loadingMessage={getCreateOrderState(state).get(
+                        'loadingMessage'
+                    )}
                     payload={getCreateOrderState(state).get('payload')}
                     draftOrder={getCreateOrderState(state).get('draftOrder')}
                     products={getCreateOrderState(state).get('products')}
@@ -173,9 +185,13 @@ describe('<DraftOrderModalComponent/>', () => {
 
             const component = shallow(
                 <DraftOrderModalComponent
-                    integrations={getIntegrationsByTypes([SHOPIFY_INTEGRATION_TYPE])(state)}
+                    integrations={getIntegrationsByTypes([
+                        SHOPIFY_INTEGRATION_TYPE,
+                    ])(state)}
                     loading={getCreateOrderState(state).get('loading')}
-                    loadingMessage={getCreateOrderState(state).get('loadingMessage')}
+                    loadingMessage={getCreateOrderState(state).get(
+                        'loadingMessage'
+                    )}
                     payload={getCreateOrderState(state).get('payload')}
                     draftOrder={getCreateOrderState(state).get('draftOrder')}
                     products={getCreateOrderState(state).get('products')}
@@ -201,7 +217,10 @@ describe('<DraftOrderModalComponent/>', () => {
             const products = new Map([[product.get('id'), product]])
             const draftOrder = initDraftOrderPayload(customer, order, products)
             const payload = getDuplicateOrderPayload(draftOrder)
-            const createOrderState = createOrderStateFixture({payload, draftOrder})
+            const createOrderState = createOrderStateFixture({
+                payload,
+                draftOrder,
+            })
 
             const store = mockStore({
                 integrations: integrationsStateWithShopify,
@@ -212,9 +231,13 @@ describe('<DraftOrderModalComponent/>', () => {
 
             const component = shallow(
                 <DraftOrderModalComponent
-                    integrations={getIntegrationsByTypes([SHOPIFY_INTEGRATION_TYPE])(state)}
+                    integrations={getIntegrationsByTypes([
+                        SHOPIFY_INTEGRATION_TYPE,
+                    ])(state)}
                     loading={getCreateOrderState(state).get('loading')}
-                    loadingMessage={getCreateOrderState(state).get('loadingMessage')}
+                    loadingMessage={getCreateOrderState(state).get(
+                        'loadingMessage'
+                    )}
                     payload={getCreateOrderState(state).get('payload')}
                     draftOrder={getCreateOrderState(state).get('draftOrder')}
                     products={getCreateOrderState(state).get('products')}
@@ -239,7 +262,10 @@ describe('<DraftOrderModalComponent/>', () => {
             const products = new Map()
             const draftOrder = initDraftOrderPayload(customer, order, products)
             const payload = getDuplicateOrderPayload(draftOrder)
-            const createOrderState = createOrderStateFixture({payload, draftOrder})
+            const createOrderState = createOrderStateFixture({
+                payload,
+                draftOrder,
+            })
 
             const store = mockStore({
                 integrations: integrationsStateWithShopify,
@@ -250,9 +276,13 @@ describe('<DraftOrderModalComponent/>', () => {
 
             const component = shallow(
                 <DraftOrderModalComponent
-                    integrations={getIntegrationsByTypes([SHOPIFY_INTEGRATION_TYPE])(state)}
+                    integrations={getIntegrationsByTypes([
+                        SHOPIFY_INTEGRATION_TYPE,
+                    ])(state)}
                     loading={getCreateOrderState(state).get('loading')}
-                    loadingMessage={getCreateOrderState(state).get('loadingMessage')}
+                    loadingMessage={getCreateOrderState(state).get(
+                        'loadingMessage'
+                    )}
                     payload={getCreateOrderState(state).get('payload')}
                     draftOrder={getCreateOrderState(state).get('draftOrder')}
                     products={getCreateOrderState(state).get('products')}
@@ -271,17 +301,25 @@ describe('<DraftOrderModalComponent/>', () => {
             expect(component).toMatchSnapshot()
         })
 
-        it('should render as open, with order table and default currency, when it\s missing', () => {
+        it('should render as open, with order table and default currency, when its missing', () => {
             const order = fromJS(shopifyOrderFixture())
             const customer = fromJS(shopifyCustomerFixture())
             const product = fromJS(shopifyProductFixture())
             const products = new Map([[product.get('id'), product]])
             const draftOrder = initDraftOrderPayload(customer, order, products)
             const payload = getDuplicateOrderPayload(draftOrder)
-            const createOrderState = createOrderStateFixture({payload, draftOrder})
+            const createOrderState = createOrderStateFixture({
+                payload,
+                draftOrder,
+            })
 
             const store = mockStore({
-                integrations: integrationsStateWithShopify.removeIn(['integrations', 0, 'meta', 'currency']),
+                integrations: integrationsStateWithShopify.removeIn([
+                    'integrations',
+                    0,
+                    'meta',
+                    'currency',
+                ]),
                 infobarActions: infobarActionsStateFixture({createOrderState}),
             })
 
@@ -289,9 +327,13 @@ describe('<DraftOrderModalComponent/>', () => {
 
             const component = shallow(
                 <DraftOrderModalComponent
-                    integrations={getIntegrationsByTypes([SHOPIFY_INTEGRATION_TYPE])(state)}
+                    integrations={getIntegrationsByTypes([
+                        SHOPIFY_INTEGRATION_TYPE,
+                    ])(state)}
                     loading={getCreateOrderState(state).get('loading')}
-                    loadingMessage={getCreateOrderState(state).get('loadingMessage')}
+                    loadingMessage={getCreateOrderState(state).get(
+                        'loadingMessage'
+                    )}
                     payload={getCreateOrderState(state).get('payload')}
                     draftOrder={getCreateOrderState(state).get('draftOrder')}
                     products={getCreateOrderState(state).get('products')}
@@ -319,7 +361,10 @@ describe('<DraftOrderModalComponent/>', () => {
                 .set('status', 'invoice_sent')
                 .set('invoice_sent_at', '2020-02-26T21:31:34-05:00')
             const payload = getDuplicateOrderPayload(draftOrder)
-            const createOrderState = createOrderStateFixture({payload, draftOrder})
+            const createOrderState = createOrderStateFixture({
+                payload,
+                draftOrder,
+            })
 
             const store = mockStore({
                 integrations: integrationsStateWithShopify,
@@ -330,9 +375,13 @@ describe('<DraftOrderModalComponent/>', () => {
 
             const component = shallow(
                 <DraftOrderModalComponent
-                    integrations={getIntegrationsByTypes([SHOPIFY_INTEGRATION_TYPE])(state)}
+                    integrations={getIntegrationsByTypes([
+                        SHOPIFY_INTEGRATION_TYPE,
+                    ])(state)}
                     loading={getCreateOrderState(state).get('loading')}
-                    loadingMessage={getCreateOrderState(state).get('loadingMessage')}
+                    loadingMessage={getCreateOrderState(state).get(
+                        'loadingMessage'
+                    )}
                     payload={getCreateOrderState(state).get('payload')}
                     draftOrder={getCreateOrderState(state).get('draftOrder')}
                     products={getCreateOrderState(state).get('products')}
@@ -364,18 +413,26 @@ describe('<DraftOrderModalComponent/>', () => {
 
                 const store = mockStore({
                     integrations: integrationsStateWithShopify,
-                    infobarActions: infobarActionsStateFixture({createOrderState}),
+                    infobarActions: infobarActionsStateFixture({
+                        createOrderState,
+                    }),
                 })
 
                 const state = store.getState()
 
                 const component = shallow(
                     <DraftOrderModalComponent
-                        integrations={getIntegrationsByTypes([SHOPIFY_INTEGRATION_TYPE])(state)}
+                        integrations={getIntegrationsByTypes([
+                            SHOPIFY_INTEGRATION_TYPE,
+                        ])(state)}
                         loading={getCreateOrderState(state).get('loading')}
-                        loadingMessage={getCreateOrderState(state).get('loadingMessage')}
+                        loadingMessage={getCreateOrderState(state).get(
+                            'loadingMessage'
+                        )}
                         payload={getCreateOrderState(state).get('payload')}
-                        draftOrder={getCreateOrderState(state).get('draftOrder')}
+                        draftOrder={getCreateOrderState(state).get(
+                            'draftOrder'
+                        )}
                         products={getCreateOrderState(state).get('products')}
                         header="Duplicate order"
                         isOpen={false}
@@ -396,7 +453,7 @@ describe('<DraftOrderModalComponent/>', () => {
                     order,
                     customer,
                     currencyCode,
-                    component.instance()._onInitError,
+                    component.instance()._onInitError
                 )
             })
         })
@@ -414,7 +471,10 @@ describe('<DraftOrderModalComponent/>', () => {
             const products = new Map([[product.get('id'), product]])
             const draftOrder = initDraftOrderPayload(customer, order, products)
             const payload = getDuplicateOrderPayload(draftOrder)
-            const createOrderState = createOrderStateFixture({payload, draftOrder})
+            const createOrderState = createOrderStateFixture({
+                payload,
+                draftOrder,
+            })
 
             const store = mockStore({
                 integrations: integrationsStateWithShopify,
@@ -425,9 +485,13 @@ describe('<DraftOrderModalComponent/>', () => {
 
             component = shallow(
                 <DraftOrderModalComponent
-                    integrations={getIntegrationsByTypes([SHOPIFY_INTEGRATION_TYPE])(state)}
+                    integrations={getIntegrationsByTypes([
+                        SHOPIFY_INTEGRATION_TYPE,
+                    ])(state)}
                     loading={getCreateOrderState(state).get('loading')}
-                    loadingMessage={getCreateOrderState(state).get('loadingMessage')}
+                    loadingMessage={getCreateOrderState(state).get(
+                        'loadingMessage'
+                    )}
                     payload={getCreateOrderState(state).get('payload')}
                     draftOrder={getCreateOrderState(state).get('draftOrder')}
                     products={getCreateOrderState(state).get('products')}
@@ -453,7 +517,12 @@ describe('<DraftOrderModalComponent/>', () => {
                 component.instance()._onVariantClicked(item, variant)
 
                 const actionName = ShopifyAction.DUPLICATE_ORDER
-                expect(actions.addRow).toHaveBeenCalledWith(actionName, context.integrationId, product, variant)
+                expect(actions.addRow).toHaveBeenCalledWith(
+                    actionName,
+                    context.integrationId,
+                    product,
+                    variant
+                )
             })
         })
 
@@ -463,7 +532,10 @@ describe('<DraftOrderModalComponent/>', () => {
 
                 component.instance()._onAddCustomItem(lineItem)
 
-                expect(actions.addCustomRow).toHaveBeenCalledWith(context.integrationId, lineItem)
+                expect(actions.addCustomRow).toHaveBeenCalledWith(
+                    context.integrationId,
+                    lineItem
+                )
             })
         })
 
@@ -478,7 +550,7 @@ describe('<DraftOrderModalComponent/>', () => {
                     context.customerId,
                     order.get('id'),
                     invoicePayload,
-                    expect.any(Function),
+                    expect.any(Function)
                 )
 
                 expect(actions.onClose).toHaveBeenCalled()
@@ -490,7 +562,11 @@ describe('<DraftOrderModalComponent/>', () => {
             it('should call onSubmit()', () => {
                 component.instance()._onSubmitPaid()
 
-                expect(actions.onChange).toHaveBeenCalledWith('payment_pending', false, expect.any(Function))
+                expect(actions.onChange).toHaveBeenCalledWith(
+                    'payment_pending',
+                    false,
+                    expect.any(Function)
+                )
                 expect(actions.onSubmit).toHaveBeenCalled()
                 expect(actions.onSubmitCleanUp).toHaveBeenCalled()
                 expect(actions.onReset).toHaveBeenCalled()
@@ -501,7 +577,11 @@ describe('<DraftOrderModalComponent/>', () => {
             it('should call onSubmit()', () => {
                 component.instance()._onSubmitPending()
 
-                expect(actions.onChange).toHaveBeenCalledWith('payment_pending', true, expect.any(Function))
+                expect(actions.onChange).toHaveBeenCalledWith(
+                    'payment_pending',
+                    true,
+                    expect.any(Function)
+                )
                 expect(actions.onSubmit).toHaveBeenCalled()
                 expect(actions.onSubmitCleanUp).toHaveBeenCalled()
                 expect(actions.onReset).toHaveBeenCalled()
@@ -513,7 +593,11 @@ describe('<DraftOrderModalComponent/>', () => {
                 component.instance()._onCancel('foo')
 
                 const actionName = ShopifyAction.DUPLICATE_ORDER
-                expect(actions.onCancel).toHaveBeenCalledWith(actionName, context.integrationId, 'foo')
+                expect(actions.onCancel).toHaveBeenCalledWith(
+                    actionName,
+                    context.integrationId,
+                    'foo'
+                )
                 expect(actions.onClose).toHaveBeenCalled()
                 expect(actions.onReset).toHaveBeenCalled()
             })
@@ -524,7 +608,11 @@ describe('<DraftOrderModalComponent/>', () => {
                 component.instance()._onCancelViaHeader()
 
                 const actionName = ShopifyAction.DUPLICATE_ORDER
-                expect(actions.onCancel).toHaveBeenCalledWith(actionName, context.integrationId, 'header')
+                expect(actions.onCancel).toHaveBeenCalledWith(
+                    actionName,
+                    context.integrationId,
+                    'header'
+                )
                 expect(actions.onClose).toHaveBeenCalled()
                 expect(actions.onReset).toHaveBeenCalled()
             })
@@ -535,7 +623,11 @@ describe('<DraftOrderModalComponent/>', () => {
                 component.instance()._onCancelViaFooter()
 
                 const actionName = ShopifyAction.DUPLICATE_ORDER
-                expect(actions.onCancel).toHaveBeenCalledWith(actionName, context.integrationId, 'footer')
+                expect(actions.onCancel).toHaveBeenCalledWith(
+                    actionName,
+                    context.integrationId,
+                    'footer'
+                )
                 expect(actions.onClose).toHaveBeenCalled()
                 expect(actions.onReset).toHaveBeenCalled()
             })

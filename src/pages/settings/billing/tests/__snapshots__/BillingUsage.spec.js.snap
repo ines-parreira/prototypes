@@ -99,7 +99,8 @@ exports[`BillingUsage component should display price 1`] = `
                   Pro monthly plan
                 </h4>
                 <div>
-                  Your current subscription started on 
+                  Your current subscription started on
+                   
                   <strong>
                     Jan 01
                   </strong>
@@ -411,13 +412,15 @@ exports[`BillingUsage component should display price 1`] = `
       </div>
     </CardGroup>
     <p>
-      If you have any questions or if you want to unsubscribe, please contact us at 
+      If you have any questions or if you want to unsubscribe, please contact us at
+       
       <a
         href="mailto:support@gorgias.io"
       >
         support@gorgias.io
       </a>
-       or
+       
+      or
        
       <a
         href=""
@@ -492,7 +495,8 @@ exports[`BillingUsage component should load with empty props 1`] = `
                   Pro monthly plan
                 </h4>
                 <div>
-                  Your current subscription started on 
+                  Your current subscription started on
+                   
                   <strong>
                     Jan 01
                   </strong>
@@ -784,13 +788,15 @@ exports[`BillingUsage component should load with empty props 1`] = `
       </div>
     </CardGroup>
     <p>
-      If you have any questions or if you want to unsubscribe, please contact us at 
+      If you have any questions or if you want to unsubscribe, please contact us at
+       
       <a
         href="mailto:support@gorgias.io"
       >
         support@gorgias.io
       </a>
-       or
+       
+      or
        
       <a
         href=""

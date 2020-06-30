@@ -11,11 +11,14 @@ import * as constants from './constants'
 export const initialState = fromJS({
     settings: [],
     _internal: {
-        loading: {}
-    }
+        loading: {},
+    },
 })
 
-export default function reducer(state: Map<*, *> = initialState, action: actionType): Map<*, *> {
+export default function reducer(
+    state: Map<*, *> = initialState,
+    action: actionType
+): Map<*, *> {
     switch (action.type) {
         case constants.UPDATE_ACCOUNT_START:
             return state.setIn(['_internal', 'loading', 'updateAccount'], true)
@@ -23,11 +26,17 @@ export default function reducer(state: Map<*, *> = initialState, action: actionT
             return state.setIn(['_internal', 'loading', 'updateAccount'], false)
         case constants.UPDATE_ACCOUNT_SUCCESS: {
             const account = fromJS(action.resp)
-            return state.setIn(['_internal', 'loading', 'updateAccount'], false)
-                .merge(account)
-                // do not merge the current subscription
-                // in case it has been canceled and it's empty
-                .set('current_subscription', account.get('current_subscription'))
+            return (
+                state
+                    .setIn(['_internal', 'loading', 'updateAccount'], false)
+                    .merge(account)
+                    // do not merge the current subscription
+                    // in case it has been canceled and it's empty
+                    .set(
+                        'current_subscription',
+                        account.get('current_subscription')
+                    )
+            )
         }
 
         case constants.UPDATE_ACCOUNT_OWNER_SUCCESS:
@@ -48,24 +57,32 @@ export default function reducer(state: Map<*, *> = initialState, action: actionT
             const new_setting = action.setting
 
             if (!action.isUpdate) {
-                if (state.get('settings').findIndex((setting) => setting.get('type') === new_setting.type) !== -1) {
+                if (
+                    state
+                        .get('settings')
+                        .findIndex(
+                            (setting) =>
+                                setting.get('type') === new_setting.type
+                        ) !== -1
+                ) {
                     return state.mergeDeep({
-                        'settings': [new_setting]
+                        settings: [new_setting],
                     })
                 }
 
-                return state.update('settings', (settings) => settings.push(fromJS(new_setting)))
+                return state.update('settings', (settings) =>
+                    settings.push(fromJS(new_setting))
+                )
             }
 
-            return state
-                .update('settings', (settings) => settings
-                    .map((setting) => {
-                        if (setting.get('id') === new_setting.id) {
-                            return fromJS(new_setting)
-                        }
-                        return setting
-                    })
-                )
+            return state.update('settings', (settings) =>
+                settings.map((setting) => {
+                    if (setting.get('id') === new_setting.id) {
+                        return fromJS(new_setting)
+                    }
+                    return setting
+                })
+            )
         }
         default:
             return state

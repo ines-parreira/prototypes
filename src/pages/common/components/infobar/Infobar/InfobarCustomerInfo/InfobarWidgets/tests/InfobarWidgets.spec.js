@@ -21,84 +21,102 @@ describe('InfobarWidgets component', () => {
     const baseEditing = {
         actions: {
             foo: () => {},
-            removeEditedWidget: () => {}
+            removeEditedWidget: () => {},
         },
         isEditing: false,
         isDragging: false,
-        canDrop: () => true
+        canDrop: () => true,
     }
 
     let baseSource = fromJS({
         ticket: {
             customer: {
-                integrations: {}
-            }
-        }
+                integrations: {},
+            },
+        },
     })
 
     baseSource = baseSource.setIn(
         ['ticket', 'customer', 'integrations', httpIntegrationId.toString()],
-        fromJS({foo: httpIntegrationId.toString()}))
+        fromJS({foo: httpIntegrationId.toString()})
+    )
     baseSource = baseSource.setIn(
         ['ticket', 'customer', 'integrations', shopifyIntegrationId.toString()],
-        fromJS({bar: shopifyIntegrationId.toString()}))
+        fromJS({bar: shopifyIntegrationId.toString()})
+    )
 
-    const baseWidgets = fromJS([{
-        id: 4,
-        type: 'http',
-        integration_id: httpIntegrationId,
-        template: {
-            type: 'wrapper',
-            widgets: [{
-                path: '',
-                type: 'card',
-                title: 'Foo container',
-                widgets: [{
-                    path: 'foo',
-                    type: 'text',
-                    title: 'Foo',
-                    order: 1
-                }]
-            }]
+    const baseWidgets = fromJS([
+        {
+            id: 4,
+            type: 'http',
+            integration_id: httpIntegrationId,
+            template: {
+                type: 'wrapper',
+                widgets: [
+                    {
+                        path: '',
+                        type: 'card',
+                        title: 'Foo container',
+                        widgets: [
+                            {
+                                path: 'foo',
+                                type: 'text',
+                                title: 'Foo',
+                                order: 1,
+                            },
+                        ],
+                    },
+                ],
+            },
+            order: 1,
         },
-        order: 1
-    }, {
-        id: 5,
-        type: 'shopify',
-        template: {
-            type: 'wrapper',
-            widgets: [{
-                path: '',
-                type: 'card',
-                title: 'Bar container',
-                widgets: [{
-                    path: 'bar',
-                    type: 'text',
-                    title: 'Bar',
-                    order: 1
-                }]
-            }]
+        {
+            id: 5,
+            type: 'shopify',
+            template: {
+                type: 'wrapper',
+                widgets: [
+                    {
+                        path: '',
+                        type: 'card',
+                        title: 'Bar container',
+                        widgets: [
+                            {
+                                path: 'bar',
+                                type: 'text',
+                                title: 'Bar',
+                                order: 1,
+                            },
+                        ],
+                    },
+                ],
+            },
+            order: 2,
         },
-        order: 2
-    }, {
-        id: 6,
-        type: 'recharge',
-        template: {
-            type: 'wrapper',
-            widgets: [{
-                path: '',
-                type: 'card',
-                title: 'Baz container',
-                widgets: [{
-                    path: 'baz',
-                    type: 'text',
-                    title: 'Baz',
-                    order: 1
-                }]
-            }]
+        {
+            id: 6,
+            type: 'recharge',
+            template: {
+                type: 'wrapper',
+                widgets: [
+                    {
+                        path: '',
+                        type: 'card',
+                        title: 'Baz container',
+                        widgets: [
+                            {
+                                path: 'baz',
+                                type: 'text',
+                                title: 'Baz',
+                                order: 1,
+                            },
+                        ],
+                    },
+                ],
+            },
+            order: 3,
         },
-        order: 3
-    }])
+    ])
 
     beforeEach(() => {
         store = mockStore({
@@ -107,20 +125,20 @@ describe('InfobarWidgets component', () => {
                     {
                         id: httpIntegrationId,
                         type: 'http',
-                        name: 'my little http integration'
+                        name: 'my little http integration',
                     },
                     {
                         id: shopifyIntegrationId,
                         type: 'shopify',
-                        name: 'my little shopify integration'
+                        name: 'my little shopify integration',
                     },
                     {
                         id: rechargeIntegrationId,
                         type: 'recharge',
-                        name: 'my little recharge integration'
+                        name: 'my little recharge integration',
                     },
-                ]
-            })
+                ],
+            }),
         })
 
         // reactstrap popover needs to be in the dom
@@ -129,7 +147,7 @@ describe('InfobarWidgets component', () => {
         document.body.appendChild(container)
     })
 
-    it('should not display anything if there\'s no widgets', () => {
+    it("should not display anything if there's no widgets", () => {
         const component = mount(
             <InfobarWidgets
                 store={store}

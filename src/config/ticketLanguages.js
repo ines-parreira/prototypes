@@ -2,214 +2,214 @@
 export default [
     {
         localeName: 'af',
-        displayName: 'Afrikaans'
+        displayName: 'Afrikaans',
     },
     {
         localeName: 'ar',
-        displayName: 'Arabic'
+        displayName: 'Arabic',
     },
     {
         localeName: 'bg',
-        displayName: 'Bulgarian'
+        displayName: 'Bulgarian',
     },
     {
         localeName: 'ca',
-        displayName: 'Catalan'
+        displayName: 'Catalan',
     },
     {
         localeName: 'cs',
-        displayName: 'Czech'
+        displayName: 'Czech',
     },
     {
         localeName: 'cy',
-        displayName: 'Welsh'
+        displayName: 'Welsh',
     },
     {
         localeName: 'da',
-        displayName: 'Danish'
+        displayName: 'Danish',
     },
     {
         localeName: 'de',
-        displayName: 'German'
+        displayName: 'German',
     },
     {
         localeName: 'el',
-        displayName: 'Greek'
+        displayName: 'Greek',
     },
     {
         localeName: 'en',
-        displayName: 'English'
+        displayName: 'English',
     },
     {
         localeName: 'es',
-        displayName: 'Spanish'
+        displayName: 'Spanish',
     },
     {
         localeName: 'et',
-        displayName: 'Estonian'
+        displayName: 'Estonian',
     },
     {
         localeName: 'fa',
-        displayName: 'Persian'
+        displayName: 'Persian',
     },
     {
         localeName: 'fi',
-        displayName: 'Finnish'
+        displayName: 'Finnish',
     },
     {
         localeName: 'fr',
-        displayName: 'French'
+        displayName: 'French',
     },
     {
         localeName: 'gu',
-        displayName: 'Gurarati'
+        displayName: 'Gurarati',
     },
     {
         localeName: 'he',
-        displayName: 'Hebrew'
+        displayName: 'Hebrew',
     },
     {
         localeName: 'hi',
-        displayName: 'Hindi'
+        displayName: 'Hindi',
     },
     {
         localeName: 'hr',
-        displayName: 'Croatian'
+        displayName: 'Croatian',
     },
     {
         localeName: 'hu',
-        displayName: 'Hungarian'
+        displayName: 'Hungarian',
     },
     {
         localeName: 'id',
-        displayName: 'Indonesian'
+        displayName: 'Indonesian',
     },
     {
         localeName: 'it',
-        displayName: 'Italian'
+        displayName: 'Italian',
     },
     {
         localeName: 'ja',
-        displayName: 'Japanese'
+        displayName: 'Japanese',
     },
     {
         localeName: 'kn',
-        displayName: 'Kannada'
+        displayName: 'Kannada',
     },
     {
         localeName: 'ko',
-        displayName: 'Korean'
+        displayName: 'Korean',
     },
     {
         localeName: 'lt',
-        displayName: 'Lithuanian'
+        displayName: 'Lithuanian',
     },
     {
         localeName: 'lv',
-        displayName: 'Latvian'
+        displayName: 'Latvian',
     },
     {
         localeName: 'mk',
-        displayName: 'Macedonian'
+        displayName: 'Macedonian',
     },
     {
         localeName: 'ml',
-        displayName: 'Malayalam'
+        displayName: 'Malayalam',
     },
     {
         localeName: 'mr',
-        displayName: 'Marathi'
+        displayName: 'Marathi',
     },
     {
         localeName: 'ne',
-        displayName: 'Nepali'
+        displayName: 'Nepali',
     },
     {
         localeName: 'nl',
-        displayName: 'Dutch'
+        displayName: 'Dutch',
     },
     {
         localeName: 'no',
-        displayName: 'Norwegian'
+        displayName: 'Norwegian',
     },
     {
         localeName: 'pa',
-        displayName: 'Panjabi'
+        displayName: 'Panjabi',
     },
     {
         localeName: 'pl',
-        displayName: 'Polish'
+        displayName: 'Polish',
     },
     {
         localeName: 'pt',
-        displayName: 'Portuguese'
+        displayName: 'Portuguese',
     },
     {
         localeName: 'ro',
-        displayName: 'Romanian'
+        displayName: 'Romanian',
     },
     {
         localeName: 'ru',
-        displayName: 'Russian'
+        displayName: 'Russian',
     },
     {
         localeName: 'sk',
-        displayName: 'Slovak'
+        displayName: 'Slovak',
     },
     {
         localeName: 'sl',
-        displayName: 'Slovenian'
+        displayName: 'Slovenian',
     },
     {
         localeName: 'so',
-        displayName: 'Somali'
+        displayName: 'Somali',
     },
     {
         localeName: 'sq',
-        displayName: 'Albanian'
+        displayName: 'Albanian',
     },
     {
         localeName: 'sv',
-        displayName: 'Swedish'
+        displayName: 'Swedish',
     },
     {
         localeName: 'sw',
-        displayName: 'Swahili'
+        displayName: 'Swahili',
     },
     {
         localeName: 'ta',
-        displayName: 'Tamil'
+        displayName: 'Tamil',
     },
     {
         localeName: 'te',
-        displayName: 'Telegu'
+        displayName: 'Telegu',
     },
     {
         localeName: 'tl',
-        displayName: 'Tagalog'
+        displayName: 'Tagalog',
     },
     {
         localeName: 'tr',
-        displayName: 'Turkish'
+        displayName: 'Turkish',
     },
     {
         localeName: 'uk',
-        displayName: 'Ukranian'
+        displayName: 'Ukranian',
     },
     {
         localeName: 'ur',
-        displayName: 'Urdu'
+        displayName: 'Urdu',
     },
     {
         localeName: 'vi',
-        displayName: 'Vietnamese'
+        displayName: 'Vietnamese',
     },
     {
         localeName: 'zh-cn',
-        displayName: 'Chinese (Simplified, PRC)'
+        displayName: 'Chinese (Simplified, PRC)',
     },
     {
         localeName: 'zh-tw',
-        displayName: 'Chinese (Traditional, Taiwan)'
+        displayName: 'Chinese (Traditional, Taiwan)',
     },
 ]

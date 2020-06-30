@@ -3,13 +3,16 @@ import React from 'react'
 import classnames from 'classnames'
 import {fromJS, Map} from 'immutable'
 import {
-    Button, DropdownItem, DropdownMenu, DropdownToggle,
+    Button,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
     Form as BootstrapForm,
     FormGroup,
     Popover,
     PopoverBody,
     PopoverHeader,
-    UncontrolledButtonDropdown
+    UncontrolledButtonDropdown,
 } from 'reactstrap'
 
 import InputField from '../../../../../common/forms/InputField'
@@ -29,9 +32,8 @@ import {getMomentUtcISOString} from '../../../../../../utils/date'
 
 import css from './RuleItem.less'
 
-
 type Props = {
-    rule: Map<*,*>,
+    rule: Map<*, *>,
     actions: Object,
     toggleOpening: (number) => void,
 }
@@ -88,64 +90,62 @@ export default class RuleItem extends React.Component<Props, State> {
 
         this.setState({isSubmitting: true})
         if (this._canSubmit()) {
-            return actions.rules.save({
-                id: rule.get('id'),
-                description: this.state.description,
-                event_types: this.state.eventTypes.join(','),
-                name: this.state.name,
-                code: rule.get('code'),
-                code_ast: rule.get('code_ast'),
-            }).then(() => {
-                this.setState({isSubmitting: false})
-            })
+            return actions.rules
+                .save({
+                    id: rule.get('id'),
+                    description: this.state.description,
+                    event_types: this.state.eventTypes.join(','),
+                    name: this.state.name,
+                    code: rule.get('code'),
+                    code_ast: rule.get('code_ast'),
+                })
+                .then(() => {
+                    this.setState({isSubmitting: false})
+                })
         }
     }
 
     _handleReset = () => {
         const {actions, rule} = this.props
         this.setState({isResetting: true})
-        return actions.rules.reset(rule.get('id'))
-            .then(() => {
-                this.setState({
-                    isResetting: false,
-                    eventTypes: rulesHelpers.eventTypes(rule),
-                })
+        return actions.rules.reset(rule.get('id')).then(() => {
+            this.setState({
+                isResetting: false,
+                eventTypes: rulesHelpers.eventTypes(rule),
             })
+        })
     }
 
     _handleActivate = () => {
         const {actions, rule} = this.props
         this.setState({isDeactivating: true})
-        return actions.rules.activate(rule.get('id'))
-            .then(() => {
-                this.setState({isDeactivating: false})
-            })
+        return actions.rules.activate(rule.get('id')).then(() => {
+            this.setState({isDeactivating: false})
+        })
     }
 
     _handleDeactivate = () => {
         const {actions, rule} = this.props
 
         this.setState({isDeactivating: true})
-        return actions.rules.deactivate(rule.get('id'))
-            .then(() => {
-                this.setState({isDeactivating: false})
-                this._toggleConfirmation()
-            })
+        return actions.rules.deactivate(rule.get('id')).then(() => {
+            this.setState({isDeactivating: false})
+            this._toggleConfirmation()
+        })
     }
 
     _handleRemove = () => {
         const {actions, rule} = this.props
 
         this.setState({isDeleting: true})
-        return actions.rules.remove(rule.get('id'))
-            .then(() => {
-                this.setState({isDeleting: false})
-            })
+        return actions.rules.remove(rule.get('id')).then(() => {
+            this.setState({isDeleting: false})
+        })
     }
 
     _handleChangeEvents = (value: Array<string>) => {
         return this.setState({
-            eventTypes: value
+            eventTypes: value,
         })
     }
 
@@ -169,20 +169,22 @@ export default class RuleItem extends React.Component<Props, State> {
                 name = `${name} - copy`
             }
 
-            return actions.rules.create({
-                description: this.state.description,
-                event_types: this.state.eventTypes.join(','),
-                name,
-                code: rule.get('code'),
-                code_ast: rule.get('code_ast'),
-                deactivated_datetime: getMomentUtcISOString()
-            }).then(({rule: newRule}) => {
-                this.setState({isSubmitting: false})
+            return actions.rules
+                .create({
+                    description: this.state.description,
+                    event_types: this.state.eventTypes.join(','),
+                    name,
+                    code: rule.get('code'),
+                    code_ast: rule.get('code_ast'),
+                    deactivated_datetime: getMomentUtcISOString(),
+                })
+                .then(({rule: newRule}) => {
+                    this.setState({isSubmitting: false})
 
-                this._handleReset() // reset this rule, as we only want the last changes in the new rule
-                this.props.toggleOpening(rule.get('id')) // close this rule...
-                this.props.toggleOpening(newRule.id)  // ...and open the new one
-            })
+                    this._handleReset() // reset this rule, as we only want the last changes in the new rule
+                    this.props.toggleOpening(rule.get('id')) // close this rule...
+                    this.props.toggleOpening(newRule.id) // ...and open the new one
+                })
         }
     }
 
@@ -196,21 +198,22 @@ export default class RuleItem extends React.Component<Props, State> {
                         <Button
                             color="success"
                             type="submit"
-                            disabled={this.state.isSubmitting || !this._canSubmit()}
+                            disabled={
+                                this.state.isSubmitting || !this._canSubmit()
+                            }
                             form={`rule-form-${rule.get('id')}`}
                         >
                             Save rule
                         </Button>
-                        <DropdownToggle
-                            caret
-                            type="button"
-                            color="success"
-                        />
+                        <DropdownToggle caret type="button" color="success" />
                         <DropdownMenu right>
                             <DropdownItem
                                 key="open"
                                 type="button"
-                                disabled={this.state.isSubmitting || !this._canSubmit()}
+                                disabled={
+                                    this.state.isSubmitting ||
+                                    !this._canSubmit()
+                                }
                                 onClick={this._saveAsNewRule}
                             >
                                 Save as new rule
@@ -242,7 +245,6 @@ export default class RuleItem extends React.Component<Props, State> {
         )
     }
 
-
     render() {
         const {rule, actions} = this.props
         const {showConfirmation} = this.state
@@ -265,8 +267,13 @@ export default class RuleItem extends React.Component<Props, State> {
                     <div className={css.row}>
                         <div className={classnames(css.col, css['left-col'])}>
                             <i
-                                className={classnames('material-icons', css.closeRuleIcon)}
-                                onClick={() => this.props.toggleOpening(rule.get('id'))}
+                                className={classnames(
+                                    'material-icons',
+                                    css.closeRuleIcon
+                                )}
+                                onClick={() =>
+                                    this.props.toggleOpening(rule.get('id'))
+                                }
                             >
                                 keyboard_arrow_down
                             </i>
@@ -277,8 +284,13 @@ export default class RuleItem extends React.Component<Props, State> {
                                     title={this.state.name}
                                     placeholder="Name"
                                     size="md"
-                                    className={classnames('font-weight-bold', css.name)}
-                                    onChange={(value) => this.setState({name: value})}
+                                    className={classnames(
+                                        'font-weight-bold',
+                                        css.name
+                                    )}
+                                    onChange={(value) =>
+                                        this.setState({name: value})
+                                    }
                                 />
                             </div>
                             <FormGroup className="mb-0">
@@ -288,7 +300,9 @@ export default class RuleItem extends React.Component<Props, State> {
                                     placeholder="Description"
                                     rows="1"
                                     value={this.state.description}
-                                    onChange={(value) => this.setState({description: value})}
+                                    onChange={(value) =>
+                                        this.setState({description: value})
+                                    }
                                 />
                             </FormGroup>
                         </div>
@@ -305,12 +319,11 @@ export default class RuleItem extends React.Component<Props, State> {
                                 target={toggleId}
                                 toggle={this._toggleConfirmation}
                             >
-                                <PopoverHeader>
-                                    Are you sure?
-                                </PopoverHeader>
+                                <PopoverHeader>Are you sure?</PopoverHeader>
                                 <PopoverBody>
                                     <p>
-                                        Are you sure you want to deactivate this rule?
+                                        Are you sure you want to deactivate this
+                                        rule?
                                     </p>
 
                                     <Button
@@ -344,20 +357,29 @@ export default class RuleItem extends React.Component<Props, State> {
                                             onChange={this._handleChangeEvents}
                                             className={css['when-events']}
                                         />
-                                        {
-                                            this.state.eventTypes.length === 0 && (
-                                                <Errors inline>You need to select at least one trigger</Errors>
-                                            )
-                                        }
+                                        {this.state.eventTypes.length === 0 && (
+                                            <Errors inline>
+                                                You need to select at least one
+                                                trigger
+                                            </Errors>
+                                        )}
                                     </div>
                                     <Program
                                         {...codeAST}
                                         rule={rule}
                                         actions={{
                                             modifyCodeAST: (...args) => {
-                                                return actions.rules.modifyCodeAST(rule.get('id'), ...args)
+                                                return actions.rules.modifyCodeAST(
+                                                    rule.get('id'),
+                                                    ...args
+                                                )
                                             },
-                                            getCondition: (path) => rule.getIn(['code_ast'].concat(toJS(path))) || fromJS({}),
+                                            getCondition: (path) =>
+                                                rule.getIn(
+                                                    ['code_ast'].concat(
+                                                        toJS(path)
+                                                    )
+                                                ) || fromJS({}),
                                         }}
                                         triggers={this.state.eventTypes}
                                     />
@@ -366,9 +388,7 @@ export default class RuleItem extends React.Component<Props, State> {
                         </div>
                     </div>
 
-                    <div className={css.row}>
-                        {this._renderButtons()}
-                    </div>
+                    <div className={css.row}>{this._renderButtons()}</div>
                 </td>
             </tr>
         )

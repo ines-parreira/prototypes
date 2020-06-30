@@ -39,4 +39,6 @@ export const TICKET_AUDIT_LOG_EVENTS_MAP = Object.freeze({
     TICKET_UNTRASHED,
 })
 
-export const TICKET_AUDIT_LOG_EVENTS = Object.freeze(Object.values(TICKET_AUDIT_LOG_EVENTS_MAP))
+export const TICKET_AUDIT_LOG_EVENTS = Object.freeze(
+    Object.values(TICKET_AUDIT_LOG_EVENTS_MAP)
+)

@@ -1,19 +1,20 @@
-import { shallow } from 'enzyme'
+import {shallow} from 'enzyme'
 import * as React from 'react'
 
 import createLink from '../link'
-import { convertFromHTML } from '../../../../../../../utils/editor'
+import {convertFromHTML} from '../../../../../../../utils/editor'
 import LinkPopover from '../../components/LinkPopover'
 
 describe('link decorator', () => {
     describe('strategy', () => {
         const link = createLink({
             isActive: () => true,
-            onLinkEdit: () => undefined
+            onLinkEdit: () => undefined,
         })
 
         it('should select links with entities', () => {
-            const html = 'a url <a href="http://google.com">link</a>, http://gorgias.io and <a href="http://google.com">link</a>'
+            const html =
+                'a url <a href="http://google.com">link</a>, http://gorgias.io and <a href="http://google.com">link</a>'
             const contentState = convertFromHTML(html)
             const block = contentState.getFirstBlock()
             const spy = jest.fn()
@@ -32,14 +33,14 @@ describe('link decorator', () => {
             const editSpy = jest.fn()
             const link = createLink({
                 isActive: () => true,
-                onLinkEdit: editSpy
+                onLinkEdit: editSpy,
             })
-            const component = shallow((
+            const component = shallow(
                 <link.component
                     contentState={contentState}
                     entityKey={contentState.getFirstBlock().getEntityAt(0)}
                 />
-            ))
+            )
             const linkPopover = component.find(LinkPopover).first()
             expect(linkPopover.props().onEdit).toBeDefined()
         })
@@ -48,14 +49,14 @@ describe('link decorator', () => {
             const editSpy = jest.fn()
             const link = createLink({
                 isActive: () => false,
-                onLinkEdit: editSpy
+                onLinkEdit: editSpy,
             })
-            const component = shallow((
+            const component = shallow(
                 <link.component
                     contentState={contentState}
                     entityKey={contentState.getFirstBlock().getEntityAt(0)}
                 />
-            ))
+            )
             const linkPopover = component.find(LinkPopover).first()
             expect(linkPopover.props().onEdit).not.toBeDefined()
         })
@@ -66,21 +67,21 @@ describe('link decorator', () => {
             const contentState = convertFromHTML(html)
             const link = createLink({
                 isActive: () => false,
-                onLinkEdit: editSpy
+                onLinkEdit: editSpy,
             })
-            const component = shallow((
+            const component = shallow(
                 <link.component
                     contentState={{
                         getEntity: () => ({
                             getData: () => ({
-                                url
-                            })
-                        })
+                                url,
+                            }),
+                        }),
                     }}
                     entityKey={contentState.getFirstBlock().getEntityAt(0)}
                     decoratedText={url}
                 />
-            ))
+            )
             const linkPopover = component.find(LinkPopover).first()
             expect(linkPopover.props().onDelete).not.toBeDefined()
         })

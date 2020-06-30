@@ -5,7 +5,6 @@ import {noop as _noop} from 'lodash/noop'
 
 import BusinessHoursForm from '../BusinessHoursForm'
 
-
 describe('BusinessHoursForm component', () => {
     it('should render', () => {
         const component = shallow(
@@ -14,7 +13,7 @@ describe('BusinessHoursForm component', () => {
                 businessHour={fromJS({
                     days: '1',
                     from_time: '09:00',
-                    to_time: '18:00'
+                    to_time: '18:00',
                 })}
             />
         )
@@ -31,7 +30,7 @@ describe('BusinessHoursForm component', () => {
                 businessHour={fromJS({
                     days: '1',
                     from_time: '09:00',
-                    to_time: '18:00'
+                    to_time: '18:00',
                 })}
             />
         ).instance()
@@ -39,10 +38,12 @@ describe('BusinessHoursForm component', () => {
         component._onChange({days: '2'})
 
         expect(spy).toHaveBeenCalledTimes(1)
-        expect(spy).toHaveBeenCalledWith(fromJS({
-            days: '2',
-            from_time: '09:00',
-            to_time: '18:00'
-        }))
+        expect(spy).toHaveBeenCalledWith(
+            fromJS({
+                days: '2',
+                from_time: '09:00',
+                to_time: '18:00',
+            })
+        )
     })
 })

@@ -10,10 +10,9 @@ import {getIntegrationsList} from '../../../../state/integrations/helpers'
 
 import IntegrationListRow from './IntegrationListRow'
 
-
 type Props = {
-    integrations: Map<*,*>,
-    currentPlan: Map<*,*>,
+    integrations: Map<*, *>,
+    currentPlan: Map<*, *>,
     allowedIntegrations: number,
     activeIntegrations: number,
 }
@@ -22,7 +21,7 @@ export default class IntegrationList extends React.Component<Props> {
     _limitWarning = () => {
         const {activeIntegrations, allowedIntegrations} = this.props
         const remainingIntegrations = allowedIntegrations - activeIntegrations
-        const plural = (activeIntegrations > 1)
+        const plural = activeIntegrations > 1
 
         if (remainingIntegrations > 3) {
             return null
@@ -33,34 +32,38 @@ export default class IntegrationList extends React.Component<Props> {
                 color={remainingIntegrations > 0 ? 'warning' : 'danger'}
                 className="d-flex align-items-center"
             >
-                <i className="material-icons md-3 mr-3">
-                    error
-                </i>
+                <i className="material-icons md-3 mr-3">error</i>
 
-                {
-                    remainingIntegrations > 0 ? (
-                        <span>
-                            You are using <strong>
-                                {activeIntegrations} {plural ? 'integrations' : 'integration'} of {this.props.allowedIntegrations} allowed
-                            </strong> allowed on your <strong>
-                                {this.props.currentPlan.get('name')} plan.
-                            </strong> Need more? <Link
-                                to="/app/settings/billing"
-                                className="alert-link"
-                            >
-                                Upgrade your account.
-                            </Link>
-                        </span>
-                    ) : (
-                        <span>
-                            <strong> Your account has reached the integration limit. </strong>
-                            To add more integrations, <Link
-                                to="/app/settings/billing"
-                                className="alert-link"
-                            >upgrade your plan</Link>.
-                        </span>
-                    )
-                }
+                {remainingIntegrations > 0 ? (
+                    <span>
+                        You are using{' '}
+                        <strong>
+                            {activeIntegrations}{' '}
+                            {plural ? 'integrations' : 'integration'} of{' '}
+                            {this.props.allowedIntegrations} allowed
+                        </strong>{' '}
+                        allowed on your{' '}
+                        <strong>
+                            {this.props.currentPlan.get('name')} plan.
+                        </strong>{' '}
+                        Need more?{' '}
+                        <Link to="/app/settings/billing" className="alert-link">
+                            Upgrade your account.
+                        </Link>
+                    </span>
+                ) : (
+                    <span>
+                        <strong>
+                            {' '}
+                            Your account has reached the integration limit.{' '}
+                        </strong>
+                        To add more integrations,{' '}
+                        <Link to="/app/settings/billing" className="alert-link">
+                            upgrade your plan
+                        </Link>
+                        .
+                    </span>
+                )}
             </Alert>
         )
     }
@@ -69,22 +72,24 @@ export default class IntegrationList extends React.Component<Props> {
         const {integrations} = this.props
 
         const list = getIntegrationsList(integrations.get('integrations'))
-        const displayList = list.filter((integration) => !integration.get('hide'))
+        const displayList = list.filter(
+            (integration) => !integration.get('hide')
+        )
 
         return (
             <div className="full-width">
-                <PageHeader title="Integrations"/>
+                <PageHeader title="Integrations" />
 
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <Container fluid className="page-container">
                     <Row className="mb-4">
                         <Col md="10">
                             <p>
-                                Gorgias is most useful when you connect it to other applications. Integrations let you
-                                communicate with customers through multiple channels, pull more information about them
-                                and perform actions in outside tools directly from Gorgias.
+                                Gorgias is most useful when you connect it to
+                                other applications. Integrations let you
+                                communicate with customers through multiple
+                                channels, pull more information about them and
+                                perform actions in outside tools directly from
+                                Gorgias.
                             </p>
 
                             {this._limitWarning()}
@@ -92,16 +97,14 @@ export default class IntegrationList extends React.Component<Props> {
                     </Row>
                     <Row>
                         <Col>
-                            {
-                                displayList.map((config, index) => {
-                                    return (
-                                        <IntegrationListRow
-                                            key={index}
-                                            integrationConfig={config}
-                                        />
-                                    )
-                                })
-                            }
+                            {displayList.map((config, index) => {
+                                return (
+                                    <IntegrationListRow
+                                        key={index}
+                                        integrationConfig={config}
+                                    />
+                                )
+                            })}
                         </Col>
                     </Row>
                 </Container>

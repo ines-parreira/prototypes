@@ -21,11 +21,7 @@ describe('<Result/>', () => {
 
         it('should render with default image', () => {
             const component = shallow(
-                <Result
-                    title="Title"
-                    image={null}
-                    subtitle="Subtitle"
-                />
+                <Result title="Title" image={null} subtitle="Subtitle" />
             )
 
             expect(component).toMatchSnapshot()

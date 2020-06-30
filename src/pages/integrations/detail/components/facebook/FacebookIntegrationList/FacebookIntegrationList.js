@@ -11,10 +11,9 @@ import FacebookPageRow from './FacebookPageRow'
 
 import css from './FacebookIntegrationList.less'
 
-
 @connect((state) => {
     return {
-        integrations: integrationsSelectors.getFacebookIntegrations(state)
+        integrations: integrationsSelectors.getFacebookIntegrations(state),
     }
 })
 export default class FacebookIntegrationList extends React.Component {
@@ -48,16 +47,18 @@ This integration creates tickets when customers post on your Facebook page or se
                 integrations={integrations}
                 longTypeDescription={longTypeDescription}
                 createIntegration={this._onLogin}
-                createIntegrationButtonContent={(
+                createIntegrationButtonContent={
                     <div>
                         <img
-                            src={getIconFromUrl('integrations/facebook-white.png')}
+                            src={getIconFromUrl(
+                                'integrations/facebook-white.png'
+                            )}
                             alt="facebook-logo"
                             className={css.facebookLogo}
                         />
                         Login with Facebook
                     </div>
-                )}
+                }
                 createIntegrationButtonClassName={css.createIntegrationButton}
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}

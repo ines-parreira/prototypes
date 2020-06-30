@@ -24,7 +24,7 @@ type Props = {
     value: Object,
     config?: Object,
     actions: Object,
-    rule: Object
+    rule: Object,
 }
 
 export default class Property extends React.Component<Props> {
@@ -53,9 +53,7 @@ export default class Property extends React.Component<Props> {
                     config={config}
                     parent={parent.push('value', 'value')}
                 />
-                {
-                    errors ? <Errors belowInput>{errors}</Errors> : null
-                }
+                {errors ? <Errors belowInput>{errors}</Errors> : null}
             </div>
         )
     }

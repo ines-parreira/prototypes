@@ -13,21 +13,14 @@ describe('AddActionOrIfStatement component', () => {
     }
 
     it('should render', () => {
-        const component = shallow(
-            <AddActionOrIfStatement
-                {...commonProps}
-            />
-        )
+        const component = shallow(<AddActionOrIfStatement {...commonProps} />)
 
         expect(component).toMatchSnapshot()
     })
 
     it('should render a button to delete the block when it is allowed to delete itself', () => {
         const component = shallow(
-            <AddActionOrIfStatement
-                {...commonProps}
-                removable
-            />
+            <AddActionOrIfStatement {...commonProps} removable />
         )
 
         expect(component).toMatchSnapshot()

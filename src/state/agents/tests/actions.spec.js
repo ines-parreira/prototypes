@@ -33,12 +33,13 @@ describe('agents actions', () => {
         const data = {
             name: 'Alex',
             email: 'alex@gorgias.io',
-            role: AGENT_ROLE
+            role: AGENT_ROLE,
         }
 
         mockServer.onPost('/api/users/').reply(200, {data})
 
-        return store.dispatch(actions.createAgent(data))
+        return store
+            .dispatch(actions.createAgent(data))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
@@ -46,19 +47,22 @@ describe('agents actions', () => {
         it('delete agent', () => {
             mockServer.onDelete('/api/users/1/').reply(200)
 
-            return store.dispatch(actions.deleteAgent(1))
+            return store
+                .dispatch(actions.deleteAgent(1))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
         it('display error', () => {
             mockServer.onDelete('/api/users/1/').reply(400, {
                 error: {
-                    msg: 'Cannot delete user because it is used in the following places:',
-                    data: {'Rules': ['[Generic] Auto Reply: Auto-responder']}
-                }
+                    msg:
+                        'Cannot delete user because it is used in the following places:',
+                    data: {Rules: ['[Generic] Auto Reply: Auto-responder']},
+                },
             })
 
-            return store.dispatch(actions.deleteAgent(1))
+            return store
+                .dispatch(actions.deleteAgent(1))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
     })
@@ -68,10 +72,9 @@ describe('agents actions', () => {
             const user = {data: {id: 2}}
             mockServer.onGet('/api/users/2/').reply(200, user)
 
-            return store.dispatch(actions.fetchAgent(2))
-                .then((resp) => {
-                    expect(resp).toEqualImmutable(fromJS(user))
-                })
+            return store.dispatch(actions.fetchAgent(2)).then((resp) => {
+                expect(resp).toEqualImmutable(fromJS(user))
+            })
         })
 
         it('should return undefined on failure', async () => {
@@ -81,18 +84,19 @@ describe('agents actions', () => {
         })
     })
 
-
     it('fetch agents', () => {
         mockServer.onGet('/api/users/').reply(200, {data: [{id: 1}]})
 
-        return store.dispatch(actions.fetchPagination())
+        return store
+            .dispatch(actions.fetchPagination())
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
     it('invite agent', () => {
         mockServer.onPost('/api/users/2/invite').reply(200)
 
-        return store.dispatch(actions.inviteAgent(2))
+        return store
+            .dispatch(actions.inviteAgent(2))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
@@ -101,12 +105,13 @@ describe('agents actions', () => {
             id: 2,
             name: 'Alex',
             email: 'alex@gorgias.io',
-            role: AGENT_ROLE
+            role: AGENT_ROLE,
         }
 
         mockServer.onPut('/api/users/2/').reply(200, {data})
 
-        return store.dispatch(actions.updateAgent(2, data))
+        return store
+            .dispatch(actions.updateAgent(2, data))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 })

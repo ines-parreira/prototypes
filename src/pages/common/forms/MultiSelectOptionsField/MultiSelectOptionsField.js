@@ -19,19 +19,22 @@ type Props = {
     selectedOptions: Option[],
     className?: string,
     caseInsensitive?: boolean,
-    onChange: Option[] => void,
-    onInputChange?: string => void,
+    onChange: (Option[]) => void,
+    onInputChange?: (string) => void,
     loading?: boolean,
-    dropdownMenu?: ComponentType<*>
+    dropdownMenu?: ComponentType<*>,
 }
 
 type State = {
     input: string,
     filteredOptions: Option[],
-    isFocused: boolean
+    isFocused: boolean,
 }
 
-export default class MultiSelectOptionsField extends React.Component<Props, State> {
+export default class MultiSelectOptionsField extends React.Component<
+    Props,
+    State
+> {
     static defaultProps: $Shape<Props> = {
         allowCustomOptions: false,
         matchInput: false,
@@ -42,48 +45,67 @@ export default class MultiSelectOptionsField extends React.Component<Props, Stat
         selectedOptions: [],
     }
 
-    constructor (props: Props) {
+    constructor(props: Props) {
         super(props)
         this.state = {
             input: '',
             isFocused: false,
-            filteredOptions: this._filterOptions(props.options, props.selectedOptions, '')
+            filteredOptions: this._filterOptions(
+                props.options,
+                props.selectedOptions,
+                ''
+            ),
         }
     }
 
-    componentDidUpdate (prevProps: Props) {
+    componentDidUpdate(prevProps: Props) {
         if (!_isEqual(this.props.selectedOptions, prevProps.selectedOptions)) {
-            const filteredOptions = this._filterOptions(this.props.options, this.props.selectedOptions, '')
+            const filteredOptions = this._filterOptions(
+                this.props.options,
+                this.props.selectedOptions,
+                ''
+            )
             this.setState({
                 input: '',
-                filteredOptions
+                filteredOptions,
             })
         }
 
         if (!_isEqual(this.props.options, prevProps.options)) {
             const {options, selectedOptions} = this.props
-            const filteredOptions = this._filterOptions(options, selectedOptions, this.state.input)
+            const filteredOptions = this._filterOptions(
+                options,
+                selectedOptions,
+                this.state.input
+            )
             this.setState({filteredOptions})
         }
     }
 
     _focus = () => {
         this.setState({
-            isFocused: true
+            isFocused: true,
         })
     }
 
     _blur = () => {
         this.setState({
-            isFocused: false
+            isFocused: false,
         })
     }
 
-    _filterOptions = (options: Option[], selectedOptions: Option[], input: string): Option[] => {
+    _filterOptions = (
+        options: Option[],
+        selectedOptions: Option[],
+        input: string
+    ): Option[] => {
         return options.filter((option: Option) => {
             const {value, label} = option
             const alreadySelected = this._hasOptionValue(selectedOptions, value)
-            const matchesInput = this.props.matchInput && input && !label.toLowerCase().includes(input.toLowerCase())
+            const matchesInput =
+                this.props.matchInput &&
+                input &&
+                !label.toLowerCase().includes(input.toLowerCase())
             return !alreadySelected && !matchesInput
         })
     }
@@ -96,9 +118,11 @@ export default class MultiSelectOptionsField extends React.Component<Props, Stat
     }
 
     _removeOption = (option: Option) => {
-        const newSelectedOptions = this.props.selectedOptions.filter((selectedOption: Option) => {
-            return selectedOption.value !== option.value
-        })
+        const newSelectedOptions = this.props.selectedOptions.filter(
+            (selectedOption: Option) => {
+                return selectedOption.value !== option.value
+            }
+        )
         this.props.onChange(newSelectedOptions)
     }
 
@@ -112,7 +136,11 @@ export default class MultiSelectOptionsField extends React.Component<Props, Stat
 
         this.setState({
             input,
-            filteredOptions: this._filterOptions(options, selectedOptions, input)
+            filteredOptions: this._filterOptions(
+                options,
+                selectedOptions,
+                input
+            ),
         })
 
         if (onInputChange) {
@@ -136,19 +164,23 @@ export default class MultiSelectOptionsField extends React.Component<Props, Stat
         const displayLabel = (
             <i>
                 {`Add ${singular} "`}
-                <b>{`${input}`}</b>
-                "
+                <b>{`${input}`}</b>"
             </i>
         )
         return {
             displayLabel,
             label: input,
-            value: input
+            value: input,
         }
     }
 
     _onDropdownSelect = (option: Option) => {
-        const {allowCustomOptions, options, caseInsensitive, selectedOptions} = this.props
+        const {
+            allowCustomOptions,
+            options,
+            caseInsensitive,
+            selectedOptions,
+        } = this.props
         let processedValue = option.value
 
         if (caseInsensitive && typeof processedValue === 'string') {
@@ -156,23 +188,38 @@ export default class MultiSelectOptionsField extends React.Component<Props, Stat
         }
 
         // Whitelist with the options
-        if (!allowCustomOptions && !options.map((option) => option.value).includes(processedValue)) {
+        if (
+            !allowCustomOptions &&
+            !options.map((option) => option.value).includes(processedValue)
+        ) {
             return
         }
 
         // Check for duplicates
-        if (this._hasOptionValue(selectedOptions, processedValue) ) {
+        if (this._hasOptionValue(selectedOptions, processedValue)) {
             return
         }
 
-        this.props.onChange(selectedOptions.concat([{
-            label: option.label,
-            value: processedValue
-        }]))
+        this.props.onChange(
+            selectedOptions.concat([
+                {
+                    label: option.label,
+                    value: processedValue,
+                },
+            ])
+        )
     }
 
     render() {
-        const {className, style, selectedOptions, tagColor, plural, allowCustomOptions, dropdownMenu} = this.props
+        const {
+            className,
+            style,
+            selectedOptions,
+            tagColor,
+            plural,
+            allowCustomOptions,
+            dropdownMenu,
+        } = this.props
         const {isFocused, filteredOptions, input} = this.state
 
         let displayOptions = filteredOptions
@@ -182,13 +229,12 @@ export default class MultiSelectOptionsField extends React.Component<Props, Stat
 
         return (
             <div
-                className={classNames('MultiSelectField', className, {[css.focused]: isFocused})}
+                className={classNames('MultiSelectField', className, {
+                    [css.focused]: isFocused,
+                })}
                 style={style}
             >
-                <div
-                    className={css.select}
-                    onClick={this._focus}
-                >
+                <div className={css.select} onClick={this._focus}>
                     {selectedOptions.map((selectedOption: Option) => (
                         <OptionTag
                             key={selectedOption.value}

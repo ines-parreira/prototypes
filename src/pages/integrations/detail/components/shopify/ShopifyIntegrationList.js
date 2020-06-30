@@ -43,26 +43,37 @@ export default class ShopifyIntegrationList extends React.Component {
         const {integrations, loading} = this.props
 
         const imagesUrl = [
-            `${window.GORGIAS_ASSETS_URL || ''}/static/private/img/presentationals/shopify-carousel_1@0,25x.jpg`,
-            `${window.GORGIAS_ASSETS_URL || ''}/static/private/img/presentationals/shopify-carousel_2@0,25x.jpg`,
-            `${window.GORGIAS_ASSETS_URL || ''}/static/private/img/presentationals/shopify-carousel_3@0,25x.jpg`
+            `${
+                window.GORGIAS_ASSETS_URL || ''
+            }/static/private/img/presentationals/shopify-carousel_1@0,25x.jpg`,
+            `${
+                window.GORGIAS_ASSETS_URL || ''
+            }/static/private/img/presentationals/shopify-carousel_2@0,25x.jpg`,
+            `${
+                window.GORGIAS_ASSETS_URL || ''
+            }/static/private/img/presentationals/shopify-carousel_3@0,25x.jpg`,
         ]
 
         const longTypeDescription = (
             <div>
-                <p>Shopify is an e-commerce platform used by 500,000+ stores.</p>
+                <p>
+                    Shopify is an e-commerce platform used by 500,000+ stores.
+                </p>
 
                 <p>How Gorgias works with Shopify:</p>
                 <ul>
                     <li>
-                        See Shopify profiles, orders & shipping status next to support tickets
+                        See Shopify profiles, orders & shipping status next to
+                        support tickets
                     </li>
                     <li>
-                        Edit orders, issue refunds, etc. directly from support conversations
+                        Edit orders, issue refunds, etc. directly from support
+                        conversations
                     </li>
                     <li>
-                        Search customers by order number, shipping address... and match anonymous chat tickets with
-                        existing Shopify customers
+                        Search customers by order number, shipping address...
+                        and match anonymous chat tickets with existing Shopify
+                        customers
                     </li>
                 </ul>
 
@@ -80,8 +91,12 @@ export default class ShopifyIntegrationList extends React.Component {
                     isOpen={this.state.isLightboxOpen}
                     onClose={() => this._toggleLightbox()}
                     currentImage={this.state.currentImage}
-                    onClickPrev={() => this._gotoImage(this.state.currentImage - 1)}
-                    onClickNext={() => this._gotoImage(this.state.currentImage + 1)}
+                    onClickPrev={() =>
+                        this._gotoImage(this.state.currentImage - 1)
+                    }
+                    onClickNext={() =>
+                        this._gotoImage(this.state.currentImage + 1)
+                    }
                     onClickThumbnail={this._gotoImage}
                     showThumbnails
                     backdropClosesModal
@@ -94,11 +109,15 @@ export default class ShopifyIntegrationList extends React.Component {
         const integrationToItemDisplay = (int) => {
             const toggleIntegration = (value) => {
                 const integrationId = int.get('id')
-                return value ? this.props.activate(integrationId) : this.props.deactivate(integrationId)
+                return value
+                    ? this.props.activate(integrationId)
+                    : this.props.deactivate(integrationId)
             }
 
             const isDisabled = int.get('deactivated_datetime')
-            const editLink = `/app/settings/integrations/shopify/${int.get('id')}`
+            const editLink = `/app/settings/integrations/shopify/${int.get(
+                'id'
+            )}`
 
             return (
                 <tr key={int.get('id')}>
@@ -126,8 +145,14 @@ export default class ShopifyIntegrationList extends React.Component {
             <IntegrationList
                 longTypeDescription={longTypeDescription}
                 integrationType="shopify"
-                integrations={integrations.filter((v) => v.get('type') === 'shopify')}
-                createIntegration={() => browserHistory.push('/app/settings/integrations/shopify/new')}
+                integrations={integrations.filter(
+                    (v) => v.get('type') === 'shopify'
+                )}
+                createIntegration={() =>
+                    browserHistory.push(
+                        '/app/settings/integrations/shopify/new'
+                    )
+                }
                 createIntegrationButtonContent="Add Shopify"
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}

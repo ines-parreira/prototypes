@@ -3,7 +3,15 @@ import React from 'react'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
 import {fromJS, Map, List} from 'immutable'
-import {Breadcrumb, BreadcrumbItem, Button, Col, Container, Form, Row} from 'reactstrap'
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    Button,
+    Col,
+    Container,
+    Form,
+    Row,
+} from 'reactstrap'
 import classnames from 'classnames'
 
 import PageHeader from '../../../../../common/components/PageHeader'
@@ -13,7 +21,7 @@ import {updateOrCreateIntegration} from '../../../../../../state/integrations/ac
 import {
     QUICK_REPLIES_DEFAULTS,
     QUICK_REPLIES_MAX_ITEM_LENGTH,
-    QUICK_REPLIES_MAX_ITEMS
+    QUICK_REPLIES_MAX_ITEMS,
 } from '../../../../../../config/integrations/smooch_inside'
 
 import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
@@ -21,28 +29,32 @@ import ChatIntegrationPreview from '../ChatIntegrationPreview'
 import QuickRepliesPreview from '../ChatIntegrationPreview/QuickReplies'
 
 type Props = {
-    integration: Map<*,*>,
-    updateOrCreateIntegration: (Map<*,*>) => Promise<*>
+    integration: Map<*, *>,
+    updateOrCreateIntegration: (Map<*, *>) => Promise<*>,
 }
 
 type State = {
     quickReplies: List<string>,
     quickRepliesEnabled: boolean,
     isUpdating: boolean,
-    isInitialized: boolean
+    isInitialized: boolean,
 }
 
-export class ChatIntegrationQuickRepliesComponent extends React.Component<Props, State> {
+export class ChatIntegrationQuickRepliesComponent extends React.Component<
+    Props,
+    State
+> {
     state = {
         quickReplies: fromJS([]),
         quickRepliesEnabled: false,
         isUpdating: false,
-        isInitialized: false
+        isInitialized: false,
     }
 
     _initState = () => {
         const {integration} = this.props
-        const quickRepliesState = integration.getIn(['meta', 'quick_replies']) || fromJS({})
+        const quickRepliesState =
+            integration.getIn(['meta', 'quick_replies']) || fromJS({})
         let quickReplies = quickRepliesState.get('replies') || fromJS([])
 
         // If quickRepliesState is empty, it means this integration never had any quick replies set for it, so we
@@ -54,7 +66,7 @@ export class ChatIntegrationQuickRepliesComponent extends React.Component<Props,
         this.setState({
             quickRepliesEnabled: quickRepliesState.get('enabled') || false,
             quickReplies,
-            isInitialized: true
+            isInitialized: true,
         })
     }
 
@@ -77,14 +89,19 @@ export class ChatIntegrationQuickRepliesComponent extends React.Component<Props,
         this.setState({isUpdating: true})
 
         const existingMeta = integration.get('meta') || fromJS({})
-        const trimmedQuickReplies = this.state.quickReplies.map((quickReplies) => quickReplies.trim())
+        const trimmedQuickReplies = this.state.quickReplies.map(
+            (quickReplies) => quickReplies.trim()
+        )
 
         let payload = fromJS({
             id: integration.get('id'),
-            meta: existingMeta.set('quick_replies', fromJS({
-                enabled: this.state.quickRepliesEnabled,
-                replies: trimmedQuickReplies.toJS()
-            }))
+            meta: existingMeta.set(
+                'quick_replies',
+                fromJS({
+                    enabled: this.state.quickRepliesEnabled,
+                    replies: trimmedQuickReplies.toJS(),
+                })
+            ),
         })
 
         this.setState({quickReplies: trimmedQuickReplies})
@@ -100,40 +117,44 @@ export class ChatIntegrationQuickRepliesComponent extends React.Component<Props,
 
         return (
             <div className="full-width">
-                <PageHeader title={(
-                    <Breadcrumb>
-                        <BreadcrumbItem>
-                            <Link to="/app/settings/integrations">Integrations</Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            <Link to={`/app/settings/integrations/${integration.get('type')}`}>
-                                Chat
-                            </Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            {integration.get('name')}
-                        </BreadcrumbItem>
-                        <BreadcrumbItem active>
-                            Quick replies
-                        </BreadcrumbItem>
-                    </Breadcrumb>
-                )}/>
+                <PageHeader
+                    title={
+                        <Breadcrumb>
+                            <BreadcrumbItem>
+                                <Link to="/app/settings/integrations">
+                                    Integrations
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                <Link
+                                    to={`/app/settings/integrations/${integration.get(
+                                        'type'
+                                    )}`}
+                                >
+                                    Chat
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                {integration.get('name')}
+                            </BreadcrumbItem>
+                            <BreadcrumbItem active>
+                                Quick replies
+                            </BreadcrumbItem>
+                        </Breadcrumb>
+                    }
+                />
 
-                <ChatIntegrationNavigation integration={integration}/>
+                <ChatIntegrationNavigation integration={integration} />
 
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <Container fluid className="page-container">
                     <Row>
                         <Col>
                             <Form onSubmit={this._submit}>
                                 <div className="mb-4">
-                                    <h4>
-                                        Quick replies
-                                    </h4>
+                                    <h4>Quick replies</h4>
                                     <p>
-                                        When a customer opens the chat, select the quick replies the customer can click
+                                        When a customer opens the chat, select
+                                        the quick replies the customer can click
                                         on.
                                     </p>
 
@@ -143,7 +164,11 @@ export class ChatIntegrationQuickRepliesComponent extends React.Component<Props,
                                             type="checkbox"
                                             label="Enable quick replies"
                                             value={quickRepliesEnabled}
-                                            onChange={(quickRepliesEnabled) => this.setState({quickRepliesEnabled})}
+                                            onChange={(quickRepliesEnabled) =>
+                                                this.setState({
+                                                    quickRepliesEnabled,
+                                                })
+                                            }
                                         />
                                     </div>
                                 </div>
@@ -151,7 +176,9 @@ export class ChatIntegrationQuickRepliesComponent extends React.Component<Props,
                                 <ListField
                                     className="mb-5"
                                     items={this.state.quickReplies}
-                                    onChange={(quickReplies) => this.setState({quickReplies})}
+                                    onChange={(quickReplies) =>
+                                        this.setState({quickReplies})
+                                    }
                                     maxLength={QUICK_REPLIES_MAX_ITEM_LENGTH}
                                     maxItems={QUICK_REPLIES_MAX_ITEMS}
                                 />
@@ -161,7 +188,7 @@ export class ChatIntegrationQuickRepliesComponent extends React.Component<Props,
                                         type="submit"
                                         color="success"
                                         className={classnames({
-                                            'btn-loading': isUpdating
+                                            'btn-loading': isUpdating,
                                         })}
                                         disabled={isUpdating}
                                     >
@@ -174,15 +201,27 @@ export class ChatIntegrationQuickRepliesComponent extends React.Component<Props,
                         <Col>
                             <ChatIntegrationPreview
                                 name={integration.get('name')}
-                                introductionText={integration.getIn(['decoration', 'introduction_text'])}
-                                mainColor={integration.getIn(['decoration', 'main_color'])}
+                                introductionText={integration.getIn([
+                                    'decoration',
+                                    'introduction_text',
+                                ])}
+                                mainColor={integration.getIn([
+                                    'decoration',
+                                    'main_color',
+                                ])}
                                 quickReplies={this.state.quickReplies.toJS()}
-                                language={integration.getIn(['meta', 'language'])}
+                                language={integration.getIn([
+                                    'meta',
+                                    'language',
+                                ])}
                                 isOnline
                             >
                                 <QuickRepliesPreview
                                     quickReplies={this.state.quickReplies.toJS()}
-                                    mainColor={integration.getIn(['decoration', 'main_color'])}
+                                    mainColor={integration.getIn([
+                                        'decoration',
+                                        'main_color',
+                                    ])}
                                 />
                             </ChatIntegrationPreview>
                         </Col>
@@ -193,8 +232,6 @@ export class ChatIntegrationQuickRepliesComponent extends React.Component<Props,
     }
 }
 
-
 export default connect(null, {
-    updateOrCreateIntegration
+    updateOrCreateIntegration,
 })(ChatIntegrationQuickRepliesComponent)
-

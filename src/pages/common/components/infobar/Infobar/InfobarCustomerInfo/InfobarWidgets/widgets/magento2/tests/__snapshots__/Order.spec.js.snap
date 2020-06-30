@@ -234,7 +234,8 @@ exports[`Order <AfterContent/> render() should display both shipments and credit
                       >
                         <span>
                           4
-                           x 
+                           x
+                           
                           Sneakers
                         </span>
                       </div>
@@ -253,7 +254,8 @@ exports[`Order <AfterContent/> render() should display both shipments and credit
                       >
                         <span>
                           1
-                           x 
+                           x
+                           
                           Pants
                         </span>
                       </div>
@@ -453,8 +455,7 @@ exports[`Order <AfterContent/> render() should display both shipments and credit
                     >
                       redeem
                     </i>
-                     
-                    Credit memo: 
+                     Credit memo: 
                      
                   </span>
                 </a>
@@ -500,7 +501,8 @@ exports[`Order <AfterContent/> render() should display both shipments and credit
                       >
                         <span>
                           4
-                           x 
+                           x
+                           
                           Sneakers
                         </span>
                       </div>
@@ -519,7 +521,8 @@ exports[`Order <AfterContent/> render() should display both shipments and credit
                       >
                         <span>
                           1
-                           x 
+                           x
+                           
                           T-shirt
                         </span>
                       </div>
@@ -551,8 +554,7 @@ exports[`Order <AfterContent/> render() should display both shipments and credit
                     >
                       redeem
                     </i>
-                     
-                    Credit memo: 
+                     Credit memo: 
                      
                   </span>
                 </a>
@@ -701,8 +703,7 @@ exports[`Order <AfterContent/> render() should display credit memos with links b
                     >
                       redeem
                     </i>
-                     
-                    Credit memo: 
+                     Credit memo: 
                      
                   </span>
                 </a>
@@ -748,7 +749,8 @@ exports[`Order <AfterContent/> render() should display credit memos with links b
                       >
                         <span>
                           4
-                           x 
+                           x
+                           
                           Sneakers
                         </span>
                       </div>
@@ -767,7 +769,8 @@ exports[`Order <AfterContent/> render() should display credit memos with links b
                       >
                         <span>
                           1
-                           x 
+                           x
+                           
                           T-shirt
                         </span>
                       </div>
@@ -799,8 +802,7 @@ exports[`Order <AfterContent/> render() should display credit memos with links b
                     >
                       redeem
                     </i>
-                     
-                    Credit memo: 
+                     Credit memo: 
                      
                   </span>
                 </a>
@@ -949,8 +951,7 @@ exports[`Order <AfterContent/> render() should display credit memos without link
                     >
                       redeem
                     </i>
-                     
-                    Credit memo: 
+                     Credit memo: 
                      
                   </span>
                 </a>
@@ -996,7 +997,8 @@ exports[`Order <AfterContent/> render() should display credit memos without link
                       >
                         <span>
                           4
-                           x 
+                           x
+                           
                           Sneakers
                         </span>
                       </div>
@@ -1015,7 +1017,8 @@ exports[`Order <AfterContent/> render() should display credit memos without link
                       >
                         <span>
                           1
-                           x 
+                           x
+                           
                           T-shirt
                         </span>
                       </div>
@@ -1047,8 +1050,7 @@ exports[`Order <AfterContent/> render() should display credit memos without link
                     >
                       redeem
                     </i>
-                     
-                    Credit memo: 
+                     Credit memo: 
                      
                   </span>
                 </a>
@@ -1327,7 +1329,8 @@ exports[`Order <AfterContent/> render() should display shipments with links beca
                       >
                         <span>
                           4
-                           x 
+                           x
+                           
                           Sneakers
                         </span>
                       </div>
@@ -1346,7 +1349,8 @@ exports[`Order <AfterContent/> render() should display shipments with links beca
                       >
                         <span>
                           1
-                           x 
+                           x
+                           
                           Pants
                         </span>
                       </div>
@@ -1703,7 +1707,8 @@ exports[`Order <AfterContent/> render() should display shipments without links b
                       >
                         <span>
                           4
-                           x 
+                           x
+                           
                           Sneakers
                         </span>
                       </div>
@@ -1722,7 +1727,8 @@ exports[`Order <AfterContent/> render() should display shipments without links b
                       >
                         <span>
                           1
-                           x 
+                           x
+                           
                           Pants
                         </span>
                       </div>

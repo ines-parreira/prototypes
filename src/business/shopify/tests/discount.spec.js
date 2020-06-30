@@ -6,10 +6,14 @@ import {
     shopifyAppliedDiscountFixture,
     shopifyCustomLineItemFixture,
     shopifyDraftOrderPayloadFixture,
-    shopifyLineItemFixture
+    shopifyLineItemFixture,
 } from '../../../fixtures/shopify'
 import {addCustomLineItem} from '../draftOrder'
-import {getDiscountAmount, getTotalDiscountAmount, refreshAppliedDiscounts} from '../discount'
+import {
+    getDiscountAmount,
+    getTotalDiscountAmount,
+    refreshAppliedDiscounts,
+} from '../discount'
 import {formatPrice} from '../number'
 
 describe('getDiscountAmount()', () => {
@@ -18,7 +22,11 @@ describe('getDiscountAmount()', () => {
         const discountType = 'fixed_amount'
         const discountAmount = '10.0'
         const currencyCode = 'USD'
-        const result = formatPrice(getDiscountAmount(amount, discountType, discountAmount), currencyCode, true)
+        const result = formatPrice(
+            getDiscountAmount(amount, discountType, discountAmount),
+            currencyCode,
+            true
+        )
         expect(result).toMatchSnapshot()
     })
 
@@ -27,7 +35,11 @@ describe('getDiscountAmount()', () => {
         const discountType = 'percentage'
         const discountAmount = '10.0'
         const currencyCode = 'USD'
-        const result = formatPrice(getDiscountAmount(amount, discountType, discountAmount), currencyCode, true)
+        const result = formatPrice(
+            getDiscountAmount(amount, discountType, discountAmount),
+            currencyCode,
+            true
+        )
         expect(result).toMatchSnapshot()
     })
 })
@@ -40,7 +52,10 @@ describe('getTotalDiscountAmount()', () => {
     })
 
     it('should return the total discount amount of given payload when there is no applied discount', () => {
-        const payload = fromJS(shopifyDraftOrderPayloadFixture()).set('applied_discount', null)
+        const payload = fromJS(shopifyDraftOrderPayloadFixture()).set(
+            'applied_discount',
+            null
+        )
         const total = getTotalDiscountAmount(payload)
         expect(total).toMatchSnapshot()
     })
@@ -53,7 +68,10 @@ describe('refreshAppliedDiscounts()', () => {
 
         // Add a line item, applied discounts are wrong because we did not refresh them yet
         const customLineItem = fromJS(shopifyCustomLineItemFixture())
-        const payloadWithCustomLineItem = addCustomLineItem(payload, customLineItem)
+        const payloadWithCustomLineItem = addCustomLineItem(
+            payload,
+            customLineItem
+        )
         expect(getTotalDiscountAmount(payloadWithCustomLineItem)).toBe(5)
 
         // Refresh applied discounts
@@ -63,12 +81,14 @@ describe('refreshAppliedDiscounts()', () => {
 
     it('should work without rounding errors', () => {
         // Payload has a 100% discount applied
-        const payload = fromJS(shopifyDraftOrderPayloadFixture())
-            .set('line_items', fromJS([
+        const payload = fromJS(shopifyDraftOrderPayloadFixture()).set(
+            'line_items',
+            fromJS([
                 shopifyLineItemFixture({price: '98.99'}),
                 shopifyLineItemFixture({price: '24.95'}),
                 shopifyLineItemFixture({price: '8.95'}),
-            ]))
+            ])
+        )
 
         const newPayload = refreshAppliedDiscounts(payload)
         expect(newPayload).toMatchSnapshot()
@@ -90,17 +110,33 @@ describe('refreshAppliedDiscounts()', () => {
         [13, '129.93'],
         [14, '139.93'],
         [15, '149.92'],
-    ])('should return expected payload with applied discounts', (quantity, expectedAmount) => {
-        const appliedDiscount = fromJS(shopifyAppliedDiscountFixture({value: '50.00'}))
-        const lineItem = fromJS(shopifyLineItemFixture({price: '19.99', quantity, appliedDiscount}))
-        const payload = fromJS(shopifyDraftOrderPayloadFixture())
-            .set('applied_discount', null)
-            .set('line_items', fromJS([lineItem]))
+    ])(
+        'should return expected payload with applied discounts',
+        (quantity, expectedAmount) => {
+            const appliedDiscount = fromJS(
+                shopifyAppliedDiscountFixture({value: '50.00'})
+            )
+            const lineItem = fromJS(
+                shopifyLineItemFixture({
+                    price: '19.99',
+                    quantity,
+                    appliedDiscount,
+                })
+            )
+            const payload = fromJS(shopifyDraftOrderPayloadFixture())
+                .set('applied_discount', null)
+                .set('line_items', fromJS([lineItem]))
 
-        const newPayload = refreshAppliedDiscounts(payload)
-        const discountAmount = newPayload.getIn(['line_items', 0, 'applied_discount', 'amount'])
-        expect(discountAmount).toEqual(expectedAmount)
-    })
+            const newPayload = refreshAppliedDiscounts(payload)
+            const discountAmount = newPayload.getIn([
+                'line_items',
+                0,
+                'applied_discount',
+                'amount',
+            ])
+            expect(discountAmount).toEqual(expectedAmount)
+        }
+    )
 
     it.each([
         [1, '4747'],
@@ -121,15 +157,28 @@ describe('refreshAppliedDiscounts()', () => {
     ])(
         'should return expected payload with applied discounts and non-fractional currency',
         (quantity, expectedAmount) => {
-            const appliedDiscount = fromJS(shopifyAppliedDiscountFixture({value: '5.00'}))
-            const lineItem = fromJS(shopifyLineItemFixture({price: '94952', quantity, appliedDiscount}))
+            const appliedDiscount = fromJS(
+                shopifyAppliedDiscountFixture({value: '5.00'})
+            )
+            const lineItem = fromJS(
+                shopifyLineItemFixture({
+                    price: '94952',
+                    quantity,
+                    appliedDiscount,
+                })
+            )
             const payload = fromJS(shopifyDraftOrderPayloadFixture())
                 .set('applied_discount', null)
                 .set('line_items', fromJS([lineItem]))
                 .set('currency', 'JPY')
 
             const newPayload = refreshAppliedDiscounts(payload)
-            const discountAmount = newPayload.getIn(['line_items', 0, 'applied_discount', 'amount'])
+            const discountAmount = newPayload.getIn([
+                'line_items',
+                0,
+                'applied_discount',
+                'amount',
+            ])
             expect(discountAmount).toEqual(expectedAmount)
         }
     )

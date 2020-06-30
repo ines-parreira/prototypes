@@ -12,7 +12,7 @@
  * Moreover, there should be no imports of any other directory here.
  * This way, we'll be able to extract this folder to a lib in order
  * to share code with the mobile app for example
- * 
+ *
  * Every file should be organised as below:
  */
 

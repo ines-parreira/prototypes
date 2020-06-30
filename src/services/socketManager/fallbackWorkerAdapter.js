@@ -13,7 +13,6 @@ import {BROADCAST_CHANNEL_EVENTS} from './constants'
 export const MAX_INCREMENTAL_RECONNECT_BACKOFF = 30
 export const DISCONNECTED_NOTIFICATION_DELAY = 10
 
-
 export class FallbackWorker {
     socket = null
 
@@ -41,13 +40,18 @@ export class FallbackWorker {
     }
 
     _onSocketJson = (wsMessage) => {
-        fallbackWorkerAdapter.postMessage({type: BROADCAST_CHANNEL_EVENTS.SERVER_MESSAGE, json: wsMessage})
+        fallbackWorkerAdapter.postMessage({
+            type: BROADCAST_CHANNEL_EVENTS.SERVER_MESSAGE,
+            json: wsMessage,
+        })
     }
 
     _onSocketConnect = () => {
         // eslint-disable-next-line no-console
         console.log('WS connected!')
-        fallbackBroadcastChannelAdapter.postMessage({type: BROADCAST_CHANNEL_EVENTS.WS_CONNECTED})
+        fallbackBroadcastChannelAdapter.postMessage({
+            type: BROADCAST_CHANNEL_EVENTS.WS_CONNECTED,
+        })
 
         if (this.incrementalReconnectTask) {
             this.incrementalReconnectBackoff = 1
@@ -64,7 +68,10 @@ export class FallbackWorker {
         console.log('WS disconnected!')
 
         this.sendDisconnectedNotificationTask = setTimeout(
-            () => fallbackBroadcastChannelAdapter.postMessage({type: BROADCAST_CHANNEL_EVENTS.WS_DISCONNECTED}),
+            () =>
+                fallbackBroadcastChannelAdapter.postMessage({
+                    type: BROADCAST_CHANNEL_EVENTS.WS_DISCONNECTED,
+                }),
             DISCONNECTED_NOTIFICATION_DELAY * 1000
         )
 
@@ -81,7 +88,9 @@ export class FallbackWorker {
             this.socket.on('connect', this._onSocketConnect)
             this.socket.on('disconnect', this._onSocketDisconnect)
         } else {
-            fallbackWorkerAdapter.postMessage({type: BROADCAST_CHANNEL_EVENTS.WS_CONNECTED})
+            fallbackWorkerAdapter.postMessage({
+                type: BROADCAST_CHANNEL_EVENTS.WS_CONNECTED,
+            })
         }
     }
 
@@ -97,10 +106,11 @@ const fallbackWorker = new FallbackWorker()
 export const fallbackWorkerAdapter = {
     port: {
         start: () => fallbackWorker.onConnect(),
-        postMessage: ((message) => fallbackWorker.onMessage(message)),
-        onmessage: () => {}
+        postMessage: (message) => fallbackWorker.onMessage(message),
+        onmessage: () => {},
     },
-    postMessage: (message) => fallbackWorkerAdapter.port.onmessage({data: message}),
+    postMessage: (message) =>
+        fallbackWorkerAdapter.port.onmessage({data: message}),
 }
 
 export const fallbackBroadcastChannelAdapter = {
@@ -108,5 +118,6 @@ export const fallbackBroadcastChannelAdapter = {
         fallbackBroadcastChannelAdapter.onmessage = handler
     },
     onmessage: () => {},
-    postMessage: (message) => fallbackBroadcastChannelAdapter.onmessage({data: message}),
+    postMessage: (message) =>
+        fallbackBroadcastChannelAdapter.onmessage({data: message}),
 }

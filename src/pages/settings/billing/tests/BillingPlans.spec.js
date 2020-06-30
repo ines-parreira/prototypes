@@ -31,8 +31,8 @@ describe('BillingPlans component', () => {
                         name: 'my plan',
                         free_tickets: 100,
                         currencySign: '$',
-                        integrations: 10
-                    }
+                        integrations: 10,
+                    },
                 })}
                 subscription={fromJS({plan: 'plan1'})}
                 currentPlan={fromJS({})}
@@ -40,7 +40,6 @@ describe('BillingPlans component', () => {
         )
         expect(component).toMatchSnapshot()
     })
-
 
     it('should display multiple plans', () => {
         const component = shallow(
@@ -54,22 +53,22 @@ describe('BillingPlans component', () => {
                         name: 'my plan',
                         free_tickets: 100,
                         currencySign: '$',
-                        integrations: 10
+                        integrations: 10,
                     },
                     plan2: {
                         public: true,
                         name: 'my second plan',
                         free_tickets: 1000,
                         currencySign: '$',
-                        integrations: 100
+                        integrations: 100,
                     },
                     hidden: {
                         public: false,
                         name: 'my hidden plan',
                         free_tickets: 1000,
                         currencySign: '$',
-                        integrations: 100
-                    }
+                        integrations: 100,
+                    },
                 })}
                 subscription={fromJS({plan: 'plan1'})}
                 currentPlan={fromJS({})}
@@ -90,15 +89,15 @@ describe('BillingPlans component', () => {
                         name: 'custom plan',
                         free_tickets: 100,
                         currencySign: '$',
-                        integrations: 10
+                        integrations: 10,
                     },
                     plan1: {
                         public: true,
                         name: 'plan 1',
                         free_tickets: 100,
                         currencySign: '$',
-                        integrations: 10
-                    }
+                        integrations: 10,
+                    },
                 })}
                 subscription={fromJS({plan: 'custom'})}
                 currentPlan={fromJS({custom: true})}

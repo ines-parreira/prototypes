@@ -15,14 +15,14 @@ export const agents = [
         roles: [
             {
                 name: AGENT_ROLE,
-                id: 2
+                id: 2,
             },
             {
                 name: ADMIN_ROLE,
-                id: 3
-            }
+                id: 3,
+            },
         ],
-        updated_datetime: '2017-07-31T21:43:05.502541+00:00'
+        updated_datetime: '2017-07-31T21:43:05.502541+00:00',
     },
     {
         lastname: 'Smith',
@@ -37,27 +37,27 @@ export const agents = [
         roles: [
             {
                 name: AGENT_ROLE,
-                id: 2
-            }
+                id: 2,
+            },
         ],
-        updated_datetime: '2017-07-31T21:43:08.033390+00:00'
-    }
+        updated_datetime: '2017-07-31T21:43:08.033390+00:00',
+    },
 ]
 export const locations = {
     '1': {
         Ticket: [1, 2],
-        Customer: [3]
+        Customer: [3],
     },
     '2': {
         Ticket: [1],
-        Customer: [2]
-    }
+        Customer: [2],
+    },
 }
 export const typingStatuses = {
     '1': {
-        Ticket: [1, 2]
+        Ticket: [1, 2],
     },
     '2': {
-        Ticket: [1]
-    }
+        Ticket: [1],
+    },
 }

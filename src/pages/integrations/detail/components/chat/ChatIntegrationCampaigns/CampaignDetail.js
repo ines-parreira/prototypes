@@ -5,8 +5,17 @@ import {Link, browserHistory} from 'react-router'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
 import {
-    Breadcrumb, BreadcrumbItem, Button, Col, Container, DropdownItem, DropdownMenu, DropdownToggle, Form, Row,
-    UncontrolledDropdown
+    Breadcrumb,
+    BreadcrumbItem,
+    Button,
+    Col,
+    Container,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    Form,
+    Row,
+    UncontrolledDropdown,
 } from 'reactstrap'
 
 import InputField from '../../../../../common/forms/InputField'
@@ -29,29 +38,30 @@ import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
 import {
     CAMPAIGNS_TRIGGER_KEYS,
     SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
-    SMOOCH_INSIDE_WIDGET_TEXTS
+    SMOOCH_INSIDE_WIDGET_TEXTS,
 } from '../../../../../../config/integrations/smooch_inside'
 
 import CampaignPreview from './CampaignPreview'
 import css from './CampaignDetail.less'
 
-
 /**
  * Generate and return a default empty trigger associated with a trigger configuration.
  * @param idx: the index of the trigger configuration, in CAMPAIGN_TRIGGER_KEYS
  */
-const DEFAULT_TRIGGER = (idx) => fromJS({
-    'key': CAMPAIGNS_TRIGGER_KEYS.getIn([idx, 'name']),
-    'operator': CAMPAIGNS_TRIGGER_KEYS.getIn([idx, 'operators']).keySeq().get(0),
-    'value': CAMPAIGNS_TRIGGER_KEYS.getIn([idx, 'value', 'default'])
-})
-
+const DEFAULT_TRIGGER = (idx) =>
+    fromJS({
+        key: CAMPAIGNS_TRIGGER_KEYS.getIn([idx, 'name']),
+        operator: CAMPAIGNS_TRIGGER_KEYS.getIn([idx, 'operators'])
+            .keySeq()
+            .get(0),
+        value: CAMPAIGNS_TRIGGER_KEYS.getIn([idx, 'value', 'default']),
+    })
 
 class ValueInput extends React.Component {
     static propTypes = {
         keyConfig: PropTypes.object.isRequired,
         trigger: PropTypes.object.isRequired,
-        onChange: PropTypes.func.isRequired
+        onChange: PropTypes.func.isRequired,
     }
 
     render() {
@@ -89,11 +99,10 @@ class ValueInput extends React.Component {
                 )
             }
             default:
-                return <div/>
+                return <div />
         }
     }
 }
-
 
 class TriggerRow extends React.Component {
     static propTypes = {
@@ -103,13 +112,17 @@ class TriggerRow extends React.Component {
 
         onOperatorChange: PropTypes.func.isRequired,
         onValueChange: PropTypes.func.isRequired,
-        onDelete: PropTypes.func.isRequired
+        onDelete: PropTypes.func.isRequired,
     }
 
     render() {
         const {
-            trigger, nbOfTriggers, idx,
-            onOperatorChange, onValueChange, onDelete
+            trigger,
+            nbOfTriggers,
+            idx,
+            onOperatorChange,
+            onValueChange,
+            onDelete,
         } = this.props
 
         const keyConfig = CAMPAIGNS_TRIGGER_KEYS.find(
@@ -121,50 +134,42 @@ class TriggerRow extends React.Component {
         const isLastCondition = idx + 1 >= nbOfTriggers
 
         return (
-            <div
-                key={idx}
-                className={css.triggerWrapper}
-            >
-                <Button
-                    className="btn-frozen"
-                    color="info"
-                    tag="div"
-                >
+            <div key={idx} className={css.triggerWrapper}>
+                <Button className="btn-frozen" color="info" tag="div">
                     {keyConfig.get('label')}
                 </Button>
                 <SelectField
                     onChange={onOperatorChange}
                     value={
-                        keyConfig.get('operators').keySeq().includes(currentOperator)
+                        keyConfig
+                            .get('operators')
+                            .keySeq()
+                            .includes(currentOperator)
                             ? currentOperator
                             : defaultOperator
                     }
-                    options={keyConfig.get('operators').map(
-                        (operatorData, operator) => {
+                    options={keyConfig
+                        .get('operators')
+                        .map((operatorData, operator) => {
                             return {
                                 value: operator,
                                 text: operator,
-                                label: operatorData.get('label')
+                                label: operatorData.get('label'),
                             }
-                        }
-                    ).toList().toJS()}
+                        })
+                        .toList()
+                        .toJS()}
                 />
                 <ValueInput
                     keyConfig={keyConfig}
                     trigger={trigger}
                     onChange={onValueChange}
                 />
-                {
-                    !isLastCondition && (
-                        <Button
-                            className="btn-frozen"
-                            color="warning"
-                            tag="div"
-                        >
-                            and
-                        </Button>
-                    )
-                }
+                {!isLastCondition && (
+                    <Button className="btn-frozen" color="warning" tag="div">
+                        and
+                    </Button>
+                )}
                 <div className={css.closeWrapper}>
                     <i
                         className="material-icons text-danger clickable"
@@ -177,7 +182,6 @@ class TriggerRow extends React.Component {
         )
     }
 }
-
 
 export class CampaignDetail extends React.Component {
     static propTypes = {
@@ -196,16 +200,18 @@ export class CampaignDetail extends React.Component {
     state = {
         name: '',
         triggers: fromJS({}),
-        message: fromJS({})
+        message: fromJS({}),
     }
 
     _initState = (campaign) => {
         this.isInitialized = true
         this.setState({
             name: campaign.get('name'),
-            triggers: campaign.get('triggers') || fromJS([
-                DEFAULT_TRIGGER(0)  // default `current_url` empty trigger in case of new campaign
-            ]),
+            triggers:
+                campaign.get('triggers') ||
+                fromJS([
+                    DEFAULT_TRIGGER(0), // default `current_url` empty trigger in case of new campaign
+                ]),
             message: campaign.get('message') || fromJS({}),
         })
     }
@@ -225,7 +231,9 @@ export class CampaignDetail extends React.Component {
     }
 
     _addNewTrigger = (keyConfigIdx) => {
-        this.setState({triggers: this.state.triggers.push(DEFAULT_TRIGGER(keyConfigIdx))})
+        this.setState({
+            triggers: this.state.triggers.push(DEFAULT_TRIGGER(keyConfigIdx)),
+        })
     }
 
     _handleSubmit = (e) => {
@@ -247,15 +255,24 @@ export class CampaignDetail extends React.Component {
         // to have the required fields
         let message
         if (author) {
-            message = this.state.message.set('author', fromJS({
-                name: author.get('name'),
-                email: author.get('email')
-            }))
+            message = this.state.message.set(
+                'author',
+                fromJS({
+                    name: author.get('name'),
+                    email: author.get('email'),
+                })
+            )
 
-            const authorAvatarUrl = author.getIn(['meta', 'profile_picture_url'])
+            const authorAvatarUrl = author.getIn([
+                'meta',
+                'profile_picture_url',
+            ])
 
             if (authorAvatarUrl) {
-                message = message.setIn(['author', 'avatar_url'], authorAvatarUrl)
+                message = message.setIn(
+                    ['author', 'avatar_url'],
+                    authorAvatarUrl
+                )
             }
         } else {
             message = this.state.message.delete('author')
@@ -265,15 +282,19 @@ export class CampaignDetail extends React.Component {
             name: this.state.name,
             id: campaign.get('id'),
             triggers: this.state.triggers,
-            message: message
+            message: message,
         })
 
         this.setState({loading: true})
 
         if (isUpdate) {
-            this.props.updateCampaign(form, integration).then(() => this.setState({loading: false}))
+            this.props
+                .updateCampaign(form, integration)
+                .then(() => this.setState({loading: false}))
         } else {
-            this.props.createCampaign(form, integration).then(() => this.setState({loading: false}))
+            this.props
+                .createCampaign(form, integration)
+                .then(() => this.setState({loading: false}))
         }
     }
 
@@ -284,11 +305,14 @@ export class CampaignDetail extends React.Component {
             : null
 
         const message = author
-            ? this.state.message.set('author', fromJS({
-                name: author.get('name'),
-                email: author.get('email'),
-                avatar_url: author.getIn(['meta', 'profile_picture_url'])
-            }))
+            ? this.state.message.set(
+                  'author',
+                  fromJS({
+                      name: author.get('name'),
+                      email: author.get('email'),
+                      avatar_url: author.getIn(['meta', 'profile_picture_url']),
+                  })
+              )
             : this.state.message.delete('author')
 
         this.setState({message})
@@ -297,7 +321,11 @@ export class CampaignDetail extends React.Component {
     _deleteCampaign = () => {
         const {deleteCampaign, campaign, integration} = this.props
         deleteCampaign(campaign, integration).then(() => {
-            browserHistory.push(`/app/settings/integrations/${integration.get('type')}/${integration.get('id')}/campaigns`)
+            browserHistory.push(
+                `/app/settings/integrations/${integration.get(
+                    'type'
+                )}/${integration.get('id')}/campaigns`
+            )
         })
     }
 
@@ -307,59 +335,67 @@ export class CampaignDetail extends React.Component {
 
         const isUpdate = id !== 'new'
 
-        const authorOptions = agents.map((agent) => {
-            const label = (
-                <AgentLabel
-                    name={agent.get('name')}
-                    maxWidth="100"
-                />
-            )
+        const authorOptions = agents
+            .map((agent) => {
+                const label = (
+                    <AgentLabel name={agent.get('name')} maxWidth="100" />
+                )
 
-            return {
-                value: agent.get('email'),
-                text: agent.get('name'),
-                label
-            }
-        }).toJS()
+                return {
+                    value: agent.get('email'),
+                    text: agent.get('name'),
+                    label,
+                }
+            })
+            .toJS()
 
         // This is the default value; if no author is specified, any agent displayed in the widget when the customer sees
         // the campaign can be displayed as author of the campaign
         authorOptions.push({
             value: null,
             text: 'randomagent',
-            label: 'Random agent'
+            label: 'Random agent',
         })
 
         return (
             <div className="full-width">
-                <PageHeader title={(
-                    <Breadcrumb>
-                        <BreadcrumbItem>
-                            <Link to="/app/settings/integrations">Integrations</Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            <Link to="/app/settings/integrations/smooch_inside/${integration.get('id')}">Chat</Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            {integration.get('name')}
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            <Link to={`/app/settings/integrations/smooch_inside/${integration.get('id')}/campaigns`}>
-                                Campaigns
-                            </Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem active>
-                            {isUpdate ? campaign.get('name') : 'New campaign'}
-                        </BreadcrumbItem>
-                    </Breadcrumb>
-                )}/>
+                <PageHeader
+                    title={
+                        <Breadcrumb>
+                            <BreadcrumbItem>
+                                <Link to="/app/settings/integrations">
+                                    Integrations
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                <Link to="/app/settings/integrations/smooch_inside/${integration.get('id')}">
+                                    Chat
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                {integration.get('name')}
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                <Link
+                                    to={`/app/settings/integrations/smooch_inside/${integration.get(
+                                        'id'
+                                    )}/campaigns`}
+                                >
+                                    Campaigns
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem active>
+                                {isUpdate
+                                    ? campaign.get('name')
+                                    : 'New campaign'}
+                            </BreadcrumbItem>
+                        </Breadcrumb>
+                    }
+                />
 
-                <ChatIntegrationNavigation integration={integration}/>
+                <ChatIntegrationNavigation integration={integration} />
 
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <Container fluid className="page-container">
                     <Row>
                         <Col>
                             <Form onSubmit={this._handleSubmit}>
@@ -370,7 +406,9 @@ export class CampaignDetail extends React.Component {
                                         label="Campaign name"
                                         placeholder="My new campaign"
                                         value={name}
-                                        onChange={(value) => this.setState({name: value})}
+                                        onChange={(value) =>
+                                            this.setState({name: value})
+                                        }
                                         required
                                     />
                                 </div>
@@ -379,33 +417,47 @@ export class CampaignDetail extends React.Component {
 
                                 <h5>Choose your audience</h5>
                                 <div className="mb-4">
-                                    {
-                                        triggers.map((trigger, idx) => {
+                                    {triggers
+                                        .map((trigger, idx) => {
                                             return (
                                                 <TriggerRow
                                                     key={idx}
                                                     trigger={trigger}
                                                     nbOfTriggers={triggers.size}
                                                     idx={idx}
-                                                    onOperatorChange={(value) => {
+                                                    onOperatorChange={(
+                                                        value
+                                                    ) => {
                                                         this.setState({
-                                                            triggers: triggers.setIn([idx, 'operator'], value)
+                                                            triggers: triggers.setIn(
+                                                                [
+                                                                    idx,
+                                                                    'operator',
+                                                                ],
+                                                                value
+                                                            ),
                                                         })
                                                     }}
                                                     onValueChange={(value) => {
                                                         this.setState({
-                                                            triggers: this.state.triggers.setIn([idx, 'value'], value)
+                                                            triggers: this.state.triggers.setIn(
+                                                                [idx, 'value'],
+                                                                value
+                                                            ),
                                                         })
                                                     }}
                                                     onDelete={() => {
                                                         this.setState({
-                                                            triggers: triggers.delete(idx)
+                                                            triggers: triggers.delete(
+                                                                idx
+                                                            ),
                                                         })
                                                     }}
                                                 />
                                             )
-                                        }).toList().toJS()
-                                    }
+                                        })
+                                        .toList()
+                                        .toJS()}
 
                                     <UncontrolledDropdown>
                                         <DropdownToggle
@@ -419,19 +471,27 @@ export class CampaignDetail extends React.Component {
                                             Add condition
                                         </DropdownToggle>
                                         <DropdownMenu>
-                                            {
-                                                CAMPAIGNS_TRIGGER_KEYS.map((keyConfig, idx) => {
+                                            {CAMPAIGNS_TRIGGER_KEYS.map(
+                                                (keyConfig, idx) => {
                                                     return (
                                                         <DropdownItem
-                                                            key={keyConfig.get('name')}
+                                                            key={keyConfig.get(
+                                                                'name'
+                                                            )}
                                                             type="button"
-                                                            onClick={() => this._addNewTrigger(idx)}
+                                                            onClick={() =>
+                                                                this._addNewTrigger(
+                                                                    idx
+                                                                )
+                                                            }
                                                         >
-                                                            {keyConfig.get('label')}
+                                                            {keyConfig.get(
+                                                                'label'
+                                                            )}
                                                         </DropdownItem>
                                                     )
-                                                })
-                                            }
+                                                }
+                                            )}
                                         </DropdownMenu>
                                     </UncontrolledDropdown>
                                 </div>
@@ -440,73 +500,108 @@ export class CampaignDetail extends React.Component {
 
                                 <h5>Write your message</h5>
                                 <div className="mb-4">
-                                    <div className={classnames('mb-2', css.authorWrapper)}>
+                                    <div
+                                        className={classnames(
+                                            'mb-2',
+                                            css.authorWrapper
+                                        )}
+                                    >
                                         <span>From: </span>
                                         <SelectField
                                             className={css.authorInput}
-                                            value={message.getIn(['author', 'email'], null)}
+                                            value={message.getIn(
+                                                ['author', 'email'],
+                                                null
+                                            )}
                                             options={authorOptions}
                                             onChange={this._setAgent}
                                         />
                                     </div>
-                                    {
-                                        this.isInitialized && (
-                                            <RichField
-                                                type="text"
-                                                rows="8"
-                                                value={{html: message.get('html')}}
-                                                onChange={(value) => {
-                                                    const content = value.getCurrentContent()
+                                    {this.isInitialized && (
+                                        <RichField
+                                            type="text"
+                                            rows="8"
+                                            value={{html: message.get('html')}}
+                                            onChange={(value) => {
+                                                const content = value.getCurrentContent()
 
-                                                    this.setState({
-                                                        message: message
-                                                            .set('html', convertToHTML(content))
-                                                            .set('text', content.getPlainText())
-                                                    })
-                                                }}
-                                                displayedActions={['BOLD', 'ITALIC', 'UNDERLINE', 'IMAGE', 'EMOJI']}
-                                                placeholder={'Write your message'}
-                                                required
-                                            />
-                                        )
-                                    }
+                                                this.setState({
+                                                    message: message
+                                                        .set(
+                                                            'html',
+                                                            convertToHTML(
+                                                                content
+                                                            )
+                                                        )
+                                                        .set(
+                                                            'text',
+                                                            content.getPlainText()
+                                                        ),
+                                                })
+                                            }}
+                                            displayedActions={[
+                                                'BOLD',
+                                                'ITALIC',
+                                                'UNDERLINE',
+                                                'IMAGE',
+                                                'EMOJI',
+                                            ]}
+                                            placeholder={'Write your message'}
+                                            required
+                                        />
+                                    )}
                                 </div>
 
                                 <Button
                                     color="success"
-                                    className={classnames({'btn-loading': this.state.loading})}
+                                    className={classnames({
+                                        'btn-loading': this.state.loading,
+                                    })}
                                     disabled={this.state.loading}
                                 >
-                                    {isUpdate ? 'Save' : 'Create & activate campaign'}
+                                    {isUpdate
+                                        ? 'Save'
+                                        : 'Create & activate campaign'}
                                 </Button>
 
-
-                                {
-                                    isUpdate && (
-                                        <ConfirmButton
-                                            id="delete-campaign-button"
-                                            className="float-right"
-                                            placement="bottom right"
-                                            color="secondary"
-                                            confirm={this._deleteCampaign}
-                                            content="Are you sure you want to delete this campaign?"
-                                        >
-                                            <i className="material-icons mr-1 text-danger">
-                                                delete
-                                            </i>
-                                            Delete campaign
-                                        </ConfirmButton>
-                                    )
-                                }
+                                {isUpdate && (
+                                    <ConfirmButton
+                                        id="delete-campaign-button"
+                                        className="float-right"
+                                        placement="bottom right"
+                                        color="secondary"
+                                        confirm={this._deleteCampaign}
+                                        content="Are you sure you want to delete this campaign?"
+                                    >
+                                        <i className="material-icons mr-1 text-danger">
+                                            delete
+                                        </i>
+                                        Delete campaign
+                                    </ConfirmButton>
+                                )}
                             </Form>
                         </Col>
                         <Col>
                             <CampaignPreview
                                 html={sanitizeHtmlDefault(message.get('html'))}
-                                mainColor={integration.getIn(['decoration', 'main_color'])}
+                                mainColor={integration.getIn([
+                                    'decoration',
+                                    'main_color',
+                                ])}
                                 authorName={message.getIn(['author', 'name'])}
-                                authorAvatarUrl={message.getIn(['author', 'avatar_url'])}
-                                translatedTexts={SMOOCH_INSIDE_WIDGET_TEXTS[integration.getIn(['meta', 'language']) || SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT]}
+                                authorAvatarUrl={message.getIn([
+                                    'author',
+                                    'avatar_url',
+                                ])}
+                                translatedTexts={
+                                    SMOOCH_INSIDE_WIDGET_TEXTS[
+                                        integration.getIn([
+                                            'meta',
+                                            'language',
+                                        ]) ||
+                                            SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
+                                    ]
+                                }
                             />
                         </Col>
                     </Row>
@@ -516,14 +611,20 @@ export class CampaignDetail extends React.Component {
     }
 }
 
-export default connect((state, props) => {
-    return {
-        campaign: integrationsSelectors.getChatIntegrationCampaignById(props.integration.get('id'), props.id)(state),
-        agents: agentSelectors.getAgents(state)
+export default connect(
+    (state, props) => {
+        return {
+            campaign: integrationsSelectors.getChatIntegrationCampaignById(
+                props.integration.get('id'),
+                props.id
+            )(state),
+            agents: agentSelectors.getAgents(state),
+        }
+    },
+    {
+        createCampaign: campaignActions.createCampaign,
+        updateCampaign: campaignActions.updateCampaign,
+        deleteCampaign: campaignActions.deleteCampaign,
+        notify,
     }
-}, {
-    createCampaign: campaignActions.createCampaign,
-    updateCampaign: campaignActions.updateCampaign,
-    deleteCampaign: campaignActions.deleteCampaign,
-    notify
-})(CampaignDetail)
+)(CampaignDetail)

@@ -8,18 +8,18 @@ type Props = {
     trigger: React.Node,
     children: React.Node,
     isOpen: boolean,
-    className?: string
+    className?: string,
 }
 
 export default class Popover extends React.Component<Props> {
-    render () {
-        const { isOpen, children, trigger, className } = this.props
+    render() {
+        const {isOpen, children, trigger, className} = this.props
         return (
             <span className={css.popoverWrapper}>
                 {trigger}
                 <div
                     className={classnames(className, css.popover, {
-                        [css.hidden]: !isOpen
+                        [css.hidden]: !isOpen,
                     })}
                 >
                     {isOpen && children}

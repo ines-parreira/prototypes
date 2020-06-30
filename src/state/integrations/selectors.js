@@ -8,7 +8,7 @@ import {
     EMAIL_INTEGRATION_TYPES,
     FACEBOOK_INTEGRATION_TYPE,
     MAGENTO2_INTEGRATION_TYPE,
-    MESSAGING_INTEGRATION_TYPES
+    MESSAGING_INTEGRATION_TYPES,
 } from '../../constants/integration'
 import {compare} from '../../utils'
 import type {stateType} from '../types'
@@ -17,11 +17,11 @@ import {getTicketState} from '../ticket/selectors'
 
 type typesType = Array<string> | string
 
-export const getIntegrationsState = (state: stateType) => state.integrations || fromJS({})
+export const getIntegrationsState = (state: stateType) =>
+    state.integrations || fromJS({})
 
-export const getIntegrations = createSelector(
-    [getIntegrationsState],
-    (state) => state.get('integrations', fromJS([]))
+export const getIntegrations = createSelector([getIntegrationsState], (state) =>
+    state.get('integrations', fromJS([]))
 )
 
 export const getCurrentIntegration = createSelector(
@@ -34,68 +34,106 @@ export const getActiveIntegrations = createSelector(
     (state) => state.filter((i) => !i.get('deactivated_datetime'))
 )
 
-export const getIntegrationById = (id: number) => createSelector(
-    [getIntegrations],
-    (integrations) => {
-        return integrations.find((integration) => integration.get('id', '').toString() === (id || '').toString())
-            || fromJS({})
-    }
-)
+export const getIntegrationById = (id: number) =>
+    createSelector([getIntegrations], (integrations) => {
+        return (
+            integrations.find(
+                (integration) =>
+                    integration.get('id', '').toString() ===
+                    (id || '').toString()
+            ) || fromJS({})
+        )
+    })
 
-export const makeGetIntegrationById = (state: stateType) => (id: number) => getIntegrationById(id)(state)
+export const makeGetIntegrationById = (state: stateType) => (id: number) =>
+    getIntegrationById(id)(state)
 
-export const getIntegrationsByTypes = (types: typesType) => createSelector(
-    [getIntegrations],
-    (integrations) => {
+export const getIntegrationsByTypes = (types: typesType) =>
+    createSelector([getIntegrations], (integrations) => {
         const formattedTypes = !_isArray(types) ? [types] : types
 
-        return integrations.filter((integration) => formattedTypes.includes(integration.get('type')))
-    }
-)
+        return integrations.filter((integration) =>
+            formattedTypes.includes(integration.get('type'))
+        )
+    })
 
-export const makeGetIntegrationsByTypes = (state: stateType) => (types: typesType) =>
-    getIntegrationsByTypes(types)(state)
+export const makeGetIntegrationsByTypes = (state: stateType) => (
+    types: typesType
+) => getIntegrationsByTypes(types)(state)
 
-export const getEligibleShopifyIntegrationsFor = (state: stateType) => (type: string) => {
+export const getEligibleShopifyIntegrationsFor = (state: stateType) => (
+    type: string
+) => {
     const shopifyIntegrations = getIntegrationsByTypes('shopify')(state)
     const currentIntegrationOfType = getIntegrationsByTypes(type)(state)
 
-    return shopifyIntegrations.filter((integration) => ! currentIntegrationOfType.find(
-        (currentIntegration) => currentIntegration.get('name') === integration.get('name')))
+    return shopifyIntegrations.filter(
+        (integration) =>
+            !currentIntegrationOfType.find(
+                (currentIntegration) =>
+                    currentIntegration.get('name') === integration.get('name')
+            )
+    )
 }
 
 export const getFacebookIntegrations = createSelector(
     [getIntegrations],
-    (state) => state
-        .filter((integration) => integration.get('type') === 'facebook')
-        .sort((a, b) => compare(a.getIn(['facebook', 'name']), b.getIn(['facebook', 'name'])))
+    (state) =>
+        state
+            .filter((integration) => integration.get('type') === 'facebook')
+            .sort((a, b) =>
+                compare(
+                    a.getIn(['facebook', 'name']),
+                    b.getIn(['facebook', 'name'])
+                )
+            )
 )
 
-export const getOnboardingIntegrations = (integrationType: string) => createSelector(
-    [getIntegrationsState],
-    (state) => state.getIn(['extra', integrationType, 'onboardingIntegrations', 'data']) || fromJS([])
-)
+export const getOnboardingIntegrations = (integrationType: string) =>
+    createSelector(
+        [getIntegrationsState],
+        (state) =>
+            state.getIn([
+                'extra',
+                integrationType,
+                'onboardingIntegrations',
+                'data',
+            ]) || fromJS([])
+    )
 
-export const getOnboardingMeta = (integrationType: string) => createSelector(
-    [getIntegrationsState],
-    (state) => state.getIn(['extra', integrationType, 'onboardingIntegrations', 'meta']) || fromJS({})
-)
+export const getOnboardingMeta = (integrationType: string) =>
+    createSelector(
+        [getIntegrationsState],
+        (state) =>
+            state.getIn([
+                'extra',
+                integrationType,
+                'onboardingIntegrations',
+                'meta',
+            ]) || fromJS({})
+    )
 
 export const getFacebookMaxAccountAds = createSelector(
     [getIntegrationsState],
-    (state) => state.getIn(['extra', FACEBOOK_INTEGRATION_TYPE, 'max_account_ads']) || 0
+    (state) =>
+        state.getIn(['extra', FACEBOOK_INTEGRATION_TYPE, 'max_account_ads']) ||
+        0
 )
 
-export const getEmailIntegrations = createSelector(
-    [getIntegrations],
-    (state) => state.filter((integration) => EMAIL_INTEGRATION_TYPES.includes(integration.get('type')))
+export const getEmailIntegrations = createSelector([getIntegrations], (state) =>
+    state.filter((integration) =>
+        EMAIL_INTEGRATION_TYPES.includes(integration.get('type'))
+    )
 )
 
 export const getBaseEmailIntegration = createSelector(
     [getEmailIntegrations],
-    (state) => state
-        .find((integration) => integration.getIn(['meta', 'address'], '').endsWith(window.EMAIL_FORWARDING_DOMAIN))
-        || fromJS({})
+    (state) =>
+        state.find((integration) =>
+            integration
+                .getIn(['meta', 'address'], '')
+                .endsWith(window.EMAIL_FORWARDING_DOMAIN)
+        ) || fromJS({})
 )
 
 // return email and gmail integrations formatted as channel
@@ -116,50 +154,65 @@ export const getChannels = createSelector(
                 name: integration.get('name'),
                 address: integration.getIn(['meta', 'address']),
                 preferred: integration.getIn(['meta', 'preferred']),
-                signature: nestedReplace(integration.getIn(['meta', 'signature']), currentTicket, currentUser),
-                verified: integration.get('type') !== EMAIL_INTEGRATION_TYPE
-                    || integration.getIn(['meta', 'verified'], false)
+                signature: nestedReplace(
+                    integration.getIn(['meta', 'signature']),
+                    currentTicket,
+                    currentUser
+                ),
+                verified:
+                    integration.get('type') !== EMAIL_INTEGRATION_TYPE ||
+                    integration.getIn(['meta', 'verified'], false),
             })
         })
     }
 )
 
-export const getChannelsByType = (type: string) => createSelector(
-    [getChannels],
-    (state) => state.filter((integration) => integration.get('type') === type)
-)
+export const getChannelsByType = (type: string) =>
+    createSelector([getChannels], (state) =>
+        state.filter((integration) => integration.get('type') === type)
+    )
 
-export const getChannelByTypeAndAddress = (type: string, address: string) => createSelector(
-    [getChannels],
-    (channels) => channels.filter((channel) => channel.get('type') === type && channel.get('address') === address).first() || fromJS({})
-)
+export const getChannelByTypeAndAddress = (type: string, address: string) =>
+    createSelector(
+        [getChannels],
+        (channels) =>
+            channels
+                .filter(
+                    (channel) =>
+                        channel.get('type') === type &&
+                        channel.get('address') === address
+                )
+                .first() || fromJS({})
+    )
 
-export const getChannelSignature = (type: string, address: string) => createSelector(
-    [getChannelByTypeAndAddress(type, address)],
-    (channel) => channel.get('signature') || fromJS({})
-)
+export const getChannelSignature = (type: string, address: string) =>
+    createSelector(
+        [getChannelByTypeAndAddress(type, address)],
+        (channel) => channel.get('signature') || fromJS({})
+    )
 
-export const getAuthData = (type: string) => createSelector(
-    [getIntegrationsState],
-    (state) => state.getIn(['authentication', type], fromJS({}))
-)
+export const getAuthData = (type: string) =>
+    createSelector([getIntegrationsState], (state) =>
+        state.getIn(['authentication', type], fromJS({}))
+    )
 
-export const getRedirectUri = (type: string) => createSelector(
-    [getAuthData(type)],
-    (state) => state.get('redirect_uri', '')
-)
+export const getRedirectUri = (type: string) =>
+    createSelector([getAuthData(type)], (state) =>
+        state.get('redirect_uri', '')
+    )
 
 export const getForwardingEmailAddress = createSelector(
     [getAuthData(EMAIL_INTEGRATION_TYPE)],
     (state) => state.get('forwarding_email_address', '')
 )
 
-export const getFacebookRedirectUri = (reconnect: boolean = false) => createSelector(
-    [getAuthData(FACEBOOK_INTEGRATION_TYPE)],
-    (state) => state.get(reconnect ? 'redirect_uri_reconnect' : 'redirect_uri', '')
-)
+export const getFacebookRedirectUri = (reconnect: boolean = false) =>
+    createSelector([getAuthData(FACEBOOK_INTEGRATION_TYPE)], (state) =>
+        state.get(reconnect ? 'redirect_uri_reconnect' : 'redirect_uri', '')
+    )
 
-export const makeGetRedirectUri = (state: stateType) => (type: string) => getRedirectUri(type)(state)
+export const makeGetRedirectUri = (state: stateType) => (type: string) =>
+    getRedirectUri(type)(state)
 
 // return the list of integration used to send messages from the helpdesk
 export const getMessagingIntegrations = createSelector(
@@ -174,12 +227,15 @@ export const getMessagingIntegrations = createSelector(
     }
 )
 
-export const hasIntegrationOfTypes = (types: typesType) => createSelector(
-    [getIntegrationsByTypes(types)],
-    (integrations) => !integrations.isEmpty()
-)
+export const hasIntegrationOfTypes = (types: typesType) =>
+    createSelector(
+        [getIntegrationsByTypes(types)],
+        (integrations) => !integrations.isEmpty()
+    )
 
-export const makeHasIntegrationOfTypes = (state: stateType) => (types: typesType) => hasIntegrationOfTypes(types)(state)
+export const makeHasIntegrationOfTypes = (state: stateType) => (
+    types: typesType
+) => hasIntegrationOfTypes(types)(state)
 
 export const getShopifyIntegrationsWithoutChat = (state: stateType) => {
     const shopifyIntegrations = getIntegrationsByTypes('shopify')(state)
@@ -189,7 +245,9 @@ export const getShopifyIntegrationsWithoutChat = (state: stateType) => {
         const shopifyId = shopifyIntegration.get('id')
 
         return !chatIntegrations.some((chatIntegration) => {
-            return chatIntegration.getIn(['meta', 'shopify_integration_ids'], fromJS([])).contains(shopifyId)
+            return chatIntegration
+                .getIn(['meta', 'shopify_integration_ids'], fromJS([]))
+                .contains(shopifyId)
         })
     })
 }
@@ -202,33 +260,54 @@ export const getShopifyIntegrationsWithoutFacebook = (state: stateType) => {
         const shopifyId = shopifyIntegration.get('id')
 
         return !facebookIntegrations.some((facebookIntegration) => {
-            return facebookIntegration.getIn(['meta', 'shopify_integration_ids'], fromJS([])).contains(shopifyId)
+            return facebookIntegration
+                .getIn(['meta', 'shopify_integration_ids'], fromJS([]))
+                .contains(shopifyId)
         })
     })
 }
 
-export const getShopifyIntegrationByShopName = (shopName: string) => createSelector(
-    [getIntegrationsByTypes(['shopify'])],
-    (state) => state.find((integration) => integration.getIn(['meta', 'shop_name']) === shopName) || fromJS({})
-)
+export const getShopifyIntegrationByShopName = (shopName: string) =>
+    createSelector(
+        [getIntegrationsByTypes(['shopify'])],
+        (state) =>
+            state.find(
+                (integration) =>
+                    integration.getIn(['meta', 'shop_name']) === shopName
+            ) || fromJS({})
+    )
 
-export const makeGetShopifyIntegrationByShopName = (state: stateType) => (shopName: string) =>
-    getShopifyIntegrationByShopName(shopName)(state)
+export const makeGetShopifyIntegrationByShopName = (state: stateType) => (
+    shopName: string
+) => getShopifyIntegrationByShopName(shopName)(state)
 
-export const getMagento2IntegrationByStoreUrl = (storeUrl: string) => createSelector(
-    [getIntegrationsByTypes([MAGENTO2_INTEGRATION_TYPE])],
-    (state) => state.find((integration) => integration.getIn(['meta', 'store_url']) === storeUrl) || fromJS({})
-)
+export const getMagento2IntegrationByStoreUrl = (storeUrl: string) =>
+    createSelector(
+        [getIntegrationsByTypes([MAGENTO2_INTEGRATION_TYPE])],
+        (state) =>
+            state.find(
+                (integration) =>
+                    integration.getIn(['meta', 'store_url']) === storeUrl
+            ) || fromJS({})
+    )
 
-export const makeGetMagento2IntegrationByStoreUrl = (state: stateType) => (storeUrl: string) =>
-    getMagento2IntegrationByStoreUrl(storeUrl)(state)
+export const makeGetMagento2IntegrationByStoreUrl = (state: stateType) => (
+    storeUrl: string
+) => getMagento2IntegrationByStoreUrl(storeUrl)(state)
 
-export const getChatIntegrationCampaigns = (id: number) => createSelector(
-    [getIntegrationById(id)],
-    (integration) => integration.getIn(['meta', 'campaigns']) || fromJS([])
-)
+export const getChatIntegrationCampaigns = (id: number) =>
+    createSelector(
+        [getIntegrationById(id)],
+        (integration) => integration.getIn(['meta', 'campaigns']) || fromJS([])
+    )
 
-export const getChatIntegrationCampaignById = (id: number, campaignId: number) => createSelector(
-    [getChatIntegrationCampaigns(id)],
-    (campaigns) => campaigns.find((campaign) => campaign.get('id') === campaignId) || fromJS({})
-)
+export const getChatIntegrationCampaignById = (
+    id: number,
+    campaignId: number
+) =>
+    createSelector(
+        [getChatIntegrationCampaigns(id)],
+        (campaigns) =>
+            campaigns.find((campaign) => campaign.get('id') === campaignId) ||
+            fromJS({})
+    )

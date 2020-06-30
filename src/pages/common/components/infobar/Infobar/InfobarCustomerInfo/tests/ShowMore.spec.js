@@ -8,10 +8,7 @@ describe('<ShowMore/>', () => {
     describe('render()', () => {
         it('should render children', () => {
             const component = shallow(
-                <ShowMore
-                    className="foo"
-                    onClick={_noop}
-                >
+                <ShowMore className="foo" onClick={_noop}>
                     Show more
                 </ShowMore>
             )

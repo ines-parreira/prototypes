@@ -6,12 +6,7 @@ import ColorField from '../ColorField'
 
 describe('ColorField', () => {
     it('should render a basic color input', () => {
-        const component = shallow(
-            <ColorField
-                value="value"
-                onChange={_noop}
-            />
-        )
+        const component = shallow(<ColorField value="value" onChange={_noop} />)
         expect(component).toMatchSnapshot()
     })
 })

@@ -12,23 +12,27 @@ const mockStore = configureMockStore(middlewares)
 describe('ast', () => {
     describe('widgets', () => {
         describe('TagsSelect', () => {
-            const tags = fromJS([{
-                name: 'billing',
-            }, {
-                name: 'refund',
-            }, {
-                name: 'question',
-            }])
+            const tags = fromJS([
+                {
+                    name: 'billing',
+                },
+                {
+                    name: 'refund',
+                },
+                {
+                    name: 'question',
+                },
+            ])
             let store = null
             const actions = {
-                create: jest.fn()
+                create: jest.fn(),
             }
 
             beforeEach(() => {
                 store = mockStore({
                     tags: fromJS({
-                        items: tags
-                    })
+                        items: tags,
+                    }),
                 })
             })
 
@@ -69,8 +73,9 @@ describe('ast', () => {
                     ).instance()
 
                     component._onChange(['new', 'value'])
-                    expect(onChangeSpy.mock.calls[0]).toEqual([['new', 'value']])
-
+                    expect(onChangeSpy.mock.calls[0]).toEqual([
+                        ['new', 'value'],
+                    ])
                 })
 
                 it('should handle change (string as value)', () => {

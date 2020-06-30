@@ -99,7 +99,8 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
             tag="div"
           >
             <p>
-              You are about to delete 
+              You are about to delete
+               
               <b>
                 Waive Fee
               </b>
@@ -190,7 +191,8 @@ exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
             tag="div"
           >
             <p>
-              You are about to delete 
+              You are about to delete
+               
               <b>
                 Do Not Waive Fee
               </b>

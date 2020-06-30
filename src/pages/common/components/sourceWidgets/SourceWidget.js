@@ -10,16 +10,13 @@ import WrapperSourceWidget from './widgets/WrapperSourceWidget'
 
 class SourceWidget extends React.Component {
     render() {
-        const {
-            parent,
-            source,
-            widget,
+        const {parent, source, widget, template, editing} = this.props
+
+        const {updatedTemplate, data, type, path} = prepareWidgetToDisplay(
             template,
-            editing,
-        } = this.props
-
-
-        const {updatedTemplate, data, type, path} = prepareWidgetToDisplay(template, source, parent)
+            source,
+            parent
+        )
 
         const isParentList = parent && parent.get('type') === 'list'
 
@@ -62,16 +59,9 @@ class SourceWidget extends React.Component {
         }
 
         return (
-            <div
-                className="simple-field draggable"
-                data-key={path}
-            >
-                <span className="field-label">
-                    {path}:
-                </span>
-                <span className="field-value">
-                    {displayLabel(data)}
-                </span>
+            <div className="simple-field draggable" data-key={path}>
+                <span className="field-label">{path}:</span>
+                <span className="field-value">{displayLabel(data)}</span>
             </div>
         )
     }

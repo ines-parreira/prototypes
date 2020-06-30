@@ -5,16 +5,20 @@ import moment from 'moment'
 import React, {useState} from 'react'
 import {connect} from 'react-redux'
 import {browserHistory} from 'react-router'
-import {
-    Button,
-    Popover,
-    PopoverHeader,
-    PopoverBody,
-} from 'reactstrap'
+import {Button, Popover, PopoverHeader, PopoverBody} from 'reactstrap'
 
 import {ORDER_DIRECTION, type OrderDirection} from '../../../models/api'
-import {createMacro, deleteMacro, MACRO_SORTABLE_PROPERTIES, type MacroSortableProperties} from '../../../models/macro'
-import {macroCreated, macroDeleted, type MacrosState} from '../../../state/entities/macros'
+import {
+    createMacro,
+    deleteMacro,
+    MACRO_SORTABLE_PROPERTIES,
+    type MacroSortableProperties,
+} from '../../../models/macro'
+import {
+    macroCreated,
+    macroDeleted,
+    type MacrosState,
+} from '../../../state/entities/macros'
 import {notify} from '../../../state/notifications/actions'
 import Loader from '../../common/components/Loader'
 import BodyCell from '../../common/components/table/cells/BodyCell'
@@ -30,7 +34,10 @@ import css from './MacrosSettingsTable.less'
 type OwnProps = {
     isLoading: boolean,
     macroIds: number[],
-    onSortOptionsChange: (orderBy: MacroSortableProperties, orderDir: OrderDirection) => void,
+    onSortOptionsChange: (
+        orderBy: MacroSortableProperties,
+        orderDir: OrderDirection
+    ) => void,
     sortOptions: {
         orderBy: MacroSortableProperties,
         orderDir: OrderDirection,
@@ -56,12 +63,7 @@ export function MacrosSettingsTableContainer({
 }: Props) {
     const [visiblePopoverId, setVisiblePopoverId] = useState(null)
     const toggleVisiblePopover = (nextId: string) => {
-        setVisiblePopoverId(
-            nextId === visiblePopoverId ?
-                null
-                :
-                nextId
-        )
+        setVisiblePopoverId(nextId === visiblePopoverId ? null : nextId)
     }
     const handleMacroDelete = async (macroId: number) => {
         try {
@@ -103,10 +105,10 @@ export function MacrosSettingsTableContainer({
     const handleSortChange = (orderBy: MacroSortableProperties) => {
         onSortOptionsChange(
             orderBy,
-            orderBy !== sortOptions.orderBy || sortOptions.orderDir === ORDER_DIRECTION.DESC ?
-                ORDER_DIRECTION.ASC
-                :
-                ORDER_DIRECTION.DESC
+            orderBy !== sortOptions.orderBy ||
+                sortOptions.orderDir === ORDER_DIRECTION.DESC
+                ? ORDER_DIRECTION.ASC
+                : ORDER_DIRECTION.DESC
         )
     }
 
@@ -115,43 +117,54 @@ export function MacrosSettingsTableContainer({
             <TableHead className={css.tableHead}>
                 <HeaderCellProperty
                     direction={sortOptions.orderDir}
-                    isOrderedBy={sortOptions.orderBy === MACRO_SORTABLE_PROPERTIES.NAME}
-                    onClick={() => handleSortChange(MACRO_SORTABLE_PROPERTIES.NAME)}
+                    isOrderedBy={
+                        sortOptions.orderBy === MACRO_SORTABLE_PROPERTIES.NAME
+                    }
+                    onClick={() =>
+                        handleSortChange(MACRO_SORTABLE_PROPERTIES.NAME)
+                    }
                     title="Macro"
                 />
                 <HeaderCellProperty
                     direction={sortOptions.orderDir}
-                    isOrderedBy={sortOptions.orderBy === MACRO_SORTABLE_PROPERTIES.USAGE}
-                    onClick={() => handleSortChange(MACRO_SORTABLE_PROPERTIES.USAGE)}
+                    isOrderedBy={
+                        sortOptions.orderBy === MACRO_SORTABLE_PROPERTIES.USAGE
+                    }
+                    onClick={() =>
+                        handleSortChange(MACRO_SORTABLE_PROPERTIES.USAGE)
+                    }
                     title="Usage count"
                 />
                 <HeaderCellProperty
                     direction={sortOptions.orderDir}
-                    isOrderedBy={sortOptions.orderBy === MACRO_SORTABLE_PROPERTIES.UPDATED_DATETIME}
-                    onClick={() => handleSortChange(MACRO_SORTABLE_PROPERTIES.UPDATED_DATETIME)}
+                    isOrderedBy={
+                        sortOptions.orderBy ===
+                        MACRO_SORTABLE_PROPERTIES.UPDATED_DATETIME
+                    }
+                    onClick={() =>
+                        handleSortChange(
+                            MACRO_SORTABLE_PROPERTIES.UPDATED_DATETIME
+                        )
+                    }
                     title="Last updated"
                 />
-                <HeaderCell/>
+                <HeaderCell />
             </TableHead>
             <TableBody>
-                {isLoading ?
+                {isLoading ? (
                     <TableBodyRow>
                         <BodyCell colSpan={4}>
-                            <Loader/>
+                            <Loader />
                         </BodyCell>
                     </TableBodyRow>
-                    :
+                ) : (
                     macroIds.map((macroId) => {
                         const macro = macros[macroId.toString()]
 
                         if (!macro) {
                             return null
                         }
-                        const {
-                            name,
-                            updated_datetime,
-                            usage,
-                        } = macro
+                        const {name, updated_datetime, usage} = macro
                         const deleteButtonId = `delete-button-${macroId}`
 
                         return (
@@ -159,19 +172,26 @@ export function MacrosSettingsTableContainer({
                                 className={css.tableBodyRow}
                                 key={macroId}
                                 onClick={() => {
-                                    browserHistory.push(`/app/settings/macros/${macroId}`)
+                                    browserHistory.push(
+                                        `/app/settings/macros/${macroId}`
+                                    )
                                 }}
                             >
                                 <BodyCell className={css.macroTitle}>
                                     {name}
                                 </BodyCell>
-                                <BodyCell>
-                                    {usage}
-                                </BodyCell>
+                                <BodyCell>{usage}</BodyCell>
                                 <BodyCell className={css.dateCell}>
-                                    {moment(updated_datetime).format('YYYY-MM-DD')}
+                                    {moment(updated_datetime).format(
+                                        'YYYY-MM-DD'
+                                    )}
                                 </BodyCell>
-                                <BodyCell className={classnames('smallest', css.actions)}>
+                                <BodyCell
+                                    className={classnames(
+                                        'smallest',
+                                        css.actions
+                                    )}
+                                >
                                     <Button
                                         className="mr-1 btn-transparent"
                                         onClick={(e) => {
@@ -186,7 +206,10 @@ export function MacrosSettingsTableContainer({
                                         </i>
                                     </Button>
                                     <Button
-                                        className={classnames('mr-1 btn-transparent', css.deleteButton)}
+                                        className={classnames(
+                                            'mr-1 btn-transparent',
+                                            css.deleteButton
+                                        )}
                                         id={deleteButtonId}
                                         onClick={(e) => {
                                             e.stopPropagation()
@@ -195,26 +218,31 @@ export function MacrosSettingsTableContainer({
                                         title="Delete macro"
                                         type="button"
                                     >
-                                        <i className="material-icons">
-                                            delete
-                                        </i>
+                                        <i className="material-icons">delete</i>
                                     </Button>
                                     <Popover
-                                        isOpen={deleteButtonId === visiblePopoverId}
+                                        isOpen={
+                                            deleteButtonId === visiblePopoverId
+                                        }
                                         placement="left"
                                         target={deleteButtonId}
-                                        toggle={() => toggleVisiblePopover(deleteButtonId)}
+                                        toggle={() =>
+                                            toggleVisiblePopover(deleteButtonId)
+                                        }
                                     >
                                         <PopoverHeader>
                                             Are you sure?
                                         </PopoverHeader>
                                         <PopoverBody>
                                             <p>
-                                                You are about to delete <b>{name || 'this'}</b> macro.
+                                                You are about to delete{' '}
+                                                <b>{name || 'this'}</b> macro.
                                             </p>
                                             <Button
                                                 color="danger"
-                                                onClick={() => handleMacroDelete(macroId)}
+                                                onClick={() =>
+                                                    handleMacroDelete(macroId)
+                                                }
                                                 type="submit"
                                             >
                                                 Confirm
@@ -225,7 +253,7 @@ export function MacrosSettingsTableContainer({
                             </TableBodyRow>
                         )
                     })
-                }
+                )}
             </TableBody>
         </TableWrapper>
     )
@@ -241,4 +269,7 @@ const mapDispatchToProps = {
     notify,
 }
 
-export default connect<Props, OwnProps>(mapStateToProps, mapDispatchToProps)(MacrosSettingsTableContainer)
+export default connect<Props, OwnProps>(
+    mapStateToProps,
+    mapDispatchToProps
+)(MacrosSettingsTableContainer)

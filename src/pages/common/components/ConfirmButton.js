@@ -1,19 +1,13 @@
 // @flow
 import React from 'react'
 import classnames from 'classnames'
-import {
-    Button,
-    Popover,
-    PopoverHeader,
-    PopoverBody,
-} from 'reactstrap'
+import {Button, Popover, PopoverHeader, PopoverBody} from 'reactstrap'
 import _get from 'lodash/get'
 import _noop from 'lodash/noop'
 
 import type {Node} from 'react'
 
 import css from './ConfirmButton.less'
-
 
 type Props = {
     id?: string,
@@ -33,7 +27,7 @@ type Props = {
 
 type State = {
     loading: boolean,
-    showConfirmation: boolean
+    showConfirmation: boolean,
 }
 
 export default class ConfirmButton extends React.Component<Props, State> {
@@ -52,7 +46,7 @@ export default class ConfirmButton extends React.Component<Props, State> {
 
     state = {
         loading: false,
-        showConfirmation: false
+        showConfirmation: false,
     }
 
     dateId: number
@@ -76,10 +70,7 @@ export default class ConfirmButton extends React.Component<Props, State> {
     _showConfirmation = (e: Event) => {
         if (this.props.type === 'submit') {
             const form: HTMLFormElement = _get(e, ['target', 'form'])
-            if (
-                !!form
-                && !form.checkValidity()
-            ) {
+            if (!!form && !form.checkValidity()) {
                 // don't show popover for invalid forms
                 return
             }
@@ -112,8 +103,7 @@ export default class ConfirmButton extends React.Component<Props, State> {
         // the submit event is not triggered.
         setTimeout(this._hideConfirmation)
 
-        Promise
-            .resolve(this.props.confirm())
+        Promise.resolve(this.props.confirm())
             .then(this._hideLoading)
             .catch(this._hideLoading)
     }
@@ -144,9 +134,7 @@ export default class ConfirmButton extends React.Component<Props, State> {
             ...buttonProps
         } = this.props
 
-        const {
-            showConfirmation
-        } = this.state
+        const {showConfirmation} = this.state
 
         const isLoading = this.state.loading || loading
 
@@ -154,9 +142,13 @@ export default class ConfirmButton extends React.Component<Props, State> {
 
         return (
             <div
-                className={classnames(css.component, 'd-inline-block', className)}
+                className={classnames(
+                    css.component,
+                    'd-inline-block',
+                    className
+                )}
                 id={id}
-                ref={(container) => this._container = container}
+                ref={(container) => (this._container = container)}
             >
                 <Button
                     id={uid}
@@ -164,7 +156,7 @@ export default class ConfirmButton extends React.Component<Props, State> {
                     disabled={isLoading || disabled}
                     onClick={this._showConfirmation}
                     className={classnames(buttonClassName, {
-                        [`${css.loading} btn-loading`]: isLoading
+                        [`${css.loading} btn-loading`]: isLoading,
                     })}
                     {...buttonProps}
                 >
@@ -179,9 +171,7 @@ export default class ConfirmButton extends React.Component<Props, State> {
                 >
                     <PopoverHeader>{title}</PopoverHeader>
                     <PopoverBody>
-                        <p>
-                            {content}
-                        </p>
+                        <p>{content}</p>
 
                         <Button
                             type={type}
@@ -195,5 +185,4 @@ export default class ConfirmButton extends React.Component<Props, State> {
             </div>
         )
     }
-
 }

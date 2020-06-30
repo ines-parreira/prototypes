@@ -7,10 +7,7 @@ import MacroNoResults from '../MacroNoResults'
 describe('MacroNoResults component', () => {
     it('should display no macros available without search query', () => {
         const component = shallow(
-            <MacroNoResults
-                searchQuery=''
-                newAction={_noop}
-            />
+            <MacroNoResults searchQuery="" newAction={_noop} />
         )
 
         expect(component).toMatchSnapshot()
@@ -18,10 +15,7 @@ describe('MacroNoResults component', () => {
 
     it('should display no macros found with search query', () => {
         const component = shallow(
-            <MacroNoResults
-                searchQuery='Pizza Pepperoni'
-                newAction={_noop}
-            />
+            <MacroNoResults searchQuery="Pizza Pepperoni" newAction={_noop} />
         )
 
         expect(component).toMatchSnapshot()

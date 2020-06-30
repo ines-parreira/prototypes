@@ -6,9 +6,8 @@ import {Card, CardBody, Button} from 'reactstrap'
 
 import * as segmentTracker from '../../../../../../store/middlewares/segmentTracker'
 
-
 type Props = {
-    customer: Map<*, *>
+    customer: Map<*, *>,
 }
 
 export default class AddIntegrationSuggestion extends React.Component<Props> {
@@ -29,38 +28,69 @@ export default class AddIntegrationSuggestion extends React.Component<Props> {
                                     <CardBody className="content">
                                         <div>
                                             <div className="simple-field">
-                                                <span className="field-label">Spent:</span>
-                                                <span className="field-value">$71</span>
-                                            </div>
-                                            <div className="simple-field">
-                                                <span className="field-label">Lifetime value:</span>
-                                                <span className="field-value">$252</span>
-                                            </div>
-                                            <div className="simple-field">
-                                                <span className="field-label">Points:</span>
-                                                <span className="field-value">153</span>
-                                            </div>
-                                            <div className="simple-field">
-                                                <span className="field-label">Group:</span>
-                                                <span className="field-value">VIP</span>
-                                            </div>
-                                            <div className="simple-field">
-                                                <span className="field-label">Birthday:</span>
-                                                <span className="field-value">03/08/1991</span>
-                                            </div>
-                                            <div className="simple-field">
-                                                <span className="field-label">Address:</span>
+                                                <span className="field-label">
+                                                    Spent:
+                                                </span>
                                                 <span className="field-value">
-                                                    768 Harrison St, San Francisco, 94107, CA
+                                                    $71
                                                 </span>
                                             </div>
                                             <div className="simple-field">
-                                                <span className="field-label">Created at:</span>
-                                                <span className="field-value">12/10/2016</span>
+                                                <span className="field-label">
+                                                    Lifetime value:
+                                                </span>
+                                                <span className="field-value">
+                                                    $252
+                                                </span>
                                             </div>
                                             <div className="simple-field">
-                                                <span className="field-label">Preferred communication:</span>
-                                                <span className="field-value">email</span>
+                                                <span className="field-label">
+                                                    Points:
+                                                </span>
+                                                <span className="field-value">
+                                                    153
+                                                </span>
+                                            </div>
+                                            <div className="simple-field">
+                                                <span className="field-label">
+                                                    Group:
+                                                </span>
+                                                <span className="field-value">
+                                                    VIP
+                                                </span>
+                                            </div>
+                                            <div className="simple-field">
+                                                <span className="field-label">
+                                                    Birthday:
+                                                </span>
+                                                <span className="field-value">
+                                                    03/08/1991
+                                                </span>
+                                            </div>
+                                            <div className="simple-field">
+                                                <span className="field-label">
+                                                    Address:
+                                                </span>
+                                                <span className="field-value">
+                                                    768 Harrison St, San
+                                                    Francisco, 94107, CA
+                                                </span>
+                                            </div>
+                                            <div className="simple-field">
+                                                <span className="field-label">
+                                                    Created at:
+                                                </span>
+                                                <span className="field-value">
+                                                    12/10/2016
+                                                </span>
+                                            </div>
+                                            <div className="simple-field">
+                                                <span className="field-label">
+                                                    Preferred communication:
+                                                </span>
+                                                <span className="field-value">
+                                                    email
+                                                </span>
                                             </div>
                                         </div>
                                     </CardBody>
@@ -74,15 +104,18 @@ export default class AddIntegrationSuggestion extends React.Component<Props> {
                                             fontWeight: 'bold',
                                         }}
                                     >
-                                        Display customer data here by adding an integration
+                                        Display customer data here by adding an
+                                        integration
                                     </div>
                                     <Button
                                         tag={Link}
                                         color="info"
                                         to="/app/settings/integrations"
                                         onClick={() => {
-                                            segmentTracker
-                                                .logEvent(segmentTracker.EVENTS.INFOBAR_INTEGRATION_ADD_CLICKED)
+                                            segmentTracker.logEvent(
+                                                segmentTracker.EVENTS
+                                                    .INFOBAR_INTEGRATION_ADD_CLICKED
+                                            )
                                         }}
                                     >
                                         Add integration

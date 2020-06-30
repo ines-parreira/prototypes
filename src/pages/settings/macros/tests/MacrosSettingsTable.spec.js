@@ -15,11 +15,13 @@ jest.mock('react-router')
 jest.mock('../../../../models/macro')
 
 describe('<MacrosSettingsTable/>', () => {
-    const macrosState = (macrosFixtures
-        .reduce((acc, macro) => ({
+    const macrosState = (macrosFixtures.reduce(
+        (acc, macro) => ({
             ...acc,
             [macro.id]: macro,
-        }), {}): any)
+        }),
+        {}
+    ): any)
     const mockCreateMacro = (createMacro: any)
     const mockDeleteMacro = (deleteMacro: any)
     const mockMacroCreated = jest.fn()
@@ -56,10 +58,7 @@ describe('<MacrosSettingsTable/>', () => {
 
     it('should display a loading when fetching macros', () => {
         const component = shallow(
-            <MacrosSettingsTableContainer
-                {...minProps}
-                isLoading={true}
-            />
+            <MacrosSettingsTableContainer {...minProps} isLoading={true} />
         )
 
         expect(component.find(Loader)).toHaveLength(1)
@@ -89,7 +88,10 @@ describe('<MacrosSettingsTable/>', () => {
         )
 
         component.find(TableBodyRow).at(0).simulate('click')
-        expect(browserHistory.push).toHaveBeenNthCalledWith(1, '/app/settings/macros/1')
+        expect(browserHistory.push).toHaveBeenNthCalledWith(
+            1,
+            '/app/settings/macros/1'
+        )
     })
 
     it('should duplicate a macro', (done) => {
@@ -113,7 +115,10 @@ describe('<MacrosSettingsTable/>', () => {
                 ...macrosState['1'],
                 id: 3,
             })
-            expect(browserHistory.push).toHaveBeenNthCalledWith(1, '/app/settings/macros/3')
+            expect(browserHistory.push).toHaveBeenNthCalledWith(
+                1,
+                '/app/settings/macros/3'
+            )
             done()
         })
     })
@@ -181,9 +186,15 @@ describe('<MacrosSettingsTable/>', () => {
     })
 
     it('should change sort column when clicking header cell', () => {
-        const component = shallow(<MacrosSettingsTableContainer {...minProps}/>)
+        const component = shallow(
+            <MacrosSettingsTableContainer {...minProps} />
+        )
 
         component.find(HeaderCellProperty).at(0).simulate('click')
-        expect(mockOnSortOptionsChange).toHaveBeenNthCalledWith(1, 'name', 'asc')
+        expect(mockOnSortOptionsChange).toHaveBeenNthCalledWith(
+            1,
+            'name',
+            'asc'
+        )
     })
 })

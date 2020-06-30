@@ -20,7 +20,9 @@ describe('localStorageManager', () => {
     describe('integrations', () => {
         describe('[SHOPIFY_INTEGRATION_TYPE]', () => {
             describe('draftOrders', () => {
-                const methods = localStorageManager.integrations[SHOPIFY_INTEGRATION_TYPE].draftOrders
+                const methods =
+                    localStorageManager.integrations[SHOPIFY_INTEGRATION_TYPE]
+                        .draftOrders
                 const key = methods._key
 
                 describe('getMap()', () => {
@@ -34,8 +36,14 @@ describe('localStorageManager', () => {
 
                     it('should get values when it is defined', () => {
                         // Given
-                        const entries = [[1, now], [2, soon]]
-                        window.localStorage.setItem(key, JSON.stringify(entries))
+                        const entries = [
+                            [1, now],
+                            [2, soon],
+                        ]
+                        window.localStorage.setItem(
+                            key,
+                            JSON.stringify(entries)
+                        )
 
                         // When
                         const values = methods.getMap()
@@ -51,20 +59,30 @@ describe('localStorageManager', () => {
                         methods.setMapItem(1, now)
 
                         // Then
-                        const values = JSON.parse(window.localStorage.getItem(key))
+                        const values = JSON.parse(
+                            window.localStorage.getItem(key)
+                        )
                         expect(values).toEqual([[1, now]])
                     })
 
                     it('should set value when map is defined', () => {
                         // Given
-                        window.localStorage.setItem(key, JSON.stringify([[1, now]]))
+                        window.localStorage.setItem(
+                            key,
+                            JSON.stringify([[1, now]])
+                        )
 
                         // When
                         methods.setMapItem(2, soon)
 
                         // Then
-                        const values = JSON.parse(window.localStorage.getItem(key))
-                        expect(values).toEqual([[1, now], [2, soon]])
+                        const values = JSON.parse(
+                            window.localStorage.getItem(key)
+                        )
+                        expect(values).toEqual([
+                            [1, now],
+                            [2, soon],
+                        ])
                     })
                 })
 
@@ -74,19 +92,29 @@ describe('localStorageManager', () => {
                         methods.deleteMapItem(1)
 
                         // Then
-                        const values = JSON.parse(window.localStorage.getItem(key))
+                        const values = JSON.parse(
+                            window.localStorage.getItem(key)
+                        )
                         expect(values).toEqual([])
                     })
 
                     it('should remove value when map is defined', () => {
                         // Given
-                        window.localStorage.setItem(key, JSON.stringify([[1, now], [2, soon]]))
+                        window.localStorage.setItem(
+                            key,
+                            JSON.stringify([
+                                [1, now],
+                                [2, soon],
+                            ])
+                        )
 
                         // When
                         methods.deleteMapItem(1)
 
                         // Then
-                        const values = JSON.parse(window.localStorage.getItem(key))
+                        const values = JSON.parse(
+                            window.localStorage.getItem(key)
+                        )
                         expect(values).toEqual([[2, soon]])
                     })
                 })

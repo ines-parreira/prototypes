@@ -3,9 +3,12 @@ import {type List, type Map} from 'immutable'
 import classnames from 'classnames'
 
 import {
-    CHAT_CUSTOMER_CHANNEL_TYPE, EMAIL_CUSTOMER_CHANNEL_TYPE,
+    CHAT_CUSTOMER_CHANNEL_TYPE,
+    EMAIL_CUSTOMER_CHANNEL_TYPE,
     FACEBOOK_CUSTOMER_CHANNEL_TYPE,
-    INSTAGRAM_CUSTOMER_CHANNEL_TYPE, PHONE_CUSTOMER_CHANNEL_TYPE, TWITTER_CUSTOMER_CHANNEL_TYPE
+    INSTAGRAM_CUSTOMER_CHANNEL_TYPE,
+    PHONE_CUSTOMER_CHANNEL_TYPE,
+    TWITTER_CUSTOMER_CHANNEL_TYPE,
 } from '../../../../../../constants/user'
 import SourceIcon from '../../../SourceIcon'
 import Tooltip from '../../../Tooltip'
@@ -13,22 +16,20 @@ import css from '../../Infobar.less'
 
 import {ShowMore} from './ShowMore'
 
-
 const DEFAULT_COUNT_DISPLAYED_CUSTOMER_CHANNELS = 2
 
-
 type Props = {
-    channels: List<Map<*,*>>,
+    channels: List<Map<*, *>>,
     children: Node,
 }
 
 type State = {
-    displayAllCustomerChannels: boolean
+    displayAllCustomerChannels: boolean,
 }
 
 export default class CustomerChannels extends React.Component<Props, State> {
     state = {
-        displayAllCustomerChannels: false
+        displayAllCustomerChannels: false,
     }
 
     _displayAllCustomerChannels = () => {
@@ -40,19 +41,26 @@ export default class CustomerChannels extends React.Component<Props, State> {
         const {displayAllCustomerChannels} = this.state
 
         let filteredChannels = channels
-            .filter((channel) => { // hide chats and facebook
-                return ![CHAT_CUSTOMER_CHANNEL_TYPE, FACEBOOK_CUSTOMER_CHANNEL_TYPE, INSTAGRAM_CUSTOMER_CHANNEL_TYPE]
-                    .includes(channel.get('type'))
+            .filter((channel) => {
+                // hide chats and facebook
+                return ![
+                    CHAT_CUSTOMER_CHANNEL_TYPE,
+                    FACEBOOK_CUSTOMER_CHANNEL_TYPE,
+                    INSTAGRAM_CUSTOMER_CHANNEL_TYPE,
+                ].includes(channel.get('type'))
             })
             .sortBy((channel) => channel.get('address', '').toLowerCase()) // order addresses alphabetically
             .sortBy((channel) => -channel.get('preferred')) // put preferred addresses on top
             .sortBy((channel) => channel.get('type')) // group by channel type
 
-        const hasMoreChannels = !displayAllCustomerChannels
-            && filteredChannels.size > DEFAULT_COUNT_DISPLAYED_CUSTOMER_CHANNELS
+        const hasMoreChannels =
+            !displayAllCustomerChannels &&
+            filteredChannels.size > DEFAULT_COUNT_DISPLAYED_CUSTOMER_CHANNELS
 
         if (!displayAllCustomerChannels) {
-            filteredChannels = filteredChannels.take(DEFAULT_COUNT_DISPLAYED_CUSTOMER_CHANNELS)
+            filteredChannels = filteredChannels.take(
+                DEFAULT_COUNT_DISPLAYED_CUSTOMER_CHANNELS
+            )
         }
 
         const list = filteredChannels.map((channel, idx) => {
@@ -68,19 +76,21 @@ export default class CustomerChannels extends React.Component<Props, State> {
             switch (channelType) {
                 case EMAIL_CUSTOMER_CHANNEL_TYPE:
                     props = {
-                        href: `mailto:${channelAddress}`
+                        href: `mailto:${channelAddress}`,
                     }
                     break
                 case TWITTER_CUSTOMER_CHANNEL_TYPE:
                     props = {
                         href: `https://twitter.com/${channelAddress}`,
-                        target: '_blank'
+                        target: '_blank',
                     }
                     break
                 case PHONE_CUSTOMER_CHANNEL_TYPE:
                     // remove dots and spaces so that some extensions recognize the address as a tel number
                     props = {
-                        href: `tel:${channelAddress.replace(/\./g, '').replace(/ /g, '')}`
+                        href: `tel:${channelAddress
+                            .replace(/\./g, '')
+                            .replace(/ /g, '')}`,
                     }
                     break
                 default:
@@ -91,35 +101,28 @@ export default class CustomerChannels extends React.Component<Props, State> {
 
             if (props) {
                 addressComponent = (
-                    <a
-                        {...props}
-                        id={componentId}
-                    >
+                    <a {...props} id={componentId}>
                         {channelAddress}
                     </a>
                 )
             } else {
-                addressComponent = <span id={componentId}>{channelAddress}</span>
+                addressComponent = (
+                    <span id={componentId}>{channelAddress}</span>
+                )
             }
 
             return (
-                <p
-                    key={idx}
-                    className={css.customerChannel}
-                >
-                    <SourceIcon
-                        type={channelType}
-                        className="uncolored mr-2"
-                    />
+                <p key={idx} className={css.customerChannel}>
+                    <SourceIcon type={channelType} className="uncolored mr-2" />
                     {addressComponent}
                     <span
-                        className={classnames(css.copyAddress, 'ml-2 js-clipboard-copy')}
+                        className={classnames(
+                            css.copyAddress,
+                            'ml-2 js-clipboard-copy'
+                        )}
                         data-clipboard-target={`#${componentId}`}
                     >
-                        <i
-                            id={`copy-icon-${idx}`}
-                            className="material-icons"
-                        >
+                        <i id={`copy-icon-${idx}`} className="material-icons">
                             content_copy
                         </i>
                         <Tooltip
@@ -127,7 +130,7 @@ export default class CustomerChannels extends React.Component<Props, State> {
                             target={`copy-icon-${idx}`}
                             delay={{
                                 show: 1000,
-                                hide: 0
+                                hide: 0,
                             }}
                         >
                             Copy
@@ -141,16 +144,14 @@ export default class CustomerChannels extends React.Component<Props, State> {
             <>
                 {list}
                 {children}
-                {
-                    hasMoreChannels && (
-                        <ShowMore
-                            className="pl-0"
-                            onClick={this._displayAllCustomerChannels}
-                        >
-                            More info
-                        </ShowMore>
-                    )
-                }
+                {hasMoreChannels && (
+                    <ShowMore
+                        className="pl-0"
+                        onClick={this._displayAllCustomerChannels}
+                    >
+                        More info
+                    </ShowMore>
+                )}
             </>
         )
     }

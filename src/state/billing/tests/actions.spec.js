@@ -22,9 +22,9 @@ const contactInformation = {
             city: 'San Francisco',
             state: 'CA',
             country: 'United States',
-            postal_code: '94103'
-        }
-    }
+            postal_code: '94103',
+        },
+    },
 }
 
 jest.mock('../../notifications/actions', () => {
@@ -61,31 +61,35 @@ describe('billing actions', () => {
         const usage = {
             data: {
                 cost: 12.35,
-                ticket: 12323
+                ticket: 12323,
             },
             meta: {
                 startDate: '2016-11-13T18:30:19+00:00',
-                endDate: '2016-12-13T18:30:19+00:00'
-            }
+                endDate: '2016-12-13T18:30:19+00:00',
+            },
         }
 
         mockServer.onGet('/api/billing/current-usage/').reply(200, usage)
 
-        return store.dispatch(actions.fetchCurrentUsage())
+        return store
+            .dispatch(actions.fetchCurrentUsage())
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
     it('fetch invoices', () => {
-        const invoices = [{
-            metadata: {},
-            paid: true,
-            date: '2016-11-13T18:30:19+00:00',
-            amount_due: 1234
-        }]
+        const invoices = [
+            {
+                metadata: {},
+                paid: true,
+                date: '2016-11-13T18:30:19+00:00',
+                amount_due: 1234,
+            },
+        ]
 
         mockServer.onGet('/api/billing/invoices/').reply(200, {data: invoices})
 
-        return store.dispatch(actions.fetchInvoices())
+        return store
+            .dispatch(actions.fetchInvoices())
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
@@ -95,44 +99,51 @@ describe('billing actions', () => {
             method: 'stripe',
         }
 
-        mockServer.onGet('/api/billing/payment-method/').reply(200, paymentMethod)
+        mockServer
+            .onGet('/api/billing/payment-method/')
+            .reply(200, paymentMethod)
 
-        return store.dispatch(actions.fetchPaymentMethod())
+        return store
+            .dispatch(actions.fetchPaymentMethod())
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
     describe('fetch billing contact information', () => {
         it('success', () => {
+            mockServer
+                .onGet('/api/billing/contact/')
+                .reply(200, contactInformation)
 
-            mockServer.onGet('/api/billing/contact/').reply(200, contactInformation)
-
-            return store.dispatch(actions.fetchContact())
+            return store
+                .dispatch(actions.fetchContact())
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
         it('failure', () => {
-
             mockServer.onGet('/api/billing/contact/').reply(400)
 
-            return store.dispatch(actions.fetchContact())
+            return store
+                .dispatch(actions.fetchContact())
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
     })
 
     describe('update billing contact information', () => {
         it('success', () => {
+            mockServer
+                .onPut('/api/billing/contact/')
+                .reply(200, contactInformation)
 
-            mockServer.onPut('/api/billing/contact/').reply(200, contactInformation)
-
-            return store.dispatch(actions.updateContact(fromJS(contactInformation)))
+            return store
+                .dispatch(actions.updateContact(fromJS(contactInformation)))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
         it('failure', () => {
-
             mockServer.onPut('/api/billing/contact/').reply(400)
 
-            return store.dispatch(actions.updateContact(fromJS(contactInformation)))
+            return store
+                .dispatch(actions.updateContact(fromJS(contactInformation)))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
     })
@@ -142,12 +153,13 @@ describe('billing actions', () => {
             brand: 'visa',
             last4: '4242',
             exp_month: 12,
-            exp_year: 35
+            exp_year: 35,
         }
 
         mockServer.onGet('/api/billing/credit-card/').reply(200, card)
 
-        return store.dispatch(actions.fetchCreditCard())
+        return store
+            .dispatch(actions.fetchCreditCard())
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
@@ -158,7 +170,7 @@ describe('billing actions', () => {
                 brand: 'mastercard',
                 name: 'Steve Frizeli',
                 exp_month: '12',
-                exp_year: '24'
+                exp_year: '24',
             }
             expect(actions.setCreditCard(fromJS(card))).toMatchSnapshot()
         })
@@ -166,7 +178,9 @@ describe('billing actions', () => {
 
     describe('setFutureSubscriptionPlan()', () => {
         it('should return a Redux action to set the future subscription plan.', () => {
-            expect(actions.setFutureSubscriptionPlan('advanced-usd-1')).toMatchSnapshot()
+            expect(
+                actions.setFutureSubscriptionPlan('advanced-usd-1')
+            ).toMatchSnapshot()
         })
     })
 
@@ -176,7 +190,9 @@ describe('billing actions', () => {
                 id: 'in_dnu3xd0i2n3f0',
                 paid: false,
             }
-            expect(actions.updateInvoiceInList(fromJS(invoice))).toMatchSnapshot()
+            expect(
+                actions.updateInvoiceInList(fromJS(invoice))
+            ).toMatchSnapshot()
         })
     })
 })

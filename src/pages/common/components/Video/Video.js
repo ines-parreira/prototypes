@@ -8,17 +8,16 @@ import css from './Video.less'
 type Props = {
     videoId: string,
     videoPreviewIndex?: string,
-    legend: string
+    legend: string,
 }
 
 type State = {
-    modalIsOpen: boolean
+    modalIsOpen: boolean,
 }
-
 
 export default class Video extends React.Component<Props, State> {
     state = {
-        modalIsOpen: false
+        modalIsOpen: false,
     }
 
     _toggleModal = () => {
@@ -33,23 +32,23 @@ export default class Video extends React.Component<Props, State> {
 
         return (
             <div>
-                <div
-                    className={css.preview}
-                    onClick={this._toggleModal}
-                >
+                <div className={css.preview} onClick={this._toggleModal}>
                     <div className={css.screenshot}>
                         <img
                             alt="video preview"
                             src={`https://img.youtube.com/vi/${videoId}/${previewIndex}.jpg`}
                         />
-                        <i className={classnames('material-icons', css.playIcon)}>
+                        <i
+                            className={classnames(
+                                'material-icons',
+                                css.playIcon
+                            )}
+                        >
                             play_circle_filled_white
                         </i>
-                        <div className={css.iconBackground}/>
+                        <div className={css.iconBackground} />
                     </div>
-                    <div className={css.title}>
-                        {legend}
-                    </div>
+                    <div className={css.title}>{legend}</div>
                 </div>
                 <Modal
                     isOpen={modalIsOpen}

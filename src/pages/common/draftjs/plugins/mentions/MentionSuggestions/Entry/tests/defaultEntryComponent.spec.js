@@ -3,7 +3,6 @@ import {shallow} from 'enzyme'
 
 import defaultEntryComponent from '../defaultEntryComponent'
 
-
 describe('defaultEntryComponent', () => {
     it('should render', () => {
         const component = shallow(
@@ -12,12 +11,13 @@ describe('defaultEntryComponent', () => {
                     name: 'Marie Curie',
                     email: 'marïe@gorgias.io',
                     meta: {
-                        profile_picture_url: 'https://gorgias.io/profilepicture.png'
-                    }
+                        profile_picture_url:
+                            'https://gorgias.io/profilepicture.png',
+                    },
                 }),
                 theme: {
-                    mentionSuggestionsEntryText: 'my-class-name'
-                }
+                    mentionSuggestionsEntryText: 'my-class-name',
+                },
             })
         )
 

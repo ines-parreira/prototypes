@@ -9,7 +9,7 @@ type Props = {
     isActive: boolean,
     children?: Node,
     onActivate: () => void,
-    onSelect: () => void
+    onSelect: () => void,
 }
 
 export default class MenuItem extends React.Component<Props> {
@@ -25,7 +25,7 @@ export default class MenuItem extends React.Component<Props> {
             <DropdownItem
                 type="button"
                 className={classNames(css.option, {
-                    [`${css['option--focused']}`]: isActive
+                    [`${css['option--focused']}`]: isActive,
                 })}
                 onMouseEnter={onActivate}
                 onMouseDown={this._onSelect}

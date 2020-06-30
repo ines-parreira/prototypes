@@ -10,19 +10,10 @@ type Props = $Exact<{
     className?: string,
 }>
 
-export default function TableHead({
-    children,
-    className,
-    ...otherProps
-}: Props) {
+export default function TableHead({children, className, ...otherProps}: Props) {
     return (
-        <thead
-            {...otherProps}
-            className={classnames(className)}
-        >
-            <tr className={css.headerRow}>
-                {children}
-            </tr>
+        <thead {...otherProps} className={classnames(className)}>
+            <tr className={css.headerRow}>{children}</tr>
         </thead>
     )
 }

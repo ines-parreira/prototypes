@@ -8,10 +8,9 @@ import Avatar from '../../../../../common/components/Avatar'
 import css from './ChatIntegrationPreview.less'
 import CustomerInitialMessages from './CustomerInitialMessages'
 
-
 type Props = {
     conversationColor: string,
-    currentUser?: Map<*,*>
+    currentUser?: Map<*, *>,
 }
 
 export default class MessageContent extends React.Component<Props> {
@@ -28,7 +27,7 @@ export default class MessageContent extends React.Component<Props> {
                     conversationColor={conversationColor}
                     messages={[
                         'Hey there',
-                        'I\'m wondering about the status of my order, I\'ve been waiting for a while now and it has not arrived yet.'
+                        "I'm wondering about the status of my order, I've been waiting for a while now and it has not arrived yet.",
                     ]}
                 />
 
@@ -45,7 +44,12 @@ export default class MessageContent extends React.Component<Props> {
                             {currentUser.get('name')}
                         </div>
 
-                        <div className={classnames(css.bubble, css.firstMessageOfAppMaker)}>
+                        <div
+                            className={classnames(
+                                css.bubble,
+                                css.firstMessageOfAppMaker
+                            )}
+                        >
                             Sure, what's your email / order number?
                         </div>
                     </div>

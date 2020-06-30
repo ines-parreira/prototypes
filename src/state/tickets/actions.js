@@ -6,35 +6,47 @@ import {notify} from '../notifications/actions'
 import type {dispatchType, thunkActionType} from '../types'
 import {buildJobMessage} from '../../utils/notificationUtils'
 
-import * as types from'./constants'
-
+import * as types from './constants'
 
 export const updateCursor = (cursor) => (dispatch) => {
     return dispatch({
         type: types.UPDATE_CURSOR,
-        cursor
+        cursor,
     })
 }
 
-export function createJob(ids: List<*>, jobType: string, jobPartialParams: Object): thunkActionType {
+export function createJob(
+    ids: List<*>,
+    jobType: string,
+    jobPartialParams: Object
+): thunkActionType {
     return (dispatch: dispatchType): Promise<dispatchType> => {
-
         const requestPayload = {
-            'type': jobType,
-            'params': Object.assign({}, {'ticket_ids': ids.toJS()}, jobPartialParams)
+            type: jobType,
+            params: Object.assign(
+                {},
+                {ticket_ids: ids.toJS()},
+                jobPartialParams
+            ),
         }
 
-        const notification = dispatch(notify({
-            status: 'loading',
-            dismissAfter: 0,
-            closeOnNext: true,
-            message: buildJobMessage(jobType, false,
-                ids.size === 1 ? 'ticket' : 'tickets',
-                jobPartialParams,
-                ids.size)
-        }))
+        const notification = dispatch(
+            notify({
+                status: 'loading',
+                dismissAfter: 0,
+                closeOnNext: true,
+                message: buildJobMessage(
+                    jobType,
+                    false,
+                    ids.size === 1 ? 'ticket' : 'tickets',
+                    jobPartialParams,
+                    ids.size
+                ),
+            })
+        )
 
-        return axios.post('/api/jobs/', requestPayload)
+        return axios
+            .post('/api/jobs/', requestPayload)
             .then((json = {}) => json.data)
             .then(() => {
                 notification.status = 'success'
@@ -42,7 +54,8 @@ export function createJob(ids: List<*>, jobType: string, jobPartialParams: Objec
             })
             .catch((error) => {
                 notification.status = 'error'
-                notification.message = 'Failed to apply action on tickets. Please try again.'
+                notification.message =
+                    'Failed to apply action on tickets. Please try again.'
                 dispatch(updateNotification(notification))
                 throw error
             })

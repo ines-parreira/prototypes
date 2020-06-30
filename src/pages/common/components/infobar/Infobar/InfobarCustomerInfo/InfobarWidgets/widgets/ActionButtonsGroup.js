@@ -1,7 +1,13 @@
 // @flow
 import React from 'react'
 import classnames from 'classnames'
-import {ButtonDropdown, ButtonGroup, DropdownItem, DropdownMenu, DropdownToggle,} from 'reactstrap'
+import {
+    ButtonDropdown,
+    ButtonGroup,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+} from 'reactstrap'
 
 import ActionButton from './ActionButton'
 
@@ -9,12 +15,12 @@ import type {ActionType} from './types'
 
 type Props = {
     actions: Array<ActionType>,
-    payload: Object,  // the arguments which need to be passed to execute any action
+    payload: Object, // the arguments which need to be passed to execute any action
     float: boolean,
 }
 
 type State = {
-    actionDropdownIsOpen: boolean
+    actionDropdownIsOpen: boolean,
 }
 
 // The maximum number of actions we can display before adding the dropdown
@@ -26,7 +32,7 @@ export default class ActionButtonsGroup extends React.Component<Props, State> {
     }
 
     state = {
-        actionDropdownIsOpen: false
+        actionDropdownIsOpen: false,
     }
 
     render() {
@@ -42,66 +48,68 @@ export default class ActionButtonsGroup extends React.Component<Props, State> {
         const dropdownOptions = actions.slice(NB_ACTIONS_DISPLAYED)
 
         return (
-            <ButtonGroup className={classnames('action-buttons', {'action-buttons-float': float})}>
-                {
-                    buttons.map((action) => {
-                        return (
-                            <ActionButton
-                                key={action.key}
-                                options={action.options}
-                                payload={payload}
-                                popover={action.popover}
-                                tooltip={action.tooltip}
-                                title={action.title}
-                                modal={action.modal}
-                                modalData={action.modalData}
-                                float={float}
-                            >
-                                {action.child}
-                            </ActionButton>
-                        )
-                    })
-                }
-                {
-                    dropdownOptions.length > 0 && (
-                        <ButtonDropdown
-                            className="action-dropdown"
-                            isOpen={actionDropdownIsOpen}
-                            toggle={() => this.setState({actionDropdownIsOpen: !actionDropdownIsOpen})}
+            <ButtonGroup
+                className={classnames('action-buttons', {
+                    'action-buttons-float': float,
+                })}
+            >
+                {buttons.map((action) => {
+                    return (
+                        <ActionButton
+                            key={action.key}
+                            options={action.options}
+                            payload={payload}
+                            popover={action.popover}
+                            tooltip={action.tooltip}
+                            title={action.title}
+                            modal={action.modal}
+                            modalData={action.modalData}
+                            float={float}
                         >
-                            <DropdownToggle
-                                caret
-                                className="caret-only"
-                                type="button"
-                                color="secondary"
-                                size="sm"
-                            />
-                            <DropdownMenu right>
-                                {
-                                    dropdownOptions.map((action) => {
-                                        return (
-                                            <ActionButton
-                                                key={action.key}
-                                                options={action.options}
-                                                payload={payload}
-                                                tag={DropdownItem}
-                                                tagOptions={{toggle: false}}
-                                                popover={action.popover}
-                                                tooltip={action.tooltip}
-                                                title={action.title}
-                                                modal={action.modal}
-                                                modalData={action.modalData}
-                                                float={float}
-                                            >
-                                                {action.child}
-                                            </ActionButton>
-                                        )
-                                    })
-                                }
-                            </DropdownMenu>
-                        </ButtonDropdown>
+                            {action.child}
+                        </ActionButton>
                     )
-                }
+                })}
+                {dropdownOptions.length > 0 && (
+                    <ButtonDropdown
+                        className="action-dropdown"
+                        isOpen={actionDropdownIsOpen}
+                        toggle={() =>
+                            this.setState({
+                                actionDropdownIsOpen: !actionDropdownIsOpen,
+                            })
+                        }
+                    >
+                        <DropdownToggle
+                            caret
+                            className="caret-only"
+                            type="button"
+                            color="secondary"
+                            size="sm"
+                        />
+                        <DropdownMenu right>
+                            {dropdownOptions.map((action) => {
+                                return (
+                                    <ActionButton
+                                        key={action.key}
+                                        options={action.options}
+                                        payload={payload}
+                                        tag={DropdownItem}
+                                        tagOptions={{toggle: false}}
+                                        popover={action.popover}
+                                        tooltip={action.tooltip}
+                                        title={action.title}
+                                        modal={action.modal}
+                                        modalData={action.modalData}
+                                        float={float}
+                                    >
+                                        {action.child}
+                                    </ActionButton>
+                                )
+                            })}
+                        </DropdownMenu>
+                    </ButtonDropdown>
+                )}
             </ButtonGroup>
         )
     }

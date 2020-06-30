@@ -22,7 +22,8 @@ exports[`Charge AfterContent should aggregate line_items by subscriptions 1`] = 
           >
             🔄
           </span>
-           Subscription #
+           
+          Subscription #
           1
         </span>
       </a>
@@ -76,7 +77,8 @@ exports[`Charge AfterContent should aggregate line_items by subscriptions 1`] = 
           >
             🔄
           </span>
-           Subscription #
+           
+          Subscription #
           2
         </span>
       </a>

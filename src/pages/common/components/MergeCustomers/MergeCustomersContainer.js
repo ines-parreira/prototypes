@@ -36,11 +36,15 @@ class MergeCustomersContainer extends React.Component {
 
         if (isTicketContext && ticketMessages) {
             ticketMessages.forEach((message) => {
-                requiredAddresses.push(message.getIn(['source', 'from', 'address'], null))
+                requiredAddresses.push(
+                    message.getIn(['source', 'from', 'address'], null)
+                )
 
-                message.getIn(['source', 'to'], fromJS([])).forEach((sourceField) => {
-                    requiredAddresses.push(sourceField.get('address', null))
-                })
+                message
+                    .getIn(['source', 'to'], fromJS([]))
+                    .forEach((sourceField) => {
+                        requiredAddresses.push(sourceField.get('address', null))
+                    })
             })
         }
 
@@ -52,7 +56,9 @@ class MergeCustomersContainer extends React.Component {
                 toggleModal={onClose}
                 mergeCustomers={mergeCustomers}
                 isLoading={customersIsLoading('merge')}
-                requiredAddresses={fromJS(requiredAddresses).toSet().filter((address) => address)}
+                requiredAddresses={fromJS(requiredAddresses)
+                    .toSet()
+                    .filter((address) => address)}
                 onSuccess={onSuccess}
             />
         )
@@ -62,7 +68,7 @@ class MergeCustomersContainer extends React.Component {
 MergeCustomersContainer.defaultProps = {
     display: false,
     isLoading: false,
-    isTicketContext: false
+    isTicketContext: false,
 }
 
 MergeCustomersContainer.propTypes = {
@@ -75,14 +81,16 @@ MergeCustomersContainer.propTypes = {
     onSuccess: PropTypes.func,
 
     isTicketContext: PropTypes.bool.isRequired,
-    ticketMessages: PropTypes.object.isRequired
+    ticketMessages: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state) {
     return {
         customersIsLoading: makeIsLoading(state),
-        ticketMessages: getMessages(state)
+        ticketMessages: getMessages(state),
     }
 }
 
-export default connect(mapStateToProps, {mergeCustomers})(MergeCustomersContainer)
+export default connect(mapStateToProps, {mergeCustomers})(
+    MergeCustomersContainer
+)

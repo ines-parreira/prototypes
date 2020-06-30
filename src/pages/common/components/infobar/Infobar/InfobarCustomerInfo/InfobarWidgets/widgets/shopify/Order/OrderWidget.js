@@ -29,7 +29,7 @@ export default function OrderWidget() {
 
 type AfterTitleProps = {
     isEditing: boolean,
-    source: Map<string, string | number | boolean>
+    source: Map<string, string | number | boolean>,
 }
 
 class AfterTitle extends React.Component<AfterTitleProps> {
@@ -60,16 +60,12 @@ class AfterTitle extends React.Component<AfterTitleProps> {
                         parameters: [
                             {name: 'order_id', type: 'hidden'},
                             {name: 'payload', type: 'hidden'},
-                        ]
-                    }
+                        ],
+                    },
                 ],
                 title: 'Refund order',
                 tooltip: 'Refund order',
-                child: (
-                    <i className="material-icons">
-                        refresh
-                    </i>
-                ),
+                child: <i className="material-icons">refresh</i>,
                 modal: RefundOrderModal,
                 modalData: {
                     actionName: ShopifyAction.REFUND_ORDER,
@@ -85,16 +81,12 @@ class AfterTitle extends React.Component<AfterTitleProps> {
                         parameters: [
                             {name: 'order_id', type: 'hidden'},
                             {name: 'payload', type: 'hidden'},
-                        ]
-                    }
+                        ],
+                    },
                 ],
                 title: 'Cancel order',
                 tooltip: 'Cancel order',
-                child: (
-                    <i className="material-icons">
-                        block
-                    </i>
-                ),
+                child: <i className="material-icons">block</i>,
                 modal: CancelOrderModal,
                 modalData: {
                     actionName: ShopifyAction.CANCEL_ORDER,
@@ -116,11 +108,7 @@ class AfterTitle extends React.Component<AfterTitleProps> {
                 ],
                 title: 'Duplicate order',
                 tooltip: 'Duplicate order',
-                child: (
-                    <i className="material-icons">
-                        filter_none
-                    </i>
-                ),
+                child: <i className="material-icons">filter_none</i>,
                 modal: DraftOrderModal,
                 modalData: {
                     actionName: ShopifyAction.DUPLICATE_ORDER,
@@ -146,7 +134,9 @@ class AfterTitle extends React.Component<AfterTitleProps> {
         }
 
         // remove removed actions from list of available actions
-        return actions.filter((action: ActionType) => !removed.includes(action.key))
+        return actions.filter(
+            (action: ActionType) => !removed.includes(action.key)
+        )
     }
 
     render() {
@@ -162,7 +152,7 @@ class AfterTitle extends React.Component<AfterTitleProps> {
         }
 
         const payload: Object = {
-            order_id: source.get('id') || ''
+            order_id: source.get('id') || '',
         }
 
         return (
@@ -186,8 +176,16 @@ class AfterTitle extends React.Component<AfterTitleProps> {
                     </CardHeaderValue>
                     <CardHeaderValue label="Total">
                         <MoneyAmount
-                            amount={source.getIn(['total_price_set', 'presentment_money', 'amount'])}
-                            currencyCode={source.getIn(['total_price_set', 'presentment_money', 'currency_code'])}
+                            amount={source.getIn([
+                                'total_price_set',
+                                'presentment_money',
+                                'amount',
+                            ])}
+                            currencyCode={source.getIn([
+                                'total_price_set',
+                                'presentment_money',
+                                'currency_code',
+                            ])}
                         />
                     </CardHeaderValue>
                 </CardHeaderDetails>
@@ -198,21 +196,27 @@ class AfterTitle extends React.Component<AfterTitleProps> {
 
 type TitleWrapperProps = {
     children?: Node,
-    source: Map<*, *>
+    source: Map<*, *>,
 }
 
-class TitleWrapper extends React.Component<TitleWrapperProps> { // eslint-disable-line
+class TitleWrapper extends React.Component<TitleWrapperProps> {
+    // eslint-disable-line
     static contextTypes = {
         integration: ImmutablePropTypes.map.isRequired,
     }
 
     render() {
         const {children, source} = this.props
-        const shopName: string = this.context.integration.getIn(['meta', 'shop_name'])
+        const shopName: string = this.context.integration.getIn([
+            'meta',
+            'shop_name',
+        ])
 
         return (
             <a
-                href={`https://${shopName}.myshopify.com/admin/orders/${(source.get('id') || '').toString()}`}
+                href={`https://${shopName}.myshopify.com/admin/orders/${(
+                    source.get('id') || ''
+                ).toString()}`}
                 target="_blank"
                 rel="noopener noreferrer"
             >
@@ -222,13 +226,13 @@ class TitleWrapper extends React.Component<TitleWrapperProps> { // eslint-disabl
     }
 }
 
-
 type WrapperProps = {
     children: Node,
-    source: Map<*, *>
+    source: Map<*, *>,
 }
 
-class Wrapper extends React.Component<WrapperProps> { // eslint-disable-line
+class Wrapper extends React.Component<WrapperProps> {
+    // eslint-disable-line
     static childContextTypes = {
         order: ImmutablePropTypes.map.isRequired,
         orderId: PropTypes.number,
@@ -244,7 +248,8 @@ class Wrapper extends React.Component<WrapperProps> { // eslint-disable-line
         const isCancelled = !!order.get('cancelled_at')
         const isRefunded = order.get('financial_status') === 'refunded'
         const isFulfilled = order.get('fulfillment_status') === 'fulfilled'
-        const isPartiallyFulfilled = order.get('fulfillment_status') === 'partial'
+        const isPartiallyFulfilled =
+            order.get('fulfillment_status') === 'partial'
 
         return {
             order,

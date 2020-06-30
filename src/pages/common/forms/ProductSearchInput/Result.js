@@ -17,17 +17,15 @@ export type Props = {
 export default class Result extends React.PureComponent<Props> {
     render() {
         const {image, title, subtitle} = this.props
-        const imageSrc = !!image ? getSizedImageUrl(image.src, 'small') : defaultImage
+        const imageSrc = !!image
+            ? getSizedImageUrl(image.src, 'small')
+            : defaultImage
         const imageAlt = !!image ? image.alt : ''
 
         return (
             <div className={css.container}>
                 <div className={css.imgContainer}>
-                    <img
-                        className={css.img}
-                        src={imageSrc}
-                        alt={imageAlt}
-                    />
+                    <img className={css.img} src={imageSrc} alt={imageAlt} />
                 </div>
                 <div className={css.legend}>
                     <div className={css.title}>{title}</div>

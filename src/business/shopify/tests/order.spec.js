@@ -8,14 +8,14 @@ import {
     shopifyRefundFixture,
     shopifyRefundLineItemFixture,
     shopifyRefundOrderPayloadFixture,
-    shopifySuggestedRefundFixture
+    shopifySuggestedRefundFixture,
 } from '../../../fixtures/shopify'
 import {
     getFinalCancelOrderPayload,
     getFinalRefundOrderPayload,
     getLineItemQuantity,
     initCancelOrderPayload,
-    initRefundOrderLineItems
+    initRefundOrderLineItems,
 } from '../order'
 
 describe('initCancelOrderPayload()', () => {
@@ -55,7 +55,10 @@ describe('getLineItemQuantity()', () => {
     it('should return adjusted quantity because there is a refund', () => {
         const refundLineItems = fromJS([shopifyRefundLineItemFixture()])
         const refund = fromJS(shopifyRefundFixture({refundLineItems}))
-        const order = fromJS(shopifyOrderFixture()).setIn(['refunds', 0], refund)
+        const order = fromJS(shopifyOrderFixture()).setIn(
+            ['refunds', 0],
+            refund
+        )
         const lineItem = order.getIn(['line_items', 0])
         const quantity = getLineItemQuantity(order, lineItem)
 

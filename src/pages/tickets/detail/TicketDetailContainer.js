@@ -35,7 +35,6 @@ import type {reactRouterLocation, reactRouterRoute} from '../../../types'
 import TicketView from './components/TicketView'
 import {updateMessageText} from './components/ReplyArea/TicketReplyEditor'
 
-
 type Props = {
     params: {
         view?: string,
@@ -73,35 +72,46 @@ type State = {
 }
 
 @withRouter
-@connect((state) => {
-    return {
-        activeView: viewsSelectors.getActiveView(state),
-        activeCustomer: customersSelectors.getActiveCustomer(state),
-        currentUser: state.currentUser,
-        customers: customersSelectors.getCustomersState(state),
-        routing: state.routing,
-        ticket: state.ticket,
-        newMessage: state.newMessage,
-        tickets: state.tickets,
-        isTicketDirty: ticketSelectors.isDirty(state),
-        canSendMessage: currentAccountSelectors.isAccountActive(state) && newMessageSelectors.isReady(state),
-        newMessageSource: newMessageSelectors.getNewMessageSource(state)
+@connect(
+    (state) => {
+        return {
+            activeView: viewsSelectors.getActiveView(state),
+            activeCustomer: customersSelectors.getActiveCustomer(state),
+            currentUser: state.currentUser,
+            customers: customersSelectors.getCustomersState(state),
+            routing: state.routing,
+            ticket: state.ticket,
+            newMessage: state.newMessage,
+            tickets: state.tickets,
+            isTicketDirty: ticketSelectors.isDirty(state),
+            canSendMessage:
+                currentAccountSelectors.isAccountActive(state) &&
+                newMessageSelectors.isReady(state),
+            newMessageSource: newMessageSelectors.getNewMessageSource(state),
+        }
+    },
+    (dispatch) => {
+        return {
+            actions: {
+                macro: bindActionCreators(MacroActions, dispatch),
+                tag: bindActionCreators(TagActions, dispatch),
+                ticket: bindActionCreators(TicketActions, dispatch),
+                customers: bindActionCreators(customersActions, dispatch),
+                views: bindActionCreators(ViewsActions, dispatch),
+                newMessage: bindActionCreators(newMessageActions, dispatch),
+            },
+            notify: bindActionCreators(notify, dispatch),
+            updateActiveViewCursor: bindActionCreators(
+                ticketsActions.updateCursor,
+                dispatch
+            ),
+            submitTicket: bindActionCreators(
+                newMessageActions.submitTicket,
+                dispatch
+            ),
+        }
     }
-}, (dispatch) => {
-    return {
-        actions: {
-            macro: bindActionCreators(MacroActions, dispatch),
-            tag: bindActionCreators(TagActions, dispatch),
-            ticket: bindActionCreators(TicketActions, dispatch),
-            customers: bindActionCreators(customersActions, dispatch),
-            views: bindActionCreators(ViewsActions, dispatch),
-            newMessage: bindActionCreators(newMessageActions, dispatch),
-        },
-        notify: bindActionCreators(notify, dispatch),
-        updateActiveViewCursor: bindActionCreators(ticketsActions.updateCursor, dispatch),
-        submitTicket: bindActionCreators(newMessageActions.submitTicket, dispatch),
-    }
-})
+)
 class TicketDetailContainer extends React.Component<Props, State> {
     static defaultProps = {
         isTicketDirty: false,
@@ -128,31 +138,26 @@ class TicketDetailContainer extends React.Component<Props, State> {
     componentWillMount() {
         const {
             actions: {
-                customers: {
-                    fetchCustomer,
-                },
-                tag: {
-                    fetchTags,
-                },
-                ticket: {
-                    clearTicket,
-                    fetchTicket,
-                }
+                customers: {fetchCustomer},
+                tag: {fetchTags},
+                ticket: {clearTicket, fetchTicket},
             },
             activeCustomer,
             location: {
                 query: {customer},
             },
-            params: {
-                ticketId,
-            }
+            params: {ticketId},
         } = this.props
         fetchTags()
         clearTicket()
         fetchTicket(ticketId || '')
 
         const customerId = parseInt(customer)
-        if (ticketId === 'new' && customer && activeCustomer.get('id') !== customerId) {
+        if (
+            ticketId === 'new' &&
+            customer &&
+            activeCustomer.get('id') !== customerId
+        ) {
             fetchCustomer(customerId)
         }
     }
@@ -164,12 +169,8 @@ class TicketDetailContainer extends React.Component<Props, State> {
     componentWillReceiveProps(nextProps: Props) {
         const {
             actions: {
-                customers: {
-                    fetchCustomerHistory,
-                },
-                newMessage: {
-                    setReceivers,
-                },
+                customers: {fetchCustomerHistory},
+                newMessage: {setReceivers},
                 ticket: {
                     clearTicket,
                     fetchTicket,
@@ -179,9 +180,7 @@ class TicketDetailContainer extends React.Component<Props, State> {
             },
             activeView,
             newMessageSource,
-            params: {
-                ticketId,
-            },
+            params: {ticketId},
             ticket,
             updateActiveViewCursor,
         } = this.props
@@ -190,21 +189,29 @@ class TicketDetailContainer extends React.Component<Props, State> {
         const nextParams = nextProps.params
         const nextCustomers = nextProps.customers
         const prevRecipients = newMessageSource.get('to') || fromJS([])
-        const nextRecipients = nextProps.newMessageSource.get('to') || fromJS([])
+        const nextRecipients =
+            nextProps.newMessageSource.get('to') || fromJS([])
 
         const ticketIdParamChanged = nextParams.ticketId !== ticketId
         const nextTicketIsNew = nextParams.ticketId === 'new'
-        const nextTicketIdParamMatchesNextTicket = nextTicket.get('id', '').toString() === nextParams.ticketId
-        const customerHasChanged = ticket.getIn(['customer', 'id']) !== nextCustomer.get('id')
+        const nextTicketIdParamMatchesNextTicket =
+            nextTicket.get('id', '').toString() === nextParams.ticketId
+        const customerHasChanged =
+            ticket.getIn(['customer', 'id']) !== nextCustomer.get('id')
 
         const hasCustomer = !nextCustomer.isEmpty()
 
-        const recipientsHaveBeenRemoved = !prevRecipients.isEmpty() && nextRecipients.isEmpty()
+        const recipientsHaveBeenRemoved =
+            !prevRecipients.isEmpty() && nextRecipients.isEmpty()
         const recipientsHaveChanged = !prevRecipients.equals(nextRecipients)
 
         const onlyOneRecipient = nextRecipients.size === 1
 
-        if (!nextTicketIsNew && nextTicket.get('customer') && !nextCustomers.getIn(['customerHistory', 'triedLoading'])) {
+        if (
+            !nextTicketIsNew &&
+            nextTicket.get('customer') &&
+            !nextCustomers.getIn(['customerHistory', 'triedLoading'])
+        ) {
             const customerId = nextTicket.getIn(['customer', 'id'])
 
             if (!customerId) {
@@ -215,7 +222,7 @@ class TicketDetailContainer extends React.Component<Props, State> {
             fetchCustomerHistory(customerId, {
                 successCondition: (state) => {
                     return state.ticket.getIn(['customer', 'id']) === customerId
-                }
+                },
             })
         }
 
@@ -231,22 +238,29 @@ class TicketDetailContainer extends React.Component<Props, State> {
 
         // set customer and receiver from query
         // map default channel (email) to address, for the receivers select.
-        const receiver = nextProps.activeCustomer.set('address', nextProps.activeCustomer.get('email'))
+        const receiver = nextProps.activeCustomer.set(
+            'address',
+            nextProps.activeCustomer.get('email')
+        )
         const customer = ticket.get('customer') || fromJS({})
 
         if (
             nextTicketIsNew &&
             nextProps.location.query.customer &&
-            nextProps.activeCustomer.get('id') === parseInt(nextProps.location.query.customer) &&
+            nextProps.activeCustomer.get('id') ===
+                parseInt(nextProps.location.query.customer) &&
             !customer.equals(receiver)
         ) {
             // set customer on ticket
             // (to show in infobar and be used in macros)
             setCustomer(receiver).then(() => {
                 // set in receivers selector
-                return setReceivers({
-                    to: [receiver.toJS()]
-                }, true)
+                return setReceivers(
+                    {
+                        to: [receiver.toJS()],
+                    },
+                    true
+                )
             })
         }
 
@@ -259,7 +273,8 @@ class TicketDetailContainer extends React.Component<Props, State> {
 
         // When we're on a new ticket, the recipients have changed, and there's now exactly one recipient,
         // set this recipient as customer of the ticket
-        const shouldSetFirstRecipientAsCustomer = recipientsHaveChanged && onlyOneRecipient
+        const shouldSetFirstRecipientAsCustomer =
+            recipientsHaveChanged && onlyOneRecipient
 
         if (nextTicketIsNew && shouldSetFirstRecipientAsCustomer) {
             const recipient = nextRecipients.first()
@@ -270,11 +285,16 @@ class TicketDetailContainer extends React.Component<Props, State> {
             // current customer.
 
             if (nextCustomer && !nextCustomer.isEmpty()) {
-                (nextCustomer.get('channels') || fromJS([])).forEach((channel) => {
-                    if (channel.get('type') === 'email' && channel.get('address') === recipient.get('address')) {
-                        shouldSetCustomer = false
+                ;(nextCustomer.get('channels') || fromJS([])).forEach(
+                    (channel) => {
+                        if (
+                            channel.get('type') === 'email' &&
+                            channel.get('address') === recipient.get('address')
+                        ) {
+                            shouldSetCustomer = false
+                        }
                     }
-                })
+                )
             }
 
             if (shouldSetCustomer) {
@@ -292,12 +312,17 @@ class TicketDetailContainer extends React.Component<Props, State> {
         // as recipient of the new message
         if (nextTicketIsNew && customerHasChanged && hasCustomer) {
             const newReceivers = _merge(
-                _pick(nextProps.newMessageSource.toJS(), newMessageSelectors.getReceiversProperties()),
+                _pick(
+                    nextProps.newMessageSource.toJS(),
+                    newMessageSelectors.getReceiversProperties()
+                ),
                 {
-                    to: [{
-                        name: nextTicket.getIn(['customer', 'name']),
-                        address: nextTicket.getIn(['customer', 'email'])
-                    }]
+                    to: [
+                        {
+                            name: nextTicket.getIn(['customer', 'name']),
+                            address: nextTicket.getIn(['customer', 'email']),
+                        },
+                    ],
                 }
             )
 
@@ -309,13 +334,9 @@ class TicketDetailContainer extends React.Component<Props, State> {
         window.onbeforeunload = null
         const {
             actions: {
-                ticket: {
-                    clearTicket,
-                },
+                ticket: {clearTicket},
             },
-            params: {
-                ticketId,
-            },
+            params: {ticketId},
             ticket,
         } = this.props
         const customerId = ticket.getIn(['customer', 'id'])
@@ -336,30 +357,30 @@ class TicketDetailContainer extends React.Component<Props, State> {
     _bindKeys() {
         const {
             actions: {
-                ticket: {
-                    clearTicket,
-                    goToNextTicket,
-                    goToPrevTicket,
-                },
-            }
+                ticket: {clearTicket, goToNextTicket, goToPrevTicket},
+            },
         } = this.props
 
         shortcutManager.bind('TicketDetailContainer', {
             GO_BACK: {
                 action: () => {
-                    const {params: {ticketId}} = this.props
+                    const {
+                        params: {ticketId},
+                    } = this.props
                     const ticketNumber = parseInt(ticketId)
                     clearTicket()
                     goToPrevTicket(ticketNumber)
-                }
+                },
             },
             GO_FORWARD: {
                 action: () => {
-                    const {params: {ticketId}} = this.props
+                    const {
+                        params: {ticketId},
+                    } = this.props
                     const ticketNumber = parseInt(ticketId)
                     clearTicket()
                     goToNextTicket(ticketNumber)
-                }
+                },
             },
             SUBMIT_TICKET: {
                 action: (e) => {
@@ -369,7 +390,7 @@ class TicketDetailContainer extends React.Component<Props, State> {
                     }
 
                     this._submit()
-                }
+                },
             },
             SUBMIT_CLOSE_TICKET: {
                 action: (e) => {
@@ -379,12 +400,17 @@ class TicketDetailContainer extends React.Component<Props, State> {
                     }
 
                     this._submit('closed', true)
-                }
+                },
             },
         })
     }
 
-    _submit = (status: ?string, next: any, action: ?List<Map<*, *>>, resetMessage: boolean = true) => {
+    _submit = (
+        status: ?string,
+        next: any,
+        action: ?List<Map<*, *>>,
+        resetMessage: boolean = true
+    ) => {
         let {
             canSendMessage,
             currentUser,
@@ -414,8 +440,8 @@ class TicketDetailContainer extends React.Component<Props, State> {
             ticket = ticket.mergeDeep({
                 customer: receiver,
                 newMessage: {
-                    sender
-                }
+                    sender,
+                },
             })
 
             promise = submitTicket(
@@ -430,26 +456,29 @@ class TicketDetailContainer extends React.Component<Props, State> {
         }
 
         if (status && promise) {
-            (promise: any).then(() => {
-                return this._setStatus(status || '', newMessage.getIn(['newMessage', 'source', 'type']))
+            ;(promise: any).then(() => {
+                return this._setStatus(
+                    status || '',
+                    newMessage.getIn(['newMessage', 'source', 'type'])
+                )
             })
         }
 
         return promise
     }
 
-    submitNewMessage = async (status: ?string, next: any, action: ?List<Map<*, *>>, resetMessage: boolean) => {
+    submitNewMessage = async (
+        status: ?string,
+        next: any,
+        action: ?List<Map<*, *>>,
+        resetMessage: boolean
+    ) => {
         const {
             actions: {
-                newMessage: {
-                    prepareTicketMessage,
-                    sendTicketMessage,
-                }
+                newMessage: {prepareTicketMessage, sendTicketMessage},
             },
             newMessage,
-            params: {
-                ticketId,
-            },
+            params: {ticketId},
             ticket,
         } = this.props
 
@@ -461,26 +490,30 @@ class TicketDetailContainer extends React.Component<Props, State> {
         )
 
         if (messageToSend.source.type === 'email') {
-            pendingMessageManager.sendMessage(newMessage.getIn(['state', 'contentState']), messageId, messageToSend, action, resetMessage, ticketId)
+            pendingMessageManager.sendMessage(
+                newMessage.getIn(['state', 'contentState']),
+                messageId,
+                messageToSend,
+                action,
+                resetMessage,
+                ticketId
+            )
             return
         }
         pendingMessageManager.skipExistingTimer()
         return sendTicketMessage(messageId, messageToSend, action, resetMessage)
     }
 
-    _setStatus = (status: string, sourceType?: $Keys<typeof SOURCE_VALUE_PROP>) => {
+    _setStatus = (
+        status: string,
+        sourceType?: $Keys<typeof SOURCE_VALUE_PROP>
+    ) => {
         const {
             actions: {
-                ticket: {
-                    clearTicket,
-                    goToNextTicket,
-                    setStatus,
-                },
+                ticket: {clearTicket, goToNextTicket, setStatus},
             },
             notify,
-            params: {
-                ticketId,
-            },
+            params: {ticketId},
             ticket,
         } = this.props
         return setStatus(status, () => {
@@ -505,22 +538,22 @@ class TicketDetailContainer extends React.Component<Props, State> {
         const {
             actions,
             activeView,
-            params: {
-                ticketId,
-            },
+            params: {ticketId},
             ticket,
         } = this.props
         const {isTicketHidden} = this.state
         if (
-            (ticketId !== 'new' && !ticket.get('id'))
-            || (ticketId === 'new' && ticket.get('id'))
-            || ticket.getIn(['_internal', 'loading', 'fetchTicket'])
+            (ticketId !== 'new' && !ticket.get('id')) ||
+            (ticketId === 'new' && ticket.get('id')) ||
+            ticket.getIn(['_internal', 'loading', 'fetchTicket'])
         ) {
-            return <Loader message="Loading ticket..."/>
+            return <Loader message="Loading ticket..." />
         }
 
         return (
-            <DocumentTitle title={ticket.get('id') ? ticket.get('subject') : 'New ticket'}>
+            <DocumentTitle
+                title={ticket.get('id') ? ticket.get('subject') : 'New ticket'}
+            >
                 <div className="TicketDetailContainer">
                     <TicketView
                         actions={actions}

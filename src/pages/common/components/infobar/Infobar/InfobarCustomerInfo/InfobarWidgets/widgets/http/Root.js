@@ -25,24 +25,20 @@ export function TitleWrapper({children, source, template}: Props) {
 
     return (
         <>
-            <CardHeaderIcon
-                src={logo}
-                alt="HTTP"
-            />
+            <CardHeaderIcon src={logo} alt="HTTP" />
             <CardHeaderTitle>HTTP</CardHeaderTitle>
             <CardHeaderSubtitle>
-                {link
-                    ? (
-                        <a
-                            href={renderTemplate(link, source.toJS())}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                        >
-                            {children}
-                        </a>
-                    )
-                    : children
-                }
+                {link ? (
+                    <a
+                        href={renderTemplate(link, source.toJS())}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {children}
+                    </a>
+                ) : (
+                    children
+                )}
             </CardHeaderSubtitle>
         </>
     )

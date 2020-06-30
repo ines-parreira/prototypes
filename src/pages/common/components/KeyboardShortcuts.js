@@ -25,4 +25,3 @@ export default class KeyboardShortcuts extends React.Component<Props> {
 
     render = () => null
 }
-

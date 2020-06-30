@@ -6,9 +6,8 @@ import _noop from 'lodash/noop'
 
 import configureStore from '../../../../../../store/configureStore'
 import ConnectedTicketReplyEditor, {
-    TicketReplyEditor
+    TicketReplyEditor,
 } from '../TicketReplyEditor'
-
 
 describe('TicketReplyEditor component', () => {
     it('should render empty ticket', () => {
@@ -40,19 +39,19 @@ describe('TicketReplyEditor component', () => {
             receiver: null,
             priority: 'normal',
             tags: [],
-            trashed_datetime: null
+            trashed_datetime: null,
         })
 
         const newMessage = fromJS({
             state: {
                 contentState: null,
                 selectionState: null,
-                cacheAdded: true
+                cacheAdded: true,
             },
             newMessage: {
                 body_text: '',
-                body_html: ''
-            }
+                body_html: '',
+            },
         })
         let newMessageText = ''
 
@@ -63,7 +62,6 @@ describe('TicketReplyEditor component', () => {
                 agents={[]}
                 actions={{}}
                 ticket={ticket}
-
                 addAttachments={_noop}
                 notify={_noop}
                 setMacrosVisible={_noop}
@@ -75,7 +73,9 @@ describe('TicketReplyEditor component', () => {
         )
 
         // simulate RichField change event
-        const editorState = EditorState.createWithContent(ContentState.createFromText('Pizza Pepperoni'))
+        const editorState = EditorState.createWithContent(
+            ContentState.createFromText('Pizza Pepperoni')
+        )
         component.instance()._onEditorChange(editorState)
         // simulate leaving ticket
         component.unmount()

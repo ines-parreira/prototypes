@@ -1,5 +1,10 @@
 //@flow
-import {hasFailedAction, hasPendingAction, isFailed, isPending} from '../predicates'
+import {
+    hasFailedAction,
+    hasPendingAction,
+    isFailed,
+    isPending,
+} from '../predicates'
 import type {TicketMessage} from '../types'
 
 import {action as defaultAction, message as defaultMessage} from './mocks'
@@ -21,10 +26,13 @@ describe('predicates', () => {
         it('should return true if has failed action', () => {
             const message: TicketMessage = ({
                 ...defaultMessage,
-                actions: [defaultAction, {
-                    ...defaultAction,
-                    status: 'error',
-                }],
+                actions: [
+                    defaultAction,
+                    {
+                        ...defaultAction,
+                        status: 'error',
+                    },
+                ],
             }: any)
             expect(hasFailedAction(message)).toBe(true)
         })
@@ -46,10 +54,13 @@ describe('predicates', () => {
         it('should return true if has pending action', () => {
             const message: TicketMessage = ({
                 ...defaultMessage,
-                actions: [defaultAction, {
-                    ...defaultAction,
-                    status: 'pending',
-                }],
+                actions: [
+                    defaultAction,
+                    {
+                        ...defaultAction,
+                        status: 'pending',
+                    },
+                ],
             }: any)
             expect(hasPendingAction(message)).toBe(true)
         })
@@ -63,10 +74,12 @@ describe('predicates', () => {
         it('should return true if has pending action', () => {
             const message: TicketMessage = ({
                 ...defaultMessage,
-                actions: [{
-                    ...defaultAction,
-                    status: 'pending',
-                }],
+                actions: [
+                    {
+                        ...defaultAction,
+                        status: 'pending',
+                    },
+                ],
             }: any)
             expect(isPending(message)).toBe(true)
         })
@@ -74,13 +87,16 @@ describe('predicates', () => {
         it('should return false if has failed and pending', () => {
             const message: TicketMessage = ({
                 ...defaultMessage,
-                actions: [{
-                    ...defaultAction,
-                    status: 'error',
-                }, {
-                    ...defaultAction,
-                    status: 'pending',
-                }],
+                actions: [
+                    {
+                        ...defaultAction,
+                        status: 'error',
+                    },
+                    {
+                        ...defaultAction,
+                        status: 'pending',
+                    },
+                ],
             }: any)
             expect(isPending(message)).toBe(false)
         })
@@ -97,10 +113,12 @@ describe('predicates', () => {
             const message: TicketMessage = ({
                 ...defaultMessage,
                 isPending: true,
-                actions: [{
-                    ...defaultAction,
-                    status: 'error',
-                }],
+                actions: [
+                    {
+                        ...defaultAction,
+                        status: 'error',
+                    },
+                ],
             }: any)
             expect(isPending(message)).toBe(true)
         })
@@ -133,10 +151,12 @@ describe('predicates', () => {
         it('should return true if it has failed action', () => {
             const message: TicketMessage = ({
                 ...defaultMessage,
-                actions: [{
-                    ...defaultAction,
-                    status: 'error',
-                }],
+                actions: [
+                    {
+                        ...defaultAction,
+                        status: 'error',
+                    },
+                ],
             }: any)
             expect(isFailed(message)).toBe(true)
         })
@@ -145,10 +165,12 @@ describe('predicates', () => {
             const message: TicketMessage = ({
                 ...defaultMessage,
                 isPending: true,
-                actions: [{
-                    ...defaultAction,
-                    status: 'error',
-                }],
+                actions: [
+                    {
+                        ...defaultAction,
+                        status: 'error',
+                    },
+                ],
             }: any)
             expect(isFailed(message)).toBe(false)
         })

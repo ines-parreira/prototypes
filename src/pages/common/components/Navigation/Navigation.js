@@ -12,8 +12,10 @@ type Props = {
 export default class Navigation extends React.Component<Props> {
     render() {
         const {
-            hasNextItems, fetchNextItems,
-            hasPrevItems, fetchPrevItems
+            hasNextItems,
+            fetchNextItems,
+            hasPrevItems,
+            fetchPrevItems,
         } = this.props
 
         if (!hasPrevItems && !hasNextItems) {
@@ -29,7 +31,9 @@ export default class Navigation extends React.Component<Props> {
                         disabled={!hasPrevItems}
                         onClick={fetchPrevItems}
                     >
-                        <i className="material-icons md-2">keyboard_arrow_left</i>
+                        <i className="material-icons md-2">
+                            keyboard_arrow_left
+                        </i>
                     </Button>
                     <Button
                         id="next-btn"
@@ -37,7 +41,9 @@ export default class Navigation extends React.Component<Props> {
                         disabled={!hasNextItems}
                         onClick={fetchNextItems}
                     >
-                        <i className="material-icons md-2">keyboard_arrow_right</i>
+                        <i className="material-icons md-2">
+                            keyboard_arrow_right
+                        </i>
                     </Button>
                 </ButtonGroup>
             </div>

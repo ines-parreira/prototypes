@@ -5,10 +5,7 @@ import _isEqual from 'lodash/isEqual'
 import _omit from 'lodash/omit'
 import _functions from 'lodash/functions'
 
-import {
-    addNotification,
-    removeNotification
-} from 'reapop'
+import {addNotification, removeNotification} from 'reapop'
 
 import type {dispatchType, getStateType} from '../types'
 // TODO(@ghinda): use existing array for status when flow implements it
@@ -34,7 +31,7 @@ export const AUTHORIZED_NOTIFICATION_TYPES = [
     'error',
     'warning',
     'info',
-    'loading'
+    'loading',
 ]
 
 export const INITIAL_MESSAGE = {
@@ -45,16 +42,17 @@ export const INITIAL_MESSAGE = {
     allowHTML: false,
     closeButton: false,
     // styles available: alert, banner, modal
-    style: 'alert'
+    style: 'alert',
 }
 
 // clean-up notification for comparison
-const cleanNotification = (n): {} => _omit(n, _functions(n).concat([
-    'id'
-]))
+const cleanNotification = (n): {} => _omit(n, _functions(n).concat(['id']))
 
 // detect duplicate notifications
-const isDuplicate = (notification: notificationType, oldNotification: notificationType): boolean => {
+const isDuplicate = (
+    notification: notificationType,
+    oldNotification: notificationType
+): boolean => {
     return _isEqual(
         cleanNotification(notification),
         cleanNotification(oldNotification)
@@ -69,7 +67,10 @@ const isDuplicate = (notification: notificationType, oldNotification: notificati
  * set closeOnNext = true to make the notification close on next notification addition
  * @param message
  */
-export const notify = (message: notificationType) => (dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
+export const notify = (message: notificationType) => (
+    dispatch: dispatchType,
+    getState: getStateType
+): Promise<dispatchType> => {
     // don't add empty notifications
     if (!message) {
         return Promise.resolve()
@@ -82,7 +83,7 @@ export const notify = (message: notificationType) => (dispatch: dispatchType, ge
     const finalMessage = {
         ...INITIAL_MESSAGE,
         ...message,
-        ...{status}
+        ...{status},
     }
 
     // TODO(@ghinda): use message everywhere, and remove this conditional
@@ -96,12 +97,12 @@ export const notify = (message: notificationType) => (dispatch: dispatchType, ge
     if (finalMessage.dismissible && finalMessage.dismissAfter === 0) {
         const wordsPerMinute = 230
         const readText = `${finalMessage.title} ${finalMessage.message}`
-        let readingTime = _words(readText).length * 60 / wordsPerMinute
+        let readingTime = (_words(readText).length * 60) / wordsPerMinute
         readingTime = _max([3, Math.ceil(readingTime)])
         finalMessage.dismissAfter = readingTime * 1000
     }
 
-    const notificationsState = ((getState() || {}).notifications || [])
+    const notificationsState = (getState() || {}).notifications || []
     let duplicate = false
 
     notificationsState.forEach((notification) => {

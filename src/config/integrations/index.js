@@ -14,7 +14,7 @@ const allIntegrations = [
     shopify,
     smile,
     smooch,
-    smoochInside
+    smoochInside,
 ]
 
 export const CHAT_AUTO_RESPONDER_REPLY_SHORTLY = 'reply-shortly'
@@ -27,7 +27,7 @@ export const CHAT_AUTO_RESPONDER_REPLY_OPTIONS = [
     CHAT_AUTO_RESPONDER_REPLY_SHORTLY,
     CHAT_AUTO_RESPONDER_REPLY_IN_MINUTES,
     CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
-    CHAT_AUTO_RESPONDER_REPLY_IN_DAY
+    CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
 ]
 
 export const CHAT_AUTO_RESPONDER_TEXTS = require('../../../../../integrations/common/texts/chat_auto_responder_texts.json')
@@ -52,9 +52,13 @@ const getIntegrationVariables = (variableStoreName: string): Array<Object> => {
 
 export const INTEGRATION_VARIABLES = getIntegrationVariables('MACRO_VARIABLES')
 
-export const INTEGRATION_HIDDEN_VARIABLES = getIntegrationVariables('MACRO_HIDDEN_VARIABLES')
+export const INTEGRATION_HIDDEN_VARIABLES = getIntegrationVariables(
+    'MACRO_HIDDEN_VARIABLES'
+)
 
-export const INTEGRATION_PREVIOUS_VARIABLES = getIntegrationVariables('MACRO_PREVIOUS_VARIABLES')
+export const INTEGRATION_PREVIOUS_VARIABLES = getIntegrationVariables(
+    'MACRO_PREVIOUS_VARIABLES'
+)
 
 /**
  * Generate a list of all integrations which define at least one variable to be used in the macro.
@@ -64,11 +68,12 @@ const getIntegrationTypesWithVariables = (): Array<string> => {
     const integrationTypesWithVariables: Array<string> = []
 
     allIntegrations.forEach((integration) => {
-        const variableStore = integration.MACRO_VARIABLES
+        const variableStore =
+            integration.MACRO_VARIABLES ||
             //$FlowFixMe
-            || integration.MACRO_HIDDEN_VARIABLES
+            integration.MACRO_HIDDEN_VARIABLES ||
             //$FlowFixMe
-            || integration.MACRO_PREVIOUS_VARIABLES
+            integration.MACRO_PREVIOUS_VARIABLES
 
         if (variableStore) {
             integrationTypesWithVariables.push(variableStore.type)
@@ -80,8 +85,9 @@ const getIntegrationTypesWithVariables = (): Array<string> => {
 
 export const INTEGRATION_TYPE_WITH_VARIABLES = getIntegrationTypesWithVariables()
 
-
-export const getAutoResponderReplyOptions = (language: ?string): Array<Object> => {
+export const getAutoResponderReplyOptions = (
+    language: ?string
+): Array<Object> => {
     if (!language) {
         return []
     }
@@ -89,7 +95,7 @@ export const getAutoResponderReplyOptions = (language: ?string): Array<Object> =
     return CHAT_AUTO_RESPONDER_REPLY_OPTIONS.map((option) => {
         return {
             value: option,
-            label: `"${CHAT_AUTO_RESPONDER_TEXTS[language][option]}"`
+            label: `"${CHAT_AUTO_RESPONDER_TEXTS[language][option]}"`,
         }
     })
 }

@@ -436,14 +436,16 @@ exports[`BillingPaymentMethod Stripe should render a button to update a credit c
                     >
                       <span>
                         Visa
-                         ending in 
+                         ending in
+                         
                         <strong>
                           4242
                            
                         </strong>
                       </span>
                       <span>
-                        will expire on 
+                        will expire on
+                         
                         <em>
                           9
                           /

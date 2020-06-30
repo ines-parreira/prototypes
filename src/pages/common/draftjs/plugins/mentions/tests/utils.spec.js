@@ -58,9 +58,7 @@ describe('defaultSuggestionsFilter()', () => {
         {name: 'Séverine Dupont'},
     ])
 
-    const greekResults = fromJS([
-        {name: 'Πόπη Κουρούπη'},
-    ])
+    const greekResults = fromJS([{name: 'Πόπη Κουρούπη'}])
 
     describe('should return matching suggestions', () => {
         it('when the search value contains diacritics', () => {

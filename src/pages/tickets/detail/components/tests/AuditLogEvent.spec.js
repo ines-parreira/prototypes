@@ -9,7 +9,12 @@ import thunk from 'redux-thunk'
 import * as constants from '../../../../../constants/event'
 import Component from '../AuditLogEvent'
 
-import {type AuditLogEvent, type AuditLogEventType, SYSTEM_RULE_TYPE, TAGS_ADDED_KEY} from '../../../../../models/event'
+import {
+    type AuditLogEvent,
+    type AuditLogEventType,
+    SYSTEM_RULE_TYPE,
+    TAGS_ADDED_KEY,
+} from '../../../../../models/event'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -58,77 +63,94 @@ describe('<AuditLogEvent/>', () => {
 
     describe('render()', () => {
         describe('should render', () => {
-            it.each(constants.TICKET_AUDIT_LOG_EVENTS)('with event type %s', (eventType: AuditLogEventType) => {
-                const event = getEvent(eventType)
+            it.each(constants.TICKET_AUDIT_LOG_EVENTS)(
+                'with event type %s',
+                (eventType: AuditLogEventType) => {
+                    const event = getEvent(eventType)
 
-                switch (eventType) {
-                    case constants.RULE_EXECUTED:
-                        event.data = {id: 1, name: 'Rule 1'}
-                        break
-                    case constants.TICKET_TAGS_ADDED:
-                        event.data = {tags_added: [1]}
-                        break
-                    case constants.TICKET_TAGS_REMOVED:
-                        event.data = {tags_removed: [1]}
-                        break
-                    case constants.TICKET_ASSIGNED:
-                        event.data = {assignee_user_id: 1}
-                        break
-                    case constants.TICKET_TEAM_ASSIGNED:
-                        event.data = {assignee_team_id: 1}
-                        break
-                    default:
-                        break
+                    switch (eventType) {
+                        case constants.RULE_EXECUTED:
+                            event.data = {id: 1, name: 'Rule 1'}
+                            break
+                        case constants.TICKET_TAGS_ADDED:
+                            event.data = {tags_added: [1]}
+                            break
+                        case constants.TICKET_TAGS_REMOVED:
+                            event.data = {tags_removed: [1]}
+                            break
+                        case constants.TICKET_ASSIGNED:
+                            event.data = {assignee_user_id: 1}
+                            break
+                        case constants.TICKET_TEAM_ASSIGNED:
+                            event.data = {assignee_team_id: 1}
+                            break
+                        default:
+                            break
+                    }
+
+                    const component = shallow(
+                        <Component
+                            store={store}
+                            event={fromJS(event)}
+                            isLast={false}
+                        />
+                    ).dive()
+
+                    expect(component).toMatchSnapshot()
                 }
+            )
 
-                const component = shallow(
-                    <Component
-                        store={store}
-                        event={fromJS(event)}
-                        isLast={false}
-                    />
-                ).dive()
+            const tagsEventTypes = [
+                constants.TICKET_TAGS_ADDED,
+                constants.TICKET_TAGS_REMOVED,
+            ]
+            it.each(tagsEventTypes)(
+                'with event type %s and several tags',
+                (eventType: AuditLogEventType) => {
+                    const event = getEvent(eventType)
 
-                expect(component).toMatchSnapshot()
-            })
+                    event.data =
+                        eventType === constants.TICKET_TAGS_ADDED
+                            ? {tags_added: [1, 2]}
+                            : {tags_removed: [1, 2]}
 
-            const tagsEventTypes = [constants.TICKET_TAGS_ADDED, constants.TICKET_TAGS_REMOVED]
-            it.each(tagsEventTypes)('with event type %s and several tags', (eventType: AuditLogEventType) => {
-                const event = getEvent(eventType)
+                    const component = shallow(
+                        <Component
+                            store={store}
+                            event={fromJS(event)}
+                            isLast={false}
+                        />
+                    ).dive()
 
-                event.data = eventType === constants.TICKET_TAGS_ADDED
-                    ? {tags_added: [1, 2]}
-                    : {tags_removed: [1, 2]}
+                    expect(component).toMatchSnapshot()
+                }
+            )
 
-                const component = shallow(
-                    <Component
-                        store={store}
-                        event={fromJS(event)}
-                        isLast={false}
-                    />
-                ).dive()
+            const assignEventType = [
+                constants.TICKET_ASSIGNED,
+                constants.TICKET_TEAM_ASSIGNED,
+            ]
+            it.each(assignEventType)(
+                'with event type %s and missing assignee',
+                (eventType: AuditLogEventType) => {
+                    const event = getEvent(eventType)
 
-                expect(component).toMatchSnapshot()
-            })
+                    event.data =
+                        eventType === constants.TICKET_ASSIGNED
+                            ? {assignee_user_id: 9}
+                            : {assignee_team_id: 9}
 
-            const assignEventType = [constants.TICKET_ASSIGNED, constants.TICKET_TEAM_ASSIGNED]
-            it.each(assignEventType)('with event type %s and missing assignee', (eventType: AuditLogEventType) => {
-                const event = getEvent(eventType)
+                    const component = shallow(
+                        <Component
+                            store={store}
+                            event={fromJS(event)}
+                            isLast={false}
+                        />
+                    ).dive()
 
-                event.data = eventType === constants.TICKET_ASSIGNED
-                    ? {assignee_user_id: 9}
-                    : {assignee_team_id: 9}
-
-                const component = shallow(
-                    <Component
-                        store={store}
-                        event={fromJS(event)}
-                        isLast={false}
-                    />
-                ).dive()
-
-                expect(component).toMatchSnapshot()
-            })
+                    expect(component).toMatchSnapshot()
+                }
+            )
 
             it('when the user ID is missing', () => {
                 const event = getEvent(constants.TICKET_REOPENED)
@@ -172,7 +194,10 @@ describe('<AuditLogEvent/>', () => {
                         store={mockStore({
                             ...getState(),
                             ticket: fromJS({
-                                events: [fromJS(ruleExecutedEvent), fromJS(event)],
+                                events: [
+                                    fromJS(ruleExecutedEvent),
+                                    fromJS(event),
+                                ],
                             }),
                         })}
                         event={fromJS(event)}
@@ -186,14 +211,14 @@ describe('<AuditLogEvent/>', () => {
             it('when the customer has changed', () => {
                 const event = getEvent(constants.TICKET_CUSTOMER_UPDATED)
                 event.data = {
-                    'old_customer': {
-                        'id': 2,
-                        'name': 'customer 2',
+                    old_customer: {
+                        id: 2,
+                        name: 'customer 2',
                     },
-                    'new_customer': {
-                        'id': 3,
-                        'name': 'customer 3',
-                    }
+                    new_customer: {
+                        id: 3,
+                        name: 'customer 3',
+                    },
                 }
 
                 const component = shallow(
@@ -210,14 +235,14 @@ describe('<AuditLogEvent/>', () => {
             it('when the customer has changed - name is empty', () => {
                 const event = getEvent(constants.TICKET_CUSTOMER_UPDATED)
                 event.data = {
-                    'old_customer': {
-                        'id': 2,
-                        'name': null,
+                    old_customer: {
+                        id: 2,
+                        name: null,
                     },
-                    'new_customer': {
-                        'id': 3,
-                        'name': '',
-                    }
+                    new_customer: {
+                        id: 3,
+                        name: '',
+                    },
                 }
 
                 const component = shallow(

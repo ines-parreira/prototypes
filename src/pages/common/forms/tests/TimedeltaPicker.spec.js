@@ -6,10 +6,7 @@ import TimedeltaPicker from '../TimedeltaPicker'
 describe('TimedeltaPicker component', () => {
     it('should render correct passed data', () => {
         const component = shallow(
-            <TimedeltaPicker
-                value="2w"
-                onChange={() => {}}
-            />
+            <TimedeltaPicker value="2w" onChange={() => {}} />
         )
 
         expect(component).toMatchSnapshot()
@@ -17,10 +14,7 @@ describe('TimedeltaPicker component', () => {
 
     it('should ignore incorrect passed data and use default values instead', () => {
         const component = shallow(
-            <TimedeltaPicker
-                value="d1"
-                onChange={() => {}}
-            />
+            <TimedeltaPicker value="d1" onChange={() => {}} />
         )
 
         expect(component).toMatchSnapshot()
@@ -28,10 +22,7 @@ describe('TimedeltaPicker component', () => {
 
     it('should handle unit change', () => {
         const wrapper = shallow(
-            <TimedeltaPicker
-                value=""
-                onChange={() => {}}
-            />
+            <TimedeltaPicker value="" onChange={() => {}} />
         )
 
         const component = wrapper.instance()
@@ -45,10 +36,7 @@ describe('TimedeltaPicker component', () => {
 
     it('should handle quantity change', () => {
         const wrapper = shallow(
-            <TimedeltaPicker
-                value=""
-                onChange={() => {}}
-            />
+            <TimedeltaPicker value="" onChange={() => {}} />
         )
 
         const component = wrapper.instance()
@@ -62,28 +50,20 @@ describe('TimedeltaPicker component', () => {
 
     it('should call passed onChange with the correct value', () => {
         const spy = jest.fn()
-        const wrapper = shallow(
-            <TimedeltaPicker
-                value=""
-                onChange={spy}
-            />
-        )
+        const wrapper = shallow(<TimedeltaPicker value="" onChange={spy} />)
 
         const component = wrapper.instance()
         component._onChange(2, 'm')
 
         expect(spy).toHaveBeenCalledTimes(1)
 
-        expect(spy.mock.calls[0].length).toBe(1)  // called with one argument
+        expect(spy.mock.calls[0].length).toBe(1) // called with one argument
         expect(spy.mock.calls[0][0]).toBe('2m')
     })
 
     it('should build state correctly', () => {
         const wrapper = shallow(
-            <TimedeltaPicker
-                value=""
-                onChange={() => {}}
-            />
+            <TimedeltaPicker value="" onChange={() => {}} />
         )
 
         const component = wrapper.instance()

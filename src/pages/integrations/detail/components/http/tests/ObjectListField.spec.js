@@ -24,12 +24,11 @@ describe('ObjectListField component', () => {
                 name="http.form"
                 fieldName="field"
                 title="Form field"
-                fields={[{'foo': 'bar', 'baz': 'foo'}]}
+                fields={[{foo: 'bar', baz: 'foo'}]}
                 onChange={() => {}}
             />
         )
 
         expect(component).toMatchSnapshot()
     })
-
 })

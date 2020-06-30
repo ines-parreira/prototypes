@@ -3,7 +3,7 @@ import React, {Component} from 'react'
 import {Map} from 'immutable'
 
 type Props = {
-    params?: Map<*, *>
+    params?: Map<*, *>,
 }
 
 export default class HTTPIntegrationEventParams extends Component<Props> {
@@ -16,14 +16,15 @@ export default class HTTPIntegrationEventParams extends Component<Props> {
 
         return (
             <ul>
-                {params.map((value, key) => (
-                    <li key={key}>
-                        <b className="mr-1">{key}:</b>
-                        <span className="text-black">
-                            {value}
-                        </span>
-                    </li>
-                )).valueSeq().toJS()}
+                {params
+                    .map((value, key) => (
+                        <li key={key}>
+                            <b className="mr-1">{key}:</b>
+                            <span className="text-black">{value}</span>
+                        </li>
+                    ))
+                    .valueSeq()
+                    .toJS()}
             </ul>
         )
     }

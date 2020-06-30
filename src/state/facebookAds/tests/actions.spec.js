@@ -15,10 +15,10 @@ describe('facebookAds actions', () => {
                     ads: {
                         postid1: {
                             name: 'ad 1',
-                            is_active: true
-                        }
-                    }
-                }
+                            is_active: true,
+                        },
+                    },
+                },
             }
 
             const action = actions.setFacebookAdsInternals(internals)

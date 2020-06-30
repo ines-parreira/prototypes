@@ -9,14 +9,10 @@ import SourceWidget from './SourceWidget'
 
 class SourceWidgets extends React.Component {
     render() {
-        const {
-            source,
-            widgets,
-            editing,
-        } = this.props
+        const {source, widgets, editing} = this.props
 
         const className = classnames('widgets-list editing', {
-            dragging: editing && editing.isDragging
+            dragging: editing && editing.isDragging,
         })
 
         return (
@@ -26,32 +22,32 @@ class SourceWidgets extends React.Component {
                     group={{
                         name: 'root',
                         pull: true,
-                        put: false
+                        put: false,
                     }}
                     isEditing
                 >
-                    {
-                        widgets
-                            .map((widget, i) => {
-                                let passedTemplate = widget
-                                    .get('template', fromJS({}))
-                                    .set('templatePath', `${widget.get('order').toString()}.template`)
+                    {widgets.map((widget, i) => {
+                        let passedTemplate = widget
+                            .get('template', fromJS({}))
+                            .set(
+                                'templatePath',
+                                `${widget.get('order').toString()}.template`
+                            )
 
-                                const sourcePath = widget.get('sourcePath')
-                                passedTemplate = passedTemplate.set('path', sourcePath)
+                        const sourcePath = widget.get('sourcePath')
+                        passedTemplate = passedTemplate.set('path', sourcePath)
 
-                                return (
-                                    <SourceWidget
-                                        key={`${passedTemplate.get('path')}-${i}`}
-                                        source={source}
-                                        widget={widget}
-                                        template={passedTemplate}
-                                        editing={editing}
-                                        parent={widget}
-                                    />
-                                )
-                            })
-                    }
+                        return (
+                            <SourceWidget
+                                key={`${passedTemplate.get('path')}-${i}`}
+                                source={source}
+                                widget={widget}
+                                template={passedTemplate}
+                                editing={editing}
+                                parent={widget}
+                            />
+                        )
+                    })}
                 </DragWrapper>
             </div>
         )
@@ -61,12 +57,12 @@ class SourceWidgets extends React.Component {
 SourceWidgets.propTypes = {
     editing: PropTypes.object,
     source: PropTypes.object.isRequired,
-    widgets: PropTypes.object.isRequired
+    widgets: PropTypes.object.isRequired,
 }
 
 SourceWidgets.defaultProps = {
     source: {},
-    title: ''
+    title: '',
 }
 
 export default SourceWidgets

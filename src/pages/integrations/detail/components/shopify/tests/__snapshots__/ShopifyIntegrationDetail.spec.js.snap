@@ -62,7 +62,8 @@ exports[`ShopifyIntegrationDetail should render the page for a deactivated integ
         }
       >
         <p>
-          All your Shopify customers have been imported. You can now see their info in the sidebar. 
+          All your Shopify customers have been imported. You can now see their info in the sidebar.
+           
           <Link
             onlyActiveOnIndex={false}
             style={Object {}}
@@ -126,17 +127,20 @@ exports[`ShopifyIntegrationDetail should render the page for a deactivated integ
             If this option is enabled, updating a customer's note in Shopify will also update it in Gorgias, and updating it in Gorgias will also update it in Shopify:
             <ul>
               <li>
-                if two people are editing a single customer's note at the same time in Shopify and Gorgias, 
+                if two people are editing a single customer's note at the same time in Shopify and Gorgias,
+                 
                 <b>
                   the first one to save the data will overwrite the other one's modifications
                 </b>
               </li>
               <li>
-                if a single Gorgias customer is associated with two or more Shopify customers on two or more Shopify stores, 
+                if a single Gorgias customer is associated with two or more Shopify customers on two or more Shopify stores,
+                 
                 <b>
                   its note will not be synchronized from Shopify
                 </b>
-                , and 
+                , and
+                 
                 <b>
                   updating the Gorgias customer note won't update any Shopify customer note
                 </b>
@@ -355,7 +359,8 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
         }
       >
         <p>
-          All your Shopify customers have been imported. You can now see their info in the sidebar. 
+          All your Shopify customers have been imported. You can now see their info in the sidebar.
+           
           <Link
             onlyActiveOnIndex={false}
             style={Object {}}
@@ -419,17 +424,20 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
             If this option is enabled, updating a customer's note in Shopify will also update it in Gorgias, and updating it in Gorgias will also update it in Shopify:
             <ul>
               <li>
-                if two people are editing a single customer's note at the same time in Shopify and Gorgias, 
+                if two people are editing a single customer's note at the same time in Shopify and Gorgias,
+                 
                 <b>
                   the first one to save the data will overwrite the other one's modifications
                 </b>
               </li>
               <li>
-                if a single Gorgias customer is associated with two or more Shopify customers on two or more Shopify stores, 
+                if a single Gorgias customer is associated with two or more Shopify customers on two or more Shopify stores,
+                 
                 <b>
                   its note will not be synchronized from Shopify
                 </b>
-                , and 
+                , and
+                 
                 <b>
                   updating the Gorgias customer note won't update any Shopify customer note
                 </b>
@@ -641,17 +649,20 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
             If this option is enabled, updating a customer's note in Shopify will also update it in Gorgias, and updating it in Gorgias will also update it in Shopify:
             <ul>
               <li>
-                if two people are editing a single customer's note at the same time in Shopify and Gorgias, 
+                if two people are editing a single customer's note at the same time in Shopify and Gorgias,
+                 
                 <b>
                   the first one to save the data will overwrite the other one's modifications
                 </b>
               </li>
               <li>
-                if a single Gorgias customer is associated with two or more Shopify customers on two or more Shopify stores, 
+                if a single Gorgias customer is associated with two or more Shopify customers on two or more Shopify stores,
+                 
                 <b>
                   its note will not be synchronized from Shopify
                 </b>
-                , and 
+                , and
+                 
                 <b>
                   updating the Gorgias customer note won't update any Shopify customer note
                 </b>
@@ -769,7 +780,8 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
         }
       >
         <p>
-          All your Shopify customers have been imported. You can now see their info in the sidebar. 
+          All your Shopify customers have been imported. You can now see their info in the sidebar.
+           
           <Link
             onlyActiveOnIndex={false}
             style={Object {}}
@@ -833,17 +845,20 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
             If this option is enabled, updating a customer's note in Shopify will also update it in Gorgias, and updating it in Gorgias will also update it in Shopify:
             <ul>
               <li>
-                if two people are editing a single customer's note at the same time in Shopify and Gorgias, 
+                if two people are editing a single customer's note at the same time in Shopify and Gorgias,
+                 
                 <b>
                   the first one to save the data will overwrite the other one's modifications
                 </b>
               </li>
               <li>
-                if a single Gorgias customer is associated with two or more Shopify customers on two or more Shopify stores, 
+                if a single Gorgias customer is associated with two or more Shopify customers on two or more Shopify stores,
+                 
                 <b>
                   its note will not be synchronized from Shopify
                 </b>
-                , and 
+                , and
+                 
                 <b>
                   updating the Gorgias customer note won't update any Shopify customer note
                 </b>
@@ -961,7 +976,8 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
         }
       >
         <p>
-          All your Shopify customers have been imported. You can now see their info in the sidebar. 
+          All your Shopify customers have been imported. You can now see their info in the sidebar.
+           
           <Link
             onlyActiveOnIndex={false}
             style={Object {}}
@@ -1025,17 +1041,20 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
             If this option is enabled, updating a customer's note in Shopify will also update it in Gorgias, and updating it in Gorgias will also update it in Shopify:
             <ul>
               <li>
-                if two people are editing a single customer's note at the same time in Shopify and Gorgias, 
+                if two people are editing a single customer's note at the same time in Shopify and Gorgias,
+                 
                 <b>
                   the first one to save the data will overwrite the other one's modifications
                 </b>
               </li>
               <li>
-                if a single Gorgias customer is associated with two or more Shopify customers on two or more Shopify stores, 
+                if a single Gorgias customer is associated with two or more Shopify customers on two or more Shopify stores,
+                 
                 <b>
                   its note will not be synchronized from Shopify
                 </b>
-                , and 
+                , and
+                 
                 <b>
                   updating the Gorgias customer note won't update any Shopify customer note
                 </b>
@@ -1265,7 +1284,8 @@ exports[`ShopifyIntegrationDetail should render the page to update an existing i
         }
       >
         <p>
-          All your Shopify customers have been imported. You can now see their info in the sidebar. 
+          All your Shopify customers have been imported. You can now see their info in the sidebar.
+           
           <Link
             onlyActiveOnIndex={false}
             style={Object {}}
@@ -1329,17 +1349,20 @@ exports[`ShopifyIntegrationDetail should render the page to update an existing i
             If this option is enabled, updating a customer's note in Shopify will also update it in Gorgias, and updating it in Gorgias will also update it in Shopify:
             <ul>
               <li>
-                if two people are editing a single customer's note at the same time in Shopify and Gorgias, 
+                if two people are editing a single customer's note at the same time in Shopify and Gorgias,
+                 
                 <b>
                   the first one to save the data will overwrite the other one's modifications
                 </b>
               </li>
               <li>
-                if a single Gorgias customer is associated with two or more Shopify customers on two or more Shopify stores, 
+                if a single Gorgias customer is associated with two or more Shopify customers on two or more Shopify stores,
+                 
                 <b>
                   its note will not be synchronized from Shopify
                 </b>
-                , and 
+                , and
+                 
                 <b>
                   updating the Gorgias customer note won't update any Shopify customer note
                 </b>

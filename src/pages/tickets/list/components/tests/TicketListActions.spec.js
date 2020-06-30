@@ -13,19 +13,19 @@ const mockStore = configureMockStore(middlewares)
 describe('TicketListActions component', () => {
     const currentUserStore = fromJS({
         id: 1,
-        name: 'Peter Parker'
+        name: 'Peter Parker',
     })
 
     const viewsStore = fromJS({
         active: {
             id: 12,
             category: 'user',
-            name: 'not trash'
-        }
+            name: 'not trash',
+        },
     })
 
     const agentsStore = fromJS({
-        all: []
+        all: [],
     })
 
     let store
@@ -34,16 +34,13 @@ describe('TicketListActions component', () => {
         store = mockStore({
             currentUser: currentUserStore,
             views: viewsStore,
-            agents: agentsStore
+            agents: agentsStore,
         })
     })
 
     it('should display when nothing is selected', () => {
         const component = shallow(
-            <TicketListActions
-                store={store}
-                selectedItemsIds={fromJS([])}
-            />
+            <TicketListActions store={store} selectedItemsIds={fromJS([])} />
         ).dive()
 
         expect(component).toMatchSnapshot()
@@ -69,7 +66,7 @@ describe('TicketListActions component', () => {
                     4: {id: 4, name: 'foo'},
                     5: {id: 5, name: 'bar'},
                     6: {id: 6, name: 'baz'},
-                }
+                },
             }),
         })
 
@@ -92,7 +89,7 @@ describe('TicketListActions component', () => {
                     {id: 4, name: 'foo'},
                     {id: 5, name: 'bar'},
                     {id: 6, name: 'baz'},
-                ]
+                ],
             }),
         })
 
@@ -112,17 +109,14 @@ describe('TicketListActions component', () => {
             views: fromJS({
                 active: {
                     category: 'system',
-                    name: 'Trash'
-                }
+                    name: 'Trash',
+                },
             }),
             agents: agentsStore,
         })
 
         const component = shallow(
-            <TicketListActions
-                store={store}
-                selectedItemsIds={fromJS([])}
-            />
+            <TicketListActions store={store} selectedItemsIds={fromJS([])} />
         ).dive()
 
         expect(component).toMatchSnapshot()
@@ -133,17 +127,14 @@ describe('TicketListActions component', () => {
             currentUser: fromJS({
                 id: 1,
                 name: 'Peter Parker',
-                roles: [{id: 1, name: AGENT_ROLE}]
+                roles: [{id: 1, name: AGENT_ROLE}],
             }),
             views: viewsStore,
             agents: agentsStore,
         })
 
         const component = shallow(
-            <TicketListActions
-                store={store}
-                selectedItemsIds={fromJS([])}
-            />
+            <TicketListActions store={store} selectedItemsIds={fromJS([])} />
         ).dive()
 
         expect(component).toMatchSnapshot()
@@ -154,17 +145,14 @@ describe('TicketListActions component', () => {
             currentUser: fromJS({
                 id: 1,
                 name: 'Peter Parker',
-                roles: [{id: 2, name: LITE_AGENT_ROLE}]
+                roles: [{id: 2, name: LITE_AGENT_ROLE}],
             }),
             views: viewsStore,
             agents: agentsStore,
         })
 
         const component = shallow(
-            <TicketListActions
-                store={store}
-                selectedItemsIds={fromJS([])}
-            />
+            <TicketListActions store={store} selectedItemsIds={fromJS([])} />
         ).dive()
 
         expect(component).toMatchSnapshot()

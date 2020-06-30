@@ -14,7 +14,6 @@ jest.mock('../../../../utils', () => {
 
 jest.mock('lodash/uniqueId', () => () => 'input-1')
 
-
 describe('<FileField/>', () => {
     const minProps = {
         value: 'value',
@@ -30,18 +29,17 @@ describe('<FileField/>', () => {
             let calledNotify = false
 
             const component = shallow(
-                <FileField
-                    {...minProps}
-                    notify={() => calledNotify = true}
-                />
+                <FileField {...minProps} notify={() => (calledNotify = true)} />
             )
 
             component.instance()._onChange({
                 target: {
-                    files: [{
-                        type: 'image/svg+xml'
-                    }]
-                }
+                    files: [
+                        {
+                            type: 'image/svg+xml',
+                        },
+                    ],
+                },
             })
 
             expect(component.state('isUploading')).toBe(false)
@@ -62,16 +60,14 @@ describe('<FileField/>', () => {
 
             component.instance()._onChange({
                 target: {
-                    files: [
-                        {size: 1000 * 1000 * 10},
-                        {size: 1000 * 1000 * 10},
-                    ]
-                }
+                    files: [{size: 1000 * 1000 * 10}, {size: 1000 * 1000 * 10}],
+                },
             })
 
             expect(notify).toBeCalledWith({
-                message: 'Failed to upload files. Attached files must be smaller than 10MB.',
-                status: 'error'
+                message:
+                    'Failed to upload files. Attached files must be smaller than 10MB.',
+                status: 'error',
             })
         })
 
@@ -79,25 +75,19 @@ describe('<FileField/>', () => {
             const notify = jest.fn()
 
             const component = shallow(
-                <FileField
-                    {...minProps}
-                    maxSize={1000}
-                    notify={notify}
-                />
+                <FileField {...minProps} maxSize={1000} notify={notify} />
             )
 
             component.instance()._onChange({
                 target: {
-                    files: [
-                        {size: 1000},
-                        {size: 1000},
-                    ]
-                }
+                    files: [{size: 1000}, {size: 1000}],
+                },
             })
 
             expect(notify).toBeCalledWith({
-                message: 'Failed to upload files. Attached files must be smaller than 1kB.',
-                status: 'error'
+                message:
+                    'Failed to upload files. Attached files must be smaller than 1kB.',
+                status: 'error',
             })
         })
     })
@@ -105,37 +95,27 @@ describe('<FileField/>', () => {
     describe('render()', () => {
         it('should render a basic file input', () => {
             const component = shallow(
-                <FileField
-                    value="value"
-                    onChange={_noop}
-                />
+                <FileField value="value" onChange={_noop} />
             )
             expect(component).toMatchSnapshot()
         })
 
         it('should render preview', () => {
             const component = shallow(
-                <FileField
-                    {...minProps}
-                    previewUrl="url"
-                />
+                <FileField {...minProps} previewUrl="url" />
             )
             expect(component).toMatchSnapshot()
         })
 
         it('should not render preview', () => {
             const component = shallow(
-                <FileField
-                    {...minProps}
-                    previewUrl="url"
-                    noPreview
-                />
+                <FileField {...minProps} previewUrl="url" noPreview />
             )
             expect(component).toMatchSnapshot()
         })
 
         it('should display loading when loading', () => {
-            const component = shallow(<FileField {...minProps}/>)
+            const component = shallow(<FileField {...minProps} />)
             component.setState({isUploading: true})
             expect(component).toMatchSnapshot()
         })

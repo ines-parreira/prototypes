@@ -5,7 +5,11 @@ import {fromJS} from 'immutable'
 import TicketTags from '../../../../detail/components/TicketDetails/TicketTags'
 
 export default class AddTagsAction extends React.Component {
-    splitIncomingTags = () => this.props.args.get('tags', '').split(',').filter((t) => !!t)
+    splitIncomingTags = () =>
+        this.props.args
+            .get('tags', '')
+            .split(',')
+            .filter((t) => !!t)
 
     addTags = (tags) => {
         let newTags = this.splitIncomingTags()
@@ -22,7 +26,9 @@ export default class AddTagsAction extends React.Component {
 
     render() {
         const {index} = this.props
-        const ticketTags = fromJS(this.splitIncomingTags().map((t) => ({name: t})))
+        const ticketTags = fromJS(
+            this.splitIncomingTags().map((t) => ({name: t}))
+        )
 
         return (
             <TicketTags

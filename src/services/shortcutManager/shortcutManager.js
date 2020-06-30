@@ -19,11 +19,11 @@ type keyboardActionType = {
     key: string,
     action: (e: Event) => void,
     description?: string,
-    component?: string
+    component?: string,
 }
 
 type keymapActionsType = {
-    [string]: keyboardActionType
+    [string]: keyboardActionType,
 }
 
 export class ShortcutManager {
@@ -38,11 +38,11 @@ export class ShortcutManager {
         // the event should be triggered.
         // escape key works all the time.
         if (
-            closest(element, '.shortcuts-enable')
-            || combo.includes('mod')
-            || combo.includes('meta')
-            || combo.includes('esc')
-            || combo.includes('escape')
+            closest(element, '.shortcuts-enable') ||
+            combo.includes('mod') ||
+            combo.includes('meta') ||
+            combo.includes('esc') ||
+            combo.includes('escape')
         ) {
             return false
         }
@@ -57,7 +57,7 @@ export class ShortcutManager {
     _getComponentKeymap(component: string) {
         if (!this._keymap[component] || !this._keymap[component].actions) {
             this._keymap[component] = {
-                actions: {}
+                actions: {},
             }
         }
 
@@ -76,12 +76,15 @@ export class ShortcutManager {
         // using just the component name.
         // allows unbind/re-bind actions of component actions,
         // from different component.
-        this._setComponentKeymap(component, _merge(this._getComponentKeymap(component), {actions}))
+        this._setComponentKeymap(
+            component,
+            _merge(this._getComponentKeymap(component), {actions})
+        )
         const index = _findIndex(this._bound, (b) => b.name === component)
         if (!~index) {
             this._bound.push({
                 name: component,
-                paused: this._isPaused
+                paused: this._isPaused,
             })
         }
 
@@ -110,7 +113,7 @@ export class ShortcutManager {
     unpause() {
         this._isPaused = false
 
-        this._bound.forEach((b) => b.paused = false)
+        this._bound.forEach((b) => (b.paused = false))
     }
 
     _globalAction = (e: Event, combo: string) => {
@@ -126,7 +129,9 @@ export class ShortcutManager {
             const keymap = this._getComponentKeymap(c.name)
             Object.keys(keymap.actions).forEach((a) => {
                 const action = keymap.actions[a]
-                const hasCombo = (_isObject(action.key) && action.key.includes(combo)) || action.key === combo
+                const hasCombo =
+                    (_isObject(action.key) && action.key.includes(combo)) ||
+                    action.key === combo
                 if (hasCombo && _isFunction(action.action)) {
                     action.action(e)
                 }
@@ -153,7 +158,11 @@ export class ShortcutManager {
     }
 
     triggerAction(component: string = 'global', actionName: string) {
-        const config = _get(this._keymap, [component, 'actions', actionName], {})
+        const config = _get(
+            this._keymap,
+            [component, 'actions', actionName],
+            {}
+        )
 
         if (!config) {
             return
@@ -169,7 +178,7 @@ export class ShortcutManager {
     parseKeyPart(keyPart: string) {
         const modifiers = {
             mod: 'Ctrl',
-            meta: 'Meta'
+            meta: 'Meta',
         }
 
         if (keyPart in modifiers) {
@@ -185,16 +194,21 @@ export class ShortcutManager {
     }
 
     parseKeyString(keyString: string) {
-        return keyString.split('+').map((keyPart) => {
-            return keyPart.split(' ').map(this.parseKeyPart).join(' ')
-        }).join(' + ')
+        return keyString
+            .split('+')
+            .map((keyPart) => {
+                return keyPart.split(' ').map(this.parseKeyPart).join(' ')
+            })
+            .join(' + ')
     }
 
     getActionKeys(action: keyboardActionType) {
         if (typeof action.key === 'object') {
-            return action.key.map((keyString) => {
-                return this.parseKeyString(keyString)
-            }).join(' / ')
+            return action.key
+                .map((keyString) => {
+                    return this.parseKeyString(keyString)
+                })
+                .join(' / ')
         }
 
         return this.parseKeyString(action.key)

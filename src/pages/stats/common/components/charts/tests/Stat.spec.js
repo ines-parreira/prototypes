@@ -12,18 +12,14 @@ const stat = fromJS({
     label: 'Stat label',
     legend: {},
     data: {},
-    meta: {}
+    meta: {},
 })
 
 describe('Stat', () => {
     it('should render a bar chart', () => {
         const config = fromJS({style: 'bar'})
         const component = shallow(
-            <Stat
-                store={mockStore({})}
-                config={config}
-                {...stat.toObject()}
-            />
+            <Stat store={mockStore({})} config={config} {...stat.toObject()} />
         ).dive()
         expect(component).toMatchSnapshot()
     })
@@ -31,11 +27,7 @@ describe('Stat', () => {
     it('should render a line chart', () => {
         const config = fromJS({style: 'line'})
         const component = shallow(
-            <Stat
-                store={mockStore({})}
-                config={config}
-                {...stat.toObject()}
-            />
+            <Stat store={mockStore({})} config={config} {...stat.toObject()} />
         ).dive()
         expect(component).toMatchSnapshot()
     })
@@ -43,11 +35,7 @@ describe('Stat', () => {
     it('should render a table chart', () => {
         const config = fromJS({style: 'table'})
         const component = shallow(
-            <Stat
-                store={mockStore({})}
-                config={config}
-                {...stat.toObject()}
-            />
+            <Stat store={mockStore({})} config={config} {...stat.toObject()} />
         ).dive()
         expect(component).toMatchSnapshot()
     })
@@ -55,11 +43,7 @@ describe('Stat', () => {
     it('should render a key metrics chart', () => {
         const config = fromJS({style: 'key-metrics'})
         const component = shallow(
-            <Stat
-                store={mockStore({})}
-                config={config}
-                {...stat.toObject()}
-            />
+            <Stat store={mockStore({})} config={config} {...stat.toObject()} />
         ).dive()
         expect(component).toMatchSnapshot()
     })

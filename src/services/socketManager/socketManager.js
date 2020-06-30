@@ -10,8 +10,15 @@ import {store} from '../../init'
 import {devLog} from '../../utils'
 import {ROOM_JOINED, ROOM_LEFT} from '../../config/socketConstants'
 
-import {BROADCAST_CHANNEL_EVENTS, BROADCAST_CHANNEL_NAME, MESSAGE_PORT_EVENTS} from './constants'
-import {fallbackBroadcastChannelAdapter, fallbackWorkerAdapter} from './fallbackWorkerAdapter'
+import {
+    BROADCAST_CHANNEL_EVENTS,
+    BROADCAST_CHANNEL_NAME,
+    MESSAGE_PORT_EVENTS,
+} from './constants'
+import {
+    fallbackBroadcastChannelAdapter,
+    fallbackWorkerAdapter,
+} from './fallbackWorkerAdapter'
 import type {ServerMessage} from './types'
 
 type BroadcastEvents = $Values<typeof BROADCAST_CHANNEL_EVENTS>
@@ -19,12 +26,13 @@ type PortEvents = $Values<typeof MESSAGE_PORT_EVENTS>
 
 type WSMessage = {
     type: BroadcastEvents | PortEvents,
-    json: ?ServerMessage
+    json: ?ServerMessage,
 }
 
 const CONNECTION_TIMEOUT = 10
 
-const currentBrowserSupportsSharedWorker = window.BroadcastChannel && window.SharedWorker
+const currentBrowserSupportsSharedWorker =
+    window.BroadcastChannel && window.SharedWorker
 
 /**
  * Manage the connection with the shared worker that handles the websocket connection with the back-end.
@@ -35,9 +43,12 @@ export class SocketManager {
         : fallbackBroadcastChannelAdapter
     isConnected = false
     disconnectedNotificationId = '696480246'
-    rooms: Array<*> = []  // rooms currently joined
+    rooms: Array<*> = [] // rooms currently joined
     worker = currentBrowserSupportsSharedWorker
-        ? new window.SharedWorker(window.SHARED_WORKER_BUILD_URL, 'WebsocketSharedWorker')
+        ? new window.SharedWorker(
+              window.SHARED_WORKER_BUILD_URL,
+              'WebsocketSharedWorker'
+          )
         : fallbackWorkerAdapter
 
     constructor() {
@@ -61,7 +72,7 @@ export class SocketManager {
         this.worker.port.postMessage({
             type: MESSAGE_PORT_EVENTS.CLIENT_CONNECTED,
             wsUrl: window.WS_URL,
-            clientId: window.CLIENT_ID
+            clientId: window.CLIENT_ID,
         })
     }
 
@@ -94,7 +105,9 @@ export class SocketManager {
         }
 
         // find config of received event
-        const config = _find(socketEvents.receivedEvents, {name: json.event.type})
+        const config = _find(socketEvents.receivedEvents, {
+            name: json.event.type,
+        })
         if (!config) {
             return
         }
@@ -107,21 +120,26 @@ export class SocketManager {
 
     onDisconnect = () => {
         this.isConnected = false
-        this.dispatchReduxAction(notify({
-            id: this.disconnectedNotificationId,
-            style: 'banner',
-            status: 'error',
-            dismissible: false,
-            message: 'You are not connected to live ticket updates. <u>Please reload the page</u>',
-            onClick: () => window.location.reload(false)
-        }))
+        this.dispatchReduxAction(
+            notify({
+                id: this.disconnectedNotificationId,
+                style: 'banner',
+                status: 'error',
+                dismissible: false,
+                message:
+                    'You are not connected to live ticket updates. <u>Please reload the page</u>',
+                onClick: () => window.location.reload(false),
+            })
+        )
     }
 
     onConnect = () => {
         devLog('socket (re)connected')
         this.isConnected = true
 
-        this.dispatchReduxAction(removeNotification(this.disconnectedNotificationId))
+        this.dispatchReduxAction(
+            removeNotification(this.disconnectedNotificationId)
+        )
 
         // join rooms that were active before being disconnected
         if (this.rooms.length) {
@@ -298,7 +316,9 @@ export class SocketManager {
      */
     _saveLeaveRoom = (data: Object) => {
         // remove all rooms of same dataType as passed data
-        this.rooms = this.rooms.filter((roomData: Object): boolean => roomData.dataType !== data.dataType)
+        this.rooms = this.rooms.filter(
+            (roomData: Object): boolean => roomData.dataType !== data.dataType
+        )
     }
 }
 

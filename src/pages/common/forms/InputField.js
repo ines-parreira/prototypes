@@ -3,12 +3,7 @@ import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import _omit from 'lodash/omit'
 import _uniqueId from 'lodash/uniqueId'
-import {
-    FormGroup,
-    Label,
-    Input as BootstrapInput,
-    FormText,
-} from 'reactstrap'
+import {FormGroup, Label, Input as BootstrapInput, FormText} from 'reactstrap'
 
 import {defined} from '../../../utils'
 
@@ -17,20 +12,22 @@ import FormField from './FormField'
 
 import css from './InputField.less'
 
-
 export default class InputField extends FormField {
-    static propTypes = Object.assign({
-        children: PropTypes.node,
-        inline: PropTypes.bool,
-        placeholder: PropTypes.node,
-        type: PropTypes.string.isRequired,
-        leftAddon: PropTypes.string,
-        rightAddon: PropTypes.string,
-        caseInsensitive: PropTypes.bool
-    }, FormField.propTypes)
+    static propTypes = Object.assign(
+        {
+            children: PropTypes.node,
+            inline: PropTypes.bool,
+            placeholder: PropTypes.node,
+            type: PropTypes.string.isRequired,
+            leftAddon: PropTypes.string,
+            rightAddon: PropTypes.string,
+            caseInsensitive: PropTypes.bool,
+        },
+        FormField.propTypes
+    )
 
     static defaultProps = {
-        type: 'text'
+        type: 'text',
     }
 
     componentWillMount() {
@@ -60,11 +57,7 @@ export default class InputField extends FormField {
     }
 
     _getField = () => {
-        const {
-            children,
-            error,
-            ...rest
-        } = _omit(this.props, [
+        const {children, error, ...rest} = _omit(this.props, [
             'leftAddon',
             'rightAddon',
             'caseInsensitive',
@@ -73,14 +66,14 @@ export default class InputField extends FormField {
             'label',
             'name',
             'onChange',
-            'className'
+            'className',
         ])
 
         return (
             <BootstrapInput
                 className={classnames({
                     'form-control-danger': error,
-                    'is-invalid': error
+                    'is-invalid': error,
                 })}
                 id={this.id}
                 onChange={this._onChange}
@@ -120,57 +113,39 @@ export default class InputField extends FormField {
             <FormGroup
                 className={classnames('InputField', className, {
                     [css.required]: required,
-                    'd-inline-block': inline
+                    'd-inline-block': inline,
                 })}
                 color={color}
             >
-                {
-                    label && (
-                        <Label
-                            htmlFor={this.id}
-                            className="control-label"
-                        >
-                            {label}
-                        </Label>
-                    )
-                }
-                <div className={classnames({'input-group': !!rightAddon || !!leftAddon})}>
-                    {
-                        leftAddon && (
-                            <span className="input-group-append">
-                                <span className="input-group-text">
-                                    {leftAddon}
-                                </span>
+                {label && (
+                    <Label htmlFor={this.id} className="control-label">
+                        {label}
+                    </Label>
+                )}
+                <div
+                    className={classnames({
+                        'input-group': !!rightAddon || !!leftAddon,
+                    })}
+                >
+                    {leftAddon && (
+                        <span className="input-group-append">
+                            <span className="input-group-text">
+                                {leftAddon}
                             </span>
-                        )
-                    }
+                        </span>
+                    )}
                     {this._getField()}
-                    {
-                        rightAddon && (
-                            <span className="input-group-append">
-                                <span className="input-group-text">
-                                    {rightAddon}
-                                </span>
+                    {rightAddon && (
+                        <span className="input-group-append">
+                            <span className="input-group-text">
+                                {rightAddon}
                             </span>
-                        )
-                    }
-                    {
-                        error && (
-                            <Errors>
-                                {error}
-                            </Errors>
-                        )
-                    }
+                        </span>
+                    )}
+                    {error && <Errors>{error}</Errors>}
                 </div>
-                {
-                    defined(help) && (
-                        <FormText color="muted">
-                            {help}
-                        </FormText>
-                    )
-                }
+                {defined(help) && <FormText color="muted">{help}</FormText>}
             </FormGroup>
         )
     }
 }
-

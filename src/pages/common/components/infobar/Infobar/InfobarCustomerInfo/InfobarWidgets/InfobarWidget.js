@@ -8,9 +8,12 @@ import {
     RECHARGE_WIDGET_TYPE,
     SHOPIFY_WIDGET_TYPE,
     SMILE_WIDGET_TYPE,
-    SMOOCH_INSIDE_WIDGET_TYPE
+    SMOOCH_INSIDE_WIDGET_TYPE,
 } from '../../../../../../../state/widgets/constants'
-import {guessFieldValueFromRawData, prepareWidgetToDisplay} from '../../../utils'
+import {
+    guessFieldValueFromRawData,
+    prepareWidgetToDisplay,
+} from '../../../utils'
 
 import ListInfobarWidget from './widgets/ListInfobarWidget'
 import WrapperInfobarWidget from './widgets/WrapperInfobarWidget'
@@ -24,7 +27,6 @@ import shopify from './widgets/shopify'
 import smile from './widgets/smile'
 import smoochInside from './widgets/smoochInside'
 import {infobarWidgetShouldRender} from './predicates'
-
 
 export default class InfobarWidget extends React.Component {
     static propTypes = {
@@ -49,7 +51,7 @@ export default class InfobarWidget extends React.Component {
             template,
             editing,
             isEditing,
-            open
+            open,
         } = this.props
 
         if (!infobarWidgetShouldRender(source)) {
@@ -134,9 +136,7 @@ export default class InfobarWidget extends React.Component {
                 )
             }
             case 'divider': {
-                return (
-                    <div className="divider"/>
-                )
+                return <div className="divider" />
             }
             default:
         }

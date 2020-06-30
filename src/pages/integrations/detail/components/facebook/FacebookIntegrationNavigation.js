@@ -5,9 +5,8 @@ import {Link} from 'react-router'
 
 import SecondaryNavbar from '../../../../common/components/SecondaryNavbar/SecondaryNavbar'
 
-
 type Props = {
-    integration: Map<*, *>
+    integration: Map<*, *>,
 }
 
 export default class FacebookIntegrationNavigation extends React.Component<Props> {
@@ -15,7 +14,11 @@ export default class FacebookIntegrationNavigation extends React.Component<Props
         const {integration} = this.props
         const integrationId = integration.get('id')
         const baseURL = `/app/settings/integrations/facebook/${integrationId}`
-        const instagramAdsEnabled = integration.getIn(['facebook', 'settings', 'instagram_ads_enabled'])
+        const instagramAdsEnabled = integration.getIn([
+            'facebook',
+            'settings',
+            'instagram_ads_enabled',
+        ])
 
         const links = [
             [`${baseURL}/overview`, 'Overview'],
@@ -30,10 +33,7 @@ export default class FacebookIntegrationNavigation extends React.Component<Props
         return (
             <SecondaryNavbar>
                 {links.map(([to, text]) => (
-                    <Link
-                        key={to}
-                        to={to}
-                    >
+                    <Link key={to} to={to}>
                         {text}
                     </Link>
                 ))}

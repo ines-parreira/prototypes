@@ -3,7 +3,6 @@ import {shallow} from 'enzyme'
 
 import RestrictedRevenue from '../RestrictedRevenue'
 
-
 describe('RevenueUpgrade', () => {
     it('should render feature missing', () => {
         const component = shallow(

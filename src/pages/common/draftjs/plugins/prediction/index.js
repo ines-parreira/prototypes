@@ -12,7 +12,7 @@ import {
     insertPrediction,
     removeFirstNCharsOfPrediction,
     removePrediction,
-    usePrediction
+    usePrediction,
 } from './utils'
 import decorators from './decorators'
 
@@ -28,7 +28,7 @@ export const setCachedSelection = (value: SelectionState) => {
 }
 
 let predictionCache = []
-export const clearCache = () => predictionCache = []
+export const clearCache = () => (predictionCache = [])
 const inCache = (text: string) => predictionCache.includes((text || '').trim())
 const addCache = (text: string) => predictionCache.push((text || '').trim())
 
@@ -45,13 +45,16 @@ const cancelApiRequest = () => {
 const currentPrediction: {
     inputText: string,
     predictionText: string,
-    numberAcceptedCharacters: number
+    numberAcceptedCharacters: number,
 } = {
     inputText: '',
     predictionText: '',
-    numberAcceptedCharacters: 0
+    numberAcceptedCharacters: 0,
 }
-const resetCurrentPrediction = (inputText?: string = '', predictionText?: string = '') => {
+const resetCurrentPrediction = (
+    inputText?: string = '',
+    predictionText?: string = ''
+) => {
     currentPrediction.inputText = inputText
     currentPrediction.predictionText = predictionText
     currentPrediction.numberAcceptedCharacters = 0
@@ -72,41 +75,48 @@ const requestPrediction = (
     context: Map<*, *>,
     plugin: PluginMethods
 ) => {
-    return axios.post(window.PHRASE_PREDICTION_URL, {
-        query: text,
-        context: context.toJS()
-    }, {
-        cancelToken: cancelApiRequest(),
-        timeout: 2000
-    }).then((res) => {
-        const predictionText = res.data.prediction
-        if (!predictionText) {
-            return
-        }
-        addCache(text)
-
-        const editorState = plugin.getEditorState()
-        const selection = editorState.getSelection()
-
-        const newEditorState = removeExistingPrediction(editorState)
-        predictionKey = createPrediction(predictionText, newEditorState)
-
-        plugin.setEditorState(
-            EditorState.forceSelection(
-                insertPrediction(predictionKey, newEditorState),
-                selection
-            )
+    return axios
+        .post(
+            window.PHRASE_PREDICTION_URL,
+            {
+                query: text,
+                context: context.toJS(),
+            },
+            {
+                cancelToken: cancelApiRequest(),
+                timeout: 2000,
+            }
         )
+        .then((res) => {
+            const predictionText = res.data.prediction
+            if (!predictionText) {
+                return
+            }
+            addCache(text)
 
-        resetCurrentPrediction(text, predictionText)
-    }).catch((err) => {
-        // ignore request cancel
-        if (err instanceof Cancel) {
-            return
-        }
+            const editorState = plugin.getEditorState()
+            const selection = editorState.getSelection()
 
-        throw err
-    })
+            const newEditorState = removeExistingPrediction(editorState)
+            predictionKey = createPrediction(predictionText, newEditorState)
+
+            plugin.setEditorState(
+                EditorState.forceSelection(
+                    insertPrediction(predictionKey, newEditorState),
+                    selection
+                )
+            )
+
+            resetCurrentPrediction(text, predictionText)
+        })
+        .catch((err) => {
+            // ignore request cancel
+            if (err instanceof Cancel) {
+                return
+            }
+
+            throw err
+        })
 }
 
 const sendFeedback = async (
@@ -121,7 +131,8 @@ const sendFeedback = async (
     const predictionText = getPredictionText(predictionKey, editorState)
     let acceptedPredictionChars = 0
     let charIndex = 0
-    while (charIndex < predictionText.length &&
+    while (
+        charIndex < predictionText.length &&
         charIndex < addedText.length &&
         predictionText.charAt(charIndex) === addedText.charAt(charIndex)
     ) {
@@ -135,22 +146,32 @@ const sendFeedback = async (
         query_text: currentPrediction.inputText,
         query_context: context.toJS(),
         result_prediction_text: currentPrediction.predictionText,
-        result_prediction_accepted: predictionText.length === acceptedPredictionChars,
-        result_number_accepted_characters: currentPrediction.numberAcceptedCharacters,
-        diverged_phrase: null
+        result_prediction_accepted:
+            predictionText.length === acceptedPredictionChars,
+        result_number_accepted_characters:
+            currentPrediction.numberAcceptedCharacters,
+        diverged_phrase: null,
     })
 
     resetCurrentPrediction()
 }
 
-const completePrediction = (event: KeyboardEvent, plugin: PluginMethods, config: Object) => {
+const completePrediction = (
+    event: KeyboardEvent,
+    plugin: PluginMethods,
+    config: Object
+) => {
     if (!predictionKey) {
         return
     }
     event.preventDefault()
 
     const editorState = plugin.getEditorState()
-    sendFeedback(config.context, getPredictionText(predictionKey, editorState), editorState)
+    sendFeedback(
+        config.context,
+        getPredictionText(predictionKey, editorState),
+        editorState
+    )
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const newEditorState = usePrediction(predictionKey, editorState)
@@ -158,7 +179,7 @@ const completePrediction = (event: KeyboardEvent, plugin: PluginMethods, config:
     plugin.setEditorState(newEditorState)
 }
 
-const predictionPlugin = (config: { context: Map<*, *> }): Plugin => {
+const predictionPlugin = (config: {context: Map<*, *>}): Plugin => {
     return {
         decorators,
         onChange: (editorState: EditorState, plugin: PluginMethods) => {
@@ -178,19 +199,33 @@ const predictionPlugin = (config: { context: Map<*, *> }): Plugin => {
             }
 
             if (predictionKey) {
-                const predictionText = getPredictionText(predictionKey, editorState)
-                const currentText = getPlainTextFromStateWithPrediction(editorState)
-                const prevText = getPlainTextFromStateWithPrediction(EditorState.undo(editorState))
+                const predictionText = getPredictionText(
+                    predictionKey,
+                    editorState
+                )
+                const currentText = getPlainTextFromStateWithPrediction(
+                    editorState
+                )
+                const prevText = getPlainTextFromStateWithPrediction(
+                    EditorState.undo(editorState)
+                )
                 const charNumDiff = currentText.length - prevText.length
-                const addedText = charNumDiff > 0 ? currentText.slice(-charNumDiff) : ''
+                const addedText =
+                    charNumDiff > 0 ? currentText.slice(-charNumDiff) : ''
 
                 // Update the prediction if there's an input that matches the prediction and doesn't complete it
-                if (addedText &&
+                if (
+                    addedText &&
                     predictionText.startsWith(addedText) &&
                     addedText.length < predictionText.length
                 ) {
-                    currentPrediction.numberAcceptedCharacters += addedText.length
-                    return removeFirstNCharsOfPrediction(predictionKey, editorState, addedText.length)
+                    currentPrediction.numberAcceptedCharacters +=
+                        addedText.length
+                    return removeFirstNCharsOfPrediction(
+                        predictionKey,
+                        editorState,
+                        addedText.length
+                    )
                 }
 
                 sendFeedback(config.context, addedText, editorState)
@@ -215,13 +250,13 @@ const predictionPlugin = (config: { context: Map<*, *> }): Plugin => {
 
             if (
                 // only for caret
-                selection.isCollapsed()
+                selection.isCollapsed() &&
                 // and at the end of the block
-                && start === blockText.length
+                start === blockText.length &&
                 // and text is longer than 1 char
-                && blockText.length > 1
+                blockText.length > 1 &&
                 // and not in cache
-                && !inCache(blockText)
+                !inCache(blockText)
             ) {
                 requestPrediction(blockText, config.context, plugin)
                 return newEditorState
@@ -229,8 +264,10 @@ const predictionPlugin = (config: { context: Map<*, *> }): Plugin => {
 
             return newEditorState
         },
-        onTab: (event: KeyboardEvent, plugin: PluginMethods) => completePrediction(event, plugin, config),
-        onRightArrow: (event: KeyboardEvent, plugin: PluginMethods) => completePrediction(event, plugin, config),
+        onTab: (event: KeyboardEvent, plugin: PluginMethods) =>
+            completePrediction(event, plugin, config),
+        onRightArrow: (event: KeyboardEvent, plugin: PluginMethods) =>
+            completePrediction(event, plugin, config),
     }
 }
 

@@ -1,14 +1,27 @@
 // @flow
 
 import React, {type Node} from 'react'
-import {Button, Form, FormGroup, Input, InputGroup, InputGroupAddon, Label, Popover, PopoverBody} from 'reactstrap'
+import {
+    Button,
+    Form,
+    FormGroup,
+    Input,
+    InputGroup,
+    InputGroupAddon,
+    Label,
+    Popover,
+    PopoverBody,
+} from 'reactstrap'
 import {fromJS, type Record} from 'immutable'
 import classnames from 'classnames'
 
 import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker'
 import {getDiscountAmount} from '../../../../../../../../../../../../business/shopify/discount'
 import * as Shopify from '../../../../../../../../../../../../constants/integrations/shopify'
-import {formatPercentage, formatPrice} from '../../../../../../../../../../../../business/shopify/number'
+import {
+    formatPercentage,
+    formatPrice,
+} from '../../../../../../../../../../../../business/shopify/number'
 import {focusElement} from '../../../../../../../../../../../../utils/html'
 import ShopifyMoneySymbol from '../../MoneySymbol'
 import AmountInput from '../../AmountInput'
@@ -52,9 +65,7 @@ export default class DiscountPopover extends React.PureComponent<Props, State> {
         discountValue: this.props.value
             ? this.props.value.get('value') || ''
             : '',
-        title: this.props.value
-            ? this.props.value.get('title') || ''
-            : '',
+        title: this.props.value ? this.props.value.get('title') || '' : '',
     }
 
     componentDidUpdate(prevProps: Props, prevState: State) {
@@ -69,8 +80,10 @@ export default class DiscountPopover extends React.PureComponent<Props, State> {
             focusElement(() => this._inputElement)
             segmentTracker.logEvent(
                 actionName === ShopifyAction.CREATE_ORDER
-                    ? segmentTracker.EVENTS.SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_OPEN
-                    : segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_OPEN
+                    ? segmentTracker.EVENTS
+                          .SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_OPEN
+                    : segmentTracker.EVENTS
+                          .SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_OPEN
             )
         } else if (onClose) {
             focusElement(() => this._buttonElement)
@@ -143,15 +156,21 @@ export default class DiscountPopover extends React.PureComponent<Props, State> {
             title,
             value,
             value_type: type,
-            amount: formatPrice(getDiscountAmount(max, type, value), currencyCode, true),
+            amount: formatPrice(
+                getDiscountAmount(max, type, value),
+                currencyCode,
+                true
+            ),
         }
 
         onChange(fromJS(newValue))
 
         segmentTracker.logEvent(
             actionName === ShopifyAction.CREATE_ORDER
-                ? segmentTracker.EVENTS.SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_APPLY
-                : segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_APPLY
+                ? segmentTracker.EVENTS
+                      .SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_APPLY
+                : segmentTracker.EVENTS
+                      .SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_APPLY
         )
     }
 
@@ -169,8 +188,10 @@ export default class DiscountPopover extends React.PureComponent<Props, State> {
 
         segmentTracker.logEvent(
             actionName === ShopifyAction.CREATE_ORDER
-                ? segmentTracker.EVENTS.SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_REMOVE
-                : segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_REMOVE
+                ? segmentTracker.EVENTS
+                      .SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_REMOVE
+                : segmentTracker.EVENTS
+                      .SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_REMOVE
         )
     }
 
@@ -181,13 +202,24 @@ export default class DiscountPopover extends React.PureComponent<Props, State> {
 
         segmentTracker.logEvent(
             actionName === ShopifyAction.CREATE_ORDER
-                ? segmentTracker.EVENTS.SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_CLOSE
-                : segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_CLOSE
+                ? segmentTracker.EVENTS
+                      .SHOPIFY_CREATE_ORDER_DISCOUNT_POPOVER_CLOSE
+                : segmentTracker.EVENTS
+                      .SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_CLOSE
         )
     }
 
     render() {
-        const {id, label, children, placement, currencyCode, editable, value, max} = this.props
+        const {
+            id,
+            label,
+            children,
+            placement,
+            currencyCode,
+            editable,
+            value,
+            max,
+        } = this.props
         const {isOpen, type, discountValue, title} = this.state
         const discountValueMax = type === 'percentage' ? 100 : max
         const discountValueSymbol = type === 'percentage' ? '%' : null
@@ -206,20 +238,21 @@ export default class DiscountPopover extends React.PureComponent<Props, State> {
                 >
                     <strong>{children}</strong>
                 </Button>
-                {value && value.get('title') ? <span className={css.title}>{value.get('title')}</span> : null}
+                {value && value.get('title') ? (
+                    <span className={css.title}>{value.get('title')}</span>
+                ) : null}
                 <Popover
                     placement={placement}
                     isOpen={isOpen}
                     target={id}
                     toggle={this._toggle}
                 >
-                    <Form
-                        onKeyDown={this._onKeyDown}
-                        onSubmit={this._onSubmit}
-                    >
+                    <Form onKeyDown={this._onKeyDown} onSubmit={this._onSubmit}>
                         <PopoverBody className="pt-3">
                             <FormGroup>
-                                <Label for="discount-value">Discount this {label} by</Label>
+                                <Label for="discount-value">
+                                    Discount this {label} by
+                                </Label>
                                 <InputGroup>
                                     <InputGroupAddon addonType="prepend">
                                         <Button
@@ -266,31 +299,28 @@ export default class DiscountPopover extends React.PureComponent<Props, State> {
                                 />
                             </FormGroup>
                         </PopoverBody>
-                        <hr className="m-0"/>
+                        <hr className="m-0" />
                         <PopoverBody className="d-flex">
-                            {!!value
-                                ? (
-                                    <Button
-                                        type="button"
-                                        color="danger"
-                                        tabIndex={0}
-                                        className={css.focusable}
-                                        onClick={this._onRemove}
-                                    >
-                                        Remove
-                                    </Button>
-                                )
-                                : (
-                                    <Button
-                                        type="button"
-                                        tabIndex={0}
-                                        className={css.focusable}
-                                        onClick={this._onClose}
-                                    >
-                                        Close
-                                    </Button>
-                                )
-                            }
+                            {!!value ? (
+                                <Button
+                                    type="button"
+                                    color="danger"
+                                    tabIndex={0}
+                                    className={css.focusable}
+                                    onClick={this._onRemove}
+                                >
+                                    Remove
+                                </Button>
+                            ) : (
+                                <Button
+                                    type="button"
+                                    tabIndex={0}
+                                    className={css.focusable}
+                                    onClick={this._onClose}
+                                >
+                                    Close
+                                </Button>
+                            )}
                             <Button
                                 color="primary"
                                 type="submit"

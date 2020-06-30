@@ -11,30 +11,33 @@ import * as currentAccountSelectors from '../../state/currentAccount/selectors'
 const TRACKED_ACTIONS = [
     currentAccountTypes.UPDATE_ACCOUNT_SUCCESS,
     newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START,
-    ticketTypes.FETCH_TICKET_START
+    ticketTypes.FETCH_TICKET_START,
 ]
 
 export const USAGE_NOTIFICATION_BANNER = 99
 export const PAYMENT_MODAL = 100
 
-
 const _showPaymentModal = (store, notification) => {
     store.dispatch(hide(PAYMENT_MODAL))
-    store.dispatch(notify({
-        id: PAYMENT_MODAL,
-        style: 'modal',
-        status: notification.get('type'),
-        dismissible: true,
-        title: 'Trial limits reached',
-        message: notification.get('message'),
-        buttons: [{
-            name: 'Update payment method',
-            color: 'primary',
-            onClick: () => {
-                browserHistory.push('/app/settings/billing')
-            }
-        }]
-    }))
+    store.dispatch(
+        notify({
+            id: PAYMENT_MODAL,
+            style: 'modal',
+            status: notification.get('type'),
+            dismissible: true,
+            title: 'Trial limits reached',
+            message: notification.get('message'),
+            buttons: [
+                {
+                    name: 'Update payment method',
+                    color: 'primary',
+                    onClick: () => {
+                        browserHistory.push('/app/settings/billing')
+                    },
+                },
+            ],
+        })
+    )
 }
 
 // Middleware used to notify user about free limit usage
@@ -79,7 +82,8 @@ const usageLimitNotifier = (store) => (next) => (action) => {
         case currentAccountTypes.UPDATE_ACCOUNT_SUCCESS: {
             const nextAccountStatus = _action.getIn(['resp', 'status'])
             const nextStatus = nextAccountStatus.get('status') || 'active'
-            const nextNotification = nextAccountStatus.get('notification') || fromJS({})
+            const nextNotification =
+                nextAccountStatus.get('notification') || fromJS({})
 
             // Hide the notification if the status was changed
             if (!accountStatus.equals(nextAccountStatus)) {
@@ -87,16 +91,18 @@ const usageLimitNotifier = (store) => (next) => (action) => {
             }
 
             if (nextStatus !== 'active' || !nextNotification.isEmpty()) {
-                store.dispatch(notify({
-                    id: USAGE_NOTIFICATION_BANNER,
-                    style: 'banner',
-                    status: nextNotification.get('type'),
-                    dismissible: false,
-                    message: nextNotification.get('message'),
-                    onClick: () => {
-                        browserHistory.push('/app/settings/billing')
-                    }
-                }))
+                store.dispatch(
+                    notify({
+                        id: USAGE_NOTIFICATION_BANNER,
+                        style: 'banner',
+                        status: nextNotification.get('type'),
+                        dismissible: false,
+                        message: nextNotification.get('message'),
+                        onClick: () => {
+                            browserHistory.push('/app/settings/billing')
+                        },
+                    })
+                )
             }
             break
         }

@@ -1,7 +1,11 @@
 import {fromJS, type Record} from 'immutable'
 
 import {SYSTEM_RULE_TYPE} from '../constants'
-import {isRuleExecutedType, isSystemRuleEvent, isViaRuleEvent} from '../predicates'
+import {
+    isRuleExecutedType,
+    isSystemRuleEvent,
+    isViaRuleEvent,
+} from '../predicates'
 import {RULE_EXECUTED, TICKET_ASSIGNED} from '../../../constants/event'
 import type {AuditLogEvent, AuditLogEventType} from '../types'
 
@@ -47,24 +51,28 @@ describe('Event predicates', () => {
     })
 
     describe('isViaRuleEvent()', () => {
-        const getEvent = (eventType: AuditLogEventType): Record<AuditLogEvent> => fromJS({
-            id: 1,
-            account_id: 1,
-            user_id: 1,
-            object_type: 'Ticket',
-            object_id: 1,
-            data: null,
-            context: 'foo',
-            type: eventType,
-            created_datetime: '2019-11-15 19:00:00.000000',
-        })
+        const getEvent = (
+            eventType: AuditLogEventType
+        ): Record<AuditLogEvent> =>
+            fromJS({
+                id: 1,
+                account_id: 1,
+                user_id: 1,
+                object_type: 'Ticket',
+                object_id: 1,
+                data: null,
+                context: 'foo',
+                type: eventType,
+                created_datetime: '2019-11-15 19:00:00.000000',
+            })
 
         /**
          * @returns {AuditLogEvent} Event added after `ruleExecutedEvent`, with the same `context`
          */
-        const getValidEvent = () => getEvent(TICKET_ASSIGNED)
-            .set('id', 2)
-            .set('created_datetime', '2019-11-15 19:00:00.500000')
+        const getValidEvent = () =>
+            getEvent(TICKET_ASSIGNED)
+                .set('id', 2)
+                .set('created_datetime', '2019-11-15 19:00:00.500000')
 
         it('should return truthy value', () => {
             const ruleExecutedEvent = getEvent(RULE_EXECUTED)
@@ -114,14 +122,20 @@ describe('Event predicates', () => {
             })
 
             it('because the context is different', () => {
-                const ruleExecutedEvent = getEvent(RULE_EXECUTED).set('context', 'bar')
+                const ruleExecutedEvent = getEvent(RULE_EXECUTED).set(
+                    'context',
+                    'bar'
+                )
                 const event = getValidEvent()
                 const events = fromJS([ruleExecutedEvent, event])
                 expect(isViaRuleEvent(event, events)).toBeFalsy()
             })
 
             it('because the created datetime is not older', () => {
-                const ruleExecutedEvent = getEvent(RULE_EXECUTED).set('created_datetime', '2019-11-15 20:00:00.000000')
+                const ruleExecutedEvent = getEvent(RULE_EXECUTED).set(
+                    'created_datetime',
+                    '2019-11-15 20:00:00.000000'
+                )
                 const event = getValidEvent()
                 const events = fromJS([ruleExecutedEvent, event])
                 expect(isViaRuleEvent(event, events)).toBeFalsy()

@@ -15,7 +15,7 @@ describe('MacroEdit component', () => {
         intents: {
             'catOne/intentOne': 'description one',
             'catOne/intentTwo': 'description two',
-            'catTwo/intentTWo': 'description three'
+            'catTwo/intentTWo': 'description three',
         },
         name: 'Pizza Pepperoni',
         setActions: _noop,
@@ -24,7 +24,7 @@ describe('MacroEdit component', () => {
     }
 
     beforeEach(() => {
-        component = mount(<MacroEdit {...defaultProps}/>)
+        component = mount(<MacroEdit {...defaultProps} />)
     })
 
     it('should render the macro edit form', () => {

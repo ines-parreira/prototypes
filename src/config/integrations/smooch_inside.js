@@ -10,9 +10,8 @@ import {
     SPANISH_LANGUAGE,
     SWEDISH_LANGUAGE,
     GERMAN_LANGUAGE,
-    NORWEGIAN_LANGUAGE
+    NORWEGIAN_LANGUAGE,
 } from '../../constants/languages'
-
 
 export const SMOOCH_INSIDE_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH = 50
 
@@ -30,14 +29,16 @@ export const SMOOCH_INSIDE_WIDGET_LANGUAGE_OPTIONS = fromJS([
 ])
 
 export const SMOOCH_INSIDE_WIDGET_TEXTS = require('../../../../../integrations/smooch_inside/texts/widget_texts.json')
-export const SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS = SMOOCH_INSIDE_WIDGET_TEXTS[SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT]
+export const SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS =
+    SMOOCH_INSIDE_WIDGET_TEXTS[SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT]
 export const SMOOCH_INSIDE_DEFAULT_COLOR = '#0d87dd'
 
 export const SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_OPTIONAL = 'optional'
-export const SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS = 'required-outside-business-hours'
-export const SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED = 'always-required'
+export const SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS =
+    'required-outside-business-hours'
+export const SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED =
+    'always-required'
 export const SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT = SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_OPTIONAL
-
 
 // Campaigns
 export const CAMPAIGNS_TRIGGER_KEYS = fromJS([
@@ -46,27 +47,27 @@ export const CAMPAIGNS_TRIGGER_KEYS = fromJS([
         name: 'current_url',
         operators: {
             eq: {
-                label: 'is'
+                label: 'is',
             },
             neq: {
-                label: 'is not'
+                label: 'is not',
             },
             contains: {
-                label: 'contains'
+                label: 'contains',
             },
             notContains: {
-                label: 'does not contain'
+                label: 'does not contain',
             },
             startsWith: {
-                label: 'starts with'
+                label: 'starts with',
             },
             endsWith: {
-                label: 'ends with'
-            }
+                label: 'ends with',
+            },
         },
         value: {
             input: 'text',
-            default: ''
+            default: '',
         },
     },
     {
@@ -74,19 +75,21 @@ export const CAMPAIGNS_TRIGGER_KEYS = fromJS([
         name: 'time_spent_on_page',
         operators: {
             gt: {
-                label: 'is greater than'
-            }
+                label: 'is greater than',
+            },
         },
         value: {
             input: 'number',
-            default: 0
-        }
-    }
+            default: 0,
+        },
+    },
 ])
 
-
 // Quick replies
-export const QUICK_REPLIES_DEFAULTS = fromJS(['Get order status', 'Apply promo code'])
+export const QUICK_REPLIES_DEFAULTS = fromJS([
+    'Get order status',
+    'Apply promo code',
+])
 export const QUICK_REPLIES_MAX_ITEMS = 3
 export const QUICK_REPLIES_MAX_ITEM_LENGTH = 20
 

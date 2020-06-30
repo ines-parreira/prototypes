@@ -8,7 +8,10 @@ import {type CancelTokenSource} from 'axios'
 import {getActionTemplate} from '../../../../../utils'
 import {fetchMacros, getMacro} from '../../../../../state/macro/actions'
 import {useCancelToken} from '../../../../../hooks'
-import {type State as MacrosState, Macro} from '../../../../../state/macro/types'
+import {
+    type State as MacrosState,
+    Macro,
+} from '../../../../../state/macro/types'
 
 import Select from './ReactSelect'
 import {useOptions} from './hooks'
@@ -20,7 +23,7 @@ type Props = {
     getMacro: typeof getMacro,
     onChange: (any) => void,
     value: string,
-    className?: string
+    className?: string,
 }
 
 const MacroSelect = (props: Props) => {
@@ -29,35 +32,55 @@ const MacroSelect = (props: Props) => {
     const [searchResults, setSearchResults] = useState(fromJS([]))
     const [search, setSearch] = useState('')
     const selectedMacro: ?Macro = value ? macros.get(parseInt(value)) : null
-    const macroOptions = useOptions(selectedMacro, searchResults, (macro) => macro.get('id'))
+    const macroOptions = useOptions(selectedMacro, searchResults, (macro) =>
+        macro.get('id')
+    )
 
-    useEffect( () => {
+    useEffect(() => {
         if (selectedMacro) {
             return
         }
         getMacro(value)
     }, [selectedMacro])
 
-    useCancelToken(async (source: CancelTokenSource) => {
-        setIsLoading(true)
-        const res = await fetchMacros({search}, '', 'asc', source.token)
-        if (res) {
-            setIsLoading(false)
-            setSearchResults(res.macros)
-        }
-    }, [search])
+    useCancelToken(
+        async (source: CancelTokenSource) => {
+            setIsLoading(true)
+            const res = await fetchMacros({search}, '', 'asc', source.token)
+            if (res) {
+                setIsLoading(false)
+                setSearchResults(res.macros)
+            }
+        },
+        [search]
+    )
 
     const options = useMemo((): List<*> => {
         if (isLoading) {
             return fromJS([])
         }
         // Filter out macros with external actions
-        return macroOptions.filter((macro) => macro.get('actions')
-            .filter((action) => {
-                const actionTemplate = getActionTemplate(action.get('name'))
-                return actionTemplate && actionTemplate.execution === 'back'
-            })
-            .isEmpty()).map((macro) => fromJS({value: macro.get('id').toString(), label: macro.get('name')}))
+        return macroOptions
+            .filter((macro) =>
+                macro
+                    .get('actions')
+                    .filter((action) => {
+                        const actionTemplate = getActionTemplate(
+                            action.get('name')
+                        )
+                        return (
+                            actionTemplate &&
+                            actionTemplate.execution === 'back'
+                        )
+                    })
+                    .isEmpty()
+            )
+            .map((macro) =>
+                fromJS({
+                    value: macro.get('id').toString(),
+                    label: macro.get('name'),
+                })
+            )
             .toList()
             .sortBy((macro) => (macro.get('label') || '').toLowerCase())
     }, [macroOptions, isLoading])
@@ -75,9 +98,12 @@ const MacroSelect = (props: Props) => {
 }
 
 //$FlowFixMe
-export default connect((state) => ({
-    macros: state.macros
-}), {
-    fetchMacros,
-    getMacro
-})(MacroSelect)
+export default connect(
+    (state) => ({
+        macros: state.macros,
+    }),
+    {
+        fetchMacros,
+        getMacro,
+    }
+)(MacroSelect)

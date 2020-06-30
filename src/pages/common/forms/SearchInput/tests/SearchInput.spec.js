@@ -23,8 +23,12 @@ jest.mock('lodash/debounce', () => (fn) => fn)
 describe('<SearchInput/>', () => {
     describe('render()', () => {
         const endpoint = '/api/foo'
-        const Result = ({result}: SearchInputResultProps<ResultType>): Node => result.id
-        const SubResult = ({result, subResult}: SearchInputSubResultProps<ResultType, SubResultType>): Node =>
+        const Result = ({result}: SearchInputResultProps<ResultType>): Node =>
+            result.id
+        const SubResult = ({
+            result,
+            subResult,
+        }: SearchInputSubResultProps<ResultType, SubResultType>): Node =>
             `${result.id} / ${subResult.id}`
         let mockServer
 
@@ -38,10 +42,7 @@ describe('<SearchInput/>', () => {
 
         it('should render a closed dropdown because input is not focused', () => {
             const component = shallow(
-                <SearchInput
-                    endpoint={endpoint}
-                    renderResult={Result}
-                />
+                <SearchInput endpoint={endpoint} renderResult={Result} />
             )
 
             expect(component).toMatchSnapshot()
@@ -49,10 +50,7 @@ describe('<SearchInput/>', () => {
 
         it('should render a closed dropdown because input is empty', async () => {
             const component = shallow(
-                <SearchInput
-                    endpoint={endpoint}
-                    renderResult={Result}
-                />
+                <SearchInput endpoint={endpoint} renderResult={Result} />
             )
 
             const input = component.find(Input).dive().find('input')
@@ -63,13 +61,14 @@ describe('<SearchInput/>', () => {
 
         it('should render an open dropdown because input is focused and value is not empty', (done) => {
             const component = shallow(
-                <SearchInput
-                    endpoint={endpoint}
-                    renderResult={Result}
-                />
+                <SearchInput endpoint={endpoint} renderResult={Result} />
             )
 
-            const results: ResultType[] = [{id: 1, subResults: []}, {id: 2, subResults: []}, {id: 3, subResults: []}]
+            const results: ResultType[] = [
+                {id: 1, subResults: []},
+                {id: 2, subResults: []},
+                {id: 3, subResults: []},
+            ]
             mockServer.onGet(endpoint).reply(200, {data: results})
 
             const input = component.find(Input).dive().find('input')
@@ -94,7 +93,10 @@ describe('<SearchInput/>', () => {
 
             const subResults1: SubResultType[] = [{id: 10}, {id: 11}]
             const subResults2: SubResultType[] = [{id: 20}, {id: 21}]
-            const results: ResultType[] = [{id: 1, subResults: subResults1}, {id: 2, subResults: subResults2}]
+            const results: ResultType[] = [
+                {id: 1, subResults: subResults1},
+                {id: 2, subResults: subResults2},
+            ]
             mockServer.onGet(endpoint).reply(200, {data: results})
 
             const input = component.find(Input).dive().find('input')

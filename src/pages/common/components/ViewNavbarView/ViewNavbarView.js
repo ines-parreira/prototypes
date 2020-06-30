@@ -10,7 +10,12 @@ import {getPluralObjectName} from '../../../../utils'
 import Tooltip from '../Tooltip'
 import shortcutManager from '../../../../services/shortcutManager'
 import {moveIndex} from '../../utils/keyboard'
-import {getActiveView, makeGetView, makeGetViewCount, makeGetViewsByType} from '../../../../state/views/selectors'
+import {
+    getActiveView,
+    makeGetView,
+    makeGetViewCount,
+    makeGetViewsByType,
+} from '../../../../state/views/selectors'
 import {makeGetSettingsByType} from '../../../../state/currentUser/selectors'
 import ViewName from '../ViewName'
 import ViewCount from '../ViewCount'
@@ -28,7 +33,8 @@ class ViewNavbarView extends Component {
         activeView: PropTypes.object.isRequired,
         viewType: PropTypes.oneOf(['ticket-list', 'customer-list']).isRequired,
         settings: PropTypes.object,
-        settingType: PropTypes.oneOf(['ticket-views', 'customer-views']).isRequired,
+        settingType: PropTypes.oneOf(['ticket-views', 'customer-views'])
+            .isRequired,
         isLoading: PropTypes.bool.isRequired,
         getViewCount: PropTypes.func.isRequired,
     }
@@ -39,7 +45,7 @@ class ViewNavbarView extends Component {
 
     state = {
         hasEditMode: false,
-        viewCusor: 0
+        viewCusor: 0,
     }
 
     componentDidMount() {
@@ -51,16 +57,21 @@ class ViewNavbarView extends Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({viewCursor: this._getViewCursor(nextProps.activeView, nextProps.views)})
+        this.setState({
+            viewCursor: this._getViewCursor(
+                nextProps.activeView,
+                nextProps.views
+            ),
+        })
     }
 
     _bindKeys = () => {
         shortcutManager.bind('ViewNavbarView', {
             GO_NEXT_VIEW: {
-                action: () => this._moveCursor()
+                action: () => this._moveCursor(),
             },
             GO_PREV_VIEW: {
-                action: () => this._moveCursor('previous')
+                action: () => this._moveCursor('previous'),
             },
         })
     }
@@ -84,14 +95,21 @@ class ViewNavbarView extends Component {
 
     _moveCursor = (direction: string = 'next') => {
         const displayedViews = this._getDisplayedViews()
-        const viewCursor = moveIndex(this.state.viewCursor, displayedViews.size, {
-            direction,
-            rotate: true
-        })
+        const viewCursor = moveIndex(
+            this.state.viewCursor,
+            displayedViews.size,
+            {
+                direction,
+                rotate: true,
+            }
+        )
         this.setState({viewCursor})
 
         const objectName = getPluralObjectName(this.props.viewType)
-        const viewUrl = this._getViewUrl(objectName, displayedViews.get(viewCursor))
+        const viewUrl = this._getViewUrl(
+            objectName,
+            displayedViews.get(viewCursor)
+        )
         this._updateViewUrl(viewUrl)
     }
 
@@ -111,7 +129,7 @@ class ViewNavbarView extends Component {
         const objectName = getPluralObjectName(viewType)
 
         const settingButtonClass = classnames(css.settingButton, {
-            [css.active]: hasEditMode
+            [css.active]: hasEditMode,
         })
 
         let displayedViews = this._getDisplayedViews()
@@ -120,96 +138,101 @@ class ViewNavbarView extends Component {
             <div>
                 <div className="item">
                     <h4>
-                        <i className="icon material-icons">
-                            view_list
-                        </i>
+                        <i className="icon material-icons">view_list</i>
                         Views
                         {/*
                         TODO(customers-migration): remove this condition when we finished to migrate views
                         */}
-                        {viewType !== 'customer-list' ?
+                        {viewType !== 'customer-list' ? (
                             <span
                                 onClick={this._toggleHasEditMode}
                                 className={settingButtonClass}
                             >
                                 <span id="navbar-views-settings">
-                                    {isLoading
-                                        ? (
-                                            <i className="material-icons md-spin">
-                                                refresh
-                                            </i>
-                                        ) : (
-                                            <i className="d-none d-md-inline-block material-icons">
-                                                {hasEditMode ? 'close' : 'settings'}
-                                            </i>
-                                        )
-                                    }
+                                    {isLoading ? (
+                                        <i className="material-icons md-spin">
+                                            refresh
+                                        </i>
+                                    ) : (
+                                        <i className="d-none d-md-inline-block material-icons">
+                                            {hasEditMode ? 'close' : 'settings'}
+                                        </i>
+                                    )}
                                 </span>
                                 <Tooltip
                                     placement="top"
                                     target="navbar-views-settings"
                                 >
-                                    {hasEditMode ? popupLeaveMessage : popupEnterMessage}
+                                    {hasEditMode
+                                        ? popupLeaveMessage
+                                        : popupEnterMessage}
                                 </Tooltip>
                             </span>
-                            : null
-                        }
+                        ) : null}
                     </h4>
                     <div className="menu">
-                        {
-                            hasEditMode ?
-                                <ViewNavbarViewEditor
-                                    initialValues={settings.toJS()}
-                                    setting={settings}
-                                    isLoading={isLoading}
-                                    views={displayedViews}
-                                    objectName={objectName}
-                                />
-                                : (
-                                    displayedViews.map((view) => {
-                                        const isCurrentView = activeView.get('id') === view.get('id')
-                                        const isFocused = window.location.pathname.startsWith(`/app/tickets/${view.get('id')}/`)
-
-                                        const key = `${view.get('slug')}-${view.get('id')}`
-                                        let classes = classnames('item', {
-                                            active: isCurrentView,
-                                            focused: isFocused,
-                                        })
-
-                                        const viewCount = this.props.getViewCount(view.get('id'))
-                                        let count = ''
-                                        let isMoreThanMaxCount = false
-
-                                        if (viewCount !== null) {
-                                            isMoreThanMaxCount = viewCount >= MAX_TICKET_COUNT_PER_VIEW
-                                            count = `(${
-                                                isMoreThanMaxCount
-                                                    ? `${MAX_TICKET_COUNT_PER_VIEW - 1}+`
-                                                    : viewCount
-                                            })`
-                                        }
-
-                                        return (
-                                            <Link
-                                                key={key}
-                                                to={this._getViewUrl(objectName, view)}
-                                                className={classes}
-                                                title={`${view.get('name')} ${count}`}
-                                                onClick={() => {
-                                                    this.context.closePanel()
-                                                }}
-                                            >
-                                                <span className="item-name">
-                                                    <ViewName view={view}/>
-                                                </span>
-                                                <span className="item-count">
-                                                    <ViewCount view={view}/>
-                                                </span>
-                                            </Link>
-                                        )
-                                    })
+                        {hasEditMode ? (
+                            <ViewNavbarViewEditor
+                                initialValues={settings.toJS()}
+                                setting={settings}
+                                isLoading={isLoading}
+                                views={displayedViews}
+                                objectName={objectName}
+                            />
+                        ) : (
+                            displayedViews.map((view) => {
+                                const isCurrentView =
+                                    activeView.get('id') === view.get('id')
+                                const isFocused = window.location.pathname.startsWith(
+                                    `/app/tickets/${view.get('id')}/`
                                 )
-                        }
+
+                                const key = `${view.get('slug')}-${view.get(
+                                    'id'
+                                )}`
+                                let classes = classnames('item', {
+                                    active: isCurrentView,
+                                    focused: isFocused,
+                                })
+
+                                const viewCount = this.props.getViewCount(
+                                    view.get('id')
+                                )
+                                let count = ''
+                                let isMoreThanMaxCount = false
+
+                                if (viewCount !== null) {
+                                    isMoreThanMaxCount =
+                                        viewCount >= MAX_TICKET_COUNT_PER_VIEW
+                                    count = `(${
+                                        isMoreThanMaxCount
+                                            ? `${
+                                                  MAX_TICKET_COUNT_PER_VIEW - 1
+                                              }+`
+                                            : viewCount
+                                    })`
+                                }
+
+                                return (
+                                    <Link
+                                        key={key}
+                                        to={this._getViewUrl(objectName, view)}
+                                        className={classes}
+                                        title={`${view.get('name')} ${count}`}
+                                        onClick={() => {
+                                            this.context.closePanel()
+                                        }}
+                                    >
+                                        <span className="item-name">
+                                            <ViewName view={view} />
+                                        </span>
+                                        <span className="item-count">
+                                            <ViewCount view={view} />
+                                        </span>
+                                    </Link>
+                                )
+                            })
+                        )}
                     </div>
                 </div>
             </div>

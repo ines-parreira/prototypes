@@ -4,7 +4,7 @@ function isNumeric(n) {
 
 export function creditCardNormalizer(value, previousValue) {
     const newValue = value.replace(/ /g, '')
-    if (isNumeric(newValue) && newValue.length <= 19 || !newValue) {
+    if ((isNumeric(newValue) && newValue.length <= 19) || !newValue) {
         return newValue.replace(/(\d){4}/g, (match) => `${match} `).trim()
     }
     return previousValue
@@ -19,7 +19,7 @@ export function creditCardCVCNormalizer(value, previousValue) {
 
 export function creditCardExpDateNormalizer(value, previousValue) {
     const newValue = value.replace(/[ /]/g, '')
-    if (isNumeric(newValue) && newValue.length <= 4 || !newValue) {
+    if ((isNumeric(newValue) && newValue.length <= 4) || !newValue) {
         // user type backyard and cursor is at `MM / ` <--
         if (value.length === 4) {
             return newValue

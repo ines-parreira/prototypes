@@ -65,8 +65,11 @@ export class FilterTopbarComponent extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         // fetch page again when filters changed and that filters are valid
-        const isSameView = this.props.activeView.get('id') === nextProps.activeView.get('id')
-        const filtersHaveChanged = this.props.activeView.get('filters') !== nextProps.activeView.get('filters')
+        const isSameView =
+            this.props.activeView.get('id') === nextProps.activeView.get('id')
+        const filtersHaveChanged =
+            this.props.activeView.get('filters') !==
+            nextProps.activeView.get('filters')
 
         if (isSameView && filtersHaveChanged && nextProps.areFiltersValid) {
             this.props.fetchViewItems()
@@ -92,7 +95,7 @@ export class FilterTopbarComponent extends React.Component {
         }
 
         this.setState({
-            isSubmitting: true
+            isSubmitting: true,
         })
 
         let activeView = this.props.activeView
@@ -106,9 +109,7 @@ export class FilterTopbarComponent extends React.Component {
             const newName = `${activeView.get('name', '')} - copy`
             const newSlug = slugify(newName)
 
-            activeView = activeView
-                .set('name', newName)
-                .set('slug', newSlug)
+            activeView = activeView.set('name', newName).set('slug', newSlug)
         }
 
         this._submitView(activeView)
@@ -124,7 +125,7 @@ export class FilterTopbarComponent extends React.Component {
         const operator = getDefaultOperator(left, this.props.schemas)
         const filter = {
             left,
-            operator
+            operator,
         }
 
         this.props.addFieldFilter(field.toJS(), filter)
@@ -148,7 +149,7 @@ export class FilterTopbarComponent extends React.Component {
         }
 
         this.setState({
-            isSubmitting: true
+            isSubmitting: true,
         })
 
         let activeView = this.props.activeView
@@ -164,7 +165,7 @@ export class FilterTopbarComponent extends React.Component {
     _submitView = (view) => {
         this.props.submitView(view).then(() => {
             this.setState({
-                isSubmitting: false
+                isSubmitting: false,
             })
         })
     }
@@ -177,7 +178,15 @@ export class FilterTopbarComponent extends React.Component {
 
     render() {
         const {
-            config, activeView, areFiltersValid, isDirty, isUpdate, isSearch, agents, teams, currentUser
+            config,
+            activeView,
+            areFiltersValid,
+            isDirty,
+            isUpdate,
+            isSearch,
+            agents,
+            teams,
+            currentUser,
         } = this.props
         const {isSubmitting} = this.state
         const isSystemView = activeView.get('category') === 'system'
@@ -186,20 +195,24 @@ export class FilterTopbarComponent extends React.Component {
             return null
         }
 
-        const filterableFields = config.get('fields')
-            .filter((field) => field.get('filter') && field.getIn(['filter', 'show'], true))
+        const filterableFields = config
+            .get('fields')
+            .filter(
+                (field) =>
+                    field.get('filter') && field.getIn(['filter', 'show'], true)
+            )
             .sortBy((field) => field.get('title'))
 
         return (
             <Card className={css.component}>
                 <CardBody className="filter-topbar-content">
-                    <p className={css.subtitle}>
-                        ADVANCED FILTERS
-                    </p>
+                    <p className={css.subtitle}>ADVANCED FILTERS</p>
                     <Filters
                         view={activeView}
                         removeFieldFilter={this.props.removeFieldFilter}
-                        updateFieldFilterOperator={this.props.updateFieldFilterOperator}
+                        updateFieldFilterOperator={
+                            this.props.updateFieldFilterOperator
+                        }
                         agents={agents}
                         teams={teams}
                         currentUser={currentUser}
@@ -214,109 +227,128 @@ export class FilterTopbarComponent extends React.Component {
                             size="sm"
                             className="mr-2"
                             onClick={() => {
-                                segmentTracker.logEvent(segmentTracker.EVENTS.VIEW_FILTER_ADD_CLICKED)
+                                segmentTracker.logEvent(
+                                    segmentTracker.EVENTS
+                                        .VIEW_FILTER_ADD_CLICKED
+                                )
                             }}
                         >
-                            <i className="material-icons mr-2">
-                                add
-                            </i>
+                            <i className="material-icons mr-2">add</i>
                             Add filter
                         </DropdownToggle>
                         <DropdownMenu>
-                            {
-                                filterableFields.map((field) => {
-                                    return (
-                                        <DropdownItem
-                                            key={field.get('name')}
-                                            type="button"
-                                            onClick={() => this._onClickFilter(field)}
-                                        >
-                                            {field.get('title')}
-                                        </DropdownItem>
-                                    )
-                                })
-                            }
+                            {filterableFields.map((field) => {
+                                return (
+                                    <DropdownItem
+                                        key={field.get('name')}
+                                        type="button"
+                                        onClick={() =>
+                                            this._onClickFilter(field)
+                                        }
+                                    >
+                                        {field.get('title')}
+                                    </DropdownItem>
+                                )
+                            })}
                         </DropdownMenu>
                     </UncontrolledDropdown>
                 </CardBody>
-                {!isSearch &&
+                {!isSearch && (
                     <CardFooter>
                         <div className="d-flex align-items-center justify-content-between">
                             <div>
-                                {
-                                    isSystemView ? (
-                                        <span>
-                                            <i className="material-icons mr-2">
-                                                info
-                                            </i>
-                                            This view cannot be saved
-                                        </span>
-                                    ) : (
-                                        isUpdate ? (
-                                            <UncontrolledButtonDropdown>
+                                {isSystemView ? (
+                                    <span>
+                                        <i className="material-icons mr-2">
+                                            info
+                                        </i>
+                                        This view cannot be saved
+                                    </span>
+                                ) : isUpdate ? (
+                                    <UncontrolledButtonDropdown>
+                                        <Button
+                                            type="submit"
+                                            id="update-view-button"
+                                            color="success"
+                                            className={classnames({
+                                                'btn-loading': this.state
+                                                    .isSubmitting,
+                                            })}
+                                            disabled={
+                                                isSubmitting ||
+                                                !areFiltersValid ||
+                                                !isDirty
+                                            }
+                                            onClick={
+                                                this._toggleUpdateConfirmation
+                                            }
+                                        >
+                                            Update view
+                                        </Button>
+                                        <Popover
+                                            placement="bottom"
+                                            isOpen={
+                                                this.state.askUpdateConfirmation
+                                            }
+                                            target="update-view-button"
+                                            toggle={
+                                                this._toggleUpdateConfirmation
+                                            }
+                                        >
+                                            <PopoverHeader>
+                                                Are you sure?
+                                            </PopoverHeader>
+                                            <PopoverBody>
+                                                <p>
+                                                    You are about to edit this
+                                                    view for <b>all users</b>.
+                                                </p>
                                                 <Button
                                                     type="submit"
-                                                    id="update-view-button"
                                                     color="success"
-                                                    className={classnames({
-                                                        'btn-loading': this.state.isSubmitting,
-                                                    })}
-                                                    disabled={isSubmitting || !areFiltersValid || !isDirty}
-                                                    onClick={this._toggleUpdateConfirmation}
+                                                    onClick={
+                                                        this._onClickUpdate
+                                                    }
                                                 >
-                                                    Update view
+                                                    Confirm
                                                 </Button>
-                                                <Popover
-                                                    placement="bottom"
-                                                    isOpen={this.state.askUpdateConfirmation}
-                                                    target="update-view-button"
-                                                    toggle={this._toggleUpdateConfirmation}
-                                                >
-                                                    <PopoverHeader>Are you sure?</PopoverHeader>
-                                                    <PopoverBody>
-                                                        <p>
-                                                            You are about to edit this view for <b>all users</b>.
-                                                        </p>
-                                                        <Button
-                                                            type="submit"
-                                                            color="success"
-                                                            onClick={this._onClickUpdate}
-                                                        >
-                                                            Confirm
-                                                        </Button>
-                                                    </PopoverBody>
-                                                </Popover>
-                                                <DropdownToggle
-                                                    caret
-                                                    type="button"
-                                                    color="success"
-                                                />
-                                                <DropdownMenu right>
-                                                    <DropdownItem
-                                                        key="open"
-                                                        type="button"
-                                                        disabled={isSubmitting || !areFiltersValid}
-                                                        onClick={this._onClickNew}
-                                                    >
-                                                        Save as new view
-                                                    </DropdownItem>
-                                                </DropdownMenu>
-                                            </UncontrolledButtonDropdown>
-                                        ) : (
-                                            <Button
-                                                type="submit"
-                                                color="primary"
-                                                className={classnames({
-                                                    'btn-loading': this.state.isSubmitting,
-                                                })}
-                                                disabled={isSubmitting || !areFiltersValid}
-                                                onClick={this._createView}
+                                            </PopoverBody>
+                                        </Popover>
+                                        <DropdownToggle
+                                            caret
+                                            type="button"
+                                            color="success"
+                                        />
+                                        <DropdownMenu right>
+                                            <DropdownItem
+                                                key="open"
+                                                type="button"
+                                                disabled={
+                                                    isSubmitting ||
+                                                    !areFiltersValid
+                                                }
+                                                onClick={this._onClickNew}
                                             >
-                                                Create view
-                                            </Button>
-                                        )
-                                    )
-                                }
+                                                Save as new view
+                                            </DropdownItem>
+                                        </DropdownMenu>
+                                    </UncontrolledButtonDropdown>
+                                ) : (
+                                    <Button
+                                        type="submit"
+                                        color="primary"
+                                        className={classnames({
+                                            'btn-loading': this.state
+                                                .isSubmitting,
+                                        })}
+                                        disabled={
+                                            isSubmitting || !areFiltersValid
+                                        }
+                                        onClick={this._createView}
+                                    >
+                                        Create view
+                                    </Button>
+                                )}
                                 {!isSearch && (
                                     <Button
                                         type="submit"
@@ -329,13 +361,14 @@ export class FilterTopbarComponent extends React.Component {
                                     </Button>
                                 )}
                             </div>
-                            {!isSearch && !isSystemView && isUpdate &&(
+                            {!isSearch && !isSystemView && isUpdate && (
                                 <ConfirmButton
-                                    content={(
+                                    content={
                                         <span>
-                                            You are about to <b>delete</b> this view for <b>all users</b>.
+                                            You are about to <b>delete</b> this
+                                            view for <b>all users</b>.
                                         </span>
-                                    )}
+                                    }
                                     confirm={() => {
                                         return this.props.deleteView(activeView)
                                     }}
@@ -348,7 +381,7 @@ export class FilterTopbarComponent extends React.Component {
                             )}
                         </div>
                     </CardFooter>
-                }
+                )}
             </Card>
         )
     }
@@ -380,4 +413,7 @@ const mapDispatchToProps = {
     updateFieldFilterOperator: viewsActions.updateFieldFilterOperator,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(FilterTopbarComponent)
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(FilterTopbarComponent)

@@ -11,7 +11,6 @@ import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'
 import * as integrationsActions from '../../../../../state/integrations/actions'
 
-
 type Props = {
     integrations: List,
     redirectUri: string,
@@ -30,10 +29,13 @@ type State = {
     activate: integrationsActions.activateIntegration,
     deactivate: integrationsActions.deactivateIntegration,
 })
-export default class SmileIntegrationList extends React.Component<Props, State> {
+export default class SmileIntegrationList extends React.Component<
+    Props,
+    State
+> {
     state: State = {
         isLightboxOpen: false,
-        currentImage: 0
+        currentImage: 0,
     }
 
     _toggleLightbox = (selectedImageId: ?number) => {
@@ -53,11 +55,17 @@ export default class SmileIntegrationList extends React.Component<Props, State> 
 
     render() {
         const {integrations, loading} = this.props
-        const smileIntegrations = integrations.filter((v) => v.get('type') === 'smile')
+        const smileIntegrations = integrations.filter(
+            (v) => v.get('type') === 'smile'
+        )
 
         const imagesUrl = [
-            `${window.GORGIAS_ASSETS_URL || ''}/static/private/img/presentationals/smile-carousel_1.jpg`,
-            `${window.GORGIAS_ASSETS_URL || ''}/static/private/img/presentationals/smile-carousel_2.jpg`
+            `${
+                window.GORGIAS_ASSETS_URL || ''
+            }/static/private/img/presentationals/smile-carousel_1.jpg`,
+            `${
+                window.GORGIAS_ASSETS_URL || ''
+            }/static/private/img/presentationals/smile-carousel_2.jpg`,
         ]
 
         const longTypeDescription = (
@@ -72,8 +80,8 @@ export default class SmileIntegrationList extends React.Component<Props, State> 
                 </ul>
 
                 <p>
-                    For each customer, the following Smile data is available in Gorgias: point balance, referral url,
-                    VIP tier, state.
+                    For each customer, the following Smile data is available in
+                    Gorgias: point balance, referral url, VIP tier, state.
                 </p>
 
                 <Carousel
@@ -90,8 +98,12 @@ export default class SmileIntegrationList extends React.Component<Props, State> 
                     isOpen={this.state.isLightboxOpen}
                     onClose={() => this._toggleLightbox()}
                     currentImage={this.state.currentImage}
-                    onClickPrev={() => this._gotoImage(this.state.currentImage - 1)}
-                    onClickNext={() => this._gotoImage(this.state.currentImage + 1)}
+                    onClickPrev={() =>
+                        this._gotoImage(this.state.currentImage - 1)
+                    }
+                    onClickNext={() =>
+                        this._gotoImage(this.state.currentImage + 1)
+                    }
                     onClickThumbnail={this._gotoImage}
                     showThumbnails
                     backdropClosesModal
@@ -104,11 +116,15 @@ export default class SmileIntegrationList extends React.Component<Props, State> 
         const integrationToItemDisplay = (integration: Map<*, *>) => {
             const toggleIntegration = (value: boolean): Promise<*> => {
                 const integrationId = integration.get('id')
-                return value ? this.props.activate(integrationId) : this.props.deactivate(integrationId)
+                return value
+                    ? this.props.activate(integrationId)
+                    : this.props.deactivate(integrationId)
             }
 
             const isDisabled = integration.get('deactivated_datetime')
-            const editLink = `/app/settings/integrations/smile/${integration.get('id')}`
+            const editLink = `/app/settings/integrations/smile/${integration.get(
+                'id'
+            )}`
 
             return (
                 <tr key={integration.get('id')}>

@@ -19,7 +19,7 @@ import {
     caseInsensitiveOperators,
     collectionOperators,
     deprecatedOperators,
-    timedeltaOperators
+    timedeltaOperators,
 } from '../../../../config/rules'
 import {removeSuffix} from '../../../../utils/string'
 import TimedeltaPicker from '../../forms/TimedeltaPicker'
@@ -45,18 +45,18 @@ type Props = {
     properties: Array<*>,
     className?: string,
     compact?: boolean,
-    hasIntegrationOfTypes: (string) => boolean
+    hasIntegrationOfTypes: (string) => boolean,
 }
 
 type State = {
     textFieldPropIndex: number,
-    textFieldParent: Array<string>
+    textFieldParent: Array<string>,
 }
 
 export class Widget extends React.Component<Props, State> {
     static defaultProps = {
         config: {},
-        properties: []
+        properties: [],
     }
 
     constructor(props: Props) {
@@ -72,14 +72,22 @@ export class Widget extends React.Component<Props, State> {
         }
     }
 
-    _getTextField = (config: Object, parent: List<*>, properties: Array<*>): Object => {
+    _getTextField = (
+        config: Object,
+        parent: List<*>,
+        properties: Array<*>
+    ): Object => {
         const textFieldParent = parent.slice(0, -3)
         const textFieldPropIndex = properties.findIndex((property) => {
             return property.key.name === config.textField
         })
         return {
             textFieldPropIndex: textFieldPropIndex,
-            textFieldParent: textFieldParent.concat([textFieldPropIndex, 'value', 'value']),
+            textFieldParent: textFieldParent.concat([
+                textFieldPropIndex,
+                'value',
+                'value',
+            ]),
         }
     }
 
@@ -101,14 +109,18 @@ export class Widget extends React.Component<Props, State> {
             newValue = newValue.map((val) => ({
                 type: 'Literal',
                 raw: `'${val}'`,
-                value: val
+                value: val,
             }))
         }
 
         return actions.modifyCodeAST(parent, newValue, 'UPDATE')
     }
 
-    _input = (value: any, type: string = 'text', caseInsensitive: boolean = false) => {
+    _input = (
+        value: any,
+        type: string = 'text',
+        caseInsensitive: boolean = false
+    ) => {
         const {config = {}, className, compact} = this.props
 
         return (
@@ -150,10 +162,18 @@ export class Widget extends React.Component<Props, State> {
 
         // fill the text field with the text version
         if (textFieldParent) {
-            actions.modifyCodeAST(textFieldParent, getPlainText(contentState), 'UPDATE')
+            actions.modifyCodeAST(
+                textFieldParent,
+                getPlainText(contentState),
+                'UPDATE'
+            )
         }
 
-        return actions.modifyCodeAST(parent, convertToHTML(contentState), 'UPDATE')
+        return actions.modifyCodeAST(
+            parent,
+            convertToHTML(contentState),
+            'UPDATE'
+        )
     }
 
     _richField = (html: any) => {
@@ -203,10 +223,7 @@ export class Widget extends React.Component<Props, State> {
     _timedeltaSelect = (value: any) => {
         return (
             <div className="widget d-inline-block">
-                <TimedeltaPicker
-                    value={value}
-                    onChange={this._handleChange}
-                />
+                <TimedeltaPicker value={value} onChange={this._handleChange} />
             </div>
         )
     }
@@ -239,7 +256,15 @@ export class Widget extends React.Component<Props, State> {
     }
 
     render() {
-        const {leftsiblings, schemas, value, rule, parent, className, config} = this.props
+        const {
+            leftsiblings,
+            schemas,
+            value,
+            rule,
+            parent,
+            className,
+            config,
+        } = this.props
 
         // todo should depend on triggers (should be described in schemas)
         const rootObjects = ['ticket', 'message']
@@ -271,13 +296,20 @@ export class Widget extends React.Component<Props, State> {
                 // only show props that have a meta value or a refs
                 if (prop.hasOwnProperty('meta')) {
                     // hide prop if it is hidden in rules and not used
-                    if (_get(prop, ['meta', 'rules', 'hide']) === true && key !== widget.value) {
+                    if (
+                        _get(prop, ['meta', 'rules', 'hide']) === true &&
+                        key !== widget.value
+                    ) {
                         continue
                     }
 
                     widget.options.push({
                         value: key,
-                        label: _get(prop, ['meta', 'rules', 'label']) || humanizeString(removeSuffix(key, '_datetime')).toLowerCase(),
+                        label:
+                            _get(prop, ['meta', 'rules', 'label']) ||
+                            humanizeString(
+                                removeSuffix(key, '_datetime')
+                            ).toLowerCase(),
                     })
                     widget.description = prop.description
                 } else if (prop.hasOwnProperty('$ref')) {
@@ -288,7 +320,6 @@ export class Widget extends React.Component<Props, State> {
                     widget.description = ''
                 }
             }
-
         } else if (left.last() === 'operators') {
             // operators are using simple select widget, all we need is the options
             let operators = schemas.getIn(left)
@@ -312,23 +343,38 @@ export class Widget extends React.Component<Props, State> {
         } else {
             // all other properties
             const right = schemas.getIn(left)
-            const calleeName = rule.getIn(parent.slice(0, -3).concat(['callee', 'name']).insert(0, 'code_ast'))
-            widget.type = right ? right.getIn(['meta', 'rules', 'widget']) : 'input'
+            const calleeName = rule.getIn(
+                parent
+                    .slice(0, -3)
+                    .concat(['callee', 'name'])
+                    .insert(0, 'code_ast')
+            )
+            widget.type = right
+                ? right.getIn(['meta', 'rules', 'widget'])
+                : 'input'
 
             // display a multi select field in case current attribute is an array AND
             // it's has no specific input AND callee is a collection operator
-            if (_isArray(widget.value) && (!widget.type || widget.type === 'input') &&
-                collectionOperators.includes(calleeName)) {
+            if (
+                _isArray(widget.value) &&
+                (!widget.type || widget.type === 'input') &&
+                collectionOperators.includes(calleeName)
+            ) {
                 widget.type = 'multi-select'
             }
 
             // current properties is a tag field so we used the specific
-            if (leftsiblings.join('.').includes('Ticket.properties.tags.name')) {
+            if (
+                leftsiblings.join('.').includes('Ticket.properties.tags.name')
+            ) {
                 widget.type = 'tags-select'
                 widget.multiple = collectionOperators.includes(calleeName)
             }
 
-            if (caseInsensitiveOperators.includes(calleeName) && widget.type !== 'tags-select') {
+            if (
+                caseInsensitiveOperators.includes(calleeName) &&
+                widget.type !== 'tags-select'
+            ) {
                 caseInsensitive = true
             }
 
@@ -339,7 +385,9 @@ export class Widget extends React.Component<Props, State> {
             }
         }
 
-        const operatorName = rule.getIn(parent.slice(0, -3).concat(['callee', 'name']).insert(0, 'code_ast'))
+        const operatorName = rule.getIn(
+            parent.slice(0, -3).concat(['callee', 'name']).insert(0, 'code_ast')
+        )
         const isOperatorRelative = timedeltaOperators.includes(operatorName)
 
         if (widget.type === 'datetime-select' && isOperatorRelative) {
@@ -348,51 +396,57 @@ export class Widget extends React.Component<Props, State> {
 
         switch (widget.type) {
             case 'intents-select':
-                return <MultiSelectField
-                    className={className}
-                    style={{
-                        display: 'inline-block',
-                        paddingBottom: '2px'
-                    }}
-                    options={widget.options.map((option) => ({
-                        value: option.toString(),
-                        label: option.toString(),
-                    }))}
-                    singular="intent"
-                    plural="intents"
-                    values={widget.value}
-                    onChange={this._handleChange}
-                />
+                return (
+                    <MultiSelectField
+                        className={className}
+                        style={{
+                            display: 'inline-block',
+                            paddingBottom: '2px',
+                        }}
+                        options={widget.options.map((option) => ({
+                            value: option.toString(),
+                            label: option.toString(),
+                        }))}
+                        singular="intent"
+                        plural="intents"
+                        values={widget.value}
+                        onChange={this._handleChange}
+                    />
+                )
             case 'sentiments-select':
-                return <MultiSelectField
-                    className={className}
-                    style={{
-                        display: 'inline-block',
-                        paddingBottom: '2px'
-                    }}
-                    options={widget.options.map((option) => ({
-                        value: option.toString(),
-                        label: option.toString(),
-                    }))}
-                    singular="sentiment"
-                    plural="sentiments"
-                    values={widget.value}
-                    onChange={this._handleChange}
-                />
+                return (
+                    <MultiSelectField
+                        className={className}
+                        style={{
+                            display: 'inline-block',
+                            paddingBottom: '2px',
+                        }}
+                        options={widget.options.map((option) => ({
+                            value: option.toString(),
+                            label: option.toString(),
+                        }))}
+                        singular="sentiment"
+                        plural="sentiments"
+                        values={widget.value}
+                        onChange={this._handleChange}
+                    />
+                )
             case 'multi-select':
-                return <MultiSelectField
-                    className={className}
-                    style={{
-                        display: 'inline-block',
-                        paddingBottom: '2px'
-                    }}
-                    values={widget.value}
-                    singular="word"
-                    plural="words"
-                    allowCustomValues
-                    onChange={this._handleChange}
-                    caseInsensitive={caseInsensitive}
-                />
+                return (
+                    <MultiSelectField
+                        className={className}
+                        style={{
+                            display: 'inline-block',
+                            paddingBottom: '2px',
+                        }}
+                        values={widget.value}
+                        singular="word"
+                        plural="words"
+                        allowCustomValues
+                        onChange={this._handleChange}
+                        caseInsensitive={caseInsensitive}
+                    />
+                )
             case 'select':
                 return (
                     <Select
@@ -416,7 +470,11 @@ export class Widget extends React.Component<Props, State> {
                         className={className}
                         onChange={this._handleChange}
                         caseInsensitive={caseInsensitive}
-                        multiple={_isUndefined(widget.multiple) ? true : widget.multiple}
+                        multiple={
+                            _isUndefined(widget.multiple)
+                                ? true
+                                : widget.multiple
+                        }
                     />
                 )
             case 'macro-select':
@@ -471,7 +529,7 @@ export class Widget extends React.Component<Props, State> {
 
 function mapStateToProps(state) {
     return {
-        hasIntegrationOfTypes: makeHasIntegrationOfTypes(state)
+        hasIntegrationOfTypes: makeHasIntegrationOfTypes(state),
     }
 }
 

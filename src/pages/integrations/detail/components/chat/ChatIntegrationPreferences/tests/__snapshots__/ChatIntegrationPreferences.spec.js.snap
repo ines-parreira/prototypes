@@ -250,7 +250,8 @@ exports[`<ChatIntegrationPreferences/> render() should render buttons in loading
                 className="text-faded"
               >
                 <b>
-                  During 
+                  During
+                   
                   <Link
                     onlyActiveOnIndex={false}
                     style={Object {}}
@@ -295,7 +296,8 @@ exports[`<ChatIntegrationPreferences/> render() should render buttons in loading
                 className="text-faded"
               >
                 <b>
-                  Outside 
+                  Outside
+                   
                   <Link
                     onlyActiveOnIndex={false}
                     style={Object {}}
@@ -536,7 +538,8 @@ exports[`<ChatIntegrationPreferences/> render() should render the Chat preferenc
                 className="text-faded"
               >
                 <b>
-                  During 
+                  During
+                   
                   <Link
                     onlyActiveOnIndex={false}
                     style={Object {}}
@@ -581,7 +584,8 @@ exports[`<ChatIntegrationPreferences/> render() should render the Chat preferenc
                 className="text-faded"
               >
                 <b>
-                  Outside 
+                  Outside
+                   
                   <Link
                     onlyActiveOnIndex={false}
                     style={Object {}}

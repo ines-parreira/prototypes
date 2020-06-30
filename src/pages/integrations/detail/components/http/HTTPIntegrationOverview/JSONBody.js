@@ -2,11 +2,7 @@
 import React from 'react'
 import _isEqual from 'lodash/isEqual'
 import _some from 'lodash/some'
-import {
-    FormGroup,
-    FormText,
-    Label
-} from 'reactstrap'
+import {FormGroup, FormText, Label} from 'reactstrap'
 
 import Select from '../../../../../common/components/ast/widget/ReactSelect'
 import Tooltip from '../../../../../common/components/Tooltip'
@@ -14,25 +10,26 @@ import JsonField from '../../../../../common/forms/JsonField'
 
 import {CONTEXT_SPECIAL_VARIABLE, DEFAULT_FORM} from './constants'
 
-
 type Props = {
     form: string | Object | Array<*>,
-    onChange: (string | Object | Array<*>) => void
+    onChange: (string | Object | Array<*>) => void,
 }
 
 type State = {
-    cachedForm: string | Object | Array<*>
+    cachedForm: string | Object | Array<*>,
 }
-
 
 export default class JSONBody extends React.Component<Props, State> {
     presetOptions = [
         {label: 'JSON template', value: DEFAULT_FORM},
-        {label: 'Send the entire ticket/message JSON', value: CONTEXT_SPECIAL_VARIABLE},
+        {
+            label: 'Send the entire ticket/message JSON',
+            value: CONTEXT_SPECIAL_VARIABLE,
+        },
     ]
 
     state = {
-        cachedForm: DEFAULT_FORM
+        cachedForm: DEFAULT_FORM,
     }
 
     componentWillMount() {
@@ -42,7 +39,9 @@ export default class JSONBody extends React.Component<Props, State> {
     }
 
     _onDropdownChange = (form: Object | string) => {
-        this.props.onChange(_isEqual(form, DEFAULT_FORM) ? this.state.cachedForm : form)
+        this.props.onChange(
+            _isEqual(form, DEFAULT_FORM) ? this.state.cachedForm : form
+        )
     }
 
     _onJSONChange = (form: Object) => {
@@ -51,8 +50,12 @@ export default class JSONBody extends React.Component<Props, State> {
     }
 
     _formIsPresetOption = (form: string | Object | Array<*>): boolean => {
-        const presetOptionsValues = this.presetOptions.map((option) => option.value)
-        return _some(presetOptionsValues, (presetOptionValue) => _isEqual(presetOptionValue, form))
+        const presetOptionsValues = this.presetOptions.map(
+            (option) => option.value
+        )
+        return _some(presetOptionsValues, (presetOptionValue) =>
+            _isEqual(presetOptionValue, form)
+        )
     }
 
     render() {
@@ -72,8 +75,9 @@ export default class JSONBody extends React.Component<Props, State> {
                     </i>
                 </Label>
                 <Tooltip target="json-body-label">
-                    You can choose to build your own JSON request body using variables, or to send the whole
-                    context (which includes the entire ticket, and new message if any) directly.
+                    You can choose to build your own JSON request body using
+                    variables, or to send the whole context (which includes the
+                    entire ticket, and new message if any) directly.
                 </Tooltip>
                 <div className="mb-2">
                     <Select
@@ -82,28 +86,26 @@ export default class JSONBody extends React.Component<Props, State> {
                         value={dropdownValue}
                     />
                 </div>
-                {
-                    _isEqual(dropdownValue, DEFAULT_FORM) ? (
-                        <div>
-                            <JsonField
-                                name="http.form"
-                                rows="8"
-                                value={form || DEFAULT_FORM}
-                                onChange={this._onJSONChange}
-                            />
-                            <FormText color="muted">
-                                See full list of variables{' '}
-                                <a
-                                    href="https://api.gorgias.io/#Customer-object"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                        here
-                                </a>
-                            </FormText>
-                        </div>
-                    ) : null
-                }
+                {_isEqual(dropdownValue, DEFAULT_FORM) ? (
+                    <div>
+                        <JsonField
+                            name="http.form"
+                            rows="8"
+                            value={form || DEFAULT_FORM}
+                            onChange={this._onJSONChange}
+                        />
+                        <FormText color="muted">
+                            See full list of variables{' '}
+                            <a
+                                href="https://api.gorgias.io/#Customer-object"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                here
+                            </a>
+                        </FormText>
+                    </div>
+                ) : null}
             </FormGroup>
         )
     }

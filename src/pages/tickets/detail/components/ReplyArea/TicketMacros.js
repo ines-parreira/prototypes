@@ -4,7 +4,15 @@ import ReactDOM from 'react-dom'
 import {fromJS, Map} from 'immutable'
 import classnames from 'classnames'
 import {connect} from 'react-redux'
-import {Button, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Popover, PopoverBody} from 'reactstrap'
+import {
+    Button,
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    Popover,
+    PopoverBody,
+} from 'reactstrap'
 
 import type {TicketMessageSourceType} from '../../../../../business/ticket'
 import {isRichType} from '../../../../../config/ticket'
@@ -21,9 +29,8 @@ import {notify} from './../../../../../state/notifications/actions'
 
 import css from './TicketMacros.less'
 
-
 type Props = {
-    currentTicket: Map<*,*>,
+    currentTicket: Map<*, *>,
     macros: Map<*, Map<*, *>>,
     isInitialMacrosLoading: boolean,
     newMessageType: TicketMessageSourceType,
@@ -31,7 +38,7 @@ type Props = {
     deleteMacro: typeof deleteMacro,
     applyMacro: () => void,
     notify: typeof notify,
-    currentMacro: Map<*,*>,
+    currentMacro: Map<*, *>,
     onClearMacro: () => void,
     page: number,
     totalPages: number,
@@ -47,7 +54,6 @@ type State = {
     isModalOpen: boolean,
     isCreatingMacro: boolean,
 }
-
 
 export class TicketMacros extends React.Component<Props, State> {
     static defaultProps = {
@@ -71,8 +77,13 @@ export class TicketMacros extends React.Component<Props, State> {
 
     componentDidUpdate(prevProps: Props) {
         // brings the preview to top when previewing another macro
-        if (this.props.currentMacro.get('id') !== prevProps.currentMacro.get('id')) {
-            const element: ?Node = ReactDOM.findDOMNode(this.previewContainerRef)
+        if (
+            this.props.currentMacro.get('id') !==
+            prevProps.currentMacro.get('id')
+        ) {
+            const element: ?Node = ReactDOM.findDOMNode(
+                this.previewContainerRef
+            )
 
             if (element) {
                 // $FlowFixMe
@@ -83,13 +94,13 @@ export class TicketMacros extends React.Component<Props, State> {
 
     _toggleMacroDropdown = () => {
         this.setState({
-            macroDropdownOpen: !this.state.macroDropdownOpen
+            macroDropdownOpen: !this.state.macroDropdownOpen,
         })
     }
 
     _toggleMacroDeleteConfirmOpen = () => {
         this.setState({
-            isDeleteConfirmOpen: !this.state.isDeleteConfirmOpen
+            isDeleteConfirmOpen: !this.state.isDeleteConfirmOpen,
         })
     }
 
@@ -115,10 +126,9 @@ export class TicketMacros extends React.Component<Props, State> {
     _deleteMacro = () => {
         this._toggleMacroDeleteConfirmOpen()
         const macroId = this.props.currentMacro.get('id', '')
-        return this.props.deleteMacro(macroId)
-            .then(() => {
-                this.props.fetchMacros({search: this.props.searchQuery})
-            })
+        return this.props.deleteMacro(macroId).then(() => {
+            this.props.fetchMacros({search: this.props.searchQuery})
+        })
     }
 
     render() {
@@ -132,17 +142,12 @@ export class TicketMacros extends React.Component<Props, State> {
             totalPages,
             currentMacro,
             selectMacro,
-            isInitialMacrosLoading
+            isInitialMacrosLoading,
         } = this.props
 
         let content = null
         if (macros.isEmpty() && isInitialMacrosLoading) {
-            content = (
-                <Loader
-                    minHeight="100%"
-                    message="Loading macros..."
-                />
-            )
+            content = <Loader minHeight="100%" message="Loading macros..." />
         } else if (macros.isEmpty()) {
             content = (
                 <MacroNoResults
@@ -152,9 +157,7 @@ export class TicketMacros extends React.Component<Props, State> {
             )
         } else {
             content = (
-                <div
-                    className={css.content}
-                >
+                <div className={css.content}>
                     <MacroList
                         className={css.macroList}
                         currentMacro={currentMacro}
@@ -168,7 +171,7 @@ export class TicketMacros extends React.Component<Props, State> {
                     />
                     <div
                         className={css.previewContainer}
-                        ref={(ref) => this.previewContainerRef = ref}
+                        ref={(ref) => (this.previewContainerRef = ref)}
                     >
                         <Dropdown
                             isOpen={this.state.macroDropdownOpen}
@@ -179,35 +182,41 @@ export class TicketMacros extends React.Component<Props, State> {
                                 className={classnames(css.manageMacros)}
                                 id="deleteMacroTarget"
                             >
-                                <i className="material-icons">
-                                    settings
-                                </i>
+                                <i className="material-icons">settings</i>
                             </DropdownToggle>
                             <DropdownMenu>
                                 <DropdownItem
                                     onClick={this._openMacroModal}
                                     className="cursor-pointer"
                                 >
-                                    <i className="material-icons">settings</i> Manage macros
+                                    <i className="material-icons">settings</i>{' '}
+                                    Manage macros
                                 </DropdownItem>
                                 <DropdownItem
                                     onClick={this._openMacroModal}
                                     className="cursor-pointer"
                                 >
-                                    <i className="material-icons">mode_edit</i> Edit macro
+                                    <i className="material-icons">mode_edit</i>{' '}
+                                    Edit macro
                                 </DropdownItem>
                                 <DropdownItem
-                                    onClick={() => this._openMacroModal({create: true})}
+                                    onClick={() =>
+                                        this._openMacroModal({create: true})
+                                    }
                                     className="cursor-pointer"
                                 >
-                                    <i className="material-icons">add</i> Create new macro
+                                    <i className="material-icons">add</i> Create
+                                    new macro
                                 </DropdownItem>
                                 <DropdownItem
                                     id="deleteButtonMenuItem"
                                     onClick={this._toggleMacroDeleteConfirmOpen}
                                     className="cursor-pointer"
                                 >
-                                    <i className="material-icons text-danger">delete</i> Delete macro
+                                    <i className="material-icons text-danger">
+                                        delete
+                                    </i>{' '}
+                                    Delete macro
                                 </DropdownItem>
                             </DropdownMenu>
                         </Dropdown>
@@ -219,7 +228,10 @@ export class TicketMacros extends React.Component<Props, State> {
                             toggle={this._toggleMacroDeleteConfirmOpen}
                         >
                             <PopoverBody>
-                                <p>Are you sure you want to delete '{currentMacro.get('name')}'?</p>
+                                <p>
+                                    Are you sure you want to delete '
+                                    {currentMacro.get('name')}'?
+                                </p>
                                 <Button
                                     onClick={this._deleteMacro}
                                     color="danger"
@@ -255,17 +267,10 @@ export class TicketMacros extends React.Component<Props, State> {
                     <i className="material-icons d-none d-md-inline-block">
                         close
                     </i>
-                    <Button
-                        color="secondary"
-                        size="sm"
-                        className="d-md-none"
-                    >
+                    <Button color="secondary" size="sm" className="d-md-none">
                         Close
                     </Button>
-                    <Tooltip
-                        placement="top"
-                        target="clear-macro-button"
-                    >
+                    <Tooltip placement="top" target="clear-macro-button">
                         <strong>Esc</strong> to close the macro list.
                     </Tooltip>
                 </a>
@@ -283,9 +288,12 @@ export class TicketMacros extends React.Component<Props, State> {
     }
 }
 
-export default connect((state) => ({
-    newMessageType: newMessageSelectors.getNewMessageType(state),
-}), {
-    notify,
-    deleteMacro,
-})(TicketMacros)
+export default connect(
+    (state) => ({
+        newMessageType: newMessageSelectors.getNewMessageType(state),
+    }),
+    {
+        notify,
+        deleteMacro,
+    }
+)(TicketMacros)

@@ -339,7 +339,8 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
                               <p>
                                 Install the 
                                 customer chat
-                                 widget on your 
+                                 widget on your
+                                 
                                 Shopify
                                  store in one click
                               </p>
@@ -457,10 +458,12 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
                         <b>
                           Whitelisted Domains
                         </b>
-                         section, just add the address of you website.
+                         
+                        section, just add the address of you website.
                         <br />
                         <br />
-                        Then, copy the code below and paste it on your website above the 
+                        Then, copy the code below and paste it on your website above the
+                         
                         <b>
                           &lt;/body&gt;
                         </b>
@@ -512,10 +515,12 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
                                     <b>
                                       Whitelisted Domains
                                     </b>
-                                     section, just add the address of you website.
+                                     
+                                    section, just add the address of you website.
                                     <br />
                                     <br />
-                                    Then, copy the code below and paste it on your website above the 
+                                    Then, copy the code below and paste it on your website above the
+                                     
                                     <b>
                                       &lt;/body&gt;
                                     </b>

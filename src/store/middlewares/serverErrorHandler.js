@@ -9,9 +9,7 @@ import {notify} from '../../state/notifications/actions'
  * @param store
  */
 
-const IGNORED_PREFIXS = [
-    'SUBMIT_ACTIVITY_ERROR',
-]
+const IGNORED_PREFIXS = ['SUBMIT_ACTIVITY_ERROR']
 
 const serverErrorHandler = (store) => (next) => (action) => {
     const status = _get(action, 'error.response.status', '')
@@ -20,10 +18,12 @@ const serverErrorHandler = (store) => (next) => (action) => {
     // notify user and redirect him to the login page when his session has expired
     if ([401, 419].includes(status)) {
         if (error.msg) {
-            store.dispatch(notify({
-                status: 'error',
-                title: error.msg
-            }))
+            store.dispatch(
+                notify({
+                    status: 'error',
+                    title: error.msg,
+                })
+            )
         }
 
         setTimeout(() => {
@@ -33,14 +33,16 @@ const serverErrorHandler = (store) => (next) => (action) => {
         return next(action)
     }
 
-    const shouldDisplayError = action
-        && (action.error || action.reason)
-        && !_some(IGNORED_PREFIXS, (prefix) => action.type.startsWith(prefix))
+    const shouldDisplayError =
+        action &&
+        (action.error || action.reason) &&
+        !_some(IGNORED_PREFIXS, (prefix) => action.type.startsWith(prefix))
 
     if (shouldDisplayError) {
-        let title = error.msg
-            || action.reason
-            || `Unknown error for action ${action.type}`
+        let title =
+            error.msg ||
+            action.reason ||
+            `Unknown error for action ${action.type}`
 
         console.error('ERROR', title, action.error)
 

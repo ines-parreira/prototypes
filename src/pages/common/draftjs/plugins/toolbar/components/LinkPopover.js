@@ -8,31 +8,34 @@ import css from './LinkPopover.less'
 type Props = {
     id: string,
     url: string,
-    onEdit?: string => void,
-    onDelete?: string => void,
-    children?: React.Node
+    onEdit?: (string) => void,
+    onDelete?: (string) => void,
+    children?: React.Node,
 }
 
 type State = {
-    isOpen: boolean
+    isOpen: boolean,
 }
 
 const Button = (props: any) => (
     <button
         {...props}
         type="button"
-        className={classnames('btn', 'btn-secondary', 'btn-transparent', css.button, props.className)}
+        className={classnames(
+            'btn',
+            'btn-secondary',
+            'btn-transparent',
+            css.button,
+            props.className
+        )}
     >
-        <i className="material-icons">
-            {props.children}
-        </i>
+        <i className="material-icons">{props.children}</i>
     </button>
-
 )
 
 export default class LinkPopover extends React.Component<Props, State> {
     state: State = {
-        isOpen: false
+        isOpen: false,
     }
 
     timeout: ?TimeoutID

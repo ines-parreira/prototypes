@@ -9,17 +9,17 @@ const commonProps = {
         id: 1,
         name: 'my integration',
         meta: {
-            address: 'myintegration@gorgias.io'
-        }
+            address: 'myintegration@gorgias.io',
+        },
     }),
-    loading: fromJS({updateIntegration: false})
+    loading: fromJS({updateIntegration: false}),
 }
 
 describe('<EmailIntegrationCreateCustom/>', () => {
     describe('render()', () => {
         it('should render', () => {
             const component = render(
-                <EmailIntegrationCreateCustom {...commonProps}/>
+                <EmailIntegrationCreateCustom {...commonProps} />
             )
 
             expect(component).toMatchSnapshot()
@@ -27,7 +27,7 @@ describe('<EmailIntegrationCreateCustom/>', () => {
         it('should render update', () => {
             commonProps.loading = fromJS({updateIntegration: true})
             const component = render(
-                <EmailIntegrationCreateCustom {...commonProps}/>
+                <EmailIntegrationCreateCustom {...commonProps} />
             )
 
             expect(component).toMatchSnapshot()

@@ -1,12 +1,11 @@
 import React from 'react'
 import {FormGroup, Input, Label, FormText} from 'reactstrap'
 
-
 type Props = {
     options: Array<{
         value: any,
         label: string,
-        description?: string
+        description?: string,
     }>,
     value: ?any,
     onChange: (any) => void,
@@ -16,7 +15,7 @@ type Props = {
 
 export default class RadioField extends React.Component<Props> {
     static defaultProps = {
-        disabled: false
+        disabled: false,
     }
 
     _onChange = (value: any) => {
@@ -28,43 +27,37 @@ export default class RadioField extends React.Component<Props> {
 
         return (
             <FormGroup tag="fieldset">
-                {
-                    !!label && (
-                        <Label className="control-label">
-                            {label}
-                        </Label>
-                    )
-                }
-                {
-                    options.map((option) => (
-                        <FormGroup
-                            key={option.value}
-                            className="mb-2"
+                {!!label && <Label className="control-label">{label}</Label>}
+                {options.map((option) => (
+                    <FormGroup key={option.value} className="mb-2" check>
+                        <Input
+                            type="radio"
+                            checked={selectedValue === option.value}
+                            onChange={
+                                disabled
+                                    ? null
+                                    : () => this._onChange(option.value)
+                            }
+                            disabled={disabled}
+                        />
+                        <Label
+                            className="control-label ml-2"
+                            onClick={
+                                disabled
+                                    ? null
+                                    : () => this._onChange(option.value)
+                            }
                             check
                         >
-                            <Input
-                                type="radio"
-                                checked={selectedValue === option.value}
-                                onChange={disabled ? null : () => this._onChange(option.value)}
-                                disabled={disabled}
-                            />
-                            <Label
-                                className="control-label ml-2"
-                                onClick={disabled ? null : () => this._onChange(option.value)}
-                                check
-                            >
-                                {option.label}
-                                {
-                                    option.description && (
-                                        <FormText color="muted">
-                                            {option.description}
-                                        </FormText>
-                                    )
-                                }
-                            </Label>
-                        </FormGroup>
-                    ))
-                }
+                            {option.label}
+                            {option.description && (
+                                <FormText color="muted">
+                                    {option.description}
+                                </FormText>
+                            )}
+                        </Label>
+                    </FormGroup>
+                ))}
             </FormGroup>
         )
     }

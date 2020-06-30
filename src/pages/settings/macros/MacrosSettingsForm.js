@@ -18,9 +18,21 @@ import {
 
 import {DEFAULT_ACTIONS} from '../../../config'
 import type {IntentName} from '../../../models/intent'
-import {createMacro, deleteMacro, fetchMacro, updateMacro, type MacroDraft} from '../../../models/macro'
+import {
+    createMacro,
+    deleteMacro,
+    fetchMacro,
+    updateMacro,
+    type MacroDraft,
+} from '../../../models/macro'
 import {getAgents} from '../../../state/agents/selectors'
-import {macroCreated, macroDeleted, macroFetched, macroUpdated, type MacrosState} from '../../../state/entities/macros'
+import {
+    macroCreated,
+    macroDeleted,
+    macroFetched,
+    macroUpdated,
+    type MacrosState,
+} from '../../../state/entities/macros'
 import {getDefaultMacro} from '../../../state/macro/utils'
 import {notify} from '../../../state/notifications/actions'
 import ConfirmButton from '../../common/components/ConfirmButton'
@@ -56,8 +68,13 @@ export function MacrosSettingsFormContainer({
     notify,
     params: {macroId},
 }: Props) {
-    const [macroForm, setMacroForm] = useState<MacroDraft>(getDefaultMacro().toJS())
-    const [{loading: isFetchPending}, handleMacroFetch] = useAsyncFn(async () => {
+    const [macroForm, setMacroForm] = useState<MacroDraft>(
+        getDefaultMacro().toJS()
+    )
+    const [
+        {loading: isFetchPending},
+        handleMacroFetch,
+    ] = useAsyncFn(async () => {
         try {
             const res = await fetchMacro(parseInt(macroId))
             macroFetched(res)
@@ -70,7 +87,9 @@ export function MacrosSettingsFormContainer({
         }
     }, [macroId])
     const handleActionsChange = (actions: Map<*, *>) => {
-        const filteredActions = actions.filter((action) => DEFAULT_ACTIONS.includes(action.get('name')))
+        const filteredActions = actions.filter((action) =>
+            DEFAULT_ACTIONS.includes(action.get('name'))
+        )
 
         setMacroForm({
             ...macroForm,
@@ -83,7 +102,10 @@ export function MacrosSettingsFormContainer({
             }),
         })
     }
-    const [{loading: isSubmitPending}, handleFormSubmit] = useAsyncFn(async () => {
+    const [
+        {loading: isSubmitPending},
+        handleFormSubmit,
+    ] = useAsyncFn(async () => {
         let res
         try {
             if (macroId) {
@@ -97,7 +119,9 @@ export function MacrosSettingsFormContainer({
                 macroCreated(res)
             }
             notify({
-                message: `Successfully ${macroId ? 'updated' : 'created'} macro.`,
+                message: `Successfully ${
+                    macroId ? 'updated' : 'created'
+                } macro.`,
                 status: 'success',
             })
             browserHistory.push('/app/settings/macros')
@@ -144,31 +168,29 @@ export function MacrosSettingsFormContainer({
 
     return (
         <div className="full-width">
-            <PageHeader title={(
-                <Breadcrumb>
-                    <BreadcrumbItem>
-                        <Link to="/app/settings/macros">
-                            Macros
-                        </Link>
-                    </BreadcrumbItem>
-                    <BreadcrumbItem active>
-                        {!macroId ?
-                            'Add macro'
-                            : !macros[macroId] ?
-                                'Edit'
-                                :
-                                `Edit: ${macros[macroId].name}`
-                        }
-                    </BreadcrumbItem>
-                </Breadcrumb>
-            )}/>
+            <PageHeader
+                title={
+                    <Breadcrumb>
+                        <BreadcrumbItem>
+                            <Link to="/app/settings/macros">Macros</Link>
+                        </BreadcrumbItem>
+                        <BreadcrumbItem active>
+                            {!macroId
+                                ? 'Add macro'
+                                : !macros[macroId]
+                                ? 'Edit'
+                                : `Edit: ${macros[macroId].name}`}
+                        </BreadcrumbItem>
+                    </Breadcrumb>
+                }
+            />
             <Container
                 fluid
                 className={classnames('page-container', css.container)}
             >
-                {isFetchPending ?
-                    <Loader/>
-                    :
+                {isFetchPending ? (
+                    <Loader />
+                ) : (
                     <Form
                         onSubmit={(e: SyntheticEvent<HTMLFormElement>) => {
                             e.preventDefault()
@@ -183,9 +205,18 @@ export function MacrosSettingsFormContainer({
                             currentMacro={fromJS(macroForm)}
                             intent={macroForm.intent}
                             name={macroForm.name}
-                            setActions={(actions) => !isActionDisabled && handleActionsChange(actions)}
-                            setName={(name: string) => !isActionDisabled && setMacroForm({...macroForm, name})}
-                            setIntent={(intent: ?IntentName) => !isActionDisabled && setMacroForm({...macroForm, intent})}
+                            setActions={(actions) =>
+                                !isActionDisabled &&
+                                handleActionsChange(actions)
+                            }
+                            setName={(name: string) =>
+                                !isActionDisabled &&
+                                setMacroForm({...macroForm, name})
+                            }
+                            setIntent={(intent: ?IntentName) =>
+                                !isActionDisabled &&
+                                setMacroForm({...macroForm, intent})
+                            }
                         />
                         <FormGroup className="mt-5">
                             <Button
@@ -198,7 +229,7 @@ export function MacrosSettingsFormContainer({
                             >
                                 {macroId ? 'Update macro' : 'Create macro'}
                             </Button>
-                            {macroId &&
+                            {macroId && (
                                 <ConfirmButton
                                     className="float-right"
                                     color="secondary"
@@ -208,15 +239,20 @@ export function MacrosSettingsFormContainer({
                                     loading={isDeletePending}
                                     type="button"
                                 >
-                                    <i className={classnames('material-icons mr-2', css.deleteIcon)}>
+                                    <i
+                                        className={classnames(
+                                            'material-icons mr-2',
+                                            css.deleteIcon
+                                        )}
+                                    >
                                         delete
                                     </i>
                                     Delete macro
                                 </ConfirmButton>
-                            }
+                            )}
                         </FormGroup>
                     </Form>
-                }
+                )}
             </Container>
         </div>
     )
@@ -235,4 +271,7 @@ const mapDispatchToProps = {
     notify,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MacrosSettingsFormContainer)
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(MacrosSettingsFormContainer)

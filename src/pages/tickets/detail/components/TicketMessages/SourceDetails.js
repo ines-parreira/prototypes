@@ -15,7 +15,7 @@ type Props = {
     message: TicketMessage,
     isLastRead: boolean,
     timezone: string,
-    className?: string
+    className?: string,
 }
 
 export default function SourceDetails(props: Props) {
@@ -35,7 +35,7 @@ export default function SourceDetails(props: Props) {
                     timezone={timezone}
                 />
             )}
-            <DatetimeLabel dateTime={message.created_datetime}/>
+            <DatetimeLabel dateTime={message.created_datetime} />
         </div>
     )
 }

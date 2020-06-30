@@ -31,21 +31,14 @@ describe('ViewTable::Table::Cell', () => {
 
     it('default cell with a url passed', () => {
         const component = shallow(
-            <Cell
-                {...minProps}
-                itemUrl="/app/ticket/123"
-            />
+            <Cell {...minProps} itemUrl="/app/ticket/123" />
         ).dive()
         expect(component).toMatchSnapshot()
     })
 
     it('default cell with a click handler passed', () => {
         const component = shallow(
-            <Cell
-                {...minProps}
-                onClick={() => {
-                }}
-            />
+            <Cell {...minProps} onClick={() => {}} />
         ).dive()
         expect(component).toMatchSnapshot()
     })

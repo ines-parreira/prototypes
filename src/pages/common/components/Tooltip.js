@@ -6,24 +6,20 @@ import type {Node} from 'react'
 
 import {isTouchDevice} from '../utils/mobile'
 
-
 type Props = {
     children: Node,
     delay?: number | {show: number, hide: number},
-    disabled?: boolean
+    disabled?: boolean,
 }
 
 export default class Tooltip extends React.Component<Props> {
     static defaultProps = {
         // fix tap-twice on buttons with tooltips bug, on iOS
-        delay: isTouchDevice() ? 200 : 0
+        delay: isTouchDevice() ? 200 : 0,
     }
 
     render() {
-        const {
-            children,
-            ...rest
-        } = this.props
+        const {children, ...rest} = this.props
 
         const extraProps = {}
         if (this.props.disabled) {
@@ -31,10 +27,7 @@ export default class Tooltip extends React.Component<Props> {
         }
 
         return (
-            <UncontrolledTooltip
-                {...rest}
-                {...extraProps}
-            >
+            <UncontrolledTooltip {...rest} {...extraProps}>
                 {children}
             </UncontrolledTooltip>
         )

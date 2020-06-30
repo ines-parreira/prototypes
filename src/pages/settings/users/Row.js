@@ -13,9 +13,8 @@ import DeleteUser from './DeleteUser'
 
 import css from './Row.less'
 
-
 type Props = {
-    agent: Map<*,*>,
+    agent: Map<*, *>,
     currentPage: number,
     isAccountOwner: boolean,
     deleteAgent: (id: string, currentPage: number) => Promise<*>,
@@ -25,20 +24,13 @@ type Props = {
 
 export default class Row extends React.Component<Props> {
     _deleteAgent = () => {
-        const {
-            agent,
-            currentPage,
-            deleteAgent,
-            fetchAgents,
-            last,
-        } = this.props
-        return deleteAgent(agent.get('id'), currentPage)
-            .then(() => {
-                // if last agent on page was deleted,
-                // reload the previous page.
-                const page = (last && currentPage > 1) ? currentPage - 1 : currentPage
-                return fetchAgents(page)
-            })
+        const {agent, currentPage, deleteAgent, fetchAgents, last} = this.props
+        return deleteAgent(agent.get('id'), currentPage).then(() => {
+            // if last agent on page was deleted,
+            // reload the previous page.
+            const page = last && currentPage > 1 ? currentPage - 1 : currentPage
+            return fetchAgents(page)
+        })
     }
 
     render() {
@@ -46,10 +38,7 @@ export default class Row extends React.Component<Props> {
         const editLink = `/app/settings/users/${agent.get('id')}`
 
         return (
-            <Link
-                to={editLink}
-                className={css.component}
-            >
+            <Link to={editLink} className={css.component}>
                 <span className="d-flex align-items-center">
                     <Avatar
                         name={agent.get('name')}
@@ -58,36 +47,25 @@ export default class Row extends React.Component<Props> {
                         className={classnames(css.avatar, 'd-none d-md-block')}
                     />
                     <span className={css.meta}>
-                        <p className={css.name}>
-                            {agent.get('name')}
-                        </p>
+                        <p className={css.name}>{agent.get('name')}</p>
                         <p className={classnames(css.email, 'text-faded')}>
                             {agent.get('email')}
                         </p>
                     </span>
                     <span className={css.role}>
-                        <RoleLabel
-                            roles={agent.get('roles')}
-                        />
-                        {
-                            isAccountOwner && (
-                                <Badge
-                                    color='dark'
-                                    pill
-                                >
-                                    Account Owner
-                                </Badge>
-                            )
-                        }
+                        <RoleLabel roles={agent.get('roles')} />
+                        {isAccountOwner && (
+                            <Badge color="dark" pill>
+                                Account Owner
+                            </Badge>
+                        )}
                     </span>
                     <span className={css.delete}>
                         <DeleteUser
                             action={this._deleteAgent}
                             buttonClassName="btn-transparent"
                         >
-                            <i className="material-icons md-2">
-                                delete
-                            </i>
+                            <i className="material-icons md-2">delete</i>
                         </DeleteUser>
                     </span>
                 </span>

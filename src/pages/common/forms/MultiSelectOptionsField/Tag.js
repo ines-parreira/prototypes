@@ -8,7 +8,7 @@ import type {Option} from './types'
 type Props = {
     option: Option,
     color: string,
-    onRemove: Option => void
+    onRemove: (Option) => void,
 }
 
 export default class Tag extends React.Component<Props> {

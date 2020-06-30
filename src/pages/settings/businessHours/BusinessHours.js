@@ -18,23 +18,22 @@ import {DEFAULT_BUSINESS_HOUR, MAX_BUSINESS_HOURS} from './constants'
 import BusinessHoursForm from './BusinessHoursForm'
 import css from './BusinessHours.less'
 
-
 type Props = {
     submitSetting: (Object) => Promise<*>,
-    businessHoursSettings: Map<*,*>
+    businessHoursSettings: Map<*, *>,
 }
 
 type State = {
-    items: List<Map<*,*>>,
+    items: List<Map<*, *>>,
     timezone: string,
-    loading: boolean
+    loading: boolean,
 }
 
 class BusinessHours extends React.Component<Props, State> {
     state = {
         items: fromJS([DEFAULT_BUSINESS_HOUR]),
         timezone: 'UTC',
-        loading: false
+        loading: false,
     }
 
     componentDidMount() {
@@ -43,7 +42,7 @@ class BusinessHours extends React.Component<Props, State> {
         if (!businessHoursSettings.isEmpty()) {
             this.setState({
                 timezone: businessHoursSettings.getIn(['data', 'timezone']),
-                items: businessHoursSettings.getIn(['data', 'business_hours'])
+                items: businessHoursSettings.getIn(['data', 'business_hours']),
             })
         }
     }
@@ -60,8 +59,8 @@ class BusinessHours extends React.Component<Props, State> {
             type: currentAccountConstants.SETTING_TYPE_BUSINESS_HOURS,
             data: {
                 timezone: timezone,
-                business_hours: items.toJS()
-            }
+                business_hours: items.toJS(),
+            },
         }
 
         try {
@@ -88,19 +87,20 @@ class BusinessHours extends React.Component<Props, State> {
 
         return (
             <div className="full-width">
-                <PageHeader title="Business hours"/>
+                <PageHeader title="Business hours" />
 
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <Container fluid className="page-container">
                     <p>
-                        Let customers know when your team is online.<br/>
-                        This way, you can set different auto-responders in the rules based on when your team is working.
+                        Let customers know when your team is online.
+                        <br />
+                        This way, you can set different auto-responders in the
+                        rules based on when your team is working.
                     </p>
                     <p>
                         The appearance of your{' '}
-                        <Link to="/app/settings/integrations/smooch_inside">Chat integrations</Link>{' '}
+                        <Link to="/app/settings/integrations/smooch_inside">
+                            Chat integrations
+                        </Link>{' '}
                         will change when outside business hours.
                     </p>
 
@@ -108,38 +108,54 @@ class BusinessHours extends React.Component<Props, State> {
                         <Row className="mb-2">
                             <Col md="9">
                                 <div className="mb-3">
-                                    <Label className={classnames('control-label', css.businessHoursLabel)}>
+                                    <Label
+                                        className={classnames(
+                                            'control-label',
+                                            css.businessHoursLabel
+                                        )}
+                                    >
                                         Business hours
                                     </Label>
-                                    {
-                                        items.map((item, idx) => (
+                                    {items.map((item, idx) => (
+                                        <div
+                                            key={idx}
+                                            className={
+                                                css.businessHoursInputWrapper
+                                            }
+                                        >
+                                            <BusinessHoursForm
+                                                businessHour={item}
+                                                onChange={(data) =>
+                                                    this.setState({
+                                                        items: items.set(
+                                                            idx,
+                                                            data
+                                                        ),
+                                                    })
+                                                }
+                                            />
                                             <div
-                                                key={idx}
-                                                className={css.businessHoursInputWrapper}
+                                                className={css.deleteButton}
+                                                onClick={() =>
+                                                    this.setState({
+                                                        items: items.delete(
+                                                            idx
+                                                        ),
+                                                    })
+                                                }
                                             >
-                                                <BusinessHoursForm
-                                                    businessHour={item}
-                                                    onChange={(data) => this.setState({items: items.set(idx, data)})}
-                                                />
-                                                <div
-                                                    className={css.deleteButton}
-                                                    onClick={() => this.setState({items: items.delete(idx)})}
-                                                >
-                                                    <i className="material-icons red">
-                                                        clear
-                                                    </i>
-                                                </div>
+                                                <i className="material-icons red">
+                                                    clear
+                                                </i>
                                             </div>
-                                        ))
-                                    }
+                                        </div>
+                                    ))}
                                     <Button
                                         type="button"
                                         onClick={this._addBusinessHours}
                                     >
-                                        <i className="material-icons">
-                                            add
-                                        </i>
-                                        {' '}Add business hours
+                                        <i className="material-icons">add</i>{' '}
+                                        Add business hours
                                     </Button>
                                 </div>
 
@@ -148,19 +164,15 @@ class BusinessHours extends React.Component<Props, State> {
                                     name="timezone"
                                     label="Timezone"
                                     value={this.state.timezone}
-                                    onChange={(timezone) => this.setState({timezone})}
-                                >
-                                    {
-                                        getMomentTimezoneNames()
-                                            .map((name) => (
-                                                <option
-                                                    key={name}
-                                                    value={name}
-                                                >
-                                                    {name}
-                                                </option>
-                                            ))
+                                    onChange={(timezone) =>
+                                        this.setState({timezone})
                                     }
+                                >
+                                    {getMomentTimezoneNames().map((name) => (
+                                        <option key={name} value={name}>
+                                            {name}
+                                        </option>
+                                    ))}
                                 </InputField>
                             </Col>
                         </Row>
@@ -177,16 +189,20 @@ class BusinessHours extends React.Component<Props, State> {
                         </Button>
                     </Form>
                 </Container>
-
             </div>
         )
     }
 }
 
-export default connect((state) => {
-    return {
-        businessHoursSettings: currentAccountSelectors.getBusinessHoursSettings(state)
+export default connect(
+    (state) => {
+        return {
+            businessHoursSettings: currentAccountSelectors.getBusinessHoursSettings(
+                state
+            ),
+        }
+    },
+    {
+        submitSetting: currentAccountActions.submitSetting,
     }
-}, {
-    submitSetting: currentAccountActions.submitSetting
-})(BusinessHours)
+)(BusinessHours)

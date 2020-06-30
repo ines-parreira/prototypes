@@ -12,7 +12,7 @@ export default class OperatorLabel extends React.Component {
 
         const operatorLabels = {
             '&&': 'and',
-            '||': 'or'
+            '||': 'or',
         }
 
         return (

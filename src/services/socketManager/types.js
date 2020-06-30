@@ -3,48 +3,48 @@ import * as socketConstants from '../../config/socketConstants'
 
 export type CustomerUpdatedEvent = {
     event: {
-        type: 'customer-updated'
+        type: 'customer-updated',
     },
-    customer: Object
+    customer: Object,
 }
 
 export type UserLocationUpdatedEvent = {
     event: {
-        type: 'user-location-updated'
+        type: 'user-location-updated',
     },
-    locations: Object
+    locations: Object,
 }
 
 export type UserTypingStatusUpdatedEvent = {
     event: {
-        type: 'user-typing-status-updated'
+        type: 'user-typing-status-updated',
     },
-    locations: Object
+    locations: Object,
 }
 
 export type TicketUpdatedEvent = {
     event: {
-        type: 'ticket-updated'
+        type: 'ticket-updated',
     },
     ticket: {
-        id: number
-    }
+        id: number,
+    },
 }
 
 export type TicketMessageCreatedEvent = {
     event: {
-        type: 'ticket-message-created'
+        type: 'ticket-message-created',
     },
     ticket: {
-        id: number
-    }
+        id: number,
+    },
 }
 
 export type TicketMessageActionFailedEvent = {
     event: {
-        type: 'ticket-message-action-failed'
+        type: 'ticket-message-action-failed',
     },
-    ticket_id: number
+    ticket_id: number,
 }
 
 export type TicketMessageFailedEvent = {
@@ -56,109 +56,109 @@ export type TicketMessageFailedEvent = {
             },
         },
     },
-    ticket_id: number
+    ticket_id: number,
 }
 
 export type ActionExecutedEvent = {
     event: {
-        type: 'action-executed'
-    }
+        type: 'action-executed',
+    },
 }
 
 export type ViewCreatedEvent = {
     event: {
-        type: 'view-created'
+        type: 'view-created',
     },
-    view: Object
+    view: Object,
 }
 
 export type ViewUpdatedEvent = {
     event: {
-        type: 'view-updated'
+        type: 'view-updated',
     },
-    view: Object
+    view: Object,
 }
 
 export type ViewDeletedEvent = {
     event: {
-        type: 'view-deleted'
+        type: 'view-deleted',
     },
-    view: Object
+    view: Object,
 }
 
 export type ViewCountUpdatedEvent = {
     event: {
-        type: 'view-count-updated'
+        type: 'view-count-updated',
     },
-    view: Object
+    view: Object,
 }
 
 export type AccountUpdatedEvent = {
     event: {
-        type: socketConstants.ACCOUNT_UPDATED
+        type: socketConstants.ACCOUNT_UPDATED,
     },
     account: {
-        settings: Array<Object>
-    }
+        settings: Array<Object>,
+    },
 }
 
 export type SIDUpdatedEvent = {
     event: {
-        type: socketConstants.SID_UPDATED
-    }
+        type: socketConstants.SID_UPDATED,
+    },
 }
 
 export type TicketMessageChatCreatedEvent = {
     event: {
-        type: socketConstants.TICKET_MESSAGE_CHAT_CREATED
+        type: socketConstants.TICKET_MESSAGE_CHAT_CREATED,
     },
-    data: RecentChatTicket
+    data: RecentChatTicket,
 }
 
 export type TicketChatUpdatedEvent = {
     event: {
-        type: socketConstants.TICKET_CHAT_UPDATED
+        type: socketConstants.TICKET_CHAT_UPDATED,
     },
-    data: RecentChatTicket
+    data: RecentChatTicket,
 }
 
 export type EmailIntegrationVerifiedEvent = {
     event: {
-        type: socketConstants.EMAIL_INTEGRATION_VERIFIED
+        type: socketConstants.EMAIL_INTEGRATION_VERIFIED,
     },
-    integration_id: number
+    integration_id: number,
 }
 
 export type FacebookIntegrationsReconnected = {
     event: {
         type: socketConstants.FACEBOOK_INTEGRATIONS_RECONNECTED,
-        total: number
-    }
+        total: number,
+    },
 }
 
 export type ViewsDeactivated = {
     event: {
         type: socketConstants.VIEWS_DEACTIVATED,
-        names: string[]
-    }
+        names: string[],
+    },
 }
 
 export type ServerMessage =
-    CustomerUpdatedEvent |
-    UserLocationUpdatedEvent |
-    UserTypingStatusUpdatedEvent |
-    TicketUpdatedEvent |
-    TicketMessageCreatedEvent |
-    TicketMessageActionFailedEvent |
-    TicketMessageFailedEvent |
-    ActionExecutedEvent |
-    ViewCreatedEvent |
-    ViewUpdatedEvent |
-    ViewDeletedEvent |
-    ViewCountUpdatedEvent |
-    AccountUpdatedEvent |
-    SIDUpdatedEvent |
-    TicketMessageChatCreatedEvent |
-    TicketChatUpdatedEvent |
-    EmailIntegrationVerifiedEvent |
-    FacebookIntegrationsReconnected
+    | CustomerUpdatedEvent
+    | UserLocationUpdatedEvent
+    | UserTypingStatusUpdatedEvent
+    | TicketUpdatedEvent
+    | TicketMessageCreatedEvent
+    | TicketMessageActionFailedEvent
+    | TicketMessageFailedEvent
+    | ActionExecutedEvent
+    | ViewCreatedEvent
+    | ViewUpdatedEvent
+    | ViewDeletedEvent
+    | ViewCountUpdatedEvent
+    | AccountUpdatedEvent
+    | SIDUpdatedEvent
+    | TicketMessageChatCreatedEvent
+    | TicketChatUpdatedEvent
+    | EmailIntegrationVerifiedEvent
+    | FacebookIntegrationsReconnected

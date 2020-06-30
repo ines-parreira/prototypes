@@ -28,8 +28,8 @@ describe('reducers', () => {
                     type: constants.SET_STATS_FILTERS,
                     filters: fromJS({
                         tags: [1, 2, 4],
-                        agents: [1]
-                    })
+                        agents: [1],
+                    }),
                 }
                 const state = initialState.set('filters', null)
                 expect(statsReducer(state, action)).toMatchSnapshot()
@@ -42,8 +42,8 @@ describe('reducers', () => {
                     type: constants.MERGE_STATS_FILTERS,
                     filters: fromJS({
                         tags: [1, 2, 4],
-                        agents: [1]
-                    })
+                        agents: [1],
+                    }),
                 }
                 const state = initialState.set('filters', fromJS({score: 4}))
                 expect(statsReducer(state, action)).toMatchSnapshot()

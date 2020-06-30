@@ -9,7 +9,6 @@ import {getActiveIntegrations} from '../../../state/integrations/selectors'
 
 import IntegrationList from './components/IntegrationList'
 
-
 type Props = {
     integrations: Object,
     actions: Object,
@@ -39,9 +38,12 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(IntegrationsActions, dispatch)
+        actions: bindActionCreators(IntegrationsActions, dispatch),
     }
 }
 
 //$FlowFixMe
-export default connect(mapStateToProps, mapDispatchToProps)(IntegrationListContainer)
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(IntegrationListContainer)

@@ -24,14 +24,20 @@ class ListInfobarWidget extends React.Component {
             editing,
         } = this.props
 
-        const updatedTemplate = template
-            .set('absolutePath', template.get('absolutePath').concat(['[]']))
+        const updatedTemplate = template.set(
+            'absolutePath',
+            template.get('absolutePath').concat(['[]'])
+        )
 
         const passedTemplate = updatedTemplate
             .getIn(['widgets', '0'])
-            .set('templatePath', `${updatedTemplate.get('templatePath', '')}.widgets.0`)
+            .set(
+                'templatePath',
+                `${updatedTemplate.get('templatePath', '')}.widgets.0`
+            )
 
-        const isParentOfCard = updatedTemplate.getIn(['widgets', 0, 'type'], '') === 'card'
+        const isParentOfCard =
+            updatedTemplate.getIn(['widgets', 0, 'type'], '') === 'card'
 
         // if source data is not a list, don't try to display it as a list
         // it means incoming data does not have the expected shape
@@ -46,7 +52,9 @@ class ListInfobarWidget extends React.Component {
         if (!isEditing && orderByConfig) {
             // format of config : "-name" would tell order by 'name' DESC
             const orderByProperty = orderByConfig.slice(1)
-            orderedSource = orderedSource.sort((a, b) => compare(a.get(orderByProperty), b.get(orderByProperty)))
+            orderedSource = orderedSource.sort((a, b) =>
+                compare(a.get(orderByProperty), b.get(orderByProperty))
+            )
 
             const orderByDirection = orderByConfig.slice(0, 1)
             if (orderByDirection === '-') {
@@ -79,26 +87,30 @@ class ListInfobarWidget extends React.Component {
             const hasExcludedItems = excludedItems > 0
 
             if (hasExcludedItems) {
-                exclusionMessage = isEditing
-                    ? `${excludedItems} more items`
-                    : (
-                        <>
-                            <ShowMore
-                                className="pl-0"
-                                onClick={() => this.setState({showMoreTimes: this.state.showMoreTimes + 1})}
-                            >
-                                Show more
-                            </ShowMore>
-                            <span className={css.remaining}>
-                                {excludedItems} remaining
-                            </span>
-                        </>
-                    )
+                exclusionMessage = isEditing ? (
+                    `${excludedItems} more items`
+                ) : (
+                    <>
+                        <ShowMore
+                            className="pl-0"
+                            onClick={() =>
+                                this.setState({
+                                    showMoreTimes: this.state.showMoreTimes + 1,
+                                })
+                            }
+                        >
+                            Show more
+                        </ShowMore>
+                        <span className={css.remaining}>
+                            {excludedItems} remaining
+                        </span>
+                    </>
+                )
             }
         }
 
         const className = classnames('list', {
-            draggable: !isParentList
+            draggable: !isParentList,
         })
 
         if (!isEditing && !sourceList.size) {
@@ -106,37 +118,28 @@ class ListInfobarWidget extends React.Component {
         }
 
         return (
-            <div
-                className={className}
-                data-key={`${template.get('path')}[]`}
-            >
-                {
-                    sourceList
-                        .map((d, i) => {
-                            return (
-                                <InfobarWidget
-                                    key={i}
-                                    source={d}
-                                    parent={updatedTemplate}
-                                    widget={widget}
-                                    template={passedTemplate}
-                                    editing={editing}
-                                    isEditing={isEditing}
-                                    open={i === 0}
-                                />
-                            )
-                        })
-                }
-                {
-                    !sourceList.isEmpty()
-                    && isParentOfCard
-                    && exclusionMessage
-                    && (
+            <div className={className} data-key={`${template.get('path')}[]`}>
+                {sourceList.map((d, i) => {
+                    return (
+                        <InfobarWidget
+                            key={i}
+                            source={d}
+                            parent={updatedTemplate}
+                            widget={widget}
+                            template={passedTemplate}
+                            editing={editing}
+                            isEditing={isEditing}
+                            open={i === 0}
+                        />
+                    )
+                })}
+                {!sourceList.isEmpty() &&
+                    isParentOfCard &&
+                    exclusionMessage && (
                         <div className="footer clearfix">
                             {exclusionMessage}
                         </div>
-                    )
-                }
+                    )}
             </div>
         )
     }
@@ -149,11 +152,11 @@ ListInfobarWidget.propTypes = {
     template: PropTypes.object.isRequired,
     isEditing: PropTypes.bool.isRequired,
     isParentList: PropTypes.bool.isRequired,
-    open: PropTypes.bool
+    open: PropTypes.bool,
 }
 
 ListInfobarWidget.defaultProps = {
-    isEditing: false
+    isEditing: false,
 }
 
 export default ListInfobarWidget

@@ -15,13 +15,20 @@ describe('billing selectors', () => {
     beforeEach(() => {
         state = {
             currentAccount: fromJS({
-                current_subscription: {plan: 'free'}
+                current_subscription: {plan: 'free'},
             }),
             billing: initialState.mergeDeep(billingFixtures.billingState),
             integrations: fromJS({
                 // 6 active integrations to test plan integrations limits
-                integrations: [{id: 1}, {id: 2}, {id: 3}, {id: 4}, {id: 5}, {id: 6}]
-            })
+                integrations: [
+                    {id: 1},
+                    {id: 2},
+                    {id: 3},
+                    {id: 4},
+                    {id: 5},
+                    {id: 6},
+                ],
+            }),
         }
     })
 
@@ -47,8 +54,12 @@ describe('billing selectors', () => {
     it('getPlan', () => {
         expect(selectors.getPlan()({})).toEqualImmutable(fromJS({}))
         expect(selectors.getPlan()(state)).toEqualImmutable(fromJS({}))
-        expect(selectors.getPlan('growth-usd-1')(state).get('name')).toBe(state.billing.getIn(['plans', 'growth-usd-1', 'name']))
-        expect(selectors.getPlan('standard-1')(state).get('name')).toBe(state.billing.getIn(['plans', 'standard-1', 'name']))
+        expect(selectors.getPlan('growth-usd-1')(state).get('name')).toBe(
+            state.billing.getIn(['plans', 'growth-usd-1', 'name'])
+        )
+        expect(selectors.getPlan('standard-1')(state).get('name')).toBe(
+            state.billing.getIn(['plans', 'standard-1', 'name'])
+        )
     })
 
     it('invoices', () => {
@@ -58,34 +69,52 @@ describe('billing selectors', () => {
 
     it('contact', () => {
         expect(selectors.getContact({})).toBe(null)
-        expect(selectors.getContact(state)).toEqualImmutable(state.billing.get('contact'))
+        expect(selectors.getContact(state)).toEqualImmutable(
+            state.billing.get('contact')
+        )
     })
 
     it('creditCard', () => {
         expect(selectors.creditCard({})).toEqualImmutable(fromJS({}))
-        expect(selectors.creditCard(state)).toEqualImmutable(state.billing.get('creditCard'))
+        expect(selectors.creditCard(state)).toEqualImmutable(
+            state.billing.get('creditCard')
+        )
     })
 
     it('paymentMethod', () => {
         expect(selectors.paymentMethod({})).toBe('')
-        expect(selectors.paymentMethod(state)).toEqualImmutable(state.billing.get('paymentMethod'))
+        expect(selectors.paymentMethod(state)).toEqualImmutable(
+            state.billing.get('paymentMethod')
+        )
     })
 
     it('currentUsage', () => {
         expect(selectors.currentUsage({})).toEqualImmutable(fromJS({}))
-        expect(selectors.currentUsage(state)).toEqualImmutable(state.billing.get('currentUsage'))
+        expect(selectors.currentUsage(state)).toEqualImmutable(
+            state.billing.get('currentUsage')
+        )
     })
 
     it('isAllowedToCreateIntegration', () => {
         expect(selectors.isAllowedToCreateIntegration({})).toBe(false)
-        expect(selectors.isAllowedToCreateIntegration({
-            ...state,
-            currentAccount: initialCurrentAccountState.set('current_subscription', fromJS({plan: 'standard-usd-1'})),
-        })).toBe(false)
-        expect(selectors.isAllowedToCreateIntegration({
-            ...state,
-            currentAccount: initialCurrentAccountState.set('current_subscription', fromJS({plan: 'growth-usd-1'})),
-        })).toBe(true)
+        expect(
+            selectors.isAllowedToCreateIntegration({
+                ...state,
+                currentAccount: initialCurrentAccountState.set(
+                    'current_subscription',
+                    fromJS({plan: 'standard-usd-1'})
+                ),
+            })
+        ).toBe(false)
+        expect(
+            selectors.isAllowedToCreateIntegration({
+                ...state,
+                currentAccount: initialCurrentAccountState.set(
+                    'current_subscription',
+                    fromJS({plan: 'growth-usd-1'})
+                ),
+            })
+        ).toBe(true)
     })
 
     it('planIntegrations', () => {
@@ -95,8 +124,12 @@ describe('billing selectors', () => {
 
     it('isAllowedToChangePlan', () => {
         expect(selectors.isAllowedToChangePlan()({})).toBe(true)
-        expect(selectors.isAllowedToChangePlan('standard-usd-1')(state)).toBe(false)
-        expect(selectors.isAllowedToChangePlan('growth-usd-1')(state)).toBe(true)
+        expect(selectors.isAllowedToChangePlan('standard-usd-1')(state)).toBe(
+            false
+        )
+        expect(selectors.isAllowedToChangePlan('growth-usd-1')(state)).toBe(
+            true
+        )
     })
 
     describe('currentPlanId()', () => {
@@ -107,16 +140,20 @@ describe('billing selectors', () => {
 
         it('should return plan of the current subscription', () => {
             const state = {
-                currentAccount: fromJS({current_subscription: {plan: 'subscription-plan-123'}}),
-                billing: fromJS({futureSubscriptionPlan: 'future-plan-123'})
+                currentAccount: fromJS({
+                    current_subscription: {plan: 'subscription-plan-123'},
+                }),
+                billing: fromJS({futureSubscriptionPlan: 'future-plan-123'}),
             }
-            expect(selectors.currentPlanId(state)).toEqual('subscription-plan-123')
+            expect(selectors.currentPlanId(state)).toEqual(
+                'subscription-plan-123'
+            )
         })
 
         it('should return the future subscription plan', () => {
             const state = {
                 currentAccount: fromJS({current_subscription: null}),
-                billing: fromJS({futureSubscriptionPlan: 'future-plan-123'})
+                billing: fromJS({futureSubscriptionPlan: 'future-plan-123'}),
             }
             expect(selectors.currentPlanId(state)).toEqual('future-plan-123')
         })

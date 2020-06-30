@@ -2,23 +2,26 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 
-import HTTPIntegrationEventsContainer, {HTTPIntegrationEvents} from '../HTTPIntegrationEvents'
+import HTTPIntegrationEventsContainer, {
+    HTTPIntegrationEvents,
+} from '../HTTPIntegrationEvents'
 import {initialState} from '../../../../../../../state/HTTPIntegrationEvents/reducers'
 import {mockStore, shallowWithStore} from '../../../../../../../utils/testing'
 import {getMomentNow} from '../../../../../../../utils/date'
 
-const events = fromJS([{
-    created_datetime: getMomentNow(),
-    request: {
-        method: 'GET',
-        url: 'https://api.gorgias.io',
-        status: 200,
-        headers: {headersKey1: 'headersValue1'},
-        params: {paramKey1: 'paramValue1'},
-        body: {bodyKey1: 'bodyValue1'},
-    }
-}])
-
+const events = fromJS([
+    {
+        created_datetime: getMomentNow(),
+        request: {
+            method: 'GET',
+            url: 'https://api.gorgias.io',
+            status: 200,
+            headers: {headersKey1: 'headersValue1'},
+            params: {paramKey1: 'paramValue1'},
+            body: {bodyKey1: 'bodyValue1'},
+        },
+    },
+])
 
 describe('HTTPIntegrationEvents', () => {
     describe('component', () => {
@@ -45,10 +48,7 @@ describe('HTTPIntegrationEvents', () => {
 
         it('should render a loader while the component is fetching events', () => {
             const component = shallow(
-                <HTTPIntegrationEvents
-                    integationId="1"
-                    events={events}
-                />
+                <HTTPIntegrationEvents integationId="1" events={events} />
             )
             component.setState({isFetching: true})
 
@@ -57,9 +57,7 @@ describe('HTTPIntegrationEvents', () => {
 
         it('should render a loader because the component has no events', () => {
             const component = shallow(
-                <HTTPIntegrationEvents
-                    integationId="1"
-                />
+                <HTTPIntegrationEvents integationId="1" />
             )
             component.setState({isFetching: false})
 
@@ -68,10 +66,7 @@ describe('HTTPIntegrationEvents', () => {
 
         it('should render events', () => {
             const component = shallow(
-                <HTTPIntegrationEvents
-                    integationId="1"
-                    events={events}
-                />
+                <HTTPIntegrationEvents integationId="1" events={events} />
             )
             expect(component).toMatchSnapshot()
         })
@@ -82,9 +77,8 @@ describe('HTTPIntegrationEvents', () => {
             const state = initialState.set('events', events)
             const store = mockStore({HTTPIntegrationEvents: state})
             const container = shallowWithStore(
-                <HTTPIntegrationEventsContainer
-                    integrationId="1"
-                />, store
+                <HTTPIntegrationEventsContainer integrationId="1" />,
+                store
             )
 
             expect(container).toMatchSnapshot()

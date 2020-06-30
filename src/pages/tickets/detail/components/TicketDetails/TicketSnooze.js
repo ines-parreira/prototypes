@@ -7,11 +7,10 @@ import {formatDatetime} from '../../../../../utils'
 
 import * as currentUserSelectors from '../../../../../state/currentUser/selectors'
 
-
 type Props = {
     className: ?string,
     datetime: ?string,
-    timezone: string
+    timezone: string,
 }
 
 export class TicketSnooze extends Component<Props> {
@@ -24,14 +23,13 @@ export class TicketSnooze extends Component<Props> {
 
         return (
             <div className={this.props.className}>
-                <i id="ticket-header-snooze-icon"
-                    className="icon material-icons">
+                <i
+                    id="ticket-header-snooze-icon"
+                    className="icon material-icons"
+                >
                     snooze
                 </i>
-                <Tooltip
-                    placement="bottom"
-                    target="ticket-header-snooze-icon"
-                >
+                <Tooltip placement="bottom" target="ticket-header-snooze-icon">
                     Snooze {formatDatetime(datetime, timezone)}
                 </Tooltip>
             </div>
@@ -41,6 +39,6 @@ export class TicketSnooze extends Component<Props> {
 
 export default connect((state) => {
     return {
-        timezone: currentUserSelectors.getTimezone(state)
+        timezone: currentUserSelectors.getTimezone(state),
     }
 })(TicketSnooze)

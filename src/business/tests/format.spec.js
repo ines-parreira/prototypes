@@ -1,5 +1,5 @@
 // @flow
-import { humanize } from '../format'
+import {humanize} from '../format'
 
 describe('Business', () => {
     describe('format', () => {

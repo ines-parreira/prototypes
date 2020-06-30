@@ -5,19 +5,18 @@ import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import FilterTopbar, { FilterTopbarComponent } from '../FilterTopbar'
+import FilterTopbar, {FilterTopbarComponent} from '../FilterTopbar'
 import * as viewsConfig from '../../../../../config/views'
 
 const mockStore = configureMockStore([thunk])
 
 describe('<FilterTopbar/>', () => {
-
     const minStore = {
         agents: fromJS({}),
         teams: fromJS({}),
         activeView: fromJS({}),
         areFiltersValid: true,
-        currentUser: fromJS({'first_name': 'Steve'}),
+        currentUser: fromJS({first_name: 'Steve'}),
         isDirty: false,
         pristineActiveView: fromJS({}),
         schemas: fromJS({}),
@@ -35,7 +34,7 @@ describe('<FilterTopbar/>', () => {
         resetView: () => {},
         schemas: {},
         submitView: () => {},
-        deleteView: () => {}
+        deleteView: () => {},
     }
 
     const connectedProps = Object.assign({}, minProps, {type: 'ticket'})
@@ -62,20 +61,14 @@ describe('<FilterTopbar/>', () => {
     describe('render()', () => {
         it('should render correctly when creating a view (here no delete button)', () => {
             const component = shallow(
-                <FilterTopbarComponent
-                    {...props}
-                    isUpdate={false}
-                />
+                <FilterTopbarComponent {...props} isUpdate={false} />
             )
             expect(component).toMatchSnapshot()
         })
 
         it('should render correctly when updating a view (here we have delete button)', () => {
             const component = shallow(
-                <FilterTopbarComponent
-                    {...props}
-                    isUpdate={true}
-                />
+                <FilterTopbarComponent {...props} isUpdate={true} />
             )
             expect(component).toMatchSnapshot()
         })

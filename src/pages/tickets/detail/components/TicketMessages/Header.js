@@ -19,7 +19,7 @@ type Props = {
     message: TicketMessage,
     timezone: string,
     isLastRead: boolean,
-    hasError?: boolean
+    hasError?: boolean,
 }
 
 export default function Header(props: Props) {
@@ -27,21 +27,25 @@ export default function Header(props: Props) {
     const sender = fromJS(message.sender || {})
     const isForwarded = isForwardedMessage(message)
     return (
-        <div className={classNames(css.header, {
-            hasError: hasError,
-        })}>
+        <div
+            className={classNames(css.header, {
+                hasError: hasError,
+            })}
+        >
             <div className={css.headerDetails}>
-                <div className={classNames(css.author, {
-                    isAgent: message.from_agent,
-                })}>
-                    {
-                        message.from_agent ? (
-                            <AgentLabel
-                                name={sender.get('name')}
-                                className={css.agentIcon}
-                            />
-                        ) : <CustomerLabel customer={sender}/>
-                    }
+                <div
+                    className={classNames(css.author, {
+                        isAgent: message.from_agent,
+                    })}
+                >
+                    {message.from_agent ? (
+                        <AgentLabel
+                            name={sender.get('name')}
+                            className={css.agentIcon}
+                        />
+                    ) : (
+                        <CustomerLabel customer={sender} />
+                    )}
                 </div>
 
                 {message.source && (

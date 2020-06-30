@@ -1,5 +1,5 @@
 //@flow
-import { ContentState, RichUtils, SelectionState, EditorState } from 'draft-js'
+import {ContentState, RichUtils, SelectionState, EditorState} from 'draft-js'
 
 import createFoundUrl from '../foundUrl'
 
@@ -27,16 +27,26 @@ describe('foundUrl decorator', () => {
 
     it('should not select urls that are entities', () => {
         const text = 'find a url http://google.com'
-        let editorState = EditorState.createWithContent(ContentState.createFromText(text))
-        const selection = SelectionState.createEmpty(editorState.getCurrentContent().getFirstBlock().getKey())
+        let editorState = EditorState.createWithContent(
+            ContentState.createFromText(text)
+        )
+        const selection = SelectionState.createEmpty(
+            editorState.getCurrentContent().getFirstBlock().getKey()
+        )
             .set('anchorOffset', 18)
             .set('focusOffset', 28)
         editorState.getCurrentContent().createEntity('link', 'MUTABLE')
-        const entityKey = editorState.getCurrentContent().getLastCreatedEntityKey()
+        const entityKey = editorState
+            .getCurrentContent()
+            .getLastCreatedEntityKey()
         editorState = RichUtils.toggleLink(editorState, selection, entityKey)
 
         const spy = jest.fn()
-        foundUrl.strategy(editorState.getCurrentContent().getFirstBlock(), spy, editorState.getCurrentContent())
+        foundUrl.strategy(
+            editorState.getCurrentContent().getFirstBlock(),
+            spy,
+            editorState.getCurrentContent()
+        )
         expect(spy.mock.calls.length).toBe(0)
     })
 })

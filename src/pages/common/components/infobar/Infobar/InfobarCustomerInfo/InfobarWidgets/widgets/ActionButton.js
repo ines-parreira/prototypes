@@ -11,7 +11,15 @@ import _isUndefined from 'lodash/isUndefined'
 import _omit from 'lodash/omit'
 import _uniqueId from 'lodash/uniqueId'
 import _noop from 'lodash/noop'
-import {Button, Form, Label, Popover, PopoverBody, PopoverHeader, UncontrolledTooltip} from 'reactstrap'
+import {
+    Button,
+    Form,
+    Label,
+    Popover,
+    PopoverBody,
+    PopoverHeader,
+    UncontrolledTooltip,
+} from 'reactstrap'
 
 import SelectField from '../../../../../../forms/SelectField'
 import BooleanField from '../../../../../../forms/BooleanField'
@@ -25,7 +33,6 @@ import * as infobarUtils from '../../../../../../../../state/infobar/utils'
 
 import css from './ActionButton.less'
 import type {InfobarModalProps, OptionType, ParameterType} from './types'
-
 
 type Props = {
     options: Array<OptionType>,
@@ -44,7 +51,13 @@ type Props = {
     float: boolean,
 
     getPendingActionCallback: (string) => Map<*, *>,
-    executeAction: (string, number, number, Object, callback?: () => void) => void,
+    executeAction: (
+        string,
+        number,
+        number,
+        Object,
+        callback?: () => void
+    ) => void,
 }
 
 type State = {
@@ -55,11 +68,16 @@ type State = {
     actionId: ?string,
 }
 
-@connect((state) => ({
-    getPendingActionCallback: infobarSelectors.makeGetPendingActionCallbacks(state),
-}), {
-    executeAction: infobarActions.executeAction,
-})
+@connect(
+    (state) => ({
+        getPendingActionCallback: infobarSelectors.makeGetPendingActionCallbacks(
+            state
+        ),
+    }),
+    {
+        executeAction: infobarActions.executeAction,
+    }
+)
 // todo(@martin): remove this flow-fix-me when flow support decorators and props injection
 // $FlowFixMe
 export default class ActionButton extends React.Component<Props, State> {
@@ -69,11 +87,11 @@ export default class ActionButton extends React.Component<Props, State> {
         isLoading: false,
         actionName: '',
         parameters: {},
-        actionId: 'initialActionId'
+        actionId: 'initialActionId',
     }
 
     static defaultProps = {
-        tag: Button
+        tag: Button,
     }
 
     static contextTypes = {
@@ -90,7 +108,9 @@ export default class ActionButton extends React.Component<Props, State> {
     componentDidMount() {
         const {options} = this.props
 
-        const actionId = this._generateActionId(this.props, this.context, {actionName: this.props.options[0].value})
+        const actionId = this._generateActionId(this.props, this.context, {
+            actionName: this.props.options[0].value,
+        })
         this.setState({actionId})
 
         const defaultParameters = {}
@@ -101,7 +121,9 @@ export default class ActionButton extends React.Component<Props, State> {
         // the user will confirm he wants to execute the action.
         if (parameters) {
             parameters.forEach((parameter) => {
-                defaultParameters[parameter.name] = _isUndefined(parameter.defaultValue)
+                defaultParameters[parameter.name] = _isUndefined(
+                    parameter.defaultValue
+                )
                     ? null
                     : parameter.defaultValue
             })
@@ -109,7 +131,7 @@ export default class ActionButton extends React.Component<Props, State> {
 
         this.setState({
             actionName: options[0].value,
-            parameters: defaultParameters
+            parameters: defaultParameters,
         })
     }
 
@@ -117,10 +139,14 @@ export default class ActionButton extends React.Component<Props, State> {
      * Everytime the action parameters are updated, update the actionId.
      */
     componentWillReceiveProps(nextProps: Props) {
-        const actionId = this._generateActionId(nextProps, this.context, this.state)
+        const actionId = this._generateActionId(
+            nextProps,
+            this.context,
+            this.state
+        )
         this.setState({
             isLoading: !!nextProps.getPendingActionCallback(actionId),
-            actionId
+            actionId,
         })
     }
 
@@ -135,7 +161,11 @@ export default class ActionButton extends React.Component<Props, State> {
      * @returns {string}: the unique id
      * @private
      */
-    _generateActionId = (props: Props, context: Object, state: State | Object) => {
+    _generateActionId = (
+        props: Props,
+        context: Object,
+        state: State | Object
+    ) => {
         const data = {
             action_name: state.actionName,
             // TODO(customers-migration): update `user_id` when we update our REST API
@@ -143,7 +173,7 @@ export default class ActionButton extends React.Component<Props, State> {
             integration_id: context.integrationId,
             payload: {
                 ...props.payload,
-                ...state.parameters
+                ...state.parameters,
             },
         }
 
@@ -158,10 +188,13 @@ export default class ActionButton extends React.Component<Props, State> {
         const actionConfig: ?Object = getActionByName(this.state.actionName)
 
         if (actionConfig) {
-            segmentTracker.logEvent(segmentTracker.EVENTS.INFOBAR_ACTION_CLICKED, {
-                type: this.context.integration.get('type'),
-                name: actionConfig.label,
-            })
+            segmentTracker.logEvent(
+                segmentTracker.EVENTS.INFOBAR_ACTION_CLICKED,
+                {
+                    type: this.context.integration.get('type'),
+                    name: actionConfig.label,
+                }
+            )
         }
 
         const payload = {
@@ -173,7 +206,7 @@ export default class ActionButton extends React.Component<Props, State> {
             this.state.actionName,
             this.context.integrationId,
             this.context.customerId,
-            payload,
+            payload
         )
 
         this._toggleUi()
@@ -182,14 +215,20 @@ export default class ActionButton extends React.Component<Props, State> {
     // If we don't debounce, when clicking on the button to close the Popover, toggle is called two times (once
     // by the button's `onClick`, and once by the Popover's `onClickOutside`), resulting in the Popover not closing.
     // There's probably an eventPropagation thing we can tweak to fix this, but so far we couldn't find out how.
-    _toggleUi = _debounce(() => {
-        this.setState({
-            isUiOpen: !this.state.isUiOpen
-        })
-    }, 100, {leading: true, trailing: false})
+    _toggleUi = _debounce(
+        () => {
+            this.setState({
+                isUiOpen: !this.state.isUiOpen,
+            })
+        },
+        100,
+        {leading: true, trailing: false}
+    )
 
     _updateActionName = (actionName: string | number) => {
-        const currentOption = this.props.options.find((option) => option.value === actionName)
+        const currentOption = this.props.options.find(
+            (option) => option.value === actionName
+        )
         const parameters = {}
 
         if (currentOption && currentOption.parameters) {
@@ -206,12 +245,15 @@ export default class ActionButton extends React.Component<Props, State> {
         value: string | number | boolean | Object,
         callback: () => void = _noop
     ) => {
-        this.setState({
-            parameters: {
-                ...this.state.parameters,
-                [name]: value,
-            }
-        }, callback)
+        this.setState(
+            {
+                parameters: {
+                    ...this.state.parameters,
+                    [name]: value,
+                },
+            },
+            callback
+        )
     }
 
     _updateActionParameters = (
@@ -234,7 +276,9 @@ export default class ActionButton extends React.Component<Props, State> {
         const {options} = this.props
         const {actionName, parameters: actionParameters} = this.state
 
-        let currentOption: ?OptionType = options.find((option) => option.value === actionName)
+        let currentOption: ?OptionType = options.find(
+            (option) => option.value === actionName
+        )
 
         if (!currentOption) {
             currentOption = options[0]
@@ -303,45 +347,38 @@ export default class ActionButton extends React.Component<Props, State> {
                     // Necessary to avoid the popover being displayed outside of the window.
                     // http://tether.io/#constraints
                     constraints: [
-                        {to: 'scrollParent', attachment: 'together none', pin: true},
-                        {to: 'window', attachment: 'together none', pin: true}
-                    ]
+                        {
+                            to: 'scrollParent',
+                            attachment: 'together none',
+                            pin: true,
+                        },
+                        {to: 'window', attachment: 'together none', pin: true},
+                    ],
                 }}
             >
                 <PopoverHeader>{title}</PopoverHeader>
                 <PopoverBody>
-                    {
-                        popover ? (
-                            <p className={css.popover}>
-                                {popover}
-                            </p>
-                        ) : null
-                    }
+                    {popover ? <p className={css.popover}>{popover}</p> : null}
                     <Form onSubmit={this._confirmAction}>
-                        {
-                            multipleOptions ? [
-                                <Label key="label">
-                                    Type
-                                </Label>,
-                                <SelectField
-                                    key="input"
-                                    style={{marginBottom: '1rem'}}
-                                    onChange={this._updateActionName}
-                                    value={actionName}
-                                    options={options.map((option: OptionType) => ({
-                                        value: option.value,
-                                        label: option.label
-                                    }))}
-                                />
-                            ] : null
-                        }
-                        {
-                            this._renderActionParameters()
-                        }
-                        <Button
-                            color="success"
-                            block
-                        >
+                        {multipleOptions
+                            ? [
+                                  <Label key="label">Type</Label>,
+                                  <SelectField
+                                      key="input"
+                                      style={{marginBottom: '1rem'}}
+                                      onChange={this._updateActionName}
+                                      value={actionName}
+                                      options={options.map(
+                                          (option: OptionType) => ({
+                                              value: option.value,
+                                              label: option.label,
+                                          })
+                                      )}
+                                  />,
+                              ]
+                            : null}
+                        {this._renderActionParameters()}
+                        <Button color="success" block>
                             Confirm
                         </Button>
                     </Form>
@@ -351,7 +388,14 @@ export default class ActionButton extends React.Component<Props, State> {
     }
 
     render() {
-        const {children, tag: Tag, tagOptions, tooltip, modal, float} = this.props
+        const {
+            children,
+            tag: Tag,
+            tagOptions,
+            tooltip,
+            modal,
+            float,
+        } = this.props
         const {isLoading} = this.state
         const buttonColor = float ? 'link' : 'secondary'
 

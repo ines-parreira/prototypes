@@ -5,7 +5,7 @@ import {fromJS} from 'immutable'
 import {
     MAGENTO2_INTEGRATION_TYPE,
     RECHARGE_INTEGRATION_TYPE,
-    SHOPIFY_INTEGRATION_TYPE
+    SHOPIFY_INTEGRATION_TYPE,
 } from '../../../../../../../../constants/integration'
 
 import InfobarWidget from '../InfobarWidget'
@@ -15,53 +15,59 @@ const defaultWidget = fromJS({})
 const defaultSource = fromJS({
     ticket: {
         customer: {
-            integrations: [{
-                foo: 'bar'
-            }]
-        }
-    }
+            integrations: [
+                {
+                    foo: 'bar',
+                },
+            ],
+        },
+    },
 })
 
 const defaultTemplate = fromJS({
     type: 'card',
     path: ['ticket', 'customer', 'integrations', '0'],
     title: 'Duh',
-    widgets: [{
-        path: '',
-        type: 'card',
-        title: 'Foo container',
-        widgets: []
-    }]
+    widgets: [
+        {
+            path: '',
+            type: 'card',
+            title: 'Foo container',
+            widgets: [],
+        },
+    ],
 })
 
 const defaultProps = {
     widget: defaultWidget,
     template: defaultTemplate,
     isEditing: false,
-    source: defaultSource
+    source: defaultSource,
 }
 
 jest.mock('../widgets/shopify', () => {
-    return () => {return {'extensionUsed': 'shopify'}}
+    return () => {
+        return {extensionUsed: 'shopify'}
+    }
 })
 
 jest.mock('../widgets/recharge', () => {
-    return () => {return {'extensionUsed': 'recharge'}}
+    return () => {
+        return {extensionUsed: 'recharge'}
+    }
 })
 
 jest.mock('../widgets/magento2', () => {
-    return () => {return {'extensionUsed': 'magento2'}}
+    return () => {
+        return {extensionUsed: 'magento2'}
+    }
 })
-
 
 describe('InfobarWidget', () => {
     describe('card widget', () => {
         it('should display the widget if isEditing=true', () => {
             const component = shallow(
-                <InfobarWidget
-                    {...defaultProps}
-                    isEditing={true}
-                />
+                <InfobarWidget {...defaultProps} isEditing={true} />
             )
             expect(component.debug()).toMatchSnapshot()
         })
@@ -131,18 +137,18 @@ describe('InfobarWidget', () => {
                 ['boolean', true],
                 ['array', [1, 2]],
                 ['number', 1],
-                ['undefined', undefined]
+                ['undefined', undefined],
             ]
             for (const dataSet of invalidData) {
                 const [name, data] = dataSet
                 it(`should not throw if card widget data is ${name}`, () => {
-                    const source = defaultSource.setIn([ 'ticket', 'customer', 'integrations', '0'], data)
+                    const source = defaultSource.setIn(
+                        ['ticket', 'customer', 'integrations', '0'],
+                        data
+                    )
                     expect(() => {
                         shallow(
-                            <InfobarWidget
-                                {...defaultProps}
-                                source={source}
-                            />
+                            <InfobarWidget {...defaultProps} source={source} />
                         )
                     }).not.toThrow()
                 })

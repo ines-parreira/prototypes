@@ -6,9 +6,6 @@ import type {stateType} from '../types'
 
 export const getState = (state: stateType) => state.teams || fromJS({})
 
-export const getTeams = createImmutableSelector(
-    [getState],
-    (state) => state.has('all')
-        ? state.get('all').valueSeq()
-        : fromJS([])
+export const getTeams = createImmutableSelector([getState], (state) =>
+    state.has('all') ? state.get('all').valueSeq() : fromJS([])
 )

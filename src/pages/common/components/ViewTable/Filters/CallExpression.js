@@ -17,11 +17,12 @@ import Operator from './Operator'
 import OperatorLabel from './OperatorLabel'
 import RemoveCallExpression from './RemoveCallExpression'
 
-
 const resolveObjectPath = (node) => {
     switch (node.type) {
         case 'MemberExpression':
-            return `${resolveObjectPath(node.object)}.${resolveObjectPath(node.property)}`
+            return `${resolveObjectPath(node.object)}.${resolveObjectPath(
+                node.property
+            )}`
         case 'Identifier':
             return node.name
         default:
@@ -30,7 +31,7 @@ const resolveObjectPath = (node) => {
 }
 @connect((state) => {
     return {
-        config: viewsSelectors.getActiveViewConfig(state)
+        config: viewsSelectors.getActiveViewConfig(state),
     }
 })
 export default class CallExpression extends React.Component {
@@ -50,7 +51,7 @@ export default class CallExpression extends React.Component {
 
         updateFieldFilter: PropTypes.func.isRequired,
 
-        parentNode: PropTypes.object
+        parentNode: PropTypes.object,
     }
 
     _getOperators = (objectPath) => {
@@ -61,12 +62,20 @@ export default class CallExpression extends React.Component {
         if (property && property.meta) {
             let operators = {
                 ..._get(property.meta, 'operators'),
-                ..._get(property.meta, 'views.additional_operators', {})
+                ..._get(property.meta, 'views.additional_operators', {}),
             }
 
-            const excludedOperators = _get(property.meta, 'views.excluded_operators', {})
+            const excludedOperators = _get(
+                property.meta,
+                'views.excluded_operators',
+                {}
+            )
             if (excludedOperators) {
-                operators = _pickBy(operators, (value, key) => !Object.keys(excludedOperators).includes(key))
+                operators = _pickBy(
+                    operators,
+                    (value, key) =>
+                        !Object.keys(excludedOperators).includes(key)
+                )
             }
 
             return operators
@@ -77,7 +86,16 @@ export default class CallExpression extends React.Component {
 
     render() {
         const {
-            config, view, node, updateOperator, removeCondition, index, agents, teams, currentUser, parentNode
+            config,
+            view,
+            node,
+            updateOperator,
+            removeCondition,
+            index,
+            agents,
+            teams,
+            currentUser,
+            parentNode,
         } = this.props
 
         const left = node.arguments[0]
@@ -87,16 +105,16 @@ export default class CallExpression extends React.Component {
         const objectPath = resolveObjectPath(left)
 
         const fields = config.get('fields', fromJS([]))
-        const field = fields.find((field) => objectPath === `${config.get('singular')}.${fieldPath(field)}`)
+        const field = fields.find(
+            (field) =>
+                objectPath === `${config.get('singular')}.${fieldPath(field)}`
+        )
 
         const operators = this._getOperators(objectPath)
 
         return (
             <div className="CallExpression">
-                <Left
-                    objectPath={objectPath}
-                    view={view}
-                />
+                <Left objectPath={objectPath} view={view} />
                 <Operator
                     operators={operators}
                     selected={operator.name}
@@ -116,20 +134,9 @@ export default class CallExpression extends React.Component {
                     field={field}
                     empty={Object.keys(UNARY_OPERATORS).includes(operator.name)}
                 />
-                {!field && (
-                    <Badge color="danger">
-                        System condition
-                    </Badge>
-                )}
-                {
-                    parentNode && (
-                        <OperatorLabel operator={parentNode.operator}/>
-                    )
-                }
-                <RemoveCallExpression
-                    onClick={removeCondition}
-                    index={index}
-                />
+                {!field && <Badge color="danger">System condition</Badge>}
+                {parentNode && <OperatorLabel operator={parentNode.operator} />}
+                <RemoveCallExpression onClick={removeCondition} index={index} />
             </div>
         )
     }

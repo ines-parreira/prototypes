@@ -14,10 +14,7 @@ import css from './Infobar.less'
 }))
 export default class InfobarLayout extends React.Component {
     static propTypes = {
-        children: PropTypes.oneOfType([
-            PropTypes.object,
-            PropTypes.array
-        ]),
+        children: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
         isOpenedPanel: PropTypes.bool.isRequired,
         className: PropTypes.string,
     }
@@ -34,7 +31,8 @@ export default class InfobarLayout extends React.Component {
         this.classHandle = 'infobar-drag-handle'
         this.classActive = 'infobar-drag-active'
 
-        const width = window.localStorage.getItem('infobar-width') || this.minWidth
+        const width =
+            window.localStorage.getItem('infobar-width') || this.minWidth
 
         this.state = {width}
     }
@@ -61,7 +59,10 @@ export default class InfobarLayout extends React.Component {
         this.cursorX = e.clientX
         const computedStyle = window.getComputedStyle(this.containerRef)
 
-        this.originalWidth = parseInt(computedStyle.getPropertyValue('width'), 10)
+        this.originalWidth = parseInt(
+            computedStyle.getPropertyValue('width'),
+            10
+        )
 
         document.body.classList.add(this.classActive)
     }
@@ -85,28 +86,31 @@ export default class InfobarLayout extends React.Component {
         // for performance.
         if (nextWidth > this.minWidth && nextWidth < this.maxWidth) {
             this.setState({
-                width: this.originalWidth + this.cursorX - e.clientX
+                width: this.originalWidth + this.cursorX - e.clientX,
             })
         }
     }
 
     render() {
         const style = {
-            width: `${this.state.width}px`
+            width: `${this.state.width}px`,
         }
 
         return (
             <div
-                className={classnames(css.component, 'infobar infobar-panel d-print-none', {
-                    'hidden-panel': !this.props.isOpenedPanel,
-                }, this.props.className)}
-                ref={(ref) => this.containerRef = ref}
+                className={classnames(
+                    css.component,
+                    'infobar infobar-panel d-print-none',
+                    {
+                        'hidden-panel': !this.props.isOpenedPanel,
+                    },
+                    this.props.className
+                )}
+                ref={(ref) => (this.containerRef = ref)}
                 style={style}
             >
                 <div className="infobar-drag-handle" />
-                <ErrorBoundary>
-                    {this.props.children}
-                </ErrorBoundary>
+                <ErrorBoundary>{this.props.children}</ErrorBoundary>
             </div>
         )
     }

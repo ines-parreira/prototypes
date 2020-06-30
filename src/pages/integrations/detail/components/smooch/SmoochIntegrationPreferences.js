@@ -7,18 +7,12 @@ import {fromJS, type Map} from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
 import _omitBy from 'lodash/omitBy'
 
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    Button,
-    Container,
-    Form,
-} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Button, Container, Form} from 'reactstrap'
 
 import {
     CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
     CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
-    getAutoResponderReplyOptions
+    getAutoResponderReplyOptions,
 } from '../../../../../config/integrations'
 
 import {updateOrCreateIntegration} from '../../../../../state/integrations/actions'
@@ -28,33 +22,50 @@ import RadioField from '../../../../common/forms/RadioField'
 
 import SmoochIntegrationNavigation from './SmoochIntegrationNavigation'
 
-
 type Props = {
-    updateOrCreateIntegration: (Map<*,*>) => Promise<*>,
-    integration: Map<*,*>
+    updateOrCreateIntegration: (Map<*, *>) => Promise<*>,
+    integration: Map<*, *>,
 }
 
 type State = {
     autoResponderEnabled: boolean,
     autoResponderReply: string,
     isUpdating: boolean,
-    isInitialized: boolean
+    isInitialized: boolean,
 }
 
-export class SmoochIntegrationPreferences extends React.Component<Props, State> {
+export class SmoochIntegrationPreferences extends React.Component<
+    Props,
+    State
+> {
     state = {
         autoResponderEnabled: CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
         autoResponderReply: CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
         isUpdating: false,
-        isInitialized: false
+        isInitialized: false,
     }
 
-    _initState = (integration: Map<*,*>) => {
-        this.setState(_omitBy({
-            autoResponderEnabled: integration.getIn(['meta', 'preferences', 'auto_responder', 'enabled']),
-            autoResponderReply: integration.getIn(['meta', 'preferences', 'auto_responder', 'reply']),
-            isInitialized: true
-        }, _isUndefined))
+    _initState = (integration: Map<*, *>) => {
+        this.setState(
+            _omitBy(
+                {
+                    autoResponderEnabled: integration.getIn([
+                        'meta',
+                        'preferences',
+                        'auto_responder',
+                        'enabled',
+                    ]),
+                    autoResponderReply: integration.getIn([
+                        'meta',
+                        'preferences',
+                        'auto_responder',
+                        'reply',
+                    ]),
+                    isInitialized: true,
+                },
+                _isUndefined
+            )
+        )
     }
 
     componentDidMount() {
@@ -91,10 +102,10 @@ export class SmoochIntegrationPreferences extends React.Component<Props, State> 
                 preferences: {
                     auto_responder: {
                         enabled: this.state.autoResponderEnabled,
-                        reply: this.state.autoResponderReply
-                    }
-                }
-            })
+                        reply: this.state.autoResponderReply,
+                    },
+                },
+            }),
         })
 
         await updateOrCreateIntegration(payload)
@@ -103,42 +114,42 @@ export class SmoochIntegrationPreferences extends React.Component<Props, State> 
     }
 
     render() {
-        const {autoResponderEnabled, autoResponderReply, isUpdating} = this.state
+        const {
+            autoResponderEnabled,
+            autoResponderReply,
+            isUpdating,
+        } = this.state
         const {integration} = this.props
 
         return (
             <div className="full-width">
-                <PageHeader title={(
-                    <Breadcrumb>
-                        <BreadcrumbItem>
-                            <Link to="/app/settings/integrations">Integrations</Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            <Link to="/app/settings/integrations/smooch">
-                                Smooch
-                            </Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            {integration.get('name')}
-                        </BreadcrumbItem>
-                        <BreadcrumbItem active>
-                            Preferences
-                        </BreadcrumbItem>
-                    </Breadcrumb>
-                )}/>
+                <PageHeader
+                    title={
+                        <Breadcrumb>
+                            <BreadcrumbItem>
+                                <Link to="/app/settings/integrations">
+                                    Integrations
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                <Link to="/app/settings/integrations/smooch">
+                                    Smooch
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                {integration.get('name')}
+                            </BreadcrumbItem>
+                            <BreadcrumbItem active>Preferences</BreadcrumbItem>
+                        </Breadcrumb>
+                    }
+                />
 
-                <SmoochIntegrationNavigation integration={integration}/>
+                <SmoochIntegrationNavigation integration={integration} />
 
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <Container fluid className="page-container">
                     <Form onSubmit={this._submitPreferences}>
                         <div className="mb-4">
-                            <h4>
-                                Auto-responder
-                            </h4>
-
+                            <h4>Auto-responder</h4>
 
                             <div className="mb-3 d-flex align-items-center">
                                 <ToggleButton
@@ -151,24 +162,50 @@ export class SmoochIntegrationPreferences extends React.Component<Props, State> 
                             </div>
 
                             <div className="mb-3">
-                                <p className={classnames({'text-faded': !autoResponderEnabled})}>
-                                    <b>During <Link to="/app/settings/business-hours">Business hours</Link></b>,
-                                    tell customers how fast they can expect a response with an auto-responder:
+                                <p
+                                    className={classnames({
+                                        'text-faded': !autoResponderEnabled,
+                                    })}
+                                >
+                                    <b>
+                                        During{' '}
+                                        <Link to="/app/settings/business-hours">
+                                            Business hours
+                                        </Link>
+                                    </b>
+                                    , tell customers how fast they can expect a
+                                    response with an auto-responder:
                                 </p>
                                 <RadioField
-                                    options={getAutoResponderReplyOptions(integration.getIn(['meta', 'language']))}
+                                    options={getAutoResponderReplyOptions(
+                                        integration.getIn(['meta', 'language'])
+                                    )}
                                     value={autoResponderReply}
                                     onChange={this._setAutoResponderReply}
                                     disabled={!autoResponderEnabled}
                                 />
-                                <p className={classnames({'text-faded': !autoResponderEnabled})}>
-                                    This message will be sent in new chat tickets after 30 seconds without
-                                    replies from an agent.
+                                <p
+                                    className={classnames({
+                                        'text-faded': !autoResponderEnabled,
+                                    })}
+                                >
+                                    This message will be sent in new chat
+                                    tickets after 30 seconds without replies
+                                    from an agent.
                                 </p>
-                                <p className={classnames({'text-faded': !autoResponderEnabled})}>
-                                    <b>Outside <Link to="/app/settings/business-hours">Business hours</Link>
-                                    </b>, Gorgias will automatically tell customers when they can expect a
-                                    response.
+                                <p
+                                    className={classnames({
+                                        'text-faded': !autoResponderEnabled,
+                                    })}
+                                >
+                                    <b>
+                                        Outside{' '}
+                                        <Link to="/app/settings/business-hours">
+                                            Business hours
+                                        </Link>
+                                    </b>
+                                    , Gorgias will automatically tell customers
+                                    when they can expect a response.
                                 </p>
                             </div>
                         </div>
@@ -178,7 +215,7 @@ export class SmoochIntegrationPreferences extends React.Component<Props, State> 
                                 type="submit"
                                 color="success"
                                 className={classnames({
-                                    'btn-loading': isUpdating
+                                    'btn-loading': isUpdating,
                                 })}
                                 disabled={isUpdating}
                             >
@@ -193,5 +230,5 @@ export class SmoochIntegrationPreferences extends React.Component<Props, State> 
 }
 
 export default connect(null, {
-    updateOrCreateIntegration
+    updateOrCreateIntegration,
 })(SmoochIntegrationPreferences)

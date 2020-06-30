@@ -6,7 +6,7 @@ import DeactivatedViewMessage from '../DeactivatedViewMessage'
 describe('<DeactivatedViewMessage/>', () => {
     describe('render()', () => {
         it('should render', () => {
-            const component = render(<DeactivatedViewMessage/>)
+            const component = render(<DeactivatedViewMessage />)
             expect(component).toMatchSnapshot()
         })
     })

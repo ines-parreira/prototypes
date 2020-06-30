@@ -2,7 +2,9 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 
-import HTTPIntegrationEventContainer, {HTTPIntegrationEvent} from '../HTTPIntegrationEvent'
+import HTTPIntegrationEventContainer, {
+    HTTPIntegrationEvent,
+} from '../HTTPIntegrationEvent'
 import {initialState} from '../../../../../../../state/HTTPIntegrationEvents/reducers'
 import {mockStore, shallowWithStore} from '../../../../../../../utils/testing'
 import {getMomentNow} from '../../../../../../../utils/date'
@@ -52,7 +54,7 @@ const HTTPEventWithEmptyBodies = fromJS({
     },
     response: {
         headers: {headersKey1: 'headersValue1'},
-    }
+    },
 })
 
 const HTTPEventWithErrorInResponse = fromJS({
@@ -66,8 +68,8 @@ const HTTPEventWithErrorInResponse = fromJS({
     },
     response: {
         headers: {headersKey1: 'headersValue1'},
-        error: 'There is an error'
-    }
+        error: 'There is an error',
+    },
 })
 
 describe('<HTTPIntegrationEvent/>', () => {
@@ -87,7 +89,10 @@ describe('<HTTPIntegrationEvent/>', () => {
             component.instance().componentWillMount()
 
             setTimeout(() => {
-                expect(fetchHTTPIntegrationEvent).toHaveBeenCalledWith(integrationId, eventId)
+                expect(fetchHTTPIntegrationEvent).toHaveBeenCalledWith(
+                    integrationId,
+                    eventId
+                )
                 expect(fetchHTTPIntegrationEvent).toHaveBeenCalledTimes(1)
                 component.update()
                 expect(component.state()).toEqual({isFetching: false})
@@ -110,10 +115,7 @@ describe('<HTTPIntegrationEvent/>', () => {
 
         it('should render a loader because the component has no event', () => {
             const component = shallow(
-                <HTTPIntegrationEvent
-                    eventId="2"
-                    integationId="1"
-                />
+                <HTTPIntegrationEvent eventId="2" integationId="1" />
             )
             component.setState({isFetching: false})
 
@@ -179,15 +181,19 @@ describe('<HTTPIntegrationEvent/>', () => {
 
         it(
             'should render the data of the HTTP request when there was an error making the request and the default ' +
-            'message is already in the event',
+                'message is already in the event',
             () => {
-                const error = 'There was an error while making this request. Foo bar. There is an error.'
+                const error =
+                    'There was an error while making this request. Foo bar. There is an error.'
 
                 const component = shallow(
                     <HTTPIntegrationEvent
                         eventId="2"
                         integationId="1"
-                        event={HTTPEventWithErrorInResponse.setIn(['response', 'error'], error)}
+                        event={HTTPEventWithErrorInResponse.setIn(
+                            ['response', 'error'],
+                            error
+                        )}
                     />
                 )
                 expect(component).toMatchSnapshot()
@@ -197,13 +203,14 @@ describe('<HTTPIntegrationEvent/>', () => {
 
     describe('container', () => {
         it('should render a HTTPIntegrationEvent component with props from the Redux store', () => {
-            const state = initialState.set('event', fromJS(HTTPEventWithHTMLResp))
+            const state = initialState.set(
+                'event',
+                fromJS(HTTPEventWithHTMLResp)
+            )
             const store = mockStore({HTTPIntegrationEvents: state})
             const container = shallowWithStore(
-                <HTTPIntegrationEventContainer
-                    integrationId="1"
-                    eventId="2"
-                />, store
+                <HTTPIntegrationEventContainer integrationId="1" eventId="2" />,
+                store
             )
 
             expect(container).toMatchSnapshot()

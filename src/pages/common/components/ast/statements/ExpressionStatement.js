@@ -20,7 +20,7 @@ type Props = {
     parent: Object,
     actions: ?Object,
     schemas: ?Object,
-    depth: number
+    depth: number,
 }
 
 class ExpressionStatement extends React.Component<Props> {
@@ -52,7 +52,7 @@ class ExpressionStatement extends React.Component<Props> {
 }
 
 ExpressionStatement.contextTypes = {
-    hovered: PropTypes.bool
+    hovered: PropTypes.bool,
 }
 
 export default Hoverable(ExpressionStatement)

@@ -20,7 +20,10 @@ type Props = {
 }
 
 export default class OrderTable extends React.PureComponent<Props> {
-    _onLineItemChange = (index: number, updatedLineItem: Record<Shopify.LineItem>) => {
+    _onLineItemChange = (
+        index: number,
+        updatedLineItem: Record<Shopify.LineItem>
+    ) => {
         const {onChange, lineItems} = this.props
         const newLineItems = lineItems.set(index, updatedLineItem)
 
@@ -28,13 +31,16 @@ export default class OrderTable extends React.PureComponent<Props> {
     }
 
     render() {
-        const {lineItems, refund, shopName, currencyCode, shopCurrencyCode} = this.props
+        const {
+            lineItems,
+            refund,
+            shopName,
+            currencyCode,
+            shopCurrencyCode,
+        } = this.props
 
         return (
-            <Table
-                hover
-                className={css.table}
-            >
+            <Table hover className={css.table}>
                 <thead>
                     <tr>
                         <th>Product</th>
@@ -56,7 +62,12 @@ export default class OrderTable extends React.PureComponent<Props> {
                                 shopName={shopName}
                                 currencyCode={currencyCode}
                                 shopCurrencyCode={shopCurrencyCode}
-                                onChange={(updatedLineItem) => this._onLineItemChange(index, updatedLineItem)}
+                                onChange={(updatedLineItem) =>
+                                    this._onLineItemChange(
+                                        index,
+                                        updatedLineItem
+                                    )
+                                }
                             />
                         )
                     })}

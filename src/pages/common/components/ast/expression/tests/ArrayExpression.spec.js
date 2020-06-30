@@ -9,11 +9,14 @@ describe('ast', () => {
         describe('ArrayExpression', () => {
             it('should render component and not display any error', () => {
                 const parent = fromJS(['body', 0, 'test', 'arguments', 1])
-                const elements = [{
-                    value: 'hello',
-                }, {
-                    value: 'world!'
-                }]
+                const elements = [
+                    {
+                        value: 'hello',
+                    },
+                    {
+                        value: 'world!',
+                    },
+                ]
                 expect(
                     shallow(
                         <ArrayExpression

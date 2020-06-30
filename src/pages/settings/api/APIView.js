@@ -1,7 +1,16 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import Clipboard from 'clipboard'
-import {FormGroup, Container, Label, InputGroup, Button, Input, InputGroupAddon, FormText} from 'reactstrap'
+import {
+    FormGroup,
+    Container,
+    Label,
+    InputGroup,
+    Button,
+    Input,
+    InputGroupAddon,
+    FormText,
+} from 'reactstrap'
 
 import * as currentUserSelectors from '../../../state/currentUser/selectors'
 import * as authsSelectors from '../../../state/auths/selectors'
@@ -10,7 +19,6 @@ import {fetchCurrentAuths, resetApiKey} from '../../../state/auths/actions'
 import {notify} from '../../../state/notifications/actions'
 import PageHeader from '../../common/components/PageHeader'
 import * as segmentTracker from '../../../store/middlewares/segmentTracker'
-
 
 type Props = {
     apiKey: string,
@@ -36,16 +44,27 @@ export class APIViewComponent extends React.Component<Props, State> {
 
     componentWillMount() {
         // Load postman js
-        (function (p, o, s, t, m, a, n) {
-            !p[s] && (p[s] = function () {
-                (p[t] || (p[t] = [])).push(arguments)
-            })
-            !o.getElementById(s + t) && o.getElementsByTagName('head')[0].appendChild((
-                // eslint-disable-next-line no-param-reassign
-                (n = o.createElement('script')),
-                (n.id = s + t), (n.async = 1), (n.src = m), n
-            ))
-        }(window, document, '_pm', 'PostmanRunObject', 'https://run.pstmn.io/button.js'))
+        ;(function (p, o, s, t, m, a, n) {
+            !p[s] &&
+                (p[s] = function () {
+                    ;(p[t] || (p[t] = [])).push(arguments)
+                })
+            !o.getElementById(s + t) &&
+                o.getElementsByTagName('head')[0].appendChild(
+                    // eslint-disable-next-line no-param-reassign
+                    ((n = o.createElement('script')),
+                    (n.id = s + t),
+                    (n.async = 1),
+                    (n.src = m),
+                    n)
+                )
+        })(
+            window,
+            document,
+            '_pm',
+            'PostmanRunObject',
+            'https://run.pstmn.io/button.js'
+        )
     }
 
     componentDidMount() {
@@ -70,15 +89,20 @@ export class APIViewComponent extends React.Component<Props, State> {
     _subscribeToDeveloperNewsletter = () => {
         const {notify} = this.props
 
-        segmentTracker.logEvent(segmentTracker.EVENTS.SUBSCRIBED_TO_DEV_NEWSLETTER)
+        segmentTracker.logEvent(
+            segmentTracker.EVENTS.SUBSCRIBED_TO_DEV_NEWSLETTER
+        )
         notify({
             status: 'success',
-            message: 'Thank you! You have been subscribed to our developer newsletter.'
+            message:
+                'Thank you! You have been subscribed to our developer newsletter.',
         })
     }
 
     _resetApiKey = () => {
-        const confirm = window.confirm('You are about to reset your API key. Are you sure?')
+        const confirm = window.confirm(
+            'You are about to reset your API key. Are you sure?'
+        )
 
         if (confirm) {
             this.props.resetApiKey()
@@ -111,30 +135,18 @@ export class APIViewComponent extends React.Component<Props, State> {
     _renderApiKeySection(apiKey: string) {
         return (
             <InputGroup>
-                <Input
-                    id="apiKey"
-                    type="text"
-                    value={apiKey}
-                    readOnly
-                />
+                <Input id="apiKey" type="text" value={apiKey} readOnly />
                 <InputGroupAddon addonType="append">
                     <Button
                         className="resetBtn"
                         color="danger"
                         onClick={this._resetApiKey}
                     >
-                        <i className="material-icons mr-2">
-                            refresh
-                        </i>
+                        <i className="material-icons mr-2">refresh</i>
                         Reset
                     </Button>
-                    <Button
-                        className="copyBtn"
-                        data-clipboard-target="#apiKey"
-                    >
-                        <i className="material-icons mr-2">
-                            file_copy
-                        </i>
+                    <Button className="copyBtn" data-clipboard-target="#apiKey">
+                        <i className="material-icons mr-2">file_copy</i>
                         {this.state.isCopiedAPIKey ? 'Copied!' : 'Copy'}
                     </Button>
                 </InputGroupAddon>
@@ -146,54 +158,68 @@ export class APIViewComponent extends React.Component<Props, State> {
         const {domain, apiKey, email} = this.props
         const postmanVars = [
             {
-                'enabled': true,
-                'key': 'domain',
-                'value': domain,
-                'type': 'text'
+                enabled: true,
+                key: 'domain',
+                value: domain,
+                type: 'text',
             },
             {
-                'enabled': true,
-                'key': 'email',
-                'value': email,
-                'type': 'text'
+                enabled: true,
+                key: 'email',
+                value: email,
+                type: 'text',
             },
             {
-                'enabled': true,
-                'key': 'api_key',
-                'value': apiKey,
-                'type': 'text'
-            }
+                enabled: true,
+                key: 'api_key',
+                value: apiKey,
+                type: 'text',
+            },
         ]
-        const postmanParams = encodeURI(`env[Gorgias Helpdesk]=${btoa(JSON.stringify(postmanVars))}`)
+        const postmanParams = encodeURI(
+            `env[Gorgias Helpdesk]=${btoa(JSON.stringify(postmanVars))}`
+        )
 
         return (
             <div className="max-width">
-                <PageHeader title="REST API"/>
+                <PageHeader title="REST API" />
 
-                <Container
-                    className="page-container"
-                >
+                <Container className="page-container">
                     <p>
-                        Gorgias prides itself on being a developer-friendly helpdesk.
-                        We expose a <a
+                        Gorgias prides itself on being a developer-friendly
+                        helpdesk. We expose a{' '}
+                        <a
                             href="https://stackoverflow.com/questions/671118/what-exactly-is-restful-programming"
                             target="_blank"
                             rel="noopener noreferrer"
-                        >RESTful API</a> to make it easy for you to
-                        get, create, update and delete many objects including customers, tickets,
-                        messages and events. To find out more about our API, please consult our docs here:
+                        >
+                            RESTful API
+                        </a>{' '}
+                        to make it easy for you to get, create, update and
+                        delete many objects including customers, tickets,
+                        messages and events. To find out more about our API,
+                        please consult our docs here:
                         <a
                             href="https://api.gorgias.com/"
                             target="_blank"
                             rel="noopener noreferrer"
-                        > https://api.gorgias.com/</a>.
+                        >
+                            {' '}
+                            https://api.gorgias.com/
+                        </a>
+                        .
                     </p>
                     <p>
-                        Below are the parameters you will need to access our API. We're
-                        using <a
+                        Below are the parameters you will need to access our
+                        API. We're using{' '}
+                        <a
                             href="https://en.wikipedia.org/wiki/Basic_access_authentication"
                             rel="noopener noreferrer"
-                        >HTTP basic authentication</a> to authenticate API requests.</p>
+                        >
+                            HTTP basic authentication
+                        </a>{' '}
+                        to authenticate API requests.
+                    </p>
                     <h4>API Access &amp; Credentials</h4>
                     <FormGroup>
                         <Label for="URL">Base API URL</Label>
@@ -212,7 +238,9 @@ export class APIViewComponent extends React.Component<Props, State> {
                                     <i className="material-icons mr-2">
                                         file_copy
                                     </i>
-                                    {this.state.isCopiedUrl ? 'Copied!' : 'Copy'}
+                                    {this.state.isCopiedUrl
+                                        ? 'Copied!'
+                                        : 'Copy'}
                                 </Button>
                             </InputGroupAddon>
                         </InputGroup>
@@ -234,20 +262,20 @@ export class APIViewComponent extends React.Component<Props, State> {
                                     <i className="material-icons mr-2">
                                         file_copy
                                     </i>
-                                    {this.state.isCopiedEmail ? 'Copied!' : 'Copy'}
+                                    {this.state.isCopiedEmail
+                                        ? 'Copied!'
+                                        : 'Copy'}
                                 </Button>
                             </InputGroupAddon>
                         </InputGroup>
                     </FormGroup>
                     <FormGroup>
                         <Label for="apiKey">Password (API Key)</Label>
-                        {
-                            !!apiKey
-                                ? this._renderApiKeySection(apiKey)
-                                : this._renderCreateApiKeySection()
-                        }
+                        {!!apiKey
+                            ? this._renderApiKeySection(apiKey)
+                            : this._renderCreateApiKeySection()}
                     </FormGroup>
-                    <br/>
+                    <br />
 
                     <h4>Postman collection</h4>
                     <p>
@@ -258,8 +286,9 @@ export class APIViewComponent extends React.Component<Props, State> {
                             rel="noopener noreferrer"
                         >
                             Postman
-                        </a>
-                        {' '}collection below to quickly connect and use our REST API.
+                        </a>{' '}
+                        collection below to quickly connect and use our REST
+                        API.
                     </p>
                     <div
                         className="postman-run-button"
@@ -267,13 +296,16 @@ export class APIViewComponent extends React.Component<Props, State> {
                         data-postman-var-1="9cd4c1e0f841a18f3510"
                         data-postman-param={postmanParams}
                     />
-                    <br/><br/>
+                    <br />
+                    <br />
 
                     <h4>Developer newsletter</h4>
                     <p>
-                        If you're using our API, we highly encourage you to subscribe to our developer newsletter.{' '}
-                        It contains updates about <b>upcoming changes and breaking changes to the API</b>, new{' '}
-                        features and integrations.
+                        If you're using our API, we highly encourage you to
+                        subscribe to our developer newsletter. It contains
+                        updates about{' '}
+                        <b>upcoming changes and breaking changes to the API</b>,
+                        new features and integrations.
                     </p>
                     <Button
                         color="primary"
@@ -291,8 +323,14 @@ const mapStateToProps = (state) => {
     return {
         apiKey: authsSelectors.getApiKey(state),
         email: currentUserSelectors.getCurrentUser(state).get('email'),
-        domain: currentAccountSelectors.getCurrentAccountState(state).get('domain'),
+        domain: currentAccountSelectors
+            .getCurrentAccountState(state)
+            .get('domain'),
     }
 }
 
-export default connect(mapStateToProps, {fetchCurrentAuths, notify, resetApiKey})(APIViewComponent)
+export default connect(mapStateToProps, {
+    fetchCurrentAuths,
+    notify,
+    resetApiKey,
+})(APIViewComponent)

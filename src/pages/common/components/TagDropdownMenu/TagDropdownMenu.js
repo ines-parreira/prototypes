@@ -3,7 +3,7 @@ import React from 'react'
 import {DropdownMenu} from 'reactstrap'
 
 type Props = {
-    style?: {}
+    style?: {},
 }
 
 export default function TagDropdownMenu(props: Props) {
@@ -13,8 +13,8 @@ export default function TagDropdownMenu(props: Props) {
             style={{
                 ...props.style,
                 width: 'auto',
-                minWidth: `${230/14}em`,
-                maxWidth: `${480/14}em`
+                minWidth: `${230 / 14}em`,
+                maxWidth: `${480 / 14}em`,
             }}
         />
     )

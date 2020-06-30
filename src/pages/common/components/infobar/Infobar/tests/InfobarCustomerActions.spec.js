@@ -6,25 +6,25 @@ import InfobarCustomerActions from '../InfobarCustomerActions'
 
 const commonProps = {
     customer: fromJS({
-        id: 1
+        id: 1,
     }),
     sources: fromJS({
         customer: {
-            id: 1
+            id: 1,
         },
         ticket: {
-            id: 2
-        }
+            id: 2,
+        },
     }),
     selectedCustomer: fromJS({
-        id: 3
+        id: 3,
     }),
     toggleMergeCustomerModal: () => {},
-    setCustomer: () => {}
+    setCustomer: () => {},
 }
 
 jest.mock('../../../../../../utils', () => ({
-    isCurrentlyOnTicket: (ticketId) => !!ticketId
+    isCurrentlyOnTicket: (ticketId) => !!ticketId,
 }))
 
 describe('InfobarCustomerActions component', () => {
@@ -34,8 +34,8 @@ describe('InfobarCustomerActions component', () => {
                 {...commonProps}
                 sources={fromJS({
                     customer: {
-                        id: 1
-                    }
+                        id: 1,
+                    },
                 })}
             />
         )
@@ -56,21 +56,14 @@ describe('InfobarCustomerActions component', () => {
 
     it('should not render "merge" button because there is no customer to merge the selected customer with', () => {
         const component = shallow(
-            <InfobarCustomerActions
-                {...commonProps}
-                customer={fromJS({})}
-            />
+            <InfobarCustomerActions {...commonProps} customer={fromJS({})} />
         )
 
         expect(component).toMatchSnapshot()
     })
 
     it('should render "set as customer" and "merge" button', () => {
-        const component = shallow(
-            <InfobarCustomerActions
-                {...commonProps}
-            />
-        )
+        const component = shallow(<InfobarCustomerActions {...commonProps} />)
 
         expect(component).toMatchSnapshot()
     })

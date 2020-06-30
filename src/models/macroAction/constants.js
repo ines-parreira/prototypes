@@ -15,8 +15,10 @@ export const MACRO_ACTION_NAME = Object.freeze({
     SHOPIFY_CANCEL_LAST_ORDER: 'shopifyCancelLastOrder',
     SHOPIFY_CANCEL_ORDER: 'shopifyCancelOrder',
     SHOPIFY_DUPLICATE_LAST_ORDER: 'shopifyDuplicateLastOrder',
-    SHOPIFY_EDIT_SHIPPING_ADDRESS_LAST_ORDER: 'shopifyEditShippingAddressOfLastOrder',
-    SHOPIFY_REFUND_SHIPPING_COST_LAST_ORDER: 'shopifyRefundShippingCostOfLastOrder',
+    SHOPIFY_EDIT_SHIPPING_ADDRESS_LAST_ORDER:
+        'shopifyEditShippingAddressOfLastOrder',
+    SHOPIFY_REFUND_SHIPPING_COST_LAST_ORDER:
+        'shopifyRefundShippingCostOfLastOrder',
     SHOPIFY_FULL_REFUND_LAST_ORDER: 'shopifyFullRefundLastOrder',
     SHOPIFY_PARTIAL_REFUND_LAST_ORDER: 'shopifyPartialRefundLastOrder',
     SHOPIFY_EDIT_NOTE_LAST_ORDER: 'shopifyEditNoteOfLastOrder',

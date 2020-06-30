@@ -11,7 +11,6 @@ describe('client resources', () => {
     })
 
     describe('resources axios instance', () => {
-
         it('should resolve with data', async () => {
             mockedServer.onGet('/api').reply(200, {
                 data: {
@@ -26,9 +25,11 @@ describe('client resources', () => {
             mockedServer.onPost('/api').reply(200)
             await client.post('/api', {
                 foo_bar: 'foo',
-                foo: [{
-                    foo_bar: 'foo',
-                }],
+                foo: [
+                    {
+                        foo_bar: 'foo',
+                    },
+                ],
             })
             expect(mockedServer.history).toMatchSnapshot()
         })

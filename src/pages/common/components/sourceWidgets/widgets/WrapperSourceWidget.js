@@ -19,7 +19,7 @@ class WrapperSourceWidget extends React.Component {
             source,
             editing,
             parent,
-            getIntegrationById
+            getIntegrationById,
         } = this.props
 
         const ap = template.get('absolutePath')
@@ -56,9 +56,7 @@ class WrapperSourceWidget extends React.Component {
                 data-key={template.get('path').join('.')}
             >
                 <CardBody className="header">
-                    <CardTitle>
-                        {displayName}
-                    </CardTitle>
+                    <CardTitle>{displayName}</CardTitle>
                 </CardBody>
                 <CardBody className="content">
                     <DragWrapper
@@ -66,28 +64,27 @@ class WrapperSourceWidget extends React.Component {
                         group={{
                             name: ap.join('.'),
                             pull: true,
-                            put: false
+                            put: false,
                         }}
                         isEditing
                     >
-                        {
-                            children
-                                .map((w, i) => {
-                                    const passedTemplate = w
-                                        .set('templatePath', `${tp}.widgets.${i}`)
+                        {children.map((w, i) => {
+                            const passedTemplate = w.set(
+                                'templatePath',
+                                `${tp}.widgets.${i}`
+                            )
 
-                                    return (
-                                        <SourceWidget
-                                            key={`${passedTemplate.get('path')}-${i}`}
-                                            source={source}
-                                            parent={template}
-                                            template={passedTemplate}
-                                            widget={widget}
-                                            editing={editing}
-                                        />
-                                    )
-                                })
-                        }
+                            return (
+                                <SourceWidget
+                                    key={`${passedTemplate.get('path')}-${i}`}
+                                    source={source}
+                                    parent={template}
+                                    template={passedTemplate}
+                                    widget={widget}
+                                    editing={editing}
+                                />
+                            )
+                        })}
                     </DragWrapper>
                 </CardBody>
             </Card>
@@ -101,12 +98,12 @@ WrapperSourceWidget.propTypes = {
     parent: PropTypes.object.isRequired,
     widget: PropTypes.object.isRequired,
     template: PropTypes.object.isRequired,
-    getIntegrationById: PropTypes.func.isRequired
+    getIntegrationById: PropTypes.func.isRequired,
 }
 
 const mapStateToProps = (state) => {
     return {
-        getIntegrationById: integrationsSelectors.makeGetIntegrationById(state)
+        getIntegrationById: integrationsSelectors.makeGetIntegrationById(state),
     }
 }
 

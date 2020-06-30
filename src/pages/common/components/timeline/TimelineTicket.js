@@ -40,7 +40,9 @@ export default class TimelineTicket extends React.Component {
 
         return (
             <Card
-                className={classnames(css.component, {[css.current]: this.props.isCurrent})}
+                className={classnames(css.component, {
+                    [css.current]: this.props.isCurrent,
+                })}
                 onClick={this._goToTicket}
                 tag="a"
                 href={`/app/ticket/${ticket.get('id')}`}
@@ -55,9 +57,7 @@ export default class TimelineTicket extends React.Component {
                             dateTime={ticket.get('created_datetime')}
                             className="d-block mb-1"
                         />
-                        {assigneeName && (
-                            <AgentLabel name={assigneeName}/>
-                        )}
+                        {assigneeName && <AgentLabel name={assigneeName} />}
                     </div>
                     <div className={classnames(css.details)}>
                         <SourceIcon
@@ -80,11 +80,10 @@ export default class TimelineTicket extends React.Component {
 TimelineTicket.propTypes = {
     ticket: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
-    isCurrent: PropTypes.bool.isRequired
+    isCurrent: PropTypes.bool.isRequired,
 }
 
 TimelineTicket.defaultProps = {
     actions: {},
-    isCurrent: false
+    isCurrent: false,
 }
-

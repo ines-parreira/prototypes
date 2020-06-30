@@ -21,7 +21,7 @@ type Props = {
     lastMessageDatetimeAfterMount: ?moment$Moment,
     children?: Node,
     timezone: string,
-    isLastRead: boolean
+    isLastRead: boolean,
 }
 
 export default class Container extends React.Component<Props> {
@@ -39,19 +39,29 @@ export default class Container extends React.Component<Props> {
         const sender = fromJS(message.sender || {})
 
         // appear animation if message is created after the ticket body component is mounted
-        const { lastMessageDatetimeAfterMount } = this.props
-        const appear = !!lastMessageDatetimeAfterMount
-            && !message.from_agent
-            && moment(message.created_datetime).diff(lastMessageDatetimeAfterMount) > 0
+        const {lastMessageDatetimeAfterMount} = this.props
+        const appear =
+            !!lastMessageDatetimeAfterMount &&
+            !message.from_agent &&
+            moment(message.created_datetime).diff(
+                lastMessageDatetimeAfterMount
+            ) > 0
 
         return (
-            <div className={classNames('ticket-message', this.props.className, css.component, {
-                fromAgent: message.from_agent,
-                internal: !message.public,
-                appear: appear,
-                hasError: isFailed(message),
-                'ticket-message-loading': isPending(message),
-            })}>
+            <div
+                className={classNames(
+                    'ticket-message',
+                    this.props.className,
+                    css.component,
+                    {
+                        fromAgent: message.from_agent,
+                        internal: !message.public,
+                        appear: appear,
+                        hasError: isFailed(message),
+                        'ticket-message-loading': isPending(message),
+                    }
+                )}
+            >
                 <div className={css.avatar}>
                     <Avatar
                         email={message.from_agent ? null : sender.get('email')}

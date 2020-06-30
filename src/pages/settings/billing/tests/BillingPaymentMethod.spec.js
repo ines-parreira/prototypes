@@ -61,7 +61,7 @@ describe('BillingPaymentMethod', () => {
                         brand: 'Visa',
                         last4: 4242,
                         exp_month: 9,
-                        exp_year: 2017
+                        exp_year: 2017,
                     })}
                     paymentMethod="stripe"
                     paymentIsActive
@@ -74,7 +74,6 @@ describe('BillingPaymentMethod', () => {
     })
 
     describe('Shopify', () => {
-
         it('should render an active status', () => {
             const component = mount(
                 <BillingPaymentMethod
@@ -131,7 +130,7 @@ describe('BillingPaymentMethod', () => {
                 <BillingPaymentMethod
                     currentPlan={fromJS({
                         amount: 12,
-                        currencySign: '$'
+                        currencySign: '$',
                     })}
                     fetchPaymentMethod={() => Promise.resolve()}
                     fetchCreditCard={() => Promise.resolve()}

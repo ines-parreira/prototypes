@@ -4,15 +4,14 @@ import {fromJS} from 'immutable'
 
 import {EmailIntegrationCreateVerification} from '../EmailIntegrationCreateVerification'
 
-
 const commonProps = {
     forwardingEmailAddress: 'hmq29fh29zfmh29fzq2f3@emails-acme.gorgi.us',
     integration: fromJS({
         id: 1,
         name: 'my integration',
         meta: {
-            address: 'myintegration@gorgias.io'
-        }
+            address: 'myintegration@gorgias.io',
+        },
     }),
     verify: jest.fn(),
     sendVerificationEmail: jest.fn(),
@@ -23,9 +22,7 @@ describe('<EmailIntegrationCreateVerification/>', () => {
     describe('render()', () => {
         it('should render the regular instructions', () => {
             const component = shallow(
-                <EmailIntegrationCreateVerification
-                    {...commonProps}
-                />
+                <EmailIntegrationCreateVerification {...commonProps} />
             )
 
             expect(component).toMatchSnapshot()
@@ -36,8 +33,8 @@ describe('<EmailIntegrationCreateVerification/>', () => {
                 id: 1,
                 name: 'my integration',
                 meta: {
-                    address: 'myintegration@emails.gorgias.com'
-                }
+                    address: 'myintegration@emails.gorgias.com',
+                },
             })
 
             const component = shallow(

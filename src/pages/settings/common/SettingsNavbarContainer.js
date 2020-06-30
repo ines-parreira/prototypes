@@ -7,10 +7,10 @@ import SettingsNavbar from './components/SettingsNavbar'
 
 type Props = {
     currentUser: Object,
-    currentAccount: Object
+    currentAccount: Object,
 }
 
-class SettingsNavbarContainer extends React.Component<Props>{
+class SettingsNavbarContainer extends React.Component<Props> {
     render() {
         return (
             <Navbar activeContent="settings">
@@ -23,7 +23,7 @@ class SettingsNavbarContainer extends React.Component<Props>{
 function mapStateToProps(state) {
     return {
         currentUser: state.currentUser,
-        currentAccount: state.currentAccount
+        currentAccount: state.currentAccount,
     }
 }
 

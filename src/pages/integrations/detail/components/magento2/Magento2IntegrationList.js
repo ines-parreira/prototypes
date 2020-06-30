@@ -10,10 +10,9 @@ import ToggleButton from '../../../../common/components/ToggleButton'
 import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'
 
-
 type Props = {
-    integrations: List<Map<*,*>>,
-    loading: Map<*,*>,
+    integrations: List<Map<*, *>>,
+    loading: Map<*, *>,
     activate: (number) => Promise<*>,
     deactivate: (number) => Promise<*>,
 }
@@ -24,24 +23,26 @@ export class Magento2IntegrationList extends React.Component<Props> {
 
         const longTypeDescription = (
             <div>
-                <p>Magento 2 is an e-commerce platform used by 200,000+ stores.</p>
+                <p>
+                    Magento 2 is an e-commerce platform used by 200,000+ stores.
+                </p>
 
                 <p>How Gorgias works with Magento 2:</p>
                 <ul>
                     <li>
-                        See Magento 2 profiles, orders & shipping status next to support tickets
+                        See Magento 2 profiles, orders & shipping status next to
+                        support tickets
                     </li>
-                    {
-                        /*
+                    {/*
                         todo(@martin): uncomment when doing Magento2 improvements
                         <li>
                             Edit orders, issue refunds, etc. directly from support conversations
                         </li>
-                        */
-                    }
+                        */}
                     <li>
-                        Search customers by order number, shipping address... and match anonymous chat tickets with
-                        existing Magento 2 customers
+                        Search customers by order number, shipping address...
+                        and match anonymous chat tickets with existing Magento 2
+                        customers
                     </li>
                 </ul>
 
@@ -52,11 +53,15 @@ export class Magento2IntegrationList extends React.Component<Props> {
         const integrationToItemDisplay = (integration) => {
             const toggleIntegration = (value) => {
                 const integrationId = integration.get('id')
-                return value ? this.props.activate(integrationId) : this.props.deactivate(integrationId)
+                return value
+                    ? this.props.activate(integrationId)
+                    : this.props.deactivate(integrationId)
             }
 
             const isDisabled = integration.get('deactivated_datetime')
-            const editLink = `/app/settings/integrations/magento2/${integration.get('id')}`
+            const editLink = `/app/settings/integrations/magento2/${integration.get(
+                'id'
+            )}`
 
             return (
                 <tr key={integration.get('id')}>
@@ -80,15 +85,21 @@ export class Magento2IntegrationList extends React.Component<Props> {
             )
         }
 
-        const magento2Integrations = integrations
-            .filter((integration) => integration.get('type') === MAGENTO2_INTEGRATION_TYPE)
+        const magento2Integrations = integrations.filter(
+            (integration) =>
+                integration.get('type') === MAGENTO2_INTEGRATION_TYPE
+        )
 
         return (
             <IntegrationList
                 longTypeDescription={longTypeDescription}
                 integrationType={MAGENTO2_INTEGRATION_TYPE}
                 integrations={magento2Integrations}
-                createIntegration={() => browserHistory.push('/app/settings/integrations/magento2/new')}
+                createIntegration={() =>
+                    browserHistory.push(
+                        '/app/settings/integrations/magento2/new'
+                    )
+                }
                 createIntegrationButtonContent="Add Magento 2 store"
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}
@@ -96,7 +107,6 @@ export class Magento2IntegrationList extends React.Component<Props> {
         )
     }
 }
-
 
 export default connect(null, {
     activate: integrationsActions.activateIntegration,

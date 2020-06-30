@@ -9,10 +9,9 @@ import css from './BusinessHours.less'
 
 import {DAYS_OPTIONS} from './constants'
 
-
 type Props = {
-    onChange: (Map<*,*>) => void,
-    businessHour: Map<*,*>
+    onChange: (Map<*, *>) => void,
+    businessHour: Map<*, *>,
 }
 
 export default class BusinessHoursForm extends React.Component<Props> {
@@ -33,7 +32,9 @@ export default class BusinessHoursForm extends React.Component<Props> {
                 />
                 <Input
                     className={css.timeField}
-                    onChange={(e) => this._onChange({from_time: e.target.value})}
+                    onChange={(e) =>
+                        this._onChange({from_time: e.target.value})
+                    }
                     value={businessHour.get('from_time')}
                     type="time"
                     pattern="[0-9][0-9]:[0-9][0-9]"

@@ -1,15 +1,15 @@
 //@flow
 import * as React from 'react'
-import { RichUtils } from 'draft-js'
+import {RichUtils} from 'draft-js'
 
-import type { ActionInjectedProps } from '../types'
+import type {ActionInjectedProps} from '../types'
 
 import Button from './Button'
 
 type Props = {
     name: string,
     icon: string,
-    style: string
+    style: string,
 } & ActionInjectedProps
 
 export default class InlineStyle extends React.Component<Props> {
@@ -27,10 +27,9 @@ export default class InlineStyle extends React.Component<Props> {
 
     _onToggle = () => {
         const editorState = this.props.getEditorState()
-        this.props.setEditorState(RichUtils.toggleInlineStyle(
-            editorState,
-            this.props.style
-        ))
+        this.props.setEditorState(
+            RichUtils.toggleInlineStyle(editorState, this.props.style)
+        )
     }
 
     render() {

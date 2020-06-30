@@ -2,7 +2,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import type {List} from 'immutable'
-import {UncontrolledButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem, Button} from 'reactstrap'
+import {
+    UncontrolledButtonDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem,
+    Button,
+} from 'reactstrap'
 
 import Hoverable from '../../Hoverable'
 
@@ -10,7 +16,7 @@ type Props = {
     rule: Object,
     actions: Object,
     parent: List<*>,
-    title: string
+    title: string,
 }
 
 export class AddLogicalCondition extends React.Component<Props> {
@@ -27,7 +33,7 @@ export class AddLogicalCondition extends React.Component<Props> {
                 type: 'CallExpression',
                 callee: {
                     type: 'Identifier',
-                    name: 'eq'
+                    name: 'eq',
                 },
                 arguments: [
                     {
@@ -35,18 +41,18 @@ export class AddLogicalCondition extends React.Component<Props> {
                         computed: false,
                         object: {
                             type: 'Identifier',
-                            name: 'ticket'
+                            name: 'ticket',
                         },
                         property: {
                             type: 'Identifier',
-                            name: 'status'
-                        }
+                            name: 'status',
+                        },
                     },
                     {
                         type: 'Literal',
                         value: 'open',
-                        raw: '\'open\''
-                    }
+                        raw: "'open'",
+                    },
                 ],
             },
         }
@@ -64,7 +70,7 @@ export class AddLogicalCondition extends React.Component<Props> {
                 type: 'CallExpression',
                 callee: {
                     type: 'Identifier',
-                    name: 'eq'
+                    name: 'eq',
                 },
                 arguments: [
                     {
@@ -72,18 +78,18 @@ export class AddLogicalCondition extends React.Component<Props> {
                         computed: false,
                         object: {
                             type: 'Identifier',
-                            name: 'ticket'
+                            name: 'ticket',
                         },
                         property: {
                             type: 'Identifier',
-                            name: 'status'
-                        }
+                            name: 'status',
+                        },
                     },
                     {
                         type: 'Literal',
                         value: 'open',
-                        raw: '\'open\''
-                    }
+                        raw: "'open'",
+                    },
                 ],
             },
         }
@@ -99,8 +105,8 @@ export class AddLogicalCondition extends React.Component<Props> {
         const actionNode = {
             alternate: {
                 type: 'BlockStatement',
-                body: []
-            }
+                body: [],
+            },
         }
 
         const {actions, parent} = this.props

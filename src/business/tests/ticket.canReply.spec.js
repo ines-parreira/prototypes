@@ -1,5 +1,9 @@
 // @flow
-import { canReply, type TicketMessageSourceType, TicketMessageSourceTypes } from '../ticket'
+import {
+    canReply,
+    type TicketMessageSourceType,
+    TicketMessageSourceTypes,
+} from '../ticket'
 
 describe('Business', () => {
     describe('ticket', () => {
@@ -15,11 +19,17 @@ describe('Business', () => {
                 explicitReason = null
 
                 // When
-                const result = canReply(messageType, attachmentCount, explicitReason)
+                const result = canReply(
+                    messageType,
+                    attachmentCount,
+                    explicitReason
+                )
 
                 // Then
                 // $FlowFixMe
-                expect(result.message).toEqual('When using Facebook messenger, you can either send a text message, or an attachment, but not both at the same time. If you want to write a message, remove the attachment first.')
+                expect(result.message).toEqual(
+                    'When using Facebook messenger, you can either send a text message, or an attachment, but not both at the same time. If you want to write a message, remove the attachment first.'
+                )
             })
 
             it('should not allow to reply when there is an explicit reason', () => {
@@ -29,7 +39,11 @@ describe('Business', () => {
                 explicitReason = 'Your chat integration is disabled'
 
                 // When
-                const result = canReply(messageType, attachmentCount, explicitReason)
+                const result = canReply(
+                    messageType,
+                    attachmentCount,
+                    explicitReason
+                )
 
                 // Then
                 // $FlowFixMe

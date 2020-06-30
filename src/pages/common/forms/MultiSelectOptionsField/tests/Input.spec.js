@@ -16,7 +16,7 @@ describe('MultiSelectField Input', () => {
         onFocus: _noop,
         onBlur: _noop,
         onSubmit: _noop,
-        onDelete: _noop
+        onDelete: _noop,
     }
 
     it('should blur and clean the value on Escape', () => {
@@ -37,24 +37,14 @@ describe('MultiSelectField Input', () => {
 
     it('should call onDown when ArrowDown pressed', () => {
         const onDownSpy = jest.fn()
-        const wrapper = mount(
-            <Input
-                {...defaultProps}
-                onDown={onDownSpy}
-            />
-        )
+        const wrapper = mount(<Input {...defaultProps} onDown={onDownSpy} />)
         wrapper.find('input').simulate('keyDown', {key: 'ArrowDown'})
         expect(onDownSpy).toBeCalled()
     })
 
     it('should call onUp when ArrowUp pressed', () => {
         const onUpSpy = jest.fn()
-        const wrapper = mount(
-            <Input
-                {...defaultProps}
-                onUp={onUpSpy}
-            />
-        )
+        const wrapper = mount(<Input {...defaultProps} onUp={onUpSpy} />)
         wrapper.find('input').simulate('keyDown', {key: 'ArrowUp'})
         expect(onUpSpy).toBeCalled()
     })
@@ -62,10 +52,7 @@ describe('MultiSelectField Input', () => {
     it('should call onSubmit when Tab/Enter pressed', () => {
         const onSubmitSpy = jest.fn()
         const wrapper = mount(
-            <Input
-                {...defaultProps}
-                onSubmit={onSubmitSpy}
-            />
+            <Input {...defaultProps} onSubmit={onSubmitSpy} />
         )
         wrapper.find('input').simulate('keyDown', {key: 'Tab'})
         wrapper.find('input').simulate('keyDown', {key: 'Enter'})
@@ -75,11 +62,7 @@ describe('MultiSelectField Input', () => {
     it('should call onDelete when Backspace pressed and there is no input', () => {
         const onDeleteSpy = jest.fn()
         const wrapper = mount(
-            <Input
-                {...defaultProps}
-                value='foo'
-                onDelete={onDeleteSpy}
-            />
+            <Input {...defaultProps} value="foo" onDelete={onDeleteSpy} />
         )
         wrapper.find('input').simulate('keyDown', {key: 'Backspace'})
         wrapper.setProps({value: ''})
@@ -93,17 +76,12 @@ describe('MultiSelectField Input', () => {
             const stopPropagationSpy = jest.fn()
             const preventDefaultSpy = jest.fn()
 
-            const wrapper = mount(
-                <Input
-                    {...defaultProps}
-                    value={undefined}
-                />
-            )
+            const wrapper = mount(<Input {...defaultProps} value={undefined} />)
 
             wrapper.find('input').simulate('keyDown', {
                 key,
                 preventDefault: preventDefaultSpy,
-                stopPropagation: stopPropagationSpy
+                stopPropagation: stopPropagationSpy,
             })
 
             expect(preventDefaultSpy.mock.calls).toHaveLength(1)
@@ -115,17 +93,12 @@ describe('MultiSelectField Input', () => {
         const stopPropagationSpy = jest.fn()
         const preventDefaultSpy = jest.fn()
 
-        const wrapper = mount(
-            <Input
-                {...defaultProps}
-                value="foo"
-            />
-        )
+        const wrapper = mount(<Input {...defaultProps} value="foo" />)
 
         wrapper.find('input').simulate('keyDown', {
             key: 'Tab',
             preventDefault: preventDefaultSpy,
-            stopPropagation: stopPropagationSpy
+            stopPropagation: stopPropagationSpy,
         })
 
         expect(preventDefaultSpy.mock.calls).toHaveLength(1)
@@ -136,17 +109,12 @@ describe('MultiSelectField Input', () => {
         const stopPropagationSpy = jest.fn()
         const preventDefaultSpy = jest.fn()
 
-        const wrapper = mount(
-            <Input
-                {...defaultProps}
-                value=""
-            />
-        )
+        const wrapper = mount(<Input {...defaultProps} value="" />)
 
         wrapper.find('input').simulate('keyDown', {
             key: 'Tab',
             preventDefault: preventDefaultSpy,
-            stopPropagation: stopPropagationSpy
+            stopPropagation: stopPropagationSpy,
         })
 
         expect(preventDefaultSpy.mock.calls).toHaveLength(0)

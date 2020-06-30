@@ -6,13 +6,12 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 
 export default class MentionSuggestionsPortal extends Component {
-
     static propTypes = {
         store: PropTypes.object,
         setEditorState: PropTypes.func,
         offsetKey: PropTypes.string,
         getEditorState: PropTypes.func,
-        children: PropTypes.array
+        children: PropTypes.array,
     }
 
     // When inputting Japanese characters (or any complex alphabet which requires
@@ -39,11 +38,8 @@ export default class MentionSuggestionsPortal extends Component {
     }
 
     updatePortalClientRect(props) {
-        this.props.store.updatePortalClientRect(
-            props.offsetKey,
-            () => (
-                this.searchPortal.getBoundingClientRect()
-            ),
+        this.props.store.updatePortalClientRect(props.offsetKey, () =>
+            this.searchPortal.getBoundingClientRect()
         )
     }
 

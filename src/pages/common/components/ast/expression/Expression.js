@@ -12,13 +12,11 @@ import CallExpression from './CallExpression'
 import ArrayExpression from './ArrayExpression'
 import ObjectExpression from './ObjectExpression'
 
-
 type Props = {
-    type: string
+    type: string,
 }
 
 export default class Expression extends React.Component<Props> {
-
     types = {
         BinaryExpression,
         LogicalExpression,
@@ -34,5 +32,4 @@ export default class Expression extends React.Component<Props> {
         const Component = this.types[this.props.type] || UnknownSyntax
         return <Component {...this.props} />
     }
-
 }

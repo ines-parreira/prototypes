@@ -26,7 +26,6 @@ export function closest(element: HTMLElement, selector: string): ?Element {
     return null
 }
 
-
 /**
  * Return '⌘' if the user is using a Mac, Ctrl/Meta otherwise
  * @returns {string}
@@ -36,12 +35,13 @@ export function getModifier(defaultKey: string = 'Ctrl'): string {
     return isMac ? '⌘' : defaultKey
 }
 
-
 /**
  * Check if element is button
  */
 export function isButton(element: HTMLElement): boolean {
     const type = element.getAttribute('type') || ''
-    return element.tagName === 'BUTTON'
-        || (element.tagName === 'INPUT' && type.toLowerCase() === 'submit')
+    return (
+        element.tagName === 'BUTTON' ||
+        (element.tagName === 'INPUT' && type.toLowerCase() === 'submit')
+    )
 }

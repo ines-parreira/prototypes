@@ -17,7 +17,7 @@ import {
     AGENT_ROLE,
     BASIC_AGENT_ROLE,
     LITE_AGENT_ROLE,
-    OBSERVER_AGENT_ROLE
+    OBSERVER_AGENT_ROLE,
 } from '../../../config/user'
 import * as currentUserSelectors from '../../../state/currentUser/selectors'
 import Tooltip from '../components/Tooltip'
@@ -67,32 +67,22 @@ export class AgentLabel extends React.Component<AgentLabelProps> {
 
         return (
             <div className={classnames(css.AgentLabel, className)}>
-                {
-                    showAvatar ? (
-                        <Avatar
-                            name={name}
-                            url={profilePictureUrl}
-                            size="26"
-                            className={css.avatar}
-                        />
-                    ) : (
-                        <span className="material-icons md-2">
-                            account_circle
-                        </span>
-                    )
-                }
+                {showAvatar ? (
+                    <Avatar
+                        name={name}
+                        url={profilePictureUrl}
+                        size="26"
+                        className={css.avatar}
+                    />
+                ) : (
+                    <span className="material-icons md-2">account_circle</span>
+                )}
 
-
-                {
-                    name && (
-                        <span
-                            className={css.name}
-                            style={style}
-                        >
-                            {name}
-                        </span>
-                    )
-                }
+                {name && (
+                    <span className={css.name} style={style}>
+                        {name}
+                    </span>
+                )}
             </div>
         )
     }
@@ -122,32 +112,22 @@ export class TeamLabel extends React.Component<TeamLabelProps> {
         const {name, emoji, shouldDisplayAvatar} = this.props
 
         if (shouldDisplayAvatar) {
-            return emoji
-                ? (
-                    <span className={css.avatar}>
-                        <Emoji
-                            emoji={emoji.toJS()}
-                            size={26}
-                            sheetSize={32}
-                            className={css.avatar}
-                            forceSize
-                        />
-                    </span>
-                )
-                : (
-                    <Avatar
-                        name={name}
-                        size="26"
+            return emoji ? (
+                <span className={css.avatar}>
+                    <Emoji
+                        emoji={emoji.toJS()}
+                        size={26}
+                        sheetSize={32}
                         className={css.avatar}
+                        forceSize
                     />
-                )
+                </span>
+            ) : (
+                <Avatar name={name} size="26" className={css.avatar} />
+            )
         }
 
-        return (
-            <span className="material-icons md-2">
-                people
-            </span>
-        )
+        return <span className="material-icons md-2">people</span>
     }
 
     render() {
@@ -160,21 +140,21 @@ export class TeamLabel extends React.Component<TeamLabelProps> {
         return (
             <div className={classnames(css.TeamLabel, className)}>
                 {this._renderAvatar()}
-                {
-                    name && (
-                        <span
-                            className={css.name}
-                            style={style}
-                        >
-                            {name}
-                            {shouldDisplayTeamIcon && (
-                                <span className={classnames(css.nameIcon, 'material-icons md-2')}>
-                                    people
-                                </span>
-                            )}
-                        </span>
-                    )
-                }
+                {name && (
+                    <span className={css.name} style={style}>
+                        {name}
+                        {shouldDisplayTeamIcon && (
+                            <span
+                                className={classnames(
+                                    css.nameIcon,
+                                    'material-icons md-2'
+                                )}
+                            >
+                                people
+                            </span>
+                        )}
+                    </span>
+                )}
             </div>
         )
     }
@@ -186,19 +166,17 @@ export class TeamLabel extends React.Component<TeamLabelProps> {
 type CustomerLabelParamType = {
     customer: {
         name: string,
-        id: string
-    }
+        id: string,
+    },
 }
 export const CustomerLabel = ({customer}: CustomerLabelParamType) => {
     if (_isString(customer)) {
         // flow discourages type detection
         // $FlowFixMe
-        return (<span>{customer}</span>)
+        return <span>{customer}</span>
     }
 
-    return (
-        <span>{customersHelpers.getDisplayName(customer)}</span>
-    )
+    return <span>{customersHelpers.getDisplayName(customer)}</span>
 }
 CustomerLabel.displayName = 'CustomerLabel'
 
@@ -208,19 +186,20 @@ CustomerLabel.displayName = 'CustomerLabel'
 type TagLabelParamType = {
     className?: ?string,
     style: {
-        color?: string
+        color?: string,
     },
     decoration?: Map<*, *>,
     children?: Node,
 }
-export const TagLabel = ({className, decoration, children}: TagLabelParamType) => {
+export const TagLabel = ({
+    className,
+    decoration,
+    children,
+}: TagLabelParamType) => {
     const color = (decoration || fromJS({})).get('color') || DEFAULT_TAG_COLOR
 
     return (
-        <Badge
-            className={classnames('badge-tag', className)}
-            style={{color}}
-        >
+        <Badge className={classnames('badge-tag', className)} style={{color}}>
             {children}
         </Badge>
     )
@@ -235,7 +214,7 @@ TagLabel.displayName = 'TagLabel'
  * STATUS
  */
 type StatusLabelParam = {
-    status: string
+    status: string,
 }
 export const StatusLabel = ({status, ...rest}: StatusLabelParam) => {
     let color = 'info'
@@ -251,12 +230,7 @@ export const StatusLabel = ({status, ...rest}: StatusLabelParam) => {
     }
 
     return (
-        <Badge
-            className="text-center"
-            color={color}
-            pill
-            {...rest}
-        >
+        <Badge className="text-center" color={color} pill {...rest}>
             {status}
         </Badge>
     )
@@ -267,20 +241,22 @@ StatusLabel.displayName = 'StatusLabel'
  * CHANNEL
  */
 
-export const ChannelLabel = ({channel}: { channel: SourceType }) => (
-    <SourceIcon
-        type={channel}
-        className="text-secondary"
-    />
+export const ChannelLabel = ({channel}: {channel: SourceType}) => (
+    <SourceIcon type={channel} className="text-secondary" />
 )
 
 /**
  *  Source DETAIL
  */
-export const IntegrationsDetailLabel = ({integration}: { integration: Map<*, *> }) => {
+export const IntegrationsDetailLabel = ({
+    integration,
+}: {
+    integration: Map<*, *>,
+}) => {
     const type = integration.get('type')
     let label = integration.get('name', integration.get('address'))
-    let address = integration.get('address') || integration.getIn(['meta', 'address'])
+    let address =
+        integration.get('address') || integration.getIn(['meta', 'address'])
 
     if (EMAIL_INTEGRATION_TYPES.includes(type) && address) {
         label = `${integration.get('name')} <${address}>`
@@ -290,10 +266,7 @@ export const IntegrationsDetailLabel = ({integration}: { integration: Map<*, *> 
 
     return (
         <span>
-            <SourceIcon
-                type={integration.get('type')}
-                className="mr-2"
-            />
+            <SourceIcon type={integration.get('type')} className="mr-2" />
             {label}
         </span>
     )
@@ -303,7 +276,7 @@ IntegrationsDetailLabel.displayName = 'IntegrationsDetailLabel'
 /**
  * ROLE
  */
-export const RoleLabel = ({roles = 'user'}: { roles: string }) => {
+export const RoleLabel = ({roles = 'user'}: {roles: string}) => {
     const rolesJS = toJS(roles)
     let userRoles = !_isArray(rolesJS) ? [rolesJS] : rolesJS
 
@@ -338,10 +311,7 @@ export const RoleLabel = ({roles = 'user'}: { roles: string }) => {
     }
 
     return (
-        <Badge
-            color={color}
-            className="badge-pill"
-        >
+        <Badge color={color} className="badge-pill">
             {role}
         </Badge>
     )
@@ -360,7 +330,7 @@ type DatetimeLabelProps = {
 
 @connect((state) => {
     return {
-        timezone: currentUserSelectors.getTimezone(state)
+        timezone: currentUserSelectors.getTimezone(state),
     }
 })
 export class DatetimeLabel extends React.PureComponent<DatetimeLabelProps> {
@@ -376,7 +346,10 @@ export class DatetimeLabel extends React.PureComponent<DatetimeLabelProps> {
     }
 
     render() {
-        const {dateTime, labelFormat, timezone, hasTooltip, ...rest} = _omit(this.props, 'dispatch')
+        const {dateTime, labelFormat, timezone, hasTooltip, ...rest} = _omit(
+            this.props,
+            'dispatch'
+        )
 
         if (!dateTime) {
             return null
@@ -387,9 +360,7 @@ export class DatetimeLabel extends React.PureComponent<DatetimeLabelProps> {
 
         return (
             <span {...rest}>
-                <span id={this.id}>
-                    {labelDatetime}
-                </span>
+                <span id={this.id}>{labelDatetime}</span>
                 {hasTooltip && (
                     <Tooltip
                         placement="top"
@@ -405,9 +376,19 @@ export class DatetimeLabel extends React.PureComponent<DatetimeLabelProps> {
     }
 }
 
-const UserAssigneeLabelComponent = ({assigneeUser, agents}: { assigneeUser: Map<*, *>, agents: List<*> }) => {
-    const agent = agents.find((agent) => agent.get('id') === assigneeUser.get('id'))
-    const avatarUrl = assigneeUser.getIn(['meta', 'profile_picture_url']) || (agent && agent.getIn(['meta', 'profile_picture_url']))
+const UserAssigneeLabelComponent = ({
+    assigneeUser,
+    agents,
+}: {
+    assigneeUser: Map<*, *>,
+    agents: List<*>,
+}) => {
+    const agent = agents.find(
+        (agent) => agent.get('id') === assigneeUser.get('id')
+    )
+    const avatarUrl =
+        assigneeUser.getIn(['meta', 'profile_picture_url']) ||
+        (agent && agent.getIn(['meta', 'profile_picture_url']))
     return assigneeUser.isEmpty() ? null : (
         <div className={css.assigneeLabelContainer}>
             <Avatar
@@ -421,48 +402,46 @@ const UserAssigneeLabelComponent = ({assigneeUser, agents}: { assigneeUser: Map<
     )
 }
 
-export const UserAssigneeLabel = connect(
-    (state) => ({
-        agents: getAgents(state)
-    }),
-)(UserAssigneeLabelComponent)
+export const UserAssigneeLabel = connect((state) => ({
+    agents: getAgents(state),
+}))(UserAssigneeLabelComponent)
 
-const TeamAssigneeLabelComponent = ({assigneeTeam, teams}: { assigneeTeam: Map<*, *>, teams: List<*> }) => {
+const TeamAssigneeLabelComponent = ({
+    assigneeTeam,
+    teams,
+}: {
+    assigneeTeam: Map<*, *>,
+    teams: List<*>,
+}) => {
     const team = teams.find((team) => team.get('id') === assigneeTeam.get('id'))
     const emoji = team && team.getIn(['decoration', 'emoji'])
 
     return assigneeTeam.isEmpty() ? null : (
         <div className={css.assigneeLabelContainer}>
-            {
-                emoji
-                    ? (
-                        <span className={css.assigneeLabelAvatar}>
-                            <Emoji
-                                emoji={emoji.toJS()}
-                                size={26}
-                                sheetSize={32}
-                                forceSize
-                            />
-                        </span>
-                    )
-                    : (
-                        <Avatar
-                            name={assigneeTeam.get('name')}
-                            size="26"
-                            className={css.assigneeLabelAvatar}
-                        />
-                    )
-            }
+            {emoji ? (
+                <span className={css.assigneeLabelAvatar}>
+                    <Emoji
+                        emoji={emoji.toJS()}
+                        size={26}
+                        sheetSize={32}
+                        forceSize
+                    />
+                </span>
+            ) : (
+                <Avatar
+                    name={assigneeTeam.get('name')}
+                    size="26"
+                    className={css.assigneeLabelAvatar}
+                />
+            )}
             <div className="d-inline-block">{assigneeTeam.get('name')}</div>
         </div>
     )
 }
 
-export const TeamAssigneeLabel = connect(
-    (state) => ({
-        teams: getTeams(state)
-    }),
-)(TeamAssigneeLabelComponent)
+export const TeamAssigneeLabel = connect((state) => ({
+    teams: getTeams(state),
+}))(TeamAssigneeLabelComponent)
 
 type RenderLabelProps = {
     field: Map<*, *>,
@@ -490,23 +469,30 @@ export class RenderLabel extends React.Component<RenderLabelProps> {
             case 'last_received_message':
             case 'snooze':
             case 'closed':
-                return <DatetimeLabel dateTime={value}/>
+                return <DatetimeLabel dateTime={value} />
             case 'status':
-                return <StatusLabel status={value}/>
+                return <StatusLabel status={value} />
             case 'assignee':
-                return <UserAssigneeLabel assigneeUser={value}/>
+                return <UserAssigneeLabel assigneeUser={value} />
             case 'assignee_team':
-                return <TeamAssigneeLabel assigneeTeam={value}/>
+                return <TeamAssigneeLabel assigneeTeam={value} />
             case 'integrations':
-                return typeof value === 'string' ? <span>{value}</span> :
-                    <IntegrationsDetailLabel integration={value}/>
+                return typeof value === 'string' ? (
+                    <span>{value}</span>
+                ) : (
+                    <IntegrationsDetailLabel integration={value} />
+                )
             case 'customer':
-                return <CustomerLabel customer={value}/>
+                return <CustomerLabel customer={value} />
             case 'roles':
-                return <RoleLabel roles={isImmutable(value) ? value.toJS() : value}/>
+                return (
+                    <RoleLabel
+                        roles={isImmutable(value) ? value.toJS() : value}
+                    />
+                )
             case 'via':
             case 'channel':
-                return <ChannelLabel channel={value}/>
+                return <ChannelLabel channel={value} />
             default:
                 return <span>{value}</span>
         }

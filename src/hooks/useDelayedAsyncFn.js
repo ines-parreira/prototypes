@@ -10,10 +10,7 @@ const useDelayedAsyncFn = <T: any[], Y>(
 ): [AsyncState<Y>, (...args: T) => Promise<Y>] => {
     const timeoutRef = useRef(null)
     const [isDelayed, setDelayed] = useState(false)
-    const [{
-        loading,
-        ...otherStatus
-    }, handleFn] = useAsyncFn(fn, deps)
+    const [{loading, ...otherStatus}, handleFn] = useAsyncFn(fn, deps)
     const clearDelay = () => {
         if (timeoutRef.current) {
             clearTimeout(timeoutRef.current)

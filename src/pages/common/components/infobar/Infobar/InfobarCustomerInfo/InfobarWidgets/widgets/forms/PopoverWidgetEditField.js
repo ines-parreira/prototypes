@@ -8,7 +8,7 @@ import InputField from '../../../../../../../forms/InputField'
 class PopoverWidgetEditField extends React.Component {
     state = {
         title: '',
-        type: ''
+        type: '',
     }
 
     componentDidMount() {
@@ -17,7 +17,7 @@ class PopoverWidgetEditField extends React.Component {
         // populating the form
         this.setState({
             title: template.get('title', ''),
-            type: template.get('type', '')
+            type: template.get('type', ''),
         })
     }
 
@@ -30,10 +30,9 @@ class PopoverWidgetEditField extends React.Component {
 
     _handleSubmit = (e) => {
         e.preventDefault()
-        this.props.actions.updateEditedWidget(_pick(this.state, [
-            'title',
-            'type'
-        ]))
+        this.props.actions.updateEditedWidget(
+            _pick(this.state, ['title', 'type'])
+        )
         this._closePopup()
     }
 
@@ -66,11 +65,7 @@ class PopoverWidgetEditField extends React.Component {
                 </InputField>
 
                 <div>
-                    <Button
-                        color="primary"
-                        type="submit"
-                        className="mr-2"
-                    >
+                    <Button color="primary" type="submit" className="mr-2">
                         Submit
                     </Button>
                     <Button
@@ -88,8 +83,7 @@ class PopoverWidgetEditField extends React.Component {
 
 PopoverWidgetEditField.propTypes = {
     template: PropTypes.object.isRequired,
-    actions: PropTypes.object.isRequired
+    actions: PropTypes.object.isRequired,
 }
 
 export default PopoverWidgetEditField
-

@@ -59,26 +59,17 @@ export default class Modal extends React.Component {
                 {...toggleProps}
                 {...rest}
             >
-                {
-                    header && (
-                        <ModalHeader
-                            {...toggleProps}
-                            className={headerClassName}
-                        >
-                            {header}
-                        </ModalHeader>
-                    )
-                }
-                <ModalBody className={bodyClassName}>
-                    {children}
-                </ModalBody>
-                {
-                    footer && (
-                        <ModalFooter className={footerClassName}>
-                            {footer}
-                        </ModalFooter>
-                    )
-                }
+                {header && (
+                    <ModalHeader {...toggleProps} className={headerClassName}>
+                        {header}
+                    </ModalHeader>
+                )}
+                <ModalBody className={bodyClassName}>{children}</ModalBody>
+                {footer && (
+                    <ModalFooter className={footerClassName}>
+                        {footer}
+                    </ModalFooter>
+                )}
             </BootstrapModal>
         )
     }

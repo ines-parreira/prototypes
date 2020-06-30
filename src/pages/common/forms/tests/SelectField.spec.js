@@ -18,159 +18,137 @@ import SelectField from '../SelectField'
 
 describe('SelectField', () => {
     const minProps = {
-        onChange: _noop
+        onChange: _noop,
     }
 
     const props = {
         value: 1,
-        options: [{
-            value: 1,
-            text: 'first',
-            label: 'First',
-        }, {
-            value: 2,
-            text: 'second',
-            label: 'Second',
-        }],
+        options: [
+            {
+                value: 1,
+                text: 'first',
+                label: 'First',
+            },
+            {
+                value: 2,
+                text: 'second',
+                label: 'Second',
+            },
+        ],
         onChange: _noop,
         placeholder: 'placeholder',
         style: {
             background: 'red',
-        }
+        },
     }
 
     it('should use default props', () => {
-        const component = mount(<SelectField {...minProps}/>)
+        const component = mount(<SelectField {...minProps} />)
         expect(component.props()).toMatchSnapshot()
     })
 
     it('should init state with default props', () => {
-        const component = mount(<SelectField {...minProps}/>)
+        const component = mount(<SelectField {...minProps} />)
         expect(component.state()).toMatchSnapshot()
     })
 
-
     it('should render a select input with default props', () => {
-        const component = shallow(<SelectField {...minProps}/>)
+        const component = shallow(<SelectField {...minProps} />)
         expect(component).toMatchSnapshot()
     })
 
     it('should use custom props', () => {
-        const component = mount(
-            <SelectField
-                {...minProps}
-                {...props}
-            />
-        )
+        const component = mount(<SelectField {...minProps} {...props} />)
         expect(component.props()).toMatchSnapshot()
     })
 
     it('should init state with custom props', () => {
-        const component = mount(
-            <SelectField
-                {...minProps}
-                {...props}
-            />
-        )
+        const component = mount(<SelectField {...minProps} {...props} />)
         expect(component.state()).toMatchSnapshot()
     })
 
     it('should render a select input with custom props', () => {
-        const component = shallow(
-            <SelectField
-                {...minProps}
-                {...props}
-            />
-        )
+        const component = shallow(<SelectField {...minProps} {...props} />)
         expect(component).toMatchSnapshot()
     })
 
     it('should set the minWidth of the input according to the length of the longest label', () => {
         const component = shallow(
-            <SelectField
-                {...minProps}
-                {...props}
-                fixedWidth
-            />
+            <SelectField {...minProps} {...props} fixedWidth />
         )
         expect(component).toMatchSnapshot()
     })
 
     it('should update state when search changes (custom values allowed)', () => {
-        const options = [{
-            value: 'hello',
-            label: 'Hello'
-        }, {
-            value: 'world',
-            label: 'World'
-        }]
+        const options = [
+            {
+                value: 'hello',
+                label: 'Hello',
+            },
+            {
+                value: 'world',
+                label: 'World',
+            },
+        ]
 
         const wrapper = shallow(
-            <SelectField
-                {...minProps}
-                options={options}
-                allowCustomValue
-            />
+            <SelectField {...minProps} options={options} allowCustomValue />
         )
         const component = wrapper.instance()
 
         component._onSearchChange({
-            currentTarget: {value: 'hello'}
+            currentTarget: {value: 'hello'},
         })
         expect(wrapper.state()).toMatchSnapshot()
 
         component._onSearchChange({
-            currentTarget: {value: ''}
+            currentTarget: {value: ''},
         })
         expect(wrapper.state()).toMatchSnapshot()
     })
 
     it('should update state when search changes (custom NOT values allowed)', () => {
-        const options = [{
-            value: 'hello',
-            label: 'Hello'
-        }, {
-            value: 'world',
-            label: 'World'
-        }]
+        const options = [
+            {
+                value: 'hello',
+                label: 'Hello',
+            },
+            {
+                value: 'world',
+                label: 'World',
+            },
+        ]
 
-        const wrapper = mount(
-            <SelectField
-                {...minProps}
-                options={options}
-            />
-        )
+        const wrapper = mount(<SelectField {...minProps} options={options} />)
         const component = wrapper.instance()
         component._onSearchChange({
-            currentTarget: {value: 'hello'}
+            currentTarget: {value: 'hello'},
         })
         expect(wrapper.state()).toMatchSnapshot()
 
         component._onSearchChange({
-            currentTarget: {value: ''}
+            currentTarget: {value: ''},
         })
         expect(wrapper.state()).toMatchSnapshot()
     })
 
     it('should handle search on mixed label type options', () => {
-        const options = [{
-            value: 'hello1',
-            label: <i>Hello1</i>
-        }, {
-            value: 'hello2',
-            text: 'Hello2',
-            label: <b>Hello2</b>
-        }]
+        const options = [
+            {
+                value: 'hello1',
+                label: <i>Hello1</i>,
+            },
+            {
+                value: 'hello2',
+                text: 'Hello2',
+                label: <b>Hello2</b>,
+            },
+        ]
 
-        const wrapper = mount(
-            <SelectField
-                {...minProps}
-                options={options}
-            />
-        )
+        const wrapper = mount(<SelectField {...minProps} options={options} />)
 
         wrapper.instance()._onSearchChange({
-            currentTarget: {value: 'hello'}
+            currentTarget: {value: 'hello'},
         })
         wrapper.update()
 
@@ -180,21 +158,15 @@ describe('SelectField', () => {
     })
 
     it('should reset state on blur', () => {
-        const wrapper = mount(
-            <SelectField
-                {...minProps}
-                {...props}
-            />
-        )
+        const wrapper = mount(<SelectField {...minProps} {...props} />)
         const component = wrapper.instance()
 
         component._focusInput()
         component._onSearchChange({
-            currentTarget: {value: ''}
+            currentTarget: {value: ''},
         })
         component._blurInput()
         expect(wrapper.state()).toMatchSnapshot()
-
     })
 
     it('stopPropagation()', () => {
@@ -204,12 +176,7 @@ describe('SelectField', () => {
             stopPropagation: stopPropagationSpy,
             preventDefault: preventDefaultSpy,
         }
-        const wrapper = mount(
-            <SelectField
-                {...minProps}
-                {...props}
-            />
-        )
+        const wrapper = mount(<SelectField {...minProps} {...props} />)
         const component = wrapper.instance()
 
         component._stopPropagation(event)
@@ -251,7 +218,7 @@ describe('SelectField', () => {
         )
         const component = wrapper.instance()
         component._onSearchChange({
-            currentTarget: {value: 'hello'}
+            currentTarget: {value: 'hello'},
         })
         component._stopPropagation = stopPropagationSpy
         wrapper.update()
@@ -265,16 +232,11 @@ describe('SelectField', () => {
         const addKeys = ['Enter', 'Tab']
 
         it('Escape', () => {
-            const wrapper = mount(
-                <SelectField
-                    {...minProps}
-                    {...props}
-                />
-            )
+            const wrapper = mount(<SelectField {...minProps} {...props} />)
             const component = wrapper.instance()
 
             component._onSearchChange({
-                currentTarget: {value: 'hello'}
+                currentTarget: {value: 'hello'},
             })
 
             component._toggleDropdown()
@@ -284,11 +246,7 @@ describe('SelectField', () => {
 
         it('ArrowUp/ArrowDown', () => {
             const wrapper = mount(
-                <SelectField
-                    {...minProps}
-                    {...props}
-                    value={undefined}
-                />
+                <SelectField {...minProps} {...props} value={undefined} />
             )
             const component = wrapper.instance()
 
@@ -349,7 +307,7 @@ describe('SelectField', () => {
                 const component = wrapper.instance()
 
                 component._onSearchChange({
-                    currentTarget: {value: 'custom value'}
+                    currentTarget: {value: 'custom value'},
                 })
                 wrapper.find('input').simulate('keyDown', {key})
 
@@ -375,7 +333,9 @@ describe('SelectField', () => {
                 wrapper.find('input').simulate('keyDown', {key})
 
                 expect(wrapper.state()).toMatchSnapshot()
-                expect(onChangeSpy.mock.calls[0][0]).toEqual(props.options[0].value)
+                expect(onChangeSpy.mock.calls[0][0]).toEqual(
+                    props.options[0].value
+                )
             })
         })
 
@@ -384,11 +344,7 @@ describe('SelectField', () => {
             keys.forEach((key) => {
                 const stopPropagationSpy = jest.fn()
                 const wrapper = mount(
-                    <SelectField
-                        {...minProps}
-                        {...props}
-                        value={undefined}
-                    />
+                    <SelectField {...minProps} {...props} value={undefined} />
                 )
                 const component = wrapper.instance()
 

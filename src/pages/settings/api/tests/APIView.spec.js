@@ -4,9 +4,8 @@ import React from 'react'
 import {APIViewComponent} from '../APIView'
 
 describe('<APIView/>', () => {
-
     const minProps = {
-        domain:'justatest',
+        domain: 'justatest',
     }
 
     describe('render()', () => {
@@ -24,17 +23,10 @@ describe('<APIView/>', () => {
 
         it('should render a Create API Key Button', () => {
             const component = shallow(
-                <APIViewComponent
-                    {...minProps}
-                    fetchCurrentAuths={() => {}}
-                />
+                <APIViewComponent {...minProps} fetchCurrentAuths={() => {}} />
             )
 
             expect(component).toMatchSnapshot()
         })
     })
 })
-
-
-
-

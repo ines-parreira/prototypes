@@ -24,8 +24,8 @@ describe('ast', () => {
                         <AssigneeTeamSelect
                             store={mockStore({
                                 teams: fromJS({
-                                    all: teams
-                                })
+                                    all: teams,
+                                }),
                             })}
                         />
                     )
@@ -38,8 +38,8 @@ describe('ast', () => {
                             value={1}
                             store={mockStore({
                                 teams: fromJS({
-                                    all: teams
-                                })
+                                    all: teams,
+                                }),
                             })}
                         />
                     )
@@ -52,8 +52,8 @@ describe('ast', () => {
                             value={1}
                             store={mockStore({
                                 teams: fromJS({
-                                    all: teams
-                                })
+                                    all: teams,
+                                }),
                             })}
                             allowUnassign={false}
                         />

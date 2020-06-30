@@ -6,7 +6,7 @@ import HTTPIntegrationLayout from '../HTTPIntegrationLayout'
 
 const HTTPintegration = fromJS({
     id: 1,
-    name: 'Backend integration'
+    name: 'Backend integration',
 })
 
 describe('HTTPIntegrationLayout', () => {

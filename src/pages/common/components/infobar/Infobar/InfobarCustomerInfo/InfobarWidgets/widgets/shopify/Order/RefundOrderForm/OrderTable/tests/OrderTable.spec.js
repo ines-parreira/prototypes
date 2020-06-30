@@ -6,7 +6,7 @@ import {shallow} from 'enzyme'
 
 import {
     shopifyDraftOrderPayloadFixture,
-    shopifySuggestedRefundFixture
+    shopifySuggestedRefundFixture,
 } from '../../../../../../../../../../../../../fixtures/shopify'
 import OrderTable from '../OrderTable'
 
@@ -65,10 +65,14 @@ describe('<OrderTable/>', () => {
                 />
             )
 
-            const updatedLineItem = payload.getIn(['line_items', 0]).set('quantity', 5)
+            const updatedLineItem = payload
+                .getIn(['line_items', 0])
+                .set('quantity', 5)
             component.instance()._onLineItemChange(0, updatedLineItem)
 
-            const newLineItems = payload.get('line_items').set(0, updatedLineItem)
+            const newLineItems = payload
+                .get('line_items')
+                .set(0, updatedLineItem)
             expect(onChange).toHaveBeenCalledWith(newLineItems)
         })
     })

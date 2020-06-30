@@ -20,9 +20,9 @@ describe('<TicketReply/>', () => {
     const baseNewMessage = {
         public: true,
         source: {
-            type: answerableSourceType
+            type: answerableSourceType,
         },
-        attachments: []
+        attachments: [],
     }
 
     const commonProps = {
@@ -32,9 +32,14 @@ describe('<TicketReply/>', () => {
         ticket: fromJS({
             reply_options: {
                 [answerableSourceType]: {answerable: true},
-                [nonAnswerableSourceType]: {answerable: false, reason: 'You cannot respond.'},
-                [TicketMessageSourceTypes.FACEBOOK_MESSENGER]: {answerable: true},
-            }
+                [nonAnswerableSourceType]: {
+                    answerable: false,
+                    reason: 'You cannot respond.',
+                },
+                [TicketMessageSourceTypes.FACEBOOK_MESSENGER]: {
+                    answerable: true,
+                },
+            },
         }),
     }
 
@@ -44,8 +49,8 @@ describe('<TicketReply/>', () => {
                 {...commonProps}
                 store={mockStore({
                     newMessage: fromJS({
-                        newMessage: baseNewMessage
-                    })
+                        newMessage: baseNewMessage,
+                    }),
                 })}
             />
         ).dive()
@@ -55,7 +60,7 @@ describe('<TicketReply/>', () => {
 
     it('shoud render alert if cannot reply', () => {
         businessTicket.canReply = () => ({
-            message: 'You cannot respond.'
+            message: 'You cannot respond.',
         })
 
         const component = shallow(
@@ -63,8 +68,8 @@ describe('<TicketReply/>', () => {
                 {...commonProps}
                 store={mockStore({
                     newMessage: fromJS({
-                        newMessage: baseNewMessage
-                    })
+                        newMessage: baseNewMessage,
+                    }),
                 })}
             />
         ).dive()

@@ -11,14 +11,13 @@ import * as viewsConfig from '../../../../../config/views'
 import css from '../Table.less'
 
 type Props = {
-    config: Map<*,*>,
-    field: Map<*,*>,
-    item: Map<*,*>,
+    config: Map<*, *>,
+    field: Map<*, *>,
+    item: Map<*, *>,
     type: string,
-    onClick: ?(Map<*,*>) => void,
-    itemUrl: ?string
+    onClick: ?(Map<*, *>) => void,
+    itemUrl: ?string,
 }
-
 
 class Cell extends React.Component<Props> {
     static defaultProps = {
@@ -37,46 +36,27 @@ class Cell extends React.Component<Props> {
         const {item, field, onClick, itemUrl} = this.props
 
         let content
-        let children = (
-            <RenderLabel
-                field={field}
-                value={this._labelValue()}
-            />
-        )
+        let children = <RenderLabel field={field} value={this._labelValue()} />
 
         if (onClick) {
             content = (
-                <div
-                    className="cell-wrapper"
-                    onClick={() => onClick(item)}
-                >
+                <div className="cell-wrapper" onClick={() => onClick(item)}>
                     {children}
                 </div>
             )
         } else if (itemUrl) {
             content = (
                 <Link to={itemUrl}>
-                    <div className="cell-wrapper">
-                        {children}
-                    </div>
+                    <div className="cell-wrapper">{children}</div>
                 </Link>
             )
         } else {
-            content = (
-                <div className="cell-wrapper">
-                    {children}
-                </div>
-            )
+            content = <div className="cell-wrapper">{children}</div>
         }
 
-        return (
-            <td className={css['limit-overflow']}>
-                {content}
-            </td>
-        )
+        return <td className={css['limit-overflow']}>{content}</td>
     }
 }
-
 
 export default connect((state, ownProps) => {
     return {

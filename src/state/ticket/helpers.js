@@ -3,7 +3,11 @@
 import moment from 'moment'
 import {fromJS, type List, Record} from 'immutable'
 
-import {AuditLogEvent, TAGS_ADDED_KEY, TAGS_REMOVED_KEY} from '../../models/event'
+import {
+    AuditLogEvent,
+    TAGS_ADDED_KEY,
+    TAGS_REMOVED_KEY,
+} from '../../models/event'
 import * as constants from '../../constants/event'
 import {CLOSED_STATUS, OPEN_STATUS} from '../../config/ticket'
 
@@ -25,8 +29,12 @@ type TicketState = {
  * @param {string} ticketCreatedDatetime
  * @returns {boolean}
  */
-export function shouldDeduplicateAuditLogEvents(ticketCreatedDatetime: string): boolean {
-    return moment.utc(ticketCreatedDatetime).isBefore(moment.utc('2019-12-10T01:00:00Z'))
+export function shouldDeduplicateAuditLogEvents(
+    ticketCreatedDatetime: string
+): boolean {
+    return moment
+        .utc(ticketCreatedDatetime)
+        .isBefore(moment.utc('2019-12-10T01:00:00Z'))
 }
 
 // TODO(@samy): delete in a few months
@@ -42,7 +50,9 @@ export function deduplicateAuditLogEvents(events: List<Record<AuditLogEvent>>) {
         tags: [],
     }
 
-    const sortedEvents = events.sortBy((event) => moment(event.get('created_datetime')))
+    const sortedEvents = events.sortBy((event) =>
+        moment(event.get('created_datetime'))
+    )
 
     sortedEvents.forEach((event) => {
         const type = event.get('type')
@@ -91,7 +101,11 @@ export function deduplicateAuditLogEvents(events: List<Record<AuditLogEvent>>) {
                 const snoozedAt = moment(event.get('created_datetime'))
 
                 if (ticketState.snoozedAt) {
-                    const diff = snoozedAt.diff(ticketState.snoozedAt, 'seconds', true)
+                    const diff = snoozedAt.diff(
+                        ticketState.snoozedAt,
+                        'seconds',
+                        true
+                    )
 
                     if (Math.abs(diff) < MAX_DIFF_SECONDS) {
                         break
@@ -115,7 +129,12 @@ export function deduplicateAuditLogEvents(events: List<Record<AuditLogEvent>>) {
                 })
 
                 if (deduplicatedTagsAdded.length) {
-                    results.push(event.setIn(['data', TAGS_ADDED_KEY], fromJS(deduplicatedTagsAdded)))
+                    results.push(
+                        event.setIn(
+                            ['data', TAGS_ADDED_KEY],
+                            fromJS(deduplicatedTagsAdded)
+                        )
+                    )
                 }
 
                 break
@@ -127,13 +146,20 @@ export function deduplicateAuditLogEvents(events: List<Record<AuditLogEvent>>) {
 
                 tagsRemoved.forEach((tagRemoved) => {
                     if (ticketState.tags.includes(tagRemoved)) {
-                        ticketState.tags = ticketState.tags.filter((ticketTag) => ticketTag !== tagRemoved)
+                        ticketState.tags = ticketState.tags.filter(
+                            (ticketTag) => ticketTag !== tagRemoved
+                        )
                         deduplicatedTagsRemoved.push(tagRemoved)
                     }
                 })
 
                 if (deduplicatedTagsRemoved.length) {
-                    results.push(event.setIn(['data', TAGS_REMOVED_KEY], fromJS(deduplicatedTagsRemoved)))
+                    results.push(
+                        event.setIn(
+                            ['data', TAGS_REMOVED_KEY],
+                            fromJS(deduplicatedTagsRemoved)
+                        )
+                    )
                 }
 
                 break

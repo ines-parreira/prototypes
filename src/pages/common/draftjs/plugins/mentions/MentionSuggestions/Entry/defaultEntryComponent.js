@@ -9,11 +9,11 @@ import {type Map} from 'immutable'
 import {AgentLabel} from '../../../../../utils/labels'
 
 type Props = {
-    mention: Map<*,*>,
+    mention: Map<*, *>,
     theme: {
-        mentionSuggestionsEntryText: string
+        mentionSuggestionsEntryText: string,
     },
-    searchValue?: string
+    searchValue?: string,
 }
 
 const defaultEntryComponent = (props: Props) => {
@@ -29,7 +29,10 @@ const defaultEntryComponent = (props: Props) => {
             <AgentLabel
                 className={theme.mentionSuggestionsEntryText}
                 name={mention.get('name')}
-                profilePictureUrl={mention.getIn(['meta', 'profile_picture_url'])}
+                profilePictureUrl={mention.getIn([
+                    'meta',
+                    'profile_picture_url',
+                ])}
                 shouldDisplayAvatar
             />
         </div>

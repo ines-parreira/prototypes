@@ -9,7 +9,6 @@ import MergeTicketsContainer from '../MergeTicketsContainer'
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
-
 const _noop = () => {}
 
 describe('MergeTicketsContainer component', () => {
@@ -17,12 +16,12 @@ describe('MergeTicketsContainer component', () => {
         subject: 'foo',
         assignee_user: {
             id: 1,
-            name: 'John Smith'
+            name: 'John Smith',
         },
         customer: {
             id: 22,
-            name: 'Maria Curie'
-        }
+            name: 'Maria Curie',
+        },
     })
 
     const commonProps = {
@@ -38,10 +37,7 @@ describe('MergeTicketsContainer component', () => {
         const props = {...commonProps}
         props.isOpen = false
         const component = shallow(
-            <MergeTicketsContainer
-                sourceTicket={baseTicket}
-                {...props}
-            />
+            <MergeTicketsContainer sourceTicket={baseTicket} {...props} />
         ).dive()
 
         expect(component).toMatchSnapshot()
@@ -49,10 +45,7 @@ describe('MergeTicketsContainer component', () => {
 
     it('should render the selection component if there is no selected ticket in the state', () => {
         const component = shallow(
-            <MergeTicketsContainer
-                sourceTicket={baseTicket}
-                {...commonProps}
-            />
+            <MergeTicketsContainer sourceTicket={baseTicket} {...commonProps} />
         ).dive()
 
         expect(component).toMatchSnapshot()
@@ -60,10 +53,7 @@ describe('MergeTicketsContainer component', () => {
 
     it('should render the build component if there is a selected ticket in the state', () => {
         const component = shallow(
-            <MergeTicketsContainer
-                sourceTicket={baseTicket}
-                {...commonProps}
-            />
+            <MergeTicketsContainer sourceTicket={baseTicket} {...commonProps} />
         ).dive()
 
         component.setState({targetTicket: baseTicket})

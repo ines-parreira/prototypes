@@ -14,7 +14,7 @@ type Props = $Exact<{
     direction?: OrderDirection,
     isOrderedBy?: boolean,
     onClick?: () => void,
-    title: string
+    title: string,
 }>
 
 export default function HeaderCellProperty({
@@ -37,15 +37,17 @@ export default function HeaderCellProperty({
                 <div>
                     <span className={css.title}>{title}</span>
                     <i
-                        className={classnames('material-icons md-1', css.directionIcon, {
-                            [css.isVisible]: isOrderedBy,
-                        })}
+                        className={classnames(
+                            'material-icons md-1',
+                            css.directionIcon,
+                            {
+                                [css.isVisible]: isOrderedBy,
+                            }
+                        )}
                     >
-                        {direction === ORDER_DIRECTION.ASC ?
-                            'arrow_drop_down'
-                            :
-                            'arrow_drop_up'
-                        }
+                        {direction === ORDER_DIRECTION.ASC
+                            ? 'arrow_drop_down'
+                            : 'arrow_drop_up'}
                     </i>
                 </div>
             </div>

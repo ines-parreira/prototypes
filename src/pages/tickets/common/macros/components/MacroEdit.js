@@ -4,7 +4,12 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import classnames from 'classnames'
-import {UncontrolledButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap'
+import {
+    UncontrolledButtonDropdown,
+    DropdownToggle,
+    DropdownMenu,
+    DropdownItem,
+} from 'reactstrap'
 
 import {generateDefaultAction} from '../../../../../state/macro/utils'
 
@@ -12,7 +17,9 @@ import * as ticketTypes from '../../../../../state/ticket/constants'
 import * as newMessageTypes from '../../../../../state/newMessage/constants'
 import * as integrationsSelectors from '../../../../../state/integrations/selectors'
 import {ACTION_TEMPLATES} from '../../../../../config'
-import RichDropdown, {type OptionGroup} from '../../../../common/components/RichDropdown/RichDropdown'
+import RichDropdown, {
+    type OptionGroup,
+} from '../../../../common/components/RichDropdown/RichDropdown'
 import InputField from '../../../../common/forms/InputField'
 
 import SetStatusAction from './actions/SetStatusAction'
@@ -27,7 +34,6 @@ import IntegrationAction from './actions/IntegrationAction'
 import {getSortedIntegrationActionsNames} from './../../utils'
 
 import css from './MacroEdit.less'
-
 
 import {getActionTemplate, humanizeString} from './../../../../../utils'
 
@@ -61,7 +67,9 @@ export class MacroEdit extends React.Component<Props> {
     }
 
     _addAction = (actionName) => {
-        const actions = this.props.actions.push(generateDefaultAction(actionName))
+        const actions = this.props.actions.push(
+            generateDefaultAction(actionName)
+        )
         this.props.setActions(actions)
     }
 
@@ -71,95 +79,121 @@ export class MacroEdit extends React.Component<Props> {
     }
 
     _addAttachment = (index, files) => {
-        const actions = this.props.actions.updateIn([index, 'arguments', 'attachments'], (attachments) => attachments.concat(fromJS(files)))
+        const actions = this.props.actions.updateIn(
+            [index, 'arguments', 'attachments'],
+            (attachments) => attachments.concat(fromJS(files))
+        )
         this.props.setActions(actions)
     }
 
     _deleteAttachment = (actionIndex, fileIndex) => {
-        const actions = this.props.actions.updateIn([actionIndex, 'arguments', 'attachments'], (attachments) => attachments.delete(fileIndex))
+        const actions = this.props.actions.updateIn(
+            [actionIndex, 'arguments', 'attachments'],
+            (attachments) => attachments.delete(fileIndex)
+        )
         this.props.setActions(actions)
     }
 
     getIntentOptionsFromGlobal = _memoize((intents: Intents): OptionGroup[] =>
-        Object.values(Object.keys(intents)
-            .reduce((acc: {[key: string]: OptionGroup}, intent) => {
-                const [intentCategory, intentName] = intent.split('/')
+        Object.values(
+            Object.keys(intents).reduce(
+                (acc: {[key: string]: OptionGroup}, intent) => {
+                    const [intentCategory, intentName] = intent.split('/')
 
-                if (acc[intentCategory]) {
-                    acc[intentCategory].options.push({
-                        description: intents[intent],
-                        key: intent,
-                        label: humanizeString(intentName),
-                    })
-                } else {
-                    acc[intentCategory] = {
-                        key: intentCategory,
-                        label: intentCategory.toUpperCase(),
-                        options: [{
+                    if (acc[intentCategory]) {
+                        acc[intentCategory].options.push({
                             description: intents[intent],
                             key: intent,
                             label: humanizeString(intentName),
-                        }],
+                        })
+                    } else {
+                        acc[intentCategory] = {
+                            key: intentCategory,
+                            label: intentCategory.toUpperCase(),
+                            options: [
+                                {
+                                    description: intents[intent],
+                                    key: intent,
+                                    label: humanizeString(intentName),
+                                },
+                            ],
+                        }
                     }
-                }
-                return acc
-            }, {}))
+                    return acc
+                },
+                {}
+            )
+        )
     )
 
     renderNewActionMenu = () => {
         // front actions executed on client
-        const ticketActions = ACTION_TEMPLATES
-            .filter((template) => template.execution === 'front')
+        const ticketActions = ACTION_TEMPLATES.filter(
+            (template) => template.execution === 'front'
+        )
             // remove actions that have already been used
-            .filter((action) => !this.props.actions.find((usedActions) => usedActions.get('name') === action.name))
+            .filter(
+                (action) =>
+                    !this.props.actions.find(
+                        (usedActions) => usedActions.get('name') === action.name
+                    )
+            )
 
         // external actions executed on server
-        const externalActions = ACTION_TEMPLATES.filter((template) => template.execution === 'back')
+        const externalActions = ACTION_TEMPLATES.filter(
+            (template) => template.execution === 'back'
+        )
         // external actions without externalType, list of names
-        const nonIntegrationActions = externalActions.filter((v) => !v.integrationType)
+        const nonIntegrationActions = externalActions.filter(
+            (v) => !v.integrationType
+        )
 
-        const hasActions = (ticketActions.length  > 0)
+        const hasActions = ticketActions.length > 0
 
         return (
             <DropdownMenu className={css.dropdown}>
-                {hasActions && <DropdownItem header>TICKET ACTIONS</DropdownItem>}
+                {hasActions && (
+                    <DropdownItem header>TICKET ACTIONS</DropdownItem>
+                )}
                 {hasActions && <DropdownItem divider />}
-                {
-                    ticketActions.map((action) => {
-                        const actionName = action.name
-                        return (
-                            <DropdownItem
-                                key={actionName}
-                                type="button"
-                                onClick={() => this._addAction(actionName)}
-                            >
-                                {action.title || humanizeString(actionName)}
-                            </DropdownItem>
-                        )
-                    })
-                }
+                {ticketActions.map((action) => {
+                    const actionName = action.name
+                    return (
+                        <DropdownItem
+                            key={actionName}
+                            type="button"
+                            onClick={() => this._addAction(actionName)}
+                        >
+                            {action.title || humanizeString(actionName)}
+                        </DropdownItem>
+                    )
+                })}
                 {hasActions && <DropdownItem divider />}
                 <DropdownItem header>EXTERNAL ACTIONS</DropdownItem>
-                {
-                    nonIntegrationActions.map((action) => {
-                        const actionName = action.name
-                        return (
-                            <DropdownItem
-                                key={actionName}
-                                type="button"
-                                onClick={() => this._addAction(actionName)}
-                            >
-                                {action.title || humanizeString(actionName)}
-                            </DropdownItem>
-                        )
-                    })
-                }
+                {nonIntegrationActions.map((action) => {
+                    const actionName = action.name
+                    return (
+                        <DropdownItem
+                            key={actionName}
+                            type="button"
+                            onClick={() => this._addAction(actionName)}
+                        >
+                            {action.title || humanizeString(actionName)}
+                        </DropdownItem>
+                    )
+                })}
             </DropdownMenu>
         )
     }
 
     render() {
-        const {currentMacro, hasIntegrationOfTypes, intent, intents, setIntent} = this.props
+        const {
+            currentMacro,
+            hasIntegrationOfTypes,
+            intent,
+            intents,
+            setIntent,
+        } = this.props
 
         if (!currentMacro) {
             return null
@@ -170,9 +204,13 @@ export class MacroEdit extends React.Component<Props> {
         }
 
         // external actions executed on server
-        const externalActions = ACTION_TEMPLATES.filter((template) => template.execution === 'back')
+        const externalActions = ACTION_TEMPLATES.filter(
+            (template) => template.execution === 'back'
+        )
         // external actions with externalType grouped by externalType
-        const integrationMenus = getSortedIntegrationActionsNames(externalActions.filter((v) => !!v.integrationType))
+        const integrationMenus = getSortedIntegrationActionsNames(
+            externalActions.filter((v) => !!v.integrationType)
+        )
 
         return (
             <form>
@@ -193,201 +231,221 @@ export class MacroEdit extends React.Component<Props> {
                     <RichDropdown
                         options={this.getIntentOptionsFromGlobal(intents)}
                         onClick={setIntent}
-                        renderMenuItems={(menuItems) =>
+                        renderMenuItems={(menuItems) => (
                             <>
                                 <DropdownItem
                                     onClick={() => setIntent(null)}
                                     type="button"
                                 >
-                                    <i className="icon material-icons">
-                                        clear
-                                    </i>
+                                    <i className="icon material-icons">clear</i>
                                     {humanizeString('clear intent')}
                                 </DropdownItem>
                                 {menuItems}
                             </>
-                        }
+                        )}
                         value={
-                            (intent && humanizeString(intent.replace('/', ' - ')))
-                            || 'Choose intent'
+                            (intent &&
+                                humanizeString(intent.replace('/', ' - '))) ||
+                            'Choose intent'
                         }
                     >
                         <div className={classnames('mb-2', css.title)}>
                             Intent
                         </div>
                         <div className={css.description}>
-                            Choose an intent to describe in which cases this macro will be used.
+                            Choose an intent to describe in which cases this
+                            macro will be used.
                         </div>
                     </RichDropdown>
 
-                    {
-                        this.props.actions.map((action, index) => {
-                            let config = {}
+                    {this.props.actions.map((action, index) => {
+                        let config = {}
 
-                            switch (action.get('name')) {
-                                case ticketTypes.SET_STATUS:
-                                    config = {
-                                        title: 'Set status',
-                                        content: (
-                                            <SetStatusAction
-                                                index={index}
-                                                action={action}
-                                                updateActionArgs={this._updateActionArguments}
-                                            />
-                                        ),
-                                    }
-                                    break
-                                case ticketTypes.ADD_TICKET_TAGS:
-                                    config = {
-                                        title: 'Add tags',
-                                        content: (
-                                            <AddTagsAction
-                                                index={index}
-                                                args={action.get('arguments')}
-                                                updateActionArgs={this._updateActionArguments}
-                                            />
-                                        ),
-                                    }
-                                    break
-                                case newMessageTypes.SET_RESPONSE_TEXT:
-                                    config = {
-                                        title: 'Set response text',
-                                        content: (
-                                            <SetResponseTextAction
-                                                index={index}
-                                                action={action}
-                                                updateActionArgs={this._updateActionArguments}
-                                            />
-                                        ),
-                                    }
-                                    break
-                                case ticketTypes.SET_AGENT:
-                                    config = {
-                                        title: 'Set user assignee',
-                                        content: (
-                                            <SetAssigneeAction
-                                                index={index}
-                                                action={action}
-                                                agents={this.props.agents}
-                                                updateActionArgs={this._updateActionArguments}
-                                                handleUsers={true}
-                                            />
-                                        ),
-                                    }
-                                    break
-                                case ticketTypes.SET_TEAM:
-                                    config = {
-                                        title: 'Set team assignee',
-                                        content: (
-                                            <SetAssigneeAction
-                                                index={index}
-                                                action={action}
-                                                agents={this.props.agents}
-                                                updateActionArgs={this._updateActionArguments}
-                                                handleTeams={true}
-                                            />
-                                        ),
-                                    }
-                                    break
-                                case ticketTypes.SET_SUBJECT:
-                                    config = {
-                                        title: 'Set ticket subject',
-                                        content: (
-                                            <SetSubjectAction
-                                                index={index}
-                                                action={action}
-                                                updateActionArgs={this._updateActionArguments}
-                                            />
-                                        ),
-                                    }
-                                    break
-                                case 'http':
-                                    config = {
-                                        title: 'HTTP WebHook',
-                                        content: (
-                                            <HttpAction
-                                                index={index}
-                                                action={action}
-                                                updateActionArgs={this._updateActionArguments}
-                                                updateActionTitle={this._updateActionTitle}
-                                            />
-                                        ),
-                                    }
-                                    break
-                                case newMessageTypes.ADD_ATTACHMENTS:
-                                    config = {
-                                        title: 'Add attachments',
-                                        content: (
-                                            <AddAttachmentsAction
-                                                index={index}
-                                                action={action}
-                                                addAttachments={this._addAttachment}
-                                                removeAttachment={this._deleteAttachment}
-                                            />
-                                        ),
-                                    }
-                                    break
-                                default: {
-                                    const integrationType = getActionTemplate(action.get('name')).integrationType
-                                    config = {
-                                        title: `Action ${integrationType.toUpperCase()}`,
-                                        content: (
-                                            <IntegrationAction
-                                                index={index}
-                                                action={action}
-                                            />
-                                        ),
-                                    }
+                        switch (action.get('name')) {
+                            case ticketTypes.SET_STATUS:
+                                config = {
+                                    title: 'Set status',
+                                    content: (
+                                        <SetStatusAction
+                                            index={index}
+                                            action={action}
+                                            updateActionArgs={
+                                                this._updateActionArguments
+                                            }
+                                        />
+                                    ),
+                                }
+                                break
+                            case ticketTypes.ADD_TICKET_TAGS:
+                                config = {
+                                    title: 'Add tags',
+                                    content: (
+                                        <AddTagsAction
+                                            index={index}
+                                            args={action.get('arguments')}
+                                            updateActionArgs={
+                                                this._updateActionArguments
+                                            }
+                                        />
+                                    ),
+                                }
+                                break
+                            case newMessageTypes.SET_RESPONSE_TEXT:
+                                config = {
+                                    title: 'Set response text',
+                                    content: (
+                                        <SetResponseTextAction
+                                            index={index}
+                                            action={action}
+                                            updateActionArgs={
+                                                this._updateActionArguments
+                                            }
+                                        />
+                                    ),
+                                }
+                                break
+                            case ticketTypes.SET_AGENT:
+                                config = {
+                                    title: 'Set user assignee',
+                                    content: (
+                                        <SetAssigneeAction
+                                            index={index}
+                                            action={action}
+                                            agents={this.props.agents}
+                                            updateActionArgs={
+                                                this._updateActionArguments
+                                            }
+                                            handleUsers={true}
+                                        />
+                                    ),
+                                }
+                                break
+                            case ticketTypes.SET_TEAM:
+                                config = {
+                                    title: 'Set team assignee',
+                                    content: (
+                                        <SetAssigneeAction
+                                            index={index}
+                                            action={action}
+                                            agents={this.props.agents}
+                                            updateActionArgs={
+                                                this._updateActionArguments
+                                            }
+                                            handleTeams={true}
+                                        />
+                                    ),
+                                }
+                                break
+                            case ticketTypes.SET_SUBJECT:
+                                config = {
+                                    title: 'Set ticket subject',
+                                    content: (
+                                        <SetSubjectAction
+                                            index={index}
+                                            action={action}
+                                            updateActionArgs={
+                                                this._updateActionArguments
+                                            }
+                                        />
+                                    ),
+                                }
+                                break
+                            case 'http':
+                                config = {
+                                    title: 'HTTP WebHook',
+                                    content: (
+                                        <HttpAction
+                                            index={index}
+                                            action={action}
+                                            updateActionArgs={
+                                                this._updateActionArguments
+                                            }
+                                            updateActionTitle={
+                                                this._updateActionTitle
+                                            }
+                                        />
+                                    ),
+                                }
+                                break
+                            case newMessageTypes.ADD_ATTACHMENTS:
+                                config = {
+                                    title: 'Add attachments',
+                                    content: (
+                                        <AddAttachmentsAction
+                                            index={index}
+                                            action={action}
+                                            addAttachments={this._addAttachment}
+                                            removeAttachment={
+                                                this._deleteAttachment
+                                            }
+                                        />
+                                    ),
+                                }
+                                break
+                            default: {
+                                const integrationType = getActionTemplate(
+                                    action.get('name')
+                                ).integrationType
+                                config = {
+                                    title: `Action ${integrationType.toUpperCase()}`,
+                                    content: (
+                                        <IntegrationAction
+                                            index={index}
+                                            action={action}
+                                        />
+                                    ),
                                 }
                             }
+                        }
 
-                            // the unique key is based on index of action + ID of macro
-                            // so when we switch from a macro to the other, all previous macro fields are unmounted
-                            // it's simpler to manage lifecycle of actions components then
-                            const key = `${index}${currentMacro.get('id')}`
+                        // the unique key is based on index of action + ID of macro
+                        // so when we switch from a macro to the other, all previous macro fields are unmounted
+                        // it's simpler to manage lifecycle of actions components then
+                        const key = `${index}${currentMacro.get('id')}`
 
-                            return (
-                                <div
-                                    key={key}
-                                    className="mt-3"
-                                >
-                                    <div className="d-flex justify-content-between align-items-center mb-2">
-                                        <div className={css.title}>
-                                            {config.title}
-                                        </div>
-                                        <i
-                                            className="material-icons md-2 clickable"
-                                            onClick={() => this._deleteAction(index)}
-                                        >
-                                            close
-                                        </i>
+                        return (
+                            <div key={key} className="mt-3">
+                                <div className="d-flex justify-content-between align-items-center mb-2">
+                                    <div className={css.title}>
+                                        {config.title}
                                     </div>
-                                    {config.content}
+                                    <i
+                                        className="material-icons md-2 clickable"
+                                        onClick={() =>
+                                            this._deleteAction(index)
+                                        }
+                                    >
+                                        close
+                                    </i>
                                 </div>
-                            )
-                        })
-                    }
+                                {config.content}
+                            </div>
+                        )
+                    })}
 
                     <div className="mt-3">
                         <UncontrolledButtonDropdown className="mr-2">
-                            <DropdownToggle
-                                color="primary"
-                                caret
-                                type="button"
-                            >
+                            <DropdownToggle color="primary" caret type="button">
                                 Add action
                             </DropdownToggle>
                             {this.renderNewActionMenu()}
                         </UncontrolledButtonDropdown>
 
-                        {
-                            integrationMenus.map((actions, key) => {
+                        {integrationMenus
+                            .map((actions, key) => {
                                 if (!hasIntegrationOfTypes(key)) {
                                     return null
                                 }
 
                                 // remove actions that have already been used
-                                const filteredActions = actions.filter((action) => !this.props.actions.find((usedActions) => usedActions.get('name') === action))
+                                const filteredActions = actions.filter(
+                                    (action) =>
+                                        !this.props.actions.find(
+                                            (usedActions) =>
+                                                usedActions.get('name') ===
+                                                action
+                                        )
+                                )
 
                                 if (filteredActions.isEmpty()) {
                                     return null
@@ -406,24 +464,33 @@ export class MacroEdit extends React.Component<Props> {
                                             Add {humanizeString(key)} action
                                         </DropdownToggle>
                                         <DropdownMenu>
-                                            {
-                                                filteredActions.map((actionName) => {
+                                            {filteredActions.map(
+                                                (actionName) => {
                                                     return (
                                                         <DropdownItem
                                                             key={actionName}
                                                             type="button"
-                                                            onClick={() => this._addAction(actionName)}
+                                                            onClick={() =>
+                                                                this._addAction(
+                                                                    actionName
+                                                                )
+                                                            }
                                                         >
-                                                            {getActionTemplate(actionName).title || humanizeString(actionName)}
+                                                            {getActionTemplate(
+                                                                actionName
+                                                            ).title ||
+                                                                humanizeString(
+                                                                    actionName
+                                                                )}
                                                         </DropdownItem>
                                                     )
-                                                })
-                                            }
+                                                }
+                                            )}
                                         </DropdownMenu>
                                     </UncontrolledButtonDropdown>
                                 )
-                            }).toList()
-                        }
+                            })
+                            .toList()}
                     </div>
                 </div>
             </form>
@@ -440,12 +507,14 @@ MacroEdit.propTypes = {
     setName: PropTypes.func.isRequired,
     hasIntegrationOfTypes: PropTypes.func.isRequired,
     intent: PropTypes.string,
-    setIntent: PropTypes.func.isRequired
+    setIntent: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state) {
     return {
-        hasIntegrationOfTypes: integrationsSelectors.makeHasIntegrationOfTypes(state),
+        hasIntegrationOfTypes: integrationsSelectors.makeHasIntegrationOfTypes(
+            state
+        ),
     }
 }
 

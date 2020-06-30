@@ -4,7 +4,6 @@ import {fromJS, type Map} from 'immutable'
 import {ContentState, type ContentState as ContentStateType} from 'draft-js'
 import {createAction} from '@reduxjs/toolkit'
 
-
 import _isNull from 'lodash/isNull'
 import _assign from 'lodash/assign'
 import _pick from 'lodash/pick'
@@ -19,12 +18,8 @@ import {notify} from '../notifications/actions'
 import * as ticketActions from '../ticket/actions'
 import {renderTemplate} from '../../pages/common/utils/template'
 
-import { TicketMessageSourceTypes } from '../../business/ticket'
-import {
-    getActionTemplate,
-    uploadFiles,
-    toJS,
-} from '../../utils'
+import {TicketMessageSourceTypes} from '../../business/ticket'
+import {getActionTemplate, uploadFiles, toJS} from '../../utils'
 import {convertToHTML} from '../../utils/editor'
 
 import {
@@ -40,69 +35,91 @@ import {
 import * as integrationSelectors from '../integrations/selectors'
 import * as ticketSelectors from '../ticket/selectors'
 import * as agentSelectors from '../agents/selectors'
-import {AGENT_TYPING_STARTED, AGENT_TYPING_STOPPED} from '../../config/socketConstants'
+import {
+    AGENT_TYPING_STARTED,
+    AGENT_TYPING_STOPPED,
+} from '../../config/socketConstants'
 
 import socketManager from '../../services/socketManager'
 import type {attachmentType} from '../../types'
-import type {dispatchType, getStateType, currentUserType, thunkActionType} from '../types'
+import type {
+    dispatchType,
+    getStateType,
+    currentUserType,
+    thunkActionType,
+} from '../types'
 import {getMomentNow} from '../../utils/date'
 
-import {INSTAGRAM_AD_COMMENT_SOURCE, INSTAGRAM_COMMENT_SOURCE} from '../../config/ticket'
+import {
+    INSTAGRAM_AD_COMMENT_SOURCE,
+    INSTAGRAM_COMMENT_SOURCE,
+} from '../../config/ticket'
 
 import * as responseUtils from './responseUtils'
 import * as selectors from './selectors'
 import * as constants from './constants'
-import type {
-    MacroActionsType,
-    NewMessageType,
-    TicketType,
-} from './types'
+import type {MacroActionsType, NewMessageType, TicketType} from './types'
 
-export const addAttachments = (ticket: Map<*, *>, atts: FileList | attachmentType[]) => (dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
+export const addAttachments = (
+    ticket: Map<*, *>,
+    atts: FileList | attachmentType[]
+) => (
+    dispatch: dispatchType,
+    getState: getStateType
+): Promise<dispatchType> => {
     dispatch({
-        type: constants.NEW_MESSAGE_ADD_ATTACHMENT_START
+        type: constants.NEW_MESSAGE_ADD_ATTACHMENT_START,
     })
     const {newMessage} = getState()
 
     let attachments = atts
 
-    if (newMessage.getIn(['newMessage', 'source', 'type']) === TicketMessageSourceTypes.FACEBOOK_COMMENT) {
+    if (
+        newMessage.getIn(['newMessage', 'source', 'type']) ===
+        TicketMessageSourceTypes.FACEBOOK_COMMENT
+    ) {
         // We have specific constraints on attachments.
 
-        const attachmentsFiltered = Object.values(atts).filter(
-            (att: any) => {
-                const type = att.type || att.content_type
-                return type.startsWith('image') || type.startsWith('video')
-            }
-        )
+        const attachmentsFiltered = Object.values(atts).filter((att: any) => {
+            const type = att.type || att.content_type
+            return type.startsWith('image') || type.startsWith('video')
+        })
 
-        const previousAtts = newMessage.getIn(['newMessage', 'attachments']) || fromJS([])
+        const previousAtts =
+            newMessage.getIn(['newMessage', 'attachments']) || fromJS([])
 
-        if ((previousAtts.size > 0) || (atts.length > 1) || atts.length !== attachmentsFiltered.length) {
-            dispatch(notify({
-                id: 'newMessageAddAttachmentsError',
-                dismissAfter: 0,
-                status: 'error',
-                title: 'We could not add all of your attachments !',
-                allowHTML: true,
-                message: `
+        if (
+            previousAtts.size > 0 ||
+            atts.length > 1 ||
+            atts.length !== attachmentsFiltered.length
+        ) {
+            dispatch(
+                notify({
+                    id: 'newMessageAddAttachmentsError',
+                    dismissAfter: 0,
+                    status: 'error',
+                    title: 'We could not add all of your attachments !',
+                    allowHTML: true,
+                    message: `
                     Facebook comments have limitations on attachments:
                     <ul>
                         <li>You cannot send more than one attachment.</li>
                         <li>You can only send images or videos.</li>
                     </ul>
-                `
-            }))
+                `,
+                })
+            )
             return dispatch({
                 type: constants.NEW_MESSAGE_ADD_ATTACHMENT_ERROR,
             })
         }
 
-        attachments = previousAtts.size > 0 ? [] : attachmentsFiltered.slice(0, 1)
+        attachments =
+            previousAtts.size > 0 ? [] : attachmentsFiltered.slice(0, 1)
     }
 
-    return uploadFiles(attachments)
-        .then((resp) => {
+    return uploadFiles(attachments).then(
+        (resp) => {
             const state = getState()
             const {ticket: _ticket} = state
 
@@ -112,81 +129,101 @@ export const addAttachments = (ticket: Map<*, *>, atts: FileList | attachmentTyp
 
             return dispatch({
                 type: constants.NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS,
-                resp
+                resp,
             })
-        }, (error) => {
+        },
+        (error) => {
             if (error.response.status === 413) {
                 return dispatch({
                     type: constants.NEW_MESSAGE_ADD_ATTACHMENT_ERROR,
                     error,
-                    reason: 'Failed to upload files. One or more files are larger than the size limit of 10MB.'
+                    reason:
+                        'Failed to upload files. One or more files are larger than the size limit of 10MB.',
                 })
             }
 
             return dispatch({
                 type: constants.NEW_MESSAGE_ADD_ATTACHMENT_ERROR,
                 error,
-                reason: 'Failed to upload files. Please try again later'
+                reason: 'Failed to upload files. Please try again later',
             })
-        })
+        }
+    )
 }
 
 export const deleteAttachment = (index: number) => ({
     type: constants.NEW_MESSAGE_DELETE_ATTACHMENT,
-    index
+    index,
 })
 
-const _throttledIsTyping = _throttle((ticketId: string) => {
-    socketManager.send(AGENT_TYPING_STARTED, ticketId)
-}, 5000, {trailing: false}) // we don't want to throw event after the ticket has been left
+const _throttledIsTyping = _throttle(
+    (ticketId: string) => {
+        socketManager.send(AGENT_TYPING_STARTED, ticketId)
+    },
+    5000,
+    {trailing: false}
+) // we don't want to throw event after the ticket has been left
 
-export const setResponseText = (args: Map<*, *> = fromJS({})) =>
-    (dispatch: dispatchType, getState: getStateType): dispatchType => {
-        const state = getState()
-        const {ticket, currentUser, newMessage} = state
-        const contentState = args.get('contentState')
-        const ticketId = ticket.get('id')
-        const signature = selectors.getNewMessageSignature(state)
+export const setResponseText = (args: Map<*, *> = fromJS({})) => (
+    dispatch: dispatchType,
+    getState: getStateType
+): dispatchType => {
+    const state = getState()
+    const {ticket, currentUser, newMessage} = state
+    const contentState = args.get('contentState')
+    const ticketId = ticket.get('id')
+    const signature = selectors.getNewMessageSignature(state)
 
-        if (contentState && newMessage && ticketId) {
-            const plainText = contentState.getPlainText()
+    if (contentState && newMessage && ticketId) {
+        const plainText = contentState.getPlainText()
 
-            const shouldSendTypingEvent = plainText
-                && !responseUtils.hasOnlySignature(contentState, signature.get('text'))
-                && newMessage.getIn(['newMessage', 'source', 'type']) !== TicketMessageSourceTypes.INTERNAL_NOTE
+        const shouldSendTypingEvent =
+            plainText &&
+            !responseUtils.hasOnlySignature(
+                contentState,
+                signature.get('text')
+            ) &&
+            newMessage.getIn(['newMessage', 'source', 'type']) !==
+                TicketMessageSourceTypes.INTERNAL_NOTE
 
-            if (shouldSendTypingEvent) {
-                _throttledIsTyping(ticketId)
-            } else if (agentSelectors.isAgentTypingOnTicket(ticketId)(state)) {
-                _throttledIsTyping.cancel()
-                socketManager.send(AGENT_TYPING_STOPPED, ticketId)
-            }
+        if (shouldSendTypingEvent) {
+            _throttledIsTyping(ticketId)
+        } else if (agentSelectors.isAgentTypingOnTicket(ticketId)(state)) {
+            _throttledIsTyping.cancel()
+            socketManager.send(AGENT_TYPING_STOPPED, ticketId)
         }
-
-        // should have the same params in state/ticket/actions/applyMacroAction
-        return dispatch({
-            type: constants.SET_RESPONSE_TEXT,
-            args,
-            ticketId,
-            forceFocus: args.get('forceFocus', false),
-            forceUpdate: args.get('forceUpdate', false),
-            ticket, // used in middleware, not in reducer
-            appliedMacro: ticket.getIn(['state', 'appliedMacro']),
-            currentUser, // used in middleware, not in reducer
-            signature,
-            fromMacro: false, // used in middleware, not in reducer
-        })
     }
+
+    // should have the same params in state/ticket/actions/applyMacroAction
+    return dispatch({
+        type: constants.SET_RESPONSE_TEXT,
+        args,
+        ticketId,
+        forceFocus: args.get('forceFocus', false),
+        forceUpdate: args.get('forceUpdate', false),
+        ticket, // used in middleware, not in reducer
+        appliedMacro: ticket.getIn(['state', 'appliedMacro']),
+        currentUser, // used in middleware, not in reducer
+        signature,
+        fromMacro: false, // used in middleware, not in reducer
+    })
+}
 
 /**
  * Add a signature (if any) at the end of the content state
  */
-export const addSignature = (contentState: Object, signature: Object) => (dispatch: dispatchType, getState: getStateType): dispatchType => {
+export const addSignature = (contentState: Object, signature: Object) => (
+    dispatch: dispatchType,
+    getState: getStateType
+): dispatchType => {
     const {newMessage} = getState()
 
-    if (newMessage.getIn(['newMessage', 'source', 'type']) !== 'email' ||
-        newMessage.getIn(['newMessage', 'state', 'signatureAdded'], false) === true ||
-        responseUtils.isSignatureAdded(contentState, signature.get('text'))) {
+    if (
+        newMessage.getIn(['newMessage', 'source', 'type']) !== 'email' ||
+        newMessage.getIn(['newMessage', 'state', 'signatureAdded'], false) ===
+            true ||
+        responseUtils.isSignatureAdded(contentState, signature.get('text'))
+    ) {
         return
     }
 
@@ -203,7 +240,10 @@ export const addSignature = (contentState: Object, signature: Object) => (dispat
  * @param replaceAll - boolean true if should replace all recipients properties with the incoming object (to, cc, bcc)
  * or if it only replaces passed properties
  */
-export const setReceivers = (receivers: {} = {}, replaceAll: boolean = true) => ({
+export const setReceivers = (
+    receivers: {} = {},
+    replaceAll: boolean = true
+) => ({
     type: constants.NEW_MESSAGE_SET_RECEIVERS,
     receivers,
     replaceAll,
@@ -213,7 +253,10 @@ export const setReceivers = (receivers: {} = {}, replaceAll: boolean = true) => 
  * Set new message sender. A sender is represented by an integration (email or gmail)
  * @param sender - address of an integration used to communicate. E.g: email, gmail
  */
-export const setSender = (sender: ?string) => (dispatch: dispatchType, getState: getStateType): dispatchType => {
+export const setSender = (sender: ?string) => (
+    dispatch: dispatchType,
+    getState: getStateType
+): dispatchType => {
     const state = getState()
     const {ticket} = state
     const channels = integrationSelectors.getChannels(state)
@@ -221,29 +264,43 @@ export const setSender = (sender: ?string) => (dispatch: dispatchType, getState:
     let _sender = fromJS({})
 
     if (sender) {
-        _sender = channels.find((channel) => channel.get('address') === sender) || fromJS({})
+        _sender =
+            channels.find((channel) => channel.get('address') === sender) ||
+            fromJS({})
     }
 
     if (_sender.isEmpty()) {
-        _sender = getNewMessageSender(ticket, sourceType, channels) || fromJS({})
+        _sender =
+            getNewMessageSender(ticket, sourceType, channels) || fromJS({})
     }
 
-    if (!_sender.isEmpty() && _sender.get('type') === 'email' && !_sender.get('verified')) {
+    if (
+        !_sender.isEmpty() &&
+        _sender.get('type') === 'email' &&
+        !_sender.get('verified')
+    ) {
         if (!_sender.get('address').endsWith(window.EMAIL_FORWARDING_DOMAIN)) {
-            dispatch(notify({
-                status: 'error',
-                message: `You cannot send messages using ${_sender.get('address')}, because this address is not verified yet.`
-            }))
+            dispatch(
+                notify({
+                    status: 'error',
+                    message: `You cannot send messages using ${_sender.get(
+                        'address'
+                    )}, because this address is not verified yet.`,
+                })
+            )
         }
-        _sender = channels.find(
-            (channel) => channel.get('verified') === true && EMAIL_INTEGRATION_TYPES.includes(channel.get('type'))
-        ) || fromJS({})
+        _sender =
+            channels.find(
+                (channel) =>
+                    channel.get('verified') === true &&
+                    EMAIL_INTEGRATION_TYPES.includes(channel.get('type'))
+            ) || fromJS({})
     }
 
     if (!_sender.isEmpty()) {
         _sender = fromJS({
             name: _sender.get('name', ''),
-            address: _sender.get('address', '')
+            address: _sender.get('address', ''),
         })
 
         // persist `_sender` only if it's explicitly set on the function call (i.e: when user selects value from dropdown)
@@ -254,11 +311,14 @@ export const setSender = (sender: ?string) => (dispatch: dispatchType, getState:
 
     return dispatch({
         type: constants.NEW_MESSAGE_SET_SENDER,
-        sender: _sender
+        sender: _sender,
     })
 }
 
-export const setSourceType = (sourceType: string) => (dispatch: dispatchType, getState: getStateType): dispatchType => {
+export const setSourceType = (sourceType: string) => (
+    dispatch: dispatchType,
+    getState: getStateType
+): dispatchType => {
     dispatch({
         type: constants.NEW_MESSAGE_SET_SOURCE_TYPE,
         sourceType,
@@ -268,18 +328,21 @@ export const setSourceType = (sourceType: string) => (dispatch: dispatchType, ge
 
 export const setSubject = (subject: string = '') => ({
     type: constants.NEW_MESSAGE_SET_SUBJECT,
-    subject
+    subject,
 })
 
 export const setSourceExtra = (extra: {}) => ({
     type: constants.NEW_MESSAGE_SET_SOURCE_EXTRA,
-    extra
+    extra,
 })
 
 /**
  * Prepare default message
  */
-const prepareDefault = (sourceType: string) => (dispatch: dispatchType, getState: getStateType): dispatchType => {
+const prepareDefault = (sourceType: string) => (
+    dispatch: dispatchType,
+    getState: getStateType
+): dispatchType => {
     dispatch(setSubject())
     dispatch(setSourceType(sourceType))
     dispatch(setSourceExtra({}))
@@ -290,7 +353,10 @@ const prepareDefault = (sourceType: string) => (dispatch: dispatchType, getState
  * Prepare the new message based on its source type
  * @param {String} sourceType the new source type
  */
-export const prepare = (sourceType: string) => (dispatch: dispatchType, getState: getStateType) => {
+export const prepare = (sourceType: string) => (
+    dispatch: dispatchType,
+    getState: getStateType
+) => {
     const state = getState()
     const currentTicket = ticketSelectors.getTicket(state)
     // cache source type when changed
@@ -302,15 +368,21 @@ export const prepare = (sourceType: string) => (dispatch: dispatchType, getState
             let attachments = []
 
             messages.forEach((message) => {
-                attachments = attachments.concat(toJS(message.get('attachments') || fromJS([])))
+                attachments = attachments.concat(
+                    toJS(message.get('attachments') || fromJS([]))
+                )
             })
 
             const currentAttachments = selectors.getNewMessageAttachments(state)
-            const currentAttachmentsUrls = currentAttachments.map((attachment) => attachment.get('url'))
+            const currentAttachmentsUrls = currentAttachments.map(
+                (attachment) => attachment.get('url')
+            )
 
             // Filter out all attachments already present in the state, to avoid setting them again when changing
             // the source type to `email-forward` multiple times
-            attachments = attachments.filter((attachment) => !currentAttachmentsUrls.includes(attachment.url))
+            attachments = attachments.filter(
+                (attachment) => !currentAttachmentsUrls.includes(attachment.url)
+            )
 
             dispatch(setSubject(`Fwd: ${currentTicket.get('subject', '')}`))
             dispatch(setSourceType('email'))
@@ -319,7 +391,7 @@ export const prepare = (sourceType: string) => (dispatch: dispatchType, getState
             dispatch(setReceivers())
             dispatch({
                 type: constants.NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS,
-                resp: attachments
+                resp: attachments,
             })
             break
         }
@@ -328,19 +400,29 @@ export const prepare = (sourceType: string) => (dispatch: dispatchType, getState
             let contentState = selectors.getNewMessageContentState(state)
             const signature = selectors.getNewMessageSignature(state)
 
-            if (responseUtils.isSignatureAdded(contentState, signature.get('text'))) {
-                contentState = responseUtils.removeSignature(contentState, signature)
+            if (
+                responseUtils.isSignatureAdded(
+                    contentState,
+                    signature.get('text')
+                )
+            ) {
+                contentState = responseUtils.removeSignature(
+                    contentState,
+                    signature
+                )
             }
 
             // update content with removed signature,
             // and focus the editor
-            dispatch(setResponseText(
-                fromJS({
-                    contentState,
-                    forceFocus: true,
-                    forceUpdate: true,
-                })
-            ))
+            dispatch(
+                setResponseText(
+                    fromJS({
+                        contentState,
+                        forceFocus: true,
+                        forceUpdate: true,
+                    })
+                )
+            )
             dispatch(prepareDefault(sourceType))
 
             break
@@ -352,8 +434,14 @@ export const prepare = (sourceType: string) => (dispatch: dispatchType, getState
             dispatch(prepareDefault(sourceType))
             const newState = getState()
             const newMessageState = selectors.getNewMessageState(newState)
-            const receiverName = newMessageState.getIn(['newMessage', 'source', 'to', 0, 'name'], '')
-            const contentState = newMessageState.getIn(['state', 'contentState'])
+            const receiverName = newMessageState.getIn(
+                ['newMessage', 'source', 'to', 0, 'name'],
+                ''
+            )
+            const contentState = newMessageState.getIn([
+                'state',
+                'contentState',
+            ])
 
             // If there's already text in the contentState, or there's no receiver's name, we don't want to add the
             // mention
@@ -361,16 +449,24 @@ export const prepare = (sourceType: string) => (dispatch: dispatchType, getState
                 return
             }
 
-            const newContentState = ContentState.createFromText(`@${receiverName} `)
-            const newSelectionState = responseUtils.selectionAfter(newContentState.getBlocksAsArray())
+            const newContentState = ContentState.createFromText(
+                `@${receiverName} `
+            )
+            const newSelectionState = responseUtils.selectionAfter(
+                newContentState.getBlocksAsArray()
+            )
 
-            dispatch(setResponseText(fromJS({
-                contentState: newContentState,
-                selectionState: newSelectionState,
-                dirty: true,
-                forceFocus: true,
-                forceUpdate: true
-            })))
+            dispatch(
+                setResponseText(
+                    fromJS({
+                        contentState: newContentState,
+                        selectionState: newSelectionState,
+                        dirty: true,
+                        forceFocus: true,
+                        forceUpdate: true,
+                    })
+                )
+            )
             break
         }
         default: {
@@ -386,27 +482,32 @@ export const prepare = (sourceType: string) => (dispatch: dispatchType, getState
  * @param query
  * @returns {function(*)}
  */
-export const updatePotentialCustomers = (query: string) => (dispatch: dispatchType): Promise<dispatchType> => (
-    axios.post('/api/search/', {
-        type: 'user_channel_email',
-        query
-    })
-        .then((json = {}) => json.data)
-        .then((resp) => {
-            return resp.data.map((result) => {
-                return {
-                    ...result,
-                    ...result.user
-                }
-            })
-        }, (error) => {
-            return dispatch({
-                type: 'ERROR',
-                error,
-                reason: 'Failed to do the search. Please try again...'
-            })
+export const updatePotentialCustomers = (query: string) => (
+    dispatch: dispatchType
+): Promise<dispatchType> =>
+    axios
+        .post('/api/search/', {
+            type: 'user_channel_email',
+            query,
         })
-)
+        .then((json = {}) => json.data)
+        .then(
+            (resp) => {
+                return resp.data.map((result) => {
+                    return {
+                        ...result,
+                        ...result.user,
+                    }
+                })
+            },
+            (error) => {
+                return dispatch({
+                    type: 'ERROR',
+                    error,
+                    reason: 'Failed to do the search. Please try again...',
+                })
+            }
+        )
 
 export const initializeMessageDraft = () => (dispatch: dispatchType) => {
     // get cached ticket reply message
@@ -420,7 +521,15 @@ export const initializeMessageDraft = () => (dispatch: dispatchType) => {
  * Adds the newMessage to the ticket's messages, attaches actions and sets some source elements on the message.
  * Also sets some properties on the ticket.
  */
-export function prepareTicketDataToSend(dispatch: dispatchType, getState: getStateType, ticket: Map<*, *>, newMessage: Map<*, *>, status: ?string, actionsForMacro: ?MacroActionsType, currentUser: currentUserType): ?{ ticket: TicketType, newMessage: NewMessageType } {
+export function prepareTicketDataToSend(
+    dispatch: dispatchType,
+    getState: getStateType,
+    ticket: Map<*, *>,
+    newMessage: Map<*, *>,
+    status: ?string,
+    actionsForMacro: ?MacroActionsType,
+    currentUser: currentUserType
+): ?{ticket: TicketType, newMessage: NewMessageType} {
     const data = toJS(ticket)
     data.newMessage = toJS(newMessage).newMessage
     data.status = status || data.status
@@ -434,13 +543,23 @@ export function prepareTicketDataToSend(dispatch: dispatchType, getState: getSta
 
         // add signature
         // only on email, if not already added
-        if (sourceType === 'email' && !newMessage.getIn(['state', 'signatureAdded'], false)) {
+        if (
+            sourceType === 'email' &&
+            !newMessage.getIn(['state', 'signatureAdded'], false)
+        ) {
             const state = getState()
             const contentState = newMessage.getIn(['state', 'contentState'])
             const signature = selectors.getNewMessageSignature(state)
-            const newContentState = responseUtils.addSignature(contentState, signature)
-            const bodyText = newContentState ? newContentState.getPlainText() : ''
-            const bodyHtml = newContentState ? convertToHTML(newContentState) : ''
+            const newContentState = responseUtils.addSignature(
+                contentState,
+                signature
+            )
+            const bodyText = newContentState
+                ? newContentState.getPlainText()
+                : ''
+            const bodyHtml = newContentState
+                ? convertToHTML(newContentState)
+                : ''
 
             if (bodyText) {
                 data.newMessage.body_text = bodyText
@@ -450,13 +569,20 @@ export function prepareTicketDataToSend(dispatch: dispatchType, getState: getSta
             }
         }
 
-        let lastSameTypeMessage = getLastSameSourceTypeMessage(ticket.get('messages'), sourceType)
+        let lastSameTypeMessage = getLastSameSourceTypeMessage(
+            ticket.get('messages'),
+            sourceType
+        )
 
         if (data.messages.length && lastSameTypeMessage) {
             lastSameTypeMessage = lastSameTypeMessage.toJS()
 
             if (lastSameTypeMessage.source.extra) {
-                data.newMessage.source.extra = _assign({}, data.newMessage.source.extra, lastSameTypeMessage.source.extra)
+                data.newMessage.source.extra = _assign(
+                    {},
+                    data.newMessage.source.extra,
+                    lastSameTypeMessage.source.extra
+                )
             }
         }
 
@@ -466,27 +592,40 @@ export function prepareTicketDataToSend(dispatch: dispatchType, getState: getSta
         }
 
         if (!data.newMessage.sender) {
-            data.newMessage.sender = fromJS(_pick(currentUser.toJS(), ['email', 'id', 'name']))
+            data.newMessage.sender = fromJS(
+                _pick(currentUser.toJS(), ['email', 'id', 'name'])
+            )
         }
 
         // Facebook does not accept comment with just an attachment.
-        if (data.newMessage.channel === 'facebook' && data.newMessage.source.type === 'facebook-comment') {
-            if ((data.newMessage.body_text.length === 0) && (data.newMessage.attachments.length > 0)) {
-                dispatch(notify({
-                    status: 'error',
-                    title: 'Your message cannot be sent',
-                    message: 'You cannot send an attachment without a message in a Facebook comment.'
-                }))
+        if (
+            data.newMessage.channel === 'facebook' &&
+            data.newMessage.source.type === 'facebook-comment'
+        ) {
+            if (
+                data.newMessage.body_text.length === 0 &&
+                data.newMessage.attachments.length > 0
+            ) {
+                dispatch(
+                    notify({
+                        status: 'error',
+                        title: 'Your message cannot be sent',
+                        message:
+                            'You cannot send an attachment without a message in a Facebook comment.',
+                    })
+                )
                 return null
             }
         }
 
         if (actionsForMacro) {
-            data.newMessage.actions = actionsForMacro.map((curAction) => formatAction(
-                curAction,
-                fromJS(getActionTemplate(curAction.get('name'))),
-                {ticket: ticket.toJS(), currentUser: currentUser.toJS()}
-            ))
+            data.newMessage.actions = actionsForMacro.map((curAction) =>
+                formatAction(
+                    curAction,
+                    fromJS(getActionTemplate(curAction.get('name'))),
+                    {ticket: ticket.toJS(), currentUser: currentUser.toJS()}
+                )
+            )
         }
     }
 
@@ -501,7 +640,11 @@ export function prepareTicketDataToSend(dispatch: dispatchType, getState: getSta
     }
 }
 
-export const formatAction = (action: Map<*, *>, template: Map<*, *>, context: {}) => {
+export const formatAction = (
+    action: Map<*, *>,
+    template: Map<*, *>,
+    context: {}
+) => {
     /**
      * Verify if any argument of the action is a `listDict`, i.e. a data structure as such :
      *
@@ -548,7 +691,12 @@ export const formatAction = (action: Map<*, *>, template: Map<*, *>, context: {}
         }
     })
 
-    return action.set('arguments', newArgs).set('status', template.get('execution') === 'back' ? 'pending' : 'success')
+    return action
+        .set('arguments', newArgs)
+        .set(
+            'status',
+            template.get('execution') === 'back' ? 'pending' : 'success'
+        )
 }
 
 /**
@@ -558,7 +706,7 @@ function onMessageSent(dispatch: dispatchType) {
     // reinitialize the current macro
     dispatch({
         type: ticketConstants.APPLY_MACRO,
-        macro: undefined
+        macro: undefined,
     })
 }
 
@@ -569,160 +717,233 @@ export function prepareTicketMessage(
     resetMessage: boolean = true,
     retryMessage: Map<*, *>
 ): thunkActionType {
-    return (dispatch: dispatchType, getState: getStateType): Promise<{messageId: number, messageToSend: NewMessageType}> => new Promise((resolve, reject) => {
-        const {ticket, currentUser, newMessage} = getState()
-        // temporary message id
-        let messageId = getMomentNow()
-        let messageToSend: NewMessageType
+    return (
+        dispatch: dispatchType,
+        getState: getStateType
+    ): Promise<{messageId: number, messageToSend: NewMessageType}> =>
+        new Promise((resolve, reject) => {
+            const {ticket, currentUser, newMessage} = getState()
+            // temporary message id
+            let messageId = getMomentNow()
+            let messageToSend: NewMessageType
 
-        // message already parsed
-        if (!!retryMessage) {
-            messageId = retryMessage.getIn(['_internal', 'id'])
+            // message already parsed
+            if (!!retryMessage) {
+                messageId = retryMessage.getIn(['_internal', 'id'])
 
-            messageToSend = retryMessage.get('originalMessage')
-        } else {
-            const dataToSend = prepareTicketDataToSend(dispatch, getState, ticket, newMessage, status, macroActions, currentUser)
+                messageToSend = retryMessage.get('originalMessage')
+            } else {
+                const dataToSend = prepareTicketDataToSend(
+                    dispatch,
+                    getState,
+                    ticket,
+                    newMessage,
+                    status,
+                    macroActions,
+                    currentUser
+                )
 
-            if (!dataToSend || _isNull(dataToSend)) {
-                dispatch({
-                    type: constants.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR,
-                    reason: 'Message was not sent. Sent data is invalid.',
-                    messageId,
-                })
-                return reject()
+                if (!dataToSend || _isNull(dataToSend)) {
+                    dispatch({
+                        type: constants.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR,
+                        reason: 'Message was not sent. Sent data is invalid.',
+                        messageId,
+                    })
+                    return reject()
+                }
+
+                messageToSend = dataToSend.newMessage
             }
 
-            messageToSend = dataToSend.newMessage
-        }
+            // Execute front-end validations for each action of the message
+            if (messageToSend.actions) {
+                for (const messageAction of messageToSend.actions) {
+                    const template = getActionTemplate(
+                        fromJS(messageAction).get('name')
+                    )
 
-        // Execute front-end validations for each action of the message
-        if (messageToSend.actions) {
-            for (const messageAction of messageToSend.actions) {
-                const template = getActionTemplate(fromJS(messageAction).get('name'))
+                    // We can't just have a fallback in the get, in case ticket.customer.data === null
+                    const customer = (
+                        ticket.getIn(['customer']) || fromJS({})
+                    ).toJS()
+                    if (template && template.validators) {
+                        for (const validator of template.validators) {
+                            const res = validator.validate(customer)
 
-                // We can't just have a fallback in the get, in case ticket.customer.data === null
-                const customer = (ticket.getIn(['customer']) || fromJS({})).toJS()
-                if (template && template.validators) {
-                    for (const validator of template.validators) {
-                        const res = validator.validate(customer)
-
-                        if (!res) {
-                            dispatch({
-                                type: constants.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR,
-                                error: 'Action validation error.',
-                                reason: validator.error,
-                                message: messageToSend,
-                                messageId,
-                            })
-                            return reject()
+                            if (!res) {
+                                dispatch({
+                                    type:
+                                        constants.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR,
+                                    error: 'Action validation error.',
+                                    reason: validator.error,
+                                    message: messageToSend,
+                                    messageId,
+                                })
+                                return reject()
+                            }
                         }
                     }
                 }
             }
-        }
 
-        let state = getState()
+            let state = getState()
 
-        dispatch({
-            type: constants.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START,
-            message: messageToSend,
-            messageId,
-            resetMessage,
-            retry: !!retryMessage,
-            status: status,
-            messages: ticketSelectors.getMessages(state),
-            ticketId: ticket.get('id'),
+            dispatch({
+                type: constants.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START,
+                message: messageToSend,
+                messageId,
+                resetMessage,
+                retry: !!retryMessage,
+                status: status,
+                messages: ticketSelectors.getMessages(state),
+                ticketId: ticket.get('id'),
+            })
+
+            onMessageSent(dispatch)
+
+            // clear the message (since it was just sent) but force the focus on the field
+            dispatch(
+                setResponseText(fromJS({forceFocus: true, forceUpdate: true}))
+            )
+            dispatch(resetReceiversAndSender)
+            resolve({
+                messageId,
+                messageToSend,
+            })
         })
-
-        onMessageSent(dispatch)
-
-        // clear the message (since it was just sent) but force the focus on the field
-        dispatch(setResponseText(fromJS({forceFocus: true, forceUpdate: true})))
-        dispatch(resetReceiversAndSender)
-        resolve({
-            messageId,
-            messageToSend,
-        })
-    })
 }
 
-export function sendTicketMessage(messageId: string, messageToSend: NewMessageType, action: ?string, resetMessage: boolean = true, ticketId: ?string) {
-    return (dispatch: dispatchType, getState: getStateType): Promise<dispatchType | {}> => new Promise((resolve) => {
-        const {ticket} = getState()
-        let promise
+export function sendTicketMessage(
+    messageId: string,
+    messageToSend: NewMessageType,
+    action: ?string,
+    resetMessage: boolean = true,
+    ticketId: ?string
+) {
+    return (
+        dispatch: dispatchType,
+        getState: getStateType
+    ): Promise<dispatchType | {}> =>
+        new Promise((resolve) => {
+            const {ticket} = getState()
+            let promise
 
-        if (action) {
-            promise = axios.put(
-                // $FlowFixMe
-                `/api/tickets/${ticketId || ticket.get('id')}/messages/${messageToSend.id}/${action ? `?action=${action}` : ''}`,
-                messageToSend
-            )
-        } else {
-            promise = axios.post(`/api/tickets/${ticketId || ticket.get('id')}/messages/`, messageToSend)
-        }
-        promise
-            .then((json = {}) => json.data)
-            .then((resp) => {
-                let state = getState()
-                let {ticket: _ticket} = state
+            if (action) {
+                promise = axios.put(
+                    `/api/tickets/${ticketId || ticket.get('id')}/messages/${
+                        // $FlowFixMe
+                        messageToSend.id
+                    }/${action ? `?action=${action}` : ''}`,
+                    messageToSend
+                )
+            } else {
+                promise = axios.post(
+                    `/api/tickets/${ticketId || ticket.get('id')}/messages/`,
+                    messageToSend
+                )
+            }
+            promise
+                .then((json = {}) => json.data)
+                .then(
+                    (resp) => {
+                        let state = getState()
+                        let {ticket: _ticket} = state
 
-                // if we changed the displayed ticket (e.g. submit and close), we don't want to change the state.
-                if (!(resp.ticket_id !== _ticket.get('id') && _ticket.get('id'))) {
-                    const messages = ticketSelectors.getMessages(state)
+                        // if we changed the displayed ticket (e.g. submit and close), we don't want to change the state.
+                        if (
+                            !(
+                                resp.ticket_id !== _ticket.get('id') &&
+                                _ticket.get('id')
+                            )
+                        ) {
+                            const messages = ticketSelectors.getMessages(state)
 
-                    dispatch({
-                        type: constants.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_SUCCESS,
-                        resetMessage,
-                        resp,
-                        messages,
-                        messageId,
-                    })
+                            dispatch({
+                                type:
+                                    constants.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_SUCCESS,
+                                resetMessage,
+                                resp,
+                                messages,
+                                messageId,
+                            })
 
-                    const sourceTypeOfResponse = getSourceTypeOfResponse(messages)
+                            const sourceTypeOfResponse = getSourceTypeOfResponse(
+                                messages
+                            )
 
-                    if ([INSTAGRAM_COMMENT_SOURCE, INSTAGRAM_AD_COMMENT_SOURCE].includes(sourceTypeOfResponse)) {
-                        dispatch(prepare(sourceTypeOfResponse))
+                            if (
+                                [
+                                    INSTAGRAM_COMMENT_SOURCE,
+                                    INSTAGRAM_AD_COMMENT_SOURCE,
+                                ].includes(sourceTypeOfResponse)
+                            ) {
+                                dispatch(prepare(sourceTypeOfResponse))
+                            }
+                        }
+
+                        return Promise.resolve(resp)
+                    },
+                    (error) => {
+                        return dispatch({
+                            type:
+                                constants.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR,
+                            error,
+                            verbose: true,
+                            reason:
+                                'Message was not sent. Please try again in a few moments. If the problem persists contact us.',
+                            message: messageToSend,
+                            messageId,
+                        })
                     }
-                }
-
-                return Promise.resolve(resp)
-            }, (error) => {
-                return dispatch({
-                    type: constants.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR,
-                    error,
-                    verbose: true,
-                    reason: 'Message was not sent. Please try again in a few moments. If the problem persists contact us.',
-                    message: messageToSend,
-                    messageId,
-                })
-            })
-            .then(resolve)
-    })
+                )
+                .then(resolve)
+        })
 }
 
 export function retrySubmitTicketMessage(message: Map<*, *>): thunkActionType {
     return (dispatch: dispatchType): Promise<dispatchType | {}> => {
-        return dispatch(prepareTicketMessage(
-            message.getIn(['_internal', 'status']),
-            null,
-            null,
-            false,
-            message
-        )).then(({messageId, messageToSend}) => {
-            return dispatch(sendTicketMessage(messageId, messageToSend, null, false))
+        return dispatch(
+            prepareTicketMessage(
+                message.getIn(['_internal', 'status']),
+                null,
+                null,
+                false,
+                message
+            )
+        ).then(({messageId, messageToSend}) => {
+            return dispatch(
+                sendTicketMessage(messageId, messageToSend, null, false)
+            )
         })
     }
 }
 
-export function submitTicket(ticket: Map<*, *>, status: ?string, macroActions: ?MacroActionsType, currentUser: currentUserType, resetMessage: boolean = true) {
-    return (dispatch: dispatchType, getState: getStateType): ?Promise<dispatchType> => {
+export function submitTicket(
+    ticket: Map<*, *>,
+    status: ?string,
+    macroActions: ?MacroActionsType,
+    currentUser: currentUserType,
+    resetMessage: boolean = true
+) {
+    return (
+        dispatch: dispatchType,
+        getState: getStateType
+    ): ?Promise<dispatchType> => {
         const {newMessage} = getState()
 
         dispatch({
-            type: constants.NEW_MESSAGE_SUBMIT_TICKET_START
+            type: constants.NEW_MESSAGE_SUBMIT_TICKET_START,
         })
 
-        const dataToSend = prepareTicketDataToSend(dispatch, getState, ticket, newMessage, status, macroActions, currentUser)
+        const dataToSend = prepareTicketDataToSend(
+            dispatch,
+            getState,
+            ticket,
+            newMessage,
+            status,
+            macroActions,
+            currentUser
+        )
 
         // in case of,
         // error is dispatched by prepareTicketDataToSend
@@ -733,44 +954,49 @@ export function submitTicket(ticket: Map<*, *>, status: ?string, macroActions: ?
         const ticketToSend = dataToSend.ticket
         ticketToSend.messages.push(dataToSend.newMessage)
 
-        return axios.post('/api/tickets/', ticketToSend)
+        return axios
+            .post('/api/tickets/', ticketToSend)
             .then((json = {}) => json.data)
-            .then((resp) => {
-                onMessageSent(dispatch)
+            .then(
+                (resp) => {
+                    onMessageSent(dispatch)
 
-                browserHistory.push(`/app/ticket/${resp.id}`)
+                    browserHistory.push(`/app/ticket/${resp.id}`)
 
-                const state = getState()
-                const {ticket} = state
+                    const state = getState()
+                    const {ticket} = state
 
-                if (resp.id !== ticket.get('id') && ticket.get('id')) {
-                    return Promise.resolve({resp})
+                    if (resp.id !== ticket.get('id') && ticket.get('id')) {
+                        return Promise.resolve({resp})
+                    }
+
+                    // dispatch for ticket reducer branch
+                    dispatch({
+                        type: ticketConstants.SUBMIT_TICKET_SUCCESS,
+                        resp,
+                    })
+
+                    // dispatch for newMessage reducer branch
+                    dispatch({
+                        type: constants.NEW_MESSAGE_SUBMIT_TICKET_SUCCESS,
+                        resetMessage,
+                        resp,
+                    })
+
+                    dispatch(resetReceiversAndSender)
+
+                    return Promise.resolve(resp)
+                },
+                (error) => {
+                    return dispatch({
+                        type: constants.NEW_MESSAGE_SUBMIT_TICKET_ERROR,
+                        error,
+                        verbose: true,
+                        reason:
+                            'Ticket was not created. Please try again in a few moments. If the problem persists contact us',
+                    })
                 }
-
-                // dispatch for ticket reducer branch
-                dispatch({
-                    type: ticketConstants.SUBMIT_TICKET_SUCCESS,
-                    resp
-                })
-
-                // dispatch for newMessage reducer branch
-                dispatch({
-                    type: constants.NEW_MESSAGE_SUBMIT_TICKET_SUCCESS,
-                    resetMessage,
-                    resp,
-                })
-
-                dispatch(resetReceiversAndSender)
-
-                return Promise.resolve(resp)
-            }, (error) => {
-                return dispatch({
-                    type: constants.NEW_MESSAGE_SUBMIT_TICKET_ERROR,
-                    error,
-                    verbose: true,
-                    reason: 'Ticket was not created. Please try again in a few moments. If the problem persists contact us'
-                })
-            })
+            )
     }
 }
 
@@ -784,18 +1010,26 @@ export function resetFromTicket(ticket: Map<*, *>) {
     }
 }
 
-export function resetReceiversAndSender(dispatch: dispatchType, getState: getStateType): dispatchType {
+export function resetReceiversAndSender(
+    dispatch: dispatchType,
+    getState: getStateType
+): dispatchType {
     const state = getState()
     const {ticket} = state
     const type = selectors.getNewMessageType(state)
     // set receivers according to last sent message
-    const receivers = guessReceiversFromTicket(ticket, type, integrationSelectors.getChannelsByType(type)(state))
+    const receivers = guessReceiversFromTicket(
+        ticket,
+        type,
+        integrationSelectors.getChannelsByType(type)(state)
+    )
     const receiversValues = receiversValueFromState(receivers, type)
     dispatch(setReceivers(receiversStateFromValue(receiversValues, type)))
     // set sender according to last sent message
     return dispatch(setSender())
 }
 
-export const newMessageResetFromMessage = createAction<typeof constants.NEW_MESSAGE_RESET_FROM_MESSAGE, {contentState: ContentStateType, newMessage: NewMessageType}>(
-    constants.NEW_MESSAGE_RESET_FROM_MESSAGE
-)
+export const newMessageResetFromMessage = createAction<
+    typeof constants.NEW_MESSAGE_RESET_FROM_MESSAGE,
+    {contentState: ContentStateType, newMessage: NewMessageType}
+>(constants.NEW_MESSAGE_RESET_FROM_MESSAGE)

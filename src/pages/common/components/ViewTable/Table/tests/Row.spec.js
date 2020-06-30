@@ -56,7 +56,7 @@ describe('ViewTable::Table::Row', () => {
                     agents: fromJS({
                         all: agentsFixtures.agents,
                         locations: agentsFixtures.locations,
-                    })
+                    }),
                 })}
                 item={fromJS(ticketFixtures.ticket).set('id', 1)}
             />

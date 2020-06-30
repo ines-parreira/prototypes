@@ -8,20 +8,22 @@ import {FACEBOOK_INTEGRATION_TYPE} from '../../../../constants/integration'
 
 import css from './CustomInstallationCard.less'
 
-
 type Props = {
     integrationType: string,
     description: string | Node,
-    code: string
+    code: string,
 }
 
 type State = {
-    isCopied: boolean
+    isCopied: boolean,
 }
 
-export default class CustomInstallationCard extends React.Component<Props, State> {
+export default class CustomInstallationCard extends React.Component<
+    Props,
+    State
+> {
     state = {
-        isCopied: false
+        isCopied: false,
     }
 
     clearIsCopiedTimeout: ?TimeoutID = null
@@ -64,21 +66,18 @@ export default class CustomInstallationCard extends React.Component<Props, State
                         <div className={css['logo-wrapper']}>
                             <img
                                 alt="javascript-logo"
-                                src={`${window.GORGIAS_ASSETS_URL || ''}/static/private/img/integrations/javascript.png`}
+                                src={`${
+                                    window.GORGIAS_ASSETS_URL || ''
+                                }/static/private/img/integrations/javascript.png`}
                             />
                         </div>
                         <div>
                             <h3>Javascript</h3>
-                            <p>
-                                {description}
-                            </p>
+                            <p>{description}</p>
                         </div>
                     </div>
                     <Alert className={css['code-wrapper']}>
-                        <pre
-                            id="code-snippet"
-                            className={css.code}
-                        >
+                        <pre id="code-snippet" className={css.code}>
                             {code}
                         </pre>
                     </Alert>
@@ -87,12 +86,12 @@ export default class CustomInstallationCard extends React.Component<Props, State
                     id="copy-code-snippet"
                     type="button"
                     color="info"
-                    className={classnames(css.copy, {'mr-4': integrationType === FACEBOOK_INTEGRATION_TYPE})}
+                    className={classnames(css.copy, {
+                        'mr-4': integrationType === FACEBOOK_INTEGRATION_TYPE,
+                    })}
                     data-clipboard-target="#code-snippet"
                 >
-                    <i className="material-icons-outlined mr-2">
-                        file_copy
-                    </i>
+                    <i className="material-icons-outlined mr-2">file_copy</i>
                     {this.state.isCopied ? 'Copied!' : 'Copy'}
                 </Button>
             </Card>

@@ -19,18 +19,21 @@ type Props = {
     forwardingEmailAddress: string,
     sendVerificationEmail: () => Promise<void>,
     notify: ({status: string, message: string}) => Promise<void>,
-    resendAccountVerificationEmail: () => Promise<void>
+    resendAccountVerificationEmail: () => Promise<void>,
 }
 
 type State = {
     token: string,
-    loading: boolean
+    loading: boolean,
 }
 
-export class EmailIntegrationCreateVerification extends React.Component<Props, State> {
+export class EmailIntegrationCreateVerification extends React.Component<
+    Props,
+    State
+> {
     state = {
         token: '',
-        loading: false
+        loading: false,
     }
 
     componentWillMount() {
@@ -42,12 +45,22 @@ export class EmailIntegrationCreateVerification extends React.Component<Props, S
     }
 
     componentWillReceiveProps(nextProps: Props) {
-        if (!this.props.integration.get('id') && nextProps.integration.get('id')) {
+        if (
+            !this.props.integration.get('id') &&
+            nextProps.integration.get('id')
+        ) {
             socketManager.join('integration', nextProps.integration.get('id'))
         }
 
-        if (!this.props.integration.getIn(['meta', 'verified']) && nextProps.integration.getIn(['meta', 'verified'])) {
-            browserHistory.push(`/app/settings/integrations/email/${nextProps.integration.get('id')}`)
+        if (
+            !this.props.integration.getIn(['meta', 'verified']) &&
+            nextProps.integration.getIn(['meta', 'verified'])
+        ) {
+            browserHistory.push(
+                `/app/settings/integrations/email/${nextProps.integration.get(
+                    'id'
+                )}`
+            )
         }
     }
 
@@ -65,25 +78,33 @@ export class EmailIntegrationCreateVerification extends React.Component<Props, S
     }
 
     _renderInstructions = () => {
-        const {integration, deleteIntegration, forwardingEmailAddress} = this.props
+        const {
+            integration,
+            deleteIntegration,
+            forwardingEmailAddress,
+        } = this.props
         const isLoading = this.state.loading
 
         return (
             <div>
-                <Alert
-                    color="info"
-                    className="mb-4"
-                >
-                    <i className="material-icons md-spin mr-2">
-                        autorenew
-                    </i>
-                  We're waiting to receive your verification email on <strong>{forwardingEmailAddress}</strong>.
+                <Alert color="info" className="mb-4">
+                    <i className="material-icons md-spin mr-2">autorenew</i>
+                    We're waiting to receive your verification email on{' '}
+                    <strong>{forwardingEmailAddress}</strong>.
                 </Alert>
                 <p>
-                    If you haven't set up the forwarding yet, you'll find the instructions{' '}
-                    <Link to={`/app/settings/integrations/email/${integration.get('id')}/forwarding`}>there</Link>.<br/>
-                    If you have setup forwarding after having received the verification email, click on the button{' '}
-                    below to re-send it.
+                    If you haven't set up the forwarding yet, you'll find the
+                    instructions{' '}
+                    <Link
+                        to={`/app/settings/integrations/email/${integration.get(
+                            'id'
+                        )}/forwarding`}
+                    >
+                        there
+                    </Link>
+                    .<br />
+                    If you have setup forwarding after having received the
+                    verification email, click on the button below to re-send it.
                 </p>
                 <Button
                     type="button"
@@ -93,7 +114,8 @@ export class EmailIntegrationCreateVerification extends React.Component<Props, S
                     })}
                     onClick={this._sendVerificationEmail}
                 >
-                    <i className="material-icons">mail</i>{' '}Re-send verification email
+                    <i className="material-icons">mail</i> Re-send verification
+                    email
                 </Button>
                 <ConfirmButton
                     className="float-right"
@@ -101,9 +123,7 @@ export class EmailIntegrationCreateVerification extends React.Component<Props, S
                     confirm={() => deleteIntegration(integration, 'email')}
                     content="Are you sure you want to delete this integration?"
                 >
-                    <i className="material-icons mr-1 text-danger">
-                        delete
-                    </i>
+                    <i className="material-icons mr-1 text-danger">delete</i>
                     Delete email address
                 </ConfirmButton>
             </div>
@@ -115,14 +135,11 @@ export class EmailIntegrationCreateVerification extends React.Component<Props, S
 
         return (
             <div>
-
-                <Alert
-                    color="warning"
-                    className="mb-4"
-                >
-                    In order to verify your base email integration, you need to verify your own email address. Please
-                    check your inbox, you should have received a verification email from us. If you did not, you can
-                    re-send this email by{' '}
+                <Alert color="warning" className="mb-4">
+                    In order to verify your base email integration, you need to
+                    verify your own email address. Please check your inbox, you
+                    should have received a verification email from us. If you
+                    did not, you can re-send this email by{' '}
                     <Button
                         color="link"
                         className="p-0"
@@ -141,52 +158,58 @@ export class EmailIntegrationCreateVerification extends React.Component<Props, S
         const {integration} = this.props
 
         const address = integration.getIn(['meta', 'address'], '')
-        const isBaseEmailIntegration = address.endsWith(window.EMAIL_FORWARDING_DOMAIN)
+        const isBaseEmailIntegration = address.endsWith(
+            window.EMAIL_FORWARDING_DOMAIN
+        )
 
         return (
             <div className="full-width">
-                <PageHeader title={(
-                    <Breadcrumb>
-                        <BreadcrumbItem>
-                            <Link to="/app/settings/integrations">Integrations</Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            <Link to="/app/settings/integrations/email">Email</Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem active>
-                            {integration.get('name')}{' '}
-                            <span className="text-faded">
-                                {integration.getIn(['meta', 'address'])}
-                            </span>
-                        </BreadcrumbItem>
-                    </Breadcrumb>
-                )}/>
+                <PageHeader
+                    title={
+                        <Breadcrumb>
+                            <BreadcrumbItem>
+                                <Link to="/app/settings/integrations">
+                                    Integrations
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                <Link to="/app/settings/integrations/email">
+                                    Email
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem active>
+                                {integration.get('name')}{' '}
+                                <span className="text-faded">
+                                    {integration.getIn(['meta', 'address'])}
+                                </span>
+                            </BreadcrumbItem>
+                        </Breadcrumb>
+                    }
+                />
 
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <Container fluid className="page-container">
                     <h1>
                         <i className="material-icons"></i>
                         Verification in progress...
                     </h1>
 
-                    {
-                        isBaseEmailIntegration
-                            ? this._renderBaseIntegrationInstructions()
-                            : this._renderInstructions()
-                    }
+                    {isBaseEmailIntegration
+                        ? this._renderBaseIntegrationInstructions()
+                        : this._renderInstructions()}
                 </Container>
             </div>
         )
     }
 }
 
-export default connect((state) => ({
-    forwardingEmailAddress: getForwardingEmailAddress(state)
-}), {
-    sendVerificationEmail: integrationActions.sendVerificationEmail,
-    notify: notificationActions.notify,
-    deleteIntegration: integrationActions.deleteIntegration,
-    resendAccountVerificationEmail: accountActions.resendVerificationEmail,
-})(EmailIntegrationCreateVerification)
+export default connect(
+    (state) => ({
+        forwardingEmailAddress: getForwardingEmailAddress(state),
+    }),
+    {
+        sendVerificationEmail: integrationActions.sendVerificationEmail,
+        notify: notificationActions.notify,
+        deleteIntegration: integrationActions.deleteIntegration,
+        resendAccountVerificationEmail: accountActions.resendVerificationEmail,
+    }
+)(EmailIntegrationCreateVerification)

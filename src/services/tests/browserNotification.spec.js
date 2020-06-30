@@ -19,7 +19,7 @@ describe('services', () => {
                 browserNotification.newMessage({
                     title: null,
                     body: null,
-                    ticketId: null
+                    ticketId: null,
                 })
                 expect(PushJS.getAll()).toMatchSnapshot()
             })
@@ -27,7 +27,7 @@ describe('services', () => {
             it('should create a browser notification with default values (invalid values)', () => {
                 browserNotification.newMessage({
                     title: 1234,
-                    body: 1234
+                    body: 1234,
                 })
                 expect(PushJS.getAll()).toMatchSnapshot()
             })
@@ -36,7 +36,7 @@ describe('services', () => {
                 browserNotification.newMessage({
                     title: 'title',
                     body: 'body',
-                    ticketId: 12
+                    ticketId: 12,
                 })
                 expect(PushJS.getAll()).toMatchSnapshot()
             })

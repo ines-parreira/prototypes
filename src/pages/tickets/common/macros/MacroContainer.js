@@ -17,10 +17,9 @@ import MacroModal from './components/MacroModal'
 
 import {getDefaultSelectedMacroId, getCurrentMacro} from './utils'
 
-
 type Props = {
-    activeView: Map<*,*>,
-    agents: Map<*,*>,
+    activeView: Map<*, *>,
+    agents: Map<*, *>,
     actions: {
         macro: typeof MacroActions,
         tickets: typeof TicketsActions,
@@ -29,8 +28,8 @@ type Props = {
     closeModal: () => void,
     isCreatingMacro: boolean,
     toggleCreateMacro?: (T?: boolean) => Promise<*>,
-     // macro to select when modal opens, selects first macro of list otherwise
-    selectedMacro: Map<*,*>,
+    // macro to select when modal opens, selects first macro of list otherwise
+    selectedMacro: Map<*, *>,
     selectedItemsIds: List<*>,
 
     disableExternalActions?: boolean,
@@ -43,7 +42,7 @@ type State = {
     search: string,
     page: number,
     totalPages: number,
-    macros: Map<*,*>,
+    macros: Map<*, *>,
     selectedMacroId: ?number,
     firstLoad: boolean,
 }
@@ -70,10 +69,12 @@ class MacroContainer extends React.Component<Props, State> {
                 const currentMacro = getCurrentMacro(
                     this.state.macros,
                     this.props.selectedMacro.get('id'),
-                    this.props.isCreatingMacro,
+                    this.props.isCreatingMacro
                 )
 
-                this.setState({selectedMacroId: this.props.selectedMacro.get('id')})
+                this.setState({
+                    selectedMacroId: this.props.selectedMacro.get('id'),
+                })
                 // selectedMacro is not in page=1 macro list
                 if (currentMacro.isEmpty()) {
                     // search for it
@@ -84,23 +85,36 @@ class MacroContainer extends React.Component<Props, State> {
     }
 
     _loadMacros = ({search = '', page = 1} = {}) => {
-        return this.props.actions.macro.fetchMacros({
-            currentMacros: this.state.macros,
-            currentPage: this.state.page,
-            search,
-            page,
-        }, 'name', 'asc').then((res) => {
-            const selectedMacroId = getDefaultSelectedMacroId(res.macros, this.state.selectedMacroId, this.props.isCreatingMacro)
-            return new Promise((resolve) => {
-                this.setState({
-                    selectedMacroId,
-                    macros: res.macros,
-                    page: res.page,
-                    totalPages: res.totalPages,
-                    firstLoad: false,
-                }, resolve)
+        return this.props.actions.macro
+            .fetchMacros(
+                {
+                    currentMacros: this.state.macros,
+                    currentPage: this.state.page,
+                    search,
+                    page,
+                },
+                'name',
+                'asc'
+            )
+            .then((res) => {
+                const selectedMacroId = getDefaultSelectedMacroId(
+                    res.macros,
+                    this.state.selectedMacroId,
+                    this.props.isCreatingMacro
+                )
+                return new Promise((resolve) => {
+                    this.setState(
+                        {
+                            selectedMacroId,
+                            macros: res.macros,
+                            page: res.page,
+                            totalPages: res.totalPages,
+                            firstLoad: false,
+                        },
+                        resolve
+                    )
+                })
             })
-        })
     }
 
     _handleClickItem = (macroId) => {
@@ -116,11 +130,7 @@ class MacroContainer extends React.Component<Props, State> {
 
     _onSearch = (search: string = '', forceSearch: boolean = false) => {
         this.setState({search})
-        if (
-            forceSearch
-            || !search.trim().length
-            || search.trim().length > 1
-        ) {
+        if (forceSearch || !search.trim().length || search.trim().length > 1) {
             this._debounceLoadMacros({search, page: 1})
         }
     }
@@ -140,7 +150,11 @@ class MacroContainer extends React.Component<Props, State> {
             getViewCount,
         } = this.props
 
-        const currentMacro = getCurrentMacro(this.state.macros, this.state.selectedMacroId, isCreatingMacro)
+        const currentMacro = getCurrentMacro(
+            this.state.macros,
+            this.state.selectedMacroId,
+            isCreatingMacro
+        )
 
         return (
             <MacroModal
@@ -170,12 +184,13 @@ class MacroContainer extends React.Component<Props, State> {
     }
 }
 
-
 function mapStateToProps(state) {
     return {
         agents: getAgents(state),
-        allViewItemsSelected: viewsSelectors.areAllActiveViewItemsSelected(state),
-        getViewCount: viewsSelectors.makeGetViewCount(state)
+        allViewItemsSelected: viewsSelectors.areAllActiveViewItemsSelected(
+            state
+        ),
+        getViewCount: viewsSelectors.makeGetViewCount(state),
     }
 }
 
@@ -185,7 +200,7 @@ function mapDispatchToProps(dispatch) {
             views: bindActionCreators(ViewsActions, dispatch),
             tickets: bindActionCreators(TicketsActions, dispatch),
             macro: bindActionCreators(MacroActions, dispatch),
-        }
+        },
     }
 }
 

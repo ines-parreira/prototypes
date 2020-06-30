@@ -11,12 +11,14 @@ export default class AircallIntegrationListItem extends React.Component {
     }
 
     state = {
-        isDeleting: false
+        isDeleting: false,
     }
 
     _toggle = (value) => {
         const integrationId = this.props.integration.get('id')
-        return value ? this.props.activate(integrationId) : this.props.deactivate(integrationId)
+        return value
+            ? this.props.activate(integrationId)
+            : this.props.deactivate(integrationId)
     }
 
     render() {
@@ -34,10 +36,7 @@ export default class AircallIntegrationListItem extends React.Component {
                     </div>
                 </td>
                 <td className="smallest align-middle">
-                    <ToggleButton
-                        value={!isDisabled}
-                        onChange={this._toggle}
-                    />
+                    <ToggleButton value={!isDisabled} onChange={this._toggle} />
                 </td>
             </tr>
         )

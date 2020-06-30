@@ -6,12 +6,11 @@ import {
     CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
     CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
     CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
-    CHAT_AUTO_RESPONDER_REPLY_IN_HOURS
+    CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
 } from '../../../../../../config/integrations'
 import {SMOOCH_LANGUAGE_DEFAULT} from '../../../../../../config/integrations/smooch'
 import {SMOOCH_INTEGRATION_TYPE} from '../../../../../../constants/integration'
 import {SmoochIntegrationPreferences} from '../SmoochIntegrationPreferences'
-
 
 describe('<SmoochIntegrationPreferences/>', () => {
     describe('componentWillMount()', () => {
@@ -39,9 +38,9 @@ describe('<SmoochIntegrationPreferences/>', () => {
                         auto_responder: {
                             enabled: true,
                             reply: CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
-                        }
-                    }
-                }
+                        },
+                    },
+                },
             })
 
             const component = shallow(
@@ -81,9 +80,9 @@ describe('<SmoochIntegrationPreferences/>', () => {
                         auto_responder: {
                             enabled: true,
                             reply: CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
-                        }
-                    }
-                }
+                        },
+                    },
+                },
             })
 
             const component = shallow(
@@ -111,9 +110,9 @@ describe('<SmoochIntegrationPreferences/>', () => {
                         auto_responder: {
                             enabled: true,
                             reply: CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
-                        }
-                    }
-                }
+                        },
+                    },
+                },
             })
 
             const component = shallow(
@@ -138,11 +137,17 @@ describe('<SmoochIntegrationPreferences/>', () => {
                 />
             )
 
-            expect(component.state('autoResponderEnabled')).toEqual(CHAT_AUTO_RESPONDER_ENABLED_DEFAULT)
+            expect(component.state('autoResponderEnabled')).toEqual(
+                CHAT_AUTO_RESPONDER_ENABLED_DEFAULT
+            )
 
-            component.instance()._setAutoResponderEnabled(!CHAT_AUTO_RESPONDER_ENABLED_DEFAULT)
+            component
+                .instance()
+                ._setAutoResponderEnabled(!CHAT_AUTO_RESPONDER_ENABLED_DEFAULT)
 
-            expect(component.state('autoResponderEnabled')).toEqual(!CHAT_AUTO_RESPONDER_ENABLED_DEFAULT)
+            expect(component.state('autoResponderEnabled')).toEqual(
+                !CHAT_AUTO_RESPONDER_ENABLED_DEFAULT
+            )
         })
     })
 
@@ -155,11 +160,17 @@ describe('<SmoochIntegrationPreferences/>', () => {
                 />
             )
 
-            expect(component.state('autoResponderReply')).toEqual(CHAT_AUTO_RESPONDER_REPLY_DEFAULT)
+            expect(component.state('autoResponderReply')).toEqual(
+                CHAT_AUTO_RESPONDER_REPLY_DEFAULT
+            )
 
-            component.instance()._setAutoResponderReply(CHAT_AUTO_RESPONDER_REPLY_IN_DAY)
+            component
+                .instance()
+                ._setAutoResponderReply(CHAT_AUTO_RESPONDER_REPLY_IN_DAY)
 
-            expect(component.state('autoResponderReply')).toEqual(CHAT_AUTO_RESPONDER_REPLY_IN_DAY)
+            expect(component.state('autoResponderReply')).toEqual(
+                CHAT_AUTO_RESPONDER_REPLY_IN_DAY
+            )
         })
     })
 
@@ -172,7 +183,10 @@ describe('<SmoochIntegrationPreferences/>', () => {
                 />
             )
 
-            const submitPreferencesSpy = jest.spyOn(component.instance(), '_submitPreferences')
+            const submitPreferencesSpy = jest.spyOn(
+                component.instance(),
+                '_submitPreferences'
+            )
             component.instance().forceUpdate()
             component.find('form').simulate('submit')
 
@@ -189,19 +203,23 @@ describe('<SmoochIntegrationPreferences/>', () => {
                 />
             )
 
-            await component.instance()._submitPreferences({preventDefault: () => {}})
+            await component
+                .instance()
+                ._submitPreferences({preventDefault: () => {}})
 
-            expect(updateOrCreateIntegration).toHaveBeenCalledWith(fromJS({
-                id: undefined,
-                meta: {
-                    preferences: {
-                        auto_responder: {
-                            enabled: CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
-                            reply: CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
-                        }
-                    }
-                }
-            }))
+            expect(updateOrCreateIntegration).toHaveBeenCalledWith(
+                fromJS({
+                    id: undefined,
+                    meta: {
+                        preferences: {
+                            auto_responder: {
+                                enabled: CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
+                                reply: CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
+                            },
+                        },
+                    },
+                })
+            )
         })
 
         it('should submit the form with loaded values', async () => {
@@ -216,9 +234,9 @@ describe('<SmoochIntegrationPreferences/>', () => {
                         auto_responder: {
                             enabled: true,
                             reply: CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
-                        }
-                    }
-                }
+                        },
+                    },
+                },
             })
 
             const component = shallow(
@@ -228,16 +246,25 @@ describe('<SmoochIntegrationPreferences/>', () => {
                 />
             )
 
-            component.setState({autoResponderReply: CHAT_AUTO_RESPONDER_REPLY_IN_DAY})
+            component.setState({
+                autoResponderReply: CHAT_AUTO_RESPONDER_REPLY_IN_DAY,
+            })
 
-            await component.instance()._submitPreferences({preventDefault: () => {}})
+            await component
+                .instance()
+                ._submitPreferences({preventDefault: () => {}})
 
-            expect(updateOrCreateIntegration).toHaveBeenCalledWith(fromJS({
-                id: integration.get('id'),
-                meta: integration
-                    .get('meta')
-                    .setIn(['preferences', 'auto_responder', 'reply'], CHAT_AUTO_RESPONDER_REPLY_IN_DAY)
-            }))
+            expect(updateOrCreateIntegration).toHaveBeenCalledWith(
+                fromJS({
+                    id: integration.get('id'),
+                    meta: integration
+                        .get('meta')
+                        .setIn(
+                            ['preferences', 'auto_responder', 'reply'],
+                            CHAT_AUTO_RESPONDER_REPLY_IN_DAY
+                        ),
+                })
+            )
         })
     })
 
@@ -249,7 +276,7 @@ describe('<SmoochIntegrationPreferences/>', () => {
                     integration={fromJS({
                         id: 2,
                         type: SMOOCH_INTEGRATION_TYPE,
-                        meta: {language: SMOOCH_LANGUAGE_DEFAULT}
+                        meta: {language: SMOOCH_LANGUAGE_DEFAULT},
                     })}
                 />
             )
@@ -264,7 +291,7 @@ describe('<SmoochIntegrationPreferences/>', () => {
                     integration={fromJS({
                         id: 2,
                         type: SMOOCH_INTEGRATION_TYPE,
-                        meta: {language: SMOOCH_LANGUAGE_DEFAULT}
+                        meta: {language: SMOOCH_LANGUAGE_DEFAULT},
                     })}
                 />
             )

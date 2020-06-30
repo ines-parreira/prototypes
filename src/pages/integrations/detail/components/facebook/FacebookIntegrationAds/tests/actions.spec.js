@@ -24,10 +24,10 @@ describe('FacebookIntegrationInstagramAds actions', () => {
                     ads: {
                         postid1: {
                             name: 'ad 1',
-                            is_active: true
-                        }
-                    }
-                }
+                            is_active: true,
+                        },
+                    },
+                },
             }
 
             mockServer
@@ -44,7 +44,7 @@ describe('FacebookIntegrationInstagramAds actions', () => {
             const body = {
                 integration_id: 1,
                 ad_id: 'postid1',
-                is_active: true
+                is_active: true,
             }
 
             mockServer
@@ -59,7 +59,7 @@ describe('FacebookIntegrationInstagramAds actions', () => {
             const body = {
                 integration_id: 1,
                 ad_id: 'postid1',
-                is_active: false
+                is_active: false,
             }
 
             mockServer

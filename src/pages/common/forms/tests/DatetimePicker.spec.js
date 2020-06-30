@@ -4,26 +4,22 @@ import {shallow} from 'enzyme'
 import DatetimePicker from '../DatetimePicker'
 
 describe('DatetimePicker component', () => {
-    it('should display a placeholder when there\'s no data', () => {
-        const component = shallow(
-            <DatetimePicker datetime=""/>
-        )
+    it("should display a placeholder when there's no data", () => {
+        const component = shallow(<DatetimePicker datetime="" />)
 
         expect(component).toMatchSnapshot()
     })
 
     it('should display the passed data', () => {
         const component = shallow(
-            <DatetimePicker datetime="2012-03-21T08:32:12.045Z"/>
+            <DatetimePicker datetime="2012-03-21T08:32:12.045Z" />
         )
 
         expect(component).toMatchSnapshot()
     })
 
     it('should ignore invalid passed data', () => {
-        const component = shallow(
-            <DatetimePicker datetime="7d"/>
-        )
+        const component = shallow(<DatetimePicker datetime="7d" />)
 
         expect(component).toMatchSnapshot()
     })
@@ -32,16 +28,13 @@ describe('DatetimePicker component', () => {
         const datetime = '2012-03-21T08:32:12.045Z'
         const spy = jest.fn()
         const wrapper = shallow(
-            <DatetimePicker
-                datetime={datetime}
-                onChange={spy}
-            />
+            <DatetimePicker datetime={datetime} onChange={spy} />
         )
 
         const picker = {
             startDate: {
-                toISOString: () => datetime
-            }
+                toISOString: () => datetime,
+            },
         }
 
         const component = wrapper.instance()

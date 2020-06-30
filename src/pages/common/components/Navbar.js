@@ -6,7 +6,13 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import classnames from 'classnames'
 import _capitalize from 'lodash/capitalize'
-import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap'
+import {
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    UncontrolledDropdown,
+} from 'reactstrap'
 
 import shortcutManager from '../../../services/shortcutManager'
 
@@ -21,7 +27,6 @@ import './Navbar.less'
 import * as segmentTracker from '../../../store/middlewares/segmentTracker'
 
 import Avatar from './Avatar/Avatar'
-
 
 type NavLinkProps = {
     to: string,
@@ -52,50 +57,58 @@ class NavLink extends React.Component<NavLinkProps> {
     }
 }
 
-const mainMenu = [{
-    url: '/app/tickets',
-    label: 'Tickets',
-    icon: 'question_answer',
-}, {
-    url: '/app/customers',
-    label: 'Customers',
-    icon: 'people',
-}, {
-    url: '/app/stats',
-    label: 'Statistics',
-    className: 'd-none d-md-block',
-    icon: 'bar_chart',
-}, {
-    url: '/app/settings',
-    label: 'Settings',
-    icon: 'settings',
-}]
+const mainMenu = [
+    {
+        url: '/app/tickets',
+        label: 'Tickets',
+        icon: 'question_answer',
+    },
+    {
+        url: '/app/customers',
+        label: 'Customers',
+        icon: 'people',
+    },
+    {
+        url: '/app/stats',
+        label: 'Statistics',
+        className: 'd-none d-md-block',
+        icon: 'bar_chart',
+    },
+    {
+        url: '/app/settings',
+        label: 'Settings',
+        icon: 'settings',
+    },
+]
 
 type NavbarProps = {
-    currentUser: Map<*,*>,
-    currentUserPreferences: Map<*,*>,
+    currentUser: Map<*, *>,
+    currentUserPreferences: Map<*, *>,
     available: boolean,
     activeContent: ?string,
     children: ?Array<Node> | ?Node,
     submitSetting: (Object) => Promise<*>,
     isOpenedPanel: boolean,
-    closePanels: typeof layoutActions.closePanels
+    closePanels: typeof layoutActions.closePanels,
 }
 
 type NavbarState = {
     bottomDropdownOpen: boolean,
-    title: ?string
+    title: ?string,
 }
 
-@connect((state) => ({
-    currentUser: currentUserSelectors.getCurrentUser(state),
-    currentUserPreferences: currentUserSelectors.getPreferences(state),
-    available: currentUserSelectors.isAvailable(state),
-    isOpenedPanel: layoutSelectors.isOpenedPanel('navbar')(state),
-}), {
-    submitSetting: currentUserActions.submitSetting,
-    closePanels: layoutActions.closePanels,
-})
+@connect(
+    (state) => ({
+        currentUser: currentUserSelectors.getCurrentUser(state),
+        currentUserPreferences: currentUserSelectors.getPreferences(state),
+        available: currentUserSelectors.isAvailable(state),
+        isOpenedPanel: layoutSelectors.isOpenedPanel('navbar')(state),
+    }),
+    {
+        submitSetting: currentUserActions.submitSetting,
+        closePanels: layoutActions.closePanels,
+    }
+)
 export default class Navbar extends React.Component<NavbarProps, NavbarState> {
     static childContextTypes = {
         closePanel: PropTypes.func.isRequired,
@@ -103,7 +116,7 @@ export default class Navbar extends React.Component<NavbarProps, NavbarState> {
 
     state = {
         bottomDropdownOpen: false,
-        title: null
+        title: null,
     }
 
     getChildContext() {
@@ -114,7 +127,9 @@ export default class Navbar extends React.Component<NavbarProps, NavbarState> {
 
     componentWillMount() {
         this.setState({
-            title: this.props.activeContent ? _capitalize(this.props.activeContent) : null
+            title: this.props.activeContent
+                ? _capitalize(this.props.activeContent)
+                : null,
         })
     }
 
@@ -124,14 +139,16 @@ export default class Navbar extends React.Component<NavbarProps, NavbarState> {
 
     _toggleBottomDropdown = () => {
         this.setState((prevState) => ({
-            bottomDropdownOpen: !prevState.bottomDropdownOpen
+            bottomDropdownOpen: !prevState.bottomDropdownOpen,
         }))
     }
 
     _updateAvailableForChatPreference = () => {
         const {currentUserPreferences, submitSetting} = this.props
-        const newPreferences = currentUserPreferences
-            .updateIn(['data', 'available'], (status) => !status)
+        const newPreferences = currentUserPreferences.updateIn(
+            ['data', 'available'],
+            (status) => !status
+        )
         return submitSetting(newPreferences.toJS())
     }
 
@@ -144,42 +161,36 @@ export default class Navbar extends React.Component<NavbarProps, NavbarState> {
                     'hidden-panel': !this.props.isOpenedPanel,
                 })}
             >
-                <UncontrolledDropdown
-                    className="nav-dropdown"
-                >
+                <UncontrolledDropdown className="nav-dropdown">
                     <DropdownToggle color="transparent">
                         <div>
                             {this.state.title || ''}
-                            <i className="material-icons md-2">
-                                more_vert
-                            </i>
+                            <i className="material-icons md-2">more_vert</i>
                         </div>
                     </DropdownToggle>
                     <DropdownMenu>
-                        {
-                            mainMenu.map((item) => {
-                                return (
-                                    <DropdownItem
-                                        key={item.label}
-                                        tag={NavLink}
-                                        to={item.url}
-                                        onClick={() => {
-                                            this.setState({title: item.label})
-                                            this._closePanel()
-                                        }}
-                                    >
-                                        <i className="material-icons mr-2">{item.icon}</i>
-                                        {item.label}
-                                    </DropdownItem>
-                                )
-                            })
-                        }
+                        {mainMenu.map((item) => {
+                            return (
+                                <DropdownItem
+                                    key={item.label}
+                                    tag={NavLink}
+                                    to={item.url}
+                                    onClick={() => {
+                                        this.setState({title: item.label})
+                                        this._closePanel()
+                                    }}
+                                >
+                                    <i className="material-icons mr-2">
+                                        {item.icon}
+                                    </i>
+                                    {item.label}
+                                </DropdownItem>
+                            )
+                        })}
                     </DropdownMenu>
                 </UncontrolledDropdown>
 
-                <div className="navbar-content">
-                    {this.props.children}
-                </div>
+                <div className="navbar-content">{this.props.children}</div>
 
                 <Dropdown
                     className="nav-dropdown dropup"
@@ -195,36 +206,39 @@ export default class Navbar extends React.Component<NavbarProps, NavbarState> {
                                 {currentUser.get('name')}
                                 <Avatar
                                     name={currentUser.get('name')}
-                                    url={currentUser.getIn(['meta', 'profile_picture_url'])}
+                                    url={currentUser.getIn([
+                                        'meta',
+                                        'profile_picture_url',
+                                    ])}
                                     size={36}
                                     style={{
                                         position: 'absolute',
                                         bottom: '12px',
                                         right: '18px',
                                     }}
-                                    badgeColor={available ? '#24d69d' : '#FF9600'}
+                                    badgeColor={
+                                        available ? '#24d69d' : '#FF9600'
+                                    }
                                 />
                             </span>
                         </div>
                     </DropdownToggle>
                     <DropdownMenu>
-                        <DropdownItem tag="a"
-                            className="mt-2"
-                            toggle={false}
-                        >
+                        <DropdownItem tag="a" className="mt-2" toggle={false}>
                             <div className="d-flex justify-content-between align-items-center">
-                                <div>
-                                    Available
-                                </div>
+                                <div>Available</div>
                                 <div>
                                     <ToggleButton
                                         value={available}
-                                        onChange={this._updateAvailableForChatPreference}
+                                        onChange={
+                                            this
+                                                ._updateAvailableForChatPreference
+                                        }
                                     />
                                 </div>
                             </div>
                         </DropdownItem>
-                        <DropdownItem divider/>
+                        <DropdownItem divider />
                         <DropdownItem
                             tag={NavLink}
                             to="/app/settings/profile"
@@ -239,7 +253,11 @@ export default class Navbar extends React.Component<NavbarProps, NavbarState> {
                             tag="a"
                             href="https://docs.gorgias.com/"
                             target="_blank"
-                            onClick={() => segmentTracker.logEvent(segmentTracker.EVENTS.HELP_CENTER_CLICKED)}
+                            onClick={() =>
+                                segmentTracker.logEvent(
+                                    segmentTracker.EVENTS.HELP_CENTER_CLICKED
+                                )
+                            }
                         >
                             <i
                                 className="material-icons mr-2"
@@ -257,14 +275,13 @@ export default class Navbar extends React.Component<NavbarProps, NavbarState> {
                             <i className="material-icons mr-2">map</i>
                             Roadmap
                         </DropdownItem>
-                        <DropdownItem
-                            tag="div"
-                            toggle={false}
-                        >
+                        <DropdownItem tag="div" toggle={false}>
                             {this.state.bottomDropdownOpen && (
                                 <noticeable-widget
                                     id="custom-eye-catching-animation"
-                                    access-token={window.NOTICEABLE_ACCESS_TOKEN}
+                                    access-token={
+                                        window.NOTICEABLE_ACCESS_TOKEN
+                                    }
                                     project-id={window.NOTICEABLE_PROJECT_ID}
                                     white-label="true"
                                 >
@@ -276,7 +293,10 @@ export default class Navbar extends React.Component<NavbarProps, NavbarState> {
                         </DropdownItem>
                         <DropdownItem
                             onClick={() => {
-                                shortcutManager.triggerAction('KeyboardHelp', 'SHOW_HELP')
+                                shortcutManager.triggerAction(
+                                    'KeyboardHelp',
+                                    'SHOW_HELP'
+                                )
                             }}
                         >
                             <i className="material-icons mr-2">keyboard</i>

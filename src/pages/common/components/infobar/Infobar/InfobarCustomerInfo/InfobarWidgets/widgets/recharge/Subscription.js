@@ -6,12 +6,16 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
 import {Badge} from 'reactstrap'
 
-import {devLog, humanizeString, isCurrentlyOnTicket} from '../../../../../../../../../utils'
+import {
+    devLog,
+    humanizeString,
+    isCurrentlyOnTicket,
+} from '../../../../../../../../../utils'
 import {renderTemplate} from '../../../../../../../utils/template'
 
 import {
     RECHARGE_CANCELLATION_REASONS,
-    RECHARGE_DEFAULT_CANCELLATION_REASON
+    RECHARGE_DEFAULT_CANCELLATION_REASON,
 } from '../../../../../../../../../config/integrations/recharge'
 import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../../../../state/customers/selectors'
 import * as ticketSelectors from '../../../../../../../../../state/ticket/selectors'
@@ -21,7 +25,6 @@ import ActionButtonsGroup from '../ActionButtonsGroup'
 import {CardHeaderDetails} from '../CardHeaderDetails'
 import {CardHeaderValue} from '../CardHeaderValue'
 
-
 export default function Subscription() {
     return {
         AfterTitle,
@@ -30,10 +33,9 @@ export default function Subscription() {
     }
 }
 
-
 type AfterTitleProps = {
     isEditing: boolean,
-    source: Map<*, *>
+    source: Map<*, *>,
 }
 
 const statusColors = {
@@ -58,33 +60,33 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
         let actions = [
             {
                 key: 'cancel',
-                options: [{
-                    value: 'rechargeCancelSubscription',
-                    parameters: [{
-                        name: 'cancellation_reason',
-                        label: 'Cancellation reason',
-                        type: 'select',
-                        options: RECHARGE_CANCELLATION_REASONS.map((option) => ({value: option, label: option})),
-                        defaultValue: RECHARGE_DEFAULT_CANCELLATION_REASON,
-                        allowCustomValue: true,
-                        required: true
-                    }]
-                }],
+                options: [
+                    {
+                        value: 'rechargeCancelSubscription',
+                        parameters: [
+                            {
+                                name: 'cancellation_reason',
+                                label: 'Cancellation reason',
+                                type: 'select',
+                                options: RECHARGE_CANCELLATION_REASONS.map(
+                                    (option) => ({value: option, label: option})
+                                ),
+                                defaultValue: RECHARGE_DEFAULT_CANCELLATION_REASON,
+                                allowCustomValue: true,
+                                required: true,
+                            },
+                        ],
+                    },
+                ],
                 popover: 'This will cancel the subscription in Recharge.',
                 tooltip: 'Cancel subscription',
                 title: (
                     <div>
-                        <i className="material-icons mr-2">
-                            block
-                        </i>
+                        <i className="material-icons mr-2">block</i>
                         Cancel subscription
                     </div>
                 ),
-                child: (
-                    <i className="material-icons">
-                        block
-                    </i>
-                )
+                child: <i className="material-icons">block</i>,
             },
             {
                 key: 'activate',
@@ -93,24 +95,20 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                 tooltip: 'Activate subscription',
                 title: (
                     <div>
-                        <i className="material-icons mr-2">
-                            refresh
-                        </i>
+                        <i className="material-icons mr-2">refresh</i>
                         Activate subscription
                     </div>
                 ),
-                child: (
-                    <i className="material-icons">
-                        refresh
-                    </i>
-                )
+                child: <i className="material-icons">refresh</i>,
             },
         ]
 
         let ignoredActions = [isSubscriptionCancelled ? 'cancel' : 'activate']
 
         // remove removed actions from list of available actions
-        actions = actions.filter((action) => !ignoredActions.includes(action.key))
+        actions = actions.filter(
+            (action) => !ignoredActions.includes(action.key)
+        )
         const payload = {
             subscription_id: source.get('id'),
         }
@@ -127,11 +125,7 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                 >
                     {humanizeString(status)}
                 </Badge>
-                <ActionButtonsGroup
-                    actions={actions}
-                    payload={payload}
-                    float
-                />
+                <ActionButtonsGroup actions={actions} payload={payload} float />
                 <CardHeaderDetails>
                     <CardHeaderValue label="Created">
                         <DatetimeLabel
@@ -145,30 +139,37 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
     }
 }
 
-
 type TitleWrapperProps = {
     children: ?Node,
     source: Map<*, *>,
     template: Map<*, *>,
-    getIntegrationData: (number, number) => Map<*, *>
+    getIntegrationData: (number, number) => Map<*, *>,
 }
 
 @connect((state) => {
     return {
         getIntegrationData: (integrationId, customerId) => {
             const integrationData = isCurrentlyOnTicket()
-                ? ticketSelectors.getIntegrationDataByIntegrationId(integrationId)(state)
-                : getActiveCustomerIntegrationDataByIntegrationId(integrationId)(state)
+                ? ticketSelectors.getIntegrationDataByIntegrationId(
+                      integrationId
+                  )(state)
+                : getActiveCustomerIntegrationDataByIntegrationId(
+                      integrationId
+                  )(state)
 
             if (integrationData.getIn(['customer', 'id']) !== customerId) {
-                devLog('[INFOBAR][recharge][subscription] Could not find integration data for customer.', {
-                    customerId, integrationId
-                })
+                devLog(
+                    '[INFOBAR][recharge][subscription] Could not find integration data for customer.',
+                    {
+                        customerId,
+                        integrationId,
+                    }
+                )
                 return fromJS({})
             }
 
             return integrationData
-        }
+        },
     }
 })
 export class TitleWrapper extends React.Component<TitleWrapperProps> {
@@ -180,8 +181,10 @@ export class TitleWrapper extends React.Component<TitleWrapperProps> {
         const {children, source, getIntegrationData, template} = this.props
         const {integration} = this.context
         const storeName = integration.getIn(['meta', 'store_name'])
-        const customerHash = getIntegrationData(integration.get('id'), source.get('customer_id'))
-            .getIn(['customer', 'hash'])
+        const customerHash = getIntegrationData(
+            integration.get('id'),
+            source.get('customer_id')
+        ).getIn(['customer', 'hash'])
 
         let link = null
 
@@ -191,26 +194,24 @@ export class TitleWrapper extends React.Component<TitleWrapperProps> {
             let customLink = template.getIn(['meta', 'link'])
 
             if (customLink) {
-                link = renderTemplate(customLink, source.set('customerHash', customerHash).toJS())
+                link = renderTemplate(
+                    customLink,
+                    source.set('customerHash', customerHash).toJS()
+                )
             }
         }
 
         return (
-            <a
-                href={link}
-                target="_blank"
-                rel="noopener noreferrer"
-            >
+            <a href={link} target="_blank" rel="noopener noreferrer">
                 {children}
             </a>
         )
     }
 }
 
-
 type WrapperProps = {
     children: Node,
-    source: Map<*, *>
+    source: Map<*, *>,
 }
 
 class Wrapper extends React.Component<WrapperProps> {

@@ -1,8 +1,6 @@
 //@flow
 import React from 'react'
-import {
-    DropdownItem,
-} from 'reactstrap'
+import {DropdownItem} from 'reactstrap'
 
 import type {Option} from './RichDropdown'
 
@@ -13,7 +11,7 @@ type Props = {
     onClick: (optionKey: string) => void,
 }
 
-export default function RichDropdownOptions ({options, onClick}: Props) {
+export default function RichDropdownOptions({options, onClick}: Props) {
     return (
         <>
             {options.map(({description, key, label}) => (
@@ -23,12 +21,10 @@ export default function RichDropdownOptions ({options, onClick}: Props) {
                     type="button"
                 >
                     {label}
-                    <br/>
-                    {description &&
-                        <span className={css.description}>
-                            {description}
-                        </span>
-                    }
+                    <br />
+                    {description && (
+                        <span className={css.description}>{description}</span>
+                    )}
                 </DropdownItem>
             ))}
         </>

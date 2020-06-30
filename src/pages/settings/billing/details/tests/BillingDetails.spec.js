@@ -41,9 +41,9 @@ describe('BillingDetails component', () => {
                             city: 'San Francisco',
                             state: 'CA',
                             country: 'United States',
-                            postal_code: '94103'
-                        }
-                    }
+                            postal_code: '94103',
+                        },
+                    },
                 })}
             />
         )

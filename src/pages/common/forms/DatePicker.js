@@ -18,13 +18,13 @@ type Props = {
     singleDatePicker: ?boolean,
     startDate: ?Object,
     timePicker: ?boolean,
-    toggle?: Function
+    toggle?: Function,
 }
 
 export default class DatePicker extends Component<Props> {
     static defaultProps = {
         onHide: null,
-        showCustomRangeLabel: false
+        showCustomRangeLabel: false,
     }
 
     datePickerRef: ?Element<typeof DateRangePicker>
@@ -49,7 +49,9 @@ export default class DatePicker extends Component<Props> {
         // ranges for single date picker are hidden by default
         // so we display them.
         if (this.props.ranges && this.props.singleDatePicker) {
-            const ranges = document.querySelector('.daterangepicker .ranges > ul')
+            const ranges = document.querySelector(
+                '.daterangepicker .ranges > ul'
+            )
 
             if (ranges) {
                 ranges.style.display = ''
@@ -76,14 +78,18 @@ export default class DatePicker extends Component<Props> {
     }
 
     render() {
-        const dateRangePickerProps = _pick(this.props, Object.keys(DateRangePicker.propTypes))
+        const dateRangePickerProps = _pick(
+            this.props,
+            Object.keys(DateRangePicker.propTypes)
+        )
         return (
             <DateRangePicker
-                ref={(ref) => this.datePickerRef = ref}
+                ref={(ref) => (this.datePickerRef = ref)}
                 onEvent={this._onEvent}
                 {...dateRangePickerProps}
             >
                 {this.props.children}
-            </DateRangePicker>)
+            </DateRangePicker>
+        )
     }
 }

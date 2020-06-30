@@ -10,9 +10,8 @@ import {
     ITALIAN_LANGUAGE,
     NORWEGIAN_LANGUAGE,
     SPANISH_LANGUAGE,
-    SWEDISH_LANGUAGE
+    SWEDISH_LANGUAGE,
 } from '../../constants/languages'
-
 
 export const SMOOCH_LANGUAGE_DEFAULT = ENGLISH_US_LANGUAGE
 export const SMOOCH_LANGUAGE_OPTIONS = fromJS([

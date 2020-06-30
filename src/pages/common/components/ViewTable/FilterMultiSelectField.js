@@ -5,31 +5,33 @@ import React, {type ComponentType} from 'react'
 import {connect} from 'react-redux'
 
 import {fieldEnumSearch} from '../../../../state/views/actions'
-import MultiSelectOptionsField, {type Option} from '../../forms/MultiSelectOptionsField'
+import MultiSelectOptionsField, {
+    type Option,
+} from '../../forms/MultiSelectOptionsField'
 
 type Props = {
     plural: string,
     singular: string,
     selectedOptions: Option[],
-    onChange: Option[] => void,
+    onChange: (Option[]) => void,
     field: Map<*, *>,
     fieldEnumSearch: (Map<*, *>, string) => Map<*, *>,
     mapSearchResults: <T>(searchResults: T[]) => Option[],
-    dropdownMenu?: ComponentType<*>
+    dropdownMenu?: ComponentType<*>,
 }
 
 type State = {
     options: Option[],
-    isLoading: boolean
+    isLoading: boolean,
 }
 
 export class FilterMultiSelectField extends React.Component<Props, State> {
     state: State = {
         options: [],
-        isLoading: false
+        isLoading: false,
     }
 
-    componentDidMount () {
+    componentDidMount() {
         this._onSearch('')
     }
 
@@ -46,7 +48,7 @@ export class FilterMultiSelectField extends React.Component<Props, State> {
         const data = await this.props.fieldEnumSearch(this.props.field, query)
         this.setState({
             isLoading: false,
-            options: this.props.mapSearchResults(data ? data.toJS() : [])
+            options: this.props.mapSearchResults(data ? data.toJS() : []),
         })
     }
 
@@ -76,5 +78,5 @@ export class FilterMultiSelectField extends React.Component<Props, State> {
 }
 
 export default connect(null, {
-    fieldEnumSearch
+    fieldEnumSearch,
 })(FilterMultiSelectField)

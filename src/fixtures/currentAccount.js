@@ -19,7 +19,7 @@ export const currentAccountState = {
         is_active: false,
         internal: null,
         end_datetime: '2017-09-06T01:38:53+00:00',
-        updated_datetime: null
+        updated_datetime: null,
     },
     domain: 'acme',
     meta: {},
@@ -28,18 +28,18 @@ export const currentAccountState = {
     user_id: 1,
     created_datetime: '2017-08-23T01:38:52.479339+00:00',
     status: {
-        status: 'active'
+        status: 'active',
     },
     subscriptions: [
         {
             id: 1,
-            account_id: 1
-        }
+            account_id: 1,
+        },
     ],
     id: 1,
     _internal: {
         loading: {
-            updateAccount: false
-        }
-    }
+            updateAccount: false,
+        },
+    },
 }

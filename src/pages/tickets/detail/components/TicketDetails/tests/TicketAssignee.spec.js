@@ -9,21 +9,21 @@ import {fromJS} from 'immutable'
 import TicketAssigneeContainer, {
     TicketAssignee,
     TicketAssigneeTeamSection,
-    TicketAssigneeUserSection
+    TicketAssigneeUserSection,
 } from '../TicketAssignee'
 
 const teams = fromJS({
     all: {
         1: {id: 1, name: 'Team 1', decoration: {}},
         2: {id: 2, name: 'Team 2', decoration: {}},
-    }
+    },
 })
 
 const users = fromJS({
     all: [
         {id: 1, name: 'User 1', email: 'email1@foo.com', meta: {}},
         {id: 2, name: 'User 2', email: 'email2@foo.com', meta: {}},
-    ]
+    ],
 })
 
 describe('<TicketAssignee/>', () => {
@@ -51,7 +51,7 @@ describe('<TicketAssignee/>', () => {
                 <TicketAssignee
                     {...defaultProps}
                     currentAssigneeUser={fromJS({id: 1, name: 'Steve Frizeli'})}
-                    profilePictureUrl='profilePictureUrl'
+                    profilePictureUrl="profilePictureUrl"
                 />
             )
 
@@ -66,7 +66,10 @@ describe('<TicketAssignee/>', () => {
                         {id: 1, email: 'steve@acme.gorgias.io'},
                         users.getIn(['all', 1]),
                     ])}
-                    currentAssigneeUser={fromJS({id: 1, email: 'steve@acme.gorgias.io'})}
+                    currentAssigneeUser={fromJS({
+                        id: 1,
+                        email: 'steve@acme.gorgias.io',
+                    })}
                 />
             )
 
@@ -77,7 +80,10 @@ describe('<TicketAssignee/>', () => {
             const component = shallow(
                 <TicketAssignee
                     {...defaultProps}
-                    currentAssigneeUser={fromJS({id: 1, email: 'steve@acme.gorgias.io'})}
+                    currentAssigneeUser={fromJS({
+                        id: 1,
+                        email: 'steve@acme.gorgias.io',
+                    })}
                     currentAssigneeTeam={fromJS({id: 1, name: 'Team 1'})}
                 />
             )
@@ -98,10 +104,7 @@ describe('<TicketAssignee/>', () => {
 
         it('should display users only', () => {
             const component = shallow(
-                <TicketAssignee
-                    {...defaultProps}
-                    handleTeams={false}
-                />
+                <TicketAssignee {...defaultProps} handleTeams={false} />
             )
 
             expect(component).toMatchSnapshot()
@@ -109,10 +112,7 @@ describe('<TicketAssignee/>', () => {
 
         it('should display teams only', () => {
             const component = shallow(
-                <TicketAssignee
-                    {...defaultProps}
-                    handleUsers={false}
-                />
+                <TicketAssignee {...defaultProps} handleUsers={false} />
             )
 
             expect(component).toMatchSnapshot()
@@ -120,10 +120,7 @@ describe('<TicketAssignee/>', () => {
 
         it('should not display teams because object is empty', () => {
             const component = shallow(
-                <TicketAssignee
-                    {...defaultProps}
-                    teams={fromJS([])}
-                />
+                <TicketAssignee {...defaultProps} teams={fromJS([])} />
             )
 
             expect(component).toMatchSnapshot()
@@ -133,7 +130,11 @@ describe('<TicketAssignee/>', () => {
     it('should read data from the redux store correctly', () => {
         const middlewares = [thunk]
         const mockStore = configureMockStore(middlewares)
-        const store = mockStore({agents: users, teams, currentUser: fromJS({id: 1, email: 'steve@acme.gorgias.io'})})
+        const store = mockStore({
+            agents: users,
+            teams,
+            currentUser: fromJS({id: 1, email: 'steve@acme.gorgias.io'}),
+        })
         const component = shallow(<TicketAssigneeContainer store={store} />)
         expect(component).toMatchSnapshot()
     })

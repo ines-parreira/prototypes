@@ -4,12 +4,21 @@ import {browserHistory} from 'react-router'
 import {removeNotification} from 'reapop'
 
 import {store as reduxStore} from '../init'
-import {newMessageResetFromMessage, sendTicketMessage} from '../state/newMessage/actions'
+import {
+    newMessageResetFromMessage,
+    sendTicketMessage,
+} from '../state/newMessage/actions'
 import type {NewMessageType} from '../state/newMessage/types'
 import {notify} from '../state/notifications/actions'
 import {applyMacro, messageDeleted} from '../state/ticket/actions'
 
-export type SendMessageArgs = [string, NewMessageType, ?string, boolean, ?string]
+export type SendMessageArgs = [
+    string,
+    NewMessageType,
+    ?string,
+    boolean,
+    ?string
+]
 
 const pendingMessageDelay = 5000
 
@@ -40,17 +49,21 @@ export class PendingMessageManager {
         const [messageId] = args
 
         this.skipExistingTimer()
-        reduxStore.dispatch(notify({
-            id: messageId,
-            status: 'success',
-            message: 'Message sent',
-            dismissAfter: pendingMessageDelay,
-            buttons: [{
-                name: 'Undo',
-                onClick: this.undoMessage,
-                primary: true,
-            }]
-        }))
+        reduxStore.dispatch(
+            notify({
+                id: messageId,
+                status: 'success',
+                message: 'Message sent',
+                dismissAfter: pendingMessageDelay,
+                buttons: [
+                    {
+                        name: 'Undo',
+                        onClick: this.undoMessage,
+                        primary: true,
+                    },
+                ],
+            })
+        )
         this.pendingContentState = contentState
         this.pendingMessageArgs = args
         this.timeoutId = setTimeout(() => {
@@ -68,8 +81,15 @@ export class PendingMessageManager {
 
     undoMessage = () => {
         if (this.timeoutId && this.pendingMessageArgs) {
-            // eslint-disable-next-line
-            const [messageId, messageToSend, action, reset, ticketId] = this.pendingMessageArgs
+            const [
+                messageId,
+                messageToSend,
+                // eslint-disable-next-line no-unused-vars
+                action,
+                // eslint-disable-next-line no-unused-vars
+                reset,
+                ticketId,
+            ] = this.pendingMessageArgs
 
             reduxStore.dispatch(removeNotification(messageId))
             reduxStore.dispatch(messageDeleted(messageId))
@@ -78,13 +98,21 @@ export class PendingMessageManager {
                 const macros = messageToSend.macros || []
                 const {macros: macrosState} = reduxStore.getState()
 
-                reduxStore.dispatch(newMessageResetFromMessage({
-                    contentState: this.pendingContentState,
-                    newMessage: messageToSend,
-                }))
+                reduxStore.dispatch(
+                    newMessageResetFromMessage({
+                        contentState: this.pendingContentState,
+                        newMessage: messageToSend,
+                    })
+                )
                 macros.map(({id}) => {
                     if (macrosState.get(id)) {
-                        reduxStore.dispatch(applyMacro(macrosState.get(id), parseInt(ticketId), false))
+                        reduxStore.dispatch(
+                            applyMacro(
+                                macrosState.get(id),
+                                parseInt(ticketId),
+                                false
+                            )
+                        )
                     }
                 })
             }, 0)
@@ -103,4 +131,6 @@ export class PendingMessageManager {
     }
 }
 
-export default new PendingMessageManager('Are you sure? Your message won\'t be sent')
+export default new PendingMessageManager(
+    "Are you sure? Your message won't be sent"
+)

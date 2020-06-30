@@ -9,14 +9,14 @@ import {
     shopifyDraftOrderPayloadFixture,
     shopifyLineItemFixture,
     shopifyOrderFixture,
-    shopifyPriceSetFixture
+    shopifyPriceSetFixture,
 } from '../../../fixtures/shopify'
 import {
     getDraftOrderLineItemDiscountedPrice,
     getDraftOrderLineItemTotal,
     getDraftOrderTotalLineItemsPrice,
     getOrderLineItemDiscountedPrice,
-    initLineItemAppliedDiscount
+    initLineItemAppliedDiscount,
 } from '../lineItem'
 import {formatPrice} from '../number'
 
@@ -26,7 +26,10 @@ describe('initLineItemAppliedDiscount()', () => {
         const discountApplication = fromJS(shopifyDiscountApplicationFixture())
         const order = fromJS(shopifyOrderFixture())
             .setIn(['line_items', 0, 'total_discount'], '0.50')
-            .setIn(['line_items', 0, 'discount_allocations', 0], discountAllocation)
+            .setIn(
+                ['line_items', 0, 'discount_allocations', 0],
+                discountAllocation
+            )
             .setIn(['discount_applications', 0], discountApplication)
         const lineItem = order.getIn(['line_items', 0])
 
@@ -35,12 +38,22 @@ describe('initLineItemAppliedDiscount()', () => {
     })
 
     it('should return the applied discount with fixed amount', () => {
-        const discountAllocation = fromJS(shopifyDiscountAllocationFixture({amount: '0.20'}))
-        const discountApplication = fromJS(shopifyDiscountApplicationFixture({value: '0.20', type: 'fixed_amount'}))
+        const discountAllocation = fromJS(
+            shopifyDiscountAllocationFixture({amount: '0.20'})
+        )
+        const discountApplication = fromJS(
+            shopifyDiscountApplicationFixture({
+                value: '0.20',
+                type: 'fixed_amount',
+            })
+        )
         const order = fromJS(shopifyOrderFixture())
             .setIn(['line_items', 0, 'quantity'], 2)
             .setIn(['line_items', 0, 'total_discount'], '0.20')
-            .setIn(['line_items', 0, 'discount_allocations', 0], discountAllocation)
+            .setIn(
+                ['line_items', 0, 'discount_allocations', 0],
+                discountAllocation
+            )
             .setIn(['discount_applications', 0], discountApplication)
         const lineItem = order.getIn(['line_items', 0])
 
@@ -58,24 +71,35 @@ describe('initLineItemAppliedDiscount()', () => {
 })
 
 describe('getDraftOrderLineItemDiscountedPrice()', () => {
-    it('should return the line item\'s price when there is no applied discount', () => {
+    it("should return the line item's price when there is no applied discount", () => {
         const lineItem = fromJS(shopifyLineItemFixture())
         const currencyCode = 'USD'
-        const price = getDraftOrderLineItemDiscountedPrice(lineItem, currencyCode)
+        const price = getDraftOrderLineItemDiscountedPrice(
+            lineItem,
+            currencyCode
+        )
         expect(price).toMatchSnapshot()
     })
 
-    it('should return the line item\'s discounted price when there is an applied discount', () => {
-        const appliedDiscount = fromJS(shopifyAppliedDiscountFixture({value: '50.0', amount: '0.50'}))
-        const lineItem = fromJS(shopifyLineItemFixture()).set('applied_discount', appliedDiscount)
+    it("should return the line item's discounted price when there is an applied discount", () => {
+        const appliedDiscount = fromJS(
+            shopifyAppliedDiscountFixture({value: '50.0', amount: '0.50'})
+        )
+        const lineItem = fromJS(shopifyLineItemFixture()).set(
+            'applied_discount',
+            appliedDiscount
+        )
         const currencyCode = 'USD'
-        const price = getDraftOrderLineItemDiscountedPrice(lineItem, currencyCode)
+        const price = getDraftOrderLineItemDiscountedPrice(
+            lineItem,
+            currencyCode
+        )
         expect(price).toMatchSnapshot()
     })
 })
 
 describe('getDraftOrderLineItemTotal()', () => {
-    it('should return the line item\'s total price', () => {
+    it("should return the line item's total price", () => {
         const lineItem = fromJS(shopifyLineItemFixture({quantity: 2}))
         const total = getDraftOrderLineItemTotal(lineItem)
         const currencyCode = 'USD'
@@ -99,10 +123,21 @@ describe('getDraftOrderLineItemTotal()', () => {
         [14, '139.93', '139.93'],
         [15, '149.92', '149.93'],
     ])(
-        'should return expected line item\'s total price with applied discount',
+        "should return expected line item's total price with applied discount",
         (quantity, discountAmount, expectedTotal) => {
-            const appliedDiscount = fromJS(shopifyAppliedDiscountFixture({value: '50.00', amount: discountAmount}))
-            const lineItem = fromJS(shopifyLineItemFixture({price: '19.99', quantity, appliedDiscount}))
+            const appliedDiscount = fromJS(
+                shopifyAppliedDiscountFixture({
+                    value: '50.00',
+                    amount: discountAmount,
+                })
+            )
+            const lineItem = fromJS(
+                shopifyLineItemFixture({
+                    price: '19.99',
+                    quantity,
+                    appliedDiscount,
+                })
+            )
             const total = getDraftOrderLineItemTotal(lineItem)
             const currencyCode = 'USD'
             expect(formatPrice(total, currencyCode)).toEqual(expectedTotal)
@@ -126,10 +161,21 @@ describe('getDraftOrderLineItemTotal()', () => {
         [14, '66466', '1262862'],
         [15, '71214', '1353066'],
     ])(
-        'should return expected line item\'s total price with applied discount and non-fractional currency',
+        "should return expected line item's total price with applied discount and non-fractional currency",
         (quantity, discountAmount, expectedTotal) => {
-            const appliedDiscount = fromJS(shopifyAppliedDiscountFixture({value: '5.00', amount: discountAmount}))
-            const lineItem = fromJS(shopifyLineItemFixture({price: '94952', quantity, appliedDiscount}))
+            const appliedDiscount = fromJS(
+                shopifyAppliedDiscountFixture({
+                    value: '5.00',
+                    amount: discountAmount,
+                })
+            )
+            const lineItem = fromJS(
+                shopifyLineItemFixture({
+                    price: '94952',
+                    quantity,
+                    appliedDiscount,
+                })
+            )
             const total = getDraftOrderLineItemTotal(lineItem)
             const currencyCode = 'JPY'
             expect(formatPrice(total, currencyCode)).toEqual(expectedTotal)
@@ -138,53 +184,78 @@ describe('getDraftOrderLineItemTotal()', () => {
 })
 
 describe('getDraftOrderTotalLineItemsPrice()', () => {
-    it('should return all the line items\' total price', () => {
+    it("should return all the line items' total price", () => {
         const payload = fromJS(shopifyDraftOrderPayloadFixture())
         const total = getDraftOrderTotalLineItemsPrice(payload)
         expect(total).toMatchSnapshot()
     })
 
     it('should return the correct value without rounding errors', () => {
-        const payload = fromJS(shopifyDraftOrderPayloadFixture())
-            .set('line_items', fromJS([
+        const payload = fromJS(shopifyDraftOrderPayloadFixture()).set(
+            'line_items',
+            fromJS([
                 shopifyLineItemFixture({price: '27.99'}),
                 shopifyLineItemFixture({price: '5.00'}),
-            ]))
+            ])
+        )
 
         const currencyCode = 'USD'
-        const total = formatPrice(getDraftOrderTotalLineItemsPrice(payload), currencyCode)
+        const total = formatPrice(
+            getDraftOrderTotalLineItemsPrice(payload),
+            currencyCode
+        )
         expect(total).toMatchSnapshot()
     })
 })
 
 describe('getOrderLineItemDiscountedPrice()', () => {
-    it('should return the line item\'s price when there is no quantity', () => {
+    it("should return the line item's price when there is no quantity", () => {
         const quantity = 0
         const currencyCode = 'USD'
-        const lineItem = fromJS(shopifyLineItemFixture({quantity, currencyCode: 'USD'}))
-        const price = getOrderLineItemDiscountedPrice(lineItem, currencyCode, quantity)
+        const lineItem = fromJS(
+            shopifyLineItemFixture({quantity, currencyCode: 'USD'})
+        )
+        const price = getOrderLineItemDiscountedPrice(
+            lineItem,
+            currencyCode,
+            quantity
+        )
 
         expect(price).toMatchSnapshot()
     })
 
-    it('should return the line item\'s price when there is no discount', () => {
+    it("should return the line item's price when there is no discount", () => {
         const quantity = 1
         const currencyCode = 'USD'
-        const totalDiscountSet = fromJS(shopifyPriceSetFixture({amount: '0.00'}))
-        const lineItem = fromJS(shopifyLineItemFixture({quantity, currencyCode: 'USD'}))
-            .set('total_discount_set', totalDiscountSet)
-        const price = getOrderLineItemDiscountedPrice(lineItem, currencyCode, quantity)
+        const totalDiscountSet = fromJS(
+            shopifyPriceSetFixture({amount: '0.00'})
+        )
+        const lineItem = fromJS(
+            shopifyLineItemFixture({quantity, currencyCode: 'USD'})
+        ).set('total_discount_set', totalDiscountSet)
+        const price = getOrderLineItemDiscountedPrice(
+            lineItem,
+            currencyCode,
+            quantity
+        )
 
         expect(price).toMatchSnapshot()
     })
 
-    it('should return the line item\'s price when there is a discount', () => {
+    it("should return the line item's price when there is a discount", () => {
         const quantity = 1
         const currencyCode = 'USD'
-        const totalDiscountSet = fromJS(shopifyPriceSetFixture({amount: '0.50'}))
-        const lineItem = fromJS(shopifyLineItemFixture({quantity, currencyCode: 'USD'}))
-            .set('total_discount_set', totalDiscountSet)
-        const price = getOrderLineItemDiscountedPrice(lineItem, currencyCode, quantity)
+        const totalDiscountSet = fromJS(
+            shopifyPriceSetFixture({amount: '0.50'})
+        )
+        const lineItem = fromJS(
+            shopifyLineItemFixture({quantity, currencyCode: 'USD'})
+        ).set('total_discount_set', totalDiscountSet)
+        const price = getOrderLineItemDiscountedPrice(
+            lineItem,
+            currencyCode,
+            quantity
+        )
 
         expect(price).toMatchSnapshot()
     })

@@ -29,33 +29,37 @@ import zoho from './../../../../../../../img/integrations/zoho.svg'
 import exchange from './../../../../../../../img/integrations/exchange.svg'
 import groups from './../../../../../../../img/integrations/google-groups.svg'
 
-
 const servicesWithTutorials = [
     {
         img: groups,
         title: 'Google Groups',
-        link: 'https://docs.gorgias.com/email-integrations/how-to-set-up-email-forwarding#g_suite_groups'
+        link:
+            'https://docs.gorgias.com/email-integrations/how-to-set-up-email-forwarding#g_suite_groups',
     },
     {
         img: outlook,
         title: 'Outlook',
-        link: 'https://docs.gorgias.com/email-integrations/how-to-set-up-email-forwarding#outlook_com'
+        link:
+            'https://docs.gorgias.com/email-integrations/how-to-set-up-email-forwarding#outlook_com',
     },
     {
         img: office,
         title: 'Office 365',
-        link: 'https://docs.gorgias.com/email-integrations/how-to-set-up-email-forwarding#outlook_com'
+        link:
+            'https://docs.gorgias.com/email-integrations/how-to-set-up-email-forwarding#outlook_com',
     },
     {
         img: exchange,
         title: 'Microsoft Exchange',
-        link: 'https://docs.gorgias.com/email-integrations/how-to-set-up-email-forwarding#microsoft_exchange'
+        link:
+            'https://docs.gorgias.com/email-integrations/how-to-set-up-email-forwarding#microsoft_exchange',
     },
     {
         img: zoho,
         title: 'Zoho Mail',
-        link: 'https://docs.gorgias.com/email-integrations/how-to-set-up-email-forwarding#zoho_mail'
-    }
+        link:
+            'https://docs.gorgias.com/email-integrations/how-to-set-up-email-forwarding#zoho_mail',
+    },
 ]
 
 type Props = {
@@ -69,10 +73,13 @@ type Props = {
 
 type State = {
     isCopied: boolean,
-    isLoading: boolean
+    isLoading: boolean,
 }
 
-export class EmailIntegrationCreateForwarding extends React.Component<Props, State> {
+export class EmailIntegrationCreateForwarding extends React.Component<
+    Props,
+    State
+> {
     state = {
         isCopied: false,
         isLoading: false,
@@ -96,7 +103,11 @@ export class EmailIntegrationCreateForwarding extends React.Component<Props, Sta
         this.setState({isLoading: true})
         this.props.sendVerificationEmail().then(() => {
             this.setState({isLoading: false})
-            browserHistory.push(`/app/settings/integrations/email/${integration.get('id')}/verification`)
+            browserHistory.push(
+                `/app/settings/integrations/email/${integration.get(
+                    'id'
+                )}/verification`
+            )
         })
     }
 
@@ -109,7 +120,8 @@ export class EmailIntegrationCreateForwarding extends React.Component<Props, Sta
             <div>
                 <div className="mb-4">
                     <p>
-                        Forward emails from <b>{address}</b> to the address below.
+                        Forward emails from <b>{address}</b> to the address
+                        below.
                     </p>
 
                     <InputGroup>
@@ -125,9 +137,7 @@ export class EmailIntegrationCreateForwarding extends React.Component<Props, Sta
                                 color="primary"
                                 data-clipboard-target="#forwarding-email"
                             >
-                                <i className="material-icons mr-2">
-                                    file_copy
-                                </i>
+                                <i className="material-icons mr-2">file_copy</i>
                                 {this.state.isCopied ? 'Copied!' : 'Copy'}
                             </Button>
                         </InputGroupAddon>
@@ -135,33 +145,36 @@ export class EmailIntegrationCreateForwarding extends React.Component<Props, Sta
                 </div>
 
                 <div className="mb-4">
-                    <p>Below are some handful tutorial to setup email forwarding depending on your email provider:</p>
+                    <p>
+                        Below are some handful tutorial to setup email
+                        forwarding depending on your email provider:
+                    </p>
 
                     <div className="d-flex flex-wrap">
-                        {
-                            servicesWithTutorials.map((config, idx) => (
-                                <Button
-                                    key={idx}
-                                    color="secondary"
-                                    size="lg"
-                                    tag="a"
-                                    href={config.link}
-                                    target="_blank"
-                                    className={css.forwardingCard}
-                                >
-                                    <img
-                                        alt={`${config.title} logo`}
-                                        src={config.img}
-                                    />
-                                    <div>{config.title}</div>
-                                </Button>
-                            ))
-                        }
+                        {servicesWithTutorials.map((config, idx) => (
+                            <Button
+                                key={idx}
+                                color="secondary"
+                                size="lg"
+                                tag="a"
+                                href={config.link}
+                                target="_blank"
+                                className={css.forwardingCard}
+                            >
+                                <img
+                                    alt={`${config.title} logo`}
+                                    src={config.img}
+                                />
+                                <div>{config.title}</div>
+                            </Button>
+                        ))}
                     </div>
 
                     <p>
                         Using GMail or G Suite?{' '}
-                        <Link to="/app/settings/integrations/email/new">Connect your account in one click.</Link>
+                        <Link to="/app/settings/integrations/email/new">
+                            Connect your account in one click.
+                        </Link>
                     </p>
                 </div>
 
@@ -171,7 +184,7 @@ export class EmailIntegrationCreateForwarding extends React.Component<Props, Sta
                     tag={Link}
                     onClick={this._onSubmit}
                     className={classnames({
-                        'btn-loading': isLoading
+                        'btn-loading': isLoading,
                     })}
                 >
                     Verify email forwarding
@@ -185,30 +198,31 @@ export class EmailIntegrationCreateForwarding extends React.Component<Props, Sta
 
         return (
             <div className="full-width">
-                <PageHeader title={(
-                    <Breadcrumb>
-                        <BreadcrumbItem>
-                            <Link to="/app/settings/integrations">Integrations</Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            <Link to="/app/settings/integrations/email">Email</Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem active>
-                            {integration.get('name')}{' '}
-                            <span className="text-faded">
-                                {integration.getIn(['meta', 'address'])}
-                            </span>
-                        </BreadcrumbItem>
-                    </Breadcrumb>
-                )}/>
+                <PageHeader
+                    title={
+                        <Breadcrumb>
+                            <BreadcrumbItem>
+                                <Link to="/app/settings/integrations">
+                                    Integrations
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                <Link to="/app/settings/integrations/email">
+                                    Email
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem active>
+                                {integration.get('name')}{' '}
+                                <span className="text-faded">
+                                    {integration.getIn(['meta', 'address'])}
+                                </span>
+                            </BreadcrumbItem>
+                        </Breadcrumb>
+                    }
+                />
 
-                <Container
-                    fluid
-                    className="page-container"
-                >
-                    <h1>
-                        Let's setup email forwarding
-                    </h1>
+                <Container fluid className="page-container">
+                    <h1>Let's setup email forwarding</h1>
 
                     {this._renderInstructions()}
                 </Container>
@@ -216,7 +230,6 @@ export class EmailIntegrationCreateForwarding extends React.Component<Props, Sta
         )
     }
 }
-
 
 const mapStateToProps = (state) => {
     return {
@@ -229,4 +242,9 @@ const mapDispatchToProps = {
     notify: notificationActions.notify,
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(EmailIntegrationCreateForwarding))
+export default withRouter(
+    connect(
+        mapStateToProps,
+        mapDispatchToProps
+    )(EmailIntegrationCreateForwarding)
+)

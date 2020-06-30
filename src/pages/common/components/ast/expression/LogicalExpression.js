@@ -23,12 +23,21 @@ type Props = {
     operator: string,
     parent: Object,
     right: Object,
-    schemas: Object
+    schemas: Object,
 }
 
 export default class LogicalExpression extends React.Component<Props> {
     render() {
-        const {operator, left, right, rule, parent, actions, leftsiblings, schemas} = this.props
+        const {
+            operator,
+            left,
+            right,
+            rule,
+            parent,
+            actions,
+            leftsiblings,
+            schemas,
+        } = this.props
 
         let leftsiblings2
         let leftsiblings3

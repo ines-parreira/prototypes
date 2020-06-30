@@ -11,21 +11,22 @@ import {TICKETS_CLOSED_PER_AGENT} from '../../../../config/stats'
 
 import BlankState from './components/BlankState'
 
-export const TICKET_CLOSED_BY_CURRENT_AGENT_7_DAYS = 'ticket-closed-current-agent-7-days'
+export const TICKET_CLOSED_BY_CURRENT_AGENT_7_DAYS =
+    'ticket-closed-current-agent-7-days'
 
 type Props = {
-    currentUser: Map<*,*>,
-    message: ?Object | ?string
+    currentUser: Map<*, *>,
+    message: ?Object | ?string,
 }
 
 type State = {
-    closedTicketsCount: number | null
+    closedTicketsCount: number | null,
 }
 
 class BlankStateContainer extends React.Component<Props, State> {
     gorgiasApi = new GorgiasApi()
     state = {
-        closedTicketsCount: null
+        closedTicketsCount: null,
     }
 
     componentWillMount() {
@@ -43,13 +44,26 @@ class BlankStateContainer extends React.Component<Props, State> {
         const filters = {
             agents: [props.currentUser.get('id')],
             period: {
-                start_datetime: moment().startOf('day').subtract(6, 'days').format(),
+                start_datetime: moment()
+                    .startOf('day')
+                    .subtract(6, 'days')
+                    .format(),
                 end_datetime: moment().endOf('day').format(),
-            }
+            },
         }
         try {
-            const stat = await this.gorgiasApi.getStatistic(TICKETS_CLOSED_PER_AGENT, fromJS({filters}))
-            const closedTicketsCount = stat.getIn(['data', 'data', 'lines', 0, 1, 'value'])
+            const stat = await this.gorgiasApi.getStatistic(
+                TICKETS_CLOSED_PER_AGENT,
+                fromJS({filters})
+            )
+            const closedTicketsCount = stat.getIn([
+                'data',
+                'data',
+                'lines',
+                0,
+                1,
+                'value',
+            ])
             this.setState({closedTicketsCount})
         } catch (error) {
             // Not important, we will try to fetch this stat next time.
@@ -71,7 +85,6 @@ class BlankStateContainer extends React.Component<Props, State> {
 
 export default connect((state) => {
     return {
-        currentUser: state.currentUser
+        currentUser: state.currentUser,
     }
 }, {})(BlankStateContainer)
-

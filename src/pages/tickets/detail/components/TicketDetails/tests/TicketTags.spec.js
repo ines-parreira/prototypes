@@ -1,6 +1,6 @@
 import React from 'react'
 import {shallow} from 'enzyme'
-import { fromJS } from 'immutable'
+import {fromJS} from 'immutable'
 import _noop from 'lodash/noop'
 
 import {TicketTags} from '../TicketTags'
@@ -8,10 +8,7 @@ import {TicketTags} from '../TicketTags'
 describe('TicketTags component', () => {
     let component
 
-    const ticketTags = fromJS([
-        { name: 'tag1' },
-        { name: 'tag5' }
-    ])
+    const ticketTags = fromJS([{name: 'tag1'}, {name: 'tag5'}])
 
     beforeAll(() => {
         component = shallow(

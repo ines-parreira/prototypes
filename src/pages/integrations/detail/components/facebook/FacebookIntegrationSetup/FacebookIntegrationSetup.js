@@ -30,32 +30,36 @@ import pageIconDefault from '../../../../../../../img/integrations/facebook-page
 
 import css from './FacebookIntegrationSetup.less'
 
-
-
 type Props = {
-    integrations: List<Map<*,*>>,
+    integrations: List<Map<*, *>>,
     pagination: Object,
     actions: Object,
     loading: Object,
 }
 
 type State = {
-    selectedIntegrations: List<Map<*,*>>,
-    isLoading: boolean
+    selectedIntegrations: List<Map<*, *>>,
+    isLoading: boolean,
 }
-
 
 @connect((state) => {
     // Here we only want the DELETED integrations of the current_user
     return {
-        integrations: integrationsSelectors.getOnboardingIntegrations(FACEBOOK_INTEGRATION_TYPE)(state),
-        pagination: integrationsSelectors.getOnboardingMeta(FACEBOOK_INTEGRATION_TYPE)(state)
+        integrations: integrationsSelectors.getOnboardingIntegrations(
+            FACEBOOK_INTEGRATION_TYPE
+        )(state),
+        pagination: integrationsSelectors.getOnboardingMeta(
+            FACEBOOK_INTEGRATION_TYPE
+        )(state),
     }
 })
-export default class FacebookIntegrationSetup extends React.Component<Props, State> {
+export default class FacebookIntegrationSetup extends React.Component<
+    Props,
+    State
+> {
     state = {
         selectedIntegrations: fromJS({}),
-        isLoading: false
+        isLoading: false,
     }
 
     fetchInterval = null
@@ -81,24 +85,43 @@ export default class FacebookIntegrationSetup extends React.Component<Props, Sta
         const {selectedIntegrations} = this.state
 
         const data = selectedIntegrations
-            .map((integration) => fromJS(integration).set('deleted_datetime', null))
-            .toList().toJS()
+            .map((integration) =>
+                fromJS(integration).set('deleted_datetime', null)
+            )
+            .toList()
+            .toJS()
 
-        actions.activateOnboardingIntegrations(data, FACEBOOK_INTEGRATION_TYPE).then(() => actions.fetchIntegrations())
+        actions
+            .activateOnboardingIntegrations(data, FACEBOOK_INTEGRATION_TYPE)
+            .then(() => actions.fetchIntegrations())
         browserHistory.push('/app/settings/integrations/facebook')
     }
 
-    _toggleIntegration = (integration: Map<*,*>, enable: boolean) => {
+    _toggleIntegration = (integration: Map<*, *>, enable: boolean) => {
         let {selectedIntegrations} = this.state
         const id = integration.get('id')
 
         if (enable) {
-            selectedIntegrations = selectedIntegrations.set(id, integration.setIn(['facebook', 'settings'], fromJS({
-                messenger_enabled: true,
-                posts_enabled: true,
-                instagram_comments_enabled: !!integration.getIn(['meta', 'instagram', 'id']),
-                instagram_ads_enabled: !!integration.getIn(['meta', 'instagram', 'id'])
-            })))
+            selectedIntegrations = selectedIntegrations.set(
+                id,
+                integration.setIn(
+                    ['facebook', 'settings'],
+                    fromJS({
+                        messenger_enabled: true,
+                        posts_enabled: true,
+                        instagram_comments_enabled: !!integration.getIn([
+                            'meta',
+                            'instagram',
+                            'id',
+                        ]),
+                        instagram_ads_enabled: !!integration.getIn([
+                            'meta',
+                            'instagram',
+                            'id',
+                        ]),
+                    })
+                )
+            )
         } else {
             selectedIntegrations = selectedIntegrations.delete(id)
         }
@@ -107,12 +130,22 @@ export default class FacebookIntegrationSetup extends React.Component<Props, Sta
     }
 
     _getSettingValue = (id: number, key: string): boolean => {
-        return this.state.selectedIntegrations.getIn([id, 'facebook', 'settings', key]) || false
+        return (
+            this.state.selectedIntegrations.getIn([
+                id,
+                'facebook',
+                'settings',
+                key,
+            ]) || false
+        )
     }
 
     _setSettingValue = (id: number, key: string, value: boolean) => {
         this.setState({
-            selectedIntegrations: this.state.selectedIntegrations.setIn([id, 'facebook', 'settings', key], value)
+            selectedIntegrations: this.state.selectedIntegrations.setIn(
+                [id, 'facebook', 'settings', key],
+                value
+            ),
         })
     }
 
@@ -121,11 +154,13 @@ export default class FacebookIntegrationSetup extends React.Component<Props, Sta
             this.setState({isLoading: true})
         }
 
-        this.props.actions.fetchFacebookOnboardingIntegrations(page, !silent).then(() => {
-            if (!silent) {
-                this.setState({isLoading: false})
-            }
-        })
+        this.props.actions
+            .fetchFacebookOnboardingIntegrations(page, !silent)
+            .then(() => {
+                if (!silent) {
+                    this.setState({isLoading: false})
+                }
+            })
     }
 
     _renderIntegrations = () => {
@@ -139,23 +174,30 @@ export default class FacebookIntegrationSetup extends React.Component<Props, Sta
         return (
             <div className="mb-4">
                 <p className="font-weight-medium">
-                    We found {pagination.get('item_count')} pages associated with your account.{' '}
-                    Please activate the pages you want to use with Gorgias:
+                    We found {pagination.get('item_count')} pages associated
+                    with your account. Please activate the pages you want to use
+                    with Gorgias:
                 </p>
                 <div className="mb-2">
-                    {
-                        isLoading ? <Loader></Loader> : integrations.map((integration) => {
+                    {isLoading ? (
+                        <Loader></Loader>
+                    ) : (
+                        integrations.map((integration) => {
                             const id = integration.get('id')
                             const page = integration.get('facebook')
 
-                            const instagramIsDisabled = !integration.getIn(['meta', 'instagram', 'id'])
+                            const instagramIsDisabled = !integration.getIn([
+                                'meta',
+                                'instagram',
+                                'id',
+                            ])
                             const pageEnabled = selectedIntegrations.has(id)
 
                             return (
                                 <div
                                     key={id}
                                     className={classnames(css.page, {
-                                        [css.enabled]: !!pageEnabled
+                                        [css.enabled]: !!pageEnabled,
                                     })}
                                 >
                                     <div className="d-flex flex-wrap flex-md-nowrap">
@@ -163,26 +205,58 @@ export default class FacebookIntegrationSetup extends React.Component<Props, Sta
                                             <div>
                                                 <img
                                                     alt="facebook logo"
-                                                    className={classnames('image rounded mr-3 mb-2 mb-md-0', css.icon)}
-                                                    src={page.getIn(['picture', 'data', 'url'], pageIconDefault)}
+                                                    className={classnames(
+                                                        'image rounded mr-3 mb-2 mb-md-0',
+                                                        css.icon
+                                                    )}
+                                                    src={page.getIn(
+                                                        [
+                                                            'picture',
+                                                            'data',
+                                                            'url',
+                                                        ],
+                                                        pageIconDefault
+                                                    )}
                                                 />
-                                                <div className={classnames(css.details, 'mr-3 text-faded')}>
-                                                    <h3 className={classnames(css.name, 'mr-3')}>
+                                                <div
+                                                    className={classnames(
+                                                        css.details,
+                                                        'mr-3 text-faded'
+                                                    )}
+                                                >
+                                                    <h3
+                                                        className={classnames(
+                                                            css.name,
+                                                            'mr-3'
+                                                        )}
+                                                    >
                                                         {page.get('name')}
                                                     </h3>
-                                                    <span>{_truncate(page.get('about'), {length: 100})}</span>
+                                                    <span>
+                                                        {_truncate(
+                                                            page.get('about'),
+                                                            {length: 100}
+                                                        )}
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
                                         <ToggleButton
                                             value={pageEnabled}
-                                            onChange={(value) => this._toggleIntegration(integration, value)}
+                                            onChange={(value) =>
+                                                this._toggleIntegration(
+                                                    integration,
+                                                    value
+                                                )
+                                            }
                                         />
                                     </div>
 
                                     <div className={css.settings}>
                                         <p className="font-weight-medium">
-                                        Choose the Facebook channels you want to use to communicate with your customers:
+                                            Choose the Facebook channels you
+                                            want to use to communicate with your
+                                            customers:
                                         </p>
 
                                         <div className="d-md-flex">
@@ -191,23 +265,50 @@ export default class FacebookIntegrationSetup extends React.Component<Props, Sta
                                                     name={`${id}.messenger_enabled`}
                                                     type="checkbox"
                                                     label="Enable Messenger"
-                                                    value={this._getSettingValue(id, 'messenger_enabled')}
-                                                    onChange={(value) => this._setSettingValue(id, 'messenger_enabled', value)}
+                                                    value={this._getSettingValue(
+                                                        id,
+                                                        'messenger_enabled'
+                                                    )}
+                                                    onChange={(value) =>
+                                                        this._setSettingValue(
+                                                            id,
+                                                            'messenger_enabled',
+                                                            value
+                                                        )
+                                                    }
                                                 />
                                                 <BooleanField
                                                     name={`${id}.posts_enabled`}
                                                     type="checkbox"
                                                     label="Enable Facebook posts, comments and ads comments"
-                                                    value={this._getSettingValue(id, 'posts_enabled')}
-                                                    onChange={(value) => this._setSettingValue(id, 'posts_enabled', value)}
+                                                    value={this._getSettingValue(
+                                                        id,
+                                                        'posts_enabled'
+                                                    )}
+                                                    onChange={(value) =>
+                                                        this._setSettingValue(
+                                                            id,
+                                                            'posts_enabled',
+                                                            value
+                                                        )
+                                                    }
                                                 />
                                                 {!instagramIsDisabled && (
                                                     <BooleanField
                                                         name={`${id}.instagram_comments_enabled`}
                                                         type="checkbox"
                                                         label="Enable Instagram comments"
-                                                        value={this._getSettingValue(id, 'instagram_comments_enabled')}
-                                                        onChange={(value) => this._setSettingValue(id, 'instagram_comments_enabled', value)}
+                                                        value={this._getSettingValue(
+                                                            id,
+                                                            'instagram_comments_enabled'
+                                                        )}
+                                                        onChange={(value) =>
+                                                            this._setSettingValue(
+                                                                id,
+                                                                'instagram_comments_enabled',
+                                                                value
+                                                            )
+                                                        }
                                                     />
                                                 )}
                                                 {!instagramIsDisabled && (
@@ -215,8 +316,17 @@ export default class FacebookIntegrationSetup extends React.Component<Props, Sta
                                                         name={`${id}.instagram_ads_enabled`}
                                                         type="checkbox"
                                                         label="Enable Instagram ads"
-                                                        value={this._getSettingValue(id, 'instagram_ads_enabled')}
-                                                        onChange={(value) => this._setSettingValue(id, 'instagram_ads_enabled', value)}
+                                                        value={this._getSettingValue(
+                                                            id,
+                                                            'instagram_ads_enabled'
+                                                        )}
+                                                        onChange={(value) =>
+                                                            this._setSettingValue(
+                                                                id,
+                                                                'instagram_ads_enabled',
+                                                                value
+                                                            )
+                                                        }
                                                     />
                                                 )}
                                             </FormGroup>
@@ -227,17 +337,20 @@ export default class FacebookIntegrationSetup extends React.Component<Props, Sta
                                                         className="d-flex align-items-center"
                                                     >
                                                         <i className="material-icons md-3 mr-3">
-                                                        warning
+                                                            warning
                                                         </i>
-                                                    Create an Instagram account for this page and you will be able to
-                                                    enable Instagram comments.
+                                                        Create an Instagram
+                                                        account for this page
+                                                        and you will be able to
+                                                        enable Instagram
+                                                        comments.
                                                     </Alert>
                                                 </div>
                                             )}
                                         </div>
 
                                         <p className="font-weight-medium">
-                                        Import your Facebook data:
+                                            Import your Facebook data:
                                         </p>
                                         <div className="d-md-flex">
                                             <FormGroup className="mr-5">
@@ -245,8 +358,17 @@ export default class FacebookIntegrationSetup extends React.Component<Props, Sta
                                                     name={`${id}.import_history_enabled`}
                                                     type="checkbox"
                                                     label="Import 30 days of history (posts and comments) as closed tickets"
-                                                    value={this._getSettingValue(id, 'import_history_enabled')}
-                                                    onChange={(value) => this._setSettingValue(id, 'import_history_enabled', value)}
+                                                    value={this._getSettingValue(
+                                                        id,
+                                                        'import_history_enabled'
+                                                    )}
+                                                    onChange={(value) =>
+                                                        this._setSettingValue(
+                                                            id,
+                                                            'import_history_enabled',
+                                                            value
+                                                        )
+                                                    }
                                                 />
                                             </FormGroup>
                                         </div>
@@ -254,7 +376,7 @@ export default class FacebookIntegrationSetup extends React.Component<Props, Sta
                                 </div>
                             )
                         })
-                    }
+                    )}
                 </div>
                 <Pagination
                     onChange={(page) => this._fetchPage(page, false)}
@@ -265,37 +387,41 @@ export default class FacebookIntegrationSetup extends React.Component<Props, Sta
         )
     }
 
-
     render() {
         const {loading} = this.props
         const {selectedIntegrations} = this.state
 
         return (
             <div className="full-width">
-                <PageHeader title={(
-                    <Breadcrumb>
-                        <BreadcrumbItem>
-                            <Link to="/app/settings/integrations">Integrations</Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            <Link to="/app/settings/integrations/facebook">Facebook</Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem active>
-                            Facebook Pages setup
-                        </BreadcrumbItem>
-                    </Breadcrumb>
-                )}/>
+                <PageHeader
+                    title={
+                        <Breadcrumb>
+                            <BreadcrumbItem>
+                                <Link to="/app/settings/integrations">
+                                    Integrations
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                <Link to="/app/settings/integrations/facebook">
+                                    Facebook
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem active>
+                                Facebook Pages setup
+                            </BreadcrumbItem>
+                        </Breadcrumb>
+                    }
+                />
 
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <Container fluid className="page-container">
                     <h1>Facebook Pages setup</h1>
                     <p>
-                        One last step: choose the pages you want to manage with Gorgias.
-                        <br/>
-                        If you just wanted to re-activate your Facebook integration or update your permissions:
-                        it's done, you can leave this page.
+                        One last step: choose the pages you want to manage with
+                        Gorgias.
+                        <br />
+                        If you just wanted to re-activate your Facebook
+                        integration or update your permissions: it's done, you
+                        can leave this page.
                     </p>
 
                     <Form onSubmit={this._activateSelectedIntegrations}>
@@ -307,7 +433,9 @@ export default class FacebookIntegrationSetup extends React.Component<Props, Sta
                                 color="success"
                                 disabled={selectedIntegrations.isEmpty()}
                                 className={classnames({
-                                    'btn-loading': loading.get('updateIntegration'),
+                                    'btn-loading': loading.get(
+                                        'updateIntegration'
+                                    ),
                                 })}
                             >
                                 Save changes

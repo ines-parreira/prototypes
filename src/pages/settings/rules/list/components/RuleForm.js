@@ -18,23 +18,30 @@ class RuleForm extends React.Component {
     _handleSubmit = (e) => {
         e.preventDefault()
         this.setState({
-            submitting: true
+            submitting: true,
         })
 
-        return this.props.onSubmit({
-            name: this.state.name,
-            description: this.state.description
-        }).then((res) => {
-            this.setState(defaultValues)
+        return this.props
+            .onSubmit({
+                name: this.state.name,
+                description: this.state.description,
+            })
+            .then((res) => {
+                this.setState(defaultValues)
 
-            return res
-        })
+                return res
+            })
     }
 
     _updateField = (value) => {
-        this.setState(Object.assign({
-            dirty: true
-        }, value))
+        this.setState(
+            Object.assign(
+                {
+                    dirty: true,
+                },
+                value
+            )
+        )
     }
 
     render() {
@@ -58,7 +65,9 @@ class RuleForm extends React.Component {
                             label="Description"
                             rows="3"
                             value={this.state.description}
-                            onChange={(description) => this._updateField({description})}
+                            onChange={(description) =>
+                                this._updateField({description})
+                            }
                         />
                     </div>
                     <div className="actions float-right mt-3">
@@ -76,7 +85,9 @@ class RuleForm extends React.Component {
                             className={classnames({
                                 'btn-loading': this.state.submitting,
                             })}
-                            disabled={this.state.submitting || !this.state.dirty}
+                            disabled={
+                                this.state.submitting || !this.state.dirty
+                            }
                         >
                             Create rule
                         </Button>
@@ -89,7 +100,7 @@ class RuleForm extends React.Component {
 
 RuleForm.propTypes = {
     onSubmit: PropTypes.func.isRequired,
-    onCancel: PropTypes.func.isRequired
+    onCancel: PropTypes.func.isRequired,
 }
 
 export default RuleForm

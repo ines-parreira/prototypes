@@ -1,6 +1,11 @@
 //@flow
 import React, {Component, type Node} from 'react'
-import {DropdownItem, DropdownMenu, DropdownToggle, UncontrolledDropdown} from 'reactstrap'
+import {
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    UncontrolledDropdown,
+} from 'reactstrap'
 import classnames from 'classnames'
 import _max from 'lodash/max'
 import _min from 'lodash/min'
@@ -29,12 +34,12 @@ type Props = {
     style: {},
     rightAddon?: string,
     value?: Value,
-    onChange: Value => void,
-    onSearchChange: string => void,
+    onChange: (Value) => void,
+    onSearchChange: (string) => void,
     className?: string,
     fixedWidth: boolean,
     focusedPlaceholder?: string,
-    fullWidth?: boolean
+    fullWidth?: boolean,
 }
 
 type State = {
@@ -42,7 +47,7 @@ type State = {
     optionsOpen: boolean,
     selectedOptionIndex: number,
     filteredOptions: Option[],
-    isFocused: boolean
+    isFocused: boolean,
 }
 
 export default class SelectField extends Component<Props, State> {
@@ -54,7 +59,7 @@ export default class SelectField extends Component<Props, State> {
         style: {},
         onSearchChange: _noop,
         fixedWidth: false,
-        fullWidth: false
+        fullWidth: false,
     }
     inputRef: ?HTMLInputElement
 
@@ -68,28 +73,49 @@ export default class SelectField extends Component<Props, State> {
             input: '',
             optionsOpen: false,
             selectedOptionIndex: props.allowCustomValue ? -1 : 0,
-            filteredOptions: this._filterOptions(props.options, props.value, ''),
-            isFocused: false
+            filteredOptions: this._filterOptions(
+                props.options,
+                props.value,
+                ''
+            ),
+            isFocused: false,
         }
     }
 
     componentWillReceiveProps(nextProps: Props) {
-        const hasNewOptions = this.props.options.length !== nextProps.options.length ||
-            !!nextProps.options.filter((option) => !this.props.options.includes(option))
+        const hasNewOptions =
+            this.props.options.length !== nextProps.options.length ||
+            !!nextProps.options.filter(
+                (option) => !this.props.options.includes(option)
+            )
 
         if (this.props.value !== nextProps.value || hasNewOptions) {
             this.setState({
-                filteredOptions: this._filterOptions(nextProps.options, nextProps.value, this.state.input)
+                filteredOptions: this._filterOptions(
+                    nextProps.options,
+                    nextProps.value,
+                    this.state.input
+                ),
             })
         }
     }
 
-    _filterOptions = (options: Option[], value?: Value, input: string): Option[] => {
+    _filterOptions = (
+        options: Option[],
+        value?: Value,
+        input: string
+    ): Option[] => {
         return options.filter((option) => {
             const searchableText = option.text ? option.text : option.label
 
-            return option.value !== value &&
-                (!input || (typeof searchableText === 'string' && searchableText.toLowerCase().includes(input.toLowerCase())))
+            return (
+                option.value !== value &&
+                (!input ||
+                    (typeof searchableText === 'string' &&
+                        searchableText
+                            .toLowerCase()
+                            .includes(input.toLowerCase())))
+            )
         })
     }
 
@@ -132,7 +158,10 @@ export default class SelectField extends Component<Props, State> {
 
             case 'Tab':
             case 'Enter':
-                if (selectedOptionIndex >= 0 && filteredOptions.length > selectedOptionIndex) {
+                if (
+                    selectedOptionIndex >= 0 &&
+                    filteredOptions.length > selectedOptionIndex
+                ) {
                     // add selected option
                     onChange(filteredOptions[selectedOptionIndex].value)
                 } else if (allowCustomValue && input) {
@@ -143,11 +172,21 @@ export default class SelectField extends Component<Props, State> {
                 break
             // move option selection down
             case 'ArrowUp':
-                this.setState({selectedOptionIndex: _max([selectedOptionIndex - 1, minSelectedOptionIndex])})
+                this.setState({
+                    selectedOptionIndex: _max([
+                        selectedOptionIndex - 1,
+                        minSelectedOptionIndex,
+                    ]),
+                })
                 break
             // move option selection up
             case 'ArrowDown':
-                this.setState({selectedOptionIndex: _min([selectedOptionIndex + 1, filteredOptions.length - 1])})
+                this.setState({
+                    selectedOptionIndex: _min([
+                        selectedOptionIndex + 1,
+                        filteredOptions.length - 1,
+                    ]),
+                })
                 break
             default:
         }
@@ -194,11 +233,28 @@ export default class SelectField extends Component<Props, State> {
 
     render() {
         const {
-            allowCustomValue, value, singular, style, placeholder, className, options,
-            rightAddon, fixedWidth, focusedPlaceholder, fullWidth
+            allowCustomValue,
+            value,
+            singular,
+            style,
+            placeholder,
+            className,
+            options,
+            rightAddon,
+            fixedWidth,
+            focusedPlaceholder,
+            fullWidth,
         } = this.props
-        const {filteredOptions, input, optionsOpen, selectedOptionIndex, isFocused} = this.state
-        const selectedOption = options.find((option) => _isEqual(option.value, value))
+        const {
+            filteredOptions,
+            input,
+            optionsOpen,
+            selectedOptionIndex,
+            isFocused,
+        } = this.state
+        const selectedOption = options.find((option) =>
+            _isEqual(option.value, value)
+        )
         const hasNoFilteredOptions = filteredOptions.length === 0
         let label = selectedOption ? selectedOption.label : null
 
@@ -212,16 +268,23 @@ export default class SelectField extends Component<Props, State> {
         // we use this value to increase the min width of the input, and
         // the label to increase or decrease according to its content
         let selectMinWidth = fixedWidth
-            ? _max(options.map((option: Option) => {
-                if (typeof option.label === 'string') {
-                    return option.label.length
-                }
-                if (option.text) {
-                    return option.text.length
-                }
-                return 0
-            })) * APPROXIMATE_CHAR_WIDTH + ARROW_ICON_WIDTH
-            : _min([input.length * APPROXIMATE_CHAR_WIDTH + ARROW_ICON_WIDTH, MAXIMUM_MIN_WIDTH])
+            ? _max(
+                  options.map((option: Option) => {
+                      if (typeof option.label === 'string') {
+                          return option.label.length
+                      }
+                      if (option.text) {
+                          return option.text.length
+                      }
+                      return 0
+                  })
+              ) *
+                  APPROXIMATE_CHAR_WIDTH +
+              ARROW_ICON_WIDTH
+            : _min([
+                  input.length * APPROXIMATE_CHAR_WIDTH + ARROW_ICON_WIDTH,
+                  MAXIMUM_MIN_WIDTH,
+              ])
 
         return (
             <div style={style}>
@@ -235,9 +298,13 @@ export default class SelectField extends Component<Props, State> {
                         className={className}
                     >
                         <div
-                            className={classnames(css.select, 'dropdown-toggle', {
-                                [css.selectFullWidth]: fullWidth
-                            })}
+                            className={classnames(
+                                css.select,
+                                'dropdown-toggle',
+                                {
+                                    [css.selectFullWidth]: fullWidth,
+                                }
+                            )}
                             onClick={this._toggleDropdown}
                         >
                             <span
@@ -245,20 +312,23 @@ export default class SelectField extends Component<Props, State> {
                                     minWidth: selectMinWidth,
                                     // hide the label when the input is filled
                                     // to keep the current width of the select
-                                    opacity: input ? 0 : 1
+                                    opacity: input ? 0 : 1,
                                 }}
                                 className={classnames(css.label, {
-                                    [css.placeholder]: !label
+                                    [css.placeholder]: !label,
                                 })}
                             >
-                                {label || (isFocused && focusedPlaceholder ? focusedPlaceholder : placeholder)}
+                                {label ||
+                                    (isFocused && focusedPlaceholder
+                                        ? focusedPlaceholder
+                                        : placeholder)}
                             </span>
                             <input
                                 style={{
-                                    minWidth: selectMinWidth
+                                    minWidth: selectMinWidth,
                                 }}
                                 className={css.input}
-                                ref={(ref) => this.inputRef = ref}
+                                ref={(ref) => (this.inputRef = ref)}
                                 value={input}
                                 onChange={this._onSearchChange}
                                 onKeyDown={this._onSearchKeyDown}
@@ -270,71 +340,75 @@ export default class SelectField extends Component<Props, State> {
                     </DropdownToggle>
                     <DropdownMenu
                         className={classnames(css.options, {
-                            [css.optionsFullWidth]: fullWidth
+                            [css.optionsFullWidth]: fullWidth,
                         })}
                     >
                         {hasNoFilteredOptions && !allowCustomValue ? (
-                            <DropdownItem header>
-                                No result
-                            </DropdownItem>
-                        ) : ([
-                            input && allowCustomValue && (
-                                <DropdownItem
-                                    key={-1}
-                                    type="button"
-                                    className={classnames(css.option, {
-                                        [`${css['option--focused']}`]: -1 === selectedOptionIndex
-                                    })}
-                                    onMouseEnter={() => {
-                                        this.setState({selectedOptionIndex: -1})
-                                    }}
-                                    onClick={(event) => {
-                                        this._onOptionClick(event, input)
-                                    }}
-                                >
-                                    <i>
-                                        {`Add ${singular} "`}
-                                        <b>{`${input}`}</b>
-                                        "
-                                    </i>
-                                </DropdownItem>
-                            )
-                            ,
-                            ...filteredOptions.map((item, index) => {
-                                return (
+                            <DropdownItem header>No result</DropdownItem>
+                        ) : (
+                            [
+                                input && allowCustomValue && (
                                     <DropdownItem
-                                        key={item.value}
+                                        key={-1}
                                         type="button"
                                         className={classnames(css.option, {
-                                            [`${css['option--focused']}`]: index === selectedOptionIndex
+                                            [`${css['option--focused']}`]:
+                                                -1 === selectedOptionIndex,
                                         })}
-
                                         onMouseEnter={() => {
-                                            this.setState({selectedOptionIndex: index})
+                                            this.setState({
+                                                selectedOptionIndex: -1,
+                                            })
                                         }}
                                         onClick={(event) => {
-                                            this._onOptionClick(event, item.value)
+                                            this._onOptionClick(event, input)
                                         }}
                                     >
-                                        {item.label}
+                                        <i>
+                                            {`Add ${singular} "`}
+                                            <b>{`${input}`}</b>"
+                                        </i>
                                     </DropdownItem>
-                                )
-                            })
-                        ])}
+                                ),
+                                ...filteredOptions.map((item, index) => {
+                                    return (
+                                        <DropdownItem
+                                            key={item.value}
+                                            type="button"
+                                            className={classnames(css.option, {
+                                                [`${css['option--focused']}`]:
+                                                    index ===
+                                                    selectedOptionIndex,
+                                            })}
+                                            onMouseEnter={() => {
+                                                this.setState({
+                                                    selectedOptionIndex: index,
+                                                })
+                                            }}
+                                            onClick={(event) => {
+                                                this._onOptionClick(
+                                                    event,
+                                                    item.value
+                                                )
+                                            }}
+                                        >
+                                            {item.label}
+                                        </DropdownItem>
+                                    )
+                                }),
+                            ]
+                        )}
                     </DropdownMenu>
-
                 </UncontrolledDropdown>
-                {
-                    rightAddon && (
-                        <div className={classnames({'input-group': !!rightAddon})}>
-                            <span className="input-group-append">
-                                <span className="input-group-text">
-                                    {rightAddon}
-                                </span>
+                {rightAddon && (
+                    <div className={classnames({'input-group': !!rightAddon})}>
+                        <span className="input-group-append">
+                            <span className="input-group-text">
+                                {rightAddon}
                             </span>
-                        </div>
-                    )
-                }
+                        </span>
+                    </div>
+                )}
             </div>
         )
     }

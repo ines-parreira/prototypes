@@ -4,8 +4,14 @@ import {type List, type Record} from 'immutable'
 import _debounce from 'lodash/debounce'
 import axios from 'axios'
 
-import {initCancelOrderPayload, initRefundOrderLineItems} from '../../../../business/shopify/order'
-import {getRefundAmount, getTotalQuantities} from '../../../../business/shopify/refund'
+import {
+    initCancelOrderPayload,
+    initRefundOrderLineItems,
+} from '../../../../business/shopify/order'
+import {
+    getRefundAmount,
+    getTotalQuantities,
+} from '../../../../business/shopify/refund'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 import * as Shopify from '../../../../constants/integrations/shopify'
 import {formatPrice} from '../../../../business/shopify/number'
@@ -46,7 +52,9 @@ const setOrderId = (orderId) => ({
     orderId,
 })
 
-export const setPayload = (payload: Record<$Shape<Shopify.CancelOrderPayload>>) => ({
+export const setPayload = (
+    payload: Record<$Shape<Shopify.CancelOrderPayload>>
+) => ({
     type: SET_PAYLOAD,
     payload,
 })
@@ -75,7 +83,10 @@ const setInitialState = () => ({
     type: SET_INITIAL_STATE,
 })
 
-export const onInit = (integrationId: number, order: Record<Shopify.Order>) => async (dispatch: dispatchType) => {
+export const onInit = (
+    integrationId: number,
+    order: Record<Shopify.Order>
+) => async (dispatch: dispatchType) => {
     try {
         let payload = initCancelOrderPayload(order)
         const lineItems = initRefundOrderLineItems(order)
@@ -83,16 +94,29 @@ export const onInit = (integrationId: number, order: Record<Shopify.Order>) => a
         const orderId = order.get('id')
         api.cancelPendingRequests(true)
 
-        segmentTracker.logEvent(segmentTracker.EVENTS.SHOPIFY_CANCEL_ORDER_OPEN, {
-            orderId,
-        })
+        segmentTracker.logEvent(
+            segmentTracker.EVENTS.SHOPIFY_CANCEL_ORDER_OPEN,
+            {
+                orderId,
+            }
+        )
 
         // Fetch maximum refundable amount, and use it as default value
         dispatch(setLoading(true, 'Calculating refund...'))
 
-        const suggestedRefund = await api.calculateRefund(integrationId, orderId, payload)
-        const shippingMaximumRefundable = suggestedRefund.getIn(['shipping', 'maximum_refundable'])
-        payload = payload.setIn(['refund', 'shipping', 'amount'], shippingMaximumRefundable)
+        const suggestedRefund = await api.calculateRefund(
+            integrationId,
+            orderId,
+            payload
+        )
+        const shippingMaximumRefundable = suggestedRefund.getIn([
+            'shipping',
+            'maximum_refundable',
+        ])
+        payload = payload.setIn(
+            ['refund', 'shipping', 'amount'],
+            shippingMaximumRefundable
+        )
 
         return Promise.all([
             dispatch(setOrderId(orderId)),
@@ -109,40 +133,52 @@ export const onInit = (integrationId: number, order: Record<Shopify.Order>) => a
     }
 }
 
-export const onLineItemsChange = (integrationId: number, lineItems: List<$Shape<Shopify.LineItem>>) =>
-    async (dispatch: dispatchType, getState: getStateType) => {
-        const state = getState()
-        let newPayload = getCancelOrderState(state).get('payload')
+export const onLineItemsChange = (
+    integrationId: number,
+    lineItems: List<$Shape<Shopify.LineItem>>
+) => async (dispatch: dispatchType, getState: getStateType) => {
+    const state = getState()
+    let newPayload = getCancelOrderState(state).get('payload')
 
-        // Ignore already refunded line items
-        newPayload = newPayload.setIn(
-            ['refund', 'refund_line_items'],
-            lineItems
-                .map((lineItem) => {
-                    const refundLineItem = newPayload.getIn(['refund', 'refund_line_items']).find(
-                        (refundLineItem) => refundLineItem.get('line_item_id') === lineItem.get('id')
+    // Ignore already refunded line items
+    newPayload = newPayload.setIn(
+        ['refund', 'refund_line_items'],
+        lineItems
+            .map((lineItem) => {
+                const refundLineItem = newPayload
+                    .getIn(['refund', 'refund_line_items'])
+                    .find(
+                        (refundLineItem) =>
+                            refundLineItem.get('line_item_id') ===
+                            lineItem.get('id')
                     )
 
-                    return refundLineItem
-                        ? refundLineItem.set('quantity', lineItem.get('quantity'))
-                        : refundLineItem
-                })
-                .filter((lineItem) => !!lineItem)
-        )
+                return refundLineItem
+                    ? refundLineItem.set('quantity', lineItem.get('quantity'))
+                    : refundLineItem
+            })
+            .filter((lineItem) => !!lineItem)
+    )
 
-        dispatch(setLineItems(lineItems))
-        return dispatch(onPayloadChange(integrationId, newPayload))
-    }
+    dispatch(setLineItems(lineItems))
+    return dispatch(onPayloadChange(integrationId, newPayload))
+}
 
-export const onPayloadChange = (integrationId: number, payload: Record<$Shape<Shopify.CancelOrderPayload>>) =>
-    async (dispatch: dispatchType, getState: getStateType) => {
-        dispatch(setPayload(payload))
-        dispatch(setLoading(true, 'Calculating refund...'))
-        return calculateRefund(integrationId, dispatch, getState)
-    }
+export const onPayloadChange = (
+    integrationId: number,
+    payload: Record<$Shape<Shopify.CancelOrderPayload>>
+) => async (dispatch: dispatchType, getState: getStateType) => {
+    dispatch(setPayload(payload))
+    dispatch(setLoading(true, 'Calculating refund...'))
+    return calculateRefund(integrationId, dispatch, getState)
+}
 
 export const calculateRefund = _debounce(
-    async (integrationId: number, dispatch: dispatchType, getState: getStateType) => {
+    async (
+        integrationId: number,
+        dispatch: dispatchType,
+        getState: getStateType
+    ) => {
         try {
             dispatch(setLoading(true, 'Calculating refund...'))
 
@@ -152,9 +188,15 @@ export const calculateRefund = _debounce(
             const state = getState()
             const orderId = getCancelOrderState(state).get('orderId')
             const cancelOrderPayload = getCancelOrderState(state).get('payload')
-            const refundPayload = cancelOrderPayload.get('refund').delete('transactions')
+            const refundPayload = cancelOrderPayload
+                .get('refund')
+                .delete('transactions')
             const currencyCode = refundPayload.get('currency')
-            const suggestedRefund = await api.calculateRefund(integrationId, orderId, refundPayload)
+            const suggestedRefund = await api.calculateRefund(
+                integrationId,
+                orderId,
+                refundPayload
+            )
             const amount = getRefundAmount(suggestedRefund)
 
             const promises = [
@@ -164,7 +206,10 @@ export const calculateRefund = _debounce(
             ]
 
             // Check or uncheck the "Restock" checkbox
-            const totalQuantities = getTotalQuantities(refundPayload, suggestedRefund)
+            const totalQuantities = getTotalQuantities(
+                refundPayload,
+                suggestedRefund
+            )
             const restock = totalQuantities > 0
 
             if (restock !== refundPayload.get('restock')) {
@@ -184,17 +229,22 @@ export const calculateRefund = _debounce(
     500
 )
 
-export const onApiError = (error: Object, defaultMessage: string) => (dispatch: dispatchType) => {
-    const message = error.response && error.response.data && error.response.data.error
-        ? error.response.data.error.msg
-        : null
+export const onApiError = (error: Object, defaultMessage: string) => (
+    dispatch: dispatchType
+) => {
+    const message =
+        error.response && error.response.data && error.response.data.error
+            ? error.response.data.error.msg
+            : null
 
     dispatch(setLoading(false))
-    dispatch(notify({
-        status: 'error',
-        message: message || defaultMessage,
-        allowHTML: true,
-    }))
+    dispatch(
+        notify({
+            status: 'error',
+            message: message || defaultMessage,
+            allowHTML: true,
+        })
+    )
 }
 
 export const onCancel = (via: string) => () => {
@@ -209,4 +259,7 @@ export const onCancel = (via: string) => () => {
 
 export const onReset = () => (dispatch: dispatchType) => resetState(dispatch)
 
-export const resetState = _debounce((dispatch: dispatchType) => dispatch(setInitialState()), 250)
+export const resetState = _debounce(
+    (dispatch: dispatchType) => dispatch(setInitialState()),
+    250
+)

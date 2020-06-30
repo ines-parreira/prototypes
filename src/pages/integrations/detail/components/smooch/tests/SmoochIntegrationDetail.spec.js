@@ -5,12 +5,14 @@ import {fromJS} from 'immutable'
 import {SMOOCH_LANGUAGE_DEFAULT} from '../../../../../../config/integrations/smooch'
 import {
     SMOOCH_INTEGRATION_TYPE,
-    SUCCESS_AUTHENTICATION_STATUS
+    SUCCESS_AUTHENTICATION_STATUS,
 } from '../../../../../../constants/integration'
-import {DANISH_LANGUAGE, SPANISH_LANGUAGE} from '../../../../../../constants/languages'
+import {
+    DANISH_LANGUAGE,
+    SPANISH_LANGUAGE,
+} from '../../../../../../constants/languages'
 
 import {SmoochIntegrationDetail} from '../SmoochIntegrationDetail'
-
 
 const defaultProps = {
     actions: {
@@ -19,15 +21,14 @@ const defaultProps = {
         updateOrCreateIntegration: jest.fn(),
         activateIntegration: jest.fn(),
         deactivateIntegration: jest.fn(),
-        deleteIntegration: jest.fn()
+        deleteIntegration: jest.fn(),
     },
     loading: fromJS({
         integration: null,
-        updateIntegration: null
+        updateIntegration: null,
     }),
-    location: {query: {}}
+    location: {query: {}},
 }
-
 
 describe('<SmoochIntegrationDetail/>', () => {
     beforeEach(() => {
@@ -55,9 +56,9 @@ describe('<SmoochIntegrationDetail/>', () => {
                 type: SMOOCH_INTEGRATION_TYPE,
                 meta: {
                     language: DANISH_LANGUAGE,
-                    oauth: {status: SUCCESS_AUTHENTICATION_STATUS}
+                    oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
                 },
-                deactivated_datetime: null
+                deactivated_datetime: null,
             })
 
             const component = shallow(
@@ -69,7 +70,9 @@ describe('<SmoochIntegrationDetail/>', () => {
 
             expect(component.instance().isInitialized).toEqual(true)
             expect(component.state('name')).toEqual(integration.get('name'))
-            expect(component.state('language')).toEqual(integration.getIn(['meta', 'language']))
+            expect(component.state('language')).toEqual(
+                integration.getIn(['meta', 'language'])
+            )
         })
     })
 
@@ -96,9 +99,9 @@ describe('<SmoochIntegrationDetail/>', () => {
                 type: SMOOCH_INTEGRATION_TYPE,
                 meta: {
                     language: DANISH_LANGUAGE,
-                    oauth: {status: SUCCESS_AUTHENTICATION_STATUS}
+                    oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
                 },
-                deactivated_datetime: null
+                deactivated_datetime: null,
             })
 
             const component = shallow(
@@ -112,7 +115,9 @@ describe('<SmoochIntegrationDetail/>', () => {
 
             expect(component.instance().isInitialized).toEqual(true)
             expect(component.state('name')).toEqual(integration.get('name'))
-            expect(component.state('language')).toEqual(integration.getIn(['meta', 'language']))
+            expect(component.state('language')).toEqual(
+                integration.getIn(['meta', 'language'])
+            )
         })
     })
 
@@ -125,9 +130,14 @@ describe('<SmoochIntegrationDetail/>', () => {
                 />
             )
 
-            component.instance().componentWillReceiveProps({...defaultProps, integration: fromJS({})})
+            component.instance().componentWillReceiveProps({
+                ...defaultProps,
+                integration: fromJS({}),
+            })
 
-            expect(defaultProps.actions.triggerCreateSuccess).not.toHaveBeenCalled()
+            expect(
+                defaultProps.actions.triggerCreateSuccess
+            ).not.toHaveBeenCalled()
         })
 
         it('should not do anything because the current and previous integrations are both not empty', () => {
@@ -137,9 +147,9 @@ describe('<SmoochIntegrationDetail/>', () => {
                 type: SMOOCH_INTEGRATION_TYPE,
                 meta: {
                     language: DANISH_LANGUAGE,
-                    oauth: {status: SUCCESS_AUTHENTICATION_STATUS}
+                    oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
                 },
-                deactivated_datetime: null
+                deactivated_datetime: null,
             })
 
             const component = shallow(
@@ -149,9 +159,13 @@ describe('<SmoochIntegrationDetail/>', () => {
                 />
             )
 
-            component.instance().componentWillReceiveProps({...defaultProps, integration})
+            component
+                .instance()
+                .componentWillReceiveProps({...defaultProps, integration})
 
-            expect(defaultProps.actions.triggerCreateSuccess).not.toHaveBeenCalled()
+            expect(
+                defaultProps.actions.triggerCreateSuccess
+            ).not.toHaveBeenCalled()
         })
 
         it('should not do anything because the current action is not "authentication"', () => {
@@ -161,9 +175,9 @@ describe('<SmoochIntegrationDetail/>', () => {
                 type: SMOOCH_INTEGRATION_TYPE,
                 meta: {
                     language: DANISH_LANGUAGE,
-                    oauth: {status: SUCCESS_AUTHENTICATION_STATUS}
+                    oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
                 },
-                deactivated_datetime: null
+                deactivated_datetime: null,
             })
 
             const component = shallow(
@@ -173,9 +187,13 @@ describe('<SmoochIntegrationDetail/>', () => {
                 />
             )
 
-            component.instance().componentWillReceiveProps({...defaultProps, integration})
+            component
+                .instance()
+                .componentWillReceiveProps({...defaultProps, integration})
 
-            expect(defaultProps.actions.triggerCreateSuccess).not.toHaveBeenCalled()
+            expect(
+                defaultProps.actions.triggerCreateSuccess
+            ).not.toHaveBeenCalled()
         })
 
         it('should call `triggerCreateSuccess`', () => {
@@ -185,9 +203,9 @@ describe('<SmoochIntegrationDetail/>', () => {
                 type: SMOOCH_INTEGRATION_TYPE,
                 meta: {
                     language: DANISH_LANGUAGE,
-                    oauth: {status: SUCCESS_AUTHENTICATION_STATUS}
+                    oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
                 },
-                deactivated_datetime: null
+                deactivated_datetime: null,
             })
 
             const location = {query: {action: 'authentication'}}
@@ -200,9 +218,15 @@ describe('<SmoochIntegrationDetail/>', () => {
                 />
             )
 
-            component.instance().componentWillReceiveProps({...defaultProps, integration, location})
+            component.instance().componentWillReceiveProps({
+                ...defaultProps,
+                integration,
+                location,
+            })
 
-            expect(defaultProps.actions.triggerCreateSuccess).toHaveBeenCalledWith(integration.toJS())
+            expect(
+                defaultProps.actions.triggerCreateSuccess
+            ).toHaveBeenCalledWith(integration.toJS())
         })
     })
 
@@ -217,9 +241,9 @@ describe('<SmoochIntegrationDetail/>', () => {
                         type: SMOOCH_INTEGRATION_TYPE,
                         meta: {
                             language: DANISH_LANGUAGE,
-                            oauth: {status: SUCCESS_AUTHENTICATION_STATUS}
+                            oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
                         },
-                        deactivated_datetime: null
+                        deactivated_datetime: null,
                     })}
                 />
             )
@@ -243,9 +267,9 @@ describe('<SmoochIntegrationDetail/>', () => {
                         type: SMOOCH_INTEGRATION_TYPE,
                         meta: {
                             language: DANISH_LANGUAGE,
-                            oauth: {status: SUCCESS_AUTHENTICATION_STATUS}
+                            oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
                         },
-                        deactivated_datetime: null
+                        deactivated_datetime: null,
                     })}
                 />
             )
@@ -264,9 +288,9 @@ describe('<SmoochIntegrationDetail/>', () => {
                 type: SMOOCH_INTEGRATION_TYPE,
                 meta: {
                     language: DANISH_LANGUAGE,
-                    oauth: {status: SUCCESS_AUTHENTICATION_STATUS}
+                    oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
                 },
-                deactivated_datetime: null
+                deactivated_datetime: null,
             })
 
             const component = shallow(
@@ -278,18 +302,24 @@ describe('<SmoochIntegrationDetail/>', () => {
 
             const newName = 'my new name'
 
-            component.instance().setState({name: newName, language: SPANISH_LANGUAGE})
+            component
+                .instance()
+                .setState({name: newName, language: SPANISH_LANGUAGE})
 
             component.instance()._handleSubmit({preventDefault: jest.fn()})
 
-            expect(defaultProps.actions.updateOrCreateIntegration).toHaveBeenCalledWith(fromJS({
-                id: integration.get('id'),
-                name: newName,
-                meta: {
-                    language: SPANISH_LANGUAGE,
-                    oauth: {status: SUCCESS_AUTHENTICATION_STATUS}
-                }
-            }))
+            expect(
+                defaultProps.actions.updateOrCreateIntegration
+            ).toHaveBeenCalledWith(
+                fromJS({
+                    id: integration.get('id'),
+                    name: newName,
+                    meta: {
+                        language: SPANISH_LANGUAGE,
+                        oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
+                    },
+                })
+            )
         })
     })
 
@@ -304,9 +334,9 @@ describe('<SmoochIntegrationDetail/>', () => {
                         type: SMOOCH_INTEGRATION_TYPE,
                         meta: {
                             language: DANISH_LANGUAGE,
-                            oauth: {status: SUCCESS_AUTHENTICATION_STATUS}
+                            oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
                         },
-                        deactivated_datetime: null
+                        deactivated_datetime: null,
                     })}
                 />
             )
@@ -324,9 +354,9 @@ describe('<SmoochIntegrationDetail/>', () => {
                         type: SMOOCH_INTEGRATION_TYPE,
                         meta: {
                             language: DANISH_LANGUAGE,
-                            oauth: {status: SUCCESS_AUTHENTICATION_STATUS}
+                            oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
                         },
-                        deactivated_datetime: '2019-01-01 00:00:00'
+                        deactivated_datetime: '2019-01-01 00:00:00',
                     })}
                 />
             )
@@ -339,7 +369,7 @@ describe('<SmoochIntegrationDetail/>', () => {
                 <SmoochIntegrationDetail
                     {...defaultProps}
                     loading={fromJS({
-                        updateIntegration: 1
+                        updateIntegration: 1,
                     })}
                     integration={fromJS({
                         id: 1,
@@ -347,9 +377,9 @@ describe('<SmoochIntegrationDetail/>', () => {
                         type: SMOOCH_INTEGRATION_TYPE,
                         meta: {
                             language: DANISH_LANGUAGE,
-                            oauth: {status: SUCCESS_AUTHENTICATION_STATUS}
+                            oauth: {status: SUCCESS_AUTHENTICATION_STATUS},
                         },
-                        deactivated_datetime: null
+                        deactivated_datetime: null,
                     })}
                 />
             )

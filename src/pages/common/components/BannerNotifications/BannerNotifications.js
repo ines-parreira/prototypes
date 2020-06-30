@@ -7,7 +7,7 @@ import BannerNotification from './BannerNotification'
 
 type Props = {
     notifications: Array<*>,
-    hide: (number | string) => void
+    hide: (number | string) => void,
 }
 
 const BannerNotifications = ({notifications = [], hide}: Props) => (

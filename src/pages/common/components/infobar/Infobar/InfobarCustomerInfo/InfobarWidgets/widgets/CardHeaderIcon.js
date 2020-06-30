@@ -10,11 +10,5 @@ type Props = {
 }
 
 export function CardHeaderIcon({src, alt}: Props) {
-    return (
-        <img
-            src={src}
-            alt={alt}
-            className={css.container}
-        />
-    )
+    return <img src={src} alt={alt} className={css.container} />
 }

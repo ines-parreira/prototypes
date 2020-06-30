@@ -5,20 +5,12 @@ import TicketStatus from '../TicketStatus'
 
 describe('TicketStatus component', () => {
     it('closed ticket', () => {
-        const component = shallow(
-            <TicketStatus
-                currentStatus="closed"
-            />
-        )
+        const component = shallow(<TicketStatus currentStatus="closed" />)
         expect(component).toMatchSnapshot()
     })
 
     it('open ticket', () => {
-        const component = shallow(
-            <TicketStatus
-                currentStatus="open"
-            />
-        )
+        const component = shallow(<TicketStatus currentStatus="open" />)
         expect(component).toMatchSnapshot()
     })
 })

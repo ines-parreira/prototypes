@@ -6,9 +6,7 @@ import ExpandAllButton from '../ExpandAllButton'
 describe('<ExpandAllButton/>', () => {
     describe('render()', () => {
         it('should render', () => {
-            const component = shallow(
-                <ExpandAllButton/>
-            )
+            const component = shallow(<ExpandAllButton />)
 
             expect(component).toMatchSnapshot()
         })

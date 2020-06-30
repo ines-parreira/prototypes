@@ -4,7 +4,16 @@ import {connect} from 'react-redux'
 import {browserHistory, Link} from 'react-router'
 import classNames from 'classnames'
 import _pick from 'lodash/pick'
-import {Breadcrumb, BreadcrumbItem, Button, Col, Container, Form, FormGroup, Row} from 'reactstrap'
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    Button,
+    Col,
+    Container,
+    Form,
+    FormGroup,
+    Row,
+} from 'reactstrap'
 
 import {fromJS} from 'immutable'
 
@@ -28,7 +37,11 @@ import {setCurrentSubscription} from '../../../../state/currentAccount/actions'
 import {notify} from '../../../../state/notifications/actions'
 import {createStripeCardToken} from '../../../../utils/stripe'
 
-import {creditCardCVCNormalizer, creditCardExpDateNormalizer, creditCardNormalizer} from './utils'
+import {
+    creditCardCVCNormalizer,
+    creditCardExpDateNormalizer,
+    creditCardNormalizer,
+} from './utils'
 
 declare var Stripe: Object
 
@@ -46,7 +59,7 @@ type Props = {
     name: string,
     expDate: string,
     cvc: string,
-    notify: (Object) => Object
+    notify: (Object) => Object,
 }
 
 type State = {
@@ -57,7 +70,7 @@ type State = {
     name: string,
     number: string,
     expDate: string,
-    cvc: string
+    cvc: string,
 }
 
 export class CreditCard extends Component<Props, State> {
@@ -69,7 +82,7 @@ export class CreditCard extends Component<Props, State> {
         number: '',
         name: '',
         expDate: '',
-        cvc: ''
+        cvc: '',
     }
 
     state = {
@@ -98,9 +111,14 @@ export class CreditCard extends Component<Props, State> {
     componentDidUpdate(prevProps: Props, prevState: State) {
         const {currentPlan, currentSubscription} = this.props
         const {isStripeLoaded} = this.state
-        const noSubscriptionNorPlan = currentSubscription.isEmpty() || currentPlan.isEmpty()
+        const noSubscriptionNorPlan =
+            currentSubscription.isEmpty() || currentPlan.isEmpty()
 
-        if (isStripeLoaded && !prevState.isStripeLoaded && noSubscriptionNorPlan) {
+        if (
+            isStripeLoaded &&
+            !prevState.isStripeLoaded &&
+            noSubscriptionNorPlan
+        ) {
             browserHistory.push('/app/settings/billing/')
         }
     }
@@ -114,7 +132,13 @@ export class CreditCard extends Component<Props, State> {
      */
     _submit = (event: SyntheticEvent<*>): Promise<any> => {
         event.preventDefault()
-        const {currentAccount, currentUser, hasCreditCard, currentSubscription, notify} = this.props
+        const {
+            currentAccount,
+            currentUser,
+            hasCreditCard,
+            currentSubscription,
+            notify,
+        } = this.props
         const hasSubscription = !!currentSubscription.get('status')
         const cardToEncode = _pick(this.state, ['name', 'number', 'cvc'])
         const [expMonth, expYear] = this.state.expDate.split('/')
@@ -122,21 +146,29 @@ export class CreditCard extends Component<Props, State> {
         cardToEncode.exp_year = expYear.trim()
 
         this.setState({isSubmitting: true})
-        segmentTracker.logEvent(segmentTracker.EVENTS.PAYMENT_METHOD_ADD_CLICKED, {
-            payment_method: 'stripe',
-            user_id: currentUser.get('id'),
-            account_domain: currentAccount.get('domain')
-        })
+        segmentTracker.logEvent(
+            segmentTracker.EVENTS.PAYMENT_METHOD_ADD_CLICKED,
+            {
+                payment_method: 'stripe',
+                user_id: currentUser.get('id'),
+                account_domain: currentAccount.get('domain'),
+            }
+        )
 
         return new Promise(async (resolve) => {
             let creditCard = null
             let subscription = currentSubscription
             let payment = null
             try {
-                const creditCardToken = await createStripeCardToken(cardToEncode)
-                creditCard = await this.gorgiasApi.updateCreditCard(fromJS({token: creditCardToken.id}))
+                const creditCardToken = await createStripeCardToken(
+                    cardToEncode
+                )
+                creditCard = await this.gorgiasApi.updateCreditCard(
+                    fromJS({token: creditCardToken.id})
+                )
             } catch (exception) {
-                let errorMsg = 'Failed to update credit card. Please try again in a few seconds.'
+                let errorMsg =
+                    'Failed to update credit card. Please try again in a few seconds.'
                 if (exception.response && exception.response.data.error) {
                     // Gorgias API error
                     errorMsg = exception.response.data.error.msg
@@ -152,11 +184,14 @@ export class CreditCard extends Component<Props, State> {
             this.props.setCreditCard(creditCard)
 
             if (!hasCreditCard) {
-                segmentTracker.logEvent(segmentTracker.EVENTS.PAYMENT_METHOD_ADDED, {
-                    payment_method: 'stripe',
-                    user_id: currentUser.get('id'),
-                    account_domain: currentAccount.get('domain')
-                })
+                segmentTracker.logEvent(
+                    segmentTracker.EVENTS.PAYMENT_METHOD_ADDED,
+                    {
+                        payment_method: 'stripe',
+                        user_id: currentUser.get('id'),
+                        account_domain: currentAccount.get('domain'),
+                    }
+                )
             }
 
             if (hasSubscription && subscription.get('status') !== 'trialing') {
@@ -170,9 +205,10 @@ export class CreditCard extends Component<Props, State> {
                 subscription = response.get('subscription')
                 payment = response.get('payment')
             } catch (exception) {
-                const errorMsg = exception.response && exception.response.data.error
-                    ? exception.response.data.error.msg
-                    : 'Failed to update credit card. Please try again in a few seconds.'
+                const errorMsg =
+                    exception.response && exception.response.data.error
+                        ? exception.response.data.error.msg
+                        : 'Failed to update credit card. Please try again in a few seconds.'
                 this.props.notify({status: 'error', title: errorMsg})
                 return resolve()
             }
@@ -181,10 +217,11 @@ export class CreditCard extends Component<Props, State> {
             if (payment.get('confirmation_url')) {
                 notify({
                     status: 'info',
-                    message: 'In order to activate your subscription, we need you to confirm this payment to your bank.' +
+                    message:
+                        'In order to activate your subscription, we need you to confirm this payment to your bank.' +
                         'You will be redirected in a few seconds to a secure page.',
                     dismissAfter: 5000,
-                    dismissible: false
+                    dismissible: false,
                 })
 
                 setTimeout(() => {
@@ -197,8 +234,10 @@ export class CreditCard extends Component<Props, State> {
             if (payment.get('error')) {
                 notify({
                     status: 'error',
-                    message: payment.get('error') + ' ' +
-                        'Please update your payment method and retry to pay your invoice.'
+                    message:
+                        payment.get('error') +
+                        ' ' +
+                        'Please update your payment method and retry to pay your invoice.',
                 })
             }
 
@@ -239,59 +278,69 @@ export class CreditCard extends Component<Props, State> {
     _updateField = (value: Object) => {
         const newState = Object.assign({}, this.state, value)
 
-        this.setState(Object.assign({}, newState, {
-            dirty: true,
-            errors: this._validate(newState)
-        }))
+        this.setState(
+            Object.assign({}, newState, {
+                dirty: true,
+                errors: this._validate(newState),
+            })
+        )
     }
 
     render() {
-        const {
-            currentPlan,
-            currentSubscription,
-            location,
-        } = this.props
+        const {currentPlan, currentSubscription, location} = this.props
         const {isStripeLoaded, errors} = this.state
 
         const invalid = Object.keys(errors).length > 0
-        const isUpdating = /update-credit-card/.test(location? location.pathname : '')
+        const isUpdating = /update-credit-card/.test(
+            location ? location.pathname : ''
+        )
         const action = isUpdating ? 'Update' : 'Add'
-        const payment = (isUpdating || currentPlan.isEmpty() || currentPlan.get('amount') === 0) ? '' :
-            ` and pay ${currentPlan.get('currencySign')}${currentPlan.get('amount')}`
+        const payment =
+            isUpdating ||
+            currentPlan.isEmpty() ||
+            currentPlan.get('amount') === 0
+                ? ''
+                : ` and pay ${currentPlan.get('currencySign')}${currentPlan.get(
+                      'amount'
+                  )}`
 
         if (!isStripeLoaded) {
-            return <Loader/>
+            return <Loader />
         }
 
         return (
             <div className="full-width">
-                <PageHeader title={(
-                    <Breadcrumb>
-                        <BreadcrumbItem>
-                            <Link
-                                className="section"
-                                to="/app/settings/billing/"
-                            >Billing & Usage</Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>{action} credit card</BreadcrumbItem>
-                    </Breadcrumb>
-                )}/>
+                <PageHeader
+                    title={
+                        <Breadcrumb>
+                            <BreadcrumbItem>
+                                <Link
+                                    className="section"
+                                    to="/app/settings/billing/"
+                                >
+                                    Billing & Usage
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                {action} credit card
+                            </BreadcrumbItem>
+                        </Breadcrumb>
+                    }
+                />
 
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <Container fluid className="page-container">
                     <p>Enter the information of the card you'd like to use.</p>
 
                     <Row>
-                        {currentSubscription.get('status') !== 'active' && !currentPlan.isEmpty() && (
-                            <Col sm={3}>
-                                <Plan
-                                    plan={currentPlan}
-                                    showFooter={false}
-                                />
-                            </Col>
-                        )}
+                        {currentSubscription.get('status') !== 'active' &&
+                            !currentPlan.isEmpty() && (
+                                <Col sm={3}>
+                                    <Plan
+                                        plan={currentPlan}
+                                        showFooter={false}
+                                    />
+                                </Col>
+                            )}
                         <Col sm={4}>
                             <Form onSubmit={this._submit}>
                                 <InputField
@@ -300,11 +349,19 @@ export class CreditCard extends Component<Props, State> {
                                     label="Card number"
                                     placeholder="4657 7894 1234 7895"
                                     required
-                                    help={!isUpdating && 'You will be charged for the current period of your plan once you add your Credit Card'}
+                                    help={
+                                        !isUpdating &&
+                                        'You will be charged for the current period of your plan once you add your Credit Card'
+                                    }
                                     value={this.state.number}
-                                    onChange={(number) => this._updateField({
-                                        number: creditCardNormalizer(number, this.state.number)
-                                    })}
+                                    onChange={(number) =>
+                                        this._updateField({
+                                            number: creditCardNormalizer(
+                                                number,
+                                                this.state.number
+                                            ),
+                                        })
+                                    }
                                     error={errors.number}
                                 />
                                 <InputField
@@ -314,7 +371,9 @@ export class CreditCard extends Component<Props, State> {
                                     placeholder="Marie Curie"
                                     required
                                     value={this.state.name}
-                                    onChange={(name) => this._updateField({name})}
+                                    onChange={(name) =>
+                                        this._updateField({name})
+                                    }
                                     error={errors.name}
                                 />
                                 <Row>
@@ -326,9 +385,14 @@ export class CreditCard extends Component<Props, State> {
                                             placeholder="05 / 21"
                                             required
                                             value={this.state.expDate}
-                                            onChange={(expDate) => this._updateField({
-                                                expDate: creditCardExpDateNormalizer(expDate, this.state.expDate)
-                                            })}
+                                            onChange={(expDate) =>
+                                                this._updateField({
+                                                    expDate: creditCardExpDateNormalizer(
+                                                        expDate,
+                                                        this.state.expDate
+                                                    ),
+                                                })
+                                            }
                                             error={errors.expDate}
                                         />
                                     </Col>
@@ -340,9 +404,14 @@ export class CreditCard extends Component<Props, State> {
                                             placeholder="693"
                                             required
                                             value={this.state.cvc}
-                                            onChange={(cvc) => this._updateField({
-                                                cvc: creditCardCVCNormalizer(cvc, this.state.cvc)
-                                            })}
+                                            onChange={(cvc) =>
+                                                this._updateField({
+                                                    cvc: creditCardCVCNormalizer(
+                                                        cvc,
+                                                        this.state.cvc
+                                                    ),
+                                                })
+                                            }
                                             error={errors.cvc}
                                         />
                                     </Col>
@@ -356,8 +425,15 @@ export class CreditCard extends Component<Props, State> {
 
                                     <Button
                                         color="success"
-                                        className={classNames({'btn-loading': this.state.isSubmitting})}
-                                        disabled={this.state.isSubmitting || invalid || !this.state.dirty}
+                                        className={classNames({
+                                            'btn-loading': this.state
+                                                .isSubmitting,
+                                        })}
+                                        disabled={
+                                            this.state.isSubmitting ||
+                                            invalid ||
+                                            !this.state.dirty
+                                        }
                                     >
                                         {action} credit card {payment}
                                     </Button>
@@ -375,9 +451,11 @@ function mapStateToProps(state) {
     return {
         currentPlan: currentPlanSelector(state),
         currentUser: state.currentUser,
-        currentSubscription: currentAccountSelectors.getCurrentSubscription(state),
+        currentSubscription: currentAccountSelectors.getCurrentSubscription(
+            state
+        ),
         currentAccount: state.currentAccount,
-        hasCreditCard: !!state.billing.get('creditCard')
+        hasCreditCard: !!state.billing.get('creditCard'),
     }
 }
 

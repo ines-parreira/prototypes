@@ -4,10 +4,7 @@ import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import {fromJS, type Map} from 'immutable'
 import {connect} from 'react-redux'
-import {
-    Badge,
-    CardBody,
-} from 'reactstrap'
+import {Badge, CardBody} from 'reactstrap'
 
 import _lowerCase from 'lodash/lowerCase'
 import _groupBy from 'lodash/groupBy'
@@ -15,7 +12,12 @@ import _groupBy from 'lodash/groupBy'
 import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../../../../state/customers/selectors'
 import * as ticketSelectors from '../../../../../../../../../state/ticket/selectors'
 
-import {devLog, humanizeString, isCurrentlyOnTicket, toJS} from '../../../../../../../../../utils'
+import {
+    devLog,
+    humanizeString,
+    isCurrentlyOnTicket,
+    toJS,
+} from '../../../../../../../../../utils'
 import {renderTemplate} from '../../../../../../../utils/template'
 
 import ActionButtonsGroup from '../ActionButtonsGroup'
@@ -32,7 +34,7 @@ export default function Charge() {
 
 type AfterTitleProps = {
     isEditing: boolean,
-    source: Map<*,*>
+    source: Map<*, *>,
 }
 
 export class AfterTitle extends React.Component<AfterTitleProps> {
@@ -54,7 +56,8 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
         let actions = [
             {
                 key: 'refund',
-                popover: 'This will refund the charge in Recharge with the amount specified below.',
+                popover:
+                    'This will refund the charge in Recharge with the amount specified below.',
                 tooltip: 'Refund charge',
                 options: [
                     {
@@ -69,55 +72,44 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                                 required: true,
                                 step: 0.01,
                                 min: 0.01,
-                                max: total_price - total_refunds
-                            }
-                        ]
-                    }
+                                max: total_price - total_refunds,
+                            },
+                        ],
+                    },
                 ],
                 title: (
                     <div>
-                        <i className="material-icons mr-2">
-                            refresh
-                        </i>
+                        <i className="material-icons mr-2">refresh</i>
                         Refund charge
                     </div>
                 ),
-                child: (
-                    <i className="material-icons">
-                        refresh
-                    </i>
-                )
-            }
+                child: <i className="material-icons">refresh</i>,
+            },
         ]
 
-
         const status = source.get('status')
-        let removed = !['SUCCESS', 'PARTIALLY_REFUNDED'].includes(status) ? ['refund'] : []
+        let removed = !['SUCCESS', 'PARTIALLY_REFUNDED'].includes(status)
+            ? ['refund']
+            : []
 
         // remove removed actions from list of available actions
         actions = actions.filter((action) => !removed.includes(action.key))
 
         const payload = {
-            charge_id: source.get('id')
+            charge_id: source.get('id'),
         }
 
-        return (
-            <ActionButtonsGroup
-                payload={payload}
-                actions={actions}
-                float
-            />
-        )
+        return <ActionButtonsGroup payload={payload} actions={actions} float />
     }
 }
 
-
 type SubscriptionAfterTitleProps = {
     isEditing: boolean,
-    source: Map<*,*>
+    source: Map<*, *>,
 }
 
-export class SubscriptionAfterTitle extends React.Component<SubscriptionAfterTitleProps> { // eslint-disable-line
+export class SubscriptionAfterTitle extends React.Component<SubscriptionAfterTitleProps> {
+    // eslint-disable-line
     static contextTypes = {
         integrationId: PropTypes.number,
         chargeStatus: PropTypes.string.isRequired,
@@ -135,25 +127,22 @@ export class SubscriptionAfterTitle extends React.Component<SubscriptionAfterTit
             {
                 key: 'skip',
                 options: [{value: 'rechargeSkipCharge'}],
-                popover: 'Skip the charge for this subscription on Recharge. ' +
+                popover:
+                    'Skip the charge for this subscription on Recharge. ' +
                     'No order will be created and no item will be shipped.',
                 tooltip: 'Skip charge',
                 title: (
                     <div>
-                        <i className="material-icons mr-1">
-                            block
-                        </i>
+                        <i className="material-icons mr-1">block</i>
                         Skip charge on subscription
                     </div>
                 ),
                 child: (
                     <div>
-                        <i className="material-icons mr-1">
-                            block
-                        </i>
+                        <i className="material-icons mr-1">block</i>
                         Skip
                     </div>
-                )
+                ),
             },
             {
                 key: 'unskip',
@@ -162,21 +151,17 @@ export class SubscriptionAfterTitle extends React.Component<SubscriptionAfterTit
                 tooltip: 'Unskip charge',
                 title: (
                     <div>
-                        <i className="material-icons mr-1">
-                            block
-                        </i>
+                        <i className="material-icons mr-1">block</i>
                         Unskip charge on subscription
                     </div>
                 ),
                 child: (
                     <div>
-                        <i className="material-icons mr-1">
-                            autorenew
-                        </i>
+                        <i className="material-icons mr-1">autorenew</i>
                         Unskip
                     </div>
-                )
-            }
+                ),
+            },
         ]
 
         let removed = []
@@ -194,15 +179,10 @@ export class SubscriptionAfterTitle extends React.Component<SubscriptionAfterTit
 
         const payload = {
             charge_id: source.get('charge_id'),
-            subscription_id: source.get('subscription_id')
+            subscription_id: source.get('subscription_id'),
         }
 
-        return (
-            <ActionButtonsGroup
-                payload={payload}
-                actions={actions}
-            />
-        )
+        return <ActionButtonsGroup payload={payload} actions={actions} />
     }
 }
 
@@ -212,14 +192,15 @@ const statusColors = {
     queued: 'default',
     partially_refunded: 'warning',
     refunded: 'warning',
-    skipped: 'info'
+    skipped: 'info',
 }
 
 type BeforeContentProps = {
-    source: Map<*,*>
+    source: Map<*, *>,
 }
 
-class BeforeContent extends React.Component<BeforeContentProps> { // eslint-disable-line
+class BeforeContent extends React.Component<BeforeContentProps> {
+    // eslint-disable-line
     render() {
         const {source} = this.props
 
@@ -228,14 +209,9 @@ class BeforeContent extends React.Component<BeforeContentProps> { // eslint-disa
         return (
             <div>
                 <div className="simple-field">
-                    <span className="field-label">
-                        Status:
-                    </span>
+                    <span className="field-label">Status:</span>
                     <span className="field-value">
-                        <Badge
-                            pill
-                            color={statusColors[status]}
-                        >
+                        <Badge pill color={statusColors[status]}>
                             {humanizeString(status)}
                         </Badge>
                     </span>
@@ -245,76 +221,94 @@ class BeforeContent extends React.Component<BeforeContentProps> { // eslint-disa
     }
 }
 
-
 type AfterContentProps = {
     isEditing: boolean,
-    source: Map<*,*>
+    source: Map<*, *>,
 }
 
-export class AfterContent extends React.Component<AfterContentProps> { // eslint-disable-line
+export class AfterContent extends React.Component<AfterContentProps> {
+    // eslint-disable-line
     render() {
         const {source, isEditing} = this.props
 
-        const chargeSubscriptions = _groupBy(toJS(source.get('line_items')), (item) => item.subscription_id)
+        const chargeSubscriptions = _groupBy(
+            toJS(source.get('line_items')),
+            (item) => item.subscription_id
+        )
 
         return (
             <div className="mt-2">
-                {
-                    Object.keys(chargeSubscriptions).map((k) => {
-                        return (
-                            <div
-                                className="card"
-                                key={k}
-                            >
-                                <CardBody className="header clearfix">
-                                    <a target="_blank">
-                                        <span><span role="img" aria-label="subscription emoji">🔄</span> Subscription #{k}</span>
-                                    </a>
-                                    <SubscriptionAfterTitle
-                                        isEditing={isEditing}
-                                        source={fromJS({charge_id: source.get('id'), subscription_id: k})}
-                                    />
-                                </CardBody>
-                                <CardBody className="content">
-                                    {
-                                        chargeSubscriptions[k].map((item) => {
-                                            return <span key={`${k}-${item.id}`}>{item.title} ({item.quantity})</span>
-                                        })
-                                    }
-                                </CardBody>
-                            </div>
-                        )
-                    })
-                }
+                {Object.keys(chargeSubscriptions).map((k) => {
+                    return (
+                        <div className="card" key={k}>
+                            <CardBody className="header clearfix">
+                                <a target="_blank">
+                                    <span>
+                                        <span
+                                            role="img"
+                                            aria-label="subscription emoji"
+                                        >
+                                            🔄
+                                        </span>{' '}
+                                        Subscription #{k}
+                                    </span>
+                                </a>
+                                <SubscriptionAfterTitle
+                                    isEditing={isEditing}
+                                    source={fromJS({
+                                        charge_id: source.get('id'),
+                                        subscription_id: k,
+                                    })}
+                                />
+                            </CardBody>
+                            <CardBody className="content">
+                                {chargeSubscriptions[k].map((item) => {
+                                    return (
+                                        <span key={`${k}-${item.id}`}>
+                                            {item.title} ({item.quantity})
+                                        </span>
+                                    )
+                                })}
+                            </CardBody>
+                        </div>
+                    )
+                })}
             </div>
         )
     }
 }
 
-
 type TitleWrapperProps = {
     children: ?Node,
-    source: Map<*,*>,
-    template: Map<*,*>,
-    getIntegrationData: (number, number) => Map<*,*>
+    source: Map<*, *>,
+    template: Map<*, *>,
+    getIntegrationData: (number, number) => Map<*, *>,
 }
 
 @connect((state) => {
     return {
         getIntegrationData: (integrationId, customerId) => {
             const integrationData = isCurrentlyOnTicket()
-                ? ticketSelectors.getIntegrationDataByIntegrationId(integrationId)(state)
-                : getActiveCustomerIntegrationDataByIntegrationId(integrationId)(state)
+                ? ticketSelectors.getIntegrationDataByIntegrationId(
+                      integrationId
+                  )(state)
+                : getActiveCustomerIntegrationDataByIntegrationId(
+                      integrationId
+                  )(state)
 
             if (integrationData.getIn(['customer', 'id']) !== customerId) {
-                devLog('[INFOBAR][recharge][charge] Could not find integration data for customer.', {
-                    customerId, integrationId
-                })
+                devLog(
+                    '[INFOBAR][recharge][charge] Could not find integration data for customer.',
+                    {
+                        customerId,
+                        integrationId,
+                    }
+                )
                 return fromJS({})
             }
 
             return integrationData
-        }
+        },
     }
 })
 export class TitleWrapper extends React.Component<TitleWrapperProps> {
@@ -325,32 +319,32 @@ export class TitleWrapper extends React.Component<TitleWrapperProps> {
     render() {
         const {children, template, source, getIntegrationData} = this.props
         const {integration} = this.context
-        const customerHash = getIntegrationData(integration.get('id'), source.get('customer_id'))
-            .getIn(['customer', 'hash'])
+        const customerHash = getIntegrationData(
+            integration.get('id'),
+            source.get('customer_id')
+        ).getIn(['customer', 'hash'])
 
         let link = null
         let customLink = template.getIn(['meta', 'link'])
 
         if (customLink && customerHash) {
-            link = renderTemplate(customLink, source.set('customerHash', customerHash).toJS())
+            link = renderTemplate(
+                customLink,
+                source.set('customerHash', customerHash).toJS()
+            )
         }
 
         return (
-            <a
-                href={link}
-                target="_blank"
-                rel="noopener noreferrer"
-            >
+            <a href={link} target="_blank" rel="noopener noreferrer">
                 {children}
             </a>
         )
     }
 }
 
-
 type WrapperProps = {
     children: Node,
-    source: Map<*,*>
+    source: Map<*, *>,
 }
 
 class Wrapper extends React.Component<WrapperProps> {

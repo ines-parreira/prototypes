@@ -6,7 +6,7 @@ import {shallow} from 'enzyme'
 
 import {
     shopifyDraftOrderPayloadFixture,
-    shopifyProductFixture
+    shopifyProductFixture,
 } from '../../../../../../../../../../../../../fixtures/shopify'
 import DraftOrderTable from '../DraftOrderTable'
 import {ShopifyAction} from '../../../../constants'
@@ -90,10 +90,14 @@ describe('<DraftOrderTable/>', () => {
                 />
             )
 
-            const updatedLineItem = payload.getIn(['line_items', 0]).set('quantity', 5)
+            const updatedLineItem = payload
+                .getIn(['line_items', 0])
+                .set('quantity', 5)
             component.instance()._onLineItemChange(0, updatedLineItem)
 
-            const newLineItems = payload.get('line_items').set(0, updatedLineItem)
+            const newLineItems = payload
+                .get('line_items')
+                .set(0, updatedLineItem)
             expect(onChange).toHaveBeenCalledWith(newLineItems)
         })
     })

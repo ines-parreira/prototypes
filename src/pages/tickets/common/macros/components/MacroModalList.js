@@ -10,7 +10,6 @@ import {isMacroDisabled} from '../utils'
 
 import {fetchMacros} from '../../../../../state/macro/actions'
 
-
 import css from './MacroModalList.less'
 
 import MacroList from './MacroList'
@@ -36,13 +35,13 @@ export default class MacroModalList extends React.Component<Props> {
                 action: (e) => {
                     e.preventDefault()
                     this._moveCursor()
-                }
+                },
             },
             GO_PREV_MACRO: {
                 action: (e) => {
                     e.preventDefault()
                     this._moveCursor('previous')
-                }
+                },
             },
         })
     }
@@ -52,11 +51,16 @@ export default class MacroModalList extends React.Component<Props> {
     }
 
     componentWillReceiveProps(nextProps: Props) {
-        this._macroCursor = this._getMacroCursor(nextProps.currentMacro, nextProps.macros)
+        this._macroCursor = this._getMacroCursor(
+            nextProps.currentMacro,
+            nextProps.macros
+        )
     }
 
     _getMacroCursor(currentMacro: Object, macros: Object) {
-        return macros.findIndex((macro) => macro.get('id') === currentMacro.get('id'))
+        return macros.findIndex(
+            (macro) => macro.get('id') === currentMacro.get('id')
+        )
     }
 
     _moveCursor = (direction: string = 'next') => {

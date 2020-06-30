@@ -6,10 +6,12 @@ import {useOptions} from '../hooks'
 const getOptionId = (option) => option.get('id')
 
 describe('useOptions', () => {
-    const options = fromJS([{
-        id: 1,
-        foo: 'bar'
-    }])
+    const options = fromJS([
+        {
+            id: 1,
+            foo: 'bar',
+        },
+    ])
 
     it('should return options if no selected option', () => {
         const {result} = renderHook(() => {
@@ -21,7 +23,7 @@ describe('useOptions', () => {
     it('should add selected option to options', () => {
         const selectedOption = fromJS({
             id: 2,
-            baz: 'bac'
+            baz: 'bac',
         })
         const {result} = renderHook(() => {
             return useOptions(selectedOption, options, getOptionId)
@@ -32,7 +34,7 @@ describe('useOptions', () => {
     it('should not add selected option to options if it is already there', () => {
         const selectedOption = fromJS({
             id: 1,
-            baz: 'bac'
+            baz: 'bac',
         })
         const {result} = renderHook(() => {
             return useOptions(selectedOption, options, getOptionId)

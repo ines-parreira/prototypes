@@ -43,7 +43,8 @@ exports[`Plan component should render 1`] = `
         <strong>
           9999999999
         </strong>
-         tickets included
+         
+        tickets included
       </li>
       <li>
         <i
@@ -56,7 +57,8 @@ exports[`Plan component should render 1`] = `
           + 
           0.00
         </strong>
-         per 
+         
+        per 
         100
          tickets
          

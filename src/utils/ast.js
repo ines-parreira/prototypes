@@ -15,7 +15,10 @@ export const isTimedelta = (data: any, raw: boolean = false): boolean => {
     }
 
     if (raw) {
-        return !!data.match(DOUBLEQUOTE_RAW_TIMEDELTA_REGEX) || !!data.match(SINGLEQUOTE_RAW_TIMEDELTA_REGEX)
+        return (
+            !!data.match(DOUBLEQUOTE_RAW_TIMEDELTA_REGEX) ||
+            !!data.match(SINGLEQUOTE_RAW_TIMEDELTA_REGEX)
+        )
     }
 
     return !!data.match(TIMEDELTA_REGEX)

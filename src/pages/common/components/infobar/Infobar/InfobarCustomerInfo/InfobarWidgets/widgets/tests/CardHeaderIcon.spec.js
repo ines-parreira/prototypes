@@ -7,10 +7,7 @@ describe('<CardHeaderIcon/>', () => {
     describe('render()', () => {
         it('should render icon', () => {
             const component = shallow(
-                <CardHeaderIcon
-                    alt="Foo"
-                    src="foo.png"
-                />
+                <CardHeaderIcon alt="Foo" src="foo.png" />
             )
 
             expect(component).toMatchSnapshot()

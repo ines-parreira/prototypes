@@ -8,10 +8,10 @@ import type {List, Map} from 'immutable'
 import {DEFAULT_SOURCE_PATHS} from '../../config'
 
 import type {contextType} from './types'
-type itemsType = List<Map<*,*>>
+type itemsType = List<Map<*, *>>
 type contextFromSourcePathType = {
     context: contextType,
-    type: string
+    type: string,
 }
 
 /**
@@ -20,7 +20,10 @@ type contextFromSourcePathType = {
  * @param context
  * @returns {*}
  */
-export function itemsWithContext(items: itemsType = fromJS([]), context: contextType): itemsType {
+export function itemsWithContext(
+    items: itemsType = fromJS([]),
+    context: contextType
+): itemsType {
     // TODO(custoners-migration): update this line when we migrated widgets with a `user` context
     return items.filter((w) => {
         if (['customer', 'user'].includes(context)) {
@@ -30,7 +33,10 @@ export function itemsWithContext(items: itemsType = fromJS([]), context: context
     })
 }
 
-export function itemsWithoutContext(items: itemsType = fromJS([]), context: contextType): itemsType {
+export function itemsWithoutContext(
+    items: itemsType = fromJS([]),
+    context: contextType
+): itemsType {
     // TODO(custoners-migration): update this line when we migrated widgets with a `user` context
     return items.filter((w) => {
         if (['customer', 'user'].includes(context)) {
@@ -46,7 +52,10 @@ export function itemsWithoutContext(items: itemsType = fromJS([]), context: cont
  * @param type (Optional) - type of widget (custom, shopify, etc.)
  * @returns {string/Array}
  */
-export function getSourcePathFromContext(context: contextType, type: string = ''): string | Array<string> {
+export function getSourcePathFromContext(
+    context: contextType,
+    type: string = ''
+): string | Array<string> {
     const config = DEFAULT_SOURCE_PATHS[context]
 
     const defaultSourcePath = config.custom
@@ -67,7 +76,9 @@ export function getSourcePathFromContext(context: contextType, type: string = ''
  * @param sourcePath - path of wrapper (ticket.customer.data, etc.)
  * @returns {{context: string, type: string}}
  */
-export function getContextFromSourcePath(sourcePath: Array<string>): contextFromSourcePathType {
+export function getContextFromSourcePath(
+    sourcePath: Array<string>
+): contextFromSourcePathType {
     const config = DEFAULT_SOURCE_PATHS
 
     let result = {
@@ -96,7 +107,11 @@ export function getContextFromSourcePath(sourcePath: Array<string>): contextFrom
  * @param newWidgets
  * @returns {*}
  */
-export function itemsWithUpdatedWidgets(items: itemsType = fromJS([]), context: contextType, newWidgets: {}): itemsType {
+export function itemsWithUpdatedWidgets(
+    items: itemsType = fromJS([]),
+    context: contextType,
+    newWidgets: {}
+): itemsType {
     const otherWidgets = itemsWithoutContext(items, context)
     return otherWidgets.merge(fromJS(newWidgets))
 }

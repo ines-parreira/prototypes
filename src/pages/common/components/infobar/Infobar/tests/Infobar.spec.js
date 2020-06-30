@@ -4,9 +4,15 @@ import {shallow} from 'enzyme'
 import {fromJS, Map} from 'immutable'
 
 import {Infobar} from '../Infobar'
-import { FETCH_PREVIEW_CUSTOMER_ERROR, FETCH_PREVIEW_CUSTOMER_SUCCESS } from '../../../../../../state/infobar/constants'
-import {startEditionMode, stopEditionMode, submitWidgets} from '../../../../../../state/widgets/actions'
-
+import {
+    FETCH_PREVIEW_CUSTOMER_ERROR,
+    FETCH_PREVIEW_CUSTOMER_SUCCESS,
+} from '../../../../../../state/infobar/constants'
+import {
+    startEditionMode,
+    stopEditionMode,
+    submitWidgets,
+} from '../../../../../../state/widgets/actions'
 
 const commonProps = {
     actions: {
@@ -16,8 +22,8 @@ const commonProps = {
             submitWidgets: jest.fn(submitWidgets),
         },
         infobar: {
-            fetchPreviewCustomer: jest.fn(() => Promise.resolve({resp: {}}))
-        }
+            fetchPreviewCustomer: jest.fn(() => Promise.resolve({resp: {}})),
+        },
     },
     context: 'ticket',
     identifier: '1',
@@ -26,20 +32,20 @@ const commonProps = {
     sources: fromJS({
         ticket: {
             customer: {
-                id: 2
-            }
+                id: 2,
+            },
         },
         customer: {
-            id: 2
-        }
+            id: 2,
+        },
     }),
     customer: fromJS({
-        id: 2
+        id: 2,
     }),
     widgets: fromJS({
         _internal: {
-            isEditing: false
-        }
+            isEditing: false,
+        },
     }),
     fetchCustomerHistory: jest.fn(() => () => Promise.resolve()),
     search: jest.fn(() => Promise.resolve({resp: {data: []}})),
@@ -49,7 +55,7 @@ const commonProps = {
         search: 'searchQuery',
         pathname: 'foo',
         query: {},
-    }
+    },
 }
 
 describe('<Infobar/>', () => {
@@ -58,79 +64,56 @@ describe('<Infobar/>', () => {
     })
 
     it('should render ticket context', () => {
-        const component = shallow(
-            <Infobar
-                {...commonProps}
-            />
-        )
+        const component = shallow(<Infobar {...commonProps} />)
 
         expect(component).toMatchSnapshot()
     })
 
     it('should render customer context', () => {
         const component = shallow(
-            <Infobar
-                {...commonProps}
-                context="customer"
-            />
+            <Infobar {...commonProps} context="customer" />
         )
 
         expect(component).toMatchSnapshot()
     })
 
     it('should render loading state because the search is in progress', () => {
-        const component = shallow(
-            <Infobar
-                {...commonProps}
-            />
-        ).setState({isSearching: true})
+        const component = shallow(<Infobar {...commonProps} />).setState({
+            isSearching: true,
+        })
 
         expect(component).toMatchSnapshot()
     })
 
     it('should render loading state because the customer is being fetched', () => {
-        const component = shallow(
-            <Infobar
-                {...commonProps}
-            />
-        ).setState({isFetchingCustomer: true})
+        const component = shallow(<Infobar {...commonProps} />).setState({
+            isFetchingCustomer: true,
+        })
 
         expect(component).toMatchSnapshot()
     })
 
     it('should render selected customer', () => {
-        const component = shallow(
-            <Infobar
-                {...commonProps}
-            />
-        ).setState({
+        const component = shallow(<Infobar {...commonProps} />).setState({
             displaySelectedCustomer: true,
-            selectedCustomer: fromJS({id: 7})
+            selectedCustomer: fromJS({id: 7}),
         })
 
         expect(component).toMatchSnapshot()
     })
 
     it('should render search results', () => {
-        const component = shallow(
-            <Infobar
-                {...commonProps}
-            />
-        ).setState({
+        const component = shallow(<Infobar {...commonProps} />).setState({
             displaySearchResults: true,
-            searchResults: fromJS([{id: 8}, {id: 9}])
+            searchResults: fromJS([{id: 8}, {id: 9}]),
         })
 
         expect(component).toMatchSnapshot()
     })
 
     it('should render current customer with suggested customer', () => {
-        const component = shallow(
-            <Infobar
-                {...commonProps}
-            />
-        ).setState({
-            suggestedCustomer: fromJS({id: 10})
+        const component = shallow(<Infobar {...commonProps} />).setState({
+            suggestedCustomer: fromJS({id: 10}),
         })
 
         expect(component).toMatchSnapshot()
@@ -142,8 +125,8 @@ describe('<Infobar/>', () => {
                 {...commonProps}
                 widgets={fromJS({
                     _internal: {
-                        isEditing: true
-                    }
+                        isEditing: true,
+                    },
                 })}
                 isRouteEditingWidgets={true}
             />
@@ -170,13 +153,15 @@ describe('<Infobar/>', () => {
                         ...commonProps.actions,
                         infobar: {
                             ...commonProps.infobar,
-                            fetchPreviewCustomer: jest.fn(() => Promise.resolve({
-                                type: FETCH_PREVIEW_CUSTOMER_SUCCESS,
-                                resp: {
-                                    id: customerId
-                                }
-                            }))
-                        }
+                            fetchPreviewCustomer: jest.fn(() =>
+                                Promise.resolve({
+                                    type: FETCH_PREVIEW_CUSTOMER_SUCCESS,
+                                    resp: {
+                                        id: customerId,
+                                    },
+                                })
+                            ),
+                        },
                     }}
                 />
             )
@@ -184,7 +169,9 @@ describe('<Infobar/>', () => {
             await component.instance()._onSearchResultClick(customer)
 
             expect(component.state().isFetchingCustomer).toEqual(false)
-            expect(component.state().selectedCustomer.get('id')).toEqual(customerId)
+            expect(component.state().selectedCustomer.get('id')).toEqual(
+                customerId
+            )
         })
 
         it('should reset spinner and keep customer empty on fetch customer failure', async () => {
@@ -195,10 +182,12 @@ describe('<Infobar/>', () => {
                         ...commonProps.actions,
                         infobar: {
                             ...commonProps.infobar,
-                            fetchPreviewCustomer: jest.fn(() => Promise.resolve({
-                                type: FETCH_PREVIEW_CUSTOMER_ERROR,
-                            }))
-                        }
+                            fetchPreviewCustomer: jest.fn(() =>
+                                Promise.resolve({
+                                    type: FETCH_PREVIEW_CUSTOMER_ERROR,
+                                })
+                            ),
+                        },
                     }}
                 />
             )
@@ -210,14 +199,11 @@ describe('<Infobar/>', () => {
         })
 
         it('should start edition mode, because it is mounting in edition mode and the widgets state is not in edit mode', () => {
-            shallow(
-                <Infobar
-                    {...commonProps}
-                    isRouteEditingWidgets={true}
-                />
-            )
+            shallow(<Infobar {...commonProps} isRouteEditingWidgets={true} />)
 
-            expect(commonProps.actions.widgets.startEditionMode).toHaveBeenNthCalledWith(1, commonProps.context)
+            expect(
+                commonProps.actions.widgets.startEditionMode
+            ).toHaveBeenNthCalledWith(1, commonProps.context)
         })
 
         it('should stop edition mode, because it is mounting in read mode and the widgets state is in edit mode', () => {
@@ -232,7 +218,9 @@ describe('<Infobar/>', () => {
                 />
             )
 
-            expect(commonProps.actions.widgets.stopEditionMode).toHaveBeenNthCalledWith(1)
+            expect(
+                commonProps.actions.widgets.stopEditionMode
+            ).toHaveBeenNthCalledWith(1)
         })
     })
 })

@@ -6,11 +6,7 @@ import BodyCell from '../BodyCell'
 
 describe('<BodyCell/>', () => {
     it('should render', () => {
-        const component = shallow(
-            <BodyCell className="foo">
-                Foo
-            </BodyCell>
-        )
+        const component = shallow(<BodyCell className="foo">Foo</BodyCell>)
 
         expect(component).toMatchSnapshot()
     })

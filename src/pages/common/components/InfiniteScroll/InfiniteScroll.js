@@ -8,7 +8,6 @@ import Loader from '../Loader'
 
 import css from './InfiniteScroll.less'
 
-
 type Props = {
     load: () => Promise<*>,
     loadMore: boolean,
@@ -30,7 +29,7 @@ export default class InfiniteScroll extends React.Component<Props, State> {
     }
 
     state = {
-        loading: false
+        loading: false,
     }
 
     container = null
@@ -52,18 +51,17 @@ export default class InfiniteScroll extends React.Component<Props, State> {
     _load = (container: ?HTMLElement) => {
         if (
             // parent stopped loading
-            !this.props.loadMore
+            !this.props.loadMore ||
             // still loading
-            || this.state.loading
+            this.state.loading ||
             // container not ready
-            || !container
+            !container
         ) {
             return
         }
 
-        const containerScroll = container.scrollTop
-            + container.clientHeight
-            + this.props.threshold
+        const containerScroll =
+            container.scrollTop + container.clientHeight + this.props.threshold
 
         // reached the end
         if (containerScroll >= container.scrollHeight) {
@@ -84,19 +82,19 @@ export default class InfiniteScroll extends React.Component<Props, State> {
 
         return (
             <div
-                className={classnames(css.component, {
-                    [css.loading]: this.state.loading
-                }, className)}
+                className={classnames(
+                    css.component,
+                    {
+                        [css.loading]: this.state.loading,
+                    },
+                    className
+                )}
                 ref={this._scrollContainer}
                 onScroll={(e: {target: HTMLElement}) => this._load(e.target)}
             >
                 {children}
-                <Loader
-                    className={css.loader}
-                    minHeight="0"
-                />
+                <Loader className={css.loader} minHeight="0" />
             </div>
         )
     }
 }
-

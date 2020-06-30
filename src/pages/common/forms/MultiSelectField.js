@@ -13,8 +13,8 @@ type Props = {
     values: any[],
     className?: string,
     caseInsensitive?: boolean,
-    onChange: any[] => void,
-    dropdownMenu?: ComponentType<*>
+    onChange: (any[]) => void,
+    dropdownMenu?: ComponentType<*>,
 }
 
 // Deprecated: Use MultiSelectOptionsField instead
@@ -25,7 +25,7 @@ export default class MultiSelectField extends React.Component<Props> {
         plural: 'items',
         singular: 'item',
         tagColor: '#0275d8',
-        values: []
+        values: [],
     }
 
     _onChange = (options: Option[]) => {
@@ -34,12 +34,18 @@ export default class MultiSelectField extends React.Component<Props> {
     }
 
     render() {
-        const selectedOptions: Option[] = this.props.values.map((value: any) => {
-            return this.props.options.find((option: Option) => option.value === value) || {
-                value,
-                label: value
+        const selectedOptions: Option[] = this.props.values.map(
+            (value: any) => {
+                return (
+                    this.props.options.find(
+                        (option: Option) => option.value === value
+                    ) || {
+                        value,
+                        label: value,
+                    }
+                )
             }
-        })
+        )
         return (
             <MultiSelectOptionsField
                 allowCustomOptions={this.props.allowCustomValues}

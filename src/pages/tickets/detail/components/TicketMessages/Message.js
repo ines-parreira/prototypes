@@ -2,7 +2,12 @@
 import classNamesBind from 'classnames/bind'
 import React from 'react'
 
-import {hasFailedAction, isFailed, isPending, TicketMessage} from '../../../../../models/ticket'
+import {
+    hasFailedAction,
+    isFailed,
+    isPending,
+    TicketMessage,
+} from '../../../../../models/ticket'
 
 import Actions from './Actions'
 import Attachments from './Attachments'
@@ -19,7 +24,7 @@ type Props = {
     setStatus: () => void,
     showSourceDetails: boolean,
     isLastRead: boolean,
-    timezone: string
+    timezone: string,
 }
 
 export default function Message(props: Props) {
@@ -28,25 +33,22 @@ export default function Message(props: Props) {
     return (
         <div
             className={classNames('wrapper', {
-                hasSourceDetails: props.showSourceDetails
+                hasSourceDetails: props.showSourceDetails,
             })}
         >
             {props.showSourceDetails && (
                 <SourceDetails
                     className={classNames('sourceDetails', {
-                        internal: !message.public
+                        internal: !message.public,
                     })}
                     message={message}
                     timezone={props.timezone}
                     isLastRead={props.isLastRead}
                 />
             )}
-            <Body
-                message={message}
-                hasError={hasError}
-            />
-            <Attachments message={message}/>
-            <Actions message={message}/>
+            <Body message={message} hasError={hasError} />
+            <Attachments message={message} />
+            <Actions message={message} />
             <Errors
                 message={message}
                 ticketId={props.ticketId}

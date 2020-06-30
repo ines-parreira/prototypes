@@ -20,7 +20,9 @@ export function getPersonLabelFromSource(person, sourceType) {
     if (sourceType === 'email') {
         // shrink email address if too long
         if (address.length > 45) {
-            address = `${address.slice(0, 20)}[...]${address.slice(address.length - 20)}`
+            address = `${address.slice(0, 20)}[...]${address.slice(
+                address.length - 20
+            )}`
         }
 
         if (person.name) {
@@ -69,7 +71,10 @@ export function getSortedIntegrationActionsNames(actionsList) {
             sortedActions = sortedActions.set(type, fromJS([]))
         }
 
-        sortedActions = sortedActions.set(type, sortedActions.get(type).push(action.name))
+        sortedActions = sortedActions.set(
+            type,
+            sortedActions.get(type).push(action.name)
+        )
     })
 
     return sortedActions
@@ -86,13 +91,18 @@ export function getSortedIntegrationActions(actionsList) {
     let sortedActions = fromJS({})
 
     actionsList.map((action) => {
-        const type = getActionTemplate(action.get('name')).integrationType || action.get('name')
+        const type =
+            getActionTemplate(action.get('name')).integrationType ||
+            action.get('name')
 
         if (!sortedActions.get(type)) {
             sortedActions = sortedActions.set(type, fromJS([]))
         }
 
-        sortedActions = sortedActions.set(type, sortedActions.get(type).push(action))
+        sortedActions = sortedActions.set(
+            type,
+            sortedActions.get(type).push(action)
+        )
     })
 
     return sortedActions

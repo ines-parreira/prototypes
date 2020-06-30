@@ -21,7 +21,7 @@ export default class ButtonPopover extends React.Component<Props> {
     static defaultProps = {
         isActive: false,
         isDisabled: false,
-        isOpen: false
+        isOpen: false,
     }
 
     popover: ?ElementRef<*>
@@ -68,11 +68,19 @@ export default class ButtonPopover extends React.Component<Props> {
     }
 
     render() {
-        const {isActive, isDisabled, className, isOpen, children, icon, name} = this.props
+        const {
+            isActive,
+            isDisabled,
+            className,
+            isOpen,
+            children,
+            icon,
+            name,
+        } = this.props
 
         return (
             <Popover
-                trigger={(
+                trigger={
                     <Button
                         name={name}
                         isActive={isActive}
@@ -80,10 +88,10 @@ export default class ButtonPopover extends React.Component<Props> {
                         icon={icon}
                         onToggle={this._onButtonToggle}
                     />
-                )}
+                }
                 className={className}
                 isOpen={isOpen}
-                ref={(el: ?ElementRef<*>) => this.popover = el}
+                ref={(el: ?ElementRef<*>) => (this.popover = el)}
             >
                 {children}
             </Popover>

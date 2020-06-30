@@ -23,14 +23,17 @@
  * Inspired by https://ayushgp.github.io/scaling-websockets-using-sharedworkers/
  */
 
-
 import io from 'socket.io-client'
 
-import {BROADCAST_CHANNEL_EVENTS, BROADCAST_CHANNEL_NAME, MESSAGE_PORT_EVENTS} from './constants'
+import {
+    BROADCAST_CHANNEL_EVENTS,
+    BROADCAST_CHANNEL_NAME,
+    MESSAGE_PORT_EVENTS,
+} from './constants'
 
 export const SOCKET_EVENTS = Object.freeze({
     CLIENT_CONNECTED: 'client-connected',
-    CLIENT_DISCONNECTED: 'client-disconnected'
+    CLIENT_DISCONNECTED: 'client-disconnected',
 })
 export const MAX_INCREMENTAL_RECONNECT_BACKOFF = 30
 export const DISCONNECTED_NOTIFICATION_DELAY = 10
@@ -59,7 +62,9 @@ export class WebsocketSharedWorker {
         this.pendingTabs = Object.assign({}, this.connectedTabs)
 
         Object.keys(this.connectedTabs).forEach((clientId) => {
-            this.connectedTabs[clientId].postMessage({type: MESSAGE_PORT_EVENTS.HEALTH_CHECK})
+            this.connectedTabs[clientId].postMessage({
+                type: MESSAGE_PORT_EVENTS.HEALTH_CHECK,
+            })
         })
 
         setTimeout(this.disconnectTabs, HEALTH_CHECK_TIMEOUT * 1000)
@@ -100,13 +105,18 @@ export class WebsocketSharedWorker {
     }
 
     _onSocketJson = (wsMessage) => {
-        this.broadcastChannel.postMessage({type: BROADCAST_CHANNEL_EVENTS.SERVER_MESSAGE, json: wsMessage})
+        this.broadcastChannel.postMessage({
+            type: BROADCAST_CHANNEL_EVENTS.SERVER_MESSAGE,
+            json: wsMessage,
+        })
     }
 
     _onSocketConnect = () => {
         // eslint-disable-next-line no-console
         console.log('WS connected!')
-        this.broadcastChannel.postMessage({type: BROADCAST_CHANNEL_EVENTS.WS_CONNECTED})
+        this.broadcastChannel.postMessage({
+            type: BROADCAST_CHANNEL_EVENTS.WS_CONNECTED,
+        })
 
         if (this.incrementalReconnectTask) {
             this.incrementalReconnectBackoff = 1
@@ -123,7 +133,10 @@ export class WebsocketSharedWorker {
         console.log('WS disconnected!')
 
         this.sendDisconnectedNotificationTask = setTimeout(
-            () => this.broadcastChannel.postMessage({type: BROADCAST_CHANNEL_EVENTS.WS_DISCONNECTED}),
+            () =>
+                this.broadcastChannel.postMessage({
+                    type: BROADCAST_CHANNEL_EVENTS.WS_DISCONNECTED,
+                }),
             DISCONNECTED_NOTIFICATION_DELAY * 1000
         )
 
@@ -153,14 +166,16 @@ export class WebsocketSharedWorker {
             this.socket.on('connect', this._onSocketConnect)
             this.socket.on('disconnect', this._onSocketDisconnect)
         } else {
-            messagePort.postMessage({type: BROADCAST_CHANNEL_EVENTS.WS_CONNECTED})
+            messagePort.postMessage({
+                type: BROADCAST_CHANNEL_EVENTS.WS_CONNECTED,
+            })
         }
 
         this.connectedTabs[message.clientId] = messagePort
 
         this.socket.send({
             event: SOCKET_EVENTS.CLIENT_CONNECTED,
-            clientId: message.clientId
+            clientId: message.clientId,
         })
     }
 

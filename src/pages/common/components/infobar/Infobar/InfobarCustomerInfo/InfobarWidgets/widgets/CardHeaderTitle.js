@@ -9,9 +9,5 @@ type Props = {
 }
 
 export function CardHeaderTitle({children}: Props) {
-    return (
-        <span className={css.container}>
-            {children}
-        </span>
-    )
+    return <span className={css.container}>{children}</span>
 }

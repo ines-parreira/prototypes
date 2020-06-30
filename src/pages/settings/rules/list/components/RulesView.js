@@ -4,11 +4,7 @@ import {fromJS, List} from 'immutable'
 import moment from 'moment'
 import classnames from 'classnames'
 import _xor from 'lodash/xor'
-import {
-    Button,
-    Container,
-    Table
-} from 'reactstrap'
+import {Button, Container, Table} from 'reactstrap'
 
 import Modal from '../../../../common/components/Modal'
 import PageHeader from '../../../../common/components/PageHeader'
@@ -22,7 +18,6 @@ import RuleForm from './RuleForm'
 
 import css from './RulesView.less'
 
-
 type Props = {
     rules: List<*>,
     actions: Object,
@@ -34,7 +29,7 @@ type Props = {
 type State = {
     showForm: boolean,
     openedRules: [],
-    hasScrolled: boolean
+    hasScrolled: boolean,
 }
 
 export default class RulesView extends React.Component<Props, State> {
@@ -45,7 +40,7 @@ export default class RulesView extends React.Component<Props, State> {
     state = {
         showForm: false,
         openedRules: [],
-        hasScrolled: false
+        hasScrolled: false,
     }
 
     componentWillMount() {
@@ -90,19 +85,18 @@ export default class RulesView extends React.Component<Props, State> {
         values.code_ast = getAST(values.code)
         values.code = getCode(values.code_ast)
         values.deactivated_datetime = moment().format()
-        return this.props.actions.rules.create(values)
-            .then(({rule}) => {
-                this._hideForm()
+        return this.props.actions.rules.create(values).then(({rule}) => {
+            this._hideForm()
 
-                // when new rule is created, open it immediately
-                this._toggleRuleOpening(rule.id)
-            })
+            // when new rule is created, open it immediately
+            this._toggleRuleOpening(rule.id)
+        })
     }
 
     _toggleRuleOpening = (id: number) => {
         this.setState({
             //$FlowFixMe
-            openedRules: _xor(this.state.openedRules, [id])
+            openedRules: _xor(this.state.openedRules, [id]),
         })
     }
 
@@ -139,8 +133,9 @@ export default class RulesView extends React.Component<Props, State> {
                 >
                     <div className="mb-3">
                         <p>
-                            Rules provide a way to automatically perform actions on tickets, like tagging, assigning{' '}
-                            or even responding.
+                            Rules provide a way to automatically perform actions
+                            on tickets, like tagging, assigning or even
+                            responding.
                         </p>
 
                         <p>
@@ -151,53 +146,54 @@ export default class RulesView extends React.Component<Props, State> {
                                 target="_blank"
                             >
                                 in our docs
-                            </a>.
+                            </a>
+                            .
                         </p>
 
                         <p>
-                            Rules are going to be executed in the order they are sorted by below.
+                            Rules are going to be executed in the order they are
+                            sorted by below.
                         </p>
                     </div>
-                    <Video
-                        videoId="0fIboyInGDg"
-                        legend="Working with rules"
-                    />
+                    <Video videoId="0fIboyInGDg" legend="Working with rules" />
                 </Container>
 
-                {
-                    !rules.isEmpty() && (
-                        <div className="rule-category">
-                            <Table hover>
-                                <ReactSortable
-                                    tag="tbody"
-                                    options={{
-                                        sort: true,
-                                        draggable: '.draggable',
-                                        handle: '.drag-handle',
-                                        animation: 150,
-                                    }}
-                                    onChange={this._updateOrder}
-                                >
-                                    {
-                                        rules.map((rule) => {
-                                            const id = rule.get('id')
+                {!rules.isEmpty() && (
+                    <div className="rule-category">
+                        <Table hover>
+                            <ReactSortable
+                                tag="tbody"
+                                options={{
+                                    sort: true,
+                                    draggable: '.draggable',
+                                    handle: '.drag-handle',
+                                    animation: 150,
+                                }}
+                                onChange={this._updateOrder}
+                            >
+                                {rules
+                                    .map((rule) => {
+                                        const id = rule.get('id')
 
-                                            return (
-                                                <RuleRow
-                                                    actions={actions}
-                                                    key={id}
-                                                    rule={rule}
-                                                    toggleOpening={this._toggleRuleOpening}
-                                                    isOpen={this.state.openedRules.includes(id)}
-                                                />
-                                            )
-                                        }).toList()
-                                    }
-                                </ReactSortable>
-                            </Table>
-                        </div>
-                    )
-                }
+                                        return (
+                                            <RuleRow
+                                                actions={actions}
+                                                key={id}
+                                                rule={rule}
+                                                toggleOpening={
+                                                    this._toggleRuleOpening
+                                                }
+                                                isOpen={this.state.openedRules.includes(
+                                                    id
+                                                )}
+                                            />
+                                        )
+                                    })
+                                    .toList()}
+                            </ReactSortable>
+                        </Table>
+                    </div>
+                )}
 
                 <Modal
                     header="Create new rule"

@@ -8,7 +8,11 @@ import {Button, Container} from 'reactstrap'
 
 import {useDelayedAsyncFn} from '../../../hooks'
 import type {OrderDirection} from '../../../models/api'
-import {fetchMacros, type FetchMacrosOptions, type MacroSortableProperties} from '../../../models/macro'
+import {
+    fetchMacros,
+    type FetchMacrosOptions,
+    type MacroSortableProperties,
+} from '../../../models/macro'
 import {macrosFetched, type MacrosState} from '../../../state/entities/macros'
 import {notify} from '../../../state/notifications/actions'
 import PageHeader from '../../common/components/PageHeader'
@@ -41,23 +45,30 @@ export function MacrosSettingsContentContainer({
         orderDir: 'asc',
     })
     const [macroIds, setMacroIds] = useState<number[]>([])
-    const [pagination, setPagination]= useState<PaginationState>({
+    const [pagination, setPagination] = useState<PaginationState>({
         page: 1,
         nbPages: 1,
     })
-    const [{loading: isFetchPending}, handleFetchMacros] = useDelayedAsyncFn(async () => {
-        try {
-            const {data, meta: {page, nb_pages}} = await fetchMacros(options)
-            macrosFetched(data)
-            setMacroIds(data.map((macro) => macro.id))
-            setPagination({page, nbPages: nb_pages})
-        } catch (error) {
-            notify({
-                message: 'Failed to fetch macros',
-                status: 'error',
-            })
-        }
-    }, [options], 200)
+    const [{loading: isFetchPending}, handleFetchMacros] = useDelayedAsyncFn(
+        async () => {
+            try {
+                const {
+                    data,
+                    meta: {page, nb_pages},
+                } = await fetchMacros(options)
+                macrosFetched(data)
+                setMacroIds(data.map((macro) => macro.id))
+                setPagination({page, nbPages: nb_pages})
+            } catch (error) {
+                notify({
+                    message: 'Failed to fetch macros',
+                    status: 'error',
+                })
+            }
+        },
+        [options],
+        200
+    )
     useEffect(() => {
         handleFetchMacros()
     }, [options])
@@ -65,9 +76,9 @@ export function MacrosSettingsContentContainer({
         const {page, nbPages} = pagination
         const nextMacroIds = macroIds.filter((macroId) => macros[macroId])
         if (
-            nbPages > 1
-            && nextMacroIds.length < macroIds.length
-            && !isFetchPending
+            nbPages > 1 &&
+            nextMacroIds.length < macroIds.length &&
+            !isFetchPending
         ) {
             setMacroIds(nextMacroIds)
             setOptions({...options, page: page === nbPages ? page - 1 : page})
@@ -82,12 +93,14 @@ export function MacrosSettingsContentContainer({
                         bindKey
                         className="mr-2"
                         forcedQuery={options.search || ''}
-                        onChange={(search) => setOptions({
-                            ...options,
-                            orderBy: 'createdDatetime',
-                            orderDir: 'asc',
-                            search,
-                        })}
+                        onChange={(search) =>
+                            setOptions({
+                                ...options,
+                                orderBy: 'createdDatetime',
+                                orderDir: 'asc',
+                                search,
+                            })
+                        }
                         placeholder="Search macros..."
                         searchDebounceTime={300}
                     />
@@ -102,17 +115,19 @@ export function MacrosSettingsContentContainer({
                     </Button>
                 </div>
             </PageHeader>
-            <Container
-                className="page-container"
-                fluid
-            >
+            <Container className="page-container" fluid>
                 <div className={css.description}>
                     <div className={css.descriptionText}>
                         <p>
-                            Macros are used to automatise your client support responses. You can create new macros, delete or disable existing ones.
+                            Macros are used to automatise your client support
+                            responses. You can create new macros, delete or
+                            disable existing ones.
                         </p>
                         <p>
-                            For example you can create a macro for letting your clients know the shipment status of their order or for sending gift-card. Check out the video on the right to find out more about working with macros.
+                            For example you can create a macro for letting your
+                            clients know the shipment status of their order or
+                            for sending gift-card. Check out the video on the
+                            right to find out more about working with macros.
                         </p>
                     </div>
                 </div>
@@ -121,11 +136,17 @@ export function MacrosSettingsContentContainer({
             <MacrosSettingsTable
                 isLoading={isFetchPending}
                 macroIds={macroIds}
-                onSortOptionsChange={(orderBy: MacroSortableProperties, orderDir: OrderDirection) => !options.search && setOptions({
-                    ...options,
-                    orderBy,
-                    orderDir,
-                })}
+                onSortOptionsChange={(
+                    orderBy: MacroSortableProperties,
+                    orderDir: OrderDirection
+                ) =>
+                    !options.search &&
+                    setOptions({
+                        ...options,
+                        orderBy,
+                        orderDir,
+                    })
+                }
                 sortOptions={_pick(options, ['orderBy', 'orderDir'])}
             />
 
@@ -148,4 +169,7 @@ const mapDispatchToProps = {
     notify,
 }
 
-export default connect<Props, OwnProps>(mapStateToProps, mapDispatchToProps)(MacrosSettingsContentContainer)
+export default connect<Props, OwnProps>(
+    mapStateToProps,
+    mapDispatchToProps
+)(MacrosSettingsContentContainer)

@@ -17,9 +17,9 @@ describe('<Stats/>', () => {
         filters: fromJS({
             period: {
                 start_datetime: '2019-03-09',
-                end_datetime: '2019-03-10'
-            }
-        })
+                end_datetime: '2019-03-10',
+            },
+        }),
     }
 
     let apiMock = null
@@ -38,15 +38,16 @@ describe('<Stats/>', () => {
             apiMock.onAny().reply(200, firstResponseTimeStat)
 
             const componentWrapper = shallow(
-                <Stats
-                    {...defaultProps}
-                    params={{view: channelsStatView}}
-                />
+                <Stats {...defaultProps} params={{view: channelsStatView}} />
             )
             const component = componentWrapper.instance()
-            expect(component.state).toMatchSnapshot('should contain loading stats')
+            expect(component.state).toMatchSnapshot(
+                'should contain loading stats'
+            )
             setTimeout(() => {
-                expect(component.state).toMatchSnapshot('should contain data of stats and be marked as not loading')
+                expect(component.state).toMatchSnapshot(
+                    'should contain data of stats and be marked as not loading'
+                )
                 done()
             })
         })
@@ -55,14 +56,13 @@ describe('<Stats/>', () => {
             apiMock.onAny().reply(400, {error: {msg: 'Invalid filters'}})
 
             const componentWrapper = shallow(
-                <Stats
-                    {...defaultProps}
-                    params={{view: channelsStatView}}
-                />
+                <Stats {...defaultProps} params={{view: channelsStatView}} />
             )
             const component = componentWrapper.instance()
             setTimeout(() => {
-                expect(component.state).toMatchSnapshot('stats should be marked as not loading')
+                expect(component.state).toMatchSnapshot(
+                    'stats should be marked as not loading'
+                )
                 expect(defaultProps.notify.mock.calls).toMatchSnapshot()
                 done()
             })
@@ -72,14 +72,13 @@ describe('<Stats/>', () => {
             apiMock.onAny().reply(500)
 
             const componentWrapper = shallow(
-                <Stats
-                    {...defaultProps}
-                    params={{view: channelsStatView}}
-                />
+                <Stats {...defaultProps} params={{view: channelsStatView}} />
             )
             const component = componentWrapper.instance()
             setTimeout(() => {
-                expect(component.state).toMatchSnapshot('stats should be marked as not loading')
+                expect(component.state).toMatchSnapshot(
+                    'stats should be marked as not loading'
+                )
                 expect(defaultProps.notify.mock.calls).toMatchSnapshot()
                 done()
             })
@@ -91,10 +90,7 @@ describe('<Stats/>', () => {
             apiMock = new MockAdapter(axios, {delayResponse: 2000})
 
             const componentWrapper = shallow(
-                <Stats
-                    {...defaultProps}
-                    params={{view: channelsStatView}}
-                />
+                <Stats {...defaultProps} params={{view: channelsStatView}} />
             )
             const component = componentWrapper.instance()
             const cancelPendingRequestsSpy = jest.fn()
@@ -107,51 +103,44 @@ describe('<Stats/>', () => {
     describe('render()', () => {
         it('should render stats', () => {
             const componentWrapper = shallow(
-                <Stats
-                    {...defaultProps}
-                    params={{view: channelsStatView}}
-                />
+                <Stats {...defaultProps} params={{view: channelsStatView}} />
             )
             const component = componentWrapper.instance()
             component.setState({
                 fetchingStates: fromJS({}),
                 stats: fromJS({
-                    'first-response-time': firstResponseTimeStat
-                })
+                    'first-response-time': firstResponseTimeStat,
+                }),
             })
             expect(componentWrapper.dive()).toMatchSnapshot()
         })
 
         it('should render stats as loading', () => {
             const componentWrapper = shallow(
-                <Stats
-                    {...defaultProps}
-                    params={{view: channelsStatView}}
-                />
+                <Stats {...defaultProps} params={{view: channelsStatView}} />
             )
             const statNames = statsViewsConfig.getIn(['channels', 'stats'])
             const component = componentWrapper.instance()
             component.setState({
-                fetchingStates: statNames.reduce((loaders, statName) => loaders.set(statName, true), fromJS({})),
-                stats: fromJS({})
+                fetchingStates: statNames.reduce(
+                    (loaders, statName) => loaders.set(statName, true),
+                    fromJS({})
+                ),
+                stats: fromJS({}),
             })
             expect(componentWrapper.dive()).toMatchSnapshot()
         })
 
-        it('should not render stats because there is no stat to render and it\'s not fetching stats', () => {
+        it("should not render stats because there is no stat to render and it's not fetching stats", () => {
             const componentWrapper = shallow(
-                <Stats
-                    {...defaultProps}
-                    params={{view: channelsStatView}}
-                />
+                <Stats {...defaultProps} params={{view: channelsStatView}} />
             )
             const component = componentWrapper.instance()
             component.setState({
                 fetchingStates: fromJS({}),
-                stats: fromJS({})
+                stats: fromJS({}),
             })
             expect(componentWrapper.dive()).toMatchSnapshot()
         })
     })
-
 })

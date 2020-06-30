@@ -1,6 +1,10 @@
 import {fromJS} from 'immutable'
 
-import {TicketReplyCache, defaultTicket, CACHE_MAX_ITEMS} from '../../newMessage/ticketReplyCache'
+import {
+    TicketReplyCache,
+    defaultTicket,
+    CACHE_MAX_ITEMS,
+} from '../../newMessage/ticketReplyCache'
 
 // Storage Mock
 const storageMock = () => {
@@ -22,7 +26,7 @@ const storageMock = () => {
         key: (i) => {
             const keys = Object.keys(storage)
             return keys[i] || null
-        }
+        },
     }
 }
 

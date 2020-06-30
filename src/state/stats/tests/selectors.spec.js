@@ -10,7 +10,7 @@ describe('selectors', () => {
 
         beforeEach(() => {
             state = {
-                stats: initialState
+                stats: initialState,
             }
         })
 
@@ -34,7 +34,9 @@ describe('selectors', () => {
         describe('getViewfilters()', () => {
             it('should return no filter for the given view because there is no filter', () => {
                 state.stats = state.stats.set('filters', null)
-                expect(selectors.getViewFilters('overview')(state)).toEqual(null)
+                expect(selectors.getViewFilters('overview')(state)).toEqual(
+                    null
+                )
             })
 
             it('should return filters for the given view', () => {
@@ -45,12 +47,16 @@ describe('selectors', () => {
                     channels: [EMAIL_CHANNEL],
                     period: {
                         start_datetime: '2019-03-09',
-                        end_datetime: '2019-03-10'
-                    }
+                        end_datetime: '2019-03-10',
+                    },
                 })
                 state.stats = state.stats.set('filters', filters)
-                expect(selectors.getViewFilters('overview')(state)).toMatchSnapshot()
-                expect(selectors.getViewFilters('satisfaction')(state)).toMatchSnapshot()
+                expect(
+                    selectors.getViewFilters('overview')(state)
+                ).toMatchSnapshot()
+                expect(
+                    selectors.getViewFilters('satisfaction')(state)
+                ).toMatchSnapshot()
             })
         })
     })

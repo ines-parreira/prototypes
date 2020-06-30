@@ -29,13 +29,17 @@ class ShowMoreFieldsDropdown extends React.Component {
     }
 
     render() {
-        const visibleFieldsNames = this.props.visibleFields.map((field) => field.get('name'))
+        const visibleFieldsNames = this.props.visibleFields.map((field) =>
+            field.get('name')
+        )
 
         return (
             <UncontrolledDropdown
                 className="d-flex"
                 onClick={() => {
-                    segmentTracker.logEvent(segmentTracker.EVENTS.SHOW_MORE_FIELDS_CLICKED)
+                    segmentTracker.logEvent(
+                        segmentTracker.EVENTS.SHOW_MORE_FIELDS_CLICKED
+                    )
                 }}
             >
                 <DropdownToggle
@@ -47,37 +51,36 @@ class ShowMoreFieldsDropdown extends React.Component {
                     <i className="icon material-icons md-2">view_column</i>
                 </DropdownToggle>
                 <DropdownMenu right>
-                    <DropdownItem
-                        className="pb-2"
-                        header
-                    >
+                    <DropdownItem className="pb-2" header>
                         COLUMNS
                     </DropdownItem>
-                    {
-                        this.props.fields
-                            .map((field) => {
-                                const isMandatory = this.props.config.get('mainField') === field.get('name')
-                                const isChecked = visibleFieldsNames.includes(field.get('name')) || isMandatory
-                                let setFieldVisibility = (value) => this._setFieldVisibility(field.get('name'), value)
+                    {this.props.fields.map((field) => {
+                        const isMandatory =
+                            this.props.config.get('mainField') ===
+                            field.get('name')
+                        const isChecked =
+                            visibleFieldsNames.includes(field.get('name')) ||
+                            isMandatory
+                        let setFieldVisibility = (value) =>
+                            this._setFieldVisibility(field.get('name'), value)
 
-                                return (
-                                    <DropdownItem
-                                        key={field.get('name')}
-                                        tag="label"
-                                        className="pt-1 pb-1 mb-0"
-                                        toggle={false}
-                                        disabled={isMandatory}
-                                    >
-                                        <BooleanField
-                                            value={isChecked}
-                                            onChange={setFieldVisibility}
-                                            label={field.get('title')}
-                                            disabled={isMandatory}
-                                        />
-                                    </DropdownItem>
-                                )
-                            })
-                    }
+                        return (
+                            <DropdownItem
+                                key={field.get('name')}
+                                tag="label"
+                                className="pt-1 pb-1 mb-0"
+                                toggle={false}
+                                disabled={isMandatory}
+                            >
+                                <BooleanField
+                                    value={isChecked}
+                                    onChange={setFieldVisibility}
+                                    label={field.get('title')}
+                                    disabled={isMandatory}
+                                />
+                            </DropdownItem>
+                        )
+                    })}
                 </DropdownMenu>
             </UncontrolledDropdown>
         )
@@ -100,4 +103,3 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(null, mapDispatchToProps)(ShowMoreFieldsDropdown)
-

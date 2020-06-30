@@ -17,23 +17,23 @@ type Attachment = any
 type Props = {
     attachments: List<Attachment>,
     removable: boolean,
-    deleteAttachment?: number => void,
+    deleteAttachment?: (number) => void,
     className?: string,
 }
 
 type State = {
     isLightboxOpen: boolean,
-    currentImage: number
+    currentImage: number,
 }
 
 export default class TicketAttachments extends React.Component<Props, State> {
     static defaultProps = {
-        removable: false
+        removable: false,
     }
 
     state = {
         isLightboxOpen: false,
-        currentImage: 0
+        currentImage: 0,
     }
 
     renderAttachmentIcon = (contentType: string) => {
@@ -80,15 +80,21 @@ export default class TicketAttachments extends React.Component<Props, State> {
 
         try {
             return {
-                backgroundImage: `url(${proxifyURL(attachment.get('url'), '120x80')})`
+                backgroundImage: `url(${proxifyURL(
+                    attachment.get('url'),
+                    '120x80'
+                )})`,
             }
         } catch (error) {
             return null
         }
-
     }
 
-    openLightbox = (e: SyntheticEvent<*>, attachment: Attachment, images: List<Attachment>) => {
+    openLightbox = (
+        e: SyntheticEvent<*>,
+        attachment: Attachment,
+        images: List<Attachment>
+    ) => {
         if (!this.isImage(attachment)) {
             return
         }
@@ -97,7 +103,9 @@ export default class TicketAttachments extends React.Component<Props, State> {
 
         this.setState({
             isLightboxOpen: true,
-            currentImage: images.findIndex((curImage) => curImage.get('url') === attachment.get('url')),
+            currentImage: images.findIndex(
+                (curImage) => curImage.get('url') === attachment.get('url')
+            ),
         })
 
         // pause hotkeys
@@ -106,7 +114,7 @@ export default class TicketAttachments extends React.Component<Props, State> {
 
     closeLightbox = () => {
         this.setState({
-            isLightboxOpen: false
+            isLightboxOpen: false,
         })
 
         shortcutManager.unpause()
@@ -125,57 +133,61 @@ export default class TicketAttachments extends React.Component<Props, State> {
         }
 
         const images = attachments.filter(this.isImage)
-        const failedAttachments = attachments.filter((attachment) => attachment.get('public') === false)
-        const publicAttachments = attachments.filter((attachment) => attachment.get('public') !== false)
+        const failedAttachments = attachments.filter(
+            (attachment) => attachment.get('public') === false
+        )
+        const publicAttachments = attachments.filter(
+            (attachment) => attachment.get('public') !== false
+        )
 
         return (
             <div className={classnames(css.component, className)}>
-                {
-                    failedAttachments.size > 0 && (
-                        <div className="mb-2">
-                            <i className="material-icons mr-1">
-                                warning
-                            </i>
-                            {' '}There is {`${failedAttachments.size}`} attachment(s) to this message which we{' '}
-                            couldn't download.
-                        </div>
-                    )
-                }
-                {
-                    publicAttachments.map((attachment: Attachment, idx) => {
-                        return (
-                            <a
-                                href={attachment.get('url') || '#'}
-                                target="_blank"
-                                className={classnames(css.item, {
-                                    [css.hasPreview]: this.isImage(attachment)
-                                })}
-                                key={idx}
-                                style={this.setImagePreview(attachment)}
-                                onClick={(e) => this.openLightbox(e, attachment, images)}
-                                rel="noopener noreferrer"
-                            >
-                                <div className={css.itemMeta}>
-                                    <div className={css.metaName}>
-                                        {attachment.get('name')}
-                                    </div>
-
-                                    {this.renderAttachmentIcon(attachment.get('content_type'))}
-
-                                    {this.renderRemoveIcon(idx)}
+                {failedAttachments.size > 0 && (
+                    <div className="mb-2">
+                        <i className="material-icons mr-1">warning</i> There is{' '}
+                        {`${failedAttachments.size}`} attachment(s) to this
+                        message which we couldn't download.
+                    </div>
+                )}
+                {publicAttachments.map((attachment: Attachment, idx) => {
+                    return (
+                        <a
+                            href={attachment.get('url') || '#'}
+                            target="_blank"
+                            className={classnames(css.item, {
+                                [css.hasPreview]: this.isImage(attachment),
+                            })}
+                            key={idx}
+                            style={this.setImagePreview(attachment)}
+                            onClick={(e) =>
+                                this.openLightbox(e, attachment, images)
+                            }
+                            rel="noopener noreferrer"
+                        >
+                            <div className={css.itemMeta}>
+                                <div className={css.metaName}>
+                                    {attachment.get('name')}
                                 </div>
-                            </a>
-                        )
-                    })
-                }
+
+                                {this.renderAttachmentIcon(
+                                    attachment.get('content_type')
+                                )}
+
+                                {this.renderRemoveIcon(idx)}
+                            </div>
+                        </a>
+                    )
+                })}
 
                 <Lightbox
-                    images={images.map((image) => {
-                        return {
-                            src: proxifyURL(image.get('url')),
-                            caption: image.get('name')
-                        }
-                    }).toJS()}
+                    images={images
+                        .map((image) => {
+                            return {
+                                src: proxifyURL(image.get('url')),
+                                caption: image.get('name'),
+                            }
+                        })
+                        .toJS()}
                     isOpen={isLightboxOpen}
                     currentImage={currentImage}
                     onClickPrev={() => this.gotoImage(currentImage - 1)}

@@ -21,14 +21,16 @@ describe('users audit actions', () => {
     it('fetch user audit', () => {
         mockServer.onGet('/api/users/audit/').reply(200, {data: [{id: 2}]})
 
-        return store.dispatch(actions.fetchUsersAudit({}))
+        return store
+            .dispatch(actions.fetchUsersAudit({}))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
     it('fetch user audit bad request', () => {
         mockServer.onGet('/api/users/audit/').reply(400, {data: [{id: 2}]})
 
-        return store.dispatch(actions.fetchUsersAudit({}))
+        return store
+            .dispatch(actions.fetchUsersAudit({}))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 })

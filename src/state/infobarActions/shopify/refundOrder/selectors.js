@@ -9,5 +9,5 @@ import type {RefundOrderState} from './types'
 
 export const getRefundOrderState = createSelector(
     [getShopifyActionsState],
-    (state: ShopifyActionsState): RefundOrderState => state.refundOrder,
+    (state: ShopifyActionsState): RefundOrderState => state.refundOrder
 )

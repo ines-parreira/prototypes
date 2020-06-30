@@ -31,7 +31,7 @@ type Props = {
     callee: Object,
     parent: List<*>,
     schemas: Object,
-    depth: number
+    depth: number,
 }
 
 export class WrappedCallExpression extends React.Component<Props> {
@@ -43,7 +43,8 @@ export class WrappedCallExpression extends React.Component<Props> {
         const parentCallee = parent.push('callee')
 
         const isConditionExpression = parent.contains('test')
-        const isActionExpression = callee.type === 'Identifier' && callee.name === 'Action'
+        const isActionExpression =
+            callee.type === 'Identifier' && callee.name === 'Action'
 
         if (!isConditionExpression && !isActionExpression) {
             console.error('Invalid callExpression')
@@ -110,7 +111,7 @@ export class WrappedCallExpression extends React.Component<Props> {
                         leftsiblings={left.push('meta', 'operators')}
                         className="OperatorDropdown"
                     />
-                    {secondArg ?
+                    {secondArg ? (
                         <Expression
                             {...secondArg}
                             parent={parent.push('arguments', 1)}
@@ -120,8 +121,7 @@ export class WrappedCallExpression extends React.Component<Props> {
                             schemas={schemas}
                             leftsiblings={left}
                         />
-                        : null
-                    }
+                    ) : null}
                     {hovered && deleteBinaryExpression}
                 </span>
             )
@@ -147,7 +147,9 @@ export class WrappedCallExpression extends React.Component<Props> {
                     <ObjectExpression
                         properties={actionArguments.properties}
                         actions={actions}
-                        leftsiblings={actionRootLeftSiblings.push(actionName.value)}
+                        leftsiblings={actionRootLeftSiblings.push(
+                            actionName.value
+                        )}
                         rule={rule}
                         schemas={schemas}
                         parent={parent.push('arguments', 1)}

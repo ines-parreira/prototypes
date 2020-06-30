@@ -16,7 +16,7 @@ export const renderDifference = (label, percentage, moreIsBetter) => {
     }
 
     const isIncreasing = percentage > 0
-    const isDecreasing  = percentage < 0
+    const isDecreasing = percentage < 0
     const isEqual = percentage === 0
     let icon = 'arrow_forward'
     let colorLabel = ''
@@ -24,12 +24,14 @@ export const renderDifference = (label, percentage, moreIsBetter) => {
     if (!_isUndefined(moreIsBetter)) {
         if (isEqual) {
             colorLabel = 'neutral'
-        } else if ((isIncreasing && moreIsBetter) || (isDecreasing && !moreIsBetter)) {
+        } else if (
+            (isIncreasing && moreIsBetter) ||
+            (isDecreasing && !moreIsBetter)
+        ) {
             colorLabel = 'positive'
         } else {
             colorLabel = 'negative'
         }
-
     }
 
     if (isIncreasing) {
@@ -51,8 +53,13 @@ export const renderDifference = (label, percentage, moreIsBetter) => {
     )
 }
 
-export const comparedPeriodString = (previousStartDatetime, previousEndDatetime) => {
-    let previousPeriod = `${previousStartDatetime.format('MMM DD, YYYY')} - ${previousEndDatetime.format('MMM DD, YYYY')}`
+export const comparedPeriodString = (
+    previousStartDatetime,
+    previousEndDatetime
+) => {
+    let previousPeriod = `${previousStartDatetime.format(
+        'MMM DD, YYYY'
+    )} - ${previousEndDatetime.format('MMM DD, YYYY')}`
 
     if (previousStartDatetime.isSame(previousEndDatetime, 'day')) {
         previousPeriod = previousStartDatetime.format('MMM DD, YYYY')
@@ -77,7 +84,7 @@ export const formatCurrency = (value, currency) => {
         style: 'currency',
         currency: currency,
         maximumFractionDigits: 2,
-        minimumFractionDigits: 0
+        minimumFractionDigits: 0,
     })
 }
 
@@ -130,4 +137,3 @@ export const formatDuration = (value, precision = 9) => {
 
     return response
 }
-

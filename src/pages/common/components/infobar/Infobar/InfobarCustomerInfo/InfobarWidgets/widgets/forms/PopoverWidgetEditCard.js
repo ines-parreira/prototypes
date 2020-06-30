@@ -14,7 +14,7 @@ class PopoverWidgetEditCard extends React.Component {
         link: '',
         displayCard: true,
         limit: '',
-        orderBy: ''
+        orderBy: '',
     }
 
     componentDidMount() {
@@ -23,12 +23,12 @@ class PopoverWidgetEditCard extends React.Component {
         const cardModel = {
             title: template.get('title', ''),
             link: template.getIn(['meta', 'link'], ''),
-            displayCard: template.getIn(['meta', 'displayCard'], true)
+            displayCard: template.getIn(['meta', 'displayCard'], true),
         }
 
         const listModel = {
             limit: parent.getIn(['meta', 'limit'], ''),
-            orderBy: parent.getIn(['meta', 'orderBy'], '')
+            orderBy: parent.getIn(['meta', 'orderBy'], ''),
         }
 
         // populating the form
@@ -55,21 +55,21 @@ class PopoverWidgetEditCard extends React.Component {
             title: this.state.title,
             meta: {
                 link: this.state.link,
-                displayCard: this.state.displayCard
-            }
+                displayCard: this.state.displayCard,
+            },
         }
         const list = {
             meta: {
                 limit: this.state.limit,
-                orderBy: this.state.orderBy
-            }
+                orderBy: this.state.orderBy,
+            },
         }
 
         if (isParentList) {
             // saving the parent list AND the card inside that list
             this.props.actions.updateEditedWidget({
                 ...list,
-                widgets: [{...card}]
+                widgets: [{...card}],
             })
         } else {
             // saving only the card
@@ -89,7 +89,7 @@ class PopoverWidgetEditCard extends React.Component {
                 .filter(isSimpleTemplateWidget)
                 .map((w) => ({
                     label: w.get('title', ''),
-                    value: w.get('path', '')
+                    value: w.get('path', ''),
                 }))
         }
 
@@ -103,79 +103,66 @@ class PopoverWidgetEditCard extends React.Component {
                     value={this.state.title}
                     onChange={(title) => this.setState({title})}
                 />
-                {
-                    !editionHiddenFields.includes('link') && (
-                        <InputField
-                            type="text"
-                            name="card.meta.link"
-                            label="Link"
-                            placeholder="http://myapi.com/{{id}}"
-                            value={this.state.link}
-                            onChange={(link) => this.setState({link})}
-                        />
-                    )
-                }
-                {
-                    !editionHiddenFields.includes('displayCard') && (
-                        <FormGroup>
-                            <BooleanField
-                                type="checkbox"
-                                name="card.meta.displayCard"
-                                label="Display card"
-                                value={this.state.displayCard}
-                                onChange={(displayCard) => this.setState({displayCard})}
-                            />
-                        </FormGroup>
-                    )
-                }
-                {
-                    isParentList && [
-                        <InputField
-                            key="limit"
-                            type="number"
-                            name="list.meta.limit"
-                            label="Limit"
-                            placeholder="ex: 0"
-                            value={this.state.limit}
-                            onChange={(limit) => this.setState({limit})}
-                        />,
-                        <InputField
-                            key="order"
-                            type="select"
-                            name="list.meta.orderBy"
-                            label="Order by"
-                            value={this.state.orderBy}
-                            onChange={(orderBy) => this.setState({orderBy})}
-                        >
-                            {
-                                orderByOptions
-                                    .map((option) => {
-                                        return ['-', '+']
-                                            .map((order) => {
-                                                const value = `${order}${option.value}`
-                                                const label = `${option.label} (${order === '-' ? 'DESC' : 'ASC'})`
-
-                                                return (
-                                                    <option
-                                                        value={value}
-                                                        key={value}
-                                                    >
-                                                        {label}
-                                                    </option>
-                                                )
-                                            })
-                                    })
+                {!editionHiddenFields.includes('link') && (
+                    <InputField
+                        type="text"
+                        name="card.meta.link"
+                        label="Link"
+                        placeholder="http://myapi.com/{{id}}"
+                        value={this.state.link}
+                        onChange={(link) => this.setState({link})}
+                    />
+                )}
+                {!editionHiddenFields.includes('displayCard') && (
+                    <FormGroup>
+                        <BooleanField
+                            type="checkbox"
+                            name="card.meta.displayCard"
+                            label="Display card"
+                            value={this.state.displayCard}
+                            onChange={(displayCard) =>
+                                this.setState({displayCard})
                             }
-                        </InputField>
-                    ]
-                }
+                        />
+                    </FormGroup>
+                )}
+                {isParentList && [
+                    <InputField
+                        key="limit"
+                        type="number"
+                        name="list.meta.limit"
+                        label="Limit"
+                        placeholder="ex: 0"
+                        value={this.state.limit}
+                        onChange={(limit) => this.setState({limit})}
+                    />,
+                    <InputField
+                        key="order"
+                        type="select"
+                        name="list.meta.orderBy"
+                        label="Order by"
+                        value={this.state.orderBy}
+                        onChange={(orderBy) => this.setState({orderBy})}
+                    >
+                        {orderByOptions.map((option) => {
+                            return ['-', '+'].map((order) => {
+                                const value = `${order}${option.value}`
+                                const label = `${option.label} (${
+                                    order === '-' ? 'DESC' : 'ASC'
+                                })`
+
+                                return (
+                                    <option value={value} key={value}>
+                                        {label}
+                                    </option>
+                                )
+                            })
+                        })}
+                    </InputField>,
+                ]}
 
                 <div>
-                    <Button
-                        color="primary"
-                        type="submit"
-                        className="mr-2"
-                    >
+                    <Button color="primary" type="submit" className="mr-2">
                         Submit
                     </Button>
                     <Button
@@ -197,7 +184,7 @@ PopoverWidgetEditCard.propTypes = {
     template: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     isParentList: PropTypes.bool.isRequired,
-    parent: PropTypes.object
+    parent: PropTypes.object,
 }
 
 PopoverWidgetEditCard.defaultProps = {

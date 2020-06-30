@@ -7,7 +7,7 @@ import _isNull from 'lodash/isNull'
 let touchSupport = null
 export function isTouchDevice(): ?boolean {
     if (_isNull(touchSupport)) {
-        touchSupport = ('ontouchstart' in window)
+        touchSupport = 'ontouchstart' in window
     }
 
     return touchSupport
@@ -15,7 +15,7 @@ export function isTouchDevice(): ?boolean {
 
 const screens = {
     small: 768,
-    medium: 1024
+    medium: 1024,
 }
 
 function screenUnder(size: 'small' | 'medium' = 'small'): boolean {

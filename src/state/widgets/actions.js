@@ -19,70 +19,77 @@ type widgetUpdateType = {
     title: string,
     meta: {
         link: string,
-        displayCard: boolean
-    }
+        displayCard: boolean,
+    },
 }
 type widgetType = {
     order: number,
     type: string,
     context: {},
-    template: {}
+    template: {},
 }
 
 export function fetchWidgets() {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
-            type: types.FETCH_WIDGETS_START
+            type: types.FETCH_WIDGETS_START,
         })
 
-        return axios.get('/api/widgets/', {
-            data: {
-                type: 'ticket-list'
-            }
-        })
-            .then((json = {}) => json.data)
-            .then((resp) => {
-                return dispatch({
-                    type: types.FETCH_WIDGETS_SUCCESS,
-                    items: resp.data
-                })
-            }, (error) => {
-                return dispatch({
-                    type: types.FETCH_WIDGETS_ERROR,
-                    error,
-                    reason: 'Failed to fetch widgets'
-                })
+        return axios
+            .get('/api/widgets/', {
+                data: {
+                    type: 'ticket-list',
+                },
             })
+            .then((json = {}) => json.data)
+            .then(
+                (resp) => {
+                    return dispatch({
+                        type: types.FETCH_WIDGETS_SUCCESS,
+                        items: resp.data,
+                    })
+                },
+                (error) => {
+                    return dispatch({
+                        type: types.FETCH_WIDGETS_ERROR,
+                        error,
+                        reason: 'Failed to fetch widgets',
+                    })
+                }
+            )
     }
 }
 
 export function startEditionMode(context: string = 'ticket') {
     return {
         type: types.START_EDITION_MODE,
-        context
+        context,
     }
 }
 
 export function stopEditionMode() {
     return {
-        type: types.STOP_EDITION_MODE
+        type: types.STOP_EDITION_MODE,
     }
 }
 
 export function startWidgetEdition(templatePath: string) {
     return {
         type: types.START_WIDGET_EDITION,
-        path: templatePath
+        path: templatePath,
     }
 }
 
 export function stopWidgetEdition() {
     return {
-        type: types.STOP_WIDGET_EDITION
+        type: types.STOP_WIDGET_EDITION,
     }
 }
 
-export function generateAndSetWidgets(sources: Map<*,*>, context: string = 'ticket') {
+export function generateAndSetWidgets(
+    sources: Map<*, *>,
+    context: string = 'ticket'
+) {
     return (dispatch: dispatchType): dispatchType => {
         // generate template
         const items = jsonToWidgets(sources.toJS(), context)
@@ -90,45 +97,51 @@ export function generateAndSetWidgets(sources: Map<*,*>, context: string = 'tick
         return dispatch({
             type: types.GENERATE_AND_SET_WIDGETS,
             items,
-            context
+            context,
         })
     }
 }
 
-export function setEditedWidgets(items: Array<Map<*,*>>) {
+export function setEditedWidgets(items: Array<Map<*, *>>) {
     return {
         type: types.SET_EDITED_WIDGETS,
-        items
+        items,
     }
 }
 
 export function setEditionAsDirty() {
     return {
-        type: types.SET_EDITION_AS_DIRTY
+        type: types.SET_EDITION_AS_DIRTY,
     }
 }
 
 export function selectContext(context: string = 'ticket') {
     return {
         type: types.SELECT_CONTEXT,
-        context
+        context,
     }
 }
 
 export function drag(group: string) {
     return {
         type: types.DRAG,
-        group
+        group,
     }
 }
 
 export function cancelDrag() {
     return {
-        type: types.CANCEL_DRAG
+        type: types.CANCEL_DRAG,
     }
 }
 
-export function drop(eventType: 'add' | 'update', targetParentTemplatePath: string = '', key: string = '', toIndex: number = 0, fromIndex: number = 0) {
+export function drop(
+    eventType: 'add' | 'update',
+    targetParentTemplatePath: string = '',
+    key: string = '',
+    toIndex: number = 0,
+    fromIndex: number = 0
+) {
     return (dispatch: dispatchType, getState: getStateType): dispatchType => {
         const state = getState()
         const splitKey = key.split('.')
@@ -142,7 +155,9 @@ export function drop(eventType: 'add' | 'update', targetParentTemplatePath: stri
             const currentIntegrationId = parseInt(_last(splitKey))
 
             if (!isNaN(currentIntegrationId)) {
-                const integration = integrationsSelectors.getIntegrationById(currentIntegrationId)(state)
+                const integration = integrationsSelectors.getIntegrationById(
+                    currentIntegrationId
+                )(state)
 
                 if (integration) {
                     type = integration.get('type')
@@ -154,8 +169,8 @@ export function drop(eventType: 'add' | 'update', targetParentTemplatePath: stri
         let source = getSources(state)
         // edit-widgets for new tickets
         if (
-            source.get('ticket')
-            && _isUndefined(source.getIn(['ticket', 'id']))
+            source.get('ticket') &&
+            _isUndefined(source.getIn(['ticket', 'id']))
         ) {
             source = getSourcesWithCustomer(state)
         }
@@ -169,7 +184,7 @@ export function drop(eventType: 'add' | 'update', targetParentTemplatePath: stri
             targetParentTemplatePath,
             source,
             widgetType: type,
-            integrationId
+            integrationId,
         })
     }
 }
@@ -177,24 +192,30 @@ export function drop(eventType: 'add' | 'update', targetParentTemplatePath: stri
 export function updateEditedWidget(data: widgetUpdateType) {
     return {
         type: types.UPDATE_EDITED_WIDGET,
-        item: data
+        item: data,
     }
 }
 
-export function removeEditedWidget(templatePath: string = '', absolutePath: string = '') {
+export function removeEditedWidget(
+    templatePath: string = '',
+    absolutePath: string = ''
+) {
     return {
         type: types.REMOVE_EDITED_WIDGET,
         templatePath,
-        absolutePath
+        absolutePath,
     }
 }
 
 export function submitWidgets(data: ?Array<widgetType>) {
-    return (dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
+    return (
+        dispatch: dispatchType,
+        getState: getStateType
+    ): Promise<dispatchType> => {
         const context = getState().widgets.get('currentContext', 'ticket')
 
         dispatch({
-            type: types.SUBMIT_WIDGET_START
+            type: types.SUBMIT_WIDGET_START,
         })
 
         let items = data || []
@@ -206,47 +227,61 @@ export function submitWidgets(data: ?Array<widgetType>) {
 
         // if no widget, just put an empty one
         if (!items.length) {
-            items = [{
-                order: 0,
-                type: 'custom',
-                context,
-                template: {}
-            }]
+            items = [
+                {
+                    order: 0,
+                    type: 'custom',
+                    context,
+                    template: {},
+                },
+            ]
         }
 
         // re assign order number and pick only interesting fields
         items = items.map((item, i) => {
             const updatedItem = item
             updatedItem.order = i
-            return _pick(updatedItem, ['id', 'order', 'template', 'context', 'type', 'integration_id'])
+            return _pick(updatedItem, [
+                'id',
+                'order',
+                'template',
+                'context',
+                'type',
+                'integration_id',
+            ])
         })
 
         return axios
             .put('/api/widgets/', items)
             .then((json = {}) => json.data)
-            .then((resp) => {
-                dispatch({
-                    type: types.SUBMIT_WIDGET_SUCCESS,
-                    items: resp.data,
-                    context
-                })
+            .then(
+                (resp) => {
+                    dispatch({
+                        type: types.SUBMIT_WIDGET_SUCCESS,
+                        items: resp.data,
+                        context,
+                    })
 
-                dispatch(notify({
-                    status: 'success',
-                    message: 'Widgets successfully updated'
-                }))
-            }, (error) => {
-                return dispatch({
-                    type: types.SUBMIT_WIDGET_ERROR,
-                    error,
-                    reason: 'Failed to update widgets'
-                })
-            })
+                    dispatch(
+                        notify({
+                            status: 'success',
+                            message: 'Widgets successfully updated',
+                        })
+                    )
+                },
+                (error) => {
+                    return dispatch({
+                        type: types.SUBMIT_WIDGET_ERROR,
+                        error,
+                        reason: 'Failed to update widgets',
+                    })
+                }
+            )
     }
 }
 
 export function resetWidgets() {
     return {
-        type: types.RESET_WIDGETS
+        type: types.RESET_WIDGETS,
     }
 }

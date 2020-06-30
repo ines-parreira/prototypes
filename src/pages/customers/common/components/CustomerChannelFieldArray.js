@@ -7,9 +7,13 @@ import InputField from '../../../common/forms/InputField'
 
 class CustomerChannelFieldArray extends React.Component {
     _add = () => {
-        return this.props.onChange(_clone(this.props.fields).concat([{
-            address: ''
-        }]))
+        return this.props.onChange(
+            _clone(this.props.fields).concat([
+                {
+                    address: '',
+                },
+            ])
+        )
     }
 
     _update = (index, key, value) => {
@@ -26,57 +30,39 @@ class CustomerChannelFieldArray extends React.Component {
     }
 
     render() {
-        const {
-            fields,
-            placeholder,
-            type,
-            addLabel,
-            label,
-            errors,
-        } = this.props
+        const {fields, placeholder, type, addLabel, label, errors} = this.props
 
         return (
             <FormGroup>
                 {label && <Label>{label}</Label>}
-                {
-                    !fields.length && <p>No {label.toLowerCase()}</p>
-                }
-                {
-                    fields.map((contact, index) =>
-                        <Row
-                            key={index}
-                            className="mb-3 form-row"
-                        >
-                            <Col
-                                md="10"
-                                xs="9"
+                {!fields.length && <p>No {label.toLowerCase()}</p>}
+                {fields.map((contact, index) => (
+                    <Row key={index} className="mb-3 form-row">
+                        <Col md="10" xs="9">
+                            <InputField
+                                type={type}
+                                name={`${contact}.address`}
+                                placeholder={placeholder}
+                                value={contact.address}
+                                onChange={(address) =>
+                                    this._update(index, 'address', address)
+                                }
+                                error={errors[index] && errors[index].address}
+                            />
+                        </Col>
+                        <Col md="2" xs="3">
+                            <Button
+                                color="danger"
+                                type="button"
+                                onClick={() => this._remove(index)}
                             >
-                                <InputField
-                                    type={type}
-                                    name={`${contact}.address`}
-                                    placeholder={placeholder}
-                                    value={contact.address}
-                                    onChange={(address) => this._update(index, 'address', address)}
-                                    error={errors[index] && errors[index].address}
-                                />
-                            </Col>
-                            <Col
-                                md="2"
-                                xs="3"
-                            >
-                                <Button
-                                    color="danger"
-                                    type="button"
-                                    onClick={() => this._remove(index)}
-                                >
-                                    <i className="material-icons md-2">
-                                        delete_outline
-                                    </i>
-                                </Button>
-                            </Col>
-                        </Row>
-                    )
-                }
+                                <i className="material-icons md-2">
+                                    delete_outline
+                                </i>
+                            </Button>
+                        </Col>
+                    </Row>
+                ))}
 
                 <Button
                     type="button"
@@ -84,9 +70,7 @@ class CustomerChannelFieldArray extends React.Component {
                     onClick={this._add}
                     color="secondary"
                 >
-                    <i className="material-icons mr-2">
-                        add
-                    </i>
+                    <i className="material-icons mr-2">add</i>
                     {addLabel}
                 </Button>
             </FormGroup>
@@ -98,7 +82,7 @@ CustomerChannelFieldArray.defaultProps = {
     type: 'text',
     label: '',
     addLabel: 'Add',
-    errors: {}
+    errors: {},
 }
 
 CustomerChannelFieldArray.propTypes = {

@@ -7,8 +7,8 @@ describe('facebook customer chat utils', () => {
         it('should render correctly', () => {
             const integration = fromJS({
                 facebook: {
-                    page_id: 'mylittlepageid'
-                }
+                    page_id: 'mylittlepageid',
+                },
             })
 
             expect(renderFacebookCodeSnippet(integration)).toMatchSnapshot()

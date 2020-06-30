@@ -3,7 +3,6 @@ import {mount, shallow} from 'enzyme'
 
 import RadioField from '../RadioField'
 
-
 describe('<RadioField/>', () => {
     describe('_onChange()', () => {
         it('should call `_onChange` when changing the value of the field because the field is enabled', () => {
@@ -14,8 +13,16 @@ describe('<RadioField/>', () => {
             const component = mount(
                 <RadioField
                     options={[
-                        {value: oldValue, label: 'foo', description: 'one of the options'},
-                        {value: newValue, label: 'bar', description: 'another option'},
+                        {
+                            value: oldValue,
+                            label: 'foo',
+                            description: 'one of the options',
+                        },
+                        {
+                            value: newValue,
+                            label: 'bar',
+                            description: 'another option',
+                        },
                         {value: 3, label: 'baz'},
                     ]}
                     value={oldValue}
@@ -38,8 +45,16 @@ describe('<RadioField/>', () => {
             const component = mount(
                 <RadioField
                     options={[
-                        {value: oldValue, label: 'foo', description: 'one of the options'},
-                        {value: newValue, label: 'bar', description: 'another option'},
+                        {
+                            value: oldValue,
+                            label: 'foo',
+                            description: 'one of the options',
+                        },
+                        {
+                            value: newValue,
+                            label: 'bar',
+                            description: 'another option',
+                        },
                         {value: 3, label: 'baz'},
                     ]}
                     value={oldValue}
@@ -62,8 +77,16 @@ describe('<RadioField/>', () => {
             const component = mount(
                 <RadioField
                     options={[
-                        {value: oldValue, label: 'foo', description: 'one of the options'},
-                        {value: newValue, label: 'bar', description: 'another option'},
+                        {
+                            value: oldValue,
+                            label: 'foo',
+                            description: 'one of the options',
+                        },
+                        {
+                            value: newValue,
+                            label: 'bar',
+                            description: 'another option',
+                        },
                         {value: 3, label: 'baz'},
                     ]}
                     value={oldValue}
@@ -87,8 +110,16 @@ describe('<RadioField/>', () => {
             const component = mount(
                 <RadioField
                     options={[
-                        {value: oldValue, label: 'foo', description: 'one of the options'},
-                        {value: newValue, label: 'bar', description: 'another option'},
+                        {
+                            value: oldValue,
+                            label: 'foo',
+                            description: 'one of the options',
+                        },
+                        {
+                            value: newValue,
+                            label: 'bar',
+                            description: 'another option',
+                        },
                         {value: 3, label: 'baz'},
                     ]}
                     value={oldValue}
@@ -107,7 +138,11 @@ describe('<RadioField/>', () => {
             const component = shallow(
                 <RadioField
                     options={[
-                        {value: 1, label: 'foo', description: 'one of the options'},
+                        {
+                            value: 1,
+                            label: 'foo',
+                            description: 'one of the options',
+                        },
                         {value: 2, label: 'bar', description: 'another option'},
                         {value: 3, label: 'baz'},
                     ]}

@@ -22,7 +22,7 @@ type Props = {
     schemas: Object,
     actions: Object,
     className?: string,
-    compact?: boolean
+    compact?: boolean,
 }
 
 export default class ObjectExpression extends React.Component<Props> {
@@ -36,13 +36,21 @@ export default class ObjectExpression extends React.Component<Props> {
             }
 
             const parentProperty = parent.push('properties', idx)
-            const argConfig = config && config.args ? config.args[property.key.name] : {}
+            const argConfig =
+                config && config.args ? config.args[property.key.name] : {}
 
             if (argConfig && argConfig.hide) {
                 return null
             }
 
-            const propsToPass = _pick(this.props, ['compact', 'className', 'actions', 'schemas', 'rule', 'properties'])
+            const propsToPass = _pick(this.props, [
+                'compact',
+                'className',
+                'actions',
+                'schemas',
+                'rule',
+                'properties',
+            ])
 
             return (
                 <Property
@@ -57,8 +65,6 @@ export default class ObjectExpression extends React.Component<Props> {
             )
         })
 
-        return (
-            <div>{propertiesComp}</div>
-        )
+        return <div>{propertiesComp}</div>
     }
 }

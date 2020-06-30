@@ -27,42 +27,26 @@ describe('BooleanField', () => {
     })
 
     it('should render a required input', () => {
-        const component = shallow(
-            <BooleanField
-                {...minProps}
-                required
-            />
-        )
+        const component = shallow(<BooleanField {...minProps} required />)
         expect(component).toMatchSnapshot()
     })
 
     it('should render a help text', () => {
         const component = shallow(
-            <BooleanField
-                {...minProps}
-                help="help text"
-            />
+            <BooleanField {...minProps} help="help text" />
         )
         expect(component).toMatchSnapshot()
     })
 
     it('should render the input with an error', () => {
         const component = shallow(
-            <BooleanField
-                {...minProps}
-                error="the value is wrong"
-            />
+            <BooleanField {...minProps} error="the value is wrong" />
         )
         expect(component).toMatchSnapshot()
     })
 
     it('should render inline', () => {
-        const component = shallow(
-            <BooleanField
-                {...minProps}
-                inline
-            />
-        )
+        const component = shallow(<BooleanField {...minProps} inline />)
         expect(component).toMatchSnapshot()
     })
 })

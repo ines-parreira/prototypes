@@ -9,7 +9,7 @@ describe('<ErrorBoundary/>', () => {
     it('should render children when there is no error', () => {
         const component = mount(
             <ErrorBoundary>
-                <Foo/>
+                <Foo />
             </ErrorBoundary>
         )
 
@@ -19,7 +19,7 @@ describe('<ErrorBoundary/>', () => {
     it('should render an error message because an error occurred', () => {
         const component = mount(
             <ErrorBoundary>
-                <Foo/>
+                <Foo />
             </ErrorBoundary>
         )
 

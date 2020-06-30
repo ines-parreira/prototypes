@@ -13,10 +13,7 @@ describe('<HeaderCellProperty/>', () => {
 
     it('should render', () => {
         const component = shallow(
-            <HeaderCellProperty
-                {...minProps}
-                className="foo"
-            />
+            <HeaderCellProperty {...minProps} className="foo" />
         )
 
         expect(component).toMatchSnapshot()
@@ -24,9 +21,7 @@ describe('<HeaderCellProperty/>', () => {
 
     it('should render children', () => {
         const component = shallow(
-            <HeaderCellProperty {...minProps}>
-                Bar
-            </HeaderCellProperty>
+            <HeaderCellProperty {...minProps}>Bar</HeaderCellProperty>
         )
 
         expect(component).toMatchSnapshot()
@@ -47,10 +42,7 @@ describe('<HeaderCellProperty/>', () => {
     it('should call onClick when clicked', () => {
         const mockOnClick = jest.fn()
         const component = shallow(
-            <HeaderCellProperty
-                {...minProps}
-                onClick={mockOnClick}
-            />
+            <HeaderCellProperty {...minProps} onClick={mockOnClick} />
         )
 
         component.find(HeaderCell).simulate('click')

@@ -4,7 +4,6 @@ import {fromJS} from 'immutable'
 import reducer, {initialState} from '../reducers'
 import * as constants from '../constants'
 
-
 jest.addMatchers(immutableMatchers)
 
 describe('HTTPIntegrationEvents', () => {
@@ -13,22 +12,26 @@ describe('HTTPIntegrationEvents', () => {
             const events = [{id: 1}, {id: 2}]
             const action = {
                 type: constants.FETCH_HTTP_INTEGRATION_EVENTS_SUCCESS,
-                events
+                events,
             }
             const expectedState = initialState.set('events', fromJS(events))
 
-            expect(reducer(initialState, action)).toEqualImmutable(expectedState)
+            expect(reducer(initialState, action)).toEqualImmutable(
+                expectedState
+            )
         })
 
         it('should set `event` value', () => {
             const event = {id: 1}
             const action = {
                 type: constants.FETCH_HTTP_INTEGRATION_EVENT_SUCCESS,
-                event
+                event,
             }
             const expectedState = initialState.set('event', fromJS(event))
 
-            expect(reducer(initialState, action)).toEqualImmutable(expectedState)
+            expect(reducer(initialState, action)).toEqualImmutable(
+                expectedState
+            )
         })
     })
 })

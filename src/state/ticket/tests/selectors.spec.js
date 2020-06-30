@@ -11,64 +11,67 @@ describe('ticket selectors', () => {
 
     beforeEach(() => {
         state = {
-            ticket: initialState
-                .mergeDeep({
-                    customer: {
-                        data: {id: 1},
-                        integrations: {
-                            '1': {name: 'integration 1'},
-                            '2': {name: 'integration 2'}
-                        },
+            ticket: initialState.mergeDeep({
+                customer: {
+                    data: {id: 1},
+                    integrations: {
+                        '1': {name: 'integration 1'},
+                        '2': {name: 'integration 2'},
                     },
-                    messages: [ // deliberately not ordered
+                },
+                messages: [
+                    // deliberately not ordered
+                    {
+                        id: 2,
+                        opened_datetime: '2017-07-29T22:00:00',
+                        sent_datetime: '2017-07-29T21:01:00',
+                        created_datetime: '2017-07-29T21:00:00',
+                    },
+                    {
+                        // last message
+                        id: 3,
+                        opened_datetime: null,
+                        sent_datetime: '2017-07-31T21:01:00',
+                        created_datetime: '2017-07-31T21:00:00',
+                    },
+                    {
+                        // first message
+                        id: 1,
+                        opened_datetime: '2017-07-25T22:00:00',
+                        sent_datetime: '2017-07-25T21:01:00',
+                        created_datetime: '2017-07-24T21:00:00',
+                    },
+                ],
+                events: [
+                    // deliberately not ordered
+                    {
+                        id: 2,
+                        created_datetime: '2017-06-29T21:00:00',
+                    },
+                    {
+                        id: 1,
+                        created_datetime: '2017-06-31T21:00:00',
+                    },
+                ],
+                _internal: {
+                    loading: {
+                        loader1: true,
+                        loader2: false,
+                    },
+                    pendingMessages: [
                         {
-                            id: 2,
-                            opened_datetime: '2017-07-29T22:00:00',
-                            sent_datetime: '2017-07-29T21:01:00',
-                            created_datetime: '2017-07-29T21:00:00',
+                            created_datetime: '2017-08-31T21:00:00',
                         },
-                        { // last message
-                            id: 3,
-                            opened_datetime: null,
-                            sent_datetime: '2017-07-31T21:01:00',
-                            created_datetime: '2017-07-31T21:00:00',
-                        },
-                        { // first message
-                            id: 1,
-                            opened_datetime: '2017-07-25T22:00:00',
-                            sent_datetime: '2017-07-25T21:01:00',
-                            created_datetime: '2017-07-24T21:00:00',
+                        {
+                            created_datetime: '2017-08-29T21:00:00',
+                            failed_datetime: '2017-08-29T21:01:00',
                         },
                     ],
-                    events: [ // deliberately not ordered
-                        {
-                            id: 2,
-                            created_datetime: '2017-06-29T21:00:00',
-                        },
-                        {
-                            id: 1,
-                            created_datetime: '2017-06-31T21:00:00',
-                        },
-                    ],
-                    _internal: {
-                        loading: {
-                            loader1: true,
-                            loader2: false,
-                        },
-                        pendingMessages: [
-                            {
-                                created_datetime: '2017-08-31T21:00:00',
-                            },
-                            {
-                                created_datetime: '2017-08-29T21:00:00',
-                                failed_datetime: '2017-08-29T21:01:00',
-                            }
-                        ]
-                    },
-                    state: {
-                        dirty: false,
-                    }
-                })
+                },
+                state: {
+                    dirty: false,
+                },
+            }),
         }
     })
 
@@ -78,7 +81,9 @@ describe('ticket selectors', () => {
     })
 
     it('getLoading', () => {
-        expect(selectors.getLoading(state)).toEqualImmutable(state.ticket.getIn(['_internal', 'loading']))
+        expect(selectors.getLoading(state)).toEqualImmutable(
+            state.ticket.getIn(['_internal', 'loading'])
+        )
         expect(selectors.getLoading({})).toEqualImmutable(fromJS({}))
     })
 
@@ -91,7 +96,9 @@ describe('ticket selectors', () => {
     it('getProperty', () => {
         const properties = state.ticket.keySeq()
         properties.forEach((property) => {
-            expect(selectors.getProperty(property)(state)).toEqualImmutable(state.ticket.get(property))
+            expect(selectors.getProperty(property)(state)).toEqualImmutable(
+                state.ticket.get(property)
+            )
         })
         expect(selectors.getProperty('unknown')(state)).toEqual(undefined)
     })
@@ -103,15 +110,29 @@ describe('ticket selectors', () => {
     })
 
     it('getIntegrationsData', () => {
-        expect(selectors.getIntegrationsData(state)).toEqualImmutable(state.ticket.getIn(['customer', 'integrations']))
+        expect(selectors.getIntegrationsData(state)).toEqualImmutable(
+            state.ticket.getIn(['customer', 'integrations'])
+        )
         expect(selectors.getIntegrationsData({})).toEqualImmutable(fromJS({}))
     })
 
     it('getIntegrationDataByIntegrationId', () => {
-        expect(selectors.getIntegrationDataByIntegrationId(1)(state)).toEqualImmutable(state.ticket.getIn(['customer', 'integrations', '1']))
-        expect(selectors.getIntegrationDataByIntegrationId('1')(state)).toEqualImmutable(state.ticket.getIn(['customer', 'integrations', '1']))
-        expect(selectors.getIntegrationDataByIntegrationId('unknown')(state)).toEqualImmutable(fromJS({}))
-        expect(selectors.getIntegrationDataByIntegrationId('unknown')({})).toEqualImmutable(fromJS({}))
+        expect(
+            selectors.getIntegrationDataByIntegrationId(1)(state)
+        ).toEqualImmutable(
+            state.ticket.getIn(['customer', 'integrations', '1'])
+        )
+        expect(
+            selectors.getIntegrationDataByIntegrationId('1')(state)
+        ).toEqualImmutable(
+            state.ticket.getIn(['customer', 'integrations', '1'])
+        )
+        expect(
+            selectors.getIntegrationDataByIntegrationId('unknown')(state)
+        ).toEqualImmutable(fromJS({}))
+        expect(
+            selectors.getIntegrationDataByIntegrationId('unknown')({})
+        ).toEqualImmutable(fromJS({}))
     })
 
     it('isDirty', () => {
@@ -127,12 +148,16 @@ describe('ticket selectors', () => {
     })
 
     it('getMessages', () => {
-        expect(selectors.getMessages(state)).toEqualImmutable(state.ticket.get('messages'))
+        expect(selectors.getMessages(state)).toEqualImmutable(
+            state.ticket.get('messages')
+        )
         expect(selectors.getMessages({})).toEqualImmutable(fromJS([]))
     })
 
     it('getPendingMessages', () => {
-        expect(selectors.getPendingMessages(state)).toEqualImmutable(state.ticket.getIn(['_internal', 'pendingMessages']))
+        expect(selectors.getPendingMessages(state)).toEqualImmutable(
+            state.ticket.getIn(['_internal', 'pendingMessages'])
+        )
         expect(selectors.getPendingMessages({})).toEqualImmutable(fromJS([]))
     })
 

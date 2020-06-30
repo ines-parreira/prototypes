@@ -3,7 +3,10 @@
 import {useEffect} from 'react'
 import axios, {CancelToken, type CancelTokenSource} from 'axios'
 
-const useCancelToken = (makeRequest: (source: CancelTokenSource) => Promise<*>, inputs: any[]) => {
+const useCancelToken = (
+    makeRequest: (source: CancelTokenSource) => Promise<*>,
+    inputs: any[]
+) => {
     const requestHandler = async (source: CancelTokenSource) => {
         try {
             await makeRequest(source)

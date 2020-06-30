@@ -3,14 +3,12 @@ import React from 'react'
 
 import Tooltip from '../../Tooltip'
 
-
-
 type Props = {
     rule: Object,
     actions: Object,
     parent: Object,
     isDisplayed: boolean,
-    type: string
+    type: string,
 }
 
 export default class DeleteBlockStatementItem extends React.Component<Props> {
@@ -33,20 +31,13 @@ export default class DeleteBlockStatementItem extends React.Component<Props> {
                 style={{display}}
                 onClick={this._handleClick}
             >
-                <i
-                    id={uniqueId}
-                    className="material-icons"
-                >
+                <i id={uniqueId} className="material-icons">
                     close
                 </i>
-                <Tooltip
-                    placement="top"
-                    target={uniqueId}
-                >
+                <Tooltip placement="top" target={uniqueId}>
                     {label}
                 </Tooltip>
             </span>
         )
     }
-
 }

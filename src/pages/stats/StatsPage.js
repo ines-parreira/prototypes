@@ -31,13 +31,18 @@ export class StatsPage extends Component<Props> {
         let defaultFilters = {
             period: {
                 // default period: last 7 days
-                'start_datetime': moment().startOf('day').subtract(6, 'days').format(),
-                'end_datetime': moment().endOf('day').format()
-            }
+                start_datetime: moment()
+                    .startOf('day')
+                    .subtract(6, 'days')
+                    .format(),
+                end_datetime: moment().endOf('day').format(),
+            },
         }
 
         if (props.storeIntegrations.size) {
-            defaultFilters.integrations = [props.storeIntegrations.getIn([0, 'id'])]
+            defaultFilters.integrations = [
+                props.storeIntegrations.getIn([0, 'id']),
+            ]
         }
         props.setStatsFilters(fromJS(defaultFilters))
     }
@@ -50,14 +55,21 @@ export class StatsPage extends Component<Props> {
         const {
             globalFilters,
             currentAccount,
-            params: {view}
+            params: {view},
         } = this.props
 
-        const hasSatisfactionSurveyFeature = currentAccount.get('extra_features').includes('satisfaction-surveys')
-        const hasRevenueStatFeature = currentAccount.get('extra_features').includes('revenue')
-        const hasRequiredStoreIntegration = globalFilters && (globalFilters.get('integrations', List()).size === 1)
+        const hasSatisfactionSurveyFeature = currentAccount
+            .get('extra_features')
+            .includes('satisfaction-surveys')
+        const hasRevenueStatFeature = currentAccount
+            .get('extra_features')
+            .includes('revenue')
+        const hasRequiredStoreIntegration =
+            globalFilters &&
+            globalFilters.get('integrations', List()).size === 1
 
-        const isOnSatisfactionSurveyPage = view === views.getIn(['satisfaction', 'link'])
+        const isOnSatisfactionSurveyPage =
+            view === views.getIn(['satisfaction', 'link'])
         const isOnRevenuePage = view === views.getIn(['revenue', 'link'])
 
         // do not display statistics until filters have been initialized
@@ -66,10 +78,13 @@ export class StatsPage extends Component<Props> {
         }
 
         if (isOnSatisfactionSurveyPage && !hasSatisfactionSurveyFeature) {
-            return <RestrictedSatisfactionSurvey/>
+            return <RestrictedSatisfactionSurvey />
         }
 
-        if (isOnRevenuePage && (!hasRevenueStatFeature || !hasRequiredStoreIntegration)) {
+        if (
+            isOnRevenuePage &&
+            (!hasRevenueStatFeature || !hasRequiredStoreIntegration)
+        ) {
             return (
                 <RestrictedRevenue
                     hasFeature={hasRevenueStatFeature}
@@ -80,10 +95,8 @@ export class StatsPage extends Component<Props> {
 
         return (
             <div className="stats full-width">
-                <StatsFilters/>
-                <Stats
-                    key={`${view}-${getHashOfObj(globalFilters.toJS())}`}
-                />
+                <StatsFilters />
+                <Stats key={`${view}-${getHashOfObj(globalFilters.toJS())}`} />
             </div>
         )
     }
@@ -95,7 +108,7 @@ const mapStateToProps = (state) => {
         currentAccount: state.currentAccount,
         storeIntegrations: getIntegrations(state).filter((integration) => {
             return STORE_INTEGRATION_TYPES.includes(integration.get('type'))
-        })
+        }),
     }
 }
 

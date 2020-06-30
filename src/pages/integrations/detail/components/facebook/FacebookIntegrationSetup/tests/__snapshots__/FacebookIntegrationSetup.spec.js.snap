@@ -65,9 +65,7 @@ exports[`FacebookIntegrationSetup should render a loader because integrations ar
         >
           We found 
           1
-           pages associated with your account.
-           
-          Please activate the pages you want to use with Gorgias:
+           pages associated with your account. Please activate the pages you want to use with Gorgias:
         </p>
         <div
           className="mb-2"
@@ -238,9 +236,7 @@ exports[`FacebookIntegrationSetup should render integrations because there is av
         >
           We found 
           1
-           pages associated with your account.
-           
-          Please activate the pages you want to use with Gorgias:
+           pages associated with your account. Please activate the pages you want to use with Gorgias:
         </p>
         <div
           className="mb-2"
@@ -458,9 +454,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled and s
         >
           We found 
           1
-           pages associated with your account.
-           
-          Please activate the pages you want to use with Gorgias:
+           pages associated with your account. Please activate the pages you want to use with Gorgias:
         </p>
         <div
           className="mb-2"
@@ -678,9 +672,7 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
         >
           We found 
           1
-           pages associated with your account.
-           
-          Please activate the pages you want to use with Gorgias:
+           pages associated with your account. Please activate the pages you want to use with Gorgias:
         </p>
         <div
           className="mb-2"

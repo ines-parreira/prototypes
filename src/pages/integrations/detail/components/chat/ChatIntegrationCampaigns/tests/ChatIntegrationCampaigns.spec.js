@@ -25,8 +25,8 @@ describe('ChatIntegrationCampaigns component', () => {
                     type: 'smooch_inside',
                     name: 'My new chat',
                     meta: {
-                        campaigns: []
-                    }
+                        campaigns: [],
+                    },
                 })}
                 updateCampaign={() => {}}
             />
@@ -44,16 +44,20 @@ describe('ChatIntegrationCampaigns component', () => {
                     type: 'smooch_inside',
                     name: 'My new chat',
                     meta: {
-                        campaigns: [{
-                            id: '156a4d-fg68h40-sd6f4',
-                            name: 'Super campaign',
-                            deactivated_datetime: null
-                        }, {
-                            id: 'not-so-good-campaign-d8f9-fds486-sf78',
-                            name: 'Not so good campaign',
-                            deactivated_datetime: '2017-10-06T17:17:56.565Z'
-                        }]
-                    }
+                        campaigns: [
+                            {
+                                id: '156a4d-fg68h40-sd6f4',
+                                name: 'Super campaign',
+                                deactivated_datetime: null,
+                            },
+                            {
+                                id: 'not-so-good-campaign-d8f9-fds486-sf78',
+                                name: 'Not so good campaign',
+                                deactivated_datetime:
+                                    '2017-10-06T17:17:56.565Z',
+                            },
+                        ],
+                    },
                 })}
                 updateCampaign={() => {}}
             />

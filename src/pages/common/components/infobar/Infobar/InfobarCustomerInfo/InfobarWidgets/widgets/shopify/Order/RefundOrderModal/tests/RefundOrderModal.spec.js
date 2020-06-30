@@ -7,12 +7,10 @@ import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import {Form} from 'reactstrap'
 
-import {
-    getRefundOrderState
-} from '../../../../../../../../../../../../state/infobarActions/shopify/refundOrder/selectors'
+import {getRefundOrderState} from '../../../../../../../../../../../../state/infobarActions/shopify/refundOrder/selectors'
 import {
     infobarActionsStateFixture,
-    refundOrderStateFixture
+    refundOrderStateFixture,
 } from '../../../../../../../../../../../../fixtures/infobarActions'
 import {
     shopifyLineItemFixture,
@@ -23,7 +21,7 @@ import {
 import {
     getFinalRefundOrderPayload,
     initRefundOrderLineItems,
-    initRefundOrderPayload
+    initRefundOrderPayload,
 } from '../../../../../../../../../../../../business/shopify/order'
 import {getIntegrationsByTypes} from '../../../../../../../../../../../../state/integrations/selectors'
 import {integrationsStateWithShopify} from '../../../../../../../../../../../../fixtures/integrations'
@@ -35,13 +33,19 @@ function initActions() {
     return {
         onBulkChange: jest.fn(),
         onCancel: jest.fn(),
-        onChange: jest.fn().mockImplementation(
-            (name: string, value: string | number | boolean | Object, callback?: () => void) => {
-                if (callback) {
-                    callback()
+        onChange: jest
+            .fn()
+            .mockImplementation(
+                (
+                    name: string,
+                    value: string | number | boolean | Object,
+                    callback?: () => void
+                ) => {
+                    if (callback) {
+                        callback()
+                    }
                 }
-            }
-        ),
+            ),
         onClose: jest.fn(),
         onInit: jest.fn(),
         onLineItemsChange: jest.fn(),
@@ -130,9 +134,13 @@ describe('<RefundOrderModalComponent/>', () => {
 
             const component = shallow(
                 <RefundOrderModalComponent
-                    integrations={getIntegrationsByTypes([SHOPIFY_INTEGRATION_TYPE])(state)}
+                    integrations={getIntegrationsByTypes([
+                        SHOPIFY_INTEGRATION_TYPE,
+                    ])(state)}
                     loading={getRefundOrderState(state).get('loading')}
-                    loadingMessage={getRefundOrderState(state).get('loadingMessage')}
+                    loadingMessage={getRefundOrderState(state).get(
+                        'loadingMessage'
+                    )}
                     payload={getRefundOrderState(state).get('payload')}
                     lineItems={getRefundOrderState(state).get('lineItems')}
                     refund={getRefundOrderState(state).get('refund')}
@@ -160,9 +168,13 @@ describe('<RefundOrderModalComponent/>', () => {
 
             const component = shallow(
                 <RefundOrderModalComponent
-                    integrations={getIntegrationsByTypes([SHOPIFY_INTEGRATION_TYPE])(state)}
+                    integrations={getIntegrationsByTypes([
+                        SHOPIFY_INTEGRATION_TYPE,
+                    ])(state)}
                     loading={getRefundOrderState(state).get('loading')}
-                    loadingMessage={getRefundOrderState(state).get('loadingMessage')}
+                    loadingMessage={getRefundOrderState(state).get(
+                        'loadingMessage'
+                    )}
                     payload={getRefundOrderState(state).get('payload')}
                     lineItems={getRefundOrderState(state).get('lineItems')}
                     refund={getRefundOrderState(state).get('refund')}
@@ -184,7 +196,10 @@ describe('<RefundOrderModalComponent/>', () => {
             const order = fromJS(shopifyOrderFixture())
             const payload = initRefundOrderPayload(order)
             const lineItems = initRefundOrderLineItems(order)
-            const refundOrderState = refundOrderStateFixture({payload, lineItems})
+            const refundOrderState = refundOrderStateFixture({
+                payload,
+                lineItems,
+            })
 
             const store = mockStore({
                 integrations: integrationsStateWithShopify,
@@ -195,9 +210,13 @@ describe('<RefundOrderModalComponent/>', () => {
 
             const component = shallow(
                 <RefundOrderModalComponent
-                    integrations={getIntegrationsByTypes([SHOPIFY_INTEGRATION_TYPE])(state)}
+                    integrations={getIntegrationsByTypes([
+                        SHOPIFY_INTEGRATION_TYPE,
+                    ])(state)}
                     loading={getRefundOrderState(state).get('loading')}
-                    loadingMessage={getRefundOrderState(state).get('loadingMessage')}
+                    loadingMessage={getRefundOrderState(state).get(
+                        'loadingMessage'
+                    )}
                     payload={getRefundOrderState(state).get('payload')}
                     lineItems={getRefundOrderState(state).get('lineItems')}
                     refund={getRefundOrderState(state).get('refund')}
@@ -228,7 +247,11 @@ describe('<RefundOrderModalComponent/>', () => {
             refund = fromJS(shopifySuggestedRefundFixture())
 
             const lineItems = initRefundOrderLineItems(order)
-            const refundOrderState = refundOrderStateFixture({payload, lineItems, refund})
+            const refundOrderState = refundOrderStateFixture({
+                payload,
+                lineItems,
+                refund,
+            })
 
             const store = mockStore({
                 integrations: integrationsStateWithShopify,
@@ -239,9 +262,13 @@ describe('<RefundOrderModalComponent/>', () => {
 
             component = shallow(
                 <RefundOrderModalComponent
-                    integrations={getIntegrationsByTypes([SHOPIFY_INTEGRATION_TYPE])(state)}
+                    integrations={getIntegrationsByTypes([
+                        SHOPIFY_INTEGRATION_TYPE,
+                    ])(state)}
                     loading={getRefundOrderState(state).get('loading')}
-                    loadingMessage={getRefundOrderState(state).get('loadingMessage')}
+                    loadingMessage={getRefundOrderState(state).get(
+                        'loadingMessage'
+                    )}
                     payload={getRefundOrderState(state).get('payload')}
                     lineItems={getRefundOrderState(state).get('lineItems')}
                     refund={getRefundOrderState(state).get('refund')}
@@ -262,7 +289,10 @@ describe('<RefundOrderModalComponent/>', () => {
                 const payload = fromJS(shopifyRefundOrderPayloadFixture())
                 component.instance()._onPayloadChange(payload)
 
-                expect(actions.onPayloadChange).toHaveBeenCalledWith(context.integrationId, payload)
+                expect(actions.onPayloadChange).toHaveBeenCalledWith(
+                    context.integrationId,
+                    payload
+                )
             })
         })
 
@@ -271,7 +301,10 @@ describe('<RefundOrderModalComponent/>', () => {
                 const lineItems = fromJS([shopifyLineItemFixture()])
                 component.instance()._onLineItemsChange(lineItems)
 
-                expect(actions.onLineItemsChange).toHaveBeenCalledWith(context.integrationId, lineItems)
+                expect(actions.onLineItemsChange).toHaveBeenCalledWith(
+                    context.integrationId,
+                    lineItems
+                )
             })
         })
 
@@ -288,14 +321,23 @@ describe('<RefundOrderModalComponent/>', () => {
         describe('_onSubmit()', () => {
             it('should call onSubmit()', () => {
                 // Click on "Submit"
-                component.find(Form).at(0).simulate('submit', {
-                    preventDefault: () => {
-                    },
-                })
+                component
+                    .find(Form)
+                    .at(0)
+                    .simulate('submit', {
+                        preventDefault: () => {},
+                    })
 
-                const finalPayload = getFinalRefundOrderPayload(payload, refund).toJS()
+                const finalPayload = getFinalRefundOrderPayload(
+                    payload,
+                    refund
+                ).toJS()
 
-                expect(actions.onChange).toHaveBeenCalledWith('payload', finalPayload, expect.any(Function))
+                expect(actions.onChange).toHaveBeenCalledWith(
+                    'payload',
+                    finalPayload,
+                    expect.any(Function)
+                )
                 expect(actions.onSubmit).toHaveBeenCalled()
                 expect(actions.onReset).toHaveBeenCalled()
             })

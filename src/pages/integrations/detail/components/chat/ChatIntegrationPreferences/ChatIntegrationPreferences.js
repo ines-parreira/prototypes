@@ -7,19 +7,28 @@ import _isUndefined from 'lodash/isUndefined'
 import _omitBy from 'lodash/omitBy'
 import {fromJS, type List, type Map} from 'immutable'
 
-import {Breadcrumb, BreadcrumbItem, Button, Col, Container, Form, Label, Row} from 'reactstrap'
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    Button,
+    Col,
+    Container,
+    Form,
+    Label,
+    Row,
+} from 'reactstrap'
 
 import {
     CHAT_AUTO_RESPONDER_ENABLED_DEFAULT,
     CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
-    getAutoResponderReplyOptions
+    getAutoResponderReplyOptions,
 } from '../../../../../../config/integrations'
 
 import {
     SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
     SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT,
     SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_OPTIONAL,
-    SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS
+    SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS,
 } from '../../../../../../config/integrations/smooch_inside'
 
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
@@ -40,17 +49,18 @@ const emailCaptureOptions = [
     {
         value: SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_OPTIONAL,
         label: 'Optional',
-        description: 'Leaving your email is optional, everyone can start a conversation. Maximise conversation volume'
+        description:
+            'Leaving your email is optional, everyone can start a conversation. Maximise conversation volume',
     },
     {
         value: SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS,
         label: 'Required only outside business hours',
-        description: 'Reduces conversation volume by around 5%'
+        description: 'Reduces conversation volume by around 5%',
     },
     {
         value: SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
         label: 'Always required',
-        description: 'Reduces conversation volume by around 30%'
+        description: 'Reduces conversation volume by around 30%',
     },
 ]
 
@@ -60,7 +70,7 @@ export const PREVIEW_AUTO_RESPONDER = 'auto-responder'
 type Props = {
     updateOrCreateIntegration: (Map<*, *>) => Promise<*>,
     integration: Map<*, *>,
-    emailIntegrations: List<Map<*, *>>
+    emailIntegrations: List<Map<*, *>>,
 }
 
 type State = {
@@ -70,12 +80,12 @@ type State = {
     isInitialized: boolean,
     isUpdating: boolean,
     preview: string,
-    linkedEmailIntegration: ?number
+    linkedEmailIntegration: ?number,
 }
 
 export class ChatIntegrationPreferences extends React.Component<Props, State> {
     static defaultProps = {
-        emailIntegrations: fromJS([])
+        emailIntegrations: fromJS([]),
     }
 
     state = {
@@ -86,18 +96,41 @@ export class ChatIntegrationPreferences extends React.Component<Props, State> {
 
         isInitialized: false,
         isUpdating: false,
-        preview: PREVIEW_EMAIL_CAPTURE
+        preview: PREVIEW_EMAIL_CAPTURE,
     }
 
     _initState = (integration: Map<*, *>) => {
-        this.setState(_omitBy({
-            autoResponderEnabled: integration.getIn(['meta', 'preferences', 'auto_responder', 'enabled']),
-            autoResponderReply: integration.getIn(['meta', 'preferences', 'auto_responder', 'reply'])
-                || CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
-            emailCaptureEnforcement: integration.getIn(['meta', 'preferences', 'email_capture_enforcement']),
-            linkedEmailIntegration: integration.getIn(['meta', 'preferences', 'linked_email_integration']),
-            isInitialized: true
-        }, _isUndefined))
+        this.setState(
+            _omitBy(
+                {
+                    autoResponderEnabled: integration.getIn([
+                        'meta',
+                        'preferences',
+                        'auto_responder',
+                        'enabled',
+                    ]),
+                    autoResponderReply:
+                        integration.getIn([
+                            'meta',
+                            'preferences',
+                            'auto_responder',
+                            'reply',
+                        ]) || CHAT_AUTO_RESPONDER_REPLY_DEFAULT,
+                    emailCaptureEnforcement: integration.getIn([
+                        'meta',
+                        'preferences',
+                        'email_capture_enforcement',
+                    ]),
+                    linkedEmailIntegration: integration.getIn([
+                        'meta',
+                        'preferences',
+                        'linked_email_integration',
+                    ]),
+                    isInitialized: true,
+                },
+                _isUndefined
+            )
+        )
     }
 
     componentDidMount() {
@@ -115,21 +148,21 @@ export class ChatIntegrationPreferences extends React.Component<Props, State> {
     _setEmailCaptureEnforcement = (value: string) => {
         this.setState({
             emailCaptureEnforcement: value,
-            preview: PREVIEW_EMAIL_CAPTURE
+            preview: PREVIEW_EMAIL_CAPTURE,
         })
     }
 
     _setAutoResponderEnabled = (value: boolean) => {
         this.setState({
             autoResponderEnabled: value,
-            preview: value ? PREVIEW_AUTO_RESPONDER : PREVIEW_EMAIL_CAPTURE
+            preview: value ? PREVIEW_AUTO_RESPONDER : PREVIEW_EMAIL_CAPTURE,
         })
     }
 
     _setAutoResponderReply = (value: string) => {
         this.setState({
             autoResponderReply: value,
-            preview: PREVIEW_AUTO_RESPONDER
+            preview: PREVIEW_AUTO_RESPONDER,
         })
     }
 
@@ -137,7 +170,7 @@ export class ChatIntegrationPreferences extends React.Component<Props, State> {
         this.setState({linkedEmailIntegration: integrationId})
     }
 
-    _submitPreferences = async(event: SyntheticEvent<*>) => {
+    _submitPreferences = async (event: SyntheticEvent<*>) => {
         const {updateOrCreateIntegration, integration} = this.props
         event.preventDefault()
 
@@ -151,12 +184,13 @@ export class ChatIntegrationPreferences extends React.Component<Props, State> {
                 preferences: {
                     auto_responder: {
                         enabled: this.state.autoResponderEnabled,
-                        reply: this.state.autoResponderReply
+                        reply: this.state.autoResponderReply,
                     },
-                    email_capture_enforcement: this.state.emailCaptureEnforcement,
-                    linked_email_integration: this.state.linkedEmailIntegration
-                }
-            })
+                    email_capture_enforcement: this.state
+                        .emailCaptureEnforcement,
+                    linked_email_integration: this.state.linkedEmailIntegration,
+                },
+            }),
         })
 
         await updateOrCreateIntegration(payload)
@@ -171,18 +205,25 @@ export class ChatIntegrationPreferences extends React.Component<Props, State> {
             emailCaptureEnforcement,
             isUpdating,
             preview,
-            linkedEmailIntegration
+            linkedEmailIntegration,
         } = this.state
         const {integration, emailIntegrations} = this.props
 
-        const conversationColor = integration.getIn(['decoration', 'conversation_color'], '')
+        const conversationColor = integration.getIn(
+            ['decoration', 'conversation_color'],
+            ''
+        )
         const language = integration.getIn(['meta', 'language'])
 
-        const isPreviewOnline = preview === PREVIEW_AUTO_RESPONDER
-            || emailCaptureEnforcement !== SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS
+        const isPreviewOnline =
+            preview === PREVIEW_AUTO_RESPONDER ||
+            emailCaptureEnforcement !==
+                SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS
 
-        const renderPreviewFooter = preview === PREVIEW_AUTO_RESPONDER
-            || emailCaptureEnforcement === SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_OPTIONAL
+        const renderPreviewFooter =
+            preview === PREVIEW_AUTO_RESPONDER ||
+            emailCaptureEnforcement ===
+                SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_OPTIONAL
 
         let previewChildren = null
 
@@ -195,7 +236,10 @@ export class ChatIntegrationPreferences extends React.Component<Props, State> {
                     autoResponderReply={autoResponderReply}
                 />
             )
-        } else if (emailCaptureEnforcement === SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_OPTIONAL) {
+        } else if (
+            emailCaptureEnforcement ===
+            SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_OPTIONAL
+        ) {
             previewChildren = (
                 <OptionalEmailCapturePreview
                     conversationColor={conversationColor}
@@ -214,51 +258,56 @@ export class ChatIntegrationPreferences extends React.Component<Props, State> {
 
         return (
             <div className="full-width">
-                <PageHeader title={(
-                    <Breadcrumb>
-                        <BreadcrumbItem>
-                            <Link to="/app/settings/integrations">Integrations</Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            <Link to="/app/settings/integrations/smooch_inside">Chat</Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            {integration.get('name')}
-                        </BreadcrumbItem>
-                        <BreadcrumbItem active>
-                            Preferences
-                        </BreadcrumbItem>
-                    </Breadcrumb>
-                )}/>
+                <PageHeader
+                    title={
+                        <Breadcrumb>
+                            <BreadcrumbItem>
+                                <Link to="/app/settings/integrations">
+                                    Integrations
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                <Link to="/app/settings/integrations/smooch_inside">
+                                    Chat
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                {integration.get('name')}
+                            </BreadcrumbItem>
+                            <BreadcrumbItem active>Preferences</BreadcrumbItem>
+                        </Breadcrumb>
+                    }
+                />
 
-                <ChatIntegrationNavigation integration={integration}/>
+                <ChatIntegrationNavigation integration={integration} />
 
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <Container fluid className="page-container">
                     <Row>
                         <Col>
                             <Form onSubmit={this._submitPreferences}>
-
                                 <div className="mb-4">
                                     <h4>Email capture</h4>
-                                    <p>Ask your customers to leave their email before starting a chat</p>
+                                    <p>
+                                        Ask your customers to leave their email
+                                        before starting a chat
+                                    </p>
                                     <RadioField
                                         options={emailCaptureOptions}
                                         value={emailCaptureEnforcement}
-                                        onChange={this._setEmailCaptureEnforcement}
+                                        onChange={
+                                            this._setEmailCaptureEnforcement
+                                        }
                                     />
                                 </div>
 
                                 <div className="mb-4">
-                                    <h4>
-                                        Auto-responder
-                                    </h4>
+                                    <h4>Auto-responder</h4>
 
                                     <div className="mb-3 d-flex align-items-center">
                                         <ToggleButton
-                                            onChange={this._setAutoResponderEnabled}
+                                            onChange={
+                                                this._setAutoResponderEnabled
+                                            }
                                             value={autoResponderEnabled}
                                         />
                                         <div className="ml-2">
@@ -267,58 +316,100 @@ export class ChatIntegrationPreferences extends React.Component<Props, State> {
                                     </div>
 
                                     <div className="mb-3">
-                                        <p className={classnames({'text-faded': !autoResponderEnabled})}>
-                                            <b>During <Link to="/app/settings/business-hours">Business hours</Link></b>,
-                                            tell customers how fast they can expect a response with an auto-responder:
+                                        <p
+                                            className={classnames({
+                                                'text-faded': !autoResponderEnabled,
+                                            })}
+                                        >
+                                            <b>
+                                                During{' '}
+                                                <Link to="/app/settings/business-hours">
+                                                    Business hours
+                                                </Link>
+                                            </b>
+                                            , tell customers how fast they can
+                                            expect a response with an
+                                            auto-responder:
                                         </p>
                                         <RadioField
-                                            options={getAutoResponderReplyOptions(language)}
+                                            options={getAutoResponderReplyOptions(
+                                                language
+                                            )}
                                             value={autoResponderReply}
-                                            onChange={this._setAutoResponderReply}
+                                            onChange={
+                                                this._setAutoResponderReply
+                                            }
                                             disabled={!autoResponderEnabled}
                                         />
-                                        <p className={classnames({'text-faded': !autoResponderEnabled})}>
-                                            This message will be sent in new chat tickets after 30 seconds without
-                                            replies from an agent.
+                                        <p
+                                            className={classnames({
+                                                'text-faded': !autoResponderEnabled,
+                                            })}
+                                        >
+                                            This message will be sent in new
+                                            chat tickets after 30 seconds
+                                            without replies from an agent.
                                         </p>
-                                        <p className={classnames({'text-faded': !autoResponderEnabled})}>
-                                            <b>Outside <Link to="/app/settings/business-hours">Business hours</Link>
-                                            </b>, Gorgias will automatically tell customers when they can expect a
+                                        <p
+                                            className={classnames({
+                                                'text-faded': !autoResponderEnabled,
+                                            })}
+                                        >
+                                            <b>
+                                                Outside{' '}
+                                                <Link to="/app/settings/business-hours">
+                                                    Business hours
+                                                </Link>
+                                            </b>
+                                            , Gorgias will automatically tell
+                                            customers when they can expect a
                                             response.
                                         </p>
                                     </div>
                                 </div>
-                                <h4>
-                                    Associated email integration
-                                </h4>
+                                <h4>Associated email integration</h4>
 
                                 <div className="mb-4">
                                     <p className="mb-3">
-                                        If a customer doesn't see your responses on a chat for 1 hour, Gorgias will
-                                        automatically deliver these messages via email.<br/>
-                                        Satisfaction surveys for chat tickets are also sent over email.
+                                        If a customer doesn't see your responses
+                                        on a chat for 1 hour, Gorgias will
+                                        automatically deliver these messages via
+                                        email.
+                                        <br />
+                                        Satisfaction surveys for chat tickets
+                                        are also sent over email.
                                     </p>
                                     <Label
                                         className="control-label"
                                         for="linkedEmailIntegration"
                                     >
-                                        Email integration used to send these emails
+                                        Email integration used to send these
+                                        emails
                                     </Label>
                                     <SelectField
                                         placeholder="Select an email integration"
                                         // Typing of `SelectOption` is not correct and value cannot be `null`.
                                         // $FlowFixMe
                                         value={linkedEmailIntegration}
-                                        options={emailIntegrations.map((integration) => ({
-                                            label: `${integration.get('name')} <${integration.getIn(['meta', 'address'])}>`,
-                                            value: integration.get('id')
-                                        })).toJS()}
+                                        options={emailIntegrations
+                                            .map((integration) => ({
+                                                label: `${integration.get(
+                                                    'name'
+                                                )} <${integration.getIn([
+                                                    'meta',
+                                                    'address',
+                                                ])}>`,
+                                                value: integration.get('id'),
+                                            }))
+                                            .toJS()}
                                         fullWidth
                                         onChange={(integrationId) => {
                                             // Typing of `SelectOption` is not correct and
                                             // Flow thinks `integrationId` can be a string which is impossible in our case.
-                                            // $FlowFixMe
-                                            this._setLinkedEmailIntegration(integrationId)
+                                            this._setLinkedEmailIntegration(
+                                                // $FlowFixMe
+                                                integrationId
+                                            )
                                         }}
                                     />
                                 </div>
@@ -327,7 +418,7 @@ export class ChatIntegrationPreferences extends React.Component<Props, State> {
                                         type="submit"
                                         color="success"
                                         className={classnames({
-                                            'btn-loading': isUpdating
+                                            'btn-loading': isUpdating,
                                         })}
                                         disabled={isUpdating}
                                     >
@@ -339,9 +430,18 @@ export class ChatIntegrationPreferences extends React.Component<Props, State> {
                         <Col>
                             <ChatIntegrationPreview
                                 name={integration.get('name')}
-                                introductionText={integration.getIn(['decoration', 'introduction_text'])}
-                                offlineIntroductionText={integration.getIn(['decoration', 'offline_introduction_text'])}
-                                mainColor={integration.getIn(['decoration', 'main_color'])}
+                                introductionText={integration.getIn([
+                                    'decoration',
+                                    'introduction_text',
+                                ])}
+                                offlineIntroductionText={integration.getIn([
+                                    'decoration',
+                                    'offline_introduction_text',
+                                ])}
+                                mainColor={integration.getIn([
+                                    'decoration',
+                                    'main_color',
+                                ])}
                                 isOnline={isPreviewOnline}
                                 language={language}
                                 renderFooter={renderPreviewFooter}
@@ -356,8 +456,13 @@ export class ChatIntegrationPreferences extends React.Component<Props, State> {
     }
 }
 
-export default connect((state) => ({
-    emailIntegrations: getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES)(state)
-}), {
-    updateOrCreateIntegration
-})(ChatIntegrationPreferences)
+export default connect(
+    (state) => ({
+        emailIntegrations: getIntegrationsByTypes(EMAIL_INTEGRATION_TYPES)(
+            state
+        ),
+    }),
+    {
+        updateOrCreateIntegration,
+    }
+)(ChatIntegrationPreferences)

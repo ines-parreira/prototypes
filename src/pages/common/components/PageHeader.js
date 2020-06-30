@@ -16,19 +16,17 @@ export default class PageHeader extends React.Component<Props> {
     render() {
         const {title, children, className} = this.props
         return (
-            <div className={`d-flex align-items-center justify-content-between flex-wrap page-header ${className || ''}`}>
-                {
-                    typeof title === 'string'
-                        ? <h1 className="d-flex align-items-center">{title}</h1>
-                        : title
-                }
-                {
-                    children && (
-                        <div>
-                            {this.props.children}
-                        </div>
-                    )
-                }
+            <div
+                className={`d-flex align-items-center justify-content-between flex-wrap page-header ${
+                    className || ''
+                }`}
+            >
+                {typeof title === 'string' ? (
+                    <h1 className="d-flex align-items-center">{title}</h1>
+                ) : (
+                    title
+                )}
+                {children && <div>{this.props.children}</div>}
             </div>
         )
     }

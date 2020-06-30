@@ -7,7 +7,7 @@ import {
     shopifyMultiCurrencyOrderFixture,
     shopifyOrderFixture,
     shopifyRefundOrderPayloadFixture,
-    shopifySuggestedRefundFixture
+    shopifySuggestedRefundFixture,
 } from '../../../../../../../../../../../../fixtures/shopify'
 import RefundOrderForm from '../RefundOrderForm'
 import {ShopifyAction} from '../../../constants'
@@ -53,7 +53,9 @@ describe('<RefundOrderForm/>', () => {
         })
 
         it('should render for multi-currency order', () => {
-            const multiCurrencyOrder = fromJS(shopifyMultiCurrencyOrderFixture())
+            const multiCurrencyOrder = fromJS(
+                shopifyMultiCurrencyOrderFixture()
+            )
 
             const component = shallow(
                 <RefundOrderForm

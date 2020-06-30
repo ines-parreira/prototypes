@@ -9,14 +9,16 @@ type Props = {
     datetime?: string,
     isOpen: boolean,
     onApply: Function,
-    toggle: Function
+    toggle: Function,
 }
 
 export default class TicketSnoozePicker extends Component<Props> {
     render() {
         const {datetime, isOpen, onApply, toggle} = this.props
         const formattedDate = moment(datetime)
-        const snoozeDatetime = formattedDate.isValid() ? formattedDate : moment()
+        const snoozeDatetime = formattedDate.isValid()
+            ? formattedDate
+            : moment()
         const ranges = {
             'In 3 hours': [moment().add(3, 'hours'), moment().add(3, 'hours')],
             'In 6 hours': [moment().add(6, 'hours'), moment().add(6, 'hours')],

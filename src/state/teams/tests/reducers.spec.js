@@ -42,7 +42,10 @@ describe('teams reducers', () => {
     })
 
     it('should delete the deleted team when action type is DELETE_TEAM_SUCCESS', () => {
-        const state = initialState.setIn(['all', team.id.toString()], fromJS(team))
+        const state = initialState.setIn(
+            ['all', team.id.toString()],
+            fromJS(team)
+        )
 
         expect(
             reducer(state, {

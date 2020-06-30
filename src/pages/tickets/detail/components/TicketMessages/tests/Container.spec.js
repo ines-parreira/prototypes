@@ -25,7 +25,7 @@ describe('Container', () => {
     it('should have hasError class if message is failed', () => {
         const failedMessage = {
             ...message,
-            failed_datetime: '2017-01-01T12:12:34Z'
+            failed_datetime: '2017-01-01T12:12:34Z',
         }
         const component = shallow(
             <Container

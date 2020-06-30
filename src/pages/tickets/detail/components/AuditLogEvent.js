@@ -6,7 +6,12 @@ import {connect} from 'react-redux'
 
 import type {List, Record} from 'immutable'
 
-import {AgentLabel, DatetimeLabel, TagLabel, TeamLabel} from '../../../common/utils/labels'
+import {
+    AgentLabel,
+    DatetimeLabel,
+    TagLabel,
+    TeamLabel,
+} from '../../../common/utils/labels'
 import * as constants from '../../../../constants/event'
 import {
     type AuditLogEvent as AuditLogEventType,
@@ -65,18 +70,30 @@ class AuditLogEventComponent extends React.Component<Props> {
         [constants.TICKET_ASSIGNED]: () => this._renderTicketAssignedEvent(),
         [constants.TICKET_CLOSED]: () => <ActionName>Closed</ActionName>,
         [constants.TICKET_CREATED]: () => <ActionName>Created</ActionName>,
-        [constants.TICKET_CUSTOMER_UPDATED]: () => this._renderCustomerUpdated(),
-        [constants.TICKET_MARKED_SPAM]: () => <ActionName>Marked as spam</ActionName>,
+        [constants.TICKET_CUSTOMER_UPDATED]: () =>
+            this._renderCustomerUpdated(),
+        [constants.TICKET_MARKED_SPAM]: () => (
+            <ActionName>Marked as spam</ActionName>
+        ),
         [constants.TICKET_MERGED]: () => <ActionName>Merged</ActionName>,
         [constants.TICKET_REOPENED]: () => <ActionName>Reopened</ActionName>,
         [constants.TICKET_SNOOZED]: () => <ActionName>Snoozed</ActionName>,
-        [constants.TICKET_TAGS_ADDED]: () => this._renderTagsEvent(TAGS_ADDED_KEY),
-        [constants.TICKET_TAGS_REMOVED]: () => this._renderTagsEvent(TAGS_REMOVED_KEY),
-        [constants.TICKET_TEAM_ASSIGNED]: () => this._renderTicketTeamAssignedEvent(),
-        [constants.TICKET_TEAM_UNASSIGNED]: () => <ActionName>Unassigned from team</ActionName>,
+        [constants.TICKET_TAGS_ADDED]: () =>
+            this._renderTagsEvent(TAGS_ADDED_KEY),
+        [constants.TICKET_TAGS_REMOVED]: () =>
+            this._renderTagsEvent(TAGS_REMOVED_KEY),
+        [constants.TICKET_TEAM_ASSIGNED]: () =>
+            this._renderTicketTeamAssignedEvent(),
+        [constants.TICKET_TEAM_UNASSIGNED]: () => (
+            <ActionName>Unassigned from team</ActionName>
+        ),
         [constants.TICKET_TRASHED]: () => <ActionName>Deleted</ActionName>,
-        [constants.TICKET_UNASSIGNED]: () => <ActionName>Unassigned from user</ActionName>,
-        [constants.TICKET_UNMARKED_SPAM]: () => <ActionName>Unmarked as spam</ActionName>,
+        [constants.TICKET_UNASSIGNED]: () => (
+            <ActionName>Unassigned from user</ActionName>
+        ),
+        [constants.TICKET_UNMARKED_SPAM]: () => (
+            <ActionName>Unmarked as spam</ActionName>
+        ),
         [constants.TICKET_UNTRASHED]: () => <ActionName>Undeleted</ActionName>,
     }
 
@@ -88,9 +105,7 @@ class AuditLogEventComponent extends React.Component<Props> {
 
         return (
             <div className={classnames(css.icon, className)}>
-                <i className="material-icons">
-                    {icon}
-                </i>
+                <i className="material-icons">{icon}</i>
             </div>
         )
     }
@@ -114,7 +129,11 @@ class AuditLogEventComponent extends React.Component<Props> {
 
         return (
             <ActionName>
-                Rule "<a href={`/app/settings/rules?ruleId=${data.get('id')}`}>{data.get('name')}</a>" executed
+                Rule "
+                <a href={`/app/settings/rules?ruleId=${data.get('id')}`}>
+                    {data.get('name')}
+                </a>
+                " executed
             </ActionName>
         )
     }
@@ -122,7 +141,9 @@ class AuditLogEventComponent extends React.Component<Props> {
     _renderTicketAssignedEvent() {
         const {event, users} = this.props
         const assigneeUserId = event.getIn(['data', 'assignee_user_id'])
-        const assigneeUser = users.find((user) => user.get('id') === assigneeUserId)
+        const assigneeUser = users.find(
+            (user) => user.get('id') === assigneeUserId
+        )
         const elements = [<ActionName key="action-name">Assigned</ActionName>]
 
         if (assigneeUser) {
@@ -132,7 +153,7 @@ class AuditLogEventComponent extends React.Component<Props> {
                     key="assign-label"
                     name={assigneeUser.get('name')}
                     className={css.assigneeLabel}
-                />,
+                />
             )
         }
 
@@ -142,7 +163,9 @@ class AuditLogEventComponent extends React.Component<Props> {
     _renderTicketTeamAssignedEvent() {
         const {event, teams} = this.props
         const assigneeTeamId = event.getIn(['data', 'assignee_team_id'])
-        const assigneeTeam = teams.find((team) => team.get('id') === assigneeTeamId)
+        const assigneeTeam = teams.find(
+            (team) => team.get('id') === assigneeTeamId
+        )
         const elements = [<ActionName key="action-name">Assigned</ActionName>]
 
         if (assigneeTeam) {
@@ -152,7 +175,7 @@ class AuditLogEventComponent extends React.Component<Props> {
                     key="team-label"
                     name={assigneeTeam.get('name')}
                     className={css.assigneeLabel}
-                />,
+                />
             )
         }
 
@@ -169,7 +192,9 @@ class AuditLogEventComponent extends React.Component<Props> {
         }
 
         const elements = [
-            <ActionName key="action-name-left">{tagsIdsKey === TAGS_ADDED_KEY ? 'Tagged' : 'Untagged'}</ActionName>
+            <ActionName key="action-name-left">
+                {tagsIdsKey === TAGS_ADDED_KEY ? 'Tagged' : 'Untagged'}
+            </ActionName>,
         ]
 
         {
@@ -199,14 +224,21 @@ class AuditLogEventComponent extends React.Component<Props> {
             return null
         }
 
-        const oldCustomerName = oldCustomer.get('name') || `Customer #${oldCustomer.get('id')}`
-        const newCustomerName = newCustomer.get('name') || `Customer #${newCustomer.get('id')}`
+        const oldCustomerName =
+            oldCustomer.get('name') || `Customer #${oldCustomer.get('id')}`
+        const newCustomerName =
+            newCustomer.get('name') || `Customer #${newCustomer.get('id')}`
 
         return (
             <ActionName>
-                Customer changed from <a
-                    href={`/app/customer/${oldCustomer.get('id')}`}>{oldCustomerName}</a> to <a
-                    href={`/app/customer/${newCustomer.get('id')}`}>{newCustomerName}</a>
+                Customer changed from{' '}
+                <a href={`/app/customer/${oldCustomer.get('id')}`}>
+                    {oldCustomerName}
+                </a>{' '}
+                to{' '}
+                <a href={`/app/customer/${newCustomer.get('id')}`}>
+                    {newCustomerName}
+                </a>
             </ActionName>
         )
     }
@@ -221,9 +253,12 @@ class AuditLogEventComponent extends React.Component<Props> {
 
         const {event, isLast, users, events} = this.props
         const viaRule = isViaRuleEvent(event, events)
-        const user = users.find((user) => user.get('id') === event.get('user_id'))
+        const user = users.find(
+            (user) => user.get('id') === event.get('user_id')
+        )
         const shouldRenderViaRule = viaRule && !isRuleExecutedType(event)
-        const shouldRenderByUser = !shouldRenderViaRule && user && !isRuleExecutedType(event)
+        const shouldRenderByUser =
+            !shouldRenderViaRule && user && !isRuleExecutedType(event)
 
         return (
             <div
@@ -250,7 +285,7 @@ class AuditLogEventComponent extends React.Component<Props> {
                     <DatetimeLabel
                         dateTime={event.get('created_datetime')}
                         settings={{
-                            position: 'top left'
+                            position: 'top left',
                         }}
                         className={classnames(css.date, 'text-faded')}
                     />
@@ -270,6 +305,10 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps)(AuditLogEventComponent)
 
 // Internal helper components
-type HelperProps = { children: Node }
-const ActionName = ({children}: HelperProps) => <span className={css.actionName}>{children}</span>
-const Filler = ({children}: HelperProps) => <span className={css.filler}>{children}</span>
+type HelperProps = {children: Node}
+const ActionName = ({children}: HelperProps) => (
+    <span className={css.actionName}>{children}</span>
+)
+const Filler = ({children}: HelperProps) => (
+    <span className={css.filler}>{children}</span>
+)

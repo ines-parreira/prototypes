@@ -15,14 +15,12 @@ const BeforeContent = orderWidgets.BeforeContent
 const AfterContent = orderWidgets.AfterContent
 const TitleWrapper = orderWidgets.TitleWrapper
 
-
 jest.mock('../../../../../../../../utils/labels', () => {
     return {
         ...require.requireActual('../../../../../../../../utils/labels'),
-        DatetimeLabel: 'DatetimeLabelMock'
+        DatetimeLabel: 'DatetimeLabelMock',
     }
 })
-
 
 describe('Order', () => {
     describe('<BeforeContent/>', () => {
@@ -30,9 +28,7 @@ describe('Order', () => {
             for (const state of Object.keys(statusColors)) {
                 it(`should render with a label for the ${state} state`, () => {
                     const component = shallow(
-                        <BeforeContent
-                            source={fromJS({state})}
-                        />
+                        <BeforeContent source={fromJS({state})} />
                     )
 
                     expect(component).toMatchSnapshot()
@@ -45,18 +41,18 @@ describe('Order', () => {
         describe('render()', () => {
             it('should not render link because there is no admin url suffix', () => {
                 const component = shallow(
-                    <TitleWrapper
-                        source={fromJS({entity_id: 1})}
-                    >
+                    <TitleWrapper source={fromJS({entity_id: 1})}>
                         <div>foo bar</div>
                     </TitleWrapper>,
                     {
                         context: {
-                            integration: fromJS({meta: {
-                                store_url: 'magento.gorgi.us',
-                                admin_url_suffix: ''
-                            }})
-                        }
+                            integration: fromJS({
+                                meta: {
+                                    store_url: 'magento.gorgi.us',
+                                    admin_url_suffix: '',
+                                },
+                            }),
+                        },
                     }
                 )
 
@@ -65,19 +61,20 @@ describe('Order', () => {
 
             it('should render link', () => {
                 const component = shallow(
-                    <TitleWrapper
-                        source={fromJS({entity_id: 1})}
-                    >
+                    <TitleWrapper source={fromJS({entity_id: 1})}>
                         <div>foo bar</div>
-                    </TitleWrapper>
-                    , {
+                    </TitleWrapper>,
+                    {
                         context: {
-                            integration: fromJS({meta: {
-                                store_url: 'magento.gorgi.us',
-                                admin_url_suffix: 'admin_12df'
-                            }})
-                        }
-                    })
+                            integration: fromJS({
+                                meta: {
+                                    store_url: 'magento.gorgi.us',
+                                    admin_url_suffix: 'admin_12df',
+                                },
+                            }),
+                        },
+                    }
+                )
 
                 expect(component).toMatchSnapshot()
             })
@@ -89,59 +86,76 @@ describe('Order', () => {
         const orderId = 2
         const integrationId = 3
 
-        const shipments = [{
-            order_id: orderId,
-            entity_id: 963,
-            updated_at: '2019-03-04 11:12',
-            tracks: [{
-                track_number: '123ABC',
-                carrier_code: 'UPS',
-                tracking_url: 'https://foo.com'
-            }, {
-                track_number: '456DEF',
-                carrier_code: 'DHL',
-                tracking_url: 'https://bar.com'
-            }],
-            items: [{
-                order_item_id: 118,
-                qty: 4,
-                name: 'Sneakers'
-            }, {
-                order_item_id: 218,
-                qty: 1,
-                name: 'Pants'
-            }]
-        }, {
-            order_id: orderId,
-            entity_id: 741,
-            updated_at: '2019-02-04 11:12',
-            tracks: [{
-                track_number: '789GHJ',
-                carrier_code: 'LaPoste',
-                tracking_url: 'https://laposte.net'
-            }],
-            items: []
-        }]
+        const shipments = [
+            {
+                order_id: orderId,
+                entity_id: 963,
+                updated_at: '2019-03-04 11:12',
+                tracks: [
+                    {
+                        track_number: '123ABC',
+                        carrier_code: 'UPS',
+                        tracking_url: 'https://foo.com',
+                    },
+                    {
+                        track_number: '456DEF',
+                        carrier_code: 'DHL',
+                        tracking_url: 'https://bar.com',
+                    },
+                ],
+                items: [
+                    {
+                        order_item_id: 118,
+                        qty: 4,
+                        name: 'Sneakers',
+                    },
+                    {
+                        order_item_id: 218,
+                        qty: 1,
+                        name: 'Pants',
+                    },
+                ],
+            },
+            {
+                order_id: orderId,
+                entity_id: 741,
+                updated_at: '2019-02-04 11:12',
+                tracks: [
+                    {
+                        track_number: '789GHJ',
+                        carrier_code: 'LaPoste',
+                        tracking_url: 'https://laposte.net',
+                    },
+                ],
+                items: [],
+            },
+        ]
 
-        const creditMemos = [{
-            order_id: orderId,
-            entity_id: 852,
-            updated_at: '2018-11-07 05:22',
-            items: [{
-                order_item_id: 741,
-                qty: 4,
-                name: 'Sneakers'
-            }, {
-                order_item_id: 753,
-                qty: 1,
-                name: 'T-shirt'
-            }]
-        }, {
-            order_id: orderId,
-            entity_id: 852,
-            updated_at: '2018-11-07 05:22',
-            items: []
-        }]
+        const creditMemos = [
+            {
+                order_id: orderId,
+                entity_id: 852,
+                updated_at: '2018-11-07 05:22',
+                items: [
+                    {
+                        order_item_id: 741,
+                        qty: 4,
+                        name: 'Sneakers',
+                    },
+                    {
+                        order_item_id: 753,
+                        qty: 1,
+                        name: 'T-shirt',
+                    },
+                ],
+            },
+            {
+                order_id: orderId,
+                entity_id: 852,
+                updated_at: '2018-11-07 05:22',
+                items: [],
+            },
+        ]
 
         describe('render()', () => {
             it('should return null because the order has no shipments nor credit memos', () => {
@@ -154,15 +168,15 @@ describe('Order', () => {
                                         [integrationId]: {
                                             customer: {id: customerId},
                                             shipments: [],
-                                            credit_memos: []
-                                        }
-                                    }
-                                }
-                            })
+                                            credit_memos: [],
+                                        },
+                                    },
+                                },
+                            }),
                         })}
                         source={fromJS({
                             customer_id: customerId,
-                            entity_id: orderId
+                            entity_id: orderId,
                         })}
                     />
                 )
@@ -181,17 +195,17 @@ describe('Order', () => {
                                         [integrationId.toString()]: {
                                             customer: {id: customerId},
                                             shipments,
-                                            credit_memos: []
-                                        }
-                                    }
-                                }
-                            })
+                                            credit_memos: [],
+                                        },
+                                    },
+                                },
+                            }),
                         })}
                     >
                         <AfterContent
                             source={fromJS({
                                 customer_id: customerId,
-                                entity_id: orderId
+                                entity_id: orderId,
                             })}
                         />
                     </Provider>,
@@ -201,13 +215,13 @@ describe('Order', () => {
                                 id: integrationId,
                                 meta: {
                                     store_url: 'magento.gorgi.us',
-                                    admin_url_suffix: 'admin_123'
-                                }
-                            })
+                                    admin_url_suffix: 'admin_123',
+                                },
+                            }),
                         },
                         childContextTypes: {
                             integration: ImmutablePropTypes.map.isRequired,
-                        }
+                        },
                     }
                 )
 
@@ -225,17 +239,17 @@ describe('Order', () => {
                                         [integrationId.toString()]: {
                                             customer: {id: customerId},
                                             shipments,
-                                            credit_memos: []
-                                        }
-                                    }
-                                }
-                            })
+                                            credit_memos: [],
+                                        },
+                                    },
+                                },
+                            }),
                         })}
                     >
                         <AfterContent
                             source={fromJS({
                                 customer_id: customerId,
-                                entity_id: orderId
+                                entity_id: orderId,
                             })}
                         />
                     </Provider>,
@@ -245,13 +259,13 @@ describe('Order', () => {
                                 id: integrationId,
                                 meta: {
                                     store_url: 'magento.gorgi.us',
-                                    admin_url_suffix: ''
-                                }
-                            })
+                                    admin_url_suffix: '',
+                                },
+                            }),
                         },
                         childContextTypes: {
                             integration: ImmutablePropTypes.map.isRequired,
-                        }
+                        },
                     }
                 )
 
@@ -269,17 +283,17 @@ describe('Order', () => {
                                         [integrationId.toString()]: {
                                             customer: {id: customerId},
                                             shipments: [],
-                                            credit_memos: creditMemos
-                                        }
-                                    }
-                                }
-                            })
+                                            credit_memos: creditMemos,
+                                        },
+                                    },
+                                },
+                            }),
                         })}
                     >
                         <AfterContent
                             source={fromJS({
                                 customer_id: customerId,
-                                entity_id: orderId
+                                entity_id: orderId,
                             })}
                         />
                     </Provider>,
@@ -289,13 +303,13 @@ describe('Order', () => {
                                 id: integrationId,
                                 meta: {
                                     store_url: 'magento.gorgi.us',
-                                    admin_url_suffix: 'admin_123'
-                                }
-                            })
+                                    admin_url_suffix: 'admin_123',
+                                },
+                            }),
                         },
                         childContextTypes: {
                             integration: ImmutablePropTypes.map.isRequired,
-                        }
+                        },
                     }
                 )
 
@@ -313,17 +327,17 @@ describe('Order', () => {
                                         [integrationId.toString()]: {
                                             customer: {id: customerId},
                                             shipments: [],
-                                            credit_memos: creditMemos
-                                        }
-                                    }
-                                }
-                            })
+                                            credit_memos: creditMemos,
+                                        },
+                                    },
+                                },
+                            }),
                         })}
                     >
                         <AfterContent
                             source={fromJS({
                                 customer_id: customerId,
-                                entity_id: orderId
+                                entity_id: orderId,
                             })}
                         />
                     </Provider>,
@@ -333,13 +347,13 @@ describe('Order', () => {
                                 id: integrationId,
                                 meta: {
                                     store_url: 'magento.gorgi.us',
-                                    admin_url_suffix: ''
-                                }
-                            })
+                                    admin_url_suffix: '',
+                                },
+                            }),
                         },
                         childContextTypes: {
                             integration: ImmutablePropTypes.map.isRequired,
-                        }
+                        },
                     }
                 )
 
@@ -357,17 +371,17 @@ describe('Order', () => {
                                         [integrationId.toString()]: {
                                             customer: {id: customerId},
                                             shipments,
-                                            credit_memos: creditMemos
-                                        }
-                                    }
-                                }
-                            })
+                                            credit_memos: creditMemos,
+                                        },
+                                    },
+                                },
+                            }),
                         })}
                     >
                         <AfterContent
                             source={fromJS({
                                 customer_id: customerId,
-                                entity_id: orderId
+                                entity_id: orderId,
                             })}
                         />
                     </Provider>,
@@ -377,18 +391,17 @@ describe('Order', () => {
                                 id: integrationId,
                                 meta: {
                                     store_url: 'magento.gorgi.us',
-                                    admin_url_suffix: 'admin_123'
-                                }
-                            })
+                                    admin_url_suffix: 'admin_123',
+                                },
+                            }),
                         },
                         childContextTypes: {
                             integration: ImmutablePropTypes.map.isRequired,
-                        }
+                        },
                     }
                 )
 
                 expect(component.children()).toMatchSnapshot()
-
             })
         })
     })

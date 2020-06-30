@@ -3,7 +3,7 @@ import {Button, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 
 export type Props = {
     disabled: boolean,
-    onBulkDelete: () => any
+    onBulkDelete: () => any,
 }
 
 const BulkDeleteButton = ({onBulkDelete, disabled}: Props) => {

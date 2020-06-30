@@ -22,11 +22,7 @@ export function ShowMore({children, className, onClick}: Props) {
             className={classnames(css.container, className)}
             onClick={onClick}
         >
-            <img
-                src={expandDown}
-                alt="Expand"
-                className="mr-3"
-            />
+            <img src={expandDown} alt="Expand" className="mr-3" />
             {children}
         </Button>
     )

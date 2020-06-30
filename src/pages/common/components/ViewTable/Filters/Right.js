@@ -23,10 +23,9 @@ import FilterMultiSelectField from '../FilterMultiSelectField'
     return {
         integrations: getMessagingIntegrations(state),
         areFiltersValid: viewsSelectors.areFiltersValid(state),
-        tags: getTags(state)
+        tags: getTags(state),
     }
 })
-
 export default class Right extends React.Component {
     static propTypes = {
         operator: PropTypes.object,
@@ -43,16 +42,16 @@ export default class Right extends React.Component {
         updateFieldFilter: PropTypes.func.isRequired,
         objectPath: PropTypes.string.isRequired,
         empty: PropTypes.bool.isRequired,
-        tags: PropTypes.object.isRequired
+        tags: PropTypes.object.isRequired,
     }
 
     static defaultProps = {
-        empty: false
+        empty: false,
     }
 
     state = {
         dropdownOpen: false,
-        selectedOptions: []
+        selectedOptions: [],
     }
 
     componentDidMount() {
@@ -92,12 +91,20 @@ export default class Right extends React.Component {
     _mapTagSearchResultsToOptions = (results) => {
         return results.map((result) => ({
             value: result.name,
-            label: result.name
+            label: result.name,
         }))
     }
 
     render() {
-        const {operator, node, config, field, updateFieldFilter, index, empty} = this.props
+        const {
+            operator,
+            node,
+            config,
+            field,
+            updateFieldFilter,
+            index,
+            empty,
+        } = this.props
 
         if (empty) {
             return <span />
@@ -115,50 +122,69 @@ export default class Right extends React.Component {
 
         let displayedValue = node.value
 
-        if (displayedValue === '{{current_user.id}}') { // display current user variable
+        if (displayedValue === '{{current_user.id}}') {
+            // display current user variable
             displayedValue = 'Me (current user)'
-        } else if (field.get('name') === 'integrations') { // display integration
+        } else if (field.get('name') === 'integrations') {
+            // display integration
             if (node.type === 'ArrayExpression') {
                 const selectedOptions = node.elements.map((opt) => opt.value)
-                const options = this.props.integrations.map((integration) => ({
-                    label: integration.get('name'),
-                    displayLabel: <IntegrationsDetailLabel integration={integration}/>,
-                    value: integration.get('id')
-                })).toJS()
+                const options = this.props.integrations
+                    .map((integration) => ({
+                        label: integration.get('name'),
+                        displayLabel: (
+                            <IntegrationsDetailLabel
+                                integration={integration}
+                            />
+                        ),
+                        value: integration.get('id'),
+                    }))
+                    .toJS()
 
                 return (
                     <MultiSelectField
                         values={selectedOptions}
                         options={options}
-                        singular='integration'
-                        plural='integrations'
+                        singular="integration"
+                        plural="integrations"
                         onChange={(value) => updateFieldFilter(index, value)}
                     />
                 )
             }
 
-            const integration = this.props.integrations.find((integration) => (
-                integration.get('id').toString() === displayedValue.toString())
+            const integration = this.props.integrations.find(
+                (integration) =>
+                    integration.get('id').toString() ===
+                    displayedValue.toString()
             )
             if (integration) {
                 displayedValue = (
                     <IntegrationsDetailLabel integration={integration} />
                 )
             }
-
-        } else if (field.get('name') === 'assignee_team') { // display assignee team
-            const assignee = this.props.teams.find((team) => team.get('id').toString() === displayedValue.toString())
+        } else if (field.get('name') === 'assignee_team') {
+            // display assignee team
+            const assignee = this.props.teams.find(
+                (team) =>
+                    team.get('id').toString() === displayedValue.toString()
+            )
             if (assignee) {
-                displayedValue = (<span>{assignee.get('name')}</span>)
+                displayedValue = <span>{assignee.get('name')}</span>
             }
-        }  else if (field.get('name') === 'assignee') { // display assignee user
-            const assignee = this.props.agents.find((agent) => agent.get('id').toString() === displayedValue.toString())
+        } else if (field.get('name') === 'assignee') {
+            // display assignee user
+            const assignee = this.props.agents.find(
+                (agent) =>
+                    agent.get('id').toString() === displayedValue.toString()
+            )
             if (assignee) {
-                displayedValue = (<span>{assignee.get('name')}</span>)
+                displayedValue = <span>{assignee.get('name')}</span>
             }
-        } else if (field.get('name') === 'customer') { // display customer
+        } else if (field.get('name') === 'customer') {
+            // display customer
             displayedValue = `Customer #${displayedValue}`
-        } else if (field.get('name') === 'language') { // show the display name
+        } else if (field.get('name') === 'language') {
+            // show the display name
             displayedValue = getLanguageDisplayName(displayedValue)
         } else if ((field.get('path') || '').endsWith('_datetime')) {
             if (timedeltaOperators.includes(operator.name)) {
@@ -180,16 +206,21 @@ export default class Right extends React.Component {
             if (node.type === 'ArrayExpression') {
                 const selectedOptions = node.elements.map((opt) => ({
                     label: opt.value,
-                    value: opt.value
+                    value: opt.value,
                 }))
 
                 return (
                     <FilterMultiSelectField
                         field={field}
                         selectedOptions={selectedOptions}
-                        singular='tag'
-                        plural='tags'
-                        onChange={(options) => updateFieldFilter(index, options.map((option) => option.value))}
+                        singular="tag"
+                        plural="tags"
+                        onChange={(options) =>
+                            updateFieldFilter(
+                                index,
+                                options.map((option) => option.value)
+                            )
+                        }
                         mapSearchResults={this._mapTagSearchResultsToOptions}
                         dropdownMenu={TagDropdownMenu}
                     />
@@ -198,17 +229,20 @@ export default class Right extends React.Component {
         } else if (field.get('name') === 'channel') {
             if (node.type === 'ArrayExpression') {
                 const selectedOptions = node.elements.map((opt) => opt.value)
-                const options = field.getIn(['filter', 'enum']).map((val) => ({
-                    label: val,
-                    value: val
-                })).toJS()
+                const options = field
+                    .getIn(['filter', 'enum'])
+                    .map((val) => ({
+                        label: val,
+                        value: val,
+                    }))
+                    .toJS()
 
                 return (
                     <MultiSelectField
                         values={selectedOptions}
                         options={options}
-                        singular='channel'
-                        plural='channels'
+                        singular="channel"
+                        plural="channels"
                         onChange={(value) => updateFieldFilter(index, value)}
                     />
                 )
@@ -217,32 +251,32 @@ export default class Right extends React.Component {
 
         return (
             <div>
-                <div
-                    onClick={this._toggleDropdown}
-                >
-                    {
-                        node.value === '' ? (
-                            <div className="btn btn-secondary btn-sm dropdown-toggle clickable">
-                                Select a value
-                            </div>
-                        ) : (
-                            <div className="btn btn-light btn-sm dropdown-toggle clickable">
-                                {displayedValue}
-                            </div>
-                        )
-                    }
+                <div onClick={this._toggleDropdown}>
+                    {node.value === '' ? (
+                        <div className="btn btn-secondary btn-sm dropdown-toggle clickable">
+                            Select a value
+                        </div>
+                    ) : (
+                        <div className="btn btn-light btn-sm dropdown-toggle clickable">
+                            {displayedValue}
+                        </div>
+                    )}
                 </div>
-                {
-                    this.state.dropdownOpen && (
-                        <FilterDropdown
-                            viewConfig={config}
-                            field={field}
-                            updateFieldFilter={(value) => updateFieldFilter(index, value)}
-                            toggleDropdown={this._toggleDropdown}
-                            menu={field.get('name') === 'tags' ? TagDropdownMenu : undefined}
-                        />
-                    )
-                }
+                {this.state.dropdownOpen && (
+                    <FilterDropdown
+                        viewConfig={config}
+                        field={field}
+                        updateFieldFilter={(value) =>
+                            updateFieldFilter(index, value)
+                        }
+                        toggleDropdown={this._toggleDropdown}
+                        menu={
+                            field.get('name') === 'tags'
+                                ? TagDropdownMenu
+                                : undefined
+                        }
+                    />
+                )}
             </div>
         )
     }

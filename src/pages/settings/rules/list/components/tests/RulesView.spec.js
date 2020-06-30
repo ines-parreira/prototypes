@@ -3,16 +3,15 @@ import {shallow} from 'enzyme'
 
 import RulesView from '../RulesView'
 
-
 const commonProps = {
     actions: {
         rules: {
-            fetchRules: jest.fn()
-        }
+            fetchRules: jest.fn(),
+        },
     },
     location: {
-        query: {}
-    }
+        query: {},
+    },
 }
 
 describe('RulesView component', () => {
@@ -26,8 +25,8 @@ describe('RulesView component', () => {
                 {...commonProps}
                 location={{
                     query: {
-                        ruleId: '3'
-                    }
+                        ruleId: '3',
+                    },
                 }}
             />
         )
@@ -39,11 +38,7 @@ describe('RulesView component', () => {
     })
 
     it('should not put anything in the openedRules array because no ruleId is passed', () => {
-        const component = shallow(
-            <RulesView
-                {...commonProps}
-            />
-        )
+        const component = shallow(<RulesView {...commonProps} />)
 
         const openedRules = component.state('openedRules')
         expect(openedRules).toEqual([])

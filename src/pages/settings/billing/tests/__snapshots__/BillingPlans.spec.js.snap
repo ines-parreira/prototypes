@@ -170,7 +170,8 @@ exports[`BillingPlans component should display a custom plan 1`] = `
               Can I switch between plans?
             </dt>
             <dd>
-              Yes you can. Switching between monthly/yearly plans will 
+              Yes you can. Switching between monthly/yearly plans will
+               
               <a
                 href="https://stripe.com/docs/subscriptions/upgrading-downgrading#understanding-proration"
                 rel="noreferrer noopener"
@@ -178,7 +179,8 @@ exports[`BillingPlans component should display a custom plan 1`] = `
               >
                 prorate
               </a>
-               your subscription. See the question below for switching from yearly to monthly plans.
+               
+              your subscription. See the question below for switching from yearly to monthly plans.
             </dd>
             <dt>
               Can I switch from an yearly plan to a monthly plan?
@@ -287,12 +289,14 @@ exports[`BillingPlans component should display matching current plan 1`] = `
                 arrow_downward
               </i>
                
-              Discounted prices for volumes of 
+              Discounted prices for volumes of
+               
               <strong>
                 10,000
                 +
               </strong>
-               tickets
+               
+              tickets
             </li>
             <li>
               <i
@@ -405,7 +409,8 @@ exports[`BillingPlans component should display matching current plan 1`] = `
               Can I switch between plans?
             </dt>
             <dd>
-              Yes you can. Switching between monthly/yearly plans will 
+              Yes you can. Switching between monthly/yearly plans will
+               
               <a
                 href="https://stripe.com/docs/subscriptions/upgrading-downgrading#understanding-proration"
                 rel="noreferrer noopener"
@@ -413,7 +418,8 @@ exports[`BillingPlans component should display matching current plan 1`] = `
               >
                 prorate
               </a>
-               your subscription. See the question below for switching from yearly to monthly plans.
+               
+              your subscription. See the question below for switching from yearly to monthly plans.
             </dd>
             <dt>
               Can I switch from an yearly plan to a monthly plan?
@@ -522,12 +528,14 @@ exports[`BillingPlans component should display multiple plans 1`] = `
                 arrow_downward
               </i>
                
-              Discounted prices for volumes of 
+              Discounted prices for volumes of
+               
               <strong>
                 10,000
                 +
               </strong>
-               tickets
+               
+              tickets
             </li>
             <li>
               <i
@@ -640,7 +648,8 @@ exports[`BillingPlans component should display multiple plans 1`] = `
               Can I switch between plans?
             </dt>
             <dd>
-              Yes you can. Switching between monthly/yearly plans will 
+              Yes you can. Switching between monthly/yearly plans will
+               
               <a
                 href="https://stripe.com/docs/subscriptions/upgrading-downgrading#understanding-proration"
                 rel="noreferrer noopener"
@@ -648,7 +657,8 @@ exports[`BillingPlans component should display multiple plans 1`] = `
               >
                 prorate
               </a>
-               your subscription. See the question below for switching from yearly to monthly plans.
+               
+              your subscription. See the question below for switching from yearly to monthly plans.
             </dd>
             <dt>
               Can I switch from an yearly plan to a monthly plan?
@@ -836,12 +846,14 @@ exports[`BillingPlans component should load with empty props 1`] = `
                       arrow_downward
                     </i>
                      
-                    Discounted prices for volumes of 
+                    Discounted prices for volumes of
+                     
                     <strong>
                       10,000
                       +
                     </strong>
-                     tickets
+                     
+                    tickets
                   </li>
                   <li>
                     <i
@@ -915,12 +927,14 @@ exports[`BillingPlans component should load with empty props 1`] = `
                             arrow_downward
                           </i>
                            
-                          Discounted prices for volumes of 
+                          Discounted prices for volumes of
+                           
                           <strong>
                             10,000
                             +
                           </strong>
-                           tickets
+                           
+                          tickets
                         </li>
                         <li>
                           <i
@@ -1062,7 +1076,8 @@ exports[`BillingPlans component should load with empty props 1`] = `
                       Can I switch between plans?
                     </dt>
                     <dd>
-                      Yes you can. Switching between monthly/yearly plans will 
+                      Yes you can. Switching between monthly/yearly plans will
+                       
                       <a
                         href="https://stripe.com/docs/subscriptions/upgrading-downgrading#understanding-proration"
                         rel="noreferrer noopener"
@@ -1070,7 +1085,8 @@ exports[`BillingPlans component should load with empty props 1`] = `
                       >
                         prorate
                       </a>
-                       your subscription. See the question below for switching from yearly to monthly plans.
+                       
+                      your subscription. See the question below for switching from yearly to monthly plans.
                     </dd>
                     <dt>
                       Can I switch from an yearly plan to a monthly plan?

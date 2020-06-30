@@ -5,7 +5,16 @@ import _merge from 'lodash/merge'
 import _pick from 'lodash/pick'
 import _sortBy from 'lodash/sortBy'
 import moment from 'moment-timezone'
-import {Button, Col, Container, Form, FormGroup, FormText, Label, Row} from 'reactstrap'
+import {
+    Button,
+    Col,
+    Container,
+    Form,
+    FormGroup,
+    FormText,
+    Label,
+    Row,
+} from 'reactstrap'
 
 import {Link} from 'react-router'
 
@@ -34,7 +43,7 @@ type Props = {
     currentUser: Object,
     submitSetting: (Object, boolean) => Promise<*>,
     preferences: Object,
-    isLoading: boolean
+    isLoading: boolean,
 }
 
 type State = {
@@ -47,7 +56,7 @@ type State = {
     preferences: Map<*, *>,
     profilePictureUrl: string,
     password_confirmation: null | string,
-    timezone: string
+    timezone: string,
 }
 
 export default class YourProfileView extends React.Component<Props, State> {
@@ -58,11 +67,14 @@ export default class YourProfileView extends React.Component<Props, State> {
 
         this.isInitialized = false
 
-        this.state = _merge({
-            loadingPreferences: false,
-            preferences: props.preferences.get('data'),
-            hasChangedEmail: false
-        }, this._getForm(props))
+        this.state = _merge(
+            {
+                loadingPreferences: false,
+                preferences: props.preferences.get('data'),
+                hasChangedEmail: false,
+            },
+            this._getForm(props)
+        )
 
         if (!this.props.currentUser.isEmpty()) {
             this.isInitialized = true
@@ -84,7 +96,10 @@ export default class YourProfileView extends React.Component<Props, State> {
         return _merge(
             _pick(props.currentUser.toJS(), Object.keys(defaultContent)),
             {
-                profilePictureUrl: props.currentUser.getIn(['meta', 'profile_picture_url'])
+                profilePictureUrl: props.currentUser.getIn([
+                    'meta',
+                    'profile_picture_url',
+                ]),
             }
         )
     }
@@ -93,29 +108,28 @@ export default class YourProfileView extends React.Component<Props, State> {
         event.preventDefault()
         const normalizedValues = _pick(this.state, Object.keys(defaultContent))
 
-        return this.props.updateCurrentUser(normalizedValues)
-            .then((user) => {
-                if (user.email === normalizedValues.email) {
-                    this.setState({
-                        hasChangedEmail: false,
-                        password_confirmation: null
-                    })
-                }
-            })
+        return this.props.updateCurrentUser(normalizedValues).then((user) => {
+            if (user.email === normalizedValues.email) {
+                this.setState({
+                    hasChangedEmail: false,
+                    password_confirmation: null,
+                })
+            }
+        })
     }
 
     _onEmailChange = (email: string) => {
         this.setState({
             email,
-            hasChangedEmail: (this.props.currentUser.get('email') !== email)
+            hasChangedEmail: this.props.currentUser.get('email') !== email,
         })
     }
 
     _saveProfilePicture = () => {
         return this.props.updateCurrentUser({
             meta: {
-                profile_picture_url: this.state.profilePictureUrl
-            }
+                profile_picture_url: this.state.profilePictureUrl,
+            },
         })
     }
 
@@ -124,12 +138,13 @@ export default class YourProfileView extends React.Component<Props, State> {
 
         this.setState({loadingPreferences: true})
 
-        const newSettings = this.props.preferences.update('data', (data) => data.mergeDeep(this.state.preferences)).toJS()
+        const newSettings = this.props.preferences
+            .update('data', (data) => data.mergeDeep(this.state.preferences))
+            .toJS()
 
-        return this.props.submitSetting(newSettings, true)
-            .then(() => {
-                this.setState({loadingPreferences: false})
-            })
+        return this.props.submitSetting(newSettings, true).then(() => {
+            this.setState({loadingPreferences: false})
+        })
     }
 
     render() {
@@ -139,16 +154,10 @@ export default class YourProfileView extends React.Component<Props, State> {
 
         return (
             <div className="full-width">
-                <PageHeader title="Your profile"/>
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <PageHeader title="Your profile" />
+                <Container fluid className="page-container">
                     <p>Update your profile information.</p>
-                    <Form
-                        className="mb-4"
-                        onSubmit={this._handleSubmit}
-                    >
+                    <Form className="mb-4" onSubmit={this._handleSubmit}>
                         <Row>
                             <Col md="9">
                                 <InputField
@@ -169,7 +178,7 @@ export default class YourProfileView extends React.Component<Props, State> {
                                     value={this.state.email}
                                     onChange={this._onEmailChange}
                                 />
-                                {hasChangedEmail ?
+                                {hasChangedEmail ? (
                                     <InputField
                                         type="password"
                                         name="password_confirmation"
@@ -177,17 +186,21 @@ export default class YourProfileView extends React.Component<Props, State> {
                                         placeholder="Your password"
                                         required
                                         value={password_confirmation}
-                                        onChange={(password_confirmation) => this.setState({password_confirmation})}
+                                        onChange={(password_confirmation) =>
+                                            this.setState({
+                                                password_confirmation,
+                                            })
+                                        }
                                     />
-                                    : null
-                                }
+                                ) : null}
                                 <InputField
                                     type="text"
                                     name="bio"
                                     label="Your bio"
                                     help={
                                         <span>
-                                            Your bio can be used in signatures as a variable. Admins can set up
+                                            Your bio can be used in signatures
+                                            as a variable. Admins can set up
                                             signatures{' '}
                                             <Link to="/app/settings/integrations/email">
                                                 in each email integration
@@ -198,46 +211,72 @@ export default class YourProfileView extends React.Component<Props, State> {
                                     onChange={(bio) => this.setState({bio})}
                                 />
                                 <FormGroup>
-                                    <Label className="control-label">Timezone</Label>
+                                    <Label className="control-label">
+                                        Timezone
+                                    </Label>
                                     <SelectField
                                         name="timezone"
                                         label="Timezone"
                                         value={this.state.timezone}
-                                        options={_sortBy(moment.tz.names().filter((name) => name !== 'US/Pacific-New')
-                                            /*
+                                        options={_sortBy(
+                                            moment.tz
+                                                .names()
+                                                .filter(
+                                                    (name) =>
+                                                        name !==
+                                                        'US/Pacific-New'
+                                                )
+                                                /*
                                             US/Pacific-New is not supposed to be a valid timezone and as such, pytz
                                             (the validator on backend) doesn't allow it, so we skip it.
                                             More info at: https://github.com/moment/moment-timezone/issues/498
                                             */
-                                            .map((name) => ({
-                                                value: name,
-                                                label: `(UTC${moment.tz(name).format('Z')}) ${name}`
-                                            })), (item) => moment.tz(item.value).utcOffset())}
-                                        onChange={(value) => this.setState({timezone: value.toString()})}
+                                                .map((name) => ({
+                                                    value: name,
+                                                    label: `(UTC${moment
+                                                        .tz(name)
+                                                        .format('Z')}) ${name}`,
+                                                })),
+                                            (item) =>
+                                                moment
+                                                    .tz(item.value)
+                                                    .utcOffset()
+                                        )}
+                                        onChange={(value) =>
+                                            this.setState({
+                                                timezone: value.toString(),
+                                            })
+                                        }
                                         fullWidth
                                     />
                                 </FormGroup>
                                 <FormGroup>
-                                    <Label className="control-label">Language</Label>
+                                    <Label className="control-label">
+                                        Language
+                                    </Label>
                                     <SelectField
                                         name="language"
                                         value={this.state.language}
-                                        onChange={(value) => this.setState({language: value.toString()})}
-                                        options={AVAILABLE_LANGUAGES.map((locale) => ({
-                                            value: locale.localeName,
-                                            label: locale.displayName
-                                        }))}
+                                        onChange={(value) =>
+                                            this.setState({
+                                                language: value.toString(),
+                                            })
+                                        }
+                                        options={AVAILABLE_LANGUAGES.map(
+                                            (locale) => ({
+                                                value: locale.localeName,
+                                                label: locale.displayName,
+                                            })
+                                        )}
                                         fullWidth
                                     />
                                     <FormText color="muted">
-                                        Changing the language only changes the time format
+                                        Changing the language only changes the
+                                        time format
                                     </FormText>
                                 </FormGroup>
                             </Col>
-                            <Col
-                                md="3"
-                                xs="12"
-                            >
+                            <Col md="3" xs="12">
                                 <FormGroup>
                                     <Label className="control-label">
                                         Profile picture
@@ -251,20 +290,26 @@ export default class YourProfileView extends React.Component<Props, State> {
                                         />
                                     </div>
 
-                                    <br/>
+                                    <br />
 
                                     <FileField
                                         returnFiles={false}
                                         noPreview={true}
-                                        onChange={(picture_url) => this.setState(
-                                            {profilePictureUrl: picture_url},
-                                            this._saveProfilePicture)}
+                                        onChange={(picture_url) =>
+                                            this.setState(
+                                                {
+                                                    profilePictureUrl: picture_url,
+                                                },
+                                                this._saveProfilePicture
+                                            )
+                                        }
                                         uploadType="profile_picture"
                                         maxSize={500 * 1000}
                                     />
 
                                     <FormText color="muted">
-                                        The image must be square and weight less than 500kB.
+                                        The image must be square and weight less
+                                        than 500kB.
                                     </FormText>
                                 </FormGroup>
                             </Col>
@@ -282,9 +327,7 @@ export default class YourProfileView extends React.Component<Props, State> {
                         </Button>
                     </Form>
 
-                    <h4>
-                        Preferences
-                    </h4>
+                    <h4>Preferences</h4>
 
                     <form onSubmit={this._savePreferences}>
                         <FormGroup>
@@ -292,8 +335,17 @@ export default class YourProfileView extends React.Component<Props, State> {
                                 name="show_macros"
                                 type="checkbox"
                                 label="Display macros by default on emails"
-                                value={this.state.preferences.get('show_macros')}
-                                onChange={(value) => this.setState({preferences: this.state.preferences.set('show_macros', value)})}
+                                value={this.state.preferences.get(
+                                    'show_macros'
+                                )}
+                                onChange={(value) =>
+                                    this.setState({
+                                        preferences: this.state.preferences.set(
+                                            'show_macros',
+                                            value
+                                        ),
+                                    })
+                                }
                             />
                         </FormGroup>
 
@@ -302,7 +354,8 @@ export default class YourProfileView extends React.Component<Props, State> {
                                 type="submit"
                                 color="success"
                                 className={classnames({
-                                    'btn-loading': this.state.loadingPreferences,
+                                    'btn-loading': this.state
+                                        .loadingPreferences,
                                 })}
                                 disabled={this.state.loadingPreferences}
                             >

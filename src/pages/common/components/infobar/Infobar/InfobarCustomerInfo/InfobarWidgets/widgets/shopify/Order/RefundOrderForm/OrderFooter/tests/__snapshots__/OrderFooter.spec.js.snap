@@ -216,9 +216,7 @@ exports[`<OrderFooter/> render() should render 1`] = `
               color="muted"
               tag="small"
             >
-              The amount being refunded is different from the value of items being
-               
-              returned.
+              The amount being refunded is different from the value of items being returned.
             </FormText>
           </FormGroup>
           <FormGroup
@@ -255,7 +253,7 @@ exports[`<OrderFooter/> render() should render 1`] = `
               color="muted"
               tag="small"
             >
-              The claimed quantity for products in this order will be restocked back to 
+              The claimed quantity for products in this order will be restocked back to
                
               your store.
             </FormText>
@@ -584,9 +582,7 @@ exports[`<OrderFooter/> render() should render for refund order action 1`] = `
               color="muted"
               tag="small"
             >
-              The amount being refunded is different from the value of items being
-               
-              returned.
+              The amount being refunded is different from the value of items being returned.
             </FormText>
           </FormGroup>
           <FormGroup
@@ -623,7 +619,7 @@ exports[`<OrderFooter/> render() should render for refund order action 1`] = `
               color="muted"
               tag="small"
             >
-              The claimed quantity for products in this order will be restocked back to 
+              The claimed quantity for products in this order will be restocked back to
                
               your store.
             </FormText>

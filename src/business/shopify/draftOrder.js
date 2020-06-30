@@ -5,13 +5,16 @@ import {fromJS, type List, type Record} from 'immutable'
 import * as Shopify from '../../constants/integrations/shopify'
 
 import {formatPercentage} from './number'
-import {getDraftOrderTotalLineItemsPrice, initLineItemAppliedDiscount} from './lineItem'
+import {
+    getDraftOrderTotalLineItemsPrice,
+    initLineItemAppliedDiscount,
+} from './lineItem'
 import {getTotalDiscountAmount, refreshAppliedDiscounts} from './discount'
 
 export function initDraftOrderPayload(
     customer: Record<$Shape<Shopify.Customer>>,
     order: Record<Shopify.Order> = fromJS({}),
-    products: Map<number, Record<Shopify.Product>> = new Map(),
+    products: Map<number, Record<Shopify.Product>> = new Map()
 ): Record<$Shape<Shopify.DraftOrder>> {
     const draftOrder = fromJS({
         line_items: order.get('line_items', []).map((lineItem) => {
@@ -20,7 +23,12 @@ export function initDraftOrderPayload(
                 : null
 
             const variant = !!product
-                ? product.get('variants').find((variant) => variant.get('id') === lineItem.get('variant_id'))
+                ? product
+                      .get('variants')
+                      .find(
+                          (variant) =>
+                              variant.get('id') === lineItem.get('variant_id')
+                      )
                 : null
 
             return fromJS({
@@ -29,10 +37,16 @@ export function initDraftOrderPayload(
                 quantity: lineItem.get('quantity') || 1,
                 price: !!variant ? variant.get('price') : lineItem.get('price'),
                 title: !!product ? product.get('title') : lineItem.get('title'),
-                variant_title: !!variant ? variant.get('title') : lineItem.get('variant_title'),
+                variant_title: !!variant
+                    ? variant.get('title')
+                    : lineItem.get('variant_title'),
                 sku: !!variant ? variant.get('sku') : lineItem.get('sku'),
-                taxable: !!variant ? variant.get('taxable') : lineItem.get('taxable'),
-                requires_shipping: !!variant ? variant.get('requires_shipping') : lineItem.get('requires_shipping'),
+                taxable: !!variant
+                    ? variant.get('taxable')
+                    : lineItem.get('taxable'),
+                requires_shipping: !!variant
+                    ? variant.get('requires_shipping')
+                    : lineItem.get('requires_shipping'),
                 product_exists: !!variant,
                 properties: lineItem.get('properties') || [],
                 applied_discount: initLineItemAppliedDiscount(lineItem, order),
@@ -43,8 +57,10 @@ export function initDraftOrderPayload(
         shipping_line: order.getIn(['shipping_lines', 0]) || null,
         tax_exempt: false,
         customer,
-        billing_address: order.get('billing_address') || customer.get('default_address'),
-        shipping_address: order.get('shipping_address') || customer.get('default_address'),
+        billing_address:
+            order.get('billing_address') || customer.get('default_address'),
+        shipping_address:
+            order.get('shipping_address') || customer.get('default_address'),
         currency: order.get('currency') || customer.get('currency'),
     })
 
@@ -56,60 +72,82 @@ export function addVariant(
     product: Shopify.Product,
     variant: Shopify.Variant
 ): Record<$Shape<Shopify.DraftOrder>> {
-    const lineItemIndex = draftOrder.get('line_items', []).findIndex(
-        (lineItem) => lineItem.get('product_id') === product.id
-            && lineItem.get('variant_id') === variant.id
-    )
+    const lineItemIndex = draftOrder
+        .get('line_items', [])
+        .findIndex(
+            (lineItem) =>
+                lineItem.get('product_id') === product.id &&
+                lineItem.get('variant_id') === variant.id
+        )
 
     return lineItemIndex === -1
         ? draftOrder.update('line_items', (lineItems) =>
-            lineItems.push(fromJS({
-                product_id: product.id,
-                variant_id: variant.id,
-                quantity: 1,
-                price: variant.price,
-                title: product.title,
-                variant_title: variant.title,
-                sku: variant.sku,
-                taxable: variant.taxable,
-                requires_shipping: variant.requires_shipping,
-                product_exists: true,
-                properties: [],
-            }))
-        )
+              lineItems.push(
+                  fromJS({
+                      product_id: product.id,
+                      variant_id: variant.id,
+                      quantity: 1,
+                      price: variant.price,
+                      title: product.title,
+                      variant_title: variant.title,
+                      sku: variant.sku,
+                      taxable: variant.taxable,
+                      requires_shipping: variant.requires_shipping,
+                      product_exists: true,
+                      properties: [],
+                  })
+              )
+          )
         : draftOrder.setIn(
-            ['line_items', lineItemIndex, 'quantity'],
-            draftOrder.getIn(['line_items', lineItemIndex, 'quantity']) + 1
-        )
+              ['line_items', lineItemIndex, 'quantity'],
+              draftOrder.getIn(['line_items', lineItemIndex, 'quantity']) + 1
+          )
 }
 
 export function addCustomLineItem(
     draftOrder: Record<$Shape<Shopify.DraftOrder>>,
     lineItem: Record<$Shape<Shopify.LineItem>>
 ): Record<$Shape<Shopify.DraftOrder>> {
-    return draftOrder.update('line_items', (lineItems) => lineItems.push(lineItem))
+    return draftOrder.update('line_items', (lineItems) =>
+        lineItems.push(lineItem)
+    )
 }
 
-export function getSubtotal(draftOrder: Record<$Shape<Shopify.DraftOrder>>): number {
-    return getDraftOrderTotalLineItemsPrice(draftOrder) - getTotalDiscountAmount(draftOrder)
+export function getSubtotal(
+    draftOrder: Record<$Shape<Shopify.DraftOrder>>
+): number {
+    return (
+        getDraftOrderTotalLineItemsPrice(draftOrder) -
+        getTotalDiscountAmount(draftOrder)
+    )
 }
 
-export function getTotalShippingPrice(draftOrder: Record<$Shape<Shopify.DraftOrder>>): number {
+export function getTotalShippingPrice(
+    draftOrder: Record<$Shape<Shopify.DraftOrder>>
+): number {
     return parseFloat(draftOrder.getIn(['shipping_line', 'price'], 0))
 }
 
-export function getTaxLineLabel(taxLine: Record<Shopify.TaxLine>, taxesIncluded: boolean): string {
-    const label = `${taxLine.get('title')} ${formatPercentage(taxLine.get('rate') * 100)}%`
+export function getTaxLineLabel(
+    taxLine: Record<Shopify.TaxLine>,
+    taxesIncluded: boolean
+): string {
+    const label = `${taxLine.get('title')} ${formatPercentage(
+        taxLine.get('rate') * 100
+    )}%`
     return taxesIncluded ? `${label} (included)` : label
 }
 
 export function getTotalTaxes(taxLines: List<Shopify.TaxLine>): number {
-    return taxLines.reduce((total, taxLine) => total + parseFloat(taxLine.get('price')), 0)
+    return taxLines.reduce(
+        (total, taxLine) => total + parseFloat(taxLine.get('price')),
+        0
+    )
 }
 
 export function getTaxLinesTotals(
     draftOrder: Record<$Shape<Shopify.DraftOrder>>
-): Array<{ label: string, total: number }> {
+): Array<{label: string, total: number}> {
     const taxLines = draftOrder.get('tax_lines') || []
     const taxesIncluded = draftOrder.get('taxes_included')
     const taxLinesByLabel = new Map()

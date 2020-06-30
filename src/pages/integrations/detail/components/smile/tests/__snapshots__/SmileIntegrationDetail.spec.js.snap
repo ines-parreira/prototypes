@@ -215,7 +215,8 @@ exports[`<SmileIntegrationDetail/> render() should render a small paragraph beca
         }
       >
         <p>
-          All your Smile customers have been imported. You can now see their info in the sidebar. 
+          All your Smile customers have been imported. You can now see their info in the sidebar.
+           
           <Link
             onlyActiveOnIndex={false}
             style={Object {}}

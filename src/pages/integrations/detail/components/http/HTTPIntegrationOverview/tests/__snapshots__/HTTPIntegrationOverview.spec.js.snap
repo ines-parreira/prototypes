@@ -10,7 +10,7 @@ exports[`HTTPIntegrationOverview should display data about the integration 1`] =
     tag="div"
   >
     <p>
-      Add the details about the HTTP integration you want to add below. If you need help, you can check our 
+      Add the details about the HTTP integration you want to add below. If you need help, you can check our
        
       <a
         href="https://docs.gorgias.com/data-and-http-integrations/http-integrations"
@@ -19,7 +19,8 @@ exports[`HTTPIntegrationOverview should display data about the integration 1`] =
       >
         docs
       </a>
-       or contact us.
+       
+      or contact us.
     </p>
     <Form
       onSubmit={[Function]}
@@ -92,11 +93,14 @@ exports[`HTTPIntegrationOverview should display data about the integration 1`] =
         error="Only https protocol allowed"
         help={
           <div>
-            You can use 
+            You can use
+             
             <code>
               {{ticket.customer.email}}
             </code>
-             to pass the email of the ticket customer. See other 
+             
+            to pass the email of the ticket customer. See other
+             
             <a
               href="https://api.gorgias.io/#Customer-object"
               rel="noopener noreferrer"
@@ -273,7 +277,7 @@ exports[`HTTPIntegrationOverview should display data with url-encoded format 1`]
     tag="div"
   >
     <p>
-      Add the details about the HTTP integration you want to add below. If you need help, you can check our 
+      Add the details about the HTTP integration you want to add below. If you need help, you can check our
        
       <a
         href="https://docs.gorgias.com/data-and-http-integrations/http-integrations"
@@ -282,7 +286,8 @@ exports[`HTTPIntegrationOverview should display data with url-encoded format 1`]
       >
         docs
       </a>
-       or contact us.
+       
+      or contact us.
     </p>
     <Form
       onSubmit={[Function]}
@@ -355,11 +360,14 @@ exports[`HTTPIntegrationOverview should display data with url-encoded format 1`]
         error="Only https protocol allowed"
         help={
           <div>
-            You can use 
+            You can use
+             
             <code>
               {{ticket.customer.email}}
             </code>
-             to pass the email of the ticket customer. See other 
+             
+            to pass the email of the ticket customer. See other
+             
             <a
               href="https://api.gorgias.io/#Customer-object"
               rel="noopener noreferrer"
@@ -547,7 +555,7 @@ exports[`HTTPIntegrationOverview should display default values because there is 
     tag="div"
   >
     <p>
-      Add the details about the HTTP integration you want to add below. If you need help, you can check our 
+      Add the details about the HTTP integration you want to add below. If you need help, you can check our
        
       <a
         href="https://docs.gorgias.com/data-and-http-integrations/http-integrations"
@@ -556,7 +564,8 @@ exports[`HTTPIntegrationOverview should display default values because there is 
       >
         docs
       </a>
-       or contact us.
+       
+      or contact us.
     </p>
     <Form
       onSubmit={[Function]}
@@ -629,11 +638,14 @@ exports[`HTTPIntegrationOverview should display default values because there is 
         error={null}
         help={
           <div>
-            You can use 
+            You can use
+             
             <code>
               {{ticket.customer.email}}
             </code>
-             to pass the email of the ticket customer. See other 
+             
+            to pass the email of the ticket customer. See other
+             
             <a
               href="https://api.gorgias.io/#Customer-object"
               rel="noopener noreferrer"

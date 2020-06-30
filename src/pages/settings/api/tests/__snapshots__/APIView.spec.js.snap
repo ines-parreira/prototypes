@@ -12,7 +12,8 @@ exports[`<APIView/> render() should render a Create API Key Button 1`] = `
     tag="div"
   >
     <p>
-      Gorgias prides itself on being a developer-friendly helpdesk. We expose a 
+      Gorgias prides itself on being a developer-friendly helpdesk. We expose a
+       
       <a
         href="https://stackoverflow.com/questions/671118/what-exactly-is-restful-programming"
         rel="noopener noreferrer"
@@ -20,25 +21,29 @@ exports[`<APIView/> render() should render a Create API Key Button 1`] = `
       >
         RESTful API
       </a>
-       to make it easy for you to get, create, update and delete many objects including customers, tickets, messages and events. To find out more about our API, please consult our docs here:
+       
+      to make it easy for you to get, create, update and delete many objects including customers, tickets, messages and events. To find out more about our API, please consult our docs here:
       <a
         href="https://api.gorgias.com/"
         rel="noopener noreferrer"
         target="_blank"
       >
-         https://api.gorgias.com/
+         
+        https://api.gorgias.com/
       </a>
       .
     </p>
     <p>
-      Below are the parameters you will need to access our API. We're using 
+      Below are the parameters you will need to access our API. We're using
+       
       <a
         href="https://en.wikipedia.org/wiki/Basic_access_authentication"
         rel="noopener noreferrer"
       >
         HTTP basic authentication
       </a>
-       to authenticate API requests.
+       
+      to authenticate API requests.
     </p>
     <h4>
       API Access & Credentials
@@ -202,15 +207,12 @@ exports[`<APIView/> render() should render a Create API Key Button 1`] = `
       Developer newsletter
     </h4>
     <p>
-      If you're using our API, we highly encourage you to subscribe to our developer newsletter.
+      If you're using our API, we highly encourage you to subscribe to our developer newsletter. It contains updates about
        
-      It contains updates about 
       <b>
         upcoming changes and breaking changes to the API
       </b>
-      , new
-       
-      features and integrations.
+      , new features and integrations.
     </p>
     <Button
       color="primary"
@@ -235,7 +237,8 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
     tag="div"
   >
     <p>
-      Gorgias prides itself on being a developer-friendly helpdesk. We expose a 
+      Gorgias prides itself on being a developer-friendly helpdesk. We expose a
+       
       <a
         href="https://stackoverflow.com/questions/671118/what-exactly-is-restful-programming"
         rel="noopener noreferrer"
@@ -243,25 +246,29 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
       >
         RESTful API
       </a>
-       to make it easy for you to get, create, update and delete many objects including customers, tickets, messages and events. To find out more about our API, please consult our docs here:
+       
+      to make it easy for you to get, create, update and delete many objects including customers, tickets, messages and events. To find out more about our API, please consult our docs here:
       <a
         href="https://api.gorgias.com/"
         rel="noopener noreferrer"
         target="_blank"
       >
-         https://api.gorgias.com/
+         
+        https://api.gorgias.com/
       </a>
       .
     </p>
     <p>
-      Below are the parameters you will need to access our API. We're using 
+      Below are the parameters you will need to access our API. We're using
+       
       <a
         href="https://en.wikipedia.org/wiki/Basic_access_authentication"
         rel="noopener noreferrer"
       >
         HTTP basic authentication
       </a>
-       to authenticate API requests.
+       
+      to authenticate API requests.
     </p>
     <h4>
       API Access & Credentials
@@ -448,15 +455,12 @@ exports[`<APIView/> render() should render a Reset Button 1`] = `
       Developer newsletter
     </h4>
     <p>
-      If you're using our API, we highly encourage you to subscribe to our developer newsletter.
+      If you're using our API, we highly encourage you to subscribe to our developer newsletter. It contains updates about
        
-      It contains updates about 
       <b>
         upcoming changes and breaking changes to the API
       </b>
-      , new
-       
-      features and integrations.
+      , new features and integrations.
     </p>
     <Button
       color="primary"

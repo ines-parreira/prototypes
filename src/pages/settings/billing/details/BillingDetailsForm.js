@@ -2,7 +2,15 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {Link} from 'react-router'
-import {Breadcrumb, BreadcrumbItem, Button, Container, Form, Row, Col} from 'reactstrap'
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    Button,
+    Container,
+    Form,
+    Row,
+    Col,
+} from 'reactstrap'
 import classNames from 'classnames'
 
 import {fetchContact, updateContact} from '../../../../state/billing/actions'
@@ -31,7 +39,7 @@ export class BillingDetailsForm extends Component<Props, State> {
     state = {
         isLoading: false,
         isSubmitting: false,
-        contact: null
+        contact: null,
     }
 
     constructor(props: Props) {
@@ -65,7 +73,7 @@ export class BillingDetailsForm extends Component<Props, State> {
     _submit = (event: SyntheticEvent<*>) => {
         event.preventDefault()
         this.setState({
-            isSubmitting: true
+            isSubmitting: true,
         })
 
         // $FlowFixMe
@@ -76,9 +84,10 @@ export class BillingDetailsForm extends Component<Props, State> {
 
     _getInputProps = (contact: billingContactType, path: Array<string>) => ({
         value: contact.getIn(path, ''),
-        onChange: (value: mixed) => this.setState({
-            contact: contact.setIn(path, value)
-        })
+        onChange: (value: mixed) =>
+            this.setState({
+                contact: contact.setIn(path, value),
+            }),
     })
 
     render() {
@@ -87,130 +96,164 @@ export class BillingDetailsForm extends Component<Props, State> {
 
         return (
             <div className="full-width">
-                <PageHeader title={(
-                    <Breadcrumb>
-                        <BreadcrumbItem>
-                            <Link
-                                className="section"
-                                to="/app/settings/billing/"
-                            >Billing & Usage</Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>Billing details</BreadcrumbItem>
-                    </Breadcrumb>
-                )}/>
+                <PageHeader
+                    title={
+                        <Breadcrumb>
+                            <BreadcrumbItem>
+                                <Link
+                                    className="section"
+                                    to="/app/settings/billing/"
+                                >
+                                    Billing & Usage
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>Billing details</BreadcrumbItem>
+                        </Breadcrumb>
+                    }
+                />
 
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <Container fluid className="page-container">
                     <p>
-                        Please enter the billing details you'd like us to use on your next invoice.
+                        Please enter the billing details you'd like us to use on
+                        your next invoice.
                     </p>
                     <Row>
                         <Col lg={6}>
-                            {
-                                isLoading ? <Loader/> : (
-                                    contact &&
-                                        <Form
-                                            onSubmit={this._submit}
+                            {isLoading ? (
+                                <Loader />
+                            ) : (
+                                contact && (
+                                    <Form onSubmit={this._submit}>
+                                        <InputField
+                                            type="email"
+                                            name="email"
+                                            label="Billing email"
+                                            help="Invoices are sent to this email address."
+                                            required
+                                            {...this._getInputProps(contact, [
+                                                'email',
+                                            ])}
+                                        />
+                                        <InputField
+                                            type="text"
+                                            name="name"
+                                            label="Company name"
+                                            placeholder="My Company"
+                                            {...this._getInputProps(contact, [
+                                                'shipping',
+                                                'name',
+                                            ])}
+                                        />
+                                        <InputField
+                                            type="text"
+                                            name="phone"
+                                            label="Phone number"
+                                            placeholder="415 859 3010"
+                                            {...this._getInputProps(contact, [
+                                                'shipping',
+                                                'phone',
+                                            ])}
+                                        />
+                                        <InputField
+                                            type="text"
+                                            name="line1"
+                                            label="Address (line 1)"
+                                            placeholder="123 Post St"
+                                            {...this._getInputProps(contact, [
+                                                ...addressPath,
+                                                'line1',
+                                            ])}
+                                        />
+                                        <InputField
+                                            type="text"
+                                            name="line2"
+                                            label="Address (line 2)"
+                                            placeholder="2nd floor"
+                                            {...this._getInputProps(contact, [
+                                                ...addressPath,
+                                                'line2',
+                                            ])}
+                                        />
+                                        <Row>
+                                            <Col lg={6}>
+                                                <InputField
+                                                    type="text"
+                                                    name="city"
+                                                    label="City"
+                                                    placeholder="San Francisco"
+                                                    {...this._getInputProps(
+                                                        contact,
+                                                        [...addressPath, 'city']
+                                                    )}
+                                                />
+                                            </Col>
+                                            <Col lg={3}>
+                                                <InputField
+                                                    type="text"
+                                                    name="state"
+                                                    label="State"
+                                                    placeholder="CA"
+                                                    {...this._getInputProps(
+                                                        contact,
+                                                        [
+                                                            ...addressPath,
+                                                            'state',
+                                                        ]
+                                                    )}
+                                                />
+                                            </Col>
+                                            <Col lg={3}>
+                                                <InputField
+                                                    type="text"
+                                                    name="postalCode"
+                                                    label="Postal code"
+                                                    placeholder="94103"
+                                                    {...this._getInputProps(
+                                                        contact,
+                                                        [
+                                                            ...addressPath,
+                                                            'postal_code',
+                                                        ]
+                                                    )}
+                                                />
+                                            </Col>
+                                        </Row>
+                                        <InputField
+                                            type="select"
+                                            name="country"
+                                            label="Country"
+                                            {...this._getInputProps(contact, [
+                                                ...addressPath,
+                                                'country',
+                                            ])}
                                         >
-                                            <InputField
-                                                type="email"
-                                                name="email"
-                                                label="Billing email"
-                                                help="Invoices are sent to this email address."
-                                                required
-                                                {...this._getInputProps(contact, ['email'])}
-                                            />
-                                            <InputField
-                                                type="text"
-                                                name="name"
-                                                label="Company name"
-                                                placeholder="My Company"
-                                                {...this._getInputProps(contact, ['shipping', 'name'])}
-                                            />
-                                            <InputField
-                                                type="text"
-                                                name="phone"
-                                                label="Phone number"
-                                                placeholder="415 859 3010"
-                                                {...this._getInputProps(contact, ['shipping', 'phone'])}
-                                            />
-                                            <InputField
-                                                type="text"
-                                                name="line1"
-                                                label="Address (line 1)"
-                                                placeholder="123 Post St"
-                                                {...this._getInputProps(contact, [...addressPath, 'line1'])}
-                                            />
-                                            <InputField
-                                                type="text"
-                                                name="line2"
-                                                label="Address (line 2)"
-                                                placeholder="2nd floor"
-                                                {...this._getInputProps(contact, [...addressPath, 'line2'])}
-                                            />
-                                            <Row>
-                                                <Col lg={6}>
-                                                    <InputField
-                                                        type="text"
-                                                        name="city"
-                                                        label="City"
-                                                        placeholder="San Francisco"
-                                                        {...this._getInputProps(contact, [...addressPath, 'city'])}
-                                                    />
-                                                </Col>
-                                                <Col lg={3}>
-                                                    <InputField
-                                                        type="text"
-                                                        name="state"
-                                                        label="State"
-                                                        placeholder="CA"
-                                                        {...this._getInputProps(contact, [...addressPath, 'state'])}
-                                                    />
-                                                </Col>
-                                                <Col lg={3}>
-                                                    <InputField
-                                                        type="text"
-                                                        name="postalCode"
-                                                        label="Postal code"
-                                                        placeholder="94103"
-                                                        {...this._getInputProps(
-                                                            contact, [...addressPath, 'postal_code'])
-                                                        }
-                                                    />
-                                                </Col>
-                                            </Row>
-                                            <InputField
-                                                type="select"
-                                                name="country"
-                                                label="Country"
-                                                {...this._getInputProps(contact, [...addressPath, 'country'])}
-                                            >
-                                                <option value={''}>-</option>
-                                                {
-                                                    countries.map((country) =>
-                                                        <option
-                                                            value={country.value}
-                                                            key={country.value}
-                                                        >
-                                                            {country.label}
-                                                        </option>
-                                                    )
-                                                }
-                                            </InputField>
-                                            <div>
-                                                <Button
-                                                    color="success"
-                                                    className={classNames({'btn-loading': this.state.isSubmitting})}
-                                                    disabled={this.state.isSubmitting}
+                                            <option value={''}>-</option>
+                                            {countries.map((country) => (
+                                                <option
+                                                    value={country.value}
+                                                    key={country.value}
                                                 >
-                                                    Update billing details
-                                                </Button>
-                                            </div>
-                                        </Form>
+                                                    {country.label}
+                                                </option>
+                                            ))}
+                                        </InputField>
+                                        <div>
+                                            <Button
+                                                color="success"
+                                                className={classNames({
+                                                    'btn-loading': this.state
+                                                        .isSubmitting,
+                                                })}
+                                                disabled={
+                                                    this.state.isSubmitting
+                                                }
+                                            >
+                                                Update billing details
+                                            </Button>
+                                        </div>
+                                    </Form>
                                 )
-                            }
+                            )}
                         </Col>
                     </Row>
                 </Container>
@@ -219,6 +262,9 @@ export class BillingDetailsForm extends Component<Props, State> {
     }
 }
 
-export default connect((state) => ({
-    contact: getContact(state)
-}), {fetchContact, updateContact})(BillingDetailsForm)
+export default connect(
+    (state) => ({
+        contact: getContact(state),
+    }),
+    {fetchContact, updateContact}
+)(BillingDetailsForm)

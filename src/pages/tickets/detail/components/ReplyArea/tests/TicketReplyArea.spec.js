@@ -26,7 +26,7 @@ jest.mock('../TicketReply', () => {
             return <div>hello</div>
         }
     }
-    (TicketReplyMock: any).mocks = {
+    ;(TicketReplyMock: any).mocks = {
         focusEditor,
     }
 
@@ -40,10 +40,7 @@ type TicketMacrosMockProps = {
 jest.mock('../TicketMacros', () => ({onClearMacro}: TicketMacrosMockProps) => (
     <div>
         TicketMacros mock
-        <button
-            className="clear-macro"
-            onClick={onClearMacro}
-        >
+        <button className="clear-macro" onClick={onClearMacro}>
             clear mocks
         </button>
     </div>
@@ -75,7 +72,7 @@ const minProps = {
     cacheAdded: false,
 }
 
-function focusMacroInput (component: ReactWrapper<any>) {
+function focusMacroInput(component: ReactWrapper<any>) {
     component.find('input').simulate('focus')
 }
 
@@ -85,13 +82,13 @@ describe('<TicketReplyArea/>', () => {
     })
 
     it('should render', () => {
-        const component = shallow(<TicketReplyArea {...minProps}/>)
+        const component = shallow(<TicketReplyArea {...minProps} />)
 
         expect(component).toMatchSnapshot()
     })
 
-    it('should hide macros when newMessageType becomes \'internal-note\'', () => {
-        const component = mount(<TicketReplyArea {...minProps}/>)
+    it("should hide macros when newMessageType becomes 'internal-note'", () => {
+        const component = mount(<TicketReplyArea {...minProps} />)
 
         focusMacroInput(component)
         expect(component.find(TicketMacros)).toHaveLength(1)
@@ -100,8 +97,8 @@ describe('<TicketReplyArea/>', () => {
         expect(component.find(TicketMacros)).toHaveLength(0)
     })
 
-    it('should not focus editor when newMessageType becomes \'internal-note\'', () => {
-        const component = mount(<TicketReplyArea {...minProps}/>)
+    it("should not focus editor when newMessageType becomes 'internal-note'", () => {
+        const component = mount(<TicketReplyArea {...minProps} />)
 
         component.setProps({newMessageType: 'internal-note'})
         expect(TicketReply.mocks.focusEditor).not.toHaveBeenCalled()
@@ -109,7 +106,7 @@ describe('<TicketReplyArea/>', () => {
 
     describe('_hideMacrosAndFocusEditor()', () => {
         it('should hide macros and focus editor when called', () => {
-            const component = mount(<TicketReplyArea {...minProps}/>)
+            const component = mount(<TicketReplyArea {...minProps} />)
 
             focusMacroInput(component)
             component.find('.clear-macro').simulate('click')

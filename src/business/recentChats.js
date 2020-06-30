@@ -3,7 +3,6 @@ import {fromJS, type Map} from 'immutable'
 
 import {TicketStatuses, type TicketChannel, type TicketStatus} from './ticket'
 
-
 /**
  * Return whether or not a ticket update received via websockets should be displayed in the current user's recent chats.
  * @param ticket: the ticket we received via websocket
@@ -19,28 +18,38 @@ export function shouldTicketBeDisplayedInRecentChats(
     currentUser: Map<*, *>,
     currentUserIsAvailable: boolean
 ) {
-    const ticketShouldBeHidden = ticket.status === TicketStatuses.CLOSED
-        || ticket.spam
-        || !!ticket.trashed_datetime
-        || !!ticket.deleted_datetime
+    const ticketShouldBeHidden =
+        ticket.status === TicketStatuses.CLOSED ||
+        ticket.spam ||
+        !!ticket.trashed_datetime ||
+        !!ticket.deleted_datetime
     if (ticketShouldBeHidden) {
         return false
     }
 
-    const ticketHasBeenReassigned = ticket.assignee_user_id && ticket.assignee_user_id !== currentUser.get('id')
+    const ticketHasBeenReassigned =
+        ticket.assignee_user_id &&
+        ticket.assignee_user_id !== currentUser.get('id')
     if (ticketHasBeenReassigned) {
         return false
     }
 
-    const autoAssignEnabled = ticketAssignmentSetting.getIn(['data', 'auto_assign_to_teams'])
+    const autoAssignEnabled = ticketAssignmentSetting.getIn([
+        'data',
+        'auto_assign_to_teams',
+    ])
     const channelSetForTicketAssignmentSettings = ticketAssignmentSetting
         .getIn(['data', 'assignment_channels'], fromJS([]))
         .includes(ticket.channel)
-    const autoAssignIsEnabledForTicketChannel = autoAssignEnabled && channelSetForTicketAssignmentSettings
+    const autoAssignIsEnabledForTicketChannel =
+        autoAssignEnabled && channelSetForTicketAssignmentSettings
 
     const ticketIsAssigned = !!ticket.assignee_user_id
 
-    return ticketIsAssigned || (!autoAssignIsEnabledForTicketChannel && currentUserIsAvailable)
+    return (
+        ticketIsAssigned ||
+        (!autoAssignIsEnabledForTicketChannel && currentUserIsAvailable)
+    )
 }
 
 // Types
@@ -50,7 +59,7 @@ export type RecentChatTicket = {
     customer: {
         id: number,
         name: string,
-        email: string
+        email: string,
     },
     last_message_datetime: string,
     is_unread: boolean,
@@ -61,5 +70,5 @@ export type RecentChatTicket = {
     deleted_datetime: string,
 
     last_message_from_agent: ?boolean,
-    last_message_body_text: ?string
+    last_message_body_text: ?string,
 }

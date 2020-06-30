@@ -4,18 +4,22 @@ import classNames from 'classnames'
 import _trim from 'lodash/trim'
 
 import {proxifyImages} from '../../../../../utils'
-import {linkifyHtml, linkifyString, sanitizeHtmlDefault} from '../../../../../utils/html'
+import {
+    linkifyHtml,
+    linkifyString,
+    sanitizeHtmlDefault,
+} from '../../../../../utils/html'
 import Ellipsis from '../../../../common/components/Ellipsis'
 
 type Props = {
     html?: string,
     text?: string,
     strippedHtml?: string,
-    strippedText?: string
+    strippedText?: string,
 }
 
 type State = {
-    showFullBody: boolean
+    showFullBody: boolean,
 }
 
 export default class Content extends React.Component<Props, State> {
@@ -58,15 +62,20 @@ export default class Content extends React.Component<Props, State> {
 
         const content = html || text || ''
         const isHtml = !!html
-        const strippedContent = html && strippedHtml ? strippedHtml : strippedText
+        const strippedContent =
+            html && strippedHtml ? strippedHtml : strippedText
 
         // only show quoteButton if the contents of body and stripped are different
         // we're ignoring whitespaces because mailgun sends stripped_html without spaces
-        const isStripped = strippedContent && strippedContent.replace(/\s+/g, '') !== content.replace(/\s+/g, '')
+        const isStripped =
+            strippedContent &&
+            strippedContent.replace(/\s+/g, '') !== content.replace(/\s+/g, '')
 
         const displayContent = this._getDisplayContent(
-            (isStripped && !this.state.showFullBody) ? (strippedContent || '') : content,
-            isHtml,
+            isStripped && !this.state.showFullBody
+                ? strippedContent || ''
+                : content,
+            isHtml
         )
 
         if (!displayContent && !isStripped) {

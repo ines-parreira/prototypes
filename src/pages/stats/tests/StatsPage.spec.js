@@ -4,18 +4,16 @@ import {fromJS} from 'immutable'
 
 import {StatsPage} from '../StatsPage'
 
-
 jest.mock('moment', () => {
     return () => require.requireActual('moment')('2019-09-03')
 })
-
 
 describe('StatsPage', () => {
     const defaultProps = {
         globalFilters: null,
         setStatsFilters: jest.fn(),
         resetStatsFilters: jest.fn(),
-        storeIntegrations: fromJS([])
+        storeIntegrations: fromJS([]),
     }
 
     describe('testing default filters', () => {
@@ -72,10 +70,12 @@ describe('StatsPage', () => {
                 globalFilters={fromJS({})}
                 currentAccount={fromJS({
                     extra_features: [],
-                    settings: [{
-                        data: {},
-                        type: 'satisfaction-surveys'
-                    }]
+                    settings: [
+                        {
+                            data: {},
+                            type: 'satisfaction-surveys',
+                        },
+                    ],
                 })}
             />
         )
@@ -83,12 +83,12 @@ describe('StatsPage', () => {
         expect(component).toMatchSnapshot()
     })
 
-    it('should restrict access to revenue stats because the account doesn\'t have this feature', () => {
+    it("should restrict access to revenue stats because the account doesn't have this feature", () => {
         const component = shallow(
             <StatsPage
                 {...defaultProps}
                 params={{view: 'revenue'}}
-                globalFilters={fromJS({'integrations': [1]})}
+                globalFilters={fromJS({integrations: [1]})}
                 config={fromJS({
                     link: 'revenue',
                     stats: [],
@@ -100,7 +100,7 @@ describe('StatsPage', () => {
         expect(component).toMatchSnapshot()
     })
 
-    it('should restrict access to revenue stats because the account doesn\'t have a store integration', () => {
+    it("should restrict access to revenue stats because the account doesn't have a store integration", () => {
         const component = shallow(
             <StatsPage
                 {...defaultProps}

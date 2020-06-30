@@ -21,7 +21,7 @@ export default class MoneyAmount extends React.PureComponent<Props> {
         const {amount, renderIfZero, currencyCode, negative} = this.props
         const parsedAmount = parseFloat(amount)
 
-        if (!parsedAmount && !renderIfZero || isNaN(parsedAmount)) {
+        if ((!parsedAmount && !renderIfZero) || isNaN(parsedAmount)) {
             return '—'
         }
 
@@ -31,10 +31,10 @@ export default class MoneyAmount extends React.PureComponent<Props> {
             currencyDisplay: 'symbol',
             maximumFractionDigits: 2,
         })
-        const formattedAmount = formatter.format(negative ? -parsedAmount : parsedAmount)
-
-        return (
-            <span>{formattedAmount}</span>
+        const formattedAmount = formatter.format(
+            negative ? -parsedAmount : parsedAmount
         )
+
+        return <span>{formattedAmount}</span>
     }
 }

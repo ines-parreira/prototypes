@@ -7,7 +7,7 @@ export type Props = {
     tags: List<*>,
     meta: Map<*, *>,
     onMerge: () => any,
-    disabled: boolean
+    disabled: boolean,
 }
 
 const MergeButton = ({selectedNum, tags, meta, onMerge, disabled}: Props) => {
@@ -15,8 +15,15 @@ const MergeButton = ({selectedNum, tags, meta, onMerge, disabled}: Props) => {
     const [mergeTagDestination, setMergeTagDestination] = useState('')
 
     const toggleMergeConfirmation = useCallback(() => {
-        const destID = meta.filter((meta) => meta.get('selected')).keySeq().toList().last()
-        const destName = tags.filter((meta) => meta.get('id').toString() === destID.toString()).first().get('name', '')
+        const destID = meta
+            .filter((meta) => meta.get('selected'))
+            .keySeq()
+            .toList()
+            .last()
+        const destName = tags
+            .filter((meta) => meta.get('id').toString() === destID.toString())
+            .first()
+            .get('name', '')
         setAskMergeConfirmation(!askMergeConfirmation)
         setMergeTagDestination(destName)
     }, [tags, meta, askMergeConfirmation])
@@ -51,7 +58,7 @@ const MergeButton = ({selectedNum, tags, meta, onMerge, disabled}: Props) => {
                 <PopoverBody>
                     <p>
                         You are about to merge {selectedNum} tags into{' '}
-                        <b>{mergeTagDestination}</b>.<br/>
+                        <b>{mergeTagDestination}</b>.<br />
                         <b>This action cannot be undone</b>.
                     </p>
                     <Button

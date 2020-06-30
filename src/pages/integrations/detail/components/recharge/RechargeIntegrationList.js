@@ -4,9 +4,7 @@ import {Link, browserHistory} from 'react-router'
 import {connect} from 'react-redux'
 import Lightbox from 'react-images'
 
-import {
-    Alert
-} from 'reactstrap'
+import {Alert} from 'reactstrap'
 
 import ToggleButton from '../../../../common/components/ToggleButton'
 import IntegrationList from '../IntegrationList'
@@ -15,7 +13,6 @@ import * as integrationsActions from '../../../../../state/integrations/actions'
 import * as integrationsSelectors from '../../../../../state/integrations/selectors'
 
 import Carousel from './../../../common/Carousel'
-
 
 type Props = {
     integrations: List,
@@ -26,7 +23,7 @@ type Props = {
     activate: typeof integrationsActions.activateIntegration,
     deactivate: typeof integrationsActions.deactivateIntegration,
 
-    redirectUri: string
+    redirectUri: string,
 }
 
 type State = {
@@ -34,16 +31,23 @@ type State = {
     currentImage: Number,
 }
 
-@connect((state) => {
-    return {
-        redirectUri: integrationsSelectors.getRedirectUri('recharge')(state)
+@connect(
+    (state) => {
+        return {
+            redirectUri: integrationsSelectors.getRedirectUri('recharge')(
+                state
+            ),
+        }
+    },
+    {
+        activate: integrationsActions.activateIntegration,
+        deactivate: integrationsActions.deactivateIntegration,
     }
-}, {
-    activate: integrationsActions.activateIntegration,
-    deactivate: integrationsActions.deactivateIntegration,
-})
-export default class RechargeIntegrationList extends React.Component<Props, State> {
-
+)
+export default class RechargeIntegrationList extends React.Component<
+    Props,
+    State
+> {
     state = {
         isLightboxOpen: false,
         currentImage: 0,
@@ -66,27 +70,33 @@ export default class RechargeIntegrationList extends React.Component<Props, Stat
 
     render() {
         const {integrations, loading} = this.props
-        const rechargeIntegrations = integrations.filter((v) => v.get('type') === 'recharge')
+        const rechargeIntegrations = integrations.filter(
+            (v) => v.get('type') === 'recharge'
+        )
 
         const imagesUrl = [
-            `${window.GORGIAS_ASSETS_URL || ''}/static/private/img/presentationals/recharge-carousel_1.jpg`,
-            `${window.GORGIAS_ASSETS_URL || ''}/static/private/img/presentationals/recharge-carousel_2.jpg`
+            `${
+                window.GORGIAS_ASSETS_URL || ''
+            }/static/private/img/presentationals/recharge-carousel_1.jpg`,
+            `${
+                window.GORGIAS_ASSETS_URL || ''
+            }/static/private/img/presentationals/recharge-carousel_2.jpg`,
         ]
 
         const longTypeDescription = (
             <div>
-                {
-                    this._shouldHideCreateButton() && (!rechargeIntegrations.size ? (
+                {this._shouldHideCreateButton() &&
+                    (!rechargeIntegrations.size ? (
                         <Alert color="danger">
-                            You need to have at least one Shopify integration to add Recharge integrations.
+                            You need to have at least one Shopify integration to
+                            add Recharge integrations.
                         </Alert>
                     ) : (
                         <Alert color="info">
-                                All your Shopify integrations have a Recharge integration connected.
+                            All your Shopify integrations have a Recharge
+                            integration connected.
                         </Alert>
-                    )
-                    )
-                }
+                    ))}
 
                 <p>Recharge is a recurring payment app for Shopify.</p>
 
@@ -95,15 +105,13 @@ export default class RechargeIntegrationList extends React.Component<Props, Stat
                     <li>
                         Display Recharge subscriptions next to support tickets
                     </li>
+                    <li>Edit subscriptions in one click</li>
                     <li>
-                        Edit subscriptions in one click
-                    </li>
-                    <li>
-                        When a customer asks to edit their subscription, send them an auto-response with the link to
-                        manage the subscription
+                        When a customer asks to edit their subscription, send
+                        them an auto-response with the link to manage the
+                        subscription
                     </li>
                 </ul>
-
 
                 <Carousel
                     imagesUrl={imagesUrl}
@@ -119,8 +127,12 @@ export default class RechargeIntegrationList extends React.Component<Props, Stat
                     isOpen={this.state.isLightboxOpen}
                     onClose={() => this._toggleLightbox()}
                     currentImage={this.state.currentImage}
-                    onClickPrev={() => this._gotoImage(this.state.currentImage - 1)}
-                    onClickNext={() => this._gotoImage(this.state.currentImage + 1)}
+                    onClickPrev={() =>
+                        this._gotoImage(this.state.currentImage - 1)
+                    }
+                    onClickNext={() =>
+                        this._gotoImage(this.state.currentImage + 1)
+                    }
                     onClickThumbnail={this._gotoImage}
                     showThumbnails
                     backdropClosesModal
@@ -133,11 +145,15 @@ export default class RechargeIntegrationList extends React.Component<Props, Stat
         const integrationToItemDisplay = (int) => {
             const toggleIntegration = (value) => {
                 const integrationId = int.get('id')
-                return value ? this.props.activate(integrationId) : this.props.deactivate(integrationId)
+                return value
+                    ? this.props.activate(integrationId)
+                    : this.props.deactivate(integrationId)
             }
 
             const isDisabled = int.get('deactivated_datetime')
-            const editLink = `/app/settings/integrations/recharge/${int.get('id')}`
+            const editLink = `/app/settings/integrations/recharge/${int.get(
+                'id'
+            )}`
 
             return (
                 <tr key={int.get('id')}>
@@ -166,7 +182,11 @@ export default class RechargeIntegrationList extends React.Component<Props, Stat
                 longTypeDescription={longTypeDescription}
                 integrationType="recharge"
                 integrations={rechargeIntegrations}
-                createIntegration={() => browserHistory.push('/app/settings/integrations/recharge/new')}
+                createIntegration={() =>
+                    browserHistory.push(
+                        '/app/settings/integrations/recharge/new'
+                    )
+                }
                 createIntegrationButtonContent="Add Recharge"
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}

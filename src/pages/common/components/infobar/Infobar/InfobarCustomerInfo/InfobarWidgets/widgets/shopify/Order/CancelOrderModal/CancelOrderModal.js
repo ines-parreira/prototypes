@@ -13,7 +13,7 @@ import {
     onLineItemsChange,
     onPayloadChange,
     onReset,
-    setPayload
+    setPayload,
 } from '../../../../../../../../../../../state/infobarActions/shopify/cancelOrder/actions'
 import {getCancelOrderState} from '../../../../../../../../../../../state/infobarActions/shopify/cancelOrder/selectors'
 import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager'
@@ -41,10 +41,19 @@ type Props = InfobarModalProps & {
     },
     onCancel: (via: string) => void,
     onInit: (integrationId: number, order: Record<Shopify.Order>) => void,
-    onLineItemsChange: (integrationId: number, lineItems: List<$Shape<Shopify.LineItem>>) => void,
+    onLineItemsChange: (
+        integrationId: number,
+        lineItems: List<$Shape<Shopify.LineItem>>
+    ) => void,
     onReset: () => void,
-    onPayloadChange: (integrationId: number, payload: Record<$Shape<Shopify.CancelOrderPayload>>) => void,
-    setPayload: (integrationId: number, Record<$Shape<Shopify.RefundOrderPayload>>) => void,
+    onPayloadChange: (
+        integrationId: number,
+        payload: Record<$Shape<Shopify.CancelOrderPayload>>
+    ) => void,
+    setPayload: (
+        integrationId: number,
+        Record<$Shape<Shopify.RefundOrderPayload>>
+    ) => void,
 }
 
 export class CancelOrderModalComponent extends React.PureComponent<Props> {
@@ -60,7 +69,13 @@ export class CancelOrderModalComponent extends React.PureComponent<Props> {
     }
 
     componentWillReceiveProps(nextProps: Props) {
-        const {isOpen, data: {actionName, order}, onOpen, onInit, onChange} = this.props
+        const {
+            isOpen,
+            data: {actionName, order},
+            onOpen,
+            onInit,
+            onChange,
+        } = this.props
         const {integrationId} = this.context
 
         if (!isOpen && nextProps.isOpen) {
@@ -75,7 +90,9 @@ export class CancelOrderModalComponent extends React.PureComponent<Props> {
         const {integrations} = this.props
         const {integrationId} = this.context
 
-        return integrations.find((integration) => integration.get('id') === integrationId)
+        return integrations.find(
+            (integration) => integration.get('id') === integrationId
+        )
     }
 
     _onLineItemsChange = (lineItems: List<$Shape<Shopify.LineItem>>) => {
@@ -85,7 +102,9 @@ export class CancelOrderModalComponent extends React.PureComponent<Props> {
         onLineItemsChange(integrationId, lineItems)
     }
 
-    _onRefundPayloadChange = (refundPayload: Record<$Shape<Shopify.RefundOrderPayload>>) => {
+    _onRefundPayloadChange = (
+        refundPayload: Record<$Shape<Shopify.RefundOrderPayload>>
+    ) => {
         const {payload, onPayloadChange} = this.props
         const {integrationId} = this.context
         const newPayload = payload.set('refund', refundPayload)
@@ -93,7 +112,9 @@ export class CancelOrderModalComponent extends React.PureComponent<Props> {
         onPayloadChange(integrationId, newPayload)
     }
 
-    _setRefundPayload = (refundPayload: Record<$Shape<Shopify.RefundOrderPayload>>) => {
+    _setRefundPayload = (
+        refundPayload: Record<$Shape<Shopify.RefundOrderPayload>>
+    ) => {
         const {payload, setPayload} = this.props
         const newPayload = payload.set('refund', refundPayload)
 
@@ -147,7 +168,14 @@ export class CancelOrderModalComponent extends React.PureComponent<Props> {
 
     render() {
         const {
-            header, isOpen, payload, refund, lineItems, loading, loadingMessage, data: {order, actionName},
+            header,
+            isOpen,
+            payload,
+            refund,
+            lineItems,
+            loading,
+            loadingMessage,
+            data: {order, actionName},
         } = this.props
 
         const integration = this._getIntegration()
@@ -236,4 +264,7 @@ const mapDispatchToProps = {
     setPayload,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CancelOrderModalComponent)
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(CancelOrderModalComponent)

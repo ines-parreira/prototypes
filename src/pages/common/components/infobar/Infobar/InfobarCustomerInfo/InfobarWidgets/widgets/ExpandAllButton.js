@@ -31,10 +31,7 @@ export default function ExpandAllButton() {
             className={classnames(css.container, 'expand-all')}
             onClick={onClick}
         >
-            <img
-                src={logo}
-                alt="Expand all"
-            />
+            <img src={logo} alt="Expand all" />
         </span>
     )
 }

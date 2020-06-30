@@ -16,14 +16,9 @@ export default class Ellipsis extends React.Component<Props> {
     render() {
         const {title, onClick} = this.props
         return (
-            <div
-                className={css['btn-more']}
-                title={title}
-                onClick={onClick}
-            >
+            <div className={css['btn-more']} title={title} onClick={onClick}>
                 &hellip;
             </div>
-
         )
     }
 }

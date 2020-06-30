@@ -24,7 +24,10 @@ export default class DraftOrderTable extends React.PureComponent<Props> {
         products: new Map<number, Record<Shopify.Product>>(),
     }
 
-    _onLineItemChange = (index: number, updatedLineItem: Record<Shopify.LineItem>) => {
+    _onLineItemChange = (
+        index: number,
+        updatedLineItem: Record<Shopify.LineItem>
+    ) => {
         const {onChange, lineItems} = this.props
         const newLineItems = lineItems.set(index, updatedLineItem)
 
@@ -39,13 +42,16 @@ export default class DraftOrderTable extends React.PureComponent<Props> {
     }
 
     render() {
-        const {lineItems, products, shopName, actionName, currencyCode} = this.props
+        const {
+            lineItems,
+            products,
+            shopName,
+            actionName,
+            currencyCode,
+        } = this.props
 
         return (
-            <Table
-                hover={!!lineItems.size}
-                className={css.table}
-            >
+            <Table hover={!!lineItems.size} className={css.table}>
                 <thead>
                     <tr>
                         <th>Product</th>
@@ -57,10 +63,7 @@ export default class DraftOrderTable extends React.PureComponent<Props> {
                 <tbody>
                     {!lineItems.size && (
                         <tr>
-                            <td
-                                colSpan={4}
-                                className="text-center text-muted"
-                            >
+                            <td colSpan={4} className="text-center text-muted">
                                 <small>No items</small>
                             </td>
                         </tr>
@@ -68,7 +71,10 @@ export default class DraftOrderTable extends React.PureComponent<Props> {
                     {lineItems.map((lineItem, index) => {
                         let keyObject = lineItem.remove('quantity')
                         if (keyObject.get('applied_discount')) {
-                            keyObject = keyObject.removeIn(['applied_discount', 'amount'])
+                            keyObject = keyObject.removeIn([
+                                'applied_discount',
+                                'amount',
+                            ])
                         }
 
                         const key = hash(keyObject)
@@ -79,11 +85,18 @@ export default class DraftOrderTable extends React.PureComponent<Props> {
                                 id={key}
                                 actionName={actionName}
                                 lineItem={lineItem}
-                                product={products.get(lineItem.get('product_id'))}
+                                product={products.get(
+                                    lineItem.get('product_id')
+                                )}
                                 shopName={shopName}
                                 currencyCode={currencyCode}
                                 removable={lineItems.size > 1}
-                                onChange={(updatedLineItem) => this._onLineItemChange(index, updatedLineItem)}
+                                onChange={(updatedLineItem) =>
+                                    this._onLineItemChange(
+                                        index,
+                                        updatedLineItem
+                                    )
+                                }
                                 onDelete={() => this._onLineItemDelete(index)}
                             />
                         )

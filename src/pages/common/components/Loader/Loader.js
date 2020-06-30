@@ -16,7 +16,7 @@ export default class Loader extends Component<Props> {
     static defaultProps = {
         inline: false,
         minHeight: '500px',
-        size: '40px'
+        size: '40px',
     }
 
     render() {
@@ -24,21 +24,14 @@ export default class Loader extends Component<Props> {
 
         return (
             <div className={classnames(css.container, className)}>
-                <div
-                    className={css.inner}
-                    style={{minHeight}}
-                >
+                <div className={css.inner} style={{minHeight}}>
                     <i
                         className="icon-custom icon-circle-o-notch md-spin"
                         style={{fontSize: size}}
                     />
-                    {
-                        !inline && message && (
-                            <div className="mt-3">
-                                {message}
-                            </div>
-                        )
-                    }
+                    {!inline && message && (
+                        <div className="mt-3">{message}</div>
+                    )}
                 </div>
             </div>
         )

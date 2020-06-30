@@ -63,7 +63,7 @@ describe('Config: ticket', () => {
                 expect(object).toHaveProperty('children')
             })
 
-            it('structure of object\'s children', () => {
+            it("structure of object's children", () => {
                 const child = value[0].children ? value[0].children[0] : {}
                 expect(child).toHaveProperty('name')
                 expect(child).toHaveProperty('value')
@@ -73,28 +73,40 @@ describe('Config: ticket', () => {
 
     describe('orderedMessages', () => {
         it('order messages', () => {
-            const messages = [{
-                id: 1,
-                created_datetime: '2017-07-01T18:00:00',
-            }, {
-                id: 2,
-                created_datetime: '2017-07-02T18:00:00',
-            }]
+            const messages = [
+                {
+                    id: 1,
+                    created_datetime: '2017-07-01T18:00:00',
+                },
+                {
+                    id: 2,
+                    created_datetime: '2017-07-02T18:00:00',
+                },
+            ]
 
             expect(
-                ticketConfig.orderedMessages(messages).map((message) => message.get('id')).toJS()
+                ticketConfig
+                    .orderedMessages(messages)
+                    .map((message) => message.get('id'))
+                    .toJS()
             ).toEqual([1, 2])
 
-            const reversedMessages = [{
-                id: 1,
-                created_datetime: '2017-07-02T18:00:00',
-            }, {
-                id: 2,
-                created_datetime: '2017-07-01T18:00:00',
-            }]
+            const reversedMessages = [
+                {
+                    id: 1,
+                    created_datetime: '2017-07-02T18:00:00',
+                },
+                {
+                    id: 2,
+                    created_datetime: '2017-07-01T18:00:00',
+                },
+            ]
 
             expect(
-                ticketConfig.orderedMessages(reversedMessages).map((message) => message.get('id')).toJS()
+                ticketConfig
+                    .orderedMessages(reversedMessages)
+                    .map((message) => message.get('id'))
+                    .toJS()
             ).toEqual([2, 1])
         })
     })
@@ -133,72 +145,81 @@ describe('Config: ticket', () => {
         it('falsy if no message', () => {
             const messages = []
 
-            expect(
-                ticketConfig.lastNonSystemTypeMessage(messages)
-            ).toBeFalsy()
+            expect(ticketConfig.lastNonSystemTypeMessage(messages)).toBeFalsy()
         })
 
         it('is correct', () => {
-            const lastMessage = ticketConfig.lastNonSystemTypeMessage([{
-                id: 1,
-                created_datetime: '2017-07-01T18:00:00',
-            }, {
-                id: 2,
-                created_datetime: '2017-07-02T18:00:00',
-            }])
+            const lastMessage = ticketConfig.lastNonSystemTypeMessage([
+                {
+                    id: 1,
+                    created_datetime: '2017-07-01T18:00:00',
+                },
+                {
+                    id: 2,
+                    created_datetime: '2017-07-02T18:00:00',
+                },
+            ])
 
             if (!lastMessage) {
                 throw new Error('lastMessage is undefined')
             }
-            expect(
-                lastMessage.get('id')
-            ).toEqual(2)
+            expect(lastMessage.get('id')).toEqual(2)
 
-            const lastReversedMessage = ticketConfig.lastNonSystemTypeMessage([{
-                id: 1,
-                created_datetime: '2017-07-02T18:00:00',
-            }, {
-                id: 2,
-                created_datetime: '2017-07-01T18:00:00',
-            }])
+            const lastReversedMessage = ticketConfig.lastNonSystemTypeMessage([
+                {
+                    id: 1,
+                    created_datetime: '2017-07-02T18:00:00',
+                },
+                {
+                    id: 2,
+                    created_datetime: '2017-07-01T18:00:00',
+                },
+            ])
 
             if (!lastReversedMessage) {
                 throw new Error('lastReversedMessages is undefined')
             }
-            expect(
-                lastReversedMessage.get('id')
-            ).toEqual(1)
+            expect(lastReversedMessage.get('id')).toEqual(1)
         })
 
         it('ignores system messages', () => {
             const systemType = ticketConfig.SYSTEM_SOURCE_TYPES[0]
 
-            const lastMessage = ticketConfig.lastNonSystemTypeMessage([{
-                id: 1,
-                created_datetime: '2017-07-01T18:00:00',
-            }, {
-                id: 2,
-                created_datetime: '2017-07-02T18:00:00',
-            }, {
-                id: 3,
-                created_datetime: '2017-07-03T18:00:00',
-                source: {
-                    type: systemType,
-                }
-            }])
+            const lastMessage = ticketConfig.lastNonSystemTypeMessage([
+                {
+                    id: 1,
+                    created_datetime: '2017-07-01T18:00:00',
+                },
+                {
+                    id: 2,
+                    created_datetime: '2017-07-02T18:00:00',
+                },
+                {
+                    id: 3,
+                    created_datetime: '2017-07-03T18:00:00',
+                    source: {
+                        type: systemType,
+                    },
+                },
+            ])
 
             if (!lastMessage) {
                 throw new Error('lastMessage is undefined')
             }
-            expect(
-                lastMessage.get('id')
-            ).toEqual(2)
+            expect(lastMessage.get('id')).toEqual(2)
         })
     })
 
     describe('isPublic', () => {
         it('is boolean', () => {
-            const values: any = ['email', 'unknown-value', 1, undefined, null, []]
+            const values: any = [
+                'email',
+                'unknown-value',
+                1,
+                undefined,
+                null,
+                [],
+            ]
 
             values.forEach((value) => {
                 expect(_isBoolean(ticketConfig.isPublic(value))).toBe(true)
@@ -208,7 +229,14 @@ describe('Config: ticket', () => {
 
     describe('isRichType', () => {
         it('is boolean', () => {
-            const values: any = ['email', 'unknown-value', 1, undefined, null, []]
+            const values: any = [
+                'email',
+                'unknown-value',
+                1,
+                undefined,
+                null,
+                [],
+            ]
 
             values.forEach((value) => {
                 expect(_isBoolean(ticketConfig.isRichType(value))).toBe(true)
@@ -245,7 +273,9 @@ describe('Config: ticket', () => {
         })
 
         it('returns correct config object', () => {
-            const config = ticketConfig.VARIABLES[0].children && ticketConfig.VARIABLES[0].children[0]
+            const config =
+                ticketConfig.VARIABLES[0].children &&
+                ticketConfig.VARIABLES[0].children[0]
             if (!config) {
                 throw new Error('config is undefined')
             }

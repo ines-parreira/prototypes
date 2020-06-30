@@ -12,7 +12,6 @@ import {convertFromHTML} from '../../../../../utils/editor'
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
 
-
 describe('RichFieldEditor', () => {
     const defaultProps = {
         createToolbarPlugin,
@@ -42,7 +41,7 @@ describe('RichFieldEditor', () => {
                 {...defaultProps}
                 editorState={editorState}
                 onChange={onChange}
-            />,
+            />
         )
         const text = 'a\n\nb\n\nc'
         const html = '<div>a<br><br>b<br><br>c</div>'
@@ -69,16 +68,19 @@ describe('RichFieldEditor', () => {
                 editorKey="editor"
                 editorState={editorState}
                 onChange={onChange}
-            />,
+            />
         )
         const text = 'a\n\nb\n\nc'
         // html copied from draft-js contains the data-editor=editorKey attribute
-        const html = '<div data-editor="editor"><div>a<br><br>b<br><br>c</div></div>'
+        const html =
+            '<div data-editor="editor"><div>a<br><br>b<br><br>c</div></div>'
 
         // simulate pasted text
         component.instance()._handlePastedText(text, html, editorState)
 
-        const [newContentState] = onChange.mock.calls[onChange.mock.calls.length - 1]
+        const [newContentState] = onChange.mock.calls[
+            onChange.mock.calls.length - 1
+        ]
         const convertedHTML = convertToHTML(newContentState.getCurrentContent())
         // we can't simulate the paste event, so we test for unmodified content
         expect(convertedHTML).toBe('<p>html</p>')
@@ -96,7 +98,8 @@ describe('RichFieldEditor', () => {
                 editorState={editorState}
                 onChange={onChange}
                 onFocus={onFocus}
-            />)
+            />
+        )
 
         expect(component).toMatchSnapshot()
         expect(component.state('wasEverFocused')).toBe(false)

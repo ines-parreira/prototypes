@@ -14,10 +14,13 @@ describe('infobarWidgetShouldRender()', () => {
         fromJS({}),
     ]
 
-    it.each(invalidSources)('should return false because source is invalid', (source) => {
-        const result = infobarWidgetShouldRender(source)
-        expect(result).toBe(false)
-    })
+    it.each(invalidSources)(
+        'should return false because source is invalid',
+        (source) => {
+            const result = infobarWidgetShouldRender(source)
+            expect(result).toBe(false)
+        }
+    )
 
     it('should return true because source is valid', () => {
         const source = fromJS({foo: 'bar'})

@@ -4,9 +4,8 @@ import HTTPStatus from 'httpstatus'
 import {Badge} from 'reactstrap'
 
 type Props = {
-    statusCode: number
+    statusCode: number,
 }
-
 
 export default class HTTPStatusLabel extends Component<Props> {
     _getHTTPStatusColor = (status: HTTPStatus) => {
@@ -25,7 +24,9 @@ export default class HTTPStatusLabel extends Component<Props> {
     render() {
         const {statusCode} = this.props
         const status = new HTTPStatus(statusCode)
-        const desc = status.description ? status.description.toUpperCase() : 'UNKNOWN HTTP STATUS CODE'
+        const desc = status.description
+            ? status.description.toUpperCase()
+            : 'UNKNOWN HTTP STATUS CODE'
         const color = this._getHTTPStatusColor(status)
 
         return (

@@ -1,5 +1,11 @@
 // @flow
-import {ContentState, convertFromRaw, convertToRaw, Modifier, SelectionState} from 'draft-js'
+import {
+    ContentState,
+    convertFromRaw,
+    convertToRaw,
+    Modifier,
+    SelectionState,
+} from 'draft-js'
 import type {Map} from 'immutable'
 import {fromJS} from 'immutable'
 import _findIndex from 'lodash/findIndex'
@@ -24,30 +30,36 @@ type contextType = {
         fromMacro: boolean,
         ticketId: string,
         currentUser: currentUserType,
-        ticket: Map<*,*>,
-        args: Map<*,*>,
-        signature: Map<*,*>
+        ticket: Map<*, *>,
+        args: Map<*, *>,
+        signature: Map<*, *>,
     },
     appliedMacro: {},
     contentState: ContentState,
     forceUpdate: boolean,
     forceFocus: boolean,
-    state: Map<*,*>,
+    state: Map<*, *>,
     signatureAdded?: boolean,
     cacheAdded?: boolean,
     selectionState?: SelectionState,
     sourceType?: string,
 }
 
-export const getSignatureContentState = (signature: Map<*,*>): ContentState => {
+export const getSignatureContentState = (
+    signature: Map<*, *>
+): ContentState => {
     let signatureBlocks = null
-    const text =  signature.get('text')
-    const html =  signature.get('html')
+    const text = signature.get('text')
+    const html = signature.get('html')
 
     if (html) {
-        signatureBlocks = convertFromHTML(`${signatureHTMLPrefix}${html}`).getBlocksAsArray()
+        signatureBlocks = convertFromHTML(
+            `${signatureHTMLPrefix}${html}`
+        ).getBlocksAsArray()
     } else if (text) {
-        signatureBlocks = ContentState.createFromText(`${signatureTextPrefix}${text}`).getBlocksAsArray()
+        signatureBlocks = ContentState.createFromText(
+            `${signatureTextPrefix}${text}`
+        ).getBlocksAsArray()
     }
 
     if (!signatureBlocks) {
@@ -55,20 +67,25 @@ export const getSignatureContentState = (signature: Map<*,*>): ContentState => {
     }
 
     // mark blocks with signature meta flag - useful later for removing it when switching to chat or internal note
-    signatureBlocks = signatureBlocks.map((b) => b.set('data', fromJS({signature: true})))
+    signatureBlocks = signatureBlocks.map((b) =>
+        b.set('data', fromJS({signature: true}))
+    )
 
     // Concat the signature blocks at the end of the content
     return ContentState.createFromBlockArray(signatureBlocks)
 }
 
 // find a contentState in another contentState and return a selection state
-function findContentState (parentContentState: ContentState, contentState: ContentState): SelectionState {
+function findContentState(
+    parentContentState: ContentState,
+    contentState: ContentState
+): SelectionState {
     let selectionState = SelectionState.createEmpty()
     const parentBlocks = parentContentState.getBlocksAsArray()
     const blocks = contentState.getBlocksAsArray()
     const clearKeys = {
         key: '',
-        characterList: []
+        characterList: [],
     }
 
     // find block array inside block array
@@ -85,7 +102,7 @@ function findContentState (parentContentState: ContentState, contentState: Conte
             if (j === blocks.length) {
                 selectionState = selectionState.merge({
                     focusKey: key,
-                    focusOffset: block.getLength()
+                    focusOffset: block.getLength(),
                 })
                 return true
             }
@@ -101,17 +118,25 @@ function findContentState (parentContentState: ContentState, contentState: Conte
 /**
  * Test if the given signature is in the content state
  */
-export const isSignatureAdded = (contentState: ?ContentState, textSignature: ?string = ''): boolean => {
+export const isSignatureAdded = (
+    contentState: ?ContentState,
+    textSignature: ?string = ''
+): boolean => {
     if (!contentState || !textSignature) {
         return false
     }
 
-    return contentState.getPlainText().includes(signatureTextPrefix + textSignature)
+    return contentState
+        .getPlainText()
+        .includes(signatureTextPrefix + textSignature)
 }
 /**
  * Test if the contentState only has the signature and nothing else
  */
-export const hasOnlySignature = (contentState: ?ContentState, textSignature: ?string): boolean => {
+export const hasOnlySignature = (
+    contentState: ?ContentState,
+    textSignature: ?string
+): boolean => {
     if (!contentState || !textSignature) {
         return false
     }
@@ -122,7 +147,10 @@ export const getSourceTypeCache = (ticketId: string): string => {
     return ticketReplyCache.get(ticketId).get('sourceType')
 }
 
-export const setSourceTypeCache = (ticketId: string, sourceType: string): void => {
+export const setSourceTypeCache = (
+    ticketId: string,
+    sourceType: string
+): void => {
     return ticketReplyCache.set(ticketId, {sourceType})
 }
 
@@ -152,7 +180,9 @@ export const getCache = (context: contextType): contextType => {
             const cachedSelectionState = cachedContent.get('selectionState')
             if (cachedSelectionState) {
                 // create a new selection and just copy the props from the cached state
-                context.selectionState = SelectionState.createEmpty().merge(cachedSelectionState)
+                context.selectionState = SelectionState.createEmpty().merge(
+                    cachedSelectionState
+                )
             }
         }
     }
@@ -164,11 +194,20 @@ export const getCache = (context: contextType): contextType => {
  * Update the cache by saving the contentState and selectionState
  */
 export const updateCache = (context: contextType) => {
-    const {contentState, selectionState, appliedMacro, action, sourceType} = context
+    const {
+        contentState,
+        selectionState,
+        appliedMacro,
+        action,
+        sourceType,
+    } = context
     const textSignature = action.signature ? action.signature.get('text') : ''
 
     // We're storing the content state in a persistent storage so we can keep it after page refresh
-    if ((contentState && contentState.hasText() && !hasOnlySignature(contentState, textSignature)) ||
+    if (
+        (contentState &&
+            contentState.hasText() &&
+            !hasOnlySignature(contentState, textSignature)) ||
         appliedMacro
     ) {
         // TODO (@xarg): We also need to keep the attachments in the cache
@@ -252,13 +291,15 @@ export const convertToRawWithoutPredictions = (contentState: ContentState) => {
  * @param blocks
  * @private
  */
-export const selectionAfter = (blocks: Array<{key: string, text: string}>): ?SelectionState => {
+export const selectionAfter = (
+    blocks: Array<{key: string, text: string}>
+): ?SelectionState => {
     if (blocks && blocks.length) {
         // we only want the last block, we put the selection after it
         const block = blocks.slice(-1)[0]
         return SelectionState.createEmpty(block.key).merge({
             focusOffset: block.text.length,
-            anchorOffset: block.text.length
+            anchorOffset: block.text.length,
         })
     }
     return null
@@ -268,7 +309,7 @@ export const selectionAfter = (blocks: Array<{key: string, text: string}>): ?Sel
  * Add a signature (if any) at the end of the content state
  */
 export const addSignature = (contentState: ?Object, signature: Object): any => {
-    if(!contentState) {
+    if (!contentState) {
         return contentState
     }
 
@@ -280,15 +321,24 @@ export const addSignature = (contentState: ?Object, signature: Object): any => {
 
     // using contentState.getSelectionAfter inserts the signature at the start,
     // when the content is loaded from cache.
-    const selectionState = selectionAfter(contentState.getBlocksAsArray()) || contentState.getSelectionAfter()
+    const selectionState =
+        selectionAfter(contentState.getBlocksAsArray()) ||
+        contentState.getSelectionAfter()
     // add the signature contentState at the end of the existing content
-    return Modifier.replaceWithFragment(contentState, selectionState, signatureContentState.getBlockMap())
+    return Modifier.replaceWithFragment(
+        contentState,
+        selectionState,
+        signatureContentState.getBlockMap()
+    )
 }
 
 /**
  * Remove the signature (if any) from the content state
  */
-export const removeSignature = (contentState: ContentState, signature: Map<*,*>): ContentState => {
+export const removeSignature = (
+    contentState: ContentState,
+    signature: Map<*, *>
+): ContentState => {
     const signatureContentState = getSignatureContentState(signature)
     const selectionState = findContentState(contentState, signatureContentState)
 
@@ -315,11 +365,16 @@ export const applyMacro = (context: contextType): contextType => {
     }
 
     const ticketState = action.ticket.toJS()
-    const currentUser = _pick(action.currentUser.toJS(), ['name', 'firstname', 'lastname', 'email'])
+    const currentUser = _pick(action.currentUser.toJS(), [
+        'name',
+        'firstname',
+        'lastname',
+        'email',
+    ])
 
     const variables = {
         ticket: ticketState,
-        current_user: currentUser
+        current_user: currentUser,
     }
 
     const text = renderTemplate(action.args.get('body_text', ''), variables)

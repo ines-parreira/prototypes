@@ -196,7 +196,8 @@ exports[`<EmailIntegrationCreateVerification/> render() should render the regula
         >
           autorenew
         </i>
-        We're waiting to receive your verification email on 
+        We're waiting to receive your verification email on
+         
         <strong>
           hmq29fh29zfmh29fzq2f3@emails-acme.gorgi.us
         </strong>
@@ -214,9 +215,7 @@ exports[`<EmailIntegrationCreateVerification/> render() should render the regula
         </Link>
         .
         <br />
-        If you have setup forwarding after having received the verification email, click on the button
-         
-        below to re-send it.
+        If you have setup forwarding after having received the verification email, click on the button below to re-send it.
       </p>
       <Button
         className=""
@@ -231,8 +230,7 @@ exports[`<EmailIntegrationCreateVerification/> render() should render the regula
         >
           mail
         </i>
-         
-        Re-send verification email
+         Re-send verification email
       </Button>
       <ConfirmButton
         className="float-right"

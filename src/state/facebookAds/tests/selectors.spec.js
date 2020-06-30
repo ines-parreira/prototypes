@@ -11,21 +11,20 @@ describe('facebookAds selectors', () => {
 
     beforeEach(() => {
         state = {
-            facebookAds: initialState
-                .mergeDeep({
-                    loading: true,
-                    internals: {
-                        '1': {
-                            ads: {
-                                postid1: {
-                                    name: 'ad 1',
-                                    is_active: true
-                                }
-                            }
-                        }
+            facebookAds: initialState.mergeDeep({
+                loading: true,
+                internals: {
+                    '1': {
+                        ads: {
+                            postid1: {
+                                name: 'ad 1',
+                                is_active: true,
+                            },
+                        },
                     },
-                    loadingAds: ['postid1'],
-                })
+                },
+                loadingAds: ['postid1'],
+            }),
         }
     })
 
@@ -39,7 +38,7 @@ describe('facebookAds selectors', () => {
 
         it('should return default internals when its value is null', () => {
             state = {
-                facebookAds: initialState.mergeDeep({internals: null})
+                facebookAds: initialState.mergeDeep({internals: null}),
             }
 
             const result = selectors.getFacebookIntegrationInternals(state)
@@ -50,7 +49,7 @@ describe('facebookAds selectors', () => {
 
         it('should return default internals when its value is `{}`', () => {
             state = {
-                facebookAds: initialState.mergeDeep({internals: {}})
+                facebookAds: initialState.mergeDeep({internals: {}}),
             }
 
             const result = selectors.getFacebookIntegrationInternals(state)
@@ -70,7 +69,7 @@ describe('facebookAds selectors', () => {
 
         it('should return loading ads when the value is null', () => {
             state = {
-                facebookAds: initialState.mergeDeep({loadingAds: null})
+                facebookAds: initialState.mergeDeep({loadingAds: null}),
             }
 
             const result = selectors.getFacebookIntegrationLoadingAds(state)
@@ -81,7 +80,7 @@ describe('facebookAds selectors', () => {
 
         it('should return loading ads when the value is `[]`', () => {
             state = {
-                facebookAds: initialState.mergeDeep({loadingAds: []})
+                facebookAds: initialState.mergeDeep({loadingAds: []}),
             }
 
             const result = selectors.getFacebookIntegrationLoadingAds(state)

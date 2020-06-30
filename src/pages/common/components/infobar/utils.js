@@ -25,7 +25,10 @@ import _toLower from 'lodash/toLower'
 
 import {DatetimeLabel} from '../../utils/labels'
 import * as utils from '../../../../utils'
-import {getContextFromSourcePath, getSourcePathFromContext} from '../../../../state/widgets/utils'
+import {
+    getContextFromSourcePath,
+    getSourcePathFromContext,
+} from '../../../../state/widgets/utils'
 
 const Raven = window.Raven
 
@@ -131,7 +134,7 @@ export function isDate(string) {
         'YYYY-MM-DDThh:mm:ss.s',
         'YYYY-MM-DDThh:mmTZD',
         'YYYY-MM-DDThh:mm:ssTZD',
-        'YYYY-MM-DDThh:mm:ss.sTZD'
+        'YYYY-MM-DDThh:mm:ss.sTZD',
     ]
 
     return moment(string, formats, true).isValid()
@@ -161,7 +164,11 @@ export function isBoolean(string) {
  * @param everySources
  * @returns {*|boolean}
  */
-export function areSourcesReady(sources: Map<*, *>, context: string, everySources: boolean = false): boolean {
+export function areSourcesReady(
+    sources: Map<*, *>,
+    context: string,
+    everySources: boolean = false
+): boolean {
     // for every source
     const currentSource = sources.get(context)
 
@@ -206,9 +213,12 @@ export function canDisplayWidget(widget, source) {
     // ex : ticket, customer, etc.
     const initialSourceName = splitPath[0]
 
-    const ready = areSourcesReady(fromJS({
-        [initialSourceName]: source.get(initialSourceName, fromJS({}))
-    }), initialSourceName)
+    const ready = areSourcesReady(
+        fromJS({
+            [initialSourceName]: source.get(initialSourceName, fromJS({})),
+        }),
+        initialSourceName
+    )
 
     return ready && !isWidgetEmpty(widget, source)
 }
@@ -217,20 +227,30 @@ export function isWidgetEmpty(widget, source, path = []) {
     switch (widget.get('type')) {
         case 'wrapper': {
             const subPath = widget.get('path')
-            return widget.get('widgets', []).every((subWidget) => isWidgetEmpty(subWidget, source, subPath))
+            return widget
+                .get('widgets', [])
+                .every((subWidget) => isWidgetEmpty(subWidget, source, subPath))
         }
         case 'card': {
-            const subPath = widget.get('path') ? [...path, widget.get('path')] : path
-            return widget.get('widgets', []).every((subWidget) => isWidgetEmpty(subWidget, source, subPath))
+            const subPath = widget.get('path')
+                ? [...path, widget.get('path')]
+                : path
+            return widget
+                .get('widgets', [])
+                .every((subWidget) => isWidgetEmpty(subWidget, source, subPath))
         }
         case 'list': {
-            const subPath = widget.get('path') ? [...path, widget.get('path')] : path
+            const subPath = widget.get('path')
+                ? [...path, widget.get('path')]
+                : path
             const data = source.getIn(subPath, [])
 
             return data.every((value, index) =>
-                widget.get('widgets', []).every((subWidget) =>
-                    isWidgetEmpty(subWidget, source, [...subPath, index])
-                )
+                widget
+                    .get('widgets', [])
+                    .every((subWidget) =>
+                        isWidgetEmpty(subWidget, source, [...subPath, index])
+                    )
             )
         }
         default: {
@@ -241,7 +261,14 @@ export function isWidgetEmpty(widget, source, path = []) {
     }
 }
 
-export function makeWrapper({order, context, child, sourcePath, widgetType, integrationId}) {
+export function makeWrapper({
+    order,
+    context,
+    child,
+    sourcePath,
+    widgetType,
+    integrationId,
+}) {
     let type = getContextFromSourcePath(sourcePath).type
 
     if (widgetType) {
@@ -258,7 +285,10 @@ export function makeWrapper({order, context, child, sourcePath, widgetType, inte
     // children into the wrapper directly instead of letting them in the card
     const firstWidget = wrapperWidget.get('widgets', fromJS([])).first()
     if (hasNoSimpleWidget(firstWidget)) {
-        wrapperWidget = wrapperWidget.set('widgets', firstWidget.get('widgets', fromJS([])))
+        wrapperWidget = wrapperWidget.set(
+            'widgets',
+            firstWidget.get('widgets', fromJS([]))
+        )
     }
 
     return fromJS({
@@ -267,7 +297,7 @@ export function makeWrapper({order, context, child, sourcePath, widgetType, inte
         context,
         template: wrapperWidget,
         sourcePath,
-        integration_id: integrationId
+        integration_id: integrationId,
     })
 }
 
@@ -284,7 +314,7 @@ export function jsonToWidget(value, key = '', isChildOfList = false) {
         if (isArrayOfObjects(value)) {
             const response = {
                 type: 'list',
-                widgets: [jsonToWidget(value[0], key, true)]
+                widgets: [jsonToWidget(value[0], key, true)],
             }
 
             if (!isChildOfList) {
@@ -312,7 +342,7 @@ export function jsonToWidget(value, key = '', isChildOfList = false) {
                     return !isObject(v) && !isArrayOfObjects(v)
                 }),
                 ..._pickBy(enhancedValues, isObject),
-                ..._pickBy(enhancedValues, isArrayOfObjects)
+                ..._pickBy(enhancedValues, isArrayOfObjects),
             }
 
             const widgets = []
@@ -321,7 +351,7 @@ export function jsonToWidget(value, key = '', isChildOfList = false) {
             const response = {
                 type: 'card',
                 title: utils.humanizeString(key),
-                widgets
+                widgets,
             }
 
             if (!isChildOfList) {
@@ -369,8 +399,8 @@ export function jsonToWidget(value, key = '', isChildOfList = false) {
                 extra: {
                     description: message,
                     json: value,
-                    key
-                }
+                    key,
+                },
             })
         } else {
             console.error('Here are some details', value, key)
@@ -407,42 +437,45 @@ export function jsonToWidgets(json: Object, context: string = 'ticket'): Array {
         _forEach(integrationsData, (integrationData, integrationId) => {
             const newPath = integrationsPath.slice()
             newPath.push(integrationId.toString())
-            typeByPath = typeByPath.set(newPath, fromJS({
-                type: integrationData['__integration_type__'],
-                integrationId
-            }))
+            typeByPath = typeByPath.set(
+                newPath,
+                fromJS({
+                    type: integrationData['__integration_type__'],
+                    integrationId,
+                })
+            )
             sourcePaths.push(newPath)
         })
 
         const idx = sourcePaths.indexOf(integrationsPath)
         sourcePaths.splice(idx, 1)
 
-        const response = sourcePaths
-            .map((sourcePath, i) => {
-                let source = _get(json, sourcePath, {})
+        const response = sourcePaths.map((sourcePath, i) => {
+            let source = _get(json, sourcePath, {})
 
-                // remove private keys from source before we transform it into a template
-                source = _omitBy(source, (v, k) => k.startsWith('_'))
+            // remove private keys from source before we transform it into a template
+            source = _omitBy(source, (v, k) => k.startsWith('_'))
 
-                if (!source || !_size(source)) {
-                    return null
-                }
+            if (!source || !_size(source)) {
+                return null
+            }
 
-                const template = jsonToWidget(source)
+            const template = jsonToWidget(source)
 
-                if (!template || !_size(template)) {
-                    return null
-                }
+            if (!template || !_size(template)) {
+                return null
+            }
 
-                return makeWrapper({
-                    order: i,
-                    context,
-                    child: template,
-                    sourcePath,
-                    widgetType: typeByPath.getIn([sourcePath, 'type']) || null,
-                    integrationId: typeByPath.getIn([sourcePath, 'integrationId']) || null
-                })
+            return makeWrapper({
+                order: i,
+                context,
+                child: template,
+                sourcePath,
+                widgetType: typeByPath.getIn([sourcePath, 'type']) || null,
+                integrationId:
+                    typeByPath.getIn([sourcePath, 'integrationId']) || null,
             })
+        })
 
         // remove null widgets
         return _compact(response)
@@ -456,8 +489,8 @@ export function jsonToWidgets(json: Object, context: string = 'ticket'): Array {
                 extra: {
                     description: message,
                     json,
-                    context
-                }
+                    context,
+                },
             })
         } else {
             console.error('Here are some details', json, context)
@@ -489,9 +522,14 @@ export function canDrop(group = '', targetAbsolutePath = '') {
  * @param parent
  * @returns {{updatedWidget: *, data: *, type: *, path: *}}
  */
-export function prepareWidgetToDisplay(template = fromJS({}), source = fromJS({}), parent) {
+export function prepareWidgetToDisplay(
+    template = fromJS({}),
+    source = fromJS({}),
+    parent
+) {
     // build absolute path of widget
-    const parentPath = !!parent && parent.get('absolutePath', parent.get('path', ''))
+    const parentPath =
+        !!parent && parent.get('absolutePath', parent.get('path', ''))
     const ownPath = template.get('path', '')
 
     let absolutePath = template.get('path')
@@ -525,7 +563,7 @@ export function prepareWidgetToDisplay(template = fromJS({}), source = fromJS({}
         updatedTemplate,
         data,
         type,
-        path
+        path,
     }
 }
 
@@ -552,7 +590,7 @@ export function guessFieldValueFromRawData(data, type) {
             break
         }
         case 'date': {
-            fieldValue = <DatetimeLabel dateTime={data}/>
+            fieldValue = <DatetimeLabel dateTime={data} />
             break
         }
         case 'age': {
@@ -565,11 +603,7 @@ export function guessFieldValueFromRawData(data, type) {
         case 'url': {
             if (utils.isUrl(data)) {
                 fieldValue = (
-                    <a
-                        href={data}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
+                    <a href={data} target="_blank" rel="noopener noreferrer">
                         {data.length > 60 ? `${data.slice(0, 57)}...` : data}
                     </a>
                 )
@@ -606,10 +640,7 @@ export function guessFieldValueFromRawData(data, type) {
             }
 
             fieldValue = (
-                <Badge
-                    pill
-                    color={isTrue ? 'success' : 'danger'}
-                >
+                <Badge pill color={isTrue ? 'success' : 'danger'}>
                     {isTrue ? 'True' : 'False'}
                 </Badge>
             )

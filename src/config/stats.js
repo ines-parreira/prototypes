@@ -20,9 +20,11 @@ export const RESOLUTION_TIME = 'resolution-time'
 export const FIRST_RESPONSE_TIME = 'first-response-time'
 export const TICKETS_PER_TAG = 'tickets-per-tag'
 export const TICKETS_CREATED_PER_CHANNEL = 'tickets-created-per-channel'
-export const TICKETS_CREATED_PER_CHANNEL_PER_DAY = 'tickets-created-per-channel-per-day'
+export const TICKETS_CREATED_PER_CHANNEL_PER_DAY =
+    'tickets-created-per-channel-per-day'
 export const TICKETS_CLOSED_PER_AGENT = 'tickets-closed-per-agent'
-export const TICKETS_CLOSED_PER_AGENT_PER_DAY = 'tickets-closed-per-agent-per-day'
+export const TICKETS_CLOSED_PER_AGENT_PER_DAY =
+    'tickets-closed-per-agent-per-day'
 export const MESSAGES_SENT_PER_MACRO = 'messages-sent-per-macro'
 export const SATISFACTION_SURVEYS = 'satisfaction-surveys'
 export const LATEST_SATISFACTION_SURVEYS = 'latest-satisfaction-surveys'
@@ -75,15 +77,16 @@ _merge(defaults, {
                 left: 0,
                 right: 0,
                 top: 0,
-                bottom: 0
-            }
+                bottom: 0,
+            },
         },
         title: {
             position: 'top',
             fontSize: 16,
             fontStyle: '600',
             fontColor: 'rgb(41, 43, 44)',
-            fontFamily: '\'Inter UI\', \'Helvetica Neue\', Arial, Helvetica, sans-serif',
+            fontFamily:
+                "'Inter UI', 'Helvetica Neue', Arial, Helvetica, sans-serif",
         },
         legend: {
             // legend is displayed separately
@@ -107,30 +110,30 @@ _merge(defaults, {
             callbacks: {
                 title: (tooltipItem) => {
                     return formatDateAxeCb(tooltipItem[0].label)
-                }
-            }
+                },
+            },
         },
         hover: {
             mode: 'index',
             intersect: false,
         },
         animation: {
-            duration: 300
+            duration: 300,
         },
         elements: {
             point: {
-                radius: 0
-            }
-        }
-    }
+                radius: 0,
+            },
+        },
+    },
 })
 
 const defaultTicks = {
-    fontColor: '#b2bddd'
+    fontColor: '#b2bddd',
 }
 
 const defaultScaleLabel = {
-    fontColor: '#b2bddd'
+    fontColor: '#b2bddd',
 }
 const defaultXAxeGridLines = {
     display: false,
@@ -140,7 +143,7 @@ const defaultXAxeGridLines = {
 const defaultYAxeGridLines = {
     drawBorder: false,
     color: '#dfe3f1',
-    borderDash: [2, 4]
+    borderDash: [2, 4],
 }
 
 // configuration for each stat
@@ -152,17 +155,21 @@ export const stats = fromJS({
         callbacks: {
             cell: (line, val) => {
                 if (_isString(val) && val.toLowerCase() === 'without macro') {
-                    return (<i><b>{val}</b></i>)
+                    return (
+                        <i>
+                            <b>{val}</b>
+                        </i>
+                    )
                 }
 
                 return val
-            }
-        }
+            },
+        },
     },
     [TICKETS_CREATED_PER_CHANNEL]: {
         helpText: 'Number of tickets created per channel',
         style: 'table',
-        downloadable: true
+        downloadable: true,
     },
     [TICKETS_CREATED_PER_CHANNEL_PER_DAY]: {
         helpText: 'Number of tickets created per channel per day',
@@ -187,77 +194,86 @@ export const stats = fromJS({
             },
             twitter: {
                 label: 'Twitter',
-                color: '#00aced'
+                color: '#00aced',
             },
             chat: {
                 label: 'Chat',
-                color: '#ffb584'
+                color: '#ffb584',
             },
             email: {
                 label: 'Email',
-                color: '#ff5eab'
+                color: '#ff5eab',
             },
             api: {
                 label: 'Gorgias API',
-                color: '#e88850'
+                color: '#e88850',
             },
             aircall: {
                 label: 'Aircall',
-                color: '#34ba28'
+                color: '#34ba28',
             },
             phone: {
                 label: 'Phone',
-                color: '#ffe03f'
+                color: '#ffe03f',
             },
             sms: {
                 label: 'Sms',
-                color: '#69c473'
-            }
+                color: '#69c473',
+            },
         },
         options: (legend) => ({
             scales: {
-                xAxes: [{
-                    scaleLabel: _merge({}, defaultScaleLabel, {
-                        labelString: legend.getIn(['axes', 'x']),
-                        display: !!legend.getIn(['axes', 'x']),
-                    }),
-                    stacked: true,
-                    gridLines: {
-                        drawBorder: false,
-                        display: false
+                xAxes: [
+                    {
+                        scaleLabel: _merge({}, defaultScaleLabel, {
+                            labelString: legend.getIn(['axes', 'x']),
+                            display: !!legend.getIn(['axes', 'x']),
+                        }),
+                        stacked: true,
+                        gridLines: {
+                            drawBorder: false,
+                            display: false,
+                        },
+                        ticks: _merge({}, defaultTicks, {
+                            callback: formatDateAxeCb,
+                        }),
                     },
-                    ticks: _merge({}, defaultTicks, {
-                        callback: formatDateAxeCb
-                    })
-                }],
-                yAxes: [{
-                    scaleLabel: _merge({}, defaultScaleLabel, {
-                        labelString: legend.getIn(['axes', 'y']),
-                        display: !!legend.getIn(['axes', 'y']),
-                    }),
-                    stacked: true,
-                    ticks: _merge({}, defaultTicks, {
-                        min: 0,
-                        suggestedMax: 1,
-                    }),
-                    gridLines: defaultYAxeGridLines
-                }]
-            }
-        })
+                ],
+                yAxes: [
+                    {
+                        scaleLabel: _merge({}, defaultScaleLabel, {
+                            labelString: legend.getIn(['axes', 'y']),
+                            display: !!legend.getIn(['axes', 'y']),
+                        }),
+                        stacked: true,
+                        ticks: _merge({}, defaultTicks, {
+                            min: 0,
+                            suggestedMax: 1,
+                        }),
+                        gridLines: defaultYAxeGridLines,
+                    },
+                ],
+            },
+        }),
     },
     [TICKETS_CLOSED_PER_AGENT]: {
-        helpText: 'Number of tickets closed per agent. Only tickets where an agent is assigned are taken into account.',
+        helpText:
+            'Number of tickets closed per agent. Only tickets where an agent is assigned are taken into account.',
         style: 'table',
         downloadable: true,
         callbacks: {
             cell: (line, val) => {
                 if (_isString(val) && val.toLowerCase() === 'unassigned') {
-                    return (<i><b>{val}</b></i>)
+                    return (
+                        <i>
+                            <b>{val}</b>
+                        </i>
+                    )
                 }
 
                 return val
-            }
-        }
+            },
+        },
     },
     [TICKETS_PER_TAG]: {
         helpText: 'Number of tickets created per tag',
@@ -273,7 +289,11 @@ export const stats = fromJS({
                 }
 
                 if (tagName.toLowerCase() === 'untagged') {
-                    return (<i><b>{val}</b></i>)
+                    return (
+                        <i>
+                            <b>{val}</b>
+                        </i>
+                    )
                 }
 
                 if (!tagColors) {
@@ -284,8 +304,8 @@ export const stats = fromJS({
                         {tagName}
                     </TagLabel>
                 )
-            }
-        }
+            },
+        },
     },
     [TICKETS_CLOSED_PER_AGENT_PER_DAY]: {
         helpText: `Number of tickets closed per agent per day.
@@ -294,32 +314,36 @@ export const stats = fromJS({
         downloadable: true,
         options: (legend) => ({
             scales: {
-                xAxes: [{
-                    scaleLabel: _merge({}, defaultScaleLabel, {
-                        labelString: legend.getIn(['axes', 'x']),
-                        display: !!legend.getIn(['axes', 'x']),
-                    }),
-                    stacked: true,
-                    gridLines: defaultXAxeGridLines,
-                    ticks: _merge({}, defaultTicks, {
-                        callback: formatDateAxeCb
-                    })
-                }],
-                yAxes: [{
-                    scaleLabel: _merge({}, defaultScaleLabel, {
-                        labelString: legend.getIn(['axes', 'y']),
-                        display: !!legend.getIn(['axes', 'y']),
-                    }),
-                    ticks: _merge({}, defaultTicks, {
-                        min: 0,
-                        suggestedMax: 1,
-                        callback: formatTicketAxeCb
-                    }),
-                    gridLines: defaultYAxeGridLines,
-                    stacked: true,
-                }]
-            }
-        })
+                xAxes: [
+                    {
+                        scaleLabel: _merge({}, defaultScaleLabel, {
+                            labelString: legend.getIn(['axes', 'x']),
+                            display: !!legend.getIn(['axes', 'x']),
+                        }),
+                        stacked: true,
+                        gridLines: defaultXAxeGridLines,
+                        ticks: _merge({}, defaultTicks, {
+                            callback: formatDateAxeCb,
+                        }),
+                    },
+                ],
+                yAxes: [
+                    {
+                        scaleLabel: _merge({}, defaultScaleLabel, {
+                            labelString: legend.getIn(['axes', 'y']),
+                            display: !!legend.getIn(['axes', 'y']),
+                        }),
+                        ticks: _merge({}, defaultTicks, {
+                            min: 0,
+                            suggestedMax: 1,
+                            callback: formatTicketAxeCb,
+                        }),
+                        gridLines: defaultYAxeGridLines,
+                        stacked: true,
+                    },
+                ],
+            },
+        }),
     },
     [SUPPORT_VOLUME]: {
         helpText: 'Number of tickets created, replied by agents and closed.',
@@ -332,80 +356,95 @@ export const stats = fromJS({
             },
             replied: {
                 label: 'Ticket replied',
-                color: '#8892f2'
+                color: '#8892f2',
             },
             closed: {
                 label: 'Ticket closed',
-                color: '#a5e5ab'
-            }
+                color: '#a5e5ab',
+            },
         },
         options: (legend) => ({
             scales: {
-                xAxes: [{
-                    scaleLabel: _merge({}, defaultScaleLabel, {
-                        labelString: legend.getIn(['axes', 'x']),
-                        display: !!legend.getIn(['axes', 'x']),
-                    }),
-                    stacked: false,
-                    gridLines: defaultXAxeGridLines,
-                    ticks: _merge({}, defaultTicks, {
-                        callback: formatDateAxeCb
-                    })
-                }],
-                yAxes: [{
-                    scaleLabel: _merge({}, defaultScaleLabel, {
-                        labelString: legend.getIn(['axes', 'y']),
-                        display: !!legend.getIn(['axes', 'y']),
-                    }),
-                    ticks: _merge({}, defaultTicks, {
-                        min: 0,
-                        suggestedMax: 1,
-                        callback: formatTicketAxeCb
-                    }),
-                    gridLines: defaultYAxeGridLines
-                }]
-            }
-        })
+                xAxes: [
+                    {
+                        scaleLabel: _merge({}, defaultScaleLabel, {
+                            labelString: legend.getIn(['axes', 'x']),
+                            display: !!legend.getIn(['axes', 'x']),
+                        }),
+                        stacked: false,
+                        gridLines: defaultXAxeGridLines,
+                        ticks: _merge({}, defaultTicks, {
+                            callback: formatDateAxeCb,
+                        }),
+                    },
+                ],
+                yAxes: [
+                    {
+                        scaleLabel: _merge({}, defaultScaleLabel, {
+                            labelString: legend.getIn(['axes', 'y']),
+                            display: !!legend.getIn(['axes', 'y']),
+                        }),
+                        ticks: _merge({}, defaultTicks, {
+                            min: 0,
+                            suggestedMax: 1,
+                            callback: formatTicketAxeCb,
+                        }),
+                        gridLines: defaultYAxeGridLines,
+                    },
+                ],
+            },
+        }),
     },
     [OVERVIEW]: {
         style: 'key-metrics',
-        metrics: [{
-            api_resource_name: 'total-tickets-created',
-            label: 'Tickets created',
-            tooltip: 'Number of tickets created.',
-        }, {
-            api_resource_name: 'total-tickets-replied',
-            label: 'Tickets replied',
-            tooltip: 'Number of tickets replied by agents.',
-        }, {
-            api_resource_name: 'total-tickets-closed',
-            label: 'Tickets closed',
-            tooltip: 'Number of tickets closed. If a ticket was closed multiple times, ' +
-                'we only take into account the last time it was closed.',
-        }, {
-            api_resource_name: 'total-messages-sent',
-            tooltip: 'Number of messages sent by agents and rules.',
-            label: 'Messages sent',
-        }, {
-            api_resource_name: 'total-messages-received',
-            tooltip: 'Number of messages received from customers.',
-            label: 'Messages received',
-        }, {
-            api_resource_name: 'median-first-response-time',
-            tooltip: `The time between the first message from a customer and the first response from an agent.
+        metrics: [
+            {
+                api_resource_name: 'total-tickets-created',
+                label: 'Tickets created',
+                tooltip: 'Number of tickets created.',
+            },
+            {
+                api_resource_name: 'total-tickets-replied',
+                label: 'Tickets replied',
+                tooltip: 'Number of tickets replied by agents.',
+            },
+            {
+                api_resource_name: 'total-tickets-closed',
+                label: 'Tickets closed',
+                tooltip:
+                    'Number of tickets closed. If a ticket was closed multiple times, ' +
+                    'we only take into account the last time it was closed.',
+            },
+            {
+                api_resource_name: 'total-messages-sent',
+                tooltip: 'Number of messages sent by agents and rules.',
+                label: 'Messages sent',
+            },
+            {
+                api_resource_name: 'total-messages-received',
+                tooltip: 'Number of messages received from customers.',
+                label: 'Messages received',
+            },
+            {
+                api_resource_name: 'median-first-response-time',
+                tooltip: `The time between the first message from a customer and the first response from an agent.
                  Messages sent by rules are not taken into account. (median)`,
-            label: 'First response time',
-        }, {
-            api_resource_name: 'median-resolution-time',
-            tooltip: `The time between the first message from a customer and the moment the ticket
+                label: 'First response time',
+            },
+            {
+                api_resource_name: 'median-resolution-time',
+                tooltip: `The time between the first message from a customer and the moment the ticket
                    has been closed by an agent or a rule. Only tickets with at least one response
                    from an agent or a rule are taken into account. (median)`,
-            label: 'Resolution time',
-        }, {
-            api_resource_name: 'total-one-touch-tickets',
-            tooltip: 'Percentage of tickets closed with only one response from an agent or a rule.',
-            label: 'One-touch tickets',
-        }]
+                label: 'Resolution time',
+            },
+            {
+                api_resource_name: 'total-one-touch-tickets',
+                tooltip:
+                    'Percentage of tickets closed with only one response from an agent or a rule.',
+                label: 'One-touch tickets',
+            },
+        ],
     },
     [RESOLUTION_TIME]: {
         helpText: `The time between the first message from a customer and the moment the ticket
@@ -425,39 +464,43 @@ export const stats = fromJS({
                 backgroundColor: '#ff6b80',
                 borderWidth: 0,
                 borderColor: '#ff6b80',
-            }
+            },
         },
         options: (legend) => ({
             tooltips: {
                 callbacks: {
-                    label: formatDurationTooltipCb
-                }
+                    label: formatDurationTooltipCb,
+                },
             },
             scales: {
-                xAxes: [{
-                    scaleLabel: _merge({}, defaultScaleLabel, {
-                        labelString: legend.getIn(['axes', 'x']),
-                        display: !!legend.getIn(['axes', 'x']),
-                    }),
-                    gridLines: defaultXAxeGridLines,
-                    ticks: _merge({}, defaultTicks, {
-                        callback: formatDateAxeCb
-                    })
-                }],
-                yAxes: [{
-                    scaleLabel: _merge({}, defaultScaleLabel, {
-                        labelString: legend.getIn(['axes', 'y']),
-                        display: !!legend.getIn(['axes', 'y']),
-                    }),
-                    gridLines: defaultYAxeGridLines,
-                    ticks: _merge({}, defaultTicks, {
-                        min: 0,
-                        suggestedMax: 1,
-                        callback: formatDurationAxeCb
-                    }),
-                }]
-            }
-        })
+                xAxes: [
+                    {
+                        scaleLabel: _merge({}, defaultScaleLabel, {
+                            labelString: legend.getIn(['axes', 'x']),
+                            display: !!legend.getIn(['axes', 'x']),
+                        }),
+                        gridLines: defaultXAxeGridLines,
+                        ticks: _merge({}, defaultTicks, {
+                            callback: formatDateAxeCb,
+                        }),
+                    },
+                ],
+                yAxes: [
+                    {
+                        scaleLabel: _merge({}, defaultScaleLabel, {
+                            labelString: legend.getIn(['axes', 'y']),
+                            display: !!legend.getIn(['axes', 'y']),
+                        }),
+                        gridLines: defaultYAxeGridLines,
+                        ticks: _merge({}, defaultTicks, {
+                            min: 0,
+                            suggestedMax: 1,
+                            callback: formatDurationAxeCb,
+                        }),
+                    },
+                ],
+            },
+        }),
     },
     [FIRST_RESPONSE_TIME]: {
         helpText: `The time between the first message from a customer
@@ -476,71 +519,79 @@ export const stats = fromJS({
                 backgroundColor: '#ff6b80',
                 borderWidth: 0,
                 borderColor: '#ff6b80',
-            }
+            },
         },
         options: (legend) => ({
             tooltips: {
                 callbacks: {
-                    label: formatDurationTooltipCb
-                }
+                    label: formatDurationTooltipCb,
+                },
             },
             scales: {
-                xAxes: [{
-                    scaleLabel: _merge({}, defaultScaleLabel, {
-                        labelString: legend.getIn(['axes', 'x']),
-                        display: !!legend.getIn(['axes', 'x']),
-                    }),
-                    gridLines: defaultXAxeGridLines,
-                    ticks: _merge({}, defaultTicks, {
-                        callback: formatDateAxeCb
-                    })
-                }],
-                yAxes: [{
-                    scaleLabel: _merge({}, defaultScaleLabel, {
-                        labelString: legend.getIn(['axes', 'y']),
-                        display: !!legend.getIn(['axes', 'y']),
-                    }),
-                    gridLines: defaultYAxeGridLines,
-                    ticks: _merge({}, defaultTicks, {
-                        min: 0,
-                        suggestedMax: 1,
-                        callback: formatDurationAxeCb
-                    })
-                }]
-            }
-        })
+                xAxes: [
+                    {
+                        scaleLabel: _merge({}, defaultScaleLabel, {
+                            labelString: legend.getIn(['axes', 'x']),
+                            display: !!legend.getIn(['axes', 'x']),
+                        }),
+                        gridLines: defaultXAxeGridLines,
+                        ticks: _merge({}, defaultTicks, {
+                            callback: formatDateAxeCb,
+                        }),
+                    },
+                ],
+                yAxes: [
+                    {
+                        scaleLabel: _merge({}, defaultScaleLabel, {
+                            labelString: legend.getIn(['axes', 'y']),
+                            display: !!legend.getIn(['axes', 'y']),
+                        }),
+                        gridLines: defaultYAxeGridLines,
+                        ticks: _merge({}, defaultTicks, {
+                            min: 0,
+                            suggestedMax: 1,
+                            callback: formatDurationAxeCb,
+                        }),
+                    },
+                ],
+            },
+        }),
     },
     [SATISFACTION_SURVEYS]: {
         style: 'key-metrics',
         api_resource_name: 'satisfaction-surveys',
-        metrics: [{
-            name: 'total_sent',
-            label: 'Survey sent',
-            tooltip: 'Total number of customer satisfaction surveys sent.',
-        }, {
-            name: 'response_rate',
-            label: 'Response rate',
-            tooltip: 'Total number of responses for surveys sent.',
-            type: 'donut',
-            fill: 'success',
-            maxValue: 100
-        }, {
-            name: 'average_rating',
-            label: 'Average rating',
-            tooltip: 'Average score given by the customers.',
-            type: 'donut',
-            fill: 'warning',
-            maxValue: SATISFACTION_SURVEY_MAX_SCORE
-        }, {
-            name: 'response_distribution',
-            label: 'Response Distribution',
-            tooltip: 'Percentage of responses, grouped by the given score.',
-            type: 'distribution',
-            variant: 'star',
-            minValue: SATISFACTION_SURVEY_MIN_SCORE,
-            maxValue: SATISFACTION_SURVEY_MAX_SCORE
-        },
-        ]
+        metrics: [
+            {
+                name: 'total_sent',
+                label: 'Survey sent',
+                tooltip: 'Total number of customer satisfaction surveys sent.',
+            },
+            {
+                name: 'response_rate',
+                label: 'Response rate',
+                tooltip: 'Total number of responses for surveys sent.',
+                type: 'donut',
+                fill: 'success',
+                maxValue: 100,
+            },
+            {
+                name: 'average_rating',
+                label: 'Average rating',
+                tooltip: 'Average score given by the customers.',
+                type: 'donut',
+                fill: 'warning',
+                maxValue: SATISFACTION_SURVEY_MAX_SCORE,
+            },
+            {
+                name: 'response_distribution',
+                label: 'Response Distribution',
+                tooltip: 'Percentage of responses, grouped by the given score.',
+                type: 'distribution',
+                variant: 'star',
+                minValue: SATISFACTION_SURVEY_MIN_SCORE,
+                maxValue: SATISFACTION_SURVEY_MAX_SCORE,
+            },
+        ],
     },
     [LATEST_SATISFACTION_SURVEYS]: {
         helpText: 'Latest surveys for selected period',
@@ -550,23 +601,30 @@ export const stats = fromJS({
     [REVENUE_OVERVIEW]: {
         style: 'key-metrics',
         api_resource_name: REVENUE_OVERVIEW,
-        metrics: [{
-            name: 'tickets_created',
-            label: 'Tickets created',
-            tooltip: 'Number of tickets created during the selected period.'
-        }, {
-            name: 'tickets_converted',
-            label: 'Tickets converted',
-            tooltip: 'Number of tickets converted during the selected period.',
-        }, {
-            name: 'conversion_ratio',
-            label: 'Conversion ratio',
-            tooltip: 'Ratio between created vs converted tickets.'
-        }, {
-            name: 'total_sales_from_support',
-            label: 'Total sales from support',
-            tooltip: 'Sum of the order amount for each converted ticket.'
-        }]
+        metrics: [
+            {
+                name: 'tickets_created',
+                label: 'Tickets created',
+                tooltip:
+                    'Number of tickets created during the selected period.',
+            },
+            {
+                name: 'tickets_converted',
+                label: 'Tickets converted',
+                tooltip:
+                    'Number of tickets converted during the selected period.',
+            },
+            {
+                name: 'conversion_ratio',
+                label: 'Conversion ratio',
+                tooltip: 'Ratio between created vs converted tickets.',
+            },
+            {
+                name: 'total_sales_from_support',
+                label: 'Total sales from support',
+                tooltip: 'Sum of the order amount for each converted ticket.',
+            },
+        ],
     },
     [REVENUE_PER_AGENT]: {
         helpText: 'Breakdown of sales metrics per agent.',
@@ -580,7 +638,7 @@ export const stats = fromJS({
         lines: {
             tickets_created: {
                 label: 'Tickets Created',
-                color: '#8892f2'
+                color: '#8892f2',
             },
             tickets_converted: {
                 label: 'Tickets Converted',
@@ -589,31 +647,35 @@ export const stats = fromJS({
         },
         options: (legend) => ({
             scales: {
-                xAxes: [{
-                    scaleLabel: _merge({}, defaultScaleLabel, {
-                        labelString: legend.getIn(['axes', 'x']),
-                        display: !!legend.getIn(['axes', 'x']),
-                    }),
-                    stacked: false,
-                    gridLines: defaultXAxeGridLines,
-                    ticks: _merge({}, defaultTicks, {
-                        callback: formatDateAxeCb
-                    })
-                }],
-                yAxes: [{
-                    scaleLabel: _merge({}, defaultScaleLabel, {
-                        labelString: legend.getIn(['axes', 'y']),
-                        display: !!legend.getIn(['axes', 'y']),
-                    }),
-                    ticks: _merge({}, defaultTicks, {
-                        min: 0,
-                        suggestedMax: 1,
-                        callback: formatTicketAxeCb
-                    }),
-                    gridLines: defaultYAxeGridLines
-                }]
-            }
-        })
+                xAxes: [
+                    {
+                        scaleLabel: _merge({}, defaultScaleLabel, {
+                            labelString: legend.getIn(['axes', 'x']),
+                            display: !!legend.getIn(['axes', 'x']),
+                        }),
+                        stacked: false,
+                        gridLines: defaultXAxeGridLines,
+                        ticks: _merge({}, defaultTicks, {
+                            callback: formatDateAxeCb,
+                        }),
+                    },
+                ],
+                yAxes: [
+                    {
+                        scaleLabel: _merge({}, defaultScaleLabel, {
+                            labelString: legend.getIn(['axes', 'y']),
+                            display: !!legend.getIn(['axes', 'y']),
+                        }),
+                        ticks: _merge({}, defaultTicks, {
+                            min: 0,
+                            suggestedMax: 1,
+                            callback: formatTicketAxeCb,
+                        }),
+                        gridLines: defaultYAxeGridLines,
+                    },
+                ],
+            },
+        }),
     },
     [REVENUE_PER_TICKET]: {
         helpText: 'Tickets Converted',
@@ -635,7 +697,9 @@ const formatTicketAxeCb = (val) => {
 }
 
 const formatDurationTooltipCb = (item, data) => {
-    return `${data.datasets[item.datasetIndex].label}: ${formatDuration(item.yLabel, 2) || '0'}`
+    return `${data.datasets[item.datasetIndex].label}: ${
+        formatDuration(item.yLabel, 2) || '0'
+    }`
 }
 
 /**
@@ -651,15 +715,15 @@ export const views = fromJS({
 Metrics such as volume of tickets, first response time and resolution time are key when it comes to
 providing excellent customer support.
 <a href="https://docs.gorgias.com/statistics/statistics#overview" target="_blank">Learn more</a>.`,
-        filters: [{type: 'channels'}, {type: 'agents'}, {type: 'tags'}, {type: 'period'}],
+        filters: [
+            {type: 'channels'},
+            {type: 'agents'},
+            {type: 'tags'},
+            {type: 'period'},
+        ],
         // default view available at `app/stats/`
         link: 'overview',
-        stats: [
-            OVERVIEW,
-            SUPPORT_VOLUME,
-            RESOLUTION_TIME,
-            FIRST_RESPONSE_TIME,
-        ]
+        stats: [OVERVIEW, SUPPORT_VOLUME, RESOLUTION_TIME, FIRST_RESPONSE_TIME],
     },
     tags: {
         name: 'Tags',
@@ -667,9 +731,7 @@ providing excellent customer support.
 tag attached to them. <a href="https://docs.gorgias.com/statistics/statistics#tags" target="_blank">Learn more</a>.`,
         filters: [{type: 'channels'}, {type: 'tags'}, {type: 'period'}],
         link: 'tags',
-        stats: [
-            TICKETS_PER_TAG,
-        ]
+        stats: [TICKETS_PER_TAG],
     },
     channels: {
         name: 'Channels',
@@ -681,7 +743,7 @@ channels such as Facebook Messenger, Instagram Comments, Email, Chat, etc...
         stats: [
             TICKETS_CREATED_PER_CHANNEL_PER_DAY,
             TICKETS_CREATED_PER_CHANNEL,
-        ]
+        ],
     },
     agents: {
         name: 'Agents',
@@ -689,10 +751,7 @@ channels such as Facebook Messenger, Instagram Comments, Email, Chat, etc...
 <a href="https://docs.gorgias.com/statistics/statistics#agents" target="_blank">Learn more</a>.`,
         filters: [{type: 'channels'}, {type: 'period'}],
         link: 'agents',
-        stats: [
-            TICKETS_CLOSED_PER_AGENT_PER_DAY,
-            TICKETS_CLOSED_PER_AGENT
-        ]
+        stats: [TICKETS_CLOSED_PER_AGENT_PER_DAY, TICKETS_CLOSED_PER_AGENT],
     },
     macros: {
         name: 'Macros',
@@ -702,9 +761,7 @@ to help reduce your support inquiries.
 <a href="https://docs.gorgias.com/statistics/statistics#macros" target="_blank">Learn more</a>.`,
         filters: [{type: 'channels'}, {type: 'period'}],
         link: 'macros',
-        stats: [
-            MESSAGES_SENT_PER_MACRO
-        ]
+        stats: [MESSAGES_SENT_PER_MACRO],
     },
     satisfaction: {
         name: 'Satisfaction',
@@ -713,21 +770,21 @@ How many surveys have been sent, response rate, average scores and more. <a href
         filters: [
             {
                 type: 'channels',
-                options: [EMAIL_CHANNEL, CHAT_CHANNEL]
+                options: [EMAIL_CHANNEL, CHAT_CHANNEL],
             },
             {
                 type: 'score',
                 minValue: SATISFACTION_SURVEY_MIN_SCORE,
                 maxValue: SATISFACTION_SURVEY_MAX_SCORE,
                 variant: 'star',
-                reverse: true
+                reverse: true,
             },
-            {type: 'agents'}, {type: 'tags'}, {type: 'period'},
+            {type: 'agents'},
+            {type: 'tags'},
+            {type: 'period'},
         ],
         link: 'satisfaction',
-        stats: [
-            SATISFACTION_SURVEYS, LATEST_SATISFACTION_SURVEYS
-        ]
+        stats: [SATISFACTION_SURVEYS, LATEST_SATISFACTION_SURVEYS],
     },
     revenue: {
         name: 'Revenue',
@@ -737,10 +794,14 @@ helping customers through the purchasing journey.<br/>
         filters: [
             {type: 'integrations', options: STORE_INTEGRATION_TYPES},
             {type: 'channels'},
-            {type: 'period'}],
+            {type: 'period'},
+        ],
         link: 'revenue',
         stats: [
-            REVENUE_OVERVIEW, REVENUE_PER_AGENT, REVENUE_PER_DAY, REVENUE_PER_TICKET
-        ]
+            REVENUE_OVERVIEW,
+            REVENUE_PER_AGENT,
+            REVENUE_PER_DAY,
+            REVENUE_PER_TICKET,
+        ],
     },
 })

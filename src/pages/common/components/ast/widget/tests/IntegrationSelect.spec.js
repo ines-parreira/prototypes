@@ -27,25 +27,28 @@ describe('ast', () => {
             })
 
             it('should render a SelectField', () => {
-                const integrations = fromJS([{
-                    id: 1,
-                    name: 'Acme Support',
-                    type: 'email',
-                    meta: {
-                        address: 'support@acme.gorgias.io'
-                    }
-                }, {
-                    id: 2,
-                    name: 'Acme Chat',
-                    type: 'smooch_inside',
-                    meta: {
-                        app_id: '123456uy5tr1d2g3h4'
-                    }
-                }])
+                const integrations = fromJS([
+                    {
+                        id: 1,
+                        name: 'Acme Support',
+                        type: 'email',
+                        meta: {
+                            address: 'support@acme.gorgias.io',
+                        },
+                    },
+                    {
+                        id: 2,
+                        name: 'Acme Chat',
+                        type: 'smooch_inside',
+                        meta: {
+                            app_id: '123456uy5tr1d2g3h4',
+                        },
+                    },
+                ])
                 const store = mockStore({
                     integrations: fromJS({
-                        integrations
-                    })
+                        integrations,
+                    }),
                 })
                 const component = shallow(
                     <IntegrationSelect

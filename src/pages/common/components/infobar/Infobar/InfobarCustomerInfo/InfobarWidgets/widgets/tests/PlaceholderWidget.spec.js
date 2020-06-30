@@ -16,18 +16,18 @@ describe('PlaceholderWidget component', () => {
 
     const baseTemplate = fromJS({
         path: ['ticket', 'customer', 'integrations', integrationId],
-        templatePath: '0.template'
+        templatePath: '0.template',
     })
 
     const baseWidget = fromJS({
-        type: 'shopify'
+        type: 'shopify',
     })
 
     const baseEditing = {
         actions: {
             foo: () => {},
-            removeEditedWidget: () => {}
-        }
+            removeEditedWidget: () => {},
+        },
     }
 
     beforeEach(() => {
@@ -37,10 +37,10 @@ describe('PlaceholderWidget component', () => {
                     {
                         id: integrationId,
                         type: 'http',
-                        name: 'my little integration http'
-                    }
-                ]
-            })
+                        name: 'my little integration http',
+                    },
+                ],
+            }),
         })
     })
 

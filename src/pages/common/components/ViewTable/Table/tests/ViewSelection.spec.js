@@ -7,14 +7,15 @@ import ViewSelection from '../ViewSelection'
 import * as viewsFixtures from '../../../../../../fixtures/views'
 import configureStore from '../../../../../../store/configureStore'
 
-
 describe('<ViewSelection/>', () => {
     const minStore = {
         views: fromJS({
             active: viewsFixtures.view,
-            getViewCount: () => {return 100},
-            dirtyView: true
-        })
+            getViewCount: () => {
+                return 100
+            },
+            dirtyView: true,
+        }),
     }
     const viewConfig = viewsConfig.views.first()
 
@@ -35,10 +36,7 @@ describe('<ViewSelection/>', () => {
 
         it('should render the component for an entire view selection', () => {
             const component = shallow(
-                <ViewSelection
-                    {...minProps}
-                    viewSelected={true}
-                />
+                <ViewSelection {...minProps} viewSelected={true} />
             ).dive()
             expect(component).toMatchSnapshot()
         })

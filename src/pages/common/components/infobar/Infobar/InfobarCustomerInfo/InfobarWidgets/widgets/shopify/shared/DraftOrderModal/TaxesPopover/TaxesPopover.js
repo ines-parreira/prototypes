@@ -2,7 +2,15 @@
 
 import React, {type Node} from 'react'
 import classnames from 'classnames'
-import {Button, Form, FormGroup, Input, Label, Popover, PopoverBody} from 'reactstrap'
+import {
+    Button,
+    Form,
+    FormGroup,
+    Input,
+    Label,
+    Popover,
+    PopoverBody,
+} from 'reactstrap'
 
 import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker'
 import {focusElement} from '../../../../../../../../../../../../utils/html'
@@ -50,8 +58,10 @@ export default class TaxesPopover extends React.PureComponent<Props, State> {
             focusElement(() => this._inputElement)
             segmentTracker.logEvent(
                 actionName === ShopifyAction.CREATE_ORDER
-                    ? segmentTracker.EVENTS.SHOPIFY_CREATE_ORDER_TAXES_POPOVER_OPEN
-                    : segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_TAXES_POPOVER_OPEN
+                    ? segmentTracker.EVENTS
+                          .SHOPIFY_CREATE_ORDER_TAXES_POPOVER_OPEN
+                    : segmentTracker.EVENTS
+                          .SHOPIFY_DUPLICATE_ORDER_TAXES_POPOVER_OPEN
             )
         } else if (onClose) {
             focusElement(() => this._buttonElement)
@@ -96,7 +106,8 @@ export default class TaxesPopover extends React.PureComponent<Props, State> {
         segmentTracker.logEvent(
             actionName === ShopifyAction.CREATE_ORDER
                 ? segmentTracker.EVENTS.SHOPIFY_CREATE_ORDER_TAXES_POPOVER_APPLY
-                : segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_TAXES_POPOVER_APPLY
+                : segmentTracker.EVENTS
+                      .SHOPIFY_DUPLICATE_ORDER_TAXES_POPOVER_APPLY
         )
     }
 
@@ -108,7 +119,8 @@ export default class TaxesPopover extends React.PureComponent<Props, State> {
         segmentTracker.logEvent(
             actionName === ShopifyAction.CREATE_ORDER
                 ? segmentTracker.EVENTS.SHOPIFY_CREATE_ORDER_TAXES_POPOVER_CLOSE
-                : segmentTracker.EVENTS.SHOPIFY_DUPLICATE_ORDER_TAXES_POPOVER_CLOSE
+                : segmentTracker.EVENTS
+                      .SHOPIFY_DUPLICATE_ORDER_TAXES_POPOVER_CLOSE
         )
     }
 
@@ -136,16 +148,12 @@ export default class TaxesPopover extends React.PureComponent<Props, State> {
                     target={id}
                     toggle={this._toggle}
                 >
-                    <Form
-                        onKeyDown={this._onKeyDown}
-                        onSubmit={this._onSubmit}
-                    >
+                    <Form onKeyDown={this._onKeyDown} onSubmit={this._onSubmit}>
                         <PopoverBody className="pt-3">
-                            <p className={css.legend}>Taxes are automatically calculated.</p>
-                            <FormGroup
-                                check
-                                className="mt-1 mb-3"
-                            >
+                            <p className={css.legend}>
+                                Taxes are automatically calculated.
+                            </p>
+                            <FormGroup check className="mt-1 mb-3">
                                 <Label check>
                                     <Input
                                         type="checkbox"
@@ -158,7 +166,7 @@ export default class TaxesPopover extends React.PureComponent<Props, State> {
                                 </Label>
                             </FormGroup>
                         </PopoverBody>
-                        <hr className="mb-0"/>
+                        <hr className="mb-0" />
                         <PopoverBody className="d-flex">
                             <Button
                                 type="button"

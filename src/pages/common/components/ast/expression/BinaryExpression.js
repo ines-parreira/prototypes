@@ -15,7 +15,16 @@ import Expression from './Expression'
  right: Expression;
 }
  */
-const BinaryExpression = ({ operator, left, right, rule, actions, schemas, parent, leftsiblings }) => {
+const BinaryExpression = ({
+    operator,
+    left,
+    right,
+    rule,
+    actions,
+    schemas,
+    parent,
+    leftsiblings,
+}) => {
     const parentLeft = parent.push('left')
     const parentRight = parent.push('right')
     const parentOperator = parent.push('operator')

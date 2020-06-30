@@ -15,7 +15,9 @@ class IntegrationListRow extends React.Component {
     render() {
         const {integrationConfig, hasAnIntegration} = this.props
 
-        const nextUrl = `/app/settings/integrations/${integrationConfig.get('type')}`
+        const nextUrl = `/app/settings/integrations/${integrationConfig.get(
+            'type'
+        )}`
 
         const isExternalLink = !!integrationConfig.get('url')
 
@@ -29,27 +31,36 @@ class IntegrationListRow extends React.Component {
 
         return (
             <Link
-                className={classnames(css.component, 'card d-flex flex-row align-items-center mb-3')}
+                className={classnames(
+                    css.component,
+                    'card d-flex flex-row align-items-center mb-3'
+                )}
                 onClick={() => {
-                    segmentTracker.logEvent(segmentTracker.EVENTS.INTEGRATION_CLICKED, {
-                        integration: integrationConfig.get('title')
-                    })
+                    segmentTracker.logEvent(
+                        segmentTracker.EVENTS.INTEGRATION_CLICKED,
+                        {
+                            integration: integrationConfig.get('title'),
+                        }
+                    )
                 }}
                 {...linkConfig}
             >
-                <div className={classnames(css.icon, 'd-flex align-items-center justify-content-center')}>
-                    {
-                        integrationConfig.get('image') ? (
-                            <img
-                                alt={`${integrationConfig.get('title')} logo`}
-                                role="presentation"
-                                className="logo"
-                                src={getIconFromUrl(integrationConfig.get('image'))}
-                            />
-                        ) : (
-                            <SourceIcon type={integrationConfig.get('type')} />
-                        )
-                    }
+                <div
+                    className={classnames(
+                        css.icon,
+                        'd-flex align-items-center justify-content-center'
+                    )}
+                >
+                    {integrationConfig.get('image') ? (
+                        <img
+                            alt={`${integrationConfig.get('title')} logo`}
+                            role="presentation"
+                            className="logo"
+                            src={getIconFromUrl(integrationConfig.get('image'))}
+                        />
+                    ) : (
+                        <SourceIcon type={integrationConfig.get('type')} />
+                    )}
                 </div>
                 <div className="flex-grow mr-1">
                     <h5 className={css.title}>
@@ -59,13 +70,11 @@ class IntegrationListRow extends React.Component {
                 </div>
                 <div>
                     <div className={css.action}>
-                        {
-                            hasAnIntegration && (
-                                <span className={css.count}>
-                                    {integrationConfig.get('count')} active
-                                </span>
-                            )
-                        }
+                        {hasAnIntegration && (
+                            <span className={css.count}>
+                                {integrationConfig.get('count')} active
+                            </span>
+                        )}
 
                         <i className="material-icons md-1">
                             {isExternalLink ? 'open_in_new' : 'navigate_next'}

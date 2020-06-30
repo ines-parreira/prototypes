@@ -36,7 +36,8 @@ describe('customers actions', () => {
     it('fetch customer', () => {
         mockServer.onGet('/api/customers/2/').reply(200, {data: {id: 2}})
 
-        return store.dispatch(actions.fetchCustomer(2))
+        return store
+            .dispatch(actions.fetchCustomer(2))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
@@ -48,7 +49,8 @@ describe('customers actions', () => {
 
         mockServer.onPost('/api/customers/').reply(200, {data})
 
-        return store.dispatch(actions.submitCustomer(data))
+        return store
+            .dispatch(actions.submitCustomer(data))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
@@ -61,14 +63,16 @@ describe('customers actions', () => {
 
         mockServer.onPut('/api/customers/2/').reply(200, {data})
 
-        return store.dispatch(actions.submitCustomer(data, data.id))
+        return store
+            .dispatch(actions.submitCustomer(data, data.id))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
     it('delete customer', () => {
         mockServer.onDelete('/api/customers/2/').reply(200)
 
-        return store.dispatch(actions.deleteCustomer(2))
+        return store
+            .dispatch(actions.deleteCustomer(2))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
@@ -76,32 +80,42 @@ describe('customers actions', () => {
         const customersIds = fromJS([1, 2, 3, 4, 5])
         mockServer.onAny().reply(200)
 
-        return store.dispatch(actions.bulkDeleteCustomer(customersIds)).then(() => {
-            expect(mockServer.history).toMatchSnapshot()
-            expect(store.getActions()).toMatchSnapshot()
-        })
+        return store
+            .dispatch(actions.bulkDeleteCustomer(customersIds))
+            .then(() => {
+                expect(mockServer.history).toMatchSnapshot()
+                expect(store.getActions()).toMatchSnapshot()
+            })
     })
 
     it('fetch customer history', () => {
-        mockServer.onGet('/api/customers/2/tickets/').reply(200, {data: [{id: 1}]})
+        mockServer
+            .onGet('/api/customers/2/tickets/')
+            .reply(200, {data: [{id: 1}]})
 
-        return store.dispatch(actions.fetchCustomerHistory(2))
+        return store
+            .dispatch(actions.fetchCustomerHistory(2))
             .then(() => expect(store.getActions()).toMatchSnapshot())
             .then(() => {
                 store.clearActions()
 
                 return store
-                    .dispatch(actions.fetchCustomerHistory(2, {
-                        successCondition: () => false,
-                    }))
+                    .dispatch(
+                        actions.fetchCustomerHistory(2, {
+                            successCondition: () => false,
+                        })
+                    )
                     .then(() => expect(store.getActions()).toMatchSnapshot())
             })
     })
 
     it('merge customers', () => {
-        mockServer.onPut('/api/customers/merge?target_id=2&source_id=3').reply(200, {data: [{id: 1}]})
+        mockServer
+            .onPut('/api/customers/merge?target_id=2&source_id=3')
+            .reply(200, {data: [{id: 1}]})
 
-        return store.dispatch(actions.mergeCustomers(2, 3))
+        return store
+            .dispatch(actions.mergeCustomers(2, 3))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 })

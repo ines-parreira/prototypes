@@ -5,7 +5,12 @@ import {Button} from 'reactstrap'
 
 import InputField from '../../../../forms/InputField'
 import {removeLink} from '../../utils'
-import {getEntitySelectionState, getSelectedEntityKey, getSelectedText, linkify} from '../../../../../../utils/editor'
+import {
+    getEntitySelectionState,
+    getSelectedEntityKey,
+    getSelectedText,
+    linkify,
+} from '../../../../../../utils/editor'
 import type {ActionInjectedProps} from '../types'
 
 import css from './AddLink.less'
@@ -14,16 +19,21 @@ import Popover from './ButtonPopover'
 type Props = {
     entityKey?: string,
     url: string,
-    onUrlChange: string => void,
+    onUrlChange: (string) => void,
     text: string,
-    onTextChange: string => void,
+    onTextChange: (string) => void,
     isOpen: boolean,
     onOpen: () => void,
-    onClose: () => void
+    onClose: () => void,
 } & ActionInjectedProps
 
 export default class AddLink extends React.Component<Props> {
-    _isValid = (): boolean => !!(this.props.text.trim() && this.props.url.trim() && linkify.test(this.props.url))
+    _isValid = (): boolean =>
+        !!(
+            this.props.text.trim() &&
+            this.props.url.trim() &&
+            linkify.test(this.props.url)
+        )
 
     _getSelectedLinkEntityKey = (): ?string => {
         const editorState = this.props.getEditorState()
@@ -31,7 +41,10 @@ export default class AddLink extends React.Component<Props> {
         const selection = editorState.getSelection()
         const entityKey = getSelectedEntityKey(contentState, selection)
 
-        if (!entityKey || contentState.getEntity(entityKey).getType() !== 'link') {
+        if (
+            !entityKey ||
+            contentState.getEntity(entityKey).getType() !== 'link'
+        ) {
             return
         }
 
@@ -79,7 +92,7 @@ export default class AddLink extends React.Component<Props> {
     }
 
     _updateLink = () => {
-        let { url, text, entityKey } = this.props
+        let {url, text, entityKey} = this.props
         let editorState = this.props.getEditorState()
         let contentState = editorState.getCurrentContent()
 
@@ -88,37 +101,64 @@ export default class AddLink extends React.Component<Props> {
         }
 
         // Update url
-        contentState = contentState.replaceEntityData(entityKey, { url })
-        editorState = EditorState.push(editorState, contentState, 'apply-entity')
+        contentState = contentState.replaceEntityData(entityKey, {url})
+        editorState = EditorState.push(
+            editorState,
+            contentState,
+            'apply-entity'
+        )
 
         // Update text
         const selection = getEntitySelectionState(contentState, entityKey)
         if (selection) {
-            contentState = Modifier.replaceText(contentState, selection, text, undefined, entityKey)
-            editorState = EditorState.push(editorState, contentState, 'change-block-data')
+            contentState = Modifier.replaceText(
+                contentState,
+                selection,
+                text,
+                undefined,
+                entityKey
+            )
+            editorState = EditorState.push(
+                editorState,
+                contentState,
+                'change-block-data'
+            )
         }
 
         // Force selection workaround to trigger re-render of decorators
         // https://github.com/facebook/draft-js/issues/1047
-        this.props.setEditorState(EditorState.forceSelection(editorState, editorState.getSelection()))
+        this.props.setEditorState(
+            EditorState.forceSelection(editorState, editorState.getSelection())
+        )
     }
 
     _insertLink = () => {
-        let { url, text } = this.props
+        let {url, text} = this.props
 
         let editorState = this.props.getEditorState()
         const selection = editorState.getSelection()
 
-        let contentState = editorState.getCurrentContent().createEntity(
-            'link',
-            'MUTABLE',
-            { url }
-        )
+        let contentState = editorState
+            .getCurrentContent()
+            .createEntity('link', 'MUTABLE', {url})
         const entityKey = contentState.getLastCreatedEntityKey()
 
-        contentState = Modifier.replaceText(contentState, selection, text, undefined, entityKey)
-        editorState = EditorState.push(editorState, contentState, 'apply-entity')
-        editorState = EditorState.forceSelection(editorState, editorState.getSelection()) // Focus the editor
+        contentState = Modifier.replaceText(
+            contentState,
+            selection,
+            text,
+            undefined,
+            entityKey
+        )
+        editorState = EditorState.push(
+            editorState,
+            contentState,
+            'apply-entity'
+        )
+        editorState = EditorState.forceSelection(
+            editorState,
+            editorState.getSelection()
+        ) // Focus the editor
 
         this.props.setEditorState(editorState)
     }
@@ -133,10 +173,7 @@ export default class AddLink extends React.Component<Props> {
                 onOpen={this._onPopoverOpen}
                 onClose={this.props.onClose}
             >
-                <div
-                    className={css.wrapper}
-                    onKeyDown={this._onKeyDown}
-                >
+                <div className={css.wrapper} onKeyDown={this._onKeyDown}>
                     <InputField
                         className={css.field}
                         label="Link text"

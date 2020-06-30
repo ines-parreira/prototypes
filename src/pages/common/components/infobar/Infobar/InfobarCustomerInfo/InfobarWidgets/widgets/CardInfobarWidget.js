@@ -14,7 +14,6 @@ import InfobarWidget from '../InfobarWidget'
 import PopoverWidgetEditCard from './forms/PopoverWidgetEditCard'
 import css from './CardInfobarWidget.less'
 
-
 export default class CardInfobarWidget extends React.Component {
     static propTypes = {
         AfterTitle: PropTypes.func,
@@ -30,7 +29,7 @@ export default class CardInfobarWidget extends React.Component {
         isEditing: PropTypes.bool.isRequired,
         isParentList: PropTypes.bool.isRequired,
         parent: PropTypes.object,
-        open: PropTypes.bool
+        open: PropTypes.bool,
     }
 
     static defaultProps = {
@@ -41,7 +40,7 @@ export default class CardInfobarWidget extends React.Component {
 
         isEditing: false,
         isParentList: false,
-        open: false
+        open: false,
     }
 
     constructor(props) {
@@ -59,15 +58,20 @@ export default class CardInfobarWidget extends React.Component {
         const {parent, isParentList, isEditing, template, editing} = nextProps
 
         if (isEditing) {
-            const tp = isParentList ? parent.get('templatePath', '') : template.get('templatePath', '')
-            const currentlyEditedWidgetPath = editing.state.getIn(['_internal', 'currentlyEditedWidgetPath'], '')
+            const tp = isParentList
+                ? parent.get('templatePath', '')
+                : template.get('templatePath', '')
+            const currentlyEditedWidgetPath = editing.state.getIn(
+                ['_internal', 'currentlyEditedWidgetPath'],
+                ''
+            )
             this.setState({displayPopup: tp === currentlyEditedWidgetPath})
         }
     }
 
     _toggleCardExpand = () => {
         this.setState({
-            open: !this.state.open
+            open: !this.state.open,
         })
     }
 
@@ -97,7 +101,9 @@ export default class CardInfobarWidget extends React.Component {
     _startWidgetEdition = (e) => {
         const {parent, isParentList, template, editing} = this.props
 
-        const tp = isParentList ? parent.get('templatePath', '') : template.get('templatePath', '')
+        const tp = isParentList
+            ? parent.get('templatePath', '')
+            : template.get('templatePath', '')
 
         e.stopPropagation()
         if (editing) {
@@ -157,22 +163,14 @@ export default class CardInfobarWidget extends React.Component {
                     </a>
                 )
             } else {
-                content = (
-                    <span>{renderInfobarTemplate(title, source)}</span>
-                )
+                content = <span>{renderInfobarTemplate(title, source)}</span>
             }
         } else {
-            content = (
-                <span className="placeholder">Title</span>
-            )
+            content = <span className="placeholder">Title</span>
         }
 
         if (TitleWrapper) {
-            content = (
-                <TitleWrapper {...this.props}>
-                    {content}
-                </TitleWrapper>
-            )
+            content = <TitleWrapper {...this.props}>{content}</TitleWrapper>
         }
 
         return content
@@ -215,118 +213,112 @@ export default class CardInfobarWidget extends React.Component {
         let firstNonTextWidget = false
 
         let content = (
-            <Card
-                className={className}
-                data-key={template.get('path')}
-            >
-                {
-                    (template.get('title') && !isTransparent || isEditing) && (
-                        <CardBody
-                            id={this.uniqueId}
-                            className={classnames('header clearfix', {'pr-5': isExpandable})}
-                        >
-                            {
-                                isExpandable && (
-                                    <span
-                                        className="dropdown-icon clickable text-faded"
-                                        onClick={this._toggleCardExpand}
-                                    >
-                                        <img
-                                            src={expandUp}
-                                            alt="Expand"
-                                        />
-                                    </span>
-                                )
-                            }
-                            {!isTransparent && this._renderTitle(template, source.toJS())}
-                            {
-                                isEditing
-                                && isParentList
-                                && <span className="meta"> (list)</span>
-                            }
-                            <span className="tools">
-                                {
-                                    isEditing
-                                    && (
-                                        <span>
-                                            <i
-                                                className="material-icons text-faded clickable"
-                                                onClick={this._startWidgetEdition}
-                                            >
-                                                settings
-                                            </i>
-                                            <i
-                                                className="material-icons text-danger clickable"
-                                                onClick={isParentList ? this._deleteList : this._deleteCard}
-                                            >
-                                                close
-                                            </i>
-                                        </span>
-                                    )
-                                }
+            <Card className={className} data-key={template.get('path')}>
+                {((template.get('title') && !isTransparent) || isEditing) && (
+                    <CardBody
+                        id={this.uniqueId}
+                        className={classnames('header clearfix', {
+                            'pr-5': isExpandable,
+                        })}
+                    >
+                        {isExpandable && (
+                            <span
+                                className="dropdown-icon clickable text-faded"
+                                onClick={this._toggleCardExpand}
+                            >
+                                <img src={expandUp} alt="Expand" />
                             </span>
-                            {this._renderPopover()}
-                            {!!AfterTitle && <AfterTitle {...this.props} />}
-                        </CardBody>
-                    )
-                }
+                        )}
+                        {!isTransparent &&
+                            this._renderTitle(template, source.toJS())}
+                        {isEditing && isParentList && (
+                            <span className="meta"> (list)</span>
+                        )}
+                        <span className="tools">
+                            {isEditing && (
+                                <span>
+                                    <i
+                                        className="material-icons text-faded clickable"
+                                        onClick={this._startWidgetEdition}
+                                    >
+                                        settings
+                                    </i>
+                                    <i
+                                        className="material-icons text-danger clickable"
+                                        onClick={
+                                            isParentList
+                                                ? this._deleteList
+                                                : this._deleteCard
+                                        }
+                                    >
+                                        close
+                                    </i>
+                                </span>
+                            )}
+                        </span>
+                        {this._renderPopover()}
+                        {!!AfterTitle && <AfterTitle {...this.props} />}
+                    </CardBody>
+                )}
                 <CardBody
                     className={classnames('content', {
                         hidden: !shouldDisplayCardContent,
                     })}
                 >
                     {!!BeforeContent && <BeforeContent {...this.props} />}
-                    {
-                        source.isEmpty() ? (
-                            <div className="simple-field">
-                                <span className="field-label">
-                                    <i>No data</i>
-                                </span>
-                            </div>
-                        ) : (
-                            shouldDisplayCardContent && (
-                                <DragWrapper
-                                    actions={editing && editing.actions}
-                                    sort
-                                    group={{
-                                        name: ap.join('.'),
-                                        pull: false,
-                                        put: true
-                                    }}
-                                    templatePath={tp}
-                                    isEditing={isEditing}
-                                    watchDrop
-                                >
-                                    {
-                                        childWidgets
-                                            .map((w, i) => {
-                                                const passedTemplate = w
-                                                    .set('templatePath', `${tp}.widgets.${i}`)
+                    {source.isEmpty() ? (
+                        <div className="simple-field">
+                            <span className="field-label">
+                                <i>No data</i>
+                            </span>
+                        </div>
+                    ) : (
+                        shouldDisplayCardContent && (
+                            <DragWrapper
+                                actions={editing && editing.actions}
+                                sort
+                                group={{
+                                    name: ap.join('.'),
+                                    pull: false,
+                                    put: true,
+                                }}
+                                templatePath={tp}
+                                isEditing={isEditing}
+                                watchDrop
+                            >
+                                {childWidgets.map((w, i) => {
+                                    const passedTemplate = w.set(
+                                        'templatePath',
+                                        `${tp}.widgets.${i}`
+                                    )
 
-                                                // find first non-text widget,
-                                                // to auto-expand.
-                                                if (w.get('type') !== 'text' && !firstNonTextWidget) {
-                                                    firstNonTextWidget = true
-                                                }
-
-                                                return (
-                                                    <InfobarWidget
-                                                        key={`${passedTemplate.get('path')}-${i}`}
-                                                        source={source}
-                                                        parent={template}
-                                                        widget={widget}
-                                                        template={passedTemplate}
-                                                        editing={editing}
-                                                        isEditing={isEditing}
-                                                        open={open && firstNonTextWidget}
-                                                    />
-                                                )
-                                            })
+                                    // find first non-text widget,
+                                    // to auto-expand.
+                                    if (
+                                        w.get('type') !== 'text' &&
+                                        !firstNonTextWidget
+                                    ) {
+                                        firstNonTextWidget = true
                                     }
-                                </DragWrapper>
-                            )
+
+                                    return (
+                                        <InfobarWidget
+                                            key={`${passedTemplate.get(
+                                                'path'
+                                            )}-${i}`}
+                                            source={source}
+                                            parent={template}
+                                            widget={widget}
+                                            template={passedTemplate}
+                                            editing={editing}
+                                            isEditing={isEditing}
+                                            open={open && firstNonTextWidget}
+                                        />
+                                    )
+                                })}
+                            </DragWrapper>
                         )
-                    }
+                    )}
 
                     {!!AfterContent && <AfterContent {...this.props} />}
                 </CardBody>
@@ -334,11 +326,7 @@ export default class CardInfobarWidget extends React.Component {
         )
 
         if (Wrapper) {
-            content = (
-                <Wrapper {...this.props}>
-                    {content}
-                </Wrapper>
-            )
+            content = <Wrapper {...this.props}>{content}</Wrapper>
         }
 
         return content

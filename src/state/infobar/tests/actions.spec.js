@@ -38,16 +38,22 @@ describe('infobar actions', () => {
     })
 
     it('search', () => {
-        mockServer.onPost('/api/search/').reply(200, {data: [{id: 1, name: 'alex'}]})
+        mockServer
+            .onPost('/api/search/')
+            .reply(200, {data: [{id: 1, name: 'alex'}]})
 
-        return store.dispatch(actions.search('alex'))
+        return store
+            .dispatch(actions.search('alex'))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
     it('similar customer', () => {
-        mockServer.onGet('/api/customers/1/similar/').reply(200, {id: 1, name: 'alex'})
+        mockServer
+            .onGet('/api/customers/1/similar/')
+            .reply(200, {id: 1, name: 'alex'})
 
-        return store.dispatch(actions.similarCustomer(2))
+        return store
+            .dispatch(actions.similarCustomer(2))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
@@ -61,14 +67,32 @@ describe('infobar actions', () => {
         it('success', () => {
             mockServer.onPost('/api/actions/execute/').reply(200)
 
-            return store.dispatch(actions.executeAction(actionName, integrationId, customerId, payload, callback))
+            return store
+                .dispatch(
+                    actions.executeAction(
+                        actionName,
+                        integrationId,
+                        customerId,
+                        payload,
+                        callback
+                    )
+                )
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
         it('fail', () => {
             mockServer.onPost('/api/actions/execute/').reply(400)
 
-            return store.dispatch(actions.executeAction(actionName, integrationId, customerId, payload, callback))
+            return store
+                .dispatch(
+                    actions.executeAction(
+                        actionName,
+                        integrationId,
+                        customerId,
+                        payload,
+                        callback
+                    )
+                )
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
     })

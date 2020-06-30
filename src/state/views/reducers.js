@@ -14,7 +14,7 @@ import {
     removeFilterAST,
     recentViewsStorage,
     updateFilterOperator,
-    updateFilterValue
+    updateFilterValue,
 } from './utils'
 import * as selectors from './selectors'
 
@@ -31,11 +31,14 @@ export const initialState = fromJS({
         loading: {
             fetchList: false,
             fetchListDiscreet: false,
-        }
-    }
+        },
+    },
 })
 
-export default function reducer(state: Map<*,*> = initialState, action: actionType): Map<*,*> {
+export default function reducer(
+    state: Map<*, *> = initialState,
+    action: actionType
+): Map<*, *> {
     let items
     let ast = ''
     let code = ''
@@ -52,23 +55,27 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
                 const now = moment.utc().toISOString()
                 // merge the new view and keep the most recent ones
                 return views
-                    .mergeDeep(fromJS({
-                        [action.viewId]: {
-                            inserted_datetime: now,
-                            updated_datetime: now
-                        }
-                    }))
+                    .mergeDeep(
+                        fromJS({
+                            [action.viewId]: {
+                                inserted_datetime: now,
+                                updated_datetime: now,
+                            },
+                        })
+                    )
                     .sortBy((view) => view.get('insert_datetime'))
                     .slice(-MAX_RECENT_VIEWS)
             })
 
             // store recent view on the client
             const recentViews = selectors.getRecentViews({views: newState})
-            const viewIds = recentViews.keySeq().map((viewId) => parseInt(viewId)).toJS()
+            const viewIds = recentViews
+                .keySeq()
+                .map((viewId) => parseInt(viewId))
+                .toJS()
             recentViewsStorage.set(viewIds)
 
             return newState
-
         }
 
         case constants.UPDATE_RECENT_VIEWS: {
@@ -76,7 +83,10 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
             return state.update('recent', (views) => {
                 return views.map((view, viewId) => {
                     if (action.viewIds.includes(parseInt(viewId))) {
-                        return view.set('updated_datetime', moment.utc().toISOString())
+                        return view.set(
+                            'updated_datetime',
+                            moment.utc().toISOString()
+                        )
                     }
                     return view
                 })
@@ -92,7 +102,10 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
 
         case constants.UPDATE_VIEW: {
             const view = action.view || activeView
-            return state.set('active', view.set('dirty', true).set('editMode', action.edit))
+            return state.set(
+                'active',
+                view.set('dirty', true).set('editMode', action.edit)
+            )
         }
 
         case constants.ACTIVATE_VIEW_EDIT_MODE: {
@@ -113,10 +126,13 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
         }
 
         case constants.SET_ORDER_DIRECTION: {
-            return state.set('active', activeView.merge({
-                order_by: action.fieldPath,
-                order_dir: action.direction,
-            }))
+            return state.set(
+                'active',
+                activeView.merge({
+                    order_by: action.fieldPath,
+                    order_dir: action.direction,
+                })
+            )
         }
 
         case constants.ADD_VIEW_FIELD_FILTER: {
@@ -158,7 +174,10 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
 
         case constants.RESET_VIEW: {
             // find the original view from the state and replace the active view
-            let original = selectors.getView(activeView.get('id'), action.configName)({views: state})
+            let original = selectors.getView(
+                activeView.get('id'),
+                action.configName
+            )({views: state})
 
             // if it's a new view, it's ID should be 0
             const isUpdate = original.get('id') !== 0
@@ -177,7 +196,7 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
         case constants.SUBMIT_NEW_VIEW_SUCCESS: {
             return state.merge({
                 items: addViewIfMissing(state.get('items'), action.resp),
-                active: fromJS(action.resp).set('dirty', false)
+                active: fromJS(action.resp).set('dirty', false),
             })
         }
 
@@ -190,27 +209,35 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
 
             // also populate the active view state
             if (action.currentViewId) {
-                activeView = items.find((item) => item.get('id') === parseInt(action.currentViewId), null, fromJS({}))
+                activeView = items.find(
+                    (item) => item.get('id') === parseInt(action.currentViewId),
+                    null,
+                    fromJS({})
+                )
             }
 
             return state.merge({
                 items,
                 active: activeView,
-                loading: false
+                loading: false,
             })
         }
 
         case constants.CREATE_VIEW_SUCCESS: {
-            return state.update('items', (items) => addViewIfMissing(items, action.resp))
+            return state.update('items', (items) =>
+                addViewIfMissing(items, action.resp)
+            )
         }
 
         case constants.UPDATE_VIEW_SUCCESS: {
-            let newState = state.update('items', (items) => items.map((view) => {
-                if (view.get('id') === action.resp.id) {
-                    return fromJS(action.resp)
-                }
-                return view
-            }))
+            let newState = state.update('items', (items) =>
+                items.map((view) => {
+                    if (view.get('id') === action.resp.id) {
+                        return fromJS(action.resp)
+                    }
+                    return view
+                })
+            )
             // also update the active view if we're on it
             if (newState.getIn(['active', 'id']) === action.resp.id) {
                 newState = newState.set('active', fromJS(action.resp))
@@ -220,7 +247,9 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
 
         case constants.DELETE_VIEW_SUCCESS: {
             return state.merge({
-                items: state.get('items').filter((item) => item.get('id') !== action.viewId),
+                items: state
+                    .get('items')
+                    .filter((item) => item.get('id') !== action.viewId),
             })
         }
 
@@ -229,12 +258,17 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
 
             // if fetched view is a real view (not new view created, not search, etc.) we save it's id
             if (_isNumber(action.viewId) && action.viewId > 0) {
-                newState = newState.setIn(['_internal', 'lastViewId'], action.viewId)
+                newState = newState.setIn(
+                    ['_internal', 'lastViewId'],
+                    action.viewId
+                )
             }
 
             if (action.discreet) {
-                newState = newState
-                    .setIn(['_internal', 'loading', 'fetchListDiscreet'], true)
+                newState = newState.setIn(
+                    ['_internal', 'loading', 'fetchListDiscreet'],
+                    true
+                )
             } else {
                 newState = newState
                     .setIn(['_internal', 'loading', 'fetchList'], true)
@@ -254,7 +288,8 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
         }
 
         case constants.FETCH_LIST_VIEW_ERROR:
-            return state.setIn(['_internal', 'loading', 'fetchList'], false)
+            return state
+                .setIn(['_internal', 'loading', 'fetchList'], false)
                 .setIn(['_internal', 'loading', 'fetchListDiscreet'], false)
 
         case constants.UPDATE_PAGE_SELECTION: {
@@ -262,26 +297,37 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
         }
 
         case constants.TOGGLE_ID_IN_PAGE_SELECTION: {
-            const currentlySelected = state.getIn(['_internal', 'selectedItemsIds'], fromJS([]))
+            const currentlySelected = state.getIn(
+                ['_internal', 'selectedItemsIds'],
+                fromJS([])
+            )
 
             const idx = currentlySelected.indexOf(action.id)
 
             // if already selected, deselect it
             if (~idx) {
-                return state.setIn(['_internal', 'selectedItemsIds'], currentlySelected.delete(idx))
+                return state.setIn(
+                    ['_internal', 'selectedItemsIds'],
+                    currentlySelected.delete(idx)
+                )
             }
 
             // otherwise select it
-            return state.setIn(['_internal', 'selectedItemsIds'], currentlySelected.push(action.id))
+            return state.setIn(
+                ['_internal', 'selectedItemsIds'],
+                currentlySelected.push(action.id)
+            )
         }
 
         case constants.TOGGLE_VIEW_SELECTION: {
-            return state.updateIn(['active', 'allItemsSelected'], (allItemsSelected) => !allItemsSelected)
+            return state.updateIn(
+                ['active', 'allItemsSelected'],
+                (allItemsSelected) => !allItemsSelected
+            )
         }
 
         case constants.BULK_DELETE_SUCCESS: {
-            return state
-                .setIn(['_internal', 'selectedItemsIds'], fromJS([]))
+            return state.setIn(['_internal', 'selectedItemsIds'], fromJS([]))
         }
 
         case constants.SET_PAGE: {
@@ -290,20 +336,25 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
 
         case constants.UPDATE_COUNTS: {
             const viewIds = Object.keys(action.counts)
-            return state
-            // update view counts
-                .mergeDeep({
-                    counts: action.counts
-                })
-                // update datetime when we receive count for a recent view
-                .update('recent', (views) => {
-                    return views.map((view, viewId) => {
-                        if (viewIds.includes(viewId)) {
-                            return view.set('updated_datetime', moment.utc().toISOString())
-                        }
-                        return view
+            return (
+                state
+                    // update view counts
+                    .mergeDeep({
+                        counts: action.counts,
                     })
-                })
+                    // update datetime when we receive count for a recent view
+                    .update('recent', (views) => {
+                        return views.map((view, viewId) => {
+                            if (viewIds.includes(viewId)) {
+                                return view.set(
+                                    'updated_datetime',
+                                    moment.utc().toISOString()
+                                )
+                            }
+                            return view
+                        })
+                    })
+            )
         }
 
         default:

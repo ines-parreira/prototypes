@@ -1,4 +1,8 @@
-import {fetchActiveViewCount, fetchActiveViewTickets, fetchRecentViewsCounts} from '../state/views/actions'
+import {
+    fetchActiveViewCount,
+    fetchActiveViewTickets,
+    fetchRecentViewsCounts,
+} from '../state/views/actions'
 import {store as reduxStore} from '../init'
 
 class PollingManager {
@@ -33,9 +37,10 @@ class PollingManager {
         this.store.dispatch(fetchActiveViewCount())
     }
 
-
     stop = () => {
-        Object.keys(this.intervals).forEach((interval) => this._stopInterval(interval))
+        Object.keys(this.intervals).forEach((interval) =>
+            this._stopInterval(interval)
+        )
     }
 
     _stopInterval = (interval) => {

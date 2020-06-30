@@ -6,22 +6,24 @@ import type {ActionName} from '../../draftjs/plugins/toolbar/types'
 import type {Plugin} from '../../draftjs/plugins/types'
 
 export type RequiredProps = {
-    displayedActions?: ActionName[]
+    displayedActions?: ActionName[],
 }
 
 type State = {
     linkEntityKey?: string,
     linkIsOpen: boolean,
     linkText: string,
-    linkUrl: string
+    linkUrl: string,
 }
 
 export type InjectedProps = {
-    createToolbarPlugin: (imageDecorator?: React.Node => React.Node) => Plugin,
-    onLinkUrlChange: string => void,
-    onLinkTextChange: string => void,
+    createToolbarPlugin: (
+        imageDecorator?: (React.Node) => React.Node
+    ) => Plugin,
+    onLinkUrlChange: (string) => void,
+    onLinkTextChange: (string) => void,
     onLinkOpen: () => void,
-    onLinkClose: () => void
+    onLinkClose: () => void,
 } & State
 
 export default function provideToolbarPlugin<Props: RequiredProps>(
@@ -34,12 +36,13 @@ export default function provideToolbarPlugin<Props: RequiredProps>(
             linkUrl: '',
         }
 
-        _createToolbarPlugin = (imageDecorator?: React.Node => React.Node) => createToolbarPlugin({
-            onLinkEdit: this._onToolbarPluginLinkEdit,
-            onLinkCreate: this._onToolbarPluginLinkCreate,
-            getDisplayedActions: () => this.props.displayedActions,
-            imageDecorator: imageDecorator,
-        })
+        _createToolbarPlugin = (imageDecorator?: (React.Node) => React.Node) =>
+            createToolbarPlugin({
+                onLinkEdit: this._onToolbarPluginLinkEdit,
+                onLinkCreate: this._onToolbarPluginLinkCreate,
+                getDisplayedActions: () => this.props.displayedActions,
+                imageDecorator: imageDecorator,
+            })
 
         _onLinkTextChange = (linkText: string) => this.setState({linkText})
 
@@ -58,7 +61,11 @@ export default function provideToolbarPlugin<Props: RequiredProps>(
             })
         }
 
-        _onToolbarPluginLinkEdit = (entityKey: string, text: string, url: string) => {
+        _onToolbarPluginLinkEdit = (
+            entityKey: string,
+            text: string,
+            url: string
+        ) => {
             this.setState({
                 linkEntityKey: entityKey,
                 linkIsOpen: true,

@@ -8,7 +8,7 @@ import {
     HTTP_WIDGET_TYPE,
     MAGENTO2_WIDGET_TYPE,
     SHOPIFY_WIDGET_TYPE,
-    SMOOCH_INSIDE_WIDGET_TYPE
+    SMOOCH_INSIDE_WIDGET_TYPE,
 } from '../../../../../../../../state/widgets/constants'
 
 describe('<InfobarTabs/>', () => {
@@ -23,7 +23,7 @@ describe('<InfobarTabs/>', () => {
             ])
 
             const component = shallow(
-                <InfobarTabs preparedDisplayList={preparedDisplayList}/>
+                <InfobarTabs preparedDisplayList={preparedDisplayList} />
             )
 
             expect(component).toMatchSnapshot()
@@ -37,7 +37,7 @@ describe('<InfobarTabs/>', () => {
             ])
 
             const component = shallow(
-                <InfobarTabs preparedDisplayList={preparedDisplayList}/>
+                <InfobarTabs preparedDisplayList={preparedDisplayList} />
             )
 
             expect(component).toMatchSnapshot()
@@ -47,7 +47,7 @@ describe('<InfobarTabs/>', () => {
             const preparedDisplayList = fromJS([])
 
             const component = shallow(
-                <InfobarTabs preparedDisplayList={preparedDisplayList}/>
+                <InfobarTabs preparedDisplayList={preparedDisplayList} />
             )
 
             expect(component).toMatchSnapshot()
@@ -59,7 +59,7 @@ describe('<InfobarTabs/>', () => {
             ])
 
             const component = shallow(
-                <InfobarTabs preparedDisplayList={preparedDisplayList}/>
+                <InfobarTabs preparedDisplayList={preparedDisplayList} />
             )
 
             expect(component).toMatchSnapshot()

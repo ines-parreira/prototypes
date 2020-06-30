@@ -7,73 +7,73 @@ export const currentUser = {
             data: {
                 1: {
                     hide: false,
-                    display_order: 2
+                    display_order: 2,
                 },
                 2: {
                     hide: true,
-                    display_order: 3
+                    display_order: 3,
                 },
                 3: {
                     hide: true,
-                    display_order: 1
+                    display_order: 1,
                 },
                 4: {
                     hide: true,
-                    display_order: 3
+                    display_order: 3,
                 },
                 5: {
                     hide: true,
-                    display_order: 7
+                    display_order: 7,
                 },
                 6: {
                     hide: true,
-                    display_order: 5
+                    display_order: 5,
                 },
                 7: {
                     hide: true,
-                    display_order: 6
+                    display_order: 6,
                 },
                 8: {
                     hide: true,
-                    display_order: 8
+                    display_order: 8,
                 },
                 9: {
                     hide: true,
-                    display_order: 6
+                    display_order: 6,
                 },
                 10: {
                     hide: false,
-                    display_order: 1
+                    display_order: 1,
                 },
                 11: {
                     hide: true,
-                    display_order: 6
+                    display_order: 6,
                 },
                 12: {
                     hide: true,
-                    display_order: 4
-                }
+                    display_order: 4,
+                },
             },
             id: 1,
-            type: 'ticket-views'
+            type: 'ticket-views',
         },
         {
             data: {
                 13: {
                     display_order: 1,
-                    hide: false
+                    hide: false,
                 },
                 14: {
                     display_order: 2,
-                    hide: false
+                    hide: false,
                 },
                 15: {
                     display_order: 2,
-                    hide: false
-                }
+                    hide: false,
+                },
             },
             id: 2,
-            type: 'customer-views'
+            type: 'customer-views',
         },
         {
             data: {
@@ -82,8 +82,8 @@ export const currentUser = {
                 hide_tips: true,
             },
             id: 3,
-            type: 'preferences'
-        }
+            type: 'preferences',
+        },
     ],
     meta: null,
     active: true,
@@ -93,10 +93,11 @@ export const currentUser = {
     auths: [
         {
             data: {
-                token: 'f4eea0ca3ba4c6bd4109ef440b293dcdcc41c570fb434ef999dc47577fd24d23'
+                token:
+                    'f4eea0ca3ba4c6bd4109ef440b293dcdcc41c570fb434ef999dc47577fd24d23',
             },
-            type: 'api_key'
-        }
+            type: 'api_key',
+        },
     ],
     account_id: 1,
     external_id: '2',
@@ -108,7 +109,6 @@ export const currentUser = {
             preferred: true,
             type: 'twitter',
             updated_datetime: '2016-12-22T19:36:12.542251+00:00',
-
         },
         {
             address: 'alex@gorgias.io',
@@ -141,7 +141,7 @@ export const currentUser = {
             preferred: true,
             type: 'facebook',
             updated_datetime: '2016-12-22T19:36:12.625131+00:00',
-        }
+        },
     ],
     created_datetime: '2016-12-22T19:36:12.487448+00:00',
     country: 'US',
@@ -153,15 +153,15 @@ export const currentUser = {
     roles: [
         {
             id: 2,
-            name: AGENT_ROLE
+            name: AGENT_ROLE,
         },
         {
             id: 3,
-            name: ADMIN_ROLE
-        }
+            name: ADMIN_ROLE,
+        },
     ],
     customer: null,
-    updated_datetime: '2016-12-22T19:36:12.489432+00:00'
+    updated_datetime: '2016-12-22T19:36:12.489432+00:00',
 }
 
 export const userSetting = {
@@ -170,23 +170,23 @@ export const userSetting = {
     data: {
         183: {
             hide: true,
-            display_order: 1
+            display_order: 1,
         },
         93: {
             hide: true,
-            display_order: 2
+            display_order: 2,
         },
         38: {
             hide: true,
-            display_order: 3
+            display_order: 3,
         },
         234: {
             hide: true,
-            display_order: 4
+            display_order: 4,
         },
         4: {
             hide: true,
-            display_order: 5
-        }
-    }
+            display_order: 5,
+        },
+    },
 }

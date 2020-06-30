@@ -16,10 +16,7 @@ export default function TableWrapper({
     ...otherProps
 }: Props) {
     return (
-        <table
-            {...otherProps}
-            className={classnames(css.table, className)}
-        >
+        <table {...otherProps} className={classnames(css.table, className)}>
             {children}
         </table>
     )

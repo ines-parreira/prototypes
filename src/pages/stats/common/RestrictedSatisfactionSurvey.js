@@ -3,13 +3,11 @@ import {Link} from 'react-router'
 
 import RestrictedFeature from '../../common/components/RestrictedFeature'
 
-
 const assetsURL = window.GORGIAS_ASSETS_URL || ''
 const imagesURL = [
     `${assetsURL}/static/private/img/presentationals/satisfaction-survey-stats.png`,
-    `${assetsURL}/static/private/img/presentationals/satisfaction-survey-ticket-details.png`
+    `${assetsURL}/static/private/img/presentationals/satisfaction-survey-ticket-details.png`,
 ]
-
 
 const RestrictedSatisfactionSurvey = () => (
     <RestrictedFeature

@@ -4,20 +4,19 @@ import {shallow} from 'enzyme'
 
 import {WrappedCallExpression} from '../CallExpression'
 
-
 const commonProps = {
     rule: {foo: 'rule'},
     actions: {foo: 'actions'},
     arguments: ['a', 1],
     schemas: {foo: 'schemas'},
-    depth: 0
+    depth: 0,
 }
 
 describe('CallExpression component', () => {
     describe('test condition', () => {
         const callee = {
             type: 'Identifier',
-            name: 'eq'
+            name: 'eq',
         }
 
         it('should not render delete widget because the expression is the only line of the test condition', () => {
@@ -36,43 +35,51 @@ describe('CallExpression component', () => {
                     {...commonProps}
                     parent={fromJS(['body', 0, 'test'])}
                     callee={callee}
-                />
-                , {context: {hovered: true}})
+                />,
+                {context: {hovered: true}}
+            )
 
             expect(hoveredComponent).toMatchSnapshot()
         })
 
-        it('should not render delete widget because the expression is not the only line of the test condition and the ' +
-            'expression is not hovered', () => {
-            const component = shallow(
-                <WrappedCallExpression
-                    {...commonProps}
-                    parent={fromJS(['body', 0, 'test', 'left'])}
-                    callee={callee}
-                />
-            )
+        it(
+            'should not render delete widget because the expression is not the only line of the test condition and the ' +
+                'expression is not hovered',
+            () => {
+                const component = shallow(
+                    <WrappedCallExpression
+                        {...commonProps}
+                        parent={fromJS(['body', 0, 'test', 'left'])}
+                        callee={callee}
+                    />
+                )
 
-            expect(component).toMatchSnapshot()
-        })
+                expect(component).toMatchSnapshot()
+            }
+        )
 
-        it('should render delete widget because the expression is not the only line of the test condition and the ' +
-            'expression is hovered', () => {
-            const component = shallow(
-                <WrappedCallExpression
-                    {...commonProps}
-                    parent={fromJS(['body', 0, 'test', 'left'])}
-                    callee={callee}
-                />
-                , {context: {hovered: true}})
+        it(
+            'should render delete widget because the expression is not the only line of the test condition and the ' +
+                'expression is hovered',
+            () => {
+                const component = shallow(
+                    <WrappedCallExpression
+                        {...commonProps}
+                        parent={fromJS(['body', 0, 'test', 'left'])}
+                        callee={callee}
+                    />,
+                    {context: {hovered: true}}
+                )
 
-            expect(component).toMatchSnapshot()
-        })
+                expect(component).toMatchSnapshot()
+            }
+        )
     })
 
     describe('Action call', () => {
         const callee = {
             type: 'Identifier',
-            name: 'Action'
+            name: 'Action',
         }
 
         it('should render', () => {

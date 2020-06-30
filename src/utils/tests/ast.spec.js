@@ -15,13 +15,13 @@ describe('ast util', () => {
             expect(isTimedelta('1d1')).toBe(false)
             expect(isTimedelta('d1d')).toBe(false)
             expect(isTimedelta('1.d')).toBe(false)
-            expect(isTimedelta('\'1d\'')).toBe(false)
+            expect(isTimedelta("'1d'")).toBe(false)
         })
 
         it('should return false if data does not match the regex (raw=true)', () => {
-            expect(isTimedelta('\'d1\'', true)).toBe(false)
-            expect(isTimedelta('\'1d1\'', true)).toBe(false)
-            expect(isTimedelta('\'d1d\'', true)).toBe(false)
+            expect(isTimedelta("'d1'", true)).toBe(false)
+            expect(isTimedelta("'1d1'", true)).toBe(false)
+            expect(isTimedelta("'d1d'", true)).toBe(false)
             expect(isTimedelta('1d', true)).toBe(false)
         })
 
@@ -34,11 +34,11 @@ describe('ast util', () => {
         })
 
         it('should return true if data matches the regex (raw=true)', () => {
-            expect(isTimedelta('\'1d\'', true)).toBe(true)
-            expect(isTimedelta('\'2m\'', true)).toBe(true)
-            expect(isTimedelta('\'3w\'', true)).toBe(true)
-            expect(isTimedelta('\'5h\'', true)).toBe(true)
-            expect(isTimedelta('\'123456789w\'', true)).toBe(true)
+            expect(isTimedelta("'1d'", true)).toBe(true)
+            expect(isTimedelta("'2m'", true)).toBe(true)
+            expect(isTimedelta("'3w'", true)).toBe(true)
+            expect(isTimedelta("'5h'", true)).toBe(true)
+            expect(isTimedelta("'123456789w'", true)).toBe(true)
         })
     })
 })

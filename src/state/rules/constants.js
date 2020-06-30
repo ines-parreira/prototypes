@@ -38,12 +38,12 @@ const SEND_EMAIL_ACTION_DEFAULT = {
     bcc: '',
     subject: '',
     body_text: '',
-    body_html: ''
+    body_html: '',
 }
 
 const REPLY_TO_TICKET_ACTION_DEFAULT = {
     body_text: '',
-    body_html: ''
+    body_html: '',
 }
 
 const ADD_TAGS_ACTION_DEFAULT = {
@@ -63,15 +63,15 @@ const SET_SUBJECT_ACTION_DEFAULT = {
 }
 
 const APPLY_MACRO_ACTION_DEFAULT = {
-    macro: ''
+    macro: '',
 }
 
 const ASSIGN_USER_ACTION_DEFAULT = {
-    assignee_user: '' // means unassigned
+    assignee_user: '', // means unassigned
 }
 
 const ASSIGN_TEAM_ACTION_DEFAULT = {
-    assignee_team: '' // means unassigned
+    assignee_team: '', // means unassigned
 }
 
 export const ACTION_DEFAULT_STATE = {

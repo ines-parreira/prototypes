@@ -9,7 +9,7 @@ import {
     GMAIL_INTEGRATION_TYPE,
     OUTLOOK_INTEGRATION_TYPE,
     SMOOCH_INSIDE_INTEGRATION_TYPE,
-    SMOOCH_INTEGRATION_TYPE
+    SMOOCH_INTEGRATION_TYPE,
 } from '../../../constants/integration'
 
 import type {IntegrationType} from '../../../models/integration'
@@ -31,7 +31,7 @@ import {
     OTTSPOTT_CALL_SOURCE,
     PHONE_SOURCE,
     SYSTEM_MESSAGE_SOURCE,
-    TWITTER_SOURCE
+    TWITTER_SOURCE,
 } from '../../../config/ticket'
 
 type Props = {
@@ -43,7 +43,7 @@ const sourceTypeToIcon = (sourceType?: SourceType | IntegrationType) => {
     const icon = {
         name: 'live_help',
         custom: false,
-        extra: ''
+        extra: '',
     }
 
     switch (sourceType) {
@@ -117,7 +117,7 @@ const SourceIcon = (props: Props) => {
                     [`icon-custom icon-${icon.name}`]: icon.custom,
                     ['material-icons']: !icon.custom,
                 },
-                className,
+                className
             )}
             {...allProps}
         >
@@ -127,4 +127,3 @@ const SourceIcon = (props: Props) => {
 }
 
 export default SourceIcon
-

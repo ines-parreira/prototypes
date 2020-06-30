@@ -7,7 +7,7 @@ import {
     HEALTH_CHECK_TIMEOUT,
     MAX_INCREMENTAL_RECONNECT_BACKOFF,
     SOCKET_EVENTS,
-    WebsocketSharedWorker
+    WebsocketSharedWorker,
 } from '../sharedWorker'
 
 jest.mock('socket.io-client', () => {
@@ -40,26 +40,39 @@ describe('WebsocketSharedWorker', () => {
         it('should set an interval for sending the health check', () => {
             worker.startHealthCheck()
 
-            expect(setInterval).toHaveBeenCalledWith(worker.sendHealthCheck, HEALTH_CHECK_INTERVAL * 1000)
+            expect(setInterval).toHaveBeenCalledWith(
+                worker.sendHealthCheck,
+                HEALTH_CHECK_INTERVAL * 1000
+            )
         })
     })
 
     describe('sendHealthCheck()', () => {
-        it('should set all tabs from `connectedTabs` into `pendingTabs`, send a `HEALTH_CHECK` message to each ' +
-            'connected tab, and set a timeout for the `disconnectTabs` function', () => {
-            const tab1 = new MockMessagePort()
-            const tab2 = new MockMessagePort()
+        it(
+            'should set all tabs from `connectedTabs` into `pendingTabs`, send a `HEALTH_CHECK` message to each ' +
+                'connected tab, and set a timeout for the `disconnectTabs` function',
+            () => {
+                const tab1 = new MockMessagePort()
+                const tab2 = new MockMessagePort()
 
-            worker.connectedTabs = {clientId1: tab1, clientId2: tab2}
-            expect(worker.pendingTabs).toEqual({})
+                worker.connectedTabs = {clientId1: tab1, clientId2: tab2}
+                expect(worker.pendingTabs).toEqual({})
 
-            worker.sendHealthCheck()
+                worker.sendHealthCheck()
 
-            expect(worker.pendingTabs).toEqual(worker.connectedTabs)
-            expect(setTimeout).toHaveBeenCalledWith(worker.disconnectTabs, HEALTH_CHECK_TIMEOUT * 1000)
-            expect(tab1.postMessage).toHaveBeenCalledWith({type: MESSAGE_PORT_EVENTS.HEALTH_CHECK})
-            expect(tab2.postMessage).toHaveBeenCalledWith({type: MESSAGE_PORT_EVENTS.HEALTH_CHECK})
-        })
+                expect(worker.pendingTabs).toEqual(worker.connectedTabs)
+                expect(setTimeout).toHaveBeenCalledWith(
+                    worker.disconnectTabs,
+                    HEALTH_CHECK_TIMEOUT * 1000
+                )
+                expect(tab1.postMessage).toHaveBeenCalledWith({
+                    type: MESSAGE_PORT_EVENTS.HEALTH_CHECK,
+                })
+                expect(tab2.postMessage).toHaveBeenCalledWith({
+                    type: MESSAGE_PORT_EVENTS.HEALTH_CHECK,
+                })
+            }
+        )
     })
 
     describe('onHealthCheck()', () => {
@@ -76,50 +89,64 @@ describe('WebsocketSharedWorker', () => {
     })
 
     describe('disconnectTabs()', () => {
-        it('should send a `CLIENT_DISCONNECTED` message to the worker\'s socket for each tab in `pendingTabs`, ' +
-            'empty the `pendinTabs` object and delete those tabs from the list of connected tabs', () => {
-            const tab1 = new MockMessagePort()
-            const tab2 = new MockMessagePort()
-            const tab3 = new MockMessagePort()
+        it(
+            "should send a `CLIENT_DISCONNECTED` message to the worker's socket for each tab in `pendingTabs`, " +
+                'empty the `pendinTabs` object and delete those tabs from the list of connected tabs',
+            () => {
+                const tab1 = new MockMessagePort()
+                const tab2 = new MockMessagePort()
+                const tab3 = new MockMessagePort()
 
-            worker.pendingTabs = {clientId1: tab1, clientId2: tab2}
-            worker.connectedTabs = {clientId1: tab1, clientId2: tab2, clientId3: tab3}
-            worker.socket = io()
+                worker.pendingTabs = {clientId1: tab1, clientId2: tab2}
+                worker.connectedTabs = {
+                    clientId1: tab1,
+                    clientId2: tab2,
+                    clientId3: tab3,
+                }
+                worker.socket = io()
 
-            worker.disconnectTabs()
+                worker.disconnectTabs()
 
-            expect(worker.pendingTabs).toEqual({})
-            expect(worker.connectedTabs).toEqual({clientId3: tab3})
+                expect(worker.pendingTabs).toEqual({})
+                expect(worker.connectedTabs).toEqual({clientId3: tab3})
 
-            expect(worker.socket.send).toHaveBeenCalledTimes(2)
-            expect(worker.socket.send).toHaveBeenCalledWith({
-                event: SOCKET_EVENTS.CLIENT_DISCONNECTED,
-                clientId: 'clientId1',
-            })
-            expect(worker.socket.send).toHaveBeenCalledWith({
-                event: SOCKET_EVENTS.CLIENT_DISCONNECTED,
-                clientId: 'clientId2',
-            })
-        })
+                expect(worker.socket.send).toHaveBeenCalledTimes(2)
+                expect(worker.socket.send).toHaveBeenCalledWith({
+                    event: SOCKET_EVENTS.CLIENT_DISCONNECTED,
+                    clientId: 'clientId1',
+                })
+                expect(worker.socket.send).toHaveBeenCalledWith({
+                    event: SOCKET_EVENTS.CLIENT_DISCONNECTED,
+                    clientId: 'clientId2',
+                })
+            }
+        )
     })
 
     describe('incrementalReconnect()', () => {
-        it('should try to connect the worker\'s socket, double the reconnect backoff time, ' +
-            'and then set another timeout to try again later', () => {
-            worker.socket = io()
+        it(
+            "should try to connect the worker's socket, double the reconnect backoff time, " +
+                'and then set another timeout to try again later',
+            () => {
+                worker.socket = io()
 
-            const oldBackoff = worker.incrementalReconnectBackoff
+                const oldBackoff = worker.incrementalReconnectBackoff
 
-            worker.incrementalReconnect()
+                worker.incrementalReconnect()
 
-            jest.runOnlyPendingTimers()
+                jest.runOnlyPendingTimers()
 
-            expect(worker.socket.connect).toHaveBeenCalledTimes(1)
-            expect(worker.incrementalReconnectBackoff).toEqual(2 * oldBackoff)
+                expect(worker.socket.connect).toHaveBeenCalledTimes(1)
+                expect(worker.incrementalReconnectBackoff).toEqual(
+                    2 * oldBackoff
+                )
 
-            expect(setTimeout)
-                .toHaveBeenLastCalledWith(expect.any(Function), worker.incrementalReconnectBackoff * 1000)
-        })
+                expect(setTimeout).toHaveBeenLastCalledWith(
+                    expect.any(Function),
+                    worker.incrementalReconnectBackoff * 1000
+                )
+            }
+        )
 
         it('should not increase the reconnect backoff time above the max', () => {
             worker.socket = io()
@@ -131,49 +158,71 @@ describe('WebsocketSharedWorker', () => {
             jest.runOnlyPendingTimers()
 
             expect(worker.socket.connect).toHaveBeenCalledTimes(1)
-            expect(worker.incrementalReconnectBackoff).toEqual(MAX_INCREMENTAL_RECONNECT_BACKOFF)
+            expect(worker.incrementalReconnectBackoff).toEqual(
+                MAX_INCREMENTAL_RECONNECT_BACKOFF
+            )
 
-            expect(setTimeout)
-                .toHaveBeenLastCalledWith(expect.any(Function), worker.incrementalReconnectBackoff * 1000)
+            expect(setTimeout).toHaveBeenLastCalledWith(
+                expect.any(Function),
+                worker.incrementalReconnectBackoff * 1000
+            )
         })
     })
 
     describe('_onSocketJson()', () => {
-        it('should send the message received to the worker\'s `BroadcastChannel`', () => {
+        it("should send the message received to the worker's `BroadcastChannel`", () => {
             const message = {foo: 'bar'}
 
             worker._onSocketJson(message)
 
-            expect(worker.broadcastChannel.postMessage)
-                .toHaveBeenCalledWith({type: BROADCAST_CHANNEL_EVENTS.SERVER_MESSAGE, json: message})
+            expect(worker.broadcastChannel.postMessage).toHaveBeenCalledWith({
+                type: BROADCAST_CHANNEL_EVENTS.SERVER_MESSAGE,
+                json: message,
+            })
         })
     })
 
     describe('_onSocketConnect()', () => {
-        it('should post a `WS_CONNECTED` message to the tab, reset the `incrementalReconnectBackoff` and clear all ' +
-            'tasks', () => {
-            worker.incrementalReconnectTask = setTimeout(jest.fn(), 1000)
-            worker.sendDisconnectedNotificationTask = setTimeout(jest.fn(), 1000)
-            worker.incrementalReconnectBackoff = MAX_INCREMENTAL_RECONNECT_BACKOFF
+        it(
+            'should post a `WS_CONNECTED` message to the tab, reset the `incrementalReconnectBackoff` and clear all ' +
+                'tasks',
+            () => {
+                worker.incrementalReconnectTask = setTimeout(jest.fn(), 1000)
+                worker.sendDisconnectedNotificationTask = setTimeout(
+                    jest.fn(),
+                    1000
+                )
+                worker.incrementalReconnectBackoff = MAX_INCREMENTAL_RECONNECT_BACKOFF
 
-            worker._onSocketConnect()
+                worker._onSocketConnect()
 
-            expect(clearTimeout).toHaveBeenCalledWith(worker.incrementalReconnectTask)
-            expect(clearTimeout).toHaveBeenCalledWith(worker.sendDisconnectedNotificationTask)
-            expect(worker.incrementalReconnectBackoff).toEqual(1)
-        })
+                expect(clearTimeout).toHaveBeenCalledWith(
+                    worker.incrementalReconnectTask
+                )
+                expect(clearTimeout).toHaveBeenCalledWith(
+                    worker.sendDisconnectedNotificationTask
+                )
+                expect(worker.incrementalReconnectBackoff).toEqual(1)
+            }
+        )
     })
 
     describe('_onSocketDisconnect()', () => {
         it('should delay a task to send the disconnected notification and try to reconnect', () => {
-            const incrementalReconnectSpy = jest.spyOn(worker, 'incrementalReconnect')
+            const incrementalReconnectSpy = jest.spyOn(
+                worker,
+                'incrementalReconnect'
+            )
 
             expect(worker.sendDisconnectedNotificationTask).toEqual(null)
 
             worker._onSocketDisconnect()
 
             expect(worker.sendDisconnectedNotificationTask).not.toEqual(null)
-            expect(setTimeout).toHaveBeenCalledWith(expect.any(Function), DISCONNECTED_NOTIFICATION_DELAY * 1000)
+            expect(setTimeout).toHaveBeenCalledWith(
+                expect.any(Function),
+                DISCONNECTED_NOTIFICATION_DELAY * 1000
+            )
 
             expect(incrementalReconnectSpy).toHaveBeenCalledTimes(1)
         })
@@ -194,14 +243,25 @@ describe('WebsocketSharedWorker', () => {
             expect(worker.socket).not.toEqual(null)
 
             expect(worker.socket.on).toHaveBeenCalledTimes(3)
-            expect(worker.socket.on).toHaveBeenCalledWith('json', worker._onSocketJson)
-            expect(worker.socket.on).toHaveBeenCalledWith('connect', worker._onSocketConnect)
-            expect(worker.socket.on).toHaveBeenCalledWith('disconnect', worker._onSocketDisconnect)
+            expect(worker.socket.on).toHaveBeenCalledWith(
+                'json',
+                worker._onSocketJson
+            )
+            expect(worker.socket.on).toHaveBeenCalledWith(
+                'connect',
+                worker._onSocketConnect
+            )
+            expect(worker.socket.on).toHaveBeenCalledWith(
+                'disconnect',
+                worker._onSocketDisconnect
+            )
 
-            expect(worker.connectedTabs).toEqual({[message.clientId]: messagePort})
+            expect(worker.connectedTabs).toEqual({
+                [message.clientId]: messagePort,
+            })
             expect(worker.socket.send).toHaveBeenCalledWith({
                 event: SOCKET_EVENTS.CLIENT_CONNECTED,
-                clientId: message.clientId
+                clientId: message.clientId,
             })
         })
 
@@ -215,11 +275,15 @@ describe('WebsocketSharedWorker', () => {
 
             worker.onClientConnected(message, messagePort)
 
-            expect(messagePort.postMessage).toHaveBeenCalledWith({type: BROADCAST_CHANNEL_EVENTS.WS_CONNECTED})
-            expect(worker.connectedTabs).toEqual({[message.clientId]: messagePort})
+            expect(messagePort.postMessage).toHaveBeenCalledWith({
+                type: BROADCAST_CHANNEL_EVENTS.WS_CONNECTED,
+            })
+            expect(worker.connectedTabs).toEqual({
+                [message.clientId]: messagePort,
+            })
             expect(worker.socket.send).toHaveBeenCalledWith({
                 event: SOCKET_EVENTS.CLIENT_CONNECTED,
-                clientId: message.clientId
+                clientId: message.clientId,
             })
         })
     })
@@ -235,30 +299,43 @@ describe('WebsocketSharedWorker', () => {
 
             handler(message)
 
-            expect(onClientConnectedSpy).toHaveBeenCalledWith(message.data, messagePort)
+            expect(onClientConnectedSpy).toHaveBeenCalledWith(
+                message.data,
+                messagePort
+            )
         })
 
         it('should call `onHealthCheck` because the type of the message passed is `HEALTH_CHECK`', () => {
             const handler = worker.onPortMessage(messagePort)
             const onHealthCheckSpy = jest.spyOn(worker, 'onHealthCheck')
 
-            const message = {data: {type: MESSAGE_PORT_EVENTS.HEALTH_CHECK, data: {foo: 'bar'}}}
+            const message = {
+                data: {
+                    type: MESSAGE_PORT_EVENTS.HEALTH_CHECK,
+                    data: {foo: 'bar'},
+                },
+            }
 
             handler(message)
 
             expect(onHealthCheckSpy).toHaveBeenCalledWith(message.data.data)
         })
 
-        it('should send the message on the worker\'s socket because the type of the message is not ' +
-            '`CLIENT_CONNECTED` or `HEALTH_CHECK` and the worker has a socket', () => {
-            const handler = worker.onPortMessage(messagePort)
-            worker.socket = io()
-            const message = {data: {type: 'another type', data: {foo: 'bar'}}}
+        it(
+            "should send the message on the worker's socket because the type of the message is not " +
+                '`CLIENT_CONNECTED` or `HEALTH_CHECK` and the worker has a socket',
+            () => {
+                const handler = worker.onPortMessage(messagePort)
+                worker.socket = io()
+                const message = {
+                    data: {type: 'another type', data: {foo: 'bar'}},
+                }
 
-            handler(message)
+                handler(message)
 
-            expect(worker.socket.send).toHaveBeenCalledWith(message.data)
-        })
+                expect(worker.socket.send).toHaveBeenCalledWith(message.data)
+            }
+        )
     })
 
     describe('onPortConnect()', () => {

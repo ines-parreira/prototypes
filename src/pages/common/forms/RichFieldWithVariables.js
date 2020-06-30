@@ -4,7 +4,8 @@ import {
     UncontrolledButtonDropdown,
     DropdownToggle,
     DropdownMenu,
-    DropdownItem, Label,
+    DropdownItem,
+    Label,
 } from 'reactstrap'
 
 import {attachEntitiesToVariables} from '../draftjs/plugins/variables/utils'
@@ -38,21 +39,25 @@ export default class RichFieldWithVariables extends Component<Props> {
     }
 
     render() {
-        const {allowExternalChanges, label, name, onChange, value, variableTypes} = this.props
+        const {
+            allowExternalChanges,
+            label,
+            name,
+            onChange,
+            value,
+            variableTypes,
+        } = this.props
         const variables = getVariables(variableTypes)
 
         return (
             <div className="field">
                 {label && (
-                    <Label
-                        htmlFor={this.id}
-                        className="control-label"
-                    >
+                    <Label htmlFor={this.id} className="control-label">
                         {label}
                     </Label>
                 )}
                 <div className="textarea-toolbar">
-                    {variables.map((category, index) => (
+                    {variables.map((category, index) =>
                         category.children ? (
                             <UncontrolledButtonDropdown key={index}>
                                 <DropdownToggle
@@ -64,17 +69,21 @@ export default class RichFieldWithVariables extends Component<Props> {
                                     {category.name}
                                 </DropdownToggle>
                                 <DropdownMenu>
-                                    {category.children.map((variable, indexVariable) => (
-                                        <DropdownItem
-                                            key={indexVariable}
-                                            type="button"
-                                            onClick={() => {
-                                                this._insertText(variable.value)
-                                            }}
-                                        >
-                                            {variable.name}
-                                        </DropdownItem>
-                                    ))}
+                                    {category.children.map(
+                                        (variable, indexVariable) => (
+                                            <DropdownItem
+                                                key={indexVariable}
+                                                type="button"
+                                                onClick={() => {
+                                                    this._insertText(
+                                                        variable.value
+                                                    )
+                                                }}
+                                            >
+                                                {variable.name}
+                                            </DropdownItem>
+                                        )
+                                    )}
                                 </DropdownMenu>
                             </UncontrolledButtonDropdown>
                         ) : (
@@ -88,8 +97,8 @@ export default class RichFieldWithVariables extends Component<Props> {
                             >
                                 {category.name}
                             </Button>
-                        )))
-                    }
+                        )
+                    )}
                 </div>
                 <RichField
                     ref={(richArea) => {

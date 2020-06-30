@@ -35,69 +35,68 @@ describe('tags actions', () => {
     describe('fetchTags', () => {
         it('success actions', () => {
             mockServer.onGet('/api/tags/').reply(200, {data: ['refund']})
-            return store.dispatch(actions.fetchTags(2))
+            return store
+                .dispatch(actions.fetchTags(2))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
         it('params change page', () => {
-            mockServer.onGet('/api/tags/')
-                .reply(({params}) => {
-                    expect(params).toMatchSnapshot()
-                    return [200]
-                })
+            mockServer.onGet('/api/tags/').reply(({params}) => {
+                expect(params).toMatchSnapshot()
+                return [200]
+            })
             return store.dispatch(actions.fetchTags(2))
         })
 
         it('params change sort', () => {
-            mockServer.onGet('/api/tags/')
-                .reply(({params}) => {
-                    expect(params).toMatchSnapshot()
-                    return [200]
-                })
+            mockServer.onGet('/api/tags/').reply(({params}) => {
+                expect(params).toMatchSnapshot()
+                return [200]
+            })
             return store.dispatch(actions.fetchTags(1, 'custom_sort'))
         })
 
         it('params change reverse', () => {
-            mockServer.onGet('/api/tags/')
-                .reply(({params}) => {
-                    expect(params).toMatchSnapshot()
-                    return [200]
-                })
+            mockServer.onGet('/api/tags/').reply(({params}) => {
+                expect(params).toMatchSnapshot()
+                return [200]
+            })
             return store.dispatch(actions.fetchTags(1, 'usage', false))
         })
 
         it('params search', () => {
-            mockServer.onGet('/api/tags/')
-                .reply(({params}) => {
-                    expect(params).toMatchSnapshot()
-                    return [200]
-                })
-            return store.dispatch(actions.fetchTags(1, 'name', false, 'something'))
+            mockServer.onGet('/api/tags/').reply(({params}) => {
+                expect(params).toMatchSnapshot()
+                return [200]
+            })
+            return store.dispatch(
+                actions.fetchTags(1, 'name', false, 'something')
+            )
         })
 
         it('fetch list also sorts', () => {
-            mockServer
-                .onGet('/api/tags/')
-                .reply((config) => {
-                    if (config.params.order_by === 'name' &&
-                        config.params.order_dir === 'desc' &&
-                        config.params.page === 1) {
-                        return [200, {data: ['rejected', 'refund']}]
-                    }
+            mockServer.onGet('/api/tags/').reply((config) => {
+                if (
+                    config.params.order_by === 'name' &&
+                    config.params.order_dir === 'desc' &&
+                    config.params.page === 1
+                ) {
+                    return [200, {data: ['rejected', 'refund']}]
+                }
 
-                    return [400]
-                })
+                return [400]
+            })
 
             const expectedActions = [
                 {
-                    type: types.FETCH_TAG_LIST_START
+                    type: types.FETCH_TAG_LIST_START,
                 },
                 {
                     type: types.FETCH_TAG_LIST_SUCCESS,
                     resp: {
-                        data: ['rejected', 'refund']
-                    }
-                }
+                        data: ['rejected', 'refund'],
+                    },
+                },
             ]
 
             return store
@@ -130,91 +129,92 @@ describe('tags actions', () => {
 
     it('save', () => {
         mockServer.onPut('/api/tags/1/').reply(200, {id: 1})
-        return store.dispatch(actions.save({id: 1}))
+        return store
+            .dispatch(actions.save({id: 1}))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
     it('create', () => {
         mockServer.onPost('/api/tags/').reply(200, {id: 1})
-        return store.dispatch(actions.create({id: 1}))
+        return store
+            .dispatch(actions.create({id: 1}))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
     it('remove', () => {
         mockServer.onDelete('/api/tags/1/').reply(200)
-        return store.dispatch(actions.remove(1))
+        return store
+            .dispatch(actions.remove(1))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
     it('remove error', () => {
         mockServer.onDelete('/api/tags/1/').reply(400)
-        return store.dispatch(actions.remove(1))
+        return store
+            .dispatch(actions.remove(1))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
     it('bulkDelete', () => {
-        mockServer.onDelete('/api/tags/')
-            .reply((config) => {
-                if (_isEqual(config.data, {ids: [1, 2]})) {
-                    return [204]
-                }
+        mockServer.onDelete('/api/tags/').reply((config) => {
+            if (_isEqual(config.data, {ids: [1, 2]})) {
+                return [204]
+            }
 
-                return [404]
-            })
+            return [404]
+        })
 
-        return store.dispatch(actions.bulkDelete([1, 2]))
+        return store
+            .dispatch(actions.bulkDelete([1, 2]))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
     it('bulkDelete error', () => {
-        mockServer.onDelete('/api/tags/')
-            .reply((config) => {
-                if (_isEqual(config.data, {ids: [1, 2]})) {
-                    return [204]
-                }
+        mockServer.onDelete('/api/tags/').reply((config) => {
+            if (_isEqual(config.data, {ids: [1, 2]})) {
+                return [204]
+            }
 
-                return [404]
-            })
+            return [404]
+        })
 
-        return store.dispatch(actions.bulkDelete([5]))
+        return store
+            .dispatch(actions.bulkDelete([5]))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
     it('merge', () => {
-        mockServer.onPut('/api/tags/3/merge/')
-            .reply((config) => {
-                if (_isEqual(config.data, {source_tags_ids: [1, 2]})) {
-                    return [200]
-                }
+        mockServer.onPut('/api/tags/3/merge/').reply((config) => {
+            if (_isEqual(config.data, {source_tags_ids: [1, 2]})) {
+                return [200]
+            }
 
-                return [400]
-            })
+            return [400]
+        })
 
-        return store.dispatch(actions.merge(fromJS([1, 2, 3])))
-            .then(() => {
-                const expectedActions = store.getActions()
-                expect(expectedActions[0]).toEqual({
-                    type: types.MERGE_TAGS,
-                    ids: fromJS([1, 2, 3])
-                })
-                expect(expectedActions).toMatchSnapshot()
+        return store.dispatch(actions.merge(fromJS([1, 2, 3]))).then(() => {
+            const expectedActions = store.getActions()
+            expect(expectedActions[0]).toEqual({
+                type: types.MERGE_TAGS,
+                ids: fromJS([1, 2, 3]),
             })
+            expect(expectedActions).toMatchSnapshot()
+        })
     })
 
     it('merge error', () => {
-        mockServer.onPut('/api/tags/3/merge/')
-            .reply((config) => {
-                if (_isEqual(config.data, {source_tags_ids: [1, 2]})) {
-                    return [200]
-                }
+        mockServer.onPut('/api/tags/3/merge/').reply((config) => {
+            if (_isEqual(config.data, {source_tags_ids: [1, 2]})) {
+                return [200]
+            }
 
-                return [400]
-            })
+            return [400]
+        })
 
-        return store.dispatch(actions.merge(fromJS([2, 3])))
+        return store
+            .dispatch(actions.merge(fromJS([2, 3])))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
-
 
     it('setPage', () => {
         store.dispatch(actions.setPage(1))

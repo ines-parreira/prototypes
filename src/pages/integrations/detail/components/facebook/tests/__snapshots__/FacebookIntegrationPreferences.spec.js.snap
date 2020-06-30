@@ -109,7 +109,8 @@ exports[`<FacebookIntegrationPreferences/> render() should render loading button
             className="text-faded"
           >
             <b>
-              During 
+              During
+               
               <Link
                 onlyActiveOnIndex={false}
                 style={Object {}}
@@ -154,7 +155,8 @@ exports[`<FacebookIntegrationPreferences/> render() should render loading button
             className="text-faded"
           >
             <b>
-              Outside 
+              Outside
+               
               <Link
                 onlyActiveOnIndex={false}
                 style={Object {}}
@@ -274,7 +276,8 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
             className="text-faded"
           >
             <b>
-              During 
+              During
+               
               <Link
                 onlyActiveOnIndex={false}
                 style={Object {}}
@@ -319,7 +322,8 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
             className="text-faded"
           >
             <b>
-              Outside 
+              Outside
+               
               <Link
                 onlyActiveOnIndex={false}
                 style={Object {}}

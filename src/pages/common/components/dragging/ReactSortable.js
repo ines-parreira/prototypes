@@ -5,7 +5,7 @@ import Sortable from 'sortablejs'
 
 const store = {
     previousIndex: null,
-    activeComponent: null
+    activeComponent: null,
 }
 
 /**
@@ -21,48 +21,69 @@ class ReactSortable extends React.Component {
 
     componentDidMount() {
         const {options, onChange} = this.props
-        const eventsNames = ['onStart', 'onEnd', 'onAdd', 'onSort', 'onUpdate', 'onRemove', 'onFilter', 'onMove']
+        const eventsNames = [
+            'onStart',
+            'onEnd',
+            'onAdd',
+            'onSort',
+            'onUpdate',
+            'onRemove',
+            'onFilter',
+            'onMove',
+        ]
 
-        eventsNames
-            .forEach((name) => {
-                const eventHandler = options[name]
+        eventsNames.forEach((name) => {
+            const eventHandler = options[name]
 
-                options[name] = (evt) => {
-                    if (name === 'onStart') {
-                        store.previousIndex = evt.oldIndex
-                        store.activeComponent = this
-                    } else if ((name === 'onAdd' || name === 'onUpdate') && onChange) {
-                        const items = this.sortable.toArray()
-                        const remote = store.activeComponent
-                        const remoteItems = remote.sortable.toArray()
+            options[name] = (evt) => {
+                if (name === 'onStart') {
+                    store.previousIndex = evt.oldIndex
+                    store.activeComponent = this
+                } else if (
+                    (name === 'onAdd' || name === 'onUpdate') &&
+                    onChange
+                ) {
+                    const items = this.sortable.toArray()
+                    const remote = store.activeComponent
+                    const remoteItems = remote.sortable.toArray()
 
-                        evt.from.insertBefore(evt.item, evt.from.children[store.previousIndex])
+                    evt.from.insertBefore(
+                        evt.item,
+                        evt.from.children[store.previousIndex]
+                    )
 
-                        if (remote !== this) {
-                            const remoteOptions = remote.props.options || {}
+                    if (remote !== this) {
+                        const remoteOptions = remote.props.options || {}
 
-                            if ((typeof remoteOptions.group === 'object') && (remoteOptions.group.pull === 'clone')) {
-                                // Remove the node with the same data-reactid
-                                evt.item.parentNode.removeChild(evt.item)
-                            }
-
-                            if (remote.props.onChange) {
-                                remote.props.onChange(remoteItems, remote.sortable, evt)
-                            }
+                        if (
+                            typeof remoteOptions.group === 'object' &&
+                            remoteOptions.group.pull === 'clone'
+                        ) {
+                            // Remove the node with the same data-reactid
+                            evt.item.parentNode.removeChild(evt.item)
                         }
 
-                        if (onChange) {
-                            onChange(items, this.sortable, evt)
+                        if (remote.props.onChange) {
+                            remote.props.onChange(
+                                remoteItems,
+                                remote.sortable,
+                                evt
+                            )
                         }
                     }
 
-                    setTimeout(() => {
-                        if (eventHandler) {
-                            eventHandler(evt)
-                        }
-                    }, 0)
+                    if (onChange) {
+                        onChange(items, this.sortable, evt)
+                    }
                 }
-            })
+
+                setTimeout(() => {
+                    if (eventHandler) {
+                        eventHandler(evt)
+                    }
+                }, 0)
+            }
+        })
 
         this.sortable = Sortable.create(ReactDOM.findDOMNode(this), options)
     }
@@ -85,13 +106,13 @@ ReactSortable.propTypes = {
     className: PropTypes.string,
     options: PropTypes.object,
     onChange: PropTypes.func,
-    tag: PropTypes.string
+    tag: PropTypes.string,
 }
 
 ReactSortable.defaultProps = {
     className: '',
     options: {},
-    tag: 'div'
+    tag: 'div',
 }
 
 export default ReactSortable

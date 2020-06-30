@@ -27,9 +27,7 @@ describe('Config: actions', () => {
         it('returns correct config', () => {
             const config = actionsConfig.actions[0]
 
-            expect(
-                actionsConfig.getActionByName(config.name)
-            ).toEqual(config)
+            expect(actionsConfig.getActionByName(config.name)).toEqual(config)
         })
     })
 })

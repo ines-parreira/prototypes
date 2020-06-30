@@ -6,10 +6,10 @@ import ActionSelect from '../ActionSelect'
 
 const commonProps = {
     actions: {
-        modifyCodeAST: jest.fn()
+        modifyCodeAST: jest.fn(),
     },
     parent: fromJS(['body', 0, 'expression']),
-    value: 'addTags'
+    value: 'addTags',
 }
 
 const nonSystemRule = fromJS({type: 'user'})
@@ -18,10 +18,7 @@ const systemRule = fromJS({type: 'system'})
 describe('ActionSelect component', () => {
     it('should render all non-system actions for non-system rules', () => {
         const component = shallow(
-            <ActionSelect
-                {...commonProps}
-                rule={nonSystemRule}
-            />
+            <ActionSelect {...commonProps} rule={nonSystemRule} />
         )
 
         expect(component).toMatchSnapshot()
@@ -29,10 +26,7 @@ describe('ActionSelect component', () => {
 
     it('should render all actions for system rules', () => {
         const component = shallow(
-            <ActionSelect
-                {...commonProps}
-                rule={systemRule}
-            />
+            <ActionSelect {...commonProps} rule={systemRule} />
         )
 
         expect(component).toMatchSnapshot()
@@ -40,10 +34,7 @@ describe('ActionSelect component', () => {
 
     it('should call actions.modifyCodeAST on click', () => {
         const wrapper = shallow(
-            <ActionSelect
-                {...commonProps}
-                rule={nonSystemRule}
-            />
+            <ActionSelect {...commonProps} rule={nonSystemRule} />
         )
 
         const component = wrapper.instance()
@@ -51,6 +42,10 @@ describe('ActionSelect component', () => {
 
         component._handleClick(newValue)
 
-        expect(commonProps.actions.modifyCodeAST).toHaveBeenCalledWith(commonProps.parent, newValue, 'UPDATE')
+        expect(commonProps.actions.modifyCodeAST).toHaveBeenCalledWith(
+            commonProps.parent,
+            newValue,
+            'UPDATE'
+        )
     })
 })

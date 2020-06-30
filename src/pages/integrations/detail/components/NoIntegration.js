@@ -11,15 +11,11 @@ export default class NoIntegration extends React.Component {
             return <Loader />
         }
 
-        return (
-            <div>
-                You have no integration of this type at the moment.
-            </div>
-        )
+        return <div>You have no integration of this type at the moment.</div>
     }
 }
 
 NoIntegration.propTypes = {
     type: PropTypes.string,
-    loading: PropTypes.bool.isRequired
+    loading: PropTypes.bool.isRequired,
 }

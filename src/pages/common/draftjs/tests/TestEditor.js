@@ -13,7 +13,9 @@ export default class TestEditor extends React.Component {
 
     constructor(props) {
         super(props)
-        const editorState = props.editorState ? props.editorState : createEditorStateFromHtml(props.html)
+        const editorState = props.editorState
+            ? props.editorState
+            : createEditorStateFromHtml(props.html)
         this.state = {
             editorState,
         }

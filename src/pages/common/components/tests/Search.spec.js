@@ -6,22 +6,14 @@ import Search from '../Search'
 
 describe('Search component', () => {
     it('handle change function', () => {
-        const component = mount(
-            <Search
-                onChange={_noop}
-            />
-        )
+        const component = mount(<Search onChange={_noop} />)
         component.instance()._handleChange('text')
         expect(component.instance().state.search).toEqual('text')
         expect(component).toMatchSnapshot()
     })
 
     it('reset function', () => {
-        const component = mount(
-            <Search
-                onChange={_noop}
-            />
-        )
+        const component = mount(<Search onChange={_noop} />)
         component.instance()._handleChange('text')
         expect(component.instance().state.search).toEqual('text')
         expect(component).toMatchSnapshot()

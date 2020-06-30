@@ -30,7 +30,8 @@ describe('current account actions', () => {
 
         mockServer.onPut('/api/account/').reply(200, data)
 
-        return store.dispatch(actions.updateAccount(data))
+        return store
+            .dispatch(actions.updateAccount(data))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
@@ -40,7 +41,8 @@ describe('current account actions', () => {
 
             mockServer.onPost('/api/account/settings/').reply(200, data)
 
-            return store.dispatch(actions.submitSetting(data))
+            return store
+                .dispatch(actions.submitSetting(data))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
@@ -49,7 +51,8 @@ describe('current account actions', () => {
 
             mockServer.onPut('/api/account/settings/1/').reply(200, data)
 
-            return store.dispatch(actions.submitSetting(data))
+            return store
+                .dispatch(actions.submitSetting(data))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
     })
@@ -60,7 +63,8 @@ describe('current account actions', () => {
 
             mockServer.onPut('/api/account/owner/', {id: userId}).reply(202)
 
-            return store.dispatch(actions.updateAccountOwner(userId))
+            return store
+                .dispatch(actions.updateAccountOwner(userId))
                 .then(() => {
                     expect(store.getActions()).toMatchSnapshot()
                     done()
@@ -72,13 +76,15 @@ describe('current account actions', () => {
         it('update subscription', () => {
             const subscription = {plan: 'basic'}
 
-            mockServer.onPut('/api/billing/subscription/').reply(202, subscription)
+            mockServer
+                .onPut('/api/billing/subscription/')
+                .reply(202, subscription)
 
-            return store.dispatch(actions.updateSubscription())
+            return store
+                .dispatch(actions.updateSubscription())
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
     })
-
 
     describe('setCurrentSubscription()', () => {
         it('should return a Redux action to set the current subscription.', () => {
@@ -86,7 +92,9 @@ describe('current account actions', () => {
                 plan: 'basic-usd-1',
                 status: 'active',
             }
-            expect(actions.setCurrentSubscription(fromJS(subscription))).toMatchSnapshot()
+            expect(
+                actions.setCurrentSubscription(fromJS(subscription))
+            ).toMatchSnapshot()
         })
     })
 })

@@ -6,7 +6,7 @@ import {fromJS} from 'immutable'
 
 import {
     shopifyRefundOrderPayloadFixture,
-    shopifySuggestedRefundFixture
+    shopifySuggestedRefundFixture,
 } from '../../../../../../../../../../../../../../fixtures/shopify'
 import OrderTotals from '../OrderTotals'
 

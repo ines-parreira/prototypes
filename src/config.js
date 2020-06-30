@@ -3,14 +3,17 @@ import axios from 'axios'
 import _find from 'lodash/find'
 import _get from 'lodash/get'
 
-import {RECHARGE_CANCELLATION_REASONS, RECHARGE_DEFAULT_CANCELLATION_REASON} from './config/integrations/recharge'
+import {
+    RECHARGE_CANCELLATION_REASONS,
+    RECHARGE_DEFAULT_CANCELLATION_REASON,
+} from './config/integrations/recharge'
 
 import {
     EMAIL_INTEGRATION_TYPE,
     EMAIL_INTEGRATION_TYPES,
     MAGENTO2_INTEGRATION_TYPE,
     RECHARGE_INTEGRATION_TYPE,
-    SHOPIFY_INTEGRATION_TYPE
+    SHOPIFY_INTEGRATION_TYPE,
 } from './constants/integration'
 
 import {daysToHours, hoursToSeconds} from './utils'
@@ -31,7 +34,12 @@ export const HTTP_METHOD_GET = 'GET'
 export const HTTP_METHOD_POST = 'POST'
 export const HTTP_METHOD_PUT = 'PUT'
 export const HTTP_METHOD_DELETE = 'DELETE'
-export const AVAILABLE_HTTP_METHODS = [HTTP_METHOD_GET, HTTP_METHOD_POST, HTTP_METHOD_PUT, HTTP_METHOD_DELETE]
+export const AVAILABLE_HTTP_METHODS = [
+    HTTP_METHOD_GET,
+    HTTP_METHOD_POST,
+    HTTP_METHOD_PUT,
+    HTTP_METHOD_DELETE,
+]
 
 /**
  * Timeformat related
@@ -39,11 +47,11 @@ export const AVAILABLE_HTTP_METHODS = [HTTP_METHOD_GET, HTTP_METHOD_POST, HTTP_M
 export const AVAILABLE_LANGUAGES = [
     {
         localeName: 'en',
-        displayName: 'English US'
+        displayName: 'English US',
     },
     {
         localeName: 'fr',
-        displayName: 'French'
+        displayName: 'French',
     },
 ]
 
@@ -52,36 +60,35 @@ export const AVAILABLE_LANGUAGES = [
  */
 export const BASIC_OPERATORS = {
     eq: {
-        label: 'is'
+        label: 'is',
     },
     neq: {
-        label: 'is not'
-    }
+        label: 'is not',
+    },
 }
 
 export const EMPTY_OPERATORS = {
     isEmpty: {
-        label: 'is empty'
+        label: 'is empty',
     },
     isNotEmpty: {
-        label: 'is not empty'
-    }
+        label: 'is not empty',
+    },
 }
 
 export const UNARY_OPERATORS = {
     ...EMPTY_OPERATORS,
     duringBusinessHours: {
-        label: 'during business hours'
+        label: 'during business hours',
     },
     outsideBusinessHours: {
-        label: 'outside business hours'
-    }
+        label: 'outside business hours',
+    },
 }
 
 export const TIMEDELTA_OPERATOR_DEFAULT_UNIT = 'd'
 export const TIMEDELTA_OPERATOR_DEFAULT_QUANTITY = 1
-export const TIMEDELTA_OPERATOR_DEFAULT_VALUE =
-    `${TIMEDELTA_OPERATOR_DEFAULT_QUANTITY}${TIMEDELTA_OPERATOR_DEFAULT_UNIT}`
+export const TIMEDELTA_OPERATOR_DEFAULT_VALUE = `${TIMEDELTA_OPERATOR_DEFAULT_QUANTITY}${TIMEDELTA_OPERATOR_DEFAULT_UNIT}`
 
 /**
  * Ticket-related
@@ -113,17 +120,17 @@ export const TICKET_STATUSES = ['open', 'closed']
 export const DEFAULT_SOURCE_PATHS = {
     ticket: {
         custom: ['ticket', 'customer', 'data'],
-        integrations: ['ticket', 'customer', 'integrations']
+        integrations: ['ticket', 'customer', 'integrations'],
     },
     customer: {
         custom: ['customer', 'data'],
-        integrations: ['customer', 'integrations']
+        integrations: ['customer', 'integrations'],
     },
     //TODO(customers-migration): remove this property when we migrated widgets.
     user: {
         custom: ['customer', 'data'],
-        integrations: ['customer', 'integrations']
-    }
+        integrations: ['customer', 'integrations'],
+    },
 }
 
 /**
@@ -136,7 +143,8 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         type: EMAIL_INTEGRATION_TYPE,
         subTypes: EMAIL_INTEGRATION_TYPES,
         title: 'Email',
-        description: 'Connect your support email addresses and respond to your customers from Gorgias',
+        description:
+            'Connect your support email addresses and respond to your customers from Gorgias',
     },
     {
         type: 'smooch_inside',
@@ -146,14 +154,16 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
     {
         type: 'facebook',
         title: 'Facebook, Messenger & Instagram',
-        description: 'Create tickets from Facebook posts and comments, Instagram comments and Messenger conversations',
+        description:
+            'Create tickets from Facebook posts and comments, Instagram comments and Messenger conversations',
         image: 'integrations/facebook.png',
     },
     {
         type: 'aircall',
         title: 'Aircall',
-        description: 'Provide phone support & create tickets when customers call you.',
-        image: 'integrations/aircall.png'
+        description:
+            'Provide phone support & create tickets when customers call you.',
+        image: 'integrations/aircall.png',
     },
     {
         type: 'http',
@@ -164,26 +174,29 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
     {
         type: 'shopify',
         title: 'Shopify',
-        description: 'Display customer profiles & orders next to tickets. Edit orders with macros',
+        description:
+            'Display customer profiles & orders next to tickets. Edit orders with macros',
         image: 'integrations/shopify.png',
     },
     {
         type: MAGENTO2_INTEGRATION_TYPE,
         title: 'Magento 2',
-        description: 'Display customer profiles & orders next to tickets. Edit orders with macros',
-        image: 'integrations/magento.png'
-
+        description:
+            'Display customer profiles & orders next to tickets. Edit orders with macros',
+        image: 'integrations/magento.png',
     },
     {
         type: 'recharge',
         title: 'Recharge',
-        description: 'Display subscription info. Refund charges & skip monthly payments.',
+        description:
+            'Display subscription info. Refund charges & skip monthly payments.',
         image: 'integrations/recharge.svg',
     },
     {
         type: 'smile',
         title: 'Smile',
-        description: 'Display customer points and activity. Insert point balance or referral url in macros.',
+        description:
+            'Display customer points and activity. Insert point balance or referral url in macros.',
         image: 'integrations/smile.svg',
     },
     {
@@ -200,7 +213,8 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
     },
     {
         title: 'Swell',
-        description: 'Display loyalty points next to tickets. Award points with macros.',
+        description:
+            'Display loyalty points next to tickets. Award points with macros.',
         url: 'https://docs.gorgias.com/reward-and-loyalty/swell-rewards',
         image: 'integrations/swell.png',
     },
@@ -212,7 +226,8 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
     },
     {
         title: 'Slack',
-        description: 'Post notifications on Slack when tickets are created or updated',
+        description:
+            'Post notifications on Slack when tickets are created or updated',
         url: 'https://docs.gorgias.com/other-integrations/slack',
         image: 'integrations/slack.png',
     },
@@ -232,14 +247,14 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         title: 'Ottspott',
         description: 'Create tickets from phone conversations',
         url: 'https://docs.gorgias.com/voice-and-phone/ottspott',
-        image: 'integrations/ottspott.png'
+        image: 'integrations/ottspott.png',
     },
     {
         type: 'smooch',
         title: 'Smooch',
         description: 'Connect your own Smooch to Gorgias',
         image: 'integrations/smooch.png',
-    }
+    },
 ]
 
 // Number of threads imported from Gmail
@@ -264,14 +279,14 @@ export const ACTION_TEMPLATES = [
         arguments: {
             body_text: {
                 type: 'string',
-                default: ''
+                default: '',
             },
             body_html: {
                 type: 'string',
                 format: 'html',
-                default: ''
-            }
-        }
+                default: '',
+            },
+        },
     },
     {
         execution: 'front',
@@ -280,9 +295,9 @@ export const ACTION_TEMPLATES = [
         arguments: {
             attachments: {
                 type: 'listDict',
-                default: []
-            }
-        }
+                default: [],
+            },
+        },
     },
     {
         execution: 'front',
@@ -307,9 +322,9 @@ export const ACTION_TEMPLATES = [
         arguments: {
             assignee_user: {
                 type: 'dict',
-                default: null
-            }
-        }
+                default: null,
+            },
+        },
     },
     {
         execution: 'front',
@@ -320,9 +335,9 @@ export const ACTION_TEMPLATES = [
         arguments: {
             assignee_team: {
                 type: 'dict',
-                default: null
-            }
-        }
+                default: null,
+            },
+        },
     },
     {
         execution: 'front',
@@ -343,7 +358,7 @@ export const ACTION_TEMPLATES = [
             },
             url: {
                 type: 'string',
-                format: 'url'
+                format: 'url',
             },
             headers: {
                 type: 'listDict',
@@ -351,17 +366,17 @@ export const ACTION_TEMPLATES = [
                 items: {
                     schema: {
                         key: {
-                            type: 'string'
+                            type: 'string',
                         },
                         value: {
-                            type: 'string'
+                            type: 'string',
                         },
                         editable: {
-                            type: 'bool'
-                        }
+                            type: 'bool',
+                        },
                     },
-                    type: 'object'
-                }
+                    type: 'object',
+                },
             },
             params: {
                 type: 'listDict',
@@ -369,17 +384,17 @@ export const ACTION_TEMPLATES = [
                 items: {
                     schema: {
                         key: {
-                            type: 'string'
+                            type: 'string',
                         },
                         value: {
-                            type: 'string'
+                            type: 'string',
                         },
                         editable: {
-                            type: 'bool'
-                        }
+                            type: 'bool',
+                        },
                     },
-                    type: 'object'
-                }
+                    type: 'object',
+                },
             },
             form: {
                 type: 'listDict',
@@ -387,29 +402,29 @@ export const ACTION_TEMPLATES = [
                 items: {
                     schema: {
                         key: {
-                            type: 'string'
+                            type: 'string',
                         },
                         value: {
-                            type: 'string'
+                            type: 'string',
                         },
                         editable: {
-                            type: 'bool'
-                        }
+                            type: 'bool',
+                        },
                     },
-                    type: 'object'
-                }
+                    type: 'object',
+                },
             },
             json: {
                 type: 'dict',
                 format: 'json',
-                default: {}
+                default: {},
             },
             content_type: {
                 type: 'string',
                 default: JSON_CONTENT_TYPE,
-                enum: [JSON_CONTENT_TYPE, FORM_CONTENT_TYPE]
-            }
-        }
+                enum: [JSON_CONTENT_TYPE, FORM_CONTENT_TYPE],
+            },
+        },
     },
     {
         execution: 'back',
@@ -423,9 +438,9 @@ export const ACTION_TEMPLATES = [
                 default: true,
                 editable: true,
                 input: {
-                    type: 'checkbox'
+                    type: 'checkbox',
                 },
-                display_order: 1
+                display_order: 1,
             },
             refund: {
                 label: 'Refund',
@@ -433,46 +448,65 @@ export const ACTION_TEMPLATES = [
                 default: true,
                 editable: true,
                 input: {
-                    type: 'checkbox'
+                    type: 'checkbox',
                 },
-                display_order: 2
-            }
+                display_order: 2,
+            },
         },
         validators: [
             {
                 validate: (customer: Object) => {
-                    return !!_find(customer.integrations, {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
+                    return !!_find(customer.integrations, {
+                        __integration_type__: SHOPIFY_INTEGRATION_TYPE,
+                    })
                 },
-                error: 'This customer has no Shopify data.'
+                error: 'This customer has no Shopify data.',
             },
             {
                 validate: (customer: Object) => {
-                    const shopifyIntegration = _find(customer.integrations,
-                        {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
+                    const shopifyIntegration = _find(customer.integrations, {
+                        __integration_type__: SHOPIFY_INTEGRATION_TYPE,
+                    })
 
                     return _get(shopifyIntegration, ['orders'])
                 },
-                error: 'This customer has no order to cancel.'
+                error: 'This customer has no order to cancel.',
             },
             {
                 validate: (customer: Object) => {
-                    const shopifyIntegration = _find(customer.integrations,
-                        {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
+                    const shopifyIntegration = _find(customer.integrations, {
+                        __integration_type__: SHOPIFY_INTEGRATION_TYPE,
+                    })
 
-                    return _get(shopifyIntegration, ['orders', '0', 'financial_status']) !== 'fulfilled'
+                    return (
+                        _get(shopifyIntegration, [
+                            'orders',
+                            '0',
+                            'financial_status',
+                        ]) !== 'fulfilled'
+                    )
                 },
-                error: 'The last order has already been fulfilled, it\'s not cancellable.'
+                error:
+                    "The last order has already been fulfilled, it's not cancellable.",
             },
             {
                 validate: (customer: Object) => {
-                    const shopifyIntegration = _find(customer.integrations,
-                        {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
+                    const shopifyIntegration = _find(customer.integrations, {
+                        __integration_type__: SHOPIFY_INTEGRATION_TYPE,
+                    })
 
-                    return _get(shopifyIntegration, ['orders', '0', 'financial_status']) !== 'partial'
+                    return (
+                        _get(shopifyIntegration, [
+                            'orders',
+                            '0',
+                            'financial_status',
+                        ]) !== 'partial'
+                    )
                 },
-                error: 'The last order has already been partially fulfilled, it\'s not cancellable.'
-            }
-        ]
+                error:
+                    "The last order has already been partially fulfilled, it's not cancellable.",
+            },
+        ],
     },
     {
         execution: 'back',
@@ -485,7 +519,7 @@ export const ACTION_TEMPLATES = [
                 type: 'string',
                 default: '',
                 editable: true,
-                required: true
+                required: true,
             },
             restock: {
                 label: 'Restock',
@@ -493,9 +527,9 @@ export const ACTION_TEMPLATES = [
                 default: true,
                 editable: true,
                 input: {
-                    type: 'checkbox'
+                    type: 'checkbox',
                 },
-                display_order: 1
+                display_order: 1,
             },
             refund: {
                 label: 'Refund',
@@ -503,11 +537,11 @@ export const ACTION_TEMPLATES = [
                 default: true,
                 editable: true,
                 input: {
-                    type: 'checkbox'
+                    type: 'checkbox',
                 },
-                display_order: 2
-            }
-        }
+                display_order: 2,
+            },
+        },
     },
     {
         execution: 'back',
@@ -518,150 +552,181 @@ export const ACTION_TEMPLATES = [
         validators: [
             {
                 validate: (customer: Object) => {
-                    return !!_find(customer.integrations, {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
+                    return !!_find(customer.integrations, {
+                        __integration_type__: SHOPIFY_INTEGRATION_TYPE,
+                    })
                 },
-                error: 'This customer has no Shopify data.'
+                error: 'This customer has no Shopify data.',
             },
             {
                 validate: (customer: Object) => {
-                    const shopifyIntegration = _find(customer.integrations,
-                        {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
+                    const shopifyIntegration = _find(customer.integrations, {
+                        __integration_type__: SHOPIFY_INTEGRATION_TYPE,
+                    })
 
                     return _get(shopifyIntegration, ['orders'])
                 },
-                error: 'This customer has no order to duplicate.'
+                error: 'This customer has no order to duplicate.',
             },
-        ]
+        ],
     },
     {
         execution: 'back',
         integrationType: SHOPIFY_INTEGRATION_TYPE,
         name: 'shopifyEditShippingAddressOfLastOrder',
-        title: 'Edit last order\'s shipping address',
+        title: "Edit last order's shipping address",
         notes: [
-            'This action won\'t work if the order has already been shipped.'
+            "This action won't work if the order has already been shipped.",
         ],
         arguments: {
             name: {
                 label: 'Name',
                 type: 'string',
-                default: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.name}}',
+                default:
+                    '{{ticket.customer.integrations.shopify.orders[0].shipping_address.name}}',
                 editable: true,
                 required: false,
-                display_order: 1
+                display_order: 1,
             },
             address1: {
                 label: 'Address (1)',
                 type: 'string',
-                default: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.address1}}',
+                default:
+                    '{{ticket.customer.integrations.shopify.orders[0].shipping_address.address1}}',
                 editable: true,
                 required: false,
-                display_order: 2
+                display_order: 2,
             },
             address2: {
                 label: 'Address (2)',
                 type: 'string',
-                default: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.address2}}',
+                default:
+                    '{{ticket.customer.integrations.shopify.orders[0].shipping_address.address2}}',
                 editable: true,
                 required: false,
-                display_order: 3
+                display_order: 3,
             },
             city: {
                 label: 'City',
                 type: 'string',
-                default: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.city}}',
+                default:
+                    '{{ticket.customer.integrations.shopify.orders[0].shipping_address.city}}',
                 editable: true,
                 required: false,
-                display_order: 4
+                display_order: 4,
             },
             province: {
                 label: 'State/Province',
                 type: 'string',
-                default: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.province}}',
+                default:
+                    '{{ticket.customer.integrations.shopify.orders[0].shipping_address.province}}',
                 editable: true,
                 required: false,
-                display_order: 5
+                display_order: 5,
             },
             zip: {
                 label: 'ZIP',
                 type: 'string',
-                default: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.zip}}',
+                default:
+                    '{{ticket.customer.integrations.shopify.orders[0].shipping_address.zip}}',
                 editable: true,
                 required: false,
-                display_order: 6
+                display_order: 6,
             },
             country: {
                 label: 'Country',
                 type: 'string',
-                default: '{{ticket.customer.integrations.shopify.orders[0].shipping_address.country}}',
+                default:
+                    '{{ticket.customer.integrations.shopify.orders[0].shipping_address.country}}',
                 editable: true,
                 required: false,
-                display_order: 7
+                display_order: 7,
             },
         },
         validators: [
             {
                 validate: (customer: Object) => {
-                    return !!_find(customer.integrations, {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
+                    return !!_find(customer.integrations, {
+                        __integration_type__: SHOPIFY_INTEGRATION_TYPE,
+                    })
                 },
-                error: 'This customer has no Shopify data.'
+                error: 'This customer has no Shopify data.',
             },
             {
                 validate: (customer: Object) => {
-                    const shopifyIntegration = _find(customer.integrations,
-                        {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
+                    const shopifyIntegration = _find(customer.integrations, {
+                        __integration_type__: SHOPIFY_INTEGRATION_TYPE,
+                    })
 
                     return _get(shopifyIntegration, ['orders'])
                 },
-                error: 'This customer has no order to edit.'
+                error: 'This customer has no order to edit.',
             },
             {
                 validate: (customer: Object) => {
-                    const shopifyIntegration = _find(customer.integrations,
-                        {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
+                    const shopifyIntegration = _find(customer.integrations, {
+                        __integration_type__: SHOPIFY_INTEGRATION_TYPE,
+                    })
 
-                    return _get(shopifyIntegration, ['orders', '0', 'financial_status']) !== 'fulfilled'
+                    return (
+                        _get(shopifyIntegration, [
+                            'orders',
+                            '0',
+                            'financial_status',
+                        ]) !== 'fulfilled'
+                    )
                 },
-                error: 'The last order has already been fulfilled, you can\'t edit it\'s shipping address.'
-            }
-        ]
+                error:
+                    "The last order has already been fulfilled, you can't edit it's shipping address.",
+            },
+        ],
     },
     {
         execution: 'back',
         integrationType: SHOPIFY_INTEGRATION_TYPE,
         name: 'shopifyRefundShippingCostOfLastOrder',
-        title: 'Refund last order\'s shipping cost',
+        title: "Refund last order's shipping cost",
         arguments: {},
         notes: [
-            'This action will fail if the payment hasn\'t been captured yet.'
+            "This action will fail if the payment hasn't been captured yet.",
         ],
         validators: [
             {
                 validate: (customer: Object) => {
-                    return !!_find(customer.integrations, {'__integration_type__': 'shopify'})
+                    return !!_find(customer.integrations, {
+                        __integration_type__: 'shopify',
+                    })
                 },
-                error: 'This customer has no Shopify data.'
+                error: 'This customer has no Shopify data.',
             },
             {
                 validate: (customer: Object) => {
-                    const shopifyIntegration = _find(customer.integrations,
-                        {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
+                    const shopifyIntegration = _find(customer.integrations, {
+                        __integration_type__: SHOPIFY_INTEGRATION_TYPE,
+                    })
 
                     return _get(shopifyIntegration, ['orders'])
                 },
-                error: 'This customer has no order to refund.'
+                error: 'This customer has no order to refund.',
             },
             {
                 validate: (customer: Object) => {
-                    const shopifyIntegration = _find(customer.integrations,
-                        {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
+                    const shopifyIntegration = _find(customer.integrations, {
+                        __integration_type__: SHOPIFY_INTEGRATION_TYPE,
+                    })
 
-                    return !['refunded', 'accepted']
-                        .includes(_get(shopifyIntegration, ['orders', '0', 'financial_status']))
+                    return !['refunded', 'accepted'].includes(
+                        _get(shopifyIntegration, [
+                            'orders',
+                            '0',
+                            'financial_status',
+                        ])
+                    )
                 },
-                error: 'The last order has already been refunded or hasn\'t been paid for yet.'
-            }
-        ]
+                error:
+                    "The last order has already been refunded or hasn't been paid for yet.",
+            },
+        ],
     },
     {
         execution: 'back',
@@ -675,40 +740,51 @@ export const ACTION_TEMPLATES = [
                 default: true,
                 editable: true,
                 input: {
-                    type: 'checkbox'
+                    type: 'checkbox',
                 },
-                display_order: 1
-            }
+                display_order: 1,
+            },
         },
         notes: [
-            'This action will fail if the payment hasn\'t been captured yet.'
+            "This action will fail if the payment hasn't been captured yet.",
         ],
         validators: [
             {
                 validate: (customer: Object) => {
-                    return !!_find(customer.integrations, {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
+                    return !!_find(customer.integrations, {
+                        __integration_type__: SHOPIFY_INTEGRATION_TYPE,
+                    })
                 },
-                error: 'This customer has no Shopify data.'
+                error: 'This customer has no Shopify data.',
             },
             {
                 validate: (customer: Object) => {
-                    const shopifyIntegration = _find(customer.integrations,
-                        {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
+                    const shopifyIntegration = _find(customer.integrations, {
+                        __integration_type__: SHOPIFY_INTEGRATION_TYPE,
+                    })
 
                     return _get(shopifyIntegration, ['orders'])
                 },
-                error: 'This customer has no order to refund.'
+                error: 'This customer has no order to refund.',
             },
             {
                 validate: (customer: Object) => {
-                    const shopifyIntegration = _find(customer.integrations,
-                        {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
+                    const shopifyIntegration = _find(customer.integrations, {
+                        __integration_type__: SHOPIFY_INTEGRATION_TYPE,
+                    })
 
-                    return !['refunded', 'accepted'].includes(_get(shopifyIntegration, ['orders', '0', 'financial_status']))
+                    return !['refunded', 'accepted'].includes(
+                        _get(shopifyIntegration, [
+                            'orders',
+                            '0',
+                            'financial_status',
+                        ])
+                    )
                 },
-                error: 'The last order has already been refunded or hasn\'t been paid for yet.'
-            }
-        ]
+                error:
+                    "The last order has already been refunded or hasn't been paid for yet.",
+            },
+        ],
     },
     {
         execution: 'back',
@@ -724,72 +800,87 @@ export const ACTION_TEMPLATES = [
                 display_order: 1,
                 input: {
                     type: 'number',
-                    step: 0.01
-                }
-            }
+                    step: 0.01,
+                },
+            },
         },
         notes: [
-            'This action will fail if the payment hasn\'t been captured yet.'
+            "This action will fail if the payment hasn't been captured yet.",
         ],
         validators: [
             {
                 validate: (customer: Object) => {
-                    return !!_find(customer.integrations, {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
+                    return !!_find(customer.integrations, {
+                        __integration_type__: SHOPIFY_INTEGRATION_TYPE,
+                    })
                 },
-                error: 'This customer has no Shopify data.'
+                error: 'This customer has no Shopify data.',
             },
             {
                 validate: (customer: Object) => {
-                    const shopifyIntegration = _find(customer.integrations,
-                        {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
+                    const shopifyIntegration = _find(customer.integrations, {
+                        __integration_type__: SHOPIFY_INTEGRATION_TYPE,
+                    })
 
                     return _get(shopifyIntegration, ['orders'])
                 },
-                error: 'This customer has no order to refund.'
+                error: 'This customer has no order to refund.',
             },
             {
                 validate: (customer: Object) => {
-                    const shopifyIntegration = _find(customer.integrations,
-                        {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
+                    const shopifyIntegration = _find(customer.integrations, {
+                        __integration_type__: SHOPIFY_INTEGRATION_TYPE,
+                    })
 
-                    return !['refunded', 'accepted'].includes(_get(shopifyIntegration, ['orders', '0', 'financial_status']))
+                    return !['refunded', 'accepted'].includes(
+                        _get(shopifyIntegration, [
+                            'orders',
+                            '0',
+                            'financial_status',
+                        ])
+                    )
                 },
-                error: 'The last order has already been refunded or hasn\'t been paid for yet.'
-            }
-        ]
+                error:
+                    "The last order has already been refunded or hasn't been paid for yet.",
+            },
+        ],
     },
     {
         execution: 'back',
         integrationType: SHOPIFY_INTEGRATION_TYPE,
         name: 'shopifyEditNoteOfLastOrder',
-        title: 'Edit last order\'s note',
+        title: "Edit last order's note",
         arguments: {
             note: {
                 label: 'Note',
                 type: 'string',
-                default: '{{ticket.customer.integrations.shopify.orders[0].note}}',
+                default:
+                    '{{ticket.customer.integrations.shopify.orders[0].note}}',
                 editable: true,
-                required: false,  // can be nulled
-                display_order: 1
-            }
+                required: false, // can be nulled
+                display_order: 1,
+            },
         },
         validators: [
             {
                 validate: (customer: Object) => {
-                    return !!_find(customer.integrations, {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
+                    return !!_find(customer.integrations, {
+                        __integration_type__: SHOPIFY_INTEGRATION_TYPE,
+                    })
                 },
-                error: 'This customer has no Shopify data.'
+                error: 'This customer has no Shopify data.',
             },
             {
                 validate: (customer: Object) => {
-                    const shopifyIntegration = _find(customer.integrations,
-                        {'__integration_type__': SHOPIFY_INTEGRATION_TYPE})
+                    const shopifyIntegration = _find(customer.integrations, {
+                        __integration_type__: SHOPIFY_INTEGRATION_TYPE,
+                    })
 
                     return _get(shopifyIntegration, ['orders'])
                 },
-                error: 'This customer has no order to edit.'
+                error: 'This customer has no order to edit.',
             },
-        ]
+        ],
     },
     {
         execution: 'back',
@@ -806,37 +897,50 @@ export const ACTION_TEMPLATES = [
                 display_order: 1,
                 input: {
                     type: 'select',
-                    options: RECHARGE_CANCELLATION_REASONS.map((option) => ({value: option, label: option})),
+                    options: RECHARGE_CANCELLATION_REASONS.map((option) => ({
+                        value: option,
+                        label: option,
+                    })),
                     allowCustomValue: true,
-                }
-            }
+                },
+            },
         },
         validators: [
             {
                 validate: (customer: Object) => {
-                    return !!_find(customer.integrations, {'__integration_type__': RECHARGE_INTEGRATION_TYPE})
+                    return !!_find(customer.integrations, {
+                        __integration_type__: RECHARGE_INTEGRATION_TYPE,
+                    })
                 },
-                error: 'This customer has no Recharge data.'
+                error: 'This customer has no Recharge data.',
             },
             {
                 validate: (customer: Object) => {
-                    const rechargeIntegration = _find(customer.integrations,
-                        {'__integration_type__': RECHARGE_INTEGRATION_TYPE})
+                    const rechargeIntegration = _find(customer.integrations, {
+                        __integration_type__: RECHARGE_INTEGRATION_TYPE,
+                    })
 
                     return _get(rechargeIntegration, ['subscriptions'])
                 },
-                error: 'This customer has no subscription to cancel.'
+                error: 'This customer has no subscription to cancel.',
             },
             {
                 validate: (customer: Object) => {
-                    const rechargeIntegration = _find(customer.integrations,
-                        {'__integration_type__': RECHARGE_INTEGRATION_TYPE})
+                    const rechargeIntegration = _find(customer.integrations, {
+                        __integration_type__: RECHARGE_INTEGRATION_TYPE,
+                    })
 
-                    return _get(rechargeIntegration, ['subscriptions', '0', 'cancelled_at']) === null
+                    return (
+                        _get(rechargeIntegration, [
+                            'subscriptions',
+                            '0',
+                            'cancelled_at',
+                        ]) === null
+                    )
                 },
-                error: 'The last subscription has already been cancelled.'
-            }
-        ]
+                error: 'The last subscription has already been cancelled.',
+            },
+        ],
     },
     {
         execution: 'back',
@@ -847,29 +951,39 @@ export const ACTION_TEMPLATES = [
         validators: [
             {
                 validate: (customer: Object) => {
-                    return !!_find(customer.integrations, {'__integration_type__': RECHARGE_INTEGRATION_TYPE})
+                    return !!_find(customer.integrations, {
+                        __integration_type__: RECHARGE_INTEGRATION_TYPE,
+                    })
                 },
-                error: 'This customer has no Recharge data.'
+                error: 'This customer has no Recharge data.',
             },
             {
                 validate: (customer: Object) => {
-                    const rechargeIntegration = _find(customer.integrations,
-                        {'__integration_type__': RECHARGE_INTEGRATION_TYPE})
+                    const rechargeIntegration = _find(customer.integrations, {
+                        __integration_type__: RECHARGE_INTEGRATION_TYPE,
+                    })
 
                     return _get(rechargeIntegration, ['subscriptions'])
                 },
-                error: 'This customer has no subscription to activate.'
+                error: 'This customer has no subscription to activate.',
             },
             {
                 validate: (customer: Object) => {
-                    const rechargeIntegration = _find(customer.integrations,
-                        {'__integration_type__': RECHARGE_INTEGRATION_TYPE})
+                    const rechargeIntegration = _find(customer.integrations, {
+                        __integration_type__: RECHARGE_INTEGRATION_TYPE,
+                    })
 
-                    return _get(rechargeIntegration, ['subscriptions', '0', 'cancelled_at']) !== null
+                    return (
+                        _get(rechargeIntegration, [
+                            'subscriptions',
+                            '0',
+                            'cancelled_at',
+                        ]) !== null
+                    )
                 },
-                error: 'The last subscription is already active.'
-            }
-        ]
+                error: 'The last subscription is already active.',
+            },
+        ],
     },
     {
         execution: 'back',
@@ -879,43 +993,49 @@ export const ACTION_TEMPLATES = [
         arguments: {
             amount: {
                 label: 'Amount',
-                default: '{{ticket.customer.integrations.recharge.charges[0].total_price}}',
+                default:
+                    '{{ticket.customer.integrations.recharge.charges[0].total_price}}',
                 editable: true,
                 required: true,
                 display_order: 1,
                 input: {
                     type: 'number',
-                    step: 0.01
-                }
-            }
+                    step: 0.01,
+                },
+            },
         },
         validators: [
             {
                 validate: (customer: Object) => {
-                    return !!_find(customer.integrations, {'__integration_type__': RECHARGE_INTEGRATION_TYPE})
+                    return !!_find(customer.integrations, {
+                        __integration_type__: RECHARGE_INTEGRATION_TYPE,
+                    })
                 },
-                error: 'This customer has no Recharge data.'
+                error: 'This customer has no Recharge data.',
             },
             {
                 validate: (customer: Object) => {
-                    const rechargeIntegration = _find(customer.integrations,
-                        {'__integration_type__': RECHARGE_INTEGRATION_TYPE})
+                    const rechargeIntegration = _find(customer.integrations, {
+                        __integration_type__: RECHARGE_INTEGRATION_TYPE,
+                    })
 
                     return _get(rechargeIntegration, ['charges'])
                 },
-                error: 'This customer has no charges to refund.'
+                error: 'This customer has no charges to refund.',
             },
             {
                 validate: (customer: Object) => {
-                    const rechargeIntegration = _find(customer.integrations,
-                        {'__integration_type__': RECHARGE_INTEGRATION_TYPE})
+                    const rechargeIntegration = _find(customer.integrations, {
+                        __integration_type__: RECHARGE_INTEGRATION_TYPE,
+                    })
 
-                    return ['SUCCESS', 'PARTIALLY_REFUNDED']
-                        .includes(_get(rechargeIntegration, ['charges', '0', 'status']))
+                    return ['SUCCESS', 'PARTIALLY_REFUNDED'].includes(
+                        _get(rechargeIntegration, ['charges', '0', 'status'])
+                    )
                 },
-                error: 'The last charge is not refundable.'
-            }
-        ]
+                error: 'The last charge is not refundable.',
+            },
+        ],
     },
     {
         execution: 'back',
@@ -925,47 +1045,59 @@ export const ACTION_TEMPLATES = [
         arguments: {
             amount: {
                 label: 'Amount',
-                default: '{{ticket.customer.integrations.recharge.orders[0].total_price}}',
+                default:
+                    '{{ticket.customer.integrations.recharge.orders[0].total_price}}',
                 editable: true,
                 required: true,
                 display_order: 1,
                 input: {
                     type: 'number',
-                    step: 0.01
-                }
-            }
+                    step: 0.01,
+                },
+            },
         },
         validators: [
             {
                 validate: (customer: Object) => {
-                    return !!_find(customer.integrations, {'__integration_type__': RECHARGE_INTEGRATION_TYPE})
+                    return !!_find(customer.integrations, {
+                        __integration_type__: RECHARGE_INTEGRATION_TYPE,
+                    })
                 },
-                error: 'This customer has no Recharge data.'
+                error: 'This customer has no Recharge data.',
             },
             {
                 validate: (customer: Object) => {
-                    const rechargeIntegration = _find(customer.integrations,
-                        {'__integration_type__': RECHARGE_INTEGRATION_TYPE})
+                    const rechargeIntegration = _find(customer.integrations, {
+                        __integration_type__: RECHARGE_INTEGRATION_TYPE,
+                    })
 
                     return _get(rechargeIntegration, ['orders'])
                 },
-                error: 'This customer has no orders to refund.'
+                error: 'This customer has no orders to refund.',
             },
             {
                 validate: (customer: Object) => {
-                    const rechargeIntegration = _find(customer.integrations,
-                        {'__integration_type__': RECHARGE_INTEGRATION_TYPE})
+                    const rechargeIntegration = _find(customer.integrations, {
+                        __integration_type__: RECHARGE_INTEGRATION_TYPE,
+                    })
 
-                    return ['SUCCESS', 'PARTIALLY_REFUNDED']
-                        .includes(_get(rechargeIntegration, ['orders', '0', 'charge_status']))
+                    return ['SUCCESS', 'PARTIALLY_REFUNDED'].includes(
+                        _get(rechargeIntegration, [
+                            'orders',
+                            '0',
+                            'charge_status',
+                        ])
+                    )
                 },
-                error: 'The last order is not refundable.'
-            }
-        ]
-    }
+                error: 'The last order is not refundable.',
+            },
+        ],
+    },
 ]
 
-export const DEFAULT_ACTIONS = ACTION_TEMPLATES.map<string>((template) => template.name)
+export const DEFAULT_ACTIONS = ACTION_TEMPLATES.map<string>(
+    (template) => template.name
+)
 
 /*
  * Default currentUser preferences
@@ -981,24 +1113,24 @@ export const DEFAULT_PREFERENCES = {
 export const TIMES_BEFORE_SPLIT = [
     {
         value: hoursToSeconds(0.5),
-        label: '30 minutes'
+        label: '30 minutes',
     },
     {
         value: hoursToSeconds(3),
-        label: '3 hours'
+        label: '3 hours',
     },
     {
         value: hoursToSeconds(6),
-        label: '6 hours'
+        label: '6 hours',
     },
     {
         value: hoursToSeconds(24),
-        label: '1 day'
+        label: '1 day',
     },
     {
         value: hoursToSeconds(24 * 7),
-        label: '7 days'
-    }
+        label: '7 days',
+    },
 ]
 
 /**
@@ -1007,22 +1139,21 @@ export const TIMES_BEFORE_SPLIT = [
 export const DELAY_SURVEY_FOR = [
     {
         value: 2,
-        label: '2 hours'
+        label: '2 hours',
     },
     {
         value: daysToHours(1),
-        label: '1 day'
+        label: '1 day',
     },
     {
         value: daysToHours(2),
-        label: '2 days'
+        label: '2 days',
     },
     {
         value: daysToHours(7),
-        label: '7 days'
-    }
+        label: '7 days',
+    },
 ]
-
 
 /**
  * Max header length

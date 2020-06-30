@@ -10,5 +10,6 @@ import type {ShopifyActionsState} from './types'
 
 export const getShopifyActionsState = createSelector(
     [getInfobarActionsState],
-    (state: InfobarActionsState): ShopifyActionsState => state[SHOPIFY_INTEGRATION_TYPE],
+    (state: InfobarActionsState): ShopifyActionsState =>
+        state[SHOPIFY_INTEGRATION_TYPE]
 )

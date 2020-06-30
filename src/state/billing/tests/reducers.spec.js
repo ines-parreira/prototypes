@@ -10,7 +10,7 @@ const card = {
     brand: 'visa',
     last4: '4242',
     exp_month: 12,
-    exp_year: 35
+    exp_year: 35,
 }
 
 const billingContact = {
@@ -24,9 +24,9 @@ const billingContact = {
             city: 'San Francisco',
             state: 'CA',
             country: 'United States',
-            postal_code: '94103'
-        }
-    }
+            postal_code: '94103',
+        },
+    },
 }
 
 describe('billing reducers', () => {
@@ -35,66 +35,58 @@ describe('billing reducers', () => {
     })
 
     it('fetch invoices', () => {
-        const invoices = [{
-            metadata: {},
-            paid: true,
-            date: '2016-11-13T18:30:19+00:00',
-            amount_due: 1234
-        }]
+        const invoices = [
+            {
+                metadata: {},
+                paid: true,
+                date: '2016-11-13T18:30:19+00:00',
+                amount_due: 1234,
+            },
+        ]
 
         expect(
-            reducer(
-                initialState, {
-                    type: types.FETCH_INVOICES_SUCCESS,
-                    resp: invoices,
-                }
-            )
+            reducer(initialState, {
+                type: types.FETCH_INVOICES_SUCCESS,
+                resp: invoices,
+            })
         ).toMatchSnapshot()
     })
 
     describe('should update the billing contact information', () => {
         it('on successful contact fetch action', () => {
             expect(
-                reducer(
-                    initialState, {
-                        type: types.FETCH_BILLING_CONTACT_SUCCESS,
-                        billingContact,
-                    }
-                )
+                reducer(initialState, {
+                    type: types.FETCH_BILLING_CONTACT_SUCCESS,
+                    billingContact,
+                })
             ).toMatchSnapshot()
         })
 
         it('on successful contact update action', () => {
             expect(
-                reducer(
-                    initialState, {
-                        type: types.UPDATE_BILLING_CONTACT_SUCCESS,
-                        billingContact,
-                    }
-                )
+                reducer(initialState, {
+                    type: types.UPDATE_BILLING_CONTACT_SUCCESS,
+                    billingContact,
+                })
             ).toMatchSnapshot()
         })
     })
 
     it('fetch credit card', () => {
         expect(
-            reducer(
-                initialState, {
-                    type: types.FETCH_CREDIT_CARD_SUCCESS,
-                    resp: card,
-                }
-            )
+            reducer(initialState, {
+                type: types.FETCH_CREDIT_CARD_SUCCESS,
+                resp: card,
+            })
         ).toMatchSnapshot()
     })
 
     it('update credit card', () => {
         expect(
-            reducer(
-                initialState, {
-                    type: types.UPDATE_CREDIT_CARD_SUCCESS,
-                    resp: card,
-                }
-            )
+            reducer(initialState, {
+                type: types.UPDATE_CREDIT_CARD_SUCCESS,
+                resp: card,
+            })
         ).toMatchSnapshot()
     })
 
@@ -102,38 +94,34 @@ describe('billing reducers', () => {
         const usage = {
             data: {
                 cost: 12.35,
-                ticket: 12323
+                ticket: 12323,
             },
             meta: {
                 startDate: '2016-11-13T18:30:19+00:00',
-                endDate: '2016-12-13T18:30:19+00:00'
-            }
+                endDate: '2016-12-13T18:30:19+00:00',
+            },
         }
 
         expect(
-            reducer(
-                initialState, {
-                    type: types.FETCH_CURRENT_USAGE_SUCCESS,
-                    resp: usage,
-                }
-            )
+            reducer(initialState, {
+                type: types.FETCH_CURRENT_USAGE_SUCCESS,
+                resp: usage,
+            })
         ).toMatchSnapshot()
     })
 
     it('update subscription', () => {
         const subscription = {
             data: {
-                plan: 'plan'
-            }
+                plan: 'plan',
+            },
         }
 
         expect(
-            reducer(
-                initialState, {
-                    type: types.FETCH_CURRENT_USAGE_SUCCESS,
-                    resp: subscription,
-                }
-            )
+            reducer(initialState, {
+                type: types.FETCH_CURRENT_USAGE_SUCCESS,
+                resp: subscription,
+            })
         ).toMatchSnapshot()
     })
 
@@ -143,12 +131,12 @@ describe('billing reducers', () => {
             brand: 'visa',
             exp_month: '4',
             exp_year: '23',
-            name: 'Steve'
+            name: 'Steve',
         })
         it('should set the credit card (initial state).', () => {
             const action = {
                 type: types.SET_CREDIT_CARD,
-                creditCard
+                creditCard,
             }
             expect(reducer(initialState, action)).toMatchSnapshot()
         })
@@ -156,17 +144,19 @@ describe('billing reducers', () => {
         it('should set the credit card and override the previous one.', () => {
             const action = {
                 type: types.SET_CREDIT_CARD,
-                creditCard
+                creditCard,
             }
             const state = reducer(initialState, action)
-            const newCreditCard = creditCard.merge({last4: '9583', name: 'Mark'})
+            const newCreditCard = creditCard.merge({
+                last4: '9583',
+                name: 'Mark',
+            })
 
             const newAction = {
                 type: types.SET_CREDIT_CARD,
-                creditCard: newCreditCard
+                creditCard: newCreditCard,
             }
             expect(reducer(state, newAction)).toMatchSnapshot()
-
         })
     })
 
@@ -174,7 +164,7 @@ describe('billing reducers', () => {
         it('should set the future subscription plan (initial state).', () => {
             const action = {
                 type: types.SET_FUTURE_SUBSCRIPTION_PLAN,
-                planId: 'plan-1'
+                planId: 'plan-1',
             }
             expect(reducer(initialState, action)).toMatchSnapshot()
         })
@@ -182,12 +172,12 @@ describe('billing reducers', () => {
         it('should set the future subscription plan and override the previous one.', () => {
             const action = {
                 type: types.SET_FUTURE_SUBSCRIPTION_PLAN,
-                planId: 'plan-1'
+                planId: 'plan-1',
             }
             const state = reducer(initialState, action)
             const newAction = {
                 type: types.SET_FUTURE_SUBSCRIPTION_PLAN,
-                planId: 'plan-2'
+                planId: 'plan-2',
             }
             expect(reducer(state, newAction)).toMatchSnapshot()
         })
@@ -195,22 +185,22 @@ describe('billing reducers', () => {
 
     describe('UPDATE_INVOICE_IN_LIST', () => {
         it('should update an invoice in the list of invoices. (existing invoice)', () => {
-            const invoices = [{
-                id: 'in_1',
-                paid: false,
-
-            }, {
-                id: 'in_2',
-                paid: false,
-
-            }]
+            const invoices = [
+                {
+                    id: 'in_1',
+                    paid: false,
+                },
+                {
+                    id: 'in_2',
+                    paid: false,
+                },
+            ]
             const state = initialState.set('invoices', fromJS(invoices))
             const action = {
                 type: types.UPDATE_INVOICE_IN_LIST,
-                invoice: fromJS({'id': 'in_2', paid: true})
+                invoice: fromJS({id: 'in_2', paid: true}),
             }
             expect(reducer(state, action)).toMatchSnapshot()
         })
     })
-
 })

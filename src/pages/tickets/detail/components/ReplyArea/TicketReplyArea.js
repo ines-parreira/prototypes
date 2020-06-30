@@ -12,7 +12,10 @@ import shortcutManager from '../../../../../services/shortcutManager'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {applyMacro} from '../../../../../state/ticket/actions'
 import * as ticketSelectors from '../../../../../state/ticket/selectors'
-import {getCurrentMacro, getDefaultSelectedMacroId} from '../../../common/macros/utils'
+import {
+    getCurrentMacro,
+    getDefaultSelectedMacroId,
+} from '../../../common/macros/utils'
 import {getPreferences} from '../../../../../state/currentUser/selectors'
 import {fetchMacros} from '../../../../../state/macro/actions'
 import {notify} from '../../../../../state/notifications/actions'
@@ -33,18 +36,18 @@ type Props = {
     newMessage: Object,
     newMessageType: TicketMessageSourceType,
     notify: typeof notify,
-    currentMacro: Map<*,*>,
+    currentMacro: Map<*, *>,
     page: number,
     totalPages: number,
     selectMacro: () => void,
     fetchMacros: typeof fetchMacros,
-    applyMacro: (M: Map<*,*>, I: number) => void,
-    currentTicket: Map<*,*>,
+    applyMacro: (M: Map<*, *>, I: number) => void,
+    currentTicket: Map<*, *>,
     cacheAdded: boolean,
 }
 
 type State = {
-    macros: Map<*,*>,
+    macros: Map<*, *>,
     page: number,
     totalPages: number,
     macrosVisible: boolean,
@@ -92,8 +95,8 @@ export class TicketReplyArea extends React.Component<Props, State> {
 
         if (
             // message type changed
-            prevProps.newMessageType !== this.props.newMessageType
-            && this.props.newMessageType === 'internal-note'
+            prevProps.newMessageType !== this.props.newMessageType &&
+            this.props.newMessageType === 'internal-note'
         ) {
             // hide macros on internal-note
             this._hideMacros()
@@ -117,10 +120,7 @@ export class TicketReplyArea extends React.Component<Props, State> {
         const editorFocused = this.richArea && this.richArea.isFocused()
 
         // has any text
-        const hasText = (
-            nextContextState
-            && nextContextState.hasText()
-        )
+        const hasText = nextContextState && nextContextState.hasText()
 
         // default
         let showMacros = this.props.preferences.get('show_macros')
@@ -137,29 +137,32 @@ export class TicketReplyArea extends React.Component<Props, State> {
         // toggle macros only if
         if (
             // show_macros preference is true
-            showMacros
+            showMacros &&
             // cache was added
-            && this.props.cacheAdded
+            this.props.cacheAdded &&
             // message is email
-            && this.props.newMessageType === 'email'
+            this.props.newMessageType === 'email' &&
             // editor doesn't have text
-            && !hasText
+            !hasText &&
             // editor is not focused
             // fixes issues caused by the debounced setResponseText,
             // that causes the contentState to be set with a delay.
-            && !editorFocused
+            !editorFocused
         ) {
             this._showMacros()
         }
     }
 
-    _loadMacros = ({search = '', page = 1}: {search: string, page: number} = {}) => {
+    _loadMacros = ({
+        search = '',
+        page = 1,
+    }: {search: string, page: number} = {}) => {
         const ticketId = this.props.currentTicket.get('id')
         const commonFilters = {
             currentMacros: this.state.macros,
             currentPage: this.state.page,
             search,
-            page
+            page,
         }
         const orderDir = 'desc'
         let orderBy = 'usage'
@@ -172,26 +175,35 @@ export class TicketReplyArea extends React.Component<Props, State> {
                 messageId: this.props.currentTicket.getIn([
                     'messages',
                     this.props.currentTicket.get('messages').size - 1,
-                    'id'
+                    'id',
                 ]),
-                _fallbackOrderBy: 'usage'
+                _fallbackOrderBy: 'usage',
             }
         }
 
-        return this.props.fetchMacros({...filters, ...commonFilters}, orderBy, orderDir).then((res) => {
-            const selectedMacroId = getDefaultSelectedMacroId(res.macros, this.state.selectedMacroId)
-            return new Promise((resolve) => {
-                this.setState({
-                    selectedMacroId,
-                    macros: res.macros,
-                    page: res.page,
-                    totalPages: res.totalPages,
-                }, resolve)
+        return this.props
+            .fetchMacros({...filters, ...commonFilters}, orderBy, orderDir)
+            .then((res) => {
+                const selectedMacroId = getDefaultSelectedMacroId(
+                    res.macros,
+                    this.state.selectedMacroId
+                )
+                return new Promise((resolve) => {
+                    this.setState(
+                        {
+                            selectedMacroId,
+                            macros: res.macros,
+                            page: res.page,
+                            totalPages: res.totalPages,
+                        },
+                        resolve
+                    )
+                })
             })
-        })
     }
 
-    _setSelectedMacroId = (macro: Map<*,*>) => this.setState({selectedMacroId: macro.get('id')})
+    _setSelectedMacroId = (macro: Map<*, *>) =>
+        this.setState({selectedMacroId: macro.get('id')})
 
     _bindKeys() {
         shortcutManager.bind('TicketDetailContainer', {
@@ -201,7 +213,7 @@ export class TicketReplyArea extends React.Component<Props, State> {
                     if (this.macroInput) {
                         this.macroInput.focus()
                     }
-                }
+                },
             },
             BLUR_EVERYTHING: {
                 action: () => {
@@ -210,13 +222,13 @@ export class TicketReplyArea extends React.Component<Props, State> {
                     if (document.activeElement) {
                         document.activeElement.blur()
                     }
-                }
+                },
             },
             FOCUS_REPLY_AREA: {
                 action: (e) => {
                     e.preventDefault()
                     this._hideMacrosAndFocusEditor()
-                }
+                },
             },
         })
     }
@@ -249,7 +261,9 @@ export class TicketReplyArea extends React.Component<Props, State> {
 
         if (e.key === 'Enter') {
             e.preventDefault()
-            const macro = macros.find((macro) => macro.get('id') === this.state.selectedMacroId)
+            const macro = macros.find(
+                (macro) => macro.get('id') === this.state.selectedMacroId
+            )
             this._applyMacro(macro)
         }
     }
@@ -277,12 +291,7 @@ export class TicketReplyArea extends React.Component<Props, State> {
     }
 
     _applyMacro = (macro: RecordOf<Macro>) => {
-        const {
-            applyMacro,
-            currentTicket,
-            newMessageType,
-            notify,
-        } = this.props
+        const {applyMacro, currentTicket, newMessageType, notify} = this.props
 
         const clearingResult = clearMacroBeforeApply(newMessageType, macro)
         if (clearingResult.notification) {
@@ -298,21 +307,38 @@ export class TicketReplyArea extends React.Component<Props, State> {
     }
 
     render = () => {
-        const {totalPages, macros, macroSearchQuery, isInitialMacrosLoading, macrosVisible, page} = this.state
-        const currentMacro = getCurrentMacro(this.state.macros, this.state.selectedMacroId)
+        const {
+            totalPages,
+            macros,
+            macroSearchQuery,
+            isInitialMacrosLoading,
+            macrosVisible,
+            page,
+        } = this.state
+        const currentMacro = getCurrentMacro(
+            this.state.macros,
+            this.state.selectedMacroId
+        )
 
         return (
             <div
                 className={classnames(css.component, {
-                    [css.macrosVisible]: this.state.macrosVisible
+                    [css.macrosVisible]: this.state.macrosVisible,
                 })}
             >
                 <div className={css.search}>
-                    <i className={classnames(css.searchIcon, 'material-icons md-2 text-info')}>
+                    <i
+                        className={classnames(
+                            css.searchIcon,
+                            'material-icons md-2 text-info'
+                        )}
+                    >
                         flash_on
                     </i>
                     <Input
-                        innerRef={(macroInput) => this.macroInput = macroInput}
+                        innerRef={(macroInput) =>
+                            (this.macroInput = macroInput)
+                        }
                         tabIndex="3"
                         onChange={this._searchMacros}
                         onKeyDown={this._handleSearchKeyDown}
@@ -339,9 +365,12 @@ export class TicketReplyArea extends React.Component<Props, State> {
                         <TicketReply
                             actions={this.props.actions}
                             ticket={this.props.ticket}
-                            appliedMacro={this.props.ticket.getIn(['state', 'appliedMacro'])}
+                            appliedMacro={this.props.ticket.getIn([
+                                'state',
+                                'appliedMacro',
+                            ])}
                             customers={this.props.customers}
-                            richAreaRef={(ref) => this.richArea = ref}
+                            richAreaRef={(ref) => (this.richArea = ref)}
                         />
                     )}
                 </div>
@@ -350,14 +379,17 @@ export class TicketReplyArea extends React.Component<Props, State> {
     }
 }
 
-export default connect((state) => ({
-    newMessageType: newMessageSelectors.getNewMessageType(state),
-    newMessage: state.newMessage,
-    preferences: getPreferences(state),
-    cacheAdded: newMessageSelectors.isCacheAdded(state),
-    currentTicket: ticketSelectors.getTicket(state),
-}), ({
-    notify,
-    fetchMacros,
-    applyMacro,
-}))(TicketReplyArea)
+export default connect(
+    (state) => ({
+        newMessageType: newMessageSelectors.getNewMessageType(state),
+        newMessage: state.newMessage,
+        preferences: getPreferences(state),
+        cacheAdded: newMessageSelectors.isCacheAdded(state),
+        currentTicket: ticketSelectors.getTicket(state),
+    }),
+    {
+        notify,
+        fetchMacros,
+        applyMacro,
+    }
+)(TicketReplyArea)

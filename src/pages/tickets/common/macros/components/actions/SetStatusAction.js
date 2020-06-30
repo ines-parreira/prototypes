@@ -9,7 +9,8 @@ import InputField from '../../../../../common/forms/InputField'
 export default class SetStatusAction extends React.Component {
     componentDidMount() {
         const {index, action, updateActionArgs} = this.props
-        const status = action.getIn(['arguments', 'status']) || TICKET_STATUSES[0]
+        const status =
+            action.getIn(['arguments', 'status']) || TICKET_STATUSES[0]
         updateActionArgs(index, fromJS({status}))
     }
 
@@ -21,19 +22,16 @@ export default class SetStatusAction extends React.Component {
                 <InputField
                     type="select"
                     value={action.getIn(['arguments', 'status'])}
-                    onChange={(value) => updateActionArgs(index, fromJS({status: value}))}
+                    onChange={(value) =>
+                        updateActionArgs(index, fromJS({status: value}))
+                    }
                     required
                 >
-                    {
-                        TICKET_STATUSES.map((status) =>
-                            <option
-                                key={status}
-                                value={status}
-                            >
-                                {_upperFirst(status)}
-                            </option>
-                        )
-                    }
+                    {TICKET_STATUSES.map((status) => (
+                        <option key={status} value={status}>
+                            {_upperFirst(status)}
+                        </option>
+                    ))}
                 </InputField>
             </div>
         )

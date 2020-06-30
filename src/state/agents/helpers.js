@@ -18,7 +18,10 @@ export const getHighestRole = (user: userType): ?string => {
         return null
     }
 
-    const userRoles = user.get('roles', fromJS([])).map((role) => role.get('name')).toJS()
+    const userRoles = user
+        .get('roles', fromJS([]))
+        .map((role) => role.get('name'))
+        .toJS()
     const roles = USER_ROLES_ORDERED_BY_PRIVILEGES.slice().reverse()
 
     for (let role of roles) {

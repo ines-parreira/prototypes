@@ -2,20 +2,19 @@ import React from 'react'
 
 import {
     SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
-    SMOOCH_INSIDE_WIDGET_TEXTS
+    SMOOCH_INSIDE_WIDGET_TEXTS,
 } from '../../../../../../config/integrations/smooch_inside'
 
 import css from './ChatIntegrationPreview.less'
 
-
 type Props = {
     language?: ?string,
-    conversationColor?: ?string
+    conversationColor?: ?string,
 }
 
 export default class RequiredEmailCapture extends React.Component<Props> {
     static defaultProps = {
-        language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
+        language: SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
     }
 
     render() {
@@ -27,13 +26,17 @@ export default class RequiredEmailCapture extends React.Component<Props> {
                 <div className={css.emailInputWrapper}>
                     <input
                         type="email"
-                        placeholder={translatedTexts.emailCaptureRequiredEmailPlaceholder}
+                        placeholder={
+                            translatedTexts.emailCaptureRequiredEmailPlaceholder
+                        }
                         readOnly
                     />
                 </div>
                 <div className={css.messageInputWrapper}>
                     <textarea
-                        placeholder={translatedTexts.emailCaptureRequiredMessagePlaceholder}
+                        placeholder={
+                            translatedTexts.emailCaptureRequiredMessagePlaceholder
+                        }
                         readOnly
                     />
                 </div>

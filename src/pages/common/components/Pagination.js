@@ -5,8 +5,10 @@ import ReactPaginate from 'react-paginate'
 export default class Pagination extends React.Component {
     static propTypes = {
         onChange: PropTypes.func.isRequired,
-        pageCount: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
-        currentPage: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+        pageCount: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+            .isRequired,
+        currentPage: PropTypes.oneOfType([PropTypes.number, PropTypes.string])
+            .isRequired,
         className: PropTypes.string,
     }
 
@@ -40,8 +42,12 @@ export default class Pagination extends React.Component {
 
         return (
             <ReactPaginate
-                previousLabel={<i className="material-icons md-2">keyboard_arrow_left</i>}
-                nextLabel={<i className="material-icons md-2">keyboard_arrow_right</i>}
+                previousLabel={
+                    <i className="material-icons md-2">keyboard_arrow_left</i>
+                }
+                nextLabel={
+                    <i className="material-icons md-2">keyboard_arrow_right</i>
+                }
                 marginPagesDisplayed={2}
                 pageRangeDisplayed={2}
                 onPageChange={this._handlePageClick}

@@ -14,12 +14,12 @@ describe('chat install utils', () => {
                     header_text: 'foo',
                     introduction_text: 'bar',
                     input_placeholder: 'placeholder',
-                    send_button_text: 'send!'
+                    send_button_text: 'send!',
                 },
                 meta: {
                     app_token: 'apijdasoidkas',
-                    script_url: 'config.gorgias.io/foo/chat/bar.js'
-                }
+                    script_url: 'config.gorgias.io/foo/chat/bar.js',
+                },
             })
 
             expect(renderChatCodeSnippet(integration)).toMatchSnapshot()

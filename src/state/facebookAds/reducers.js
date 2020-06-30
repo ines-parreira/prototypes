@@ -17,9 +17,18 @@ export const initialState = fromJS({
     loadingAds: [],
 })
 
-const getActivePath = (key, {integrationId, id}) => ['internals', integrationId.toString(), key, id, 'is_active']
+const getActivePath = (key, {integrationId, id}) => [
+    'internals',
+    integrationId.toString(),
+    key,
+    id,
+    'is_active',
+]
 
-export default function reducer(state: Map<*, *> = initialState, action: actionType): Map<*, *> {
+export default function reducer(
+    state: Map<*, *> = initialState,
+    action: actionType
+): Map<*, *> {
     switch (action.type) {
         case SET_FACEBOOK_ADS_LOADING:
             return state.set('loading', action.payload)
@@ -28,9 +37,14 @@ export default function reducer(state: Map<*, *> = initialState, action: actionT
         case ADD_LOADING_FACEBOOK_AD:
             return state.update('loadingAds', (ads) => ads.push(action.payload))
         case REMOVE_LOADING_FACEBOOK_AD:
-            return state.update('loadingAds', (ads) => ads.filter((ad) => ad !== action.payload))
+            return state.update('loadingAds', (ads) =>
+                ads.filter((ad) => ad !== action.payload)
+            )
         case UPDATE_ACTIVE_FACEBOOK_AD:
-            return state.setIn(getActivePath('ads', action.payload), action.payload.isActive)
+            return state.setIn(
+                getActivePath('ads', action.payload),
+                action.payload.isActive
+            )
         default:
             return state
     }

@@ -16,13 +16,7 @@ export default class Errors extends React.Component {
     }
 
     render() {
-        const {
-            belowInput,
-            children,
-            inline,
-            tag: Tag,
-            ...rest
-        } = this.props
+        const {belowInput, children, inline, tag: Tag, ...rest} = this.props
 
         if (!children) {
             return null
@@ -30,10 +24,7 @@ export default class Errors extends React.Component {
 
         if (inline) {
             return (
-                <Tag
-                    className="d-inline-block text-danger ml-2"
-                    {...rest}
-                >
+                <Tag className="d-inline-block text-danger ml-2" {...rest}>
                     {children}
                 </Tag>
             )
@@ -48,14 +39,9 @@ export default class Errors extends React.Component {
         }
 
         return (
-            <Tag
-                className="text-danger"
-                style={style}
-                {...rest}
-            >
+            <Tag className="text-danger" style={style} {...rest}>
                 {children}
             </Tag>
         )
     }
 }
-

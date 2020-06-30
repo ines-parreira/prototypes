@@ -20,29 +20,50 @@ import css from './TicketSubmitButtons.less'
 
 /* eslint-disable react/jsx-key */
 const TIPS = [
-    <span>Press <kbd>→</kbd> (right arrow) to go to next ticket</span>,
-    <span>Press <kbd>←</kbd> (left arrow) to go to previous ticket</span>,
-    <span>Press <kbd>c</kbd> to close the ticket</span>,
-    <span>Press <kbd>o</kbd> to open the ticket</span>,
-    <span>Press <kbd>#</kbd> to delete the ticket</span>,
-    <span>Press <kbd>?</kbd> to display all keyboard shortcuts</span>,
-    <span>Press <kbd>r</kbd> to reply to the ticket</span>,
-    <span>Press <kbd>m</kbd> to display macros</span>,
+    <span>
+        Press <kbd>→</kbd> (right arrow) to go to next ticket
+    </span>,
+    <span>
+        Press <kbd>←</kbd> (left arrow) to go to previous ticket
+    </span>,
+    <span>
+        Press <kbd>c</kbd> to close the ticket
+    </span>,
+    <span>
+        Press <kbd>o</kbd> to open the ticket
+    </span>,
+    <span>
+        Press <kbd>#</kbd> to delete the ticket
+    </span>,
+    <span>
+        Press <kbd>?</kbd> to display all keyboard shortcuts
+    </span>,
+    <span>
+        Press <kbd>r</kbd> to reply to the ticket
+    </span>,
+    <span>
+        Press <kbd>m</kbd> to display macros
+    </span>,
     'You can add attachments to macros',
     'Insert order info as variables in macros',
 ]
 /* eslint-enable */
 
-@connect((state) => {
-    return {
-        canSendMessage: currentAccountSelectors.isAccountActive(state) && newMessageSelectors.isReady(state),
-        currentUserPreferences: currentUserSelectors.getPreferences(state),
-        newMessage: state.newMessage,
-        isHidingTips: currentUserSelectors.isHidingTips(state),
+@connect(
+    (state) => {
+        return {
+            canSendMessage:
+                currentAccountSelectors.isAccountActive(state) &&
+                newMessageSelectors.isReady(state),
+            currentUserPreferences: currentUserSelectors.getPreferences(state),
+            newMessage: state.newMessage,
+            isHidingTips: currentUserSelectors.isHidingTips(state),
+        }
+    },
+    {
+        submitSetting: currentUserActions.submitSetting,
     }
-}, {
-    submitSetting: currentUserActions.submitSetting,
-})
+)
 export default class TicketSubmitButtons extends React.Component {
     static propTypes = {
         canSendMessage: PropTypes.bool.isRequired,
@@ -60,7 +81,11 @@ export default class TicketSubmitButtons extends React.Component {
     }
 
     submit = (status, next) => {
-        const isSending = this.props.newMessage.getIn(['_internal', 'loading', 'submitMessage'])
+        const isSending = this.props.newMessage.getIn([
+            '_internal',
+            'loading',
+            'submitMessage',
+        ])
 
         if (isSending) {
             return
@@ -71,21 +96,34 @@ export default class TicketSubmitButtons extends React.Component {
 
     _hideTips = () => {
         const {currentUserPreferences, submitSetting} = this.props
-        const newPreferences = currentUserPreferences.setIn(['data', 'hide_tips'], true)
+        const newPreferences = currentUserPreferences.setIn(
+            ['data', 'hide_tips'],
+            true
+        )
         return submitSetting(newPreferences.toJS())
     }
 
     render() {
         const {newMessage, canSendMessage, ticket, isHidingTips} = this.props
         const disabled = !canSendMessage
-        const loading = newMessage.getIn(['_internal', 'loading', 'submitMessage'])
+        const loading = newMessage.getIn([
+            '_internal',
+            'loading',
+            'submitMessage',
+        ])
 
         const isUpdating = !!ticket.get('id')
         const hasTitle = !!ticket.get('subject')
-        const titleConfirmation = 'Are you sure you want to create a ticket with no subject?'
+        const titleConfirmation =
+            'Are you sure you want to create a ticket with no subject?'
 
         return (
-            <div className={classnames(css.component, 'd-flex align-items-center justify-content-between')}>
+            <div
+                className={classnames(
+                    css.component,
+                    'd-flex align-items-center justify-content-between'
+                )}
+            >
                 <div>
                     <ConfirmButton
                         id="submit-button"
@@ -102,11 +140,11 @@ export default class TicketSubmitButtons extends React.Component {
                         Send
                     </ConfirmButton>
                     {!disabled && (
-                        <Tooltip
-                            placement="top"
-                            target="submit-button"
-                        >
-                            {shortcutManager.getActionKeys(keymap.TicketDetailContainer.actions.SUBMIT_TICKET)}
+                        <Tooltip placement="top" target="submit-button">
+                            {shortcutManager.getActionKeys(
+                                keymap.TicketDetailContainer.actions
+                                    .SUBMIT_TICKET
+                            )}
                         </Tooltip>
                     )}
                     <ConfirmButton
@@ -127,33 +165,29 @@ export default class TicketSubmitButtons extends React.Component {
                             placement="top"
                             target="submit-and-close-button"
                         >
-                            {shortcutManager.getActionKeys(keymap.TicketDetailContainer.actions.SUBMIT_CLOSE_TICKET)}
+                            {shortcutManager.getActionKeys(
+                                keymap.TicketDetailContainer.actions
+                                    .SUBMIT_CLOSE_TICKET
+                            )}
                         </Tooltip>
                     )}
                 </div>
-                {
-                    !isHidingTips && (
-                        <small className="text-faded d-none d-md-inline-block">
-                            <i className="material-icons md-1 mr-1">
-                                info
-                            </i>
-                            {this.tip}
-                            <i
-                                id="hide-helpers-button"
-                                className="material-icons md-1 cursor-pointer ml-1"
-                                onClick={this._hideTips}
-                            >
-                                close
-                            </i>
-                            <Tooltip
-                                placement="top"
-                                target="hide-helpers-button"
-                            >
-                                Permanently hide tips
-                            </Tooltip>
-                        </small>
-                    )
-                }
+                {!isHidingTips && (
+                    <small className="text-faded d-none d-md-inline-block">
+                        <i className="material-icons md-1 mr-1">info</i>
+                        {this.tip}
+                        <i
+                            id="hide-helpers-button"
+                            className="material-icons md-1 cursor-pointer ml-1"
+                            onClick={this._hideTips}
+                        >
+                            close
+                        </i>
+                        <Tooltip placement="top" target="hide-helpers-button">
+                            Permanently hide tips
+                        </Tooltip>
+                    </small>
+                )}
             </div>
         )
     }

@@ -3,7 +3,8 @@
 exports[`SelectTargetTicket component should render 1`] = `
 <div>
   <p>
-    Select the ticket you want to merge 
+    Select the ticket you want to merge
+     
     <b>
       foo
     </b>

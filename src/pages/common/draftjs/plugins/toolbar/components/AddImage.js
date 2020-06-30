@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import {Button} from 'reactstrap'
 
 import FileField from '../../../../forms/FileField'
-import type { ActionInjectedProps } from '../types'
+import type {ActionInjectedProps} from '../types'
 import {getMaxAttachmentSize} from '../../../../../../utils/file'
 import {addImage} from '../../utils'
 
@@ -12,14 +12,14 @@ import css from './AddImage.less'
 import Popover from './ButtonPopover'
 
 type Props = {
-    attachments?: File[]
+    attachments?: File[],
 } & ActionInjectedProps
 
 type State = {
     url: string,
     mode: string,
     maxSize: number,
-    isOpen: boolean
+    isOpen: boolean,
 }
 
 export default class AddImage extends React.Component<Props, State> {
@@ -27,14 +27,17 @@ export default class AddImage extends React.Component<Props, State> {
         url: '',
         mode: 'upload',
         maxSize: 0,
-        isOpen: false
+        isOpen: false,
     }
 
     inputRef: ?HTMLInputElement
 
     _updateMaxSize = () => {
         const editorState = this.props.getEditorState()
-        const maxSize =  getMaxAttachmentSize(editorState, this.props.attachments)
+        const maxSize = getMaxAttachmentSize(
+            editorState,
+            this.props.attachments
+        )
         this.setState({maxSize})
     }
 
@@ -42,11 +45,11 @@ export default class AddImage extends React.Component<Props, State> {
         this.setState({mode})
     }
 
-    _handleImage = (files: Array<{ url: string, size: number}>) => {
+    _handleImage = (files: Array<{url: string, size: number}>) => {
         files.forEach((file) => {
             this._addImage(file.url, file.size)
         })
-        this.setState({ isOpen: false })
+        this.setState({isOpen: false})
     }
 
     _addImage = (url: string, size: number = 0) => {
@@ -65,7 +68,7 @@ export default class AddImage extends React.Component<Props, State> {
         this._addImage(url)
         this.setState({
             url: '',
-            isOpen: false
+            isOpen: false,
         })
     }
 
@@ -80,13 +83,13 @@ export default class AddImage extends React.Component<Props, State> {
 
         if (e.key === 'Escape') {
             e.preventDefault()
-            this.setState({ isOpen: false })
+            this.setState({isOpen: false})
         }
     }
 
-    _onPopoverOpen = () => this.setState({ isOpen: true })
+    _onPopoverOpen = () => this.setState({isOpen: true})
 
-    _onPopoverClose = () => this.setState({ isOpen: false })
+    _onPopoverClose = () => this.setState({isOpen: false})
 
     render() {
         return (
@@ -100,55 +103,59 @@ export default class AddImage extends React.Component<Props, State> {
                 <div className={css.menu}>
                     <span
                         onClick={() => this._changeMode('upload')}
-                        className={classnames({[css.selected]: this.state.mode === 'upload'})}
+                        className={classnames({
+                            [css.selected]: this.state.mode === 'upload',
+                        })}
                     >
                         Upload
                     </span>
                     <span
                         onClick={() => this._changeMode('url')}
-                        className={classnames({[css.selected]: this.state.mode === 'url'})}
+                        className={classnames({
+                            [css.selected]: this.state.mode === 'url',
+                        })}
                     >
                         URL
                     </span>
                 </div>
-                {
-                    this.state.mode === 'upload' ? (
-                        <FileField
-                            key="file"
-                            accept="image/*"
-                            placeholder="Select image..."
-                            onClick={this._updateMaxSize}
-                            onChange={this._handleImage}
-                            maxSize={this.state.maxSize}
-                            returnFiles
-                            inline
-                            noPreview
+                {this.state.mode === 'upload' ? (
+                    <FileField
+                        key="file"
+                        accept="image/*"
+                        placeholder="Select image..."
+                        onClick={this._updateMaxSize}
+                        onChange={this._handleImage}
+                        maxSize={this.state.maxSize}
+                        returnFiles
+                        inline
+                        noPreview
+                    />
+                ) : (
+                    <div className="flex">
+                        <input
+                            className="form-control"
+                            key="url"
+                            ref={(ref) => (this.inputRef = ref)}
+                            type="text"
+                            placeholder="External image url..."
+                            onChange={(e) =>
+                                this.setState({url: e.target.value})
+                            }
+                            value={this.state.url}
+                            onKeyDown={this._onKeyDown}
+                            autoFocus
                         />
-                    ) : (
-                        <div className="flex">
-                            <input
-                                className="form-control"
-                                key="url"
-                                ref={(ref) => this.inputRef = ref}
-                                type="text"
-                                placeholder="External image url..."
-                                onChange={(e) => this.setState({url: e.target.value})}
-                                value={this.state.url}
-                                onKeyDown={this._onKeyDown}
-                                autoFocus
-                            />
-                            <Button
-                                type="button"
-                                color="primary"
-                                className="ml-2"
-                                disabled={!this.state.url}
-                                onClick={this._submit}
-                            >
-                                    Insert
-                            </Button>
-                        </div>
-                    )
-                }
+                        <Button
+                            type="button"
+                            color="primary"
+                            className="ml-2"
+                            disabled={!this.state.url}
+                            onClick={this._submit}
+                        >
+                            Insert
+                        </Button>
+                    </div>
+                )}
             </Popover>
         )
     }

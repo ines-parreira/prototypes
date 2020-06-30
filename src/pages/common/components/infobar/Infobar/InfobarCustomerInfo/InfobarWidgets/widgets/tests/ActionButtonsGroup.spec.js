@@ -5,19 +5,14 @@ import ActionButtonsGroup from '../ActionButtonsGroup'
 
 describe('ActionButtonsGroup component', () => {
     const baseAction = {
-        options: [
-            {value: 'option1', label: 'Option 1'}
-        ],
+        options: [{value: 'option1', label: 'Option 1'}],
         child: <div>Option 1</div>,
-        title: <div>Option 1</div>
+        title: <div>Option 1</div>,
     }
 
-    it('should render null if there\'s no actions', () => {
+    it("should render null if there's no actions", () => {
         const component = shallow(
-            <ActionButtonsGroup
-                actions={[]}
-                payload={{}}
-            />
+            <ActionButtonsGroup actions={[]} payload={{}} />
         )
 
         expect(component).toMatchSnapshot()
@@ -29,15 +24,15 @@ describe('ActionButtonsGroup component', () => {
                 actions={[
                     {
                         key: 'action1',
-                        ...baseAction
+                        ...baseAction,
                     },
                     {
                         key: 'action2',
-                        ...baseAction
+                        ...baseAction,
                     },
                     {
                         key: 'action3',
-                        ...baseAction
+                        ...baseAction,
                     },
                 ]}
                 payload={{}}
@@ -53,19 +48,19 @@ describe('ActionButtonsGroup component', () => {
                 actions={[
                     {
                         key: 'action1',
-                        ...baseAction
+                        ...baseAction,
                     },
                     {
                         key: 'action2',
-                        ...baseAction
+                        ...baseAction,
                     },
                     {
                         key: 'action3',
-                        ...baseAction
+                        ...baseAction,
                     },
                     {
                         key: 'action4',
-                        ...baseAction
+                        ...baseAction,
                     },
                 ]}
                 payload={{}}

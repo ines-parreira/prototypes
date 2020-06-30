@@ -2,12 +2,17 @@
 import {fromJS, type List, type Map} from 'immutable'
 import React, {type ComponentType} from 'react'
 import {connect} from 'react-redux'
-import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle,} from 'reactstrap'
+import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 
 import * as customersHelpers from '../../../../state/customers/helpers'
 import * as schemasSelectors from '../../../../state/schemas/selectors'
 import {fieldEnumSearch} from '../../../../state/views/actions'
-import {fieldPath, getLanguageDisplayName, isImmutable, resolveLiteral} from '../../../../utils'
+import {
+    fieldPath,
+    getLanguageDisplayName,
+    isImmutable,
+    resolveLiteral,
+} from '../../../../utils'
 import {RenderLabel} from '../../utils/labels'
 import Search from '../Search'
 
@@ -17,27 +22,27 @@ type Props = {
     viewConfig: Map<*, *>,
     field: Map<*, *>,
     schemas: Map<*, *>,
-    updateFieldFilter: string => void,
+    updateFieldFilter: (string) => void,
     fieldEnumSearch: typeof fieldEnumSearch,
     toggleDropdown: () => void,
-    menu: ComponentType<*>
+    menu: ComponentType<*>,
 }
 
 type State = {
     isLoading: boolean,
-    enum: List<*>
+    enum: List<*>,
 }
 
 class FilterDropdown extends React.Component<Props, State> {
     static defaultProps: $Shape<Props> = {
-        menu: DropdownMenu
+        menu: DropdownMenu,
     }
 
     constructor(props) {
         super(props)
         this.state = {
             isLoading: false,
-            enum: props.field.getIn(['filter', 'enum'], fromJS([]))
+            enum: props.field.getIn(['filter', 'enum'], fromJS([])),
         }
     }
 
@@ -74,7 +79,8 @@ class FilterDropdown extends React.Component<Props, State> {
             isLoading: true,
         })
 
-        this.props.fieldEnumSearch(this.props.field, query)
+        this.props
+            .fieldEnumSearch(this.props.field, query)
             .then((data) => {
                 this.setState({
                     enum: data,
@@ -97,21 +103,14 @@ class FilterDropdown extends React.Component<Props, State> {
         }
 
         return [
-            <DropdownItem
-                key="search"
-                header
-                className="dropdown-item-input"
-            >
+            <DropdownItem key="search" header className="dropdown-item-input">
                 <Search
                     autoFocus
                     onChange={this.onSearch}
                     searchDebounceTime={300}
                 />
             </DropdownItem>,
-            <DropdownItem
-                key="divider"
-                divider
-            />
+            <DropdownItem key="divider" divider />,
         ]
     }
 
@@ -121,9 +120,7 @@ class FilterDropdown extends React.Component<Props, State> {
         if (this.state.isLoading) {
             return (
                 <DropdownItem disabled>
-                    <i className="material-icons md-spin mr-2">
-                        refresh
-                    </i>
+                    <i className="material-icons md-spin mr-2">refresh</i>
                     Loading...
                 </DropdownItem>
             )
@@ -152,13 +149,11 @@ class FilterDropdown extends React.Component<Props, State> {
                 renderValue = customersHelpers.getDisplayName(value)
             } else if (field.get('name') === 'language') {
                 renderValue = getLanguageDisplayName(value)
-            } else if (typeof value === 'object' || field.get('name') === 'roles') {
-                renderValue = (
-                    <RenderLabel
-                        field={field}
-                        value={value}
-                    />
-                )
+            } else if (
+                typeof value === 'object' ||
+                field.get('name') === 'roles'
+            ) {
+                renderValue = <RenderLabel field={field} value={value} />
             }
 
             const passedValue = isImmutable(value) ? value.toJS() : value
@@ -178,17 +173,10 @@ class FilterDropdown extends React.Component<Props, State> {
         // special option added for some columns in the dropdown
         if (field.get('name') === 'assignee') {
             options = options.unshift(
-                <DropdownItem
-                    key="me"
-                    type="button"
-                    onClick={this._onClickMe}
-                >
+                <DropdownItem key="me" type="button" onClick={this._onClickMe}>
                     Me (current user)
                 </DropdownItem>,
-                <DropdownItem
-                    key="unassigned-divider"
-                    divider
-                />
+                <DropdownItem key="unassigned-divider" divider />
             )
         }
 
@@ -206,7 +194,7 @@ class FilterDropdown extends React.Component<Props, State> {
         const width = field.getIn(['dropdown', 'width'], '230px')
 
         const style = {
-            width: canSearch && width
+            width: canSearch && width,
         }
 
         if (field.get('name') === 'language') {
@@ -214,11 +202,8 @@ class FilterDropdown extends React.Component<Props, State> {
         }
 
         return (
-            <Dropdown
-                isOpen
-                toggle={this.props.toggleDropdown}
-            >
-                <DropdownToggle tag="span"/>
+            <Dropdown isOpen toggle={this.props.toggleDropdown}>
+                <DropdownToggle tag="span" />
                 <Menu style={style}>
                     {this.renderSearch()}
                     {this.renderEnum()}

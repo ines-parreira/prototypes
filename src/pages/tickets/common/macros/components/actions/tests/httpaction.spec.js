@@ -8,11 +8,11 @@ describe('HTTP action component', () => {
     let component
     const action = fromJS({
         arguments: {
-            form: []
+            form: [],
         },
         title: 'HTTP hook',
         type: 'user',
-        name: 'http'
+        name: 'http',
     })
 
     beforeEach(() => {
@@ -30,4 +30,3 @@ describe('HTTP action component', () => {
         expect(component).toMatchSnapshot()
     })
 })
-

@@ -14,7 +14,15 @@ import {OBJECT_DEFINITIONS} from '../../../../../state/rules/constants'
  computed: boolean;
  }
  */
-const MemberExpression = ({object, property, rule, actions, parent, leftsiblings, schemas}) => {
+const MemberExpression = ({
+    object,
+    property,
+    rule,
+    actions,
+    parent,
+    leftsiblings,
+    schemas,
+}) => {
     let left
     if (leftsiblings) {
         left = leftsiblings.concat(getSyntaxTreeLeaves(object))

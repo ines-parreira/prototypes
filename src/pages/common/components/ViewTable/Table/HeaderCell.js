@@ -15,18 +15,21 @@ import * as viewsSelectors from '../../../../../state/views/selectors'
 
 import * as viewsConfig from '../../../../../config/views'
 
-@connect((state, ownProps) => {
-    return {
-        activeView: viewsSelectors.getActiveView(state),
-        config: viewsConfig.getConfigByName(ownProps.type),
-        orderBy: viewsSelectors.getActiveViewOrderBy(state),
-        orderDirection: viewsSelectors.getActiveViewOrderDirection(state),
-        selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),
+@connect(
+    (state, ownProps) => {
+        return {
+            activeView: viewsSelectors.getActiveView(state),
+            config: viewsConfig.getConfigByName(ownProps.type),
+            orderBy: viewsSelectors.getActiveViewOrderBy(state),
+            orderDirection: viewsSelectors.getActiveViewOrderDirection(state),
+            selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),
+        }
+    },
+    {
+        fetchViewItems: viewsActions.fetchViewItems,
+        setOrderDirection: viewsActions.setOrderDirection,
     }
-}, {
-    fetchViewItems: viewsActions.fetchViewItems,
-    setOrderDirection: viewsActions.setOrderDirection,
-})
+)
 export default class HeaderCell extends React.Component {
     static propTypes = {
         ActionsComponent: PropTypes.func,
@@ -50,7 +53,9 @@ export default class HeaderCell extends React.Component {
         if (isOrderingField) {
             return (
                 <i className="material-icons md-1">
-                    {orderDirection === 'desc' ? 'arrow_drop_down': 'arrow_drop_up'}
+                    {orderDirection === 'desc'
+                        ? 'arrow_drop_down'
+                        : 'arrow_drop_up'}
                 </i>
             )
         }
@@ -69,7 +74,7 @@ export default class HeaderCell extends React.Component {
             isSearch,
             orderBy,
             orderDirection,
-            setOrderDirection
+            setOrderDirection,
         } = this.props
 
         const isMainField = config.get('mainField') === field.get('name')
@@ -85,7 +90,8 @@ export default class HeaderCell extends React.Component {
 
             if (action === 'sort') {
                 onClick = () => {
-                    const newOrderDirection = orderDirection === 'desc' ? 'asc' : 'desc'
+                    const newOrderDirection =
+                        orderDirection === 'desc' ? 'asc' : 'desc'
                     setOrderDirection(fieldPath, newOrderDirection)
                     fetchViewItems()
                 }
@@ -96,40 +102,37 @@ export default class HeaderCell extends React.Component {
             <td>
                 <div>
                     <div className="cell-wrapper">
-                        {
-                            isMainField ? (
-                                ActionsComponent ? (
-                                    <ActionsComponent
-                                        view={this.props.activeView}
-                                        selectedItemsIds={this.props.selectedItemsIds}
-                                    />
-                                ) : null
-                            ) : (
-                                <div
-                                    onClick={onClick}
-                                    className={classnames({
-                                        clickable: action === 'sort',
-                                    })}
-                                >
-                                    <span>
-                                        {field.get('title')}
-                                    </span>
-                                    {
-                                        action === 'sort' && this._renderOrderIcon(fieldPath === orderBy)
+                        {isMainField ? (
+                            ActionsComponent ? (
+                                <ActionsComponent
+                                    view={this.props.activeView}
+                                    selectedItemsIds={
+                                        this.props.selectedItemsIds
                                     }
-                                </div>
-                            )
-                        }
+                                />
+                            ) : null
+                        ) : (
+                            <div
+                                onClick={onClick}
+                                className={classnames({
+                                    clickable: action === 'sort',
+                                })}
+                            >
+                                <span>{field.get('title')}</span>
+                                {action === 'sort' &&
+                                    this._renderOrderIcon(
+                                        fieldPath === orderBy
+                                    )}
+                            </div>
+                        )}
                     </div>
-                    {
-                        isLast && !isSearch ? (
-                            <ShowMoreFieldsDropdown
-                                config={config}
-                                fields={config.get('fields', fromJS([]))}
-                                visibleFields={fields}
-                            />
-                        ) : null
-                    }
+                    {isLast && !isSearch ? (
+                        <ShowMoreFieldsDropdown
+                            config={config}
+                            fields={config.get('fields', fromJS([]))}
+                            visibleFields={fields}
+                        />
+                    ) : null}
                 </div>
             </td>
         )

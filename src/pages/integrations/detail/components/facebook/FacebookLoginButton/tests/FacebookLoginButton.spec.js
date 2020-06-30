@@ -18,31 +18,21 @@ describe('FacebookLoginButton component', () => {
                 authentication: {
                     facebook: {
                         redirect_uri_reconnect: 'https://.../?reconnect',
-                        redirect_uri: 'https://.../'
-                    }
-                }
-            })
+                        redirect_uri: 'https://.../',
+                    },
+                },
+            }),
         })
     })
 
     it('should render a log in link', () => {
-        const component = mount(
-            <FacebookLoginButton
-                store={store}
-                link
-            />
-        )
+        const component = mount(<FacebookLoginButton store={store} link />)
 
         expect(component).toMatchSnapshot()
     })
 
     it('should render a reconnect button', () => {
-        const component = mount(
-            <FacebookLoginButton
-                store={store}
-                reconnect
-            />
-        )
+        const component = mount(<FacebookLoginButton store={store} reconnect />)
 
         expect(component).toMatchSnapshot()
     })

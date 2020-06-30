@@ -22,19 +22,19 @@ import css from './Header.less'
 type Props = {
     activeView: Map<*, *>,
     config: Map<*, *>,
-    deleteView: Map<*, *> => Promise<void>,
+    deleteView: (Map<*, *>) => Promise<void>,
     isSearch: boolean,
     isUpdate: boolean,
     item: Map<*, *>,
     lastViewId: number,
     type: string,
-    updateView: Map<*, *> => void,
-    setViewEditMode: Map<*, *> => void,
+    updateView: (Map<*, *>) => void,
+    setViewEditMode: (Map<*, *>) => void,
     viewButtons: Node,
 }
 
 type State = {
-    askDeleteConfirmation: boolean
+    askDeleteConfirmation: boolean,
 }
 
 class Header extends React.Component<Props, State> {
@@ -54,8 +54,8 @@ class Header extends React.Component<Props, State> {
                     if (isSearch) {
                         browserHistory.push(this._goBackUrl())
                     }
-                }
-            }
+                },
+            },
         })
     }
 
@@ -83,26 +83,36 @@ class Header extends React.Component<Props, State> {
         // removing other querystrings from the url (eg. &page=1).
         if (this._searchQuery() !== searchQuery) {
             // add search to view and ask page of view (will return search result)
-            browserHistory.push(`/app/${config.get('routeList')}/search?q=${encodeURIComponent(searchQuery)}`)
+            browserHistory.push(
+                `/app/${config.get('routeList')}/search?q=${encodeURIComponent(
+                    searchQuery
+                )}`
+            )
         }
     }
 
     _updateViewName = (name: string) => {
-        this.props.updateView(this.props.activeView.merge({
-            name,
-            slug: slugify(name),
-        }))
+        this.props.updateView(
+            this.props.activeView.merge({
+                name,
+                slug: slugify(name),
+            })
+        )
     }
 
     _toggleDeleteConfirmation = () => {
-        this.setState({askDeleteConfirmation: !this.state.askDeleteConfirmation})
+        this.setState({
+            askDeleteConfirmation: !this.state.askDeleteConfirmation,
+        })
     }
 
     _selectEmoji = (emoji: string) => {
         const {updateView, activeView} = this.props
-        updateView(activeView.mergeDeep({
-            decoration: {emoji}
-        }))
+        updateView(
+            activeView.mergeDeep({
+                decoration: {emoji},
+            })
+        )
     }
 
     _clearEmoji = () => {
@@ -121,13 +131,7 @@ class Header extends React.Component<Props, State> {
     }
 
     render() {
-        const {
-            activeView,
-            config,
-            isSearch,
-            isUpdate,
-            viewButtons,
-        } = this.props
+        const {activeView, config, isSearch, isUpdate, viewButtons} = this.props
 
         const isEditMode = activeView.get('editMode')
         const emoji = activeView.getIn(['decoration', 'emoji'])
@@ -135,52 +139,86 @@ class Header extends React.Component<Props, State> {
         return (
             <div className={css.component}>
                 <div className="d-flex flex-grow">
-                    {!isSearch &&
-                        <div className={classnames('d-flex flex-grow mr-2', css.titleWrapper)}>
-                            {isEditMode ? (() => {
-                                const showEmojiPicker = !isSearch
-                                return (
-                                    <div className={css.titleWrapper}>
-                                        {showEmojiPicker && (
-                                            <EmojiSelect
-                                                className={classnames(css.emojiPicker)}
-                                                emoji={typeof emoji === 'string' ? emoji : null}
-                                                onEmojiSelect={this._selectEmoji}
-                                                onEmojiClear={this._clearEmoji}
+                    {!isSearch && (
+                        <div
+                            className={classnames(
+                                'd-flex flex-grow mr-2',
+                                css.titleWrapper
+                            )}
+                        >
+                            {isEditMode ? (
+                                (() => {
+                                    const showEmojiPicker = !isSearch
+                                    return (
+                                        <div className={css.titleWrapper}>
+                                            {showEmojiPicker && (
+                                                <EmojiSelect
+                                                    className={classnames(
+                                                        css.emojiPicker
+                                                    )}
+                                                    emoji={
+                                                        typeof emoji ===
+                                                        'string'
+                                                            ? emoji
+                                                            : null
+                                                    }
+                                                    onEmojiSelect={
+                                                        this._selectEmoji
+                                                    }
+                                                    onEmojiClear={
+                                                        this._clearEmoji
+                                                    }
+                                                />
+                                            )}
+                                            <EditableTitle
+                                                className={classnames(
+                                                    css.title,
+                                                    {
+                                                        [css.withEmojiPicker]: showEmojiPicker,
+                                                    }
+                                                )}
+                                                title={activeView.get(
+                                                    'name',
+                                                    ''
+                                                )}
+                                                placeholder="View name"
+                                                disabled={isSearch}
+                                                select={!isUpdate}
+                                                update={(name) => {
+                                                    if (
+                                                        name !==
+                                                        activeView.get('name')
+                                                    ) {
+                                                        this._updateViewName(
+                                                            name
+                                                        )
+                                                    }
+                                                }}
+                                                forceEditMode
                                             />
-                                        )}
-                                        <EditableTitle
-                                            className={classnames(css.title, {
-                                                [css.withEmojiPicker]: showEmojiPicker
-                                            })}
-                                            title={activeView.get('name', '')}
-                                            placeholder="View name"
-                                            disabled={isSearch}
-                                            select={!isUpdate}
-                                            update={(name) => {
-                                                if (name !== activeView.get('name')) {
-                                                    this._updateViewName(name)
-                                                }
-                                            }}
-                                            forceEditMode
-                                        />
-                                    </div>
-                                )
-                            })() : (
+                                        </div>
+                                    )
+                                })()
+                            ) : (
                                 <div
                                     id="settings-view-button"
-                                    className={classnames(css.title, 'mr-2 h-100 cursor-pointer')}
+                                    className={classnames(
+                                        css.title,
+                                        'mr-2 h-100 cursor-pointer'
+                                    )}
                                     color="transparent"
-                                    onClick={() => this.props.setViewEditMode(activeView)}
+                                    onClick={() =>
+                                        this.props.setViewEditMode(activeView)
+                                    }
                                 >
-                                    <ViewName view={activeView}/>
+                                    <ViewName view={activeView} />
                                     <i className="material-icons">
                                         keyboard_arrow_down
                                     </i>
                                 </div>
                             )}
                         </div>
-                    }
+                    )}
 
                     <div
                         className={classnames('d-flex', {
@@ -192,7 +230,9 @@ class Header extends React.Component<Props, State> {
                             onChange={this._search}
                             placeholder={`Search ${config.get('plural')}...`}
                             searchDebounceTime={400}
-                            location={`${(activeView.get('id'): any)}${!!isSearch ? '(s)' : ''}`}
+                            location={`${(activeView.get('id'): any)}${
+                                !!isSearch ? '(s)' : ''
+                            }`}
                             forcedQuery={this._searchQuery()}
                             className={classnames(css.headerSearch, 'mr-2', {
                                 [css.isSearching]: isSearch,
@@ -201,10 +241,13 @@ class Header extends React.Component<Props, State> {
                             onFocus={this.handleFocus}
                         />
 
-                        {isSearch ?
+                        {isSearch ? (
                             <Link to={this._goBackUrl()}>
                                 <i
-                                    className={classnames(css.closeIcon, 'material-icons d-none d-md-inline-block')}
+                                    className={classnames(
+                                        css.closeIcon,
+                                        'material-icons d-none d-md-inline-block'
+                                    )}
                                     id="leave-search-mode"
                                 >
                                     close
@@ -216,8 +259,9 @@ class Header extends React.Component<Props, State> {
                                     <b>Esc</b> Leave search mode
                                 </Tooltip>
                             </Link>
-                            : viewButtons
-                        }
+                        ) : (
+                            viewButtons
+                        )}
                     </div>
                 </div>
             </div>
@@ -226,14 +270,17 @@ class Header extends React.Component<Props, State> {
 }
 
 export default withRouter(
-    connect((state, ownProps) => ({
-        activeView: viewsSelectors.getActiveView(state),
-        config: viewsConfig.getConfigByName(ownProps.type),
-        lastViewId: viewsSelectors.getLastViewId(state),
-    }), {
-        deleteView: viewsActions.deleteView,
-        removeFieldFilter: viewsActions.removeFieldFilter,
-        updateView: viewsActions.updateView,
-        setViewEditMode: viewsActions.setViewEditMode
-    })(Header)
+    connect(
+        (state, ownProps) => ({
+            activeView: viewsSelectors.getActiveView(state),
+            config: viewsConfig.getConfigByName(ownProps.type),
+            lastViewId: viewsSelectors.getLastViewId(state),
+        }),
+        {
+            deleteView: viewsActions.deleteView,
+            removeFieldFilter: viewsActions.removeFieldFilter,
+            updateView: viewsActions.updateView,
+            setViewEditMode: viewsActions.setViewEditMode,
+        }
+    )(Header)
 )

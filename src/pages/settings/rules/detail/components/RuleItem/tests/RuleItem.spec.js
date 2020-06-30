@@ -5,22 +5,21 @@ import {fromJS} from 'immutable'
 import RuleItem from '../RuleItem'
 import {getMomentUtcISOString} from '../../../../../../../utils/date'
 
-
 const commonProps = {
     rule: fromJS({
         id: 17,
         name: 'my rule',
         code_ast: {},
-        code: {}
+        code: {},
     }),
     actions: {
         rules: {
             modifyCodeAst: jest.fn(),
             create: jest.fn(() => Promise.resolve({rule: {id: 12}})),
-            reset: jest.fn(() => Promise.resolve())
-        }
+            reset: jest.fn(() => Promise.resolve()),
+        },
     },
-    toggleOpening: jest.fn()
+    toggleOpening: jest.fn(),
 }
 
 describe('RuleItem component', () => {
@@ -29,23 +28,15 @@ describe('RuleItem component', () => {
     })
 
     it('should render', () => {
-        const component = shallow(
-            <RuleItem
-                {...commonProps}
-            />
-        ).setState({
-            eventTypes: ['ticket-updated']
+        const component = shallow(<RuleItem {...commonProps} />).setState({
+            eventTypes: ['ticket-updated'],
         })
 
         expect(component).toMatchSnapshot()
     })
 
     it('should render errors when there is no trigger selected', () => {
-        const component = shallow(
-            <RuleItem
-                {...commonProps}
-            />
-        )
+        const component = shallow(<RuleItem {...commonProps} />)
 
         expect(component).toMatchSnapshot()
     })
@@ -56,14 +47,11 @@ describe('RuleItem component', () => {
             const description = 'foo'
             const eventTypes = ['ticket-updated']
             const component = shallow(
-                <RuleItem
-                    {...commonProps}
-                    toggleOpening={toggleOpeningSpy}
-                />
+                <RuleItem {...commonProps} toggleOpening={toggleOpeningSpy} />
             ).setState({
                 description,
                 eventTypes,
-                name: commonProps.rule.get('name')
+                name: commonProps.rule.get('name'),
             })
 
             const instance = component.instance()
@@ -74,7 +62,7 @@ describe('RuleItem component', () => {
                     name: `${commonProps.rule.get('name')} - copy`,
                     code: commonProps.rule.get('code'),
                     code_ast: commonProps.rule.get('code_ast'),
-                    deactivated_datetime: getMomentUtcISOString()
+                    deactivated_datetime: getMomentUtcISOString(),
                 })
                 expect(toggleOpeningSpy).toHaveBeenCalledWith(17) // old rule
                 expect(toggleOpeningSpy).toHaveBeenCalledWith(12) // new rule
@@ -87,14 +75,11 @@ describe('RuleItem component', () => {
             const eventTypes = ['ticket-updated']
             const name = 'WAYOU'
             const component = shallow(
-                <RuleItem
-                    {...commonProps}
-                    toggleOpening={toggleOpeningSpy}
-                />
+                <RuleItem {...commonProps} toggleOpening={toggleOpeningSpy} />
             ).setState({
                 description,
                 eventTypes,
-                name
+                name,
             })
 
             const instance = component.instance()
@@ -105,7 +90,7 @@ describe('RuleItem component', () => {
                     name,
                     code: commonProps.rule.get('code'),
                     code_ast: commonProps.rule.get('code_ast'),
-                    deactivated_datetime: getMomentUtcISOString()
+                    deactivated_datetime: getMomentUtcISOString(),
                 })
                 expect(toggleOpeningSpy).toHaveBeenCalledWith(17) // old rule
                 expect(toggleOpeningSpy).toHaveBeenCalledWith(12) // new rule

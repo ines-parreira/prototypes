@@ -34,7 +34,7 @@ export default class Search extends React.Component {
         disabled: false,
         placeholder: 'Search...',
         style: {},
-        searchDebounceTime: 0
+        searchDebounceTime: 0,
     }
 
     state = {
@@ -58,17 +58,16 @@ export default class Search extends React.Component {
                     action: (e) => {
                         e.preventDefault()
                         ReactDOM.findDOMNode(this.searchInputRef).focus()
-                    }
-                }
+                    },
+                },
             })
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        const shouldSetValue = !this.isInitialized || (
-            nextProps.location &&
-            this.props.location !== nextProps.location
-        )
+        const shouldSetValue =
+            !this.isInitialized ||
+            (nextProps.location && this.props.location !== nextProps.location)
 
         if (shouldSetValue) {
             this.setState({search: ''})
@@ -134,7 +133,7 @@ export default class Search extends React.Component {
                     search
                 </i>
                 <Input
-                    ref={(ref) => this.searchInputRef = ref}
+                    ref={(ref) => (this.searchInputRef = ref)}
                     type="text"
                     className={css.input}
                     value={this.state.search}

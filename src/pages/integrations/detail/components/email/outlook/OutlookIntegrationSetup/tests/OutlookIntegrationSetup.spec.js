@@ -24,7 +24,7 @@ describe('<OutlookIntegrationSetup/>', () => {
                             item_count: 0,
                             nb_pages: 1,
                             page: 1,
-                        }
+                        },
                     },
                 },
             },
@@ -48,15 +48,30 @@ describe('<OutlookIntegrationSetup/>', () => {
                     store={mockStore({
                         integrations: integrations
                             .setIn(
-                                ['extra', 'outlook', 'onboardingIntegrations', 'data'],
+                                [
+                                    'extra',
+                                    'outlook',
+                                    'onboardingIntegrations',
+                                    'data',
+                                ],
                                 fromJS([
-                                    {id: 1, meta: {address: 'email1@foo.com'}, name: 'Address 1'},
+                                    {
+                                        id: 1,
+                                        meta: {address: 'email1@foo.com'},
+                                        name: 'Address 1',
+                                    },
                                 ])
                             )
                             .setIn(
-                                ['extra', 'outlook', 'onboardingIntegrations', 'meta', 'item_count'],
-                                1,
-                            )
+                                [
+                                    'extra',
+                                    'outlook',
+                                    'onboardingIntegrations',
+                                    'meta',
+                                    'item_count',
+                                ],
+                                1
+                            ),
                     })}
                     loading={fromJS({updateIntegration: false})}
                     actions={actions}
@@ -72,16 +87,35 @@ describe('<OutlookIntegrationSetup/>', () => {
                     store={mockStore({
                         integrations: integrations
                             .setIn(
-                                ['extra', 'outlook', 'onboardingIntegrations', 'data'],
+                                [
+                                    'extra',
+                                    'outlook',
+                                    'onboardingIntegrations',
+                                    'data',
+                                ],
                                 fromJS([
-                                    {id: 1, meta: {address: 'email1@foo.com'}, name: 'Address 1'},
-                                    {id: 2, meta: {address: 'email2@foo.com'}, name: 'Address 2'},
+                                    {
+                                        id: 1,
+                                        meta: {address: 'email1@foo.com'},
+                                        name: 'Address 1',
+                                    },
+                                    {
+                                        id: 2,
+                                        meta: {address: 'email2@foo.com'},
+                                        name: 'Address 2',
+                                    },
                                 ])
                             )
                             .setIn(
-                                ['extra', 'outlook', 'onboardingIntegrations', 'meta', 'item_count'],
-                                2,
-                            )
+                                [
+                                    'extra',
+                                    'outlook',
+                                    'onboardingIntegrations',
+                                    'meta',
+                                    'item_count',
+                                ],
+                                2
+                            ),
                     })}
                     loading={fromJS({updateIntegration: false})}
                     actions={actions}

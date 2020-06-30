@@ -4,7 +4,6 @@ import ColorPicker from '../components/ColorPicker'
 
 import InputField from './InputField'
 
-
 export default class ColorField extends InputField {
     _getField = () => {
         const {
@@ -17,11 +16,6 @@ export default class ColorField extends InputField {
             ...rest
         } = this.props
 
-        return (
-            <ColorPicker
-                id={this.id}
-                {...rest}
-            />
-        )
+        return <ColorPicker id={this.id} {...rest} />
     }
 }

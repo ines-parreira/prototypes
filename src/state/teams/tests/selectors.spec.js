@@ -26,7 +26,9 @@ describe('teams selectors', () => {
     })
 
     it('getTeams()', () => {
-        expect(selectors.getTeams(state)).toEqualImmutable(state.teams.get('all').valueSeq())
+        expect(selectors.getTeams(state)).toEqualImmutable(
+            state.teams.get('all').valueSeq()
+        )
         expect(selectors.getTeams({})).toEqualImmutable(fromJS([]))
     })
 })

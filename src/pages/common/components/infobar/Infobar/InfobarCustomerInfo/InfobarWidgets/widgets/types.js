@@ -17,7 +17,7 @@ export type ParameterType = {
 export type OptionType = {
     value: string,
     label?: string,
-    parameters?: Array<ParameterType>
+    parameters?: Array<ParameterType>,
 }
 
 export type ActionType = {
@@ -35,7 +35,11 @@ export type InfobarModalProps = {
     header: Node,
     isOpen: boolean,
     onOpen: (actionName: string | number) => void,
-    onChange: (name: string, value: string | number | boolean | Object, callback?: () => void) => void,
+    onChange: (
+        name: string,
+        value: string | number | boolean | Object,
+        callback?: () => void
+    ) => void,
     onBulkChange: (
         Array<{
             name: string,

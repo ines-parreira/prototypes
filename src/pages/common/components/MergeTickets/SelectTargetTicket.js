@@ -11,17 +11,17 @@ import * as viewsConfig from '../../../../config/views'
 import css from './SelectTargetTicket.less'
 
 type Props = {
-    sourceTicket: Map<*,*>,
+    sourceTicket: Map<*, *>,
     search: typeof searchTickets,
     updateTargetTicket: (number) => void,
-    customerId: ?number
+    customerId: ?number,
 }
 
 type State = {
     query: string,
-    navigation: Map<*,*>,
-    tickets: List<Map<*,*>>,
-    listIsLoading: boolean
+    navigation: Map<*, *>,
+    tickets: List<Map<*, *>>,
+    listIsLoading: boolean,
 }
 
 class SelectTargetTicket extends React.Component<Props, State> {
@@ -39,45 +39,56 @@ class SelectTargetTicket extends React.Component<Props, State> {
     _search = (direction: ?string = null) => {
         const {query, navigation} = this.state
 
-        this.props.search(
-            query,
-            this.props.sourceTicket.get('id'),
-            query ? null : this.props.customerId,
-            direction,
-            navigation
-        ).then((data) => {
-            this.setState({
-                tickets: fromJS(data.data),
-                navigation: fromJS(data.meta),
-                listIsLoading: false
+        this.props
+            .search(
+                query,
+                this.props.sourceTicket.get('id'),
+                query ? null : this.props.customerId,
+                direction,
+                navigation
+            )
+            .then((data) => {
+                this.setState({
+                    tickets: fromJS(data.data),
+                    navigation: fromJS(data.meta),
+                    listIsLoading: false,
+                })
             })
-        }).catch(() => {
-            this.setState({
-                tickets: fromJS([]),
-                navigation: fromJS({}),
-                listIsLoading: false
+            .catch(() => {
+                this.setState({
+                    tickets: fromJS([]),
+                    navigation: fromJS({}),
+                    listIsLoading: false,
+                })
             })
-        })
     }
 
     _updateQuery = (query: string) => {
-        this.setState({
-            query,
-            listIsLoading: true
-        }, () => this._search())
+        this.setState(
+            {
+                query,
+                listIsLoading: true,
+            },
+            () => this._search()
+        )
     }
 
     _onPageChange = (direction: ?string = null) => {
-        this.setState({
-            listIsLoading: true
-        }, () => this._search(direction))
+        this.setState(
+            {
+                listIsLoading: true,
+            },
+            () => this._search(direction)
+        )
     }
 
     render() {
         const {sourceTicket, updateTargetTicket} = this.props
         const {tickets, navigation} = this.state
 
-        const baseView = viewsConfig.defaultMergeTicketsView(sourceTicket.get('id'))
+        const baseView = viewsConfig.defaultMergeTicketsView(
+            sourceTicket.get('id')
+        )
 
         const config = viewsConfig.getConfigByName('ticket')
         const fields = config.get('fields').filter((field) => {
@@ -86,7 +97,10 @@ class SelectTargetTicket extends React.Component<Props, State> {
 
         return (
             <div>
-                <p>Select the ticket you want to merge <b>{sourceTicket.get('subject')}</b> with:</p>
+                <p>
+                    Select the ticket you want to merge{' '}
+                    <b>{sourceTicket.get('subject')}</b> with:
+                </p>
                 <Search
                     onChange={this._updateQuery}
                     searchDebounceTime={300}
@@ -113,5 +127,5 @@ class SelectTargetTicket extends React.Component<Props, State> {
 }
 
 export default connect(null, {
-    search: searchTickets
+    search: searchTickets,
 })(SelectTargetTicket)

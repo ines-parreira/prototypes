@@ -13,8 +13,8 @@ export type actionTemplateType = {
     arguments?: {},
     validators?: Array<{
         validate: ({integrations: Array<*>}) => {} | boolean,
-        error: string
-    }>
+        error: string,
+    }>,
 }
 
 export type attachmentType = {
@@ -25,7 +25,7 @@ export type attachmentType = {
     type: string,
 }
 
-export type schemasType = Map<*,*>
+export type schemasType = Map<*, *>
 
 // 3rd party
 
@@ -41,20 +41,23 @@ export type reactRouterLocation = {
 
 type reactRouterSingleRoute = {
     path: string,
-    component: any
+    component: any,
 }
 
 export type reactRouterRoute = reactRouterSingleRoute & {
-  childRoutes?: Array<reactRouterSingleRoute>
+    childRoutes?: Array<reactRouterSingleRoute>,
 }
 
 export type ReactRouterInjectedRouter = {
-    setRouteLeaveHook: (route: any, callback: (nextLocation?: reactRouterLocation) => any) => void,
+    setRouteLeaveHook: (
+        route: any,
+        callback: (nextLocation?: reactRouterLocation) => any
+    ) => void,
 }
 
 // esprima
 export type esprimaParse = {
     body: Array<{}>,
     sourceType: 'script',
-    type: 'Program'
+    type: 'Program',
 }

@@ -3,9 +3,8 @@ import {
     INTEGRATION_HIDDEN_VARIABLES,
     INTEGRATION_PREVIOUS_VARIABLES,
     INTEGRATION_TYPE_WITH_VARIABLES,
-    INTEGRATION_VARIABLES
+    INTEGRATION_VARIABLES,
 } from '../index'
-
 
 describe('config', () => {
     describe('integrations', () => {

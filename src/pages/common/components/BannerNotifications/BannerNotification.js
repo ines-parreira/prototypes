@@ -10,14 +10,14 @@ type Props = {
     dismissible: boolean,
     closable: boolean,
     allowHtml: boolean,
-    hide: (string | number) => void
+    hide: (string | number) => void,
 }
 
 class BannerNotification extends Component<Props> {
     static defaultProps = {
         allowHtml: true,
         closable: false,
-        dismissible: true
+        dismissible: true,
     }
 
     _onClick = () => {
@@ -41,38 +41,37 @@ class BannerNotification extends Component<Props> {
         const {status, message, allowHtml, closable} = this.props
         const classnames = classNames(
             'banner-notification',
-            `banner-notification--${status}`, {
-                'banner-notification--active': true
-            })
+            `banner-notification--${status}`,
+            {
+                'banner-notification--active': true,
+            }
+        )
 
         return (
             <div className={classnames}>
-                {allowHtml ?
+                {allowHtml ? (
                     <span
                         onClick={this._onClick}
                         className="banner-notification-message"
                         dangerouslySetInnerHTML={{__html: message}}
-                    >
-                    </span> :
+                    ></span>
+                ) : (
                     <span
                         onClick={this._onClick}
                         className="banner-notification-message"
                     >
                         {message}
                     </span>
-                }
-                { closable &&
+                )}
+                {closable && (
                     <span className="banner-notification-message__close">
                         <span>
-                            <i
-                                className="material-icons"
-                                onClick={this.close}
-                            >
+                            <i className="material-icons" onClick={this.close}>
                                 close
                             </i>
                         </span>
                     </span>
-                }
+                )}
             </div>
         )
     }

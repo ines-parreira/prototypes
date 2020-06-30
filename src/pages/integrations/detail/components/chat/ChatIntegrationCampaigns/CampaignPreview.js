@@ -5,13 +5,12 @@ import Avatar from '../../../../../common/components/Avatar'
 
 import css from './CampaignPreview.less'
 
-
 type Props = {
     html?: ?string,
     authorName?: ?string,
     authorAvatarUrl?: ?string,
     mainColor?: ?string,
-    translatedTexts: Object
+    translatedTexts: Object,
 }
 
 export default class CampaignPreview extends React.Component<Props> {
@@ -21,14 +20,14 @@ export default class CampaignPreview extends React.Component<Props> {
             authorName,
             authorAvatarUrl,
             mainColor,
-            translatedTexts
+            translatedTexts,
         } = this.props
 
         const _bgColor = (color) => ({backgroundColor: color})
 
         return (
             <div className={css.preview}>
-                <div className={css.titlebar}/>
+                <div className={css.titlebar} />
                 <div className={css.campaign}>
                     <div className={css.header}>
                         <div className={css.author}>
@@ -41,7 +40,7 @@ export default class CampaignPreview extends React.Component<Props> {
                         </div>
                         <div className={css.message}>
                             <div className={css.authorName}>
-                                <b>{authorName || '[Random agent\'s name]'}</b>
+                                <b>{authorName || "[Random agent's name]"}</b>
                             </div>
                             <div
                                 className={css.messageText}
@@ -59,14 +58,13 @@ export default class CampaignPreview extends React.Component<Props> {
                     </div>
                 </div>
 
-                <div
-                    className={css.button}
-                    style={_bgColor(mainColor)}
-                >
+                <div className={css.button} style={_bgColor(mainColor)}>
                     <img
                         alt="close icon"
                         className={css.icon}
-                        src={`${window.GORGIAS_ASSETS_URL || ''}/static/private/img/icons/DefaultCloseIcon.svg`}
+                        src={`${
+                            window.GORGIAS_ASSETS_URL || ''
+                        }/static/private/img/icons/DefaultCloseIcon.svg`}
                     />
                 </div>
             </div>

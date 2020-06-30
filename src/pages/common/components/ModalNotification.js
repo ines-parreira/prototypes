@@ -11,18 +11,20 @@ class ModalNotification extends React.Component {
         id: PropTypes.number.isRequired,
         title: PropTypes.string,
         message: PropTypes.string.isRequired,
-        buttons: PropTypes.arrayOf(PropTypes.shape({
-            name: PropTypes.string,
-            onClick: PropTypes.func,
-            color: PropTypes.string,
-        })).isRequired,
+        buttons: PropTypes.arrayOf(
+            PropTypes.shape({
+                name: PropTypes.string,
+                onClick: PropTypes.func,
+                color: PropTypes.string,
+            })
+        ).isRequired,
         dismissible: PropTypes.bool.isRequired,
         hide: PropTypes.func.isRequired,
     }
 
     static defaultProps = {
         dismissible: true,
-        buttons: []
+        buttons: [],
     }
 
     _handleClick = (onClick) => {
@@ -47,23 +49,21 @@ class ModalNotification extends React.Component {
                 onClose={this._toggle}
                 dismissible={dismissible}
                 header={title}
-                footer={
-                    buttons.map((button, index) => {
-                        return (
-                            <Button
-                                key={index}
-                                type="button"
-                                onClick={() => {
-                                    this._handleClick(button.onClick)
-                                }}
-                                color={button.color}
-                                className="mr-2"
-                            >
-                                {button.name}
-                            </Button>
-                        )
-                    })
-                }
+                footer={buttons.map((button, index) => {
+                    return (
+                        <Button
+                            key={index}
+                            type="button"
+                            onClick={() => {
+                                this._handleClick(button.onClick)
+                            }}
+                            color={button.color}
+                            className="mr-2"
+                        >
+                            {button.name}
+                        </Button>
+                    )
+                })}
             >
                 {message}
             </Modal>

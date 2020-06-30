@@ -3,7 +3,13 @@ import type {ActionCreatedBy} from '@reduxjs/toolkit'
 
 import type {Macro} from '../../../models/macro'
 
-import {macroCreated, macroDeleted, macroFetched, macroUpdated, macrosFetched} from './actions'
+import {
+    macroCreated,
+    macroDeleted,
+    macroFetched,
+    macroUpdated,
+    macrosFetched,
+} from './actions'
 
 export type MacrosState = {
     [string]: Macro,

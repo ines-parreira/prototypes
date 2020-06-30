@@ -12,11 +12,10 @@ describe('users audit reducers', () => {
     it('fetch user audit', () => {
         expect(
             reducer(
-                initialState
-                    .mergeDeep({
-                        events: [{id: 1}],
-                        meta: {},
-                    }),
+                initialState.mergeDeep({
+                    events: [{id: 1}],
+                    meta: {},
+                }),
                 {
                     type: types.FETCH_USERS_AUDIT_SUCCESS,
                     resp: {

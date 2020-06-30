@@ -9,10 +9,14 @@ import {
     FormGroup,
     Button,
     Breadcrumb,
-    BreadcrumbItem, Container,
+    BreadcrumbItem,
+    Container,
 } from 'reactstrap'
 
-import {FACEBOOK_LANGUAGE_OPTIONS, FACEBOOK_LANGUAGE_DEFAULT} from '../../../../../config/integrations/facebook'
+import {
+    FACEBOOK_LANGUAGE_OPTIONS,
+    FACEBOOK_LANGUAGE_DEFAULT,
+} from '../../../../../config/integrations/facebook'
 
 import InputField from '../../../../common/forms/InputField'
 import BooleanField from '../../../../common/forms/BooleanField'
@@ -25,11 +29,10 @@ import pageIconDefault from '../../../../../../img/integrations/facebook-page.pn
 import FacebookIntegrationNavigation from './FacebookIntegrationNavigation'
 import FacebookLoginButton from './FacebookLoginButton'
 
-
 type Props = {
     integration: Map<*, *>,
     actions: Object,
-    loading: Map<*, *>
+    loading: Map<*, *>,
 }
 
 type State = {
@@ -38,20 +41,23 @@ type State = {
         messenger_enabled: boolean,
         import_history_enabled: boolean,
         instagram_comments_enabled: boolean,
-        instagram_ads_enabled: boolean
+        instagram_ads_enabled: boolean,
     },
     language: string,
-    askDisableConfirmation: boolean
+    askDisableConfirmation: boolean,
 }
 
-export default class FacebookIntegrationDetail extends React.Component<Props, State> {
+export default class FacebookIntegrationDetail extends React.Component<
+    Props,
+    State
+> {
     state = {
         settings: {
             posts_enabled: true,
             messenger_enabled: true,
             import_history_enabled: true,
             instagram_comments_enabled: false,
-            instagram_ads_enabled: false
+            instagram_ads_enabled: false,
         },
         language: FACEBOOK_LANGUAGE_DEFAULT,
         askDisableConfirmation: false,
@@ -68,8 +74,13 @@ export default class FacebookIntegrationDetail extends React.Component<Props, St
                 posts_enabled: settings.get('posts_enabled'),
                 messenger_enabled: settings.get('messenger_enabled'),
                 import_history_enabled: settings.get('import_history_enabled'),
-                instagram_comments_enabled: settings.get('instagram_comments_enabled'),
-                instagram_ads_enabled: settings.get('instagram_ads_enabled', false),
+                instagram_comments_enabled: settings.get(
+                    'instagram_comments_enabled'
+                ),
+                instagram_ads_enabled: settings.get(
+                    'instagram_ads_enabled',
+                    false
+                ),
             }
         }
 
@@ -85,7 +96,10 @@ export default class FacebookIntegrationDetail extends React.Component<Props, St
     }
 
     componentWillReceiveProps(nextProps: Props) {
-        if (!nextProps.integration.isEmpty() && !nextProps.integration.equals(this.props.integration)) {
+        if (
+            !nextProps.integration.isEmpty() &&
+            !nextProps.integration.equals(this.props.integration)
+        ) {
             this._updateState(nextProps.integration)
         }
     }
@@ -94,8 +108,8 @@ export default class FacebookIntegrationDetail extends React.Component<Props, St
         this.setState({
             settings: {
                 ...this.state.settings,
-                [name]: value
-            }
+                [name]: value,
+            },
         })
     }
 
@@ -105,7 +119,7 @@ export default class FacebookIntegrationDetail extends React.Component<Props, St
         const {settings, language} = this.state
         const updated = integration.mergeDeep({
             facebook: {settings},
-            meta: {language}
+            meta: {language},
         })
         actions.updateOrCreateIntegration(updated)
     }
@@ -115,12 +129,19 @@ export default class FacebookIntegrationDetail extends React.Component<Props, St
 
         const integrationFacebook = integration.get('facebook') || fromJS({})
 
-        const integrationScope = integration.getIn(['meta', 'oauth', 'scope']) || fromJS([])
-        const doesntHaveInstagramPermissions = !integrationScope.includes('instagram_basic')
-            || !integrationScope.includes('instagram_manage_comments')
-        const doesntHaveAdsPermissions = !integrationScope.includes('ads_read')
-            || !integrationScope.includes('ads_management')
-        const doesntHaveInstagramId = !integration.getIn(['meta', 'instagram', 'id'])
+        const integrationScope =
+            integration.getIn(['meta', 'oauth', 'scope']) || fromJS([])
+        const doesntHaveInstagramPermissions =
+            !integrationScope.includes('instagram_basic') ||
+            !integrationScope.includes('instagram_manage_comments')
+        const doesntHaveAdsPermissions =
+            !integrationScope.includes('ads_read') ||
+            !integrationScope.includes('ads_management')
+        const doesntHaveInstagramId = !integration.getIn([
+            'meta',
+            'instagram',
+            'id',
+        ])
 
         let alertComponent = null
 
@@ -129,44 +150,39 @@ export default class FacebookIntegrationDetail extends React.Component<Props, St
         if (doesntHaveInstagramPermissions) {
             alertComponent = (
                 <Alert color="warning">
-                    <i className="material-icons md-2 mr-2">
-                        warning
-                    </i>
-                    Instagram is disabled because we miss the required permissions. Please{' '}
-                    <FacebookLoginButton
-                        reconnect
-                        link
-                    >
+                    <i className="material-icons md-2 mr-2">warning</i>
+                    Instagram is disabled because we miss the required
+                    permissions. Please{' '}
+                    <FacebookLoginButton reconnect link>
                         click here to update your permissions
-                    </FacebookLoginButton>.
+                    </FacebookLoginButton>
+                    .
                 </Alert>
             )
         } else if (doesntHaveInstagramId) {
             alertComponent = (
                 <Alert color="warning">
-                    You cannot activate Instagram on this page: it is not associated with any Instagram account.<br/>
-                    If you just associated the page with an Instagram account, please{' '}
-                    <FacebookLoginButton
-                        reconnect
-                        link
-                    >
+                    You cannot activate Instagram on this page: it is not
+                    associated with any Instagram account.
+                    <br />
+                    If you just associated the page with an Instagram account,
+                    please{' '}
+                    <FacebookLoginButton reconnect link>
                         click here to update your integrations
-                    </FacebookLoginButton>.
+                    </FacebookLoginButton>
+                    .
                 </Alert>
             )
         } else if (doesntHaveAdsPermissions) {
             alertComponent = (
                 <Alert color="warning">
-                    <i className="material-icons md-2 mr-2">
-                        warning
-                    </i>
-                    Ads are disabled because we miss the required permissions. Please{' '}
-                    <FacebookLoginButton
-                        reconnect
-                        link
-                    >
+                    <i className="material-icons md-2 mr-2">warning</i>
+                    Ads are disabled because we miss the required permissions.
+                    Please{' '}
+                    <FacebookLoginButton reconnect link>
                         click here to update your permissions
-                    </FacebookLoginButton>.
+                    </FacebookLoginButton>
+                    .
                 </Alert>
             )
         }
@@ -177,42 +193,48 @@ export default class FacebookIntegrationDetail extends React.Component<Props, St
 
         return (
             <div className="full-width">
-                <PageHeader title={(
-                    <Breadcrumb>
-                        <BreadcrumbItem>
-                            <Link to="/app/settings/integrations">Integrations</Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            <Link to="/app/settings/integrations/facebook">Facebook, Messenger & Instagram</Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            {integration.get('name')}
-                        </BreadcrumbItem>
-                        <BreadcrumbItem active>
-                            Overview
-                        </BreadcrumbItem>
-                    </Breadcrumb>
-                )}/>
+                <PageHeader
+                    title={
+                        <Breadcrumb>
+                            <BreadcrumbItem>
+                                <Link to="/app/settings/integrations">
+                                    Integrations
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                <Link to="/app/settings/integrations/facebook">
+                                    Facebook, Messenger & Instagram
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                {integration.get('name')}
+                            </BreadcrumbItem>
+                            <BreadcrumbItem active>Overview</BreadcrumbItem>
+                        </Breadcrumb>
+                    }
+                />
 
-                <FacebookIntegrationNavigation integration={integration}/>
+                <FacebookIntegrationNavigation integration={integration} />
 
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <Container fluid className="page-container">
                     <div className="d-flex align-items-center mb-3">
                         <img
                             alt="facebook logo"
                             className="image rounded mr-3"
                             width="30"
-                            src={integrationFacebook.getIn(['picture', 'data', 'url'], pageIconDefault)}
+                            src={integrationFacebook.getIn(
+                                ['picture', 'data', 'url'],
+                                pageIconDefault
+                            )}
                         />
                         <div className="text-truncate text-faded">
                             <h2 className="d-inline mr-3 text-info">
                                 {integration.get('name')}
                             </h2>
                             <span>
-                                {_truncate(integrationFacebook.get('about'), {length: 100})}
+                                {_truncate(integrationFacebook.get('about'), {
+                                    length: 100,
+                                })}
                             </span>
                         </div>
                     </div>
@@ -223,29 +245,57 @@ export default class FacebookIntegrationDetail extends React.Component<Props, St
                                 type="checkbox"
                                 label="Enable Messenger"
                                 value={this.state.settings.messenger_enabled}
-                                onChange={(value) => this._onSettingChange(value, 'messenger_enabled')}
+                                onChange={(value) =>
+                                    this._onSettingChange(
+                                        value,
+                                        'messenger_enabled'
+                                    )
+                                }
                             />
                             <BooleanField
                                 name="posts_enabled"
                                 type="checkbox"
                                 label="Enable Facebook posts, comments and ads comments"
                                 value={this.state.settings.posts_enabled}
-                                onChange={(value) => this._onSettingChange(value, 'posts_enabled')}
+                                onChange={(value) =>
+                                    this._onSettingChange(
+                                        value,
+                                        'posts_enabled'
+                                    )
+                                }
                             />
                             <BooleanField
                                 name="instagram_comments_enabled"
                                 type="checkbox"
                                 label="Enable Instagram comments"
-                                value={this.state.settings.instagram_comments_enabled}
-                                onChange={(value) => this._onSettingChange(value, 'instagram_comments_enabled')}
-                                disabled={doesntHaveInstagramPermissions || doesntHaveInstagramId}
+                                value={
+                                    this.state.settings
+                                        .instagram_comments_enabled
+                                }
+                                onChange={(value) =>
+                                    this._onSettingChange(
+                                        value,
+                                        'instagram_comments_enabled'
+                                    )
+                                }
+                                disabled={
+                                    doesntHaveInstagramPermissions ||
+                                    doesntHaveInstagramId
+                                }
                             />
                             <BooleanField
                                 name="instagram_ads_enabled"
                                 type="checkbox"
                                 label="Enable Instagram ads"
-                                value={this.state.settings.instagram_ads_enabled}
-                                onChange={(value) => this._onSettingChange(value, 'instagram_ads_enabled')}
+                                value={
+                                    this.state.settings.instagram_ads_enabled
+                                }
+                                onChange={(value) =>
+                                    this._onSettingChange(
+                                        value,
+                                        'instagram_ads_enabled'
+                                    )
+                                }
                                 disabled={
                                     doesntHaveInstagramPermissions ||
                                     doesntHaveAdsPermissions ||
@@ -256,13 +306,18 @@ export default class FacebookIntegrationDetail extends React.Component<Props, St
                                 name="import_history_enabled"
                                 type="checkbox"
                                 label="Import 30 days of history (posts and comments) as closed tickets"
-                                value={this.state.settings.import_history_enabled}
-                                onChange={(value) => this._onSettingChange(value, 'import_history_enabled')}
+                                value={
+                                    this.state.settings.import_history_enabled
+                                }
+                                onChange={(value) =>
+                                    this._onSettingChange(
+                                        value,
+                                        'import_history_enabled'
+                                    )
+                                }
                             />
                         </FormGroup>
-                        <div>
-                            {alertComponent}
-                        </div>
+                        <div>{alertComponent}</div>
                     </div>
 
                     <InputField
@@ -272,16 +327,14 @@ export default class FacebookIntegrationDetail extends React.Component<Props, St
                         onChange={(language) => this.setState({language})}
                         label="Language"
                     >
-                        {
-                            FACEBOOK_LANGUAGE_OPTIONS.map((option) => (
-                                <option
-                                    key={option.get('value')}
-                                    value={option.get('value')}
-                                >
-                                    {option.get('label')}
-                                </option>
-                            ))
-                        }
+                        {FACEBOOK_LANGUAGE_OPTIONS.map((option) => (
+                            <option
+                                key={option.get('value')}
+                                value={option.get('value')}
+                            >
+                                {option.get('label')}
+                            </option>
+                        ))}
                     </InputField>
 
                     <div>
@@ -296,15 +349,19 @@ export default class FacebookIntegrationDetail extends React.Component<Props, St
                         >
                             Save changes
                         </Button>
-                        <FacebookLoginButton reconnect/>
+                        <FacebookLoginButton reconnect />
                         <ConfirmButton
                             color="secondary"
                             className="float-right"
                             content="Are you sure you want to delete this integration?"
-                            confirm={() => actions.deleteIntegration(integration)}
+                            confirm={() =>
+                                actions.deleteIntegration(integration)
+                            }
                             disabled={isSubmitting}
                         >
-                            <i className="material-icons mr-1 text-danger">delete</i>
+                            <i className="material-icons mr-1 text-danger">
+                                delete
+                            </i>
                             Delete this page
                         </ConfirmButton>
                     </div>

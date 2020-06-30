@@ -23,7 +23,7 @@ export type StatusPageComponentsResponseData = {
 export type StatusPageScheduledMaintenance = {
     status: $Values<typeof MAINTENANCE_STATUSES>,
     scheduled_for: string,
-    components: StatusPageComponent[]
+    components: StatusPageComponent[],
 }
 
 export type StatusPageScheduledMaintenanceResponseData = {

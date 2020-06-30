@@ -15,34 +15,25 @@ describe('infobar reducers', () => {
     it('fetch person avatar (user or customer)', () => {
         // start
         expect(
-            reducer(
-                initialState,
-                {
-                    type: types.FETCH_AVATAR_START,
-                }
-            ).toJS()
+            reducer(initialState, {
+                type: types.FETCH_AVATAR_START,
+            }).toJS()
         ).toMatchSnapshot()
 
         // success
         expect(
-            reducer(
-                initialState,
-                {
-                    type: types.FETCH_AVATAR_SUCCESS,
-                    url: 'http://good.url',
-                    email: 'alex@gorgias.io',
-                }
-            ).toJS()
+            reducer(initialState, {
+                type: types.FETCH_AVATAR_SUCCESS,
+                url: 'http://good.url',
+                email: 'alex@gorgias.io',
+            }).toJS()
         ).toMatchSnapshot()
 
         // fail
         expect(
-            reducer(
-                initialState,
-                {
-                    type: types.FETCH_AVATAR_ERROR,
-                }
-            ).toJS()
+            reducer(initialState, {
+                type: types.FETCH_AVATAR_ERROR,
+            }).toJS()
         ).toMatchSnapshot()
     })
 
@@ -59,37 +50,34 @@ describe('infobar reducers', () => {
 
         // start
         expect(
-            reducer(
-                initialState,
-                {
-                    type: types.EXECUTE_ACTION_START,
-                }
-            ).toJS()
+            reducer(initialState, {
+                type: types.EXECUTE_ACTION_START,
+            }).toJS()
         ).toMatchSnapshot()
 
         // start with callback
         expect(
-            reducer(
-                initialState,
-                {
-                    type: types.EXECUTE_ACTION_START,
-                    callback: data.callback,
-                    data,
-                }
-            ).toJS()
+            reducer(initialState, {
+                type: types.EXECUTE_ACTION_START,
+                callback: data.callback,
+                data,
+            }).toJS()
         ).toMatchSnapshot()
 
         // success
         jest.clearAllMocks()
         expect(
             reducer(
-                initialState
-                    .mergeDeep(fromJS({
-                        pendingActionsCallbacks: [{
-                            id: actionId,
-                            callback: data.callback,
-                        }],
-                    })),
+                initialState.mergeDeep(
+                    fromJS({
+                        pendingActionsCallbacks: [
+                            {
+                                id: actionId,
+                                callback: data.callback,
+                            },
+                        ],
+                    })
+                ),
                 {
                     type: types.EXECUTE_ACTION_SUCCESS,
                     data,
@@ -102,13 +90,16 @@ describe('infobar reducers', () => {
         jest.clearAllMocks()
         expect(
             reducer(
-                initialState
-                    .mergeDeep(fromJS({
-                        pendingActionsCallbacks: [{
-                            id: actionId,
-                            callback: data.callback,
-                        }],
-                    })),
+                initialState.mergeDeep(
+                    fromJS({
+                        pendingActionsCallbacks: [
+                            {
+                                id: actionId,
+                                callback: data.callback,
+                            },
+                        ],
+                    })
+                ),
                 {
                     type: types.EXECUTE_ACTION_ERROR,
                     data,

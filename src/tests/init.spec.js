@@ -15,12 +15,12 @@ describe('init', () => {
             reduxStore = mockStore({})
         })
 
-        it('should not do anything because the URL\'s TLD is not `.io`', () => {
+        it("should not do anything because the URL's TLD is not `.io`", () => {
             notifyDeprecatedTld('https://acme.gorgias.com/', reduxStore)
             expect(reduxStore.getActions()).toMatchSnapshot()
         })
 
-        it('should dispatch a notification because the URL\'s TLD is `.io`', () => {
+        it("should dispatch a notification because the URL's TLD is `.io`", () => {
             notifyDeprecatedTld('https://acme.gorgias.io/', reduxStore)
             expect(reduxStore.getActions()).toMatchSnapshot()
         })
@@ -30,15 +30,17 @@ describe('init', () => {
         it('should not do anything because the base email integration is verified', () => {
             reduxStore = mockStore({
                 integrations: fromJS({
-                    integrations: [{
-                        id: 1,
-                        type: EMAIL_INTEGRATION_TYPE,
-                        meta: {
-                            address: `asdasd@${window.EMAIL_FORWARDING_DOMAIN}`,
-                            verified: true,
-                        }
-                    }]
-                })
+                    integrations: [
+                        {
+                            id: 1,
+                            type: EMAIL_INTEGRATION_TYPE,
+                            meta: {
+                                address: `asdasd@${window.EMAIL_FORWARDING_DOMAIN}`,
+                                verified: true,
+                            },
+                        },
+                    ],
+                }),
             })
 
             notifyAccountNotVerified(reduxStore)
@@ -49,15 +51,17 @@ describe('init', () => {
         it('should dispatch a notification because the base email integration is not verified', () => {
             reduxStore = mockStore({
                 integrations: fromJS({
-                    integrations: [{
-                        id: 1,
-                        type: EMAIL_INTEGRATION_TYPE,
-                        meta: {
-                            address: `asdasd@${window.EMAIL_FORWARDING_DOMAIN}`,
-                            verified: false,
-                        }
-                    }]
-                })
+                    integrations: [
+                        {
+                            id: 1,
+                            type: EMAIL_INTEGRATION_TYPE,
+                            meta: {
+                                address: `asdasd@${window.EMAIL_FORWARDING_DOMAIN}`,
+                                verified: false,
+                            },
+                        },
+                    ],
+                }),
             })
 
             notifyAccountNotVerified(reduxStore)

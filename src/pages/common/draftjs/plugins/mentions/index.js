@@ -14,33 +14,33 @@ import {defaultSuggestionsFilter, positionSuggestions} from './utils'
 
 import styles from './Mention.less'
 
-const letterRegExp = '[' +
-  '\\w-' +
-  // Latin-1 Supplement (letters only) - https://en.wikipedia.org/wiki/List_of_Unicode_characters#Latin-1_Supplement
-  '\u00C0-\u00D6' +
-  '\u00D8-\u00F6' +
-  '\u00F8-\u00FF' +
-  // Greek https://www.unicode.org/charts/PDF/U0370.pdf https://www.unicode.org/charts/PDF/U1F00.pdf
-  '\u0386-\u03CE' +
-  '\u1F00-\u1FFE' +
-  // Latin Extended-A (without deprecated character) - https://en.wikipedia.org/wiki/List_of_Unicode_characters#Latin_Extended-A
-  '\u0100-\u0148' +
-  '\u014A-\u017F' +
-  // Cyrillic symbols: \u0410-\u044F - https://en.wikipedia.org/wiki/Cyrillic_script_in_Unicode
-  '\u0410-\u044F' +
-  // hiragana (japanese): \u3040-\u309F - https://gist.github.com/ryanmcgrath/982242#file-japaneseregex-js
-  '\u3040-\u309F' +
-  // katakana (japanese): \u30A0-\u30FF - https://gist.github.com/ryanmcgrath/982242#file-japaneseregex-js
-  '\u30A0-\u30FF' +
-  // For an advanced explaination about Hangul see https://github.com/draft-js-plugins/draft-js-plugins/pull/480#issuecomment-254055437
-  // Hangul Jamo (korean): \u3130-\u318F - https://en.wikipedia.org/wiki/Korean_language_and_computers#Hangul_in_Unicode
-  // Hangul Syllables (korean): \uAC00-\uD7A3 - https://en.wikipedia.org/wiki/Korean_language_and_computers#Hangul_in_Unicode
-  '\u3130-\u318F' +
-  '\uAC00-\uD7A3' +
-  // common chinese symbols: \u4e00-\u9eff - http://stackoverflow.com/a/1366113/837709
-  '\u4e00-\u9eff' +
-  ']*'
-
+const letterRegExp =
+    '[' +
+    '\\w-' +
+    // Latin-1 Supplement (letters only) - https://en.wikipedia.org/wiki/List_of_Unicode_characters#Latin-1_Supplement
+    '\u00C0-\u00D6' +
+    '\u00D8-\u00F6' +
+    '\u00F8-\u00FF' +
+    // Greek https://www.unicode.org/charts/PDF/U0370.pdf https://www.unicode.org/charts/PDF/U1F00.pdf
+    '\u0386-\u03CE' +
+    '\u1F00-\u1FFE' +
+    // Latin Extended-A (without deprecated character) - https://en.wikipedia.org/wiki/List_of_Unicode_characters#Latin_Extended-A
+    '\u0100-\u0148' +
+    '\u014A-\u017F' +
+    // Cyrillic symbols: \u0410-\u044F - https://en.wikipedia.org/wiki/Cyrillic_script_in_Unicode
+    '\u0410-\u044F' +
+    // hiragana (japanese): \u3040-\u309F - https://gist.github.com/ryanmcgrath/982242#file-japaneseregex-js
+    '\u3040-\u309F' +
+    // katakana (japanese): \u30A0-\u30FF - https://gist.github.com/ryanmcgrath/982242#file-japaneseregex-js
+    '\u30A0-\u30FF' +
+    // For an advanced explaination about Hangul see https://github.com/draft-js-plugins/draft-js-plugins/pull/480#issuecomment-254055437
+    // Hangul Jamo (korean): \u3130-\u318F - https://en.wikipedia.org/wiki/Korean_language_and_computers#Hangul_in_Unicode
+    // Hangul Syllables (korean): \uAC00-\uD7A3 - https://en.wikipedia.org/wiki/Korean_language_and_computers#Hangul_in_Unicode
+    '\u3130-\u318F' +
+    '\uAC00-\uD7A3' +
+    // common chinese symbols: \u4e00-\u9eff - http://stackoverflow.com/a/1366113/837709
+    '\u4e00-\u9eff' +
+    ']*'
 
 const createMentionPlugin = () => {
     const theme = {
@@ -82,7 +82,8 @@ const createMentionPlugin = () => {
     const store = {
         getEditorState: undefined,
         setEditorState: undefined,
-        getPortalClientRect: (offsetKey) => clientRectFunctions.get(offsetKey)(),
+        getPortalClientRect: (offsetKey) =>
+            clientRectFunctions.get(offsetKey)(),
         getAllSearches: () => searches,
         isEscaped: (offsetKey) => escapedSearch === offsetKey,
         escapeSearch: (offsetKey) => {
@@ -119,36 +120,48 @@ const createMentionPlugin = () => {
     }
 
     return {
-        MentionSuggestions: decorateComponentWithProps(MentionSuggestions, mentionSearchProps),
+        MentionSuggestions: decorateComponentWithProps(
+            MentionSuggestions,
+            mentionSearchProps
+        ),
         decorators: [
             {
                 strategy: mentionStrategy(mentionTrigger),
                 component: decorateComponentWithProps(Mention, {theme}),
             },
             {
-                strategy: mentionSuggestionsStrategy(mentionTrigger, mentionRegExp),
-                component: decorateComponentWithProps(MentionSuggestionsPortal, {store}),
+                strategy: mentionSuggestionsStrategy(
+                    mentionTrigger,
+                    mentionRegExp
+                ),
+                component: decorateComponentWithProps(
+                    MentionSuggestionsPortal,
+                    {store}
+                ),
             },
         ],
-        getAccessibilityProps: () => (
-            {
-                role: 'combobox',
-                ariaAutoComplete: 'list',
-                ariaHasPopup: ariaProps.ariaHasPopup,
-                ariaExpanded: ariaProps.ariaExpanded,
-            }
-        ),
+        getAccessibilityProps: () => ({
+            role: 'combobox',
+            ariaAutoComplete: 'list',
+            ariaHasPopup: ariaProps.ariaHasPopup,
+            ariaExpanded: ariaProps.ariaExpanded,
+        }),
 
         initialize: ({getEditorState, setEditorState}) => {
             store.getEditorState = getEditorState
             store.setEditorState = setEditorState
         },
 
-        onDownArrow: (keyboardEvent) => callbacks.onDownArrow && callbacks.onDownArrow(keyboardEvent),
-        onTab: (keyboardEvent) => callbacks.onTab && callbacks.onTab(keyboardEvent),
-        onUpArrow: (keyboardEvent) => callbacks.onUpArrow && callbacks.onUpArrow(keyboardEvent),
-        onEscape: (keyboardEvent) => callbacks.onEscape && callbacks.onEscape(keyboardEvent),
-        handleReturn: (keyboardEvent) => callbacks.handleReturn && callbacks.handleReturn(keyboardEvent),
+        onDownArrow: (keyboardEvent) =>
+            callbacks.onDownArrow && callbacks.onDownArrow(keyboardEvent),
+        onTab: (keyboardEvent) =>
+            callbacks.onTab && callbacks.onTab(keyboardEvent),
+        onUpArrow: (keyboardEvent) =>
+            callbacks.onUpArrow && callbacks.onUpArrow(keyboardEvent),
+        onEscape: (keyboardEvent) =>
+            callbacks.onEscape && callbacks.onEscape(keyboardEvent),
+        handleReturn: (keyboardEvent) =>
+            callbacks.handleReturn && callbacks.handleReturn(keyboardEvent),
         onChange: (editorState) => {
             if (callbacks.onChange) {
                 return callbacks.onChange(editorState)
@@ -160,4 +173,3 @@ const createMentionPlugin = () => {
 
 export const suggestionsFilter = defaultSuggestionsFilter
 export default createMentionPlugin
-

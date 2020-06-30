@@ -11,7 +11,7 @@ import css from './Attachments.less'
 const classNames = classNamesBind.bind(css)
 
 type Props = {
-    message: TicketMessage
+    message: TicketMessage,
 }
 
 const Attachments = (props: Props) => {
@@ -24,12 +24,12 @@ const Attachments = (props: Props) => {
     return (
         <div className={classNames('pt-4', 'wrapper')}>
             <span className={classNames('label')}>
-                <i className="icon mr-1 material-icons">
-                    attachment
-                </i>
+                <i className="icon mr-1 material-icons">attachment</i>
                 New media files
             </span>
-            <TicketAttachments attachments={fromJS(message.attachments || [])}/>
+            <TicketAttachments
+                attachments={fromJS(message.attachments || [])}
+            />
         </div>
     )
 }

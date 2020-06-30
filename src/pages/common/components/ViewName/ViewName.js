@@ -3,7 +3,7 @@ import React from 'react'
 import {Map} from 'immutable'
 
 type Props = {
-    view: Map<*, *>
+    view: Map<*, *>,
 }
 
 const ViewName = (props: Props) => {
@@ -11,10 +11,8 @@ const ViewName = (props: Props) => {
     const name = view.get('name', '')
     const emoji = view.getIn(['decoration', 'emoji'])
     return (
-        <span
-            {...wrapperProps}
-        >
-            {(typeof emoji === 'string') && (emoji + ' ')}
+        <span {...wrapperProps}>
+            {typeof emoji === 'string' && emoji + ' '}
             {name}
         </span>
     )

@@ -29,8 +29,12 @@ class CustomerListContainer extends React.Component {
     _setInitialState = (props) => {
         this.setState({
             // TODO(customers-migration): remove statements with `users` when we updated all links in our email templates.
-            isSearch: isSearchUrl(props.location.pathname, 'users') || isSearchUrl(props.location.pathname, 'customers'),
-            isUpdate: !isCreationUrl(props.location.pathname, 'users') && !isCreationUrl(props.location.pathname, 'customers')
+            isSearch:
+                isSearchUrl(props.location.pathname, 'users') ||
+                isSearchUrl(props.location.pathname, 'customers'),
+            isUpdate:
+                !isCreationUrl(props.location.pathname, 'users') &&
+                !isCreationUrl(props.location.pathname, 'customers'),
         })
     }
 
@@ -52,7 +56,13 @@ class CustomerListContainer extends React.Component {
 
     render() {
         const {isSearch, isUpdate} = this.state
-        const {customers, urlViewId, activeView, hasActiveView, fetchViewItems} = this.props
+        const {
+            customers,
+            urlViewId,
+            activeView,
+            hasActiveView,
+            fetchViewItems,
+        } = this.props
         let title = 'Loading...'
 
         if (!isUpdate) {
@@ -60,7 +70,9 @@ class CustomerListContainer extends React.Component {
         } else if (hasActiveView) {
             title = activeView.get('name')
             if (activeView.get('count', 0) > 0) {
-                title = `(${compactInteger(activeView.get('count', 0))}) ${title}`
+                title = `(${compactInteger(
+                    activeView.get('count', 0)
+                )}) ${title}`
             }
         } else {
             title = 'Wrong view'
@@ -85,7 +97,7 @@ class CustomerListContainer extends React.Component {
                         isSearch={isSearch}
                         urlViewId={urlViewId}
                         ActionsComponent={CustomerListActions}
-                        viewButtons={(
+                        viewButtons={
                             <div className="d-inline-flex align-items-center">
                                 <Button
                                     type="button"
@@ -106,7 +118,7 @@ class CustomerListContainer extends React.Component {
                                     />
                                 </Modal>
                             </div>
-                        )}
+                        }
                     />
                 </div>
             </DocumentTitle>
@@ -141,4 +153,7 @@ const mapDispatchToProps = {
     fetchViewItems: viewsActions.fetchViewItems,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CustomerListContainer)
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(CustomerListContainer)

@@ -18,7 +18,7 @@ import css from './RecentChats.less'
 class RecentChatsItem extends React.Component {
     static propTypes = {
         recentTicket: PropTypes.object.isRequired,
-        position: PropTypes.number.isRequired
+        position: PropTypes.number.isRequired,
     }
 
     static contextTypes = {
@@ -31,7 +31,10 @@ class RecentChatsItem extends React.Component {
         const customer = recentTicket.get('customer') || fromJS({})
         const customerID = customer.get('id')
         // If no customer name nor ticket subject exists, then we'll display a customer's id
-        const customerName = customer.get('name') || customer.get('email') || `Customer #${customerID}`
+        const customerName =
+            customer.get('name') ||
+            customer.get('email') ||
+            `Customer #${customerID}`
         // is the current link active or not?
         const isActive = isCurrentlyOnTicket(recentTicket.get('id'))
         const linkClasses = classnames('item', css.menuItem, {
@@ -43,10 +46,13 @@ class RecentChatsItem extends React.Component {
         return (
             <Link
                 onClick={() => {
-                    segmentTracker.logEvent(segmentTracker.EVENTS.RECENT_ACTIVITY_CLICKED, {
-                        position,
-                        ticket: recentTicket.toJS(),
-                    })
+                    segmentTracker.logEvent(
+                        segmentTracker.EVENTS.RECENT_ACTIVITY_CLICKED,
+                        {
+                            position,
+                            ticket: recentTicket.toJS(),
+                        }
+                    )
                     this.context.closePanel()
                 }}
                 to={`/app/ticket/${recentTicket.get('id')}`}
@@ -92,9 +98,7 @@ class RecentChats extends React.Component {
             <div className={css.component}>
                 <div className="item">
                     <h4>
-                        <span id="active-chats-title">
-                            Chats
-                        </span>
+                        <span id="active-chats-title">Chats</span>
                     </h4>
                     <Tooltip
                         placement="left"
@@ -105,15 +109,13 @@ class RecentChats extends React.Component {
                     </Tooltip>
 
                     <div className="menu">
-                        {
-                            tickets.slice(0, MAX_RECENT_CHATS).map((e, index) => (
-                                <RecentChatsItem
-                                    key={e.get('id')}
-                                    recentTicket={e}
-                                    position={index + 1}
-                                />
-                            ))
-                        }
+                        {tickets.slice(0, MAX_RECENT_CHATS).map((e, index) => (
+                            <RecentChatsItem
+                                key={e.get('id')}
+                                recentTicket={e}
+                                position={index + 1}
+                            />
+                        ))}
                     </div>
                 </div>
             </div>

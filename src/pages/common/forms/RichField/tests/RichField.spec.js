@@ -24,10 +24,7 @@ describe('RichField', () => {
 
     it('should render a basic input', () => {
         const component = shallow(
-            <RichField
-                {...defaultProps}
-                value={{text: 'text', html: 'html'}}
-            />,
+            <RichField {...defaultProps} value={{text: 'text', html: 'html'}} />
         )
         expect(component).toMatchSnapshot()
     })
@@ -39,7 +36,7 @@ describe('RichField', () => {
                 value={{text: 'text', html: 'html'}}
                 alertMode="warning"
                 alertText="alert"
-            />,
+            />
         )
         expect(component).toMatchSnapshot()
     })
@@ -50,7 +47,7 @@ describe('RichField', () => {
                 {...defaultProps}
                 value={{text: 'text', html: 'html'}}
                 mentionProps={{canAddMention: true}}
-            />,
+            />
         )
         expect(component).toMatchSnapshot()
     })
@@ -59,22 +56,24 @@ describe('RichField', () => {
         const component = mount(
             <RichField
                 {...defaultProps}
-                value={{text: 'text {{current_user.name}}', html: 'html {{current_user.name}}'}}
-            />,
+                value={{
+                    text: 'text {{current_user.name}}',
+                    html: 'html {{current_user.name}}',
+                }}
+            />
         )
         expect(component).toMatchSnapshot()
     })
 
     it('should render mutable variable', () => {
         const component = mount(
-            <RichField
-                {...defaultProps}
-                value={{text: 'text', html: 'html'}}
-            />,
+            <RichField {...defaultProps} value={{text: 'text', html: 'html'}} />
         )
 
         // simulate typed text
-        const editorState = EditorState.createWithContent(ContentState.createFromText('{{current_user.name}}'))
+        const editorState = EditorState.createWithContent(
+            ContentState.createFromText('{{current_user.name}}')
+        )
         component.instance()._setEditorState(editorState)
 
         expect(component).toMatchSnapshot()

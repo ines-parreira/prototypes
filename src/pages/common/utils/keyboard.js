@@ -2,7 +2,10 @@
 import {findDOMNode} from 'react-dom'
 import scrollIntoView from 'scroll-into-view-if-needed'
 
-import {NEXT_VIEW_NAV_DIRECTION, PREV_VIEW_NAV_DIRECTION} from '../../../constants/view'
+import {
+    NEXT_VIEW_NAV_DIRECTION,
+    PREV_VIEW_NAV_DIRECTION,
+} from '../../../constants/view'
 
 /**
  * Scroll DOM node into view
@@ -29,23 +32,25 @@ export function scrollToReactNode(node: any) {
  */
 type optionsType = {
     direction: MoveIndexDirection,
-    rotate?: boolean
+    rotate?: boolean,
 }
 
-export type MoveIndexDirection = typeof NEXT_VIEW_NAV_DIRECTION | typeof PREV_VIEW_NAV_DIRECTION
+export type MoveIndexDirection =
+    | typeof NEXT_VIEW_NAV_DIRECTION
+    | typeof PREV_VIEW_NAV_DIRECTION
 
 export function moveIndex(
     currentIndex: number = 0,
     length: number = 0,
     options: optionsType = {
         direction: 'next',
-        rotate: false
+        rotate: false,
     }
 ) {
-    const move = (options.direction === 'next') ? 1 : -1
+    const move = options.direction === 'next' ? 1 : -1
     const newIndex = currentIndex + move
-    const atStart = (newIndex < 0)
-    const atEnd = (newIndex >= length)
+    const atStart = newIndex < 0
+    const atEnd = newIndex >= length
 
     if (options.rotate) {
         if (atStart) {

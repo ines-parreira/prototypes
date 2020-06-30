@@ -12,32 +12,37 @@ import ToggleButton from '../../../common/components/ToggleButton'
 
 import css from './InstallOnIntegrations.less'
 
-
 function getMetaField(integrationType: string): string {
     return `${integrationType}_integration_ids`
 }
 
-
 type Props = {
     integrationType: string,
-    targetIntegrations: List<Map<*,*>>,
-    integration: Map<*,*>,
-    updateOrCreateIntegration: (Map<*,*>) => Promise<*>
+    targetIntegrations: List<Map<*, *>>,
+    integration: Map<*, *>,
+    updateOrCreateIntegration: (Map<*, *>) => Promise<*>,
 }
 
 type State = {
     integrationLoading: ?number,
-    showAll: boolean
+    showAll: boolean,
 }
 
-export default class InstallOnIntegrationsCard extends React.Component<Props, State> {
+export default class InstallOnIntegrationsCard extends React.Component<
+    Props,
+    State
+> {
     state = {
         integrationLoading: null,
-        showAll: false
+        showAll: false,
     }
 
-    async _installOnStore(targetIntegration: Map<*,*>) {
-        const {integration, integrationType, updateOrCreateIntegration} = this.props
+    async _installOnStore(targetIntegration: Map<*, *>) {
+        const {
+            integration,
+            integrationType,
+            updateOrCreateIntegration,
+        } = this.props
 
         this.setState({integrationLoading: targetIntegration.get('id')})
 
@@ -45,22 +50,29 @@ export default class InstallOnIntegrationsCard extends React.Component<Props, St
         if (targetIntegration.getIn(['meta', 'need_scope_update'])) {
             browserHistory.push(
                 `/app/settings/integrations/${targetIntegration.get('type')}/` +
-                `${targetIntegration.get('id')}/?error=need_scope_update`
+                    `${targetIntegration.get('id')}/?error=need_scope_update`
             )
             return
         }
 
         const targetIntegrationId = targetIntegration.get('id')
-        let targetIntegrationIdsList = integration.getIn(['meta',  getMetaField(integrationType)], fromJS([]))
+        let targetIntegrationIdsList = integration.getIn(
+            ['meta', getMetaField(integrationType)],
+            fromJS([])
+        )
 
         if (!targetIntegrationIdsList.contains(targetIntegrationId)) {
-            targetIntegrationIdsList = targetIntegrationIdsList.push(targetIntegrationId)
+            targetIntegrationIdsList = targetIntegrationIdsList.push(
+                targetIntegrationId
+            )
         }
 
         const form = {
             id: integration.get('id'),
             type: integration.get('type'),
-            meta: integration.get('meta').set(getMetaField(integrationType), targetIntegrationIdsList)
+            meta: integration
+                .get('meta')
+                .set(getMetaField(integrationType), targetIntegrationIdsList),
         }
 
         await updateOrCreateIntegration(fromJS(form))
@@ -69,7 +81,11 @@ export default class InstallOnIntegrationsCard extends React.Component<Props, St
     }
 
     async _removeFromStore(targetIntegrationId: number) {
-        const {integration, integrationType, updateOrCreateIntegration} = this.props
+        const {
+            integration,
+            integrationType,
+            updateOrCreateIntegration,
+        } = this.props
 
         this.setState({integrationLoading: targetIntegrationId})
 
@@ -80,7 +96,9 @@ export default class InstallOnIntegrationsCard extends React.Component<Props, St
         const form = {
             id: integration.get('id'),
             type: integration.get('type'),
-            meta: integration.get('meta').deleteIn([getMetaField(integrationType), indexToDelete])
+            meta: integration
+                .get('meta')
+                .deleteIn([getMetaField(integrationType), indexToDelete]),
         }
 
         await updateOrCreateIntegration(fromJS(form))
@@ -96,11 +114,14 @@ export default class InstallOnIntegrationsCard extends React.Component<Props, St
         const {integrationType, targetIntegrations, integration} = this.props
         const {showAll, integrationLoading} = this.state
 
-        const isChat = integration.get('type') === SMOOCH_INSIDE_INTEGRATION_TYPE
+        const isChat =
+            integration.get('type') === SMOOCH_INSIDE_INTEGRATION_TYPE
         const integrationAlias = isChat ? 'chat' : 'customer chat'
 
-        let sortedTargetIntegrations = targetIntegrations
-            .sortBy((targetIntegration) => -moment(targetIntegration.get('created_datetime')).valueOf())
+        let sortedTargetIntegrations = targetIntegrations.sortBy(
+            (targetIntegration) =>
+                -moment(targetIntegration.get('created_datetime')).valueOf()
+        )
 
         if (!showAll) {
             sortedTargetIntegrations = sortedTargetIntegrations.slice(0, 3)
@@ -112,21 +133,31 @@ export default class InstallOnIntegrationsCard extends React.Component<Props, St
                     <div className={css['logo-wrapper']}>
                         <img
                             alt={`${integrationType}-logo`}
-                            src={integrationHelpers.getIconFromType(integrationType)}
+                            src={integrationHelpers.getIconFromType(
+                                integrationType
+                            )}
                         />
                     </div>
                     <div className={css['content-wrapper']}>
                         <h3>{_capitalize(integrationType)}</h3>
                         <p>
-                            Install the {integrationAlias} widget on your {_capitalize(integrationType)} store in one
-                            click
+                            Install the {integrationAlias} widget on your{' '}
+                            {_capitalize(integrationType)} store in one click
                         </p>
                         <div>
-                            {
-                                sortedTargetIntegrations.map((targetIntegration) => {
-                                    const targetIntegrationId = targetIntegration.get('id')
+                            {sortedTargetIntegrations.map(
+                                (targetIntegration) => {
+                                    const targetIntegrationId = targetIntegration.get(
+                                        'id'
+                                    )
                                     const chatIsInstalled = integration
-                                        .getIn(['meta', getMetaField(integrationType)], fromJS([]))
+                                        .getIn(
+                                            [
+                                                'meta',
+                                                getMetaField(integrationType),
+                                            ],
+                                            fromJS([])
+                                        )
                                         .includes(targetIntegrationId)
 
                                     return (
@@ -135,23 +166,37 @@ export default class InstallOnIntegrationsCard extends React.Component<Props, St
                                             className={css['integration-item']}
                                         >
                                             <div>
-                                                <b>{targetIntegration.get('name')}</b>
+                                                <b>
+                                                    {targetIntegration.get(
+                                                        'name'
+                                                    )}
+                                                </b>
                                             </div>
                                             <ToggleButton
                                                 value={chatIsInstalled}
-                                                onChange={chatIsInstalled
-                                                    ? () => this._removeFromStore(targetIntegrationId)
-                                                    : () => this._installOnStore(targetIntegration)
+                                                onChange={
+                                                    chatIsInstalled
+                                                        ? () =>
+                                                              this._removeFromStore(
+                                                                  targetIntegrationId
+                                                              )
+                                                        : () =>
+                                                              this._installOnStore(
+                                                                  targetIntegration
+                                                              )
                                                 }
-                                                loading={integrationLoading === targetIntegrationId}
+                                                loading={
+                                                    integrationLoading ===
+                                                    targetIntegrationId
+                                                }
                                                 disabled={!!integrationLoading}
                                             />
                                         </div>
                                     )
-                                })
-                            }
-                            {
-                                !showAll && !targetIntegrations.slice(3).isEmpty() && (
+                                }
+                            )}
+                            {!showAll &&
+                                !targetIntegrations.slice(3).isEmpty() && (
                                     <div className="mt-3">
                                         <a
                                             className={css['show-more']}
@@ -160,8 +205,7 @@ export default class InstallOnIntegrationsCard extends React.Component<Props, St
                                             Show more
                                         </a>
                                     </div>
-                                )
-                            }
+                                )}
                         </div>
                     </div>
                 </CardBody>

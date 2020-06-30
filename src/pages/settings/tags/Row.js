@@ -2,7 +2,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fromJS, Map} from 'immutable'
-import {Button, Form, Popover, PopoverBody, PopoverHeader,} from 'reactstrap'
+import {Button, Form, Popover, PopoverBody, PopoverHeader} from 'reactstrap'
 import classNames from 'classnames'
 
 import InputField from '../../common/forms/InputField'
@@ -29,27 +29,28 @@ type State = {
     name?: string,
     description?: string,
     decoration: Map<*, *>,
-    askRemoveConfirmation: boolean
+    askRemoveConfirmation: boolean,
 }
-
 
 export class Row extends Component<Props, State> {
     state = {
         name: '',
         description: '',
         decoration: fromJS({
-            color: ''
+            color: '',
         }),
-        askRemoveConfirmation: false
+        askRemoveConfirmation: false,
     }
 
     _setStateFromRow = (row: Map<*, *>) => {
         this.setState({
             name: row.get('name'),
             description: row.get('description') || '',
-            decoration: row.get('decoration') || fromJS({
-                color: ''
-            })
+            decoration:
+                row.get('decoration') ||
+                fromJS({
+                    color: '',
+                }),
         })
     }
 
@@ -95,10 +96,9 @@ export class Row extends Component<Props, State> {
 
     _onRemove = () => {
         this.setState({askRemoveConfirmation: false})
-        return this.props.remove(this.props.row.get('id'))
-            .then(() => {
-                this.props.refresh()
-            })
+        return this.props.remove(this.props.row.get('id')).then(() => {
+            this.props.refresh()
+        })
     }
 
     _onSelect = () => {
@@ -118,7 +118,9 @@ export class Row extends Component<Props, State> {
     }
 
     _toggleRemoveConfirmation = () => {
-        this.setState({askRemoveConfirmation: !this.state.askRemoveConfirmation})
+        this.setState({
+            askRemoveConfirmation: !this.state.askRemoveConfirmation,
+        })
     }
 
     render() {
@@ -178,10 +180,7 @@ export class Row extends Component<Props, State> {
                                 >
                                     Cancel
                                 </Button>
-                                <Button
-                                    type="submit"
-                                    color="primary"
-                                >
+                                <Button type="submit" color="primary">
                                     Save
                                 </Button>
                             </div>
@@ -236,7 +235,10 @@ export class Row extends Component<Props, State> {
                             id={`remove-button-${row.get('id')}`}
                             type="button"
                             onClick={this._toggleRemoveConfirmation}
-                            className={classNames('btn-transparent', css.deleteButton)}
+                            className={classNames(
+                                'btn-transparent',
+                                css.deleteButton
+                            )}
                         >
                             <i className="material-icons">delete</i>
                         </Button>
@@ -274,5 +276,5 @@ export default connect(null, {
     remove: tagsActions.remove,
     save: tagsActions.save,
     select: tagsActions.select,
-    fetch: tagsActions.fetchTags
+    fetch: tagsActions.fetchTags,
 })(Row)

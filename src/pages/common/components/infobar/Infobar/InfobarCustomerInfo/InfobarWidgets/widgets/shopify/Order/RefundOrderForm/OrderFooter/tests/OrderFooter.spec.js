@@ -6,7 +6,7 @@ import {fromJS} from 'immutable'
 
 import {
     shopifyRefundOrderPayloadFixture,
-    shopifySuggestedRefundFixture
+    shopifySuggestedRefundFixture,
 } from '../../../../../../../../../../../../../fixtures/shopify'
 import {ShopifyAction} from '../../../../constants'
 import OrderFooter from '../OrderFooter'
@@ -88,7 +88,9 @@ describe('<OrderFooter/>', () => {
 
             component.find({id: 'amount'}).simulate('change', '0.20')
 
-            expect(setPayload).toHaveBeenCalledWith(payload.setIn(['transactions', 0, 'amount'], '0.20'))
+            expect(setPayload).toHaveBeenCalledWith(
+                payload.setIn(['transactions', 0, 'amount'], '0.20')
+            )
         })
 
         it('should call setPayload() with maximum amount', () => {
@@ -112,7 +114,9 @@ describe('<OrderFooter/>', () => {
 
             component.find({id: 'amount'}).simulate('change', '99.99')
 
-            expect(setPayload).toHaveBeenCalledWith(payload.setIn(['transactions', 0, 'amount'], 1.2))
+            expect(setPayload).toHaveBeenCalledWith(
+                payload.setIn(['transactions', 0, 'amount'], 1.2)
+            )
         })
     })
 
@@ -139,9 +143,13 @@ describe('<OrderFooter/>', () => {
             // Use custom amount to display discrepancy field
             component.find({id: 'amount'}).simulate('change', '0.20')
 
-            component.find({id: 'discrepancy-reason'}).simulate('change', {target: {value: 'damage'}})
+            component
+                .find({id: 'discrepancy-reason'})
+                .simulate('change', {target: {value: 'damage'}})
 
-            expect(setPayload).toHaveBeenCalledWith(payload.set('discrepancy_reason', 'damage'))
+            expect(setPayload).toHaveBeenCalledWith(
+                payload.set('discrepancy_reason', 'damage')
+            )
         })
     })
 
@@ -165,9 +173,14 @@ describe('<OrderFooter/>', () => {
                 />
             )
 
-            component.find({type: 'checkbox'}).at(0).simulate('change', {target: {checked: false}})
+            component
+                .find({type: 'checkbox'})
+                .at(0)
+                .simulate('change', {target: {checked: false}})
 
-            expect(setPayload).toHaveBeenCalledWith(payload.set('restock', false))
+            expect(setPayload).toHaveBeenCalledWith(
+                payload.set('restock', false)
+            )
         })
     })
 
@@ -191,7 +204,10 @@ describe('<OrderFooter/>', () => {
                 />
             )
 
-            component.find({type: 'checkbox'}).at(1).simulate('change', {target: {checked: false}})
+            component
+                .find({type: 'checkbox'})
+                .at(1)
+                .simulate('change', {target: {checked: false}})
 
             expect(setPayload).toHaveBeenCalledWith(payload.set('email', false))
         })

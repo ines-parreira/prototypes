@@ -14,34 +14,26 @@ type Props = {
 }
 
 @connect((state, props) => ({
-    redirectUri: getFacebookRedirectUri(props.reconnect)(state)
+    redirectUri: getFacebookRedirectUri(props.reconnect)(state),
 }))
 export default class FacebookLoginButton extends React.Component<Props> {
     static defaultProps = {
         reconnect: false,
         link: false,
-        children: null
+        children: null,
     }
 
     renderLink() {
         const {redirectUri, children} = this.props
 
-        return (
-            <a href={redirectUri}>
-                {children || 'Login with Facebook'}
-            </a>
-        )
+        return <a href={redirectUri}>{children || 'Login with Facebook'}</a>
     }
 
     renderButton() {
         const {redirectUri, children} = this.props
 
         return (
-            <Button
-                tag="a"
-                color="success"
-                href={redirectUri}
-            >
+            <Button tag="a" color="success" href={redirectUri}>
                 {children || 'Reconnect'}
             </Button>
         )
@@ -50,8 +42,6 @@ export default class FacebookLoginButton extends React.Component<Props> {
     render() {
         const {link} = this.props
 
-        return link
-            ? this.renderLink()
-            : this.renderButton()
+        return link ? this.renderLink() : this.renderButton()
     }
 }

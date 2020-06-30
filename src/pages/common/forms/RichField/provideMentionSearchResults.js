@@ -7,23 +7,23 @@ import {suggestionsFilter} from '../../draftjs/plugins/mentions'
 type Suggestions = List<*>
 
 type MentionSearchChangeArgs = {
-    value: string
+    value: string,
 }
 
 type RequiredProps = {
-    mentionSuggestions?: Suggestions
+    mentionSuggestions?: Suggestions,
 }
 
 type State = {
-    filteredSuggestions: Suggestions
+    filteredSuggestions: Suggestions,
 }
 
 export type InjectedProps = {
     mentionSearchResults: Suggestions,
-    onMentionSearchChange: MentionSearchChangeArgs => void
+    onMentionSearchChange: (MentionSearchChangeArgs) => void,
 }
 
-export default function  provideMentionSearchResults<Props: RequiredProps>(
+export default function provideMentionSearchResults<Props: RequiredProps>(
     WrappedComponent: React.ComponentType<Props & InjectedProps>
 ): React.ComponentType<Props> {
     class Wrapper extends React.Component<Props, State> {
@@ -43,7 +43,10 @@ export default function  provideMentionSearchResults<Props: RequiredProps>(
             }
 
             this.setState({
-                filteredSuggestions: suggestionsFilter(value, this.props.mentionSuggestions),
+                filteredSuggestions: suggestionsFilter(
+                    value,
+                    this.props.mentionSuggestions
+                ),
             })
         }
 

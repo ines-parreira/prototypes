@@ -34,7 +34,9 @@ type AfterTitleProps = {
 }
 
 @connect((state) => ({
-    integrations: integrationsSelectors.getIntegrationsByTypes([SHOPIFY_INTEGRATION_TYPE])(state),
+    integrations: integrationsSelectors.getIntegrationsByTypes([
+        SHOPIFY_INTEGRATION_TYPE,
+    ])(state),
 }))
 class AfterTitle extends React.Component<AfterTitleProps> {
     static contextTypes = {
@@ -96,9 +98,7 @@ class AfterTitle extends React.Component<AfterTitleProps> {
                 title: 'Create order',
                 child: (
                     <>
-                        <i className="material-icons mr-2">
-                            add
-                        </i>
+                        <i className="material-icons mr-2">add</i>
                         Create order
                     </>
                 ),
@@ -115,17 +115,17 @@ class AfterTitle extends React.Component<AfterTitleProps> {
             },
         ]
 
-        const shopName: string = this.context.integration.getIn(['meta', 'shop_name'])
+        const shopName: string = this.context.integration.getIn([
+            'meta',
+            'shop_name',
+        ])
         const payload = {
-            customer_id: source.get('id')
+            customer_id: source.get('id'),
         }
 
         return (
             <>
-                <ActionButtonsGroup
-                    actions={actions}
-                    payload={payload}
-                />
+                <ActionButtonsGroup actions={actions} payload={payload} />
                 <CardHeaderDetails>
                     <CardHeaderValue label="Total spent">
                         <MoneyAmount
@@ -147,10 +147,9 @@ class AfterTitle extends React.Component<AfterTitleProps> {
     }
 }
 
-
 type TitleWrapperProps = {
     children: Object,
-    source: Map<string, *>
+    source: Map<string, *>,
 }
 
 class TitleWrapper extends React.Component<TitleWrapperProps> {
@@ -160,26 +159,24 @@ class TitleWrapper extends React.Component<TitleWrapperProps> {
 
     render() {
         const {children, source} = this.props
-        const shopName: string = this.context.integration.getIn(['meta', 'shop_name'])
-        const href = `https://${shopName}.myshopify.com/admin/customers/${(source.get('id') || '').toString()}`
+        const shopName: string = this.context.integration.getIn([
+            'meta',
+            'shop_name',
+        ])
+        const href = `https://${shopName}.myshopify.com/admin/customers/${(
+            source.get('id') || ''
+        ).toString()}`
 
         return (
             <>
-                <CardHeaderIcon
-                    src={logo}
-                    alt="Shopify"
-                />
+                <CardHeaderIcon src={logo} alt="Shopify" />
                 <CardHeaderTitle>Shopify</CardHeaderTitle>
                 <CardHeaderSubtitle>
-                    <a
-                        href={href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                    >
+                    <a href={href} target="_blank" rel="noopener noreferrer">
                         {children}
                     </a>
                 </CardHeaderSubtitle>
-                <ExpandAllButton/>
+                <ExpandAllButton />
             </>
         )
     }

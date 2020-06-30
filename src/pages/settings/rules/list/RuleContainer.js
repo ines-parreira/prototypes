@@ -3,7 +3,6 @@ import {withRouter} from 'react-router'
 
 import {bindActionCreators} from 'redux'
 
-
 import * as RuleActions from '../../../../state/rules/actions'
 import {getRules} from '../../../../state/rules/selectors'
 
@@ -26,4 +25,6 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(RulesView))
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(RulesView)
+)

@@ -13,20 +13,24 @@ import * as constants from './constants'
  */
 export function fetchHTTPIntegrationEvents(integrationId: number): Function {
     return (dispatch: dispatchType): Promise<dispatchType> => {
-        return axios.get(`/api/integrations/${integrationId}/events/`,)
+        return axios
+            .get(`/api/integrations/${integrationId}/events/`)
             .then((json = {}) => json.data)
-            .then((resp) => {
-                return dispatch({
-                    type: constants.FETCH_HTTP_INTEGRATION_EVENTS_SUCCESS,
-                    events: resp.data
-                })
-            }, (error) => {
-                return dispatch({
-                    type: 'ERROR',
-                    error,
-                    reason: 'Failed to fetch events.'
-                })
-            })
+            .then(
+                (resp) => {
+                    return dispatch({
+                        type: constants.FETCH_HTTP_INTEGRATION_EVENTS_SUCCESS,
+                        events: resp.data,
+                    })
+                },
+                (error) => {
+                    return dispatch({
+                        type: 'ERROR',
+                        error,
+                        reason: 'Failed to fetch events.',
+                    })
+                }
+            )
     }
 }
 
@@ -37,20 +41,27 @@ export function fetchHTTPIntegrationEvents(integrationId: number): Function {
  * @param {number} eventId - the id of the event
  * @returns {Promise}
  */
-export function fetchHTTPIntegrationEvent(integrationId: number, eventId: number): Function {
+export function fetchHTTPIntegrationEvent(
+    integrationId: number,
+    eventId: number
+): Function {
     return (dispatch: dispatchType): Promise<dispatchType> => {
-        return axios.get(`/api/integrations/${integrationId}/events/${eventId}`,)
-            .then((resp) => {
-                return dispatch({
-                    type: constants.FETCH_HTTP_INTEGRATION_EVENT_SUCCESS,
-                    event: resp.data
-                })
-            }, (error) => {
-                return dispatch({
-                    type: 'ERROR',
-                    error,
-                    reason: 'Failed to fetch event'
-                })
-            })
+        return axios
+            .get(`/api/integrations/${integrationId}/events/${eventId}`)
+            .then(
+                (resp) => {
+                    return dispatch({
+                        type: constants.FETCH_HTTP_INTEGRATION_EVENT_SUCCESS,
+                        event: resp.data,
+                    })
+                },
+                (error) => {
+                    return dispatch({
+                        type: 'ERROR',
+                        error,
+                        reason: 'Failed to fetch event',
+                    })
+                }
+            )
     }
 }

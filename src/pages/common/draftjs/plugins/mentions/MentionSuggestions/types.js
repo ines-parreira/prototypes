@@ -1,5 +1,5 @@
 export type themeType = {
     mentionSuggestions?: string,
     mentionSuggestionsEntry?: string,
-    mentionSuggestionsEntryFocused?: string
+    mentionSuggestionsEntryFocused?: string,
 }

@@ -17,8 +17,10 @@ import {
     COMPONENTS_NOTIFICATION_ID,
     MAINTENANCE_NOTIFICATION_ID,
 } from './constants'
-import type {StatusPageComponentsResponseData, StatusPageScheduledMaintenanceResponseData} from './types'
-
+import type {
+    StatusPageComponentsResponseData,
+    StatusPageScheduledMaintenanceResponseData,
+} from './types'
 
 /**
  * Display notifications to users about incidents (with our components or maintenance cycle) from our status page:
@@ -81,7 +83,9 @@ export class StatusPageManager {
         if (!this.statusPage) {
             return
         }
-        this.statusPage.scheduled_maintenances({success: this.processScheduledMaintenances})
+        this.statusPage.scheduled_maintenances({
+            success: this.processScheduledMaintenances,
+        })
     }
 
     processComponents = (data: StatusPageComponentsResponseData) => {
@@ -102,7 +106,13 @@ export class StatusPageManager {
             const componentStatus = COMPONENT_STATUS_LABEL[component.status]
 
             // filter out components that don't belong to our groups of interest
-            if (!groupName || [COMPONENT_STATUSES.OPERATIONAL, COMPONENT_STATUSES.DEGRADED_PERFORMANCE].includes(component.status)) {
+            if (
+                !groupName ||
+                [
+                    COMPONENT_STATUSES.OPERATIONAL,
+                    COMPONENT_STATUSES.DEGRADED_PERFORMANCE,
+                ].includes(component.status)
+            ) {
                 continue
             }
 
@@ -124,22 +134,30 @@ export class StatusPageManager {
         }
 
         if (notification.level > 0) {
-            this.store.dispatch(notify({
-                id: COMPONENTS_NOTIFICATION_ID,
-                status: notification.status,
-                style: 'banner',
-                message: `
-Currently experiencing ${notification.label} in our ${Array.from(notification.groupNames).join(' & ')} affecting
+            this.store.dispatch(
+                notify({
+                    id: COMPONENTS_NOTIFICATION_ID,
+                    status: notification.status,
+                    style: 'banner',
+                    message: `
+Currently experiencing ${notification.label} in our ${Array.from(
+                        notification.groupNames
+                    ).join(' & ')} affecting
 ${Array.from(notification.componentNames).join(', ')} components.
-Find out more on our <u><a href="${data.page.url}" target="_blank" rel="noreferrer noopener">status page</a></u>.`,
-                allowHTML: true,
-                dismissible: false,
-                closable: true,
-            }))
+Find out more on our <u><a href="${
+                        data.page.url
+                    }" target="_blank" rel="noreferrer noopener">status page</a></u>.`,
+                    allowHTML: true,
+                    dismissible: false,
+                    closable: true,
+                })
+            )
         }
     }
 
-    processScheduledMaintenances = (data: StatusPageScheduledMaintenanceResponseData) => {
+    processScheduledMaintenances = (
+        data: StatusPageScheduledMaintenanceResponseData
+    ) => {
         const notification = {
             label: '',
             groupNames: new Set(),
@@ -152,7 +170,10 @@ Find out more on our <u><a href="${data.page.url}" target="_blank" rel="noreferr
         for (const maintenance of data.scheduled_maintenances) {
             const now = moment()
             const scheduledFor = moment(maintenance.scheduled_for)
-            const startsInMinutes = moment(maintenance.scheduled_for).diff(now, 'minutes')
+            const startsInMinutes = moment(maintenance.scheduled_for).diff(
+                now,
+                'minutes'
+            )
 
             if (maintenance.status === MAINTENANCE_STATUSES.COMPLETED) {
                 continue
@@ -187,18 +208,27 @@ Find out more on our <u><a href="${data.page.url}" target="_blank" rel="noreferr
             const startText = startsInMinutes > 0 ? 'will start' : 'started'
             const message = `A scheduled maintenance for
 ${Array.from(notification.groupNames).join(' & ')} affecting
-${Array.from(notification.componentNames).join(', ')} ${startText} <em>${scheduledFor.fromNow()}</em>.
+${Array.from(notification.componentNames).join(
+    ', '
+)} ${startText} <em>${scheduledFor.fromNow()}</em>.
 
-Find out more on our <u><a href="${data.page.url}" target="_blank" rel="noreferrer noopener">status page</a></u>.`
+Find out more on our <u><a href="${
+                data.page.url
+            }" target="_blank" rel="noreferrer noopener">status page</a></u>.`
 
-            this.store.dispatch(notify({
-                id: MAINTENANCE_NOTIFICATION_ID,
-                status: maintenance.status === MAINTENANCE_STATUSES.SCHEDULED ? 'info' : 'warning',
-                style: 'banner',
-                message: message,
-                allowHTML: true,
-                dismissible: false,
-            }))
+            this.store.dispatch(
+                notify({
+                    id: MAINTENANCE_NOTIFICATION_ID,
+                    status:
+                        maintenance.status === MAINTENANCE_STATUSES.SCHEDULED
+                            ? 'info'
+                            : 'warning',
+                    style: 'banner',
+                    message: message,
+                    allowHTML: true,
+                    dismissible: false,
+                })
+            )
 
             return // only take a single maintenance at a time.
         }

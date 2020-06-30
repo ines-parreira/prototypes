@@ -8,7 +8,6 @@ import type {actionType} from '../types'
 
 import * as types from './constants'
 
-
 export const initialState = fromJS({
     // The cursor contains the value of an attribute of a ticket used to sort tickets in a view.
     // E.g: if the current view is ordered by `updated_datetime`,
@@ -17,7 +16,10 @@ export const initialState = fromJS({
     items: [],
 })
 
-export default function reducer(state: Map<*,*> = initialState, action: actionType): Map<*,*> {
+export default function reducer(
+    state: Map<*, *> = initialState,
+    action: actionType
+): Map<*, *> {
     switch (action.type) {
         case types.UPDATE_CURSOR: {
             return state.set('cursor', action.cursor)

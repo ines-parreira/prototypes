@@ -10,7 +10,10 @@ import type {actionType} from '../types'
 
 import {getPendingMessageIndex} from './utils'
 import * as types from './constants'
-import {deduplicateAuditLogEvents, shouldDeduplicateAuditLogEvents} from './helpers'
+import {
+    deduplicateAuditLogEvents,
+    shouldDeduplicateAuditLogEvents,
+} from './helpers'
 
 export const initialState = fromJS({
     state: {
@@ -45,12 +48,15 @@ export const initialState = fromJS({
     trashed_datetime: null,
     reply_options: {
         email: {
-            answerable: true
-        }
-    }
+            answerable: true,
+        },
+    },
 })
 
-export default function reducer(state: Map<*, *> = initialState, action: actionType) {
+export default function reducer(
+    state: Map<*, *> = initialState,
+    action: actionType
+) {
     switch (action.type) {
         case newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START: {
             if (!action.retry) {
@@ -62,7 +68,7 @@ export default function reducer(state: Map<*, *> = initialState, action: actionT
                 // temporary props
                 _internal: {
                     id: action.messageId,
-                    status: action.status
+                    status: action.status,
                 },
                 // for sorting
                 created_datetime: new Date().toISOString(),
@@ -74,32 +80,47 @@ export default function reducer(state: Map<*, *> = initialState, action: actionT
 
             const messageIndex = newState
                 .getIn(['_internal', 'pendingMessages'], fromJS([]))
-                .findIndex((message) => message.getIn(['_internal', 'id']) === action.messageId)
+                .findIndex(
+                    (message) =>
+                        message.getIn(['_internal', 'id']) === action.messageId
+                )
 
             if (action.retry && ~messageIndex) {
                 // update the retried message
-                return newState
-                    .deleteIn(['_internal', 'pendingMessages', messageIndex, 'failed_datetime'])
+                return newState.deleteIn([
+                    '_internal',
+                    'pendingMessages',
+                    messageIndex,
+                    'failed_datetime',
+                ])
             }
 
-            return newState.updateIn(['_internal', 'pendingMessages'], (messages) => messages.unshift(message))
+            return newState.updateIn(
+                ['_internal', 'pendingMessages'],
+                (messages) => messages.unshift(message)
+            )
         }
 
         case newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR: {
             const messageIndex = state
                 .getIn(['_internal', 'pendingMessages'], fromJS([]))
-                .findIndex((message) => message.getIn(['_internal', 'id']) === action.messageId)
+                .findIndex(
+                    (message) =>
+                        message.getIn(['_internal', 'id']) === action.messageId
+                )
 
             if (!~messageIndex) {
                 return state
             }
 
-            return state
-                .updateIn(['_internal', 'pendingMessages', messageIndex], (message) => {
+            return state.updateIn(
+                ['_internal', 'pendingMessages', messageIndex],
+                (message) => {
                     return message.mergeDeep({
-                        failed_datetime: new Date().toISOString()
+                        failed_datetime: new Date().toISOString(),
                     })
-                })
+                }
+            )
         }
 
         case newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_SUCCESS: {
@@ -115,7 +136,10 @@ export default function reducer(state: Map<*, *> = initialState, action: actionT
 
         case types.FETCH_TICKET_SUCCESS: {
             const newState = state.merge(action.resp)
-            return newState.setIn(['_internal', 'loading', 'fetchTicket'], false)
+            return newState.setIn(
+                ['_internal', 'loading', 'fetchTicket'],
+                false
+            )
         }
 
         case types.FETCH_TICKET_ERROR: {
@@ -165,7 +189,7 @@ export default function reducer(state: Map<*, *> = initialState, action: actionT
                         return m.set('request_id', action.requestId)
                     }
                     return m
-                })
+                }),
             })
         }
 
@@ -176,27 +200,31 @@ export default function reducer(state: Map<*, *> = initialState, action: actionT
                         return m.set('request_id', null)
                     }
                     return m
-                })
+                }),
             })
         }
 
         case types.SET_SPAM_START: {
-            return state.set('spam', action.spam)
+            return state
+                .set('spam', action.spam)
                 .setIn(['_internal', 'loading', 'setSpam'], true)
         }
 
         case types.SET_SPAM_SUCCESS: {
-            return state.set('spam', false)
+            return state
+                .set('spam', false)
                 .setIn(['_internal', 'loading', 'setSpam'], false)
         }
 
         case types.SET_TRASHED_START: {
-            return state.set('trashed_datetime', action.trashed_datetime)
+            return state
+                .set('trashed_datetime', action.trashed_datetime)
                 .setIn(['_internal', 'loading', 'setTrash'], true)
         }
 
         case types.SET_TRASHED_SUCCESS: {
-            return state.set('trashed_datetime', null)
+            return state
+                .set('trashed_datetime', null)
                 .setIn(['_internal', 'loading', 'setTrash'], false)
         }
 
@@ -233,14 +261,14 @@ export default function reducer(state: Map<*, *> = initialState, action: actionT
 
         case types.APPLY_MACRO: {
             ticketReplyCache.set(action.ticketId, {
-                macro: action.macro
+                macro: action.macro,
             })
             return state.setIn(['state', 'appliedMacro'], action.macro)
         }
 
         case types.CLEAR_APPLIED_MACRO: {
             ticketReplyCache.set(action.ticketId, {
-                macro: null
+                macro: null,
             })
             return state.setIn(['state', 'appliedMacro'], null)
         }
@@ -253,49 +281,82 @@ export default function reducer(state: Map<*, *> = initialState, action: actionT
         case types.UPDATE_ACTION_ARGS_ON_APPLIED: {
             const updatedCache = ticketReplyCache
                 .get(action.ticketId)
-                .setIn(['macro', 'actions', String(action.actionIndex), 'arguments'], action.value)
+                .setIn(
+                    [
+                        'macro',
+                        'actions',
+                        String(action.actionIndex),
+                        'arguments',
+                    ],
+                    action.value
+                )
             ticketReplyCache.set(action.ticketId, updatedCache)
-            return state.setIn(['state', 'appliedMacro', 'actions', String(action.actionIndex), 'arguments'],
-                action.value)
+            return state.setIn(
+                [
+                    'state',
+                    'appliedMacro',
+                    'actions',
+                    String(action.actionIndex),
+                    'arguments',
+                ],
+                action.value
+            )
         }
 
         case types.DELETE_ACTION_ON_APPLIED: {
             const cachedMacro = ticketReplyCache.get(action.ticketId)
             if (cachedMacro.get('macro')) {
-                const updatedCache = cachedMacro.deleteIn(['macro', 'actions', String(action.actionIndex)])
+                const updatedCache = cachedMacro.deleteIn([
+                    'macro',
+                    'actions',
+                    String(action.actionIndex),
+                ])
                 ticketReplyCache.set(action.ticketId, updatedCache)
             }
-            return state.deleteIn(['state', 'appliedMacro', 'actions', String(action.actionIndex)])
+            return state.deleteIn([
+                'state',
+                'appliedMacro',
+                'actions',
+                String(action.actionIndex),
+            ])
         }
 
         case types.MARK_TICKET_DIRTY:
             return state.setIn(['state', 'dirty'], action.dirty)
 
         case types.DELETE_TICKET_MESSAGE_SUCCESS:
-            return state
-                .update('messages', (messages) => {
-                    const index = messages.findIndex((message) => message.get('id') === action.messageId)
+            return state.update('messages', (messages) => {
+                const index = messages.findIndex(
+                    (message) => message.get('id') === action.messageId
+                )
 
-                    if (!~index) {
-                        return messages
-                    }
+                if (!~index) {
+                    return messages
+                }
 
-                    return messages.delete(index)
-                })
+                return messages.delete(index)
+            })
 
         case types.TOGGLE_HISTORY: {
-            const displayHistory = action.state !== undefined
-                ? action.state
-                : !state.getIn(['_internal', 'displayHistory'])
+            const displayHistory =
+                action.state !== undefined
+                    ? action.state
+                    : !state.getIn(['_internal', 'displayHistory'])
 
             return state.setIn(['_internal', 'displayHistory'], displayHistory)
         }
 
         case types.DISPLAY_HISTORY_ON_NEXT_PAGE:
-            return state.setIn(['_internal', 'shouldDisplayHistoryOnNextPage'], action.state)
+            return state.setIn(
+                ['_internal', 'shouldDisplayHistoryOnNextPage'],
+                action.state
+            )
 
         case customerTypes.MERGE_CUSTOMERS_SUCCESS: {
-            if (action.resp && state.getIn(['customer', 'id']) === action.resp.id) {
+            if (
+                action.resp &&
+                state.getIn(['customer', 'id']) === action.resp.id
+            ) {
                 return state.set('customer', fromJS(action.resp))
             }
             return state
@@ -308,17 +369,32 @@ export default function reducer(state: Map<*, *> = initialState, action: actionT
             let newState = state.merge(ticket)
 
             // keep audit log events
-            const auditLogEvents = state.get('events').filter((event) =>
-                TICKET_AUDIT_LOG_EVENTS.includes(event.get('type'))
-                && event.get('object_id') === ticket.get('id')
-                && newState.get('events').every((existingEvent) => existingEvent.get('id') !== event.get('id'))
-            )
+            const auditLogEvents = state
+                .get('events')
+                .filter(
+                    (event) =>
+                        TICKET_AUDIT_LOG_EVENTS.includes(event.get('type')) &&
+                        event.get('object_id') === ticket.get('id') &&
+                        newState
+                            .get('events')
+                            .every(
+                                (existingEvent) =>
+                                    existingEvent.get('id') !== event.get('id')
+                            )
+                )
 
-            newState = newState.updateIn(['events'], (events) => events.concat(auditLogEvents))
+            newState = newState.updateIn(['events'], (events) =>
+                events.concat(auditLogEvents)
+            )
 
             // order messages by created datetime
             newState = newState.update('messages', (messages) => {
-                return messages.sort((a, b) => compare(a.get('created_datetime'), b.get('created_datetime')))
+                return messages.sort((a, b) =>
+                    compare(
+                        a.get('created_datetime'),
+                        b.get('created_datetime')
+                    )
+                )
             })
 
             // sockets are faster then the success callback,
@@ -327,15 +403,23 @@ export default function reducer(state: Map<*, *> = initialState, action: actionT
                 // search for matching pending message from last messages to first ones
                 const currentMessages = newState.get('messages').reverse()
                 currentMessages.forEach((message) => {
-                    const pendingMessages = newState.getIn(['_internal', 'pendingMessages']) || fromJS([])
+                    const pendingMessages =
+                        newState.getIn(['_internal', 'pendingMessages']) ||
+                        fromJS([])
                     // pending messages don't have an id we can match on
-                    const pendingIndex = getPendingMessageIndex(pendingMessages.toJS(), message.toJS())
+                    const pendingIndex = getPendingMessageIndex(
+                        pendingMessages.toJS(),
+                        message.toJS()
+                    )
 
                     if (~pendingIndex) {
                         // remove pending message
-                        newState = newState.updateIn(['_internal', 'pendingMessages'], (messages) => {
-                            return messages.splice(pendingIndex, 1)
-                        })
+                        newState = newState.updateIn(
+                            ['_internal', 'pendingMessages'],
+                            (messages) => {
+                                return messages.splice(pendingIndex, 1)
+                            }
+                        )
                     }
                 })
             }
@@ -356,32 +440,45 @@ export default function reducer(state: Map<*, *> = initialState, action: actionT
         }
 
         case types.DELETE_TICKET_PENDING_MESSAGE: {
-            return state.updateIn(['_internal', 'pendingMessages'], (messages) => {
-                let messageIndex = messages
-                    .findIndex((message) => {
-                        return message.getIn(['_internal', 'id']) === action.message.getIn(['_internal', 'id'])
+            return state.updateIn(
+                ['_internal', 'pendingMessages'],
+                (messages) => {
+                    let messageIndex = messages.findIndex((message) => {
+                        return (
+                            message.getIn(['_internal', 'id']) ===
+                            action.message.getIn(['_internal', 'id'])
+                        )
                     })
 
-                if (~messageIndex) {
-                    return messages.splice(messageIndex, 1)
-                }
+                    if (~messageIndex) {
+                        return messages.splice(messageIndex, 1)
+                    }
 
-                return messages
-            })
+                    return messages
+                }
+            )
         }
 
         case types.DISPLAY_TICKET_AUDIT_LOG_EVENTS:
-            return state.setIn(['_internal', 'shouldDisplayAuditLogEvents'], true)
+            return state.setIn(
+                ['_internal', 'shouldDisplayAuditLogEvents'],
+                true
+            )
 
         case types.HIDE_TICKET_AUDIT_LOG_EVENTS:
-            return state.setIn(['_internal', 'shouldDisplayAuditLogEvents'], false)
+            return state.setIn(
+                ['_internal', 'shouldDisplayAuditLogEvents'],
+                false
+            )
 
         case types.ADD_TICKET_AUDIT_LOG_EVENTS:
             return state.updateIn(['events'], (events) => {
                 let results = events
 
                 action.payload.forEach((eventToDisplay) => {
-                    const index = results.findIndex((event) => event.get('id') === eventToDisplay.get('id'))
+                    const index = results.findIndex(
+                        (event) => event.get('id') === eventToDisplay.get('id')
+                    )
 
                     if (index === -1) {
                         results = results.push(eventToDisplay)
@@ -390,26 +487,37 @@ export default function reducer(state: Map<*, *> = initialState, action: actionT
                     }
                 })
 
-                return shouldDeduplicateAuditLogEvents(state.get('created_datetime'))
+                return shouldDeduplicateAuditLogEvents(
+                    state.get('created_datetime')
+                )
                     ? deduplicateAuditLogEvents(results)
                     : results
             })
 
         case types.REMOVE_TICKET_AUDIT_LOG_EVENTS:
             return state.updateIn(['events'], (events) =>
-                events.filter((event) => !TICKET_AUDIT_LOG_EVENTS.includes(event.get('type')))
+                events.filter(
+                    (event) =>
+                        !TICKET_AUDIT_LOG_EVENTS.includes(event.get('type'))
+                )
             )
 
         case types.TICKET_MESSAGE_DELETED:
-            return state
-                .updateIn(['_internal', 'pendingMessages'], (messages) => {
-                    const index = messages.findIndex((message) => message.getIn(['_internal', 'id']) === parseInt(action.payload))
+            return state.updateIn(
+                ['_internal', 'pendingMessages'],
+                (messages) => {
+                    const index = messages.findIndex(
+                        (message) =>
+                            message.getIn(['_internal', 'id']) ===
+                            parseInt(action.payload)
+                    )
 
                     if (!~index) {
                         return messages
                     }
                     return messages.delete(index)
-                })
+                }
+            )
 
         default:
             return state

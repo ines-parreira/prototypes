@@ -14,21 +14,23 @@ describe('FacebookIntegrationList component', () => {
 
     const store = mockStore({
         integrations: fromJS({
-            integrations: [{
-                id: 1,
-                name: 'mylittleintegration',
-                type: FACEBOOK_INTEGRATION_TYPE,
-                created_datetime: '2018-01-01 00:00:00',
-                facebook: {
-                    name: 'My Page',
-                    picture: {
-                        data: {
-                            url: 'https://fake.url/picture.jpg'
+            integrations: [
+                {
+                    id: 1,
+                    name: 'mylittleintegration',
+                    type: FACEBOOK_INTEGRATION_TYPE,
+                    created_datetime: '2018-01-01 00:00:00',
+                    facebook: {
+                        name: 'My Page',
+                        picture: {
+                            data: {
+                                url: 'https://fake.url/picture.jpg',
+                            },
                         },
+                        category: 'Category',
                     },
-                    category: 'Category'
-                }
-            }]
+                },
+            ],
         }),
     })
 

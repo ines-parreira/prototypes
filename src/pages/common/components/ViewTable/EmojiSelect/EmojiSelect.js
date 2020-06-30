@@ -11,8 +11,8 @@ import css from './EmojiSelect.less'
 type Props = {
     emoji: ?string,
     className?: string,
-    onEmojiSelect: string => void,
-    onEmojiClear: () => void
+    onEmojiSelect: (string) => void,
+    onEmojiClear: () => void,
 }
 
 const EmojiSelect = (props: Props) => {
@@ -24,10 +24,13 @@ const EmojiSelect = (props: Props) => {
         <div className={classNames(css.picker, className)}>
             <span
                 ref={iconRef}
-                className={classNames({
-                    'material-icons': !emoji,
-                    [css.empty]: !emoji
-                }, css.icon)}
+                className={classNames(
+                    {
+                        'material-icons': !emoji,
+                        [css.empty]: !emoji,
+                    },
+                    css.icon
+                )}
                 onClick={toggle}
             >
                 {emoji ? emoji : 'insert_emoticon'}
@@ -57,8 +60,7 @@ const EmojiSelect = (props: Props) => {
                                 }}
                             >
                                 <span className={css.clearInner}>
-                                    <i className="icon material-icons">clear</i>
-                                    {' '}
+                                    <i className="icon material-icons">clear</i>{' '}
                                     Clear icon
                                 </span>
                             </Button>

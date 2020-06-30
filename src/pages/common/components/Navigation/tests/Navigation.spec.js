@@ -7,49 +7,44 @@ const commonProps = {
     hasNextItems: true,
     hasPrevItems: true,
     fetchNextItems: () => {},
-    fetchPrevItems: () => {}
+    fetchPrevItems: () => {},
 }
 
 describe('Navigation component', () => {
-    [
+    ;[
         [true, true],
         [true, false],
-        [false, true]
+        [false, true],
     ].forEach(([hasNextItems, hasPrevItems]) => {
-        it(`should render with (prev button disabled: ${!hasPrevItems}) and (next button disabled: ${!hasNextItems})`,
-            () => {
-                const component = shallow(
-                    <Navigation
-                        {...commonProps}
-                        hasNextItems={hasNextItems}
-                        hasPrevItems={hasPrevItems}
-                    />
-                )
-
-                expect(component).toMatchSnapshot()
-            })
-    })
-
-    it('should not render because there is no previous items nor next items',
-        () => {
+        it(`should render with (prev button disabled: ${!hasPrevItems}) and (next button disabled: ${!hasNextItems})`, () => {
             const component = shallow(
                 <Navigation
                     {...commonProps}
-                    hasNextItems={false}
-                    hasPrevItems={false}
+                    hasNextItems={hasNextItems}
+                    hasPrevItems={hasPrevItems}
                 />
             )
 
             expect(component).toMatchSnapshot()
         })
+    })
+
+    it('should not render because there is no previous items nor next items', () => {
+        const component = shallow(
+            <Navigation
+                {...commonProps}
+                hasNextItems={false}
+                hasPrevItems={false}
+            />
+        )
+
+        expect(component).toMatchSnapshot()
+    })
 
     it('should fetch previous items when the previous button is clicked', () => {
         const prevSpy = jest.fn()
         const component = shallow(
-            <Navigation
-                {...commonProps}
-                fetchPrevItems={prevSpy}
-            />
+            <Navigation {...commonProps} fetchPrevItems={prevSpy} />
         )
 
         component.find('#prev-btn').simulate('click')
@@ -59,10 +54,7 @@ describe('Navigation component', () => {
     it('should fetch next items when the next button is clicked', () => {
         const nextSpy = jest.fn()
         const component = shallow(
-            <Navigation
-                {...commonProps}
-                fetchNextItems={nextSpy}
-            />
+            <Navigation {...commonProps} fetchNextItems={nextSpy} />
         )
 
         component.find('#next-btn').simulate('click')

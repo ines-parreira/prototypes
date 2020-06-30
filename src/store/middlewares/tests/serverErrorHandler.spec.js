@@ -9,11 +9,11 @@ const mockStore = configureMockStore(middlewares)
 
 const types = {
     addNotification: 'ADD_NOTIFICATION',
-    removeNotification: 'REMOVE_NOTIFICATION'
+    removeNotification: 'REMOVE_NOTIFICATION',
 }
 
-function removeWhitespace (str = '') {
-    return str.replace(/\s/g,'')
+function removeWhitespace(str = '') {
+    return str.replace(/\s/g, '')
 }
 
 describe('middlewares', () => {
@@ -29,15 +29,15 @@ describe('middlewares', () => {
             const notificationTitle = `Unknown error for action ${actionType}`
             const errorAction = {
                 error: {},
-                type: actionType
+                type: actionType,
             }
             store.dispatch(errorAction)
 
             expect(store.getActions()[0]).toMatchObject({
                 payload: {
-                    message: notificationTitle
+                    message: notificationTitle,
                 },
-                type: types.addNotification
+                type: types.addNotification,
             })
         })
 
@@ -48,27 +48,27 @@ describe('middlewares', () => {
                     response: {
                         data: {
                             error: {
-                                msg: notificationTitle
-                            }
-                        }
-                    }
+                                msg: notificationTitle,
+                            },
+                        },
+                    },
                 },
-                type: ''
+                type: '',
             }
             store.dispatch(errorAction)
 
             expect(store.getActions()[0]).toMatchObject({
                 payload: {
-                    message: notificationTitle
+                    message: notificationTitle,
                 },
-                type: types.addNotification
+                type: types.addNotification,
             })
         })
 
         it('should not add notification content if not verbose', () => {
             const notificationTitle = 'Pizza pepperoni'
             const notificationContent = {
-                hello: ['world']
+                hello: ['world'],
             }
             const errorAction = {
                 error: {
@@ -76,27 +76,28 @@ describe('middlewares', () => {
                         data: {
                             error: {
                                 msg: notificationTitle,
-                                data: notificationContent
-                            }
-                        }
-                    }
+                                data: notificationContent,
+                            },
+                        },
+                    },
                 },
-                type: ''
+                type: '',
             }
             store.dispatch(errorAction)
 
             expect(store.getActions()[0]).toMatchObject({
                 payload: {
-                    message: notificationTitle
+                    message: notificationTitle,
                 },
-                type: types.addNotification
+                type: types.addNotification,
             })
         })
 
         it('should add notification with title and content', () => {
             const notificationTitle = 'Pizza pepperoni'
             const notificationContent = {
-                hello: ['world'], receiver: ['Missing data', 'Invalid value']
+                hello: ['world'],
+                receiver: ['Missing data', 'Invalid value'],
             }
             const errorAction = {
                 verbose: true,
@@ -105,12 +106,12 @@ describe('middlewares', () => {
                         data: {
                             error: {
                                 msg: notificationTitle,
-                                data: notificationContent
-                            }
-                        }
-                    }
+                                data: notificationContent,
+                            },
+                        },
+                    },
                 },
-                type: ''
+                type: '',
             }
             store.dispatch(errorAction)
 
@@ -118,7 +119,9 @@ describe('middlewares', () => {
                 {},
                 _get(store.getActions(), [0, 'payload']),
                 {
-                    message: removeWhitespace(_get(store.getActions(), [0, 'payload', 'message']))
+                    message: removeWhitespace(
+                        _get(store.getActions(), [0, 'payload', 'message'])
+                    ),
                 }
             )
 
@@ -130,7 +133,7 @@ describe('middlewares', () => {
                         <li>receiver: Missing data</li>
                         <li>receiver: Invalid value</li>
                     </ul>
-                `)
+                `),
             })
         })
     })

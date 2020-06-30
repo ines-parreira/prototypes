@@ -23,33 +23,36 @@ describe('Signature', () => {
             source: {
                 type: 'email',
                 from: {
-                    address: emailAddress
-                }
-            }
-        }
+                    address: emailAddress,
+                },
+            },
+        },
     })
 
     beforeEach(() => {
         editorState = EditorState.createEmpty()
         initialState = {
             integrations: fromJS({
-                integrations: [{
-                    type: 'gmail',
-                    meta: {
-                        address: emailAddress,
-                        preferred: true,
-                        signature: {
-                            text: 'cheers, {{current_user.first_name}}',
-                            html: 'cheers, <strong>{{current_user.first_name}}</strong>'
-                        }
+                integrations: [
+                    {
+                        type: 'gmail',
+                        meta: {
+                            address: emailAddress,
+                            preferred: true,
+                            signature: {
+                                text: 'cheers, {{current_user.first_name}}',
+                                html:
+                                    'cheers, <strong>{{current_user.first_name}}</strong>',
+                            },
+                        },
                     },
-                }]
+                ],
             }),
             currentUser: fromJS({
                 first_name: 'Steve',
             }),
             newMessage,
-            ticket: fromJS({})
+            ticket: fromJS({}),
         }
     })
 
@@ -64,7 +67,10 @@ describe('Signature', () => {
     })
 
     it('should not render for messageType other than email', () => {
-        initialState.newMessage = initialState.newMessage.setIn(['newMessage', 'source', 'type'], TicketMessageSourceTypes.CHAT)
+        initialState.newMessage = initialState.newMessage.setIn(
+            ['newMessage', 'source', 'type'],
+            TicketMessageSourceTypes.CHAT
+        )
 
         const component = shallow(
             <Signature
@@ -77,9 +83,12 @@ describe('Signature', () => {
     })
 
     it('should not render when no signature set', () => {
-        initialState.newMessage = initialState.newMessage.setIn(['newMessage', 'source', 'from'], fromJS({
-            address: 'unknonw@acme.gorgias.io'
-        }))
+        initialState.newMessage = initialState.newMessage.setIn(
+            ['newMessage', 'source', 'from'],
+            fromJS({
+                address: 'unknonw@acme.gorgias.io',
+            })
+        )
         initialState.currentUser = fromJS({})
 
         const component = shallow(
@@ -93,9 +102,12 @@ describe('Signature', () => {
     })
 
     it('should render with only text signature', () => {
-        initialState.integrations = initialState.integrations.setIn(['integrations', 0, 'meta', 'signature'], fromJS({
-            text: 'cheers, {{current_user.first_name}}'
-        }))
+        initialState.integrations = initialState.integrations.setIn(
+            ['integrations', 0, 'meta', 'signature'],
+            fromJS({
+                text: 'cheers, {{current_user.first_name}}',
+            })
+        )
 
         const component = shallow(
             <Signature
@@ -108,9 +120,12 @@ describe('Signature', () => {
     })
 
     it('should render with only html signature', () => {
-        initialState.integrations = initialState.integrations.setIn(['integrations', 0, 'meta', 'signature'], fromJS({
-            html: 'cheers, {{current_user.first_name}}'
-        }))
+        initialState.integrations = initialState.integrations.setIn(
+            ['integrations', 0, 'meta', 'signature'],
+            fromJS({
+                html: 'cheers, {{current_user.first_name}}',
+            })
+        )
 
         const component = shallow(
             <Signature

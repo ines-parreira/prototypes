@@ -1,10 +1,15 @@
-
 //@flow
 import {createAction} from '@reduxjs/toolkit'
 
 import type {Macro} from '../../../models/macro'
 
-import {MACRO_CREATED, MACRO_DELETED, MACRO_FETCHED, MACRO_UPDATED, MACROS_FETCHED} from './constants'
+import {
+    MACRO_CREATED,
+    MACRO_DELETED,
+    MACRO_FETCHED,
+    MACRO_UPDATED,
+    MACROS_FETCHED,
+} from './constants'
 
 export const macroCreated = createAction<typeof MACRO_CREATED, Macro>(
     MACRO_CREATED

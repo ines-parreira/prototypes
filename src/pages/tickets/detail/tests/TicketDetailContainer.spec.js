@@ -11,9 +11,17 @@ import thunk from 'redux-thunk'
 import moment from 'moment'
 
 import * as customersActions from '../../../../state/customers/actions'
-import {prepareTicketMessage, sendTicketMessage, setReceivers} from '../../../../state/newMessage/actions'
+import {
+    prepareTicketMessage,
+    sendTicketMessage,
+    setReceivers,
+} from '../../../../state/newMessage/actions'
 import {notify} from '../../../../state/notifications/actions'
-import {findAndSetCustomer, messageDeleted, setCustomer} from '../../../../state/ticket/actions'
+import {
+    findAndSetCustomer,
+    messageDeleted,
+    setCustomer,
+} from '../../../../state/ticket/actions'
 
 import TicketDetailContainer from '../TicketDetailContainer'
 import * as ticketsActions from '../../../../state/tickets/actions'
@@ -52,7 +60,7 @@ jest.mock('../../../../state/newMessage/actions', () => {
         submitTicket: jest.fn(() => _identity),
         prepareTicketMessage: jest.fn(),
         resetReceiversAndSender: jest.fn(() => _identity),
-        sendTicketMessage: jest.fn(() => _identity)
+        sendTicketMessage: jest.fn(() => _identity),
     }
 })
 
@@ -77,7 +85,12 @@ jest.mock('../../../../state/ticket/actions', () => {
     }
 })
 
-jest.mock('../components/TicketView', () => ({submit}: ElementProps<typeof TicketView>) => <div onClick={submit}/>)
+jest.mock(
+    '../components/TicketView',
+    () => ({submit}: ElementProps<typeof TicketView>) => (
+        <div onClick={submit} />
+    )
+)
 
 describe('TicketDetailContainer component', () => {
     const minProps: any = {
@@ -87,10 +100,10 @@ describe('TicketDetailContainer component', () => {
             isActive: _noop,
 
             params: {
-                ticketId: 'new'
+                ticketId: 'new',
             },
             location: {
-                query: {}
+                query: {},
             },
         },
         route: {},
@@ -122,17 +135,21 @@ describe('TicketDetailContainer component', () => {
         newMessage: {
             body_text: 'foobar',
             source: {
-                cc: [{
-                    name: 'cc',
-                    address: 'cc@gorgias.io'
-                }],
-                bcc: [{
-                    name: 'bcc',
-                    address: 'bcc@gorgias.io'
-                }],
+                cc: [
+                    {
+                        name: 'cc',
+                        address: 'cc@gorgias.io',
+                    },
+                ],
+                bcc: [
+                    {
+                        name: 'bcc',
+                        address: 'bcc@gorgias.io',
+                    },
+                ],
                 type: 'email',
-            }
-        }
+            },
+        },
     })
 
     beforeEach(() => {
@@ -144,35 +161,36 @@ describe('TicketDetailContainer component', () => {
             newMessage: fromJS({
                 newMessage: {
                     source: {
-                        to: []
-                    }
-                }
-            })
+                        to: [],
+                    },
+                },
+            }),
         })
     })
 
     it('should render container for new ticket', () => {
-        const component = shallow(<TicketDetailContainer {...minProps} />).dive().dive()
+        const component = shallow(<TicketDetailContainer {...minProps} />)
+            .dive()
+            .dive()
         expect(component).toMatchSnapshot()
     })
 
     it('should have new ticket title', () => {
-        const component = shallow(<TicketDetailContainer {...minProps} />).dive().dive()
+        const component = shallow(<TicketDetailContainer {...minProps} />)
+            .dive()
+            .dive()
         expect(component.dive().prop('title')).toBe('New ticket')
     })
 
     it('should fetch customer details from url', () => {
         const router = _merge(
             {...minProps.router},
-            {location: {query: {customer:'1'}}}
+            {location: {query: {customer: '1'}}}
         )
 
-        shallow(
-            <TicketDetailContainer
-                {...minProps}
-                router={router}
-            />
-        ).dive().dive()
+        shallow(<TicketDetailContainer {...minProps} router={router} />)
+            .dive()
+            .dive()
 
         expect(customersActions.fetchCustomer).toBeCalledWith(1)
     })
@@ -188,9 +206,11 @@ describe('TicketDetailContainer component', () => {
             <TicketDetailContainer
                 {...minProps}
                 params={{customerId: '1'}}
-                location={{query: {customer:'1'}}}
+                location={{query: {customer: '1'}}}
             />
-        ).dive().dive()
+        )
+            .dive()
+            .dive()
 
         component.setProps({activeCustomer})
 
@@ -204,16 +224,16 @@ describe('TicketDetailContainer component', () => {
             ticket: fromJS({
                 messages: [],
                 _internal: {
-                    displayHistory: true
-                }
+                    displayHistory: true,
+                },
             }),
             newMessage: fromJS({
                 newMessage: {
                     source: {
-                        to: []
-                    }
-                }
-            })
+                        to: [],
+                    },
+                },
+            }),
         })
 
         const component: ElementRef<typeof TicketDetailContainer> = shallow(
@@ -222,7 +242,10 @@ describe('TicketDetailContainer component', () => {
                 router={minProps.router}
                 store={store}
             />
-        ).dive().dive().instance()
+        )
+            .dive()
+            .dive()
+            .instance()
 
         component._hideTicket = jest.fn()
         component._setStatus('closed')
@@ -235,16 +258,16 @@ describe('TicketDetailContainer component', () => {
             ticket: fromJS({
                 messages: [],
                 _internal: {
-                    displayHistory: false
-                }
+                    displayHistory: false,
+                },
             }),
             newMessage: fromJS({
                 newMessage: {
                     source: {
-                        to: []
-                    }
-                }
-            })
+                        to: [],
+                    },
+                },
+            }),
         })
 
         const component: ElementRef<typeof TicketDetailContainer> = shallow(
@@ -253,7 +276,10 @@ describe('TicketDetailContainer component', () => {
                 router={minProps.router}
                 store={store}
             />
-        ).dive().dive().instance()
+        )
+            .dive()
+            .dive()
+            .instance()
 
         component._hideTicket = jest.fn(() => Promise.resolve())
         component._setStatus('closed')
@@ -271,17 +297,26 @@ describe('TicketDetailContainer component', () => {
         const component = shallow(
             <TicketDetailContainer
                 {...minProps}
-                location={{query: {customer:'1'}}}
+                location={{query: {customer: '1'}}}
             />
-        ).dive().dive()
+        )
+            .dive()
+            .dive()
 
         component.setProps({activeCustomer})
 
         // wait promise to be resolved
         setImmediate(() => {
-            expect(setReceivers).toBeCalledWith({
-                to: [activeCustomer.set('address', activeCustomer.get('email')).toJS()]
-            }, true)
+            expect(setReceivers).toBeCalledWith(
+                {
+                    to: [
+                        activeCustomer
+                            .set('address', activeCustomer.get('email'))
+                            .toJS(),
+                    ],
+                },
+                true
+            )
             done()
         })
     })
@@ -293,16 +328,20 @@ describe('TicketDetailContainer component', () => {
             <TicketDetailContainer
                 {...minProps}
                 params={{customerId: '1'}}
-                location={{query: {customer:'1'}}}
+                location={{query: {customer: '1'}}}
             />
-        ).dive().dive()
+        )
+            .dive()
+            .dive()
         component.setProps({activeView: activeView})
         component.setProps({ticket: newTicket})
 
-        expect(ticketsActions.updateCursor).toBeCalledWith(newTicket.get(activeView.get('order_by')))
+        expect(ticketsActions.updateCursor).toBeCalledWith(
+            newTicket.get(activeView.get('order_by'))
+        )
     })
 
-    it('should NOT update the cursor of the view when ticket\'s attributes change', () => {
+    it("should NOT update the cursor of the view when ticket's attributes change", () => {
         const activeView = fromJS({order_by: 'updated_datetime'})
         const ticket = minProps.store.getState().ticket
         const component = shallow(
@@ -310,7 +349,7 @@ describe('TicketDetailContainer component', () => {
                 {...minProps}
                 activeView={activeView}
                 params={{customerId: '1'}}
-                location={{query: {customer:'1'}}}
+                location={{query: {customer: '1'}}}
             />
         ).dive()
         component.setProps({ticket: ticket.set('updated_datetime', moment())})
@@ -318,119 +357,147 @@ describe('TicketDetailContainer component', () => {
         expect(ticketsActions.updateCursor).not.toHaveBeenCalled()
     })
 
-    it('should try to set the first recipient as customer because this ticket is new and the recipients have changed ' +
-        'from no recipients to one recipient', () => {
-        const component = shallow(
-            <TicketDetailContainer
-                {...minProps}
-            />
-        ).dive().dive()
+    it(
+        'should try to set the first recipient as customer because this ticket is new and the recipients have changed ' +
+            'from no recipients to one recipient',
+        () => {
+            const component = shallow(<TicketDetailContainer {...minProps} />)
+                .dive()
+                .dive()
 
-        component.setProps({
-            newMessageSource: fromJS({
-                to: [{
-                    name: 'foo',
-                    address: 'foo@gorgias.io'
-                }]
-            })
-        })
-
-        expect(findAndSetCustomer).toBeCalledWith('foo@gorgias.io')
-    })
-
-    it('should try to set the first recipient as customer because this ticket is new and the recipients have changed ' +
-        'from multiple recipients to one recipient', () => {
-        const component = shallow(
-            <TicketDetailContainer
-                {...minProps}
-                store={mockStore({
-                    ticket: fromJS({
-                        messages: [],
-                    }),
-                    newMessage: newMessageState,
-                })}
-            />
-        ).dive().dive()
-
-        component.setProps({
-            newMessageSource: fromJS({
-                to: [{
-                    name: 'foo',
-                    address: 'foo@gorgias.io'
-                }]
-            })
-        })
-
-        expect(findAndSetCustomer).toBeCalledWith('foo@gorgias.io')
-    })
-
-    it('should not try to set the first recipient as customer because event though this ticket is new and the ' +
-        'recipients have changed from multiple recipients to one recipient, this is the same customer', () => {
-        const component = shallow(
-            <TicketDetailContainer
-                {...minProps}
-                store={mockStore({
-                    ticket: fromJS({
-                        messages: [],
-                        customer: {
+            component.setProps({
+                newMessageSource: fromJS({
+                    to: [
+                        {
                             name: 'foo',
-                            email: 'foo@gorgias.io',
-                            channels: [{
-                                type: 'email',
-                                address: 'foo@gorgias.io'
-                            }]
-                        }
-                    }),
-                    newMessage: newMessageState,
-                })}
-            />
-        ).dive().dive()
-
-        component.setProps({
-            newMessageSource: fromJS({
-                to: [{
-                    name: 'foo',
-                    address: 'foo@gorgias.io'
-                }]
+                            address: 'foo@gorgias.io',
+                        },
+                    ],
+                }),
             })
-        })
 
-        expect(findAndSetCustomer).not.toHaveBeenCalled()
-    })
+            expect(findAndSetCustomer).toBeCalledWith('foo@gorgias.io')
+        }
+    )
 
-    it('should not try to set the first recipient as customer because the only recipient is in the `cc` field, and ' +
-        'not in the `to` field', () => {
-        const component = shallow(
-            <TicketDetailContainer
-                {...minProps}
-                store={mockStore({
-                    ticket: fromJS({
-                        messages: [],
-                        customer: {
+    it(
+        'should try to set the first recipient as customer because this ticket is new and the recipients have changed ' +
+            'from multiple recipients to one recipient',
+        () => {
+            const component = shallow(
+                <TicketDetailContainer
+                    {...minProps}
+                    store={mockStore({
+                        ticket: fromJS({
+                            messages: [],
+                        }),
+                        newMessage: newMessageState,
+                    })}
+                />
+            )
+                .dive()
+                .dive()
+
+            component.setProps({
+                newMessageSource: fromJS({
+                    to: [
+                        {
                             name: 'foo',
-                            email: 'foo@gorgias.io',
-                            channels: [{
-                                type: 'email',
-                                address: 'foo@gorgias.io'
-                            }]
-                        }
-                    }),
-                    newMessage: newMessageState,
-                })}
-            />
-        ).dive().dive()
-
-        component.setProps({
-            newMessageSource: fromJS({
-                to: [{
-                    name: 'foo',
-                    address: 'foo@gorgias.io'
-                }]
+                            address: 'foo@gorgias.io',
+                        },
+                    ],
+                }),
             })
-        })
 
-        expect(findAndSetCustomer).not.toHaveBeenCalled()
-    })
+            expect(findAndSetCustomer).toBeCalledWith('foo@gorgias.io')
+        }
+    )
+
+    it(
+        'should not try to set the first recipient as customer because event though this ticket is new and the ' +
+            'recipients have changed from multiple recipients to one recipient, this is the same customer',
+        () => {
+            const component = shallow(
+                <TicketDetailContainer
+                    {...minProps}
+                    store={mockStore({
+                        ticket: fromJS({
+                            messages: [],
+                            customer: {
+                                name: 'foo',
+                                email: 'foo@gorgias.io',
+                                channels: [
+                                    {
+                                        type: 'email',
+                                        address: 'foo@gorgias.io',
+                                    },
+                                ],
+                            },
+                        }),
+                        newMessage: newMessageState,
+                    })}
+                />
+            )
+                .dive()
+                .dive()
+
+            component.setProps({
+                newMessageSource: fromJS({
+                    to: [
+                        {
+                            name: 'foo',
+                            address: 'foo@gorgias.io',
+                        },
+                    ],
+                }),
+            })
+
+            expect(findAndSetCustomer).not.toHaveBeenCalled()
+        }
+    )
+
+    it(
+        'should not try to set the first recipient as customer because the only recipient is in the `cc` field, and ' +
+            'not in the `to` field',
+        () => {
+            const component = shallow(
+                <TicketDetailContainer
+                    {...minProps}
+                    store={mockStore({
+                        ticket: fromJS({
+                            messages: [],
+                            customer: {
+                                name: 'foo',
+                                email: 'foo@gorgias.io',
+                                channels: [
+                                    {
+                                        type: 'email',
+                                        address: 'foo@gorgias.io',
+                                    },
+                                ],
+                            },
+                        }),
+                        newMessage: newMessageState,
+                    })}
+                />
+            )
+                .dive()
+                .dive()
+
+            component.setProps({
+                newMessageSource: fromJS({
+                    to: [
+                        {
+                            name: 'foo',
+                            address: 'foo@gorgias.io',
+                        },
+                    ],
+                }),
+            })
+
+            expect(findAndSetCustomer).not.toHaveBeenCalled()
+        }
+    )
 
     it('should set the customer to null because the ticket is new and the recipients have been removed', () => {
         const component = shallow(
@@ -443,16 +510,20 @@ describe('TicketDetailContainer component', () => {
                     newMessage: fromJS({
                         newMessage: {
                             source: {
-                                to: [{
-                                    name: 'foo',
-                                    address: 'foo@gorgias.io'
-                                }]
-                            }
-                        }
-                    })
+                                to: [
+                                    {
+                                        name: 'foo',
+                                        address: 'foo@gorgias.io',
+                                    },
+                                ],
+                            },
+                        },
+                    }),
                 })}
             />
-        ).dive().dive()
+        )
+            .dive()
+            .dive()
 
         component.setProps({newMessageSource: fromJS({to: []})})
 
@@ -470,32 +541,40 @@ describe('TicketDetailContainer component', () => {
                     newMessage: newMessageState,
                 })}
             />
-        ).dive().dive()
+        )
+            .dive()
+            .dive()
 
         component.setProps({
             ticket: fromJS({
                 customer: {
                     id: 1,
                     name: 'foo',
-                    email: 'foo@gorgias.io'
-                }
+                    email: 'foo@gorgias.io',
+                },
             }),
         })
 
         // This operation shouldn't modify the existing cc and bcc
         expect(setReceivers).toBeCalledWith({
-            to: [{
-                name: 'foo',
-                address: 'foo@gorgias.io'
-            }],
-            cc: [{
-                name: 'cc',
-                address: 'cc@gorgias.io'
-            }],
-            bcc: [{
-                name: 'bcc',
-                address: 'bcc@gorgias.io'
-            }],
+            to: [
+                {
+                    name: 'foo',
+                    address: 'foo@gorgias.io',
+                },
+            ],
+            cc: [
+                {
+                    name: 'cc',
+                    address: 'cc@gorgias.io',
+                },
+            ],
+            bcc: [
+                {
+                    name: 'bcc',
+                    address: 'bcc@gorgias.io',
+                },
+            ],
         })
     })
 
@@ -508,7 +587,7 @@ describe('TicketDetailContainer component', () => {
                     ...minProps.router,
                     params: {
                         ticketId: '1',
-                    }
+                    },
                 }}
                 store={mockStore({
                     currentAccount: fromJS({
@@ -523,7 +602,9 @@ describe('TicketDetailContainer component', () => {
                     newMessage: newMessageState,
                 })}
             />
-        ).dive().dive()
+        )
+            .dive()
+            .dive()
 
         component.find(TicketView).props().submit()
         setImmediate(() => {
@@ -572,7 +653,7 @@ describe('TicketDetailContainer component', () => {
                     ...minProps.router,
                     params: {
                         ticketId: '1',
-                    }
+                    },
                 }}
                 store={mockStore({
                     currentAccount: fromJS({
@@ -587,7 +668,9 @@ describe('TicketDetailContainer component', () => {
                     newMessage: newMessageState,
                 })}
             />
-        ).dive().dive()
+        )
+            .dive()
+            .dive()
 
         component.find(TicketView).props().submit()
         setImmediate(() => {
@@ -611,7 +694,7 @@ describe('TicketDetailContainer component', () => {
                     ...minProps.router,
                     params: {
                         ticketId: '1',
-                    }
+                    },
                 }}
                 store={mockStore({
                     currentAccount: fromJS({
@@ -626,16 +709,20 @@ describe('TicketDetailContainer component', () => {
                     newMessage: newMessageState,
                 })}
             />
-        ).dive().dive()
+        )
+            .dive()
+            .dive()
 
         component.find(TicketView).props().submit()
         setImmediate(() => {
             expect(notify).toHaveBeenNthCalledWith(1, {
-                buttons: [{
-                    name: 'Undo',
-                    onClick: expect.any(Function),
-                    primary: true,
-                }],
+                buttons: [
+                    {
+                        name: 'Undo',
+                        onClick: expect.any(Function),
+                        primary: true,
+                    },
+                ],
                 dismissAfter: 5000,
                 id: 1,
                 message: 'Message sent',
@@ -654,7 +741,7 @@ describe('TicketDetailContainer component', () => {
                     ...minProps.router,
                     params: {
                         ticketId: '1',
-                    }
+                    },
                 }}
                 store={mockStore({
                     currentAccount: fromJS({
@@ -669,7 +756,9 @@ describe('TicketDetailContainer component', () => {
                     newMessage: newMessageState,
                 })}
             />
-        ).dive().dive()
+        )
+            .dive()
+            .dive()
 
         component.find(TicketView).props().submit()
         component.find(TicketView).props().submit()
@@ -695,7 +784,7 @@ describe('TicketDetailContainer component', () => {
                     ...minProps.router,
                     params: {
                         ticketId: '1',
-                    }
+                    },
                 }}
                 store={mockStore({
                     currentAccount: fromJS({
@@ -710,7 +799,9 @@ describe('TicketDetailContainer component', () => {
                     newMessage: newMessageState,
                 })}
             />
-        ).dive().dive()
+        )
+            .dive()
+            .dive()
 
         component.find(TicketView).props().submit()
         setImmediate(() => {

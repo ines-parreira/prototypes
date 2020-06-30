@@ -22,7 +22,7 @@ const customer1 = fromJS({
                 id: 1,
                 name: 'Pierre',
             },
-        }
+        },
     ],
     name: 'Pierre',
     note: null,
@@ -41,7 +41,7 @@ const customer2 = fromJS({
                 id: 2,
                 name: 'Pierre',
             },
-        }
+        },
     ],
     name: 'Pierre',
     note: null,

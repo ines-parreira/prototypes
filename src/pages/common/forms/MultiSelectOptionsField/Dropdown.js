@@ -16,31 +16,31 @@ type Props = {
     options: Option[],
     isFocused: boolean,
     isLoading?: boolean,
-    onChange: string => void,
+    onChange: (string) => void,
     onFocus: () => void,
     onBlur: () => void,
-    onSelect: Option => void,
+    onSelect: (Option) => void,
     onDelete: () => void,
-    menu: ComponentType<*>
+    menu: ComponentType<*>,
 }
 
 type State = {
-    activeIndex: number
+    activeIndex: number,
 }
 
 export default class Dropdown extends React.Component<Props, State> {
     static defaultProps = {
-        menu: DropdownMenu
+        menu: DropdownMenu,
     }
 
     state: State = {
-        activeIndex: 0
+        activeIndex: 0,
     }
 
     componentDidUpdate(prevProps: Props) {
         if (!_isEqual(this.props.options, prevProps.options)) {
             this.setState({
-                activeIndex: 0
+                activeIndex: 0,
             })
         }
     }
@@ -58,7 +58,7 @@ export default class Dropdown extends React.Component<Props, State> {
     _onInputUp = () => {
         const {activeIndex} = this.state
         this.setState({
-            activeIndex: _max([activeIndex - 1, 0])
+            activeIndex: _max([activeIndex - 1, 0]),
         })
     }
 
@@ -66,27 +66,34 @@ export default class Dropdown extends React.Component<Props, State> {
         const {options} = this.props
         const {activeIndex} = this.state
         this.setState({
-            activeIndex: _min([activeIndex + 1, options.length - 1])
+            activeIndex: _min([activeIndex + 1, options.length - 1]),
         })
     }
 
     _onOptionActivate = (index: number) => {
         this.setState({
-            activeIndex: index
+            activeIndex: index,
         })
     }
 
     render() {
-        const {isFocused, options, value, onChange, onDelete, onFocus, onBlur, placeholder, menu: CustomDropdownMenu} = this.props
+        const {
+            isFocused,
+            options,
+            value,
+            onChange,
+            onDelete,
+            onFocus,
+            onBlur,
+            placeholder,
+            menu: CustomDropdownMenu,
+        } = this.props
         return (
             <div className={css['input-container']}>
                 <UncontrolledDropdown
                     isOpen={isFocused && (!!options.length || !!value)}
                 >
-                    <DropdownToggle
-                        tag="div"
-                        data-toggle="dropdown"
-                    >
+                    <DropdownToggle tag="div" data-toggle="dropdown">
                         <OptionInput
                             placeholder={placeholder}
                             value={value}

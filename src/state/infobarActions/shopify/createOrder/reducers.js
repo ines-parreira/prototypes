@@ -11,7 +11,7 @@ import {
     SET_INITIAL_STATE,
     SET_LOADING,
     SET_PAYLOAD,
-    SET_PRODUCTS
+    SET_PRODUCTS,
 } from './constants'
 
 export const initialState: CreateOrderState = fromJS({

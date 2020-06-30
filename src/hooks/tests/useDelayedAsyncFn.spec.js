@@ -33,8 +33,11 @@ describe('useDelayedAsyncFn hook', () => {
     })
 
     it('should not set loading to true if async call is not pending', async () => {
-        const mockAsync = () => new Promise((resolve) => setTimeout(resolve, 100))
-        const {result, waitForNextUpdate} = renderHook(() => useDelayedAsyncFn(mockAsync, [], 200))
+        const mockAsync = () =>
+            new Promise((resolve) => setTimeout(resolve, 100))
+        const {result, waitForNextUpdate} = renderHook(() =>
+            useDelayedAsyncFn(mockAsync, [], 200)
+        )
 
         expect(result.current[0].loading).toBe(false)
         act(() => {
@@ -47,7 +50,8 @@ describe('useDelayedAsyncFn hook', () => {
     })
 
     it('should clear the previous timeout on a new function call', async () => {
-        const mockAsync = () => new Promise((resolve) => setTimeout(resolve, 200))
+        const mockAsync = () =>
+            new Promise((resolve) => setTimeout(resolve, 200))
         const {result} = renderHook(() => useDelayedAsyncFn(mockAsync, [], 100))
 
         act(() => {

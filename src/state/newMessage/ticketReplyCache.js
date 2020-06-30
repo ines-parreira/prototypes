@@ -117,7 +117,7 @@ export class TicketReplyCache {
     set(ticketId: string = 'new', ticketDetails: {}) {
         // always use strings for ids
         const id = String(ticketId)
-        const timestamp = (new Date()).getTime()
+        const timestamp = new Date().getTime()
 
         // don't save cache for new tickets
         if (id === 'new') {
@@ -141,14 +141,16 @@ export class TicketReplyCache {
 
         // save in storage
         try {
-            this.storage.setItem(`${CACHE_KEY_PREFIX}${id}${CACHE_KEY_SEPARATOR}${timestamp}`,
-                JSON.stringify(ticket.toJS()))
+            this.storage.setItem(
+                `${CACHE_KEY_PREFIX}${id}${CACHE_KEY_SEPARATOR}${timestamp}`,
+                JSON.stringify(ticket.toJS())
+            )
         } catch (err) {
             console.error('Failed to save new state in local storage', err)
         }
     }
 
-    get(ticketId: string = 'new', keys: ?Array<string>): Map<*,*> {
+    get(ticketId: string = 'new', keys: ?Array<string>): Map<*, *> {
         const id = String(ticketId)
         if (id === 'new') {
             return defaultTicket

@@ -246,14 +246,17 @@ class MultiSelectAsyncField extends React.Component {
             return this._createItemsFromInputValues(splitAddresses)
         }
 
-        this.setState({
-            inputValue,
-            focusedOptionIndex: 0,
-        }, () => {
-            return this.props.loadOptions(inputValue, (options) => {
-                this.setState({options})
-            })
-        })
+        this.setState(
+            {
+                inputValue,
+                focusedOptionIndex: 0,
+            },
+            () => {
+                return this.props.loadOptions(inputValue, (options) => {
+                    this.setState({options})
+                })
+            }
+        )
     }
 
     /**
@@ -262,15 +265,8 @@ class MultiSelectAsyncField extends React.Component {
      * @private
      */
     _onInputKeyDown = (e) => {
-        const {
-            value,
-            onChange,
-        } = this.props
-        const {
-            inputValue,
-            options,
-            focusedOptionIndex,
-        } = this.state
+        const {value, onChange} = this.props
+        const {inputValue, options, focusedOptionIndex} = this.state
 
         const key = e.key
 
@@ -302,7 +298,10 @@ class MultiSelectAsyncField extends React.Component {
             }
             // move option selection up
             case 'ArrowDown': {
-                const newFocusedOptionIndex = _min([focusedOptionIndex + 1, options.length - 1])
+                const newFocusedOptionIndex = _min([
+                    focusedOptionIndex + 1,
+                    options.length - 1,
+                ])
                 this.setState({focusedOptionIndex: newFocusedOptionIndex})
                 break
             }
@@ -310,9 +309,11 @@ class MultiSelectAsyncField extends React.Component {
             case addressesSeperator:
             case 'Tab':
             case 'Enter': {
-                if (options.length) { // selection
+                if (options.length) {
+                    // selection
                     this._onOptionClick(e, focusedOptionIndex)
-                } else { // creation
+                } else {
+                    // creation
                     this._createItemsFromInputValues(inputValue)
                 }
                 break
@@ -374,12 +375,7 @@ class MultiSelectAsyncField extends React.Component {
     }
 
     render() {
-        const {
-            value,
-            disabled,
-            placeholder,
-            required,
-        } = this.props
+        const {value, disabled, placeholder, required} = this.props
 
         const hasOptions = !!this.state.options.length
 
@@ -390,39 +386,35 @@ class MultiSelectAsyncField extends React.Component {
 
         return (
             <div className={css.field}>
-                <div
-                    className={css.values}
-                    onClick={this.focusInput}
-                >
-                    {
-                        value.map((item, index) => (
-                            <div
-                                key={index}
-                                className={classnames(css.item, {
-                                    [css['item--focused']]: this.state.focusedItemIndex === index,
-                                })}
-                                tabIndex="999999" // tabIndex is a trick to make the div focusable
-                                onBlur={this._onItemBlur}
-                                onClick={(e) => this._onItemClick(e, index)}
-                                onDoubleClick={(e) => this._onItemDoubleClick(e, index)}
+                <div className={css.values} onClick={this.focusInput}>
+                    {value.map((item, index) => (
+                        <div
+                            key={index}
+                            className={classnames(css.item, {
+                                [css['item--focused']]:
+                                    this.state.focusedItemIndex === index,
+                            })}
+                            tabIndex="999999" // tabIndex is a trick to make the div focusable
+                            onBlur={this._onItemBlur}
+                            onClick={(e) => this._onItemClick(e, index)}
+                            onDoubleClick={(e) =>
+                                this._onItemDoubleClick(e, index)
+                            }
+                        >
+                            <span>{item.label}</span>
+                            <span
+                                className={css['item-remove-button']}
+                                onClick={(e) =>
+                                    this._onItemClickRemove(e, index)
+                                }
                             >
-                                <span>
-                                    {item.label}
-                                </span>
-                                <span
-                                    className={css['item-remove-button']}
-                                    onClick={(e) => this._onItemClickRemove(e, index)}
-                                >
-                                    <i className="material-icons">
-                                        close
-                                    </i>
-                                </span>
-                            </div>
-                        ))
-                    }
+                                <i className="material-icons">close</i>
+                            </span>
+                        </div>
+                    ))}
                     <input
                         type="text"
-                        ref={(ref) => this.inputRef = ref}
+                        ref={(ref) => (this.inputRef = ref)}
                         className={css.input}
                         value={this.state.inputValue}
                         onChange={this._onInputChange}
@@ -439,20 +431,21 @@ class MultiSelectAsyncField extends React.Component {
                         [css['suggestions--hidden']]: !hasOptions,
                     })}
                 >
-                    {
-                        this.state.options.map((option, index) => (
-                            <div
-                                key={index}
-                                className={classnames(css.suggestion, {
-                                    [css['suggestion--focused']]: this.state.focusedOptionIndex === index,
-                                })}
-                                onMouseEnter={() => this.setState({focusedOptionIndex: index})}
-                                onClick={(e) => this._onOptionClick(e, index)}
-                            >
-                                {option.label}
-                            </div>
-                        ))
-                    }
+                    {this.state.options.map((option, index) => (
+                        <div
+                            key={index}
+                            className={classnames(css.suggestion, {
+                                [css['suggestion--focused']]:
+                                    this.state.focusedOptionIndex === index,
+                            })}
+                            onMouseEnter={() =>
+                                this.setState({focusedOptionIndex: index})
+                            }
+                            onClick={(e) => this._onOptionClick(e, index)}
+                        >
+                            {option.label}
+                        </div>
+                    ))}
                 </div>
             </div>
         )

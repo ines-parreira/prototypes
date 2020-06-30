@@ -11,7 +11,10 @@ describe('addSignature', () => {
             html: '<a href="#">Cruel World!</a>',
         })
         const contentState = ContentState.createFromText('')
-        const newContentState = responseUtils.addSignature(contentState, signature)
+        const newContentState = responseUtils.addSignature(
+            contentState,
+            signature
+        )
 
         expect(newContentState.getPlainText()).toBe('\n\nCruel World!')
     })
@@ -21,7 +24,10 @@ describe('addSignature', () => {
             text: 'Cruel World!',
         })
         const contentState = ContentState.createFromText('')
-        const newContentState = responseUtils.addSignature(contentState, signature)
+        const newContentState = responseUtils.addSignature(
+            contentState,
+            signature
+        )
 
         expect(newContentState.getPlainText()).toBe('\n\nCruel World!')
     })
@@ -32,8 +38,13 @@ describe('addSignature', () => {
             html: '<a href="https://gorgias.io/">Cruel World!</a>',
         })
         const contentState = ContentState.createFromText('')
-        const newContentState = responseUtils.addSignature(contentState, signature)
-        expect(convertToHTML(newContentState)).toBe('<br><br><div><a href="https://gorgias.io/" target="_blank">Cruel World!</a></div>')
+        const newContentState = responseUtils.addSignature(
+            contentState,
+            signature
+        )
+        expect(convertToHTML(newContentState)).toBe(
+            '<br><br><div><a href="https://gorgias.io/" target="_blank">Cruel World!</a></div>'
+        )
     })
 })
 
@@ -43,11 +54,17 @@ describe('removeSignature', () => {
             text: 'Cruel World!',
             html: '<a href="https://gorgias.io/">Cruel World!</a>',
         })
-        let newContentState = responseUtils.addSignature(ContentState.createFromText(''), signature)
+        let newContentState = responseUtils.addSignature(
+            ContentState.createFromText(''),
+            signature
+        )
 
         expect(newContentState.getPlainText()).not.toBe('')
 
-        newContentState = responseUtils.removeSignature(newContentState, signature)
+        newContentState = responseUtils.removeSignature(
+            newContentState,
+            signature
+        )
         expect(newContentState.getPlainText()).toBe('')
     })
 
@@ -56,7 +73,10 @@ describe('removeSignature', () => {
             text: 'Cruel World!',
             html: '<a href="https://gorgias.io/">Cruel World!</a>',
         })
-        let newContentState = responseUtils.addSignature(ContentState.createFromText(''), signature)
+        let newContentState = responseUtils.addSignature(
+            ContentState.createFromText(''),
+            signature
+        )
 
         // change text in the first signature block.
         // simulates typing text in the first empty line above the signature.
@@ -71,8 +91,13 @@ describe('removeSignature', () => {
             return b
         })
 
-        newContentState = responseUtils.removeSignature(ContentState.createFromBlockArray(blocks), signature)
-        expect(newContentState.getPlainText()).toBe('Pizza Pepperoni\n\nCruel World!')
+        newContentState = responseUtils.removeSignature(
+            ContentState.createFromBlockArray(blocks),
+            signature
+        )
+        expect(newContentState.getPlainText()).toBe(
+            'Pizza Pepperoni\n\nCruel World!'
+        )
     })
 
     it('should not remove any text', () => {
@@ -80,7 +105,10 @@ describe('removeSignature', () => {
             text: 'Cruel World!',
             html: '<a href="https://gorgias.io/">Cruel World!</a>',
         })
-        const newContentState = responseUtils.removeSignature(ContentState.createFromText('Pizza Pepperoni!'), signature)
+        const newContentState = responseUtils.removeSignature(
+            ContentState.createFromText('Pizza Pepperoni!'),
+            signature
+        )
 
         expect(newContentState.getPlainText()).toBe('Pizza Pepperoni!')
     })

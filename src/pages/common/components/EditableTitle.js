@@ -61,7 +61,7 @@ export default class EditableTitle extends React.Component {
             e.preventDefault()
 
             this.setState({
-                editMode: false
+                editMode: false,
             })
 
             if (e.keyCode === 13) {
@@ -71,7 +71,7 @@ export default class EditableTitle extends React.Component {
     }
 
     _stateProps = (props) => ({
-        value: props.title
+        value: props.title,
     })
 
     _onChange = (e) => {
@@ -100,13 +100,12 @@ export default class EditableTitle extends React.Component {
                 style={style}
                 disabled={this.props.disabled}
                 className={classnames(className, css.component, {
-                    [css['edit-mode']]: this.state.editMode || this.props.forceEditMode,
+                    [css['edit-mode']]:
+                        this.state.editMode || this.props.forceEditMode,
                 })}
-
                 placeholder={placeholder}
                 autoFocus={this.props.focus}
                 value={this.state.value}
-
                 onChange={this._onChange}
                 onFocus={() => this.setState({editMode: true})}
                 onBlur={this._onBlur}
@@ -115,7 +114,6 @@ export default class EditableTitle extends React.Component {
             />
         )
     }
-
 }
 
 EditableTitle.propTypes = {
@@ -129,9 +127,8 @@ EditableTitle.propTypes = {
     disabled: PropTypes.bool,
     style: PropTypes.object.isRequired,
     forceEditMode: PropTypes.bool,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
 }
-
 
 EditableTitle.defaultProps = {
     className: '',

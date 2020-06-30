@@ -12,73 +12,65 @@ import type {Option} from '../types'
 
 describe('MultiSelectField', () => {
     const minProps = {
-        onChange: _noop
+        onChange: _noop,
     }
 
-    const options: Option[] = [{
-        value: 'first',
-        label: 'First',
-    }, {
-        value: 'second',
-        label: 'Second',
-    }, {
-        value: 'third',
-        label: 'Third',
-    }]
+    const options: Option[] = [
+        {
+            value: 'first',
+            label: 'First',
+        },
+        {
+            value: 'second',
+            label: 'Second',
+        },
+        {
+            value: 'third',
+            label: 'Third',
+        },
+    ]
 
     const props = {
         onChange: _noop,
         selectedOptions: [],
         options: options,
         plural: 'tags',
-        singular: 'tag'
+        singular: 'tag',
     }
 
     it('should render a select input with default props', () => {
-        const component = mount(<MultiSelectField {...minProps}/>)
+        const component = mount(<MultiSelectField {...minProps} />)
         expect(component).toMatchSnapshot()
         expect(component.props()).toMatchSnapshot()
         expect(component.state()).toMatchSnapshot()
     })
 
     it('should use custom props', () => {
-        const component = mount(
-            <MultiSelectField
-                {...minProps}
-                {...props}
-            />
-        )
+        const component = mount(<MultiSelectField {...minProps} {...props} />)
         expect(component.props()).toMatchSnapshot()
     })
 
     it('should init state with custom props', () => {
-        const component = mount(
-            <MultiSelectField
-                {...minProps}
-                {...props}
-            />
-        )
+        const component = mount(<MultiSelectField {...minProps} {...props} />)
         expect(component.state()).toMatchSnapshot()
     })
 
     it('should render a multi select input with custom props', () => {
-        const component = mount(
-            <MultiSelectField
-                {...minProps}
-                {...props}
-            />
-        )
+        const component = mount(<MultiSelectField {...minProps} {...props} />)
         expect(component).toMatchSnapshot()
     })
 
     it('should update state when search changes (custom values allowed)', () => {
-        const options = [{
-            value: 'hello',
-            label: 'Hello'
-        }, {
-            value: 'world',
-            label: 'World'
-        }]
+        const options = [
+            {
+                value: 'hello',
+                label: 'Hello',
+            },
+            {
+                value: 'world',
+                label: 'World',
+            },
+        ]
 
         const wrapper = mount(
             <MultiSelectField
@@ -97,19 +89,19 @@ describe('MultiSelectField', () => {
     })
 
     it('should update state when search changes (custom values NOT allowed)', () => {
-        const options = [{
-            value: 'hello',
-            label: 'Hello'
-        }, {
-            value: 'world',
-            label: 'World'
-        }]
+        const options = [
+            {
+                value: 'hello',
+                label: 'Hello',
+            },
+            {
+                value: 'world',
+                label: 'World',
+            },
+        ]
 
         const wrapper = mount(
-            <MultiSelectField
-                {...minProps}
-                options={options}
-            />
+            <MultiSelectField {...minProps} options={options} />
         )
         const component = wrapper.instance()
         component._onDropdownChange('hello')
@@ -120,12 +112,7 @@ describe('MultiSelectField', () => {
     })
 
     it('should reset state on blur', () => {
-        const wrapper = mount(
-            <MultiSelectField
-                {...minProps}
-                {...props}
-            />
-        )
+        const wrapper = mount(<MultiSelectField {...minProps} {...props} />)
         const component = wrapper.instance()
 
         component._focus()
@@ -137,11 +124,7 @@ describe('MultiSelectField', () => {
     describe('custom options', () => {
         it('should not display the custom option if input is empty', () => {
             const wrapper = mount(
-                <MultiSelectField
-                    {...minProps}
-                    {...props}
-                    options={[]}
-                />
+                <MultiSelectField {...minProps} {...props} options={[]} />
             )
             expect(wrapper.find(Dropdown).prop('options')).toHaveLength(0)
         })
@@ -175,7 +158,9 @@ describe('MultiSelectField', () => {
             expect(options).toHaveLength(1)
             expect(options[0].label).toBe('foo')
             expect(options[0].value).toBe('foo')
-            expect(render(options[0].displayLabel).text()).toEqual('Add tag "foo"')
+            expect(render(options[0].displayLabel).text()).toEqual(
+                'Add tag "foo"'
+            )
         })
     })
 
@@ -200,9 +185,7 @@ describe('MultiSelectField', () => {
             )
             wrapper.find(Dropdown).prop('onChange')('sec') // It should match "Second" label
             wrapper.update()
-            expect(wrapper.find(Dropdown).prop('options')).toEqual([
-                options[1]
-            ])
+            expect(wrapper.find(Dropdown).prop('options')).toEqual([options[1]])
         })
 
         it('should not filter out options not matching input if not matchInput', () => {
@@ -232,23 +215,16 @@ describe('MultiSelectField', () => {
 
     describe('component update', () => {
         it('should update filtered options on options change but not the input', () => {
-            const wrapper = mount(
-                <MultiSelectField
-                    {...props}
-                />
-            )
+            const wrapper = mount(<MultiSelectField {...props} />)
             wrapper.find(Dropdown).prop('onChange')('sec')
             wrapper.update()
             wrapper.setProps({
-                options: [options[0]]
+                options: [options[0]],
             })
             wrapper.update()
             expect(wrapper.find(Dropdown).prop('value')).toBe('sec')
-            expect(wrapper.find(Dropdown).prop('options')).toEqual([
-                options[0]
-            ])
+            expect(wrapper.find(Dropdown).prop('options')).toEqual([options[0]])
         })
-
 
         it('should reset the input and update the options on selected options change', () => {
             const wrapper = mount(
@@ -260,7 +236,7 @@ describe('MultiSelectField', () => {
             wrapper.find(Dropdown).prop('onChange')('sec')
             wrapper.update()
             wrapper.setProps({
-                selectedOptions: options
+                selectedOptions: options,
             })
             wrapper.update()
             expect(wrapper.find(Dropdown).prop('value')).toBe('')
@@ -339,7 +315,7 @@ describe('MultiSelectField', () => {
             )
             wrapper.find(Dropdown).prop('onSelect')({
                 value: 'silly value',
-                label: options[0].label
+                label: options[0].label,
             })
             expect(onChangeSpy.mock.calls).toHaveLength(0)
         })
@@ -356,7 +332,7 @@ describe('MultiSelectField', () => {
             )
             wrapper.find(Dropdown).prop('onSelect')({
                 value: options[0].value.toUpperCase(),
-                label: options[0].label
+                label: options[0].label,
             })
             expect(onChangeSpy.mock.calls[0]).toEqual([[options[0]]])
         })
@@ -373,7 +349,7 @@ describe('MultiSelectField', () => {
             )
             const customOption = {
                 value: 'foo',
-                label: 'bar'
+                label: 'bar',
             }
             wrapper.find(Dropdown).prop('onSelect')(customOption)
             expect(onChangeSpy.mock.calls[0]).toEqual([[customOption]])

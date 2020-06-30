@@ -1,7 +1,13 @@
 // @flow
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Input} from 'reactstrap'
+import {
+    Dropdown,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
+    Input,
+} from 'reactstrap'
 import {type List, Map} from 'immutable'
 import classnames from 'classnames'
 
@@ -14,20 +20,20 @@ import css from './AddMember.less'
 type Props = {
     team: teamType,
     users: List<Map<*, *>>,
-    addTeamMember: () => Promise<*>
+    addTeamMember: () => Promise<*>,
 }
 
 type State = {
     isOpen: boolean,
     isLoading: boolean,
-    search: string
+    search: string,
 }
 
 class AddMember extends Component<Props, State> {
     state = {
         isOpen: false,
         isLoading: false,
-        search: ''
+        search: '',
     }
 
     _toggle = () => this.setState({isOpen: !this.state.isOpen})
@@ -46,18 +52,19 @@ class AddMember extends Component<Props, State> {
         const {team, users} = this.props
         const isLoading = this.state.isLoading
         const search = this.state.search.trim().toLowerCase()
-        const teamMemberIds = team.get('members', []).map((member) => member.get('id'))
+        const teamMemberIds = team
+            .get('members', [])
+            .map((member) => member.get('id'))
         const availableUsers = users.filter((user) => {
             return (
-                user.get('name').toLowerCase().includes(search) || user.get('email').toLowerCase().includes(search)
-            ) && !teamMemberIds.includes(user.get('id'))
+                (user.get('name').toLowerCase().includes(search) ||
+                    user.get('email').toLowerCase().includes(search)) &&
+                !teamMemberIds.includes(user.get('id'))
+            )
         })
 
         return (
-            <Dropdown
-                isOpen={this.state.isOpen}
-                toggle={this._toggle}
-            >
+            <Dropdown isOpen={this.state.isOpen} toggle={this._toggle}>
                 <DropdownToggle
                     color="success"
                     type="button"
@@ -67,10 +74,7 @@ class AddMember extends Component<Props, State> {
                 >
                     Add team member
                 </DropdownToggle>
-                <DropdownMenu
-                    right
-                    style={{width: '230px'}}
-                >
+                <DropdownMenu right style={{width: '230px'}}>
                     <DropdownItem header>
                         {
                             // rebuild input on each opening so "autoFocus" works
@@ -90,34 +94,34 @@ class AddMember extends Component<Props, State> {
                             )
                         }
                     </DropdownItem>
-                    <DropdownItem divider/>
+                    <DropdownItem divider />
                     <div className={css.content}>
-                        {
-                            availableUsers.size
-                                ? availableUsers.map((user) => {
-                                    const userId = user.get('id')
-                                    return (
-                                        <DropdownItem
-                                            key={userId}
-                                            onClick={() => this._addTeamMember(userId)}
-                                        >
-                                            <AgentLabel
-                                                name={user.get('name')}
-                                                profilePictureUrl={user.getIn(['meta', 'profile_picture_url'])}
-                                                shouldDisplayAvatar
-                                            />
-                                        </DropdownItem>
-                                    )
-                                })
-                                : (
+                        {availableUsers.size ? (
+                            availableUsers.map((user) => {
+                                const userId = user.get('id')
+                                return (
                                     <DropdownItem
-                                        key="noUser"
-                                        header
+                                        key={userId}
+                                        onClick={() =>
+                                            this._addTeamMember(userId)
+                                        }
                                     >
-                                        Could not find any user to add
+                                        <AgentLabel
+                                            name={user.get('name')}
+                                            profilePictureUrl={user.getIn([
+                                                'meta',
+                                                'profile_picture_url',
+                                            ])}
+                                            shouldDisplayAvatar
+                                        />
                                     </DropdownItem>
                                 )
-                        }
+                            })
+                        ) : (
+                            <DropdownItem key="noUser" header>
+                                Could not find any user to add
+                            </DropdownItem>
+                        )}
                     </div>
                 </DropdownMenu>
             </Dropdown>

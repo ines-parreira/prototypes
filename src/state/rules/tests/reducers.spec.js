@@ -4,13 +4,8 @@ import reducer, {initialState} from '../reducers'
 
 jest.addMatchers(immutableMatchers)
 
-
 describe('rules reducer', () => {
     it('should return the initial state', () => {
-        expect(
-            reducer(undefined, {})
-        ).toEqualImmutable(
-            initialState
-        )
+        expect(reducer(undefined, {})).toEqualImmutable(initialState)
     })
 })

@@ -16,36 +16,35 @@ describe('tickets reducers', () => {
 
     it('fetch list', () => {
         const resp = {
-            data: [{
-                name: 'A ticket'
-            }, {
-                name: 'Another ticket'
-            }],
+            data: [
+                {
+                    name: 'A ticket',
+                },
+                {
+                    name: 'Another ticket',
+                },
+            ],
             meta: {
                 nb_pages: 2,
-                page: 1
-            }
+                page: 1,
+            },
         }
 
         expect(
-            reducer(
-                initialState, {
-                    type: viewTypes.FETCH_LIST_VIEW_SUCCESS,
-                    viewType: 'ticket-list',
-                    data: resp
-                }
-            )
+            reducer(initialState, {
+                type: viewTypes.FETCH_LIST_VIEW_SUCCESS,
+                viewType: 'ticket-list',
+                data: resp,
+            })
         ).toMatchSnapshot()
 
         // wrong view type
         expect(
-            reducer(
-                initialState, {
-                    type: viewTypes.FETCH_LIST_VIEW_SUCCESS,
-                    viewType: 'unknown-list',
-                    data: resp
-                }
-            )
+            reducer(initialState, {
+                type: viewTypes.FETCH_LIST_VIEW_SUCCESS,
+                viewType: 'unknown-list',
+                data: resp,
+            })
         ).toMatchSnapshot()
     })
 
@@ -53,27 +52,24 @@ describe('tickets reducers', () => {
         const tickets = [
             {
                 id: 1,
-                name: 'A ticket'
+                name: 'A ticket',
             },
             {
                 id: 2,
-                name: 'Another ticket'
+                name: 'Another ticket',
             },
             {
                 id: 3,
-                name: 'Another nice ticket'
-            }
+                name: 'Another nice ticket',
+            },
         ]
 
         expect(
-            reducer(
-                initialState.set('items', fromJS(tickets)),
-                {
-                    type: viewTypes.BULK_DELETE_SUCCESS,
-                    viewType: 'ticket-list',
-                    ids: [1, 2]
-                }
-            )
+            reducer(initialState.set('items', fromJS(tickets)), {
+                type: viewTypes.BULK_DELETE_SUCCESS,
+                viewType: 'ticket-list',
+                ids: [1, 2],
+            })
         ).toMatchSnapshot()
     })
 
@@ -81,7 +77,7 @@ describe('tickets reducers', () => {
         const tickets = [
             {
                 id: 1,
-                name: 'A ticket'
+                name: 'A ticket',
             },
             {
                 id: 2,
@@ -90,33 +86,28 @@ describe('tickets reducers', () => {
         ]
 
         expect(
-            reducer(
-                initialState.set('items', fromJS(tickets)),
-                {
-                    type: ticketTypes.FETCH_TICKET_SUCCESS,
-                    ticketId: 2,
-                }
-            )
+            reducer(initialState.set('items', fromJS(tickets)), {
+                type: ticketTypes.FETCH_TICKET_SUCCESS,
+                ticketId: 2,
+            })
         ).toMatchSnapshot()
 
         // non existent ticket
         expect(
-            reducer(
-                initialState.set('items', fromJS(tickets)),
-                {
-                    type: ticketTypes.FETCH_TICKET_SUCCESS,
-                    ticketId: 14,
-                }
-            )
+            reducer(initialState.set('items', fromJS(tickets)), {
+                type: ticketTypes.FETCH_TICKET_SUCCESS,
+                ticketId: 14,
+            })
         ).toMatchSnapshot()
     })
 
     it('should update cursor', () => {
         const action = {
             type: types.UPDATE_CURSOR,
-            cursor: 'new'
+            cursor: 'new',
         }
-        expect(reducer(initialState, action))
-            .toEqualImmutable(initialState.set('cursor', action.cursor))
+        expect(reducer(initialState, action)).toEqualImmutable(
+            initialState.set('cursor', action.cursor)
+        )
     })
 })

@@ -9,7 +9,7 @@ import css from './DistributionKeyMetricStat.less'
 
 type Props = {
     config: Object,
-    formattedValue: Object
+    formattedValue: Object,
 }
 
 export default class DistributionKeyMetricStat extends Component<Props> {
@@ -21,14 +21,11 @@ export default class DistributionKeyMetricStat extends Component<Props> {
         const minValue = config.get('minValue')
         const variant = config.get('variant')
 
-        return <div>
-            {
-                _rangeRight(minValue, maxValue + 1).map((index) => (
-                    <div
-                        className={classnames('mb-1', 'row')}
-                        key={index}
-                    >
-                        <div className='col-md-6 ta-left'>
+        return (
+            <div>
+                {_rangeRight(minValue, maxValue + 1).map((index) => (
+                    <div className={classnames('mb-1', 'row')} key={index}>
+                        <div className="col-md-6 ta-left">
                             <DistributionVariantStat
                                 minValue={minValue}
                                 maxValue={maxValue}
@@ -37,12 +34,18 @@ export default class DistributionKeyMetricStat extends Component<Props> {
                             />
                         </div>
 
-                        <div className={classnames(css.value, 'col-md-3', 'ta-right')}>
+                        <div
+                            className={classnames(
+                                css.value,
+                                'col-md-3',
+                                'ta-right'
+                            )}
+                        >
                             {formattedValue.get(index.toString())}
                         </div>
                     </div>
-                ))
-            }
-        </div>
+                ))}
+            </div>
+        )
     }
 }

@@ -14,12 +14,15 @@ export const initialState = fromJS({
     _internal: {
         loading: {
             settings: {},
-            currentUser: false
-        }
-    }
+            currentUser: false,
+        },
+    },
 })
 
-export default function reducer(state: Map<*,*> = initialState, action: actionType): Map<*,*> {
+export default function reducer(
+    state: Map<*, *> = initialState,
+    action: actionType
+): Map<*, *> {
     if (!action) {
         return state
     }
@@ -35,16 +38,28 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
 
         case constants.SUBMIT_CURRENT_USER_SUCCESS:
         case constants.CHANGE_PASSWORD_SUCCESS:
-            return fromJS(action.resp).setIn(['_internal', 'loading', 'currentUser'], false)
+            return fromJS(action.resp).setIn(
+                ['_internal', 'loading', 'currentUser'],
+                false
+            )
 
         case constants.SUBMIT_SETTING_START:
-            return state.setIn(['_internal', 'loading', 'settings', action.settingType], true)
+            return state.setIn(
+                ['_internal', 'loading', 'settings', action.settingType],
+                true
+            )
 
         case constants.SUBMIT_SETTING_ERROR:
-            return state.setIn(['_internal', 'loading', 'settings', action.settingType], false)
+            return state.setIn(
+                ['_internal', 'loading', 'settings', action.settingType],
+                false
+            )
 
         case constants.SUBMIT_SETTING_SUCCESS: {
-            const newState = state.setIn(['_internal', 'loading', 'settings', action.settingType], false)
+            const newState = state.setIn(
+                ['_internal', 'loading', 'settings', action.settingType],
+                false
+            )
             if (action.isUpdate) {
                 return newState.update('settings', (settings) => {
                     return settings.map((setting) => {
@@ -55,10 +70,14 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
                     })
                 })
             }
-            return newState.update('settings', (settings) => settings.push(fromJS(action.resp)))
+            return newState.update('settings', (settings) =>
+                settings.push(fromJS(action.resp))
+            )
         }
         case constants.TOGGLE_ACTIVE_STATUS:
-            return state.update('is_active', (status) => _isUndefined(action.status) ? !status : action.status)
+            return state.update('is_active', (status) =>
+                _isUndefined(action.status) ? !status : action.status
+            )
         default:
             return state
     }

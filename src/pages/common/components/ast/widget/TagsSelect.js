@@ -15,13 +15,13 @@ type Props = {
     multiple: ?boolean,
     className: ?string,
     actions: Object,
-    caseInsensitive: ?string
+    caseInsensitive: ?string,
 }
 
 export class TagsSelect extends Component<Props> {
     static defaultProps = {
         value: '',
-        multiple: false
+        multiple: false,
     }
 
     _onChange = (val) => {
@@ -45,14 +45,16 @@ export class TagsSelect extends Component<Props> {
         const {multiple, tags, value, className} = this.props
         const style = {
             display: 'inline-block',
-            verticalAlign: 'top'
+            verticalAlign: 'top',
         }
-        const options = tags.map((tag) => {
-            return {
-                label: tag.get('name'),
-                value: tag.get('name')
-            }
-        }).toJS()
+        const options = tags
+            .map((tag) => {
+                return {
+                    label: tag.get('name'),
+                    value: tag.get('name'),
+                }
+            })
+            .toJS()
         let values = value
 
         if (multiple) {
@@ -95,14 +97,13 @@ export class TagsSelect extends Component<Props> {
 
 function mapStateToProps(state) {
     return {
-        tags: state.tags.get('items')
+        tags: state.tags.get('items'),
     }
 }
 
-
 function mapDispatchToProps(dispatch) {
     return {
-        actions: bindActionCreators(TagsActions, dispatch)
+        actions: bindActionCreators(TagsActions, dispatch),
     }
 }
 

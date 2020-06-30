@@ -6,7 +6,8 @@ import type {stateType} from '../types'
 
 import {initialState} from './reducers'
 
-export const getHTTPIntegrationEventsState = (state: stateType) => state.HTTPIntegrationEvents || initialState
+export const getHTTPIntegrationEventsState = (state: stateType) =>
+    state.HTTPIntegrationEvents || initialState
 
 export const getHTTPIntegrationEvents = createSelector(
     [getHTTPIntegrationEventsState],

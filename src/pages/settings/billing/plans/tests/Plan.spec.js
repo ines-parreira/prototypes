@@ -8,7 +8,7 @@ import {billingState} from '../../../../../fixtures/billing'
 describe('Plan component', () => {
     it('should render', () => {
         const plan = fromJS(billingState.plans.free)
-        const wrapper = shallow(<Plan plan={plan}/>)
+        const wrapper = shallow(<Plan plan={plan} />)
 
         expect(wrapper.dive()).toMatchSnapshot()
     })
@@ -18,10 +18,10 @@ describe('Plan component', () => {
             ...billingState.plans['standard-1'],
             currencySign: '$',
             /** @see https://floating-point-gui.de/ */
-            cost_per_ticket: 0.7 * 0.1 // 0.06999999999999999
+            cost_per_ticket: 0.7 * 0.1, // 0.06999999999999999
         })
 
-        const wrapper = shallow(<Plan plan={plan}/>)
+        const wrapper = shallow(<Plan plan={plan} />)
 
         expect(wrapper.render().text()).toContain('+ $7.00 per 100 tickets')
     })

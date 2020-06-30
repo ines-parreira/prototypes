@@ -22,12 +22,23 @@ import createPredictionPlugin from '../../draftjs/plugins/prediction'
 import InputField from '../InputField'
 import type {ActionName} from '../../draftjs/plugins/toolbar/types'
 import {type Plugin} from '../../draftjs/plugins/types'
-import {contentStateFromTextOrHTML, isValidSelectionKey, refreshEditor, removeMentions} from '../../../../utils/editor'
+import {
+    contentStateFromTextOrHTML,
+    isValidSelectionKey,
+    refreshEditor,
+    removeMentions,
+} from '../../../../utils/editor'
 
 import Signature from './Signature'
-import provideToolbarPlugin, {type InjectedProps as ToolbarPluginProps} from './provideToolbarPlugin'
-import provideMentionFilteredSuggestions, {type InjectedProps as MentionFilteredSuggestionsProps} from './provideMentionSearchResults'
-import withGrammarlyUsageTracking, {type InjectedProps as GrammarlyUsageTrackingProps} from './withGrammarlyUsageTracking'
+import provideToolbarPlugin, {
+    type InjectedProps as ToolbarPluginProps,
+} from './provideToolbarPlugin'
+import provideMentionFilteredSuggestions, {
+    type InjectedProps as MentionFilteredSuggestionsProps,
+} from './provideMentionSearchResults'
+import withGrammarlyUsageTracking, {
+    type InjectedProps as GrammarlyUsageTrackingProps,
+} from './withGrammarlyUsageTracking'
 import Toolbar from './Toolbar'
 
 type suggestionsType = List<*>
@@ -35,7 +46,7 @@ type canAddMentionType = boolean
 
 export type Props = {
     editorState: EditorState,
-    onChange: EditorState => void,
+    onChange: (EditorState) => void,
     required: boolean,
     displayOnly: boolean,
     signature: boolean,
@@ -43,7 +54,7 @@ export type Props = {
     onFocus: () => boolean,
     onBlur: () => boolean,
     placeholder: string,
-    notify: ({ status: string, message: string }) => void,
+    notify: ({status: string, message: string}) => void,
     attachFiles: (T: Array<Blob>) => void,
     canDropFiles: boolean,
     canInsertInlineImages: boolean,
@@ -56,13 +67,14 @@ export type Props = {
     tabIndex?: string,
     readOnly?: boolean,
     spellCheck?: boolean,
-} & ToolbarPluginProps & MentionFilteredSuggestionsProps & GrammarlyUsageTrackingProps
+} & ToolbarPluginProps &
+    MentionFilteredSuggestionsProps &
+    GrammarlyUsageTrackingProps
 
 type State = {
     isDragging: boolean,
-    wasEverFocused: boolean
+    wasEverFocused: boolean,
 }
-
 
 export class RichFieldEditor extends InputField<Props, State> {
     static defaultProps = {
@@ -105,7 +117,7 @@ export class RichFieldEditor extends InputField<Props, State> {
         })
 
         const imageDecorator = composeDecorators(
-            this.resizeablePlugin.decorator,
+            this.resizeablePlugin.decorator
         )
 
         this.toolbarPlugin = props.createToolbarPlugin(imageDecorator)
@@ -127,7 +139,7 @@ export class RichFieldEditor extends InputField<Props, State> {
 
         if (this.props.predictionContext) {
             this.predictionPlugin = createPredictionPlugin({
-                context: this.props.predictionContext
+                context: this.props.predictionContext,
             })
 
             plugins.push(this.predictionPlugin)
@@ -144,7 +156,9 @@ export class RichFieldEditor extends InputField<Props, State> {
         }
 
         // Force re-render since decorators depend on displayed actions
-        if (!_isEqual(prevProps.displayedActions, this.props.displayedActions)) {
+        if (
+            !_isEqual(prevProps.displayedActions, this.props.displayedActions)
+        ) {
             editorState = refreshEditor(editorState)
         }
 
@@ -159,7 +173,13 @@ export class RichFieldEditor extends InputField<Props, State> {
         // Force focus if content state was modified externally
         // Related bug: https://github.com/gorgias/gorgias/issues/4042
         // Underlying draft.js issue: https://github.com/facebook/draft-js/issues/1971
-        if (this.props.isFocused && !isValidSelectionKey(editorState, prevProps.editorState.getSelection())) {
+        if (
+            this.props.isFocused &&
+            !isValidSelectionKey(
+                editorState,
+                prevProps.editorState.getSelection()
+            )
+        ) {
             this._focusEditor()
         }
     }
@@ -198,7 +218,11 @@ export class RichFieldEditor extends InputField<Props, State> {
         return 'not-handled'
     }
 
-    _handlePastedText = (text: string, html?: string, editorState: EditorState) => {
+    _handlePastedText = (
+        text: string,
+        html?: string,
+        editorState: EditorState
+    ) => {
         if (!this.editor) {
             return
         }
@@ -218,7 +242,7 @@ export class RichFieldEditor extends InputField<Props, State> {
         const contentState = Modifier.replaceWithFragment(
             editorState.getCurrentContent(),
             editorState.getSelection(),
-            contentStateFromTextOrHTML(text, html).getBlockMap(),
+            contentStateFromTextOrHTML(text, html).getBlockMap()
         )
 
         const newEditorState = EditorState.push(editorState, contentState)
@@ -236,7 +260,10 @@ export class RichFieldEditor extends InputField<Props, State> {
         if (this.editor) {
             this.editor.resolvePlugins().forEach((plugin) => {
                 if (plugin.onChange && this.editor) {
-                    nextEditorState = plugin.onChange(nextEditorState, this.editor.getPluginMethods())
+                    nextEditorState = plugin.onChange(
+                        nextEditorState,
+                        this.editor.getPluginMethods()
+                    )
                 }
             })
         }
@@ -259,7 +286,7 @@ export class RichFieldEditor extends InputField<Props, State> {
     }
 
     _onEditorFocus = (event: Event) => {
-        const { onFocus, detectGrammarly } = this.props
+        const {onFocus, detectGrammarly} = this.props
         onFocus(event)
         detectGrammarly()
     }
@@ -293,7 +320,9 @@ export class RichFieldEditor extends InputField<Props, State> {
                         handlePastedText={this._handlePastedText}
                         readOnly={displayOnly || this.props.readOnly}
                         // once focused we're removing the placeholder (Gmail style)
-                        placeholder={!this.state.wasEverFocused && this.props.placeholder}
+                        placeholder={
+                            !this.state.wasEverFocused && this.props.placeholder
+                        }
                         ref={(editor: ?ElementRef<Editor>) => {
                             this.editor = editor
                         }}
@@ -305,33 +334,34 @@ export class RichFieldEditor extends InputField<Props, State> {
                     <MentionSuggestions
                         onSearchChange={this.props.onMentionSearchChange}
                         suggestions={this.props.mentionSearchResults}
-                        canAddMention={!!(this.props.canAddMention)}
+                        canAddMention={!!this.props.canAddMention}
                     />
-                    {
-                        required && (
-                            <input
-                                value={this.props.editorState.getCurrentContent().getPlainText()}
-                                style={{
-                                    opacity: 0,
-                                    height: 0,
-                                    padding: 0,
-                                    margin: 'none',
-                                    overflow: 'hidden',
-                                }}
-                                required
-                            />
-                        )
-                    }
+                    {required && (
+                        <input
+                            value={this.props.editorState
+                                .getCurrentContent()
+                                .getPlainText()}
+                            style={{
+                                opacity: 0,
+                                height: 0,
+                                padding: 0,
+                                margin: 'none',
+                                overflow: 'hidden',
+                            }}
+                            required
+                        />
+                    )}
 
-                    {
-                        signature &&
-                        <Signature editorState={this.props.editorState}/>
-                    }
+                    {signature && (
+                        <Signature editorState={this.props.editorState} />
+                    )}
                 </div>
                 <Toolbar
                     {...this.props}
                     canDropFiles={this._getCanDropFiles()}
-                    pluginMethods={this.editor && this.editor.getPluginMethods()}
+                    pluginMethods={
+                        this.editor && this.editor.getPluginMethods()
+                    }
                 />
             </div>
         )
@@ -339,7 +369,5 @@ export class RichFieldEditor extends InputField<Props, State> {
 }
 
 export default withGrammarlyUsageTracking(
-    provideToolbarPlugin(
-        provideMentionFilteredSuggestions(RichFieldEditor)
-    )
+    provideToolbarPlugin(provideMentionFilteredSuggestions(RichFieldEditor))
 )

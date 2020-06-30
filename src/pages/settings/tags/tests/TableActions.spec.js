@@ -8,25 +8,25 @@ import TableActions from '../TableActions'
 const defaultTags = fromJS([
     {
         id: 1,
-        name: 'refund'
+        name: 'refund',
     },
     {
         id: 2,
-        name: 'billing'
+        name: 'billing',
     },
     {
         id: 3,
-        name: 'shipping'
-    }
+        name: 'shipping',
+    },
 ])
 
 const defaultMeta = fromJS({
     1: {
-        selected: true
+        selected: true,
     },
     2: {
-        selected: true
-    }
+        selected: true,
+    },
 })
 
 const defaultProps = {
@@ -34,31 +34,31 @@ const defaultProps = {
     tags: defaultTags,
     selectedNum: 2,
     onMerge: _noop,
-    onBulkDelete: _noop
+    onBulkDelete: _noop,
 }
 
 describe('TableActions', () => {
     it('should show merge confirmation popup on merge button click', () => {
         const div = document.createElement('div')
         document.body.appendChild(div)
-        const component = mount((
-            <TableActions
-                {...defaultProps}
-            />
-        ), {attachTo: div})
+        const component = mount(<TableActions {...defaultProps} />, {
+            attachTo: div,
+        })
         component.find('button#bulk-merge-button').simulate('click')
-        expect(document.body.innerHTML).toContain('You are about to merge 2 tags into <b>billing</b>')
+        expect(document.body.innerHTML).toContain(
+            'You are about to merge 2 tags into <b>billing</b>'
+        )
     })
 
     it('should show delete confirmation popup on delete button click', () => {
         const div = document.createElement('div')
         document.body.appendChild(div)
-        const component = mount((
-            <TableActions
-                {...defaultProps}
-            />
-        ), {attachTo: div})
+        const component = mount(<TableActions {...defaultProps} />, {
+            attachTo: div,
+        })
         component.find('button#bulk-remove-button').simulate('click')
-        expect(document.body.innerHTML).toContain('Are you sure you want to delete these tags?')
+        expect(document.body.innerHTML).toContain(
+            'Are you sure you want to delete these tags?'
+        )
     })
 })

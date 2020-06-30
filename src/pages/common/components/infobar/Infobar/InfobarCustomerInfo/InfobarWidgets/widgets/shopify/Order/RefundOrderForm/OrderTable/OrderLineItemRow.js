@@ -8,7 +8,7 @@ import _debounce from 'lodash/debounce'
 
 import {
     getOrderLineItemDiscountedPrice,
-    getOrderLineItemPrice
+    getOrderLineItemPrice,
 } from '../../../../../../../../../../../../business/shopify/lineItem'
 import * as Shopify from '../../../../../../../../../../../../constants/integrations/shopify'
 import {formatPrice} from '../../../../../../../../../../../../business/shopify/number'
@@ -41,13 +41,19 @@ export class OrderLineItemRow extends React.PureComponent<Props, State> {
     static getDerivedStateFromProps({refund, lineItem}: Props, state: State) {
         // When we receive the "suggested refund" for the first time
         if (!!refund && !refund.isEmpty() && state.restockable === null) {
-            const refundLineItem = refund.get('refund_line_items', []).find((refundLineItem) =>
-                refundLineItem.get('line_item_id') === lineItem.get('id')
-            )
+            const refundLineItem = refund
+                .get('refund_line_items', [])
+                .find(
+                    (refundLineItem) =>
+                        refundLineItem.get('line_item_id') ===
+                        lineItem.get('id')
+                )
 
             return {
                 ...state,
-                restockable: refundLineItem ? !!refundLineItem.get('location_id') : true,
+                restockable: refundLineItem
+                    ? !!refundLineItem.get('location_id')
+                    : true,
             }
         }
 
@@ -98,9 +104,7 @@ export class OrderLineItemRow extends React.PureComponent<Props, State> {
         if (!productId) {
             return (
                 <div>
-                    <span className={css.title}>
-                        {lineItem.get('title')}
-                    </span>
+                    <span className={css.title}>{lineItem.get('title')}</span>
                 </div>
             )
         }
@@ -126,7 +130,8 @@ export class OrderLineItemRow extends React.PureComponent<Props, State> {
         const {lineItem} = this.props
         const {restockable} = this.state
         const variantTitle = lineItem.get('variant_title')
-        const shouldRenderVariantTitle = !!variantTitle && variantTitle !== 'Default Title'
+        const shouldRenderVariantTitle =
+            !!variantTitle && variantTitle !== 'Default Title'
         const sku = lineItem.get('sku')
         const cannotRestock = restockable === false
 
@@ -134,9 +139,15 @@ export class OrderLineItemRow extends React.PureComponent<Props, State> {
             <td className={css.container}>
                 <div className={css.legend}>
                     {this._renderTitle()}
-                    {shouldRenderVariantTitle && <div className={css.subtitle}>{variantTitle}</div>}
+                    {shouldRenderVariantTitle && (
+                        <div className={css.subtitle}>{variantTitle}</div>
+                    )}
                     {!!sku && <div className={css.subtitle}>SKU: {sku}</div>}
-                    {cannotRestock && <div className="text-danger">This product can't be restocked.</div>}
+                    {cannotRestock && (
+                        <div className="text-danger">
+                            This product can't be restocked.
+                        </div>
+                    )}
                 </div>
             </td>
         )
@@ -147,18 +158,22 @@ export class OrderLineItemRow extends React.PureComponent<Props, State> {
 
         if (this._maxQuantity === 0) {
             return (
-                <td
-                    colSpan={2}
-                    className="text-center text-muted"
-                >
+                <td colSpan={2} className="text-center text-muted">
                     <small>Already returned</small>
                 </td>
             )
         }
 
         const price = getOrderLineItemPrice(lineItem, shopCurrencyCode)
-        const discountedPrice = getOrderLineItemDiscountedPrice(lineItem, shopCurrencyCode, this._maxQuantity)
-        const formattedDiscountedPrice = formatPrice(discountedPrice, shopCurrencyCode)
+        const discountedPrice = getOrderLineItemDiscountedPrice(
+            lineItem,
+            shopCurrencyCode,
+            this._maxQuantity
+        )
+        const formattedDiscountedPrice = formatPrice(
+            discountedPrice,
+            shopCurrencyCode
+        )
         const hasDiscount = price !== formattedDiscountedPrice
 
         return (
@@ -216,7 +231,11 @@ export class OrderLineItemRow extends React.PureComponent<Props, State> {
                         <Button
                             type="button"
                             tabIndex={0}
-                            className={classnames(css.focusable, css.quantityBtn, css.quantityBtnUp)}
+                            className={classnames(
+                                css.focusable,
+                                css.quantityBtn,
+                                css.quantityBtnUp
+                            )}
                             disabled={quantity === this._maxQuantity}
                             onClick={this._onQuantityUp}
                         >
@@ -225,7 +244,11 @@ export class OrderLineItemRow extends React.PureComponent<Props, State> {
                         <Button
                             type="button"
                             tabIndex={0}
-                            className={classnames(css.focusable, css.quantityBtn, css.quantityBtnDown)}
+                            className={classnames(
+                                css.focusable,
+                                css.quantityBtn,
+                                css.quantityBtnDown
+                            )}
                             disabled={quantity === 0}
                             onClick={this._onQuantityDown}
                         >
@@ -240,15 +263,17 @@ export class OrderLineItemRow extends React.PureComponent<Props, State> {
     _renderTotal() {
         const {lineItem, currencyCode} = this.props
         const {quantity} = this.state
-        const discountedPrice = getOrderLineItemDiscountedPrice(lineItem, currencyCode, this._maxQuantity)
+        const discountedPrice = getOrderLineItemDiscountedPrice(
+            lineItem,
+            currencyCode,
+            this._maxQuantity
+        )
         const total = discountedPrice * quantity
 
         return (
             <td className={css.numberCol}>
                 <div className="d-flex">
-                    <strong
-                        className={classnames('mt-auto mb-auto ml-auto')}
-                    >
+                    <strong className={classnames('mt-auto mb-auto ml-auto')}>
                         <MoneyAmount
                             renderIfZero
                             amount={formatPrice(total, currencyCode)}

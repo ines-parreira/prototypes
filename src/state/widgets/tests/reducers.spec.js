@@ -8,42 +8,38 @@ jest.addMatchers(immutableMatchers)
 describe('reducers', () => {
     describe('widgets', () => {
         it('initial state', () => {
-            expect(
-                reducer(
-                    undefined,
-                    {}
-                )
-            ).toEqualImmutable(initialState)
+            expect(reducer(undefined, {})).toEqualImmutable(initialState)
         })
 
         it('fetch list', () => {
-            const items = [{
-                order: 0,
-                type: 'card',
-                title: 'Customer',
-                path: '',
-                widgets: []
-            }, {
-                order: 1,
-                type: 'card',
-                title: 'Orders',
-                path: 'orders',
-                widgets: []
-            }]
+            const items = [
+                {
+                    order: 0,
+                    type: 'card',
+                    title: 'Customer',
+                    path: '',
+                    widgets: [],
+                },
+                {
+                    order: 1,
+                    type: 'card',
+                    title: 'Orders',
+                    path: 'orders',
+                    widgets: [],
+                },
+            ]
 
             const expected = initialState
                 .merge({
-                    items
+                    items,
                 })
                 .setIn(['_internal', 'hasFetchedWidgets'], true)
 
             expect(
-                reducer(
-                    initialState, {
-                        type: types.FETCH_WIDGETS_SUCCESS,
-                        items
-                    }
-                )
+                reducer(initialState, {
+                    type: types.FETCH_WIDGETS_SUCCESS,
+                    items,
+                })
             ).toEqualImmutable(expected)
         })
     })

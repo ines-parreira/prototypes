@@ -27,8 +27,12 @@ import TicketHeader from './TicketHeader'
 @connect((state) => {
     return {
         agents: agentSelectors.getAgents(state),
-        agentsViewing: agentSelectors.getOtherAgentsOnTicket(state.ticket.get('id'))(state),
-        agentsTyping: agentSelectors.getOtherAgentsTypingOnTicket(state.ticket.get('id'))(state),
+        agentsViewing: agentSelectors.getOtherAgentsOnTicket(
+            state.ticket.get('id')
+        )(state),
+        agentsTyping: agentSelectors.getOtherAgentsTypingOnTicket(
+            state.ticket.get('id')
+        )(state),
         currentUser: state.currentUser,
         routing: state.routing,
         tags: tagsSelectors.getTags(state),
@@ -57,13 +61,13 @@ export default class TicketView extends React.Component {
         customersIsLoading: PropTypes.func.isRequired,
         setStatus: PropTypes.func.isRequired,
         view: PropTypes.object,
-        isHistoryDisplayed: PropTypes.bool
+        isHistoryDisplayed: PropTypes.bool,
     }
 
     static defaultProps = {
         agentsViewing: fromJS([]),
         agentsTyping: fromJS([]),
-        setStatus: _noop
+        setStatus: _noop,
     }
 
     newMessageFormRef
@@ -73,11 +77,19 @@ export default class TicketView extends React.Component {
     wasAtBottomOfPage = false // used to track if user was at the bottom of the page
 
     componentWillMount() {
-        const shouldDisplayHistoryOnNextPage = this.props.ticket.getIn(['_internal', 'shouldDisplayHistoryOnNextPage'])
-        const displayHistory = this.props.ticket.getIn(['_internal', 'displayHistory'])
+        const shouldDisplayHistoryOnNextPage = this.props.ticket.getIn([
+            '_internal',
+            'shouldDisplayHistoryOnNextPage',
+        ])
+        const displayHistory = this.props.ticket.getIn([
+            '_internal',
+            'displayHistory',
+        ])
 
         if (shouldDisplayHistoryOnNextPage !== displayHistory) {
-            this.props.actions.ticket.toggleHistory(shouldDisplayHistoryOnNextPage)
+            this.props.actions.ticket.toggleHistory(
+                shouldDisplayHistoryOnNextPage
+            )
         }
 
         if (shouldDisplayHistoryOnNextPage) {
@@ -86,7 +98,9 @@ export default class TicketView extends React.Component {
     }
 
     _getMainContent = () => {
-        const className = this.props.isHistoryDisplayed ? appCss['main-content'] : css.ticketContent
+        const className = this.props.isHistoryDisplayed
+            ? appCss['main-content']
+            : css.ticketContent
         return document.getElementsByClassName(className)[0]
     }
 
@@ -95,8 +109,11 @@ export default class TicketView extends React.Component {
         // decrease the bottom padding, to avoid scrolling to a white screen on touchscreens.
         if (this.ticketContentRef) {
             const styles = window.getComputedStyle(this.ticketContentRef)
-            const maxScrollTop = this.ticketContentRef.scrollHeight - this.ticketContentRef.clientHeight
-            this.ticketContentRef.scrollTop = maxScrollTop - parseInt(styles.paddingBottom)
+            const maxScrollTop =
+                this.ticketContentRef.scrollHeight -
+                this.ticketContentRef.clientHeight
+            this.ticketContentRef.scrollTop =
+                maxScrollTop - parseInt(styles.paddingBottom)
 
             // don't steal focus if another component manages it.
             // (eg. new ticket focuses the editable title).
@@ -112,13 +129,18 @@ export default class TicketView extends React.Component {
         // save before props update if user was at bottom of the page (probably answering something)
         // if history is displayed we calculate scroll on `main-content` wrapper
         const element = this._getMainContent()
-        this.wasAtBottomOfPage = (element.scrollHeight - element.scrollTop) <= element.offsetHeight + 40
+        this.wasAtBottomOfPage =
+            element.scrollHeight - element.scrollTop <=
+            element.offsetHeight + 40
     }
 
     componentDidUpdate(prevProps) {
         // if ticket body (messages, events, etc.) changes but user is at bottom of the page,
         // then keep him at the bottom of the page
-        if (!prevProps.ticketBody.equals(this.props.ticketBody) && this.wasAtBottomOfPage) {
+        if (
+            !prevProps.ticketBody.equals(this.props.ticketBody) &&
+            this.wasAtBottomOfPage
+        ) {
             // if history is displayed we set scroll on `main-content` wrapper
             const element = this._getMainContent()
             element.scrollTop = element.scrollHeight
@@ -146,16 +168,20 @@ export default class TicketView extends React.Component {
 
     _toggleHistory = () => {
         const {ticket, customers, actions, isHistoryDisplayed} = this.props
-        const shouldOpenHistory = ticket.get('id')
-            && customers.getIn(['customerHistory', 'hasHistory'])
-            && !isHistoryDisplayed
+        const shouldOpenHistory =
+            ticket.get('id') &&
+            customers.getIn(['customerHistory', 'hasHistory']) &&
+            !isHistoryDisplayed
 
         actions.ticket.toggleHistory(shouldOpenHistory)
 
         // TODO(customers-migration): ask confirmation to update this event
         segmentTracker.logEvent(segmentTracker.EVENTS.USER_HISTORY_TOGGLED, {
             open: shouldOpenHistory,
-            nbOfTicketsInTimeline: customers.getIn(['customerHistory', 'tickets']).size,
+            nbOfTicketsInTimeline: customers.getIn([
+                'customerHistory',
+                'tickets',
+            ]).size,
             channel: ticket.get('channel'),
             nbOfMessagesInTicket: ticket.get('messages').size,
         })
@@ -163,31 +189,42 @@ export default class TicketView extends React.Component {
 
     _renderCollisionDetection = () => {
         const {agentsViewing, agentsTyping} = this.props
-        const agentsViewingNotTyping = agentsViewing.filter((userId) => !agentsTyping.contains(userId))
+        const agentsViewingNotTyping = agentsViewing.filter(
+            (userId) => !agentsTyping.contains(userId)
+        )
         const hasBoth = agentsTyping.size > 0 && agentsViewingNotTyping.size > 0
 
         return (
             <div
                 className={classnames(css.viewersBanner, {
-                    [css.hidden]: agentsViewing.size <= 0 && agentsTyping.size <= 0,
-                    [css.bothCollisions]: hasBoth
+                    [css.hidden]:
+                        agentsViewing.size <= 0 && agentsTyping.size <= 0,
+                    [css.bothCollisions]: hasBoth,
                 })}
             >
                 {
                     // we want to hide text during animation if there is no agents viewing
                     agentsTyping.size > 0 && (
                         <div className={css.collisionCategory}>
-                            <i className={classnames(css.icon, 'material-icons')}>mode_edit</i>
+                            <i
+                                className={classnames(
+                                    css.icon,
+                                    'material-icons'
+                                )}
+                            >
+                                mode_edit
+                            </i>
 
-                            <div className={css.collisionLabel}>
-                                Typing:
-                            </div>
+                            <div className={css.collisionLabel}>Typing:</div>
 
                             {agentsTyping.map((agent, index) => (
                                 <AgentLabel
                                     key={index}
                                     name={agent.get('name')}
-                                    profilePictureUrl={agent.getIn(['meta', 'profile_picture_url'])}
+                                    profilePictureUrl={agent.getIn([
+                                        'meta',
+                                        'profile_picture_url',
+                                    ])}
                                     className={css.collisionAgent}
                                     shouldDisplayAvatar
                                 />
@@ -199,17 +236,25 @@ export default class TicketView extends React.Component {
                     // we want to hide text during animation if there is no agents viewing
                     agentsViewingNotTyping.size > 0 && (
                         <div className={css.collisionCategory}>
-                            <i className={classnames(css.icon, 'material-icons')}>remove_red_eye</i>
+                            <i
+                                className={classnames(
+                                    css.icon,
+                                    'material-icons'
+                                )}
+                            >
+                                remove_red_eye
+                            </i>
 
-                            <div className={css.collisionLabel}>
-                                Viewing:
-                            </div>
+                            <div className={css.collisionLabel}>Viewing:</div>
 
                             {agentsViewingNotTyping.map((agent, index) => (
                                 <AgentLabel
                                     key={index}
                                     name={agent.get('name')}
-                                    profilePictureUrl={agent.getIn(['meta', 'profile_picture_url'])}
+                                    profilePictureUrl={agent.getIn([
+                                        'meta',
+                                        'profile_picture_url',
+                                    ])}
                                     className={css.collisionAgent}
                                     shouldDisplayAvatar
                                 />
@@ -249,9 +294,7 @@ export default class TicketView extends React.Component {
                             className="btn-transparent mb-2 font-weight-medium"
                             onClick={this._toggleHistory}
                         >
-                            <i className="material-icons md-2 mr-2">
-                                close
-                            </i>
+                            <i className="material-icons md-2 mr-2">close</i>
                             Close ticket history
                         </Button>
 
@@ -264,23 +307,24 @@ export default class TicketView extends React.Component {
                         </div>
                     </div>
                 )}
-                <div
-                    className={css.headerContainer}
-                >
+                <div className={css.headerContainer}>
                     <div className="d-flex">
-                        {
-                            !hideHistoryButton && (
-                                <div className={classnames(css.historyButtonContainer, 'd-none d-md-flex align-items-top mt-4')}>
-                                    <HistoryButton
-                                        isHistoryDisplayed={isHistoryDisplayed}
-                                        customerHistory={customerHistory}
-                                        toggleHistory={this._toggleHistory}
-                                        ticket={ticket}
-                                        customersIsLoading={customersIsLoading}
-                                    />
-                                </div>
-                            )
-                        }
+                        {!hideHistoryButton && (
+                            <div
+                                className={classnames(
+                                    css.historyButtonContainer,
+                                    'd-none d-md-flex align-items-top mt-4'
+                                )}
+                            >
+                                <HistoryButton
+                                    isHistoryDisplayed={isHistoryDisplayed}
+                                    customerHistory={customerHistory}
+                                    toggleHistory={this._toggleHistory}
+                                    ticket={ticket}
+                                    customersIsLoading={customersIsLoading}
+                                />
+                            </div>
+                        )}
 
                         <TicketHeader
                             ticket={ticket}
@@ -298,26 +342,25 @@ export default class TicketView extends React.Component {
                         [css.historyDisplayed]: isHistoryDisplayed,
                         'mt-3': isCreating,
                     })}
-                    ref={(ref) => this.ticketContentRef = ref}
+                    ref={(ref) => (this.ticketContentRef = ref)}
                     tabIndex="1"
                 >
-                    {
-                        !isCreating && (
-                            <TicketBody
-                                elements={this.props.ticketBody}
-                                setStatus={setStatus}
-                            />
-                        )
-                    }
+                    {!isCreating && (
+                        <TicketBody
+                            elements={this.props.ticketBody}
+                            setStatus={setStatus}
+                        />
+                    )}
 
                     <form
-                        className={classnames('d-print-none', css.newMessageForm)}
+                        className={classnames(
+                            'd-print-none',
+                            css.newMessageForm
+                        )}
                         onSubmit={this._handleSubmit}
-                        ref={(ref) => this.newMessageFormRef = ref}
+                        ref={(ref) => (this.newMessageFormRef = ref)}
                     >
-                        <ReplyMessageChannel
-                            actions={this.props.actions}
-                        />
+                        <ReplyMessageChannel actions={this.props.actions} />
 
                         <TicketReplyArea
                             actions={this.props.actions}

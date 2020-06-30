@@ -29,8 +29,8 @@ describe('ast', () => {
                         <AssigneeUserSelect
                             store={mockStore({
                                 agents: fromJS({
-                                    all: []
-                                })
+                                    all: [],
+                                }),
                             })}
                             actions={actions}
                         />
@@ -43,8 +43,8 @@ describe('ast', () => {
                         <AssigneeUserSelect
                             store={mockStore({
                                 agents: fromJS({
-                                    all: agents
-                                })
+                                    all: agents,
+                                }),
                             })}
                             actions={actions}
                         />
@@ -58,8 +58,8 @@ describe('ast', () => {
                             value={1}
                             store={mockStore({
                                 agents: fromJS({
-                                    all: agents
-                                })
+                                    all: agents,
+                                }),
                             })}
                             actions={actions}
                         />

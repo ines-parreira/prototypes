@@ -4,19 +4,21 @@ import {shallow} from 'enzyme'
 
 import {FACEBOOK_LANGUAGE_DEFAULT} from '../../../../../../config/integrations/facebook'
 import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../constants/integration'
-import {DANISH_LANGUAGE, SPANISH_LANGUAGE} from '../../../../../../constants/languages'
+import {
+    DANISH_LANGUAGE,
+    SPANISH_LANGUAGE,
+} from '../../../../../../constants/languages'
 import FacebookIntegrationDetail from '../FacebookIntegrationDetail'
-
 
 const defaultProps = {
     actions: {
         updateOrCreateIntegration: jest.fn(),
-        deleteIntegration: jest.fn()
+        deleteIntegration: jest.fn(),
     },
     loading: fromJS({
         integration: null,
-        updateIntegration: null
-    })
+        updateIntegration: null,
+    }),
 }
 
 const defaultFacebookIntegrationSettings = {
@@ -24,7 +26,7 @@ const defaultFacebookIntegrationSettings = {
     messenger_enabled: true,
     import_history_enabled: true,
     instagram_comments_enabled: false,
-    instagram_ads_enabled: false
+    instagram_ads_enabled: false,
 }
 
 describe('<FacebookIntegrationDetail/>', () => {
@@ -41,8 +43,12 @@ describe('<FacebookIntegrationDetail/>', () => {
                 />
             )
 
-            expect(component.state('settings')).toEqual(defaultFacebookIntegrationSettings)
-            expect(component.state('language')).toEqual(FACEBOOK_LANGUAGE_DEFAULT)
+            expect(component.state('settings')).toEqual(
+                defaultFacebookIntegrationSettings
+            )
+            expect(component.state('language')).toEqual(
+                FACEBOOK_LANGUAGE_DEFAULT
+            )
         })
 
         it('should only set settings in the state because there is no language in the integration', () => {
@@ -51,7 +57,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                 messenger_enabled: true,
                 import_history_enabled: false,
                 instagram_comments_enabled: true,
-                instagram_ads_enabled: false
+                instagram_ads_enabled: false,
             }
 
             const component = shallow(
@@ -59,14 +65,16 @@ describe('<FacebookIntegrationDetail/>', () => {
                     {...defaultProps}
                     integration={fromJS({
                         facebook: {
-                            settings: newSettings
-                        }
+                            settings: newSettings,
+                        },
                     })}
                 />
             )
 
             expect(component.state('settings')).toEqual(newSettings)
-            expect(component.state('language')).toEqual(FACEBOOK_LANGUAGE_DEFAULT)
+            expect(component.state('language')).toEqual(
+                FACEBOOK_LANGUAGE_DEFAULT
+            )
         })
 
         it('should only set language in the state because there is no settings in the integration', () => {
@@ -75,13 +83,15 @@ describe('<FacebookIntegrationDetail/>', () => {
                     {...defaultProps}
                     integration={fromJS({
                         meta: {
-                            language: SPANISH_LANGUAGE
-                        }
+                            language: SPANISH_LANGUAGE,
+                        },
                     })}
                 />
             )
 
-            expect(component.state('settings')).toEqual(defaultFacebookIntegrationSettings)
+            expect(component.state('settings')).toEqual(
+                defaultFacebookIntegrationSettings
+            )
             expect(component.state('language')).toEqual(SPANISH_LANGUAGE)
         })
 
@@ -91,7 +101,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                 messenger_enabled: true,
                 import_history_enabled: false,
                 instagram_comments_enabled: true,
-                instagram_ads_enabled: false
+                instagram_ads_enabled: false,
             }
 
             const component = shallow(
@@ -99,11 +109,11 @@ describe('<FacebookIntegrationDetail/>', () => {
                     {...defaultProps}
                     integration={fromJS({
                         facebook: {
-                            settings: newSettings
+                            settings: newSettings,
                         },
                         meta: {
-                            language: SPANISH_LANGUAGE
-                        }
+                            language: SPANISH_LANGUAGE,
+                        },
                     })}
                 />
             )
@@ -125,18 +135,19 @@ describe('<FacebookIntegrationDetail/>', () => {
                         posts_enabled: true,
                         messenger_enabled: true,
                         import_history_enabled: true,
-                        instagram_comments_enabled: false
-                    }
+                        instagram_comments_enabled: false,
+                    },
                 },
                 meta: {
                     oauth: {
-                        scope: 'business_management,manage_pages,instagram_basic,instagram_manage_comments',
+                        scope:
+                            'business_management,manage_pages,instagram_basic,instagram_manage_comments',
                     },
                     instagram: {
-                        id: '178941234975'
+                        id: '178941234975',
                     },
-                    language: SPANISH_LANGUAGE
-                }
+                    language: SPANISH_LANGUAGE,
+                },
             })
 
             const component = shallow(
@@ -148,7 +159,10 @@ describe('<FacebookIntegrationDetail/>', () => {
 
             const prevState = component.state()
 
-            component.instance().componentWillReceiveProps({...defaultProps, integration: fromJS({})})
+            component.instance().componentWillReceiveProps({
+                ...defaultProps,
+                integration: fromJS({}),
+            })
 
             expect(component.state()).toEqual(prevState)
         })
@@ -166,27 +180,31 @@ describe('<FacebookIntegrationDetail/>', () => {
                         import_history_enabled: true,
                         instagram_comments_enabled: false,
                         instagram_ads_enabled: false,
-                    }
+                    },
                 },
                 meta: {
                     oauth: {
-                        scope: 'business_management,manage_pages,instagram_basic,instagram_manage_comments',
+                        scope:
+                            'business_management,manage_pages,instagram_basic,instagram_manage_comments',
                     },
                     instagram: {
-                        id: '178941234975'
+                        id: '178941234975',
                     },
-                    language: SPANISH_LANGUAGE
-                }
+                    language: SPANISH_LANGUAGE,
+                },
             })
 
             const newIntegration = oldIntegration
-                .setIn(['facebook', 'settings'], fromJS({
-                    posts_enabled: false,
-                    messenger_enabled: true,
-                    import_history_enabled: false,
-                    instagram_comments_enabled: true,
-                    instagram_ads_enabled: true
-                }))
+                .setIn(
+                    ['facebook', 'settings'],
+                    fromJS({
+                        posts_enabled: false,
+                        messenger_enabled: true,
+                        import_history_enabled: false,
+                        instagram_comments_enabled: true,
+                        instagram_ads_enabled: true,
+                    })
+                )
                 .setIn(['meta', 'language'], DANISH_LANGUAGE)
 
             const component = shallow(
@@ -198,10 +216,17 @@ describe('<FacebookIntegrationDetail/>', () => {
 
             const prevState = component.state()
 
-            expect(prevState.settings).toEqual(oldIntegration.getIn(['facebook', 'settings']).toJS())
-            expect(prevState.language).toEqual(oldIntegration.getIn(['meta', 'language']))
+            expect(prevState.settings).toEqual(
+                oldIntegration.getIn(['facebook', 'settings']).toJS()
+            )
+            expect(prevState.language).toEqual(
+                oldIntegration.getIn(['meta', 'language'])
+            )
 
-            component.instance().componentWillReceiveProps({...defaultProps, integration: newIntegration})
+            component.instance().componentWillReceiveProps({
+                ...defaultProps,
+                integration: newIntegration,
+            })
 
             const expectedState = fromJS(prevState)
                 .set('settings', newIntegration.getIn(['facebook', 'settings']))
@@ -226,18 +251,19 @@ describe('<FacebookIntegrationDetail/>', () => {
                         messenger_enabled: true,
                         import_history_enabled: true,
                         instagram_comments_enabled: false,
-                        instagram_ads_enabled: false
-                    }
+                        instagram_ads_enabled: false,
+                    },
                 },
                 meta: {
                     oauth: {
-                        scope: 'business_management,manage_pages,instagram_basic,instagram_manage_comments',
+                        scope:
+                            'business_management,manage_pages,instagram_basic,instagram_manage_comments',
                     },
                     instagram: {
-                        id: '178941234975'
+                        id: '178941234975',
                     },
-                    language: SPANISH_LANGUAGE
-                }
+                    language: SPANISH_LANGUAGE,
+                },
             })
 
             const component = shallow(
@@ -249,9 +275,13 @@ describe('<FacebookIntegrationDetail/>', () => {
 
             const prevState = component.state()
 
-            expect(prevState.settings).toEqual(integration.getIn(['facebook', 'settings']).toJS())
+            expect(prevState.settings).toEqual(
+                integration.getIn(['facebook', 'settings']).toJS()
+            )
 
-            component.instance()._onSettingChange(!postsEnabled, 'posts_enabled')
+            component
+                .instance()
+                ._onSettingChange(!postsEnabled, 'posts_enabled')
 
             const expectedState = fromJS(prevState)
                 .setIn(['settings', 'posts_enabled'], !postsEnabled)
@@ -267,7 +297,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                 posts_enabled: true,
                 messenger_enabled: false,
                 import_history_enabled: true,
-                instagram_comments_enabled: true
+                instagram_comments_enabled: true,
             }
 
             const integration = fromJS({
@@ -280,18 +310,19 @@ describe('<FacebookIntegrationDetail/>', () => {
                         posts_enabled: true,
                         messenger_enabled: true,
                         import_history_enabled: true,
-                        instagram_comments_enabled: false
-                    }
+                        instagram_comments_enabled: false,
+                    },
                 },
                 meta: {
                     oauth: {
-                        scope: 'business_management,manage_pages,instagram_basic,instagram_manage_comments',
+                        scope:
+                            'business_management,manage_pages,instagram_basic,instagram_manage_comments',
                     },
                     instagram: {
-                        id: '178941234975'
+                        id: '178941234975',
                     },
-                    language: SPANISH_LANGUAGE
-                }
+                    language: SPANISH_LANGUAGE,
+                },
             })
 
             const component = shallow(
@@ -303,16 +334,22 @@ describe('<FacebookIntegrationDetail/>', () => {
 
             component.setState({
                 settings: newSettings,
-                language: DANISH_LANGUAGE
+                language: DANISH_LANGUAGE,
             })
 
             component.instance()._handleSubmit({preventDefault: jest.fn()})
 
-            expect(defaultProps.actions.updateOrCreateIntegration).toHaveBeenCalledTimes(1)
-            expect(defaultProps.actions.updateOrCreateIntegration).toHaveBeenCalledWith(integration.mergeDeep({
-                facebook: {settings: newSettings},
-                meta: {language: DANISH_LANGUAGE}
-            }))
+            expect(
+                defaultProps.actions.updateOrCreateIntegration
+            ).toHaveBeenCalledTimes(1)
+            expect(
+                defaultProps.actions.updateOrCreateIntegration
+            ).toHaveBeenCalledWith(
+                integration.mergeDeep({
+                    facebook: {settings: newSettings},
+                    meta: {language: DANISH_LANGUAGE},
+                })
+            )
         })
     })
 
@@ -320,7 +357,7 @@ describe('<FacebookIntegrationDetail/>', () => {
         it('should render a loading state because the integration is loading', () => {
             const integration = fromJS({
                 id: 1,
-                type: FACEBOOK_INTEGRATION_TYPE
+                type: FACEBOOK_INTEGRATION_TYPE,
             })
 
             const component = shallow(
@@ -345,63 +382,70 @@ describe('<FacebookIntegrationDetail/>', () => {
             expect(component).toMatchSnapshot()
         })
 
-        it('should render an integration with instagram disabled because the scope of the integration does not ' +
-            'include instagram permissions', () => {
-            const integration = fromJS({
-                id: 1,
-                type: FACEBOOK_INTEGRATION_TYPE,
-                name: 'My facebook page',
-                facebook: {
+        it(
+            'should render an integration with instagram disabled because the scope of the integration does not ' +
+                'include instagram permissions',
+            () => {
+                const integration = fromJS({
+                    id: 1,
+                    type: FACEBOOK_INTEGRATION_TYPE,
                     name: 'My facebook page',
-                },
-                meta: {
-                    oauth: {
-                        scope: 'business_management,manage_pages',
+                    facebook: {
+                        name: 'My facebook page',
                     },
-                    instagram: {
-                        id: '178941234975'
-                    }
-                }
-            })
+                    meta: {
+                        oauth: {
+                            scope: 'business_management,manage_pages',
+                        },
+                        instagram: {
+                            id: '178941234975',
+                        },
+                    },
+                })
 
-            const component = shallow(
-                <FacebookIntegrationDetail
-                    {...defaultProps}
-                    integration={integration}
-                />
-            )
+                const component = shallow(
+                    <FacebookIntegrationDetail
+                        {...defaultProps}
+                        integration={integration}
+                    />
+                )
 
-            expect(component).toMatchSnapshot()
-        })
+                expect(component).toMatchSnapshot()
+            }
+        )
 
-        it('should render an integration with instagram disabled because the page has no associated instagram' +
-            'account', () => {
-            const integration = fromJS({
-                id: 1,
-                type: FACEBOOK_INTEGRATION_TYPE,
-                name: 'My facebook page',
-                facebook: {
+        it(
+            'should render an integration with instagram disabled because the page has no associated instagram' +
+                'account',
+            () => {
+                const integration = fromJS({
+                    id: 1,
+                    type: FACEBOOK_INTEGRATION_TYPE,
                     name: 'My facebook page',
-                },
-                meta: {
-                    oauth: {
-                        scope: 'business_management,manage_pages,instagram_basic,instagram_manage_comments',
+                    facebook: {
+                        name: 'My facebook page',
                     },
-                    instagram: {
-                        id: null
-                    }
-                }
-            })
+                    meta: {
+                        oauth: {
+                            scope:
+                                'business_management,manage_pages,instagram_basic,instagram_manage_comments',
+                        },
+                        instagram: {
+                            id: null,
+                        },
+                    },
+                })
 
-            const component = shallow(
-                <FacebookIntegrationDetail
-                    {...defaultProps}
-                    integration={integration}
-                />
-            )
+                const component = shallow(
+                    <FacebookIntegrationDetail
+                        {...defaultProps}
+                        integration={integration}
+                    />
+                )
 
-            expect(component).toMatchSnapshot()
-        })
+                expect(component).toMatchSnapshot()
+            }
+        )
 
         it('should render an integration with instagram enabled', () => {
             const integration = fromJS({
@@ -413,12 +457,13 @@ describe('<FacebookIntegrationDetail/>', () => {
                 },
                 meta: {
                     oauth: {
-                        scope: 'business_management,manage_pages,instagram_basic,instagram_manage_comments',
+                        scope:
+                            'business_management,manage_pages,instagram_basic,instagram_manage_comments',
                     },
                     instagram: {
-                        id: '178941234975'
-                    }
-                }
+                        id: '178941234975',
+                    },
+                },
             })
 
             const component = shallow(
@@ -444,53 +489,60 @@ describe('<FacebookIntegrationDetail/>', () => {
                 },
                 meta: {
                     oauth: {
-                        scope: 'business_management,manage_pages,instagram_basic,instagram_manage_comments,ads_read,'
-                            + 'ads_management',
+                        scope:
+                            'business_management,manage_pages,instagram_basic,instagram_manage_comments,ads_read,' +
+                            'ads_management',
                     },
                     instagram: {
-                        id: '178941234975'
-                    }
-                }
-            })
-
-            const component = shallow(
-                <FacebookIntegrationDetail
-                    {...defaultProps}
-                    integration={integration}
-                />
-            )
-
-            expect(component).toMatchSnapshot()
-        })
-
-        it('should render an integration with instagram enabled and loading buttons because the integration ' +
-            'is being submitted', () => {
-            const integration = fromJS({
-                id: 1,
-                type: FACEBOOK_INTEGRATION_TYPE,
-                name: 'My facebook page',
-                facebook: {
-                    name: 'My facebook page',
+                        id: '178941234975',
+                    },
                 },
-                meta: {
-                    oauth: {
-                        scope: 'business_management,manage_pages,instagram_basic,instagram_manage_comments',
-                    },
-                    instagram: {
-                        id: '178941234975'
-                    }
-                }
             })
 
             const component = shallow(
                 <FacebookIntegrationDetail
                     {...defaultProps}
-                    loading={fromJS({updateIntegration: integration.get('id')})}
                     integration={integration}
                 />
             )
 
             expect(component).toMatchSnapshot()
         })
+
+        it(
+            'should render an integration with instagram enabled and loading buttons because the integration ' +
+                'is being submitted',
+            () => {
+                const integration = fromJS({
+                    id: 1,
+                    type: FACEBOOK_INTEGRATION_TYPE,
+                    name: 'My facebook page',
+                    facebook: {
+                        name: 'My facebook page',
+                    },
+                    meta: {
+                        oauth: {
+                            scope:
+                                'business_management,manage_pages,instagram_basic,instagram_manage_comments',
+                        },
+                        instagram: {
+                            id: '178941234975',
+                        },
+                    },
+                })
+
+                const component = shallow(
+                    <FacebookIntegrationDetail
+                        {...defaultProps}
+                        loading={fromJS({
+                            updateIntegration: integration.get('id'),
+                        })}
+                        integration={integration}
+                    />
+                )
+
+                expect(component).toMatchSnapshot()
+            }
+        )
     })
 })

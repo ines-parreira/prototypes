@@ -11,16 +11,24 @@ import Widget from './Widget'
  */
 
 type Props = {
-    rule: Map<*,*>,
+    rule: Map<*, *>,
     actions: Object,
     leftsiblings: Object,
     name: string,
     parent: List<*>,
     schemas: Object,
-    className?: string
+    className?: string,
 }
 
-const Identifier = ({name, parent, rule, actions, schemas, leftsiblings, className} : Props) => {
+const Identifier = ({
+    name,
+    parent,
+    rule,
+    actions,
+    schemas,
+    leftsiblings,
+    className,
+}: Props) => {
     const parentNew = parent.push('name')
 
     return (

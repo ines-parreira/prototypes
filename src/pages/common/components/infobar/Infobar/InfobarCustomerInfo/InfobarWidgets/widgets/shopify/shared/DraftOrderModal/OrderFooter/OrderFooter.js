@@ -9,7 +9,9 @@ import _debounce from 'lodash/debounce'
 
 import {getCreateOrderState} from '../../../../../../../../../../../../state/infobarActions/shopify/createOrder/selectors'
 import {onPayloadChange} from '../../../../../../../../../../../../state/infobarActions/shopify/createOrder/actions'
-import MultiSelectOptionsField, {type Option} from '../../../../../../../../../../forms/MultiSelectOptionsField'
+import MultiSelectOptionsField, {
+    type Option,
+} from '../../../../../../../../../../forms/MultiSelectOptionsField'
 import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker'
 import * as Shopify from '../../../../../../../../../../../../constants/integrations/shopify'
 import {ShopifyAction} from '../../../constants'
@@ -22,20 +24,27 @@ type Props = {
     actionName: string,
     currencyCode: string,
     payload: Record<$Shape<Shopify.DraftOrder>>,
-    onPayloadChange: (integrationId: number, Record<$Shape<Shopify.DraftOrder>>) => void,
+    onPayloadChange: (
+        integrationId: number,
+        Record<$Shape<Shopify.DraftOrder>>
+    ) => void,
 }
 
 type State = {
     note: string,
 }
 
-export class DuplicateOrderFooterComponent extends React.PureComponent<Props, State> {
+export class DuplicateOrderFooterComponent extends React.PureComponent<
+    Props,
+    State
+> {
     static contextTypes = {
         integrationId: PropTypes.number.isRequired,
     }
 
     static tagsToOptions(tags: string = ''): Option[] {
-        return tags.split(',')
+        return tags
+            .split(',')
             .map((tag) => tag.trim())
             .filter((tag) => !!tag)
             .map((tag) => ({
@@ -104,15 +113,9 @@ export class DuplicateOrderFooterComponent extends React.PureComponent<Props, St
         const tags = payload.get('tags') || ''
 
         return (
-            <Container
-                fluid
-                className={css.container}
-            >
+            <Container fluid className={css.container}>
                 <Row>
-                    <Col
-                        xs={{size: 12, order: 2}}
-                        lg={{size: 6, order: 1}}
-                    >
+                    <Col xs={{size: 12, order: 2}} lg={{size: 6, order: 1}}>
                         <div className="mb-4">
                             <h4>Notes</h4>
                             <textarea
@@ -126,8 +129,12 @@ export class DuplicateOrderFooterComponent extends React.PureComponent<Props, St
                         <div>
                             <h4>Tags</h4>
                             <MultiSelectOptionsField
-                                options={DuplicateOrderFooterComponent.tagsToOptions(this._defaultTags)}
-                                selectedOptions={DuplicateOrderFooterComponent.tagsToOptions(tags)}
+                                options={DuplicateOrderFooterComponent.tagsToOptions(
+                                    this._defaultTags
+                                )}
+                                selectedOptions={DuplicateOrderFooterComponent.tagsToOptions(
+                                    tags
+                                )}
                                 plural="tags"
                                 singular="tag"
                                 onChange={this._onTagsChange}
@@ -161,4 +168,7 @@ const mapDispatchToProps = {
     onPayloadChange,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DuplicateOrderFooterComponent)
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(DuplicateOrderFooterComponent)

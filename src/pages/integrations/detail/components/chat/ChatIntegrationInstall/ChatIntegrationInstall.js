@@ -3,13 +3,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {fromJS, Map, List} from 'immutable'
 import {Link} from 'react-router'
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    Col,
-    Container,
-    Row,
-} from 'reactstrap'
+import {Breadcrumb, BreadcrumbItem, Col, Container, Row} from 'reactstrap'
 
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../constants/integration'
 
@@ -23,17 +17,13 @@ import InstallOnIntegrationsCard from '../../../../common/InstallOnIntegrationsC
 
 import {renderChatCodeSnippet} from './utils'
 
-
-const targetIntegrationsType = fromJS([
-    SHOPIFY_INTEGRATION_TYPE
-])
-
+const targetIntegrationsType = fromJS([SHOPIFY_INTEGRATION_TYPE])
 
 type Props = {
     domain: string,
     actions: Object,
     notify: ({}) => void,
-    getIntegrationsByTypes: (string) => List<Map<*,*>>,
+    getIntegrationsByTypes: (string) => List<Map<*, *>>,
     integration: Map<*, *>,
 }
 
@@ -42,7 +32,6 @@ type State = {
     email: string,
     integrationLoading: boolean | null,
 }
-
 
 class ChatIntegrationInstall extends React.Component<Props, State> {
     state = {
@@ -56,55 +45,61 @@ class ChatIntegrationInstall extends React.Component<Props, State> {
 
         return (
             <div className="full-width">
-                <PageHeader title={(
-                    <Breadcrumb>
-                        <BreadcrumbItem>
-                            <Link to="/app/settings/integrations">Integrations</Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            <Link to="/app/settings/integrations/smooch_inside">
-                                Chat
-                            </Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem>
-                            {integration.get('name')}
-                        </BreadcrumbItem>
-                        <BreadcrumbItem active>
-                            Installation
-                        </BreadcrumbItem>
-                    </Breadcrumb>
-                )}/>
+                <PageHeader
+                    title={
+                        <Breadcrumb>
+                            <BreadcrumbItem>
+                                <Link to="/app/settings/integrations">
+                                    Integrations
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                <Link to="/app/settings/integrations/smooch_inside">
+                                    Chat
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                {integration.get('name')}
+                            </BreadcrumbItem>
+                            <BreadcrumbItem active>Installation</BreadcrumbItem>
+                        </Breadcrumb>
+                    }
+                />
 
-                <ChatIntegrationNavigation integration={integration}/>
+                <ChatIntegrationNavigation integration={integration} />
 
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <Container fluid className="page-container">
                     <Row>
                         <Col md="8">
-                            {
-                                targetIntegrationsType.map((targetIntegrationType) => {
+                            {targetIntegrationsType.map(
+                                (targetIntegrationType) => {
                                     return (
                                         <InstallOnIntegrationsCard
                                             key={targetIntegrationType}
-                                            integrationType={targetIntegrationType}
-                                            targetIntegrations={getIntegrationsByTypes(targetIntegrationType)}
+                                            integrationType={
+                                                targetIntegrationType
+                                            }
+                                            targetIntegrations={getIntegrationsByTypes(
+                                                targetIntegrationType
+                                            )}
                                             integration={integration}
-                                            updateOrCreateIntegration={actions.updateOrCreateIntegration}
+                                            updateOrCreateIntegration={
+                                                actions.updateOrCreateIntegration
+                                            }
                                         />
                                     )
-                                })
-                            }
+                                }
+                            )}
 
                             <CustomInstallationCard
                                 integrationType={integration.get('type')}
-                                description={(
+                                description={
                                     <p>
-                                        Copy the code below and paste it on your website{' '}
-                                        above the <b>{'</body>'}</b> tag:
+                                        Copy the code below and paste it on your
+                                        website above the <b>{'</body>'}</b>{' '}
+                                        tag:
                                     </p>
-                                )}
+                                }
                                 code={renderChatCodeSnippet(integration)}
                             />
                         </Col>
@@ -118,7 +113,9 @@ class ChatIntegrationInstall extends React.Component<Props, State> {
 const mapStateToProps = (state) => {
     return {
         domain: state.currentAccount.get('domain'),
-        getIntegrationsByTypes: integrationSelectors.makeGetIntegrationsByTypes(state)
+        getIntegrationsByTypes: integrationSelectors.makeGetIntegrationsByTypes(
+            state
+        ),
     }
 }
 

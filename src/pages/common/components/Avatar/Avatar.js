@@ -6,7 +6,6 @@ import _isEqual from 'lodash/isEqual'
 import {getAvatar, getAvatarFromCache} from './utils'
 import css from './Avatar.less'
 
-
 type Props = {
     email: string,
     name: string,
@@ -18,7 +17,7 @@ type Props = {
 }
 
 type State = {
-    imageUrl: ?string
+    imageUrl: ?string,
 }
 
 export default class Avatar extends React.Component<Props, State> {
@@ -61,14 +60,19 @@ export default class Avatar extends React.Component<Props, State> {
     }
 
     _getDefaultState = (props: Props) => {
-        const imageUrl = props.url || getAvatarFromCache(props.email, props.size)
+        const imageUrl =
+            props.url || getAvatarFromCache(props.email, props.size)
 
         return {imageUrl}
     }
 
     _setImageUrl = () => {
         // don't update image if hidden
-        if (!this.component || !this.component.offsetParent || !this.isMounted) {
+        if (
+            !this.component ||
+            !this.component.offsetParent ||
+            !this.isMounted
+        ) {
             return
         }
 
@@ -79,7 +83,7 @@ export default class Avatar extends React.Component<Props, State> {
 
         getAvatar({
             email: this.props.email,
-            size: this.props.size
+            size: this.props.size,
         }).then((imageUrl) => {
             // Still need to do it here in case the component is unmounted while the promise is pending
             if (this.isMounted) {
@@ -105,23 +109,21 @@ export default class Avatar extends React.Component<Props, State> {
     }
 
     render() {
-        const {
-            name,
-            size,
-            className,
-            style,
-            badgeColor
-        } = this.props
+        const {name, size, className, style, badgeColor} = this.props
 
         return (
             <div
-                className={classnames(css.component, {
-                    [css.hasImage]: !!this.state.imageUrl
-                }, className)}
+                className={classnames(
+                    css.component,
+                    {
+                        [css.hasImage]: !!this.state.imageUrl,
+                    },
+                    className
+                )}
                 style={{
                     width: `${String(size)}px`,
                     height: `${String(size)}px`,
-                    ...style
+                    ...style,
                 }}
                 ref={this._container}
             >
@@ -130,30 +132,25 @@ export default class Avatar extends React.Component<Props, State> {
                     style={{
                         width: `${String(size)}px`,
                         height: `${String(size)}px`,
-                        fontSize: `${String(size / 2.4)}px`
+                        fontSize: `${String(size / 2.4)}px`,
                     }}
                 >
-                    <span>
-                        {this._getInitials(name)}
-                    </span>
+                    <span>{this._getInitials(name)}</span>
                 </div>
 
-                {
-                    this.state.imageUrl &&
+                {this.state.imageUrl && (
                     <img
                         alt="avatar"
                         src={this.state.imageUrl}
                         className={css.gravatar}
                     />
-                }
-                {
-                    badgeColor &&
+                )}
+                {badgeColor && (
                     <div
                         className={css.badge}
                         style={{backgroundColor: badgeColor}}
-                    >
-                    </div>
-                }
+                    ></div>
+                )}
             </div>
         )
     }

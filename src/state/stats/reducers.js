@@ -8,10 +8,13 @@ import type {actionType} from '../types'
 import * as constants from './constants'
 
 export const initialState = fromJS({
-    filters: null
+    filters: null,
 })
 
-export default function reducer(state: Map<*, *> = initialState, action: actionType): Map<*, *> {
+export default function reducer(
+    state: Map<*, *> = initialState,
+    action: actionType
+): Map<*, *> {
     switch (action.type) {
         case constants.RESET_STATS_FILTERS:
             return state.set('filters', null)

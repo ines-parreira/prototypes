@@ -4,18 +4,24 @@ import classNames from 'classnames'
 import {fromJS, type Map} from 'immutable'
 import _forIn from 'lodash/forIn'
 import _isEmpty from 'lodash/isEmpty'
-import {
-    Container,
-    Form,
-    FormGroup,
-    FormText,
-    Label,
-    Button,
-} from 'reactstrap'
+import {Container, Form, FormGroup, FormText, Label, Button} from 'reactstrap'
 
-import {AVAILABLE_HTTP_METHODS, FORM_CONTENT_TYPE, HTTP_METHOD_GET, JSON_CONTENT_TYPE} from '../../../../../../config'
-import {TICKET_CREATED, TICKET_MESSAGE_CREATED, TICKET_UPDATED} from '../../../../../../constants/event'
-import {toJS, validateWebhookURL, validateWebhookURLToPattern} from '../../../../../../utils'
+import {
+    AVAILABLE_HTTP_METHODS,
+    FORM_CONTENT_TYPE,
+    HTTP_METHOD_GET,
+    JSON_CONTENT_TYPE,
+} from '../../../../../../config'
+import {
+    TICKET_CREATED,
+    TICKET_MESSAGE_CREATED,
+    TICKET_UPDATED,
+} from '../../../../../../constants/event'
+import {
+    toJS,
+    validateWebhookURL,
+    validateWebhookURLToPattern,
+} from '../../../../../../utils'
 
 import Loader from '../../../../../common/components/Loader'
 import ObjectListField from '../ObjectListField'
@@ -27,12 +33,11 @@ import {DEFAULT_FORM} from './constants'
 import JSONBody from './JSONBody'
 import {validateHeaderName} from './httpHeaderValidation'
 
-
 type Props = {
     integration: Map<*, *>,
     isUpdate: boolean,
     actions: Object,
-    loading: Map<*, *>
+    loading: Map<*, *>,
 }
 
 type State = {
@@ -47,10 +52,13 @@ type State = {
     ticketUpdated: boolean,
     ticketMessageCreated: boolean,
     headers: Array<Object>,
-    form: string | Object | Array<Object>
+    form: string | Object | Array<Object>,
 }
 
-export default class HTTPIntegrationOverview extends React.Component<Props, State> {
+export default class HTTPIntegrationOverview extends React.Component<
+    Props,
+    State
+> {
     state = {
         isTestShown: false,
         name: '',
@@ -63,7 +71,7 @@ export default class HTTPIntegrationOverview extends React.Component<Props, Stat
         ticketUpdated: true,
         ticketMessageCreated: true,
         headers: [],
-        form: ''
+        form: '',
     }
 
     isInitialized: boolean
@@ -72,7 +80,12 @@ export default class HTTPIntegrationOverview extends React.Component<Props, Stat
         const {integration, isUpdate, loading} = this.props
 
         // populating the form when updating an integration
-        if (!this.isInitialized && isUpdate && !loading.get('integration') && !integration.isEmpty()) {
+        if (
+            !this.isInitialized &&
+            isUpdate &&
+            !loading.get('integration') &&
+            !integration.isEmpty()
+        ) {
             this.setState(this._getIntegration(integration))
             this.isInitialized = true
         }
@@ -89,7 +102,9 @@ export default class HTTPIntegrationOverview extends React.Component<Props, Stat
     }
 
     _getIntegration = (integration: Map<*, *>) => {
-        let isJsonBody = integration.getIn(['http', 'request_content_type']) === JSON_CONTENT_TYPE
+        let isJsonBody =
+            integration.getIn(['http', 'request_content_type']) ===
+            JSON_CONTENT_TYPE
         let formData = toJS(integration.getIn(['http', 'form']))
         if (!isJsonBody) {
             formData = this._objectToParameters(formData)
@@ -101,12 +116,27 @@ export default class HTTPIntegrationOverview extends React.Component<Props, Stat
             headers: this._objectToParameters(headers ? headers.toJS() : {}),
             url: integration.getIn(['http', 'url']),
             method: integration.getIn(['http', 'method']),
-            requestContentType: integration.getIn(['http', 'request_content_type']),
-            responseContentType: integration.getIn(['http', 'response_content_type']),
-            ticketCreated: integration.getIn(['http', 'triggers', 'ticket-created']) || false,
-            ticketUpdated: integration.getIn(['http', 'triggers', 'ticket-updated']) || false,
-            ticketMessageCreated: integration.getIn(['http', 'triggers', 'ticket-message-created']) || false,
-            form: formData
+            requestContentType: integration.getIn([
+                'http',
+                'request_content_type',
+            ]),
+            responseContentType: integration.getIn([
+                'http',
+                'response_content_type',
+            ]),
+            ticketCreated:
+                integration.getIn(['http', 'triggers', 'ticket-created']) ||
+                false,
+            ticketUpdated:
+                integration.getIn(['http', 'triggers', 'ticket-updated']) ||
+                false,
+            ticketMessageCreated:
+                integration.getIn([
+                    'http',
+                    'triggers',
+                    'ticket-message-created',
+                ]) || false,
+            form: formData,
         }
     }
 
@@ -120,14 +150,20 @@ export default class HTTPIntegrationOverview extends React.Component<Props, Stat
 
         if (value !== JSON_CONTENT_TYPE) {
             this.setState({
-                // $FlowFixMe
-                form: form instanceof Object ? this._objectToParameters(form) : form,
-                requestContentType: value
+                form:
+                    form instanceof Object
+                        ? // $FlowFixMe
+                          this._objectToParameters(form)
+                        : form,
+                requestContentType: value,
             })
         } else {
             this.setState({
-                form: form instanceof Array ? this._parametersToObject(form) : form,
-                requestContentType: value
+                form:
+                    form instanceof Array
+                        ? this._parametersToObject(form)
+                        : form,
+                requestContentType: value,
             })
         }
     }
@@ -144,7 +180,7 @@ export default class HTTPIntegrationOverview extends React.Component<Props, Stat
         _forIn(obj, (value, key) => {
             params.push({
                 key,
-                value
+                value,
             })
         })
         return params
@@ -190,10 +226,10 @@ export default class HTTPIntegrationOverview extends React.Component<Props, Stat
                 triggers: {
                     [TICKET_CREATED]: this.state.ticketCreated,
                     [TICKET_UPDATED]: this.state.ticketUpdated,
-                    [TICKET_MESSAGE_CREATED]: this.state.ticketMessageCreated
+                    [TICKET_MESSAGE_CREATED]: this.state.ticketMessageCreated,
                 },
-                form
-            }
+                form,
+            },
         }
 
         // if update, set ids for server
@@ -209,7 +245,7 @@ export default class HTTPIntegrationOverview extends React.Component<Props, Stat
 
     _validateHeaderName = (name: string, value: string): ?string => {
         if (value && name === 'key' && !validateHeaderName(value)) {
-            return 'Header\'s name needs to be printable ASCII characters'
+            return "Header's name needs to be printable ASCII characters"
         }
     }
 
@@ -219,11 +255,15 @@ export default class HTTPIntegrationOverview extends React.Component<Props, Stat
 
         let stateUpdate = {method: newMethod}
 
-        const savedMethodIsGet = !!(integration.getIn(['http', 'method']) === HTTP_METHOD_GET)
-        const isSwitchingFromGetToOther = method === HTTP_METHOD_GET && newMethod !== HTTP_METHOD_GET
+        const savedMethodIsGet = !!(
+            integration.getIn(['http', 'method']) === HTTP_METHOD_GET
+        )
+        const isSwitchingFromGetToOther =
+            method === HTTP_METHOD_GET && newMethod !== HTTP_METHOD_GET
         const formIsEmpty = !form || _isEmpty(form)
 
-        if ((!isUpdate || savedMethodIsGet) &&
+        if (
+            (!isUpdate || savedMethodIsGet) &&
             isSwitchingFromGetToOther &&
             formIsEmpty
         ) {
@@ -238,8 +278,16 @@ export default class HTTPIntegrationOverview extends React.Component<Props, Stat
         const {actions, integration, isUpdate, loading} = this.props
         const {
             method,
-            name, description, url, requestContentType, responseContentType, headers, form,
-            ticketCreated, ticketUpdated, ticketMessageCreated
+            name,
+            description,
+            url,
+            requestContentType,
+            responseContentType,
+            headers,
+            form,
+            ticketCreated,
+            ticketUpdated,
+            ticketMessageCreated,
         } = this.state
 
         const isSubmitting = this._isSubmitting()
@@ -247,25 +295,23 @@ export default class HTTPIntegrationOverview extends React.Component<Props, Stat
         const isActive = !integration.get('deactivated_datetime')
 
         if (loading.get('integration')) {
-            return <Loader/>
+            return <Loader />
         }
 
         return (
             <div className="full-width">
-                <Container
-                    fluid
-                    className="page-container"
-                >
+                <Container fluid className="page-container">
                     <p>
-                        Add the details about the HTTP integration you want to add below. If you need help, you can
-                        check our {' '}
+                        Add the details about the HTTP integration you want to
+                        add below. If you need help, you can check our{' '}
                         <a
                             href="https://docs.gorgias.com/data-and-http-integrations/http-integrations"
                             target="_blank"
                             rel="noopener noreferrer"
                         >
                             docs
-                        </a> or contact us.
+                        </a>{' '}
+                        or contact us.
                     </p>
 
                     <Form onSubmit={this._handleSubmit}>
@@ -282,13 +328,16 @@ export default class HTTPIntegrationOverview extends React.Component<Props, Stat
                             name="description"
                             label="Description"
                             value={description}
-                            onChange={(value) => this.setState({description: value})}
+                            onChange={(value) =>
+                                this.setState({description: value})
+                            }
                         />
                         <FormGroup>
                             <Label className="control-label">Triggers</Label>
                             <p>
                                 <FormText color="muted">
-                                    This HTTP integration will be executed when any of the events below happens.
+                                    This HTTP integration will be executed when
+                                    any of the events below happens.
                                 </FormText>
                             </p>
                             <BooleanField
@@ -296,21 +345,27 @@ export default class HTTPIntegrationOverview extends React.Component<Props, Stat
                                 type="checkbox"
                                 label="Ticket created"
                                 value={ticketCreated}
-                                onChange={(value) => this.setState({ticketCreated: value})}
+                                onChange={(value) =>
+                                    this.setState({ticketCreated: value})
+                                }
                             />
                             <BooleanField
                                 name="http.triggers.ticket-updated"
                                 type="checkbox"
                                 label="Ticket updated"
                                 value={ticketUpdated}
-                                onChange={(value) => this.setState({ticketUpdated: value})}
+                                onChange={(value) =>
+                                    this.setState({ticketUpdated: value})
+                                }
                             />
                             <BooleanField
                                 name="http.triggers.ticket-message-created"
                                 type="checkbox"
                                 label="Ticket message created"
                                 value={ticketMessageCreated}
-                                onChange={(value) => this.setState({ticketMessageCreated: value})}
+                                onChange={(value) =>
+                                    this.setState({ticketMessageCreated: value})
+                                }
                             />
                         </FormGroup>
                         <InputField
@@ -318,21 +373,26 @@ export default class HTTPIntegrationOverview extends React.Component<Props, Stat
                             error={validateWebhookURL(url)}
                             name="http.url"
                             label="URL"
-                            title='Example: https://company.com/api'
+                            title="Example: https://company.com/api"
                             placeholder="https://company.com/api/customers?email={{ticket.customer.email}}"
                             required
                             pattern={validateWebhookURLToPattern(url)}
-                            help={(
+                            help={
                                 <div>
-                                    You can use <code>{'{{ticket.customer.email}}'}</code> to pass the email of the
-                                    ticket customer. See
-                                    other <a
+                                    You can use{' '}
+                                    <code>{'{{ticket.customer.email}}'}</code>{' '}
+                                    to pass the email of the ticket customer.
+                                    See other{' '}
+                                    <a
                                         href="https://api.gorgias.io/#Customer-object"
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                    >vars</a>.
+                                    >
+                                        vars
+                                    </a>
+                                    .
                                 </div>
-                            )}
+                            }
                             value={url}
                             onChange={(value) => this.setState({url: value})}
                         />
@@ -344,41 +404,44 @@ export default class HTTPIntegrationOverview extends React.Component<Props, Stat
                             onChange={this._setMethod}
                             required
                         >
-                            {
-                                AVAILABLE_HTTP_METHODS.map((method) =>
-                                    <option
-                                        key={method}
-                                        value={method}
-                                    >
-                                        {method}
-                                    </option>
-                                )
-                            }
+                            {AVAILABLE_HTTP_METHODS.map((method) => (
+                                <option key={method} value={method}>
+                                    {method}
+                                </option>
+                            ))}
                         </InputField>
-                        {
-                            method !== HTTP_METHOD_GET && (
-                                <InputField
-                                    type="select"
-                                    name="http.request_content_type"
-                                    label="Request content type"
-                                    required
-                                    value={requestContentType}
-                                    onChange={(value) => this._onRequestContentTypeChange(value)}
-                                >
-                                    <option value={JSON_CONTENT_TYPE}>{JSON_CONTENT_TYPE}</option>
-                                    <option value={FORM_CONTENT_TYPE}>{FORM_CONTENT_TYPE}</option>
-                                </InputField>
-                            )
-                        }
+                        {method !== HTTP_METHOD_GET && (
+                            <InputField
+                                type="select"
+                                name="http.request_content_type"
+                                label="Request content type"
+                                required
+                                value={requestContentType}
+                                onChange={(value) =>
+                                    this._onRequestContentTypeChange(value)
+                                }
+                            >
+                                <option value={JSON_CONTENT_TYPE}>
+                                    {JSON_CONTENT_TYPE}
+                                </option>
+                                <option value={FORM_CONTENT_TYPE}>
+                                    {FORM_CONTENT_TYPE}
+                                </option>
+                            </InputField>
+                        )}
                         <InputField
                             type="select"
                             name="http.response_content_type"
                             label="Response content type"
                             value={responseContentType}
-                            onChange={(value) => this.setState({responseContentType: value})}
+                            onChange={(value) =>
+                                this.setState({responseContentType: value})
+                            }
                             required
                         >
-                            <option value={JSON_CONTENT_TYPE}>{JSON_CONTENT_TYPE}</option>
+                            <option value={JSON_CONTENT_TYPE}>
+                                {JSON_CONTENT_TYPE}
+                            </option>
                         </InputField>
                         <FormGroup>
                             <ObjectListField
@@ -387,31 +450,33 @@ export default class HTTPIntegrationOverview extends React.Component<Props, Stat
                                 fieldName="header"
                                 fields={headers}
                                 validate={this._validateHeaderName}
-                                onChange={(value) => this.setState({headers: value})}
+                                onChange={(value) =>
+                                    this.setState({headers: value})
+                                }
                             />
                         </FormGroup>
 
-                        {
-                            method !== HTTP_METHOD_GET && (
-                                requestContentType === JSON_CONTENT_TYPE ? (
-                                    <JSONBody
-                                        form={form}
-                                        onChange={(form) => this.setState({form})}
+                        {method !== HTTP_METHOD_GET &&
+                            (requestContentType === JSON_CONTENT_TYPE ? (
+                                <JSONBody
+                                    form={form}
+                                    onChange={(form) => this.setState({form})}
+                                />
+                            ) : (
+                                <FormGroup>
+                                    <ObjectListField
+                                        name="http.form"
+                                        fieldName="field"
+                                        title="Form field"
+                                        fields={
+                                            form instanceof Array ? form : []
+                                        }
+                                        onChange={(form) =>
+                                            this.setState({form})
+                                        }
                                     />
-                                ) : (
-                                    <FormGroup>
-                                        <ObjectListField
-                                            name="http.form"
-                                            fieldName="field"
-                                            title="Form field"
-                                            fields={form instanceof Array ? form : []}
-                                            onChange={(form) => this.setState({form})}
-                                        />
-                                    </FormGroup>
-                                )
-
-                            )
-                        }
+                                </FormGroup>
+                            ))}
 
                         <div>
                             <Button
@@ -425,58 +490,61 @@ export default class HTTPIntegrationOverview extends React.Component<Props, Stat
                                 {isUpdate ? 'Save changes' : 'Add integration'}
                             </Button>
 
-                            {
-                                isUpdate && isActive && (
-                                    <Button
-                                        type="button"
-                                        color="warning"
-                                        outline
-                                        className={classNames({
-                                            'btn-loading': isSubmitting,
-                                        })}
-                                        onClick={() => actions.deactivateIntegration(integration.get('id'))}
-                                    >
-                                        Deactivate integration
-                                    </Button>
-                                )
-                            }
+                            {isUpdate && isActive && (
+                                <Button
+                                    type="button"
+                                    color="warning"
+                                    outline
+                                    className={classNames({
+                                        'btn-loading': isSubmitting,
+                                    })}
+                                    onClick={() =>
+                                        actions.deactivateIntegration(
+                                            integration.get('id')
+                                        )
+                                    }
+                                >
+                                    Deactivate integration
+                                </Button>
+                            )}
 
-                            {
-                                isUpdate && !isActive && (
-                                    <Button
-                                        type="button"
-                                        color="success"
-                                        outline
-                                        className={classNames({
-                                            'btn-loading': isSubmitting,
-                                        })}
-                                        onClick={() => actions.activateIntegration(integration.get('id'))}
-                                    >
-                                        Re-activate integration
-                                    </Button>
-                                )
-                            }
+                            {isUpdate && !isActive && (
+                                <Button
+                                    type="button"
+                                    color="success"
+                                    outline
+                                    className={classNames({
+                                        'btn-loading': isSubmitting,
+                                    })}
+                                    onClick={() =>
+                                        actions.activateIntegration(
+                                            integration.get('id')
+                                        )
+                                    }
+                                >
+                                    Re-activate integration
+                                </Button>
+                            )}
 
-                            {
-                                isUpdate && (
-                                    <ConfirmButton
-                                        className="float-right"
-                                        color="secondary"
-                                        confirm={() => actions.deleteIntegration(integration)}
-                                        content="Are you sure you want to delete this integration?"
-                                    >
-                                        <i className="material-icons mr-1 text-danger">
-                                            delete
-                                        </i>
-                                        Delete integration
-                                    </ConfirmButton>
-                                )
-                            }
+                            {isUpdate && (
+                                <ConfirmButton
+                                    className="float-right"
+                                    color="secondary"
+                                    confirm={() =>
+                                        actions.deleteIntegration(integration)
+                                    }
+                                    content="Are you sure you want to delete this integration?"
+                                >
+                                    <i className="material-icons mr-1 text-danger">
+                                        delete
+                                    </i>
+                                    Delete integration
+                                </ConfirmButton>
+                            )}
                         </div>
                     </Form>
                 </Container>
             </div>
         )
     }
-
 }

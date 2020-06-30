@@ -11,7 +11,7 @@ import {
     RECHARGE_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
     SMILE_INTEGRATION_TYPE,
-    SMOOCH_INSIDE_INTEGRATION_TYPE
+    SMOOCH_INSIDE_INTEGRATION_TYPE,
 } from '../../../../constants/integration'
 
 import {areSourcesReady, jsonToWidgets} from '../infobar/utils'
@@ -27,14 +27,12 @@ export const WIDGET_DATA_TYPES = [
         description: (
             <div>
                 The following data comes from your{' '}
-                <Link
-                    to="/app/settings/integrations/shopify"
-                    target="_blank"
-                >
+                <Link to="/app/settings/integrations/shopify" target="_blank">
                     <b>Shopify stores</b>
-                </Link>.
+                </Link>
+                .
             </div>
-        )
+        ),
     },
     {
         type: RECHARGE_INTEGRATION_TYPE,
@@ -42,14 +40,12 @@ export const WIDGET_DATA_TYPES = [
         description: (
             <div>
                 The following data comes from your{' '}
-                <Link
-                    to="/app/settings/integrations/recharge"
-                    target="_blank"
-                >
+                <Link to="/app/settings/integrations/recharge" target="_blank">
                     <b>Recharge integrations</b>
-                </Link>.
+                </Link>
+                .
             </div>
-        )
+        ),
     },
     {
         type: SMILE_INTEGRATION_TYPE,
@@ -57,14 +53,12 @@ export const WIDGET_DATA_TYPES = [
         description: (
             <div>
                 The following data comes from your{' '}
-                <Link
-                    to="/app/settings/integrations/smile"
-                    target="_blank"
-                >
+                <Link to="/app/settings/integrations/smile" target="_blank">
                     <b>Smile integrations</b>
-                </Link>.
+                </Link>
+                .
             </div>
-        )
+        ),
     },
     {
         type: MAGENTO2_INTEGRATION_TYPE,
@@ -72,14 +66,12 @@ export const WIDGET_DATA_TYPES = [
         description: (
             <div>
                 The following data comes from your{' '}
-                <Link
-                    to="/app/settings/integrations/magento2"
-                    target="_blank"
-                >
+                <Link to="/app/settings/integrations/magento2" target="_blank">
                     <b>Magento2 stores</b>
-                </Link>.
+                </Link>
+                .
             </div>
-        )
+        ),
     },
     {
         type: SMOOCH_INSIDE_INTEGRATION_TYPE,
@@ -92,9 +84,10 @@ export const WIDGET_DATA_TYPES = [
                     target="_blank"
                 >
                     <b>Chat integrations</b>
-                </Link>.
+                </Link>
+                .
             </div>
-        )
+        ),
     },
     {
         type: HTTP_INTEGRATION_TYPE,
@@ -102,14 +95,12 @@ export const WIDGET_DATA_TYPES = [
         description: (
             <div>
                 The following data comes from your server, after you configured{' '}
-                <Link
-                    to="/app/settings/integrations/http"
-                    target="_blank"
-                >
+                <Link to="/app/settings/integrations/http" target="_blank">
                     <b>HTTP integrations</b>
-                </Link>.
+                </Link>
+                .
             </div>
-        )
+        ),
     },
     {
         type: 'custom',
@@ -117,16 +108,13 @@ export const WIDGET_DATA_TYPES = [
         description: (
             <div>
                 The following data comes is the one you push yourself using our{' '}
-                <Link
-                    to="https://docs.gorgias.com"
-                    target="_blank"
-                >
+                <Link to="https://docs.gorgias.com" target="_blank">
                     <b>API</b>
-                </Link>.
+                </Link>
+                .
             </div>
-        )
+        ),
     },
-
 ]
 
 type Props = {
@@ -136,19 +124,19 @@ type Props = {
     widgets: Map<*, *>,
     actions: {
         widgets: {
-            stopEditionMode: () => void
-        }
+            stopEditionMode: () => void,
+        },
     },
     getIntegrationById: (T: number) => Set<*>,
     // react-router
     location: {
-        search: string
+        search: string,
     },
 }
 
 type State = {
     widgetsTemplate: Set<*>,
-    availableTypes: Set<*>
+    availableTypes: Set<*>,
 }
 
 class SourceWrapper extends React.Component<Props, State> {
@@ -157,7 +145,7 @@ class SourceWrapper extends React.Component<Props, State> {
         // defaults
         this.state = {
             widgetsTemplate: fromJS([]),
-            availableTypes: fromJS([])
+            availableTypes: fromJS([]),
         }
         // generate widgets
         Object.assign(this.state, this._getWidgetsState(props))
@@ -174,8 +162,8 @@ class SourceWrapper extends React.Component<Props, State> {
 
         const hasWidgetsTemplates = !this.state.widgetsTemplate.isEmpty()
 
-        const shouldGenerateWidgets = areSourcesReady(sources, context)
-            && !hasWidgetsTemplates
+        const shouldGenerateWidgets =
+            areSourcesReady(sources, context) && !hasWidgetsTemplates
 
         // Generate widgets template from incoming json and use it to display source widgets (i.e. the things you can
         // drag into the infobar).
@@ -186,37 +174,55 @@ class SourceWrapper extends React.Component<Props, State> {
             const typesAlreadyDisplayed = []
 
             // Make sure we only have one `sourceWidget` per type, except for HTTP
-            widgetsTemplate = widgetsTemplate.map((widgetTemplate) => {
-                let ret = widgetTemplate
+            widgetsTemplate = widgetsTemplate
+                .map((widgetTemplate) => {
+                    let ret = widgetTemplate
 
-                if (widgetTemplate.get('sourcePath').includes('integrations')) {
-                    const integrationId = widgetTemplate.get('sourcePath').last()
+                    if (
+                        widgetTemplate
+                            .get('sourcePath')
+                            .includes('integrations')
+                    ) {
+                        const integrationId = widgetTemplate
+                            .get('sourcePath')
+                            .last()
 
-                    // If the integrationId is not a valid int, something is wrong so we discard the widget
-                    if (isNaN(parseInt(integrationId))) {
-                        return false
+                        // If the integrationId is not a valid int, something is wrong so we discard the widget
+                        if (isNaN(parseInt(integrationId))) {
+                            return false
+                        }
+
+                        const integration = getIntegrationById(
+                            parseInt(integrationId)
+                        )
+
+                        // If there's already a sourceWidget of this type, we don't want another one (except for http)
+                        if (
+                            typesAlreadyDisplayed.includes(
+                                integration.get('type')
+                            ) &&
+                            integration.get('type') !== 'http'
+                        ) {
+                            return false
+                        }
+
+                        typesAlreadyDisplayed.push(integration.get('type'))
+                        ret = widgetTemplate.set(
+                            'type',
+                            integration.get('type')
+                        )
+                    } else {
+                        typesAlreadyDisplayed.push('custom')
                     }
 
-                    const integration = getIntegrationById(parseInt(integrationId))
-
-                    // If there's already a sourceWidget of this type, we don't want another one (except for http)
-                    if (typesAlreadyDisplayed.includes(integration.get('type')) && integration.get('type') !== 'http') {
-                        return false
-                    }
-
-                    typesAlreadyDisplayed.push(integration.get('type'))
-                    ret = widgetTemplate.set('type', integration.get('type'))
-                } else {
-                    typesAlreadyDisplayed.push('custom')
-                }
-
-                return ret
-            }).filter((w) => w)  // filter out null values
+                    return ret
+                })
+                .filter((w) => w) // filter out null values
 
             return {
                 widgetsTemplate: widgetsTemplate,
                 // $FlowFixMe
-                availableTypes: new Set(typesAlreadyDisplayed)
+                availableTypes: new Set(typesAlreadyDisplayed),
             }
         }
 
@@ -231,10 +237,7 @@ class SourceWrapper extends React.Component<Props, State> {
     }
 
     render() {
-        const {
-            sources,
-            widgets
-        } = this.props
+        const {sources, widgets} = this.props
 
         const isDragging = widgets.getIn(['_internal', 'drag', 'isDragging'])
 
@@ -242,30 +245,26 @@ class SourceWrapper extends React.Component<Props, State> {
             <div>
                 <h3 className="mb-4">
                     Manage widgets
-
                     <a
                         className="clickable float-right"
                         onClick={this._leaveEditionMode}
                     >
-                        <i className="material-icons">
-                            close
-                        </i>
+                        <i className="material-icons">close</i>
                     </a>
                 </h3>
 
                 <p>
-                    Drag and drop the values below into the sidebar to preview how they will look like next to your
-                    tickets.
+                    Drag and drop the values below into the sidebar to preview
+                    how they will look like next to your tickets.
                 </p>
 
                 <div className="source-widgets">
-                    {
-                        WIDGET_DATA_TYPES.map((widgetDataType, idx) => {
-                            return this.state.availableTypes.has(widgetDataType.type) && (
-                                <Card
-                                    className="data-fields"
-                                    key={idx}
-                                >
+                    {WIDGET_DATA_TYPES.map((widgetDataType, idx) => {
+                        return (
+                            this.state.availableTypes.has(
+                                widgetDataType.type
+                            ) && (
+                                <Card className="data-fields" key={idx}>
                                     <CardBody className="header">
                                         <div className="title">
                                             {widgetDataType.title}
@@ -275,23 +274,24 @@ class SourceWrapper extends React.Component<Props, State> {
                                     <CardBody className="content">
                                         <SourceWidgets
                                             source={sources}
-                                            widgets={
-                                                this.state.widgetsTemplate.filter(
-                                                    (widgetTemplate) => widgetTemplate.get('type') === widgetDataType.type
-                                                )
-                                            }
+                                            widgets={this.state.widgetsTemplate.filter(
+                                                (widgetTemplate) =>
+                                                    widgetTemplate.get(
+                                                        'type'
+                                                    ) === widgetDataType.type
+                                            )}
                                             editing={{
                                                 isDragging,
-                                                actions: this.props.actions.widgets
+                                                actions: this.props.actions
+                                                    .widgets,
                                             }}
                                         />
                                     </CardBody>
                                 </Card>
                             )
-                        })
-                    }
+                        )
+                    })}
                 </div>
-
             </div>
         )
     }
@@ -299,7 +299,7 @@ class SourceWrapper extends React.Component<Props, State> {
 
 const mapStateToProps = (state) => {
     return {
-        getIntegrationById: integrationsSelectors.makeGetIntegrationById(state)
+        getIntegrationById: integrationsSelectors.makeGetIntegrationById(state),
     }
 }
 

@@ -1,7 +1,14 @@
 //@flow
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Breadcrumb, BreadcrumbItem, Button, Col, Container, Row} from 'reactstrap'
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    Button,
+    Col,
+    Container,
+    Row,
+} from 'reactstrap'
 import {Link} from 'react-router'
 import {fromJS, type List, type Map, Set} from 'immutable'
 import classnames from 'classnames'
@@ -27,10 +34,14 @@ type Props = {
     deleteTeamMember: (teamId: number, userId: number) => Promise<*>,
     deleteTeamMemberList: (teamId: number, userIds: Set<number>) => Promise<*>,
     fetchTeam: (teamId: number) => Promise<*>,
-    fetchTeamMembers: (teamId: number, page: ?number, search: ?string) => Promise<*>,
+    fetchTeamMembers: (
+        teamId: number,
+        page: ?number,
+        search: ?string
+    ) => Promise<*>,
     params: {
-        id: string
-    }
+        id: string,
+    },
 }
 
 type State = {
@@ -40,20 +51,23 @@ type State = {
     selection: Set<number>,
     isFetching: boolean,
     isDeleting: boolean,
-    search: string
+    search: string,
 }
 
-@connect((state) => {
-    return {
-        accountOwnerId: state.currentAccount.get('user_id'),
+@connect(
+    (state) => {
+        return {
+            accountOwnerId: state.currentAccount.get('user_id'),
+        }
+    },
+    {
+        addTeamMember: actions.addTeamMember,
+        deleteTeamMember: actions.deleteTeamMember,
+        deleteTeamMemberList: actions.deleteTeamMemberList,
+        fetchTeam: actions.fetchTeam,
+        fetchTeamMembers: actions.fetchTeamMembersPagination,
     }
-}, {
-    addTeamMember: actions.addTeamMember,
-    deleteTeamMember: actions.deleteTeamMember,
-    deleteTeamMemberList: actions.deleteTeamMemberList,
-    fetchTeam: actions.fetchTeam,
-    fetchTeamMembers: actions.fetchTeamMembersPagination,
-})
+)
 export default class MembersList extends Component<Props, State> {
     state = {
         team: fromJS({}),
@@ -62,7 +76,7 @@ export default class MembersList extends Component<Props, State> {
         selection: Set(),
         isFetching: false,
         isDeleting: false,
-        search: ''
+        search: '',
     }
 
     componentDidMount() {
@@ -71,35 +85,42 @@ export default class MembersList extends Component<Props, State> {
     }
 
     _fetchTeam = () => {
-        return this.props.fetchTeam(parseInt(this.props.params.id)).then((team) => {
-            this.setState({team})
-        })
+        return this.props
+            .fetchTeam(parseInt(this.props.params.id))
+            .then((team) => {
+                this.setState({team})
+            })
     }
 
     _fetchTeamMembers = (page: number = 1) => {
         const {team, search} = this.state
-        return this.props.fetchTeamMembers(team.get('id'), page, search)
+        return this.props
+            .fetchTeamMembers(team.get('id'), page, search)
             .then((resp) => {
                 const members = resp.get('data')
-                const memberIds = Set(members.map((member) => {
-                    return member.get('id')
-                }))
+                const memberIds = Set(
+                    members.map((member) => {
+                        return member.get('id')
+                    })
+                )
                 this.setState((state) => ({
                     pagination: resp.get('meta'),
                     members,
                     // prune selection on refetch
-                    selection: state.selection.intersect(memberIds)
+                    selection: state.selection.intersect(memberIds),
                 }))
             })
     }
 
     _fetchPage = (page: number = 1) => {
         this.setState({isFetching: true})
-        return this._fetchTeamMembers(page)
-        // $FlowFixMe
-            .finally(() => {
-                this.setState({isFetching: false})
-            })
+        return (
+            this._fetchTeamMembers(page)
+                // $FlowFixMe
+                .finally(() => {
+                    this.setState({isFetching: false})
+                })
+        )
     }
 
     _onSearch = (search: string) => {
@@ -110,24 +131,25 @@ export default class MembersList extends Component<Props, State> {
     _addTeamMember = (userId: number) => {
         const currentPage = this.state.pagination.get('page') || 1
         const teamId = this.state.team.get('id')
-        return this.props.addTeamMember(teamId, userId)
-            .then(() => {
-                this._fetchTeam()
-                return this._fetchTeamMembers(currentPage)
-            })
+        return this.props.addTeamMember(teamId, userId).then(() => {
+            this._fetchTeam()
+            return this._fetchTeamMembers(currentPage)
+        })
     }
 
     _deleteTeamMember = (memberId: number) => {
         const currentPage = this.state.pagination.get('page') || 1
         const teamId = this.state.team.get('id')
-        return this.props.deleteTeamMember(teamId, memberId)
-            .then(() => {
-                this._fetchTeam()
-                // if last agent on page was deleted,
-                // reload the previous page.
-                const page = (this.state.members.size === 1 && currentPage > 1) ? currentPage - 1 : currentPage
-                return this._fetchTeamMembers(page)
-            })
+        return this.props.deleteTeamMember(teamId, memberId).then(() => {
+            this._fetchTeam()
+            // if last agent on page was deleted,
+            // reload the previous page.
+            const page =
+                this.state.members.size === 1 && currentPage > 1
+                    ? currentPage - 1
+                    : currentPage
+            return this._fetchTeamMembers(page)
+        })
     }
 
     _deleteTeamMemberSelection = () => {
@@ -135,33 +157,38 @@ export default class MembersList extends Component<Props, State> {
         const selection = this.state.selection
         const currentPage = this.state.pagination.get('page') || 1
         const teamId = this.state.team.get('id')
-        return this.props.deleteTeamMemberList(teamId, selection)
-            .then(() => {
-                this._fetchTeam()
-                // if last agents on page were deleted,
-                // reload the previous page.
-                const page = ((selection.size >= this.state.members.size) && (currentPage > 1))
-                    ? currentPage - 1
-                    : currentPage
-                return this._fetchTeamMembers(page)
-            })
-            // $FlowFixMe
-            .finally(() => {
-                this.setState({isDeleting: false})
-            })
+        return (
+            this.props
+                .deleteTeamMemberList(teamId, selection)
+                .then(() => {
+                    this._fetchTeam()
+                    // if last agents on page were deleted,
+                    // reload the previous page.
+                    const page =
+                        selection.size >= this.state.members.size &&
+                        currentPage > 1
+                            ? currentPage - 1
+                            : currentPage
+                    return this._fetchTeamMembers(page)
+                })
+                // $FlowFixMe
+                .finally(() => {
+                    this.setState({isDeleting: false})
+                })
+        )
     }
 
     _toggleTeamMemberSelection = (memberId: number) => {
         this.setState({
             selection: this.state.selection.includes(memberId)
                 ? this.state.selection.delete(memberId)
-                : this.state.selection.add(memberId)
+                : this.state.selection.add(memberId),
         })
     }
 
     render() {
         if (this.state.isFetching) {
-            return <Loader/>
+            return <Loader />
         }
 
         const {accountOwnerId} = this.props
@@ -170,25 +197,27 @@ export default class MembersList extends Component<Props, State> {
         const currentPage = pagination.get('page') || 1
 
         const teamId = team.get('id')
-        const allMemberIds = Set(members.map((member) => {
-            return member.get('id')
-        }))
+        const allMemberIds = Set(
+            members.map((member) => {
+                return member.get('id')
+            })
+        )
         const isAllSelected = !allMemberIds.subtract(this.state.selection).size
-
 
         return (
             <div className={classnames(css.component, 'full-width')}>
-                <PageHeader title={(
-                    <Breadcrumb>
-                        <BreadcrumbItem>
-                            <Link to="/app/settings/teams">Teams</Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem active>
-                            Members of {team.get('name')}
-                        </BreadcrumbItem>
-                    </Breadcrumb>
-
-                )}>
+                <PageHeader
+                    title={
+                        <Breadcrumb>
+                            <BreadcrumbItem>
+                                <Link to="/app/settings/teams">Teams</Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem active>
+                                Members of {team.get('name')}
+                            </BreadcrumbItem>
+                        </Breadcrumb>
+                    }
+                >
                     <div className="d-flex">
                         <Search
                             bindKey
@@ -202,90 +231,104 @@ export default class MembersList extends Component<Props, State> {
                             team={team}
                             addTeamMember={this._addTeamMember}
                         />
-
                     </div>
                 </PageHeader>
 
                 <SecondaryNavbar>
-                    <Link to={`/app/settings/teams/${teamId}/members`}>Team members</Link>
+                    <Link to={`/app/settings/teams/${teamId}/members`}>
+                        Team members
+                    </Link>
                     <Link to={`/app/settings/teams/${teamId}`}>Settings</Link>
                 </SecondaryNavbar>
-                {
-                    members.size > 0 ? (
-                        <Container
-                            fluid
-                            className="page-container"
-                        >
-                            <Row className={css.listHeader}>
-                                <Col sm={4}>
-                                    <div className="d-flex align-items-center mb-2">
-                                        <input
-                                            type="checkbox"
-                                            className="mr-4"
-                                            onChange={() => {
-                                                this.setState({
-                                                    selection: (isAllSelected ? Set() : allMemberIds)
-                                                })
-                                            }}
-                                            checked={isAllSelected}
-                                        />
-                                        <Button
-                                            color="secondary"
-                                            size="sm"
-                                            onClick={this._deleteTeamMemberSelection}
-                                            className={classnames({'btn-loading': isDeleting})}
-                                            disabled={!this.state.selection.size || isDeleting}
-                                        >
-                                            <i className="material-icons mr-2">
-                                                delete
-                                            </i>
-                                            Delete
-                                        </Button>
-                                    </div>
-                                </Col>
-                            </Row>
+                {members.size > 0 ? (
+                    <Container fluid className="page-container">
+                        <Row className={css.listHeader}>
+                            <Col sm={4}>
+                                <div className="d-flex align-items-center mb-2">
+                                    <input
+                                        type="checkbox"
+                                        className="mr-4"
+                                        onChange={() => {
+                                            this.setState({
+                                                selection: isAllSelected
+                                                    ? Set()
+                                                    : allMemberIds,
+                                            })
+                                        }}
+                                        checked={isAllSelected}
+                                    />
+                                    <Button
+                                        color="secondary"
+                                        size="sm"
+                                        onClick={
+                                            this._deleteTeamMemberSelection
+                                        }
+                                        className={classnames({
+                                            'btn-loading': isDeleting,
+                                        })}
+                                        disabled={
+                                            !this.state.selection.size ||
+                                            isDeleting
+                                        }
+                                    >
+                                        <i className="material-icons mr-2">
+                                            delete
+                                        </i>
+                                        Delete
+                                    </Button>
+                                </div>
+                            </Col>
+                        </Row>
 
-                            <div className={css.list}>
-                                {
-                                    members.map((member) => {
-                                        const memberId = member.get('id')
-                                        return (
-                                            <UserRow
-                                                key={memberId}
-                                                member={member}
-                                                isAccountOwner={memberId === accountOwnerId}
-                                                deleteTeamMember={() => this._deleteTeamMember(memberId)}
-                                                select={this._toggleTeamMemberSelection}
-                                                isSelected={this.state.selection.includes(memberId)}
-                                            />
-                                        )
-                                    })
-                                }
-                            </div>
-                            <Pagination
-                                pageCount={pageCount}
-                                currentPage={currentPage}
-                                onChange={this._fetchPage}
-                                className={classnames(css.pagination, 'pagination-transparent')}
-                            />
-                        </Container>
-                    ) : (
-                        <Container
-                            fluid
-                            className="page-container"
-                            style={{minHeight: '500px'}}
-                        >
-                            {
-                                !this.state.search.length
-                                    ? (
-                                        <p className="text-center">Start adding users to this team</p>
-                                    ) : (
-                                        <p className="text-center">No user matching "{this.state.search}" in this team.</p>
-                                    )
-                            }
-                        </Container>
-                    )
-                }
+                        <div className={css.list}>
+                            {members.map((member) => {
+                                const memberId = member.get('id')
+                                return (
+                                    <UserRow
+                                        key={memberId}
+                                        member={member}
+                                        isAccountOwner={
+                                            memberId === accountOwnerId
+                                        }
+                                        deleteTeamMember={() =>
+                                            this._deleteTeamMember(memberId)
+                                        }
+                                        select={this._toggleTeamMemberSelection}
+                                        isSelected={this.state.selection.includes(
+                                            memberId
+                                        )}
+                                    />
+                                )
+                            })}
+                        </div>
+                        <Pagination
+                            pageCount={pageCount}
+                            currentPage={currentPage}
+                            onChange={this._fetchPage}
+                            className={classnames(
+                                css.pagination,
+                                'pagination-transparent'
+                            )}
+                        />
+                    </Container>
+                ) : (
+                    <Container
+                        fluid
+                        className="page-container"
+                        style={{minHeight: '500px'}}
+                    >
+                        {!this.state.search.length ? (
+                            <p className="text-center">
+                                Start adding users to this team
+                            </p>
+                        ) : (
+                            <p className="text-center">
+                                No user matching "{this.state.search}" in this
+                                team.
+                            </p>
+                        )}
+                    </Container>
+                )}
             </div>
         )
     }

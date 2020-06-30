@@ -13,15 +13,24 @@ import {MacrosSettingsContentContainer} from '../MacrosSettingsContent'
 import MacroSettingsTable from '../MacrosSettingsTable'
 
 jest.mock('../../../../models/macro')
-jest.mock('../../../common/components/Pagination', () => ({onChange}: ElementProps<typeof Pagination>) =>
-    <div onClick={() => onChange(2)}/>
+jest.mock(
+    '../../../common/components/Pagination',
+    () => ({onChange}: ElementProps<typeof Pagination>) => (
+        <div onClick={() => onChange(2)} />
+    )
 )
-jest.mock('../../../common/components/Search', () => ({onChange}: ElementProps<typeof Search>) =>
-    <div onChange={(e) => onChange(e.target.value)}/>
+jest.mock(
+    '../../../common/components/Search',
+    () => ({onChange}: ElementProps<typeof Search>) => (
+        <div onChange={(e) => onChange(e.target.value)} />
+    )
 )
 jest.mock('react-router')
-jest.mock('../MacrosSettingsTable', () => ({onSortOptionsChange}: ElementProps<typeof MacroSettingsTable>) =>
-    <div onClick={() => onSortOptionsChange('name', 'asc')}/>
+jest.mock(
+    '../MacrosSettingsTable',
+    () => ({onSortOptionsChange}: ElementProps<typeof MacroSettingsTable>) => (
+        <div onClick={() => onSortOptionsChange('name', 'asc')} />
+    )
 )
 
 describe('<MacrosSettingsContent/>', () => {
@@ -53,27 +62,32 @@ describe('<MacrosSettingsContent/>', () => {
     })
 
     it('should match snapshot', () => {
-        const component = shallow(<MacrosSettingsContentContainer {...minProps}/>)
+        const component = shallow(
+            <MacrosSettingsContentContainer {...minProps} />
+        )
 
         expect(component).toMatchSnapshot()
     })
 
     it('should fetch macros on mount', (done) => {
-        mount(<MacrosSettingsContentContainer {...minProps}/>)
+        mount(<MacrosSettingsContentContainer {...minProps} />)
 
         expect(mockFetchMacros).toHaveBeenNthCalledWith(1, {
             orderBy: 'createdDatetime',
             orderDir: 'asc',
         })
         setImmediate(() => {
-            expect(mockMacrosFetched).toHaveBeenNthCalledWith(1, mappedMacrosFixtures)
+            expect(mockMacrosFetched).toHaveBeenNthCalledWith(
+                1,
+                mappedMacrosFixtures
+            )
             done()
         })
     })
 
     it('should notify when fetching macros fails', (done) => {
         mockFetchMacros.mockRejectedValue('error')
-        mount(<MacrosSettingsContentContainer {...minProps}/>)
+        mount(<MacrosSettingsContentContainer {...minProps} />)
 
         setImmediate(() => {
             expect(mockNotify).toHaveBeenNthCalledWith(1, {
@@ -85,7 +99,9 @@ describe('<MacrosSettingsContent/>', () => {
     })
 
     it('should fetch the next macros when changing page', () => {
-        const component = mount(<MacrosSettingsContentContainer {...minProps}/>)
+        const component = mount(
+            <MacrosSettingsContentContainer {...minProps} />
+        )
 
         component.find(Pagination).simulate('click')
         expect(mockFetchMacros).toHaveBeenNthCalledWith(2, {
@@ -96,15 +112,20 @@ describe('<MacrosSettingsContent/>', () => {
     })
 
     it('should redirect when creating new macro', () => {
-        const component = mount(<MacrosSettingsContentContainer {...minProps}/>)
+        const component = mount(
+            <MacrosSettingsContentContainer {...minProps} />
+        )
 
         component.find(Button).simulate('click')
-        expect(browserHistory.push).toHaveBeenNthCalledWith(1, '/app/settings/macros/new')
+        expect(browserHistory.push).toHaveBeenNthCalledWith(
+            1,
+            '/app/settings/macros/new'
+        )
     })
 
     it('should fetch macros when sorting options change', () => {
         const component = mount(
-            <MacrosSettingsContentContainer {...minProps}/>
+            <MacrosSettingsContentContainer {...minProps} />
         )
 
         component.find(MacroSettingsTable).simulate('click')
@@ -120,7 +141,7 @@ describe('<MacrosSettingsContent/>', () => {
             meta: {
                 page: 2,
                 nb_pages: 3,
-            }
+            },
         })
         const component = mount(
             <MacrosSettingsContentContainer
@@ -148,7 +169,7 @@ describe('<MacrosSettingsContent/>', () => {
             meta: {
                 page: 2,
                 nb_pages: 2,
-            }
+            },
         })
         const component = mount(
             <MacrosSettingsContentContainer
@@ -176,7 +197,7 @@ describe('<MacrosSettingsContent/>', () => {
             meta: {
                 page: 1,
                 nb_pages: 1,
-            }
+            },
         })
         const component = mount(
             <MacrosSettingsContentContainer
@@ -195,7 +216,9 @@ describe('<MacrosSettingsContent/>', () => {
     })
 
     it('should fetch macros when searching', () => {
-        const component = mount(<MacrosSettingsContentContainer {...minProps}/>)
+        const component = mount(
+            <MacrosSettingsContentContainer {...minProps} />
+        )
 
         component.find(Search).simulate('change', {
             target: {value: 'foobar'},
@@ -208,7 +231,9 @@ describe('<MacrosSettingsContent/>', () => {
     })
 
     it('should not sort when searching', () => {
-        const component = mount(<MacrosSettingsContentContainer {...minProps}/>)
+        const component = mount(
+            <MacrosSettingsContentContainer {...minProps} />
+        )
 
         component.find(Search).simulate('change', {
             target: {value: 'foobar'},

@@ -29,13 +29,7 @@ class TicketSourceContainer extends React.Component {
     }
 
     render() {
-        const {
-            ticket,
-            widgets,
-            actions,
-            sources,
-            params,
-        } = this.props
+        const {ticket, widgets, actions, sources, params} = this.props
 
         return (
             <SourceWrapper
@@ -74,8 +68,11 @@ function mapDispatchToProps(dispatch) {
             ticket: bindActionCreators(ticketActions, dispatch),
             widgets: bindActionCreators(widgetsActions, dispatch),
             customers: bindActionCreators(customersActions, dispatch),
-        }
+        },
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TicketSourceContainer)
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(TicketSourceContainer)

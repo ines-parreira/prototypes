@@ -10,14 +10,14 @@ import {stringToDatetime} from '../../../utils/date'
 type Props = {
     datetime: string,
     isDisabled?: boolean,
-    onChange: (state: Object) => *
+    onChange: (state: Object) => *,
 }
 
 type State = {
-    datetime: moment
+    datetime: moment,
 }
 
-export default class DatetimePicker extends React.Component<Props,State> {
+export default class DatetimePicker extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props)
         //$FlowFixMe
@@ -49,7 +49,11 @@ export default class DatetimePicker extends React.Component<Props,State> {
                 timePicker24Hour
             >
                 <Input
-                    value={this.state.datetime ? this.state.datetime.format('L LT') : ''}
+                    value={
+                        this.state.datetime
+                            ? this.state.datetime.format('L LT')
+                            : ''
+                    }
                     placeholder="Choose a date..."
                 />
             </DateRangePicker>

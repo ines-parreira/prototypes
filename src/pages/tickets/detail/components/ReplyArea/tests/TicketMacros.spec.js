@@ -4,7 +4,6 @@ import {shallow} from 'enzyme'
 import _noop from 'lodash/noop'
 import _assign from 'lodash/assign'
 
-
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -20,10 +19,10 @@ describe('TicketMacros component', () => {
         newMessage: fromJS({
             newMessage: {
                 source: {
-                    type: 'email'
-                }
-            }
-        })
+                    type: 'email',
+                },
+            },
+        }),
     }
 
     beforeEach(() => {
@@ -43,24 +42,28 @@ describe('TicketMacros component', () => {
         }
     })
 
-    const baseMacros = [{
-        id: 1,
-        name: 'Refund my order',
-        actions: [{
-            name: 'setResponseText'
-        }, {
-            name: 'addAttachments'
-        }],
-    }, {
-        id: 2,
-        name: 'Order my refund',
-        actions: [],
-    }]
+    const baseMacros = [
+        {
+            id: 1,
+            name: 'Refund my order',
+            actions: [
+                {
+                    name: 'setResponseText',
+                },
+                {
+                    name: 'addAttachments',
+                },
+            ],
+        },
+        {
+            id: 2,
+            name: 'Order my refund',
+            actions: [],
+        },
+    ]
 
-    it('should display an empty state if there\'s no macros', () => {
-        const component = shallow(
-            <TicketMacros {...defaultProps} />
-        )
+    it("should display an empty state if there's no macros", () => {
+        const component = shallow(<TicketMacros {...defaultProps} />)
 
         expect(component.dive().find('MacroNoResults')).toHaveLength(1)
     })

@@ -20,7 +20,9 @@ export default class FacebookPageRow extends React.Component {
             return null
         }
 
-        const editLink = `/app/settings/integrations/facebook/${integration.get('id')}/overview`
+        const editLink = `/app/settings/integrations/facebook/${integration.get(
+            'id'
+        )}/overview`
 
         return (
             <tr className="FacebookPageRow">
@@ -47,12 +49,10 @@ export default class FacebookPageRow extends React.Component {
                     </Link>
                 </td>
                 <td className="smallest align-middle p-0">
-                    <div>
-                        {isDisabled && <FacebookLoginButton reconnect />}
-                    </div>
+                    <div>{isDisabled && <FacebookLoginButton reconnect />}</div>
                 </td>
                 <td className="smallest align-middle">
-                    <ForwardIcon href={editLink}/>
+                    <ForwardIcon href={editLink} />
                 </td>
             </tr>
         )

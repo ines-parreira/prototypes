@@ -15,7 +15,7 @@ class DragWrapper extends React.Component {
             group,
             templatePath,
             isEditing,
-            watchDrop
+            watchDrop,
         } = this.props
 
         if (!isEditing) {
@@ -35,13 +35,19 @@ class DragWrapper extends React.Component {
                     },
                     onEnd() {
                         actions.cancelDrag()
-                    }
+                    },
                 }}
                 onChange={(order, sortable, evt) => {
                     if (watchDrop) {
                         if (evt.type === 'add' || evt.type === 'update') {
                             const key = evt.item.dataset.key
-                            actions.drop(evt.type, templatePath, key, evt.newIndex, evt.oldIndex)
+                            actions.drop(
+                                evt.type,
+                                templatePath,
+                                key,
+                                evt.newIndex,
+                                evt.oldIndex
+                            )
                         }
                     }
                 }}
@@ -59,13 +65,13 @@ DragWrapper.propTypes = {
     isEditing: PropTypes.bool.isRequired,
     sort: PropTypes.bool,
     templatePath: PropTypes.string,
-    watchDrop: PropTypes.bool
+    watchDrop: PropTypes.bool,
 }
 
 DragWrapper.defaultProps = {
     sort: false,
     templatePath: '',
-    watchDrop: false
+    watchDrop: false,
 }
 
 export default DragWrapper

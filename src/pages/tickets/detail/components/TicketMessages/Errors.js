@@ -11,7 +11,7 @@ type Props = {
     ticketId: number,
     loading: boolean,
     hasActionError: boolean,
-    setStatus: () => void
+    setStatus: () => void,
 }
 
 const Errors = (props: Props) => {
@@ -33,7 +33,12 @@ const Errors = (props: Props) => {
         !loading && message.failed_datetime && (
             <Error
                 key="error"
-                error={message.last_sending_error && message.last_sending_error.error? message.last_sending_error.error : 'This message was not sent.'}
+                error={
+                    message.last_sending_error &&
+                    message.last_sending_error.error
+                        ? message.last_sending_error.error
+                        : 'This message was not sent.'
+                }
                 message={fromJS(message)}
                 messageId={message.id}
                 ticketId={message.ticket_id || ticketId}

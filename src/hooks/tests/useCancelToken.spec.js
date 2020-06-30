@@ -6,9 +6,9 @@ jest.mock('axios', () => ({
     CancelToken: {
         source: () => ({
             cancel: jest.fn(),
-            token: 'foo'
-        })
-    }
+            token: 'foo',
+        }),
+    },
 }))
 
 describe('useCancelToken', () => {
@@ -23,7 +23,9 @@ describe('useCancelToken', () => {
 
     it('should not throw if cancelled', () => {
         expect(() => {
-            const makeRequest = jest.fn(async (cancelToken) => cancelToken.cancel())
+            const makeRequest = jest.fn(async (cancelToken) =>
+                cancelToken.cancel()
+            )
             renderHook(() => {
                 useCancelToken(makeRequest)
             })

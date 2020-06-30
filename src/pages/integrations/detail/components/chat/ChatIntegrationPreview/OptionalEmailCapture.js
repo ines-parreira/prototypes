@@ -4,7 +4,7 @@ import classnames from 'classnames'
 
 import {
     SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
-    SMOOCH_INSIDE_WIDGET_TEXTS
+    SMOOCH_INSIDE_WIDGET_TEXTS,
 } from '../../../../../../config/integrations/smooch_inside'
 
 import css from './ChatIntegrationPreview.less'
@@ -13,14 +13,17 @@ import CustomerInitialMessages from './CustomerInitialMessages'
 type Props = {
     conversationColor: string,
     name?: string,
-    language?: string
+    language?: string,
 }
 
 export default class OptionalEmailCapture extends React.Component<Props> {
     render() {
         const {conversationColor, name, language} = this.props
 
-        const translatedTexts = SMOOCH_INSIDE_WIDGET_TEXTS[language || SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT]
+        const translatedTexts =
+            SMOOCH_INSIDE_WIDGET_TEXTS[
+                language || SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT
+            ]
 
         return (
             <div className={css.content}>
@@ -33,15 +36,21 @@ export default class OptionalEmailCapture extends React.Component<Props> {
                     <div className={classnames(css.avatar, css.robotLogo)}>
                         <img
                             alt="robot icon"
-                            src={`${window.GORGIAS_ASSETS_URL || ''}/static/private/img/icons/robot-icon.svg`}
+                            src={`${
+                                window.GORGIAS_ASSETS_URL || ''
+                            }/static/private/img/icons/robot-icon.svg`}
                         />
                     </div>
                     <div>
-                        <div className={css.user}>
-                            {name}
-                        </div>
+                        <div className={css.user}>{name}</div>
 
-                        <div className={classnames(css.bubble, css.firstMessageOfAppMaker, 'mb-2')}>
+                        <div
+                            className={classnames(
+                                css.bubble,
+                                css.firstMessageOfAppMaker,
+                                'mb-2'
+                            )}
+                        >
                             {translatedTexts.emailCaptureOnlineTriggerText}
                         </div>
 
@@ -52,12 +61,18 @@ export default class OptionalEmailCapture extends React.Component<Props> {
                             <div className={css.inputWrapper}>
                                 <input
                                     className="input"
-                                    placeholder={translatedTexts.emailCapturePlaceholder}
-                                    type='email'
+                                    placeholder={
+                                        translatedTexts.emailCapturePlaceholder
+                                    }
+                                    type="email"
                                     readOnly
                                 />
-                                <button style={{backgroundColor: conversationColor}}>
-                                    <i className='material-icons'>chevron_right</i>
+                                <button
+                                    style={{backgroundColor: conversationColor}}
+                                >
+                                    <i className="material-icons">
+                                        chevron_right
+                                    </i>
                                 </button>
                             </div>
                         </div>

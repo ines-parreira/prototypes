@@ -26,7 +26,7 @@ import TicketListActions from './components/TicketListActions'
 import css from './TicketListContainer.less'
 
 type Props = {
-    activeView: Map<*,*>,
+    activeView: Map<*, *>,
     hasActiveView: boolean,
     fetchTags: typeof tagsActions.fetchTags,
     selectedItemsIds: List<*>,
@@ -43,7 +43,7 @@ type State = {
     isSearch: boolean,
     isUpdate: boolean,
     isMacroModalOpen: boolean,
-    actionsComponent: ?Object
+    actionsComponent: ?Object,
 }
 
 class TicketListContainer extends React.Component<Props, State> {
@@ -51,7 +51,7 @@ class TicketListContainer extends React.Component<Props, State> {
         isSearch: false,
         isUpdate: true,
         isMacroModalOpen: false,
-        actionsComponent: null
+        actionsComponent: null,
     }
 
     _setInitialState = (props) => {
@@ -68,7 +68,9 @@ class TicketListContainer extends React.Component<Props, State> {
 
     componentDidMount() {
         this.setState({
-            actionsComponent: decorateComponentWithProps(TicketListActions, {openMacroModal: this._openMacroModal})
+            actionsComponent: decorateComponentWithProps(TicketListActions, {
+                openMacroModal: this._openMacroModal,
+            }),
         })
     }
 
@@ -89,7 +91,9 @@ class TicketListContainer extends React.Component<Props, State> {
         } else if (hasActiveView) {
             title = activeView.get('name')
             if (activeView.get('count', 0) > 0) {
-                title = `(${compactInteger(activeView.get('count', 0))}) ${title}`
+                title = `(${compactInteger(
+                    activeView.get('count', 0)
+                )}) ${title}`
             }
         } else {
             title = 'Wrong view'
@@ -115,7 +119,7 @@ class TicketListContainer extends React.Component<Props, State> {
                         isSearch={isSearch}
                         urlViewId={urlViewId}
                         ActionsComponent={this.state.actionsComponent}
-                        viewButtons={(
+                        viewButtons={
                             <div className="d-inline-flex align-items-center">
                                 <Button
                                     tag={Link}
@@ -125,7 +129,7 @@ class TicketListContainer extends React.Component<Props, State> {
                                     Create ticket
                                 </Button>
                             </div>
-                        )}
+                        }
                     />
                     {this.state.isMacroModalOpen && (
                         <MacroContainer

@@ -2,7 +2,6 @@
 import {fromJS} from 'immutable'
 import {convertToRaw, ContentState, SelectionState} from 'draft-js'
 
-
 import _pick from 'lodash/pick'
 import _assign from 'lodash/assign'
 import _omit from 'lodash/omit'
@@ -26,7 +25,10 @@ import {getReceiversProperties} from './selectors'
 import * as responseUtils from './responseUtils'
 import * as types from './constants'
 
-export const makeNewMessage = (channel: string, sourceType: TicketMessageSourceType) => {
+export const makeNewMessage = (
+    channel: string,
+    sourceType: TicketMessageSourceType
+) => {
     return fromJS({
         via: 'helpdesk',
         public: ticketConfig.isPublic(sourceType),
@@ -67,23 +69,26 @@ export const initialState = fromJS({
             submitMessage: false,
         },
     },
-    newMessage: makeNewMessage('email', 'email')
+    newMessage: makeNewMessage('email', 'email'),
 })
 
-const resetContentState = (state: Map<*,*>) => {
+const resetContentState = (state: Map<*, *>) => {
     return state
         .mergeDeep({
             state: {
                 dirty: false,
                 cacheAdded: false,
                 signatureAdded: false,
-            }
+            },
         })
         .setIn(['state', 'contentState'], ContentState.createFromText(''))
         .setIn(['state', 'selectionState'], null)
 }
 
-export default function reducer(state: Map<*,*> = initialState, action: actionType): Map<*,*> {
+export default function reducer(
+    state: Map<*, *> = initialState,
+    action: actionType
+): Map<*, *> {
     switch (action.type) {
         case types.NEW_MESSAGE_ADD_ATTACHMENT_START: {
             return state.setIn(['_internal', 'loading', 'addAttachment'], true)
@@ -92,7 +97,9 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
         case types.NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS: {
             return state.mergeDeep({
                 newMessage: {
-                    attachments: state.getIn(['newMessage', 'attachments'], fromJS([])).concat(fromJS(action.resp)),
+                    attachments: state
+                        .getIn(['newMessage', 'attachments'], fromJS([]))
+                        .concat(fromJS(action.resp)),
                 },
                 state: {
                     dirty: true,
@@ -100,15 +107,19 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
                 _internal: {
                     loading: {
                         addAttachment: false,
-                    }
-                }
+                    },
+                },
             })
         }
 
         case types.ADD_ATTACHMENTS: {
-            return state.updateIn(['newMessage', 'attachments'], fromJS([]), (attachements) => {
-                return attachements.concat(action.args.get('attachments'))
-            })
+            return state.updateIn(
+                ['newMessage', 'attachments'],
+                fromJS([]),
+                (attachements) => {
+                    return attachements.concat(action.args.get('attachments'))
+                }
+            )
         }
 
         case types.NEW_MESSAGE_ADD_ATTACHMENT_ERROR: {
@@ -117,7 +128,12 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
 
         case types.NEW_MESSAGE_DELETE_ATTACHMENT: {
             return state
-                .setIn(['newMessage', 'attachments'], state.getIn(['newMessage', 'attachments'], fromJS([])).delete(action.index))
+                .setIn(
+                    ['newMessage', 'attachments'],
+                    state
+                        .getIn(['newMessage', 'attachments'], fromJS([]))
+                        .delete(action.index)
+                )
                 .setIn(['state', 'dirty'], true)
         }
 
@@ -130,7 +146,9 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
                 return state
             }
 
-            return state.updateIn(['newMessage', 'macros'], (macros) => macros.push({id: macroId}))
+            return state.updateIn(['newMessage', 'macros'], (macros) =>
+                macros.push({id: macroId})
+            )
         }
 
         case ticketTypes.CLEAR_TICKET: {
@@ -148,22 +166,26 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
             // clear the reply cache
             responseUtils.deleteReplyCache(action.ticketId)
 
-            let newState = resetContentState(state)
-                .mergeDeep({
-                    state: {
-                        forceUpdate: false,
-                        forceFocus: false,
-                        firstNewMessage: false,
-                    }
-                })
+            let newState = resetContentState(state).mergeDeep({
+                state: {
+                    forceUpdate: false,
+                    forceFocus: false,
+                    firstNewMessage: false,
+                },
+            })
 
             if (!action.resetMessage) {
                 return newState
             }
 
             const sourceType = getSourceTypeOfResponse(messages)
-            return resetContentState(state)
-                .set('newMessage', makeNewMessage(getChannelFromSourceType(sourceType, messages), sourceType))
+            return resetContentState(state).set(
+                'newMessage',
+                makeNewMessage(
+                    getChannelFromSourceType(sourceType, messages),
+                    sourceType
+                )
+            )
         }
 
         case types.NEW_MESSAGE_SUBMIT_TICKET_ERROR: {
@@ -177,7 +199,10 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
             const messageType = state.getIn(['newMessage', 'source', 'type'])
             const sourceType = messageType || getSourceTypeOfResponse(messages)
 
-            const newMessage = makeNewMessage(getChannelFromSourceType(sourceType), sourceType)
+            const newMessage = makeNewMessage(
+                getChannelFromSourceType(sourceType),
+                sourceType
+            )
                 .set('subject', state.getIn(['newMessage', 'subject']))
                 .set('body_text', state.getIn(['newMessage', 'body_text']))
                 .set('body_html', state.getIn(['newMessage', 'body_html']))
@@ -197,7 +222,7 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
                         appliedMacro: null,
                         forceUpdate: false,
                         forceFocus: false,
-                    }
+                    },
                 })
                 .setIn(['_internal', 'loading', 'submitMessage'], false)
 
@@ -205,18 +230,23 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
                 return newState
             }
 
-            return newState.set('newMessage', makeNewMessage(channel, getSourceTypeOfResponse(messages)))
+            return newState.set(
+                'newMessage',
+                makeNewMessage(channel, getSourceTypeOfResponse(messages))
+            )
         }
 
         case types.NEW_MESSAGE_FETCH_TICKET_SUCCESS: {
             const {messages} = action.resp
             const sourceType = getSourceTypeOfResponse(messages)
 
-            return resetContentState(state)
-                .set(
-                    'newMessage',
-                    makeNewMessage(getChannelFromSourceType(sourceType, messages), sourceType)
+            return resetContentState(state).set(
+                'newMessage',
+                makeNewMessage(
+                    getChannelFromSourceType(sourceType, messages),
+                    sourceType
                 )
+            )
         }
 
         case types.NEW_MESSAGE_SET_SOURCE_TYPE: {
@@ -226,16 +256,26 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
             return state
                 .setIn(['newMessage', 'channel'], channel)
                 .setIn(['newMessage', 'source', 'type'], sourceType)
-                .setIn(['newMessage', 'public'], ticketConfig.isPublic(sourceType))
+                .setIn(
+                    ['newMessage', 'public'],
+                    ticketConfig.isPublic(sourceType)
+                )
         }
 
         case types.NEW_MESSAGE_SET_SOURCE_EXTRA: {
-            return state.setIn(['newMessage', 'source', 'extra'], fromJS(action.extra))
+            return state.setIn(
+                ['newMessage', 'source', 'extra'],
+                fromJS(action.extra)
+            )
         }
 
         case types.SET_RESPONSE_TEXT: {
-            let contentState = action.args.get('contentState') || state.getIn(['state', 'contentState'])
-            let selectionState = action.args.get('selectionState') || state.getIn(['state', 'selectionState'])
+            let contentState =
+                action.args.get('contentState') ||
+                state.getIn(['state', 'contentState'])
+            let selectionState =
+                action.args.get('selectionState') ||
+                state.getIn(['state', 'selectionState'])
             const {appliedMacro, forceFocus, forceUpdate} = action
             const source = state.getIn(['newMessage', 'source'], fromJS({}))
 
@@ -263,7 +303,9 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
 
             // get ids of all mentions within any entities in contentState, only if in internal note
             let ids = fromJS([])
-            const isInternalNote = ticketConfig.canLeaveInternalNote(state.getIn(['newMessage', 'source', 'type']))
+            const isInternalNote = ticketConfig.canLeaveInternalNote(
+                state.getIn(['newMessage', 'source', 'type'])
+            )
 
             if (contentState && isInternalNote) {
                 const entityMap = convertToRaw(contentState).entityMap
@@ -283,38 +325,53 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
                 dirty = true
             }
 
-            return context.state.mergeDeep({
-                newMessage: {
-                    body_text: contentState ? contentState.getPlainText() : '',
-                    body_html: contentState ? convertToHTML(contentState) : ''
-                },
-                state: {
-                    dirty,
-                    forceFocus: !!context.forceFocus,
-                    forceUpdate: !!context.forceUpdate,
-                    cacheAdded: !!context.cacheAdded,
-                }
-            })
-            // not in the mergeDeep because it would be merged with the previous contentState instead of replacing it
-                .setIn(['state', 'contentState'], contentState)
-                .setIn(['state', 'selectionState'], selectionState)
-                .setIn(['newMessage', 'mention_ids'], ids)
+            return (
+                context.state
+                    .mergeDeep({
+                        newMessage: {
+                            body_text: contentState
+                                ? contentState.getPlainText()
+                                : '',
+                            body_html: contentState
+                                ? convertToHTML(contentState)
+                                : '',
+                        },
+                        state: {
+                            dirty,
+                            forceFocus: !!context.forceFocus,
+                            forceUpdate: !!context.forceUpdate,
+                            cacheAdded: !!context.cacheAdded,
+                        },
+                    })
+                    // not in the mergeDeep because it would be merged with the previous contentState instead of replacing it
+                    .setIn(['state', 'contentState'], contentState)
+                    .setIn(['state', 'selectionState'], selectionState)
+                    .setIn(['newMessage', 'mention_ids'], ids)
+            )
         }
 
         case types.NEW_MESSAGE_ADD_SIGNATURE: {
             const {contentState, signature} = action
-            const newContentState = responseUtils.addSignature(contentState, signature)
+            const newContentState = responseUtils.addSignature(
+                contentState,
+                signature
+            )
 
-            return state.mergeDeep({
-                newMessage: {
-                    body_text: newContentState ? newContentState.getPlainText() : '',
-                    body_html: newContentState ? convertToHTML(newContentState) : ''
-                },
-                state: {
-                    forceUpdate: true,
-                    signatureAdded: true
-                }
-            })
+            return state
+                .mergeDeep({
+                    newMessage: {
+                        body_text: newContentState
+                            ? newContentState.getPlainText()
+                            : '',
+                        body_html: newContentState
+                            ? convertToHTML(newContentState)
+                            : '',
+                    },
+                    state: {
+                        forceUpdate: true,
+                        signatureAdded: true,
+                    },
+                })
                 .setIn(['state', 'contentState'], newContentState)
         }
 
@@ -330,36 +387,53 @@ export default function reducer(state: Map<*,*> = initialState, action: actionTy
             const receivers = _pick(action.receivers, getReceiversProperties())
             const replaceAll = action.replaceAll
 
-            const currentSource = state.getIn(['newMessage', 'source'], fromJS({})).toJS()
+            const currentSource = state
+                .getIn(['newMessage', 'source'], fromJS({}))
+                .toJS()
 
             let newReceivers = {}
 
-            if (replaceAll) { // we replace all receivers in source by passed ones
+            if (replaceAll) {
+                // we replace all receivers in source by passed ones
                 newReceivers = receivers
-            } else { // we merge existing receivers with passed ones
-                const currentReceivers = _pick(currentSource, getReceiversProperties())
+            } else {
+                // we merge existing receivers with passed ones
+                const currentReceivers = _pick(
+                    currentSource,
+                    getReceiversProperties()
+                )
                 newReceivers = _assign(currentReceivers, receivers)
             }
 
             // removing current receivers from source
-            const sourceWithoutReceivers = _omit(currentSource, getReceiversProperties())
+            const sourceWithoutReceivers = _omit(
+                currentSource,
+                getReceiversProperties()
+            )
 
             // setting new receivers in source
-            return state.setIn(['newMessage', 'source'], fromJS(_assign(sourceWithoutReceivers, newReceivers)))
+            return state.setIn(
+                ['newMessage', 'source'],
+                fromJS(_assign(sourceWithoutReceivers, newReceivers))
+            )
         }
 
         case types.NEW_MESSAGE_RESET_FROM_MESSAGE: {
-            return resetContentState(state).mergeDeep({
-                state: {
-                    cacheAdded: true,
-                    dirty: false,
-                    forceUpdate: true,
-                    forceFocus: true,
-                },
-                newMessage: fromJS(action.payload.newMessage),
-            })
+            return resetContentState(state)
+                .mergeDeep({
+                    state: {
+                        cacheAdded: true,
+                        dirty: false,
+                        forceUpdate: true,
+                        forceFocus: true,
+                    },
+                    newMessage: fromJS(action.payload.newMessage),
+                })
                 .setIn(['state', 'contentState'], action.payload.contentState)
-                .setIn(['state', 'selectionState'], SelectionState.createEmpty())
+                .setIn(
+                    ['state', 'selectionState'],
+                    SelectionState.createEmpty()
+                )
         }
 
         default:

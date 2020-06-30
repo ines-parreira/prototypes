@@ -4,17 +4,24 @@ import {fromJS} from 'immutable'
 import moment from 'moment'
 
 import * as constants from '../../../constants/event'
-import {deduplicateAuditLogEvents, shouldDeduplicateAuditLogEvents} from '../helpers'
+import {
+    deduplicateAuditLogEvents,
+    shouldDeduplicateAuditLogEvents,
+} from '../helpers'
 import {TAGS_ADDED_KEY, TAGS_REMOVED_KEY} from '../../../models/event'
 
 describe('ticket helpers', () => {
     describe('shouldDeduplicateAuditLogEvents()', () => {
         it('should return `True` because the given date is too old', () => {
-            expect(shouldDeduplicateAuditLogEvents('2019-12-10T00:00:00Z')).toBe(true)
+            expect(
+                shouldDeduplicateAuditLogEvents('2019-12-10T00:00:00Z')
+            ).toBe(true)
         })
 
         it('should return `False` because the given date is not too old', () => {
-            expect(shouldDeduplicateAuditLogEvents('2019-12-10T02:00:00Z')).toBe(false)
+            expect(
+                shouldDeduplicateAuditLogEvents('2019-12-10T02:00:00Z')
+            ).toBe(false)
         })
     })
 
@@ -22,12 +29,24 @@ describe('ticket helpers', () => {
         describe('should deduplicate events of type', () => {
             it(constants.TICKET_ASSIGNED, () => {
                 const events = fromJS([
-                    {created_datetime: 0, type: constants.TICKET_ASSIGNED, data: {assignee_user_id: 1}},
-                    {created_datetime: 1, type: constants.TICKET_ASSIGNED, data: {assignee_user_id: 1}},
+                    {
+                        created_datetime: 0,
+                        type: constants.TICKET_ASSIGNED,
+                        data: {assignee_user_id: 1},
+                    },
+                    {
+                        created_datetime: 1,
+                        type: constants.TICKET_ASSIGNED,
+                        data: {assignee_user_id: 1},
+                    },
                 ])
 
                 const expected = fromJS([
-                    {created_datetime: 0, type: constants.TICKET_ASSIGNED, data: {assignee_user_id: 1}},
+                    {
+                        created_datetime: 0,
+                        type: constants.TICKET_ASSIGNED,
+                        data: {assignee_user_id: 1},
+                    },
                 ])
 
                 expect(deduplicateAuditLogEvents(events)).toEqual(expected)
@@ -100,12 +119,24 @@ describe('ticket helpers', () => {
 
             it(constants.TICKET_TAGS_ADDED, () => {
                 const events = fromJS([
-                    {created_datetime: 0, type: constants.TICKET_TAGS_ADDED, data: {[TAGS_ADDED_KEY]: [1]}},
-                    {created_datetime: 1, type: constants.TICKET_TAGS_ADDED, data: {[TAGS_ADDED_KEY]: [1]}},
+                    {
+                        created_datetime: 0,
+                        type: constants.TICKET_TAGS_ADDED,
+                        data: {[TAGS_ADDED_KEY]: [1]},
+                    },
+                    {
+                        created_datetime: 1,
+                        type: constants.TICKET_TAGS_ADDED,
+                        data: {[TAGS_ADDED_KEY]: [1]},
+                    },
                 ])
 
                 const expected = fromJS([
-                    {created_datetime: 0, type: constants.TICKET_TAGS_ADDED, data: {[TAGS_ADDED_KEY]: [1]}},
+                    {
+                        created_datetime: 0,
+                        type: constants.TICKET_TAGS_ADDED,
+                        data: {[TAGS_ADDED_KEY]: [1]},
+                    },
                 ])
 
                 expect(deduplicateAuditLogEvents(events)).toEqual(expected)
@@ -113,14 +144,34 @@ describe('ticket helpers', () => {
 
             it(constants.TICKET_TAGS_REMOVED, () => {
                 const events = fromJS([
-                    {created_datetime: 0, type: constants.TICKET_TAGS_ADDED, data: {[TAGS_ADDED_KEY]: [1]}},
-                    {created_datetime: 1, type: constants.TICKET_TAGS_REMOVED, data: {[TAGS_REMOVED_KEY]: [1]}},
-                    {created_datetime: 2, type: constants.TICKET_TAGS_REMOVED, data: {[TAGS_REMOVED_KEY]: [1]}},
+                    {
+                        created_datetime: 0,
+                        type: constants.TICKET_TAGS_ADDED,
+                        data: {[TAGS_ADDED_KEY]: [1]},
+                    },
+                    {
+                        created_datetime: 1,
+                        type: constants.TICKET_TAGS_REMOVED,
+                        data: {[TAGS_REMOVED_KEY]: [1]},
+                    },
+                    {
+                        created_datetime: 2,
+                        type: constants.TICKET_TAGS_REMOVED,
+                        data: {[TAGS_REMOVED_KEY]: [1]},
+                    },
                 ])
 
                 const expected = fromJS([
-                    {created_datetime: 0, type: constants.TICKET_TAGS_ADDED, data: {[TAGS_ADDED_KEY]: [1]}},
-                    {created_datetime: 1, type: constants.TICKET_TAGS_REMOVED, data: {[TAGS_REMOVED_KEY]: [1]}},
+                    {
+                        created_datetime: 0,
+                        type: constants.TICKET_TAGS_ADDED,
+                        data: {[TAGS_ADDED_KEY]: [1]},
+                    },
+                    {
+                        created_datetime: 1,
+                        type: constants.TICKET_TAGS_REMOVED,
+                        data: {[TAGS_REMOVED_KEY]: [1]},
+                    },
                 ])
 
                 expect(deduplicateAuditLogEvents(events)).toEqual(expected)
@@ -128,12 +179,24 @@ describe('ticket helpers', () => {
 
             it(constants.TICKET_TEAM_ASSIGNED, () => {
                 const events = fromJS([
-                    {created_datetime: 0, type: constants.TICKET_TEAM_ASSIGNED, data: {assignee_team_id: 1}},
-                    {created_datetime: 1, type: constants.TICKET_TEAM_ASSIGNED, data: {assignee_team_id: 1}},
+                    {
+                        created_datetime: 0,
+                        type: constants.TICKET_TEAM_ASSIGNED,
+                        data: {assignee_team_id: 1},
+                    },
+                    {
+                        created_datetime: 1,
+                        type: constants.TICKET_TEAM_ASSIGNED,
+                        data: {assignee_team_id: 1},
+                    },
                 ])
 
                 const expected = fromJS([
-                    {created_datetime: 0, type: constants.TICKET_TEAM_ASSIGNED, data: {assignee_team_id: 1}},
+                    {
+                        created_datetime: 0,
+                        type: constants.TICKET_TEAM_ASSIGNED,
+                        data: {assignee_team_id: 1},
+                    },
                 ])
 
                 expect(deduplicateAuditLogEvents(events)).toEqual(expected)
@@ -141,14 +204,31 @@ describe('ticket helpers', () => {
 
             it(constants.TICKET_TEAM_UNASSIGNED, () => {
                 const events = fromJS([
-                    {created_datetime: 0, type: constants.TICKET_TEAM_ASSIGNED, data: {assignee_team_id: 1}},
-                    {created_datetime: 1, type: constants.TICKET_TEAM_UNASSIGNED},
-                    {created_datetime: 2, type: constants.TICKET_TEAM_UNASSIGNED},
+                    {
+                        created_datetime: 0,
+                        type: constants.TICKET_TEAM_ASSIGNED,
+                        data: {assignee_team_id: 1},
+                    },
+                    {
+                        created_datetime: 1,
+                        type: constants.TICKET_TEAM_UNASSIGNED,
+                    },
+                    {
+                        created_datetime: 2,
+                        type: constants.TICKET_TEAM_UNASSIGNED,
+                    },
                 ])
 
                 const expected = fromJS([
-                    {created_datetime: 0, type: constants.TICKET_TEAM_ASSIGNED, data: {assignee_team_id: 1}},
-                    {created_datetime: 1, type: constants.TICKET_TEAM_UNASSIGNED},
+                    {
+                        created_datetime: 0,
+                        type: constants.TICKET_TEAM_ASSIGNED,
+                        data: {assignee_team_id: 1},
+                    },
+                    {
+                        created_datetime: 1,
+                        type: constants.TICKET_TEAM_UNASSIGNED,
+                    },
                 ])
 
                 expect(deduplicateAuditLogEvents(events)).toEqual(expected)
@@ -169,13 +249,21 @@ describe('ticket helpers', () => {
 
             it(constants.TICKET_UNASSIGNED, () => {
                 const events = fromJS([
-                    {created_datetime: 0, type: constants.TICKET_ASSIGNED, data: {assignee_user_id: 1}},
+                    {
+                        created_datetime: 0,
+                        type: constants.TICKET_ASSIGNED,
+                        data: {assignee_user_id: 1},
+                    },
                     {created_datetime: 1, type: constants.TICKET_UNASSIGNED},
                     {created_datetime: 2, type: constants.TICKET_UNASSIGNED},
                 ])
 
                 const expected = fromJS([
-                    {created_datetime: 0, type: constants.TICKET_ASSIGNED, data: {assignee_user_id: 1}},
+                    {
+                        created_datetime: 0,
+                        type: constants.TICKET_ASSIGNED,
+                        data: {assignee_user_id: 1},
+                    },
                     {created_datetime: 1, type: constants.TICKET_UNASSIGNED},
                 ])
 
@@ -213,8 +301,16 @@ describe('ticket helpers', () => {
             describe(constants.TICKET_ASSIGNED, () => {
                 it('because ticket is assigned to someone else', () => {
                     const events = fromJS([
-                        {created_datetime: 0, type: constants.TICKET_ASSIGNED, data: {assignee_user_id: 1}},
-                        {created_datetime: 1, type: constants.TICKET_ASSIGNED, data: {assignee_user_id: 2}},
+                        {
+                            created_datetime: 0,
+                            type: constants.TICKET_ASSIGNED,
+                            data: {assignee_user_id: 1},
+                        },
+                        {
+                            created_datetime: 1,
+                            type: constants.TICKET_ASSIGNED,
+                            data: {assignee_user_id: 2},
+                        },
                     ])
 
                     expect(deduplicateAuditLogEvents(events)).toEqual(events)
@@ -222,9 +318,20 @@ describe('ticket helpers', () => {
 
                 it('because ticket is unassigned and re-assigned', () => {
                     const events = fromJS([
-                        {created_datetime: 0, type: constants.TICKET_ASSIGNED, data: {assignee_user_id: 1}},
-                        {created_datetime: 1, type: constants.TICKET_UNASSIGNED},
-                        {created_datetime: 2, type: constants.TICKET_ASSIGNED, data: {assignee_user_id: 1}},
+                        {
+                            created_datetime: 0,
+                            type: constants.TICKET_ASSIGNED,
+                            data: {assignee_user_id: 1},
+                        },
+                        {
+                            created_datetime: 1,
+                            type: constants.TICKET_UNASSIGNED,
+                        },
+                        {
+                            created_datetime: 2,
+                            type: constants.TICKET_ASSIGNED,
+                            data: {assignee_user_id: 1},
+                        },
                     ])
 
                     expect(deduplicateAuditLogEvents(events)).toEqual(events)
@@ -246,9 +353,18 @@ describe('ticket helpers', () => {
             describe(constants.TICKET_MARKED_SPAM, () => {
                 it('because ticket is unmarked as spam and marked again', () => {
                     const events = fromJS([
-                        {type: constants.TICKET_MARKED_SPAM, created_datetime: 0},
-                        {type: constants.TICKET_UNMARKED_SPAM, created_datetime: 1},
-                        {type: constants.TICKET_MARKED_SPAM, created_datetime: 2},
+                        {
+                            type: constants.TICKET_MARKED_SPAM,
+                            created_datetime: 0,
+                        },
+                        {
+                            type: constants.TICKET_UNMARKED_SPAM,
+                            created_datetime: 1,
+                        },
+                        {
+                            type: constants.TICKET_MARKED_SPAM,
+                            created_datetime: 2,
+                        },
                     ])
 
                     expect(deduplicateAuditLogEvents(events)).toEqual(events)
@@ -270,8 +386,16 @@ describe('ticket helpers', () => {
             describe(constants.TICKET_SNOOZED, () => {
                 it('because ticket is snoozed a second time, more than 5 seconds after the first time', () => {
                     const events = fromJS([
-                        {type: constants.TICKET_SNOOZED, created_datetime: moment(0).valueOf()},
-                        {type: constants.TICKET_SNOOZED, created_datetime: moment(0).add(6, 'seconds').valueOf()},
+                        {
+                            type: constants.TICKET_SNOOZED,
+                            created_datetime: moment(0).valueOf(),
+                        },
+                        {
+                            type: constants.TICKET_SNOOZED,
+                            created_datetime: moment(0)
+                                .add(6, 'seconds')
+                                .valueOf(),
+                        },
                     ])
 
                     expect(deduplicateAuditLogEvents(events)).toEqual(events)
@@ -281,8 +405,16 @@ describe('ticket helpers', () => {
             describe(constants.TICKET_TAGS_ADDED, () => {
                 it('because added tags are different', () => {
                     const events = fromJS([
-                        {created_datetime: 0, type: constants.TICKET_TAGS_ADDED, data: {[TAGS_ADDED_KEY]: [1]}},
-                        {created_datetime: 1, type: constants.TICKET_TAGS_ADDED, data: {[TAGS_ADDED_KEY]: [2]}},
+                        {
+                            created_datetime: 0,
+                            type: constants.TICKET_TAGS_ADDED,
+                            data: {[TAGS_ADDED_KEY]: [1]},
+                        },
+                        {
+                            created_datetime: 1,
+                            type: constants.TICKET_TAGS_ADDED,
+                            data: {[TAGS_ADDED_KEY]: [2]},
+                        },
                     ])
 
                     expect(deduplicateAuditLogEvents(events)).toEqual(events)
@@ -290,13 +422,29 @@ describe('ticket helpers', () => {
 
                 it('because added tags in second event contain some new tags', () => {
                     const events = fromJS([
-                        {created_datetime: 0, type: constants.TICKET_TAGS_ADDED, data: {[TAGS_ADDED_KEY]: [1]}},
-                        {created_datetime: 1, type: constants.TICKET_TAGS_ADDED, data: {[TAGS_ADDED_KEY]: [1, 2]}},
+                        {
+                            created_datetime: 0,
+                            type: constants.TICKET_TAGS_ADDED,
+                            data: {[TAGS_ADDED_KEY]: [1]},
+                        },
+                        {
+                            created_datetime: 1,
+                            type: constants.TICKET_TAGS_ADDED,
+                            data: {[TAGS_ADDED_KEY]: [1, 2]},
+                        },
                     ])
 
                     const expected = fromJS([
-                        {created_datetime: 0, type: constants.TICKET_TAGS_ADDED, data: {[TAGS_ADDED_KEY]: [1]}},
-                        {created_datetime: 1, type: constants.TICKET_TAGS_ADDED, data: {[TAGS_ADDED_KEY]: [2]}},
+                        {
+                            created_datetime: 0,
+                            type: constants.TICKET_TAGS_ADDED,
+                            data: {[TAGS_ADDED_KEY]: [1]},
+                        },
+                        {
+                            created_datetime: 1,
+                            type: constants.TICKET_TAGS_ADDED,
+                            data: {[TAGS_ADDED_KEY]: [2]},
+                        },
                     ])
 
                     expect(deduplicateAuditLogEvents(events)).toEqual(expected)
@@ -306,9 +454,21 @@ describe('ticket helpers', () => {
             describe(constants.TICKET_TAGS_REMOVED, () => {
                 it('because removed tags are different', () => {
                     const events = fromJS([
-                        {created_datetime: 0, type: constants.TICKET_TAGS_ADDED, data: {[TAGS_ADDED_KEY]: [1, 2]}},
-                        {created_datetime: 1, type: constants.TICKET_TAGS_REMOVED, data: {[TAGS_REMOVED_KEY]: [1]}},
-                        {created_datetime: 2, type: constants.TICKET_TAGS_REMOVED, data: {[TAGS_REMOVED_KEY]: [2]}},
+                        {
+                            created_datetime: 0,
+                            type: constants.TICKET_TAGS_ADDED,
+                            data: {[TAGS_ADDED_KEY]: [1, 2]},
+                        },
+                        {
+                            created_datetime: 1,
+                            type: constants.TICKET_TAGS_REMOVED,
+                            data: {[TAGS_REMOVED_KEY]: [1]},
+                        },
+                        {
+                            created_datetime: 2,
+                            type: constants.TICKET_TAGS_REMOVED,
+                            data: {[TAGS_REMOVED_KEY]: [2]},
+                        },
                     ])
 
                     expect(deduplicateAuditLogEvents(events)).toEqual(events)
@@ -316,15 +476,39 @@ describe('ticket helpers', () => {
 
                 it('because removed tags in second event contain some new tags', () => {
                     const events = fromJS([
-                        {created_datetime: 0, type: constants.TICKET_TAGS_ADDED, data: {[TAGS_ADDED_KEY]: [1, 2]}},
-                        {created_datetime: 1, type: constants.TICKET_TAGS_REMOVED, data: {[TAGS_REMOVED_KEY]: [1]}},
-                        {created_datetime: 2, type: constants.TICKET_TAGS_REMOVED, data: {[TAGS_REMOVED_KEY]: [1, 2]}},
+                        {
+                            created_datetime: 0,
+                            type: constants.TICKET_TAGS_ADDED,
+                            data: {[TAGS_ADDED_KEY]: [1, 2]},
+                        },
+                        {
+                            created_datetime: 1,
+                            type: constants.TICKET_TAGS_REMOVED,
+                            data: {[TAGS_REMOVED_KEY]: [1]},
+                        },
+                        {
+                            created_datetime: 2,
+                            type: constants.TICKET_TAGS_REMOVED,
+                            data: {[TAGS_REMOVED_KEY]: [1, 2]},
+                        },
                     ])
 
                     const expected = fromJS([
-                        {created_datetime: 0, type: constants.TICKET_TAGS_ADDED, data: {[TAGS_ADDED_KEY]: [1, 2]}},
-                        {created_datetime: 1, type: constants.TICKET_TAGS_REMOVED, data: {[TAGS_REMOVED_KEY]: [1]}},
-                        {created_datetime: 2, type: constants.TICKET_TAGS_REMOVED, data: {[TAGS_REMOVED_KEY]: [2]}},
+                        {
+                            created_datetime: 0,
+                            type: constants.TICKET_TAGS_ADDED,
+                            data: {[TAGS_ADDED_KEY]: [1, 2]},
+                        },
+                        {
+                            created_datetime: 1,
+                            type: constants.TICKET_TAGS_REMOVED,
+                            data: {[TAGS_REMOVED_KEY]: [1]},
+                        },
+                        {
+                            created_datetime: 2,
+                            type: constants.TICKET_TAGS_REMOVED,
+                            data: {[TAGS_REMOVED_KEY]: [2]},
+                        },
                     ])
 
                     expect(deduplicateAuditLogEvents(events)).toEqual(expected)
@@ -334,8 +518,16 @@ describe('ticket helpers', () => {
             describe(constants.TICKET_TEAM_ASSIGNED, () => {
                 it('because ticket is assigned to someone else', () => {
                     const events = fromJS([
-                        {created_datetime: 0, type: constants.TICKET_TEAM_ASSIGNED, data: {assignee_team_id: 1}},
-                        {created_datetime: 1, type: constants.TICKET_TEAM_ASSIGNED, data: {assignee_team_id: 2}},
+                        {
+                            created_datetime: 0,
+                            type: constants.TICKET_TEAM_ASSIGNED,
+                            data: {assignee_team_id: 1},
+                        },
+                        {
+                            created_datetime: 1,
+                            type: constants.TICKET_TEAM_ASSIGNED,
+                            data: {assignee_team_id: 2},
+                        },
                     ])
 
                     expect(deduplicateAuditLogEvents(events)).toEqual(events)
@@ -343,9 +535,20 @@ describe('ticket helpers', () => {
 
                 it('because ticket is unassigned and re-assigned', () => {
                     const events = fromJS([
-                        {created_datetime: 0, type: constants.TICKET_TEAM_ASSIGNED, data: {assignee_team_id: 1}},
-                        {created_datetime: 1, type: constants.TICKET_TEAM_UNASSIGNED},
-                        {created_datetime: 2, type: constants.TICKET_TEAM_ASSIGNED, data: {assignee_team_id: 1}},
+                        {
+                            created_datetime: 0,
+                            type: constants.TICKET_TEAM_ASSIGNED,
+                            data: {assignee_team_id: 1},
+                        },
+                        {
+                            created_datetime: 1,
+                            type: constants.TICKET_TEAM_UNASSIGNED,
+                        },
+                        {
+                            created_datetime: 2,
+                            type: constants.TICKET_TEAM_ASSIGNED,
+                            data: {assignee_team_id: 1},
+                        },
                     ])
 
                     expect(deduplicateAuditLogEvents(events)).toEqual(events)
@@ -355,10 +558,24 @@ describe('ticket helpers', () => {
             describe(constants.TICKET_TEAM_UNASSIGNED, () => {
                 it('because ticket is assigned and re-unassigned', () => {
                     const events = fromJS([
-                        {created_datetime: 0, type: constants.TICKET_TEAM_ASSIGNED, data: {assignee_team_id: 1}},
-                        {created_datetime: 1, type: constants.TICKET_TEAM_UNASSIGNED},
-                        {created_datetime: 2, type: constants.TICKET_TEAM_ASSIGNED, data: {assignee_team_id: 1}},
-                        {created_datetime: 3, type: constants.TICKET_TEAM_UNASSIGNED},
+                        {
+                            created_datetime: 0,
+                            type: constants.TICKET_TEAM_ASSIGNED,
+                            data: {assignee_team_id: 1},
+                        },
+                        {
+                            created_datetime: 1,
+                            type: constants.TICKET_TEAM_UNASSIGNED,
+                        },
+                        {
+                            created_datetime: 2,
+                            type: constants.TICKET_TEAM_ASSIGNED,
+                            data: {assignee_team_id: 1},
+                        },
+                        {
+                            created_datetime: 3,
+                            type: constants.TICKET_TEAM_UNASSIGNED,
+                        },
                     ])
 
                     expect(deduplicateAuditLogEvents(events)).toEqual(events)
@@ -380,10 +597,24 @@ describe('ticket helpers', () => {
             describe(constants.TICKET_UNASSIGNED, () => {
                 it('because ticket is assigned and re-unassigned', () => {
                     const events = fromJS([
-                        {created_datetime: 0, type: constants.TICKET_ASSIGNED, data: {assignee_user_id: 1}},
-                        {created_datetime: 1, type: constants.TICKET_UNASSIGNED},
-                        {created_datetime: 2, type: constants.TICKET_ASSIGNED, data: {assignee_user_id: 1}},
-                        {created_datetime: 3, type: constants.TICKET_UNASSIGNED},
+                        {
+                            created_datetime: 0,
+                            type: constants.TICKET_ASSIGNED,
+                            data: {assignee_user_id: 1},
+                        },
+                        {
+                            created_datetime: 1,
+                            type: constants.TICKET_UNASSIGNED,
+                        },
+                        {
+                            created_datetime: 2,
+                            type: constants.TICKET_ASSIGNED,
+                            data: {assignee_user_id: 1},
+                        },
+                        {
+                            created_datetime: 3,
+                            type: constants.TICKET_UNASSIGNED,
+                        },
                     ])
 
                     expect(deduplicateAuditLogEvents(events)).toEqual(events)
@@ -393,9 +624,18 @@ describe('ticket helpers', () => {
             describe(constants.TICKET_UNMARKED_SPAM, () => {
                 it('because ticket is marked as spam and re-unmarked', () => {
                     const events = fromJS([
-                        {created_datetime: 0, type: constants.TICKET_UNMARKED_SPAM},
-                        {created_datetime: 1, type: constants.TICKET_MARKED_SPAM},
-                        {created_datetime: 2, type: constants.TICKET_UNMARKED_SPAM},
+                        {
+                            created_datetime: 0,
+                            type: constants.TICKET_UNMARKED_SPAM,
+                        },
+                        {
+                            created_datetime: 1,
+                            type: constants.TICKET_MARKED_SPAM,
+                        },
+                        {
+                            created_datetime: 2,
+                            type: constants.TICKET_UNMARKED_SPAM,
+                        },
                     ])
 
                     expect(deduplicateAuditLogEvents(events)).toEqual(events)

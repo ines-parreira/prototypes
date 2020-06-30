@@ -4,7 +4,7 @@ import _debounce from 'lodash/debounce'
 import moment from 'moment'
 import React from 'react'
 import {connect} from 'react-redux'
-import { Button, Popover, PopoverBody } from 'reactstrap'
+import {Button, Popover, PopoverBody} from 'reactstrap'
 
 import _upperFirst from 'lodash/upperFirst'
 
@@ -52,7 +52,7 @@ export class StatsFilters extends React.Component<Props, State> {
         this.state = {
             tags: props.tags,
             integrations: props.integrations,
-            descriptionPopoverOpen: false
+            descriptionPopoverOpen: false,
         }
     }
 
@@ -64,15 +64,14 @@ export class StatsFilters extends React.Component<Props, State> {
 
     _onSearchTags = _debounce((search) => {
         const field = fromJS({
-            filter: {type: 'tag'}
+            filter: {type: 'tag'},
         })
 
-        this.props.fieldEnumSearch(field, search)
-            .then((data) => {
-                this.setState({
-                    tags: data.toJS(),
-                })
+        this.props.fieldEnumSearch(field, search).then((data) => {
+            this.setState({
+                tags: data.toJS(),
             })
+        })
     }, 300)
 
     _makeInputControl = (name: string) => {
@@ -86,14 +85,16 @@ export class StatsFilters extends React.Component<Props, State> {
 
     _toggleDescriptionPopover = () => {
         this.setState({
-            descriptionPopoverOpen: !this.state.descriptionPopoverOpen
+            descriptionPopoverOpen: !this.state.descriptionPopoverOpen,
         })
     }
 
     _renderFilterInput = (filterType: string) => {
         const {config, filters} = this.props
         const filterValue = filters.get(filterType)
-        const filterConfig = config.get('filters').find((filter) => filter.get('type') === filterType)
+        const filterConfig = config
+            .get('filters')
+            .find((filter) => filter.get('type') === filterType)
 
         switch (filterType) {
             case 'score': {
@@ -104,23 +105,31 @@ export class StatsFilters extends React.Component<Props, State> {
                 return (
                     <SearchableSelectField
                         key={filterType}
-                        plural='scores'
-                        singular='score'
-                        items={
-                            Array.from({length: maxValue - minValue + 1}, (value, index) => {
-                                const scoreValue = reverse ? (maxValue - index) : (index + minValue)
+                        plural="scores"
+                        singular="score"
+                        items={Array.from(
+                            {length: maxValue - minValue + 1},
+                            (value, index) => {
+                                const scoreValue = reverse
+                                    ? maxValue - index
+                                    : index + minValue
                                 switch (variant) {
                                     case 'star':
                                         return {
                                             value: scoreValue.toString(),
-                                            label: Array(minValue + scoreValue - 1).fill('★').join('') +
-                                                Array(maxValue - scoreValue).fill('☆').join('')
+                                            label:
+                                                Array(minValue + scoreValue - 1)
+                                                    .fill('★')
+                                                    .join('') +
+                                                Array(maxValue - scoreValue)
+                                                    .fill('☆')
+                                                    .join(''),
                                         }
                                     default:
                                         return {}
                                 }
-                            })
-                        }
+                            }
+                        )}
                         input={this._makeInputControl('score')}
                     />
                 )
@@ -132,9 +141,13 @@ export class StatsFilters extends React.Component<Props, State> {
                         key={filterType}
                         plural="channels"
                         singular="channel"
-                        items={options
-                            ? this.props.channels.filter((channel) => options.includes(channel.value))
-                            : this.props.channels}
+                        items={
+                            options
+                                ? this.props.channels.filter((channel) =>
+                                      options.includes(channel.value)
+                                  )
+                                : this.props.channels
+                        }
                         input={this._makeInputControl('channels')}
                     />
                 )
@@ -145,12 +158,13 @@ export class StatsFilters extends React.Component<Props, State> {
                         key={filterType}
                         plural="tags"
                         singular="tag"
-                        items={this.state.tags.map((tag) => ({label: tag.name, value: tag.id}))}
+                        items={this.state.tags.map((tag) => ({
+                            label: tag.name,
+                            value: tag.id,
+                        }))}
                         input={this._makeInputControl('tags')}
                         onSearch={this._onSearchTags}
-                        dropdownMenu={(props) => (
-                            <TagDropdownMenu {...props}/>
-                        )}
+                        dropdownMenu={(props) => <TagDropdownMenu {...props} />}
                     />
                 )
             case 'agents':
@@ -165,18 +179,21 @@ export class StatsFilters extends React.Component<Props, State> {
                 )
             case 'integrations': {
                 const options = filterConfig.get('options')
-                const integrations = (
-                    options
-                        ? this.props.integrations.filter((integration) => options.includes(integration.type))
-                        : this.props.integrations
-                )
+                const integrations = options
+                    ? this.props.integrations.filter((integration) =>
+                          options.includes(integration.type)
+                      )
+                    : this.props.integrations
 
                 return (
                     <SearchableSelectField
                         key={filterType}
                         plural="integrations"
                         singular="integration"
-                        items={integrations.map((integration) => ({label: integration.name, value: integration.id}))}
+                        items={integrations.map((integration) => ({
+                            label: integration.name,
+                            value: integration.id,
+                        }))}
                         input={this._makeInputControl('integrations')}
                         multiple={false}
                         required
@@ -187,19 +204,25 @@ export class StatsFilters extends React.Component<Props, State> {
                 return (
                     <PeriodPicker
                         key={filterType}
-                        startDatetime={moment(filterValue.get('start_datetime'))}
+                        startDatetime={moment(
+                            filterValue.get('start_datetime')
+                        )}
                         endDatetime={moment(filterValue.get('end_datetime'))}
                         onChange={this._handleFilterChange('period')}
                     />
                 )
             default:
-                console.error(`[stats] Cannot render input for this unknown filter type: ${filterType}`)
+                console.error(
+                    `[stats] Cannot render input for this unknown filter type: ${filterType}`
+                )
         }
     }
 
     render() {
         const {config} = this.props
-        const configFilterTypes = config.get('filters').map((filter) => filter.get('type'))
+        const configFilterTypes = config
+            .get('filters')
+            .map((filter) => filter.get('type'))
         let pageTitle = config.get('name')
 
         if (config.get('description')) {
@@ -212,7 +235,8 @@ export class StatsFilters extends React.Component<Props, State> {
                         color="link"
                         onClick={this._toggleDescriptionPopover}
                     >
-                        <i className="material-icons">info_outline</i> Learn more
+                        <i className="material-icons">info_outline</i> Learn
+                        more
                     </Button>
                     <Popover
                         placement="auto"
@@ -220,19 +244,22 @@ export class StatsFilters extends React.Component<Props, State> {
                         isOpen={this.state.descriptionPopoverOpen}
                         toggle={this._toggleDescriptionPopover}
                     >
-                        <PopoverBody dangerouslySetInnerHTML={{__html: config.get('description')}}/>
+                        <PopoverBody
+                            dangerouslySetInnerHTML={{
+                                __html: config.get('description'),
+                            }}
+                        />
                     </Popover>
                 </h1>
             )
         }
 
         return (
-            <PageHeader
-                title={pageTitle}
-                className="mb-0"
-            >
+            <PageHeader title={pageTitle} className="mb-0">
                 <div className="d-flex flex-wrap float-right">
-                    {configFilterTypes.map((filterType) => this._renderFilterInput(filterType))}
+                    {configFilterTypes.map((filterType) =>
+                        this._renderFilterInput(filterType)
+                    )}
                 </div>
             </PageHeader>
         )
@@ -250,18 +277,20 @@ const mapStateToProps = (state: Object, props: Props) => {
             label: _upperFirst(channel.replace('-', ' ')),
             value: channel,
         })),
-        agents: getAgents(state).map((agent) => ({
-            label: getDisplayName(agent),
-            value: agent.get('id'),
-        })).toJS(),
+        agents: getAgents(state)
+            .map((agent) => ({
+                label: getDisplayName(agent),
+                value: agent.get('id'),
+            }))
+            .toJS(),
         filters: getViewFilters(props.params.view)(state),
-        config
+        config,
     }
 }
 
 const actions = {
     mergeStatsFilters,
-    fieldEnumSearch
+    fieldEnumSearch,
 }
 
 export default withRouter(connect(mapStateToProps, actions)(StatsFilters))

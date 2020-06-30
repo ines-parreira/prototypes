@@ -14,54 +14,41 @@ describe('current account reducers', () => {
     it('update account', () => {
         // start
         expect(
-            reducer(
-                initialState,
-                {
-                    type: types.UPDATE_ACCOUNT_START,
-                }
-            ).toJS()
+            reducer(initialState, {
+                type: types.UPDATE_ACCOUNT_START,
+            }).toJS()
         ).toMatchSnapshot()
 
         // success
         expect(
-            reducer(
-                initialState,
-                {
-                    type: types.UPDATE_ACCOUNT_SUCCESS,
-                    resp: fromJS({settings: [{id: 10}]}),
-                }
-            ).toJS()
+            reducer(initialState, {
+                type: types.UPDATE_ACCOUNT_SUCCESS,
+                resp: fromJS({settings: [{id: 10}]}),
+            }).toJS()
         ).toMatchSnapshot()
 
         // fail
         expect(
-            reducer(
-                initialState,
-                {
-                    type: types.UPDATE_ACCOUNT_ERROR,
-                }
-            ).toJS()
+            reducer(initialState, {
+                type: types.UPDATE_ACCOUNT_ERROR,
+            }).toJS()
         ).toMatchSnapshot()
     })
 
     it('update setting', () => {
         expect(
-            reducer(
-                initialState,
-                {
-                    type: types.UPDATE_ACCOUNT_SETTING,
-                    setting: {hello: 'world'},
-                }
-            ).toJS()
+            reducer(initialState, {
+                type: types.UPDATE_ACCOUNT_SETTING,
+                setting: {hello: 'world'},
+            }).toJS()
         ).toMatchSnapshot()
 
         // update
         expect(
             reducer(
-                initialState
-                    .mergeDeep({
-                        settings: [{id: 1, hello: 'goodbye'}],
-                    }),
+                initialState.mergeDeep({
+                    settings: [{id: 1, hello: 'goodbye'}],
+                }),
                 {
                     type: types.UPDATE_ACCOUNT_SETTING,
                     setting: {id: 1, hello: 'world'},
@@ -74,13 +61,10 @@ describe('current account reducers', () => {
     it('update account owner', (done) => {
         // success
         expect(
-            reducer(
-                initialState,
-                {
-                    type: types.UPDATE_ACCOUNT_OWNER_SUCCESS,
-                    userId: 1,
-                }
-            ).toJS()
+            reducer(initialState, {
+                type: types.UPDATE_ACCOUNT_OWNER_SUCCESS,
+                userId: 1,
+            }).toJS()
         ).toMatchSnapshot()
         done()
     })
@@ -97,7 +81,10 @@ describe('current account reducers', () => {
         })
 
         it('with an existing subscription', () => {
-            const state = initialState.set('current_subscription', fromJS({plan: 'advanced-usd-1'}))
+            const state = initialState.set(
+                'current_subscription',
+                fromJS({plan: 'advanced-usd-1'})
+            )
             expect(
                 reducer(state, {
                     type: types.UPDATE_SUBSCRIPTION_SUCCESS,
@@ -110,12 +97,12 @@ describe('current account reducers', () => {
     describe('SET_CURRENT_SUBSCRIPTION', () => {
         const subscription = fromJS({
             plan: 'basic-usd-1',
-            status: 'active'
+            status: 'active',
         })
         it('should set the credit card (initial state).', () => {
             const action = {
                 type: types.SET_CURRENT_SUBSCRIPTION,
-                subscription
+                subscription,
             }
             expect(reducer(initialState, action)).toMatchSnapshot()
         })
@@ -123,21 +110,19 @@ describe('current account reducers', () => {
         it('should set the credit card and override the previous one.', () => {
             const action = {
                 type: types.SET_CURRENT_SUBSCRIPTION,
-                subscription
+                subscription,
             }
             const state = reducer(initialState, action)
-            const newSubscription =  {
+            const newSubscription = {
                 plan: 'advanced-usd-2',
-                staus: 'past_due'
+                staus: 'past_due',
             }
 
             const newAction = {
                 type: types.SET_CURRENT_SUBSCRIPTION,
-                subscription: newSubscription
+                subscription: newSubscription,
             }
             expect(reducer(state, newAction)).toMatchSnapshot()
-
         })
     })
-
 })

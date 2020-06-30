@@ -20,8 +20,8 @@ describe('rules actions', () => {
             store = mockStore({
                 rules: fromJS({
                     rules: {},
-                    openedRules: []
-                })
+                    openedRules: [],
+                }),
             })
         })
 

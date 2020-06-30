@@ -17,7 +17,7 @@ type Props = {
     isUpdating?: boolean,
     showFooter?: boolean,
     onClick?: Function,
-    className?: ?string
+    className?: ?string,
 }
 
 export class Plan extends React.Component<Props> {
@@ -27,71 +27,97 @@ export class Plan extends React.Component<Props> {
         isTrialing: false,
         isUpdating: false,
         showFooter: true,
-        className: null
+        className: null,
     }
 
     render() {
         const {
-            className, plan, isUpdating, isCurrentPlan, isTrialing, isFeatured, features, showFooter, callToAction
+            className,
+            plan,
+            isUpdating,
+            isCurrentPlan,
+            isTrialing,
+            isFeatured,
+            features,
+            showFooter,
+            callToAction,
         } = this.props
         const planSentencePrefix = isTrialing ? 'Choose' : 'Switch to'
         const costMultiplier = 100
-        const costPerTicket = (plan.get('cost_per_ticket') * costMultiplier).toFixed(2)
+        const costPerTicket = (
+            plan.get('cost_per_ticket') * costMultiplier
+        ).toFixed(2)
         const planName = plan.get('name')
         const planInterval = plan.get('interval') === 'month' ? 'mo' : 'yr'
-        const tooltipId = `additional-tickets-tooltip-${planName.replace(/\s/g, '')}`
+        const tooltipId = `additional-tickets-tooltip-${planName.replace(
+            /\s/g,
+            ''
+        )}`
 
         return (
             <Card
-                className={classnames('plan', `plan-${planName}`, className, {featured: isFeatured})}
+                className={classnames('plan', `plan-${planName}`, className, {
+                    featured: isFeatured,
+                })}
                 outline
             >
-                <CardHeader className={classnames('plan-header', {'featured-header': isFeatured})}>
+                <CardHeader
+                    className={classnames('plan-header', {
+                        'featured-header': isFeatured,
+                    })}
+                >
                     {isFeatured && (
-                        <div className="featured-header-title">Recommended Plan</div>
+                        <div className="featured-header-title">
+                            Recommended Plan
+                        </div>
                     )}
                     <div className="header-text">
                         <strong>{planName}</strong>
 
                         {plan.get('amount') && (
                             <span className="float-right">
-                                {plan.get('currencySign')}{plan.get('amount')}/{planInterval}
+                                {plan.get('currencySign')}
+                                {plan.get('amount')}/{planInterval}
                             </span>
                         )}
                     </div>
                 </CardHeader>
                 <CardBody>
-                    {features ? features : (
+                    {features ? (
+                        features
+                    ) : (
                         <ul>
                             <li>
                                 <i className="material-icons feature-icon">
                                     all_inclusive
-                                </i>
-                                {' '}
+                                </i>{' '}
                                 <strong>Unlimited</strong> users
                             </li>
                             <li>
                                 <i className="material-icons feature-icon">
                                     playlist_add_check
-                                </i>
-                                {' '}
-                                <strong>{plan.get('free_tickets')}</strong> tickets included
+                                </i>{' '}
+                                <strong>{plan.get('free_tickets')}</strong>{' '}
+                                tickets included
                             </li>
                             <li>
                                 <i className="material-icons feature-icon">
                                     playlist_add
-                                </i>
-                                {' '}
+                                </i>{' '}
                                 <strong>
-                                    + {plan.get('currencySign')}{costPerTicket}
-                                </strong> per {costMultiplier} tickets
-                                {' '}
+                                    + {plan.get('currencySign')}
+                                    {costPerTicket}
+                                </strong>{' '}
+                                per {costMultiplier} tickets{' '}
                                 <a id={tooltipId}>
-                                    <i className="material-icons text-muted">info_outline</i>
+                                    <i className="material-icons text-muted">
+                                        info_outline
+                                    </i>
                                 </a>
                                 <Tooltip target={tooltipId}>
-                                    If you reply to more tickets than included in your plan
-                                    this is the additional cost per 100 tickets.
+                                    If you reply to more tickets than included
+                                    in your plan this is the additional cost per
+                                    100 tickets.
                                 </Tooltip>
                             </li>
                         </ul>
@@ -99,18 +125,26 @@ export class Plan extends React.Component<Props> {
                 </CardBody>
                 {showFooter && (
                     <CardFooter>
-                        {callToAction ? callToAction : (
+                        {callToAction ? (
+                            callToAction
+                        ) : (
                             <Button
-                                className={classnames({'btn-loading': isUpdating})}
-                                color='link'
-                                disabled={!isTrialing && (isCurrentPlan || isUpdating)}
+                                className={classnames({
+                                    'btn-loading': isUpdating,
+                                })}
+                                color="link"
+                                disabled={
+                                    !isTrialing && (isCurrentPlan || isUpdating)
+                                }
                                 onClick={this.props.onClick}
                             >
-                                {isTrialing ? (
-                                    `Choose ${plan.get('name')} plan`
-                                ) : (
-                                    isCurrentPlan ? 'Your current plan' : `${planSentencePrefix} ${plan.get('name')} plan`
-                                )}
+                                {isTrialing
+                                    ? `Choose ${plan.get('name')} plan`
+                                    : isCurrentPlan
+                                    ? 'Your current plan'
+                                    : `${planSentencePrefix} ${plan.get(
+                                          'name'
+                                      )} plan`}
                             </Button>
                         )}
                     </CardFooter>

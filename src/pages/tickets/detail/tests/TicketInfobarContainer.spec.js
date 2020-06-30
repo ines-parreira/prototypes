@@ -27,31 +27,37 @@ describe('TicketInfobarContainer component', () => {
             isActive: _noop,
 
             params: {
-                ticketId: 'new'
+                ticketId: 'new',
             },
             location: {
-                query: {}
+                query: {},
             },
         },
         route: {},
     }
 
     it('should render infobar for new ticket', () => {
-        const component = shallow(<TicketInfobarContainer {...minProps} />).dive().dive()
+        const component = shallow(<TicketInfobarContainer {...minProps} />)
+            .dive()
+            .dive()
         expect(component).toMatchSnapshot()
     })
 
     it('should disable widget editing new tickets without customer', () => {
-        const component = shallow(<TicketInfobarContainer {...minProps} />).dive().dive()
+        const component = shallow(<TicketInfobarContainer {...minProps} />)
+            .dive()
+            .dive()
 
         expect(component.prop('customer')).toBeImmutable(fromJS({}))
     })
 
     it('should allow widget editing new tickets with customer', () => {
         const ticket = fromJS({
-            customer: {name: 'Pizza Pepperoni'}
+            customer: {name: 'Pizza Pepperoni'},
         })
-        const component = shallow(<TicketInfobarContainer {...minProps} />).dive().dive()
+        const component = shallow(<TicketInfobarContainer {...minProps} />)
+            .dive()
+            .dive()
         component.setProps({ticket})
 
         expect(component.prop('customer')).toBeImmutable(ticket.get('customer'))

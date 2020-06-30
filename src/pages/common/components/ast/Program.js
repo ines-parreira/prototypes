@@ -5,11 +5,10 @@ import {List} from 'immutable'
 import {Statement} from './statements'
 import {AddActionOrIfStatement} from './operations'
 
-
 type ProgramType = {
     rule: Object,
     actions: Object,
-    body: Array<*>
+    body: Array<*>,
 }
 
 export default class Program extends React.Component<ProgramType> {
@@ -26,30 +25,26 @@ export default class Program extends React.Component<ProgramType> {
                         title="THEN"
                         depth={0}
                     />
-                    {
-                        !!body && body.length > 0 && (
-                            <div className="Program">
-                                <div className="BlockStatement">
-                                    {
-                                        body.map((statement, key) => (
-                                            <div
-                                                key={key}
-                                                className="BlockStatementItem"
-                                            >
-                                                <Statement
-                                                    {...statement}
-                                                    parent={List(['body', key])}
-                                                    rule={rule}
-                                                    actions={actions}
-                                                    depth={1}
-                                                />
-                                            </div>
-                                        ))
-                                    }
-                                </div>
+                    {!!body && body.length > 0 && (
+                        <div className="Program">
+                            <div className="BlockStatement">
+                                {body.map((statement, key) => (
+                                    <div
+                                        key={key}
+                                        className="BlockStatementItem"
+                                    >
+                                        <Statement
+                                            {...statement}
+                                            parent={List(['body', key])}
+                                            rule={rule}
+                                            actions={actions}
+                                            depth={1}
+                                        />
+                                    </div>
+                                ))}
                             </div>
-                        )
-                    }
+                        </div>
+                    )}
                 </div>
             </div>
         )

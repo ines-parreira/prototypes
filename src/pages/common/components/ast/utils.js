@@ -1,9 +1,11 @@
 import {fromJS, List} from 'immutable'
 
 import {ACTION_DEFAULT_STATE} from '../../../../state/rules/constants'
-import {updateCallExpression, getObjectExpression} from '../../../../state/rules/utils'
+import {
+    updateCallExpression,
+    getObjectExpression,
+} from '../../../../state/rules/utils'
 import {getCode, getAST, toJS, toImmutable} from '../../../../utils'
-
 
 export const BASIC_PADDING = 59
 export const PADDING_STEP = 15
@@ -16,7 +18,6 @@ export const PADDING_STEP = 15
 export function computeLeftPadding(depth: number) {
     return `${BASIC_PADDING + depth * PADDING_STEP}px`
 }
-
 
 /* Given a WrappingNode construct a list that contains the path of all the leaves inside the tree.
 
@@ -44,7 +45,8 @@ export const getSyntaxTreeLeaves = (syntaxTree) => {
             return List([syntaxTree.value])
         case 'MemberExpression':
             return getSyntaxTreeLeaves(syntaxTree.object).concat(
-                getSyntaxTreeLeaves(syntaxTree.property))
+                getSyntaxTreeLeaves(syntaxTree.property)
+            )
         default:
             throw Error('Unknown type', syntaxTree)
     }
@@ -70,20 +72,20 @@ export const updateCodeAst = (schemas, ast, path, value, operation) => {
         // Do the updates only in the IfStatement.test
         if (immutablePath.contains('test')) {
             // generate a new CallExpression based on changes and schemas
-            newAst = updateCallExpression(
-                newAst,
-                immutablePath,
-                schemas
-            )
+            newAst = updateCallExpression(newAst, immutablePath, schemas)
         } else {
             // Update the arguments for actions when action name is updated
             const argumentsIndex = immutablePath.lastIndexOf('arguments')
             const index2 = immutablePath.lastIndexOf(0)
 
             // We check if this update, edit the first argument of a CallExpression
-            if (~argumentsIndex && ~index2 && (index2 - argumentsIndex) === 1) {
-                const pathParentCallExpression = immutablePath.setSize(argumentsIndex)
-                const calleeName = newAst.getIn(pathParentCallExpression.push('callee', 'name'))
+            if (~argumentsIndex && ~index2 && index2 - argumentsIndex === 1) {
+                const pathParentCallExpression = immutablePath.setSize(
+                    argumentsIndex
+                )
+                const calleeName = newAst.getIn(
+                    pathParentCallExpression.push('callee', 'name')
+                )
 
                 if (calleeName === 'Action') {
                     // We override the second argument with the default value of the new action type
@@ -117,12 +119,18 @@ export const updateCodeAst = (schemas, ast, path, value, operation) => {
          *     }
          */
 
-        if ((valueP === undefined) && (immutablePath.get(immutablePath.size - 2) === 'alternate')) {
+        if (
+            valueP === undefined &&
+            immutablePath.get(immutablePath.size - 2) === 'alternate'
+        ) {
             const pathElse = immutablePath.pop()
-            newAst = immutableAst.setIn(pathElse.toJS(), fromJS({
-                type: 'BlockStatement',
-                body: [value],
-            }))
+            newAst = immutableAst.setIn(
+                pathElse.toJS(),
+                fromJS({
+                    type: 'BlockStatement',
+                    body: [value],
+                })
+            )
         } else {
             newAst = immutableAst.updateIn(immutablePath.toJS(), (list) => {
                 // add action at the beginning of the body (more readable for users)
@@ -138,7 +146,9 @@ export const updateCodeAst = (schemas, ast, path, value, operation) => {
     if (operation === 'DELETE') {
         const lastIndex = immutablePath.last()
         const pathNew = immutablePath.pop()
-        newAst = immutableAst.updateIn(pathNew.toJS(), (list) => list.delete(lastIndex))
+        newAst = immutableAst.updateIn(pathNew.toJS(), (list) =>
+            list.delete(lastIndex)
+        )
     }
 
     // Add logical AND operation in TEST block of IFSTATEMENT.
@@ -173,7 +183,16 @@ export const updateCodeAst = (schemas, ast, path, value, operation) => {
     }
 
     if (operation === 'UPDATE_IF_STATEMENT') {
-        newAst = immutableAst.setIn(immutablePath, fromJS(Object.assign({}, ...immutableAst.getIn(immutablePath).toJS(), value)))
+        newAst = immutableAst.setIn(
+            immutablePath,
+            fromJS(
+                Object.assign(
+                    {},
+                    ...immutableAst.getIn(immutablePath).toJS(),
+                    value
+                )
+            )
+        )
     }
 
     // fallback if new ast is null/undefined

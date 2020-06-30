@@ -10,22 +10,21 @@ import Avatar from '../../../common/components/Avatar'
 
 import css from './Row.less'
 
-
 type Props = {
     member: Map<*, *>,
     isAccountOwner: boolean,
     deleteTeamMember: () => Promise<*>,
     select: (memberId: number) => void,
-    isSelected: boolean
+    isSelected: boolean,
 }
 
 type State = {
-    isDeleting: boolean
+    isDeleting: boolean,
 }
 
 export default class Row extends Component<Props, State> {
     state = {
-        isDeleting: false
+        isDeleting: false,
     }
 
     _deleteTeamMember = (event: SyntheticEvent<*>) => {
@@ -41,10 +40,7 @@ export default class Row extends Component<Props, State> {
         const isDeleting = this.state.isDeleting
         const editLink = `/app/settings/users/${member.get('id')}`
         return (
-            <Link
-                to={editLink}
-                className={css.component}
-            >
+            <Link to={editLink} className={css.component}>
                 <span className="d-flex align-items-center">
                     <input
                         type="checkbox"
@@ -60,37 +56,28 @@ export default class Row extends Component<Props, State> {
                         className={classnames(css.avatar, 'd-none d-md-block')}
                     />
                     <span className={css.meta}>
-                        <p className={css.name}>
-                            {member.get('name')}
-                        </p>
+                        <p className={css.name}>{member.get('name')}</p>
                         <p className={classnames(css.email, 'text-faded')}>
                             {member.get('email')}
                         </p>
                     </span>
                     <span className={css.role}>
-                        <RoleLabel
-                            roles={member.get('roles')}
-                        />
-                        {
-                            isAccountOwner && (
-                                <Badge
-                                    color='dark'
-                                    pill
-                                >
-                                    Account Owner
-                                </Badge>
-                            )
-                        }
+                        <RoleLabel roles={member.get('roles')} />
+                        {isAccountOwner && (
+                            <Badge color="dark" pill>
+                                Account Owner
+                            </Badge>
+                        )}
                     </span>
                     <span className={css.delete}>
                         <Button
                             onClick={this._deleteTeamMember}
-                            className={classnames('btn-transparent', {'btn-loading': isDeleting})}
+                            className={classnames('btn-transparent', {
+                                'btn-loading': isDeleting,
+                            })}
                             disabled={isDeleting}
                         >
-                            <i className="material-icons md-2">
-                                delete
-                            </i>
+                            <i className="material-icons md-2">delete</i>
                         </Button>
                     </span>
                 </span>
@@ -98,4 +85,3 @@ export default class Row extends Component<Props, State> {
         )
     }
 }
-

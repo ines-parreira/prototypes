@@ -8,7 +8,6 @@ import {displayLabel} from '../../../../utils'
 
 import PopoverWidgetEditField from './forms/PopoverWidgetEditField'
 
-
 export default class FieldInfobarWidget extends React.Component {
     static propTypes = {
         editing: PropTypes.object,
@@ -21,12 +20,12 @@ export default class FieldInfobarWidget extends React.Component {
         widget: PropTypes.object.isRequired,
         template: PropTypes.object.isRequired,
         isEditing: PropTypes.bool.isRequired,
-        isParentList: PropTypes.bool.isRequired
+        isParentList: PropTypes.bool.isRequired,
     }
 
     static defaultProps = {
         isEditing: false,
-        isParentList: false
+        isParentList: false,
     }
 
     state = {
@@ -44,8 +43,13 @@ export default class FieldInfobarWidget extends React.Component {
 
         if (editing) {
             const tp = template.get('templatePath')
-            const currentlyEditedWidgetPath = editing.state.getIn(['_internal', 'currentlyEditedWidgetPath'], '')
-            this.setState({displayPopup: isEditing && tp === currentlyEditedWidgetPath})
+            const currentlyEditedWidgetPath = editing.state.getIn(
+                ['_internal', 'currentlyEditedWidgetPath'],
+                ''
+            )
+            this.setState({
+                displayPopup: isEditing && tp === currentlyEditedWidgetPath,
+            })
         }
     }
 
@@ -139,12 +143,8 @@ export default class FieldInfobarWidget extends React.Component {
                 className={className}
                 onClick={this._startWidgetEdition}
             >
-                <span className="field-label">
-                    {template.get('title')}:
-                </span>
-                <span className="field-value">
-                    {displayLabel(value)}
-                </span>
+                <span className="field-label">{template.get('title')}:</span>
+                <span className="field-value">{displayLabel(value)}</span>
                 {this._renderTools()}
                 {this._renderPopover()}
             </div>

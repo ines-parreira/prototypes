@@ -13,7 +13,6 @@ import {getActionTemplate, stripErrorMessage} from '../../../../../utils'
 
 import css from './Error.less'
 
-
 const CANCEL = 'cancel'
 const FORCE = 'force'
 const RETRY = 'retry'
@@ -40,19 +39,19 @@ type Props = {
 
 type State = {
     showActions: boolean,
-    loading: string
+    loading: string,
 }
 
 class Error extends React.Component<Props, State> {
     static defaultProps = {
         error: '',
         messageActions: [],
-        retryTooltipMessage: 'Retry to send the message.'
+        retryTooltipMessage: 'Retry to send the message.',
     }
 
     state = {
         showActions: false,
-        loading: ''
+        loading: '',
     }
 
     uid: number
@@ -65,46 +64,40 @@ class Error extends React.Component<Props, State> {
     componentDidUpdate() {
         const {newMessage} = this.props
         const {loading} = this.state
-        if (!newMessage.getIn(['_internal', 'loading', 'submitNewMessage']) && loading) {
+        if (
+            !newMessage.getIn(['_internal', 'loading', 'submitNewMessage']) &&
+            loading
+        ) {
             this.setState({loading: ''})
         }
     }
 
     retry = () => {
-        const {
-            message,
-            actions,
-            ticketId,
-            messageId,
-            setStatus,
-        } = this.props
+        const {message, actions, ticketId, messageId, setStatus} = this.props
 
         this.setState({loading: RETRY})
 
         if (messageId) {
-            return actions.ticket.updateTicketMessage(ticketId, messageId, {failed_datetime: null}, RETRY)
+            return actions.ticket.updateTicketMessage(
+                ticketId,
+                messageId,
+                {failed_datetime: null},
+                RETRY
+            )
         }
 
         const status = message.getIn(['_internal', 'status'])
-        return actions
-            .newMessage
-            .retrySubmitTicketMessage(message)
-            .then(() => {
-                if (status) {
-                    return setStatus(status)
-                }
+        return actions.newMessage.retrySubmitTicketMessage(message).then(() => {
+            if (status) {
+                return setStatus(status)
+            }
 
-                return message
-            })
+            return message
+        })
     }
 
     cancel = () => {
-        const {
-            message,
-            actions,
-            ticketId,
-            messageId,
-        } = this.props
+        const {message, actions, ticketId, messageId} = this.props
 
         this.setState({loading: CANCEL})
 
@@ -118,7 +111,12 @@ class Error extends React.Component<Props, State> {
     force = () => {
         const {actions, ticketId, messageId} = this.props
         this.setState({loading: FORCE})
-        return actions.ticket.updateTicketMessage(ticketId, messageId, {}, FORCE)
+        return actions.ticket.updateTicketMessage(
+            ticketId,
+            messageId,
+            {},
+            FORCE
+        )
     }
 
     _toggleActions = () => {
@@ -126,7 +124,6 @@ class Error extends React.Component<Props, State> {
     }
 
     render() {
-
         const {
             error,
             retryTooltipMessage,
@@ -155,15 +152,10 @@ class Error extends React.Component<Props, State> {
                         className="mb-1 mb-lg-0"
                         disabled={!!this.state.loading}
                     >
-                        <i className="material-icons md-1 mr-2">
-                            cached
-                        </i>
+                        <i className="material-icons md-1 mr-2">cached</i>
                         Retry
                     </Button>
-                    <Tooltip
-                        placement="top"
-                        target={id}
-                    >
+                    <Tooltip placement="top" target={id}>
                         {retryTooltipMessage}
                     </Tooltip>
                 </span>
@@ -190,11 +182,9 @@ class Error extends React.Component<Props, State> {
                         </i>
                         Force
                     </Button>
-                    <Tooltip
-                        placement="top"
-                        target={id}
-                    >
-                        Ignore failure, execute other actions and send the message
+                    <Tooltip placement="top" target={id}>
+                        Ignore failure, execute other actions and send the
+                        message
                     </Tooltip>
                 </span>
             )
@@ -219,11 +209,8 @@ class Error extends React.Component<Props, State> {
                         </i>
                         Cancel
                     </Button>
-                    <Tooltip
-                        placement="top"
-                        target={id}
-                    >
-                       Delete the message and never send it
+                    <Tooltip placement="top" target={id}>
+                        Delete the message and never send it
                     </Tooltip>
                 </span>
             )
@@ -232,10 +219,12 @@ class Error extends React.Component<Props, State> {
         const hasActions = !!messageActions.length
 
         return (
-            <div className={classnames(css.component, {
-                [css.hasActions]: hasActions,
-                [css.showActions]: this.state.showActions
-            })}>
+            <div
+                className={classnames(css.component, {
+                    [css.hasActions]: hasActions,
+                    [css.showActions]: this.state.showActions,
+                })}
+            >
                 <Alert color="danger">
                     <div className="d-md-flex align-items-center">
                         <i className="material-icons md-3 mr-3 d-none d-md-block">
@@ -259,26 +248,28 @@ class Error extends React.Component<Props, State> {
                     </div>
 
                     <ul className={css.actions}>
-                        {
-                            messageActions.map((action, idx) => {
-                                if (action.status === 'error' && action.response && action.response.msg) {
-                                    const template = getActionTemplate(action.name)
-                                    const transformedMsg = stripErrorMessage(action.response.msg)
+                        {messageActions.map((action, idx) => {
+                            if (
+                                action.status === 'error' &&
+                                action.response &&
+                                action.response.msg
+                            ) {
+                                const template = getActionTemplate(action.name)
+                                const transformedMsg = stripErrorMessage(
+                                    action.response.msg
+                                )
 
-                                    return (
-                                        <li
-                                            key={idx}
-                                            className={css.actionError}
-                                        >
-                                            The action <b>{template ? template.title : ''}</b> failed
-                                            because <b>{transformedMsg}</b>.
-                                        </li>
-                                    )
-                                }
+                                return (
+                                    <li key={idx} className={css.actionError}>
+                                        The action{' '}
+                                        <b>{template ? template.title : ''}</b>{' '}
+                                        failed because <b>{transformedMsg}</b>.
+                                    </li>
+                                )
+                            }
 
-                                return null
-                            })
-                        }
+                            return null
+                        })}
                     </ul>
                 </Alert>
             </div>
@@ -291,7 +282,7 @@ function mapDispatchToProps(dispatch) {
         actions: {
             ticket: bindActionCreators(TicketActions, dispatch),
             newMessage: bindActionCreators(NewMessageActions, dispatch),
-        }
+        },
     }
 }
 

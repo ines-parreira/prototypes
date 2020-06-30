@@ -34,13 +34,13 @@ export default class SmoochIntegrationList extends React.Component {
         // display message from url
         const {
             message,
-            message_type: status = 'info'
+            message_type: status = 'info',
         } = this.props.location.query
 
         if (message) {
             this.props.notify({
                 status,
-                title: message.replace(/\+/g, ' ')
+                title: message.replace(/\+/g, ' '),
             })
             // remove error from url
             browserHistory.push(window.location.pathname)
@@ -60,22 +60,30 @@ export default class SmoochIntegrationList extends React.Component {
                     >
                         Smooch
                     </a>
-                </b> is a messaging platform which enables
-                you to interact with your customers across multiple channels, and to build your own bot. You can use
-                Gorgias as an interface for your team to respond to Smooch conversations.
-                <br /><br />
-                You can connect your own Smooch account to Gorgias. When a customer initiates a conversation through
-                Smooch, it will create a chat in Gorgias and send a notification.
+                </b>{' '}
+                is a messaging platform which enables you to interact with your
+                customers across multiple channels, and to build your own bot.
+                You can use Gorgias as an interface for your team to respond to
+                Smooch conversations.
+                <br />
+                <br />
+                You can connect your own Smooch account to Gorgias. When a
+                customer initiates a conversation through Smooch, it will create
+                a chat in Gorgias and send a notification.
             </div>
         )
 
         const integrationToItemDisplay = (int) => {
             const toggleIntegration = (value) => {
                 const integrationId = int.get('id')
-                return value ? this.props.activate(integrationId) : this.props.deactivate(integrationId)
+                return value
+                    ? this.props.activate(integrationId)
+                    : this.props.deactivate(integrationId)
             }
 
-            const editLink = `/app/settings/integrations/smooch/${int.get('id')}/overview`
+            const editLink = `/app/settings/integrations/smooch/${int.get(
+                'id'
+            )}/overview`
             const isDisabled = int.get('deactivated_datetime')
 
             return (
@@ -104,7 +112,9 @@ export default class SmoochIntegrationList extends React.Component {
             <IntegrationList
                 integrationType="smooch"
                 longTypeDescription={longTypeDescription}
-                integrations={integrations.filter((v) => v.get('type') === 'smooch')}
+                integrations={integrations.filter(
+                    (v) => v.get('type') === 'smooch'
+                )}
                 createIntegration={this._onLogin}
                 createIntegrationButtonContent="Add a Smooch account"
                 integrationToItemDisplay={integrationToItemDisplay}

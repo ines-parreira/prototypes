@@ -8,7 +8,7 @@ describe('DatePicker', () => {
     it('should render a date range picker', () => {
         const datetime = moment('2017-12-22')
         const ranges = {
-            'tomorrow': [datetime.add(1, 'days'), datetime.add(1, 'days')]
+            tomorrow: [datetime.add(1, 'days'), datetime.add(1, 'days')],
         }
         const component = shallow(
             <DatePicker
@@ -35,10 +35,7 @@ describe('DatePicker', () => {
 
     it('should display a date range picker on mount', () => {
         const wrapper = shallow(
-            <DatePicker
-                isOpen={true}
-                toggle={null}
-            >
+            <DatePicker isOpen={true} toggle={null}>
                 Select a date
             </DatePicker>
         )
@@ -50,10 +47,7 @@ describe('DatePicker', () => {
 
     it('should display a date range picker on update', () => {
         const wrapper = shallow(
-            <DatePicker
-                isOpen={false}
-                toggle={null}
-            >
+            <DatePicker isOpen={false} toggle={null}>
                 Select a date
             </DatePicker>
         )
@@ -67,11 +61,7 @@ describe('DatePicker', () => {
         const toggleSpy = jest.fn()
         const onHideSpy = jest.fn()
         const wrapper = shallow(
-            <DatePicker
-                isOpen={false}
-                toggle={toggleSpy}
-                onHide={onHideSpy}
-            >
+            <DatePicker isOpen={false} toggle={toggleSpy} onHide={onHideSpy}>
                 Select a date
             </DatePicker>
         )
@@ -83,10 +73,7 @@ describe('DatePicker', () => {
 
     it('should simulate a click to show the date range picker', () => {
         const wrapper = mount(
-            <DatePicker
-                isOpen={false}
-                toggle={null}
-            >
+            <DatePicker isOpen={false} toggle={null}>
                 Select a date
             </DatePicker>
         )
@@ -95,6 +82,5 @@ describe('DatePicker', () => {
         component.datePickerRef.$picker.click = showSpy
         component._show()
         expect(showSpy).toHaveBeenCalled()
-
     })
 })

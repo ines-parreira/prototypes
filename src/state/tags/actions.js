@@ -6,21 +6,25 @@ import type {List} from 'immutable'
 import {notify} from '../notifications/actions'
 import {createErrorNotification} from '../utils'
 
-import type {actionType, thunkActionType, dispatchType, getStateType} from '../types'
+import type {
+    actionType,
+    thunkActionType,
+    dispatchType,
+    getStateType,
+} from '../types'
 
 import * as constants from './constants'
 
 type existingTagType = {
     id: string,
     name: string,
-    description?: string
+    description?: string,
 }
 
 type newTagType = {
     name: string,
-    description?: string
+    description?: string,
 }
-
 
 /**types
  * Add tags to ticket.
@@ -29,39 +33,53 @@ type newTagType = {
 export function addTags(tags: Array<string> | string) {
     return {
         type: constants.ADD_TAGS,
-        tags
+        tags,
     }
 }
 
-export function fetchTags(page: ?number, sort: string = 'usage', reverse: boolean = true, search: string = ''): thunkActionType {
-    return (dispatch: dispatchType, getState: getStateType): Promise<dispatchType> => {
+export function fetchTags(
+    page: ?number,
+    sort: string = 'usage',
+    reverse: boolean = true,
+    search: string = ''
+): thunkActionType {
+    return (
+        dispatch: dispatchType,
+        getState: getStateType
+    ): Promise<dispatchType> => {
         dispatch({
-            type: constants.FETCH_TAG_LIST_START
+            type: constants.FETCH_TAG_LIST_START,
         })
 
         const {tags} = getState()
 
-        return axios.get('/api/tags/', {
-            params: {
-                page: tags ? tags.getIn(['_internal', 'pagination', 'page'], 1) : page,
-                order_by: sort,
-                order_dir: reverse ? 'desc' : 'asc',
-                search
-            }
-        })
-            .then((json = {}) => json.data)
-            .then((resp) => {
-                return dispatch({
-                    type: constants.FETCH_TAG_LIST_SUCCESS,
-                    resp
-                })
-            }, (error) => {
-                return dispatch({
-                    type: constants.FETCH_TAG_LIST_ERROR,
-                    error,
-                    reason: 'Failed to fetch tags'
-                })
+        return axios
+            .get('/api/tags/', {
+                params: {
+                    page: tags
+                        ? tags.getIn(['_internal', 'pagination', 'page'], 1)
+                        : page,
+                    order_by: sort,
+                    order_dir: reverse ? 'desc' : 'asc',
+                    search,
+                },
             })
+            .then((json = {}) => json.data)
+            .then(
+                (resp) => {
+                    return dispatch({
+                        type: constants.FETCH_TAG_LIST_SUCCESS,
+                        resp,
+                    })
+                },
+                (error) => {
+                    return dispatch({
+                        type: constants.FETCH_TAG_LIST_ERROR,
+                        error,
+                        reason: 'Failed to fetch tags',
+                    })
+                }
+            )
     }
 }
 
@@ -84,7 +102,6 @@ export function selectAll() {
         type: constants.SELECT_TAG_ALL,
     }
 }
-
 
 /**
  * Edit tag
@@ -114,22 +131,25 @@ export function cancel(tag: existingTagType) {
  */
 export const save = (tag: existingTagType): thunkActionType => {
     return (dispatch: dispatchType): Promise<dispatchType> => {
-        return axios.put(`/api/tags/${tag.id}/`, tag)
+        return axios
+            .put(`/api/tags/${tag.id}/`, tag)
             .then(() => {
-                dispatch(notify({
-                    status: 'success',
-                    message: 'Tag saved successfully',
-                }))
+                dispatch(
+                    notify({
+                        status: 'success',
+                        message: 'Tag saved successfully',
+                    })
+                )
                 return dispatch({
                     type: constants.SAVE_TAG,
-                    tag
+                    tag,
                 })
             })
             .catch((error) => {
                 return dispatch({
                     type: constants.SAVE_TAG_ERROR,
                     verbose: true,
-                    error
+                    error,
                 })
             })
     }
@@ -143,26 +163,30 @@ export const create = (tag: newTagType): thunkActionType => {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
             type: constants.CREATE_TAG_START,
-            tag
+            tag,
         })
 
-        return axios.post('/api/tags/', tag)
-            .then((resp) => {
-                dispatch(notify({
-                    status: 'success',
-                    message: `Created tag: ${tag.name}`
-                }))
+        return axios.post('/api/tags/', tag).then(
+            (resp) => {
+                dispatch(
+                    notify({
+                        status: 'success',
+                        message: `Created tag: ${tag.name}`,
+                    })
+                )
                 dispatch({
                     type: constants.CREATE_TAG_SUCCESS,
-                    tag: resp.data
+                    tag: resp.data,
                 })
-            }, (error) => {
+            },
+            (error) => {
                 return dispatch({
                     type: constants.CREATE_TAG_ERROR,
                     verbose: true,
-                    error
+                    error,
                 })
-            })
+            }
+        )
     }
 }
 
@@ -172,19 +196,23 @@ export const create = (tag: newTagType): thunkActionType => {
  */
 export const remove = (id: string): thunkActionType => {
     return (dispatch: dispatchType): Promise<dispatchType> => {
-        return axios.delete(`/api/tags/${id}/`)
-            .then(() => {
-                dispatch(notify({
-                    status: 'success',
-                    message: 'Tag deleted successfully',
-                }))
-            }, (error) => {
+        return axios.delete(`/api/tags/${id}/`).then(
+            () => {
+                dispatch(
+                    notify({
+                        status: 'success',
+                        message: 'Tag deleted successfully',
+                    })
+                )
+            },
+            (error) => {
                 return dispatch({
                     type: constants.REMOVE_TAG_ERROR,
                     verbose: true,
-                    error
+                    error,
                 })
-            })
+            }
+        )
     }
 }
 
@@ -194,19 +222,23 @@ export const remove = (id: string): thunkActionType => {
  */
 export const bulkDelete = (ids: Array<string>): thunkActionType => {
     return (dispatch: dispatchType): Promise<dispatchType> => {
-        return axios.delete('/api/tags/', {data: {ids}})
-            .then(() => {
-                dispatch(notify({
-                    status: 'success',
-                    message: `${ids.length} tags deleted successfully`
-                }))
-            }, (error) => {
+        return axios.delete('/api/tags/', {data: {ids}}).then(
+            () => {
+                dispatch(
+                    notify({
+                        status: 'success',
+                        message: `${ids.length} tags deleted successfully`,
+                    })
+                )
+            },
+            (error) => {
                 return dispatch({
                     type: constants.REMOVE_TAG_ERROR,
                     verbose: true,
-                    error
+                    error,
                 })
-            })
+            }
+        )
     }
 }
 
@@ -218,20 +250,33 @@ export const merge = (ids: List<*>): thunkActionType => {
     return (dispatch: dispatchType): Promise<dispatchType> => {
         dispatch({
             type: constants.MERGE_TAGS,
-            ids
+            ids,
         })
 
         const destinationId = ids.last()
 
-        return axios.put(`/api/tags/${destinationId}/merge/`, {'source_tags_ids': ids.pop().toJS()})
-            .then(() => {
-                return dispatch(notify({
-                    status: 'success',
-                    message: 'Tags merged successfully',
-                }))
-            }, (error) => {
-                return dispatch(createErrorNotification(error, 'Unable to merge these tags'))
+        return axios
+            .put(`/api/tags/${destinationId}/merge/`, {
+                source_tags_ids: ids.pop().toJS(),
             })
+            .then(
+                () => {
+                    return dispatch(
+                        notify({
+                            status: 'success',
+                            message: 'Tags merged successfully',
+                        })
+                    )
+                },
+                (error) => {
+                    return dispatch(
+                        createErrorNotification(
+                            error,
+                            'Unable to merge these tags'
+                        )
+                    )
+                }
+            )
     }
 }
 
@@ -241,7 +286,7 @@ export const merge = (ids: List<*>): thunkActionType => {
  * @param page
  * @returns {{type: *, page: *}}
  */
-export function setPage(page: number): actionType & { page: number } {
+export function setPage(page: number): actionType & {page: number} {
     return {
         type: constants.SET_TAG_LIST_PAGE,
         page,

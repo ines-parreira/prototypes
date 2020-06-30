@@ -10,7 +10,7 @@ type Props = {
     isActive: boolean,
     isDisabled: boolean,
     icon: string,
-    onToggle: () => void
+    onToggle: () => void,
 }
 
 const Button = (props: Props) => (
@@ -29,9 +29,7 @@ const Button = (props: Props) => (
         onMouseDown={(e: SyntheticMouseEvent<*>) => e.preventDefault()}
         title={props.name}
     >
-        <i className="material-icons">
-            {props.icon}
-        </i>
+        <i className="material-icons">{props.icon}</i>
     </button>
 )
 

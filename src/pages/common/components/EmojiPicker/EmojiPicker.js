@@ -6,7 +6,7 @@ import classNames from 'classnames'
 import css from './EmojiPicker.less'
 
 type Props = {
-    className?: string
+    className?: string,
 }
 
 const EmojiPicker = (props: Props) => (

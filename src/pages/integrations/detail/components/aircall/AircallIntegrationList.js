@@ -25,8 +25,9 @@ export default class AircallIntegrationList extends React.Component {
 
         const longTypeDescription = (
             <span>
-                Aircall is a phone app that helps you set up a call center in minutes.
-                Connect Aircall to Gorgias and create tickets when customers call you.
+                Aircall is a phone app that helps you set up a call center in
+                minutes. Connect Aircall to Gorgias and create tickets when
+                customers call you.
             </span>
         )
 
@@ -45,8 +46,14 @@ export default class AircallIntegrationList extends React.Component {
             <IntegrationList
                 integrationType="aircall"
                 longTypeDescription={longTypeDescription}
-                integrations={integrations.filter((v) => v.get('type') === 'aircall')}
-                createIntegration={() => browserHistory.push('/app/settings/integrations/aircall/new')}
+                integrations={integrations.filter(
+                    (v) => v.get('type') === 'aircall'
+                )}
+                createIntegration={() =>
+                    browserHistory.push(
+                        '/app/settings/integrations/aircall/new'
+                    )
+                }
                 createIntegrationButtonContent="Connect Aircall"
                 integrationToItemDisplay={integrationToItemDisplay}
                 loading={loading}

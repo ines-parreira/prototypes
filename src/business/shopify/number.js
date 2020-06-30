@@ -4,8 +4,14 @@ import _floor from 'lodash/floor'
 
 import {NON_FRACTIONAL_CURRENCIES} from '../../constants/integrations/shopify'
 
-export function formatPrice(price: number | string, currencyCode: string, shouldFloor: boolean = false): string {
-    const isNonFractional = NON_FRACTIONAL_CURRENCIES.includes(currencyCode.toUpperCase())
+export function formatPrice(
+    price: number | string,
+    currencyCode: string,
+    shouldFloor: boolean = false
+): string {
+    const isNonFractional = NON_FRACTIONAL_CURRENCIES.includes(
+        currencyCode.toUpperCase()
+    )
     const decimals = isNonFractional ? 0 : 2
 
     // See https://floating-point-gui.de/

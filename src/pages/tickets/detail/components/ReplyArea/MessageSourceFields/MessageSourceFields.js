@@ -57,7 +57,9 @@ class MessageSourceFields extends React.Component {
         } = this.props
 
         // remove unused fields from optional ones
-        const displayedOptionalFields = availableContactProperties.filter((r) => !getNewMessageSourceProperty(r).isEmpty())
+        const displayedOptionalFields = availableContactProperties.filter(
+            (r) => !getNewMessageSourceProperty(r).isEmpty()
+        )
 
         this.setState({
             displayedFields: displayedOptionalFields,
@@ -85,21 +87,33 @@ class MessageSourceFields extends React.Component {
         } = this.props
 
         // fields that are displayed by default
-        const mandatoryFields = availableContactProperties.filter((r) => !optionalContactProperties.includes(r))
+        const mandatoryFields = availableContactProperties.filter(
+            (r) => !optionalContactProperties.includes(r)
+        )
 
         // available optional fields, depends on the fields configuration above (depends on source type or channel)
-        const availableOptionalFields = availableContactProperties.filter((r) => optionalContactProperties.includes(r))
+        const availableOptionalFields = availableContactProperties.filter((r) =>
+            optionalContactProperties.includes(r)
+        )
 
         // selected optional fields or fields already containing data
         const displayedOptionalFields = availableOptionalFields.filter((r) => {
-            return this.state.displayedFields.includes(r) || !getNewMessageSourceProperty(r).isEmpty()
+            return (
+                this.state.displayedFields.includes(r) ||
+                !getNewMessageSourceProperty(r).isEmpty()
+            )
         })
 
         // remaining optional fields not already displayed
-        const remainingOptionalFields = _difference(availableOptionalFields, displayedOptionalFields)
+        const remainingOptionalFields = _difference(
+            availableOptionalFields,
+            displayedOptionalFields
+        )
 
         // final displayed fields
-        const displayedFields = _uniq(mandatoryFields.concat(displayedOptionalFields))
+        const displayedFields = _uniq(
+            mandatoryFields.concat(displayedOptionalFields)
+        )
 
         const from = getNewMessageSourceProperty('from').toJS()
 
@@ -113,11 +127,10 @@ class MessageSourceFields extends React.Component {
                         value = value.isEmpty() ? [] : value.toJS()
 
                         return (
-                            <div
-                                key={prop}
-                                className={css.sourceField}
-                            >
-                                <span className={css.label}>{_upperFirst(prop)}: </span>
+                            <div key={prop} className={css.sourceField}>
+                                <span className={css.label}>
+                                    {_upperFirst(prop)}:{' '}
+                                </span>
                                 <ReceiversSelectField
                                     parentId={parentId}
                                     sourceType={sourceType}
@@ -126,9 +139,12 @@ class MessageSourceFields extends React.Component {
                                     required={mandatoryFields.includes(prop)}
                                     value={value}
                                     onChange={(recipients) => {
-                                        setReceivers({
-                                            [prop]: recipients,
-                                        }, false)
+                                        setReceivers(
+                                            {
+                                                [prop]: recipients,
+                                            },
+                                            false
+                                        )
                                     }}
                                     inputRef={this.props.inputRef}
                                 />
@@ -136,43 +152,38 @@ class MessageSourceFields extends React.Component {
                         )
                     })
                 }
-                {
-                    from && (
-                        <div
-                            key="from"
-                            className={css.sourceField}
-                        >
-                            <span className={css.label}>From: </span>
-                            <SenderSelectField
-                                channels={accountChannels}
-                                value={from.address}
-                                onChange={({target}) => {
-                                    setSender(target.value)
-                                }}
-                            />
-                        </div>
-                    )
-                }
+                {from && (
+                    <div key="from" className={css.sourceField}>
+                        <span className={css.label}>From: </span>
+                        <SenderSelectField
+                            channels={accountChannels}
+                            value={from.address}
+                            onChange={({target}) => {
+                                setSender(target.value)
+                            }}
+                        />
+                    </div>
+                )}
                 {
                     // display buttons for optional fields
                     !!remainingOptionalFields.length && (
                         <div className={css.optionalFields}>
-                            {
-                                remainingOptionalFields.map((prop, index) => (
-                                    <span key={prop}>
-                                        <span
-                                            className="clickable"
-                                            onClick={(e) => {
-                                                e.stopPropagation() // prevent the edit window from closing
-                                                this._toggleOptionalField(prop)
-                                            }}
-                                        >
-                                            {_upperFirst(prop)}
-                                        </span>
-                                        {(index < remainingOptionalFields.length - 1) && ' / '}
+                            {remainingOptionalFields.map((prop, index) => (
+                                <span key={prop}>
+                                    <span
+                                        className="clickable"
+                                        onClick={(e) => {
+                                            e.stopPropagation() // prevent the edit window from closing
+                                            this._toggleOptionalField(prop)
+                                        }}
+                                    >
+                                        {_upperFirst(prop)}
                                     </span>
-                                ))
-                            }
+                                    {index <
+                                        remainingOptionalFields.length - 1 &&
+                                        ' / '}
+                                </span>
+                            ))}
                         </div>
                     )
                 }
@@ -183,7 +194,9 @@ class MessageSourceFields extends React.Component {
     _renderClosed = () => {
         const {sourceType, allRecipients, canOpen} = this.props
 
-        const allDisplayedNames = allRecipients.toJS().map((recipient) => getPersonLabelFromSource(recipient, sourceType))
+        const allDisplayedNames = allRecipients
+            .toJS()
+            .map((recipient) => getPersonLabelFromSource(recipient, sourceType))
 
         return (
             <div className={css.sourceField}>
@@ -202,7 +215,9 @@ class MessageSourceFields extends React.Component {
     render() {
         return (
             <div className={css.component}>
-                {this.props.isOpen ? this._renderOpened() : this._renderClosed()}
+                {this.props.isOpen
+                    ? this._renderOpened()
+                    : this._renderClosed()}
             </div>
         )
     }
@@ -242,7 +257,8 @@ const mapStateToProps = (state, ownProps) => {
         allRecipients: getNewMessageRecipients(state),
         availableContactProperties: getContactProperties(type)(state),
         optionalContactProperties: getOptionalContactProperties(type)(state),
-        isOpen: ownProps.isOpen || !areNewMessageContactPropertiesFulfilled(state)
+        isOpen:
+            ownProps.isOpen || !areNewMessageContactPropertiesFulfilled(state),
     }
 }
 

@@ -26,12 +26,26 @@ type Props = {
 export default class RefundOrderForm extends React.PureComponent<Props> {
     render() {
         const {
-            shopName, loading, reason, payload, refund, lineItems, order, actionName, onLineItemsChange, setPayload,
-            onPayloadChange, onReasonChange,
+            shopName,
+            loading,
+            reason,
+            payload,
+            refund,
+            lineItems,
+            order,
+            actionName,
+            onLineItemsChange,
+            setPayload,
+            onPayloadChange,
+            onReasonChange,
         } = this.props
 
         const currencyCode = payload.get('currency')
-        const shopCurrencyCode = order.getIn(['total_price_set', 'shop_money', 'currency_code'])
+        const shopCurrencyCode = order.getIn([
+            'total_price_set',
+            'shop_money',
+            'currency_code',
+        ])
 
         return (
             <React.Fragment>
