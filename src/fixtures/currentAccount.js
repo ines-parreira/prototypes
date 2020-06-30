@@ -1,7 +1,27 @@
 //@flow
 export const currentAccountState = {
     deleted_datetime: null,
-    settings: [],
+    settings: [
+        {
+            id: 2,
+            type: 'business-hours',
+            data: {
+                business_hours: [
+                    {
+                        days: '1,2,3,4,5',
+                        from_time: '00:00',
+                        to_time: '01:00',
+                    },
+                    {
+                        days: '7',
+                        from_time: '07:00',
+                        to_time: '22:00',
+                    },
+                ],
+                timezone: 'US/Pacific',
+            },
+        },
+    ],
     current_subscription: {
         canceled_datetime: null,
         discount: null,

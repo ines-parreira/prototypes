@@ -17,6 +17,7 @@ import {saveFileAsDownloaded} from '../../../../../utils/file'
 
 import LineStat from './LineStat'
 import TableStat from './TableStat/TableStat'
+import PerHourPerWeekTableStat from './PerHourPerWeekTableStat/PerHourPerWeekTableStat'
 import KeyMetricStat from './KeyMetricStat/KeyMetricStat'
 import BarStat from './BarStat'
 
@@ -99,6 +100,9 @@ export class Stat extends Component<Props, State> {
         switch (style) {
             case 'table':
                 StatComponent = TableStat
+                break
+            case 'per-hour-per-week-table':
+                StatComponent = PerHourPerWeekTableStat
                 break
             case 'key-metrics':
                 StatComponent = KeyMetricStat

@@ -9,11 +9,11 @@ exports[`LineStat should render a line chart 1`] = `
       labels={
         Array [
           Object {
-            "backgroundColor": "#ffb584",
+            "background": "#ffb584",
             "name": "median",
           },
           Object {
-            "backgroundColor": "#ff6b80",
+            "background": "#ff6b80",
             "name": "95%",
           },
         ]

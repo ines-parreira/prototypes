@@ -1,0 +1,634 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PerHourPerWeekTableStat Table Should render a message indicating we no data is present 1`] = `
+<div
+  className="text-muted"
+>
+  There is no data for this period.
+</div>
+`;
+
+exports[`PerHourPerWeekTableStat Table Should render the table with intervals 1`] = `
+<div>
+  <div
+    className="mb-4"
+  >
+    <Legend
+      labels={
+        Array [
+          Object {
+            "background": "#F6F9FF",
+            "name": "0-2",
+          },
+          Object {
+            "background": "#D2E2FD",
+            "name": "2-4",
+          },
+          Object {
+            "background": "#9BC0FC",
+            "name": "4-5",
+          },
+          Object {
+            "background": "#77A9FA",
+            "name": "5-7",
+          },
+          Object {
+            "background": "repeating-linear-gradient(135deg, #FFFFFF, #FFFFFF 2px, #F4697D 2px, #F4697D 4px)",
+            "name": "Business Hours",
+            "square": true,
+          },
+        ]
+      }
+    />
+  </div>
+  <Table
+    className="hourlyTable"
+    hover={true}
+    responsiveTag="div"
+    tag="table"
+  >
+    <thead>
+      <tr>
+        <th
+          className="string"
+          key="0"
+        >
+          <span>
+            HOUR
+          </span>
+        </th>
+        <th
+          className="number"
+          key="1"
+        >
+          <span>
+            MONDAY
+          </span>
+        </th>
+        <th
+          className="number"
+          key="2"
+        >
+          <span>
+            TUESDAY
+          </span>
+        </th>
+        <th
+          className="number"
+          key="3"
+        >
+          <span>
+            WEDNESDAY
+          </span>
+        </th>
+        <th
+          className="number"
+          key="4"
+        >
+          <span>
+            THURSDAY
+          </span>
+        </th>
+        <th
+          className="number"
+          key="5"
+        >
+          <span>
+            FRIDAY
+          </span>
+        </th>
+        <th
+          className="number"
+          key="6"
+        >
+          <span>
+            SATURDAY
+          </span>
+        </th>
+        <th
+          className="number"
+          key="7"
+        >
+          <span>
+            SUNDAY
+          </span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <TableCells
+        businessHoursSettings={Immutable.Map {}}
+        lines={
+          Immutable.List [
+            Immutable.List [
+              Immutable.Map {
+                "type": "string",
+                "value": "00:00",
+              },
+              Immutable.Map {
+                "type": "number",
+                "value": 0,
+              },
+              Immutable.Map {
+                "type": "number",
+                "value": 1,
+              },
+              Immutable.Map {
+                "type": "number",
+                "value": 2,
+              },
+              Immutable.Map {
+                "type": "number",
+                "value": 3,
+              },
+              Immutable.Map {
+                "type": "number",
+                "value": 3,
+              },
+              Immutable.Map {
+                "type": "number",
+                "value": 2,
+              },
+              Immutable.Map {
+                "type": "number",
+                "value": 0,
+              },
+            ],
+            Immutable.List [
+              Immutable.Map {
+                "type": "string",
+                "value": "01:00",
+              },
+              Immutable.Map {
+                "type": "number",
+                "value": 0,
+              },
+              Immutable.Map {
+                "type": "number",
+                "value": 4,
+              },
+              Immutable.Map {
+                "type": "number",
+                "value": 4,
+              },
+              Immutable.Map {
+                "type": "number",
+                "value": 7,
+              },
+              Immutable.Map {
+                "type": "number",
+                "value": 3,
+              },
+              Immutable.Map {
+                "type": "number",
+                "value": 3,
+              },
+              Immutable.Map {
+                "type": "number",
+                "value": 2,
+              },
+            ],
+          ]
+        }
+        userTimezone={null}
+      />
+    </tbody>
+  </Table>
+</div>
+`;
+
+exports[`PerHourPerWeekTableStat Table Should render the table with no interval in the legend 1`] = `
+<div>
+  <div
+    className="mb-4"
+  >
+    <Legend
+      labels={
+        Array [
+          Object {
+            "background": "repeating-linear-gradient(135deg, #FFFFFF, #FFFFFF 2px, #F4697D 2px, #F4697D 4px)",
+            "name": "Business Hours",
+            "square": true,
+          },
+        ]
+      }
+    />
+  </div>
+  <Table
+    className="hourlyTable"
+    hover={true}
+    responsiveTag="div"
+    tag="table"
+  >
+    <thead>
+      <tr>
+        <th
+          className="string"
+          key="0"
+        >
+          <span>
+            HOUR
+          </span>
+        </th>
+        <th
+          className="number"
+          key="1"
+        >
+          <span>
+            MONDAY
+          </span>
+        </th>
+        <th
+          className="number"
+          key="2"
+        >
+          <span>
+            TUESDAY
+          </span>
+        </th>
+        <th
+          className="number"
+          key="3"
+        >
+          <span>
+            WEDNESDAY
+          </span>
+        </th>
+        <th
+          className="number"
+          key="4"
+        >
+          <span>
+            THURSDAY
+          </span>
+        </th>
+        <th
+          className="number"
+          key="5"
+        >
+          <span>
+            FRIDAY
+          </span>
+        </th>
+        <th
+          className="number"
+          key="6"
+        >
+          <span>
+            SATURDAY
+          </span>
+        </th>
+        <th
+          className="number"
+          key="7"
+        >
+          <span>
+            SUNDAY
+          </span>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <TableCells
+        businessHoursSettings={Immutable.Map {}}
+        lines={
+          Immutable.List [
+            Immutable.List [
+              Immutable.Map {
+                "type": "string",
+                "value": "00:00",
+              },
+              Immutable.Map {
+                "type": "number",
+                "value": 0,
+              },
+              Immutable.Map {
+                "type": "number",
+                "value": 0,
+              },
+              Immutable.Map {
+                "type": "number",
+                "value": 0,
+              },
+              Immutable.Map {
+                "type": "number",
+                "value": 0,
+              },
+              Immutable.Map {
+                "type": "number",
+                "value": 0,
+              },
+              Immutable.Map {
+                "type": "number",
+                "value": 0,
+              },
+              Immutable.Map {
+                "type": "number",
+                "value": 0,
+              },
+            ],
+            Immutable.List [
+              Immutable.Map {
+                "type": "string",
+                "value": "01:00",
+              },
+              Immutable.Map {
+                "type": "number",
+                "value": 0,
+              },
+              Immutable.Map {
+                "type": "number",
+                "value": 0,
+              },
+              Immutable.Map {
+                "type": "number",
+                "value": 0,
+              },
+              Immutable.Map {
+                "type": "number",
+                "value": 0,
+              },
+              Immutable.Map {
+                "type": "number",
+                "value": 0,
+              },
+              Immutable.Map {
+                "type": "number",
+                "value": 0,
+              },
+              Immutable.Map {
+                "type": "number",
+                "value": 0,
+              },
+            ],
+          ]
+        }
+        userTimezone={null}
+      />
+    </tbody>
+  </Table>
+</div>
+`;
+
+exports[`PerHourPerWeekTableStat TableCells Should render with a different timezone between business hours and the current user 1`] = `
+Array [
+  <tr>
+    <td
+      style="background-color:#FFFFFF"
+    >
+      <span>
+        00:00
+      </span>
+    </td>
+    <td
+      style="background-color:#F6F9FF"
+    >
+      <div
+        class="redTransparentStripes"
+      />
+      <span>
+        0
+      </span>
+    </td>
+    <td
+      style="background-color:#F6F9FF"
+    >
+      <div
+        class="redTransparentStripes"
+      />
+      <span>
+        1
+      </span>
+    </td>
+    <td
+      style="background-color:#D2E2FD"
+    >
+      <div
+        class="redTransparentStripes"
+      />
+      <span>
+        2
+      </span>
+    </td>
+    <td
+      style="background-color:#D2E2FD"
+    >
+      <div
+        class="redTransparentStripes"
+      />
+      <span>
+        3
+      </span>
+    </td>
+    <td
+      style="background-color:#D2E2FD"
+    >
+      <div
+        class="redTransparentStripes"
+      />
+      <span>
+        3
+      </span>
+    </td>
+    <td
+      style="background-color:#D2E2FD"
+    >
+      <span>
+        2
+      </span>
+    </td>
+    <td
+      style="background-color:#F6F9FF"
+    >
+      <span>
+        0
+      </span>
+    </td>
+  </tr>,
+  <tr>
+    <td
+      style="background-color:#FFFFFF"
+    >
+      <span>
+        01:00
+      </span>
+    </td>
+    <td
+      style="background-color:#F6F9FF"
+    >
+      <span>
+        0
+      </span>
+    </td>
+    <td
+      style="background-color:#9BC0FC"
+    >
+      <span>
+        4
+      </span>
+    </td>
+    <td
+      style="background-color:#9BC0FC"
+    >
+      <span>
+        4
+      </span>
+    </td>
+    <td
+      style="background-color:#77A9FA"
+    >
+      <span>
+        7
+      </span>
+    </td>
+    <td
+      style="background-color:#D2E2FD"
+    >
+      <span>
+        3
+      </span>
+    </td>
+    <td
+      style="background-color:#D2E2FD"
+    >
+      <span>
+        3
+      </span>
+    </td>
+    <td
+      style="background-color:#D2E2FD"
+    >
+      <span>
+        2
+      </span>
+    </td>
+  </tr>,
+]
+`;
+
+exports[`PerHourPerWeekTableStat TableCells Should render with the same timezone for the business hours and the current user 1`] = `
+Array [
+  <tr>
+    <td
+      style="background-color:#FFFFFF"
+    >
+      <span>
+        00:00
+      </span>
+    </td>
+    <td
+      style="background-color:#F6F9FF"
+    >
+      <div
+        class="redTransparentStripes"
+      />
+      <span>
+        0
+      </span>
+    </td>
+    <td
+      style="background-color:#F6F9FF"
+    >
+      <span>
+        1
+      </span>
+    </td>
+    <td
+      style="background-color:#D2E2FD"
+    >
+      <span>
+        2
+      </span>
+    </td>
+    <td
+      style="background-color:#D2E2FD"
+    >
+      <span>
+        3
+      </span>
+    </td>
+    <td
+      style="background-color:#D2E2FD"
+    >
+      <span>
+        3
+      </span>
+    </td>
+    <td
+      style="background-color:#D2E2FD"
+    >
+      <span>
+        2
+      </span>
+    </td>
+    <td
+      style="background-color:#F6F9FF"
+    >
+      <span>
+        0
+      </span>
+    </td>
+  </tr>,
+  <tr>
+    <td
+      style="background-color:#FFFFFF"
+    >
+      <span>
+        01:00
+      </span>
+    </td>
+    <td
+      style="background-color:#F6F9FF"
+    >
+      <div
+        class="redTransparentStripes"
+      />
+      <span>
+        0
+      </span>
+    </td>
+    <td
+      style="background-color:#9BC0FC"
+    >
+      <span>
+        4
+      </span>
+    </td>
+    <td
+      style="background-color:#9BC0FC"
+    >
+      <span>
+        4
+      </span>
+    </td>
+    <td
+      style="background-color:#77A9FA"
+    >
+      <span>
+        7
+      </span>
+    </td>
+    <td
+      style="background-color:#D2E2FD"
+    >
+      <span>
+        3
+      </span>
+    </td>
+    <td
+      style="background-color:#D2E2FD"
+    >
+      <span>
+        3
+      </span>
+    </td>
+    <td
+      style="background-color:#D2E2FD"
+    >
+      <span>
+        2
+      </span>
+    </td>
+  </tr>,
+]
+`;

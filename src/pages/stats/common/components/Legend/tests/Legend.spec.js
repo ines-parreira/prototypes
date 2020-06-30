@@ -15,11 +15,17 @@ describe('Legend', () => {
         const labels = [
             {
                 name: 'line 1',
-                backgroundColor: '#000',
+                background: '#000',
             },
             {
                 name: 'line 2',
-                backgroundColor: '#fff',
+                background: '#fff',
+            },
+            {
+                name: 'square line 1',
+                background:
+                    'repeating-linear-gradient (60deg, red 80%, red 90%, white 0px, white 100%)',
+                square: true,
             },
         ]
         expect(shallow(<Legend labels={labels} />)).toMatchSnapshot()

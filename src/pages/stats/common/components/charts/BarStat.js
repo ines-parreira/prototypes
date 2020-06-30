@@ -35,7 +35,7 @@ export default class BarStat extends React.Component<Props> {
             .toArray()
         const legendLabels = datasets.map((dataset) => ({
             name: dataset.label,
-            backgroundColor: dataset.backgroundColor,
+            background: dataset.backgroundColor,
         }))
 
         return data.get('lines').isEmpty() ? (

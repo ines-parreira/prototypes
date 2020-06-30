@@ -18,6 +18,8 @@ export const OVERVIEW = 'overview'
 export const SUPPORT_VOLUME = 'support-volume'
 export const RESOLUTION_TIME = 'resolution-time'
 export const FIRST_RESPONSE_TIME = 'first-response-time'
+export const TICKET_CREATED_PER_HOUR_PER_WEEKDAY =
+    'tickets-created-per-hour-per-weekday'
 export const TICKETS_PER_TAG = 'tickets-per-tag'
 export const TICKETS_CREATED_PER_CHANNEL = 'tickets-created-per-channel'
 export const TICKETS_CREATED_PER_CHANNEL_PER_DAY =
@@ -557,6 +559,11 @@ export const stats = fromJS({
             },
         }),
     },
+    [TICKET_CREATED_PER_HOUR_PER_WEEKDAY]: {
+        helpText: 'Tickets created per hour per day of the week',
+        style: 'per-hour-per-week-table',
+        downloadable: true,
+    },
     [SATISFACTION_SURVEYS]: {
         style: 'key-metrics',
         api_resource_name: 'satisfaction-surveys',
@@ -723,7 +730,13 @@ providing excellent customer support.
         ],
         // default view available at `app/stats/`
         link: 'overview',
-        stats: [OVERVIEW, SUPPORT_VOLUME, RESOLUTION_TIME, FIRST_RESPONSE_TIME],
+        stats: [
+            OVERVIEW,
+            SUPPORT_VOLUME,
+            RESOLUTION_TIME,
+            FIRST_RESPONSE_TIME,
+            TICKET_CREATED_PER_HOUR_PER_WEEKDAY,
+        ],
     },
     tags: {
         name: 'Tags',

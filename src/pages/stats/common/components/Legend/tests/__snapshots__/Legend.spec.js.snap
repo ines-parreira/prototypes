@@ -17,10 +17,10 @@ exports[`Legend should render a legend 1`] = `
     key="line 1"
   >
     <span
-      className="circle mr-2"
+      className="icon circle mr-2"
       style={
         Object {
-          "backgroundColor": "#000",
+          "background": "#000",
         }
       }
     />
@@ -31,14 +31,28 @@ exports[`Legend should render a legend 1`] = `
     key="line 2"
   >
     <span
-      className="circle mr-2"
+      className="icon circle mr-2"
       style={
         Object {
-          "backgroundColor": "#fff",
+          "background": "#fff",
         }
       }
     />
     line 2
+  </span>
+  <span
+    className="label mr-4 mb-2"
+    key="square line 1"
+  >
+    <span
+      className="icon  mr-2"
+      style={
+        Object {
+          "background": "repeating-linear-gradient (60deg, red 80%, red 90%, white 0px, white 100%)",
+        }
+      }
+    />
+    square line 1
   </span>
 </div>
 `;

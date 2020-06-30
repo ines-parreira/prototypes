@@ -47,4 +47,12 @@ describe('Stat', () => {
         ).dive()
         expect(component).toMatchSnapshot()
     })
+
+    it('should render a per hour per week table', () => {
+        const config = fromJS({style: 'per-hour-per-week-table'})
+        const component = shallow(
+            <Stat store={mockStore({})} config={config} {...stat.toObject()} />
+        ).dive()
+        expect(component).toMatchSnapshot()
+    })
 })

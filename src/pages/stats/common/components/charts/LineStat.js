@@ -50,7 +50,7 @@ export default class LineStat extends React.Component {
             .toArray()
         const legendLabels = datasets.map((dataset) => ({
             name: dataset.label,
-            backgroundColor: dataset.backgroundColor,
+            background: dataset.backgroundColor,
         }))
 
         return (
