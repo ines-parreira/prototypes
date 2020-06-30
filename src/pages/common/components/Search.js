@@ -13,6 +13,7 @@ import css from './Search.less'
 export default class Search extends React.Component {
     static propTypes = {
         onChange: PropTypes.func.isRequired,
+        onKeyDown: PropTypes.func,
         params: PropTypes.object,
         forcedQuery: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
         shouldResetInput: PropTypes.bool,
@@ -110,6 +111,16 @@ export default class Search extends React.Component {
         return this._handleChange('')
     }
 
+    handleKeyDown = (e) => {
+        const {onKeyDown} = this.props
+        if (onKeyDown) {
+            onKeyDown(e)
+        }
+        if (e.key === 'Escape' && this.searchInputRef) {
+            ReactDOM.findDOMNode(this.searchInputRef).blur()
+        }
+    }
+
     render() {
         const {
             style,
@@ -140,6 +151,7 @@ export default class Search extends React.Component {
                     onChange={(e) => this._handleChange(e.target.value)}
                     style={{zIndex: 1}} // override the zIndex 2 of Bootstrap .form-control class
                     {...rest}
+                    onKeyDown={this.handleKeyDown}
                 />
             </div>
         )
