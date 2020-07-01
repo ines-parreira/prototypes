@@ -30,9 +30,7 @@ describe('Search component', () => {
     })
 
     it('should blur when pressing escape', () => {
-        const component = shallow(
-            <Search onChange={_noop} />
-        )
+        const component = shallow(<Search onChange={_noop} />)
         const mockBlur = jest.fn()
         spy.mockReturnValue({
             blur: mockBlur,
