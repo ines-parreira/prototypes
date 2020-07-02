@@ -17,6 +17,7 @@ export type notificationType = {
     title?: string,
     dismissAfter?: number,
     closeOnNext?: boolean,
+    allowHTML?: boolean,
     buttons?: NotificationButton[],
 }
 

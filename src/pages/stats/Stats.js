@@ -15,6 +15,9 @@ import GorgiasApi from '../../services/gorgiasApi'
 import {notify} from '../../state/notifications/actions'
 import {getViewFilters} from '../../state/stats/selectors'
 
+import {errorToChildren} from '../../utils'
+import type {notificationType} from '../../state/notifications/actions'
+
 import Stat from './common/components/charts/Stat'
 
 type Props = {
@@ -106,10 +109,17 @@ export class Stats extends React.Component<Props, State> {
                 const respData = error.response.data
                 const serverError =
                     respData && respData.error ? respData.error.msg : null
-                notify({
+                const notification: notificationType = {
                     status: 'error',
                     title: serverError || defaultError,
-                })
+                }
+                const errorDetails = errorToChildren(error)
+
+                if (errorDetails) {
+                    notification.allowHTML = true
+                    notification.message = errorDetails
+                }
+                notify(notification)
             } finally {
                 this.setState((state) => {
                     return {
