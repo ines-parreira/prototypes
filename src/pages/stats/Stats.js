@@ -105,7 +105,7 @@ export class Stats extends React.Component<Props, State> {
                 }
 
                 const defaultError =
-                    'Failed to get statistics. Please retry in a few seconds.'
+                    'Failed to retrieve statistic. Please retry in a few seconds.'
                 const respData = error.response.data
                 const serverError =
                     respData && respData.error ? respData.error.msg : null

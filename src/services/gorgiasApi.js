@@ -135,14 +135,13 @@ export default class GorgiasApi {
     /**
      * Download a statistic
      *
-     * @param {String} name - the name of the statistic to download
+     * @param {String} name - The name of the statistic to download.
      * @param {Map} data - The data to sent. Available parameters:
-     *  - {Map} filters: the filters to apply on the statistics
+     *  - {Map} filters: the filters to apply on the statistic
      * @returns {Promise}
      */
     async downloadStatistic(name: string, data: Map<*, *>) {
         const params = {
-            responseType: 'blob',
             ...data.toJS(),
         }
         const config = {timeout: 60000 * 3}

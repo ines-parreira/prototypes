@@ -32,13 +32,13 @@ Array [
   Array [
     Object {
       "status": "error",
-      "title": "Failed to get statistics. Please retry in a few seconds.",
+      "title": "Failed to retrieve statistic. Please retry in a few seconds.",
     },
   ],
   Array [
     Object {
       "status": "error",
-      "title": "Failed to get statistics. Please retry in a few seconds.",
+      "title": "Failed to retrieve statistic. Please retry in a few seconds.",
     },
   ],
 ]

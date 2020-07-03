@@ -102,7 +102,7 @@ Object {
       "cancelToken": CancelToken {
         "promise": Promise {},
       },
-      "data": "{\\"responseType\\":\\"blob\\",\\"filters\\":{\\"tags\\":[1,2],\\"score\\":\\"4\\"}}",
+      "data": "{\\"filters\\":{\\"tags\\":[1,2],\\"score\\":\\"4\\"}}",
       "headers": Object {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",

@@ -73,7 +73,7 @@ export class Stat extends Component<Props, State> {
             }
 
             const defaultError =
-                'Failed to download statistics. Please retry in a few seconds.'
+                'Failed to download statistic. Please retry in a few seconds.'
             const serverError = error.response.data.error
             notify({
                 status: 'error',
