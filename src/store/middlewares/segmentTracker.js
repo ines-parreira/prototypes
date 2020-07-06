@@ -156,4 +156,5 @@ export const EVENTS = {
     USER_MERGE_CLICKED: 'user-merge-clicked',
     VIEW_FILTER_ADD_CLICKED: 'view-filter-add-clicked',
     GRAMMARLY_ENABLED: 'grammarly-enabled',
+    UNDO_SENT_MESSAGE: 'undo-sent-message',
 }

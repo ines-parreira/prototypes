@@ -11,6 +11,7 @@ import {
 import type {NewMessageType} from '../state/newMessage/types'
 import {notify} from '../state/notifications/actions'
 import {applyMacro, messageDeleted} from '../state/ticket/actions'
+import {logEvent, EVENTS} from '../store/middlewares/segmentTracker'
 
 export type SendMessageArgs = [
     string,
@@ -91,6 +92,9 @@ export class PendingMessageManager {
                 ticketId,
             ] = this.pendingMessageArgs
 
+            logEvent(EVENTS.UNDO_SENT_MESSAGE, {
+                bodyText: messageToSend.body_text,
+            })
             reduxStore.dispatch(removeNotification(messageId))
             reduxStore.dispatch(messageDeleted(messageId))
             browserHistory.push(`/app/ticket/${ticketId || ''}`)
