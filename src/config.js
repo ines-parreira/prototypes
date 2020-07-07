@@ -206,12 +206,6 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         image: 'integrations/helpdocs.png',
     },
     {
-        title: 'Veeqo',
-        description: 'Display orders & inventory status next to tickets',
-        url: 'https://docs.gorgias.com/other-integrations/veeqo',
-        image: 'integrations/veeqo.png',
-    },
-    {
         title: 'Swell',
         description:
             'Display loyalty points next to tickets. Award points with macros.',
