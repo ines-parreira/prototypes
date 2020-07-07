@@ -1,6 +1,5 @@
 // @flow
 import React from 'react'
-import classnames from 'classnames'
 import {
     ButtonDropdown,
     ButtonGroup,
@@ -16,7 +15,6 @@ import type {ActionType} from './types'
 type Props = {
     actions: Array<ActionType>,
     payload: Object, // the arguments which need to be passed to execute any action
-    float: boolean,
 }
 
 type State = {
@@ -27,16 +25,12 @@ type State = {
 const NB_ACTIONS_DISPLAYED = 3
 
 export default class ActionButtonsGroup extends React.Component<Props, State> {
-    static defaultProps = {
-        float: false,
-    }
-
     state = {
         actionDropdownIsOpen: false,
     }
 
     render() {
-        const {actions, payload, float} = this.props
+        const {actions, payload} = this.props
 
         const {actionDropdownIsOpen} = this.state
 
@@ -48,11 +42,7 @@ export default class ActionButtonsGroup extends React.Component<Props, State> {
         const dropdownOptions = actions.slice(NB_ACTIONS_DISPLAYED)
 
         return (
-            <ButtonGroup
-                className={classnames('action-buttons', {
-                    'action-buttons-float': float,
-                })}
-            >
+            <ButtonGroup className="action-buttons">
                 {buttons.map((action) => {
                     return (
                         <ActionButton
@@ -60,11 +50,9 @@ export default class ActionButtonsGroup extends React.Component<Props, State> {
                             options={action.options}
                             payload={payload}
                             popover={action.popover}
-                            tooltip={action.tooltip}
                             title={action.title}
                             modal={action.modal}
                             modalData={action.modalData}
-                            float={float}
                         >
                             {action.child}
                         </ActionButton>
@@ -97,11 +85,9 @@ export default class ActionButtonsGroup extends React.Component<Props, State> {
                                         tag={DropdownItem}
                                         tagOptions={{toggle: false}}
                                         popover={action.popover}
-                                        tooltip={action.tooltip}
                                         title={action.title}
                                         modal={action.modal}
                                         modalData={action.modalData}
-                                        float={float}
                                     >
                                         {action.child}
                                     </ActionButton>

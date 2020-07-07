@@ -15,7 +15,6 @@ describe('ActionButton component', () => {
     const commonAttributes = {
         key: 'foo',
         popover: 'This action is little, but it is powerful.',
-        tooltip: 'Foo',
         title: (
             <div>
                 <i className="material-icons mr-2">refresh</i>
@@ -24,8 +23,7 @@ describe('ActionButton component', () => {
         ),
         child: (
             <div>
-                <i className="material-icons mr-2">refresh</i>
-                Little action
+                <i className="material-icons mr-2">refresh</i> Little action
             </div>
         ),
     }

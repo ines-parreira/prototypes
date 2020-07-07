@@ -7,7 +7,6 @@ exports[`ActionButtonsGroup component should not render the dropdown if there 3 
   tag="div"
 >
   <Connect(ActionButton)
-    float={false}
     key="action1"
     options={
       Array [
@@ -29,7 +28,6 @@ exports[`ActionButtonsGroup component should not render the dropdown if there 3 
     </div>
   </Connect(ActionButton)>
   <Connect(ActionButton)
-    float={false}
     key="action2"
     options={
       Array [
@@ -51,7 +49,6 @@ exports[`ActionButtonsGroup component should not render the dropdown if there 3 
     </div>
   </Connect(ActionButton)>
   <Connect(ActionButton)
-    float={false}
     key="action3"
     options={
       Array [
@@ -84,7 +81,6 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
   tag="div"
 >
   <Connect(ActionButton)
-    float={false}
     key="action1"
     options={
       Array [
@@ -106,7 +102,6 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
     </div>
   </Connect(ActionButton)>
   <Connect(ActionButton)
-    float={false}
     key="action2"
     options={
       Array [
@@ -128,7 +123,6 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
     </div>
   </Connect(ActionButton)>
   <Connect(ActionButton)
-    float={false}
     key="action3"
     options={
       Array [
@@ -168,7 +162,6 @@ exports[`ActionButtonsGroup component should render the dropdown if there more t
       tag="div"
     >
       <Connect(ActionButton)
-        float={false}
         key="action4"
         options={
           Array [

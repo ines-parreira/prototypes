@@ -79,27 +79,33 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                     },
                 ],
                 popover: 'This will cancel the subscription in Recharge.',
-                tooltip: 'Cancel subscription',
                 title: (
                     <div>
                         <i className="material-icons mr-2">block</i>
                         Cancel subscription
                     </div>
                 ),
-                child: <i className="material-icons">block</i>,
+                child: (
+                    <>
+                        <i className="material-icons">block</i> Cancel
+                    </>
+                ),
             },
             {
                 key: 'activate',
                 options: [{value: 'rechargeActivateSubscription'}],
                 popover: 'This will activate the subscription in Recharge.',
-                tooltip: 'Activate subscription',
                 title: (
                     <div>
                         <i className="material-icons mr-2">refresh</i>
                         Activate subscription
                     </div>
                 ),
-                child: <i className="material-icons">refresh</i>,
+                child: (
+                    <>
+                        <i className="material-icons">refresh</i> Activate
+                    </>
+                ),
             },
         ]
 
@@ -125,7 +131,7 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                 >
                     {humanizeString(status)}
                 </Badge>
-                <ActionButtonsGroup actions={actions} payload={payload} float />
+                <ActionButtonsGroup actions={actions} payload={payload} />
                 <CardHeaderDetails>
                     <CardHeaderValue label="Created">
                         <DatetimeLabel

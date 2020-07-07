@@ -114,11 +114,14 @@ exports[`Charge AfterTitle should display the refund action when the status is S
   actions={
     Array [
       Object {
-        "child": <i
-          className="material-icons"
-        >
-          refresh
-        </i>,
+        "child": <React.Fragment>
+          <i
+            className="material-icons"
+          >
+            refresh
+          </i>
+           Refund
+        </React.Fragment>,
         "key": "refund",
         "options": Array [
           Object {
@@ -147,11 +150,9 @@ exports[`Charge AfterTitle should display the refund action when the status is S
           </i>
           Refund charge
         </div>,
-        "tooltip": "Refund charge",
       },
     ]
   }
-  float={true}
   payload={
     Object {
       "charge_id": undefined,
@@ -165,11 +166,14 @@ exports[`Charge AfterTitle should display the refund action when the status is S
   actions={
     Array [
       Object {
-        "child": <i
-          className="material-icons"
-        >
-          refresh
-        </i>,
+        "child": <React.Fragment>
+          <i
+            className="material-icons"
+          >
+            refresh
+          </i>
+           Refund
+        </React.Fragment>,
         "key": "refund",
         "options": Array [
           Object {
@@ -198,11 +202,9 @@ exports[`Charge AfterTitle should display the refund action when the status is S
           </i>
           Refund charge
         </div>,
-        "tooltip": "Refund charge",
       },
     ]
   }
-  float={true}
   payload={
     Object {
       "charge_id": undefined,
@@ -216,11 +218,14 @@ exports[`Charge AfterTitle should handle correctly if total_price or total_refun
   actions={
     Array [
       Object {
-        "child": <i
-          className="material-icons"
-        >
-          refresh
-        </i>,
+        "child": <React.Fragment>
+          <i
+            className="material-icons"
+          >
+            refresh
+          </i>
+           Refund
+        </React.Fragment>,
         "key": "refund",
         "options": Array [
           Object {
@@ -249,11 +254,9 @@ exports[`Charge AfterTitle should handle correctly if total_price or total_refun
           </i>
           Refund charge
         </div>,
-        "tooltip": "Refund charge",
       },
     ]
   }
-  float={true}
   payload={
     Object {
       "charge_id": undefined,
@@ -267,11 +270,14 @@ exports[`Charge AfterTitle should handle correctly if total_price or total_refun
   actions={
     Array [
       Object {
-        "child": <i
-          className="material-icons"
-        >
-          refresh
-        </i>,
+        "child": <React.Fragment>
+          <i
+            className="material-icons"
+          >
+            refresh
+          </i>
+           Refund
+        </React.Fragment>,
         "key": "refund",
         "options": Array [
           Object {
@@ -300,11 +306,9 @@ exports[`Charge AfterTitle should handle correctly if total_price or total_refun
           </i>
           Refund charge
         </div>,
-        "tooltip": "Refund charge",
       },
     ]
   }
-  float={true}
   payload={
     Object {
       "charge_id": undefined,
@@ -316,7 +320,6 @@ exports[`Charge AfterTitle should handle correctly if total_price or total_refun
 exports[`Charge AfterTitle should not display the refund action when the status is not SUCCESS or PARTIALLY_REFUNDED 1`] = `
 <ActionButtonsGroup
   actions={Array []}
-  float={true}
   payload={
     Object {
       "charge_id": undefined,
@@ -384,14 +387,14 @@ exports[`Charge SubscriptionAfterTitle should display the skipCharge action if t
   actions={
     Array [
       Object {
-        "child": <div>
+        "child": <React.Fragment>
           <i
             className="material-icons mr-1"
           >
             block
           </i>
-          Skip
-        </div>,
+           Skip
+        </React.Fragment>,
         "key": "skip",
         "options": Array [
           Object {
@@ -407,11 +410,9 @@ exports[`Charge SubscriptionAfterTitle should display the skipCharge action if t
           </i>
           Skip charge on subscription
         </div>,
-        "tooltip": "Skip charge",
       },
     ]
   }
-  float={false}
   payload={
     Object {
       "charge_id": 2,
@@ -426,14 +427,14 @@ exports[`Charge SubscriptionAfterTitle should display the unskipCharge action if
   actions={
     Array [
       Object {
-        "child": <div>
+        "child": <React.Fragment>
           <i
             className="material-icons mr-1"
           >
             autorenew
           </i>
-          Unskip
-        </div>,
+           Unskip
+        </React.Fragment>,
         "key": "unskip",
         "options": Array [
           Object {
@@ -449,11 +450,9 @@ exports[`Charge SubscriptionAfterTitle should display the unskipCharge action if
           </i>
           Unskip charge on subscription
         </div>,
-        "tooltip": "Unskip charge",
       },
     ]
   }
-  float={false}
   payload={
     Object {
       "charge_id": 2,
@@ -466,7 +465,6 @@ exports[`Charge SubscriptionAfterTitle should display the unskipCharge action if
 exports[`Charge SubscriptionAfterTitle should not display any action if the charge is nor queued nor skipped 1`] = `
 <ActionButtonsGroup
   actions={Array []}
-  float={false}
   payload={
     Object {
       "charge_id": undefined,

@@ -58,7 +58,6 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                 key: 'refund',
                 popover:
                     'This will refund the charge in Recharge with the amount specified below.',
-                tooltip: 'Refund charge',
                 options: [
                     {
                         value: 'rechargeRefundCharge',
@@ -83,7 +82,11 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                         Refund charge
                     </div>
                 ),
-                child: <i className="material-icons">refresh</i>,
+                child: (
+                    <>
+                        <i className="material-icons">refresh</i> Refund
+                    </>
+                ),
             },
         ]
 
@@ -99,7 +102,7 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
             charge_id: source.get('id'),
         }
 
-        return <ActionButtonsGroup payload={payload} actions={actions} float />
+        return <ActionButtonsGroup payload={payload} actions={actions} />
     }
 }
 
@@ -130,7 +133,6 @@ export class SubscriptionAfterTitle extends React.Component<SubscriptionAfterTit
                 popover:
                     'Skip the charge for this subscription on Recharge. ' +
                     'No order will be created and no item will be shipped.',
-                tooltip: 'Skip charge',
                 title: (
                     <div>
                         <i className="material-icons mr-1">block</i>
@@ -138,17 +140,15 @@ export class SubscriptionAfterTitle extends React.Component<SubscriptionAfterTit
                     </div>
                 ),
                 child: (
-                    <div>
-                        <i className="material-icons mr-1">block</i>
-                        Skip
-                    </div>
+                    <>
+                        <i className="material-icons mr-1">block</i> Skip
+                    </>
                 ),
             },
             {
                 key: 'unskip',
                 options: [{value: 'rechargeUnskipCharge'}],
                 popover: 'Unskip the charge for this subscription on Recharge.',
-                tooltip: 'Unskip charge',
                 title: (
                     <div>
                         <i className="material-icons mr-1">block</i>
@@ -156,10 +156,9 @@ export class SubscriptionAfterTitle extends React.Component<SubscriptionAfterTit
                     </div>
                 ),
                 child: (
-                    <div>
-                        <i className="material-icons mr-1">autorenew</i>
-                        Unskip
-                    </div>
+                    <>
+                        <i className="material-icons mr-1">autorenew</i> Unskip
+                    </>
                 ),
             },
         ]

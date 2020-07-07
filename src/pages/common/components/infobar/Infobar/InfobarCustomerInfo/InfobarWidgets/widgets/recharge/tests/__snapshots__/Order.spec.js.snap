@@ -6,11 +6,14 @@ exports[`Order <AfterTitle/> should display the refund action 1`] = `
     actions={
       Array [
         Object {
-          "child": <i
-            className="material-icons"
-          >
-            refresh
-          </i>,
+          "child": <React.Fragment>
+            <i
+              className="material-icons"
+            >
+              refresh
+            </i>
+             Refund
+          </React.Fragment>,
           "key": "refund",
           "options": Array [
             Object {
@@ -39,11 +42,9 @@ exports[`Order <AfterTitle/> should display the refund action 1`] = `
             </i>
             Refund order
           </div>,
-          "tooltip": "Refund order",
         },
       ]
     }
-    float={true}
     payload={
       Object {
         "order_id": 1,
@@ -76,11 +77,14 @@ exports[`Order <AfterTitle/> should display the refund action with its max equal
     actions={
       Array [
         Object {
-          "child": <i
-            className="material-icons"
-          >
-            refresh
-          </i>,
+          "child": <React.Fragment>
+            <i
+              className="material-icons"
+            >
+              refresh
+            </i>
+             Refund
+          </React.Fragment>,
           "key": "refund",
           "options": Array [
             Object {
@@ -109,11 +113,9 @@ exports[`Order <AfterTitle/> should display the refund action with its max equal
             </i>
             Refund order
           </div>,
-          "tooltip": "Refund order",
         },
       ]
     }
-    float={true}
     payload={
       Object {
         "order_id": 1,
@@ -144,7 +146,6 @@ exports[`Order <AfterTitle/> should not display the refund action because the ch
 <Fragment>
   <ActionButtonsGroup
     actions={Array []}
-    float={true}
     payload={
       Object {
         "order_id": 1,
@@ -175,7 +176,6 @@ exports[`Order <AfterTitle/> should not display the refund action because the or
 <Fragment>
   <ActionButtonsGroup
     actions={Array []}
-    float={true}
     payload={
       Object {
         "order_id": 1,
@@ -206,7 +206,6 @@ exports[`Order <AfterTitle/> should not display the refund action because the or
 <Fragment>
   <ActionButtonsGroup
     actions={Array []}
-    float={true}
     payload={
       Object {
         "order_id": 1,

@@ -18,7 +18,6 @@ import {
     Popover,
     PopoverBody,
     PopoverHeader,
-    UncontrolledTooltip,
 } from 'reactstrap'
 
 import SelectField from '../../../../../../forms/SelectField'
@@ -40,15 +39,13 @@ type Props = {
         order_id?: string,
         customer_id?: string,
     },
-    children: Object,
+    children: Node,
     tag: Object,
     modal?: ComponentType<InfobarModalProps>,
     modalData?: Object,
     tagOptions?: Object,
     popover?: string,
-    tooltip?: string,
     title: Node,
-    float: boolean,
 
     getPendingActionCallback: (string) => Map<*, *>,
     executeAction: (
@@ -388,23 +385,15 @@ export default class ActionButton extends React.Component<Props, State> {
     }
 
     render() {
-        const {
-            children,
-            tag: Tag,
-            tagOptions,
-            tooltip,
-            modal,
-            float,
-        } = this.props
+        const {children, tag: Tag, tagOptions, modal} = this.props
         const {isLoading} = this.state
-        const buttonColor = float ? 'link' : 'secondary'
 
         return (
             <>
                 <Tag
                     id={this.id}
-                    color={buttonColor}
-                    size={float ? 'lg' : 'sm'}
+                    color="secondary"
+                    size="sm"
                     className={classnames(css.button, 'action-button')}
                     disabled={isLoading}
                     onClick={this._toggleUi}
@@ -413,15 +402,6 @@ export default class ActionButton extends React.Component<Props, State> {
                     {children}
                     {modal ? this._renderModal(modal) : this._renderPopover()}
                 </Tag>
-                {tooltip && (
-                    <UncontrolledTooltip
-                        placement="top"
-                        target={this.id}
-                        delay={{show: 0, hide: 0}}
-                    >
-                        {tooltip}
-                    </UncontrolledTooltip>
-                )}
             </>
         )
     }

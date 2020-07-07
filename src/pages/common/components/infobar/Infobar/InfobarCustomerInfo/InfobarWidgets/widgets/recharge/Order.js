@@ -131,14 +131,17 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                     },
                 ],
                 popover: 'This will refund the order in Recharge.',
-                tooltip: 'Refund order',
                 title: (
                     <div>
                         <i className="material-icons mr-2">refresh</i>
                         Refund order
                     </div>
                 ),
-                child: <i className="material-icons">refresh</i>,
+                child: (
+                    <>
+                        <i className="material-icons">refresh</i> Refund
+                    </>
+                ),
             },
         ]
 
@@ -170,7 +173,6 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
                 <ActionButtonsGroup
                     actions={this._getActions()}
                     payload={payload}
-                    float
                 />
                 <CardHeaderDetails>
                     <CardHeaderValue label="Created">

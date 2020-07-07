@@ -13,11 +13,14 @@ exports[`Subscription AfterTitle should display only the activate action because
     actions={
       Array [
         Object {
-          "child": <i
-            className="material-icons"
-          >
-            refresh
-          </i>,
+          "child": <React.Fragment>
+            <i
+              className="material-icons"
+            >
+              refresh
+            </i>
+             Activate
+          </React.Fragment>,
           "key": "activate",
           "options": Array [
             Object {
@@ -33,11 +36,9 @@ exports[`Subscription AfterTitle should display only the activate action because
             </i>
             Activate subscription
           </div>,
-          "tooltip": "Activate subscription",
         },
       ]
     }
-    float={true}
     payload={
       Object {
         "subscription_id": undefined,
@@ -69,11 +70,14 @@ exports[`Subscription AfterTitle should display only the cancel action because t
     actions={
       Array [
         Object {
-          "child": <i
-            className="material-icons"
-          >
-            block
-          </i>,
+          "child": <React.Fragment>
+            <i
+              className="material-icons"
+            >
+              block
+            </i>
+             Cancel
+          </React.Fragment>,
           "key": "cancel",
           "options": Array [
             Object {
@@ -129,11 +133,9 @@ exports[`Subscription AfterTitle should display only the cancel action because t
             </i>
             Cancel subscription
           </div>,
-          "tooltip": "Cancel subscription",
         },
       ]
     }
-    float={true}
     payload={
       Object {
         "subscription_id": undefined,

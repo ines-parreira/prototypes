@@ -17,7 +17,7 @@ exports[`ActionButton component should display a single option with a checkbox p
       >
         refresh
       </i>
-      Little action
+       Little action
     </div>
     <Popover
       delay={
@@ -93,18 +93,6 @@ exports[`ActionButton component should display a single option with a checkbox p
       </PopoverBody>
     </Popover>
   </Button>
-  <UncontrolledTooltip
-    delay={
-      Object {
-        "hide": 0,
-        "show": 0,
-      }
-    }
-    placement="top"
-    target="action-button-4"
-  >
-    Foo
-  </UncontrolledTooltip>
 </Fragment>
 `;
 
@@ -125,7 +113,7 @@ exports[`ActionButton component should display a single option with a number par
       >
         refresh
       </i>
-      Little action
+       Little action
     </div>
     <Popover
       delay={
@@ -205,18 +193,6 @@ exports[`ActionButton component should display a single option with a number par
       </PopoverBody>
     </Popover>
   </Button>
-  <UncontrolledTooltip
-    delay={
-      Object {
-        "hide": 0,
-        "show": 0,
-      }
-    }
-    placement="top"
-    target="action-button-3"
-  >
-    Foo
-  </UncontrolledTooltip>
 </Fragment>
 `;
 
@@ -237,7 +213,7 @@ exports[`ActionButton component should display a single option with a select par
       >
         refresh
       </i>
-      Little action
+       Little action
     </div>
     <Popover
       delay={
@@ -332,18 +308,6 @@ exports[`ActionButton component should display a single option with a select par
       </PopoverBody>
     </Popover>
   </Button>
-  <UncontrolledTooltip
-    delay={
-      Object {
-        "hide": 0,
-        "show": 0,
-      }
-    }
-    placement="top"
-    target="action-button-5"
-  >
-    Foo
-  </UncontrolledTooltip>
 </Fragment>
 `;
 
@@ -364,7 +328,7 @@ exports[`ActionButton component should display a single option with a text param
       >
         refresh
       </i>
-      Little action
+       Little action
     </div>
     <Popover
       delay={
@@ -441,18 +405,6 @@ exports[`ActionButton component should display a single option with a text param
       </PopoverBody>
     </Popover>
   </Button>
-  <UncontrolledTooltip
-    delay={
-      Object {
-        "hide": 0,
-        "show": 0,
-      }
-    }
-    placement="top"
-    target="action-button-2"
-  >
-    Foo
-  </UncontrolledTooltip>
 </Fragment>
 `;
 
@@ -473,7 +425,7 @@ exports[`ActionButton component should display a single option with no parameter
       >
         refresh
       </i>
-      Little action
+       Little action
     </div>
     <Popover
       delay={
@@ -540,18 +492,6 @@ exports[`ActionButton component should display a single option with no parameter
       </PopoverBody>
     </Popover>
   </Button>
-  <UncontrolledTooltip
-    delay={
-      Object {
-        "hide": 0,
-        "show": 0,
-      }
-    }
-    placement="top"
-    target="action-button-1"
-  >
-    Foo
-  </UncontrolledTooltip>
 </Fragment>
 `;
 
@@ -572,7 +512,7 @@ exports[`ActionButton component should display multiple options with a common pa
       >
         refresh
       </i>
-      Little action
+       Little action
     </div>
     <Popover
       delay={
@@ -692,18 +632,6 @@ exports[`ActionButton component should display multiple options with a common pa
       </PopoverBody>
     </Popover>
   </Button>
-  <UncontrolledTooltip
-    delay={
-      Object {
-        "hide": 0,
-        "show": 0,
-      }
-    }
-    placement="top"
-    target="action-button-7"
-  >
-    Foo
-  </UncontrolledTooltip>
 </Fragment>
 `;
 
@@ -724,7 +652,7 @@ exports[`ActionButton component should display multiple options with different p
       >
         refresh
       </i>
-      Little action
+       Little action
     </div>
     <Popover
       delay={
@@ -844,18 +772,6 @@ exports[`ActionButton component should display multiple options with different p
       </PopoverBody>
     </Popover>
   </Button>
-  <UncontrolledTooltip
-    delay={
-      Object {
-        "hide": 0,
-        "show": 0,
-      }
-    }
-    placement="top"
-    target="action-button-8"
-  >
-    Foo
-  </UncontrolledTooltip>
 </Fragment>
 `;
 
@@ -876,7 +792,7 @@ exports[`ActionButton component should display multiple options without paramete
       >
         refresh
       </i>
-      Little action
+       Little action
     </div>
     <Popover
       delay={
@@ -986,17 +902,5 @@ exports[`ActionButton component should display multiple options without paramete
       </PopoverBody>
     </Popover>
   </Button>
-  <UncontrolledTooltip
-    delay={
-      Object {
-        "hide": 0,
-        "show": 0,
-      }
-    }
-    placement="top"
-    target="action-button-6"
-  >
-    Foo
-  </UncontrolledTooltip>
 </Fragment>
 `;

@@ -98,8 +98,7 @@ class AfterTitle extends React.Component<AfterTitleProps> {
                 title: 'Create order',
                 child: (
                     <>
-                        <i className="material-icons mr-2">add</i>
-                        Create order
+                        <i className="material-icons mr-2">add</i> Create order
                     </>
                 ),
                 modal: DraftOrderModal,

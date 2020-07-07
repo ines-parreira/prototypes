@@ -64,8 +64,11 @@ class AfterTitle extends React.Component<AfterTitleProps> {
                     },
                 ],
                 title: 'Refund order',
-                tooltip: 'Refund order',
-                child: <i className="material-icons">refresh</i>,
+                child: (
+                    <>
+                        <i className="material-icons">refresh</i> Refund
+                    </>
+                ),
                 modal: RefundOrderModal,
                 modalData: {
                     actionName: ShopifyAction.REFUND_ORDER,
@@ -85,8 +88,11 @@ class AfterTitle extends React.Component<AfterTitleProps> {
                     },
                 ],
                 title: 'Cancel order',
-                tooltip: 'Cancel order',
-                child: <i className="material-icons">block</i>,
+                child: (
+                    <>
+                        <i className="material-icons">block</i> Cancel
+                    </>
+                ),
                 modal: CancelOrderModal,
                 modalData: {
                     actionName: ShopifyAction.CANCEL_ORDER,
@@ -107,8 +113,11 @@ class AfterTitle extends React.Component<AfterTitleProps> {
                     },
                 ],
                 title: 'Duplicate order',
-                tooltip: 'Duplicate order',
-                child: <i className="material-icons">filter_none</i>,
+                child: (
+                    <>
+                        <i className="material-icons">filter_none</i> Duplicate
+                    </>
+                ),
                 modal: DraftOrderModal,
                 modalData: {
                     actionName: ShopifyAction.DUPLICATE_ORDER,
@@ -165,7 +174,6 @@ class AfterTitle extends React.Component<AfterTitleProps> {
                 <ActionButtonsGroup
                     actions={this._getActions()}
                     payload={payload}
-                    float
                 />
                 <CardHeaderDetails>
                     <CardHeaderValue label="Created">
