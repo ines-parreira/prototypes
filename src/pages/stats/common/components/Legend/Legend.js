@@ -4,14 +4,15 @@ import _isArray from 'lodash/isArray'
 
 import css from './Legend.less'
 
-type label = {
+type Label = {
+    aheadLabel?: string,
     name: string,
     background: string,
-    square: ?boolean,
+    shape?: 'rectangle' | 'square' | 'circle',
 }
 
 type Props = {
-    labels: Array<label>,
+    labels: Array<Label>,
 }
 
 export default class Legend extends Component<Props> {
@@ -26,10 +27,11 @@ export default class Legend extends Component<Props> {
             <div className={css.legends}>
                 {labels.map((label) => (
                     <span className={`${css.label} mr-4 mb-2`} key={label.name}>
+                        {label.aheadLabel && (
+                            <span className="mr-2">{label.aheadLabel}</span>
+                        )}
                         <span
-                            className={`${css.icon} ${
-                                label.square ? '' : css.circle
-                            } mr-2`}
+                            className={`${css[label.shape || 'circle']} mr-2`}
                             style={{background: label.background}}
                         />
                         {label.name}

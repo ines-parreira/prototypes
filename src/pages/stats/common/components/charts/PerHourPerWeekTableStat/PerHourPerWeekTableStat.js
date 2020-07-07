@@ -85,7 +85,7 @@ const getLegendLabels = (lines: Map<*, *>) => {
         background:
             'repeating-linear-gradient' +
             `(135deg, ${colors.white}, ${colors.white} 2px, ${colors.red} 2px, ${colors.red} 4px)`,
-        square: true,
+        shape: 'square',
     }
 
     if (limits.n4 < 4) {
@@ -94,20 +94,25 @@ const getLegendLabels = (lines: Map<*, *>) => {
 
     return [
         {
-            name: limits.n0 + '-' + limits.n1,
-            background: getValueColor(limits, limits.n0),
-        },
-        {
-            name: limits.n1 + '-' + limits.n2,
-            background: getValueColor(limits, limits.n1),
-        },
-        {
-            name: limits.n2 + '-' + limits.n3,
-            background: getValueColor(limits, limits.n2),
-        },
-        {
-            name: limits.n3 + '-' + limits.n4,
-            background: getValueColor(limits, limits.n3),
+            aheadLabel: 'Least busy',
+            name: 'Busiest',
+            background:
+                'linear-gradient(90deg,' +
+                getValueColor(limits, limits.n0) +
+                ' 25%, ' +
+                getValueColor(limits, limits.n1) +
+                ' 25%, ' +
+                getValueColor(limits, limits.n1) +
+                ' 50%, ' +
+                getValueColor(limits, limits.n2) +
+                ' 50%, ' +
+                getValueColor(limits, limits.n2) +
+                ' 75%, ' +
+                getValueColor(limits, limits.n3) +
+                ' 75%, ' +
+                getValueColor(limits, limits.n3) +
+                ' 100%)',
+            shape: 'rectangle',
         },
         bHoursLegend,
     ]

@@ -25,7 +25,13 @@ describe('Legend', () => {
                 name: 'square line 1',
                 background:
                     'repeating-linear-gradient (60deg, red 80%, red 90%, white 0px, white 100%)',
-                square: true,
+                shape: 'square',
+            },
+            {
+                aheadLabel: 'Label ahead of the legend',
+                name: 'Rectangle name',
+                background: 'red',
+                shape: 'rectangle',
             },
         ]
         expect(shallow(<Legend labels={labels} />)).toMatchSnapshot()

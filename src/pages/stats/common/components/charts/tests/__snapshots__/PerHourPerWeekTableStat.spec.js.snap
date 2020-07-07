@@ -17,25 +17,15 @@ exports[`PerHourPerWeekTableStat Table Should render the table with intervals 1`
       labels={
         Array [
           Object {
-            "background": "#F6F9FF",
-            "name": "0-2",
-          },
-          Object {
-            "background": "#D2E2FD",
-            "name": "2-4",
-          },
-          Object {
-            "background": "#9BC0FC",
-            "name": "4-5",
-          },
-          Object {
-            "background": "#77A9FA",
-            "name": "5-7",
+            "aheadLabel": "Least busy",
+            "background": "linear-gradient(90deg,#F6F9FF 25%, #D2E2FD 25%, #D2E2FD 50%, #9BC0FC 50%, #9BC0FC 75%, #77A9FA 75%, #77A9FA 100%)",
+            "name": "Busiest",
+            "shape": "rectangle",
           },
           Object {
             "background": "repeating-linear-gradient(135deg, #FFFFFF, #FFFFFF 2px, #F4697D 2px, #F4697D 4px)",
             "name": "Business Hours",
-            "square": true,
+            "shape": "square",
           },
         ]
       }
@@ -208,7 +198,7 @@ exports[`PerHourPerWeekTableStat Table Should render the table with no interval 
           Object {
             "background": "repeating-linear-gradient(135deg, #FFFFFF, #FFFFFF 2px, #F4697D 2px, #F4697D 4px)",
             "name": "Business Hours",
-            "square": true,
+            "shape": "square",
           },
         ]
       }
