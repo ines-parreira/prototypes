@@ -259,8 +259,7 @@ export const stats = fromJS({
         }),
     },
     [TICKETS_CLOSED_PER_AGENT]: {
-        helpText:
-            'Number of tickets closed per agent. Only tickets where an agent is assigned are taken into account.',
+        helpText: 'Number of tickets closed per assigned agent',
         style: 'table',
         downloadable: true,
         callbacks: {
@@ -310,8 +309,7 @@ export const stats = fromJS({
         },
     },
     [TICKETS_CLOSED_PER_AGENT_PER_DAY]: {
-        helpText: `Number of tickets closed per agent per day.
-                   Only tickets where an agent is assigned are taken into account.`,
+        helpText: 'Number of tickets closed per assigned agent, per day',
         style: 'bar',
         downloadable: true,
         options: (legend) => ({
@@ -348,7 +346,8 @@ export const stats = fromJS({
         }),
     },
     [SUPPORT_VOLUME]: {
-        helpText: 'Number of tickets created, replied by agents and closed.',
+        helpText:
+            'Number of tickets created, replied by agents and closed per day',
         style: 'bar',
         downloadable: true,
         lines: {
@@ -403,55 +402,52 @@ export const stats = fromJS({
             {
                 api_resource_name: 'total-tickets-created',
                 label: 'Tickets created',
-                tooltip: 'Number of tickets created.',
+                tooltip: 'Number of tickets created',
             },
             {
                 api_resource_name: 'total-tickets-replied',
                 label: 'Tickets replied',
-                tooltip: 'Number of tickets replied by agents.',
+                tooltip: 'Number of tickets replied by agents',
             },
             {
                 api_resource_name: 'total-tickets-closed',
                 label: 'Tickets closed',
                 tooltip:
-                    'Number of tickets closed. If a ticket was closed multiple times, ' +
-                    'we only take into account the last time it was closed.',
+                    'Number of tickets closed (if a ticket was closed multiple times, we only count the last time)',
             },
             {
                 api_resource_name: 'total-messages-sent',
-                tooltip: 'Number of messages sent by agents and rules.',
                 label: 'Messages sent',
+                tooltip: 'Number of messages sent by agents and rules',
             },
             {
                 api_resource_name: 'total-messages-received',
-                tooltip: 'Number of messages received from customers.',
                 label: 'Messages received',
+                tooltip: 'Number of messages received from customers',
             },
             {
                 api_resource_name: 'median-first-response-time',
-                tooltip: `The time between the first message from a customer and the first response from an agent.
-                 Messages sent by rules are not taken into account. (median)`,
                 label: 'First response time',
+                tooltip:
+                    "Median time between the first message from a customer and the first response from an agent (messages sent by rules don't count)",
             },
             {
                 api_resource_name: 'median-resolution-time',
-                tooltip: `The time between the first message from a customer and the moment the ticket
-                   has been closed by an agent or a rule. Only tickets with at least one response
-                   from an agent or a rule are taken into account. (median)`,
                 label: 'Resolution time',
+                tooltip:
+                    'Median time between the first message from a customer and the moment a ticket with at least one response is closed by an agent or a rule',
             },
             {
                 api_resource_name: 'total-one-touch-tickets',
-                tooltip:
-                    'Percentage of tickets closed with only one response from an agent or a rule.',
                 label: 'One-touch tickets',
+                tooltip:
+                    'Percentage of tickets closed with only one response from an agent or a rule',
             },
         ],
     },
     [RESOLUTION_TIME]: {
-        helpText: `The time between the first message from a customer and the moment the ticket
-                   has been closed by an agent or a rule. Only tickets with a least one response
-                   from an agent or a rule are taken into account.`,
+        helpText:
+            'Time between the first message from a customer and the moment a ticket with at least one response is closed by an agent or a rule',
         style: 'line',
         downloadable: true,
         lines: {
@@ -505,8 +501,8 @@ export const stats = fromJS({
         }),
     },
     [FIRST_RESPONSE_TIME]: {
-        helpText: `The time between the first message from a customer
-                   and the first response from an agent. Messages sent by rules are not taken into account.`,
+        helpText:
+            "Time between the first message from a customer and the first response from an agent (messages sent by rules don't count)",
         style: 'line',
         downloadable: true,
         lines: {
@@ -571,12 +567,12 @@ export const stats = fromJS({
             {
                 name: 'total_sent',
                 label: 'Survey sent',
-                tooltip: 'Total number of customer satisfaction surveys sent.',
+                tooltip: 'Total number of customer satisfaction surveys sent',
             },
             {
                 name: 'response_rate',
                 label: 'Response rate',
-                tooltip: 'Total number of responses for surveys sent.',
+                tooltip: 'Total number of responses for surveys sent',
                 type: 'donut',
                 fill: 'success',
                 maxValue: 100,
@@ -584,7 +580,7 @@ export const stats = fromJS({
             {
                 name: 'average_rating',
                 label: 'Average rating',
-                tooltip: 'Average score given by the customers.',
+                tooltip: 'Average score given by the customers',
                 type: 'donut',
                 fill: 'warning',
                 maxValue: SATISFACTION_SURVEY_MAX_SCORE,
@@ -592,7 +588,7 @@ export const stats = fromJS({
             {
                 name: 'response_distribution',
                 label: 'Response Distribution',
-                tooltip: 'Percentage of responses, grouped by the given score.',
+                tooltip: 'Percentage of responses, grouped by the given score',
                 type: 'distribution',
                 variant: 'star',
                 minValue: SATISFACTION_SURVEY_MIN_SCORE,
@@ -612,34 +608,33 @@ export const stats = fromJS({
             {
                 name: 'tickets_created',
                 label: 'Tickets created',
-                tooltip:
-                    'Number of tickets created during the selected period.',
+                tooltip: 'Number of tickets created during the selected period',
             },
             {
                 name: 'tickets_converted',
                 label: 'Tickets converted',
                 tooltip:
-                    'Number of tickets converted during the selected period.',
+                    'Number of tickets converted during the selected period',
             },
             {
                 name: 'conversion_ratio',
                 label: 'Conversion ratio',
-                tooltip: 'Ratio between created vs converted tickets.',
+                tooltip: 'Ratio between created vs converted tickets',
             },
             {
                 name: 'total_sales_from_support',
                 label: 'Total sales from support',
-                tooltip: 'Sum of the order amount for each converted ticket.',
+                tooltip: 'Sum of the order amount for each converted ticket',
             },
         ],
     },
     [REVENUE_PER_AGENT]: {
-        helpText: 'Breakdown of sales metrics per agent.',
+        helpText: 'Breakdown of sales metrics per agent',
         style: 'table',
         downloadable: true,
     },
     [REVENUE_PER_DAY]: {
-        helpText: 'Number of converted and created tickets per day.',
+        helpText: 'Number of converted and created tickets per day',
         style: 'bar',
         downloadable: true,
         lines: {
