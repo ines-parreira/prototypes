@@ -30,10 +30,10 @@ export const TICKETS_CLOSED_PER_AGENT_PER_DAY =
 export const MESSAGES_SENT_PER_MACRO = 'messages-sent-per-macro'
 export const SATISFACTION_SURVEYS = 'satisfaction-surveys'
 export const LATEST_SATISFACTION_SURVEYS = 'latest-satisfaction-surveys'
-export const REVENUE_OVERVIEW = 'revenue-overview-v2'
-export const REVENUE_PER_AGENT = 'revenue-per-agent-v2'
-export const REVENUE_PER_DAY = 'revenue-per-day-v2'
-export const REVENUE_PER_TICKET = 'revenue-per-ticket-v2'
+export const REVENUE_OVERVIEW = 'revenue-overview'
+export const REVENUE_PER_AGENT = 'revenue-per-agent'
+export const REVENUE_PER_DAY = 'revenue-per-day'
+export const REVENUE_PER_TICKET = 'revenue-per-ticket'
 
 const mainBlue = '#152065'
 export const colors = [
