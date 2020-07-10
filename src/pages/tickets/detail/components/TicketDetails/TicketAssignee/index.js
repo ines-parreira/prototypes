@@ -1,5 +1,1 @@
-export default, {
-    TicketAssignee,
-    TicketAssigneeTeamSection,
-    TicketAssigneeUserSection,
-} from './TicketAssignee'
+export default, {TicketAssignee} from './TicketAssignee'

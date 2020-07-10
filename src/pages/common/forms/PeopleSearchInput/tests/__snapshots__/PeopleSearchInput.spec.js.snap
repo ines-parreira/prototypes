@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PeopleSearchInput/> render() should render 1`] = `
+<div
+  class="input-icon input-icon-right"
+>
+  <i
+    class="icon material-icons md-2 icon"
+  >
+    search
+  </i>
+  <input
+    class="form-control"
+    placeholder="Search users or teams..."
+    type="text"
+    value="foo"
+  />
+</div>
+`;

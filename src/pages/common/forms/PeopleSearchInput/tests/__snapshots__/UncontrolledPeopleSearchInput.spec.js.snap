@@ -1,0 +1,177 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<UncontrolledPeopleSearchInput/> render() should render 1`] = `
+<div
+  class="dropdown"
+>
+  <div
+    aria-expanded="false"
+    aria-haspopup="true"
+    class=""
+    data-toggle="dropdown"
+  >
+    <div
+      class="input-icon input-icon-right"
+    >
+      <i
+        class="icon material-icons md-2 icon"
+      >
+        search
+      </i>
+      <input
+        class="form-control"
+        placeholder="Search users or teams..."
+        type="text"
+        value=""
+      />
+    </div>
+  </div>
+  <div
+    aria-hidden="true"
+    class="dropdown dropdown-menu"
+    role="menu"
+    tabindex="-1"
+  >
+    <div
+      class="dropdown-divider"
+      tabindex="-1"
+    />
+    <h6
+      class="text-uppercase dropdown-header"
+      tabindex="-1"
+    >
+      Teams
+    </h6>
+    <div
+      class="items"
+    >
+      <button
+        class="item dropdown-item"
+        tabindex="0"
+        type="button"
+      >
+        <div
+          class="TeamLabel"
+        >
+          <div
+            class="component avatar"
+            style="width:26px;height:26px"
+          >
+            <div
+              class="initials"
+              style="width:26px;height:26px;font-size:10.833333333333334px"
+            >
+              <span>
+                T1
+              </span>
+            </div>
+          </div>
+          <span
+            class="name"
+          >
+            Team 1
+          </span>
+        </div>
+      </button>
+      <button
+        class="item dropdown-item"
+        tabindex="0"
+        type="button"
+      >
+        <div
+          class="TeamLabel"
+        >
+          <div
+            class="component avatar"
+            style="width:26px;height:26px"
+          >
+            <div
+              class="initials"
+              style="width:26px;height:26px;font-size:10.833333333333334px"
+            >
+              <span>
+                T2
+              </span>
+            </div>
+          </div>
+          <span
+            class="name"
+          >
+            Team 2
+          </span>
+        </div>
+      </button>
+    </div>
+    <div
+      class="dropdown-divider"
+      tabindex="-1"
+    />
+    <h6
+      class="text-uppercase dropdown-header"
+      tabindex="-1"
+    >
+      Users
+    </h6>
+    <div
+      class="items"
+    >
+      <button
+        class="item dropdown-item"
+        tabindex="0"
+        type="button"
+      >
+        <div
+          class="AgentLabel"
+        >
+          <div
+            class="component avatar"
+            style="width:26px;height:26px"
+          >
+            <div
+              class="initials"
+              style="width:26px;height:26px;font-size:10.833333333333334px"
+            >
+              <span>
+                U1
+              </span>
+            </div>
+          </div>
+          <span
+            class="name"
+          >
+            User 1
+          </span>
+        </div>
+      </button>
+      <button
+        class="item dropdown-item"
+        tabindex="0"
+        type="button"
+      >
+        <div
+          class="AgentLabel"
+        >
+          <div
+            class="component avatar"
+            style="width:26px;height:26px"
+          >
+            <div
+              class="initials"
+              style="width:26px;height:26px;font-size:10.833333333333334px"
+            >
+              <span>
+                U2
+              </span>
+            </div>
+          </div>
+          <span
+            class="name"
+          >
+            User 2
+          </span>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+`;

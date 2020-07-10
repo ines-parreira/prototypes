@@ -1,16 +1,12 @@
 import React from 'react'
-import {render, shallow} from 'enzyme'
+import {shallow} from 'enzyme'
 
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import _noop from 'lodash/noop'
 import {fromJS} from 'immutable'
 
-import TicketAssigneeContainer, {
-    TicketAssignee,
-    TicketAssigneeTeamSection,
-    TicketAssigneeUserSection,
-} from '../TicketAssignee'
+import TicketAssigneeContainer, {TicketAssignee} from '../TicketAssignee'
 
 const teams = fromJS({
     all: {
@@ -137,37 +133,5 @@ describe('<TicketAssignee/>', () => {
         })
         const component = shallow(<TicketAssigneeContainer store={store} />)
         expect(component).toMatchSnapshot()
-    })
-})
-
-describe('<TicketAssigneeTeamSection/>', () => {
-    describe('render()', () => {
-        it('should render received teams', () => {
-            const component = render(
-                <TicketAssigneeTeamSection
-                    currentAssigneeTeam={null}
-                    teams={teams.get('all').valueSeq()}
-                    selectTeam={jest.fn()}
-                />
-            )
-
-            expect(component).toMatchSnapshot()
-        })
-    })
-})
-
-describe('<TicketAssigneeUserSection/>', () => {
-    describe('render()', () => {
-        it('should render received users', () => {
-            const component = render(
-                <TicketAssigneeUserSection
-                    currentAssigneeUser={null}
-                    users={users.get('all')}
-                    selectUser={jest.fn()}
-                />
-            )
-
-            expect(component).toMatchSnapshot()
-        })
     })
 })

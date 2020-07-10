@@ -1,15 +1,9 @@
 // @flow
 import React from 'react'
 import classnames from 'classnames'
-import {fromJS, Map} from 'immutable'
+import {Map} from 'immutable'
 import {connect} from 'react-redux'
-import {
-    Dropdown,
-    DropdownItem,
-    DropdownMenu,
-    DropdownToggle,
-    Input,
-} from 'reactstrap'
+import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 import _isUndefined from 'lodash/isUndefined'
 
 import * as currentUserSelectors from '../../../../../../state/currentUser/selectors'
@@ -18,8 +12,9 @@ import * as teamsSelectors from '../../../../../../state/teams/selectors'
 
 import shortcutManager from '../../../../../../services/shortcutManager/index'
 import {AgentLabel, TeamLabel} from '../../../../../common/utils/labels'
-
 import {setAgent, setTeam} from '../../../../../../state/ticket/actions'
+import PeopleSearchInput from '../../../../../common/forms/PeopleSearchInput'
+import PeopleSearchResults from '../../../../../common/forms/PeopleSearchInput/PeopleSearchResults'
 
 import css from './TicketAssignee.less'
 
@@ -207,129 +202,113 @@ export class TicketAssignee extends React.Component<Props, State> {
             currentAssigneeTeam,
             currentAssigneeUser,
         } = this.props
-        let options = fromJS([])
 
-        const getDivider = (key) => <DropdownItem key={key} divider />
+        const {teams: filteredTeams, users: filteredUsers} = this.state
 
-        options = options.concat(this._getMenuMainOptions())
+        const availableTeams = currentAssigneeTeam
+            ? filteredTeams.filter(
+                  (team) => team.get('id') !== currentAssigneeTeam.get('id')
+              )
+            : filteredTeams
 
-        if (handleTeams && teams.size) {
-            options = options.push(getDivider('dividerBeforeTeams'))
-            options = options.concat(
-                <TicketAssigneeTeamSection
-                    key="teamSection"
-                    currentAssigneeTeam={currentAssigneeTeam}
-                    teams={this.state.teams}
-                    selectTeam={this._selectTeam}
-                />
-            )
-        }
+        const availableUsers = currentAssigneeUser
+            ? filteredUsers.filter(
+                  (user) => user.get('id') !== currentAssigneeUser.get('id')
+              )
+            : filteredUsers
 
-        if (handleUsers) {
-            options = options.push(getDivider('dividerBeforeUsers'))
-            options = options.concat(
-                <TicketAssigneeUserSection
-                    key="userSection"
-                    currentAssigneeUser={currentAssigneeUser}
-                    users={this.state.users}
-                    selectUser={this._selectUser}
-                />
-            )
-        }
-
-        return options
+        return (
+            <PeopleSearchResults
+                handleTeams={handleTeams && !!teams.size}
+                handleUsers={handleUsers}
+                teams={availableTeams}
+                users={availableUsers}
+                onTeamClick={this._selectTeam}
+                onUserClick={this._selectUser}
+            >
+                {this._renderMenuMainOptions()}
+            </PeopleSearchResults>
+        )
     }
 
-    _getMenuMainOptions() {
+    _renderMenuMainOptions() {
         const {
             currentAssigneeUser,
             currentAssigneeTeam,
             currentUser,
             handleUsers,
         } = this.props
+
         const isCurrentUserAssigned =
             currentAssigneeUser &&
             currentUser &&
             currentUser.get('id') === currentAssigneeUser.get('id')
-        let options = fromJS([])
 
-        if (currentAssigneeTeam) {
-            options = options.push(
-                <DropdownItem
-                    key="currentAssigneeTeam"
-                    className={css.assigneeItem}
-                >
-                    <TeamLabel
-                        name={currentAssigneeTeam.get('name')}
-                        emoji={currentAssigneeTeam.getIn([
-                            'decoration',
-                            'emoji',
-                        ])}
-                        className={css.assigneeLabel}
-                        shouldDisplayAvatar
-                        shouldDisplayTeamIcon
-                    />
-                    <i
-                        className="material-icons md-2"
-                        onClick={() => this._clearTeam()}
+        return (
+            <>
+                {currentAssigneeTeam && (
+                    <DropdownItem className={css.assigneeItem}>
+                        <TeamLabel
+                            name={currentAssigneeTeam.get('name')}
+                            emoji={currentAssigneeTeam.getIn([
+                                'decoration',
+                                'emoji',
+                            ])}
+                            className={css.assigneeLabel}
+                            shouldDisplayAvatar
+                            shouldDisplayTeamIcon
+                        />
+                        <i
+                            className="material-icons md-2"
+                            onClick={() => this._clearTeam()}
+                        >
+                            close
+                        </i>
+                    </DropdownItem>
+                )}
+                {currentAssigneeUser && (
+                    <DropdownItem className={css.assigneeItem}>
+                        <AgentLabel
+                            name={
+                                currentAssigneeUser.get('name') ||
+                                currentAssigneeUser.get('email')
+                            }
+                            profilePictureUrl={currentAssigneeUser.getIn([
+                                'meta',
+                                'profile_picture_url',
+                            ])}
+                            className={css.assigneeLabel}
+                            shouldDisplayAvatar
+                        />
+                        <i
+                            className="material-icons md-2"
+                            onClick={() => this._clearUser()}
+                        >
+                            close
+                        </i>
+                    </DropdownItem>
+                )}
+                {!isCurrentUserAssigned && handleUsers && (
+                    <DropdownItem
+                        type="button"
+                        className={css.item}
+                        onClick={() => this._selectUser(currentUser)}
                     >
-                        close
-                    </i>
-                </DropdownItem>
-            )
-        }
-
-        if (currentAssigneeUser) {
-            options = options.push(
-                <DropdownItem
-                    key="currentAssigneeUser"
-                    className={css.assigneeItem}
-                >
-                    <AgentLabel
-                        name={
-                            currentAssigneeUser.get('name') ||
-                            currentAssigneeUser.get('email')
-                        }
-                        profilePictureUrl={currentAssigneeUser.getIn([
-                            'meta',
-                            'profile_picture_url',
-                        ])}
-                        className={css.assigneeLabel}
-                        shouldDisplayAvatar
-                    />
-                    <i
-                        className="material-icons md-2"
-                        onClick={() => this._clearUser()}
-                    >
-                        close
-                    </i>
-                </DropdownItem>
-            )
-        }
-
-        if (!isCurrentUserAssigned && handleUsers) {
-            options = options.push(
-                <DropdownItem
-                    key="yourself"
-                    type="button"
-                    className={css.item}
-                    onClick={() => this._selectUser(currentUser)}
-                >
-                    Assign yourself
-                </DropdownItem>
-            )
-        }
-
-        return options
+                        Assign yourself
+                    </DropdownItem>
+                )}
+            </>
+        )
     }
 
     render() {
         const {direction, className} = this.props
+        const {search, dropdownOpen} = this.state
 
         return (
             <Dropdown
                 className={className}
-                isOpen={this.state.dropdownOpen}
+                isOpen={dropdownOpen}
                 toggle={this._toggle}
             >
                 {this._renderDropdownToggle()}
@@ -341,22 +320,13 @@ export class TicketAssignee extends React.Component<Props, State> {
                     <DropdownItem header className="dropdown-item-input">
                         {
                             // rebuild input on each opening so "autoFocus" works
-                            this.state.dropdownOpen && (
-                                <div className="input-icon input-icon-right">
-                                    <i className="icon material-icons md-2">
-                                        search
-                                    </i>
-
-                                    <Input
-                                        placeholder="Search users or teams..."
-                                        autoFocus
-                                        value={this.state.search}
-                                        onChange={(e) =>
-                                            this._search(e.target.value)
-                                        }
-                                        className={css.searchInput}
-                                    />
-                                </div>
+                            dropdownOpen && (
+                                <PeopleSearchInput
+                                    autoFocus
+                                    value={search}
+                                    className={css.searchInput}
+                                    onChange={this._search}
+                                />
                             )
                         }
                     </DropdownItem>
@@ -374,120 +344,3 @@ const mapStateToProps = (state) => ({
 })
 
 export default connect(mapStateToProps)(TicketAssignee)
-
-// Teams section
-type TeamSectionProps = {
-    currentAssigneeTeam: ?Map<*, *>,
-    teams: Object,
-    selectTeam: (team: Map<*, *>) => void,
-}
-
-export class TicketAssigneeTeamSection extends React.Component<TeamSectionProps> {
-    render() {
-        const {currentAssigneeTeam, teams, selectTeam} = this.props
-        const availableTeams = currentAssigneeTeam
-            ? teams.filter(
-                  (team) => team.get('id') !== currentAssigneeTeam.get('id')
-              )
-            : teams
-
-        let options = fromJS([])
-
-        options = options.push(
-            <DropdownItem key="teamsHeader" header>
-                TEAMS
-            </DropdownItem>
-        )
-
-        if (availableTeams.isEmpty()) {
-            options = options.push(
-                <DropdownItem key="noTeams" header>
-                    Could not find any team
-                </DropdownItem>
-            )
-        } else {
-            options = options.concat(
-                <div key="availableTeams" className={css.teams}>
-                    {availableTeams.map((team) => {
-                        return (
-                            <DropdownItem
-                                key={team.get('id')}
-                                type="button"
-                                className={css.item}
-                                onClick={() => selectTeam(team)}
-                            >
-                                <TeamLabel
-                                    name={team.get('name')}
-                                    emoji={team.getIn(['decoration', 'emoji'])}
-                                    shouldDisplayAvatar
-                                />
-                            </DropdownItem>
-                        )
-                    })}
-                </div>
-            )
-        }
-
-        return options
-    }
-}
-
-// Users section
-type UserSectionProps = {
-    currentAssigneeUser: ?Map<*, *>,
-    users: Object,
-    selectUser: (user: Map<*, *>) => void,
-}
-
-export class TicketAssigneeUserSection extends React.Component<UserSectionProps> {
-    render() {
-        const {currentAssigneeUser, users, selectUser} = this.props
-        const availableUsers = currentAssigneeUser
-            ? users.filter(
-                  (user) => user.get('id') !== currentAssigneeUser.get('id')
-              )
-            : users
-
-        let options = fromJS([])
-
-        options = options.push(
-            <DropdownItem key="usersHeader" header>
-                USERS
-            </DropdownItem>
-        )
-
-        if (availableUsers.isEmpty()) {
-            options = options.push(
-                <DropdownItem key="noUsers" header>
-                    Could not find any user
-                </DropdownItem>
-            )
-        } else {
-            options = options.concat(
-                <div key="availableUsers" className={css.users}>
-                    {availableUsers.map((user) => {
-                        return (
-                            <DropdownItem
-                                key={user.get('id')}
-                                type="button"
-                                className={css.item}
-                                onClick={() => selectUser(user)}
-                            >
-                                <AgentLabel
-                                    name={user.get('name') || user.get('email')}
-                                    profilePictureUrl={user.getIn([
-                                        'meta',
-                                        'profile_picture_url',
-                                    ])}
-                                    shouldDisplayAvatar
-                                />
-                            </DropdownItem>
-                        )
-                    })}
-                </div>
-            )
-        }
-
-        return options
-    }
-}

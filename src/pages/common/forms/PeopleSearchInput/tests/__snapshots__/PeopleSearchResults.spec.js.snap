@@ -1,0 +1,444 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PeopleSearchResults/> render() should render 1`] = `
+Array [
+  <div
+    class="dropdown-divider"
+    tabindex="-1"
+  />,
+  <h6
+    class="text-uppercase dropdown-header"
+    tabindex="-1"
+  >
+    Teams
+  </h6>,
+  <div
+    class="items"
+  >
+    <button
+      class="item dropdown-item"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="TeamLabel"
+      >
+        <div
+          class="component avatar"
+          style="width:26px;height:26px"
+        >
+          <div
+            class="initials"
+            style="width:26px;height:26px;font-size:10.833333333333334px"
+          >
+            <span>
+              T1
+            </span>
+          </div>
+        </div>
+        <span
+          class="name"
+        >
+          Team 1
+        </span>
+      </div>
+    </button>
+    <button
+      class="item dropdown-item"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="TeamLabel"
+      >
+        <div
+          class="component avatar"
+          style="width:26px;height:26px"
+        >
+          <div
+            class="initials"
+            style="width:26px;height:26px;font-size:10.833333333333334px"
+          >
+            <span>
+              T2
+            </span>
+          </div>
+        </div>
+        <span
+          class="name"
+        >
+          Team 2
+        </span>
+      </div>
+    </button>
+  </div>,
+  <div
+    class="dropdown-divider"
+    tabindex="-1"
+  />,
+  <h6
+    class="text-uppercase dropdown-header"
+    tabindex="-1"
+  >
+    Users
+  </h6>,
+  <div
+    class="items"
+  >
+    <button
+      class="item dropdown-item"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="AgentLabel"
+      >
+        <div
+          class="component avatar"
+          style="width:26px;height:26px"
+        >
+          <div
+            class="initials"
+            style="width:26px;height:26px;font-size:10.833333333333334px"
+          >
+            <span>
+              U1
+            </span>
+          </div>
+        </div>
+        <span
+          class="name"
+        >
+          User 1
+        </span>
+      </div>
+    </button>
+    <button
+      class="item dropdown-item"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="AgentLabel"
+      >
+        <div
+          class="component avatar"
+          style="width:26px;height:26px"
+        >
+          <div
+            class="initials"
+            style="width:26px;height:26px;font-size:10.833333333333334px"
+          >
+            <span>
+              U2
+            </span>
+          </div>
+        </div>
+        <span
+          class="name"
+        >
+          User 2
+        </span>
+      </div>
+    </button>
+  </div>,
+]
+`;
+
+exports[`<PeopleSearchResults/> render() should render with custom children displayed before teams 1`] = `
+Array [
+  <span>
+    foo
+  </span>,
+  <div
+    class="dropdown-divider"
+    tabindex="-1"
+  />,
+  <h6
+    class="text-uppercase dropdown-header"
+    tabindex="-1"
+  >
+    Teams
+  </h6>,
+  <div
+    class="items"
+  >
+    <button
+      class="item dropdown-item"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="TeamLabel"
+      >
+        <div
+          class="component avatar"
+          style="width:26px;height:26px"
+        >
+          <div
+            class="initials"
+            style="width:26px;height:26px;font-size:10.833333333333334px"
+          >
+            <span>
+              T1
+            </span>
+          </div>
+        </div>
+        <span
+          class="name"
+        >
+          Team 1
+        </span>
+      </div>
+    </button>
+    <button
+      class="item dropdown-item"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="TeamLabel"
+      >
+        <div
+          class="component avatar"
+          style="width:26px;height:26px"
+        >
+          <div
+            class="initials"
+            style="width:26px;height:26px;font-size:10.833333333333334px"
+          >
+            <span>
+              T2
+            </span>
+          </div>
+        </div>
+        <span
+          class="name"
+        >
+          Team 2
+        </span>
+      </div>
+    </button>
+  </div>,
+  <div
+    class="dropdown-divider"
+    tabindex="-1"
+  />,
+  <h6
+    class="text-uppercase dropdown-header"
+    tabindex="-1"
+  >
+    Users
+  </h6>,
+  <div
+    class="items"
+  >
+    <button
+      class="item dropdown-item"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="AgentLabel"
+      >
+        <div
+          class="component avatar"
+          style="width:26px;height:26px"
+        >
+          <div
+            class="initials"
+            style="width:26px;height:26px;font-size:10.833333333333334px"
+          >
+            <span>
+              U1
+            </span>
+          </div>
+        </div>
+        <span
+          class="name"
+        >
+          User 1
+        </span>
+      </div>
+    </button>
+    <button
+      class="item dropdown-item"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="AgentLabel"
+      >
+        <div
+          class="component avatar"
+          style="width:26px;height:26px"
+        >
+          <div
+            class="initials"
+            style="width:26px;height:26px;font-size:10.833333333333334px"
+          >
+            <span>
+              U2
+            </span>
+          </div>
+        </div>
+        <span
+          class="name"
+        >
+          User 2
+        </span>
+      </div>
+    </button>
+  </div>,
+]
+`;
+
+exports[`<PeopleSearchResults/> render() should render without teams 1`] = `
+Array [
+  <div
+    class="dropdown-divider"
+    tabindex="-1"
+  />,
+  <h6
+    class="text-uppercase dropdown-header"
+    tabindex="-1"
+  >
+    Users
+  </h6>,
+  <div
+    class="items"
+  >
+    <button
+      class="item dropdown-item"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="AgentLabel"
+      >
+        <div
+          class="component avatar"
+          style="width:26px;height:26px"
+        >
+          <div
+            class="initials"
+            style="width:26px;height:26px;font-size:10.833333333333334px"
+          >
+            <span>
+              U1
+            </span>
+          </div>
+        </div>
+        <span
+          class="name"
+        >
+          User 1
+        </span>
+      </div>
+    </button>
+    <button
+      class="item dropdown-item"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="AgentLabel"
+      >
+        <div
+          class="component avatar"
+          style="width:26px;height:26px"
+        >
+          <div
+            class="initials"
+            style="width:26px;height:26px;font-size:10.833333333333334px"
+          >
+            <span>
+              U2
+            </span>
+          </div>
+        </div>
+        <span
+          class="name"
+        >
+          User 2
+        </span>
+      </div>
+    </button>
+  </div>,
+]
+`;
+
+exports[`<PeopleSearchResults/> render() should render without users 1`] = `
+Array [
+  <div
+    class="dropdown-divider"
+    tabindex="-1"
+  />,
+  <h6
+    class="text-uppercase dropdown-header"
+    tabindex="-1"
+  >
+    Teams
+  </h6>,
+  <div
+    class="items"
+  >
+    <button
+      class="item dropdown-item"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="TeamLabel"
+      >
+        <div
+          class="component avatar"
+          style="width:26px;height:26px"
+        >
+          <div
+            class="initials"
+            style="width:26px;height:26px;font-size:10.833333333333334px"
+          >
+            <span>
+              T1
+            </span>
+          </div>
+        </div>
+        <span
+          class="name"
+        >
+          Team 1
+        </span>
+      </div>
+    </button>
+    <button
+      class="item dropdown-item"
+      tabindex="0"
+      type="button"
+    >
+      <div
+        class="TeamLabel"
+      >
+        <div
+          class="component avatar"
+          style="width:26px;height:26px"
+        >
+          <div
+            class="initials"
+            style="width:26px;height:26px;font-size:10.833333333333334px"
+          >
+            <span>
+              T2
+            </span>
+          </div>
+        </div>
+        <span
+          class="name"
+        >
+          Team 2
+        </span>
+      </div>
+    </button>
+  </div>,
+]
+`;
