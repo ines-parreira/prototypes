@@ -24,7 +24,7 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
           placement="top"
           target="title-tickets_created"
         >
-          Number of tickets created during the selected period.
+          Number of tickets created during the selected period
         </Tooltip>
       </span>
     </div>
@@ -86,7 +86,7 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
           placement="top"
           target="title-tickets_converted"
         >
-          Number of tickets converted during the selected period.
+          Number of tickets converted during the selected period
         </Tooltip>
       </span>
     </div>
@@ -148,7 +148,7 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
           placement="top"
           target="title-conversion_ratio"
         >
-          Ratio between created vs converted tickets.
+          Ratio between created vs converted tickets
         </Tooltip>
       </span>
     </div>
@@ -210,7 +210,7 @@ exports[`KeyMetricStat should render a key metrics chart (grouped key metrics) 1
           placement="top"
           target="title-total_sales_from_support"
         >
-          Sum of the order amount for each converted ticket.
+          Sum of the order amount for each converted ticket
         </Tooltip>
       </span>
     </div>
@@ -279,7 +279,7 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
           placement="top"
           target="title-total-tickets-created"
         >
-          Number of tickets created.
+          Number of tickets created
         </Tooltip>
       </span>
     </div>
@@ -309,7 +309,7 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
           placement="top"
           target="title-total-tickets-replied"
         >
-          Number of tickets replied by agents.
+          Number of tickets replied by agents
         </Tooltip>
       </span>
     </div>
@@ -339,7 +339,7 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
           placement="top"
           target="title-total-tickets-closed"
         >
-          Number of tickets closed. If a ticket was closed multiple times, we only take into account the last time it was closed.
+          Number of tickets closed (if a ticket was closed multiple times, we only count the last time)
         </Tooltip>
       </span>
     </div>
@@ -369,7 +369,7 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
           placement="top"
           target="title-total-messages-sent"
         >
-          Number of messages sent by agents and rules.
+          Number of messages sent by agents and rules
         </Tooltip>
       </span>
     </div>
@@ -429,7 +429,7 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
           placement="top"
           target="title-total-messages-received"
         >
-          Number of messages received from customers.
+          Number of messages received from customers
         </Tooltip>
       </span>
     </div>
@@ -459,8 +459,7 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
           placement="top"
           target="title-median-first-response-time"
         >
-          The time between the first message from a customer and the first response from an agent.
-                 Messages sent by rules are not taken into account. (median)
+          Median time between the first message from a customer and the first response from an agent (messages sent by rules don't count)
         </Tooltip>
       </span>
     </div>
@@ -490,9 +489,7 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
           placement="top"
           target="title-median-resolution-time"
         >
-          The time between the first message from a customer and the moment the ticket
-                   has been closed by an agent or a rule. Only tickets with at least one response
-                   from an agent or a rule are taken into account. (median)
+          Median time between the first message from a customer and the moment a ticket with at least one response is closed by an agent or a rule
         </Tooltip>
       </span>
     </div>
@@ -554,7 +551,7 @@ exports[`KeyMetricStat should render a key metrics chart (splitted key metrics) 
           placement="top"
           target="title-total-one-touch-tickets"
         >
-          Percentage of tickets closed with only one response from an agent or a rule.
+          Percentage of tickets closed with only one response from an agent or a rule
         </Tooltip>
       </span>
     </div>
@@ -591,7 +588,7 @@ exports[`KeyMetricStat should render a key metrics chart with distribution and d
           placement="top"
           target="title-total_sent"
         >
-          Total number of customer satisfaction surveys sent.
+          Total number of customer satisfaction surveys sent
         </Tooltip>
       </span>
     </div>
@@ -621,7 +618,7 @@ exports[`KeyMetricStat should render a key metrics chart with distribution and d
           placement="top"
           target="title-response_rate"
         >
-          Total number of responses for surveys sent.
+          Total number of responses for surveys sent
         </Tooltip>
       </span>
     </div>
@@ -651,7 +648,7 @@ exports[`KeyMetricStat should render a key metrics chart with distribution and d
           placement="top"
           target="title-average_rating"
         >
-          Average score given by the customers.
+          Average score given by the customers
         </Tooltip>
       </span>
     </div>
@@ -721,7 +718,7 @@ exports[`KeyMetricStat should render a key metrics chart with distribution and d
           placement="top"
           target="title-response_distribution"
         >
-          Percentage of responses, grouped by the given score.
+          Percentage of responses, grouped by the given score
         </Tooltip>
       </span>
     </div>
@@ -733,7 +730,7 @@ exports[`KeyMetricStat should render a key metrics chart with distribution and d
           Immutable.Map {
             "name": "response_distribution",
             "label": "Response Distribution",
-            "tooltip": "Percentage of responses, grouped by the given score.",
+            "tooltip": "Percentage of responses, grouped by the given score",
             "type": "distribution",
             "variant": "star",
             "minValue": 1,
