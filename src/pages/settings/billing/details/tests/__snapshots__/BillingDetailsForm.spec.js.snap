@@ -436,7 +436,7 @@ exports[`BillingDetailsForm component should display the form with billing conta
                             }
                           >
                             <label
-                              className="control-label"
+                              className="control-label "
                               htmlFor="id-email"
                             >
                               Billing email
@@ -508,7 +508,7 @@ exports[`BillingDetailsForm component should display the form with billing conta
                             }
                           >
                             <label
-                              className="control-label"
+                              className="control-label "
                               htmlFor="id-name"
                             >
                               Company name
@@ -570,7 +570,7 @@ exports[`BillingDetailsForm component should display the form with billing conta
                             }
                           >
                             <label
-                              className="control-label"
+                              className="control-label "
                               htmlFor="id-phone"
                             >
                               Phone number
@@ -632,7 +632,7 @@ exports[`BillingDetailsForm component should display the form with billing conta
                             }
                           >
                             <label
-                              className="control-label"
+                              className="control-label "
                               htmlFor="id-line1"
                             >
                               Address (line 1)
@@ -694,7 +694,7 @@ exports[`BillingDetailsForm component should display the form with billing conta
                             }
                           >
                             <label
-                              className="control-label"
+                              className="control-label "
                               htmlFor="id-line2"
                             >
                               Address (line 2)
@@ -778,7 +778,7 @@ exports[`BillingDetailsForm component should display the form with billing conta
                                     }
                                   >
                                     <label
-                                      className="control-label"
+                                      className="control-label "
                                       htmlFor="id-city"
                                     >
                                       City
@@ -858,7 +858,7 @@ exports[`BillingDetailsForm component should display the form with billing conta
                                     }
                                   >
                                     <label
-                                      className="control-label"
+                                      className="control-label "
                                       htmlFor="id-state"
                                     >
                                       State
@@ -938,7 +938,7 @@ exports[`BillingDetailsForm component should display the form with billing conta
                                     }
                                   >
                                     <label
-                                      className="control-label"
+                                      className="control-label "
                                       htmlFor="id-postalCode"
                                     >
                                       Postal code
@@ -1003,7 +1003,7 @@ exports[`BillingDetailsForm component should display the form with billing conta
                             }
                           >
                             <label
-                              className="control-label"
+                              className="control-label "
                               htmlFor="id-country"
                             >
                               Country

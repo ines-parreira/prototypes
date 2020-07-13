@@ -1,11 +1,11 @@
 import {fromJS} from 'immutable'
 
 import {updateCodeAst} from '../utils'
-import _schemas from '../../../../../fixtures/openapi.json'
+import _schemas from '../../../../../fixtures/openapi'
 
-import _astCodeContains from './fixtures/astCodeContains.json'
-import _astCodeEq from './fixtures/astCodeEq.json'
-import _astCodeNeq from './fixtures/astCodeNeq.json'
+import _astCodeContains from './fixtures/astCodeContains'
+import _astCodeEq from './fixtures/astCodeEq'
+import _astCodeNeq from './fixtures/astCodeNeq'
 
 const schemas = fromJS(_schemas)
 const astCodeContains = fromJS(_astCodeContains)

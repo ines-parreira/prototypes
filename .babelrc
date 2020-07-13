@@ -1,18 +1,15 @@
 {
     "presets": [
-        [
-            "@babel/env",
-            {
-                "targets": {
-                    "browsers": [
-                        "last 2 versions",
-                        "safari >= 7"
-                    ]
-                },
-                "useBuiltIns": "usage",
-                "loose": true
-            }
-        ],
+        ["@babel/env", {
+            "targets": {
+                "browsers": [
+                    "last 2 versions",
+                    "safari >= 7"
+                ]
+            },
+            "useBuiltIns": "usage",
+            "loose": true
+        }],
         "@babel/react",
         "@babel/flow"
     ],
@@ -26,36 +23,5 @@
         "@babel/plugin-proposal-class-properties",
         "@babel/plugin-proposal-export-default-from",
         "react-hot-loader/babel"
-    ],
-    "overrides": [
-        {
-            "test": [
-                ".ts",
-                ".tsx"
-            ],
-            "presets": [
-                [
-                    "@babel/env",
-                    {
-                        "targets": {
-                            "browsers": [
-                                "last 2 versions",
-                                "safari >= 7"
-                            ]
-                        },
-                        "useBuiltIns": "usage",
-                        "loose": true
-                    }
-                ],
-                "@babel/react",
-                [
-                    "@babel/typescript",
-                    {
-                        "allExtensions": true,
-                        "isTSX": true
-                    }
-                ]
-            ]
-        }
     ]
 }

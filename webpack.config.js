@@ -31,8 +31,7 @@ const devServer = {
     disableHostCheck: !__PRODUCTION__,
     headers: {
         'Access-Control-Allow-Origin': '*'
-    },
-    stats: 'minimal',
+    }
 }
 const optimization = {
     minimizer: [
@@ -118,7 +117,7 @@ module.exports = (env = {}) => {
             fs: 'empty'
         },
         entry: {
-            build: `${srcDir}/js/main.tsx`,
+            build: `${srcDir}/js/main.js`,
         },
         output: {
             ...outputOptions,
@@ -128,7 +127,7 @@ module.exports = (env = {}) => {
         module: {
             rules: [
                 {
-                    test: /\.(js|tsx?)$/i,
+                    test: /\.js$/i,
                     exclude: /node_modules/,
                     loader: 'babel-loader?cacheDirectory'
                 },
@@ -209,8 +208,7 @@ module.exports = (env = {}) => {
             alias: {
                 ...aliasOptions,
                 css: `${srcDir}/css/`,
-            },
-            extensions: ['.ts', '.tsx', '.js'],
+            }
         }
     }
 }

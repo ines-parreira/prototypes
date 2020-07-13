@@ -3,7 +3,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {Alert, Button, Container, Table} from 'reactstrap'
 import _pick from 'lodash/pick'
-import moment from 'moment'
+import moment from 'moment/moment'
 
 import Loader from '../../common/components/Loader/Loader'
 import PageHeader from '../../common/components/PageHeader'

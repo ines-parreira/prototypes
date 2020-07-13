@@ -3,12 +3,12 @@ import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
 import {Widget} from '../Widget'
-import _schemas from '../../../../../fixtures/openapi.json'
+import _schemas from '../../../../../fixtures/openapi'
 
-import _astCodeEq from './fixtures/astCodeEq.json'
-import _astCodeContains from './fixtures/astCodeContains.json'
-import _astCodeGteTimedelta from './fixtures/astCodeGteTimedelta.json'
-import _astCodeReplyToTicket from './fixtures/astCodeReplyToTicket.json'
+import _astCodeEq from './fixtures/astCodeEq'
+import _astCodeContains from './fixtures/astCodeContains'
+import _astCodeGteTimedelta from './fixtures/astCodeGteTimedelta'
+import _astCodeReplyToTicket from './fixtures/astCodeReplyToTicket'
 
 const schemas = fromJS(_schemas)
 const astCodeEq = fromJS(_astCodeEq)

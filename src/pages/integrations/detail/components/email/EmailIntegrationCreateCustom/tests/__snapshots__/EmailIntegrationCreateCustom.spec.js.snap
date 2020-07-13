@@ -48,7 +48,7 @@ exports[`<EmailIntegrationCreateCustom/> render() should render 1`] = `
           color=""
         >
           <label
-            class="control-label"
+            class="control-label "
             for="id-name"
           >
             Address name
@@ -76,7 +76,7 @@ exports[`<EmailIntegrationCreateCustom/> render() should render 1`] = `
           color=""
         >
           <label
-            class="control-label"
+            class="control-label "
             for="id-meta.address"
           >
             Email address
@@ -157,7 +157,7 @@ exports[`<EmailIntegrationCreateCustom/> render() should render update 1`] = `
           color=""
         >
           <label
-            class="control-label"
+            class="control-label "
             for="id-name"
           >
             Address name
@@ -185,7 +185,7 @@ exports[`<EmailIntegrationCreateCustom/> render() should render update 1`] = `
           color=""
         >
           <label
-            class="control-label"
+            class="control-label "
             for="id-meta.address"
           >
             Email address

@@ -356,7 +356,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                                   }
                                 >
                                   <label
-                                    className="control-label form-check-label"
+                                    className="control-label form-check-label "
                                     htmlFor="id-quickRepliesEnabled"
                                   >
                                     <Input
@@ -1266,7 +1266,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                                   }
                                 >
                                   <label
-                                    className="control-label form-check-label"
+                                    className="control-label form-check-label "
                                     htmlFor="id-quickRepliesEnabled"
                                   >
                                     <Input

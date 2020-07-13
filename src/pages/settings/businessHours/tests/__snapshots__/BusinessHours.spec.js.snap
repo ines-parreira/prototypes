@@ -292,7 +292,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                           }
                         >
                           <label
-                            className="control-label businessHoursLabel"
+                            className="control-label businessHoursLabel "
                           >
                             Business hours
                           </label>
@@ -1161,7 +1161,7 @@ exports[`BusinessHours component should render values from state 1`] = `
                               }
                             >
                               <label
-                                className="control-label"
+                                className="control-label "
                                 htmlFor="id-timezone"
                               >
                                 Timezone

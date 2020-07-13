@@ -6,7 +6,7 @@ import MockAdapter from 'axios-mock-adapter'
 import plan from '../fixtures/plan'
 import * as utils from '../utils'
 import TICKET_LANGUAGES from '../config/ticketLanguages'
-import schemasJSON from '../fixtures/openapi.json'
+import schemasJSON from '../fixtures/openapi'
 import {
     ADMIN_ROLE,
     AGENT_ROLE,
