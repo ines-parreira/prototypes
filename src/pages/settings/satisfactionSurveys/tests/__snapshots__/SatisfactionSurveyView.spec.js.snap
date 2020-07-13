@@ -208,7 +208,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                 }
                               >
                                 <label
-                                  className="control-label form-check-label "
+                                  className="control-label form-check-label"
                                   htmlFor="id-send_survey_on_email"
                                 >
                                   <Input
@@ -270,7 +270,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                 }
                               >
                                 <label
-                                  className="control-label form-check-label "
+                                  className="control-label form-check-label"
                                   htmlFor="id-send_survey_on_chat"
                                 >
                                   <Input
@@ -346,7 +346,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                               }
                             >
                               <label
-                                className="control-label "
+                                className="control-label"
                               >
                                 Survey email
                               </label>

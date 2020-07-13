@@ -1,0 +1,27 @@
+{
+    "compilerOptions": {
+        "forceConsistentCasingInFileNames": true,
+        "declaration": false,
+        "module": "esnext",
+        "moduleResolution": "node",
+        "pretty": true,
+        "sourceMap": false,
+        "target": "es5",
+        "lib": ["es2015", "dom"],
+        "jsx": "react",
+        "allowSyntheticDefaultImports": true,
+        "noUnusedLocals": false,
+        "allowJs": true,
+        "checkJs": false,
+        "strict": true,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true
+    },
+    "include": [
+        "g/static/private/js/**/*.ts",
+        "g/static/private/js/**/*.d.ts",
+        "g/static/private/js/**/*.tsx",
+        "types/**/*.d.ts"
+    ],
+    "exclude": ["node_modules"]
+}
