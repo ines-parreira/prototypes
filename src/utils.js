@@ -969,3 +969,12 @@ export const transformSystemMessagesToNotifications = (
         message: systemMessage[1],
     }))
 }
+
+/*
+ * Remove '/' symbols used for escaping in regex.
+ * @param symbols: array
+ * @returns: string
+ */
+export const displayRestrictedSymbols = (symbols: Array<string>): string => {
+    return symbols.join('').replace(/\\/g, '')
+}

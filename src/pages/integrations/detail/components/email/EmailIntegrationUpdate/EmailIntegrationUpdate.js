@@ -31,7 +31,10 @@ import {
     getRedirectUri,
 } from '../../../../../../state/integrations/selectors'
 
-import {isGorgiasSupportAddress} from '../../../../../../utils'
+import {
+    isGorgiasSupportAddress,
+    displayRestrictedSymbols,
+} from '../../../../../../utils'
 import {convertToHTML} from '../../../../../../utils/editor'
 import Loader from '../../../../../common/components/Loader'
 import * as segmentTracker from '../../../../../../store/middlewares/segmentTracker'
@@ -378,7 +381,7 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
         if (name && invalidNameRegexp.test(name)) {
             errors.name =
                 'The name of your Email integration cannot contain these characters: ' +
-                `${EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS.join(' ')}`
+                displayRestrictedSymbols(EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS)
         } else {
             errors.name = null
         }
@@ -421,8 +424,8 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
 
         const nameHelp =
             'The name that customers will see when they receive emails from you. ' +
-            `Cannot contain these characters: ${EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS.join(
-                ' '
+            `Cannot contain these characters: ${displayRestrictedSymbols(
+                EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS
             )}`
 
         return (

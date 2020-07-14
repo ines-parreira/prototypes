@@ -54,6 +54,8 @@ export const EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS = Object.freeze([
     ';',
     '<',
     '>',
+    '\\[',
+    '\\]',
 ])
 
 export const PENDING_AUTHENTICATION_STATUS = 'pending'
