@@ -39,7 +39,10 @@ import {convertToHTML} from '../../../../../../utils/editor'
 import Loader from '../../../../../common/components/Loader'
 import * as segmentTracker from '../../../../../../store/middlewares/segmentTracker'
 import * as integrationActions from '../../../../../../state/integrations/actions'
-import {GMAIL_IMPORTED_THREADS} from '../../../../../../config'
+import {
+    GMAIL_IMPORTED_EMAILS_FOR_YEARS,
+    OUTLOOK_IMPORTED_EMAILS_FOR_YEARS,
+} from '../../../../../../config'
 import ConfirmButton from '../../../../../common/components/ConfirmButton'
 
 import InputField from '../../../../../common/forms/InputField'
@@ -257,7 +260,8 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
         )
         const importDescription = (
             <span>
-                the last <b>{GMAIL_IMPORTED_THREADS}</b> emails
+                the last <b>{GMAIL_IMPORTED_EMAILS_FOR_YEARS}</b> years of
+                emails
             </span>
         )
         return this._renderImport(
@@ -285,7 +289,8 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
         )
         const importDescription = (
             <span>
-                the last <b>year</b> of emails
+                the last <b>{OUTLOOK_IMPORTED_EMAILS_FOR_YEARS}</b> years of
+                emails
             </span>
         )
         return this._renderImport(

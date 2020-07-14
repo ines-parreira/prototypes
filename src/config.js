@@ -251,8 +251,10 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
     },
 ]
 
-// Number of threads imported from Gmail
-export const GMAIL_IMPORTED_THREADS = 1000
+// Import period for tickets
+export const GMAIL_IMPORTED_EMAILS_FOR_YEARS = 2
+export const OUTLOOK_IMPORTED_EMAILS_FOR_YEARS = 2
+export const ZENDESK_IMPORTED_TICKETS_FOR_YEARS = 2
 
 export const JSON_CONTENT_TYPE = 'application/json'
 export const FORM_CONTENT_TYPE = 'application/x-www-form-urlencoded'

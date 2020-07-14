@@ -9,6 +9,7 @@ import {
     GMAIL_INTEGRATION_TYPE,
     OUTLOOK_INTEGRATION_TYPE,
 } from '../../../../../../constants/integration'
+import {GMAIL_IMPORTED_EMAILS_FOR_YEARS} from '../../../../../../config'
 import {getRedirectUri} from '../../../../../../state/integrations/selectors'
 
 import PageHeader from '../../../../../common/components/PageHeader'
@@ -72,7 +73,9 @@ export class EmailIntegrationCreate extends React.Component<Props> {
 
                         <p className="text-muted text-center">
                             Improve email deliverability, keep your data on your
-                            Google account, import last 1000 emails (optional)
+                            Google account, import the last{' '}
+                            {GMAIL_IMPORTED_EMAILS_FOR_YEARS} years of emails
+                            (optional)
                         </p>
 
                         <div className="divider">OR</div>

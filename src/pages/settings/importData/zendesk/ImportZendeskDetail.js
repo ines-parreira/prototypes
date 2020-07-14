@@ -7,6 +7,7 @@ import classnames from 'classnames'
 import {Breadcrumb, BreadcrumbItem, Button, Container, Form} from 'reactstrap'
 
 import InputField from '../../../common/forms/InputField'
+import {ZENDESK_IMPORTED_TICKETS_FOR_YEARS} from '../../../../config'
 
 import * as utils from '../../../../utils'
 import PageHeader from '../../../common/components/PageHeader'
@@ -75,8 +76,9 @@ export default class ImportZendeskDetail extends React.Component {
 
                 <Container fluid className="page-container">
                     <p>
-                        Gorgias will import tickets (one way) up to 1 year of
-                        history from your Zendesk account.
+                        Gorgias will import tickets (one way) up to{' '}
+                        {ZENDESK_IMPORTED_TICKETS_FOR_YEARS} years of history
+                        from your Zendesk account.
                         <br />
                         Note: The import is performed one time only it will not
                         sync your tickets continuously.
