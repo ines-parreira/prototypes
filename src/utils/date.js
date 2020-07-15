@@ -1,5 +1,5 @@
 // @flow
-import moment from 'moment'
+import moment from 'moment-timezone'
 
 /**
  * Convert a string to a moment object if the string represents a valid datetime, else returns null.
