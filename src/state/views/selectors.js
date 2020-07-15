@@ -2,7 +2,7 @@
 import {fromJS} from 'immutable'
 import {createSelector} from 'reselect'
 import type {Map, List} from 'immutable'
-import moment from 'moment/moment'
+import moment from 'moment'
 
 import {createImmutableSelector} from '../../utils'
 import * as viewsConfig from '../../config/views'

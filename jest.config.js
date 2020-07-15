@@ -71,12 +71,12 @@ module.exports = {
     // ],
 
     // An array of file extensions your modules use
-    // moduleFileExtensions: [
-    //   "js",
-    //   "json",
-    //   "jsx",
-    //   "node"
-    // ],
+    moduleFileExtensions: [
+      'js',
+      'json',
+      'ts',
+      'tsx',
+    ],
 
     // A map from regular expressions to module names that allow to stub out resources with a single module
     moduleNameMapper: {
@@ -156,7 +156,7 @@ module.exports = {
     // ],
 
     // The regexp pattern Jest uses to detect test files
-    // testRegex: "",
+    testRegex: '(/__tests__/.*|(\\.|/)(test|spec))\\.(js?|ts?)$',
 
     // This option allows the use of a custom results processor
     // testResultsProcessor: null,
