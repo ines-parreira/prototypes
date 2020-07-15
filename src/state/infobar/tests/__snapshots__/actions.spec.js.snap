@@ -154,7 +154,7 @@ Array [
 ]
 `;
 
-exports[`infobar actions search 1`] = `
+exports[`infobar actions search should dispatch search results on success 1`] = `
 Array [
   Object {
     "type": "SEARCH_CUSTOMERS_START",
@@ -169,6 +169,14 @@ Array [
       ],
     },
     "type": "SEARCH_CUSTOMERS_SUCCESS",
+  },
+]
+`;
+
+exports[`infobar actions search should not dispatch results when cancelling the search 1`] = `
+Array [
+  Object {
+    "type": "SEARCH_CUSTOMERS_START",
   },
 ]
 `;

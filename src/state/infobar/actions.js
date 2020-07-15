@@ -1,6 +1,6 @@
 // @flow
 
-import axios from 'axios'
+import axios, {type CancelToken} from 'axios'
 import {browserHistory} from 'react-router'
 import _noop from 'lodash/noop'
 
@@ -18,15 +18,17 @@ type responseType = {
     msg: string,
 }
 
-export const search = (query: string): thunkActionType => (
-    dispatch: dispatchType
-): Promise<dispatchType> => {
+export const search = (
+    query: string,
+    cancelToken?: CancelToken
+): thunkActionType => (dispatch: dispatchType): Promise<dispatchType> => {
     dispatch({
         type: constants.SEARCH_CUSTOMERS_START,
     })
+    const options = cancelToken ? {cancelToken} : {}
 
     return axios
-        .post('/api/search/', {type: 'user_profile', query})
+        .post('/api/search/', {type: 'user_profile', query}, options)
         .then((json = {}) => json.data)
         .then(
             (resp) => {
@@ -36,6 +38,9 @@ export const search = (query: string): thunkActionType => (
                 })
             },
             (error) => {
+                if (axios.isCancel(error)) {
+                    return Promise.resolve()
+                }
                 return dispatch({
                     type: constants.SEARCH_CUSTOMERS_ERROR,
                     error,

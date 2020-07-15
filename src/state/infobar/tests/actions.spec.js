@@ -1,7 +1,7 @@
 import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
-import axios from 'axios'
+import axios, {CancelToken} from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
 import * as actions from '../actions'
@@ -37,14 +37,28 @@ describe('infobar actions', () => {
         mockServer = new MockAdapter(axios)
     })
 
-    it('search', () => {
-        mockServer
-            .onPost('/api/search/')
-            .reply(200, {data: [{id: 1, name: 'alex'}]})
+    describe('search', () => {
+        it('should dispatch search results on success', () => {
+            mockServer
+                .onPost('/api/search/')
+                .reply(200, {data: [{id: 1, name: 'alex'}]})
 
-        return store
-            .dispatch(actions.search('alex'))
-            .then(() => expect(store.getActions()).toMatchSnapshot())
+            return store
+                .dispatch(actions.search('alex'))
+                .then(() => expect(store.getActions()).toMatchSnapshot())
+        })
+
+        it('should not dispatch results when cancelling the search', () => {
+            mockServer
+                .onPost('/api/search/')
+                .reply(200, {data: [{id: 1, name: 'alex'}]})
+            const source = CancelToken.source()
+            source.cancel()
+
+            return store
+                .dispatch(actions.search('alex', source.token))
+                .finally(() => expect(store.getActions()).toMatchSnapshot())
+        })
     })
 
     it('similar customer', () => {

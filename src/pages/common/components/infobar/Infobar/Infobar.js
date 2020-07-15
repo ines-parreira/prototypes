@@ -1,4 +1,5 @@
 // @flow
+import {CancelToken, type CancelTokenSource} from 'axios'
 import React from 'react'
 import classnames from 'classnames'
 import {connect} from 'react-redux'
@@ -92,6 +93,8 @@ export class Infobar extends React.Component<Props, State> {
     search = {
         _reset: _noop,
     }
+
+    searchCancelTokenSource: ?CancelTokenSource = null
 
     componentWillMount() {
         const {
@@ -228,14 +231,23 @@ export class Infobar extends React.Component<Props, State> {
     _onSearch = (query: string) => {
         if (query) {
             this.setState({isSearching: true})
-            this.props.search(query).then(({resp}) => {
-                this.setState({
-                    displaySelectedCustomer: false,
-                    displaySearchResults: true,
-                    isSearching: false,
-                    searchResults: fromJS(resp.data.slice(0, 8)),
+            if (this.searchCancelTokenSource) {
+                this.searchCancelTokenSource.cancel()
+            }
+            this.searchCancelTokenSource = CancelToken.source()
+            this.props
+                .search(query, this.searchCancelTokenSource.token)
+                .then((result) => {
+                    if (!result) {
+                        return
+                    }
+                    this.setState({
+                        displaySelectedCustomer: false,
+                        displaySearchResults: true,
+                        isSearching: false,
+                        searchResults: fromJS(result.resp.data.slice(0, 8)),
+                    })
                 })
-            })
         } else {
             this._resetSearch()
         }
