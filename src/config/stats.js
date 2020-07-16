@@ -458,7 +458,7 @@ export const stats = fromJS({
                 borderColor: '#ffb584',
             },
             '90%': {
-                label: '90%',
+                label: '95%',
                 backgroundColor: '#ff6b80',
                 borderWidth: 0,
                 borderColor: '#ff6b80',
@@ -513,7 +513,7 @@ export const stats = fromJS({
                 borderColor: '#8892f2',
             },
             '90%': {
-                label: '90%',
+                label: '95%',
                 backgroundColor: '#ff6b80',
                 borderWidth: 0,
                 borderColor: '#ff6b80',
