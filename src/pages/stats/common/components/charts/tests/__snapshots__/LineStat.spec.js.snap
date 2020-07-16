@@ -14,7 +14,7 @@ exports[`LineStat should render a line chart 1`] = `
           },
           Object {
             "background": "#ff6b80",
-            "name": "95%",
+            "name": "90%",
           },
         ]
       }
@@ -51,7 +51,7 @@ exports[`LineStat should render a line chart 1`] = `
                 87,
                 9,
               ],
-              "label": "95%",
+              "label": "90%",
               "lineTension": 0,
               "pointRadius": 4,
             },
