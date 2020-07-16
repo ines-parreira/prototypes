@@ -1,0 +1,60 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`initSentry() should init Sentry with the given config 1`] = `
+Array [
+  Array [
+    Object {
+      "beforeSend": [Function],
+      "denyUrls": Array [
+        /extensions\\\\//i,
+        /\\^chrome:\\\\/\\\\//i,
+      ],
+      "dsn": "https://fake.sentry.com/dsn",
+      "environment": "testing",
+      "ignoreErrors": Array [
+        "fb_xd_fragment",
+        "draft-js/lib/*",
+      ],
+      "release": "v12.23.4",
+    },
+  ],
+]
+`;
+
+exports[`initSentry() should init Sentry with the given config 2`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      "account.domain",
+      "acme",
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;
+
+exports[`initSentry() should init Sentry with the given config 3`] = `
+[MockFunction] {
+  "calls": Array [
+    Array [
+      Object {
+        "account_id": 3,
+        "email": "steve@example.com",
+        "id": 1,
+        "name": "Steve",
+      },
+    ],
+  ],
+  "results": Array [
+    Object {
+      "type": "return",
+      "value": undefined,
+    },
+  ],
+}
+`;

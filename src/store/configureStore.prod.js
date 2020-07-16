@@ -3,12 +3,12 @@ import thunk from 'redux-thunk'
 
 import rootReducer from '../state/reducers'
 
-import ravenCrashReporter from './middlewares/ravenCrashReporter'
+import sentryCrashReporter from './middlewares/sentryCrashReporter'
 import serverErrorHandler from './middlewares/serverErrorHandler'
 import usageLimitNotifier from './middlewares/usageLimitNotifier'
 
 const midlewares = [
-    ravenCrashReporter,
+    sentryCrashReporter,
     thunk,
     serverErrorHandler,
     usageLimitNotifier,

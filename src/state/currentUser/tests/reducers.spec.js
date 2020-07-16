@@ -6,10 +6,6 @@ import * as types from '../constants'
 
 jest.addMatchers(immutableMatchers)
 
-window.Raven = {
-    setUserContext: jest.fn(),
-}
-
 describe('current user reducers', () => {
     it('initial state', () => {
         expect(reducer(undefined, {})).toEqualImmutable(initialState)

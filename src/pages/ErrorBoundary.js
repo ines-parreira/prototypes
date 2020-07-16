@@ -3,6 +3,7 @@
 import React, {type Node} from 'react'
 import {Button, Card, CardBody, Collapse} from 'reactstrap'
 import {Emoji} from 'emoji-mart'
+import * as Sentry from '@sentry/react'
 
 import css from './ErrorBoundary.less'
 
@@ -31,11 +32,10 @@ export class ErrorBoundary extends React.PureComponent<Props, State> {
     componentDidCatch(error: Error, errorInfo: {componentStack: string}) {
         console.error(error, errorInfo)
 
-        if (window.Raven) {
-            window.Raven.captureException(error, {
-                extra: errorInfo,
-            })
-        }
+        Sentry.withScope((scope) => {
+            scope.setExtras(errorInfo)
+            Sentry.captureException(error)
+        })
     }
 
     _onToggle = () => {

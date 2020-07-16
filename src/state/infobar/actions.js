@@ -3,6 +3,7 @@
 import axios, {type CancelToken} from 'axios'
 import {browserHistory} from 'react-router'
 import _noop from 'lodash/noop'
+import * as Sentry from '@sentry/react'
 
 import {notify} from '../notifications/actions'
 import {isCurrentlyOnTicket, stripErrorMessage} from '../../utils'
@@ -70,17 +71,11 @@ export const similarCustomer = (customerId: string): thunkActionType => (
             (error) => {
                 // TODO(customers-migration): remove these lines when the migration is done
                 if (error && error.response && error.response.status === 404) {
-                    if (window.Raven) {
-                        window.Raven.captureMessage(
-                            'Agent has a customer profile',
-                            {
-                                level: 'error',
-                                extra: {
-                                    customerId,
-                                },
-                            }
-                        )
-                    }
+                    Sentry.withScope((scope) => {
+                        scope.setExtra('customerId', customerId)
+                        scope.setLevel('level', 'warning')
+                        Sentry.captureMessage('Agent has a customer profile')
+                    })
                     return Promise.resolve()
                 }
 

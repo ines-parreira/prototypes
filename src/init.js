@@ -3,6 +3,7 @@ import moment from 'moment-timezone'
 import Promise from 'promise-polyfill'
 import includes from 'array-includes'
 
+import initSentry from './sentry'
 import {resendVerificationEmail} from './state/currentAccount/actions'
 import {getBaseEmailIntegration} from './state/integrations/selectors'
 import {recentViewsStorage} from './state/views/utils'
@@ -10,6 +11,16 @@ import {notify} from './state/notifications/actions'
 import configureStore from './store/configureStore'
 import * as segmentTracker from './store/middlewares/segmentTracker'
 import {transformSystemMessagesToNotifications} from './utils'
+
+if (window.STAGING || window.PRODUCTION) {
+    initSentry({
+        release: window.GORGIAS_RELEASE,
+        environment: window.GORGIAS_ENVIRONMENT,
+        dsn: window.SENTRY_DSN,
+        currentUser: window.GORGIAS_STATE.currentUser,
+        currentAccount: window.GORGIAS_STATE.currentAccount,
+    })
+}
 
 // Polyfills
 Array.prototype.includes = Array.prototype.includes || includes // eslint-disable-line no-extend-native
