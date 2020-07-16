@@ -4,10 +4,7 @@ import _debounce from 'lodash/debounce'
 import moment from 'moment'
 import React from 'react'
 import {connect} from 'react-redux'
-import {Button, Popover, PopoverBody} from 'reactstrap'
-
 import _upperFirst from 'lodash/upperFirst'
-
 import {withRouter} from 'react-router'
 
 import {views as statViewsConfig} from '../../config/stats'
@@ -15,13 +12,14 @@ import {mergeStatsFilters} from '../../state/stats/actions'
 import {fieldEnumSearch} from '../../state/views/actions'
 import PageHeader from '../common/components/PageHeader'
 import TagDropdownMenu from '../common/components/TagDropdownMenu/TagDropdownMenu'
-
 import {getViewFilters} from '../../state/stats/selectors'
 import {getTags} from '../../state/tags/selectors'
 import {getIntegrations} from '../../state/integrations/selectors'
 import {CHANNELS} from '../../config/ticket'
 import {getAgents} from '../../state/agents/selectors'
 import {getDisplayName} from '../../state/customers/helpers'
+
+import Popover from '../common/components/Popover'
 
 import PeriodPicker from './common/PeriodPicker'
 import SearchableSelectField from './common/SearchableSelectField'
@@ -43,7 +41,6 @@ type Props = {
 type State = {
     tags: any[],
     integrations: any[],
-    descriptionPopoverOpen: boolean,
 }
 
 export class StatsFilters extends React.Component<Props, State> {
@@ -52,7 +49,6 @@ export class StatsFilters extends React.Component<Props, State> {
         this.state = {
             tags: props.tags,
             integrations: props.integrations,
-            descriptionPopoverOpen: false,
         }
     }
 
@@ -81,12 +77,6 @@ export class StatsFilters extends React.Component<Props, State> {
             value: filters.get(name, fromJS([])).toJS(),
             onChange: this._handleFilterChange(name),
         }
-    }
-
-    _toggleDescriptionPopover = () => {
-        this.setState({
-            descriptionPopoverOpen: !this.state.descriptionPopoverOpen,
-        })
     }
 
     _renderFilterInput = (filterType: string) => {
@@ -227,28 +217,18 @@ export class StatsFilters extends React.Component<Props, State> {
 
         if (config.get('description')) {
             pageTitle = (
-                <h1 className="d-flex align-items-center">
-                    {pageTitle}
-                    <Button
-                        id="stat-description-trigger"
-                        className="mt-1"
-                        color="link"
-                        onClick={this._toggleDescriptionPopover}
-                    >
-                        <i className="material-icons">info_outline</i> Learn
-                        more
-                    </Button>
-                    <Popover
-                        placement="auto"
-                        target="stat-description-trigger"
-                        isOpen={this.state.descriptionPopoverOpen}
-                        toggle={this._toggleDescriptionPopover}
-                    >
-                        <PopoverBody
-                            dangerouslySetInnerHTML={{
-                                __html: config.get('description'),
-                            }}
-                        />
+                <h1 className="align-items-center">
+                    <span>{pageTitle}</span>
+                    <Popover>
+                        <p>{config.get('description')}</p>
+                        <a
+                            href={config.get('url')}
+                            rel="noopener noreferrer"
+                            target="_blank"
+                        >
+                            {`Go to ${pageTitle.toLowerCase()} documentation`}
+                        </a>
+                        .
                     </Popover>
                 </h1>
             )

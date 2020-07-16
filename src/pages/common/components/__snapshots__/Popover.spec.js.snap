@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Popover /> should render  1`] = `
+<button
+  class="btn btn-link"
+  type="button"
+>
+  <i
+    class="material-icons"
+  >
+    info_outline
+  </i>
+  <span
+    class="ml-1"
+  >
+    Learn more
+  </span>
+</button>
+`;

@@ -33,6 +33,7 @@ import * as actions from '../../../state/agents/actions'
 import {updateAccountOwner} from '../../../state/currentAccount/actions'
 import * as helpers from '../../../state/agents/helpers'
 import PageHeader from '../../common/components/PageHeader'
+import Popover from '../../common/components/Popover'
 
 import DeleteUser from './DeleteUser'
 import css from './Form.less'
@@ -244,15 +245,32 @@ export default class Form extends Component<Props, State> {
                                     : 'Choose a role'
                             }
                         >
-                            <Label
-                                className={classnames(
-                                    'control-label',
-                                    css.roleLabel,
-                                    css.required
-                                )}
-                            >
-                                Role
-                            </Label>
+                            <div className={css.roleLabel}>
+                                <Label
+                                    className={classnames(
+                                        'control-label',
+                                        css.required
+                                    )}
+                                >
+                                    Role
+                                </Label>
+                                <Popover>
+                                    <p>
+                                        User Roles will allow the store owner to
+                                        restrict access to some parts of your
+                                        Dashboard and actions that they can take
+                                        within the dashboard.
+                                    </p>
+                                    <a
+                                        href="https://docs.gorgias.com/user/adding-team-members#user_permissions"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        Go to roles documentation
+                                    </a>
+                                    .
+                                </Popover>
+                            </div>
                         </RichDropdown>
                         <FormGroup>
                             <Button
@@ -266,7 +284,7 @@ export default class Form extends Component<Props, State> {
                                 Save user
                             </Button>
                             {isUpdate && (
-                                <span>
+                                <>
                                     <Button
                                         type="button"
                                         color="secondary"
@@ -308,7 +326,7 @@ export default class Form extends Component<Props, State> {
                                         <i className="material-icons">delete</i>{' '}
                                         Delete user
                                     </DeleteUser>
-                                </span>
+                                </>
                             )}
                         </FormGroup>
                     </BootstrapForm>

@@ -715,8 +715,8 @@ export const views = fromJS({
         name: 'Overview',
         description: `Get an overview of the most important statistics about your customer service.
 Metrics such as volume of tickets, first response time and resolution time are key when it comes to
-providing excellent customer support.
-<a href="https://docs.gorgias.com/statistics/statistics#overview" target="_blank">Learn more</a>.`,
+providing excellent customer support.`,
+        url: 'https://docs.gorgias.com/statistics/statistics#overview',
         filters: [
             {type: 'channels'},
             {type: 'agents'},
@@ -736,7 +736,8 @@ providing excellent customer support.
     tags: {
         name: 'Tags',
         description: `Tags statistics will show you how many tickets were created during this time period and have a
-tag attached to them. <a href="https://docs.gorgias.com/statistics/statistics#tags" target="_blank">Learn more</a>.`,
+tag attached to them. `,
+        url: 'https://docs.gorgias.com/statistics/statistics#tags',
         filters: [{type: 'channels'}, {type: 'tags'}, {type: 'period'}],
         link: 'tags',
         stats: [TICKETS_PER_TAG],
@@ -744,8 +745,8 @@ tag attached to them. <a href="https://docs.gorgias.com/statistics/statistics#ta
     channels: {
         name: 'Channels',
         description: `Channel statistics to get a clear view of your ticket volume based on the different communication
-channels such as Facebook Messenger, Instagram Comments, Email, Chat, etc...
-<a href="https://docs.gorgias.com/statistics/statistics#channels" target="_blank">Learn more</a>.`,
+channels such as Facebook Messenger, Instagram Comments, Email, Chat, etc...`,
+        url: 'https://docs.gorgias.com/statistics/statistics#channels',
         filters: [{type: 'channels'}, {type: 'period'}],
         link: 'channels',
         stats: [
@@ -755,8 +756,8 @@ channels such as Facebook Messenger, Instagram Comments, Email, Chat, etc...
     },
     agents: {
         name: 'Agents',
-        description: `Agents statistics will show you how many tickets were closed by each agent during this period.
-<a href="https://docs.gorgias.com/statistics/statistics#agents" target="_blank">Learn more</a>.`,
+        description: `Agents statistics will show you how many tickets were closed by each agent during this period.`,
+        url: 'https://docs.gorgias.com/statistics/statistics#agents',
         filters: [{type: 'channels'}, {type: 'period'}],
         link: 'agents',
         stats: [TICKETS_CLOSED_PER_AGENT_PER_DAY, TICKETS_CLOSED_PER_AGENT],
@@ -765,8 +766,8 @@ channels such as Facebook Messenger, Instagram Comments, Email, Chat, etc...
         name: 'Macros',
         description: `Macro statistics is an excellent way to ensure your agents are very efficient by using macros.
 It also shows what macros are being used the most often so you can you can provide this information elsewhere in order
-to help reduce your support inquiries.
-<a href="https://docs.gorgias.com/statistics/statistics#macros" target="_blank">Learn more</a>.`,
+to help reduce your support inquiries.`,
+        url: 'https://docs.gorgias.com/statistics/statistics#macros',
         filters: [{type: 'channels'}, {type: 'period'}],
         link: 'macros',
         stats: [MESSAGES_SENT_PER_MACRO],
@@ -774,7 +775,8 @@ to help reduce your support inquiries.
     satisfaction: {
         name: 'Satisfaction',
         description: `Satisfaction survey statistics allow you to measure how good is the support your team is providing over time.
-How many surveys have been sent, response rate, average scores and more. <a href="https://docs.gorgias.com/statistics/statistics#satisfaction" target="_blank">Learn more</a>.`,
+How many surveys have been sent, response rate, average scores and more. `,
+        url: 'https://docs.gorgias.com/statistics/statistics#satisfaction',
         filters: [
             {
                 type: 'channels',
@@ -797,8 +799,8 @@ How many surveys have been sent, response rate, average scores and more. <a href
     revenue: {
         name: 'Revenue',
         description: `Revenue statistics allow you to measure how much money your support team is generating by
-helping customers through the purchasing journey.<br/>
-<a href="https://docs.gorgias.com/statistics/revenue-statistics" target="_blank">Learn how it works</a>.`,
+helping customers through the purchasing journey.`,
+        url: 'https://docs.gorgias.com/statistics/revenue-statistics',
         filters: [
             {type: 'integrations', options: STORE_INTEGRATION_TYPES},
             {type: 'channels'},
