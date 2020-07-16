@@ -744,6 +744,44 @@ exports[`<HTTPIntegrationEvent/> component should render the data of the HTTP re
 </Container>
 `;
 
+exports[`<HTTPIntegrationEvent/> component should render the error that occurred before we could send the request 1`] = `
+<Container
+  className="page-container"
+  fluid={true}
+  tag="div"
+>
+  <Row
+    tag="div"
+  >
+    <Col
+      className="mb-4"
+      tag="div"
+      widths={
+        Array [
+          "xs",
+          "sm",
+          "md",
+          "lg",
+          "xl",
+        ]
+      }
+    >
+      <h2
+        className="mb-4"
+      >
+        Error
+      </h2>
+      <p>
+        The following error occurred before we could send the request:
+      </p>
+      <pre>
+        Only HTTPS scheme is allowed
+      </pre>
+    </Col>
+  </Row>
+</Container>
+`;
+
 exports[`<HTTPIntegrationEvent/> container should render a HTTPIntegrationEvent component with props from the Redux store 1`] = `
 <HTTPIntegrationEvent
   event={

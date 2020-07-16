@@ -72,6 +72,15 @@ const HTTPEventWithErrorInResponse = fromJS({
     },
 })
 
+const httpEventWithoutRequest = fromJS({
+    created_datetime: getMomentNow(),
+    status: null,
+    request: null,
+    response: {
+        error: 'Only HTTPS scheme is allowed',
+    },
+})
+
 describe('<HTTPIntegrationEvent/>', () => {
     describe('component', () => {
         it('should fetch an event when the component will mount', (done) => {
@@ -199,6 +208,18 @@ describe('<HTTPIntegrationEvent/>', () => {
                 expect(component).toMatchSnapshot()
             }
         )
+
+        it('should render the error that occurred before we could send the request', () => {
+            const component = shallow(
+                <HTTPIntegrationEvent
+                    eventId="2"
+                    integationId="1"
+                    event={httpEventWithoutRequest}
+                />
+            )
+
+            expect(component).toMatchSnapshot()
+        })
     })
 
     describe('container', () => {

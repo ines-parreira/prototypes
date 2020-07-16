@@ -73,12 +73,30 @@ export class HTTPIntegrationEvent extends Component<Props, State> {
 
         const request = event.get('request')
         const response = event.get('response')
+        let responseError = response.get('error')
+
+        if (!request) {
+            return (
+                <Container fluid className="page-container">
+                    <Row>
+                        <Col className="mb-4">
+                            <h2 className="mb-4">Error</h2>
+                            <p>
+                                The following error occurred before we could
+                                send the request:
+                            </p>
+                            <pre>{responseError}</pre>
+                        </Col>
+                    </Row>
+                </Container>
+            )
+        }
+
         const requestHeaders = request.get('headers')
         const responseHeaders = response.get('headers')
         const requestParams = request.get('params') || null
         const requestBody = request.get('body')
         let responseBody = response.get('body') || null
-        let responseError = response.get('error')
         let requestJSONBody = null
         let requestFormBody = null
 
