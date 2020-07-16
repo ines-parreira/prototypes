@@ -1,12 +1,18 @@
-import * as Sentry from '@sentry/react'
+import _isUndefined from 'lodash/isUndefined'
+
+const Raven = window.Raven
 
 /**
  * Middleware sending redux errors to Sentry
  */
 const crashReporter = () => (next) => (action) => {
+    if (_isUndefined(Raven)) {
+        return next(action)
+    }
+
     try {
         if (action.type) {
-            Sentry.addBreadcrumb({
+            Raven.captureBreadcrumb({
                 category: 'redux',
                 message: action.type,
             })
@@ -30,11 +36,9 @@ const crashReporter = () => (next) => (action) => {
                 XRequestID: action.error.response.headers['x-request-id'],
             }
         }
-
-        Sentry.withScope((scope) => {
-            scope.setExtras(action)
-            scope.setTags(customTags)
-            Sentry.captureException(err)
+        Raven.captureException(err, {
+            extra: action,
+            tags: customTags,
         })
     }
 }

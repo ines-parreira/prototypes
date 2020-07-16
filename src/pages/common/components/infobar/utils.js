@@ -22,7 +22,6 @@ import _sortBy from 'lodash/sortBy'
 import _forEach from 'lodash/forEach'
 import _forIn from 'lodash/forIn'
 import _toLower from 'lodash/toLower'
-import * as Sentry from '@sentry/react'
 
 import {DatetimeLabel} from '../../utils/labels'
 import * as utils from '../../../../utils'
@@ -30,6 +29,8 @@ import {
     getContextFromSourcePath,
     getSourcePathFromContext,
 } from '../../../../state/widgets/utils'
+
+const Raven = window.Raven
 
 /**
  * Check if is an array of objects (and no an array of string for example)
@@ -393,14 +394,18 @@ export function jsonToWidget(value, key = '', isChildOfList = false) {
 
         console.error(message)
 
-        Sentry.withScope((scope) => {
-            scope.setExtras({
-                description: message,
-                json: value,
-                key,
+        if (Raven) {
+            Raven.captureException(err, {
+                extra: {
+                    description: message,
+                    json: value,
+                    key,
+                },
             })
-            Sentry.captureException(err)
-        })
+        } else {
+            console.error('Here are some details', value, key)
+        }
+
         return {}
     }
 }
@@ -479,14 +484,17 @@ export function jsonToWidgets(json: Object, context: string = 'ticket'): Array {
 
         console.error(message)
 
-        Sentry.withScope((scope) => {
-            scope.setExtras({
-                description: message,
-                json,
-                context,
+        if (Raven) {
+            Raven.captureException(err, {
+                extra: {
+                    description: message,
+                    json,
+                    context,
+                },
             })
-            Sentry.captureException(err)
-        })
+        } else {
+            console.error('Here are some details', json, context)
+        }
 
         return defaultResponse
     }
