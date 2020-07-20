@@ -21,7 +21,7 @@ import CustomerInfobarContainer from './customers/detail/CustomerInfobarContaine
 import StatsPage from './stats/StatsPage'
 
 import YourProfileContainer from './settings/yourProfile/YourProfileContainer'
-import ChangePasswordContainer from './settings/yourProfile/ChangePasswordContainer'
+import ChangePassword from './settings/yourProfile/ChangePassword'
 import APIView from './settings/api/APIView'
 
 import SettingsNavbarContainer from './settings/common/SettingsNavbarContainer'
@@ -291,7 +291,7 @@ export default (
             <Route
                 path="change-password"
                 components={{
-                    content: ChangePasswordContainer,
+                    content: ChangePassword,
                     navbar: SettingsNavbarContainer,
                 }}
             />
