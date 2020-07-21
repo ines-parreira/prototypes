@@ -17,7 +17,7 @@
         "test:update": "yarn jest -u",
         "test:watch": "yarn jest --watch",
         "test:ci": "run-s quality test:ci:cover",
-        "test:ci:cover": "yarn run jest --coverage --no-cache --ci",
+        "test:ci:cover": "yarn run jest --coverage --no-cache --ci --runInBand",
         "dll": "webpack --env.dll",
         "postinstall": "run-s dll",
         "build": "(export NODE_ENV=production; run-s dll; webpack; webpack --config webpack.sharedWorker.config.js)",
