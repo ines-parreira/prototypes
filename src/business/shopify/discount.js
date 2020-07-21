@@ -2,14 +2,17 @@
 
 import type {Record} from 'immutable'
 
-import * as Shopify from '../../constants/integrations/shopify'
+import type {
+    DiscountType,
+    DraftOrder,
+} from '../../constants/integrations/types/shopify'
 
 import {formatPrice} from './number'
 import {getDraftOrderTotalLineItemsPrice} from './lineItem'
 
 export function getDiscountAmount(
     price: number,
-    discountType: Shopify.DiscountType,
+    discountType: DiscountType,
     discountValue: string,
     quantity: number = 1
 ): number {
@@ -21,7 +24,7 @@ export function getDiscountAmount(
 }
 
 export function getTotalDiscountAmount(
-    draftOrder: Record<$Shape<Shopify.DraftOrder>>
+    draftOrder: Record<$Shape<DraftOrder>>
 ): number {
     const appliedDiscount = draftOrder.get('applied_discount')
     return !!appliedDiscount ? parseFloat(appliedDiscount.get('amount')) : 0
@@ -32,8 +35,8 @@ export function getTotalDiscountAmount(
  * or on the global applied discount), because discount amounts depend on quantities.
  */
 export function refreshAppliedDiscounts(
-    draftOrder: Record<$Shape<Shopify.DraftOrder>>
-): Record<$Shape<Shopify.DraftOrder>> {
+    draftOrder: Record<$Shape<DraftOrder>>
+): Record<$Shape<DraftOrder>> {
     let newDraftOrder = draftOrder
 
     draftOrder.get('line_items', []).forEach((lineItem, index) => {

@@ -24,7 +24,7 @@ import {getIntegrationsByTypes} from '../../../../../../../../../../../../state/
 import {integrationsStateWithShopify} from '../../../../../../../../../../../../fixtures/integrations'
 import {initDraftOrderPayload} from '../../../../../../../../../../../../business/shopify/draftOrder'
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../../constants/integration'
-import * as Shopify from '../../../../../../../../../../../../constants/integrations/shopify'
+import type {DraftOrderInvoice} from '../../../../../../../../../../../../constants/integrations/types/shopify'
 import DraftOrderModal, {DraftOrderModalComponent} from '../DraftOrderModal'
 import {ShopifyAction} from '../../../constants'
 
@@ -55,7 +55,7 @@ function initActions() {
                     integrationId: number,
                     customerId: number,
                     orderId: number | null,
-                    invoicePayload: Record<Shopify.DraftOrderInvoice>,
+                    invoicePayload: Record<DraftOrderInvoice>,
                     onSuccess: () => void
                 ) => {
                     onSuccess()

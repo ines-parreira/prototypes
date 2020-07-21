@@ -1,7 +1,8 @@
 // @flow
 import {fromJS, type Map} from 'immutable'
 
-import {TicketStatuses, type TicketChannel, type TicketStatus} from './ticket'
+import {TicketStatuses} from './ticket'
+import type {RecentChatTicket} from './types/recentChats'
 
 /**
  * Return whether or not a ticket update received via websockets should be displayed in the current user's recent chats.
@@ -50,25 +51,4 @@ export function shouldTicketBeDisplayedInRecentChats(
         ticketIsAssigned ||
         (!autoAssignIsEnabledForTicketChannel && currentUserIsAvailable)
     )
-}
-
-// Types
-export type RecentChatTicket = {
-    id: number,
-    channel: TicketChannel,
-    customer: {
-        id: number,
-        name: string,
-        email: string,
-    },
-    last_message_datetime: string,
-    is_unread: boolean,
-    status: TicketStatus,
-    assignee_user_id: ?number,
-    spam: boolean,
-    trashed_datetime: string,
-    deleted_datetime: string,
-
-    last_message_from_agent: ?boolean,
-    last_message_body_text: ?string,
 }

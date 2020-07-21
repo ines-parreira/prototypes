@@ -3,23 +3,16 @@ import type {ContentState} from 'draft-js'
 import {browserHistory} from 'react-router'
 import {removeNotification} from 'reapop'
 
-import {store as reduxStore} from '../init'
+import {store as reduxStore} from '../../init'
 import {
     newMessageResetFromMessage,
     sendTicketMessage,
-} from '../state/newMessage/actions'
-import type {NewMessageType} from '../state/newMessage/types'
-import {notify} from '../state/notifications/actions'
-import {applyMacro, messageDeleted} from '../state/ticket/actions'
-import {logEvent, EVENTS} from '../store/middlewares/segmentTracker'
+} from '../../state/newMessage/actions'
+import {notify} from '../../state/notifications/actions'
+import {applyMacro, messageDeleted} from '../../state/ticket/actions'
+import {logEvent, EVENTS} from '../../store/middlewares/segmentTracker'
 
-export type SendMessageArgs = [
-    string,
-    NewMessageType,
-    ?string,
-    boolean,
-    ?string
-]
+import type {SendMessageArgs} from './types'
 
 const pendingMessageDelay = 5000
 

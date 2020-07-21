@@ -4,11 +4,13 @@ import _find from 'lodash/find'
 
 import {
     TicketMessageSourceTypes,
-    type TicketMessageSourceType,
     TicketStatuses,
     TicketChannels,
-    type TicketChannel,
 } from '../business/ticket'
+import type {
+    TicketMessageSourceType,
+    TicketChannel,
+} from '../business/types/ticket'
 import type {TicketMessage} from '../models/ticket'
 import {compare, getLastMessage, toImmutable} from '../utils'
 import {isForwardedMessage} from '../state/ticket/utils'

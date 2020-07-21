@@ -1,7 +1,6 @@
 //@flow
 import decorateComponentWithProps from 'decorate-component-with-props'
 import {ContentBlock, EditorState, KeyBindingUtil} from 'draft-js'
-import type {Node} from 'react'
 
 import type {PluginMethods} from '../types'
 import {removeLink} from '../utils'
@@ -13,18 +12,12 @@ import {
 import {foundUrl, link} from './decorators'
 import Toolbar from './Toolbar'
 import Image from './components/Image'
-import type {ActionName} from './types'
+import type {Config} from './types'
 
 // documentation:
 // https://github.com/draft-js-plugins/draft-js-plugins/blob/master/HOW_TO_CREATE_A_PLUGIN.md
 
-export type Config = {
-    imageDecorator?: (Node) => Node,
-    theme?: any,
-    getDisplayedActions: () => ?(ActionName[]),
-    onLinkEdit: (entityKey: string, text: string, url: string) => void,
-    onLinkCreate: (text: string) => void,
-}
+export * from './types.js'
 
 export default function toolbarPlugin(config: Config) {
     const isLinkDisplayed = () =>

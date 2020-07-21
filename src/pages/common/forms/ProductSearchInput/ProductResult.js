@@ -2,19 +2,19 @@ import React from 'react'
 
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../../constants/integration'
 import type {IntegrationDataItem} from '../../../../models/integration'
-import * as Shopify from '../../../../constants/integrations/shopify'
+import type {Product} from '../../../../constants/integrations/types/shopify'
 import type {SearchInputResultProps} from '../SearchInput'
 
 import Result, {type Props as ResultProps} from './Result'
 
-type Props = SearchInputResultProps<IntegrationDataItem<Shopify.Product>>
+type Props = SearchInputResultProps<IntegrationDataItem<Product>>
 
 export default class ProductResult extends React.PureComponent<Props> {
     static _dataMappers = {
         [SHOPIFY_INTEGRATION_TYPE]: ProductResult._shopifyDataMapper,
     }
 
-    static _shopifyDataMapper(product: Shopify.Product): ResultProps {
+    static _shopifyDataMapper(product: Product): ResultProps {
         const variant = product.variants[0]
         const sku = variant.sku ? `SKU: ${variant.sku}` : null
 

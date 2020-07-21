@@ -2,7 +2,7 @@
 import {fromJS, type Map} from 'immutable'
 import _isEqual from 'lodash/isEqual'
 
-import {actionType} from '../types'
+import {actionType} from '../types.js'
 import {USER_ROLES} from '../../config/user'
 import * as currentUserConstants from '../currentUser/constants'
 

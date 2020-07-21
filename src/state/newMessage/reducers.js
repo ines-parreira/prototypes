@@ -15,7 +15,7 @@ import {
     getChannelFromSourceType,
 } from '../ticket/utils'
 
-import type {TicketMessageSourceType} from '../../business/ticket'
+import type {TicketMessageSourceType} from '../../business/types/ticket'
 import * as ticketTypes from '../ticket/constants'
 import * as ticketConfig from '../../config/ticket'
 import {convertToHTML} from '../../utils/editor'

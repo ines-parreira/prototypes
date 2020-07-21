@@ -32,7 +32,7 @@ import type {Action, Ticket, TicketMessage} from '../../models/ticket'
 import type {Macro} from '../macro/types'
 import type {dispatchType, getStateType, thunkActionType} from '../types'
 
-import * as socketEventTypes from '../../services/socketManager/types'
+import * as socketEventTypes from '../../services/socketManager/types.js'
 
 import {
     buildPartialUpdateFromAction,

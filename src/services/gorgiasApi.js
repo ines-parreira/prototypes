@@ -12,25 +12,17 @@ import type {
     IntegrationDataItem,
     IntegrationDataItemType,
 } from '../models/integration'
-import * as Shopify from '../constants/integrations/shopify'
+import type {ApiListResponsePagination} from '../models/api'
+import type {
+    PollingConfig,
+    DraftOrder,
+    DraftOrderInvoice,
+    Refund,
+} from '../constants/integrations/types/shopify'
 import type {AuditLogEvent} from '../models/event'
 
-export type GorgiasApiOptions = {
+type GorgiasApiOptions = {
     requestsCancellation: boolean,
-}
-
-export type PaginatedResponse<T> = {
-    data: Array<T>,
-    object: string,
-    uri: string,
-    meta: {
-        page: number,
-        per_page: number,
-        current_page: string,
-        item_count: number,
-        nb_pages: number,
-        next_page?: string,
-    },
 }
 
 export type SearchResultType = {
@@ -42,9 +34,9 @@ export default class GorgiasApi {
     _requestCanceller: CancelTokenSource
 
     static _getDraftOrderPollingConfig(
-        responseData: Shopify.PollingConfig
-    ): ?Shopify.PollingConfig {
-        let pollingConfig: ?Shopify.PollingConfig = null
+        responseData: PollingConfig
+    ): ?PollingConfig {
+        let pollingConfig: ?PollingConfig = null
 
         if (responseData.retry_after) {
             pollingConfig = {
@@ -104,7 +96,7 @@ export default class GorgiasApi {
 
         while (path) {
             const response: AxiosResponse<
-                PaginatedResponse<T>
+                ApiListResponsePagination<T>
             > = await this._api.get(path, config)
             const {
                 data: {data, meta},
@@ -283,12 +275,12 @@ export default class GorgiasApi {
 
     async _upsertDraftOder(
         integrationId: number,
-        payload: Record<$Shape<Shopify.DraftOrder>>,
+        payload: Record<$Shape<DraftOrder>>,
         {
             draftOrderId,
             params = {},
         }: {draftOrderId?: ?number, params?: Object} = {}
-    ): Promise<[Record<Shopify.DraftOrder>, ?Shopify.PollingConfig]> {
+    ): Promise<[Record<DraftOrder>, ?PollingConfig]> {
         let method
         let url
 
@@ -315,18 +307,18 @@ export default class GorgiasApi {
 
     async createDraftOrder(
         integrationId: number,
-        payload: Record<$Shape<Shopify.DraftOrder>>,
+        payload: Record<$Shape<DraftOrder>>,
         orderId?: ?number
-    ): Promise<[Record<Shopify.DraftOrder>, ?Shopify.PollingConfig]> {
+    ): Promise<[Record<DraftOrder>, ?PollingConfig]> {
         const params = orderId ? {order_id: orderId} : {}
         return await this._upsertDraftOder(integrationId, payload, {params})
     }
 
     async upsertDraftOrder(
         integrationId: number,
-        payload: Record<$Shape<Shopify.DraftOrder>>,
+        payload: Record<$Shape<DraftOrder>>,
         draftOrderId: ?number
-    ): Promise<[Record<Shopify.DraftOrder>, ?Shopify.PollingConfig]> {
+    ): Promise<[Record<DraftOrder>, ?PollingConfig]> {
         // TODO(@samy): remove warning if it never happens
         const variantIds = payload
             .get('line_items', [])
@@ -350,7 +342,7 @@ export default class GorgiasApi {
     async getDraftOrder(
         integrationId: number,
         draftOrderId: number
-    ): Promise<[Record<Shopify.DraftOrder>, ?Shopify.PollingConfig]> {
+    ): Promise<[Record<DraftOrder>, ?PollingConfig]> {
         const response = await this._api.get(
             `/integrations/shopify/order/draft/${draftOrderId}/`,
             {
@@ -383,7 +375,7 @@ export default class GorgiasApi {
     async emailDraftOrderInvoice(
         integrationId: number,
         draftOrderId: number,
-        invoicePayload: Record<Shopify.DraftOrderInvoice>
+        invoicePayload: Record<DraftOrderInvoice>
     ): Promise<void> {
         await this._api.post(
             `/integrations/shopify/order/draft/${draftOrderId}/send-invoice/`,
@@ -399,8 +391,8 @@ export default class GorgiasApi {
     async calculateRefund(
         integrationId: number,
         orderId: number,
-        payload: Record<$Shape<Shopify.Refund>>
-    ): Promise<Record<Shopify.Refund>> {
+        payload: Record<$Shape<Refund>>
+    ): Promise<Record<Refund>> {
         const response = await this._api.post(
             `/integrations/shopify/order/${orderId}/refunds/calculate/`,
             payload.toJS(),

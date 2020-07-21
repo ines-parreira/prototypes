@@ -1,15 +1,5 @@
 //@flow
-
-type AgentRoleMeta = {
-    description: string,
-    label: string,
-}
-
-export type MetaByAgentRole = {
-    [key: string]: AgentRoleMeta,
-}
-
-export type UserRole = $Keys<typeof MAPPED_USER_ROLE>
+import type {AgentRoleMeta, MetaByAgentRole} from './types/user'
 
 export const OBSERVER_AGENT_ROLE = 'observer-agent'
 export const LITE_AGENT_ROLE = 'lite-agent'
@@ -18,7 +8,7 @@ export const AGENT_ROLE = 'agent'
 export const ADMIN_ROLE = 'admin'
 export const USER_ROLE = 'user'
 
-const MAPPED_USER_ROLE = Object.freeze({
+export const MAPPED_USER_ROLE = Object.freeze({
     [OBSERVER_AGENT_ROLE]: OBSERVER_AGENT_ROLE,
     [LITE_AGENT_ROLE]: LITE_AGENT_ROLE,
     [BASIC_AGENT_ROLE]: BASIC_AGENT_ROLE,

@@ -9,17 +9,20 @@ import {
     shopifyVariantFixture,
 } from '../../../../../fixtures/shopify'
 import type {IntegrationDataItem} from '../../../../../models/integration'
-import * as Shopify from '../../../../../constants/integrations/shopify'
+import type {
+    Variant,
+    Product,
+} from '../../../../../constants/integrations/types/shopify'
 import VariantResult from '../VariantResult'
 
 describe('<VariantResult/>', () => {
     describe('render()', () => {
         it('should render with product title as title, and SKU as subtitle', () => {
-            const variant: Shopify.Variant = shopifyVariantFixture()
-            const products: Shopify.Product = shopifyProductFixture({
+            const variant: Variant = shopifyVariantFixture()
+            const products: Product = shopifyProductFixture({
                 variants: [variant],
             })
-            const item: IntegrationDataItem<Shopify.Product> = integrationDataItemProductFixture(
+            const item: IntegrationDataItem<Product> = integrationDataItemProductFixture(
                 {data: products}
             )
 
@@ -31,20 +34,20 @@ describe('<VariantResult/>', () => {
         })
 
         it('should render with variant title in title', () => {
-            const variant1: Shopify.Variant = shopifyVariantFixture({
+            const variant1: Variant = shopifyVariantFixture({
                 id: 1,
                 sku: '11111',
                 title: 'Variant 1',
             })
-            const variant2: Shopify.Variant = shopifyVariantFixture({
+            const variant2: Variant = shopifyVariantFixture({
                 id: 2,
                 sku: '22222',
                 title: 'Variant 2',
             })
-            const products: Shopify.Product = shopifyProductFixture({
+            const products: Product = shopifyProductFixture({
                 variants: [variant1, variant2],
             })
-            const item: IntegrationDataItem<Shopify.Product> = integrationDataItemProductFixture(
+            const item: IntegrationDataItem<Product> = integrationDataItemProductFixture(
                 {data: products}
             )
 
@@ -56,11 +59,11 @@ describe('<VariantResult/>', () => {
         })
 
         it('should render without subtitle', () => {
-            const variant: Shopify.Variant = shopifyVariantFixture({sku: null})
-            const products: Shopify.Product = shopifyProductFixture({
+            const variant: Variant = shopifyVariantFixture({sku: null})
+            const products: Product = shopifyProductFixture({
                 variants: [variant],
             })
-            const item: IntegrationDataItem<Shopify.Product> = integrationDataItemProductFixture(
+            const item: IntegrationDataItem<Product> = integrationDataItemProductFixture(
                 {data: products}
             )
 

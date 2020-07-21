@@ -4,21 +4,9 @@ import _snakeCase from 'lodash/snakeCase'
 import client, {
     deepMapKeysToSnakeCase,
     type ApiListResponsePagination,
-    type MetaSortOptions,
-    type OrderDirection,
 } from '../api'
 
-import type {Macro, MacroDraft, MacroSortableProperties} from './types'
-
-export type FetchMacrosOptions = {
-    fallbackOrderBy?: MacroSortableProperties,
-    messageId?: number,
-    orderBy?: MacroSortableProperties | MetaSortOptions,
-    orderDir?: OrderDirection,
-    page?: number,
-    search?: string,
-    ticketId?: number,
-}
+import type {Macro, MacroDraft, FetchMacrosOptions} from './types'
 
 export const fetchMacros = async (
     options: FetchMacrosOptions = {}

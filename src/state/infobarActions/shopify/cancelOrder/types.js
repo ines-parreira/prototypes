@@ -2,13 +2,17 @@
 
 import {type List, type Record} from 'immutable'
 
-import * as Shopify from '../../../../constants/integrations/shopify'
+import type {
+    CancelOrderPayload,
+    LineItem,
+    Refund,
+} from '../../../../constants/integrations/types/shopify'
 
 export type CancelOrderState = Record<{
     loading: boolean,
     loadingMessage: ?string,
     orderId: ?number,
-    payload: ?$Shape<Shopify.CancelOrderPayload>,
-    lineItems: ?List<$Shape<Shopify.LineItem>>,
-    refund: Shopify.Refund,
+    payload: ?$Shape<CancelOrderPayload>,
+    lineItems: ?List<$Shape<LineItem>>,
+    refund: Refund,
 }>

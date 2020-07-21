@@ -1,4 +1,4 @@
 // @flow
 
 export {default} from './SearchInput'
-export * from './types'
+export * from './types.js'

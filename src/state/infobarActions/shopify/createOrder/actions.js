@@ -28,7 +28,17 @@ import {DRAFT_ORDER_DELETE_AFTER} from '../../../../config/integrations/shopify'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 import localStorageManager from '../../../../services/localStorageManager'
 import type {IntegrationDataItem} from '../../../../models/integration'
-import * as Shopify from '../../../../constants/integrations/shopify'
+import type {
+    AppliedDiscount,
+    DraftOrder,
+    Order,
+    Customer,
+    PollingConfig,
+    Product,
+    Variant,
+    DraftOrderInvoice,
+    LineItem,
+} from '../../../../constants/integrations/types/shopify'
 import type {dispatchType, getStateType} from '../../../types'
 import GorgiasApi from '../../../../services/gorgiasApi'
 import {executeAction} from '../../../infobar/actions'
@@ -90,8 +100,8 @@ const setInitialState = () => ({
 })
 
 export const getDuplicateOrderPayload = (
-    payload: Record<$Shape<Shopify.DraftOrder>>
-): Record<$Shape<Shopify.DraftOrder>> => {
+    payload: Record<$Shape<DraftOrder>>
+): Record<$Shape<DraftOrder>> => {
     // Apply a 100% discount
     const totalLineItemsPrice = getDraftOrderTotalLineItemsPrice(payload)
     const currency = payload.get('currency')
@@ -99,7 +109,7 @@ export const getDuplicateOrderPayload = (
     const type = 'percentage'
     const amount = getDiscountAmount(totalLineItemsPrice, type, value)
 
-    const appliedDiscount: Shopify.AppliedDiscount = fromJS({
+    const appliedDiscount: AppliedDiscount = fromJS({
         title: '',
         value,
         value_type: type,
@@ -118,8 +128,8 @@ export const getDuplicateOrderPayload = (
 
 export const onInit = (
     integrationId: number,
-    order: ?Record<Shopify.Order>,
-    customer: Record<$Shape<Shopify.Customer>>,
+    order: ?Record<Order>,
+    customer: Record<$Shape<Customer>>,
     currencyCode: string,
     onError: () => void
 ) => async (dispatch: dispatchType) => {
@@ -197,7 +207,7 @@ const deleteTemporaryDraftOrder = async (integrationId, draftOrderId) => {
 export const createDraftOrder = (
     integrationId: number,
     orderId: ?number,
-    payload: Record<$Shape<Shopify.DraftOrder>>,
+    payload: Record<$Shape<DraftOrder>>,
     onError: () => void
 ) => async (dispatch: dispatchType) => {
     try {
@@ -250,7 +260,7 @@ export const onApiError = (error: Object, defaultMessage: string) => (
 export const pollDraftOrder = (
     integrationId: number,
     draftOrderId: number,
-    pollingConfig: Shopify.PollingConfig
+    pollingConfig: PollingConfig
 ) => async (dispatch: dispatchType) => {
     return new Promise((resolve) => {
         setTimeout(async () => {
@@ -293,21 +303,21 @@ export const pollDraftOrder = (
 
 export const loadProducts = async (
     integrationId: number,
-    oldOrder: Record<Shopify.Order>
-): Promise<Map<number, Record<Shopify.Product>>> => {
+    oldOrder: Record<Order>
+): Promise<Map<number, Record<Product>>> => {
     const products = new Map()
     const productIds = oldOrder
         .get('line_items', [])
         .map((lineItem) => lineItem.get('product_id'))
     const api = new GorgiasApi()
-    const generator = api.getIntegrationDataItems<Shopify.Product>(
+    const generator = api.getIntegrationDataItems<Product>(
         integrationId,
         INTEGRATION_DATA_ITEM_TYPE_PRODUCT,
         productIds
     )
 
     for await (const items of generator) {
-        items.forEach((item: Record<IntegrationDataItem<Shopify.Product>>) => {
+        items.forEach((item: Record<IntegrationDataItem<Product>>) => {
             products.set(item.getIn(['data', 'id']), item.get('data'))
         })
     }
@@ -315,12 +325,12 @@ export const loadProducts = async (
     return products
 }
 
-const getLoadingMessage = (draftOrder: Record<$Shape<Shopify.DraftOrder>>) =>
+const getLoadingMessage = (draftOrder: Record<$Shape<DraftOrder>>) =>
     draftOrder.get('id') ? 'Updating draft order...' : 'Creating draft order...'
 
 export const onPayloadChange = (
     integrationId: number,
-    payload: Record<$Shape<Shopify.DraftOrder>>
+    payload: Record<$Shape<DraftOrder>>
 ) => async (dispatch: dispatchType, getState: getStateType) => {
     const state = getState()
     const draftOrder = getCreateOrderState(state).get('draftOrder')
@@ -397,8 +407,8 @@ export const upsertDraftOrder = _debounce(
 export const addRow = (
     actionName: string,
     integrationId: number,
-    product: Shopify.Product,
-    variant: Shopify.Variant
+    product: Product,
+    variant: Variant
 ) => (dispatch: dispatchType, getState: getStateType) => {
     const state = getState()
     const payload = getCreateOrderState(state).get('payload')
@@ -428,7 +438,7 @@ export const addRow = (
 
 export const addCustomRow = (
     integrationId: number,
-    lineItem: Record<$Shape<Shopify.LineItem>>
+    lineItem: Record<$Shape<LineItem>>
 ) => (dispatch: dispatchType, getState: getStateType) => {
     const state = getState()
     const payload = getCreateOrderState(state).get('payload')
@@ -484,7 +494,7 @@ export const onEmailInvoice = (
     integrationId: number,
     customerId: number,
     orderId: ?number,
-    invoicePayload: Record<Shopify.DraftOrderInvoice>,
+    invoicePayload: Record<DraftOrderInvoice>,
     onSuccess: () => void
 ) => (dispatch: dispatchType, getState: getStateType): Promise<void> => {
     return new Promise((resolve) => {

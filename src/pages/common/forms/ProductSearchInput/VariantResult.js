@@ -6,7 +6,10 @@ import type {
     Variant,
 } from '../../../../models/integration'
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../../constants/integration'
-import * as Shopify from '../../../../constants/integrations/shopify'
+import type {
+    Product as ShopifyProduct,
+    Variant as ShopifyVariant,
+} from '../../../../constants/integrations/types/shopify'
 import type {SearchInputSubResultProps} from '../SearchInput'
 
 import Result, {type Props as ResultProps} from './Result'
@@ -19,8 +22,8 @@ export default class VariantResult extends React.PureComponent<Props> {
     }
 
     static _shopifyDataMapper(
-        product: Shopify.Product,
-        variant: Shopify.Variant
+        product: ShopifyProduct,
+        variant: ShopifyVariant
     ): ResultProps {
         const title =
             product.variants.length > 1 && variant.title

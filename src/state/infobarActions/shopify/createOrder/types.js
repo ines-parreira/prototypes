@@ -2,13 +2,17 @@
 
 import {type Record} from 'immutable'
 
-import * as Shopify from '../../../../constants/integrations/shopify'
+import type {
+    DraftOrder,
+    Product,
+    ShippingLine,
+} from '../../../../constants/integrations/types/shopify'
 
 export type CreateOrderState = Record<{
     loading: boolean,
     loadingMessage: ?string,
-    payload: ?$Shape<Shopify.DraftOrder>,
-    draftOrder: ?Record<Shopify.DraftOrder>,
-    products: Map<number, Record<Shopify.Product>>,
-    defaultShippingLine: ?Record<Shopify.ShippingLine>,
+    payload: ?$Shape<DraftOrder>,
+    draftOrder: ?Record<DraftOrder>,
+    products: Map<number, Record<Product>>,
+    defaultShippingLine: ?Record<ShippingLine>,
 }>

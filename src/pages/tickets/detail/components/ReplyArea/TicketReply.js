@@ -4,10 +4,8 @@ import type {List, Map} from 'immutable'
 import React from 'react'
 import {connect} from 'react-redux'
 
-import {
-    canReply,
-    type TicketMessageSourceType,
-} from '../../../../../business/ticket'
+import {canReply} from '../../../../../business/ticket'
+import type {TicketMessageSourceType} from '../../../../../business/types/ticket'
 import * as newMessageActions from '../../../../../state/newMessage/actions'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {getActionTemplate} from '../../../../../utils'

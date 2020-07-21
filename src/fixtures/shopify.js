@@ -1,12 +1,32 @@
 //@flow
-import * as Shopify from '../constants/integrations/shopify'
+import type {
+    Image,
+    Variant,
+    Product,
+    PriceSet,
+    Customer,
+    Order,
+    Address,
+    LineItem,
+    DraftOrder,
+    AppliedDiscount,
+    ShippingLine,
+    DraftOrderInvoice,
+    TaxLine,
+    DiscountAllocation,
+    DiscountApplication,
+    Refund,
+    RefundLineItem,
+    RefundOrderPayload,
+    CancelOrderPayload,
+} from '../constants/integrations/types/shopify.js'
 import type {IntegrationDataItem} from '../models/integration'
 import {
     INTEGRATION_DATA_ITEM_TYPE_PRODUCT,
     SHOPIFY_INTEGRATION_TYPE,
 } from '../constants/integration'
 
-export const shopifyImageFixture = (): Shopify.Image => ({
+export const shopifyImageFixture = (): Image => ({
     id: 1,
     alt: 'Alt',
     src: 'src',
@@ -17,7 +37,7 @@ export const shopifyVariantFixture = ({
     sku = '11111',
     title = 'Variant 1',
     price = '9.99',
-}: any = {}): Shopify.Variant => ({
+}: any = {}): Variant => ({
     id,
     sku,
     price,
@@ -34,7 +54,7 @@ export const shopifyProductFixture = ({
     id = 1,
     title = 'Product 1',
     variants = [shopifyVariantFixture()],
-}: any = {}): Shopify.Product => ({
+}: any = {}): Product => ({
     id,
     title,
     created_at: '2020-01-01 00:00:00.000000',
@@ -45,7 +65,7 @@ export const shopifyProductFixture = ({
 
 export const integrationDataItemProductFixture = ({
     data = shopifyProductFixture(),
-}: any = {}): IntegrationDataItem<Shopify.Product> => ({
+}: any = {}): IntegrationDataItem<Product> => ({
     id: 1,
     integration_id: 1,
     integration_type: SHOPIFY_INTEGRATION_TYPE,
@@ -63,7 +83,7 @@ export const shopifyPriceSetFixture = ({
     currencyCode = 'USD',
     presentmentAmount = null,
     presentmentCurrencyCode = null,
-}: any = {}): Shopify.PriceSet => ({
+}: any = {}): PriceSet => ({
     shop_money: {
         amount,
         currency_code: currencyCode,
@@ -74,7 +94,7 @@ export const shopifyPriceSetFixture = ({
     },
 })
 
-export const shopifyCustomerFixture = (): Shopify.Customer =>
+export const shopifyCustomerFixture = (): Customer =>
     ({
         id: 2721145061399,
         email: 'apu@gorgias.com',
@@ -82,9 +102,7 @@ export const shopifyCustomerFixture = (): Shopify.Customer =>
         currency: 'USD',
     }: any)
 
-export const shopifyOrderFixture = ({
-    shippingLines = [],
-}: any = {}): Shopify.Order => ({
+export const shopifyOrderFixture = ({shippingLines = []}: any = {}): Order => ({
     id: 1894175539223,
     name: '#1684',
     note: 'ahahah??',
@@ -298,7 +316,7 @@ export const shopifyOrderFixture = ({
     total_line_items_price_set: shopifyPriceSetFixture({amount: '5.00'}),
 })
 
-export const shopifyMultiCurrencyOrderFixture = (): Shopify.Order =>
+export const shopifyMultiCurrencyOrderFixture = (): Order =>
     ({
         id: 2177984102539,
         name: '#1012',
@@ -673,7 +691,7 @@ export const shopifyMultiCurrencyOrderFixture = (): Shopify.Order =>
         },
     }: any)
 
-export const shopifyAddressFixture = (): Shopify.Address => ({
+export const shopifyAddressFixture = (): Address => ({
     id: 2888869838871,
     zip: '',
     city: '',
@@ -693,7 +711,7 @@ export const shopifyAddressFixture = (): Shopify.Address => ({
     province_code: null,
 })
 
-export const shopifyDraftOrderPayloadFixture = (): Shopify.DraftOrder =>
+export const shopifyDraftOrderPayloadFixture = (): DraftOrder =>
     ({
         shipping_address: {
             zip: null,
@@ -766,7 +784,7 @@ export const shopifyLineItemFixture = ({
     currencyCode = null,
     presentmentPrice = null,
     presentmentCurrencyCode = null,
-}: any = {}): Shopify.LineItem => {
+}: any = {}): LineItem => {
     const lineItem = {
         taxable: true,
         price,
@@ -794,7 +812,7 @@ export const shopifyLineItemFixture = ({
     return (lineItem: any)
 }
 
-export const shopifyDraftOrderFixture = (): Shopify.DraftOrder => ({
+export const shopifyDraftOrderFixture = (): DraftOrder => ({
     taxes_included: false,
     shipping_address: {
         zip: null,
@@ -961,7 +979,7 @@ export const shopifyAppliedDiscountFixture = ({
     value = '100.0',
     valueType = 'percentage',
     amount = '5.00',
-}: any = {}): Shopify.AppliedDiscount =>
+}: any = {}): AppliedDiscount =>
     ({
         description: null,
         value,
@@ -977,7 +995,7 @@ export const shopifyShippingLineFixture = ({
     presentmentPrice = null,
     presentmentDiscountedPrice = null,
     presentmentCurrencyCode = null,
-}: any = {}): Shopify.ShippingLine => {
+}: any = {}): ShippingLine => {
     const shippingLine: any = {
         code: 'custom',
         price,
@@ -1004,7 +1022,7 @@ export const shopifyShippingLineFixture = ({
     return shippingLine
 }
 
-export const shopifyCustomLineItemFixture = (): Shopify.LineItem =>
+export const shopifyCustomLineItemFixture = (): LineItem =>
     ({
         title: 'Custom item',
         price: '1.99',
@@ -1018,20 +1036,20 @@ export const shopifyTaxLineFixture = ({
     rate = 0.2,
     title = 'TVA',
     price = '0.00',
-}: any = {}): Shopify.TaxLine => ({
+}: any = {}): TaxLine => ({
     rate,
     title,
     price,
 })
 
-export const shopifyInvoicePayloadFixture = (): Shopify.DraftOrderInvoice => ({
+export const shopifyInvoicePayloadFixture = (): DraftOrderInvoice => ({
     to: 'foo@bar.xyz',
     custom_message: 'foo bar',
 })
 
 export const shopifyDiscountAllocationFixture = ({
     amount = '0.50',
-}: any = {}): Shopify.DiscountAllocation => ({
+}: any = {}): DiscountAllocation => ({
     amount,
     discount_application_index: 0,
 })
@@ -1039,7 +1057,7 @@ export const shopifyDiscountAllocationFixture = ({
 export const shopifyDiscountApplicationFixture = ({
     value = '50.00',
     type = 'percentage',
-}: any = {}): Shopify.DiscountApplication => ({
+}: any = {}): DiscountApplication => ({
     type: 'manual',
     title: '',
     value,
@@ -1053,13 +1071,13 @@ export const shopifyDiscountApplicationFixture = ({
 export const shopifyRefundFixture = ({
     refundLineItems = [],
     orderAdjustments = [],
-}: any = {}): Shopify.Refund =>
+}: any = {}): Refund =>
     ({
         refund_line_items: refundLineItems,
         order_adjustments: orderAdjustments,
     }: any)
 
-export const shopifyRefundLineItemFixture = (): Shopify.RefundLineItem => ({
+export const shopifyRefundLineItemFixture = (): RefundLineItem => ({
     id: 139749457943,
     quantity: 1,
     subtotal: 1.0,
@@ -1069,7 +1087,7 @@ export const shopifyRefundLineItemFixture = (): Shopify.RefundLineItem => ({
     restock_type: 'cancel',
 })
 
-export const shopifyCancelOrderPayloadFixture = (): Shopify.CancelOrderPayload => ({
+export const shopifyCancelOrderPayloadFixture = (): CancelOrderPayload => ({
     reason: 'customer',
     email: true,
     refund: shopifyRefundOrderPayloadFixture({notify: false}),
@@ -1077,7 +1095,7 @@ export const shopifyCancelOrderPayloadFixture = (): Shopify.CancelOrderPayload =
 
 export const shopifyRefundOrderPayloadFixture = ({
     notify = true,
-}: any = {}): Shopify.RefundOrderPayload =>
+}: any = {}): RefundOrderPayload =>
     ({
         currency: 'USD',
         restock: true,
@@ -1098,7 +1116,7 @@ export const shopifyRefundOrderPayloadFixture = ({
 
 export const shopifySuggestedRefundFixture = ({
     locationId = 123,
-}: any = {}): Shopify.Refund =>
+}: any = {}): Refund =>
     ({
         shipping: {
             amount: '0.00',

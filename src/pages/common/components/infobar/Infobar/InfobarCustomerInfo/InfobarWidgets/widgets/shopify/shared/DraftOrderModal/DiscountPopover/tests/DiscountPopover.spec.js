@@ -10,7 +10,7 @@ import {
     EVENTS,
     logEvent,
 } from '../../../../../../../../../../../../../store/middlewares/segmentTracker'
-import * as Shopify from '../../../../../../../../../../../../../constants/integrations/shopify'
+import type {AppliedDiscount} from '../../../../../../../../../../../../../constants/integrations/types/shopify'
 import DiscountPopover from '../DiscountPopover'
 import {ShopifyAction} from '../../../../constants'
 
@@ -54,7 +54,7 @@ describe('<DiscountPopover/>', () => {
         })
 
         it('should render with value', () => {
-            const appliedDiscount: Shopify.AppliedDiscount = {
+            const appliedDiscount: AppliedDiscount = {
                 title: 'foo',
                 value: '5.99',
                 value_type: 'fixed_amount',
@@ -201,7 +201,7 @@ describe('<DiscountPopover/>', () => {
                 EVENTS.SHOPIFY_DUPLICATE_ORDER_DISCOUNT_POPOVER_REMOVE,
             ],
         ])('should call prop `onChange` with `null`', (actionName, event) => {
-            const appliedDiscount: Shopify.AppliedDiscount = {
+            const appliedDiscount: AppliedDiscount = {
                 title: 'foo',
                 value: '5.99',
                 value_type: 'fixed_amount',

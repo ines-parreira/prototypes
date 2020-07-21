@@ -6,7 +6,7 @@ import {connect} from 'react-redux'
 import {Button, Col, Container, Form, Label, Row} from 'reactstrap'
 import _isEqual from 'lodash/isEqual'
 
-import {type TicketChannel} from '../../../business/ticket'
+import {type TicketChannel} from '../../../business/types/ticket'
 import UserActivityManager from '../../../services/userActivityManager'
 import * as chatsActions from '../../../state/chats/actions'
 import * as currentAccountActions from '../../../state/currentAccount/actions'

@@ -27,10 +27,8 @@ import URLSafeBase64 from 'urlsafe-base64'
 import {humanize} from './business/format'
 import {ACTION_TEMPLATES} from './config'
 import TICKET_LANGUAGES from './config/ticketLanguages'
-import {
-    AUTHORIZED_NOTIFICATION_TYPES,
-    type notificationType,
-} from './state/notifications/actions'
+import {AUTHORIZED_NOTIFICATION_TYPES} from './state/notifications/actions'
+import type {Notification} from './state/notifications/types'
 import type {viewsStateType} from './state/views/types'
 import type {
     actionTemplateType,
@@ -960,7 +958,7 @@ export const openChat = (e: Event) => {
 
 export const transformSystemMessagesToNotifications = (
     systemMessages: Array<systemMessage>
-): Array<notificationType> => {
+): Array<Notification> => {
     return systemMessages.map((systemMessage) => ({
         status:
             AUTHORIZED_NOTIFICATION_TYPES.indexOf(systemMessage[0]) > -1

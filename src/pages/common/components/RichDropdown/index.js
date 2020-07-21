@@ -1,5 +1,5 @@
 //@flow
-import RichDropdown, {type Option, type OptionGroup} from './RichDropdown'
+import RichDropdown from './RichDropdown'
 
 export default RichDropdown
-export type {Option, OptionGroup}
+export * from './types.js'

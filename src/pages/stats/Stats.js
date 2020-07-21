@@ -16,7 +16,7 @@ import {notify} from '../../state/notifications/actions'
 import {getViewFilters} from '../../state/stats/selectors'
 
 import {errorToChildren} from '../../utils'
-import type {notificationType} from '../../state/notifications/actions'
+import type {Notification} from '../../state/notifications/types'
 
 import Stat from './common/components/charts/Stat'
 
@@ -109,7 +109,7 @@ export class Stats extends React.Component<Props, State> {
                 const respData = error.response.data
                 const serverError =
                     respData && respData.error ? respData.error.msg : null
-                const notification: notificationType = {
+                const notification: Notification = {
                     status: 'error',
                     title: serverError || defaultError,
                 }

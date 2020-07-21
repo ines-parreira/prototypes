@@ -13,7 +13,11 @@ import {
     getTotalQuantities,
 } from '../../../../business/shopify/refund'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
-import * as Shopify from '../../../../constants/integrations/shopify'
+import type {
+    CancelOrderPayload,
+    LineItem,
+    Order,
+} from '../../../../constants/integrations/types/shopify'
 import {formatPrice} from '../../../../business/shopify/number'
 import type {dispatchType, getStateType} from '../../../types'
 import GorgiasApi from '../../../../services/gorgiasApi'
@@ -52,14 +56,12 @@ const setOrderId = (orderId) => ({
     orderId,
 })
 
-export const setPayload = (
-    payload: Record<$Shape<Shopify.CancelOrderPayload>>
-) => ({
+export const setPayload = (payload: Record<$Shape<CancelOrderPayload>>) => ({
     type: SET_PAYLOAD,
     payload,
 })
 
-const setLineItems = (lineItems: List<$Shape<Shopify.LineItem>>) => ({
+const setLineItems = (lineItems: List<$Shape<LineItem>>) => ({
     type: SET_LINE_ITEMS,
     lineItems,
 })
@@ -83,10 +85,9 @@ const setInitialState = () => ({
     type: SET_INITIAL_STATE,
 })
 
-export const onInit = (
-    integrationId: number,
-    order: Record<Shopify.Order>
-) => async (dispatch: dispatchType) => {
+export const onInit = (integrationId: number, order: Record<Order>) => async (
+    dispatch: dispatchType
+) => {
     try {
         let payload = initCancelOrderPayload(order)
         const lineItems = initRefundOrderLineItems(order)
@@ -135,7 +136,7 @@ export const onInit = (
 
 export const onLineItemsChange = (
     integrationId: number,
-    lineItems: List<$Shape<Shopify.LineItem>>
+    lineItems: List<$Shape<LineItem>>
 ) => async (dispatch: dispatchType, getState: getStateType) => {
     const state = getState()
     let newPayload = getCancelOrderState(state).get('payload')
@@ -166,7 +167,7 @@ export const onLineItemsChange = (
 
 export const onPayloadChange = (
     integrationId: number,
-    payload: Record<$Shape<Shopify.CancelOrderPayload>>
+    payload: Record<$Shape<CancelOrderPayload>>
 ) => async (dispatch: dispatchType, getState: getStateType) => {
     dispatch(setPayload(payload))
     dispatch(setLoading(true, 'Calculating refund...'))

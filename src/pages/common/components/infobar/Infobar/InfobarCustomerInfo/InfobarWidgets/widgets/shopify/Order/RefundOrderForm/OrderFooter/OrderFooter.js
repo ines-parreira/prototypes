@@ -17,7 +17,10 @@ import {
     getTotalAvailableToRefund,
     getTotalQuantities,
 } from '../../../../../../../../../../../../business/shopify/refund'
-import * as Shopify from '../../../../../../../../../../../../constants/integrations/shopify'
+import type {
+    Refund,
+    RefundOrderPayload,
+} from '../../../../../../../../../../../../constants/integrations/types/shopify'
 import {ShopifyAction} from '../../../constants'
 import AmountInput from '../../../shared/AmountInput'
 
@@ -31,10 +34,10 @@ type Props = {
     currencyCode: string,
     reason: ?string,
     loading: boolean,
-    payload: Record<$Shape<Shopify.RefundOrderPayload>>,
-    refund: Record<Shopify.Refund>,
-    setPayload: (Record<$Shape<Shopify.RefundOrderPayload>>) => void,
-    onPayloadChange: (Record<$Shape<Shopify.RefundOrderPayload>>) => void,
+    payload: Record<$Shape<RefundOrderPayload>>,
+    refund: Record<Refund>,
+    setPayload: (Record<$Shape<RefundOrderPayload>>) => void,
+    onPayloadChange: (Record<$Shape<RefundOrderPayload>>) => void,
     onReasonChange: (event: SyntheticInputEvent<HTMLInputElement>) => void,
 }
 

@@ -5,7 +5,10 @@ import {Table} from 'reactstrap'
 import {type List, type Record} from 'immutable'
 import hash from 'object-hash'
 
-import * as Shopify from '../../../../../../../../../../../../constants/integrations/shopify'
+import type {
+    Refund,
+    LineItem,
+} from '../../../../../../../../../../../../constants/integrations/types/shopify'
 
 import {OrderLineItemRow} from './OrderLineItemRow'
 import css from './OrderTable.less'
@@ -14,16 +17,13 @@ type Props = {
     shopName: string,
     currencyCode: string,
     shopCurrencyCode: string,
-    refund: ?Record<Shopify.Refund>,
-    lineItems: List<$Shape<Shopify.LineItem>>,
-    onChange: (lineItems: List<$Shape<Shopify.LineItem>>) => void,
+    refund: ?Record<Refund>,
+    lineItems: List<$Shape<LineItem>>,
+    onChange: (lineItems: List<$Shape<LineItem>>) => void,
 }
 
 export default class OrderTable extends React.PureComponent<Props> {
-    _onLineItemChange = (
-        index: number,
-        updatedLineItem: Record<Shopify.LineItem>
-    ) => {
+    _onLineItemChange = (index: number, updatedLineItem: Record<LineItem>) => {
         const {onChange, lineItems} = this.props
         const newLineItems = lineItems.set(index, updatedLineItem)
 

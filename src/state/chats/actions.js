@@ -4,7 +4,7 @@ import _throttle from 'lodash/throttle'
 
 import browserNotification from '../../services/browserNotification'
 
-import type {RecentChatTicket} from '../../business/recentChats'
+import type {RecentChatTicket} from '../../business/types/recentChats'
 import type {dispatchType} from '../types'
 
 import * as constants from './constants'

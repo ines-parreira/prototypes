@@ -14,7 +14,7 @@ import {fromJS, type Record} from 'immutable'
 import classnames from 'classnames'
 
 import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker'
-import * as Shopify from '../../../../../../../../../../../../constants/integrations/shopify'
+import type {DraftOrderInvoice} from '../../../../../../../../../../../../constants/integrations/types/shopify'
 import {focusElement} from '../../../../../../../../../../../../utils/html'
 import {ShopifyAction} from '../../../constants'
 
@@ -28,7 +28,7 @@ type Props = {
     color: string,
     customerEmail: string,
     disabled: boolean,
-    onSubmit: (Record<Shopify.DraftOrderInvoice>) => void,
+    onSubmit: (Record<DraftOrderInvoice>) => void,
 }
 
 type State = {
@@ -115,7 +115,7 @@ export default class EmailInvoicePopover extends React.PureComponent<
         event.preventDefault()
         this._toggle()
 
-        const newValue: Shopify.DraftOrderInvoice = {
+        const newValue: DraftOrderInvoice = {
             to,
             custom_message: customMessage,
         }

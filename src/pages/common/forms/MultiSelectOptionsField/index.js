@@ -1,3 +1,3 @@
 // @flow
 export {default} from './MultiSelectOptionsField'
-export * from './types'
+export * from './types.js'

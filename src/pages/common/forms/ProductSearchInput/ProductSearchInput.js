@@ -14,7 +14,7 @@ import type {
     Product,
     Variant,
 } from '../../../../models/integration'
-import * as Shopify from '../../../../constants/integrations/shopify'
+import type {Product as ShopifyProduct} from '../../../../constants/integrations/types/shopify'
 
 import ProductResult from './ProductResult'
 import VariantResult from './VariantResult'
@@ -42,7 +42,7 @@ export default class ProductSearchInput extends React.PureComponent<Props> {
 
     static _variantsMapper = {
         [SHOPIFY_INTEGRATION_TYPE]: (
-            result: IntegrationDataItem<Shopify.Product>
+            result: IntegrationDataItem<ShopifyProduct>
         ) => result.data.variants,
     }
 

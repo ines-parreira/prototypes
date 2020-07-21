@@ -1,7 +1,8 @@
 // @flow
 import {fromJS} from 'immutable'
 
-import {clearMacroBeforeApply, type Macro} from '../macro'
+import {clearMacroBeforeApply} from '../macro'
+import type {Macro} from '../types/macro'
 import {TicketMessageSourceTypes} from '../ticket'
 
 describe('Business', () => {

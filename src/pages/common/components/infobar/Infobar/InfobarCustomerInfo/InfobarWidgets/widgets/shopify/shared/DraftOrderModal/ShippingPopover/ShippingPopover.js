@@ -14,7 +14,7 @@ import {fromJS, type Record} from 'immutable'
 import classnames from 'classnames'
 
 import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker'
-import * as Shopify from '../../../../../../../../../../../../constants/integrations/shopify'
+import type {ShippingLine} from '../../../../../../../../../../../../constants/integrations/types/shopify'
 import {formatPrice} from '../../../../../../../../../../../../business/shopify/number'
 import {focusElement} from '../../../../../../../../../../../../utils/html'
 import MoneyAmount from '../../../../MoneyAmount'
@@ -30,9 +30,9 @@ type Props = {
     placement: string,
     editable: boolean,
     currencyCode: string,
-    value: Record<$Shape<Shopify.ShippingLine>> | null,
-    defaultValue: Record<Shopify.ShippingLine> | null,
-    onChange: (Record<$Shape<Shopify.ShippingLine>> | null) => void,
+    value: Record<$Shape<ShippingLine>> | null,
+    defaultValue: Record<ShippingLine> | null,
+    onChange: (Record<$Shape<ShippingLine>> | null) => void,
 }
 
 type State = {
@@ -135,7 +135,7 @@ export default class ShippingPopover extends React.PureComponent<Props, State> {
         }
     }
 
-    _isFreeShipping(value: Record<$Shape<Shopify.ShippingLine>>): boolean {
+    _isFreeShipping(value: Record<$Shape<ShippingLine>>): boolean {
         const {currencyCode} = this.props
 
         return (

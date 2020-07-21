@@ -2,7 +2,7 @@
 
 import {fromJS, type Map} from 'immutable'
 
-import {actionType} from '../types'
+import {actionType} from '../types.js'
 
 import * as constants from './constants'
 

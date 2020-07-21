@@ -238,7 +238,7 @@ export const debugLastAppliedEntity = (
     }
 }
 
-export type EditorStateDebug = {
+type EditorStateDebug = {
     text: string,
     blocks: BlockMapDebug,
     selection: string,

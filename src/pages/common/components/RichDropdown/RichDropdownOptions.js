@@ -2,7 +2,7 @@
 import React from 'react'
 import {DropdownItem} from 'reactstrap'
 
-import type {Option} from './RichDropdown'
+import type {Option} from './types'
 
 import css from './RichDropdownOptions.less'
 

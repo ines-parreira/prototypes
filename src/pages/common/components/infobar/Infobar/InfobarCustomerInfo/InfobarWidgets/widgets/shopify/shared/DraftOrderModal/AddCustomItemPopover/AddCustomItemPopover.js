@@ -14,7 +14,7 @@ import {fromJS, type Record} from 'immutable'
 import classnames from 'classnames'
 
 import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker'
-import * as Shopify from '../../../../../../../../../../../../constants/integrations/shopify'
+import type {LineItem} from '../../../../../../../../../../../../constants/integrations/types/shopify'
 import {formatPrice} from '../../../../../../../../../../../../business/shopify/number'
 import {focusElement} from '../../../../../../../../../../../../utils/html'
 import AmountInput from '../../AmountInput'
@@ -28,7 +28,7 @@ type Props = {
     actionName: string,
     className: ?string,
     currencyCode: string,
-    onSubmit: (Record<$Shape<Shopify.LineItem>>) => void,
+    onSubmit: (Record<$Shape<LineItem>>) => void,
 }
 
 type State = {

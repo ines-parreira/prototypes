@@ -10,19 +10,22 @@ import {
     getOrderLineItemDiscountedPrice,
     getOrderLineItemPrice,
 } from '../../../../../../../../../../../../business/shopify/lineItem'
-import * as Shopify from '../../../../../../../../../../../../constants/integrations/shopify'
+import type {
+    LineItem,
+    Refund,
+} from '../../../../../../../../../../../../constants/integrations/types/shopify'
 import {formatPrice} from '../../../../../../../../../../../../business/shopify/number'
 import MoneyAmount from '../../../../MoneyAmount'
 
 import css from './OrderLineItemRow.less'
 
 type Props = {
-    lineItem: Record<$Shape<Shopify.LineItem>>,
-    refund: ?Record<$Shape<Shopify.Refund>>,
+    lineItem: Record<$Shape<LineItem>>,
+    refund: ?Record<$Shape<Refund>>,
     shopName: string,
     currencyCode: string,
     shopCurrencyCode: string,
-    onChange: (Record<$Shape<Shopify.LineItem>>) => void,
+    onChange: (Record<$Shape<LineItem>>) => void,
 }
 
 type State = {

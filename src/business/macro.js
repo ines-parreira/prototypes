@@ -1,8 +1,9 @@
 // @flow
 import {fromJS, type RecordOf} from 'immutable'
 
-import {type Notification} from './notification'
-import {type TicketMessageSourceType, TicketMessageSourceTypes} from './ticket'
+import {type TicketMessageSourceType} from './types/ticket'
+import {TicketMessageSourceTypes} from './ticket'
+import type {Macro, MacroAction, MacroClearingResult} from './types/macro'
 
 // Public functions
 export function clearMacroBeforeApply(
@@ -75,39 +76,4 @@ function removeAttachmentsFromActions(macro: RecordOf<Macro>): RecordOf<Macro> {
     return macro.update('actions', (actions) =>
         actions.filter((action) => action.get('name') !== 'addAttachments')
     )
-}
-
-// Types
-export type MacroActionName = 'addAttachments' | 'setResponseText'
-
-export type MacroActionType = 'user'
-
-export type MacroActionAttachment = {
-    url: string,
-}
-
-export type MacroActionArguments = {
-    // addAttachments
-    attachments?: MacroActionAttachment[],
-    // setResponseText
-    body_html?: string,
-    body_text?: string,
-}
-
-export type MacroAction = {
-    arguments: MacroActionArguments,
-    name: MacroActionName,
-    title: string,
-    type: MacroActionType,
-}
-
-export type Macro = {
-    id: number,
-    name: string,
-    actions: MacroAction[],
-}
-
-export type MacroClearingResult = {
-    macro: RecordOf<Macro>,
-    notification?: Notification,
 }

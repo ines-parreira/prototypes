@@ -1,6 +1,8 @@
 // @flow
 import {humanize} from './format'
-import {type Notification} from './notification'
+
+import type {Notification} from './types/notification'
+import type {TicketMessageSourceType} from './types/ticket'
 
 // Public functions
 export function canAddAttachments(
@@ -73,7 +75,6 @@ export function canReply(
     return null
 }
 
-// Types
 export const TicketMessageSourceTypes = Object.freeze({
     AIRCALL: 'aircall',
     API: 'api',
@@ -94,13 +95,11 @@ export const TicketMessageSourceTypes = Object.freeze({
     SYSTEM_MESSAGE: 'system-message',
     TWITTER: 'twitter',
 })
-export type TicketMessageSourceType = $Values<typeof TicketMessageSourceTypes>
 
 export const TicketStatuses = Object.freeze({
     OPEN: 'open',
     CLOSED: 'closed',
 })
-export type TicketStatus = $Values<typeof TicketStatuses>
 
 export const TicketChannels = Object.freeze({
     AIRCALL: 'aircall',
@@ -115,4 +114,3 @@ export const TicketChannels = Object.freeze({
     SMS: 'sms',
     TWITTER: 'twitter',
 })
-export type TicketChannel = $Values<typeof TicketChannels>

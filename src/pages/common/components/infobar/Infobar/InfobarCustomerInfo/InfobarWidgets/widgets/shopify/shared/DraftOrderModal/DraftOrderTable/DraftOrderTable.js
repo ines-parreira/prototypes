@@ -5,7 +5,10 @@ import {Table} from 'reactstrap'
 import {type List, type Record} from 'immutable'
 import hash from 'object-hash'
 
-import * as Shopify from '../../../../../../../../../../../../constants/integrations/shopify'
+import type {
+    LineItem,
+    Product,
+} from '../../../../../../../../../../../../constants/integrations/types/shopify'
 
 import {DraftOrderLineItemRow} from './DraftOrderLineItemRow'
 import css from './DraftOrderTable.less'
@@ -14,20 +17,17 @@ type Props = {
     shopName: string,
     actionName: string,
     currencyCode: string,
-    lineItems: List<$Shape<Shopify.LineItem>>,
-    products: Map<number, Record<Shopify.Product>>,
-    onChange: (lineItems: List<$Shape<Shopify.LineItem>>) => void,
+    lineItems: List<$Shape<LineItem>>,
+    products: Map<number, Record<Product>>,
+    onChange: (lineItems: List<$Shape<LineItem>>) => void,
 }
 
 export default class DraftOrderTable extends React.PureComponent<Props> {
     static defaultProps = {
-        products: new Map<number, Record<Shopify.Product>>(),
+        products: new Map<number, Record<Product>>(),
     }
 
-    _onLineItemChange = (
-        index: number,
-        updatedLineItem: Record<Shopify.LineItem>
-    ) => {
+    _onLineItemChange = (index: number, updatedLineItem: Record<LineItem>) => {
         const {onChange, lineItems} = this.props
         const newLineItems = lineItems.set(index, updatedLineItem)
 

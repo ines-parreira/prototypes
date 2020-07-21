@@ -14,7 +14,7 @@ import {
     PopoverBody,
 } from 'reactstrap'
 
-import type {TicketMessageSourceType} from '../../../../../business/ticket'
+import type {TicketMessageSourceType} from '../../../../../business/types/ticket'
 import {isRichType} from '../../../../../config/ticket'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {deleteMacro, fetchMacros} from '../../../../../state/macro/actions'

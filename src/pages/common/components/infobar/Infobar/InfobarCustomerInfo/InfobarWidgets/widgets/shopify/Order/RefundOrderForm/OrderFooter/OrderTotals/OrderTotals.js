@@ -6,7 +6,10 @@ import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
 import {type Record} from 'immutable'
 
-import * as Shopify from '../../../../../../../../../../../../../constants/integrations/shopify'
+import type {
+    Refund,
+    RefundOrderPayload,
+} from '../../../../../../../../../../../../../constants/integrations/types/shopify'
 import {formatPrice} from '../../../../../../../../../../../../../business/shopify/number'
 import {
     getSubtotal,
@@ -24,9 +27,9 @@ type Props = {
     hasShippingLine: boolean,
     currencyCode: string,
     loading: boolean,
-    payload: Record<$Shape<Shopify.RefundOrderPayload>>,
-    refund: Record<Shopify.Refund>,
-    onPayloadChange: (Record<$Shape<Shopify.RefundOrderPayload>>) => void,
+    payload: Record<$Shape<RefundOrderPayload>>,
+    refund: Record<Refund>,
+    onPayloadChange: (Record<$Shape<RefundOrderPayload>>) => void,
 }
 
 type State = {

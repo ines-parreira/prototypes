@@ -2,8 +2,8 @@
 import React, {Fragment} from 'react'
 import {DropdownItem} from 'reactstrap'
 
-import type {OptionGroup} from './RichDropdown'
 import RichDropdownOptions from './RichDropdownOptions'
+import type {OptionGroup} from './types'
 
 type Props = {
     onClick: (optionKey: string) => void,

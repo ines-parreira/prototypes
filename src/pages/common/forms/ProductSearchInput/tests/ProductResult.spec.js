@@ -9,25 +9,28 @@ import {
     shopifyVariantFixture,
 } from '../../../../../fixtures/shopify'
 import type {IntegrationDataItem} from '../../../../../models/integration'
-import * as Shopify from '../../../../../constants/integrations/shopify'
+import type {
+    Product,
+    Variant,
+} from '../../../../../constants/integrations/types/shopify'
 import ProductResult from '../ProductResult'
 
 describe('<ProductResult/>', () => {
     describe('render()', () => {
         it('should render with SKU as subtitle', () => {
-            const item: IntegrationDataItem<Shopify.Product> = integrationDataItemProductFixture()
+            const item: IntegrationDataItem<Product> = integrationDataItemProductFixture()
             const component = shallow(<ProductResult result={item} />)
 
             expect(component).toMatchSnapshot()
         })
 
         it('should render with number of variants as subtitle', () => {
-            const variant1: Shopify.Variant = shopifyVariantFixture({id: 1})
-            const variant2: Shopify.Variant = shopifyVariantFixture({id: 2})
-            const products: Shopify.Product = shopifyProductFixture({
+            const variant1: Variant = shopifyVariantFixture({id: 1})
+            const variant2: Variant = shopifyVariantFixture({id: 2})
+            const products: Product = shopifyProductFixture({
                 variants: [variant1, variant2],
             })
-            const item: IntegrationDataItem<Shopify.Product> = integrationDataItemProductFixture(
+            const item: IntegrationDataItem<Product> = integrationDataItemProductFixture(
                 {data: products}
             )
             const component = shallow(<ProductResult result={item} />)
@@ -36,11 +39,11 @@ describe('<ProductResult/>', () => {
         })
 
         it('should render without subtitle', () => {
-            const variant: Shopify.Variant = shopifyVariantFixture({sku: null})
-            const products: Shopify.Product = shopifyProductFixture({
+            const variant: Variant = shopifyVariantFixture({sku: null})
+            const products: Product = shopifyProductFixture({
                 variants: [variant],
             })
-            const item: IntegrationDataItem<Shopify.Product> = integrationDataItemProductFixture(
+            const item: IntegrationDataItem<Product> = integrationDataItemProductFixture(
                 {data: products}
             )
             const component = shallow(<ProductResult result={item} />)

@@ -13,7 +13,7 @@ import MultiSelectOptionsField, {
     type Option,
 } from '../../../../../../../../../../forms/MultiSelectOptionsField'
 import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker'
-import * as Shopify from '../../../../../../../../../../../../constants/integrations/shopify'
+import type {DraftOrder} from '../../../../../../../../../../../../constants/integrations/types/shopify'
 import {ShopifyAction} from '../../../constants'
 
 import OrderTotals from './OrderTotals'
@@ -23,10 +23,10 @@ type Props = {
     editable: boolean,
     actionName: string,
     currencyCode: string,
-    payload: Record<$Shape<Shopify.DraftOrder>>,
+    payload: Record<$Shape<DraftOrder>>,
     onPayloadChange: (
         integrationId: number,
-        Record<$Shape<Shopify.DraftOrder>>
+        Record<$Shape<DraftOrder>>
     ) => void,
 }
 

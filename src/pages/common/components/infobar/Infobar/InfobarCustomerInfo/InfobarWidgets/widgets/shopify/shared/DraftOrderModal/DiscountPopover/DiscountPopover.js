@@ -17,7 +17,10 @@ import classnames from 'classnames'
 
 import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker'
 import {getDiscountAmount} from '../../../../../../../../../../../../business/shopify/discount'
-import * as Shopify from '../../../../../../../../../../../../constants/integrations/shopify'
+import type {
+    AppliedDiscount,
+    DiscountType,
+} from '../../../../../../../../../../../../constants/integrations/types/shopify'
 import {
     formatPercentage,
     formatPrice,
@@ -38,13 +41,13 @@ type Props = {
     editable: boolean,
     currencyCode: string,
     max: number,
-    value: Record<Shopify.AppliedDiscount> | null,
-    onChange: (Record<Shopify.AppliedDiscount> | null) => void,
+    value: Record<AppliedDiscount> | null,
+    onChange: (Record<AppliedDiscount> | null) => void,
 }
 
 type State = {
     isOpen: boolean,
-    type: Shopify.DiscountType,
+    type: DiscountType,
     discountValue: string,
     title: string,
 }
@@ -152,7 +155,7 @@ export default class DiscountPopover extends React.PureComponent<Props, State> {
         event.preventDefault()
         this._toggle()
 
-        const newValue: Shopify.AppliedDiscount = {
+        const newValue: AppliedDiscount = {
             title,
             value,
             value_type: type,

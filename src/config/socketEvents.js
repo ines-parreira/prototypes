@@ -20,7 +20,7 @@ import * as currentUserSelectors from '../state/currentUser/selectors'
 
 import {isCurrentlyOnTicket} from '../utils'
 import {store as reduxStore} from '../init'
-import * as socketEventTypes from '../services/socketManager/types'
+import * as socketEventTypes from '../services/socketManager/types.js'
 
 import {MAX_RECENT_CHATS} from './recentChats'
 import * as socketConstants from './socketConstants'

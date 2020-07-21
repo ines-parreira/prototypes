@@ -24,7 +24,15 @@ import shortcutManager from '../../../../../../../../../../../services/shortcutM
 import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors'
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../constants/integration'
 import type {IntegrationDataItem} from '../../../../../../../../../../../models/integration'
-import * as Shopify from '../../../../../../../../../../../constants/integrations/shopify'
+import type {
+    DraftOrder,
+    Product,
+    Customer,
+    Order,
+    LineItem,
+    Variant,
+    DraftOrderInvoice,
+} from '../../../../../../../../../../../constants/integrations/types/shopify'
 import ProductSearchInput from '../../../../../../../../../forms/ProductSearchInput'
 import {DatetimeLabel} from '../../../../../../../../../utils/labels'
 import Loader from '../../../../../../../../Loader/Loader'
@@ -42,23 +50,23 @@ type Props = InfobarModalProps & {
     integrations: List<*>,
     loading: boolean,
     loadingMessage: ?string,
-    payload: Record<$Shape<Shopify.DraftOrder>>,
-    draftOrder: ?Record<Shopify.DraftOrder>,
-    products: Map<number, Record<Shopify.Product>>,
+    payload: Record<$Shape<DraftOrder>>,
+    draftOrder: ?Record<DraftOrder>,
+    products: Map<number, Record<Product>>,
     data: {
         actionName: ?ShopifyActionType,
-        order?: Record<Shopify.Order>,
-        customer: Record<$Shape<Shopify.Customer>>,
+        order?: Record<Order>,
+        customer: Record<$Shape<Customer>>,
     },
     addCustomRow: (
         integrationId: number,
-        lineItem: Record<$Shape<Shopify.LineItem>>
+        lineItem: Record<$Shape<LineItem>>
     ) => void,
     addRow: (
         actionName: string,
         integrationId: number,
-        product: Shopify.Product,
-        variant: Shopify.Variant
+        product: Product,
+        variant: Variant
     ) => void,
     onCancel: (actionName: string, integrationId: number, via: string) => void,
     onInitCleanUp: (integrationId: number) => void,
@@ -66,19 +74,19 @@ type Props = InfobarModalProps & {
         integrationId: number,
         customerId: number,
         orderId: number | null,
-        invoicePayload: Record<Shopify.DraftOrderInvoice>,
+        invoicePayload: Record<DraftOrderInvoice>,
         onDone: () => void
     ) => void,
     onInit: (
         integrationId: number,
-        order: ?Record<Shopify.Order>,
-        customer: Record<$Shape<Shopify.Customer>>,
+        order: ?Record<Order>,
+        customer: Record<$Shape<Customer>>,
         currencyCode: string,
         onError: () => void
     ) => void,
     onPayloadChange: (
         integrationId: number,
-        payload: Record<$Shape<Shopify.DraftOrder>>
+        payload: Record<$Shape<DraftOrder>>
     ) => void,
     onReset: () => void,
     onSubmitCleanUp: () => void,
@@ -182,8 +190,8 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
     }
 
     _onVariantClicked = (
-        item: IntegrationDataItem<Shopify.Product>,
-        variant: Shopify.Variant
+        item: IntegrationDataItem<Product>,
+        variant: Variant
     ) => {
         const {integrationId} = this.context
         const {
@@ -195,14 +203,14 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
         addRow(actionName, integrationId, product, variant)
     }
 
-    _onAddCustomItem = (lineItem: Record<$Shape<Shopify.LineItem>>) => {
+    _onAddCustomItem = (lineItem: Record<$Shape<LineItem>>) => {
         const {addCustomRow} = this.props
         const {integrationId} = this.context
 
         addCustomRow(integrationId, lineItem)
     }
 
-    _onLineItemsChange = (lineItems: List<$Shape<Shopify.LineItem>>) => {
+    _onLineItemsChange = (lineItems: List<$Shape<LineItem>>) => {
         const {payload, onPayloadChange} = this.props
         const {integrationId} = this.context
         const newPayload = payload.set('line_items', lineItems)
@@ -210,7 +218,7 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
         onPayloadChange(integrationId, newPayload)
     }
 
-    _onEmailInvoice = (invoicePayload: Record<Shopify.DraftOrderInvoice>) => {
+    _onEmailInvoice = (invoicePayload: Record<DraftOrderInvoice>) => {
         const {
             onEmailInvoice,
             onClose,

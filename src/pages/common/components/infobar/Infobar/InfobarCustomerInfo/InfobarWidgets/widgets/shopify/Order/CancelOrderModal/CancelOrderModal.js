@@ -20,7 +20,13 @@ import shortcutManager from '../../../../../../../../../../../services/shortcutM
 import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors'
 import {getFinalCancelOrderPayload} from '../../../../../../../../../../../business/shopify/order'
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../constants/integration'
-import * as Shopify from '../../../../../../../../../../../constants/integrations/shopify'
+import type {
+    CancelOrderPayload,
+    LineItem,
+    Refund,
+    Order,
+    RefundOrderPayload,
+} from '../../../../../../../../../../../constants/integrations/types/shopify.js'
 import Loader from '../../../../../../../../Loader/Loader'
 import type {InfobarModalProps} from '../../../types'
 import Modal from '../../../../../../../../Modal'
@@ -32,27 +38,27 @@ type Props = InfobarModalProps & {
     integrations: List<*>,
     loading: boolean,
     loadingMessage: string,
-    payload: Record<$Shape<Shopify.CancelOrderPayload>>,
-    lineItems: List<$Shape<Shopify.LineItem>>,
-    refund: Record<Shopify.Refund>,
+    payload: Record<$Shape<CancelOrderPayload>>,
+    lineItems: List<$Shape<LineItem>>,
+    refund: Record<Refund>,
     data: {
         actionName: ?string,
-        order: Record<Shopify.Order>,
+        order: Record<Order>,
     },
     onCancel: (via: string) => void,
-    onInit: (integrationId: number, order: Record<Shopify.Order>) => void,
+    onInit: (integrationId: number, order: Record<Order>) => void,
     onLineItemsChange: (
         integrationId: number,
-        lineItems: List<$Shape<Shopify.LineItem>>
+        lineItems: List<$Shape<LineItem>>
     ) => void,
     onReset: () => void,
     onPayloadChange: (
         integrationId: number,
-        payload: Record<$Shape<Shopify.CancelOrderPayload>>
+        payload: Record<$Shape<CancelOrderPayload>>
     ) => void,
     setPayload: (
         integrationId: number,
-        Record<$Shape<Shopify.RefundOrderPayload>>
+        Record<$Shape<RefundOrderPayload>>
     ) => void,
 }
 
@@ -95,7 +101,7 @@ export class CancelOrderModalComponent extends React.PureComponent<Props> {
         )
     }
 
-    _onLineItemsChange = (lineItems: List<$Shape<Shopify.LineItem>>) => {
+    _onLineItemsChange = (lineItems: List<$Shape<LineItem>>) => {
         const {onLineItemsChange} = this.props
         const {integrationId} = this.context
 
@@ -103,7 +109,7 @@ export class CancelOrderModalComponent extends React.PureComponent<Props> {
     }
 
     _onRefundPayloadChange = (
-        refundPayload: Record<$Shape<Shopify.RefundOrderPayload>>
+        refundPayload: Record<$Shape<RefundOrderPayload>>
     ) => {
         const {payload, onPayloadChange} = this.props
         const {integrationId} = this.context
@@ -112,9 +118,7 @@ export class CancelOrderModalComponent extends React.PureComponent<Props> {
         onPayloadChange(integrationId, newPayload)
     }
 
-    _setRefundPayload = (
-        refundPayload: Record<$Shape<Shopify.RefundOrderPayload>>
-    ) => {
+    _setRefundPayload = (refundPayload: Record<$Shape<RefundOrderPayload>>) => {
         const {payload, setPayload} = this.props
         const newPayload = payload.set('refund', refundPayload)
 

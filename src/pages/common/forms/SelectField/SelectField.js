@@ -1,5 +1,5 @@
 //@flow
-import React, {Component, type Node} from 'react'
+import React, {Component} from 'react'
 import {
     DropdownItem,
     DropdownMenu,
@@ -13,18 +13,11 @@ import _noop from 'lodash/noop'
 import _isEqual from 'lodash/isEqual'
 
 import css from './SelectField.less'
+import type {Option, Value} from './types'
 
 const APPROXIMATE_CHAR_WIDTH = 8
 const ARROW_ICON_WIDTH = 10
 const MAXIMUM_MIN_WIDTH = 305
-
-export type Value = number | string
-
-export type Option = {
-    value: Value,
-    text?: string, // text used to filter with the search value
-    label?: Node | string, // text displayed in the dropdown
-}
 
 type Props = {
     allowCustomValue: boolean,

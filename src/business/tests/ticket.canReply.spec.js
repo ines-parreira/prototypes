@@ -1,9 +1,6 @@
 // @flow
-import {
-    canReply,
-    type TicketMessageSourceType,
-    TicketMessageSourceTypes,
-} from '../ticket'
+import {canReply, TicketMessageSourceTypes} from '../ticket'
+import type {TicketMessageSourceType} from '../types/ticket'
 
 describe('Business', () => {
     describe('ticket', () => {

@@ -16,6 +16,7 @@ export type PaginationMeta = {
     page: number,
     per_page: number,
     nb_pages: number,
+    next_page?: string,
 }
 
 export type OrderDirection = $Values<typeof ORDER_DIRECTION>

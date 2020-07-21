@@ -4,17 +4,24 @@ import React from 'react'
 import {Badge} from 'reactstrap'
 import classnames from 'classnames'
 
-import * as Shopify from '../../../../../../../../../../constants/integrations/shopify'
+import {
+    FinancialStatus,
+    FulfillmentStatus,
+} from '../../../../../../../../../../constants/integrations/shopify'
+import type {
+    FulfillmentStatusType,
+    FinancialStatusType,
+} from '../../../../../../../../../../constants/integrations/types/shopify.js'
 import {humanizeString} from '../../../../../../../../../../utils'
 
 import css from './OrderStatus.less'
 
 type FulfillmentBadgeProps = {
-    fulfillmentStatus: Shopify.FulfillmentStatusType,
+    fulfillmentStatus: FulfillmentStatusType,
 }
 
 type FinancialBadgeProps = {
-    financialStatus: Shopify.FinancialStatusType,
+    financialStatus: FinancialStatusType,
 }
 
 type Props = FulfillmentBadgeProps &
@@ -22,48 +29,36 @@ type Props = FulfillmentBadgeProps &
         isCancelled: boolean,
     }
 
-type FulfillmentValues = Map<
-    Shopify.FulfillmentStatusType,
-    [string, string, string]
->
-type FinancialValues = Map<Shopify.FinancialStatusType, [string, string]>
+type FulfillmentValues = Map<FulfillmentStatusType, [string, string, string]>
+type FinancialValues = Map<FinancialStatusType, [string, string]>
 
 const fulfillmentValues: FulfillmentValues = new Map([
     [
-        Shopify.FulfillmentStatus.FULFILLED,
+        FulfillmentStatus.FULFILLED,
         [css.successBadge, css.fullIcon, 'Fulfilled'],
     ],
     [
-        Shopify.FulfillmentStatus.PARTIAL,
+        FulfillmentStatus.PARTIAL,
         [css.successBadge, css.partialIcon, 'Partially fulfilled'],
     ],
     [
-        Shopify.FulfillmentStatus.RESTOCKED,
+        FulfillmentStatus.RESTOCKED,
         [css.secondaryBadge, css.emptyIcon, 'Restocked'],
     ],
     [null, [css.secondaryBadge, css.emptyIcon, 'Unfulfilled']],
 ])
 
 const financialValues: FinancialValues = new Map([
-    [Shopify.FinancialStatus.PENDING, [css.secondaryBadge, css.emptyIcon]],
-    [Shopify.FinancialStatus.AUTHORIZED, [css.secondaryBadge, css.emptyIcon]],
+    [FinancialStatus.PENDING, [css.secondaryBadge, css.emptyIcon]],
+    [FinancialStatus.AUTHORIZED, [css.secondaryBadge, css.emptyIcon]],
+    [FinancialStatus.PARTIALLY_PAID, [css.successBadge, css.partialIcon]],
+    [FinancialStatus.PAID, [css.successBadge, css.fullIcon]],
     [
-        Shopify.FinancialStatus.PARTIALLY_PAID,
-        [css.successBadge, css.partialIcon],
-    ],
-    [Shopify.FinancialStatus.PAID, [css.successBadge, css.fullIcon]],
-    [
-        Shopify.FinancialStatus.PARTIALLY_REFUNDED,
+        FinancialStatus.PARTIALLY_REFUNDED,
         [css.secondaryBadge, css.partialIconSecondary],
     ],
-    [
-        Shopify.FinancialStatus.REFUNDED,
-        [css.secondaryBadge, css.fullIconSecondary],
-    ],
-    [
-        Shopify.FinancialStatus.VOIDED,
-        [css.secondaryBadge, css.fullIconSecondary],
-    ],
+    [FinancialStatus.REFUNDED, [css.secondaryBadge, css.fullIconSecondary]],
+    [FinancialStatus.VOIDED, [css.secondaryBadge, css.fullIconSecondary]],
 ])
 
 export default function OrderStatus({

@@ -12,18 +12,7 @@ import _identity from 'lodash/identity'
 import css from './RichDropdown.less'
 import RichDropdownOptionGroups from './RichDropdownOptionGroups'
 import RichDropdownOptions from './RichDropdownOptions'
-
-export type Option = {
-    description?: string,
-    key: string,
-    label: string,
-}
-
-export type OptionGroup = {
-    key: string,
-    label: string,
-    options: Option[],
-}
+import type {Option, OptionGroup} from './types'
 
 type OptionProps = {
     options: Option[] | OptionGroup[],

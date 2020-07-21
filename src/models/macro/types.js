@@ -1,4 +1,5 @@
 //@flow
+import {type MetaSortOptions, type OrderDirection} from '../api'
 import type {IntentName} from '../intent'
 import type {MacroAction} from '../macroAction'
 
@@ -23,3 +24,13 @@ export type MacroDraft = {
 }
 
 export type MacroSortableProperties = $Values<typeof MACRO_SORTABLE_PROPERTIES>
+
+export type FetchMacrosOptions = {
+    fallbackOrderBy?: MacroSortableProperties,
+    messageId?: number,
+    orderBy?: MacroSortableProperties | MetaSortOptions,
+    orderDir?: OrderDirection,
+    page?: number,
+    search?: string,
+    ticketId?: number,
+}

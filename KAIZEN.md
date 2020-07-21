@@ -36,6 +36,7 @@ We are aiming to migrate them to TypeScript as it is a better tool.
 
 The general approach to migrating a file is:
 1. If the file contains some exported types, move the declarations into `types.js` and `types.ts` file
+  - When migrating existing types `type fooType` should become `type Foo` 
 2. Change the file extension from `.js` to either `.ts` or `.tsx` if the file contains jsx
 3. Make adjustments
   - Remove the `@flow` pragma and all potential `$FlowFixMe`
@@ -64,3 +65,16 @@ import type {FooType} from 'foo'
 - Some types brought by dependencies have to be defined through `@types` deps (eg `yarn add -D @types/react`)
 - TypeScript assumes that an unspecified extension is either `.ts` or `.tsx`, for importing a JavaScript file you'll need to use `.js` extension explicitly
 - For `index.js` files serving as export buffers you may find `export * from './types'`. These files should not be migrated as it allows Flow to access the types. Instead, consider having two separate `types.js` and `types.ts` files and export the JavaScript one like so: `export * from './types.js'` (notice the extension)
+- We are referencing constants with `const Object.freeze()`, thanks to TypeScript we are able to define `enum` properly.
+```
+const foo = Object.freeze({
+  BAR: 'bar',
+  BAZ: 'baz',
+})
+// becomes
+enum Foo {
+  Bar = 'bar',
+  Baz = 'baz',
+}
+```
+- When importing `Object.freeze` constants, import Typescript enum instead.

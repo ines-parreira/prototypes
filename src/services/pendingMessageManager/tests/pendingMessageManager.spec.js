@@ -7,18 +7,18 @@ import {removeNotification} from 'reapop'
 import {
     newMessageResetFromMessage,
     sendTicketMessage,
-} from '../../state/newMessage/actions'
-import {applyMacro, messageDeleted} from '../../state/ticket/actions'
+} from '../../../state/newMessage/actions'
+import {applyMacro, messageDeleted} from '../../../state/ticket/actions'
 import pendingMessageManager, {
     PendingMessageManager,
-    type SendMessageArgs,
 } from '../pendingMessageManager'
+import type {SendMessageArgs} from '../types'
 
 jest.spyOn(window, 'addEventListener')
 jest.spyOn(window, 'removeEventListener')
 jest.mock('react-router')
 jest.mock('reapop')
-jest.mock('../../init', () => {
+jest.mock('../../../init', () => {
     //$FlowFixMe
     const {fromJS} = require.requireActual('immutable')
     return {
@@ -30,9 +30,9 @@ jest.mock('../../init', () => {
         },
     }
 })
-jest.mock('../../state/newMessage/actions')
-jest.mock('../../state/notifications/actions')
-jest.mock('../../state/ticket/actions')
+jest.mock('../../../state/newMessage/actions')
+jest.mock('../../../state/notifications/actions')
+jest.mock('../../../state/ticket/actions')
 jest.useFakeTimers()
 
 describe('services', () => {

@@ -13,7 +13,11 @@ import {
 } from '../../../../../../../../../../../../business/shopify/lineItem'
 import defaultImage from '../../../../../../../../../../../../../img/presentationals/shopify-product-default-image.png'
 import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker'
-import * as Shopify from '../../../../../../../../../../../../constants/integrations/shopify'
+import type {
+    LineItem,
+    Product,
+    AppliedDiscount,
+} from '../../../../../../../../../../../../constants/integrations/types/shopify'
 import {formatPrice} from '../../../../../../../../../../../../business/shopify/number'
 import DiscountPopover from '../DiscountPopover'
 import MoneyAmount from '../../../../MoneyAmount'
@@ -24,12 +28,12 @@ import css from './DraftOrderLineItemRow.less'
 type Props = {
     id: string,
     actionName: string,
-    lineItem: Record<$Shape<Shopify.LineItem>>,
-    product: ?Record<Shopify.Product>,
+    lineItem: Record<$Shape<LineItem>>,
+    product: ?Record<Product>,
     shopName: string,
     currencyCode: string,
     removable: boolean,
-    onChange: (Record<$Shape<Shopify.LineItem>>) => void,
+    onChange: (Record<$Shape<LineItem>>) => void,
     onDelete: () => void,
 }
 
@@ -43,7 +47,7 @@ export class DraftOrderLineItemRow extends React.PureComponent<Props, State> {
     }
 
     _onAppliedDiscountChange = (
-        appliedDiscount: Record<$Shape<Shopify.AppliedDiscount>> | null
+        appliedDiscount: Record<$Shape<AppliedDiscount>> | null
     ) => {
         const {onChange, lineItem} = this.props
         const newLineItem = lineItem.set('applied_discount', appliedDiscount)

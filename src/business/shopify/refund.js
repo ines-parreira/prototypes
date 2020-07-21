@@ -2,9 +2,9 @@
 
 import {type Record} from 'immutable'
 
-import * as Shopify from '../../constants/integrations/shopify'
+import type {Refund, LineItem} from '../../constants/integrations/types/shopify'
 
-export function getSubtotal(refund: Record<Shopify.Refund>): number {
+export function getSubtotal(refund: Record<Refund>): number {
     return refund
         .get('refund_line_items', [])
         .reduce(
@@ -16,9 +16,7 @@ export function getSubtotal(refund: Record<Shopify.Refund>): number {
         )
 }
 
-export function getTotalCartDiscountAmount(
-    refund: Record<Shopify.Refund>
-): number {
+export function getTotalCartDiscountAmount(refund: Record<Refund>): number {
     return refund
         .get('refund_line_items', [])
         .reduce(
@@ -29,7 +27,7 @@ export function getTotalCartDiscountAmount(
         )
 }
 
-export function getTotalTax(refund: Record<Shopify.Refund>): number {
+export function getTotalTax(refund: Record<Refund>): number {
     return refund
         .get('refund_line_items', [])
         .reduce(
@@ -39,21 +37,19 @@ export function getTotalTax(refund: Record<Shopify.Refund>): number {
         )
 }
 
-export function getRefundAmount(refund: Record<Shopify.Refund>): number {
+export function getRefundAmount(refund: Record<Refund>): number {
     return parseFloat(refund.getIn(['transactions', 0, 'amount'], 0))
 }
 
-export function getTotalAvailableToRefund(
-    refund: Record<Shopify.Refund>
-): number {
+export function getTotalAvailableToRefund(refund: Record<Refund>): number {
     return parseFloat(
         refund.getIn(['transactions', 0, 'maximum_refundable'], 0)
     )
 }
 
 export function getTotalQuantities(
-    payload: Record<Shopify.Refund>,
-    suggestedRefund: ?Record<Shopify.Refund>
+    payload: Record<Refund>,
+    suggestedRefund: ?Record<Refund>
 ): number {
     return payload
         .get('refund_line_items', [])
@@ -82,7 +78,7 @@ export function getTotalQuantities(
 }
 
 export function getRestockType(
-    lineItem: Record<$Shape<Shopify.LineItem>>,
+    lineItem: Record<$Shape<LineItem>>,
     restock: boolean = true
 ): string {
     if (restock) {

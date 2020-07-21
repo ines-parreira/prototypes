@@ -16,7 +16,11 @@ import {
 } from '../../../../../../../../../../../../../business/shopify/draftOrder'
 import {getDraftOrderTotalLineItemsPrice} from '../../../../../../../../../../../../../business/shopify/lineItem'
 import {getTotalDiscountAmount} from '../../../../../../../../../../../../../business/shopify/discount'
-import * as Shopify from '../../../../../../../../../../../../../constants/integrations/shopify'
+import type {
+    DraftOrder,
+    ShippingLine,
+    AppliedDiscount,
+} from '../../../../../../../../../../../../../constants/integrations/types/shopify'
 import {formatPrice} from '../../../../../../../../../../../../../business/shopify/number'
 import DiscountPopover from '../../DiscountPopover'
 import ShippingPopover from '../../ShippingPopover'
@@ -30,12 +34,12 @@ type Props = {
     actionName: string,
     currencyCode: string,
     loading: boolean,
-    payload: Record<$Shape<Shopify.DraftOrder>>,
-    draftOrder: Record<Shopify.DraftOrder>,
-    defaultShippingLine: Record<Shopify.ShippingLine>,
+    payload: Record<$Shape<DraftOrder>>,
+    draftOrder: Record<DraftOrder>,
+    defaultShippingLine: Record<ShippingLine>,
     onPayloadChange: (
         integrationId: number,
-        Record<$Shape<Shopify.DraftOrder>>
+        Record<$Shape<DraftOrder>>
     ) => void,
 }
 
@@ -45,7 +49,7 @@ export class OrderTotalsComponent extends React.PureComponent<Props> {
     }
 
     _onAppliedDiscountChange = (
-        appliedDiscount: Record<$Shape<Shopify.AppliedDiscount>> | null
+        appliedDiscount: Record<$Shape<AppliedDiscount>> | null
     ) => {
         const {onPayloadChange, payload} = this.props
         const {integrationId} = this.context
@@ -54,7 +58,7 @@ export class OrderTotalsComponent extends React.PureComponent<Props> {
         onPayloadChange(integrationId, newPayload)
     }
 
-    _onShippingLinesChange = (shippingLine: $Shape<Shopify.ShippingLine>) => {
+    _onShippingLinesChange = (shippingLine: $Shape<ShippingLine>) => {
         const {onPayloadChange, payload} = this.props
         const {integrationId} = this.context
         const newPayload = payload.set('shipping_line', shippingLine)

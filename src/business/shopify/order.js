@@ -2,14 +2,20 @@
 
 import {fromJS, type List, type Record} from 'immutable'
 
-import * as Shopify from '../../constants/integrations/shopify'
+import type {
+    Order,
+    CancelOrderPayload,
+    RefundOrderPayload,
+    LineItem,
+    Refund,
+} from '../../constants/integrations/types/shopify'
 
 import {getRefundAmount, getRestockType} from './refund'
 import {formatPrice} from './number'
 
 export function initCancelOrderPayload(
-    order: Record<Shopify.Order>
-): Record<$Shape<Shopify.CancelOrderPayload>> {
+    order: Record<Order>
+): Record<$Shape<CancelOrderPayload>> {
     return fromJS({
         reason: 'customer',
         email: true,
@@ -18,9 +24,9 @@ export function initCancelOrderPayload(
 }
 
 export function initRefundOrderPayload(
-    order: Record<Shopify.Order>,
+    order: Record<Order>,
     notify: boolean = true
-): Record<$Shape<Shopify.RefundOrderPayload>> {
+): Record<$Shape<RefundOrderPayload>> {
     const currency = order.getIn([
         'total_price_set',
         'presentment_money',
@@ -47,8 +53,8 @@ export function initRefundOrderPayload(
 }
 
 export function initRefundOrderLineItems(
-    order: Record<Shopify.Order>
-): List<$Shape<Shopify.LineItem>> {
+    order: Record<Order>
+): List<$Shape<LineItem>> {
     return order.get('line_items', []).map((lineItem) =>
         fromJS({
             quantity: getLineItemQuantity(order, lineItem),
@@ -65,8 +71,8 @@ export function initRefundOrderLineItems(
 }
 
 export function getLineItemQuantity(
-    order: Record<Shopify.Order>,
-    lineItem: Record<Shopify.LineItem>
+    order: Record<Order>,
+    lineItem: Record<LineItem>
 ): number {
     let quantity = lineItem.get('quantity')
 
@@ -86,9 +92,9 @@ export function getLineItemQuantity(
 }
 
 export function getFinalCancelOrderPayload(
-    payload: Record<$Shape<Shopify.CancelOrderPayload>>,
-    refund: Record<Shopify.Refund>
-): Record<$Shape<Shopify.CancelOrderPayload>> {
+    payload: Record<$Shape<CancelOrderPayload>>,
+    refund: Record<Refund>
+): Record<$Shape<CancelOrderPayload>> {
     const refundPayload = payload.get('refund')
 
     return payload.set(
@@ -98,9 +104,9 @@ export function getFinalCancelOrderPayload(
 }
 
 export function getFinalRefundOrderPayload(
-    payload: Record<$Shape<Shopify.RefundOrderPayload>>,
-    refund: Record<Shopify.Refund>
-): Record<$Shape<Shopify.CancelOrderPayload>> {
+    payload: Record<$Shape<RefundOrderPayload>>,
+    refund: Record<Refund>
+): Record<$Shape<CancelOrderPayload>> {
     let finalPayload = payload
 
     // Format amount

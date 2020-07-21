@@ -8,24 +8,8 @@ import _functions from 'lodash/functions'
 import {addNotification, removeNotification} from 'reapop'
 
 import type {dispatchType, getStateType} from '../types'
-// TODO(@ghinda): use existing array for status when flow implements it
-// https://github.com/facebook/flow/issues/961
-export type notificationType = {
-    status: 'success' | 'error' | 'warning' | 'info' | 'loading',
-    message?: string,
-    id?: ?string,
-    title?: string,
-    dismissAfter?: number,
-    closeOnNext?: boolean,
-    allowHTML?: boolean,
-    buttons?: NotificationButton[],
-}
 
-type NotificationButton = {
-    name: string,
-    onClick: () => void,
-    primary: boolean,
-}
+import type {Notification} from './types'
 
 export const AUTHORIZED_NOTIFICATION_TYPES = [
     'success',
@@ -51,8 +35,8 @@ const cleanNotification = (n): {} => _omit(n, _functions(n).concat(['id']))
 
 // detect duplicate notifications
 const isDuplicate = (
-    notification: notificationType,
-    oldNotification: notificationType
+    notification: Notification,
+    oldNotification: Notification
 ): boolean => {
     return _isEqual(
         cleanNotification(notification),
@@ -68,7 +52,7 @@ const isDuplicate = (
  * set closeOnNext = true to make the notification close on next notification addition
  * @param message
  */
-export const notify = (message: notificationType) => (
+export const notify = (message: Notification) => (
     dispatch: dispatchType,
     getState: getStateType
 ): Promise<dispatchType> => {
@@ -97,7 +81,9 @@ export const notify = (message: notificationType) => (
     // calculate auto dismiss time if dismissAfter is not set
     if (finalMessage.dismissible && finalMessage.dismissAfter === 0) {
         const wordsPerMinute = 230
-        const readText = `${finalMessage.title} ${finalMessage.message}`
+        const readText = `${finalMessage.title || ''} ${
+            finalMessage.message || ''
+        }`
         let readingTime = (_words(readText).length * 60) / wordsPerMinute
         readingTime = _max([3, Math.ceil(readingTime)])
         finalMessage.dismissAfter = readingTime * 1000

@@ -2,7 +2,15 @@
 
 import {fromJS, type List, type Record} from 'immutable'
 
-import * as Shopify from '../../constants/integrations/shopify'
+import type {
+    Customer,
+    Order,
+    Product,
+    DraftOrder,
+    Variant,
+    LineItem,
+    TaxLine,
+} from '../../constants/integrations/types/shopify'
 
 import {formatPercentage} from './number'
 import {
@@ -12,10 +20,10 @@ import {
 import {getTotalDiscountAmount, refreshAppliedDiscounts} from './discount'
 
 export function initDraftOrderPayload(
-    customer: Record<$Shape<Shopify.Customer>>,
-    order: Record<Shopify.Order> = fromJS({}),
-    products: Map<number, Record<Shopify.Product>> = new Map()
-): Record<$Shape<Shopify.DraftOrder>> {
+    customer: Record<$Shape<Customer>>,
+    order: Record<Order> = fromJS({}),
+    products: Map<number, Record<Product>> = new Map()
+): Record<$Shape<DraftOrder>> {
     const draftOrder = fromJS({
         line_items: order.get('line_items', []).map((lineItem) => {
             const product = lineItem.get('product_exists')
@@ -68,10 +76,10 @@ export function initDraftOrderPayload(
 }
 
 export function addVariant(
-    draftOrder: Record<$Shape<Shopify.DraftOrder>>,
-    product: Shopify.Product,
-    variant: Shopify.Variant
-): Record<$Shape<Shopify.DraftOrder>> {
+    draftOrder: Record<$Shape<DraftOrder>>,
+    product: Product,
+    variant: Variant
+): Record<$Shape<DraftOrder>> {
     const lineItemIndex = draftOrder
         .get('line_items', [])
         .findIndex(
@@ -105,17 +113,15 @@ export function addVariant(
 }
 
 export function addCustomLineItem(
-    draftOrder: Record<$Shape<Shopify.DraftOrder>>,
-    lineItem: Record<$Shape<Shopify.LineItem>>
-): Record<$Shape<Shopify.DraftOrder>> {
+    draftOrder: Record<$Shape<DraftOrder>>,
+    lineItem: Record<$Shape<LineItem>>
+): Record<$Shape<DraftOrder>> {
     return draftOrder.update('line_items', (lineItems) =>
         lineItems.push(lineItem)
     )
 }
 
-export function getSubtotal(
-    draftOrder: Record<$Shape<Shopify.DraftOrder>>
-): number {
+export function getSubtotal(draftOrder: Record<$Shape<DraftOrder>>): number {
     return (
         getDraftOrderTotalLineItemsPrice(draftOrder) -
         getTotalDiscountAmount(draftOrder)
@@ -123,13 +129,13 @@ export function getSubtotal(
 }
 
 export function getTotalShippingPrice(
-    draftOrder: Record<$Shape<Shopify.DraftOrder>>
+    draftOrder: Record<$Shape<DraftOrder>>
 ): number {
     return parseFloat(draftOrder.getIn(['shipping_line', 'price'], 0))
 }
 
 export function getTaxLineLabel(
-    taxLine: Record<Shopify.TaxLine>,
+    taxLine: Record<TaxLine>,
     taxesIncluded: boolean
 ): string {
     const label = `${taxLine.get('title')} ${formatPercentage(
@@ -138,7 +144,7 @@ export function getTaxLineLabel(
     return taxesIncluded ? `${label} (included)` : label
 }
 
-export function getTotalTaxes(taxLines: List<Shopify.TaxLine>): number {
+export function getTotalTaxes(taxLines: List<TaxLine>): number {
     return taxLines.reduce(
         (total, taxLine) => total + parseFloat(taxLine.get('price')),
         0
@@ -146,7 +152,7 @@ export function getTotalTaxes(taxLines: List<Shopify.TaxLine>): number {
 }
 
 export function getTaxLinesTotals(
-    draftOrder: Record<$Shape<Shopify.DraftOrder>>
+    draftOrder: Record<$Shape<DraftOrder>>
 ): Array<{label: string, total: number}> {
     const taxLines = draftOrder.get('tax_lines') || []
     const taxesIncluded = draftOrder.get('taxes_included')

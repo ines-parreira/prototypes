@@ -1,9 +1,6 @@
 // @flow
-import {
-    canAddAttachments,
-    type TicketMessageSourceType,
-    TicketMessageSourceTypes,
-} from '../ticket'
+import {canAddAttachments, TicketMessageSourceTypes} from '../ticket'
+import type {TicketMessageSourceType} from '../types/ticket'
 
 describe('Business', () => {
     describe('ticket', () => {

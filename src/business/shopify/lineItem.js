@@ -4,14 +4,21 @@ import _ceil from 'lodash/ceil'
 
 import {fromJS, type Record} from 'immutable'
 
-import * as Shopify from '../../constants/integrations/shopify'
+import {NON_FRACTIONAL_CURRENCIES} from '../../constants/integrations/shopify'
+import type {
+    LineItem,
+    Order,
+    AppliedDiscount,
+    DraftOrder,
+    PriceSet,
+} from '../../constants/integrations/types/shopify'
 
 import {formatPercentage, formatPrice} from './number'
 
 export function initLineItemAppliedDiscount(
-    lineItem: Record<Shopify.LineItem>,
-    order: Record<Shopify.Order>
-): ?Record<Shopify.AppliedDiscount> {
+    lineItem: Record<LineItem>,
+    order: Record<Order>
+): ?Record<AppliedDiscount> {
     if (!parseFloat(lineItem.get('total_discount'))) {
         return null
     }
@@ -77,7 +84,7 @@ export function initLineItemAppliedDiscount(
 }
 
 export function getDraftOrderLineItemDiscountedPrice(
-    lineItem: Record<Shopify.LineItem>,
+    lineItem: Record<LineItem>,
     currencyCode: string
 ): number {
     const price = parseFloat(lineItem.get('price'))
@@ -86,9 +93,7 @@ export function getDraftOrderLineItemDiscountedPrice(
     const discountAmount = appliedDiscount
         ? parseFloat(appliedDiscount.get('amount'))
         : 0
-    const isNonFractional = Shopify.NON_FRACTIONAL_CURRENCIES.includes(
-        currencyCode
-    )
+    const isNonFractional = NON_FRACTIONAL_CURRENCIES.includes(currencyCode)
     const decimals = isNonFractional ? 0 : 2
 
     return appliedDiscount
@@ -96,9 +101,7 @@ export function getDraftOrderLineItemDiscountedPrice(
         : price
 }
 
-export function getDraftOrderLineItemTotal(
-    lineItem: Record<Shopify.LineItem>
-): number {
+export function getDraftOrderLineItemTotal(lineItem: Record<LineItem>): number {
     const price = parseFloat(lineItem.get('price'))
     const quantity = lineItem.get('quantity')
     const appliedDiscount = lineItem.get('applied_discount')
@@ -110,7 +113,7 @@ export function getDraftOrderLineItemTotal(
 }
 
 export function getDraftOrderTotalLineItemsPrice(
-    draftOrder: Record<$Shape<Shopify.DraftOrder>>
+    draftOrder: Record<$Shape<DraftOrder>>
 ): number {
     return draftOrder
         .get('line_items', [])
@@ -121,7 +124,7 @@ export function getDraftOrderTotalLineItemsPrice(
 }
 
 export function getPriceSetAmount(
-    priceSet: Record<Shopify.PriceSet>,
+    priceSet: Record<PriceSet>,
     currencyCode: string
 ): string {
     return priceSet.getIn(['presentment_money', 'currency_code']) ===
@@ -131,21 +134,21 @@ export function getPriceSetAmount(
 }
 
 export function getOrderLineItemPrice(
-    lineItem: Record<Shopify.LineItem>,
+    lineItem: Record<LineItem>,
     currencyCode: string
 ): string {
     return getPriceSetAmount(lineItem.get('price_set'), currencyCode)
 }
 
 export function getOrderLineItemTotalDiscount(
-    lineItem: Record<Shopify.LineItem>,
+    lineItem: Record<LineItem>,
     currencyCode: string
 ): string {
     return getPriceSetAmount(lineItem.get('total_discount_set'), currencyCode)
 }
 
 export function getOrderLineItemDiscountedPrice(
-    lineItem: Record<Shopify.LineItem>,
+    lineItem: Record<LineItem>,
     currencyCode: string,
     quantity: number
 ): number {
@@ -158,9 +161,7 @@ export function getOrderLineItemDiscountedPrice(
         getOrderLineItemTotalDiscount(lineItem, currencyCode)
     )
     const discountAmount = totalDiscount / quantity
-    const isNonFractional = Shopify.NON_FRACTIONAL_CURRENCIES.includes(
-        currencyCode
-    )
+    const isNonFractional = NON_FRACTIONAL_CURRENCIES.includes(currencyCode)
     const decimals = isNonFractional ? 0 : 2
 
     return _ceil(price - discountAmount, decimals)
