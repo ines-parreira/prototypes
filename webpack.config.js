@@ -19,7 +19,7 @@ const styleBundleFile = __PRODUCTION__ ? `${HASH}.build.min.css` : 'build.css'
 const vendorsBundleFile = __PRODUCTION__ ? `${HASH}.vendors.min.js` : 'vendors.js'
 
 const mode = __PRODUCTION__ ? 'production' : 'development'
-const devtool = 'source-map'
+const devtool = __PRODUCTION__ ? 'source-map' : 'cheap-module-source-map'
 const devServer = {
     contentBase: [
         buildDir,
