@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<InfobarSearchResultsList /> Should match snapshot if error 1`] = `
+<p
+  className="centered error"
+>
+  This is an error
+</p>
+`;
+
+exports[`<InfobarSearchResultsList /> Should match snapshot when results are available 1`] = `
+<div
+  className="m-3"
+>
+  <CardTitle
+    className="cardTitle"
+    tag="h5"
+  >
+    Customers found:
+  </CardTitle>
+  <div
+    className="mt-3"
+  >
+    <Card
+      className="clickable mb-2 current-customer"
+      key="0"
+      onClick={[Function]}
+      tag="div"
+    >
+      <CardBody
+        tag="div"
+      >
+        <span
+          className="subtitle d-block mb-1 text-truncate"
+        >
+          test
+          <Badge
+            className="ml-2"
+            color="info"
+            pill={false}
+            tag="span"
+          >
+            Current Customer
+          </Badge>
+        </span>
+        <div
+          className="detail d-block text-truncate"
+        >
+          testemail
+        </div>
+      </CardBody>
+    </Card>
+    <Card
+      className="clickable mb-2"
+      key="1"
+      onClick={[Function]}
+      tag="div"
+    >
+      <CardBody
+        tag="div"
+      >
+        <span
+          className="subtitle d-block mb-1 text-truncate"
+        >
+          test2
+        </span>
+        <div
+          className="detail d-block text-truncate"
+        >
+          testemail2
+        </div>
+      </CardBody>
+    </Card>
+  </div>
+</div>
+`;
+
+exports[`<InfobarSearchResultsList /> Should render with initial props 1`] = `
+<p
+  className="centered"
+>
+  No customer found.
+</p>
+`;

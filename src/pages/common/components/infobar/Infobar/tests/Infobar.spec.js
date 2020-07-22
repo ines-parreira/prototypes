@@ -1,5 +1,5 @@
 //@flow
-import React from 'react'
+import React, {type ElementProps} from 'react'
 import {shallow} from 'enzyme'
 import {fromJS, Map} from 'immutable'
 
@@ -13,6 +13,14 @@ import {
     stopEditionMode,
     submitWidgets,
 } from '../../../../../../state/widgets/actions'
+import Search from '../../../Search'
+
+jest.mock(
+    '../../../Search',
+    () => ({onChange, ...other}: ElementProps<typeof Search>) => (
+        <input {...other} onChange={onChange} />
+    )
+)
 
 const commonProps = {
     actions: {
@@ -83,6 +91,22 @@ describe('<Infobar/>', () => {
         })
 
         expect(component).toMatchSnapshot()
+    })
+
+    it('should render the error when loading error', (done) => {
+        const mockedErrorSearch = jest
+            .fn()
+            .mockResolvedValue({error: 'generic_error'})
+
+        const component = shallow(
+            <Infobar {...commonProps} search={mockedErrorSearch} />
+        )
+
+        component.find(Search).simulate('change', 'query')
+        setImmediate(() => {
+            expect(component).toMatchSnapshot()
+            done()
+        })
     })
 
     it('should render loading state because the customer is being fetched', () => {

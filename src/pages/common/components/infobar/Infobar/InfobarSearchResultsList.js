@@ -8,7 +8,8 @@ import {getDisplayName} from '../../../../../state/customers/helpers'
 
 import css from '../Infobar.less'
 
-type Props = {
+export type Props = {
+    errorMessage: ?string,
     searchResults: List<*>,
     defaultCustomerId: ?number,
     onCustomerClick: (Map<*, *>) => Promise<void>,
@@ -16,10 +17,19 @@ type Props = {
 
 export default class InfobarSearchResultsList extends React.Component<Props> {
     render() {
-        const {searchResults, defaultCustomerId, onCustomerClick} = this.props
+        const {
+            searchResults,
+            defaultCustomerId,
+            onCustomerClick,
+            errorMessage,
+        } = this.props
+
+        if (errorMessage) {
+            return <p className="centered error">{errorMessage}</p>
+        }
 
         if (!searchResults.size) {
-            return <p className="empty-items">No customer found.</p>
+            return <p className="centered">No customer found.</p>
         }
 
         return (

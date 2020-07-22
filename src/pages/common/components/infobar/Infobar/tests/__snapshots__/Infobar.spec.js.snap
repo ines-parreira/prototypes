@@ -10,9 +10,8 @@ exports[`<Infobar/> should render current customer with suggested customer 1`] =
     <div
       className="infobarSearchWrapper d-flex align-items-center justify-content-between"
     >
-      <Search
+      <Component
         bindKey={true}
-        disabled={false}
         onChange={[Function]}
         placeholder="Search for customers by email, order number, etc."
         searchDebounceTime={200}
@@ -190,9 +189,8 @@ exports[`<Infobar/> should render customer context 1`] = `
     <div
       className="infobarSearchWrapper d-flex align-items-center justify-content-between"
     >
-      <Search
+      <Component
         bindKey={true}
-        disabled={false}
         onChange={[Function]}
         placeholder="Search for customers by email, order number, etc."
         searchDebounceTime={200}
@@ -280,9 +278,8 @@ exports[`<Infobar/> should render loading state because the customer is being fe
     <div
       className="infobarSearchWrapper d-flex align-items-center justify-content-between"
     >
-      <Search
+      <Component
         bindKey={true}
-        disabled={false}
         onChange={[Function]}
         placeholder="Search for customers by email, order number, etc."
         searchDebounceTime={200}
@@ -340,9 +337,8 @@ exports[`<Infobar/> should render loading state because the search is in progres
     <div
       className="infobarSearchWrapper d-flex align-items-center justify-content-between"
     >
-      <Search
+      <Component
         bindKey={true}
-        disabled={false}
         onChange={[Function]}
         placeholder="Search for customers by email, order number, etc."
         searchDebounceTime={200}
@@ -400,9 +396,8 @@ exports[`<Infobar/> should render search results 1`] = `
     <div
       className="infobarSearchWrapper d-flex align-items-center justify-content-between"
     >
-      <Search
+      <Component
         bindKey={true}
-        disabled={false}
         onChange={[Function]}
         placeholder="Search for customers by email, order number, etc."
         searchDebounceTime={200}
@@ -459,6 +454,7 @@ exports[`<Infobar/> should render search results 1`] = `
       </div>
       <InfobarSearchResultsList
         defaultCustomerId={2}
+        errorMessage={null}
         onCustomerClick={[Function]}
         searchResults={
           Immutable.List [
@@ -486,9 +482,8 @@ exports[`<Infobar/> should render selected customer 1`] = `
     <div
       className="infobarSearchWrapper d-flex align-items-center justify-content-between"
     >
-      <Search
+      <Component
         bindKey={true}
-        disabled={false}
         onChange={[Function]}
         placeholder="Search for customers by email, order number, etc."
         searchDebounceTime={200}
@@ -625,6 +620,83 @@ exports[`<Infobar/> should render selected customer 1`] = `
 </Connect(InfobarLayout)>
 `;
 
+exports[`<Infobar/> should render the error when loading error 1`] = `
+<Connect(InfobarLayout)
+  className=""
+>
+  <div
+    className="infobarContent"
+  >
+    <div
+      className="infobarSearchWrapper d-flex align-items-center justify-content-between"
+    >
+      <Component
+        bindKey={true}
+        onChange={[Function]}
+        placeholder="Search for customers by email, order number, etc."
+        searchDebounceTime={200}
+        style={
+          Object {
+            "maxWidth": "none",
+          }
+        }
+        tabIndex="10"
+      />
+      <Button
+        active={false}
+        className="toggleWidgets d-none d-md-inline-block ml-2 btn-transparent"
+        color="secondary"
+        disabled={true}
+        id="toggle-widgets-edition-button"
+        onClick={[Function]}
+        tag="button"
+        type="button"
+      >
+        <i
+          className="material-icons md-2"
+        >
+          settings
+        </i>
+      </Button>
+      <Tooltip
+        delay={0}
+        placement="left"
+        target="toggle-widgets-edition-button"
+      >
+        Edit widgets
+      </Tooltip>
+    </div>
+    <div
+      className="content"
+    >
+      <div
+        className="m-3"
+      >
+        <Button
+          color="secondary"
+          onClick={[Function]}
+          tag="button"
+          type="button"
+        >
+          <i
+            className="material-icons md-2 mr-2"
+          >
+            arrow_back
+          </i>
+          Back
+        </Button>
+      </div>
+      <InfobarSearchResultsList
+        defaultCustomerId={2}
+        errorMessage="Failed to do the search. Please try again."
+        onCustomerClick={[Function]}
+        searchResults={Immutable.List []}
+      />
+    </div>
+  </div>
+</Connect(InfobarLayout)>
+`;
+
 exports[`<Infobar/> should render ticket context 1`] = `
 <Connect(InfobarLayout)
   className=""
@@ -635,9 +707,8 @@ exports[`<Infobar/> should render ticket context 1`] = `
     <div
       className="infobarSearchWrapper d-flex align-items-center justify-content-between"
     >
-      <Search
+      <Component
         bindKey={true}
-        disabled={false}
         onChange={[Function]}
         placeholder="Search for customers by email, order number, etc."
         searchDebounceTime={200}
@@ -725,9 +796,8 @@ exports[`<Infobar/> should render widgets edition mode 1`] = `
     <div
       className="infobarSearchWrapper d-flex align-items-center justify-content-between"
     >
-      <Search
+      <Component
         bindKey={true}
-        disabled={false}
         onChange={[Function]}
         placeholder="Search for customers by email, order number, etc."
         searchDebounceTime={200}

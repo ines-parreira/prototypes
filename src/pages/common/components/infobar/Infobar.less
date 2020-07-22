@@ -3,235 +3,237 @@
 @infobarBorderColor: @darkQuartz;
 
 :local .component {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  height: 100%;
-  background-color: @quartz;
-  border-left: 1px solid @infobarBorderColor;
-
-  .widgetsList {
-    > :global(.card:first-child) {
-      margin-top: 0;
-    }
-  }
-
-  &.editing {
-    background-color: @ultraLightBlue;
-  }
-
-  .toggleWidgets {
-    padding: .3em .4em;
-  }
-
-  .suggestedCustomer {
-    margin: 1.5rem;
-    background-color: @white2;
-    border-radius: 3px;
-    padding: 16px;
-
-    :global(.infobar-wrapper) {
-      margin: 0.5rem 0 0 0;
-      min-width: 100%;
-      max-width: 100%;
-    }
-  }
-
-  .content {
-    flex: 1;
-    overflow: auto;
-
-    &:after {
-      content: '';
-      display: block;
-      padding-bottom: 100px;
-    }
-  }
-
-  .customerInfo {
-    background: white;
-    padding: 1rem;
-    box-shadow: inset 0 -1px 0 @almostWhite;
-  }
-
-  .customerProfile {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    margin: 0 0 12px 0;
-  }
-
-  .displayName {
-    margin: 0;
-
-    color: @indigo;
-    font-weight: bold;
-    font-size: 17px;
-  }
-
-  .customerChannel {
-    margin-bottom: 8px;
-
-    .copyAddress {
-      cursor: pointer;
-      opacity: 0;
-      transition: all .2s linear;
-    }
-
-    &:hover {
-      .copyAddress {
-        opacity: 1;
-      }
-    }
-  }
-
-  .cardTitle {
-    color: @indigo;
-    font-size: 17px;
-    font-weight: 500;
-  }
-
-  .subtitle {
-    color: @indigo;
-    font-weight: 500;
-  }
-
-  .detail {
-    font-size: 13px;
-  }
-
-  .infobarCard {
-    border-radius: 2px;
-  }
-
-  .footer {
-    padding: .78em;
-    background-color: @quartz;
-    border-top: 1px solid @infobarBorderColor;
-    box-shadow: 1px 0 6px fade(@indigo, 10%);
-  }
-
-  .infobarContent {
-    flex: 1;
+    position: relative;
     display: flex;
     flex-direction: column;
-    height: 100%;
-    overflow: auto;
-  }
-
-  .infobarSectionSeparator {
-    content: ' ';
-    display: block;
     width: 100%;
-    border-bottom: 1px solid @white5;
-    white-space: pre;
-    margin: 8px 0;
-  }
+    height: 100%;
+    background-color: @quartz;
+    border-left: 1px solid @infobarBorderColor;
 
-  .infobarSearchWrapper {
-    padding: 12px;
-    margin-bottom: 1px;
-    background: @white;
-    border-bottom: 1px solid @infobarBorderColor;
-
-    .icon-edit-mode {
-      margin-left: 12px;
-      margin-right: 0;
-      font-size: 1.1em;
-      padding: 6px 9px !important;
-
-      &.active {
-        color: @white;
-        background-color: @lightBlue;
-      }
+    .widgetsList {
+        > :global(.card:first-child) {
+            margin-top: 0;
+        }
     }
-  }
+
+    &.editing {
+        background-color: @ultraLightBlue;
+    }
+
+    .toggleWidgets {
+        padding: 0.3em 0.4em;
+    }
+
+    .suggestedCustomer {
+        margin: 1.5rem;
+        background-color: @white2;
+        border-radius: 3px;
+        padding: 16px;
+
+        :global(.infobar-wrapper) {
+            margin: 0.5rem 0 0 0;
+            min-width: 100%;
+            max-width: 100%;
+        }
+    }
+
+    .content {
+        flex: 1;
+        overflow: auto;
+
+        &:after {
+            content: '';
+            display: block;
+            padding-bottom: 100px;
+        }
+    }
+
+    .customerInfo {
+        background: white;
+        padding: 1rem;
+        box-shadow: inset 0 -1px 0 @almostWhite;
+    }
+
+    .customerProfile {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin: 0 0 12px 0;
+    }
+
+    .displayName {
+        margin: 0;
+
+        color: @indigo;
+        font-weight: bold;
+        font-size: 17px;
+    }
+
+    .customerChannel {
+        margin-bottom: 8px;
+
+        .copyAddress {
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.2s linear;
+        }
+
+        &:hover {
+            .copyAddress {
+                opacity: 1;
+            }
+        }
+    }
+
+    .cardTitle {
+        color: @indigo;
+        font-size: 17px;
+        font-weight: 500;
+    }
+
+    .subtitle {
+        color: @indigo;
+        font-weight: 500;
+    }
+
+    .detail {
+        font-size: 13px;
+    }
+
+    .infobarCard {
+        border-radius: 2px;
+    }
+
+    .footer {
+        padding: 0.78em;
+        background-color: @quartz;
+        border-top: 1px solid @infobarBorderColor;
+        box-shadow: 1px 0 6px fade(@indigo, 10%);
+    }
+
+    .infobarContent {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        overflow: auto;
+    }
+
+    .infobarSectionSeparator {
+        content: ' ';
+        display: block;
+        width: 100%;
+        border-bottom: 1px solid @white5;
+        white-space: pre;
+        margin: 8px 0;
+    }
+
+    .infobarSearchWrapper {
+        padding: 12px;
+        margin-bottom: 1px;
+        background: @white;
+        border-bottom: 1px solid @infobarBorderColor;
+
+        .icon-edit-mode {
+            margin-left: 12px;
+            margin-right: 0;
+            font-size: 1.1em;
+            padding: 6px 9px !important;
+
+            &.active {
+                color: @white;
+                background-color: @lightBlue;
+            }
+        }
+    }
 }
 
 /* prevent text selection while resizing
  */
 .infobar-drag-active {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .infobar-drag-handle {
-  position: absolute;
-  left: 0;
-  top: 0;
-  z-index: 1021;
-  height: 100%;
-  width: 6px;
-  background: rgba(0, 0, 0, 0);
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1021;
+    height: 100%;
+    width: 6px;
+    background: rgba(0, 0, 0, 0);
 }
 
 /* set the cursor to resize on the entire document
  */
 .infobar-drag-active,
 .infobar-drag-handle {
-  cursor: col-resize;
+    cursor: col-resize;
 }
 
 .infobar-drag-handle:hover,
 .infobar-drag-active .infobar-drag-handle {
-  background: hsla(206, 47%, 87%, .6);
+    background: hsla(206, 47%, 87%, 0.6);
 }
 
 .infobar {
-  .empty-items {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
+    .centered {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .error {
+        color: @red;
+    }
 }
 
 /**
 Infobar suggestion
  */
 .blurred {
-  filter: blur(1.8px);
-  color: @white7;
+    filter: blur(1.8px);
+    color: @white7;
 }
 
 .suggestion {
-  z-index: 10;
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
+    z-index: 10;
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
 }
 
 /**
 Infobar steps for boarding
 */
 .boarding {
-  display: flex;
-  flex-direction: column;
-  text-align: left;
-  margin-top: 16px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-top: 16px;
 
-  .step {
-    margin-bottom: 10px;
+    .step {
+        margin-bottom: 10px;
 
-    i {
-      vertical-align: middle;
-      font-size: 22px;
-      margin-right: 10px;
-      color: darkgrey;
+        i {
+            vertical-align: middle;
+            font-size: 22px;
+            margin-right: 10px;
+            color: darkgrey;
+        }
+
+        &.done {
+            &,
+            i {
+                color: #38cd5d;
+            }
+        }
     }
-
-    &.done {
-      &,
-      i {
-        color: #38CD5D;
-      }
-    }
-  }
 }
-

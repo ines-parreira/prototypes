@@ -71,6 +71,7 @@ type State = {
     searchResults: List<*>,
     selectedCustomer: Map<*, *>,
     suggestedCustomer: Map<*, *>,
+    searchErrorMessage: ?string,
 }
 
 export class Infobar extends React.Component<Props, State> {
@@ -79,6 +80,7 @@ export class Infobar extends React.Component<Props, State> {
     }
 
     state = {
+        searchErrorMessage: null,
         isSearching: false,
         isFetchingCustomer: false,
         displaySearchResults: false,
@@ -231,21 +233,30 @@ export class Infobar extends React.Component<Props, State> {
     _onSearch = (query: string) => {
         if (query) {
             this.setState({isSearching: true})
+
             if (this.searchCancelTokenSource) {
                 this.searchCancelTokenSource.cancel()
             }
             this.searchCancelTokenSource = CancelToken.source()
             this.props
                 .search(query, this.searchCancelTokenSource.token)
-                .then((result) => {
-                    if (!result) {
-                        return
+                .then(({error, resp}) => {
+                    let errorMessage
+
+                    if (error) {
+                        errorMessage =
+                            error?.response?.data?.error?.msg ||
+                            'Failed to do the search. Please try again.'
                     }
+
                     this.setState({
+                        searchErrorMessage: errorMessage,
                         displaySelectedCustomer: false,
                         displaySearchResults: true,
                         isSearching: false,
-                        searchResults: fromJS(result.resp.data.slice(0, 8)),
+                        searchResults: error
+                            ? fromJS([])
+                            : fromJS(resp.data.slice(0, 8)),
                     })
                 })
         } else {
@@ -395,6 +406,7 @@ export class Infobar extends React.Component<Props, State> {
                         </Button>
                     </div>
                     <InfobarSearchResultsList
+                        errorMessage={this.state.searchErrorMessage}
                         searchResults={this.state.searchResults}
                         defaultCustomerId={defaultCustomerId}
                         onCustomerClick={this._onSearchResultClick}
