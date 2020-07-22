@@ -1,6 +1,12 @@
 //@flow
 import memoizeOne from 'memoize-one'
 
+import {
+    FACEBOOK_COMMENT_SOURCE,
+    INSTAGRAM_AD_COMMENT_SOURCE,
+    INSTAGRAM_COMMENT_SOURCE,
+} from '../../config/ticket'
+
 import type {TicketMessage} from './types'
 
 export const isTicketMessage = (obj: any) => obj.isMessage
@@ -39,4 +45,21 @@ export const isFailed = (message: TicketMessage): boolean => {
         !isPending(message) &&
         (hasFailedAction(message) || message.failed_datetime)
     )
+}
+
+export const isTicketMessageHidden = (message: TicketMessage): boolean => {
+    if (message && message.source && message.source.type) {
+        const isInstagramComment = [
+            INSTAGRAM_COMMENT_SOURCE,
+            INSTAGRAM_AD_COMMENT_SOURCE,
+        ].includes(message.source.type)
+        const isFacebookComment =
+            message.source && message.source.type === FACEBOOK_COMMENT_SOURCE
+        if (isInstagramComment || isFacebookComment) {
+            if (message.meta && message.meta.hidden_datetime) {
+                return true
+            }
+        }
+    }
+    return false
 }

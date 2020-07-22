@@ -22,6 +22,7 @@ exports[`Container should render container 1`] = `
       hasError={false}
       id="some-header"
       isLastRead={false}
+      isMessageHidden={false}
       message={
         Object {
           "channel": "email",
@@ -50,6 +51,37 @@ exports[`Container should render container 1`] = `
         }
       }
       timezone="America/Los_Angeles"
+    />
+    <Footer
+      id="some-header"
+      isMessageHidden={false}
+      message={
+        Object {
+          "channel": "email",
+          "created_datetime": "",
+          "from_agent": false,
+          "id": 1,
+          "isMessage": true,
+          "public": true,
+          "receiver": Object {
+            "email": "mary.poppins@example.com",
+            "firstname": "Mary",
+            "id": 2,
+            "lastname": "Poppins",
+            "name": "Mary Poppins",
+          },
+          "sender": Object {
+            "email": "john.doe@example.com",
+            "firstname": "John",
+            "id": 1,
+            "lastname": "Doe",
+            "name": "John Doe",
+          },
+          "subject": "Some subject",
+          "uri": "http://example.com/messages/1",
+          "via": "email",
+        }
+      }
     />
   </div>
 </div>
