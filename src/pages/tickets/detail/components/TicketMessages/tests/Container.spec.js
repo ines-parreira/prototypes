@@ -17,7 +17,6 @@ describe('Container', () => {
                 timezone="America/Los_Angeles"
                 isLastRead={false}
                 lastMessageDatetimeAfterMount={moment('2017-01-01T12:12:34Z')}
-                isMessageHidden={false}
             />
         )
         expect(component).toMatchSnapshot()
@@ -36,7 +35,6 @@ describe('Container', () => {
                 timezone="America/Los_Angeles"
                 isLastRead={false}
                 lastMessageDatetimeAfterMount={moment('2017-01-01T12:12:34Z')}
-                isMessageHidden={false}
             />
         )
         expect(component).not.toHaveClassName(css.hasError)

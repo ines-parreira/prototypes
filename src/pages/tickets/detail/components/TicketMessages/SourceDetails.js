@@ -1,13 +1,15 @@
 //@flow
-import classnames from 'classnames'
+import classNamesBind from 'classnames/bind'
 import React from 'react'
 
 import type {TicketMessage} from '../../../../../models/ticket'
 import {DatetimeLabel} from '../../../../common/utils/labels'
 
 import SeenIndicator from './SeenIndicator'
-import SourceActionsHeader from './SourceActionsHeader'
+import SourceActions from './SourceActions'
 import css from './SourceDetails.less'
+
+const classNames = classNamesBind.bind(css)
 
 type Props = {
     message: TicketMessage,
@@ -16,11 +18,11 @@ type Props = {
     className?: string,
 }
 
-export default function SourceDetailsHeader(props: Props) {
+export default function SourceDetails(props: Props) {
     const {message, isLastRead, timezone} = props
     return (
-        <div className={classnames(css.wrapper, props.className)}>
-            <SourceActionsHeader
+        <div className={classNames('wrapper', props.className)}>
+            <SourceActions
                 source={message.source}
                 meta={message.meta}
                 integrationId={message.integration_id}
