@@ -3,11 +3,11 @@
 import React, {useMemo, useState, useEffect} from 'react'
 import {connect} from 'react-redux'
 import {fromJS, List} from 'immutable'
-import {type CancelTokenSource} from 'axios'
+import {type CancelToken} from 'axios'
 
 import {getActionTemplate} from '../../../../../utils'
 import {fetchMacros, getMacro} from '../../../../../state/macro/actions'
-import {useCancelToken} from '../../../../../hooks'
+import {useCancellableRequest} from '../../../../../hooks'
 import {
     type State as MacrosState,
     Macro,
@@ -35,6 +35,16 @@ const MacroSelect = (props: Props) => {
     const macroOptions = useOptions(selectedMacro, searchResults, (macro) =>
         macro.get('id')
     )
+    const [handleMacrosSearch] = useCancellableRequest(
+        (cancelToken: CancelToken) => async () => {
+            setIsLoading(true)
+            const res = await fetchMacros({search}, '', 'asc', cancelToken)
+            if (res) {
+                setIsLoading(false)
+                setSearchResults(res.macros)
+            }
+        }
+    )
 
     useEffect(() => {
         if (selectedMacro) {
@@ -43,17 +53,9 @@ const MacroSelect = (props: Props) => {
         getMacro(value)
     }, [selectedMacro])
 
-    useCancelToken(
-        async (source: CancelTokenSource) => {
-            setIsLoading(true)
-            const res = await fetchMacros({search}, '', 'asc', source.token)
-            if (res) {
-                setIsLoading(false)
-                setSearchResults(res.macros)
-            }
-        },
-        [search]
-    )
+    useEffect(() => {
+        handleMacrosSearch()
+    }, [search])
 
     const options = useMemo((): List<*> => {
         if (isLoading) {

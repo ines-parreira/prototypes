@@ -1,3 +1,3 @@
 //@flow
-export {default as useCancelToken} from './useCancelToken'
+export {default as useCancellableRequest} from './useCancellableRequest'
 export {default as useDelayedAsyncFn} from './useDelayedAsyncFn'

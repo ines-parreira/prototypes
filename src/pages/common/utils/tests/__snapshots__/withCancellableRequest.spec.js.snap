@@ -1,0 +1,23 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`withCancellableRequest should cancel the previous call when called a second time 1`] = `
+Array [
+  Object {
+    "data": "success",
+    "type": "foo",
+  },
+]
+`;
+
+exports[`withCancellableRequest should cancel the request when cancel called 1`] = `Array []`;
+
+exports[`withCancellableRequest should cancel the request when unmounting 1`] = `Array []`;
+
+exports[`withCancellableRequest should make a request when request called 1`] = `
+Array [
+  Object {
+    "data": "success",
+    "type": "foo",
+  },
+]
+`;

@@ -1,3 +1,4 @@
+import {CancelToken} from 'axios'
 import React from 'react'
 import {shallow} from 'enzyme'
 import * as immutableMatchers from 'jest-immutable-matchers'
@@ -28,6 +29,7 @@ jest.mock('../../../../../state/views/actions', () => {
         updateView: jest.fn(() => _identity),
     }
 })
+const mockToken = CancelToken.source().token
 
 browserHistory.push = jest.fn()
 
@@ -94,11 +96,15 @@ describe('ViewTable::ViewTable', () => {
             )
                 .dive()
                 .dive()
+                .dive()
+                .dive()
             expect(component).toMatchSnapshot()
         })
 
         it('default view', () => {
             const component = shallow(<ViewTable {...minProps} />)
+                .dive()
+                .dive()
                 .dive()
                 .dive()
             expect(component).toMatchSnapshot()
@@ -122,6 +128,8 @@ describe('ViewTable::ViewTable', () => {
                             location={{query: {cursor, q: searchQuery}}}
                         />
                     )
+                        .dive()
+                        .dive()
                         .dive()
                         .dive()
 
@@ -150,6 +158,8 @@ describe('ViewTable::ViewTable', () => {
                             urlViewId={null}
                         />
                     )
+                        .dive()
+                        .dive()
                         .dive()
                         .dive()
 
@@ -185,6 +195,8 @@ describe('ViewTable::ViewTable', () => {
                     )
                         .dive()
                         .dive()
+                        .dive()
+                        .dive()
 
                     expect(viewsActions.setViewActive).toBeCalledWith(
                         minStore.views.getIn(['items', suggestedViewIndex])
@@ -215,6 +227,8 @@ describe('ViewTable::ViewTable', () => {
                     )
                         .dive()
                         .dive()
+                        .dive()
+                        .dive()
 
                     expect(viewsActions.setViewActive).toBeCalledWith(
                         minStore.views.getIn(['items', suggestedViewIndex])
@@ -239,6 +253,8 @@ describe('ViewTable::ViewTable', () => {
                     )
                         .dive()
                         .dive()
+                        .dive()
+                        .dive()
 
                     expect(viewsActions.updateView).not.toBeCalled()
                     expect(viewsActions.setViewActive).not.toBeCalled()
@@ -256,6 +272,8 @@ describe('ViewTable::ViewTable', () => {
             () => {
                 const cursor = '1234'
                 const component = shallow(<ViewTable {...minProps} />)
+                    .dive()
+                    .dive()
                     .dive()
                     .dive()
 
@@ -294,6 +312,8 @@ describe('ViewTable::ViewTable', () => {
                 const component = shallow(<ViewTable {...minProps} />)
                     .dive()
                     .dive()
+                    .dive()
+                    .dive()
 
                 component.setProps({
                     location: {query: {cursor: '789456'}},
@@ -318,9 +338,16 @@ describe('ViewTable::ViewTable', () => {
             const component = shallow(<ViewTable {...minProps} />)
                 .dive()
                 .dive()
+                .dive()
+                .dive()
             const cursor = '1523467'
             component.setProps({location: {query: {cursor}}})
-            expect(viewsActions.fetchViewItems).toBeCalledWith(null, cursor)
+            expect(viewsActions.fetchViewItems).toBeCalledWith(
+                null,
+                cursor,
+                null,
+                mockToken
+            )
         })
 
         it(
@@ -330,6 +357,8 @@ describe('ViewTable::ViewTable', () => {
                 const component = shallow(<ViewTable {...minProps} />)
                     .dive()
                     .dive()
+                    .dive()
+                    .dive()
 
                 jest.clearAllMocks()
 
@@ -337,7 +366,12 @@ describe('ViewTable::ViewTable', () => {
                     navigation: fromJS({current_cursor: '12345678'}),
                     isOnFirstPage: false,
                 })
-                expect(viewsActions.fetchViewItems).toBeCalledWith(null, null)
+                expect(viewsActions.fetchViewItems).toBeCalledWith(
+                    null,
+                    null,
+                    null,
+                    mockToken
+                )
             }
         )
 
@@ -346,6 +380,8 @@ describe('ViewTable::ViewTable', () => {
                 'on the first page because a request is currently loading',
             () => {
                 const component = shallow(<ViewTable {...minProps} />)
+                    .dive()
+                    .dive()
                     .dive()
                     .dive()
 
@@ -373,6 +409,8 @@ describe('ViewTable::ViewTable', () => {
                 )
                     .dive()
                     .dive()
+                    .dive()
+                    .dive()
 
                 jest.clearAllMocks()
 
@@ -391,11 +429,18 @@ describe('ViewTable::ViewTable', () => {
             )
                 .dive()
                 .dive()
+                .dive()
+                .dive()
             component.setProps({
                 isSearch: true,
             })
             expect(viewsActions.updateView).toBeCalled()
-            expect(viewsActions.fetchViewItems).toBeCalledWith()
+            expect(viewsActions.fetchViewItems).toBeCalledWith(
+                null,
+                null,
+                null,
+                mockToken
+            )
         })
 
         it(
@@ -405,11 +450,18 @@ describe('ViewTable::ViewTable', () => {
                 const component = shallow(<ViewTable {...minProps} isUpdate />)
                     .dive()
                     .dive()
+                    .dive()
+                    .dive()
                 component.setProps({
                     isUpdate: false,
                 })
                 expect(viewsActions.updateView).toBeCalled()
-                expect(viewsActions.fetchViewItems).toBeCalledWith()
+                expect(viewsActions.fetchViewItems).toBeCalledWith(
+                    null,
+                    null,
+                    null,
+                    mockToken
+                )
             }
         )
 
@@ -430,6 +482,8 @@ describe('ViewTable::ViewTable', () => {
                 )
                     .dive()
                     .dive()
+                    .dive()
+                    .dive()
                 component.setProps({
                     location: _merge({}, minProps.location, {
                         query: {
@@ -438,7 +492,12 @@ describe('ViewTable::ViewTable', () => {
                     }),
                 })
                 expect(viewsActions.updateView).toBeCalled()
-                expect(viewsActions.fetchViewItems).toBeCalledWith()
+                expect(viewsActions.fetchViewItems).toBeCalledWith(
+                    null,
+                    null,
+                    null,
+                    mockToken
+                )
             }
         )
 
@@ -449,11 +508,18 @@ describe('ViewTable::ViewTable', () => {
                 const component = shallow(<ViewTable {...minProps} isSearch />)
                     .dive()
                     .dive()
+                    .dive()
+                    .dive()
                 component.setProps({
                     isSearch: false,
                 })
                 expect(viewsActions.setViewActive).toBeCalled()
-                expect(viewsActions.fetchViewItems).toBeCalledWith()
+                expect(viewsActions.fetchViewItems).toBeCalledWith(
+                    null,
+                    null,
+                    null,
+                    mockToken
+                )
             }
         )
 
@@ -466,11 +532,18 @@ describe('ViewTable::ViewTable', () => {
                 )
                     .dive()
                     .dive()
+                    .dive()
+                    .dive()
                 component.setProps({
                     isUpdate: true,
                 })
                 expect(viewsActions.setViewActive).toBeCalled()
-                expect(viewsActions.fetchViewItems).toBeCalledWith()
+                expect(viewsActions.fetchViewItems).toBeCalledWith(
+                    null,
+                    null,
+                    null,
+                    mockToken
+                )
             }
         )
 
@@ -483,11 +556,18 @@ describe('ViewTable::ViewTable', () => {
                 )
                     .dive()
                     .dive()
+                    .dive()
+                    .dive()
                 component.setProps({
                     urlViewId: '2',
                 })
                 expect(viewsActions.setViewActive).toBeCalled()
-                expect(viewsActions.fetchViewItems).toBeCalledWith()
+                expect(viewsActions.fetchViewItems).toBeCalledWith(
+                    null,
+                    null,
+                    null,
+                    mockToken
+                )
             }
         )
 
@@ -502,6 +582,8 @@ describe('ViewTable::ViewTable', () => {
             const component = shallow(
                 <ViewTable {...minProps} store={mockStore(store)} />
             )
+                .dive()
+                .dive()
                 .dive()
                 .dive()
 
@@ -529,6 +611,8 @@ describe('ViewTable::ViewTable', () => {
             const component = shallow(
                 <ViewTable {...minProps} store={mockStore(store)} />
             )
+                .dive()
+                .dive()
                 .dive()
                 .dive()
 
@@ -569,6 +653,8 @@ describe('ViewTable::ViewTable', () => {
                 const component = shallow(
                     <ViewTable {...minProps} store={mockStore(store)} />
                 )
+                    .dive()
+                    .dive()
                     .dive()
                     .dive()
 

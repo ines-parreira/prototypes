@@ -1,5 +1,5 @@
 // @flow
-import axios from 'axios'
+import axios, {type CancelToken} from 'axios'
 import {fromJS, type List, type Map} from 'immutable'
 import _max from 'lodash/max'
 import {browserHistory} from 'react-router'
@@ -363,12 +363,14 @@ export const deleteViewSuccess = (viewId: number): thunkActionType => (
 export function fetchViewItems(
     direction: ?$Values<typeof VIEW_NAV_DIRECTIONS> = null,
     cursor: ?number,
-    isPolling: ?boolean = false
+    isPolling: ?boolean = false,
+    cancelToken?: CancelToken
 ): thunkActionType {
     return (
         dispatch: dispatchType,
         getState: getStateType
     ): Promise<dispatchType> => {
+        const options = cancelToken ? {cancelToken} : {}
         let state = getState()
         const activeView = viewsSelectors.getActiveView(state)
         const activeViewType = activeView.get('type')
@@ -417,15 +419,19 @@ export function fetchViewItems(
         // when a view is dirty, just send the whole view data rather than just the id
         // this will allow us to test a view before submitting it to the DB
         if (isDirty) {
-            promise = axios.put(url, {
-                view: activeView
-                    .delete('dirty')
-                    .delete('editMode')
-                    .delete('allItemsSelected')
-                    .toJS(),
-            })
+            promise = axios.put(
+                url,
+                {
+                    view: activeView
+                        .delete('dirty')
+                        .delete('editMode')
+                        .delete('allItemsSelected')
+                        .toJS(),
+                },
+                options
+            )
         } else {
-            promise = axios.get(url)
+            promise = axios.get(url, options)
         }
 
         return promise
@@ -459,6 +465,9 @@ export function fetchViewItems(
                     })
                 },
                 (error) => {
+                    if (axios.isCancel(error)) {
+                        return Promise.resolve()
+                    }
                     return dispatch({
                         type: types.FETCH_LIST_VIEW_ERROR,
                         error,

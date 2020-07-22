@@ -311,6 +311,16 @@ Array [
 ]
 `;
 
+exports[`actions fetchViewItems should not dispatch results when cancelling the fetch 1`] = `
+Array [
+  Object {
+    "discreet": null,
+    "type": "FETCH_LIST_VIEW_START",
+    "viewId": 1,
+  },
+]
+`;
+
 exports[`actions fetchViewItems should pass the view because it is dirty 1`] = `
 Array [
   Object {

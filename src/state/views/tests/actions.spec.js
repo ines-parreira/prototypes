@@ -1,7 +1,7 @@
 import moment from 'moment'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import axios from 'axios'
+import axios, {CancelToken} from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import {fromJS} from 'immutable'
 
@@ -601,6 +601,32 @@ describe('actions', () => {
 
             return store.dispatch(actions.fetchViewItems()).then(() => {
                 expect(store.getActions()).toEqual([])
+            })
+        })
+
+        it('should not dispatch results when cancelling the fetch', (done) => {
+            const store = mockStore({
+                views: fromJS({
+                    active: {
+                        id: viewId,
+                        dirty: true,
+                        editMode: false,
+                        type: TICKET_LIST_VIEW_TYPE,
+                    },
+                }),
+            })
+            const source = CancelToken.source()
+            mockServer
+                .onPut(`/api/views/${viewId}/items/`)
+                .reply(200, baseReply)
+            store.dispatch(
+                actions.fetchViewItems(null, null, null, source.token)
+            )
+            source.cancel()
+
+            setImmediate(() => {
+                expect(store.getActions()).toMatchSnapshot()
+                done()
             })
         })
     })

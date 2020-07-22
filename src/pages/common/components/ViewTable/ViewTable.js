@@ -7,6 +7,7 @@ import classnames from 'classnames'
 import _get from 'lodash/get'
 
 import Loader from '../Loader'
+import withCancellableRequest from '../../../common/utils/withCancellableRequest'
 import * as viewsActions from '../../../../state/views/actions'
 import * as viewsSelectors from '../../../../state/views/selectors'
 import * as viewsConfig from '../../../../config/views'
@@ -27,6 +28,7 @@ type Props = {
     fetchViewItems: typeof viewsActions.fetchViewItems,
     getViewIdToDisplay: typeof viewsSelectors.getViewIdToDisplay,
     getView: typeof viewsSelectors.getView,
+    fetchViewItemsCancellable: typeof viewsActions.fetchViewItems,
     hasActiveView: boolean,
 
     isLoading: (string) => boolean,
@@ -97,7 +99,7 @@ export class ViewTableContainer extends React.Component<Props> {
     componentWillReceiveProps(nextProps: Props) {
         const {
             getViewIdToDisplay,
-            fetchViewItems,
+            fetchViewItemsCancellable,
             updateView,
             setViewActive,
             getView,
@@ -203,12 +205,12 @@ export class ViewTableContainer extends React.Component<Props> {
                 // This happens when loading a page directly with a cursor in the URL.
                 // It can also happen when switching between two non-first pages, but in this case we don't want to
                 // trigger a fetch until the current fetch is over
-                return fetchViewItems(null, urlCursor)
+                return fetchViewItemsCancellable(null, urlCursor, null)
             }
         }
 
         if (shouldFetchViewItems) {
-            return fetchViewItems()
+            return fetchViewItemsCancellable(null, null, null)
         }
     }
 
@@ -304,32 +306,37 @@ export class ViewTableContainer extends React.Component<Props> {
 }
 
 export default withRouter(
-    connect(
-        (state, ownProps) => {
-            const config = viewsConfig.getConfigByName(ownProps.type)
+    withCancellableRequest<Props>(
+        'fetchViewItemsCancellable',
+        viewsActions.fetchViewItems
+    )(
+        connect(
+            (state, ownProps) => {
+                const config = viewsConfig.getConfigByName(ownProps.type)
 
-            return {
-                activeView: viewsSelectors.getActiveView(state),
-                config,
-                location: ownProps.location,
-                getView: viewsSelectors.makeGetView(state),
-                getViewIdToDisplay: viewsSelectors.makeGetViewIdToDisplay(
-                    state
-                ),
-                hasActiveView: viewsSelectors.hasActiveViewOfType(
-                    config.get('type')
-                )(state),
+                return {
+                    activeView: viewsSelectors.getActiveView(state),
+                    config,
+                    location: ownProps.location,
+                    getView: viewsSelectors.makeGetView(state),
+                    getViewIdToDisplay: viewsSelectors.makeGetViewIdToDisplay(
+                        state
+                    ),
+                    hasActiveView: viewsSelectors.hasActiveViewOfType(
+                        config.get('type')
+                    )(state),
 
-                isLoading: viewsSelectors.makeIsLoading(state),
-                isOnFirstPage: viewsSelectors.isOnFirstPage(state),
-                navigation: viewsSelectors.getNavigation(state),
-                selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),
+                    isLoading: viewsSelectors.makeIsLoading(state),
+                    isOnFirstPage: viewsSelectors.isOnFirstPage(state),
+                    navigation: viewsSelectors.getNavigation(state),
+                    selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),
+                }
+            },
+            {
+                fetchViewItems: viewsActions.fetchViewItems,
+                setViewActive: viewsActions.setViewActive,
+                updateView: viewsActions.updateView,
             }
-        },
-        {
-            fetchViewItems: viewsActions.fetchViewItems,
-            setViewActive: viewsActions.setViewActive,
-            updateView: viewsActions.updateView,
-        }
-    )(ViewTableContainer)
+        )(ViewTableContainer)
+    )
 )
