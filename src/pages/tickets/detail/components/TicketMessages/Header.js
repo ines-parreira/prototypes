@@ -3,6 +3,8 @@ import classNamesBind from 'classnames/bind'
 import {fromJS} from 'immutable'
 import React from 'react'
 
+import classnames from 'classnames'
+
 import type {TicketMessage} from '../../../../../models/ticket/types'
 import {isForwardedMessage} from '../../../../../state/ticket/utils'
 import {AgentLabel, CustomerLabel} from '../../../../common/utils/labels'
@@ -10,7 +12,7 @@ import {AgentLabel, CustomerLabel} from '../../../../common/utils/labels'
 import css from './Header.less'
 import Meta from './Meta'
 import Source from './Source'
-import SourceDetails from './SourceDetails'
+import SourceDetailsHeader from './SourceDetailsHeader'
 
 const classNames = classNamesBind.bind(css)
 
@@ -20,12 +22,30 @@ type Props = {
     timezone: string,
     isLastRead: boolean,
     hasError?: boolean,
+    isMessageHidden?: boolean,
 }
 
 export default function Header(props: Props) {
-    const {message, timezone, isLastRead, hasError} = props
+    const {message, timezone, isLastRead, hasError, isMessageHidden} = props
     const sender = fromJS(message.sender || {})
     const isForwarded = isForwardedMessage(message)
+
+    const metaContent = isMessageHidden ? (
+        <span className={classnames(css.hiddenMessage, 'ml-1')}>
+            {' '}
+            Message hidden
+        </span>
+    ) : (
+        <Meta
+            messageId={message.message_id}
+            meta={message.meta}
+            via={message.via}
+            source={message.source}
+            integrationId={message.integration_id}
+            ruleId={message.rule_id}
+        />
+    )
+
     return (
         <div
             className={classNames(css.header, {
@@ -36,6 +56,7 @@ export default function Header(props: Props) {
                 <div
                     className={classNames(css.author, {
                         isAgent: message.from_agent,
+                        hiddenMessage: isMessageHidden,
                     })}
                 >
                     {message.from_agent ? (
@@ -56,17 +77,9 @@ export default function Header(props: Props) {
                         source={message.source}
                     />
                 )}
-
-                <Meta
-                    messageId={message.message_id}
-                    meta={message.meta}
-                    via={message.via}
-                    source={message.source}
-                    integrationId={message.integration_id}
-                    ruleId={message.rule_id}
-                />
+                {metaContent}
             </div>
-            <SourceDetails
+            <SourceDetailsHeader
                 className={css.sourceDetails}
                 message={message}
                 isLastRead={isLastRead}

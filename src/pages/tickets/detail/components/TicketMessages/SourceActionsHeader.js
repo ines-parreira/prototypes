@@ -5,6 +5,8 @@ import {connect} from 'react-redux'
 
 import * as infobarActions from '../../../../../state/infobar/actions'
 import type {Meta, Source} from '../../../../../models/ticket/types'
+import hideIcon from '../../../../../../img/integrations/facebook-action-hide.svg'
+import unhideIcon from '../../../../../../img/integrations/facebook-action-unhide.svg'
 
 import {
     FACEBOOK_COMMENT_SOURCE,
@@ -25,7 +27,7 @@ type Props = {
     executeAction: typeof infobarActions.executeAction,
 }
 
-export class SourceActions extends React.Component<Props> {
+export class SourceActionsHeader extends React.Component<Props> {
     _executeAction = (name: string) => {
         const {integrationId, messageId, executeAction} = this.props
         if (integrationId) {
@@ -44,12 +46,6 @@ export class SourceActions extends React.Component<Props> {
     _toggleFacebookHideComment = (hide: boolean) => {
         this._executeAction(
             hide ? 'facebookHideComment' : 'facebookUnhideComment'
-        )
-    }
-
-    _toggleLikeComment = (like: boolean) => {
-        this._executeAction(
-            like ? 'facebookLikeComment' : 'facebookUnlikeComment'
         )
     }
 
@@ -72,12 +68,19 @@ export class SourceActions extends React.Component<Props> {
         // So we don't even display the `hide` button to avoid frustration.
         if (isInstagramComment || (isFacebookComment && !fromAgent)) {
             let hiddenDatetime = null
+            let actionIcon = hideIcon
+            let actionText = 'Hide'
 
             if (meta && meta.hidden_datetime) {
                 hiddenDatetime = meta.hidden_datetime
             }
 
             const shouldHide = !hiddenDatetime
+
+            if (!shouldHide) {
+                actionIcon = unhideIcon
+                actionText = 'Unhide'
+            }
 
             widgets.push(
                 <span
@@ -89,27 +92,7 @@ export class SourceActions extends React.Component<Props> {
                             : this._toggleFacebookHideComment(shouldHide)
                     }
                 >
-                    {shouldHide ? 'Hide' : 'Unhide'}
-                </span>
-            )
-        }
-
-        if (isFacebookComment) {
-            let likedDatetime = null
-
-            if (meta && meta.liked_datetime) {
-                likedDatetime = meta.liked_datetime
-            }
-
-            const shouldHide = !likedDatetime
-
-            widgets.push(
-                <span
-                    key="like-action"
-                    className={classNames('hidden-sm-down', css.actionButton)}
-                    onClick={() => this._toggleLikeComment(shouldHide)}
-                >
-                    {shouldHide ? 'Like' : 'Unlike'}
+                    <img src={actionIcon} title={actionText} alt={actionText} />
                 </span>
             )
         }
@@ -119,5 +102,5 @@ export class SourceActions extends React.Component<Props> {
 }
 
 export default connect(null, {executeAction: infobarActions.executeAction})(
-    SourceActions
+    SourceActionsHeader
 )

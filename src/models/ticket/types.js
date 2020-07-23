@@ -127,6 +127,24 @@ export type Meta = {
     post_id?: string,
     page_id?: string,
     parent_id?: string,
+    facebook_reactions?: FacebookReactions,
+}
+
+export type FacebookReactions = {
+    page_reaction?: FacebookReaction,
+    customer_reaction?: FacebookReaction,
+    reactions_counter: FacebookReactionCounter,
+}
+
+export type FacebookReaction = {
+    reaction_type: string,
+    reaction_datetime: string,
+    reaction_made_by?: string,
+    is_reacting?: boolean,
+}
+
+export type FacebookReactionCounter = {
+    total_reactions: number,
 }
 
 export type LastSendingError = {
