@@ -1,79 +1,9 @@
-@import '../../../../../../css/new/colors';
+:local .actionButton {
+  cursor: pointer;
+  padding: 0;
+  margin-right: 10px;
 
-:local {
-  .actionButton {
-    cursor: pointer;
-    padding: 0;
-    margin-right: 10px;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-
-  .pageReactionBadge {
-    color: @blue;
-  }
-
-  .customerReactionBadge {
-    color: @indigo;
-  }
-
-  .totalReactionsBadge {
-    color: @neutral9;
-    position: relative;
-    overflow: hidden;
-    min-height: 25px;
-    display:inline;
-  }
-
-  .reactionText {
-    color: @neutral8;
-  }
-
-  .reactionIcon {
-    width: 17px;
-    height: auto;
-  }
-
-  .reactionButton {
-    cursor: pointer;
-    padding: 0;
-    margin-left: 3px;
-
-    &:hover {
-      -ms-transform: scale(1.1); /* IE 9 */
-      -webkit-transform: scale(1.1); /* Safari 3-8 */
-      transform: scale(1.1);
-    }
-  }
-
-  .groupedReactions{
-    margin-right: -4px;
-    border:2px solid white;
-    border-radius:50%;
-    -moz-border-radius:50%;
-    -webkit-border-radius:50%;
-    width: 20px;
-  }
-
-  .spinner {
-    display: inline-block;
-    width: 20px;
-  }
-
-  .slide {
-    position: absolute;
-    right: 0;
-    width: 120px;
-    transition: 0.2s ease-out;
-    text-align: right;
-    bottom: 20px;
-    opacity: 0;
-  }
-
-  .totalReactionsBadge:hover .slide {
-    opacity: 1;
+  &:hover {
+    text-decoration: underline;
   }
 }
-
