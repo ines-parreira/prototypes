@@ -10,6 +10,7 @@ import {clearMacroBeforeApply} from '../../../../../business/macro'
 import type {Macro} from '../../../../../business/types/macro'
 import {type TicketMessageSourceType} from '../../../../../business/types/ticket'
 import shortcutManager from '../../../../../services/shortcutManager'
+import withCancellableRequest from '../../../../common/utils/withCancellableRequest'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {applyMacro} from '../../../../../state/ticket/actions'
 import * as ticketSelectors from '../../../../../state/ticket/selectors'
@@ -18,7 +19,11 @@ import {
     getDefaultSelectedMacroId,
 } from '../../../common/macros/utils'
 import {getPreferences} from '../../../../../state/currentUser/selectors'
-import {fetchMacros} from '../../../../../state/macro/actions'
+import {
+    fetchMacros,
+    type fetchMacrosParamsTypes,
+    type MacrosSearchResult,
+} from '../../../../../state/macro/actions'
 import {notify} from '../../../../../state/notifications/actions'
 import RichField from '../../../../common/forms/RichField'
 
@@ -41,7 +46,11 @@ type Props = {
     page: number,
     totalPages: number,
     selectMacro: () => void,
-    fetchMacros: typeof fetchMacros,
+    fetchMacrosCancellable: (
+        filters?: fetchMacrosParamsTypes,
+        orderBy?: string,
+        orderDir?: string
+    ) => Promise<?MacrosSearchResult>,
     applyMacro: (M: Map<*, *>, I: number) => void,
     currentTicket: Map<*, *>,
     cacheAdded: boolean,
@@ -183,8 +192,15 @@ export class TicketReplyArea extends React.Component<Props, State> {
         }
 
         return this.props
-            .fetchMacros({...filters, ...commonFilters}, orderBy, orderDir)
+            .fetchMacrosCancellable(
+                {...filters, ...commonFilters},
+                orderBy,
+                orderDir
+            )
             .then((res) => {
+                if (!res) {
+                    return
+                }
                 const selectedMacroId = getDefaultSelectedMacroId(
                     res.macros,
                     this.state.selectedMacroId
@@ -380,17 +396,21 @@ export class TicketReplyArea extends React.Component<Props, State> {
     }
 }
 
-export default connect(
-    (state) => ({
-        newMessageType: newMessageSelectors.getNewMessageType(state),
-        newMessage: state.newMessage,
-        preferences: getPreferences(state),
-        cacheAdded: newMessageSelectors.isCacheAdded(state),
-        currentTicket: ticketSelectors.getTicket(state),
-    }),
-    {
-        notify,
-        fetchMacros,
-        applyMacro,
-    }
-)(TicketReplyArea)
+export default withCancellableRequest(
+    'fetchMacrosCancellable',
+    fetchMacros
+)(
+    connect(
+        (state) => ({
+            newMessageType: newMessageSelectors.getNewMessageType(state),
+            newMessage: state.newMessage,
+            preferences: getPreferences(state),
+            cacheAdded: newMessageSelectors.isCacheAdded(state),
+            currentTicket: ticketSelectors.getTicket(state),
+        }),
+        {
+            notify,
+            applyMacro,
+        }
+    )(TicketReplyArea)
+)

@@ -18,7 +18,7 @@ exports[`<TicketReplyArea/> _hideMacrosAndFocusEditor() should hide macros and f
   currentTicket={Object {}}
   currentUser={Immutable.Map {}}
   customers={Object {}}
-  fetchMacros={[Function]}
+  fetchMacrosCancellable={[Function]}
   newMessage={Object {}}
   newMessageType="email"
   notify={[Function]}

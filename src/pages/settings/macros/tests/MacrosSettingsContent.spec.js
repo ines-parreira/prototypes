@@ -1,4 +1,5 @@
 //@flow
+import {CancelToken} from 'axios'
 import _pick from 'lodash/pick'
 import {mount, shallow} from 'enzyme'
 import React, {type ElementProps} from 'react'
@@ -32,6 +33,8 @@ jest.mock(
         <div onClick={() => onSortOptionsChange('name', 'asc')} />
     )
 )
+
+const mockToken = CancelToken.source().token
 
 describe('<MacrosSettingsContent/>', () => {
     const mappedMacrosFixtures = macrosFixtures
@@ -72,10 +75,14 @@ describe('<MacrosSettingsContent/>', () => {
     it('should fetch macros on mount', (done) => {
         mount(<MacrosSettingsContentContainer {...minProps} />)
 
-        expect(mockFetchMacros).toHaveBeenNthCalledWith(1, {
-            orderBy: 'createdDatetime',
-            orderDir: 'asc',
-        })
+        expect(mockFetchMacros).toHaveBeenNthCalledWith(
+            1,
+            {
+                orderBy: 'createdDatetime',
+                orderDir: 'asc',
+            },
+            mockToken
+        )
         setImmediate(() => {
             expect(mockMacrosFetched).toHaveBeenNthCalledWith(
                 1,
@@ -104,11 +111,15 @@ describe('<MacrosSettingsContent/>', () => {
         )
 
         component.find(Pagination).simulate('click')
-        expect(mockFetchMacros).toHaveBeenNthCalledWith(2, {
-            orderBy: 'createdDatetime',
-            orderDir: 'asc',
-            page: 2,
-        })
+        expect(mockFetchMacros).toHaveBeenNthCalledWith(
+            2,
+            {
+                orderBy: 'createdDatetime',
+                orderDir: 'asc',
+                page: 2,
+            },
+            mockToken
+        )
     })
 
     it('should redirect when creating new macro', () => {
@@ -129,10 +140,14 @@ describe('<MacrosSettingsContent/>', () => {
         )
 
         component.find(MacroSettingsTable).simulate('click')
-        expect(mockFetchMacros).toHaveBeenNthCalledWith(2, {
-            orderBy: 'name',
-            orderDir: 'asc',
-        })
+        expect(mockFetchMacros).toHaveBeenNthCalledWith(
+            2,
+            {
+                orderBy: 'name',
+                orderDir: 'asc',
+            },
+            mockToken
+        )
     })
 
     it('should refetch macros when deleting macro', (done) => {
@@ -154,11 +169,15 @@ describe('<MacrosSettingsContent/>', () => {
             component.setProps({
                 macros: _pick(macrosState, ['1', '3']),
             })
-            expect(mockFetchMacros).toHaveBeenNthCalledWith(2, {
-                orderBy: 'createdDatetime',
-                orderDir: 'asc',
-                page: 2,
-            })
+            expect(mockFetchMacros).toHaveBeenNthCalledWith(
+                2,
+                {
+                    orderBy: 'createdDatetime',
+                    orderDir: 'asc',
+                    page: 2,
+                },
+                mockToken
+            )
             done()
         })
     })
@@ -182,11 +201,15 @@ describe('<MacrosSettingsContent/>', () => {
             component.setProps({
                 macros: _pick(macrosState, ['1']),
             })
-            expect(mockFetchMacros).toHaveBeenNthCalledWith(2, {
-                orderBy: 'createdDatetime',
-                orderDir: 'asc',
-                page: 1,
-            })
+            expect(mockFetchMacros).toHaveBeenNthCalledWith(
+                2,
+                {
+                    orderBy: 'createdDatetime',
+                    orderDir: 'asc',
+                    page: 1,
+                },
+                mockToken
+            )
             done()
         })
     })
@@ -223,11 +246,15 @@ describe('<MacrosSettingsContent/>', () => {
         component.find(Search).simulate('change', {
             target: {value: 'foobar'},
         })
-        expect(mockFetchMacros).toHaveBeenNthCalledWith(2, {
-            orderBy: 'createdDatetime',
-            orderDir: 'asc',
-            search: 'foobar',
-        })
+        expect(mockFetchMacros).toHaveBeenNthCalledWith(
+            2,
+            {
+                orderBy: 'createdDatetime',
+                orderDir: 'asc',
+                search: 'foobar',
+            },
+            mockToken
+        )
     })
 
     it('should not sort when searching', () => {

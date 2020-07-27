@@ -7,6 +7,7 @@ import _debounce from 'lodash/debounce'
 
 import type {Map, List} from 'immutable'
 
+import withCancellableRequest from '../../../common/utils/withCancellableRequest'
 import * as ViewsActions from '../../../../state/views/actions'
 import * as viewsSelectors from '../../../../state/views/selectors'
 import * as MacroActions from '../../../../state/macro/actions'
@@ -31,6 +32,11 @@ type Props = {
     // macro to select when modal opens, selects first macro of list otherwise
     selectedMacro: Map<*, *>,
     selectedItemsIds: List<*>,
+    fetchMacrosCancellable: (
+        filters?: MacroActions.fetchMacrosParamsTypes,
+        orderBy?: string,
+        orderDir?: string
+    ) => Promise<?MacroActions.MacrosSearchResult>,
 
     disableExternalActions?: boolean,
     selectionMode?: boolean,
@@ -85,8 +91,8 @@ class MacroContainer extends React.Component<Props, State> {
     }
 
     _loadMacros = ({search = '', page = 1} = {}) => {
-        return this.props.actions.macro
-            .fetchMacros(
+        return this.props
+            .fetchMacrosCancellable(
                 {
                     currentMacros: this.state.macros,
                     currentPage: this.state.page,
@@ -97,6 +103,9 @@ class MacroContainer extends React.Component<Props, State> {
                 'asc'
             )
             .then((res) => {
+                if (!res) {
+                    return
+                }
                 const selectedMacroId = getDefaultSelectedMacroId(
                     res.macros,
                     this.state.selectedMacroId,
@@ -204,4 +213,7 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MacroContainer)
+export default withCancellableRequest(
+    'fetchMacrosCancellable',
+    MacroActions.fetchMacros
+)(connect(mapStateToProps, mapDispatchToProps)(MacroContainer))

@@ -8,7 +8,7 @@ import type {dispatchType, thunkActionType} from '../types'
 
 import * as constants from './constants'
 
-type fetchMacrosParamsTypes = {
+export type fetchMacrosParamsTypes = {
     search?: string,
     page?: number,
     currentMacros?: Map<*, *>,
@@ -18,7 +18,7 @@ type fetchMacrosParamsTypes = {
     _fallbackOrderBy?: string,
 }
 
-type MacrosSearchResult = {
+export type MacrosSearchResult = {
     macros: Map<*, *>,
     page: number,
     totalPages: number,
@@ -78,14 +78,15 @@ export const fetchMacros = (
                 }
             },
             (error) => {
-                if (!axios.isCancel(error)) {
-                    return dispatch(
-                        notify({
-                            status: 'error',
-                            message: 'Failed to fetch macros',
-                        })
-                    )
+                if (axios.isCancel(error)) {
+                    return Promise.resolve()
                 }
+                return dispatch(
+                    notify({
+                        status: 'error',
+                        message: 'Failed to fetch macros',
+                    })
+                )
             }
         )
 }

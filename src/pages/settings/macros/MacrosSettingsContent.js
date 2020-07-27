@@ -6,7 +6,7 @@ import {connect} from 'react-redux'
 import {browserHistory} from 'react-router'
 import {Button, Container} from 'reactstrap'
 
-import {useDelayedAsyncFn} from '../../../hooks'
+import {useDelayedAsyncFn, useCancellableRequest} from '../../../hooks'
 import type {OrderDirection} from '../../../models/api'
 import {
     fetchMacros,
@@ -49,16 +49,22 @@ export function MacrosSettingsContentContainer({
         page: 1,
         nbPages: 1,
     })
+    const [
+        cancellableFetchMacros,
+    ] = useCancellableRequest(
+        (cancelToken) => async (options: FetchMacrosOptions) =>
+            await fetchMacros(options, cancelToken)
+    )
     const [{loading: isFetchPending}, handleFetchMacros] = useDelayedAsyncFn(
         async () => {
             try {
-                const {
-                    data,
-                    meta: {page, nb_pages},
-                } = await fetchMacros(options)
-                macrosFetched(data)
-                setMacroIds(data.map((macro) => macro.id))
-                setPagination({page, nbPages: nb_pages})
+                const res = await cancellableFetchMacros(options)
+                if (!res) {
+                    return
+                }
+                macrosFetched(res.data)
+                setMacroIds(res.data.map((macro) => macro.id))
+                setPagination({page: res.meta.page, nbPages: res.meta.nb_pages})
             } catch (error) {
                 notify({
                     message: 'Failed to fetch macros',

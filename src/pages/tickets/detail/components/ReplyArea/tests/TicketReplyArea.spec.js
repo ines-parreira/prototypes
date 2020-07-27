@@ -66,7 +66,7 @@ const minProps = {
     page: 1,
     totalPages: 1,
     selectMacro: _noop,
-    fetchMacros: _noop,
+    fetchMacrosCancellable: () => Promise.resolve(),
     applyMacro: _noop,
     currentTicket: {},
     cacheAdded: false,

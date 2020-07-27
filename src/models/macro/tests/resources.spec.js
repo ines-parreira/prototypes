@@ -1,4 +1,5 @@
 //@flow
+import {Cancel, CancelToken} from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import _pick from 'lodash/pick'
 
@@ -58,6 +59,21 @@ describe('macro resources', () => {
             })
             await fetchMacros({orderBy: 'createdDatetime'})
             expect(mockedServer.history).toMatchSnapshot()
+        })
+
+        it('should reject when cancelled', async () => {
+            mockedServer.onGet('/api/macros/').reply(200, {
+                data: macrosFixtures,
+                meta: {
+                    current_page: 2,
+                },
+            })
+            const source = CancelToken.source()
+            source.cancel()
+
+            await expect(
+                fetchMacros({orderBy: 'createdDatetime'}, source.token)
+            ).rejects.toEqual(new Cancel())
         })
     })
 

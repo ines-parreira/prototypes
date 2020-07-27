@@ -1,4 +1,5 @@
 //@flow
+import type {CancelToken} from 'axios'
 import _snakeCase from 'lodash/snakeCase'
 
 import client, {
@@ -9,7 +10,8 @@ import client, {
 import type {Macro, MacroDraft, FetchMacrosOptions} from './types'
 
 export const fetchMacros = async (
-    options: FetchMacrosOptions = {}
+    options: FetchMacrosOptions = {},
+    cancelToken?: CancelToken
 ): Promise<ApiListResponsePagination<Macro[]>> => {
     const params = deepMapKeysToSnakeCase(options)
     if (params.fallback_order_by) {
@@ -19,7 +21,7 @@ export const fetchMacros = async (
     if (params.order_by) {
         params.order_by = _snakeCase(options.orderBy)
     }
-    const res = await client.get('/api/macros/', {params})
+    const res = await client.get('/api/macros/', {params, cancelToken})
     return res.data
 }
 
