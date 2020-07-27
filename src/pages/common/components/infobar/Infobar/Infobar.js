@@ -1,5 +1,4 @@
 // @flow
-import {CancelToken, type CancelTokenSource} from 'axios'
 import React from 'react'
 import classnames from 'classnames'
 import {connect} from 'react-redux'
@@ -12,6 +11,7 @@ import * as infobarActions from '../../../../../state/infobar/actions'
 import * as infobarConstants from '../../../../../state/infobar/constants'
 import * as customersActions from '../../../../../state/customers/actions'
 import * as ticketActions from '../../../../../state/ticket/actions'
+import withCancellableRequest from '../../../../common/utils/withCancellableRequest'
 import {
     startEditionMode,
     stopEditionMode,
@@ -54,7 +54,7 @@ type Props = {
     customer: Map<*, *>,
     widgets: Map<*, *>,
     fetchCustomerHistory: typeof customersActions.fetchCustomerHistory,
-    search: typeof infobarActions.search,
+    searchCancellable: typeof infobarActions.search,
     searchSimilarCustomer: typeof infobarActions.similarCustomer,
     setCustomer: typeof ticketActions.setCustomer,
 
@@ -95,8 +95,6 @@ export class Infobar extends React.Component<Props, State> {
     search = {
         _reset: _noop,
     }
-
-    searchCancelTokenSource: ?CancelTokenSource = null
 
     componentWillMount() {
         const {
@@ -233,32 +231,29 @@ export class Infobar extends React.Component<Props, State> {
     _onSearch = (query: string) => {
         if (query) {
             this.setState({isSearching: true})
+            this.props.searchCancellable(query).then((res) => {
+                if (!res) {
+                    return
+                }
+                const {error, resp} = res
+                let errorMessage
 
-            if (this.searchCancelTokenSource) {
-                this.searchCancelTokenSource.cancel()
-            }
-            this.searchCancelTokenSource = CancelToken.source()
-            this.props
-                .search(query, this.searchCancelTokenSource.token)
-                .then(({error, resp}) => {
-                    let errorMessage
+                if (error) {
+                    errorMessage =
+                        error?.response?.data?.error?.msg ||
+                        'Failed to do the search. Please try again.'
+                }
 
-                    if (error) {
-                        errorMessage =
-                            error?.response?.data?.error?.msg ||
-                            'Failed to do the search. Please try again.'
-                    }
-
-                    this.setState({
-                        searchErrorMessage: errorMessage,
-                        displaySelectedCustomer: false,
-                        displaySearchResults: true,
-                        isSearching: false,
-                        searchResults: error
-                            ? fromJS([])
-                            : fromJS(resp.data.slice(0, 8)),
-                    })
+                this.setState({
+                    searchErrorMessage: errorMessage,
+                    displaySelectedCustomer: false,
+                    displaySearchResults: true,
+                    isSearching: false,
+                    searchResults: error
+                        ? fromJS([])
+                        : fromJS(resp.data.slice(0, 8)),
                 })
+            })
         } else {
             this._resetSearch()
         }
@@ -568,11 +563,15 @@ export class Infobar extends React.Component<Props, State> {
     }
 }
 
-export default withRouter(
-    connect(null, {
-        fetchCustomerHistory: customersActions.fetchCustomerHistory,
-        search: infobarActions.search,
-        searchSimilarCustomer: infobarActions.similarCustomer,
-        setCustomer: ticketActions.setCustomer,
-    })(Infobar)
+export default withCancellableRequest(
+    'searchCancellable',
+    infobarActions.search
+)(
+    withRouter(
+        connect(null, {
+            fetchCustomerHistory: customersActions.fetchCustomerHistory,
+            searchSimilarCustomer: infobarActions.similarCustomer,
+            setCustomer: ticketActions.setCustomer,
+        })(Infobar)
+    )
 )

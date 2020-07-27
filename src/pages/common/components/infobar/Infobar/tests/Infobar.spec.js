@@ -56,7 +56,7 @@ const commonProps = {
         },
     }),
     fetchCustomerHistory: jest.fn(() => () => Promise.resolve()),
-    search: jest.fn(() => Promise.resolve({resp: {data: []}})),
+    searchCancellable: jest.fn(() => Promise.resolve({resp: {data: []}})),
     searchSimilarCustomer: jest.fn(() => Promise.resolve({customer: {id: 4}})),
     setCustomer: jest.fn(() => Promise.resolve()),
     location: {
@@ -99,7 +99,7 @@ describe('<Infobar/>', () => {
             .mockResolvedValue({error: 'generic_error'})
 
         const component = shallow(
-            <Infobar {...commonProps} search={mockedErrorSearch} />
+            <Infobar {...commonProps} searchCancellable={mockedErrorSearch} />
         )
 
         component.find(Search).simulate('change', 'query')
