@@ -1,17 +1,49 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`CallExpression component Action call should render 1`] = `
-<div>
-  <Action
+<Action
+  actions={
+    Object {
+      "foo": "actions",
+    }
+  }
+  depth={0}
+  leftsiblings={
+    Immutable.List [
+      "actions",
+    ]
+  }
+  parent={
+    Immutable.List [
+      "body",
+      0,
+      "expression",
+      "arguments",
+      0,
+    ]
+  }
+  rule={
+    Object {
+      "foo": "rule",
+    }
+  }
+  schemas={
+    Object {
+      "foo": "schemas",
+    }
+  }
+>
+  <ObjectExpression
     actions={
       Object {
         "foo": "actions",
       }
     }
-    depth={0}
+    className="ActionWidget"
     leftsiblings={
       Immutable.List [
         "actions",
+        undefined,
       ]
     }
     parent={
@@ -20,7 +52,7 @@ exports[`CallExpression component Action call should render 1`] = `
         0,
         "expression",
         "arguments",
-        0,
+        1,
       ]
     }
     rule={
@@ -33,46 +65,12 @@ exports[`CallExpression component Action call should render 1`] = `
         "foo": "schemas",
       }
     }
-  >
-    <ObjectExpression
-      actions={
-        Object {
-          "foo": "actions",
-        }
-      }
-      className="ActionWidget"
-      leftsiblings={
-        Immutable.List [
-          "actions",
-          undefined,
-        ]
-      }
-      parent={
-        Immutable.List [
-          "body",
-          0,
-          "expression",
-          "arguments",
-          1,
-        ]
-      }
-      rule={
-        Object {
-          "foo": "rule",
-        }
-      }
-      schemas={
-        Object {
-          "foo": "schemas",
-        }
-      }
-    />
-  </Action>
-</div>
+  />
+</Action>
 `;
 
 exports[`CallExpression component test condition should not render delete widget because the expression is not the only line of the test condition and the expression is not hovered 1`] = `
-<span>
+<Fragment>
   <Expression
     0="a"
     actions={
@@ -185,11 +183,11 @@ exports[`CallExpression component test condition should not render delete widget
       }
     }
   />
-</span>
+</Fragment>
 `;
 
 exports[`CallExpression component test condition should not render delete widget because the expression is the only line of the test condition 1`] = `
-<span>
+<Fragment>
   <Expression
     0="a"
     actions={
@@ -299,11 +297,11 @@ exports[`CallExpression component test condition should not render delete widget
       }
     }
   />
-</span>
+</Fragment>
 `;
 
 exports[`CallExpression component test condition should not render delete widget because the expression is the only line of the test condition 2`] = `
-<span>
+<Fragment>
   <Expression
     0="a"
     actions={
@@ -413,11 +411,11 @@ exports[`CallExpression component test condition should not render delete widget
       }
     }
   />
-</span>
+</Fragment>
 `;
 
 exports[`CallExpression component test condition should render delete widget because the expression is not the only line of the test condition and the expression is hovered 1`] = `
-<span>
+<Fragment>
   <Expression
     0="a"
     actions={
@@ -550,5 +548,5 @@ exports[`CallExpression component test condition should render delete widget bec
       }
     }
   />
-</span>
+</Fragment>
 `;

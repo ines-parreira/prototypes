@@ -48,18 +48,16 @@ export default class LogicalExpression extends React.Component<Props> {
         }
 
         return (
-            <span className="LogicalExpression">
-                <span className="left">
-                    <Expression
-                        {...left}
-                        parent={parent.push('left')}
-                        rule={rule}
-                        actions={actions}
-                        schemas={schemas}
-                        leftsiblings={leftsiblings}
-                        className="IdentifierDropdown"
-                    />
-                </span>
+            <>
+                <Expression
+                    {...left}
+                    parent={parent.push('left')}
+                    rule={rule}
+                    actions={actions}
+                    schemas={schemas}
+                    leftsiblings={leftsiblings}
+                    className="IdentifierDropdown"
+                />
                 <div className="d-flex align-items-baseline mt-1 ml-3">
                     <Button
                         className="LogicalOperator btn-frozen mr-1"
@@ -68,19 +66,17 @@ export default class LogicalExpression extends React.Component<Props> {
                     >
                         {operator === '&&' ? 'AND' : 'OR'}
                     </Button>
-                    <span className="right">
-                        <Expression
-                            {...right}
-                            parent={parent.push('right')}
-                            rule={rule}
-                            actions={actions}
-                            schemas={schemas}
-                            leftsiblings={leftsiblings3}
-                            className="IdentifierDropdown"
-                        />
-                    </span>
+                    <Expression
+                        {...right}
+                        parent={parent.push('right')}
+                        rule={rule}
+                        actions={actions}
+                        schemas={schemas}
+                        leftsiblings={leftsiblings3}
+                        className="IdentifierDropdown"
+                    />
                 </div>
-            </span>
+            </>
         )
     }
 }

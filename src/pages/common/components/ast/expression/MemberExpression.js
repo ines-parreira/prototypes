@@ -40,7 +40,7 @@ const MemberExpression = ({
     }
 
     return (
-        <span className="MemberExpression">
+        <>
             <Expression
                 {...object}
                 parent={parent.push('object')}
@@ -59,7 +59,7 @@ const MemberExpression = ({
                 schemas={schemas}
                 className="IdentifierDropdown"
             />
-        </span>
+        </>
     )
 }
 

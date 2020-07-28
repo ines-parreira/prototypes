@@ -92,7 +92,7 @@ export class WrappedCallExpression extends React.Component<Props> {
             }
 
             return (
-                <span>
+                <>
                     <Expression
                         {...firstArg}
                         parent={parent.push('arguments', 0)}
@@ -123,7 +123,7 @@ export class WrappedCallExpression extends React.Component<Props> {
                         />
                     ) : null}
                     {hovered && deleteBinaryExpression}
-                </span>
+                </>
             )
         }
 
@@ -134,30 +134,26 @@ export class WrappedCallExpression extends React.Component<Props> {
         const actionRootLeftSiblings = List(['actions'])
 
         return (
-            <div>
-                <Action
-                    value={actionName.value}
-                    parent={parent.push('arguments', 0)}
-                    rule={rule}
+            <Action
+                value={actionName.value}
+                parent={parent.push('arguments', 0)}
+                rule={rule}
+                actions={actions}
+                schemas={schemas}
+                leftsiblings={actionRootLeftSiblings}
+                depth={depth}
+            >
+                <ObjectExpression
+                    properties={actionArguments.properties}
                     actions={actions}
+                    leftsiblings={actionRootLeftSiblings.push(actionName.value)}
+                    rule={rule}
                     schemas={schemas}
-                    leftsiblings={actionRootLeftSiblings}
-                    depth={depth}
-                >
-                    <ObjectExpression
-                        properties={actionArguments.properties}
-                        actions={actions}
-                        leftsiblings={actionRootLeftSiblings.push(
-                            actionName.value
-                        )}
-                        rule={rule}
-                        schemas={schemas}
-                        parent={parent.push('arguments', 1)}
-                        className="ActionWidget"
-                        config={actionsConfig[actionName.value]}
-                    />
-                </Action>
-            </div>
+                    parent={parent.push('arguments', 1)}
+                    className="ActionWidget"
+                    config={actionsConfig[actionName.value]}
+                />
+            </Action>
         )
     }
 }
