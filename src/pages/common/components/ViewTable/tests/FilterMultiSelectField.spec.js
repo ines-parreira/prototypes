@@ -14,16 +14,16 @@ describe('FilterMultiSelectField', () => {
         selectedOptions: [],
         onChange: _noop,
         field: new Map(),
-        fieldEnumSearch: () => new Map(),
+        fieldEnumSearchCancellable: () => Promise.resolve(),
         mapSearchResults: () => [],
     }
 
     it('should search for the values on mount', () => {
-        const fieldEnumSearchSpy = jest.fn()
+        const fieldEnumSearchSpy = jest.fn().mockResolvedValue()
         mount(
             <FilterMultiSelectField
                 {...defaultProps}
-                fieldEnumSearch={fieldEnumSearchSpy}
+                fieldEnumSearchCancellable={fieldEnumSearchSpy}
             />
         )
         expect(fieldEnumSearchSpy).toBeCalled()
@@ -31,11 +31,11 @@ describe('FilterMultiSelectField', () => {
 
     // https://github.com/facebook/jest/issues/3465
     it.skip('should debounce search on input change', () => {
-        const fieldEnumSearchSpy = jest.fn()
+        const fieldEnumSearchSpy = jest.fn().mockResolvedValue()
         const wrapper = mount(
             <FilterMultiSelectField
                 {...defaultProps}
-                fieldEnumSearch={fieldEnumSearchSpy}
+                fieldEnumSearchCancellable={fieldEnumSearchSpy}
             />
         )
         wrapper.find(MultiSelectOptionsField).prop('onInputChange')('foo')
@@ -47,11 +47,11 @@ describe('FilterMultiSelectField', () => {
     })
 
     it('should reset search on change', () => {
-        const fieldEnumSearchSpy = jest.fn()
+        const fieldEnumSearchSpy = jest.fn().mockResolvedValue()
         const wrapper = mount(
             <FilterMultiSelectField
                 {...defaultProps}
-                fieldEnumSearch={fieldEnumSearchSpy}
+                fieldEnumSearchCancellable={fieldEnumSearchSpy}
             />
         )
         wrapper.find(MultiSelectOptionsField).prop('onChange')([])

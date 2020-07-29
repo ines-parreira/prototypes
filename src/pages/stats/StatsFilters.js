@@ -1,5 +1,5 @@
 // @flow
-import {fromJS} from 'immutable'
+import {fromJS, type List} from 'immutable'
 import _debounce from 'lodash/debounce'
 import moment from 'moment'
 import React from 'react'
@@ -20,6 +20,7 @@ import {getAgents} from '../../state/agents/selectors'
 import {getDisplayName} from '../../state/customers/helpers'
 
 import Popover from '../common/components/Popover'
+import withCancellableRequest from '../common/utils/withCancellableRequest'
 
 import PeriodPicker from './common/PeriodPicker'
 import SearchableSelectField from './common/SearchableSelectField'
@@ -34,7 +35,10 @@ type Props = {
     stats: Object,
     filters: Object,
     fetchStat: (any, any, any) => Promise<*>,
-    fieldEnumSearch: typeof fieldEnumSearch,
+    fieldEnumSearchCancellable: (
+        field: Map<*, *>,
+        query: string
+    ) => Promise<?List<*>>,
     mergeStatsFilters: typeof mergeStatsFilters,
 }
 
@@ -59,11 +63,15 @@ export class StatsFilters extends React.Component<Props, State> {
     }
 
     _onSearchTags = _debounce((search) => {
+        const {fieldEnumSearchCancellable} = this.props
         const field = fromJS({
             filter: {type: 'tag'},
         })
 
-        this.props.fieldEnumSearch(field, search).then((data) => {
+        fieldEnumSearchCancellable(field, search).then((data) => {
+            if (!data) {
+                return
+            }
             this.setState({
                 tags: data.toJS(),
             })
@@ -270,7 +278,11 @@ const mapStateToProps = (state: Object, props: Props) => {
 
 const actions = {
     mergeStatsFilters,
-    fieldEnumSearch,
 }
 
-export default withRouter(connect(mapStateToProps, actions)(StatsFilters))
+export default withRouter(
+    withCancellableRequest(
+        'fieldEnumSearchCancellable',
+        fieldEnumSearch
+    )(connect(mapStateToProps, actions)(StatsFilters))
+)

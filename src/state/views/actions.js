@@ -115,12 +115,10 @@ export const updateFieldFilterOperator = (index: number, operator: string) => ({
     operator,
 })
 
-// not a real redux action, is used to return data, not to be used in the reducer
-let _cancelSearch = null
-
 export function fieldEnumSearch(
     field: Map<*, *>,
-    query: string
+    query: string,
+    cancelToken?: CancelToken
 ): thunkActionType {
     return (dispatch: dispatchType): Promise<void> => {
         dispatch({
@@ -130,16 +128,9 @@ export function fieldEnumSearch(
         const data = field.get('filter').toJS()
         data.query = query
 
-        if (_cancelSearch) {
-            _cancelSearch()
-            _cancelSearch = null
-        }
-
         return axios
             .post('/api/search/', data, {
-                cancelToken: new axios.CancelToken((cancel) => {
-                    _cancelSearch = cancel
-                }),
+                cancelToken,
             })
             .then((json = {}) => json.data)
             .then(
@@ -160,7 +151,7 @@ export function fieldEnumSearch(
                         })
                     }
 
-                    return Promise.reject()
+                    return Promise.reject(error)
                 }
             )
     }

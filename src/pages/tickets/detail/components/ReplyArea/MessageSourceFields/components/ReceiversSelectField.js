@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import {bindActionCreators} from 'redux'
 import _debounce from 'lodash/debounce'
 
 import {isEmail} from '../../../../../../../utils'
@@ -11,6 +10,7 @@ import {
     receiversStateFromValue,
 } from '../../../../../../../state/ticket/utils'
 import {updatePotentialCustomers} from '../../../../../../../state/newMessage/actions'
+import withCancellableRequest from '../../../../../../common/utils/withCancellableRequest'
 
 import MultiSelectAsyncField from './MultiSelectAsyncField/index'
 
@@ -18,7 +18,7 @@ class ReceiversSelectField extends React.Component {
     static propTypes = {
         value: PropTypes.array.isRequired,
         onChange: PropTypes.func.isRequired,
-        updatePotentialCustomers: PropTypes.func.isRequired,
+        updatePotentialCustomersCancellable: PropTypes.func.isRequired,
 
         disabled: PropTypes.bool.isRequired, // whether the dropdown should allow user interactions or not
         parentId: PropTypes.string.isRequired, // the id of the parent object, to check if the field needs to be repopulated
@@ -45,13 +45,17 @@ class ReceiversSelectField extends React.Component {
     }
 
     _search = _debounce((input, callback) => {
+        const {updatePotentialCustomersCancellable} = this.props
         const queryText = input.toLowerCase()
 
         if (!queryText) {
             callback([])
         }
 
-        this.props.updatePotentialCustomers(queryText).then((data) => {
+        updatePotentialCustomersCancellable(queryText).then((data) => {
+            if (!data) {
+                return
+            }
             callback(this._valueFromState(data))
         })
     }, 200)
@@ -84,14 +88,7 @@ const mapStateToProps = (state, ownProps) => ({
     valueProp: getValuePropFromSourceType(ownProps.sourceType),
 })
 
-const mapDispatchToProps = (dispatch) => ({
-    updatePotentialCustomers: bindActionCreators(
-        updatePotentialCustomers,
-        dispatch
-    ),
-})
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(ReceiversSelectField)
+export default withCancellableRequest(
+    'updatePotentialCustomersCancellable',
+    updatePotentialCustomers
+)(connect(mapStateToProps)(ReceiversSelectField))

@@ -193,7 +193,7 @@ exports[`TicketHeader component should render existing ticket 1`] = `
         currentStatus="open"
         setQuickStatus={[Function]}
       />
-      <Connect(TicketTags)
+      <Connect(Component)
         transparent={true}
       />
     </div>
@@ -255,7 +255,7 @@ exports[`TicketHeader component should render new ticket 1`] = `
     <div
       className="d-inline-flex"
     >
-      <Connect(TicketTags)
+      <Connect(Component)
         transparent={true}
       />
     </div>
@@ -475,7 +475,7 @@ exports[`TicketHeader component should render spam ticket 1`] = `
         currentStatus="open"
         setQuickStatus={[Function]}
       />
-      <Connect(TicketTags)
+      <Connect(Component)
         transparent={true}
       />
     </div>
@@ -652,7 +652,7 @@ exports[`TicketHeader component should render trashed ticket 1`] = `
         currentStatus="open"
         setQuickStatus={[Function]}
       />
-      <Connect(TicketTags)
+      <Connect(Component)
         transparent={true}
       />
     </div>

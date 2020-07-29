@@ -41,7 +41,10 @@ describe('TicketListActions component', () => {
     it('should display when nothing is selected', () => {
         const component = shallow(
             <TicketListActions store={store} selectedItemsIds={fromJS([])} />
-        ).dive()
+        )
+            .dive()
+            .dive()
+            .dive()
 
         expect(component).toMatchSnapshot()
     })
@@ -52,7 +55,10 @@ describe('TicketListActions component', () => {
                 store={store}
                 selectedItemsIds={fromJS([1, 2, 3, 4, 5])}
             />
-        ).dive()
+        )
+            .dive()
+            .dive()
+            .dive()
 
         expect(component).toMatchSnapshot()
     })
@@ -75,7 +81,10 @@ describe('TicketListActions component', () => {
                 store={store}
                 selectedItemsIds={fromJS([1, 2, 3, 4, 5])}
             />
-        ).dive()
+        )
+            .dive()
+            .dive()
+            .dive()
 
         expect(component).toMatchSnapshot()
     })
@@ -98,7 +107,10 @@ describe('TicketListActions component', () => {
                 store={store}
                 selectedItemsIds={fromJS([1, 2, 3, 4, 5])}
             />
-        ).dive()
+        )
+            .dive()
+            .dive()
+            .dive()
 
         expect(component).toMatchSnapshot()
     })
@@ -117,7 +129,10 @@ describe('TicketListActions component', () => {
 
         const component = shallow(
             <TicketListActions store={store} selectedItemsIds={fromJS([])} />
-        ).dive()
+        )
+            .dive()
+            .dive()
+            .dive()
 
         expect(component).toMatchSnapshot()
     })
@@ -135,7 +150,10 @@ describe('TicketListActions component', () => {
 
         const component = shallow(
             <TicketListActions store={store} selectedItemsIds={fromJS([])} />
-        ).dive()
+        )
+            .dive()
+            .dive()
+            .dive()
 
         expect(component).toMatchSnapshot()
     })
@@ -153,7 +171,10 @@ describe('TicketListActions component', () => {
 
         const component = shallow(
             <TicketListActions store={store} selectedItemsIds={fromJS([])} />
-        ).dive()
+        )
+            .dive()
+            .dive()
+            .dive()
 
         expect(component).toMatchSnapshot()
     })

@@ -16,7 +16,7 @@ describe('TicketTags component', () => {
                 ticketTags={ticketTags}
                 addTags={_noop}
                 removeTag={_noop}
-                fieldEnumSearch={_noop}
+                fieldEnumSearchCancellable={_noop}
             />
         )
     })

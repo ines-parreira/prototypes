@@ -8,7 +8,7 @@ import _isNull from 'lodash/isNull'
 import _assign from 'lodash/assign'
 import _pick from 'lodash/pick'
 import _throttle from 'lodash/throttle'
-import axios from 'axios'
+import axios, {type CancelToken} from 'axios'
 
 import {EMAIL_INTEGRATION_TYPES} from '../../constants/integration'
 
@@ -482,14 +482,21 @@ export const prepare = (sourceType: string) => (
  * @param query
  * @returns {function(*)}
  */
-export const updatePotentialCustomers = (query: string) => (
-    dispatch: dispatchType
-): Promise<dispatchType> =>
+export const updatePotentialCustomers = (
+    query: string,
+    cancelToken?: CancelToken
+) => (dispatch: dispatchType): Promise<dispatchType> =>
     axios
-        .post('/api/search/', {
-            type: 'user_channel_email',
-            query,
-        })
+        .post(
+            '/api/search/',
+            {
+                type: 'user_channel_email',
+                query,
+            },
+            {
+                cancelToken,
+            }
+        )
         .then((json = {}) => json.data)
         .then(
             (resp) => {
@@ -501,6 +508,9 @@ export const updatePotentialCustomers = (query: string) => (
                 })
             },
             (error) => {
+                if (axios.isCancel(error)) {
+                    return Promise.resolve()
+                }
                 return dispatch({
                     type: 'ERROR',
                     error,

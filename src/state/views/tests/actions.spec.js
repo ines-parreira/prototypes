@@ -1,7 +1,7 @@
 import moment from 'moment'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import axios, {CancelToken} from 'axios'
+import axios, {Cancel, CancelToken} from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import {fromJS} from 'immutable'
 
@@ -79,6 +79,22 @@ describe('actions', () => {
             } catch (e) {
                 expect(store.getActions()).toMatchSnapshot()
             }
+        })
+
+        it('should reject when cancelled', async () => {
+            mockServer.onPost('/api/search/').reply(200, {})
+            const source = CancelToken.source()
+            source.cancel()
+
+            await expect(
+                store.dispatch(
+                    actions.fieldEnumSearch(
+                        fromJS({filter: {type: 'customer'}}),
+                        'foo',
+                        source.token
+                    )
+                )
+            ).rejects.toEqual(new Cancel())
         })
     })
 

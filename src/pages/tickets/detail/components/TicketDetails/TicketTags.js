@@ -4,13 +4,13 @@ import _debounce from 'lodash/debounce'
 import _isUndefined from 'lodash/isUndefined'
 import PropTypes from 'prop-types'
 import React from 'react'
-import {connect} from 'react-redux'
 import {Dropdown, DropdownItem, DropdownToggle, Input} from 'reactstrap'
 
 import shortcutManager from '../../../../../services/shortcutManager'
 import {fieldEnumSearch} from '../../../../../state/views/actions'
 import TagDropdownMenu from '../../../../common/components/TagDropdownMenu/TagDropdownMenu'
 import {TagLabel} from '../../../../common/utils/labels'
+import withCancellableRequest from '../../../../common/utils/withCancellableRequest'
 
 import css from './TicketTags.less'
 
@@ -79,13 +79,17 @@ export class TicketTags extends React.Component {
     }
 
     _queryResults = (search) => {
+        const {fieldEnumSearchCancellable} = this.props
         this.setState({isLoading: true})
 
         const field = fromJS({
             filter: {type: 'tag', size: LIMIT_TAGS_SEARCH},
         })
 
-        this.props.fieldEnumSearch(field, search).then((data) => {
+        fieldEnumSearchCancellable(field, search).then((data) => {
+            if (!data) {
+                return
+            }
             this.setState({
                 enum: data,
                 isLoading: false,
@@ -228,7 +232,7 @@ TicketTags.propTypes = {
     ticketTags: PropTypes.object.isRequired,
     addTags: PropTypes.func.isRequired,
     removeTag: PropTypes.func.isRequired,
-    fieldEnumSearch: PropTypes.func.isRequired,
+    fieldEnumSearchCancellable: PropTypes.func.isRequired,
     transparent: PropTypes.bool,
 }
 
@@ -236,8 +240,7 @@ TicketTags.defaultProps = {
     transparent: false,
 }
 
-const mapDispatchToProps = {
-    fieldEnumSearch,
-}
-
-export default connect(null, mapDispatchToProps)(TicketTags)
+export default withCancellableRequest(
+    'fieldEnumSearchCancellable',
+    fieldEnumSearch
+)(TicketTags)

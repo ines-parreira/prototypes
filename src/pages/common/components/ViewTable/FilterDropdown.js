@@ -14,6 +14,7 @@ import {
     resolveLiteral,
 } from '../../../../utils'
 import {RenderLabel} from '../../utils/labels'
+import withCancellableRequest from '../../utils/withCancellableRequest'
 import Search from '../Search'
 
 import css from './FilterDropdown.less'
@@ -23,7 +24,10 @@ type Props = {
     field: Map<*, *>,
     schemas: Map<*, *>,
     updateFieldFilter: (string) => void,
-    fieldEnumSearch: typeof fieldEnumSearch,
+    fieldEnumSearchCancellable: (
+        field: Map<*, *>,
+        query: string
+    ) => Promise<?List<*>>,
     toggleDropdown: () => void,
     menu: ComponentType<*>,
 }
@@ -70,8 +74,9 @@ class FilterDropdown extends React.Component<Props, State> {
 
     // query search from server and save it in state
     onSearch = (query: string) => {
+        const {field, fieldEnumSearchCancellable} = this.props
         // Fields that already have an enum don't need to have a search
-        if (this.props.field.getIn(['filter', 'enum'])) {
+        if (field.getIn(['filter', 'enum'])) {
             return
         }
 
@@ -79,9 +84,11 @@ class FilterDropdown extends React.Component<Props, State> {
             isLoading: true,
         })
 
-        this.props
-            .fieldEnumSearch(this.props.field, query)
+        fieldEnumSearchCancellable(field, query)
             .then((data) => {
+                if (!data) {
+                    return
+                }
                 this.setState({
                     enum: data,
                     isLoading: false,
@@ -219,8 +226,7 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = {
-    fieldEnumSearch,
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(FilterDropdown)
+export default withCancellableRequest(
+    'fieldEnumSearchCancellable',
+    fieldEnumSearch
+)(connect(mapStateToProps)(FilterDropdown))

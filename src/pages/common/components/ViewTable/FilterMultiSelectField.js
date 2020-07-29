@@ -1,10 +1,10 @@
 // @flow
-import type {Map} from 'immutable'
+import type {Map, List} from 'immutable'
 import _debounce from 'lodash/debounce'
 import React, {type ComponentType} from 'react'
-import {connect} from 'react-redux'
 
 import {fieldEnumSearch} from '../../../../state/views/actions'
+import withCancellableRequest from '../../../common/utils/withCancellableRequest'
 import MultiSelectOptionsField, {
     type Option,
 } from '../../forms/MultiSelectOptionsField'
@@ -15,7 +15,10 @@ type Props = {
     selectedOptions: Option[],
     onChange: (Option[]) => void,
     field: Map<*, *>,
-    fieldEnumSearch: (Map<*, *>, string) => Map<*, *>,
+    fieldEnumSearchCancellable: (
+        field: Map<*, *>,
+        query: string
+    ) => Promise<?List<*>>,
     mapSearchResults: <T>(searchResults: T[]) => Option[],
     dropdownMenu?: ComponentType<*>,
 }
@@ -36,6 +39,7 @@ export class FilterMultiSelectField extends React.Component<Props, State> {
     }
 
     _onSearch = async (query: string) => {
+        const {field, fieldEnumSearchCancellable} = this.props
         // Fields that already have an enum don't need to have a search
         if (this.props.field.getIn(['filter', 'enum'])) {
             return
@@ -45,7 +49,10 @@ export class FilterMultiSelectField extends React.Component<Props, State> {
             isLoading: true,
         })
 
-        const data = await this.props.fieldEnumSearch(this.props.field, query)
+        const data = await fieldEnumSearchCancellable(field, query)
+        if (!data) {
+            return
+        }
         this.setState({
             isLoading: false,
             options: this.props.mapSearchResults(data ? data.toJS() : []),
@@ -77,6 +84,7 @@ export class FilterMultiSelectField extends React.Component<Props, State> {
     }
 }
 
-export default connect(null, {
-    fieldEnumSearch,
-})(FilterMultiSelectField)
+export default withCancellableRequest<Props>(
+    'fieldEnumSearchCancellable',
+    fieldEnumSearch
+)(FilterMultiSelectField)

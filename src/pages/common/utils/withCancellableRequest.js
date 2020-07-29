@@ -7,7 +7,7 @@ import {useCancellableRequest} from '../../../hooks'
 const withCancellableRequest = <Props>(
     requestName: string,
     request: Function
-) => <P: Props>(WrappedComponent: ComponentType<Props>): ComponentType<P> => {
+) => <P: Props>(WrappedComponent: ComponentType<P>): ComponentType<P> => {
     if (requestName.length < 2) {
         throw new Error(
             'The argument requestName of withCancellableRequest expect a length greater than 1'

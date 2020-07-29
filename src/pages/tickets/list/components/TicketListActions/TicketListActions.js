@@ -2,7 +2,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
-import {fromJS, List, type Map} from 'immutable'
+import {fromJS, type List, type Map} from 'immutable'
 import moment from 'moment'
 import {bindActionCreators} from 'redux'
 import {browserHistory} from 'react-router'
@@ -43,6 +43,7 @@ import {
 import {AgentLabel, TeamLabel} from '../../../../common/utils/labels'
 import {hasRole} from '../../../../../utils'
 import TagDropdownMenu from '../../../../common/components/TagDropdownMenu/TagDropdownMenu'
+import withCancellableRequest from '../../../../common/utils/withCancellableRequest'
 
 import css from './TicketListActions.less'
 
@@ -53,7 +54,10 @@ type Props = {
         tickets: typeof ticketsActions,
     },
     selectedItemsIds: List<Map<*, *>>,
-    fieldEnumSearch: typeof viewsActions.fieldEnumSearch,
+    fieldEnumSearchCancellable: (
+        field: Map<*, *>,
+        query: string
+    ) => Promise<?List<*>>,
     currentUser: currentUserType,
     teams: teamsType,
     agents: agentsType,
@@ -213,13 +217,17 @@ class TicketListActions extends React.Component<Props, State> {
     }
 
     _queryTags = (search) => {
+        const {fieldEnumSearchCancellable} = this.props
         this.setState({isLoadingTags: true})
 
         const field = fromJS({
             filter: {type: 'tag'},
         })
 
-        this.props.fieldEnumSearch(field, search).then((data) => {
+        fieldEnumSearchCancellable(field, search).then((data) => {
+            if (!data) {
+                return
+            }
             this.setState({
                 tags: data,
                 isLoadingTags: false,
@@ -793,12 +801,11 @@ function mapDispatchToProps(dispatch) {
             views: bindActionCreators(viewsActions, dispatch),
             tickets: bindActionCreators(ticketsActions, dispatch),
         },
-        fieldEnumSearch: bindActionCreators(
-            viewsActions.fieldEnumSearch,
-            dispatch
-        ),
     }
 }
 
 //$FlowFixMe
-export default connect(mapStateToProps, mapDispatchToProps)(TicketListActions)
+export default withCancellableRequest(
+    'fieldEnumSearchCancellable',
+    viewsActions.fieldEnumSearch
+)(connect(mapStateToProps, mapDispatchToProps)(TicketListActions))

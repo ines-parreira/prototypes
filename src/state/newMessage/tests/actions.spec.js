@@ -3,7 +3,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {ContentState} from 'draft-js'
 import {fromJS} from 'immutable'
-import axios from 'axios'
+import axios, {CancelToken} from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
 import {TicketMessageSourceTypes} from '../../../business/ticket'
@@ -41,11 +41,17 @@ jest.mock('../../../services/socketManager', () => {
 import socketManager from '../../../services/socketManager'
 
 describe('actions', () => {
+    let mockServer
+    let store
+
+    beforeEach(() => {
+        mockServer = new MockAdapter(axios)
+    })
+
     describe('new message', () => {
         const channels = integrationSelectors.getChannels({
             integrations: fromJS(integrationsState),
         })
-        let store
 
         describe('setSender action', () => {
             it('with address', () => {
@@ -831,12 +837,6 @@ describe('actions', () => {
         })
 
         describe('sendTicketMessage', () => {
-            let mockServer
-
-            beforeEach(() => {
-                mockServer = new MockAdapter(axios)
-            })
-
             it('should submit new message', () => {
                 mockServer
                     .onPost('/api/tickets/12/messages/')
@@ -1030,6 +1030,54 @@ describe('actions', () => {
                     done()
                 })
             })
+        })
+    })
+
+    describe('updatePotentialCustomers', () => {
+        it('should return a list of potential customer on success', () => {
+            mockServer.onPost('/api/search/').reply(200, {
+                data: [
+                    {
+                        id: 11,
+                        address: 'marie@gorgias.io',
+                        type: 'email',
+                        user: {id: 4, name: 'Marie Curie'},
+                        customer: {id: 4, name: 'Marie Curie'},
+                    },
+                ],
+                object: 'list',
+                uri: '',
+                meta: {},
+            })
+            store = mockStore<*, StoreAction>({})
+
+            return store
+                .dispatch(actions.updatePotentialCustomers('foo'))
+                .then((res) => expect(res).toMatchSnapshot())
+        })
+
+        it('should resolve when cancelled', () => {
+            mockServer.onPost('/api/search/').reply(200, {
+                data: [
+                    {
+                        id: 11,
+                        address: 'marie@gorgias.io',
+                        type: 'email',
+                        user: {id: 4, name: 'Marie Curie'},
+                        customer: {id: 4, name: 'Marie Curie'},
+                    },
+                ],
+                object: 'list',
+                uri: '',
+                meta: {},
+            })
+            store = mockStore<*, StoreAction>({})
+            const source = CancelToken.source()
+            source.cancel()
+
+            return store
+                .dispatch(actions.updatePotentialCustomers('foo', source.token))
+                .then((res) => expect(res).toMatchSnapshot())
         })
     })
 })

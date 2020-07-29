@@ -6,7 +6,7 @@ exports[`StatsPage should render "Overview" statistics 1`] = `
 <div
   className="stats full-width"
 >
-  <withRouter(Connect(StatsFilters)) />
+  <withRouter(Connect(Component)) />
   <withRouter(Connect(Stats))
     key="overview-bda01ba4dfda3493e856796c40be4ec6"
   />
