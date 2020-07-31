@@ -4,12 +4,17 @@ import _max from 'lodash/max'
 import _isEqual from 'lodash/isEqual'
 import _omit from 'lodash/omit'
 import _functions from 'lodash/functions'
+import {browserHistory} from 'react-router'
 
-import {addNotification, removeNotification} from 'reapop'
+import {
+    addNotification,
+    removeNotification,
+    removeNotification as hide,
+} from 'reapop'
 
-import type {dispatchType, getStateType} from '../types'
+import type {Dispatch, getStateType} from '../types'
 
-import type {Notification} from './types'
+import type {Notification, HandleUsageBanner} from './types'
 
 export const AUTHORIZED_NOTIFICATION_TYPES = [
     'success',
@@ -53,9 +58,9 @@ const isDuplicate = (
  * @param message
  */
 export const notify = (message: Notification) => (
-    dispatch: dispatchType,
+    dispatch: Dispatch,
     getState: getStateType
-): Promise<dispatchType> => {
+): Promise<Dispatch> => {
     // don't add empty notifications
     if (!message) {
         return Promise.resolve()
@@ -111,4 +116,31 @@ export const notify = (message: Notification) => (
     }
 
     return dispatch(addNotification(finalMessage))
+}
+
+export const handleUsageBanner = ({
+    newAccountStatus,
+    notification,
+    currentAccountStatus,
+}: HandleUsageBanner) => (dispatch: Dispatch) => {
+    const USAGE_NOTIFICATION_BANNER = 99
+
+    if (currentAccountStatus !== newAccountStatus) {
+        dispatch(hide(USAGE_NOTIFICATION_BANNER))
+    }
+
+    if (notification) {
+        dispatch(
+            notify({
+                id: USAGE_NOTIFICATION_BANNER.toString(),
+                style: 'banner',
+                status: notification.type || 'warning',
+                dismissible: false,
+                message: notification.message,
+                onClick: () => {
+                    browserHistory.push('/app/settings/billing')
+                },
+            })
+        )
+    }
 }

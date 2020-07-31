@@ -8,7 +8,7 @@ import moment from 'moment'
 
 import {Link} from 'react-router'
 
-import type {dispatchType} from '../../../state/types'
+import type {Dispatch} from '../../../state/types'
 
 import {SHOPIFY_PAYMENT_SERVICE} from '../../../constants/billing'
 import * as billingSelectors from '../../../state/billing/selectors'
@@ -21,9 +21,9 @@ import GorgiasApi from '../../../services/gorgiasApi'
 import {notify} from '../../../state/notifications/actions'
 
 type Props = {
-    fetchInvoices: () => Promise<dispatchType>,
-    notify: (Object) => Promise<dispatchType>,
-    updateInvoiceInList: (Object) => Promise<dispatchType>,
+    fetchInvoices: () => Promise<Dispatch>,
+    notify: (Object) => Promise<Dispatch>,
+    updateInvoiceInList: (Object) => Promise<Dispatch>,
     invoices: Object,
 }
 

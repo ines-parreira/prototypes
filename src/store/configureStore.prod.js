@@ -5,14 +5,8 @@ import rootReducer from '../state/reducers'
 
 import ravenCrashReporter from './middlewares/ravenCrashReporter'
 import serverErrorHandler from './middlewares/serverErrorHandler'
-import usageLimitNotifier from './middlewares/usageLimitNotifier'
 
-const midlewares = [
-    ravenCrashReporter,
-    thunk,
-    serverErrorHandler,
-    usageLimitNotifier,
-]
+const midlewares = [ravenCrashReporter, thunk, serverErrorHandler]
 
 export default function configureStore(initialState) {
     return createStore(

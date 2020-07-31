@@ -2,7 +2,7 @@
 import axios from 'axios'
 
 import {notify} from '../notifications/actions'
-import type {dispatchType} from '../types'
+import type {Dispatch} from '../types'
 
 import * as constants from './constants'
 import type {billingContactType} from './types'
@@ -13,7 +13,7 @@ import type {billingContactType} from './types'
  * @param planId - The ID of the plan to use to create a future subscription
  * @returns - A Redux action
  */
-export const setFutureSubscriptionPlan = (planId: string): dispatchType => {
+export const setFutureSubscriptionPlan = (planId: string): Dispatch => {
     return {
         type: constants.SET_FUTURE_SUBSCRIPTION_PLAN,
         planId,
@@ -26,7 +26,7 @@ export const setFutureSubscriptionPlan = (planId: string): dispatchType => {
  * @param invoice - the new invoice to update in the list.
  * @returns - A Redux action.
  */
-export const updateInvoiceInList = (invoice: Map<*, *>): dispatchType => {
+export const updateInvoiceInList = (invoice: Map<*, *>): Dispatch => {
     return {
         type: constants.UPDATE_INVOICE_IN_LIST,
         invoice,
@@ -34,7 +34,7 @@ export const updateInvoiceInList = (invoice: Map<*, *>): dispatchType => {
 }
 
 export function fetchCurrentUsage() {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         return axios
             .get('/api/billing/current-usage/')
             .then((json = {}) => json.data)
@@ -57,7 +57,7 @@ export function fetchCurrentUsage() {
 }
 
 export function fetchInvoices() {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         return axios
             .get('/api/billing/invoices/')
             .then((json = {}) => json.data.data)
@@ -80,7 +80,7 @@ export function fetchInvoices() {
 }
 
 export function fetchPaymentMethod() {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         return axios
             .get('/api/billing/payment-method/')
             .then((json = {}) => json.data)
@@ -103,7 +103,7 @@ export function fetchPaymentMethod() {
 }
 
 export function fetchCreditCard() {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         return axios
             .get('/api/billing/credit-card/')
             .then((json = {}) => json.data)
@@ -143,7 +143,7 @@ export const setCreditCard = (creditCard: Map<*, *>): Object => {
  * @returns {Promise} the async action promise
  */
 export function fetchContact() {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         return axios
             .get('/api/billing/contact/')
             .then((json = {}) => json.data)
@@ -171,7 +171,7 @@ export function fetchContact() {
  * @returns {Promise} the async action promise
  */
 export function updateContact(billingContact: billingContactType) {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         return axios
             .put('/api/billing/contact/', billingContact.toJS())
             .then((json = {}) => json.data)

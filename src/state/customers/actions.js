@@ -7,18 +7,13 @@ import {updateNotification} from 'reapop'
 import * as viewsConfig from '../../config/views'
 
 import {notify} from '../notifications/actions'
-import type {
-    dispatchType,
-    getStateType,
-    stateType,
-    thunkActionType,
-} from '../types'
+import type {Dispatch, getStateType, stateType, thunkActionType} from '../types'
 
 import * as types from './constants'
 import {mergeChannels} from './helpers'
 
 export function fetchCustomer(customerId: number) {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         dispatch({
             type: types.FETCH_CUSTOMER_START,
         })
@@ -45,7 +40,7 @@ export function fetchCustomer(customerId: number) {
 }
 
 export function submitCustomer(data: {}, customerId: number) {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         const isUpdate = !_isUndefined(customerId)
         let promise
 
@@ -95,7 +90,7 @@ export function submitCustomer(data: {}, customerId: number) {
 }
 
 export function deleteCustomer(customerId: number) {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         dispatch({
             type: types.DELETE_CUSTOMER_START,
         })
@@ -130,7 +125,7 @@ export function deleteCustomer(customerId: number) {
 }
 
 export function bulkDeleteCustomer(ids: List<*>): thunkActionType {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         dispatch({
             type: types.BULK_DELETE_START,
         })
@@ -177,7 +172,7 @@ export function fetchCustomerHistory(
     customerId: number,
     options: {successCondition?: (T: stateType) => boolean} = {}
 ) {
-    return (dispatch: dispatchType, getState: getStateType) => {
+    return (dispatch: Dispatch, getState: getStateType) => {
         dispatch({
             type: types.FETCH_CUSTOMER_HISTORY_START,
         })
@@ -229,7 +224,7 @@ export function mergeCustomers(
     mergeCustomerId: number,
     data: Object = {}
 ) {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         dispatch({
             type: types.MERGE_CUSTOMERS_START,
         })

@@ -38,8 +38,8 @@ export type getStateType = () => stateType
 export type actionType = {
     type: string,
 }
-export type dispatchType = (action: actionType) => void
+export type Dispatch = (action: actionType) => void
 export type thunkActionType = (
-    dispatch: dispatchType,
+    dispatch: Dispatch,
     getState?: getStateType
 ) => any

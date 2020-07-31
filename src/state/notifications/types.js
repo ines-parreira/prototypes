@@ -4,6 +4,7 @@ export type Notification = {
     message?: string,
     id?: ?string,
     title?: string,
+    type?: 'success' | 'error' | 'warning' | 'info' | 'loading',
     dismissAfter?: number,
     closeOnNext?: boolean,
     allowHTML?: boolean,
@@ -14,4 +15,10 @@ type NotificationButton = {
     name: string,
     onClick: () => void,
     primary: boolean,
+}
+
+export type HandleUsageBanner = {
+    newAccountStatus: string,
+    currentAccountStatus: string,
+    notification: ?Notification,
 }

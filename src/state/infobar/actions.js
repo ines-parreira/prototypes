@@ -7,7 +7,7 @@ import _noop from 'lodash/noop'
 import {notify} from '../notifications/actions'
 import {isCurrentlyOnTicket, stripErrorMessage} from '../../utils'
 
-import type {dispatchType, getStateType, thunkActionType} from '../types'
+import type {Dispatch, getStateType, thunkActionType} from '../types'
 
 import * as constants from './constants'
 
@@ -21,7 +21,7 @@ type responseType = {
 export const search = (
     query: string,
     cancelToken?: CancelToken
-): thunkActionType => (dispatch: dispatchType): Promise<dispatchType> => {
+): thunkActionType => (dispatch: Dispatch): Promise<Dispatch> => {
     dispatch({
         type: constants.SEARCH_CUSTOMERS_START,
     })
@@ -51,8 +51,8 @@ export const search = (
 }
 
 export const similarCustomer = (customerId: string): thunkActionType => (
-    dispatch: dispatchType
-): Promise<dispatchType> => {
+    dispatch: Dispatch
+): Promise<Dispatch> => {
     dispatch({
         type: constants.SEARCH_SIMILAR_CUSTOMER_START,
     })
@@ -94,8 +94,8 @@ export const similarCustomer = (customerId: string): thunkActionType => (
 }
 
 export const fetchPreviewCustomer = (customerId: string): thunkActionType => (
-    dispatch: dispatchType
-): Promise<dispatchType> => {
+    dispatch: Dispatch
+): Promise<Dispatch> => {
     dispatch({
         type: constants.FETCH_PREVIEW_CUSTOMER_START,
     })
@@ -135,10 +135,7 @@ export const executeAction = (
     customerId?: string,
     payload: {} = {},
     callback: () => void = _noop
-) => (
-    dispatch: dispatchType,
-    getState: getStateType
-): Promise<dispatchType> => {
+) => (dispatch: Dispatch, getState: getStateType): Promise<Dispatch> => {
     const state = getState()
     const {ticket} = state
 
@@ -193,8 +190,8 @@ export const executeAction = (
  * @param response
  */
 export const handleExecutedAction = (response: responseType) => (
-    dispatch: dispatchType
-): Promise<dispatchType> => {
+    dispatch: Dispatch
+): Promise<Dispatch> => {
     if (response.status === 'error') {
         let buttons = [
             {

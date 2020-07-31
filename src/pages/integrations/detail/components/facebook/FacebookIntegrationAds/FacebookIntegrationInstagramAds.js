@@ -25,7 +25,7 @@ import {
     getFacebookIntegrationLoading,
     getFacebookIntegrationLoadingAds,
 } from '../../../../../../state/facebookAds/selectors'
-import type {dispatchType} from '../../../../../../state/types'
+import type {Dispatch} from '../../../../../../state/types'
 
 import Loader from '../../../../../common/components/Loader/Loader'
 
@@ -187,7 +187,7 @@ const mapStateToProps = (state: Object) => ({
     loadingAds: getFacebookIntegrationLoadingAds(state),
 })
 
-const mapDispatchToProps = (dispatch: dispatchType, props: Props) => ({
+const mapDispatchToProps = (dispatch: Dispatch, props: Props) => ({
     fetchAds: () => dispatch(fetchAds()),
     updateAd: (id: string, isActive: boolean) =>
         dispatch(updateAd(props.integration.get('id'), id, isActive)),

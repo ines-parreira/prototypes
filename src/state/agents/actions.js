@@ -6,14 +6,14 @@ import type {Map} from 'immutable'
 import {USER_ROLES} from '../../config/user'
 import {toImmutable, toJS} from '../../utils'
 import {notify} from '../notifications/actions'
-import type {dispatchType} from '../types'
+import type {Dispatch} from '../types'
 
 import * as constants from './constants'
 
 type agentType = {}
 
 export function fetchUsers(roles: Array<string>) {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         dispatch({
             type: constants.FETCH_USER_LIST_START,
         })
@@ -47,8 +47,8 @@ export function fetchUsers(roles: Array<string>) {
 }
 
 export const createAgent = (agent: agentType) => (
-    dispatch: dispatchType
-): Promise<dispatchType> => {
+    dispatch: Dispatch
+): Promise<Dispatch> => {
     return axios
         .post('/api/users/', toJS(agent))
         .then((json = {}) => json.data)
@@ -81,8 +81,8 @@ export const createAgent = (agent: agentType) => (
 }
 
 export const deleteAgent = (id: string) => (
-    dispatch: dispatchType
-): Promise<dispatchType> => {
+    dispatch: Dispatch
+): Promise<Dispatch> => {
     return axios
         .delete(`/api/users/${id}/`)
         .then((json = {}) => json.data)
@@ -113,7 +113,7 @@ export const deleteAgent = (id: string) => (
 }
 
 export const fetchAgent = (id: string, cancelToken?: CancelToken) => (
-    dispatch: dispatchType
+    dispatch: Dispatch
 ): Promise<?Map<*, *>> => {
     return axios
         .get(`/api/users/${id}/`, cancelToken && {cancelToken})
@@ -136,8 +136,8 @@ export const fetchAgent = (id: string, cancelToken?: CancelToken) => (
 
 // eslint-disable-next-line
 export const fetchPagination = (page: number = 1) => (
-    dispatch: dispatchType
-): Promise<dispatchType> => {
+    dispatch: Dispatch
+): Promise<Dispatch> => {
     return axios
         .get('/api/users/', {
             params: {
@@ -164,8 +164,8 @@ export const fetchPagination = (page: number = 1) => (
 }
 
 export const inviteAgent = (id: string) => (
-    dispatch: dispatchType
-): Promise<dispatchType> => {
+    dispatch: Dispatch
+): Promise<Dispatch> => {
     return axios
         .post(`/api/users/${id}/invite/`)
         .then((json = {}) => json.data)
@@ -189,8 +189,8 @@ export const inviteAgent = (id: string) => (
 }
 
 export const updateAgent = (id: string, agent: agentType) => (
-    dispatch: dispatchType
-): Promise<dispatchType> => {
+    dispatch: Dispatch
+): Promise<Dispatch> => {
     return axios
         .put(`/api/users/${id}/`, toJS(agent))
         .then((json = {}) => json.data)

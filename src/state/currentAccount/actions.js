@@ -4,7 +4,7 @@ import _capitalize from 'lodash/capitalize'
 
 import {notify} from '../notifications/actions'
 import GorgiasApi from '../../services/gorgiasApi'
-import type {dispatchType} from '../types'
+import type {Dispatch} from '../types'
 
 import * as constants from './constants'
 
@@ -13,16 +13,9 @@ type settingType = {
     type: string,
 }
 
-export const updateAccountSuccess = (resp: {}) => (dispatch: dispatchType) => {
-    dispatch({
-        type: constants.UPDATE_ACCOUNT_SUCCESS,
-        resp,
-    })
-}
-
 export const updateAccount = (values: {}) => (
-    dispatch: dispatchType
-): Promise<dispatchType> => {
+    dispatch: Dispatch
+): Promise<Dispatch> => {
     dispatch({type: constants.UPDATE_ACCOUNT_START})
 
     return axios
@@ -52,7 +45,7 @@ export const updateAccount = (values: {}) => (
 }
 
 export function submitSetting(setting: settingType) {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         const isUpdate = !!setting.id
         let promise
 
@@ -92,7 +85,7 @@ export function submitSetting(setting: settingType) {
 }
 
 export function updateSubscription(subscription: {}) {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         return axios
             .put('/api/billing/subscription/', subscription)
             .then((json = {}) => json.data)
@@ -139,8 +132,8 @@ export const setCurrentSubscription = (subscription: Map<*, *>) => {
  * @returns {Function} the async action thunk
  */
 export const updateAccountOwner = (userId: number) => (
-    dispatch: dispatchType
-): Promise<dispatchType> => {
+    dispatch: Dispatch
+): Promise<Dispatch> => {
     return axios
         .put('/api/account/owner/', {id: userId})
         .then((resp = {}) => resp.data)
@@ -169,8 +162,8 @@ export const updateAccountOwner = (userId: number) => (
 }
 
 export const resendVerificationEmail = () => async (
-    dispatch: dispatchType
-): Promise<dispatchType> => {
+    dispatch: Dispatch
+): Promise<Dispatch> => {
     const gorgiasApi = new GorgiasApi()
 
     try {

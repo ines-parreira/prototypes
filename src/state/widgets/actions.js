@@ -11,7 +11,7 @@ import {getSources, getSourcesWithCustomer} from '../widgets/selectors'
 
 import {jsonToWidgets} from '../../pages/common/components/infobar/utils'
 import {notify} from '../notifications/actions'
-import type {dispatchType, getStateType} from '../types'
+import type {Dispatch, getStateType} from '../types'
 
 import * as integrationsSelectors from './../integrations/selectors'
 import * as types from './constants'
@@ -30,7 +30,7 @@ type widgetType = {
 }
 
 export function fetchWidgets() {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         dispatch({
             type: types.FETCH_WIDGETS_START,
         })
@@ -90,7 +90,7 @@ export function generateAndSetWidgets(
     sources: Map<*, *>,
     context: string = 'ticket'
 ) {
-    return (dispatch: dispatchType): dispatchType => {
+    return (dispatch: Dispatch): Dispatch => {
         // generate template
         const items = jsonToWidgets(sources.toJS(), context)
 
@@ -142,7 +142,7 @@ export function drop(
     toIndex: number = 0,
     fromIndex: number = 0
 ) {
-    return (dispatch: dispatchType, getState: getStateType): dispatchType => {
+    return (dispatch: Dispatch, getState: getStateType): Dispatch => {
         const state = getState()
         const splitKey = key.split('.')
         let type = null
@@ -208,10 +208,7 @@ export function removeEditedWidget(
 }
 
 export function submitWidgets(data: ?Array<widgetType>) {
-    return (
-        dispatch: dispatchType,
-        getState: getStateType
-    ): Promise<dispatchType> => {
+    return (dispatch: Dispatch, getState: getStateType): Promise<Dispatch> => {
         const context = getState().widgets.get('currentContext', 'ticket')
 
         dispatch({

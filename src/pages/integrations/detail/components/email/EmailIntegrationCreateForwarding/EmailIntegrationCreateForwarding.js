@@ -19,7 +19,7 @@ import {getForwardingEmailAddress} from '../../../../../../state/integrations/se
 import * as notificationActions from '../../../../../../state/notifications/actions'
 import * as integrationActions from '../../../../../../state/integrations/actions'
 import PageHeader from '../../../../../common/components/PageHeader'
-import type {dispatchType} from '../../../../../../state/types'
+import type {Dispatch} from '../../../../../../state/types'
 
 import css from './EmailIntegrationCreateForwarding.less'
 
@@ -65,7 +65,7 @@ const servicesWithTutorials = [
 type Props = {
     forwardingEmailAddress: string,
     notify: (Object) => void,
-    sendVerificationEmail: () => Promise<dispatchType>,
+    sendVerificationEmail: () => Promise<Dispatch>,
     integration: Object,
     actions: Object,
     location: Object,

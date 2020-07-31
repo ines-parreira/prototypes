@@ -19,7 +19,7 @@ import type {
     Order,
 } from '../../../../constants/integrations/types/shopify'
 import {formatPrice} from '../../../../business/shopify/number'
-import type {dispatchType, getStateType} from '../../../types'
+import type {Dispatch, getStateType} from '../../../types'
 import GorgiasApi from '../../../../services/gorgiasApi'
 import {notify} from '../../../notifications/actions'
 
@@ -86,7 +86,7 @@ const setInitialState = () => ({
 })
 
 export const onInit = (integrationId: number, order: Record<Order>) => async (
-    dispatch: dispatchType
+    dispatch: Dispatch
 ) => {
     try {
         let payload = initCancelOrderPayload(order)
@@ -137,7 +137,7 @@ export const onInit = (integrationId: number, order: Record<Order>) => async (
 export const onLineItemsChange = (
     integrationId: number,
     lineItems: List<$Shape<LineItem>>
-) => async (dispatch: dispatchType, getState: getStateType) => {
+) => async (dispatch: Dispatch, getState: getStateType) => {
     const state = getState()
     let newPayload = getCancelOrderState(state).get('payload')
 
@@ -168,7 +168,7 @@ export const onLineItemsChange = (
 export const onPayloadChange = (
     integrationId: number,
     payload: Record<$Shape<CancelOrderPayload>>
-) => async (dispatch: dispatchType, getState: getStateType) => {
+) => async (dispatch: Dispatch, getState: getStateType) => {
     dispatch(setPayload(payload))
     dispatch(setLoading(true, 'Calculating refund...'))
     return calculateRefund(integrationId, dispatch, getState)
@@ -177,7 +177,7 @@ export const onPayloadChange = (
 export const calculateRefund = _debounce(
     async (
         integrationId: number,
-        dispatch: dispatchType,
+        dispatch: Dispatch,
         getState: getStateType
     ) => {
         try {
@@ -231,7 +231,7 @@ export const calculateRefund = _debounce(
 )
 
 export const onApiError = (error: Object, defaultMessage: string) => (
-    dispatch: dispatchType
+    dispatch: Dispatch
 ) => {
     const message =
         error.response && error.response.data && error.response.data.error
@@ -258,9 +258,9 @@ export const onCancel = (via: string) => () => {
     })
 }
 
-export const onReset = () => (dispatch: dispatchType) => resetState(dispatch)
+export const onReset = () => (dispatch: Dispatch) => resetState(dispatch)
 
 export const resetState = _debounce(
-    (dispatch: dispatchType) => dispatch(setInitialState()),
+    (dispatch: Dispatch) => dispatch(setInitialState()),
     250
 )

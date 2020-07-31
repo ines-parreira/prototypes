@@ -156,6 +156,24 @@ describe('Config: socketEvents', () => {
                 jest.resetAllMocks()
             })
 
+            it('should dispatch handleUsageBanner', () => {
+                const spy = jest.spyOn(notificationActions, 'handleUsageBanner')
+
+                mockedCurrentAccountSelectors.getTicketAssignmentSettings.mockReturnValue(
+                    fromJS({})
+                )
+
+                if (accountUpdatedHandler) {
+                    accountUpdatedHandler.onReceive({account: {}})
+                }
+
+                expect(reduxStore.dispatch).toHaveBeenCalledTimes(2)
+                expect(spy).toHaveBeenCalledWith({
+                    newAccountStatus: 'active',
+                    currentAccountStatus: 'active',
+                })
+            })
+
             it('should not fetch chats because `ticket_assignment` settings do not exist', () => {
                 const account = {
                     settings: [],

@@ -280,6 +280,19 @@ export const receivedEvents: ReceivedEvent[] = [
         name: socketConstants.ACCOUNT_UPDATED,
         onReceive: function (json: socketEventTypes.AccountUpdatedEvent) {
             const state = reduxStore.getState()
+            const newAccountStatus = json?.account?.status?.status || 'active'
+            const notification = json?.account?.status?.notification
+            const currentAccountStatus =
+                state.currentAccount?.status?.status || 'active'
+
+            reduxStore.dispatch(
+                notificationsActions.handleUsageBanner({
+                    newAccountStatus,
+                    currentAccountStatus,
+                    notification,
+                })
+            )
+
             const oldTicketAssignmentSetting = currentAccountSelectors.getTicketAssignmentSettings(
                 state
             )

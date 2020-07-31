@@ -30,7 +30,7 @@ import * as segmentTracker from '../../store/middlewares/segmentTracker'
 
 import type {Action, Ticket, TicketMessage} from '../../models/ticket'
 import type {Macro} from '../macro/types'
-import type {dispatchType, getStateType, thunkActionType} from '../types'
+import type {Dispatch, getStateType, thunkActionType} from '../types'
 
 import * as socketEventTypes from '../../services/socketManager/types.js'
 
@@ -42,7 +42,7 @@ import {
 import * as types from './constants'
 
 export const mergeTicket = (ticket: Ticket) => (
-    dispatch: dispatchType,
+    dispatch: Dispatch,
     getState: getStateType
 ) => {
     const ticketRecord = fromJS(ticket)
@@ -106,7 +106,7 @@ export const fetchTicketReplyMacro = () => ({
 })
 
 export const ticketPartialUpdate = (args: Object) => (
-    dispatch: dispatchType,
+    dispatch: Dispatch,
     getState: getStateType
 ) => {
     if (_isEmpty(args)) {
@@ -147,7 +147,7 @@ export const ticketPartialUpdate = (args: Object) => (
 }
 
 export const addTags = (tags: string) => (
-    dispatch: dispatchType,
+    dispatch: Dispatch,
     getState: getStateType
 ) => {
     dispatch({
@@ -161,7 +161,7 @@ export const addTags = (tags: string) => (
 }
 
 export const removeTag = (tag: string) => (
-    dispatch: dispatchType,
+    dispatch: Dispatch,
     getState: getStateType
 ) => {
     dispatch({
@@ -175,7 +175,7 @@ export const removeTag = (tag: string) => (
 }
 
 export const setSpam = (spam: boolean, callback: () => void = _noop) => (
-    dispatch: dispatchType,
+    dispatch: Dispatch,
     getState: getStateType
 ) => {
     const {ticket} = getState()
@@ -229,7 +229,7 @@ export const setSpam = (spam: boolean, callback: () => void = _noop) => (
 export const setTrashed = (
     datetime: ?Moment,
     callback: () => void = _noop
-): thunkActionType => (dispatch: dispatchType, getState: getStateType) => {
+): thunkActionType => (dispatch: Dispatch, getState: getStateType) => {
     const {ticket} = getState()
     const ticketId = ticket.get('id')
     const isTrashed = !!ticket.get('trashed_datetime')
@@ -286,7 +286,7 @@ export const setTrashed = (
 }
 
 export const setAgent = (assigneeUser: ?Object) => (
-    dispatch: dispatchType,
+    dispatch: Dispatch,
     getState: getStateType
 ) => {
     dispatch({
@@ -302,7 +302,7 @@ export const setAgent = (assigneeUser: ?Object) => (
 }
 
 export const setTeam = (assigneeTeam: ?Object) => (
-    dispatch: dispatchType,
+    dispatch: Dispatch,
     getState: getStateType
 ) => {
     dispatch({
@@ -318,7 +318,7 @@ export const setTeam = (assigneeTeam: ?Object) => (
 }
 
 export const setCustomer = (customer: ?Object): thunkActionType => (
-    dispatch: dispatchType
+    dispatch: Dispatch
 ) => {
     dispatch({
         type: types.SET_CUSTOMER,
@@ -341,7 +341,7 @@ export const setCustomer = (customer: ?Object): thunkActionType => (
 }
 
 export const setStatus = (status: string, callback: () => void = _noop) => (
-    dispatch: dispatchType,
+    dispatch: Dispatch,
     getState: getStateType
 ) => {
     dispatch({
@@ -362,7 +362,7 @@ export const setStatus = (status: string, callback: () => void = _noop) => (
 }
 
 export const setSubject = (subject: string) => (
-    dispatch: dispatchType,
+    dispatch: Dispatch,
     getState: getStateType
 ) => {
     dispatch({
@@ -378,7 +378,7 @@ export const setSubject = (subject: string) => (
 }
 
 export const setSnooze = (datetime: Moment, callback: () => void = _noop) => (
-    dispatch: dispatchType
+    dispatch: Dispatch
 ) => {
     const data = {
         snooze_datetime: datetime,
@@ -404,7 +404,7 @@ export const setSnooze = (datetime: Moment, callback: () => void = _noop) => (
 }
 
 export const deleteMessage = (ticketId: number, messageId: number) => (
-    dispatch: dispatchType
+    dispatch: Dispatch
 ) => {
     return axios
         .delete(`/api/tickets/${ticketId}/messages/${messageId}/`)
@@ -447,7 +447,7 @@ export const updateActionArgsOnApplied = (
 })
 
 export const applyMacroAction = (action: Record<Action>) => (
-    dispatch: dispatchType,
+    dispatch: Dispatch,
     getState: getStateType
 ) => {
     const state = getState()
@@ -476,7 +476,7 @@ export const applyMacro = (
     macro: Macro,
     ticketId: number,
     shouldUpdateNewMessage?: boolean = true
-) => (dispatch: dispatchType, getState: getStateType) => {
+) => (dispatch: Dispatch, getState: getStateType) => {
     // render macro action arguments
     let state = getState()
 
@@ -537,7 +537,7 @@ export const clearAppliedMacro = (ticketId: number) => ({
  * @param discreetly: (default: false) whether or not the function should dispatch `FETCH_TICKET_START`
  */
 export const fetchTicket = (ticketId: string, discreetly: boolean = false) => (
-    dispatch: dispatchType,
+    dispatch: Dispatch,
     getState: getStateType
 ) => {
     if (ticketId === 'new') {
@@ -652,9 +652,9 @@ export const fetchTicket = (ticketId: string, discreetly: boolean = false) => (
 export const _goToNextOrPrevTicket = (
     ticketId: number,
     direction: string,
-    promise?: Promise<?dispatchType>
+    promise?: Promise<?Dispatch>
 ) => {
-    return (dispatch: dispatchType, getState: getStateType) => {
+    return (dispatch: Dispatch, getState: getStateType) => {
         if (!promise) {
             // we do not display the loading state if there is a promise to resolve
             // because we want to do it discreetly: while something else is happening.
@@ -662,8 +662,7 @@ export const _goToNextOrPrevTicket = (
                 type: types.FETCH_TICKET_START,
             })
         }
-        let returnedPromise: Promise<?dispatchType> =
-            promise || Promise.resolve()
+        let returnedPromise: Promise<?Dispatch> = promise || Promise.resolve()
 
         const viewId = viewsSelectors.getActiveView(getState()).get('id')
         const viewCursor = ticketsSelectors.getCursor(getState())
@@ -682,7 +681,7 @@ export const _goToNextOrPrevTicket = (
             .then(
                 (ticket) => {
                     // wait for the promise to be resolved to go to the ticket
-                    return ((returnedPromise: any): Promise<?dispatchType>).then(
+                    return ((returnedPromise: any): Promise<?Dispatch>).then(
                         () => {
                             if (!ticket) {
                                 // there is no other ticket the user can handle so we go back to the view
@@ -759,8 +758,8 @@ export const _goToNextOrPrevTicket = (
  */
 export const goToPrevTicket = (
     ticketId: number,
-    promise?: Promise<?dispatchType>
-) => (dispatch: dispatchType) => {
+    promise?: Promise<?Dispatch>
+) => (dispatch: Dispatch) => {
     return dispatch(_goToNextOrPrevTicket(ticketId, 'prev', promise))
 }
 
@@ -770,13 +769,13 @@ export const goToPrevTicket = (
  */
 export const goToNextTicket = (
     ticketId: number,
-    promise?: Promise<?dispatchType>
-) => (dispatch: dispatchType) => {
+    promise?: Promise<?Dispatch>
+) => (dispatch: Dispatch) => {
     return dispatch(_goToNextOrPrevTicket(ticketId, 'next', promise))
 }
 
 export const displayAuditLogEvents = (ticketId: number) => async (
-    dispatch: dispatchType
+    dispatch: Dispatch
 ) => {
     segmentTracker.logEvent(segmentTracker.EVENTS.DISPLAY_ALL_EVENTS_CLICKED, {
         ticketId,
@@ -815,7 +814,7 @@ export const displayAuditLogEvents = (ticketId: number) => async (
     }
 }
 
-export const hideAuditLogEvents = () => (dispatch: dispatchType) => {
+export const hideAuditLogEvents = () => (dispatch: Dispatch) => {
     dispatch({
         type: types.HIDE_TICKET_AUDIT_LOG_EVENTS,
     })
@@ -826,7 +825,7 @@ export const hideAuditLogEvents = () => (dispatch: dispatchType) => {
 }
 
 export const handleMessageActionError = (ticketId: string) => (
-    dispatch: dispatchType
+    dispatch: Dispatch
 ) => {
     let buttons = []
     let fetchPromise = null
@@ -861,7 +860,7 @@ export const handleMessageActionError = (ticketId: string) => (
 
 export const handleMessageError = (
     json: socketEventTypes.TicketMessageFailedEvent
-) => (dispatch: dispatchType) => {
+) => (dispatch: Dispatch) => {
     let buttons = []
     let fetchPromise = null
 
@@ -900,7 +899,7 @@ export function updateTicketMessage(
     data: Object,
     action: ?string = null
 ) {
-    return (dispatch: dispatchType) => {
+    return (dispatch: Dispatch) => {
         dispatch({
             type: types.UPDATE_TICKET_MESSAGE_START,
             messageId,
@@ -937,7 +936,7 @@ export function updateTicketMessage(
 }
 
 export function clearTicket() {
-    return (dispatch: dispatchType, getState: getStateType) => {
+    return (dispatch: Dispatch, getState: getStateType) => {
         const state = getState()
 
         const shouldDisplayHistoryOnNextPage = state.ticket.getIn([
@@ -969,7 +968,7 @@ export function displayHistoryOnNextPage(state: boolean = true) {
 }
 
 export function deleteTicket(id: number) {
-    return (dispatch: dispatchType) => {
+    return (dispatch: Dispatch) => {
         return axios
             .delete(`/api/tickets/${id}/`)
             .then((json = {}) => json.data)
@@ -1004,7 +1003,7 @@ export function deleteTicketPendingMessage(message: Record<TicketMessage>) {
  * Search a customer by email, and then fetch it and set it as customer of the current ticket.
  * @param email: the email of the customer we want to set as customer
  */
-export const findAndSetCustomer = (email: string) => (dispatch: dispatchType) =>
+export const findAndSetCustomer = (email: string) => (dispatch: Dispatch) =>
     axios
         .post('/api/search/', {type: 'user_channel_email', query: email})
         .then((json = {}) => json.data)
@@ -1021,7 +1020,7 @@ export const findAndSetCustomer = (email: string) => (dispatch: dispatchType) =>
             return axios
                 .get(`/api/customers/${channel.user.id}/`)
                 .then((json = {}) => json.data)
-                .then((resp): Promise<dispatchType> => {
+                .then((resp): Promise<Dispatch> => {
                     return dispatch(setCustomer(fromJS(resp)))
                 })
         })

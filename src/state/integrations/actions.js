@@ -12,7 +12,7 @@ import {
 } from '../../constants/integration'
 
 import {notify} from '../notifications/actions'
-import type {dispatchType, getStateType} from '../types'
+import type {Dispatch, getStateType} from '../types'
 
 import * as constants from './constants'
 import * as integrationSelectors from './selectors'
@@ -23,7 +23,7 @@ type integrationType = {
 }
 
 export function fetchIntegrations() {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         dispatch({
             type: constants.FETCH_INTEGRATIONS_START,
         })
@@ -72,7 +72,7 @@ function fetchOnboardingIntegrations(
     forceOverride: boolean = true,
     filter: string = ''
 ) {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         dispatch({
             type: constants.FETCH_ONBOARDING_INTEGRATIONS_START,
         })
@@ -148,7 +148,7 @@ export function activateOnboardingIntegrations(
     data: Array<{}>,
     integrationType: string
 ) {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         dispatch({
             type: constants.ACTIVATE_ONBOARDING_INTEGRATIONS_START,
         })
@@ -197,9 +197,9 @@ export function activateOnboardingIntegrations(
  * @param resp: the raw Integration data coming back from the server
  */
 export function onCreateSuccess(
-    dispatch: dispatchType,
+    dispatch: Dispatch,
     resp: integrationType
-): dispatchType {
+): Dispatch {
     dispatch({
         type: constants.CREATE_INTEGRATION_SUCCESS,
         resp,
@@ -230,7 +230,7 @@ export function onCreateSuccess(
 }
 
 export function triggerCreateSuccess(integration: integrationType) {
-    return (dispatch: dispatchType) => onCreateSuccess(dispatch, integration)
+    return (dispatch: Dispatch) => onCreateSuccess(dispatch, integration)
 }
 
 /**
@@ -242,11 +242,11 @@ export function triggerCreateSuccess(integration: integrationType) {
  * @param didInvalidateCache: whether this update invalidated the cache of this integration or not
  */
 export function onUpdateSuccess(
-    dispatch: dispatchType,
+    dispatch: Dispatch,
     resp: {type: string},
     notificationId: ?string = null,
     didInvalidateCache: boolean = false
-): dispatchType {
+): Dispatch {
     dispatch({
         type: constants.UPDATE_INTEGRATION_SUCCESS,
         resp,
@@ -274,7 +274,7 @@ export function fetchIntegration(
     integrationType: string,
     waitingForAuthentication: boolean = false
 ) {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         if (!waitingForAuthentication) {
             dispatch({
                 type: constants.FETCH_INTEGRATION_START,
@@ -332,7 +332,7 @@ export function fetchIntegration(
 }
 
 export function deleteIntegration(integration: Map<*, *>) {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         dispatch({
             type: constants.DELETE_INTEGRATION_START,
             id: integration.get('id'),
@@ -381,7 +381,7 @@ function updateOrCreateIntegrationRequest(
     action: ?{},
     notificationId: ?string = null
 ) {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         const isUpdate = integration.get('id')
         const oldDecoration = integration.get('decoration') || fromJS({})
 
@@ -442,7 +442,7 @@ function updateOrCreateIntegrationRequest(
 }
 
 export function createImportIntegration(integration: Map<*, *>) {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         const isUpdate = !!integration.get('id')
 
         dispatch({
@@ -486,7 +486,7 @@ export function createImportIntegration(integration: Map<*, *>) {
 }
 
 export function deactivateIntegration(id: number) {
-    return (dispatch: dispatchType, getState: getStateType): dispatchType => {
+    return (dispatch: Dispatch, getState: getStateType): Dispatch => {
         const fullIntegration = integrationSelectors.getIntegrationById(id)(
             getState()
         )
@@ -520,7 +520,7 @@ export function deactivateIntegration(id: number) {
 }
 
 export function activateIntegration(id: number) {
-    return (dispatch: dispatchType, getState: getStateType): dispatchType => {
+    return (dispatch: Dispatch, getState: getStateType): Dispatch => {
         const fullIntegration = integrationSelectors.getIntegrationById(id)(
             getState()
         )
@@ -560,13 +560,13 @@ export function activateIntegration(id: number) {
  * @returns {Function}
  */
 export function updateOrCreateIntegration(integration: Map<*, *>, action: {}) {
-    return (dispatch: dispatchType): dispatchType => {
+    return (dispatch: Dispatch): Dispatch => {
         return dispatch(updateOrCreateIntegrationRequest(integration, action))
     }
 }
 
 export function importEmails(integration: Map<*, *>) {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         dispatch({
             type: constants.EMAIL_INTEGRATION_IMPORT_START,
             id: integration.get('id'),
@@ -603,9 +603,9 @@ export function importEmails(integration: Map<*, *>) {
 }
 
 export function onVerify(
-    dispatch: dispatchType,
+    dispatch: Dispatch,
     integrationId: number
-): Promise<dispatchType> {
+): Promise<Dispatch> {
     dispatch(
         notify({
             status: 'success',
@@ -619,10 +619,7 @@ export function onVerify(
 }
 
 export function verifyEmailIntegration(token: string) {
-    return (
-        dispatch: dispatchType,
-        getState: getStateType
-    ): Promise<dispatchType> => {
+    return (dispatch: Dispatch, getState: getStateType): Promise<Dispatch> => {
         const state = getState()
         const integration = integrationSelectors.getCurrentIntegration(state)
 
@@ -649,10 +646,7 @@ export function verifyEmailIntegration(token: string) {
 }
 
 export function sendVerificationEmail() {
-    return (
-        dispatch: dispatchType,
-        getState: getStateType
-    ): Promise<dispatchType> => {
+    return (dispatch: Dispatch, getState: getStateType): Promise<Dispatch> => {
         const state = getState()
         const integration = integrationSelectors.getCurrentIntegration(state)
 

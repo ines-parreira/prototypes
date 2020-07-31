@@ -23,7 +23,7 @@ import {
 } from '../../utils'
 import {buildJobMessage} from '../../utils/notificationUtils'
 import {getMoment} from '../../utils/date'
-import type {dispatchType, getStateType, thunkActionType} from '../types'
+import type {Dispatch, getStateType, thunkActionType} from '../types'
 
 import {activeViewUrl} from './utils'
 import * as viewsSelectors from './selectors'
@@ -31,8 +31,8 @@ import * as types from './constants'
 import type {filterType, viewType} from './types'
 
 export const setViewActive = (view: viewType) => (
-    dispatch: dispatchType
-): dispatchType => {
+    dispatch: Dispatch
+): Dispatch => {
     if (view) {
         socketManager.join('view', view.get('id'))
     }
@@ -63,7 +63,7 @@ export const toggleViewSelection = () => ({
 export const setOrderDirection = (
     fieldPath: string,
     direction: 'asc' | 'desc' = 'asc'
-) => (dispatch: dispatchType) => {
+) => (dispatch: Dispatch) => {
     dispatch({
         type: types.SET_ORDER_DIRECTION,
         fieldPath,
@@ -74,7 +74,7 @@ export const setOrderDirection = (
 }
 
 export const setFieldVisibility = (name: string, state: boolean) => (
-    dispatch: dispatchType
+    dispatch: Dispatch
 ) => {
     dispatch({
         type: types.SET_FIELD_VISIBILITY,
@@ -120,7 +120,7 @@ export function fieldEnumSearch(
     query: string,
     cancelToken?: CancelToken
 ): thunkActionType {
-    return (dispatch: dispatchType): Promise<void> => {
+    return (dispatch: Dispatch): Promise<void> => {
         dispatch({
             type: types.UPDATE_VIEW_FIELD_ENUM_START,
         })
@@ -165,7 +165,7 @@ export const resetView = (configName: string) => {
 }
 
 export function fetchViews(currentViewId: string): thunkActionType {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         dispatch({
             type: types.FETCH_VIEW_LIST_START,
         })
@@ -200,10 +200,7 @@ export function setPage(page: number) {
 }
 
 export function submitView(view: viewType): thunkActionType {
-    return (
-        dispatch: dispatchType,
-        getState: getStateType
-    ): Promise<dispatchType> => {
+    return (dispatch: Dispatch, getState: getStateType): Promise<Dispatch> => {
         const {views} = getState()
         const isUpdate = !!view.get('id')
         const objectName = getPluralObjectName(view.get('type', ''))
@@ -272,10 +269,7 @@ export function submitView(view: viewType): thunkActionType {
 }
 
 export function deleteView(view: viewType): thunkActionType {
-    return (
-        dispatch: dispatchType,
-        getState: getStateType
-    ): Promise<dispatchType> => {
+    return (dispatch: Dispatch, getState: getStateType): Promise<Dispatch> => {
         const vType = view.get('type', 'ticket-list')
         const otherViewsOfType = getState()
             .views.get('items', fromJS([]))
@@ -319,7 +313,7 @@ export function deleteView(view: viewType): thunkActionType {
 }
 
 export const deleteViewSuccess = (viewId: number): thunkActionType => (
-    dispatch: dispatchType,
+    dispatch: Dispatch,
     getState: getStateType
 ) => {
     dispatch({
@@ -357,10 +351,7 @@ export function fetchViewItems(
     isPolling: ?boolean = false,
     cancelToken?: CancelToken
 ): thunkActionType {
-    return (
-        dispatch: dispatchType,
-        getState: getStateType
-    ): Promise<dispatchType> => {
+    return (dispatch: Dispatch, getState: getStateType): Promise<Dispatch> => {
         const options = cancelToken ? {cancelToken} : {}
         let state = getState()
         const activeView = viewsSelectors.getActiveView(state)
@@ -490,7 +481,7 @@ export function createJob(
     jobType: string,
     jobPartialParams: Object
 ): thunkActionType {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         let requestPayload
         if (view.get('dirty', false)) {
             requestPayload = {
@@ -615,9 +606,9 @@ export const addRecentView = (viewId: number): Object => ({
 })
 
 export const fetchActiveViewTickets = () => (
-    dispatch: dispatchType,
+    dispatch: Dispatch,
     getState: getStateType
-): ?Promise<dispatchType> => {
+): ?Promise<Dispatch> => {
     const state = getState()
     const viewsState = viewsSelectors.getViewsState(state)
     const activeView = viewsSelectors.getActiveView(state)
@@ -639,7 +630,7 @@ export const fetchActiveViewTickets = () => (
 }
 
 export const fetchVisibleViewsCounts = () => (
-    dispatch: dispatchType,
+    dispatch: Dispatch,
     getState: getStateType
 ) => {
     const state = getState()
@@ -651,7 +642,7 @@ export const fetchVisibleViewsCounts = () => (
 }
 
 export const fetchRecentViewsCounts = () => (
-    dispatch: dispatchType,
+    dispatch: Dispatch,
     getState: getStateType
 ) => {
     // do not fetch views counts when the current user is not doing support
@@ -686,7 +677,7 @@ export const fetchRecentViewsCounts = () => (
 }
 
 export const fetchActiveViewCount = () => (
-    dispatch: dispatchType,
+    dispatch: Dispatch,
     getState: getStateType
 ) => {
     const state = getState()
@@ -715,7 +706,7 @@ export const updateRecentViews = (viewIds) => ({
  * Go to the parent view
  */
 export const gotoActiveView = () => (
-    dispatch: dispatchType,
+    dispatch: Dispatch,
     getState: getStateType
 ) => {
     const state = getState()

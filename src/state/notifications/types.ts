@@ -21,3 +21,8 @@ type NotificationButton = {
     onClick: () => void
     primary: boolean
 }
+type HandleUsageBanner = {
+    newAccountStatus: string
+    currentAccountStatus: string
+    notification: Maybe<Notification>
+}

@@ -1,7 +1,7 @@
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {INITIAL_MESSAGE, notify} from '../actions'
+import {INITIAL_MESSAGE, notify, handleUsageBanner} from '../actions'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -14,13 +14,13 @@ const initialState = {
 }
 
 describe('actions', () => {
+    let store
+
+    beforeEach(() => {
+        store = mockStore(initialState)
+    })
+
     describe('notifications', () => {
-        let store
-
-        beforeEach(() => {
-            store = mockStore(initialState)
-        })
-
         it('should not add empty notifications', () => {
             store.dispatch(notify())
             const expectedActions = store.getActions()
@@ -154,6 +154,67 @@ describe('actions', () => {
                     payload: notification.id,
                 },
             ])
+        })
+    })
+    describe('handleUsageBanner', () => {
+        it('should hide the banner if the status has changed', () => {
+            store.dispatch(
+                handleUsageBanner({
+                    newAccountStatus: 'active',
+                    currentAccountStatus: 'deactivated',
+                    dispatch: store.dispatch,
+                })
+            )
+            const expectedActions = store.getActions()
+            expect(expectedActions).toMatchSnapshot()
+        })
+
+        it('should not do anything if no notification and status has not changed', () => {
+            store.dispatch(
+                handleUsageBanner({
+                    newAccountStatus: 'active',
+                    currentAccountStatus: 'active',
+                    dispatch: store.dispatch,
+                })
+            )
+            const expectedActions = store.getActions()
+            expect(expectedActions).toMatchSnapshot()
+        })
+
+        it('should dispatch notify if there is a notification', () => {
+            const messageNotification = 'new notification test'
+            const statusNotification = 'success'
+            store.dispatch(
+                handleUsageBanner({
+                    newAccountStatus: 'active',
+                    currentAccountStatus: 'active',
+                    dispatch: store.dispatch,
+                    notification: {
+                        status: statusNotification,
+                        message: messageNotification,
+                    },
+                })
+            )
+            const expectedActions = store.getActions()
+            expect(expectedActions).toMatchSnapshot()
+        })
+
+        it('should hide and dispatch notify if there is a notification and status change', () => {
+            const messageNotification = 'new notification test'
+            const statusNotification = 'success'
+            store.dispatch(
+                handleUsageBanner({
+                    newAccountStatus: 'active',
+                    currentAccountStatus: 'deactivated',
+                    dispatch: store.dispatch,
+                    notification: {
+                        status: statusNotification,
+                        message: messageNotification,
+                    },
+                })
+            )
+            const expectedActions = store.getActions()
+            expect(expectedActions).toMatchSnapshot()
         })
     })
 })

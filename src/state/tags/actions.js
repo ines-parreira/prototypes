@@ -9,7 +9,7 @@ import {createErrorNotification} from '../utils'
 import type {
     actionType,
     thunkActionType,
-    dispatchType,
+    Dispatch,
     getStateType,
 } from '../types'
 
@@ -43,10 +43,7 @@ export function fetchTags(
     reverse: boolean = true,
     search: string = ''
 ): thunkActionType {
-    return (
-        dispatch: dispatchType,
-        getState: getStateType
-    ): Promise<dispatchType> => {
+    return (dispatch: Dispatch, getState: getStateType): Promise<Dispatch> => {
         dispatch({
             type: constants.FETCH_TAG_LIST_START,
         })
@@ -130,7 +127,7 @@ export function cancel(tag: existingTagType) {
  * @param tag
  */
 export const save = (tag: existingTagType): thunkActionType => {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         return axios
             .put(`/api/tags/${tag.id}/`, tag)
             .then(() => {
@@ -160,7 +157,7 @@ export const save = (tag: existingTagType): thunkActionType => {
  * @param tag
  */
 export const create = (tag: newTagType): thunkActionType => {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         dispatch({
             type: constants.CREATE_TAG_START,
             tag,
@@ -195,7 +192,7 @@ export const create = (tag: newTagType): thunkActionType => {
  * @param id
  */
 export const remove = (id: string): thunkActionType => {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         return axios.delete(`/api/tags/${id}/`).then(
             () => {
                 dispatch(
@@ -221,7 +218,7 @@ export const remove = (id: string): thunkActionType => {
  * @param ids: an array of ids of the tags that should be deleted
  */
 export const bulkDelete = (ids: Array<string>): thunkActionType => {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         return axios.delete('/api/tags/', {data: {ids}}).then(
             () => {
                 dispatch(
@@ -247,7 +244,7 @@ export const bulkDelete = (ids: Array<string>): thunkActionType => {
  * @param ids: an array of ids of the tags which should be merged
  */
 export const merge = (ids: List<*>): thunkActionType => {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         dispatch({
             type: constants.MERGE_TAGS,
             ids,

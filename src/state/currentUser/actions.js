@@ -6,15 +6,15 @@ import _get from 'lodash/get'
 import {notify} from '../notifications/actions'
 
 // types
-import type {dispatchType, getStateType} from '../types'
+import type {Dispatch, getStateType} from '../types'
 import {fetchChats} from '../chats/actions'
 
 import * as constants from './constants'
 import * as currentUserSelectors from './selectors'
 
 export const changePassword = (oldPassword: string, newPassword: string) => (
-    dispatch: dispatchType
-): Promise<dispatchType> => {
+    dispatch: Dispatch
+): Promise<Dispatch> => {
     dispatch({type: constants.CHANGE_PASSWORD_START})
 
     return axios
@@ -47,7 +47,7 @@ export const changePassword = (oldPassword: string, newPassword: string) => (
 }
 
 export function updateCurrentUser(data: Object) {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         dispatch({
             type: constants.SUBMIT_CURRENT_USER_START,
         })
@@ -94,9 +94,9 @@ export function submitSetting(
     notification: boolean
 ) {
     return (
-        dispatch: dispatchType,
+        dispatch: Dispatch,
         getState: getStateType
-    ): Promise<dispatchType | {}> => {
+    ): Promise<Dispatch | {}> => {
         const isUpdate = !!data.id
         const prevIsAvailableForChat = currentUserSelectors.isAvailable(
             getState()
@@ -155,7 +155,7 @@ export function submitSetting(
 }
 
 export const toggleActiveStatus = (status: ?boolean) => (
-    dispatch: dispatchType,
+    dispatch: Dispatch,
     getState: getStateType
 ) => {
     const {currentUser} = getState()

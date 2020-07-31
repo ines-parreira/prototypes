@@ -1,7 +1,7 @@
 // @flow
 import axios from 'axios'
 
-import type {dispatchType} from '../types'
+import type {Dispatch} from '../types'
 
 import * as constants from './constants'
 
@@ -12,7 +12,7 @@ import * as constants from './constants'
  * @returns {Promise}
  */
 export function fetchHTTPIntegrationEvents(integrationId: number): Function {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         return axios
             .get(`/api/integrations/${integrationId}/events/`)
             .then((json = {}) => json.data)
@@ -45,7 +45,7 @@ export function fetchHTTPIntegrationEvent(
     integrationId: number,
     eventId: number
 ): Function {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         return axios
             .get(`/api/integrations/${integrationId}/events/${eventId}`)
             .then(

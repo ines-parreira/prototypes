@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`actions handleUsageBanner should dispatch notify if there is a notification 1`] = `
+Array [
+  Object {
+    "payload": Object {
+      "allowHTML": false,
+      "buttons": Array [],
+      "closeButton": false,
+      "dismissAfter": 0,
+      "dismissible": false,
+      "id": "99",
+      "message": "new notification test",
+      "onClick": [Function],
+      "position": "tc",
+      "status": "warning",
+      "style": "banner",
+    },
+    "type": "ADD_NOTIFICATION",
+  },
+]
+`;
+
+exports[`actions handleUsageBanner should hide and dispatch notify if there is a notification and status change 1`] = `
+Array [
+  Object {
+    "payload": 99,
+    "type": "REMOVE_NOTIFICATION",
+  },
+  Object {
+    "payload": Object {
+      "allowHTML": false,
+      "buttons": Array [],
+      "closeButton": false,
+      "dismissAfter": 0,
+      "dismissible": false,
+      "id": "99",
+      "message": "new notification test",
+      "onClick": [Function],
+      "position": "tc",
+      "status": "warning",
+      "style": "banner",
+    },
+    "type": "ADD_NOTIFICATION",
+  },
+]
+`;
+
+exports[`actions handleUsageBanner should hide the banner if the status has changed 1`] = `
+Array [
+  Object {
+    "payload": 99,
+    "type": "REMOVE_NOTIFICATION",
+  },
+]
+`;
+
+exports[`actions handleUsageBanner should not do anything if no notification and status has not changed 1`] = `Array []`;

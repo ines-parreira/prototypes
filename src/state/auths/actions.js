@@ -1,13 +1,13 @@
 // @flow
 import axios from 'axios'
 
-import type {dispatchType} from '../types'
+import type {Dispatch} from '../types'
 
 import * as constants from './constants'
 
 export const fetchCurrentAuths = () => (
-    dispatch: dispatchType
-): Promise<dispatchType> => {
+    dispatch: Dispatch
+): Promise<Dispatch> => {
     return axios
         .get('/api/users/0/auths/')
         .then((json = {}) => json.data.data)
@@ -28,9 +28,7 @@ export const fetchCurrentAuths = () => (
         )
 }
 
-export const resetApiKey = () => (
-    dispatch: dispatchType
-): Promise<dispatchType> => {
+export const resetApiKey = () => (dispatch: Dispatch): Promise<Dispatch> => {
     return axios
         .post('/api/users/0/reset-key/')
         .then((json = {}) => json.data)

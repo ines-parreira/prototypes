@@ -5,14 +5,12 @@ import createLogger from 'redux-logger'
 import rootReducer from '../state/reducers'
 
 import serverErrorHandler from './middlewares/serverErrorHandler'
-import usageLimitNotifier from './middlewares/usageLimitNotifier'
 
 export default function configureStore(initialState = {}) {
     let middlewares = applyMiddleware(
         thunk,
         serverErrorHandler,
-        createLogger({collapsed: true}),
-        usageLimitNotifier
+        createLogger({collapsed: true})
     )
 
     // check if Redux devTools Chrome extension is installed

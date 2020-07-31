@@ -12,7 +12,6 @@ import pollingManager from '../services/pollingManager'
 import shortcutManager from '../services/shortcutManager'
 import userActivityManager from '../services/userActivityManager'
 import statusPageManager from '../services/statusPageManager'
-import * as currentAccountActions from '../state/currentAccount/actions'
 import * as layoutActions from '../state/layout/actions'
 import * as layoutSelectors from '../state/layout/selectors'
 import type {currentAccountType, currentUserType} from '../state/types'
@@ -22,6 +21,7 @@ import * as segmentTracker from '../store/middlewares/segmentTracker'
 import type {reactRouterLocation} from '../types'
 import * as utils from '../utils'
 import {injectInterceptor} from '../utils/axios'
+import {handleUsageBanner} from '../state/notifications/actions'
 
 import css from './App.less'
 import BannerNotifications from './common/components/BannerNotifications/'
@@ -40,10 +40,10 @@ type Props = {
         containerPadding?: boolean,
     },
     injectInterceptor: typeof injectInterceptor,
+    handleUsageBanner: typeof handleUsageBanner,
     fetchVisibleViewsCounts: typeof viewsActions.fetchVisibleViewsCounts,
     openPanel: typeof layoutActions.openPanel,
     closePanels: typeof layoutActions.closePanels,
-    updateAccountSuccess: typeof currentAccountActions.updateAccountSuccess,
     gotoActiveView: typeof viewsActions.gotoActiveView,
 
     openedPanel?: string,
@@ -65,9 +65,16 @@ type Props = {
 class App extends React.Component<Props> {
     componentWillMount() {
         this.props.injectInterceptor()
-        // We're triggering an account update the first time the app is mounted so we can get
-        // the notification from the middleware for limited (Ex: disabled, free trial ending) accounts
-        this.props.updateAccountSuccess(this.props.currentAccount)
+
+        const item = this.props.currentAccount
+        const newAccountStatus = item.getIn(['status', 'status'])
+        const notification = item.getIn(['status', 'notification'])
+        this.props.handleUsageBanner({
+            newAccountStatus,
+            notification: notification ? notification.toJS() : null,
+            currentAccountStatus: newAccountStatus,
+        })
+
         userActivityManager.watch()
         pollingManager.start()
         statusPageManager.startPolling()
@@ -230,6 +237,6 @@ export default connect(mapStateToProps, {
     fetchVisibleViewsCounts: viewsActions.fetchVisibleViewsCounts,
     openPanel: layoutActions.openPanel,
     closePanels: layoutActions.closePanels,
-    updateAccountSuccess: currentAccountActions.updateAccountSuccess,
     gotoActiveView: viewsActions.gotoActiveView,
+    handleUsageBanner: handleUsageBanner,
 })(App)

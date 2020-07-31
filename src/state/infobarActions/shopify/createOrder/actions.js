@@ -39,7 +39,7 @@ import type {
     DraftOrderInvoice,
     LineItem,
 } from '../../../../constants/integrations/types/shopify'
-import type {dispatchType, getStateType} from '../../../types'
+import type {Dispatch, getStateType} from '../../../types'
 import GorgiasApi from '../../../../services/gorgiasApi'
 import {executeAction} from '../../../infobar/actions'
 import {notify} from '../../../notifications/actions'
@@ -132,7 +132,7 @@ export const onInit = (
     customer: Record<$Shape<Customer>>,
     currencyCode: string,
     onError: () => void
-) => async (dispatch: dispatchType) => {
+) => async (dispatch: Dispatch) => {
     // Duplicate existing order:
     if (order) {
         dispatch(setLoading(true, 'Fetching products...'))
@@ -209,7 +209,7 @@ export const createDraftOrder = (
     orderId: ?number,
     payload: Record<$Shape<DraftOrder>>,
     onError: () => void
-) => async (dispatch: dispatchType) => {
+) => async (dispatch: Dispatch) => {
     try {
         dispatch(setLoading(true, 'Creating draft order...'))
 
@@ -240,7 +240,7 @@ export const createDraftOrder = (
 }
 
 export const onApiError = (error: Object, defaultMessage: string) => (
-    dispatch: dispatchType
+    dispatch: Dispatch
 ) => {
     const message =
         error.response && error.response.data && error.response.data.error
@@ -261,7 +261,7 @@ export const pollDraftOrder = (
     integrationId: number,
     draftOrderId: number,
     pollingConfig: PollingConfig
-) => async (dispatch: dispatchType) => {
+) => async (dispatch: Dispatch) => {
     return new Promise((resolve) => {
         setTimeout(async () => {
             try {
@@ -331,7 +331,7 @@ const getLoadingMessage = (draftOrder: Record<$Shape<DraftOrder>>) =>
 export const onPayloadChange = (
     integrationId: number,
     payload: Record<$Shape<DraftOrder>>
-) => async (dispatch: dispatchType, getState: getStateType) => {
+) => async (dispatch: Dispatch, getState: getStateType) => {
     const state = getState()
     const draftOrder = getCreateOrderState(state).get('draftOrder')
     const loadingMessage = getLoadingMessage(draftOrder)
@@ -346,7 +346,7 @@ export const onPayloadChange = (
 export const upsertDraftOrder = _debounce(
     async (
         integrationId: number,
-        dispatch: dispatchType,
+        dispatch: Dispatch,
         getState: getStateType
     ) => {
         try {
@@ -409,7 +409,7 @@ export const addRow = (
     integrationId: number,
     product: Product,
     variant: Variant
-) => (dispatch: dispatchType, getState: getStateType) => {
+) => (dispatch: Dispatch, getState: getStateType) => {
     const state = getState()
     const payload = getCreateOrderState(state).get('payload')
     const products = getCreateOrderState(state).get('products')
@@ -439,7 +439,7 @@ export const addRow = (
 export const addCustomRow = (
     integrationId: number,
     lineItem: Record<$Shape<LineItem>>
-) => (dispatch: dispatchType, getState: getStateType) => {
+) => (dispatch: Dispatch, getState: getStateType) => {
     const state = getState()
     const payload = getCreateOrderState(state).get('payload')
     const newPayload = addCustomLineItem(payload, lineItem)
@@ -451,7 +451,7 @@ export const onCancel = (
     actionName: string,
     integrationId: number,
     via: string
-) => async (dispatch: dispatchType, getState: getStateType) => {
+) => async (dispatch: Dispatch, getState: getStateType) => {
     getPollApi().cancelPendingRequests()
     getUpdateApi().cancelPendingRequests()
     upsertDraftOrder.cancel()
@@ -474,7 +474,7 @@ export const onCancel = (
 }
 
 export const onSubmitCleanUp = () => (
-    dispatch: dispatchType,
+    dispatch: Dispatch,
     getState: getStateType
 ) => {
     const state = getState()
@@ -483,10 +483,10 @@ export const onSubmitCleanUp = () => (
     shopifyLocalStorage.draftOrders.deleteMapItem(id)
 }
 
-export const onReset = () => (dispatch: dispatchType) => resetState(dispatch)
+export const onReset = () => (dispatch: Dispatch) => resetState(dispatch)
 
 export const resetState = _debounce(
-    (dispatch: dispatchType) => dispatch(setInitialState()),
+    (dispatch: Dispatch) => dispatch(setInitialState()),
     250
 )
 
@@ -496,7 +496,7 @@ export const onEmailInvoice = (
     orderId: ?number,
     invoicePayload: Record<DraftOrderInvoice>,
     onSuccess: () => void
-) => (dispatch: dispatchType, getState: getStateType): Promise<void> => {
+) => (dispatch: Dispatch, getState: getStateType): Promise<void> => {
     return new Promise((resolve) => {
         dispatch(setLoading(true, 'Sending invoice...'))
 

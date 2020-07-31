@@ -43,7 +43,7 @@ import {
 import socketManager from '../../services/socketManager'
 import type {attachmentType} from '../../types'
 import type {
-    dispatchType,
+    Dispatch,
     getStateType,
     currentUserType,
     thunkActionType,
@@ -63,10 +63,7 @@ import type {MacroActionsType, NewMessageType, TicketType} from './types'
 export const addAttachments = (
     ticket: Map<*, *>,
     atts: FileList | attachmentType[]
-) => (
-    dispatch: dispatchType,
-    getState: getStateType
-): Promise<dispatchType> => {
+) => (dispatch: Dispatch, getState: getStateType): Promise<Dispatch> => {
     dispatch({
         type: constants.NEW_MESSAGE_ADD_ATTACHMENT_START,
     })
@@ -165,9 +162,9 @@ const _throttledIsTyping = _throttle(
 ) // we don't want to throw event after the ticket has been left
 
 export const setResponseText = (args: Map<*, *> = fromJS({})) => (
-    dispatch: dispatchType,
+    dispatch: Dispatch,
     getState: getStateType
-): dispatchType => {
+): Dispatch => {
     const state = getState()
     const {ticket, currentUser, newMessage} = state
     const contentState = args.get('contentState')
@@ -213,9 +210,9 @@ export const setResponseText = (args: Map<*, *> = fromJS({})) => (
  * Add a signature (if any) at the end of the content state
  */
 export const addSignature = (contentState: Object, signature: Object) => (
-    dispatch: dispatchType,
+    dispatch: Dispatch,
     getState: getStateType
-): dispatchType => {
+): Dispatch => {
     const {newMessage} = getState()
 
     if (
@@ -254,9 +251,9 @@ export const setReceivers = (
  * @param sender - address of an integration used to communicate. E.g: email, gmail
  */
 export const setSender = (sender: ?string) => (
-    dispatch: dispatchType,
+    dispatch: Dispatch,
     getState: getStateType
-): dispatchType => {
+): Dispatch => {
     const state = getState()
     const {ticket} = state
     const channels = integrationSelectors.getChannels(state)
@@ -316,9 +313,9 @@ export const setSender = (sender: ?string) => (
 }
 
 export const setSourceType = (sourceType: string) => (
-    dispatch: dispatchType,
+    dispatch: Dispatch,
     getState: getStateType
-): dispatchType => {
+): Dispatch => {
     dispatch({
         type: constants.NEW_MESSAGE_SET_SOURCE_TYPE,
         sourceType,
@@ -340,9 +337,9 @@ export const setSourceExtra = (extra: {}) => ({
  * Prepare default message
  */
 const prepareDefault = (sourceType: string) => (
-    dispatch: dispatchType,
+    dispatch: Dispatch,
     getState: getStateType
-): dispatchType => {
+): Dispatch => {
     dispatch(setSubject())
     dispatch(setSourceType(sourceType))
     dispatch(setSourceExtra({}))
@@ -354,7 +351,7 @@ const prepareDefault = (sourceType: string) => (
  * @param {String} sourceType the new source type
  */
 export const prepare = (sourceType: string) => (
-    dispatch: dispatchType,
+    dispatch: Dispatch,
     getState: getStateType
 ) => {
     const state = getState()
@@ -485,7 +482,7 @@ export const prepare = (sourceType: string) => (
 export const updatePotentialCustomers = (
     query: string,
     cancelToken?: CancelToken
-) => (dispatch: dispatchType): Promise<dispatchType> =>
+) => (dispatch: Dispatch): Promise<Dispatch> =>
     axios
         .post(
             '/api/search/',
@@ -519,7 +516,7 @@ export const updatePotentialCustomers = (
             }
         )
 
-export const initializeMessageDraft = () => (dispatch: dispatchType) => {
+export const initializeMessageDraft = () => (dispatch: Dispatch) => {
     // get cached ticket reply message
     dispatch(setResponseText())
     // get cached macro
@@ -532,7 +529,7 @@ export const initializeMessageDraft = () => (dispatch: dispatchType) => {
  * Also sets some properties on the ticket.
  */
 export function prepareTicketDataToSend(
-    dispatch: dispatchType,
+    dispatch: Dispatch,
     getState: getStateType,
     ticket: Map<*, *>,
     newMessage: Map<*, *>,
@@ -712,7 +709,7 @@ export const formatAction = (
 /**
  * Perform actions when we successfully create a new message.
  */
-function onMessageSent(dispatch: dispatchType) {
+function onMessageSent(dispatch: Dispatch) {
     // reinitialize the current macro
     dispatch({
         type: ticketConstants.APPLY_MACRO,
@@ -728,7 +725,7 @@ export function prepareTicketMessage(
     retryMessage: Map<*, *>
 ): thunkActionType {
     return (
-        dispatch: dispatchType,
+        dispatch: Dispatch,
         getState: getStateType
     ): Promise<{messageId: number, messageToSend: NewMessageType}> =>
         new Promise((resolve, reject) => {
@@ -831,9 +828,9 @@ export function sendTicketMessage(
     ticketId: ?string
 ) {
     return (
-        dispatch: dispatchType,
+        dispatch: Dispatch,
         getState: getStateType
-    ): Promise<dispatchType | {}> =>
+    ): Promise<Dispatch | {}> =>
         new Promise((resolve) => {
             const {ticket} = getState()
             let promise
@@ -911,7 +908,7 @@ export function sendTicketMessage(
 }
 
 export function retrySubmitTicketMessage(message: Map<*, *>): thunkActionType {
-    return (dispatch: dispatchType): Promise<dispatchType | {}> => {
+    return (dispatch: Dispatch): Promise<Dispatch | {}> => {
         return dispatch(
             prepareTicketMessage(
                 message.getIn(['_internal', 'status']),
@@ -935,10 +932,7 @@ export function submitTicket(
     currentUser: currentUserType,
     resetMessage: boolean = true
 ) {
-    return (
-        dispatch: dispatchType,
-        getState: getStateType
-    ): ?Promise<dispatchType> => {
+    return (dispatch: Dispatch, getState: getStateType): ?Promise<Dispatch> => {
         const {newMessage} = getState()
 
         dispatch({
@@ -1011,7 +1005,7 @@ export function submitTicket(
 }
 
 export function resetFromTicket(ticket: Map<*, *>) {
-    return (dispatch: dispatchType): dispatchType => {
+    return (dispatch: Dispatch): Dispatch => {
         dispatch({
             type: constants.NEW_MESSAGE_RESET_FROM_TICKET,
             ticket,
@@ -1021,9 +1015,9 @@ export function resetFromTicket(ticket: Map<*, *>) {
 }
 
 export function resetReceiversAndSender(
-    dispatch: dispatchType,
+    dispatch: Dispatch,
     getState: getStateType
-): dispatchType {
+): Dispatch {
     const state = getState()
     const {ticket} = state
     const type = selectors.getNewMessageType(state)

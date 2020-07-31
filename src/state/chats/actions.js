@@ -5,13 +5,11 @@ import _throttle from 'lodash/throttle'
 import browserNotification from '../../services/browserNotification'
 
 import type {RecentChatTicket} from '../../business/types/recentChats'
-import type {dispatchType} from '../types'
+import type {Dispatch} from '../types'
 
 import * as constants from './constants'
 
-export const fetchChats = () => (
-    dispatch: dispatchType
-): Promise<dispatchType> => {
+export const fetchChats = () => (dispatch: Dispatch): Promise<Dispatch> => {
     return axios
         .get('/api/activity/chats/', {timeout: 10000})
         .then((json = {}) => json.data)
@@ -29,12 +27,12 @@ export const fetchChats = () => (
         )
 }
 
-export const fetchChatsThrottled = _throttle((dispatch: dispatchType) => {
+export const fetchChatsThrottled = _throttle((dispatch: Dispatch) => {
     dispatch(fetchChats())
 }, 10000)
 
 export const addChat = (ticket: RecentChatTicket, notify: boolean = true) => (
-    dispatch: dispatchType
+    dispatch: Dispatch
 ) => {
     dispatch({
         type: constants.ADD_CHAT,

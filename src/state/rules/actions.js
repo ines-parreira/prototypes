@@ -4,7 +4,7 @@ import {fromJS, List} from 'immutable'
 
 import {notify} from '../notifications/actions'
 
-import type {dispatchType, getStateType} from '../types'
+import type {Dispatch, getStateType} from '../types'
 import {createErrorNotification} from '../utils'
 
 import type {ruleType} from './types'
@@ -42,7 +42,7 @@ export const modifyCodeAST = (
     path: List<*>,
     value: string,
     operation: operationType
-) => (dispatch: dispatchType, getState: getStateType): dispatchType =>
+) => (dispatch: Dispatch, getState: getStateType): Dispatch =>
     dispatch({
         type: constants.RULES_UPDATE_CODE_AST,
         schemas: getState().schemas,
@@ -62,8 +62,8 @@ export const initialiseCodeAST = (id: string) => ({
  * @param data: the data of the rule to create
  */
 export const create = (data: ruleType) => (
-    dispatch: dispatchType
-): Promise<dispatchType> => {
+    dispatch: Dispatch
+): Promise<Dispatch> => {
     return axios.post('/api/rules/', data).then(
         (response) => {
             return dispatch(addRuleEnd(response.data))
@@ -81,8 +81,8 @@ export const create = (data: ruleType) => (
  * @param data
  */
 export const save = (data: ruleType) => (
-    dispatch: dispatchType
-): Promise<dispatchType> => {
+    dispatch: Dispatch
+): Promise<Dispatch> => {
     dispatch({
         type: constants.UPDATE_RULE_START,
         ruleId: data.id,
@@ -125,8 +125,8 @@ export const save = (data: ruleType) => (
  * @param id rule id
  */
 export const activate = (id: string) => (
-    dispatch: dispatchType
-): Promise<dispatchType> =>
+    dispatch: Dispatch
+): Promise<Dispatch> =>
     axios
         .put(`/api/rules/${id}/`, {deactivated_datetime: null})
         .then((json = {}) => json.data)
@@ -159,8 +159,8 @@ export const activate = (id: string) => (
  * @param id
  */
 export const deactivate = (id: string) => (
-    dispatch: dispatchType
-): Promise<dispatchType> =>
+    dispatch: Dispatch
+): Promise<Dispatch> =>
     axios
         .put(`/api/rules/${id}/`, {deactivated_datetime: new Date()})
         .then((json = {}) => json.data)
@@ -192,9 +192,7 @@ export const deactivate = (id: string) => (
  * Delete a rule
  * @param id
  */
-export const remove = (id: string) => (
-    dispatch: dispatchType
-): Promise<dispatchType> =>
+export const remove = (id: string) => (dispatch: Dispatch): Promise<Dispatch> =>
     axios
         .delete(`/api/rules/${id}/`)
         .then((json = {}) => json.data)
@@ -223,9 +221,7 @@ export const remove = (id: string) => (
  * Reset the code ast of a rule
  * @param id
  */
-export const reset = (id: string) => (
-    dispatch: dispatchType
-): Promise<dispatchType> =>
+export const reset = (id: string) => (dispatch: Dispatch): Promise<Dispatch> =>
     axios
         .get(`/api/rules/${id}`)
         .then((json = {}) => json.data)
@@ -238,7 +234,7 @@ export const reset = (id: string) => (
 
 export function fetchRules() {
     const url = '/api/rules/'
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         dispatch(requestRules(url))
 
         return axios
@@ -261,7 +257,7 @@ export function fetchRules() {
 }
 
 export function updateOrder(priorities: {}) {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         dispatch({
             type: constants.UPDATE_ORDER_START,
             priorities,

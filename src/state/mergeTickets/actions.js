@@ -2,7 +2,7 @@
 import axios from 'axios'
 import {type Map} from 'immutable'
 
-import type {dispatchType, thunkActionType} from '../types'
+import type {Dispatch, thunkActionType} from '../types'
 import {notify} from '../notifications/actions'
 import {createErrorNotification} from '../utils'
 import {defaultMergeTicketsView} from '../../config/views'
@@ -30,7 +30,7 @@ export function searchTickets(
     direction: ?string = null,
     navigation: Map<*, *>
 ): thunkActionType {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         const view = defaultMergeTicketsView(
             sourceTicketId,
             searchQuery,
@@ -74,7 +74,7 @@ export function mergeTickets(
     targetTicketId: number,
     ticketData: Object
 ): thunkActionType {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         return axios
             .put(
                 `/api/tickets/merge?target_id=${targetTicketId}&source_id=${sourceTicketId}`,

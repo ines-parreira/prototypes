@@ -3,7 +3,7 @@ import axios from 'axios'
 import {updateNotification} from 'reapop'
 
 import {notify} from '../notifications/actions'
-import type {dispatchType, thunkActionType} from '../types'
+import type {Dispatch, thunkActionType} from '../types'
 import {buildJobMessage} from '../../utils/notificationUtils'
 
 import * as types from './constants'
@@ -20,7 +20,7 @@ export function createJob(
     jobType: string,
     jobPartialParams: Object
 ): thunkActionType {
-    return (dispatch: dispatchType): Promise<dispatchType> => {
+    return (dispatch: Dispatch): Promise<Dispatch> => {
         const requestPayload = {
             type: jobType,
             params: Object.assign(

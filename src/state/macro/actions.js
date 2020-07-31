@@ -4,7 +4,7 @@ import {fromJS, Map} from 'immutable'
 import _get from 'lodash/get'
 
 import {notify} from '../notifications/actions'
-import type {dispatchType, thunkActionType} from '../types'
+import type {Dispatch, thunkActionType} from '../types'
 
 import * as constants from './constants'
 
@@ -29,9 +29,7 @@ export const fetchMacros = (
     orderBy: string = '',
     orderDir: string = 'asc',
     cancelToken?: CancelToken
-): thunkActionType => (
-    dispatch: dispatchType
-): Promise<?MacrosSearchResult> => {
+): thunkActionType => (dispatch: Dispatch): Promise<?MacrosSearchResult> => {
     let params = {}
     if (filters['page']) {
         params.page = filters['page']
@@ -94,7 +92,7 @@ export const fetchMacros = (
 export const getMacro = (
     id: string,
     cancelToken?: CancelToken
-): thunkActionType => async (dispatch: dispatchType): Promise<?Map<*, *>> => {
+): thunkActionType => async (dispatch: Dispatch): Promise<?Map<*, *>> => {
     try {
         const {data} = await axios.get(
             `/api/macros/${id}`,
@@ -119,8 +117,8 @@ export const getMacro = (
 }
 
 export const createMacro = (macro: Map<*, *>): thunkActionType => (
-    dispatch: dispatchType
-): Promise<dispatchType> => {
+    dispatch: Dispatch
+): Promise<Dispatch> => {
     return axios
         .post('/api/macros/', macro.toJS())
         .then((json = {}) => json.data)
@@ -152,8 +150,8 @@ export const createMacro = (macro: Map<*, *>): thunkActionType => (
 }
 
 export const updateMacro = (macro: Map<*, *>): thunkActionType => (
-    dispatch: dispatchType
-): Promise<dispatchType> => {
+    dispatch: Dispatch
+): Promise<Dispatch> => {
     return axios
         .put(`/api/macros/${macro.get('id')}/`, macro.toJS())
         .then((json = {}) => json.data)
@@ -185,8 +183,8 @@ export const updateMacro = (macro: Map<*, *>): thunkActionType => (
 }
 
 export const deleteMacro = (macroId: string): thunkActionType => (
-    dispatch: dispatchType
-): Promise<dispatchType> => {
+    dispatch: Dispatch
+): Promise<Dispatch> => {
     return axios
         .delete(`/api/macros/${macroId}/`)
         .then((json = {}) => json.data)
