@@ -1,7 +1,11 @@
-import type {Map} from 'immutable'
+import {Map} from 'immutable'
+import {Action} from 'redux'
+import {ThunkDispatch} from 'redux-thunk'
 
-import type {MacrosAction} from './entities/macros/types'
-import type {InfobarActionsState} from './infobarActions/types'
+import {MacrosAction} from './entities/macros/types'
+import {EntitiesState} from './entities/reducers'
+import {InfobarActionsState} from './infobarActions/types'
+import rootReducer from './reducers'
 
 export type StoreState = {
     activity: Map<any, any>
@@ -10,6 +14,7 @@ export type StoreState = {
     currentAccount: Map<any, any>
     currentUser: Map<any, any>
     customers: Map<any, any>
+    entities: EntitiesState
     facebookAds: Map<any, any>
     infobar: Map<any, any>
     infobarActions: InfobarActionsState
@@ -32,3 +37,7 @@ export type StoreAction = MacrosAction
 
 export type CurrentUser = Map<any, any>
 export type CurrentAccount = Map<any, any>
+
+export type StoreDispatch = ThunkDispatch<StoreState, undefined, Action>
+
+export type RootState = ReturnType<typeof rootReducer>

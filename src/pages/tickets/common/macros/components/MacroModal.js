@@ -22,7 +22,7 @@ import * as viewsActions from '../../../../../state/views/actions'
 import css from './MacroModal.less'
 import MacroNoResults from './MacroNoResults'
 import MacroPreview from './MacroPreview'
-import MacroEdit from './MacroEdit'
+import MacroEdit from './MacroEdit.tsx'
 import MacroModalList from './MacroModalList'
 
 type Props = {

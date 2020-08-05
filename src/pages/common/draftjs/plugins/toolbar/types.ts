@@ -1,5 +1,5 @@
-import type {EditorState} from 'draft-js'
-import type {ReactNode} from 'react'
+import {EditorState} from 'draft-js'
+import {ReactNode} from 'react'
 
 export enum ActionName {
     Bold = 'BOLD',

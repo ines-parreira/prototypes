@@ -1,5 +1,5 @@
-import type {EditorState, ContentState, ContentBlock} from 'draft-js'
-import type {ReactNode, ComponentType, SyntheticEvent} from 'react'
+import {EditorState, ContentState, ContentBlock} from 'draft-js'
+import {ReactNode, ComponentType, SyntheticEvent} from 'react'
 
 export type PluginMethods = {
     getEditorState: () => EditorState

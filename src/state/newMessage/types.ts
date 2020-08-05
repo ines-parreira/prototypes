@@ -1,6 +1,6 @@
-import type {List, Map} from 'immutable'
+import {List, Map} from 'immutable'
 
-import type {Attachment} from '../../types'
+import {Attachment} from '../../types'
 
 export type User = {
     id: string

@@ -1,4 +1,4 @@
-//@flow
+// $TsFixMe: remove on ts migration end
 export const MACRO_ACTION_NAME = Object.freeze({
     ADD_ATTACHMENTS: 'addAttachments',
     SET_RESPONSE_TEXT: 'setResponseText',
@@ -24,10 +24,12 @@ export const MACRO_ACTION_NAME = Object.freeze({
     SHOPIFY_EDIT_NODE_LAST_ORDER: 'shopifyEditNoteOfLastOrder',
 })
 
+// $TsFixMe: remove on ts migration end
 export const MACRO_ACTION_TYPE = Object.freeze({
     USER: 'user',
 })
 
+// $TsFixMe: remove on ts migration end
 export const MACRO_SORTABLE_PROPERTIES = Object.freeze({
     CREATED_DATETIME: 'createdDatetime',
     NAME: 'name',

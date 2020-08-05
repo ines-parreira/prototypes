@@ -1,8 +1,8 @@
-import type {Map} from 'immutable'
+import {Map} from 'immutable'
 
 import {MacroActionType} from '../../models/macroAction/types'
 
-import type {Notification} from './notification'
+import {Notification} from './notification'
 
 export enum MacroActionName {
     AddAttachments = 'addAttachments',

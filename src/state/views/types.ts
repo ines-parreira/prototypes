@@ -1,4 +1,4 @@
-import type {Map} from 'immutable'
+import {Map} from 'immutable'
 
 export type ViewsState = Map<any, any>
 

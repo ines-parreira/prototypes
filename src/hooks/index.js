@@ -1,3 +1,3 @@
 //@flow
-export {default as useCancellableRequest} from './useCancellableRequest'
-export {default as useDelayedAsyncFn} from './useDelayedAsyncFn'
+export {default as useCancellableRequest} from './useCancellableRequest.ts'
+export {default as useDelayedAsyncFn} from './useDelayedAsyncFn.ts'

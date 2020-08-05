@@ -1,4 +1,4 @@
-import type {NewMessage} from '../../state/newMessage/types'
+import {NewMessage} from '../../state/newMessage/types'
 
 export type SendMessageArgs = [
     string,

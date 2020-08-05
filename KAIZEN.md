@@ -64,7 +64,9 @@ import type {FooType} from 'foo'
 - Some external types have different names in Flow and TypeScript: `import type {Node} from 'react'` becomes `import type {ReactNode} from 'react'`
 - Some types brought by dependencies have to be defined through `@types` deps (eg `yarn add -D @types/react`)
 - TypeScript assumes that an unspecified extension is either `.ts` or `.tsx`, for importing a JavaScript file you'll need to use `.js` extension explicitly
+- And the opposite is also true, when importing TypeScript files in JavaScript we should explicitly add the extension `.ts` or `.tsx`
 - For `index.js` files serving as export buffers you may find `export * from './types'`. These files should not be migrated as it allows Flow to access the types. Instead, consider having two separate `types.js` and `types.ts` files and export the JavaScript one like so: `export * from './types.js'` (notice the extension)
+- When importing some TypeScript from any JavaScript files, replace the path to the direct export instead. Otherwise the typechecker won't be able to infer the imported types.
 - We are referencing constants with `const Object.freeze()`, thanks to TypeScript we are able to define `enum` properly.
 ```
 const foo = Object.freeze({
@@ -78,3 +80,5 @@ enum Foo {
 }
 ```
 - When importing `Object.freeze` constants, import Typescript enum instead.
+- You may want to keep some code in order to prevent existing JavaScript to break, (such as keeping a `Object.freeze` declaration instead of an `enum`). You can flag the relevant part with the `$TsFixMe explaination` comment.
+- When migrating types you may find some missing/wrong types, if the changes are too much for the current scope we are flagging these in issue [6221](https://github.com/gorgias/gorgias/issues/6221)

@@ -1,4 +1,3 @@
-//@flow
 import {
     macroCreated,
     macroDeleted,
@@ -8,7 +7,7 @@ import {
 } from '../actions'
 import reducer from '../reducer'
 
-import {macros as macrosFixtures} from '../../../../fixtures/macro'
+import {macros as macrosFixtures} from '../../../../fixtures/macro.js'
 
 describe('macros reducer', () => {
     describe('createMacro action', () => {
@@ -20,10 +19,7 @@ describe('macros reducer', () => {
 
     describe('deleteMacro action', () => {
         it('should delete a macro from the state', () => {
-            const newState = reducer(
-                {'1': macrosFixtures[0]},
-                macroDeleted('1')
-            )
+            const newState = reducer({'1': macrosFixtures[0]}, macroDeleted(1))
             expect(newState).toMatchSnapshot()
         })
     })

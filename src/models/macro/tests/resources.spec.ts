@@ -1,10 +1,9 @@
-//@flow
-import {Cancel, CancelToken} from 'axios'
+import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import _pick from 'lodash/pick'
 
-import {macros as macrosFixtures} from '../../../fixtures/macro'
-import client from '../../api'
+import {macros as macrosFixtures} from '../../../fixtures/macro.js'
+import client from '../../api/index.js'
 import {
     fetchMacros,
     fetchMacro,
@@ -12,6 +11,7 @@ import {
     deleteMacro,
     updateMacro,
 } from '../resources'
+import {MacroSortableProperties} from '../types'
 
 const mockedServer = new MockAdapter(client)
 
@@ -46,7 +46,9 @@ describe('macro resources', () => {
                     current_page: 2,
                 },
             })
-            await fetchMacros({fallbackOrderBy: 'createdDatetime'})
+            await fetchMacros({
+                fallbackOrderBy: MacroSortableProperties.CreatedDatetime,
+            })
             expect(mockedServer.history).toMatchSnapshot()
         })
 
@@ -57,7 +59,9 @@ describe('macro resources', () => {
                     current_page: 2,
                 },
             })
-            await fetchMacros({orderBy: 'createdDatetime'})
+            await fetchMacros({
+                orderBy: MacroSortableProperties.CreatedDatetime,
+            })
             expect(mockedServer.history).toMatchSnapshot()
         })
 
@@ -68,12 +72,15 @@ describe('macro resources', () => {
                     current_page: 2,
                 },
             })
-            const source = CancelToken.source()
+            const source = axios.CancelToken.source()
             source.cancel()
 
             await expect(
-                fetchMacros({orderBy: 'createdDatetime'}, source.token)
-            ).rejects.toEqual(new Cancel())
+                fetchMacros(
+                    {orderBy: MacroSortableProperties.CreatedDatetime},
+                    source.token
+                )
+            ).rejects.toEqual(new axios.Cancel())
         })
     })
 

@@ -1,4 +1,4 @@
-import type {ComponentType, ReactNode} from 'react'
+import {ComponentType, ReactNode} from 'react'
 
 export type Parameter = {
     name: string

@@ -1,31 +1,28 @@
-//@flow
-import axios, {
-    CancelToken,
-    type CancelTokenSource,
-    type CancelToken as CancelTokenType,
-} from 'axios'
-//$FlowFixMe
+import axios, {CancelTokenSource, CancelToken} from 'axios'
 import {useRef, useEffect, useCallback} from 'react'
 
-const useCancellableRequest = <T: Function>(
-    fn: (cancelToken: CancelTokenType) => T
+type FnReturningPromise = (...args: any[]) => Promise<any>
+
+const useCancellableRequest = <T extends FnReturningPromise>(
+    fn: (cancelToken: CancelToken) => T
 ): [T, () => void] => {
-    const cancelTokenSourceRef = useRef<?CancelTokenSource>()
+    const cancelTokenSourceRef = useRef<Maybe<CancelTokenSource>>()
     const cancel = useCallback(() => {
         if (cancelTokenSourceRef.current) {
             cancelTokenSourceRef.current.cancel()
         }
     }, [])
     const request = useCallback(
-        async (
-            ...args: $Call<<A: $ReadOnlyArray<mixed>>((...A) => mixed) => A, T>
-        ) => {
-            const cancelTokenSource = CancelToken.source()
+        async (...args) => {
+            const cancelTokenSource = axios.CancelToken.source()
 
             cancel()
             cancelTokenSourceRef.current = cancelTokenSource
             try {
-                return await fn(cancelTokenSource.token)(...args)
+                const res = (await fn(cancelTokenSource.token)(
+                    ...args
+                )) as ReturnType<T>
+                return res
             } catch (error) {
                 if (!axios.isCancel(error)) {
                     throw error
@@ -36,7 +33,7 @@ const useCancellableRequest = <T: Function>(
     )
     useEffect(() => cancel, [cancel])
 
-    return [request, cancel]
+    return [request as T, cancel]
 }
 
 export default useCancellableRequest

@@ -1,6 +1,6 @@
-import type {PayloadActionCreator} from '@reduxjs/toolkit'
+import {PayloadActionCreator} from '@reduxjs/toolkit'
 
-import type {Macro} from '../../../models/macro/types'
+import {Macro} from '../../../models/macro/types'
 
 import {
     MACRO_CREATED,
@@ -8,7 +8,7 @@ import {
     MACRO_FETCHED,
     MACRO_UPDATED,
     MACROS_FETCHED,
-} from './constants.js'
+} from './constants'
 
 export type MacrosState = {
     [key: string]: Macro

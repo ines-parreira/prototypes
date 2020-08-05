@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {mount} from 'enzyme'
 import {fromJS} from 'immutable'
 import _noop from 'lodash/noop'
@@ -6,8 +6,7 @@ import _noop from 'lodash/noop'
 import {MacroEdit} from '../MacroEdit'
 
 describe('MacroEdit component', () => {
-    let component
-    const defaultProps = {
+    const defaultProps = ({
         actions: fromJS([]),
         agents: fromJS({}),
         currentMacro: fromJS({id: 1}),
@@ -21,22 +20,20 @@ describe('MacroEdit component', () => {
         setActions: _noop,
         setIntent: _noop,
         setName: _noop,
-    }
-
-    beforeEach(() => {
-        component = mount(<MacroEdit {...defaultProps} />)
-    })
+    } as any) as ComponentProps<typeof MacroEdit>
 
     it('should render the macro edit form', () => {
+        const component = mount(<MacroEdit {...defaultProps} />)
         expect(component).toMatchSnapshot()
     })
 
     it('should change name input value', () => {
-        const newName = 'Pizza Capricciosa'
-        component.setProps({
-            name: newName,
-        })
+        const component = mount(
+            <MacroEdit {...defaultProps} name="Pizza Capricciosa" />
+        )
 
-        expect(component.find('input#id-name').props().value).toBe(newName)
+        expect(component.find('input#id-name').props().value).toBe(
+            'Pizza Capricciosa'
+        )
     })
 })

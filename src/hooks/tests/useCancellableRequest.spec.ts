@@ -1,5 +1,5 @@
-//@flow
-import axios, {type CancelToken} from 'axios'
+import axios from 'axios'
+import type {CancelToken, AxiosResponse} from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import {renderHook} from 'react-hooks-testing-library'
 
@@ -33,18 +33,20 @@ describe('useCancellableRequest', () => {
             return promise
         })()
 
-        expect(res).toBe()
+        expect(res).toBe(undefined)
     })
 
     it('should cancel the previous call when called a second time', () => {
         const {result} = renderHook(() => useCancellableRequest(mockCall))
 
         return Promise.all([result.current[0](), result.current[0]()]).then(
-            (values) => {
-                expect(values.map((value) => value && value.data)).toEqual([
-                    undefined,
-                    'success',
-                ])
+            (values: AxiosResponse<Maybe<string>>[]) => {
+                expect(
+                    values.map(
+                        (value: AxiosResponse<Maybe<string>>): Maybe<string> =>
+                            value && value.data
+                    )
+                ).toEqual([undefined, 'success'])
             }
         )
     })
@@ -59,6 +61,6 @@ describe('useCancellableRequest', () => {
             return promise
         })()
 
-        expect(res).toBe()
+        expect(res).toBe(undefined)
     })
 })

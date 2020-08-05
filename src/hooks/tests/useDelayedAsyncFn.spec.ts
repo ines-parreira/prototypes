@@ -1,4 +1,3 @@
-//@flow
 import {act, renderHook} from 'react-hooks-testing-library'
 
 import useDelayedAsyncFn from '../useDelayedAsyncFn'
@@ -12,7 +11,7 @@ describe('useDelayedAsyncFn hook', () => {
 
         expect(result.current[0].loading).toBe(false)
         act(() => {
-            result.current[1]()
+            void result.current[1]()
         })
         setImmediate(() => {
             expect(result.current[0].loading).toBe(false)
@@ -26,7 +25,7 @@ describe('useDelayedAsyncFn hook', () => {
 
         expect(result.current[0].loading).toBe(false)
         act(() => {
-            result.current[1]()
+            void result.current[1]()
         })
         jest.runAllTimers()
         expect(result.current[0].loading).toBe(true)
@@ -41,7 +40,7 @@ describe('useDelayedAsyncFn hook', () => {
 
         expect(result.current[0].loading).toBe(false)
         act(() => {
-            result.current[1]()
+            void result.current[1]()
         })
         jest.advanceTimersByTime(100)
         await waitForNextUpdate()
@@ -49,18 +48,18 @@ describe('useDelayedAsyncFn hook', () => {
         expect(result.current[0].loading).toBe(false)
     })
 
-    it('should clear the previous timeout on a new function call', async () => {
+    it('should clear the previous timeout on a new function call', () => {
         const mockAsync = () =>
             new Promise((resolve) => setTimeout(resolve, 200))
         const {result} = renderHook(() => useDelayedAsyncFn(mockAsync, [], 100))
 
         act(() => {
-            result.current[1]()
+            void result.current[1]()
         })
         jest.advanceTimersByTime(50)
         expect(result.current[0].loading).toBe(false)
         act(() => {
-            result.current[1]()
+            void result.current[1]()
         })
         jest.advanceTimersByTime(50)
         expect(result.current[0].loading).toBe(false)

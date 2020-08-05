@@ -1,10 +1,8 @@
-//@flow
 import classnames from 'classnames'
-import {fromJS, type Map} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 import _uniqWith from 'lodash/uniqWith'
-//$FlowFixMe
-import React, {useEffect, useState, type SyntheticEvent} from 'react'
-import {connect} from 'react-redux'
+import React, {useEffect, useState, SyntheticEvent} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 import {browserHistory, Link} from 'react-router'
 import {useAsyncFn} from 'react-use'
 import {
@@ -16,46 +14,37 @@ import {
     FormGroup,
 } from 'reactstrap'
 
-import {DEFAULT_ACTIONS} from '../../../config'
-import type {IntentName} from '../../../models/intent'
+import {DEFAULT_ACTIONS} from '../../../config.js'
+import {IntentName} from '../../../models/intent/types'
 import {
     createMacro,
     deleteMacro,
     fetchMacro,
     updateMacro,
-    type MacroDraft,
-} from '../../../models/macro'
-import {getAgents} from '../../../state/agents/selectors'
+} from '../../../models/macro/resources'
+import {MacroDraft} from '../../../models/macro/types'
+import {getAgents} from '../../../state/agents/selectors.js'
 import {
     macroCreated,
     macroDeleted,
     macroFetched,
     macroUpdated,
-    type MacrosState,
-} from '../../../state/entities/macros'
-import {getDefaultMacro} from '../../../state/macro/utils'
-import {notify} from '../../../state/notifications/actions'
-import ConfirmButton from '../../common/components/ConfirmButton'
-import Loader from '../../common/components/Loader'
-import PageHeader from '../../common/components/PageHeader'
+} from '../../../state/entities/macros/actions'
+import {getDefaultMacro} from '../../../state/macro/utils.js'
+import {notify} from '../../../state/notifications/actions.js'
+import {NotificationStatus} from '../../../state/notifications/types'
+import {RootState, StoreDispatch} from '../../../state/types'
+import ConfirmButton from '../../common/components/ConfirmButton.js'
+import Loader from '../../common/components/Loader/index.js'
+import PageHeader from '../../common/components/PageHeader.js'
 import MacroEdit from '../../tickets/common/macros/components/MacroEdit'
 
 import css from './MacrosSettingsForm.less'
 
 type OwnProps = {
     params: {
-        macroId?: string,
-    },
-}
-
-type Props = OwnProps & {
-    agents: Map<*, *>,
-    macroCreated: typeof macroCreated,
-    macroDeleted: typeof macroDeleted,
-    macroFetched: typeof macroFetched,
-    macroUpdated: typeof macroUpdated,
-    macros: MacrosState,
-    notify: typeof notify,
+        macroId?: string
+    }
 }
 
 export function MacrosSettingsFormContainer({
@@ -67,27 +56,30 @@ export function MacrosSettingsFormContainer({
     macros,
     notify,
     params: {macroId},
-}: Props) {
+}: OwnProps & ConnectedProps<typeof connector>) {
     const [macroForm, setMacroForm] = useState<MacroDraft>(
-        getDefaultMacro().toJS()
+        (getDefaultMacro as () => Map<any, any>)().toJS()
     )
     const [
         {loading: isFetchPending},
         handleMacroFetch,
     ] = useAsyncFn(async () => {
+        if (!macroId) {
+            return
+        }
         try {
             const res = await fetchMacro(parseInt(macroId))
             macroFetched(res)
         } catch (error) {
-            notify({
+            void notify({
                 message: 'Failed to fetch macro',
-                status: 'error',
+                status: NotificationStatus.Error,
             })
             browserHistory.push('/app/settings/macros')
         }
     }, [macroId])
-    const handleActionsChange = (actions: Map<*, *>) => {
-        const filteredActions = actions.filter((action) =>
+    const handleActionsChange = (actions: List<any>) => {
+        const filteredActions = actions.filter((action: Map<any, any>) =>
             DEFAULT_ACTIONS.includes(action.get('name'))
         )
 
@@ -118,40 +110,43 @@ export function MacrosSettingsFormContainer({
                 res = await createMacro(macroForm)
                 macroCreated(res)
             }
-            notify({
+            void notify({
                 message: `Successfully ${
                     macroId ? 'updated' : 'created'
                 } macro.`,
-                status: 'success',
+                status: NotificationStatus.Success,
             })
             browserHistory.push('/app/settings/macros')
         } catch (error) {
-            notify({
+            void notify({
                 message: `Failed to ${macroId ? 'update' : 'create'} macro.`,
-                status: 'error',
+                status: NotificationStatus.Error,
             })
         }
     }, [macroId, macroForm])
     const [{loading: isDeletePending}, handleDelete] = useAsyncFn(async () => {
+        if (!macroId) {
+            return
+        }
         try {
             const macroIdNumber = parseInt(macroId)
             await deleteMacro(macroIdNumber)
             macroDeleted(macroIdNumber)
-            notify({
+            void notify({
                 message: 'Successfully deleted macro',
-                status: 'success',
+                status: NotificationStatus.Success,
             })
             browserHistory.push('/app/settings/macros')
         } catch (error) {
-            notify({
+            void notify({
                 message: 'Failed to delete macro',
-                status: 'error',
+                status: NotificationStatus.Error,
             })
         }
     })
     useEffect(() => {
         if (macroId) {
-            handleMacroFetch()
+            void handleMacroFetch()
         }
     }, [macroId])
     useEffect(() => {
@@ -195,7 +190,7 @@ export function MacrosSettingsFormContainer({
                         onSubmit={(e: SyntheticEvent<HTMLFormElement>) => {
                             e.preventDefault()
                             if (!isActionDisabled) {
-                                handleFormSubmit()
+                                void handleFormSubmit()
                             }
                         }}
                     >
@@ -213,7 +208,7 @@ export function MacrosSettingsFormContainer({
                                 !isActionDisabled &&
                                 setMacroForm({...macroForm, name})
                             }
-                            setIntent={(intent: ?IntentName) =>
+                            setIntent={(intent: Maybe<IntentName>) =>
                                 !isActionDisabled &&
                                 setMacroForm({...macroForm, intent})
                             }
@@ -258,20 +253,19 @@ export function MacrosSettingsFormContainer({
     )
 }
 
-const mapStateToProps = (state) => ({
-    agents: getAgents(state),
-    macros: state.entities.macros,
-})
+const connector = connect(
+    (state: RootState) => ({
+        //$TsFixMe: Remove casting once agent selectors are migrated
+        agents: (getAgents as (state: RootState) => Map<any, any>)(state),
+        macros: state.entities.macros,
+    }),
+    {
+        macroCreated,
+        macroDeleted,
+        macroFetched,
+        macroUpdated,
+        notify,
+    }
+)
 
-const mapDispatchToProps = {
-    macroCreated,
-    macroDeleted,
-    macroFetched,
-    macroUpdated,
-    notify,
-}
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(MacrosSettingsFormContainer)
+export default connector(MacrosSettingsFormContainer)

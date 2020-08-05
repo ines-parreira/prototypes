@@ -1,7 +1,7 @@
 import {createStore, applyMiddleware} from 'redux'
 import thunk from 'redux-thunk'
 
-import rootReducer from '../state/reducers'
+import rootReducer from '../state/reducers.ts'
 
 import ravenCrashReporter from './middlewares/ravenCrashReporter'
 import serverErrorHandler from './middlewares/serverErrorHandler'

@@ -1,48 +1,43 @@
-//@flow
+import {CancelToken} from 'axios'
 import _pick from 'lodash/pick'
-//$FlowFixMe
 import React, {useEffect, useState} from 'react'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import {browserHistory} from 'react-router'
 import {Button, Container} from 'reactstrap'
 
-import {useDelayedAsyncFn, useCancellableRequest} from '../../../hooks'
-import type {OrderDirection} from '../../../models/api'
+import useDelayedAsyncFn from '../../../hooks/useDelayedAsyncFn'
+import useCancellableRequest from '../../../hooks/useCancellableRequest'
+import {OrderDirection} from '../../../models/api/types'
+import {fetchMacros} from '../../../models/macro/resources'
 import {
-    fetchMacros,
-    type FetchMacrosOptions,
-    type MacroSortableProperties,
-} from '../../../models/macro'
-import {macrosFetched, type MacrosState} from '../../../state/entities/macros'
-import {notify} from '../../../state/notifications/actions'
-import PageHeader from '../../common/components/PageHeader'
-import Pagination from '../../common/components/Pagination'
-import Search from '../../common/components/Search'
+    FetchMacrosOptions,
+    MacroSortableProperties,
+    Macro,
+} from '../../../models/macro/types'
+import {macrosFetched} from '../../../state/entities/macros/actions'
+import {notify} from '../../../state/notifications/actions.js'
+import {NotificationStatus} from '../../../state/notifications/types'
+import PageHeader from '../../common/components/PageHeader.js'
+import Pagination from '../../common/components/Pagination.js'
+import Search from '../../common/components/Search.js'
+import {RootState, StoreDispatch} from '../../../state/types.js'
 
 import css from './MacrosSettingsContent.less'
 import MacrosSettingsTable from './MacrosSettingsTable'
 
-type OwnProps = {}
-
-type Props = OwnProps & {
-    macros: MacrosState,
-    macrosFetched: typeof macrosFetched,
-    notify: typeof notify,
-}
-
 type PaginationState = {
-    page: number,
-    nbPages: number,
+    page: number
+    nbPages: number
 }
 
 export function MacrosSettingsContentContainer({
     macros,
     macrosFetched,
     notify,
-}: Props) {
+}: ConnectedProps<typeof connector>) {
     const [options, setOptions] = useState<FetchMacrosOptions>({
-        orderBy: 'createdDatetime',
-        orderDir: 'asc',
+        orderBy: MacroSortableProperties.CreatedDatetime,
+        orderDir: OrderDirection.Asc,
     })
     const [macroIds, setMacroIds] = useState<number[]>([])
     const [pagination, setPagination] = useState<PaginationState>({
@@ -52,7 +47,7 @@ export function MacrosSettingsContentContainer({
     const [
         cancellableFetchMacros,
     ] = useCancellableRequest(
-        (cancelToken) => async (options: FetchMacrosOptions) =>
+        (cancelToken: CancelToken) => async (options: FetchMacrosOptions) =>
             await fetchMacros(options, cancelToken)
     )
     const [{loading: isFetchPending}, handleFetchMacros] = useDelayedAsyncFn(
@@ -63,12 +58,12 @@ export function MacrosSettingsContentContainer({
                     return
                 }
                 macrosFetched(res.data)
-                setMacroIds(res.data.map((macro) => macro.id))
+                setMacroIds(res.data.map((macro: Macro) => macro.id))
                 setPagination({page: res.meta.page, nbPages: res.meta.nb_pages})
             } catch (error) {
-                notify({
+                void notify({
                     message: 'Failed to fetch macros',
-                    status: 'error',
+                    status: NotificationStatus.Error,
                 })
             }
         },
@@ -76,7 +71,7 @@ export function MacrosSettingsContentContainer({
         200
     )
     useEffect(() => {
-        handleFetchMacros()
+        void handleFetchMacros()
     }, [options])
     useEffect(() => {
         const {page, nbPages} = pagination
@@ -99,11 +94,12 @@ export function MacrosSettingsContentContainer({
                         bindKey
                         className="mr-2"
                         forcedQuery={options.search || ''}
-                        onChange={(search) =>
+                        onChange={(search: string) =>
                             setOptions({
                                 ...options,
-                                orderBy: 'createdDatetime',
-                                orderDir: 'asc',
+                                orderBy:
+                                    MacroSortableProperties.CreatedDatetime,
+                                orderDir: OrderDirection.Asc,
                                 search,
                             })
                         }
@@ -153,29 +149,27 @@ export function MacrosSettingsContentContainer({
                         orderDir,
                     })
                 }
-                sortOptions={_pick(options, ['orderBy', 'orderDir'])}
+                sortOptions={_pick(options, 'orderBy', 'orderDir')}
             />
 
             <Pagination
                 className="pagination-transparent"
                 currentPage={pagination.page}
-                onChange={(page) => setOptions({...options, page})}
+                onChange={(page: number) => setOptions({...options, page})}
                 pageCount={pagination.nbPages}
             />
         </div>
     )
 }
 
-const mapStateToProps = (state) => ({
-    macros: state.entities.macros,
-})
+const connector = connect(
+    (state: RootState) => ({
+        macros: state.entities.macros,
+    }),
+    {
+        macrosFetched,
+        notify,
+    }
+)
 
-const mapDispatchToProps = {
-    macrosFetched,
-    notify,
-}
-
-export default connect<Props, OwnProps>(
-    mapStateToProps,
-    mapDispatchToProps
-)(MacrosSettingsContentContainer)
+export default connector(MacrosSettingsContentContainer)

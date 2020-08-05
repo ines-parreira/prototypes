@@ -1,44 +1,57 @@
-//@flow
-import {CancelToken} from 'axios'
+import axios from 'axios'
 import _pick from 'lodash/pick'
 import {mount, shallow} from 'enzyme'
-import React, {type ElementProps} from 'react'
+import React, {ComponentProps} from 'react'
 import {browserHistory} from 'react-router'
 import {Button} from 'reactstrap'
 
-import {macros as macrosFixtures} from '../../../../fixtures/macro'
-import {fetchMacros} from '../../../../models/macro'
-import Pagination from '../../../common/components/Pagination'
-import Search from '../../../common/components/Search'
+import {macros as macrosFixtures} from '../../../../fixtures/macro.js'
+import {OrderDirection} from '../../../../models/api/types'
+import {fetchMacros} from '../../../../models/macro/resources'
+import {Macro, MacroSortableProperties} from '../../../../models/macro/types'
+import Pagination from '../../../common/components/Pagination.js'
+import Search from '../../../common/components/Search.js'
 import {MacrosSettingsContentContainer} from '../MacrosSettingsContent'
 import MacroSettingsTable from '../MacrosSettingsTable'
 
 jest.mock('../../../../models/macro')
 jest.mock(
     '../../../common/components/Pagination',
-    () => ({onChange}: ElementProps<typeof Pagination>) => (
+    //$TsFixMe Replace Props type to ComponentProps<typeof Pagination> on Pagination migration
+    () => ({onChange}: {onChange: (value: number) => void}) => (
         <div onClick={() => onChange(2)} />
     )
 )
 jest.mock(
     '../../../common/components/Search',
-    () => ({onChange}: ElementProps<typeof Search>) => (
-        <div onChange={(e) => onChange(e.target.value)} />
+    //$TsFixMe Replace Props type to ComponentProps<typeof Search> on Search migration
+    () => ({onChange}: {onChange: (value: string) => void}) => (
+        <div onChange={(e) => onChange((e.target as HTMLInputElement).value)} />
     )
 )
+/* eslint-enable */
 jest.mock('react-router')
 jest.mock(
     '../MacrosSettingsTable',
-    () => ({onSortOptionsChange}: ElementProps<typeof MacroSettingsTable>) => (
-        <div onClick={() => onSortOptionsChange('name', 'asc')} />
+    () => ({
+        onSortOptionsChange,
+    }: ComponentProps<typeof MacroSettingsTable>) => (
+        <div
+            onClick={() =>
+                onSortOptionsChange(
+                    MacroSortableProperties.Name,
+                    OrderDirection.Asc
+                )
+            }
+        />
     )
 )
 
-const mockToken = CancelToken.source().token
+const mockToken = axios.CancelToken.source().token
 
 describe('<MacrosSettingsContent/>', () => {
     const mappedMacrosFixtures = macrosFixtures
-    const mockFetchMacros = (fetchMacros: any)
+    const mockFetchMacros: jest.MockedFunction<typeof fetchMacros> = fetchMacros as any
     const mockMacrosFetched = jest.fn()
     const mockNotify = jest.fn()
     const macrosState = {
@@ -46,18 +59,23 @@ describe('<MacrosSettingsContent/>', () => {
         '2': mappedMacrosFixtures[0],
         '3': mappedMacrosFixtures[0],
     }
-    const minProps = {
+    const minProps = ({
         macros: {},
         macrosFetched: mockMacrosFetched,
         notify: mockNotify,
-    }
+    } as any) as ComponentProps<typeof MacrosSettingsContentContainer>
 
     mockFetchMacros.mockResolvedValue({
         data: mappedMacrosFixtures,
         meta: {
             page: 1,
             nb_pages: 2,
+            current_page: '',
+            item_count: 10,
+            per_page: 10,
         },
+        uri: '',
+        object: '',
     })
 
     beforeEach(() => {
@@ -157,7 +175,7 @@ describe('<MacrosSettingsContent/>', () => {
                 page: 2,
                 nb_pages: 3,
             },
-        })
+        } as any)
         const component = mount(
             <MacrosSettingsContentContainer
                 {...minProps}
@@ -189,7 +207,7 @@ describe('<MacrosSettingsContent/>', () => {
                 page: 2,
                 nb_pages: 2,
             },
-        })
+        } as any)
         const component = mount(
             <MacrosSettingsContentContainer
                 {...minProps}
@@ -221,7 +239,7 @@ describe('<MacrosSettingsContent/>', () => {
                 page: 1,
                 nb_pages: 1,
             },
-        })
+        } as any)
         const component = mount(
             <MacrosSettingsContentContainer
                 {...minProps}

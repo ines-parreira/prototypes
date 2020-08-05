@@ -1,54 +1,42 @@
-//@flow
 import classnames from 'classnames'
 import moment from 'moment'
-//$FlowFixMe
 import React, {useState} from 'react'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import {browserHistory} from 'react-router'
 import {Button, Popover, PopoverHeader, PopoverBody} from 'reactstrap'
 
-import {ORDER_DIRECTION, type OrderDirection} from '../../../models/api'
-import {
-    createMacro,
-    deleteMacro,
-    MACRO_SORTABLE_PROPERTIES,
-    type MacroSortableProperties,
-} from '../../../models/macro'
+import {OrderDirection, MetaSortOptions} from '../../../models/api/types'
+import {createMacro, deleteMacro} from '../../../models/macro/resources'
+import {MacroSortableProperties} from '../../../models/macro/types'
 import {
     macroCreated,
     macroDeleted,
-    type MacrosState,
-} from '../../../state/entities/macros'
-import {notify} from '../../../state/notifications/actions'
-import Loader from '../../common/components/Loader'
-import BodyCell from '../../common/components/table/cells/BodyCell'
-import HeaderCell from '../../common/components/table/cells/HeaderCell'
-import HeaderCellProperty from '../../common/components/table/cells/HeaderCellProperty'
-import TableBody from '../../common/components/table/TableBody'
-import TableBodyRow from '../../common/components/table/TableBodyRow'
-import TableHead from '../../common/components/table/TableHead'
-import TableWrapper from '../../common/components/table/TableWrapper'
+} from '../../../state/entities/macros/actions'
+import {notify} from '../../../state/notifications/actions.js'
+import {NotificationStatus} from '../../../state/notifications/types'
+import {RootState, StoreDispatch} from '../../../state/types'
+import Loader from '../../common/components/Loader/index.js'
+import BodyCell from '../../common/components/table/cells/BodyCell.js'
+import HeaderCell from '../../common/components/table/cells/HeaderCell.js'
+import HeaderCellProperty from '../../common/components/table/cells/HeaderCellProperty.js'
+import TableBody from '../../common/components/table/TableBody.js'
+import TableBodyRow from '../../common/components/table/TableBodyRow.js'
+import TableHead from '../../common/components/table/TableHead.js'
+import TableWrapper from '../../common/components/table/TableWrapper.js'
 
 import css from './MacrosSettingsTable.less'
 
 type OwnProps = {
-    isLoading: boolean,
-    macroIds: number[],
+    isLoading: boolean
+    macroIds: number[]
     onSortOptionsChange: (
         orderBy: MacroSortableProperties,
         orderDir: OrderDirection
-    ) => void,
+    ) => void
     sortOptions: {
-        orderBy: MacroSortableProperties,
-        orderDir: OrderDirection,
-    },
-}
-
-type Props = OwnProps & {
-    macros: MacrosState,
-    macroCreated: typeof macroCreated,
-    macroDeleted: typeof macroDeleted,
-    notify: typeof notify,
+        orderBy?: Maybe<MacroSortableProperties | MetaSortOptions>
+        orderDir?: Maybe<OrderDirection>
+    }
 }
 
 export function MacrosSettingsTableContainer({
@@ -60,8 +48,10 @@ export function MacrosSettingsTableContainer({
     notify,
     onSortOptionsChange,
     sortOptions,
-}: Props) {
-    const [visiblePopoverId, setVisiblePopoverId] = useState(null)
+}: OwnProps & ConnectedProps<typeof connector>) {
+    const [visiblePopoverId, setVisiblePopoverId] = useState<Maybe<string>>(
+        null
+    )
     const toggleVisiblePopover = (nextId: string) => {
         setVisiblePopoverId(nextId === visiblePopoverId ? null : nextId)
     }
@@ -69,14 +59,14 @@ export function MacrosSettingsTableContainer({
         try {
             await deleteMacro(macroId)
             macroDeleted(macroId)
-            notify({
+            void notify({
                 message: 'Successfully deleted macro',
-                status: 'success',
+                status: NotificationStatus.Success,
             })
         } catch (error) {
-            notify({
+            void notify({
                 message: 'Failed to delete macro',
-                status: 'error',
+                status: NotificationStatus.Error,
             })
         }
     }
@@ -96,9 +86,9 @@ export function MacrosSettingsTableContainer({
             macroCreated(res)
             browserHistory.push(`/app/settings/macros/${res.id}`)
         } catch (error) {
-            notify({
+            void notify({
                 message: 'Failed to duplicate macro',
-                status: 'error',
+                status: NotificationStatus.Error,
             })
         }
     }
@@ -106,9 +96,9 @@ export function MacrosSettingsTableContainer({
         onSortOptionsChange(
             orderBy,
             orderBy !== sortOptions.orderBy ||
-                sortOptions.orderDir === ORDER_DIRECTION.DESC
-                ? ORDER_DIRECTION.ASC
-                : ORDER_DIRECTION.DESC
+                sortOptions.orderDir === OrderDirection.Desc
+                ? OrderDirection.Asc
+                : OrderDirection.Desc
         )
     }
 
@@ -118,20 +108,20 @@ export function MacrosSettingsTableContainer({
                 <HeaderCellProperty
                     direction={sortOptions.orderDir}
                     isOrderedBy={
-                        sortOptions.orderBy === MACRO_SORTABLE_PROPERTIES.NAME
+                        sortOptions.orderBy === MacroSortableProperties.Name
                     }
                     onClick={() =>
-                        handleSortChange(MACRO_SORTABLE_PROPERTIES.NAME)
+                        handleSortChange(MacroSortableProperties.Name)
                     }
                     title="Macro"
                 />
                 <HeaderCellProperty
                     direction={sortOptions.orderDir}
                     isOrderedBy={
-                        sortOptions.orderBy === MACRO_SORTABLE_PROPERTIES.USAGE
+                        sortOptions.orderBy === MacroSortableProperties.Usage
                     }
                     onClick={() =>
-                        handleSortChange(MACRO_SORTABLE_PROPERTIES.USAGE)
+                        handleSortChange(MacroSortableProperties.Usage)
                     }
                     title="Usage count"
                 />
@@ -139,11 +129,11 @@ export function MacrosSettingsTableContainer({
                     direction={sortOptions.orderDir}
                     isOrderedBy={
                         sortOptions.orderBy ===
-                        MACRO_SORTABLE_PROPERTIES.UPDATED_DATETIME
+                        MacroSortableProperties.UpdatedDatetime
                     }
                     onClick={() =>
                         handleSortChange(
-                            MACRO_SORTABLE_PROPERTIES.UPDATED_DATETIME
+                            MacroSortableProperties.UpdatedDatetime
                         )
                     }
                     title="Last updated"
@@ -196,7 +186,7 @@ export function MacrosSettingsTableContainer({
                                         className="mr-1 btn-transparent"
                                         onClick={(e) => {
                                             e.stopPropagation()
-                                            handleMacroDuplicate(macroId)
+                                            void handleMacroDuplicate(macroId)
                                         }}
                                         title="Duplicate macro"
                                         type="button"
@@ -259,17 +249,15 @@ export function MacrosSettingsTableContainer({
     )
 }
 
-const mapStateToProps = (state) => ({
-    macros: state.entities.macros,
-})
+const connector = connect(
+    (state: RootState) => ({
+        macros: state.entities.macros,
+    }),
+    {
+        macroCreated,
+        macroDeleted,
+        notify,
+    }
+)
 
-const mapDispatchToProps = {
-    macroCreated,
-    macroDeleted,
-    notify,
-}
-
-export default connect<Props, OwnProps>(
-    mapStateToProps,
-    mapDispatchToProps
-)(MacrosSettingsTableContainer)
+export default connector(MacrosSettingsTableContainer)

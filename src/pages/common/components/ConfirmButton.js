@@ -23,6 +23,7 @@ type Props = {
     placement?: string,
     confirmColor?: string,
     buttonClassName?: string,
+    color?: string,
 }
 
 type State = {

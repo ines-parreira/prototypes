@@ -1,4 +1,4 @@
-import type {RecentChatTicket} from '../../business/types/recentChats'
+import {RecentChatTicket} from '../../business/types/recentChats'
 import * as socketConstants from '../../config/socketConstants.js'
 
 export type CustomerUpdatedEvent = {

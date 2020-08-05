@@ -9,7 +9,7 @@ import {
     macroFetched,
     macroUpdated,
     macrosFetched,
-} from './actions'
+} from './actions.ts'
 
 export type MacrosState = {
     [string]: Macro,

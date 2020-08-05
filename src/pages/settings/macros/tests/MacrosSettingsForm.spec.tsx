@@ -1,26 +1,25 @@
-//@flow
 import {mount, shallow} from 'enzyme'
-import {fromJS} from 'immutable'
-import React, {type ElementProps} from 'react'
+import {fromJS, Map} from 'immutable'
+import React, {ComponentProps} from 'react'
 import {browserHistory} from 'react-router'
 import {Button} from 'reactstrap'
 
-import {macros as macrosFixtures} from '../../../../fixtures/macro'
+import {macros as macrosFixtures} from '../../../../fixtures/macro.js'
 import {
     createMacro,
     deleteMacro,
     fetchMacro,
     updateMacro,
-} from '../../../../models/macro'
-import {getDefaultMacro} from '../../../../state/macro/utils'
-import ConfirmButton from '../../../common/components/ConfirmButton'
+} from '../../../../models/macro/resources'
+import {getDefaultMacro} from '../../../../state/macro/utils.js'
+import ConfirmButton from '../../../common/components/ConfirmButton.js'
 import {MacrosSettingsFormContainer} from '../MacrosSettingsForm'
 
 jest.mock('react-router')
 jest.mock('../../../../models/macro')
 jest.mock(
     '../../../common/components/ConfirmButton',
-    () => ({children, confirm}: ElementProps<typeof ConfirmButton>) => (
+    () => ({children, confirm}: ComponentProps<typeof ConfirmButton>) => (
         <div onClick={confirm}>{children}</div>
     )
 )
@@ -33,17 +32,24 @@ describe('<MacrosSettingsForm/>', () => {
         actions: [],
         id: 5,
         name: 'New macro',
+        category: '',
+        created_datetime: '',
+        external_id: '',
+        updated_datetime: '',
+        uri: '',
+        usage: 0,
+        intent: null,
     }
-    const mockCreateMacro = (createMacro: any)
-    const mockDeleteMacro = (deleteMacro: any)
-    const mockFetchMacro = (fetchMacro: any)
-    const mockUpdateMacro = (updateMacro: any)
+    const mockCreateMacro: jest.MockedFunction<typeof createMacro> = createMacro as any
+    const mockDeleteMacro: jest.MockedFunction<typeof deleteMacro> = deleteMacro as any
+    const mockFetchMacro: jest.MockedFunction<typeof fetchMacro> = fetchMacro as any
+    const mockUpdateMacro: jest.MockedFunction<typeof updateMacro> = updateMacro as any
     const mockMacroCreated = jest.fn()
     const mockMacroDeleted = jest.fn()
     const mockMacroFetched = jest.fn()
     const mockMacroUpdated = jest.fn()
     const mockNotify = jest.fn()
-    const minProps = {
+    const minProps = ({
         agents: fromJS({}),
         macros: {},
         macroCreated: mockMacroCreated,
@@ -52,7 +58,7 @@ describe('<MacrosSettingsForm/>', () => {
         macroUpdated: mockMacroUpdated,
         notify: mockNotify,
         params: {},
-    }
+    } as any) as ComponentProps<typeof MacrosSettingsFormContainer>
 
     mockCreateMacro.mockResolvedValue(newMacroFixture)
     mockDeleteMacro.mockResolvedValue()
@@ -136,7 +142,7 @@ describe('<MacrosSettingsForm/>', () => {
         component.find(Button).simulate('submit')
         expect(mockCreateMacro).toHaveBeenNthCalledWith(
             1,
-            getDefaultMacro().toJS()
+            (getDefaultMacro as () => Map<any, any>)().toJS()
         )
         setImmediate(() => {
             expect(mockMacroCreated).toHaveBeenNthCalledWith(1, newMacroFixture)

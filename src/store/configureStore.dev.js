@@ -2,7 +2,7 @@ import {createStore, compose, applyMiddleware} from 'redux'
 import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
 
-import rootReducer from '../state/reducers'
+import rootReducer from '../state/reducers.ts'
 
 import serverErrorHandler from './middlewares/serverErrorHandler'
 

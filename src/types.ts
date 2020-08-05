@@ -1,4 +1,4 @@
-import type {Map} from 'immutable'
+import {Map} from 'immutable'
 
 enum ActionTemplateExecution {
     Front = 'front',
@@ -11,11 +11,9 @@ export type ActionTemplate = {
     title: string
     notes?: string[]
     integrationType?: string
-    arguments?: Record<string, unknown>
+    arguments?: unknown
     validators?: Array<{
-        validate: (value: {
-            integrations: any[]
-        }) => Record<string, unknown> | boolean
+        validate: (value: {integrations: any[]}) => unknown | boolean
         error: string
     }>
 }

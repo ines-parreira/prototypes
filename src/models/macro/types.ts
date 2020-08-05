@@ -1,6 +1,6 @@
-import type {IntentName} from '../intent/types'
-import type {MacroAction} from '../macroAction/types'
-import type {MetaSortOptions, OrderDirection} from '../api/types'
+import {IntentName} from '../intent/types'
+import {MacroAction} from '../macroAction/types'
+import {MetaSortOptions, OrderDirection} from '../api/types'
 
 export type Macro = MacroDraft & {
     category: string
@@ -16,7 +16,7 @@ export type Macro = MacroDraft & {
 
 export type MacroDraft = {
     actions: MacroAction[]
-    intent: IntentName
+    intent: Maybe<IntentName>
     name: string
 }
 

@@ -1,34 +1,35 @@
-//@flow
 import {shallow} from 'enzyme'
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {browserHistory} from 'react-router'
 import {Button} from 'reactstrap'
 
-import {createMacro, deleteMacro} from '../../../../models/macro'
-import {macros as macrosFixtures} from '../../../../fixtures/macro'
-import Loader from '../../../common/components/Loader'
-import HeaderCellProperty from '../../../common/components/table/cells/HeaderCellProperty'
-import TableBodyRow from '../../../common/components/table/TableBodyRow'
+import {createMacro, deleteMacro} from '../../../../models/macro/resources'
+import {Macro} from '../../../../models/macro/types'
+import {macros as macrosFixtures} from '../../../../fixtures/macro.js'
+import {MacrosState} from '../../../../state/entities/macros/types'
+import Loader from '../../../common/components/Loader/index.js'
+import HeaderCellProperty from '../../../common/components/table/cells/HeaderCellProperty.js'
+import TableBodyRow from '../../../common/components/table/TableBodyRow.js'
 import {MacrosSettingsTableContainer} from '../MacrosSettingsTable'
 
 jest.mock('react-router')
-jest.mock('../../../../models/macro')
+jest.mock('../../../../models/macro/resources')
 
 describe('<MacrosSettingsTable/>', () => {
-    const macrosState = (macrosFixtures.reduce(
-        (acc, macro) => ({
+    const macrosState: MacrosState = macrosFixtures.reduce(
+        (acc: MacrosState, macro: Macro) => ({
             ...acc,
             [macro.id]: macro,
         }),
         {}
-    ): any)
-    const mockCreateMacro = (createMacro: any)
-    const mockDeleteMacro = (deleteMacro: any)
+    )
+    const mockCreateMacro: jest.MockedFunction<typeof createMacro> = createMacro as any
+    const mockDeleteMacro: jest.MockedFunction<typeof deleteMacro> = deleteMacro as any
     const mockMacroCreated = jest.fn()
     const mockMacroDeleted = jest.fn()
     const mockNotify = jest.fn()
     const mockOnSortOptionsChange = jest.fn()
-    const minProps = {
+    const minProps = ({
         isLoading: false,
         macroIds: [],
         macros: {},
@@ -40,7 +41,7 @@ describe('<MacrosSettingsTable/>', () => {
             orderBy: 'createdDatetime',
             orderDir: 'asc',
         },
-    }
+    } as any) as ComponentProps<typeof MacrosSettingsTableContainer>
     const mockClickEvent = {
         preventDefault: jest.fn(),
         stopPropagation: jest.fn(),

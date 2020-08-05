@@ -1,14 +1,13 @@
-//@flow
-//$FlowFixMe
-import {useEffect, useRef, useState} from 'react'
-import {useAsyncFn, type AsyncState} from 'react-use'
+import {useEffect, useRef, useState, DependencyList} from 'react'
+import {useAsyncFn} from 'react-use'
+import {AsyncState} from 'react-use/lib/useAsyncFn'
 
-const useDelayedAsyncFn = <T: any[], Y>(
-    fn: (...args: T) => Promise<Y>,
-    deps?: any[] = [],
-    delay?: number = 100
+const useDelayedAsyncFn = <T extends any[], Y>(
+    fn: (...args: T | []) => Promise<Y>,
+    deps: DependencyList = [],
+    delay = 100
 ): [AsyncState<Y>, (...args: T) => Promise<Y>] => {
-    const timeoutRef = useRef(null)
+    const timeoutRef = useRef<Maybe<number>>(null)
     const [isDelayed, setDelayed] = useState(false)
     const [{loading, ...otherStatus}, handleFn] = useAsyncFn(fn, deps)
     const clearDelay = () => {
@@ -24,13 +23,13 @@ const useDelayedAsyncFn = <T: any[], Y>(
         {
             ...otherStatus,
             loading: isDelayed && loading,
-        },
+        } as AsyncState<Y>,
         (...args) => {
             clearDelay()
-            timeoutRef.current = setTimeout(() => {
+            timeoutRef.current = window.setTimeout(() => {
                 setDelayed(true)
             }, delay)
-            return handleFn(args)
+            return handleFn(...args)
         },
     ]
 }

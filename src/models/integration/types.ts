@@ -1,4 +1,4 @@
-import type {
+import {
     Product as IntegrationProduct,
     Variant as IntegrationVariant,
 } from '../../constants/integrations/types/shopify'
