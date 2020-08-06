@@ -10,6 +10,7 @@ import {TicketMessage, isFailed, isPending} from '../../../../../models/ticket'
 
 import css from './Container.less'
 import Header from './Header'
+import Footer from './Footer'
 
 const classNames = classNamesBind.bind(css)
 
@@ -22,6 +23,7 @@ type Props = {
     children?: Node,
     timezone: string,
     isLastRead: boolean,
+    isMessageHidden: boolean,
 }
 
 export default class Container extends React.Component<Props> {
@@ -34,9 +36,22 @@ export default class Container extends React.Component<Props> {
     }
 
     render() {
-        const {children, message} = this.props
-
+        const {children, message, isMessageHidden} = this.props
         const sender = fromJS(message.sender || {})
+        let avatar
+
+        if (!isMessageHidden) {
+            avatar = (
+                <div className={css.avatar}>
+                    <Avatar
+                        email={message.from_agent ? null : sender.get('email')}
+                        name={sender.get('name')}
+                        url={sender.getIn(['meta', 'profile_picture_url'])}
+                        size="36"
+                    />
+                </div>
+            )
+        }
 
         // appear animation if message is created after the ticket body component is mounted
         const {lastMessageDatetimeAfterMount} = this.props
@@ -62,23 +77,26 @@ export default class Container extends React.Component<Props> {
                     }
                 )}
             >
-                <div className={css.avatar}>
-                    <Avatar
-                        email={message.from_agent ? null : sender.get('email')}
-                        name={sender.get('name')}
-                        url={sender.getIn(['meta', 'profile_picture_url'])}
-                        size="36"
-                    />
-                </div>
-                <div className={css.bodyWrapper}>
+                {avatar}
+                <div
+                    className={classNames(css.bodyWrapper, {
+                        bodyWrapperForHiddenMessage: isMessageHidden,
+                    })}
+                >
                     <Header
                         id={this.props.id}
                         message={message}
                         isLastRead={this.props.isLastRead}
                         timezone={this.props.timezone}
                         hasError={isFailed(message)}
+                        isMessageHidden={isMessageHidden}
                     />
                     {children}
+                    <Footer
+                        id={this.props.id}
+                        message={message}
+                        isMessageHidden={isMessageHidden}
+                    />
                 </div>
             </div>
         )
