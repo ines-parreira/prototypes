@@ -6,7 +6,6 @@ import {
     hasFailedAction,
     isFailed,
     isPending,
-    isTicketMessageHidden,
     TicketMessage,
 } from '../../../../../models/ticket'
 
@@ -31,40 +30,35 @@ type Props = {
 export default function Message(props: Props) {
     const {message} = props
     const hasError = isFailed(message)
-    let contentToRender = null
 
-    const isMessageHidden = isTicketMessageHidden(message)
-
-    if (!isMessageHidden) {
-        contentToRender = (
-            <div
-                className={classNames('wrapper', {
-                    hasSourceDetails: props.showSourceDetails,
-                })}
-            >
-                {props.showSourceDetails && (
-                    <SourceDetailsHeader
-                        className={classNames('sourceDetails', {
-                            internal: !message.public,
-                        })}
-                        message={message}
-                        timezone={props.timezone}
-                        isLastRead={props.isLastRead}
-                    />
-                )}
-                <Body message={message} hasError={hasError} />
-                <Attachments message={message} />
-                <Actions message={message} />
-                <Errors
+    const contentToRender = (
+        <div
+            className={classNames('wrapper', {
+                hasSourceDetails: props.showSourceDetails,
+            })}
+        >
+            {props.showSourceDetails && (
+                <SourceDetailsHeader
+                    className={classNames('sourceDetails', {
+                        internal: !message.public,
+                    })}
                     message={message}
-                    ticketId={props.ticketId}
-                    loading={isPending(message)}
-                    hasActionError={hasFailedAction(message)}
-                    setStatus={props.setStatus}
+                    timezone={props.timezone}
+                    isLastRead={props.isLastRead}
                 />
-            </div>
-        )
-    }
+            )}
+            <Body message={message} hasError={hasError} />
+            <Attachments message={message} />
+            <Actions message={message} />
+            <Errors
+                message={message}
+                ticketId={props.ticketId}
+                loading={isPending(message)}
+                hasActionError={hasFailedAction(message)}
+                setStatus={props.setStatus}
+            />
+        </div>
+    )
 
     return contentToRender
 }
