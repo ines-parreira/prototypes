@@ -3,7 +3,7 @@ import moment from 'moment-timezone'
 import Promise from 'promise-polyfill'
 import includes from 'array-includes'
 
-import {resendVerificationEmail} from './state/currentAccount/actions'
+import {resendVerificationEmail} from './state/currentAccount/actions.ts'
 import {getBaseEmailIntegration} from './state/integrations/selectors'
 import {recentViewsStorage} from './state/views/utils'
 import {notify} from './state/notifications/actions'

@@ -7,9 +7,9 @@ import _isObject from 'lodash/isObject'
 import {TicketStatuses} from '../../business/ticket'
 import {shouldTicketBeDisplayedInRecentChats} from '../../business/recentChats'
 
-import * as chatActions from '../../state/chats/actions'
+import * as chatActions from '../../state/chats/actions.ts'
 import * as currentAccountConstants from '../../state/currentAccount/constants'
-import * as currentAccountSelectors from '../../state/currentAccount/selectors'
+import * as currentAccountSelectors from '../../state/currentAccount/selectors.ts'
 import * as integrationActions from '../../state/integrations/actions'
 import * as notificationActions from '../../state/notifications/actions'
 import * as socketConstants from '../socketConstants'
@@ -22,7 +22,7 @@ const mockedCurrentAccountSelectors = (currentAccountSelectors: any)
 const mockedShouldTicketBeDisplayedInRecentChats = (shouldTicketBeDisplayedInRecentChats: any)
 const mockedIsCurrentlyOnTicket = (isCurrentlyOnTicket: any)
 
-jest.mock('../../state/chats/actions', () => {
+jest.mock('../../state/chats/actions.ts', () => {
     const _identity = require('lodash/identity')
 
     return {
@@ -53,10 +53,10 @@ jest.mock('../../init', () => {
     return {store}
 })
 
-jest.mock('../../state/currentAccount/selectors', () => {
+jest.mock('../../state/currentAccount/selectors.ts', () => {
     return {
         //$FlowFixMe
-        ...require.requireActual('../../state/currentAccount/selectors'),
+        ...require.requireActual('../../state/currentAccount/selectors.ts'),
         getTicketAssignmentSettings: jest.fn(),
     }
 })

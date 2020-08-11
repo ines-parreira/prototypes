@@ -7,7 +7,7 @@ import {notify} from '../notifications/actions'
 
 // types
 import type {Dispatch, getStateType} from '../types'
-import {fetchChats} from '../chats/actions'
+import {fetchChats} from '../chats/actions.ts'
 
 import * as constants from './constants'
 import * as currentUserSelectors from './selectors'

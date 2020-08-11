@@ -1,23 +1,23 @@
-// @flow
-import {Map, fromJS} from 'immutable'
+import {Map, fromJS, List} from 'immutable'
 
-export const initialState = fromJS({})
+import {GorgiasAction} from '../types'
 
-import type {actionType} from '../types'
+import * as constants from './constants.js'
+import {BillingState} from './types'
 
-import * as constants from './constants'
+export const initialState: BillingState = fromJS({})
 
 export default function reducer(
-    state: Map<*, *> = initialState,
-    action: actionType
-): Map<*, *> {
+    state: BillingState = initialState,
+    action: GorgiasAction
+): BillingState {
     switch (action.type) {
         case constants.SET_FUTURE_SUBSCRIPTION_PLAN:
             return state.set('futureSubscriptionPlan', action.planId)
         case constants.UPDATE_INVOICE_IN_LIST:
-            return state.update('invoices', (invoices) => {
-                return invoices.map((invoice) => {
-                    if (invoice.get('id') === action.invoice.get('id')) {
+            return state.update('invoices', (invoices: List<any>) => {
+                return invoices.map((invoice: Map<any, any>) => {
+                    if (invoice.get('id') === action.invoice?.get('id')) {
                         return action.invoice
                     }
                     return invoice

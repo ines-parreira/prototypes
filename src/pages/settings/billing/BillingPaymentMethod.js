@@ -5,12 +5,12 @@ import {Link} from 'react-router'
 import {Button, Card, CardBody, Col, Row, UncontrolledTooltip} from 'reactstrap'
 import classNames from 'classnames'
 
-import * as billingSelectors from '../../../state/billing/selectors'
-import * as currentAccountSelectors from '../../../state/currentAccount/selectors'
+import * as billingSelectors from '../../../state/billing/selectors.ts'
+import * as currentAccountSelectors from '../../../state/currentAccount/selectors.ts'
 import {
     fetchPaymentMethod,
     fetchCreditCard,
-} from '../../../state/billing/actions'
+} from '../../../state/billing/actions.ts'
 import Loader from '../../common/components/Loader'
 import * as segmentTracker from '../../../store/middlewares/segmentTracker'
 

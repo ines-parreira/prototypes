@@ -1,35 +1,32 @@
-// @flow
-import axios from 'axios'
+import axios, {AxiosError} from 'axios'
 import _capitalize from 'lodash/capitalize'
 
-import {notify} from '../notifications/actions'
-import GorgiasApi from '../../services/gorgiasApi'
-import type {Dispatch} from '../types'
+import {Subscription} from '../billing/types'
+import GorgiasApi from '../../services/gorgiasApi.js'
+import {notify} from '../notifications/actions.js'
+import {NotificationStatus} from '../notifications/types'
+import {StoreDispatch} from '../types'
 
-import * as constants from './constants'
+import * as constants from './constants.js'
+import {Account, AccountSetting} from './types'
 
-type settingType = {
-    id: string,
-    type: string,
-}
-
-export const updateAccount = (values: {}) => (
-    dispatch: Dispatch
-): Promise<Dispatch> => {
+export const updateAccount = (values: Account) => (
+    dispatch: StoreDispatch
+): Promise<ReturnType<StoreDispatch>> => {
     dispatch({type: constants.UPDATE_ACCOUNT_START})
 
     return axios
-        .put('/api/account/', values)
-        .then((json = {}) => json.data)
+        .put<Account>('/api/account/', values)
+        .then((json) => json?.data)
         .then(
             (resp) => {
                 dispatch({
                     type: constants.UPDATE_ACCOUNT_SUCCESS,
                     resp,
                 })
-                dispatch(
+                void dispatch(
                     notify({
-                        status: 'success',
+                        status: NotificationStatus.Success,
                         message: 'Account settings successfully updated!',
                     })
                 )
@@ -44,23 +41,23 @@ export const updateAccount = (values: {}) => (
         )
 }
 
-export function submitSetting(setting: settingType) {
-    return (dispatch: Dispatch): Promise<Dispatch> => {
+export function submitSetting(setting: AccountSetting) {
+    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         const isUpdate = !!setting.id
-        let promise
+        const promise = isUpdate
+            ? axios.put<AccountSetting>(
+                  `/api/account/settings/${setting.id}/`,
+                  setting
+              )
+            : axios.post<AccountSetting>('/api/account/settings/', setting)
 
-        if (isUpdate) {
-            promise = axios.put(`/api/account/settings/${setting.id}/`, setting)
-        } else {
-            promise = axios.post('/api/account/settings/', setting)
-        }
         return promise
-            .then((json = {}) => json.data)
+            .then((json) => json?.data)
             .then(
                 (setting) => {
-                    dispatch(
+                    void dispatch(
                         notify({
-                            status: 'success',
+                            status: NotificationStatus.Success,
                             message: `${_capitalize(
                                 setting.type
                             )} settings saved`,
@@ -84,16 +81,16 @@ export function submitSetting(setting: settingType) {
     }
 }
 
-export function updateSubscription(subscription: {}) {
-    return (dispatch: Dispatch): Promise<Dispatch> => {
+export function updateSubscription(subscription: Subscription) {
+    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return axios
-            .put('/api/billing/subscription/', subscription)
-            .then((json = {}) => json.data)
+            .put<Subscription>('/api/billing/subscription/', subscription)
+            .then((json) => json?.data)
             .then(
                 (resp) => {
-                    dispatch(
+                    void dispatch(
                         notify({
-                            status: 'success',
+                            status: NotificationStatus.Success,
                             message: 'Your subscription was updated.',
                         })
                     )
@@ -115,11 +112,8 @@ export function updateSubscription(subscription: {}) {
 
 /**
  * Set the subscription of the current account.
- *
- * @param subscription - A Gorgias internal subscription
- * @returns - A Redux action
  */
-export const setCurrentSubscription = (subscription: Map<*, *>) => {
+export const setCurrentSubscription = (subscription: Map<any, any>) => {
     return {
         type: constants.SET_CURRENT_SUBSCRIPTION,
         subscription,
@@ -128,57 +122,53 @@ export const setCurrentSubscription = (subscription: Map<*, *>) => {
 
 /**
  * Transfer the current account ownership to a user
- * @param {number} userId - The user ID
- * @returns {Function} the async action thunk
  */
 export const updateAccountOwner = (userId: number) => (
-    dispatch: Dispatch
-): Promise<Dispatch> => {
-    return axios
-        .put('/api/account/owner/', {id: userId})
-        .then((resp = {}) => resp.data)
-        .then(
-            () => {
-                dispatch(
-                    notify({
-                        status: 'success',
-                        message: 'The account owner was successfully​ changed.',
-                    })
-                )
-                return dispatch({
-                    type: constants.UPDATE_ACCOUNT_OWNER_SUCCESS,
-                    userId,
+    dispatch: StoreDispatch
+): Promise<ReturnType<StoreDispatch>> => {
+    return axios.put('/api/account/owner/', {id: userId}).then(
+        () => {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Success,
+                    message: 'The account owner was successfully​ changed.',
                 })
-            },
-            (error) => {
-                return dispatch({
-                    type: constants.UPDATE_ACCOUNT_OWNER_ERROR,
-                    error,
-                    reason:
-                        'Failed to change the account owner. Please try again in a few seconds.',
-                })
-            }
-        )
+            )
+            return dispatch({
+                type: constants.UPDATE_ACCOUNT_OWNER_SUCCESS,
+                userId,
+            })
+        },
+        (error) => {
+            return dispatch({
+                type: constants.UPDATE_ACCOUNT_OWNER_ERROR,
+                error,
+                reason:
+                    'Failed to change the account owner. Please try again in a few seconds.',
+            })
+        }
+    )
 }
 
 export const resendVerificationEmail = () => async (
-    dispatch: Dispatch
-): Promise<Dispatch> => {
+    dispatch: StoreDispatch
+): Promise<void> => {
     const gorgiasApi = new GorgiasApi()
 
     try {
         await gorgiasApi.resendAccountVerificationEmail()
-        dispatch(
+        void dispatch(
             notify({
-                status: 'success',
+                status: NotificationStatus.Success,
                 message: 'The verification email has been resent!',
             })
         )
     } catch (exc) {
-        dispatch(
+        void dispatch(
             notify({
-                status: 'error',
-                message: exc.response.data.error.msg,
+                status: NotificationStatus.Error,
+                message: (exc as AxiosError<{error: {msg: string}}>).response
+                    ?.data.error.msg,
             })
         )
     }

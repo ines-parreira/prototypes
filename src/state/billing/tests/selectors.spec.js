@@ -1,9 +1,9 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS, OrderedMap} from 'immutable'
 
-import * as selectors from '../selectors'
-import {initialState} from '../reducers'
-import {initialState as initialCurrentAccountState} from '../../currentAccount/reducers'
+import * as selectors from '../selectors.ts'
+import {initialState} from '../reducers.ts'
+import {initialState as initialCurrentAccountState} from '../../currentAccount/reducers.ts'
 
 import * as billingFixtures from '../../../fixtures/billing'
 

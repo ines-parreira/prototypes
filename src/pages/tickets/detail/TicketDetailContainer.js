@@ -25,7 +25,7 @@ import pendingMessageManager from '../../../services/pendingMessageManager'
 import * as newMessageActions from '../../../state/newMessage/actions'
 
 import {SOURCE_VALUE_PROP} from '../../../config'
-import * as currentAccountSelectors from '../../../state/currentAccount/selectors'
+import * as currentAccountSelectors from '../../../state/currentAccount/selectors.ts'
 import * as newMessageSelectors from '../../../state/newMessage/selectors'
 import * as viewsSelectors from '../../../state/views/selectors'
 import * as ticketSelectors from '../../../state/ticket/selectors'

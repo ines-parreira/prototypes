@@ -5,7 +5,7 @@ import _find from 'lodash/find'
 import {shouldTicketBeDisplayedInRecentChats} from '../business/recentChats'
 
 import * as agentsActions from '../state/agents/actions.ts'
-import * as chatsActions from '../state/chats/actions'
+import * as chatsActions from '../state/chats/actions.ts'
 import * as infobarActions from '../state/infobar/actions'
 import * as integrationsActions from '../state/integrations/actions'
 import * as notificationsActions from '../state/notifications/actions'
@@ -15,7 +15,7 @@ import * as viewsActions from '../state/views/actions'
 import * as viewsConstants from '../state/views/constants'
 import * as currentAccountConstants from '../state/currentAccount/constants'
 
-import * as currentAccountSelectors from '../state/currentAccount/selectors'
+import * as currentAccountSelectors from '../state/currentAccount/selectors.ts'
 import * as currentUserSelectors from '../state/currentUser/selectors'
 
 import {isCurrentlyOnTicket} from '../utils'

@@ -5,7 +5,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {Table} from 'reactstrap'
 
-import {getBusinessHoursSettings} from '../../../../../../state/currentAccount/selectors'
+import {getBusinessHoursSettings} from '../../../../../../state/currentAccount/selectors.ts'
 import {getTimezone} from '../../../../../../state/currentUser/selectors'
 import Legend from '../../Legend'
 

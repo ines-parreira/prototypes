@@ -1,16 +1,17 @@
-// @flow
 import axios from 'axios'
 
-import type {Dispatch} from '../types'
+import {ApiListResponsePagination} from '../../models/api/types'
+import {StoreDispatch} from '../types'
 
-import * as constants from './constants'
+import * as constants from './constants.js'
+import {AuthItem} from './types'
 
 export const fetchCurrentAuths = () => (
-    dispatch: Dispatch
-): Promise<Dispatch> => {
+    dispatch: StoreDispatch
+): Promise<ReturnType<StoreDispatch>> => {
     return axios
-        .get('/api/users/0/auths/')
-        .then((json = {}) => json.data.data)
+        .get<ApiListResponsePagination<AuthItem[]>>('/api/users/0/auths/')
+        .then((json) => json?.data?.data)
         .then(
             (resp) => {
                 return dispatch({
@@ -28,10 +29,12 @@ export const fetchCurrentAuths = () => (
         )
 }
 
-export const resetApiKey = () => (dispatch: Dispatch): Promise<Dispatch> => {
+export const resetApiKey = () => (
+    dispatch: StoreDispatch
+): Promise<ReturnType<StoreDispatch>> => {
     return axios
-        .post('/api/users/0/reset-key/')
-        .then((json = {}) => json.data)
+        .post<AuthItem>('/api/users/0/reset-key/')
+        .then((json) => json?.data)
         .then(
             (resp) => {
                 return dispatch({

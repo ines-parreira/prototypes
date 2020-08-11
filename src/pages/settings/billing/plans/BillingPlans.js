@@ -18,12 +18,12 @@ import {
 import classnames from 'classnames'
 
 import {notify} from '../../../../state/notifications/actions'
-import {updateSubscription} from '../../../../state/currentAccount/actions'
-import * as billingSelectors from '../../../../state/billing/selectors'
-import * as currentAccountSelectors from '../../../../state/currentAccount/selectors'
+import {updateSubscription} from '../../../../state/currentAccount/actions.ts'
+import * as billingSelectors from '../../../../state/billing/selectors.ts'
+import * as currentAccountSelectors from '../../../../state/currentAccount/selectors.ts'
 import {openChat} from '../../../../utils'
 import PageHeader from '../../../common/components/PageHeader'
-import {setFutureSubscriptionPlan} from '../../../../state/billing/actions'
+import {setFutureSubscriptionPlan} from '../../../../state/billing/actions.ts'
 
 import {Plan} from './Plan'
 

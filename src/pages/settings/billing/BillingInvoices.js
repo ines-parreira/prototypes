@@ -11,11 +11,11 @@ import {Link} from 'react-router'
 import type {Dispatch} from '../../../state/types'
 
 import {SHOPIFY_PAYMENT_SERVICE} from '../../../constants/billing'
-import * as billingSelectors from '../../../state/billing/selectors'
+import * as billingSelectors from '../../../state/billing/selectors.ts'
 import {
     fetchInvoices,
     updateInvoiceInList,
-} from '../../../state/billing/actions'
+} from '../../../state/billing/actions.ts'
 import Loader from '../../common/components/Loader'
 import GorgiasApi from '../../../services/gorgiasApi'
 import {notify} from '../../../state/notifications/actions'

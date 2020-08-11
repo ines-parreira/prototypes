@@ -10,8 +10,8 @@ import InputField from '../../common/forms/InputField'
 import RichFieldWithVariables from '../../common/forms/RichFieldWithVariables'
 
 import PageHeader from '../../common/components/PageHeader'
-import * as currentAccountSelectors from '../../../state/currentAccount/selectors'
-import * as currentAccountActions from '../../../state/currentAccount/actions'
+import * as currentAccountSelectors from '../../../state/currentAccount/selectors.ts'
+import * as currentAccountActions from '../../../state/currentAccount/actions.ts'
 import * as currentAccountConstants from '../../../state/currentAccount/constants'
 import RestrictedSatisfactionSurvey from '../../stats/common/RestrictedSatisfactionSurvey'
 

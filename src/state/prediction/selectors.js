@@ -2,7 +2,7 @@
 import {createSelector} from 'reselect'
 import {fromJS} from 'immutable'
 
-import {getCurrentAccountState} from '../currentAccount/selectors'
+import {getCurrentAccountState} from '../currentAccount/selectors.ts'
 import {getCurrentUser} from '../currentUser/selectors'
 import {getTicket, getCustomerMessages} from '../ticket/selectors'
 

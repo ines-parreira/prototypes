@@ -17,11 +17,11 @@ import {
 } from 'reactstrap'
 
 import Loader from '../../common/components/Loader'
-import {fetchCurrentUsage} from '../../../state/billing/actions'
+import {fetchCurrentUsage} from '../../../state/billing/actions.ts'
 import {openChat} from '../../../utils'
 import * as integrationSelectors from '../../../state/integrations/selectors'
-import * as billingSelectors from '../../../state/billing/selectors'
-import * as currentAccountSelectors from '../../../state/currentAccount/selectors'
+import * as billingSelectors from '../../../state/billing/selectors.ts'
+import * as currentAccountSelectors from '../../../state/currentAccount/selectors.ts'
 
 import css from './BillingUsage.less'
 

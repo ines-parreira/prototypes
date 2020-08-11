@@ -1,7 +1,9 @@
-import {Map} from 'immutable'
+import {Map, List} from 'immutable'
 import {Action} from 'redux'
 import {ThunkDispatch} from 'redux-thunk'
 
+import {BillingContactResponse, Subscription} from './billing/types'
+import {AccountSetting} from './currentAccount/types'
 import {MacrosAction} from './entities/macros/types'
 import {EntitiesState} from './entities/reducers'
 import {InfobarActionsState} from './infobarActions/types'
@@ -10,6 +12,7 @@ import rootReducer from './reducers'
 export type StoreState = {
     activity: Map<any, any>
     agents: Map<any, any>
+    auths: List<any>
     billing: Map<any, any>
     currentAccount: Map<any, any>
     currentUser: Map<any, any>
@@ -41,6 +44,17 @@ export type GorgiasAction = {
     roles?: unknown
     id?: string | number
     data?: unknown
+    planId?: string
+    invoice?: Map<any, any>
+    creditCard?: Map<any, any>
+    billingContact?: BillingContactResponse
+    tickets?: List<any>
+    ticket?: Map<any, any>
+    ticketId?: number
+    userId?: number
+    subscription?: Subscription
+    setting?: AccountSetting
+    isUpdate?: boolean
 }
 
 export type CurrentUser = Map<any, any>

@@ -4,7 +4,10 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 
 import * as IntegrationsActions from '../../../state/integrations/actions'
-import {planIntegrations, currentPlan} from '../../../state/billing/selectors'
+import {
+    planIntegrations,
+    currentPlan,
+} from '../../../state/billing/selectors.ts'
 import {getActiveIntegrations} from '../../../state/integrations/selectors'
 
 import IntegrationList from './components/IntegrationList'

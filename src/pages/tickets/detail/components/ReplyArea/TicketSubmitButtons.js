@@ -9,7 +9,7 @@ import keymap from '../../../../../config/shortcuts'
 
 import * as currentUserActions from '../../../../../state/currentUser/actions'
 
-import * as currentAccountSelectors from '../../../../../state/currentAccount/selectors'
+import * as currentAccountSelectors from '../../../../../state/currentAccount/selectors.ts'
 import * as currentUserSelectors from '../../../../../state/currentUser/selectors'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 

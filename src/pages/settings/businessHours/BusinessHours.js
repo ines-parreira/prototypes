@@ -10,9 +10,9 @@ import PageHeader from '../../common/components/PageHeader'
 import InputField from '../../common/forms/InputField'
 import {getMomentTimezoneNames} from '../../../utils/date'
 
-import * as currentAccountActions from '../../../state/currentAccount/actions'
+import * as currentAccountActions from '../../../state/currentAccount/actions.ts'
 import * as currentAccountConstants from '../../../state/currentAccount/constants'
-import * as currentAccountSelectors from '../../../state/currentAccount/selectors'
+import * as currentAccountSelectors from '../../../state/currentAccount/selectors.ts'
 
 import {DEFAULT_BUSINESS_HOUR, MAX_BUSINESS_HOURS} from './constants'
 import BusinessHoursForm from './BusinessHoursForm'

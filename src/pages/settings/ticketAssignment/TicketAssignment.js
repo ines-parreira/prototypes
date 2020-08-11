@@ -8,10 +8,10 @@ import _isEqual from 'lodash/isEqual'
 
 import {type TicketChannel} from '../../../business/types/ticket'
 import UserActivityManager from '../../../services/userActivityManager'
-import * as chatsActions from '../../../state/chats/actions'
-import * as currentAccountActions from '../../../state/currentAccount/actions'
+import * as chatsActions from '../../../state/chats/actions.ts'
+import * as currentAccountActions from '../../../state/currentAccount/actions.ts'
 import * as currentAccountConstants from '../../../state/currentAccount/constants'
-import * as currentAccountSelectors from '../../../state/currentAccount/selectors'
+import * as currentAccountSelectors from '../../../state/currentAccount/selectors.ts'
 
 import PageHeader from '../../common/components/PageHeader'
 import BooleanField from '../../common/forms/BooleanField'

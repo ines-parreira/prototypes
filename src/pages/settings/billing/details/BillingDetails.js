@@ -4,8 +4,8 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router'
 import {Button, Card, CardBody, Row, Col} from 'reactstrap'
 
-import {fetchContact} from '../../../../state/billing/actions'
-import {getContact} from '../../../../state/billing/selectors'
+import {fetchContact} from '../../../../state/billing/actions.ts'
+import {getContact} from '../../../../state/billing/selectors.ts'
 import Loader from '../../../common/components/Loader'
 
 import {type billingContactType} from '../../../../state/billing/types'

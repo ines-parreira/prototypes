@@ -1,19 +1,26 @@
-// @flow
 import axios from 'axios'
+import {Map} from 'immutable'
 
-import {notify} from '../notifications/actions'
-import type {Dispatch} from '../types'
+import {ApiListResponsePagination} from '../../models/api/types'
+import {notify} from '../notifications/actions.js'
+import {NotificationStatus} from '../notifications/types'
+import {StoreDispatch} from '../types'
 
-import * as constants from './constants'
-import type {billingContactType} from './types'
+import * as constants from './constants.js'
+import {
+    BillingContact,
+    CurrentUsage,
+    Invoice,
+    PaymentMethod,
+    BillingContactResponse,
+} from './types'
 
 /***
  * Set the future subscription plan.
- *
- * @param planId - The ID of the plan to use to create a future subscription
- * @returns - A Redux action
  */
-export const setFutureSubscriptionPlan = (planId: string): Dispatch => {
+export const setFutureSubscriptionPlan = (
+    planId: string
+): ReturnType<StoreDispatch> => {
     return {
         type: constants.SET_FUTURE_SUBSCRIPTION_PLAN,
         planId,
@@ -22,11 +29,10 @@ export const setFutureSubscriptionPlan = (planId: string): Dispatch => {
 
 /**
  * Update an invoice in the list of invoices.
- *
- * @param invoice - the new invoice to update in the list.
- * @returns - A Redux action.
  */
-export const updateInvoiceInList = (invoice: Map<*, *>): Dispatch => {
+export const updateInvoiceInList = (
+    invoice: Map<any, any>
+): ReturnType<StoreDispatch> => {
     return {
         type: constants.UPDATE_INVOICE_IN_LIST,
         invoice,
@@ -34,10 +40,10 @@ export const updateInvoiceInList = (invoice: Map<*, *>): Dispatch => {
 }
 
 export function fetchCurrentUsage() {
-    return (dispatch: Dispatch): Promise<Dispatch> => {
+    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return axios
-            .get('/api/billing/current-usage/')
-            .then((json = {}) => json.data)
+            .get<CurrentUsage>('/api/billing/current-usage/')
+            .then((json) => json?.data)
             .then(
                 (resp) => {
                     return dispatch({
@@ -57,10 +63,10 @@ export function fetchCurrentUsage() {
 }
 
 export function fetchInvoices() {
-    return (dispatch: Dispatch): Promise<Dispatch> => {
+    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return axios
-            .get('/api/billing/invoices/')
-            .then((json = {}) => json.data.data)
+            .get<ApiListResponsePagination<Invoice[]>>('/api/billing/invoices/')
+            .then((json) => json?.data?.data)
             .then(
                 (resp) => {
                     return dispatch({
@@ -80,10 +86,10 @@ export function fetchInvoices() {
 }
 
 export function fetchPaymentMethod() {
-    return (dispatch: Dispatch): Promise<Dispatch> => {
+    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return axios
-            .get('/api/billing/payment-method/')
-            .then((json = {}) => json.data)
+            .get<PaymentMethod>('/api/billing/payment-method/')
+            .then((json) => json?.data)
             .then(
                 (resp) => {
                     return dispatch({
@@ -103,10 +109,10 @@ export function fetchPaymentMethod() {
 }
 
 export function fetchCreditCard() {
-    return (dispatch: Dispatch): Promise<Dispatch> => {
+    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return axios
-            .get('/api/billing/credit-card/')
-            .then((json = {}) => json.data)
+            .get<unknown>('/api/billing/credit-card/')
+            .then((json) => json?.data)
             .then(
                 (resp) => {
                     return dispatch({
@@ -131,7 +137,9 @@ export function fetchCreditCard() {
  * @param creditCard - The data of the card.
  * @returns - A Redux action.
  */
-export const setCreditCard = (creditCard: Map<*, *>): Object => {
+export const setCreditCard = (
+    creditCard: Map<any, any>
+): ReturnType<StoreDispatch> => {
     return {
         type: constants.SET_CREDIT_CARD,
         creditCard,
@@ -143,10 +151,10 @@ export const setCreditCard = (creditCard: Map<*, *>): Object => {
  * @returns {Promise} the async action promise
  */
 export function fetchContact() {
-    return (dispatch: Dispatch): Promise<Dispatch> => {
+    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return axios
-            .get('/api/billing/contact/')
-            .then((json = {}) => json.data)
+            .get<BillingContactResponse>('/api/billing/contact/')
+            .then((json) => json?.data)
             .then(
                 (billingContact) => {
                     return dispatch({
@@ -170,16 +178,19 @@ export function fetchContact() {
  * @param {billingContactType} billingContact - The billing contact object
  * @returns {Promise} the async action promise
  */
-export function updateContact(billingContact: billingContactType) {
-    return (dispatch: Dispatch): Promise<Dispatch> => {
+export function updateContact(billingContact: BillingContact) {
+    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return axios
-            .put('/api/billing/contact/', billingContact.toJS())
-            .then((json = {}) => json.data)
+            .put<BillingContactResponse>(
+                '/api/billing/contact/',
+                billingContact.toJS()
+            )
+            .then((json) => json?.data)
             .then(
                 (billingContact) => {
-                    dispatch(
+                    void dispatch(
                         notify({
-                            status: 'success',
+                            status: NotificationStatus.Success,
                             message: 'Billing contact information updated',
                         })
                     )

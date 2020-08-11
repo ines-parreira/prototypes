@@ -13,8 +13,8 @@ import {
 } from 'reactstrap'
 import classNames from 'classnames'
 
-import {fetchContact, updateContact} from '../../../../state/billing/actions'
-import {getContact} from '../../../../state/billing/selectors'
+import {fetchContact, updateContact} from '../../../../state/billing/actions.ts'
+import {getContact} from '../../../../state/billing/selectors.ts'
 import Loader from '../../../common/components/Loader'
 import PageHeader from '../../../common/components/PageHeader'
 import InputField from '../../../common/forms/InputField'

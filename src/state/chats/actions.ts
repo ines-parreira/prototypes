@@ -1,24 +1,25 @@
-// @flow
 import axios from 'axios'
 import _throttle from 'lodash/throttle'
 
-import browserNotification from '../../services/browserNotification'
+import browserNotification from '../../services/browserNotification.js'
 
-import type {RecentChatTicket} from '../../business/types/recentChats'
-import type {Dispatch} from '../types'
+import {RecentChatTicket} from '../../business/types/recentChats'
+import {Ticket} from '../../models/ticket/types'
+import {StoreDispatch} from '../types'
 
-import * as constants from './constants'
+import * as constants from './constants.js'
 
-export const fetchChats = () => (dispatch: Dispatch): Promise<Dispatch> => {
+export const fetchChats = () => (
+    dispatch: StoreDispatch
+): Promise<ReturnType<StoreDispatch>> => {
     return axios
-        .get('/api/activity/chats/', {timeout: 10000})
-        .then((json = {}) => json.data)
+        .get<{tickets: Ticket[]}>('/api/activity/chats/', {timeout: 10000})
+        .then((json) => json?.data)
         .then(
-            (resp = {}) => {
-                dispatch(setChats(resp.tickets))
+            (resp) => {
+                dispatch(setChats(resp?.tickets))
             },
             (error) => {
-                console.error('Failed to fetch chats', error)
                 return dispatch({
                     type: constants.FETCH_CHATS_ERROR,
                     error,
@@ -27,12 +28,12 @@ export const fetchChats = () => (dispatch: Dispatch): Promise<Dispatch> => {
         )
 }
 
-export const fetchChatsThrottled = _throttle((dispatch: Dispatch) => {
-    dispatch(fetchChats())
+export const fetchChatsThrottled = _throttle((dispatch: StoreDispatch) => {
+    void dispatch(fetchChats())
 }, 10000)
 
-export const addChat = (ticket: RecentChatTicket, notify: boolean = true) => (
-    dispatch: Dispatch
+export const addChat = (ticket: RecentChatTicket, notify = true) => (
+    dispatch: StoreDispatch
 ) => {
     dispatch({
         type: constants.ADD_CHAT,
@@ -47,7 +48,7 @@ export const addChat = (ticket: RecentChatTicket, notify: boolean = true) => (
     }
 }
 
-export const setChats = (tickets: Array<Object>) => ({
+export const setChats = (tickets: Ticket[]) => ({
     type: constants.SET_CHATS,
     tickets,
 })
