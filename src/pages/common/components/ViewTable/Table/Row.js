@@ -10,7 +10,7 @@ import {scrollToReactNode} from '../../../utils/keyboard'
 
 import css from '../Table.less'
 
-import * as agentSelectors from '../../../../../state/agents/selectors'
+import * as agentSelectors from '../../../../../state/agents/selectors.ts'
 import * as viewsActions from '../../../../../state/views/actions'
 
 import * as viewsUtils from '../../../../../state/views/utils'

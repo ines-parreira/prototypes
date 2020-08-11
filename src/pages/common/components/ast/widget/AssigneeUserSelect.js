@@ -8,8 +8,8 @@ import {USER_ROLES} from '../../../../../config/user'
 
 import Select from './ReactSelect'
 
-import * as userActions from './../../../../../state/agents/actions'
-import * as agentSelectors from './../../../../../state/agents/selectors'
+import * as userActions from './../../../../../state/agents/actions.ts'
+import * as agentSelectors from './../../../../../state/agents/selectors.ts'
 
 type Props = {
     actions: Object,

@@ -11,7 +11,7 @@ import Timeline from '../../../common/components/timeline/Timeline'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 import * as tagsSelectors from '../../../../state/tags/selectors'
 import * as customersSelectors from '../../../../state/customers/selectors'
-import * as agentSelectors from '../../../../state/agents/selectors'
+import * as agentSelectors from '../../../../state/agents/selectors.ts'
 import * as ticketSelectors from '../../../../state/ticket/selectors'
 
 import appCss from '../../../App.less'

@@ -40,7 +40,7 @@ type Intents = {[key: string]: string}
 
 type OwnProps = {
     actions: List<any>
-    agents: Map<any, any>
+    agents: List<any>
     currentMacro: Map<any, any>
     intent: Maybe<IntentName>
     intents: Intents

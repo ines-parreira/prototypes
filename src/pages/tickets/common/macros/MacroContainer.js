@@ -12,7 +12,7 @@ import * as ViewsActions from '../../../../state/views/actions'
 import * as viewsSelectors from '../../../../state/views/selectors'
 import * as MacroActions from '../../../../state/macro/actions'
 import * as TicketsActions from '../../../../state/tickets/actions'
-import {getAgents} from '../../../../state/agents/selectors'
+import {getAgents} from '../../../../state/agents/selectors.ts'
 
 import MacroModal from './components/MacroModal'
 

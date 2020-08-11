@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react'
-import {fromJS, Map} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 
 import TicketAssignee from '../../../../detail/components/TicketDetails/TicketAssignee'
 
@@ -10,7 +10,7 @@ import css from './SetAssigneeAction.less'
 type Props = {
     action: Map<*, *>,
     teams?: Map<*, *>,
-    agents?: Map<*, *>,
+    agents?: List<*>,
     index: number,
     handleTeams?: boolean,
     handleUsers?: boolean,

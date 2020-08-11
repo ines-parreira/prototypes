@@ -21,7 +21,7 @@ import {
     TAGS_ADDED_KEY,
     TAGS_REMOVED_KEY,
 } from '../../../../models/event'
-import {getAgents} from '../../../../state/agents/selectors'
+import {getAgents} from '../../../../state/agents/selectors.ts'
 import {getTeams} from '../../../../state/teams/selectors'
 import {getTags} from '../../../../state/tags/selectors'
 import {getEvents} from '../../../../state/ticket/selectors'

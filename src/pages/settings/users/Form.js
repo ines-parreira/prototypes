@@ -29,9 +29,9 @@ import type {MetaByAgentRole} from '../../../config/types/user'
 
 import InputField from '../../common/forms/InputField'
 
-import * as actions from '../../../state/agents/actions'
+import * as actions from '../../../state/agents/actions.ts'
 import {updateAccountOwner} from '../../../state/currentAccount/actions'
-import * as helpers from '../../../state/agents/helpers'
+import * as helpers from '../../../state/agents/helpers.ts'
 import PageHeader from '../../common/components/PageHeader'
 import Popover from '../../common/components/Popover'
 

@@ -4,14 +4,17 @@ import {fromJS} from 'immutable'
 
 import reducer, {initialState} from '../reducers'
 import * as constants from '../constants'
-import * as currentUserConstants from '../../currentUser/constants'
-import {AGENT_ROLE, USER_ROLES} from '../../../config/user'
+import * as currentUserConstants from '../../currentUser/constants.js'
+import {StoreAction} from '../../types'
+import {UserRole} from '../../../config/types/user'
 
 jest.addMatchers(immutableMatchers)
 
 describe('agents reducers', () => {
     it('initial state', () => {
-        expect(reducer(undefined, {})).toEqualImmutable(initialState)
+        expect(reducer(undefined, {} as StoreAction)).toEqualImmutable(
+            initialState
+        )
     })
 
     it('fetch users (agents)', () => {
@@ -32,7 +35,7 @@ describe('agents reducers', () => {
         expect(
             reducer(initialState, {
                 type: constants.FETCH_USER_LIST_SUCCESS,
-                roles: [AGENT_ROLE],
+                roles: [UserRole.Agent],
                 resp,
             })
         ).toMatchSnapshot()
@@ -40,7 +43,7 @@ describe('agents reducers', () => {
         expect(
             reducer(initialState, {
                 type: constants.FETCH_USER_LIST_SUCCESS,
-                roles: USER_ROLES,
+                roles: Object.values(UserRole),
                 resp,
             })
         ).toMatchSnapshot()

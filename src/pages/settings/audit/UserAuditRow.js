@@ -6,7 +6,7 @@ import {connect} from 'react-redux'
 
 import Avatar from '../../common/components/Avatar/Avatar'
 import {DatetimeLabel} from '../../common/utils/labels'
-import {getAgents} from '../../../state/agents/selectors'
+import {getAgents} from '../../../state/agents/selectors.ts'
 
 import {DATETIME_LABEL_FORMAT} from './constants'
 

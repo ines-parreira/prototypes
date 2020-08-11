@@ -4,7 +4,7 @@ import _find from 'lodash/find'
 
 import {shouldTicketBeDisplayedInRecentChats} from '../business/recentChats'
 
-import * as agentsActions from '../state/agents/actions'
+import * as agentsActions from '../state/agents/actions.ts'
 import * as chatsActions from '../state/chats/actions'
 import * as infobarActions from '../state/infobar/actions'
 import * as integrationsActions from '../state/integrations/actions'

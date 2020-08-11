@@ -33,7 +33,15 @@ export type StoreState = {
     views: Map<any, any>
     widgets: Map<any, any>
 }
-export type StoreAction = MacrosAction
+export type StoreAction = MacrosAction | GorgiasAction
+
+export type GorgiasAction = {
+    type: string
+    resp?: unknown
+    roles?: unknown
+    id?: string | number
+    data?: unknown
+}
 
 export type CurrentUser = Map<any, any>
 export type CurrentAccount = Map<any, any>

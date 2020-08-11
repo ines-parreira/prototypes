@@ -1,7 +1,7 @@
 import {combineReducers} from 'redux'
 import {reducer as notificationsReducer} from 'reapop'
 
-import agentsReducer from './agents/reducers.js'
+import agentsReducer from './agents/reducers'
 import authsReducer from './auths/reducers.js'
 import billingReducer from './billing/reducers.js'
 import chatsReducer from './chats/reducers.js'

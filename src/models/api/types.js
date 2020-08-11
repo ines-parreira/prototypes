@@ -1,5 +1,5 @@
 //@flow
-import {ORDER_DIRECTION, META_SORT_OPTIONS} from './constants'
+import {ORDER_DIRECTION, META_SORT_OPTIONS} from './constants.ts'
 
 export type ApiListResponse<T, Y> = {
     data: T,

@@ -1,21 +1,22 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
-import {fromJS} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 
 import * as selectors from '../selectors'
 import {initialState} from '../reducers'
-import {initialState as currentUserInitialState} from '../../currentUser/reducers'
-import * as agentFixtures from '../../../fixtures/agents'
-import * as userFixtures from '../../../fixtures/users'
+import {initialState as currentUserInitialState} from '../../currentUser/reducers.js'
+import * as agentFixtures from '../../../fixtures/agents.js'
+import * as userFixtures from '../../../fixtures/users.js'
+import {RootState} from '../../types'
 
 jest.addMatchers(immutableMatchers)
 
 describe('agents selectors', () => {
-    let state
+    let state: RootState
 
     beforeEach(() => {
         state = {
-            currentUser: currentUserInitialState.mergeDeep(
-                fromJS(userFixtures.currentUser).set('id', 2)
+            currentUser: (currentUserInitialState as Map<any, any>).mergeDeep(
+                (fromJS(userFixtures.currentUser) as Map<any, any>).set('id', 2)
             ),
 
             agents: initialState.mergeDeep({
@@ -27,33 +28,39 @@ describe('agents selectors', () => {
                 locations: agentFixtures.locations,
                 typingStatuses: agentFixtures.typingStatuses,
             }),
-        }
+        } as RootState
     })
 
     it('getState()', () => {
         expect(selectors.getState(state)).toEqualImmutable(state.agents)
-        expect(selectors.getState({})).toEqualImmutable(fromJS({}))
+        expect(selectors.getState({} as RootState)).toEqualImmutable(fromJS({}))
     })
 
     it('getPaginatedAgents()', () => {
         expect(selectors.getPaginatedAgents(state)).toEqualImmutable(
             state.agents.getIn(['pagination', 'data'])
         )
-        expect(selectors.getPaginatedAgents({})).toEqualImmutable(fromJS([]))
+        expect(selectors.getPaginatedAgents({} as RootState)).toEqualImmutable(
+            fromJS([])
+        )
     })
 
     it('getPagination()', () => {
         expect(selectors.getPagination(state)).toEqualImmutable(
             state.agents.getIn(['pagination', 'meta'])
         )
-        expect(selectors.getPagination({})).toEqualImmutable(fromJS({}))
+        expect(selectors.getPagination({} as RootState)).toEqualImmutable(
+            fromJS({})
+        )
     })
 
     it('getAgents()', () => {
         expect(selectors.getAgents(state)).toEqualImmutable(
             state.agents.get('all')
         )
-        expect(selectors.getAgents({})).toEqualImmutable(fromJS([]))
+        expect(selectors.getAgents({} as RootState)).toEqualImmutable(
+            fromJS([])
+        )
     })
 
     it('getOtherAgents()', () => {
@@ -63,35 +70,39 @@ describe('agents selectors', () => {
 
     it('getAgent()', () => {
         expect(selectors.getAgent(1)(state)).toEqualImmutable(
-            state.agents.get('all').first()
+            (state.agents.get('all') as List<any>).first()
         )
-        expect(selectors.getAgent('1')(state)).toEqualImmutable(
-            state.agents.get('all').first()
+        expect(selectors.getAgent(1)(state)).toEqualImmutable(
+            (state.agents.get('all') as List<any>).first()
         )
         expect(selectors.getAgent(12345)(state)).toEqualImmutable(fromJS({}))
-        expect(selectors.getAgent()({})).toEqualImmutable(fromJS({}))
+        expect(selectors.getAgent()({} as RootState)).toEqualImmutable(
+            fromJS({})
+        )
     })
 
     it('getAgentsIdsLocation()', () => {
         expect(selectors.getAgentsIdsLocation(state)).toEqualImmutable(
             state.agents.get('locations')
         )
-        expect(selectors.getAgentsIdsLocation({})).toEqualImmutable(fromJS({}))
+        expect(
+            selectors.getAgentsIdsLocation({} as RootState)
+        ).toEqualImmutable(fromJS({}))
     })
 
     it('getAgentsIdsOnTicket()', () => {
-        expect(selectors.getAgentsIdsOnTicket(1)(state)).toEqualImmutable(
+        expect(selectors.getAgentsIdsOnTicket('1')(state)).toEqualImmutable(
             fromJS(['1', '2'])
         )
-        expect(selectors.getAgentsIdsOnTicket(2)(state)).toEqualImmutable(
+        expect(selectors.getAgentsIdsOnTicket('2')(state)).toEqualImmutable(
             fromJS(['1'])
         )
         expect(selectors.getAgentsIdsOnTicket()(state)).toEqualImmutable(
             fromJS([])
         )
-        expect(selectors.getAgentsIdsOnTicket()({})).toEqualImmutable(
-            fromJS([])
-        )
+        expect(
+            selectors.getAgentsIdsOnTicket()({} as RootState)
+        ).toEqualImmutable(fromJS([]))
     })
 
     it('getAgentsOnTicket()', () => {
@@ -104,17 +115,19 @@ describe('agents selectors', () => {
                 customers: [{id: 1}],
                 ticket: '2',
             },
-        ])
-        expect(selectors.getAgentsOnTicket(1)(state)).toEqualImmutable(
-            expected.first().get('customers')
+        ]) as List<any>
+        expect(selectors.getAgentsOnTicket('1')(state)).toEqualImmutable(
+            (expected.first() as Map<any, any>).get('customers')
         )
         expect(selectors.getAgentsOnTicket('2')(state)).toEqualImmutable(
-            expected.last().get('customers')
+            (expected.last() as Map<any, any>).get('customers')
         )
         expect(selectors.getAgentsOnTicket()(state)).toEqualImmutable(
             fromJS([])
         )
-        expect(selectors.getAgentsOnTicket()({})).toEqualImmutable(fromJS([]))
+        expect(selectors.getAgentsOnTicket()({} as RootState)).toEqualImmutable(
+            fromJS([])
+        )
     })
 
     it('getOtherAgentsOnTicket()', () => {
@@ -127,28 +140,28 @@ describe('agents selectors', () => {
                 customers: [{id: 1}],
                 ticket: '2',
             },
-        ])
-        expect(selectors.getOtherAgentsOnTicket(1)(state)).toEqualImmutable(
-            expected.first().get('customers')
+        ]) as List<any>
+        expect(selectors.getOtherAgentsOnTicket('1')(state)).toEqualImmutable(
+            (expected.first() as Map<any, any>).get('customers')
         )
         expect(selectors.getOtherAgentsOnTicket('2')(state)).toEqualImmutable(
-            expected.last().get('customers')
+            (expected.last() as Map<any, any>).get('customers')
         )
         expect(selectors.getOtherAgentsOnTicket()(state)).toEqualImmutable(
             fromJS([])
         )
-        expect(selectors.getOtherAgentsOnTicket()({})).toEqualImmutable(
-            fromJS([])
-        )
+        expect(
+            selectors.getOtherAgentsOnTicket()({} as RootState)
+        ).toEqualImmutable(fromJS([]))
     })
 
     it('getAgentsIdsTypingStatus()', () => {
         expect(selectors.getAgentsIdsTypingStatus(state)).toEqualImmutable(
             state.agents.get('typingStatuses')
         )
-        expect(selectors.getAgentsIdsTypingStatus({})).toEqualImmutable(
-            fromJS({})
-        )
+        expect(
+            selectors.getAgentsIdsTypingStatus({} as RootState)
+        ).toEqualImmutable(fromJS({}))
     })
 
     it('getAgentsIdsTypingStatusOnTicket()', () => {
@@ -161,18 +174,18 @@ describe('agents selectors', () => {
                 customers: ['1'],
                 ticket: '2',
             },
-        ])
+        ]) as List<any>
         expect(
-            selectors.getAgentsIdsTypingStatusOnTicket(1)(state)
-        ).toEqualImmutable(expected.first().get('customers'))
+            selectors.getAgentsIdsTypingStatusOnTicket('1')(state)
+        ).toEqualImmutable((expected.first() as Map<any, any>).get('customers'))
         expect(
             selectors.getAgentsIdsTypingStatusOnTicket('2')(state)
-        ).toEqualImmutable(expected.last().get('customers'))
+        ).toEqualImmutable((expected.last() as Map<any, any>).get('customers'))
         expect(
             selectors.getAgentsIdsTypingStatusOnTicket()(state)
         ).toEqualImmutable(fromJS([]))
         expect(
-            selectors.getAgentsIdsTypingStatusOnTicket()({})
+            selectors.getAgentsIdsTypingStatusOnTicket()({} as RootState)
         ).toEqualImmutable(fromJS([]))
     })
 
@@ -186,19 +199,19 @@ describe('agents selectors', () => {
                 customers: [{id: 1}],
                 ticket: '2',
             },
-        ])
-        expect(selectors.getAgentsTypingOnTicket(1)(state)).toEqualImmutable(
-            expected.first().get('customers')
+        ]) as List<any>
+        expect(selectors.getAgentsTypingOnTicket('1')(state)).toEqualImmutable(
+            (expected.first() as Map<any, any>).get('customers')
         )
         expect(selectors.getAgentsTypingOnTicket('2')(state)).toEqualImmutable(
-            expected.last().get('customers')
+            (expected.last() as Map<any, any>).get('customers')
         )
         expect(selectors.getAgentsTypingOnTicket()(state)).toEqualImmutable(
             fromJS([])
         )
-        expect(selectors.getAgentsTypingOnTicket()({})).toEqualImmutable(
-            fromJS([])
-        )
+        expect(
+            selectors.getAgentsTypingOnTicket()({} as RootState)
+        ).toEqualImmutable(fromJS([]))
     })
 
     it('getOtherAgentsTypingOnTicket()', () => {
@@ -211,26 +224,25 @@ describe('agents selectors', () => {
                 customers: [{id: 1}],
                 ticket: '2',
             },
-        ])
+        ]) as List<any>
         expect(
-            selectors.getOtherAgentsTypingOnTicket(1)(state)
-        ).toEqualImmutable(expected.first().get('customers'))
+            selectors.getOtherAgentsTypingOnTicket('1')(state)
+        ).toEqualImmutable((expected.first() as Map<any, any>).get('customers'))
         expect(
             selectors.getOtherAgentsTypingOnTicket('2')(state)
-        ).toEqualImmutable(expected.last().get('customers'))
+        ).toEqualImmutable((expected.last() as Map<any, any>).get('customers'))
         expect(
             selectors.getOtherAgentsTypingOnTicket()(state)
         ).toEqualImmutable(fromJS([]))
-        expect(selectors.getOtherAgentsTypingOnTicket()({})).toEqualImmutable(
-            fromJS([])
-        )
+        expect(
+            selectors.getOtherAgentsTypingOnTicket()({} as RootState)
+        ).toEqualImmutable(fromJS([]))
     })
 
     it('isAgentTypingOnTicket()', () => {
-        expect(selectors.isAgentTypingOnTicket(1)(state)).toBe(true)
         expect(selectors.isAgentTypingOnTicket('1')(state)).toBe(true)
         expect(selectors.isAgentTypingOnTicket('2')(state)).toBe(false)
         expect(selectors.isAgentTypingOnTicket()(state)).toBe(false)
-        expect(selectors.isAgentTypingOnTicket()({})).toBe(false)
+        expect(selectors.isAgentTypingOnTicket()({} as RootState)).toBe(false)
     })
 })

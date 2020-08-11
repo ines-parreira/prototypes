@@ -25,7 +25,7 @@ import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 
 import * as viewsActions from '../../../../state/views/actions'
 import * as viewsSelectors from '../../../../state/views/selectors'
-import * as agentSelectors from '../../../../state/agents/selectors'
+import * as agentSelectors from '../../../../state/agents/selectors.ts'
 import * as teamSelectors from '../../../../state/teams/selectors'
 import * as schemasSelectors from '../../../../state/schemas/selectors'
 

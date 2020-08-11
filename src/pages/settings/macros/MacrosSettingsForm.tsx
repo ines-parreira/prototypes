@@ -23,7 +23,7 @@ import {
     updateMacro,
 } from '../../../models/macro/resources'
 import {MacroDraft} from '../../../models/macro/types'
-import {getAgents} from '../../../state/agents/selectors.js'
+import {getAgents} from '../../../state/agents/selectors'
 import {
     macroCreated,
     macroDeleted,
@@ -255,8 +255,7 @@ export function MacrosSettingsFormContainer({
 
 const connector = connect(
     (state: RootState) => ({
-        //$TsFixMe: Remove casting once agent selectors are migrated
-        agents: (getAgents as (state: RootState) => Map<any, any>)(state),
+        agents: getAgents(state),
         macros: state.entities.macros,
     }),
     {

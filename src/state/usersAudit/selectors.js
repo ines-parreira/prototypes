@@ -4,7 +4,7 @@ import {createSelector} from 'reselect'
 
 import type {stateType} from '../types'
 import {humanizeString} from '../../utils'
-import {getAgents} from '../agents/selectors'
+import {getAgents} from '../agents/selectors.ts'
 
 export const getUsersAuditState = (state: stateType) =>
     state.usersAudit || fromJS({})

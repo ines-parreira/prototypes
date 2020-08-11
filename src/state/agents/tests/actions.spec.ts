@@ -1,28 +1,35 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
-import configureMockStore from 'redux-mock-store'
-import {fromJS} from 'immutable'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
+import {fromJS, Map} from 'immutable'
 import thunk from 'redux-thunk'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
 import * as actions from '../actions'
 import {initialState} from '../reducers'
-import {AGENT_ROLE} from '../../../config/user'
+import {StoreDispatch} from '../../types'
+import {UserRole} from '../../../config/types/user'
+
+type MockedRootState = {
+    agents: Map<any, any>
+}
 
 const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
+const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
+    middlewares
+)
 
 jest.addMatchers(immutableMatchers)
 
 jest.mock('../../notifications/actions', () => {
     return {
-        notify: jest.fn(() => (args) => args),
+        notify: jest.fn(() => <T>(args: T): T => args),
     }
 })
 
 describe('agents actions', () => {
-    let store
-    let mockServer
+    let store: MockStoreEnhanced<MockedRootState, StoreDispatch>
+    let mockServer: MockAdapter
 
     beforeEach(() => {
         store = mockStore({agents: initialState})
@@ -33,7 +40,7 @@ describe('agents actions', () => {
         const data = {
             name: 'Alex',
             email: 'alex@gorgias.io',
-            role: AGENT_ROLE,
+            roles: [{name: UserRole.Agent}],
         }
 
         mockServer.onPost('/api/users/').reply(200, {data})
@@ -105,7 +112,7 @@ describe('agents actions', () => {
             id: 2,
             name: 'Alex',
             email: 'alex@gorgias.io',
-            role: AGENT_ROLE,
+            roles: [{name: UserRole.Agent}],
         }
 
         mockServer.onPut('/api/users/2/').reply(200, {data})

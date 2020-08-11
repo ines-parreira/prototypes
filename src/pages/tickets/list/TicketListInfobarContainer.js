@@ -21,7 +21,7 @@ import InfobarLayout from '../../common/components/infobar/InfobarLayout'
 
 import * as integrationsSelectors from '../../../state/integrations/selectors'
 import * as currentUserSelectors from '../../../state/currentUser/selectors'
-import * as agentSelectors from '../../../state/agents/selectors'
+import * as agentSelectors from '../../../state/agents/selectors.ts'
 
 import * as segmentTracker from '../../../store/middlewares/segmentTracker'
 

@@ -37,7 +37,7 @@ import type {
     schemasType,
 } from './types'
 import {ADMIN_ROLE, USER_ROLES_ORDERED_BY_PRIVILEGES} from './config/user'
-import {getHighestRole} from './state/agents/helpers'
+import {getHighestRole} from './state/agents/helpers.ts'
 import type {attachmentType} from './state/types'
 
 type userType = Map<*, *>

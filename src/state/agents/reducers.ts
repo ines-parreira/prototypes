@@ -1,14 +1,14 @@
-// @flow
-import {fromJS, type Map} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 import _isEqual from 'lodash/isEqual'
 
-import {actionType} from '../types.js'
-import {USER_ROLES} from '../../config/user'
-import * as currentUserConstants from '../currentUser/constants'
+import {StoreAction} from '../types'
+import {UserRole, User} from '../../config/types/user'
+import * as currentUserConstants from '../currentUser/constants.js'
 
 import * as agentsConstants from './constants'
+import {AgentsState} from './types'
 
-export const initialState = fromJS({
+export const initialState: AgentsState = fromJS({
     all: [],
     pagination: {},
     locations: {},
@@ -16,35 +16,42 @@ export const initialState = fromJS({
 })
 
 export default function reducer(
-    state: Map<*, *> = initialState,
-    action: actionType
-): Map<*, *> {
+    state: AgentsState = initialState,
+    action: StoreAction
+): AgentsState {
     switch (action.type) {
         case agentsConstants.FETCH_AGENTS_PAGINATION_SUCCESS: {
             return state.set('pagination', fromJS(action.resp))
         }
 
         case agentsConstants.CREATE_AGENT_SUCCESS: {
-            return state.update('all', (agents) => agents.push(action.resp))
+            return state.update('all', (agents) =>
+                (agents as List<any>).push(action.resp as User)
+            )
         }
 
         case agentsConstants.FETCH_USER_LIST_SUCCESS: {
             let newState = state
 
             // This is a bit lame but that's the proper definition of an agent.
-            if (_isEqual(action.roles, USER_ROLES)) {
-                newState = newState.set('all', fromJS(action.resp.data))
+            if (_isEqual(action.roles, Object.values(UserRole))) {
+                newState = newState.set(
+                    'all',
+                    fromJS((action.resp as {data: unknown}).data)
+                )
             }
 
             return newState
         }
 
         case agentsConstants.UPDATE_AGENT_SUCCESS: {
-            const agent = action.resp
+            const agent = action.resp as Map<any, any>
 
-            const existingAgentIndex = state
-                .get('all')
-                .findIndex((user) => user.get('id') === agent.get('id'))
+            const existingAgentIndex = (state.get('all') as List<
+                any
+            >).findIndex(
+                (user: Map<any, any>) => user.get('id') === agent.get('id')
+            )
 
             if (!~existingAgentIndex) {
                 return state
@@ -54,9 +61,10 @@ export default function reducer(
         }
 
         case agentsConstants.DELETE_AGENT_SUCCESS: {
-            return state.update('all', (agents) =>
+            return state.update('all', (agents: List<any>) =>
                 agents.filter(
-                    (user) => String(user.get('id')) !== String(action.id)
+                    (user: Map<any, any>) =>
+                        String(user.get('id')) !== String(action.id)
                 )
             )
         }
@@ -70,11 +78,16 @@ export default function reducer(
         }
 
         case currentUserConstants.SUBMIT_CURRENT_USER_SUCCESS: {
-            const agent = fromJS(action.resp)
+            const agent = fromJS((action as Record<any, any>).resp) as Map<
+                any,
+                any
+            >
 
-            const existingAgentIndex = state
-                .get('all')
-                .findIndex((user) => user.get('id') === agent.get('id'))
+            const existingAgentIndex = (state.get('all') as List<
+                any
+            >).findIndex(
+                (user: Map<any, any>) => user.get('id') === agent.get('id')
+            )
 
             if (!~existingAgentIndex) {
                 return state

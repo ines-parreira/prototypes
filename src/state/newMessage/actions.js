@@ -34,7 +34,7 @@ import {
 
 import * as integrationSelectors from '../integrations/selectors'
 import * as ticketSelectors from '../ticket/selectors'
-import * as agentSelectors from '../agents/selectors'
+import * as agentSelectors from '../agents/selectors.ts'
 import {
     AGENT_TYPING_STARTED,
     AGENT_TYPING_STOPPED,

@@ -10,8 +10,8 @@ import type {List, Map} from 'immutable'
 import Loader from '../../common/components/Loader'
 import Pagination from '../../common/components/Pagination'
 
-import * as actions from '../../../state/agents/actions'
-import * as selectors from '../../../state/agents/selectors'
+import * as actions from '../../../state/agents/actions.ts'
+import * as selectors from '../../../state/agents/selectors.ts'
 import PageHeader from '../../common/components/PageHeader'
 
 import Row from './Row'

@@ -7,7 +7,11 @@ Array [
       "data": Immutable.Map {
         "name": "Alex",
         "email": "alex@gorgias.io",
-        "role": "agent",
+        "roles": Immutable.List [
+          Immutable.Map {
+            "name": "agent",
+          },
+        ],
       },
     },
     "type": "CREATE_AGENT_SUCCESS",
@@ -19,7 +23,6 @@ exports[`agents actions deleteAgent() delete agent 1`] = `
 Array [
   Object {
     "id": 1,
-    "resp": undefined,
     "type": "DELETE_AGENT_SUCCESS",
   },
 ]
@@ -69,7 +72,11 @@ Array [
         "id": 2,
         "name": "Alex",
         "email": "alex@gorgias.io",
-        "role": "agent",
+        "roles": Immutable.List [
+          Immutable.Map {
+            "name": "agent",
+          },
+        ],
       },
     },
     "type": "UPDATE_AGENT_SUCCESS",

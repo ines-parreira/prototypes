@@ -7,7 +7,7 @@ import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 import _isUndefined from 'lodash/isUndefined'
 
 import * as currentUserSelectors from '../../../../../../state/currentUser/selectors'
-import * as agentSelectors from '../../../../../../state/agents/selectors'
+import * as agentSelectors from '../../../../../../state/agents/selectors.ts'
 import * as teamsSelectors from '../../../../../../state/teams/selectors'
 
 import shortcutManager from '../../../../../../services/shortcutManager/index'

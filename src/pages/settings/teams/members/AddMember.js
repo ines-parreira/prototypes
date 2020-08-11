@@ -13,7 +13,7 @@ import classnames from 'classnames'
 
 import {AgentLabel} from '../../../common/utils/labels'
 import type {teamType} from '../../../../state/teams/types'
-import * as agentSelectors from '../../../../state/agents/selectors'
+import * as agentSelectors from '../../../../state/agents/selectors.ts'
 
 import css from './AddMember.less'
 
