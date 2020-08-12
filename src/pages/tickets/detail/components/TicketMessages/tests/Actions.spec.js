@@ -55,4 +55,28 @@ describe('Actions component', () => {
         const action3Button = component.find('button').at(2)
         expect(action3Button).toIncludeText('action3')
     })
+
+    it('should display modal with shopify action details', () => {
+        let messageWithRefund = {
+            actions: [
+                {
+                    name: 'shopifyFullRefundLastOrder',
+                    type: 'user',
+                    status: 'success',
+                    title: 'Refund Action',
+                    arguments: {restock: true, order_id: 1234},
+                },
+            ],
+        }
+        component = mount(<Actions message={messageWithRefund} />)
+
+        const refundActionButton = component.find('button').at(0)
+        expect(refundActionButton).toIncludeText('Refund Action')
+        refundActionButton.simulate('click')
+
+        const modalHeader = component.find('.modal-header').at(0)
+        expect(modalHeader).toIncludeText('Options')
+        const modalContent = component.find('.modal-content').at(0)
+        expect(modalContent).toIncludeText('restock: trueorder_id: 1234')
+    })
 })

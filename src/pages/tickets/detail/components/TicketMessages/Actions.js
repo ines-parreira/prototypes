@@ -9,8 +9,20 @@ import {getActionTemplate} from '../../../../../utils'
 import Modal from '../../../../common/components/Modal'
 import {JSONTree} from '../../../../common/components/JSONTree'
 import {JSON_CONTENT_TYPE, FORM_CONTENT_TYPE} from '../../../../../config'
+import {MACRO_ACTION_NAME} from '../../../../../models/macroAction/constants'
 
 import css from './Actions.less'
+
+const SHOPIFY_ACTION_NAMES = [
+    MACRO_ACTION_NAME.SHOPIFY_CANCEL_LAST_ORDER,
+    MACRO_ACTION_NAME.SHOPIFY_CANCEL_ORDER,
+    MACRO_ACTION_NAME.SHOPIFY_DUPLICATE_LAST_ORDER,
+    MACRO_ACTION_NAME.SHOPIFY_EDIT_NOTE_LAST_ORDER,
+    MACRO_ACTION_NAME.SHOPIFY_EDIT_SHIPPING_ADDRESS_LAST_ORDER,
+    MACRO_ACTION_NAME.SHOPIFY_FULL_REFUND_LAST_ORDER,
+    MACRO_ACTION_NAME.SHOPIFY_PARTIAL_REFUND_LAST_ORDER,
+    MACRO_ACTION_NAME.SHOPIFY_REFUND_SHIPPING_COST_LAST_ORDER,
+]
 
 export default class Actions extends React.Component {
     constructor(props) {
@@ -35,6 +47,29 @@ export default class Actions extends React.Component {
             this.modalState[id] = false
             this.setState({isModalOpen: this.modalState})
         }
+    }
+
+    _renderShopifyActionModalContent = (id, action) => {
+        let hiddenOptions = ['tracking_event_name']
+        return (
+            <div>
+                {Object.keys(action.arguments).map((arg, idx) => {
+                    if (!hiddenOptions.includes(arg)) {
+                        let value = action.arguments[arg]
+
+                        if (typeof value === 'boolean') {
+                            value = value.toString()
+                        }
+
+                        return (
+                            <p key={idx}>
+                                <b>{arg}:</b> {value}
+                            </p>
+                        )
+                    }
+                })}
+            </div>
+        )
     }
 
     _renderModalContent = (id, action, contentType) => {
@@ -119,8 +154,10 @@ export default class Actions extends React.Component {
                     }
 
                     const isHttpAction = action.name === 'http'
+                    const isShopifyAction = SHOPIFY_ACTION_NAMES.includes(
+                        action.name
+                    )
                     const contentType = _get(action, 'arguments.content_type')
-
                     return (
                         <div
                             key={`message-actions-${index}`}
@@ -143,7 +180,19 @@ export default class Actions extends React.Component {
                                 </i>
                                 {action.title}
                             </Button>
-
+                            {isShopifyAction ? (
+                                <Modal
+                                    isOpen={this.state.isModalOpen[index]}
+                                    onClose={this._closeModal(index)}
+                                    header="Options"
+                                    size="lg"
+                                >
+                                    {this._renderShopifyActionModalContent(
+                                        index,
+                                        action
+                                    )}
+                                </Modal>
+                            ) : null}
                             {isHttpAction ? (
                                 <Modal
                                     isOpen={this.state.isModalOpen[index]}
