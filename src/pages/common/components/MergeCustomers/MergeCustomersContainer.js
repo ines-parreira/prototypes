@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import {fromJS} from 'immutable'
 import {connect} from 'react-redux'
 
-import {mergeCustomers} from '../../../../state/customers/actions'
-import {makeIsLoading} from '../../../../state/customers/selectors'
+import {mergeCustomers} from '../../../../state/customers/actions.ts'
+import {makeIsLoading} from '../../../../state/customers/selectors.ts'
 
 import MergeCustomersModal from './MergeCustomersModal'
 

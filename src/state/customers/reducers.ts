@@ -1,17 +1,17 @@
-// @flow
-import {fromJS, type Map} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 import _sortBy from 'lodash/sortBy'
 
-import type {Ticket, TicketElement} from '../../models/ticket/types'
-import * as newMessageConstants from '../newMessage/constants'
-import * as ticketConstants from '../ticket/constants'
-import * as viewsConstants from '../views/constants'
+import {Ticket, TicketElement} from '../../models/ticket/types'
+import * as newMessageConstants from '../newMessage/constants.js'
+import * as ticketConstants from '../ticket/constants.js'
+import * as viewsConstants from '../views/constants.js'
 
-import type {actionType} from '../types'
+import {GorgiasAction} from '../types'
 
-import * as constants from './constants'
+import * as constants from './constants.js'
+import {CustomersState} from './types'
 
-export const initialState = fromJS({
+export const initialState: CustomersState = fromJS({
     active: {},
     items: [],
     customerHistory: {
@@ -30,10 +30,10 @@ export const initialState = fromJS({
 })
 
 export default function reducer(
-    state: Map<*, *> = initialState,
-    action: actionType
-): Map<*, *> {
-    const items = state.get('items', fromJS([]))
+    state: CustomersState = initialState,
+    action: GorgiasAction
+): CustomersState {
+    const items = state.get('items', fromJS([])) as List<any>
 
     switch (action.type) {
         case viewsConstants.FETCH_LIST_VIEW_SUCCESS: {
@@ -41,7 +41,7 @@ export default function reducer(
                 return state
             }
 
-            const payload = action.data
+            const payload = action.data as {data: unknown}
 
             return state.set('items', fromJS(payload.data))
         }
@@ -64,17 +64,18 @@ export default function reducer(
 
         case constants.SUBMIT_CUSTOMER_SUCCESS: {
             let newState = state
-            const customer = fromJS(action.resp)
+            const customer = fromJS(action.resp) as Map<any, any>
 
             if (action.isUpdate) {
-                const customerId = customer.get('id')
+                const customerId = customer.get('id') as number
 
                 // if updated customer is in current items list, update it
                 newState = newState.set(
                     'items',
                     items.set(
                         items.findIndex(
-                            (item) => item.get('id') === customerId
+                            (item: Map<any, any>) =>
+                                item.get('id') === customerId
                         ),
                         customer
                     )
@@ -91,9 +92,10 @@ export default function reducer(
 
         case constants.DELETE_CUSTOMER_SUCCESS: {
             return state.merge({
-                items: state
-                    .get('items')
-                    .filter((item) => item.get('id') !== action.customerId),
+                items: (state.get('items') as List<any>).filter(
+                    (item: Map<any, any>) =>
+                        item.get('id') !== action.customerId
+                ),
             })
         }
 
@@ -104,8 +106,12 @@ export default function reducer(
         }
 
         case constants.FETCH_CUSTOMER_HISTORY_SUCCESS: {
-            const hasHistory = action.resp.meta.item_count > 1
-            const tickets: Array<Object> = action.resp.data
+            const resp = action.resp as {
+                meta: {item_count: number}
+                data: unknown[]
+            }
+            const hasHistory = resp.meta.item_count > 1
+            const tickets: unknown[] = resp.data
             const sortedTickets = _sortBy(tickets, ['created_datetime'])
 
             return state
@@ -129,18 +135,22 @@ export default function reducer(
         }
 
         case newMessageConstants.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_SUCCESS: {
-            const updated: TicketElement = action.resp
-            const ticketIndex = state
-                .getIn(['customerHistory', 'tickets'], fromJS([]))
-                .findIndex((ticket) => ticket.get('id') === updated.ticket_id)
+            const updated = action.resp as TicketElement
+            const ticketIndex = (state.getIn(
+                ['customerHistory', 'tickets'],
+                fromJS([])
+            ) as List<any>).findIndex(
+                (ticket: Map<any, any>) =>
+                    ticket.get('id') === updated.ticket_id
+            )
             if (~ticketIndex) {
                 return state.updateIn(
                     ['customerHistory', 'tickets', ticketIndex],
-                    (ticket) =>
+                    (ticket: Map<any, any>) =>
                         ticket
                             .set(
                                 'messages_count',
-                                ticket.get('messages_count', 0) + 1
+                                (ticket.get('messages_count', 0) as number) + 1
                             )
                             .set('excerpt', updated.body_text)
                 )
@@ -149,14 +159,17 @@ export default function reducer(
         }
 
         case ticketConstants.TICKET_PARTIAL_UPDATE_SUCCESS: {
-            const updated: Ticket = action.resp
-            const ticketIndex = state
-                .getIn(['customerHistory', 'tickets'], fromJS([]))
-                .findIndex((ticket) => ticket.get('id') === updated.id)
+            const updated = action.resp as Ticket
+            const ticketIndex = (state.getIn(
+                ['customerHistory', 'tickets'],
+                fromJS([])
+            ) as List<any>).findIndex(
+                (ticket: Map<any, any>) => ticket.get('id') === updated.id
+            )
             if (~ticketIndex) {
                 return state.updateIn(
                     ['customerHistory', 'tickets', ticketIndex],
-                    (ticket) =>
+                    (ticket: Map<any, any>) =>
                         ticket
                             .set('assignee_user', fromJS(updated.assignee_user))
                             .set('status', updated.status)
@@ -186,9 +199,12 @@ export default function reducer(
                 return state
             }
 
-            const newItems = state
-                .get('items', fromJS([]))
-                .filter((item) => !action.ids.includes(item.get('id')))
+            const newItems = (state.get('items', fromJS([])) as List<
+                any
+            >).filter(
+                (item: Map<any, any>) =>
+                    !!action.ids && !action.ids.includes(item.get('id'))
+            )
 
             return state.set('items', newItems)
         }
@@ -203,7 +219,8 @@ export default function reducer(
 
             if (
                 action.resp &&
-                state.getIn(['active', 'id']) === action.resp.id
+                state.getIn(['active', 'id']) ===
+                    (action.resp as {id: number}).id
             ) {
                 newState = newState.set('active', fromJS(action.resp))
             }

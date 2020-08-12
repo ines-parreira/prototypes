@@ -3,7 +3,7 @@ import {createSelector} from 'reselect'
 import {fromJS} from 'immutable'
 
 import {getCurrentAccountState} from '../currentAccount/selectors.ts'
-import {getCurrentUser} from '../currentUser/selectors'
+import {getCurrentUser} from '../currentUser/selectors.ts'
 import {getTicket, getCustomerMessages} from '../ticket/selectors'
 
 export const getContext = createSelector(

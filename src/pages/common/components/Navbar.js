@@ -16,11 +16,11 @@ import {
 
 import shortcutManager from '../../../services/shortcutManager'
 
-import * as currentUserActions from '../../../state/currentUser/actions'
+import * as currentUserActions from '../../../state/currentUser/actions.ts'
 import * as layoutActions from '../../../state/layout/actions'
 
 import * as layoutSelectors from '../../../state/layout/selectors'
-import * as currentUserSelectors from '../../../state/currentUser/selectors'
+import * as currentUserSelectors from '../../../state/currentUser/selectors.ts'
 
 import ToggleButton from '../../../pages/common/components/ToggleButton'
 import './Navbar.less'

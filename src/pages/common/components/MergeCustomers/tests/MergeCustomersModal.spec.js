@@ -4,7 +4,7 @@ import _noop from 'lodash/noop'
 import {shallow} from 'enzyme'
 
 import {EMAIL_CHANNEL} from '../../../../../config/ticket'
-import {mergeCustomers} from '../../../../../state/customers/actions'
+import {mergeCustomers} from '../../../../../state/customers/actions.ts'
 import MergeCustomersModal from '../MergeCustomersModal'
 
 const address1 = 'pierre@gorgias.io'

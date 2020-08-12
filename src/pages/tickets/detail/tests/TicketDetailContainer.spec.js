@@ -10,7 +10,7 @@ import thunk from 'redux-thunk'
 
 import moment from 'moment'
 
-import * as customersActions from '../../../../state/customers/actions'
+import * as customersActions from '../../../../state/customers/actions.ts'
 import {
     prepareTicketMessage,
     sendTicketMessage,
@@ -43,7 +43,7 @@ jest.mock('../../../../state/notifications/actions', () => {
     }
 })
 
-jest.mock('../../../../state/customers/actions', () => {
+jest.mock('../../../../state/customers/actions.ts', () => {
     const _identity = require('lodash/identity')
 
     return {

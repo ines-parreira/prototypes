@@ -12,7 +12,7 @@ import {
 } from '../../constants/integration'
 import {compare} from '../../utils'
 import type {stateType} from '../types'
-import {getCurrentUserState} from '../currentUser/selectors'
+import {getCurrentUserState} from '../currentUser/selectors.ts'
 import {getTicketState} from '../ticket/selectors'
 
 type typesType = Array<string> | string

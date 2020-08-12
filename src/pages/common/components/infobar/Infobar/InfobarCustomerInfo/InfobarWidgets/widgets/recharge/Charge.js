@@ -9,7 +9,7 @@ import {Badge, CardBody} from 'reactstrap'
 import _lowerCase from 'lodash/lowerCase'
 import _groupBy from 'lodash/groupBy'
 
-import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../../../../state/customers/selectors'
+import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../../../../state/customers/selectors.ts'
 import * as ticketSelectors from '../../../../../../../../../state/ticket/selectors'
 
 import {

@@ -5,7 +5,7 @@ import {bindActionCreators} from 'redux'
 
 import * as ViewsActions from '../../../state/views/actions'
 import Navbar from '../../common/components/Navbar'
-import {getSettingsByType} from '../../../state/currentUser/selectors'
+import {getSettingsByType} from '../../../state/currentUser/selectors.ts'
 
 import CustomersNavbarView from './components/CustomersNavbarView'
 

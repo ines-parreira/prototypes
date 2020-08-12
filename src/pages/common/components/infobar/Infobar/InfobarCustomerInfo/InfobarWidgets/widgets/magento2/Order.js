@@ -5,8 +5,8 @@ import {fromJS, type List, type Map} from 'immutable'
 import {connect} from 'react-redux'
 import {Badge, CardBody} from 'reactstrap'
 
-import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../../../../state/customers/selectors'
-import * as currentUserSelectors from '../../../../../../../../../state/currentUser/selectors'
+import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../../../../state/customers/selectors.ts'
+import * as currentUserSelectors from '../../../../../../../../../state/currentUser/selectors.ts'
 import * as ticketSelectors from '../../../../../../../../../state/ticket/selectors'
 
 import {

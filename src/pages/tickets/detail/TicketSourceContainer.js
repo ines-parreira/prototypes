@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 
 import * as widgetsActions from '../../../state/widgets/actions'
 import * as ticketActions from '../../../state/ticket/actions'
-import * as customersActions from '../../../state/customers/actions'
+import * as customersActions from '../../../state/customers/actions.ts'
 
 import SourceWrapper from '../../common/components/sourceWidgets/SourceWrapper'
 import {getSourcesWithCustomer} from '../../../state/widgets/selectors'

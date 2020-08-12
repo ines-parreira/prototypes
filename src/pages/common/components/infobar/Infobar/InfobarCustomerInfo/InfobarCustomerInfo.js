@@ -18,7 +18,7 @@ import {
 } from '../../../../../../constants/integration'
 
 import {itemsWithContext} from '../../../../../../state/widgets/utils'
-import {getDisplayName} from '../../../../../../state/customers/helpers'
+import {getDisplayName} from '../../../../../../state/customers/helpers.ts'
 import * as integrationsSelectors from '../../../../../../state/integrations/selectors'
 
 import Avatar from '../../../Avatar'

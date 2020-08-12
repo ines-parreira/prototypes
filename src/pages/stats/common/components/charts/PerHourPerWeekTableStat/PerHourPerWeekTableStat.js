@@ -6,7 +6,7 @@ import {connect} from 'react-redux'
 import {Table} from 'reactstrap'
 
 import {getBusinessHoursSettings} from '../../../../../../state/currentAccount/selectors.ts'
-import {getTimezone} from '../../../../../../state/currentUser/selectors'
+import {getTimezone} from '../../../../../../state/currentUser/selectors.ts'
 import Legend from '../../Legend'
 
 import css from './PerHourPerWeekTableStat.less'

@@ -3,7 +3,7 @@ import {fromJS, Map, List} from 'immutable'
 
 import * as selectors from '../selectors'
 import {initialState} from '../reducers'
-import {initialState as currentUserInitialState} from '../../currentUser/reducers.js'
+import {initialState as currentUserInitialState} from '../../currentUser/reducers'
 import * as agentFixtures from '../../../fixtures/agents.js'
 import * as userFixtures from '../../../fixtures/users.js'
 import {RootState} from '../../types'

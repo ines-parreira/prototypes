@@ -2,7 +2,7 @@
 import {fromJS, Map} from 'immutable'
 import {createSelector} from 'reselect'
 
-import {getActiveCustomer} from '../customers/selectors'
+import {getActiveCustomer} from '../customers/selectors.ts'
 
 import type {stateType} from '../types'
 

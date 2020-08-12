@@ -11,7 +11,7 @@ import * as InfobarActions from '../../../state/infobar/actions'
 import {
     getActiveCustomer,
     getActiveCustomerId,
-} from '../../../state/customers/selectors'
+} from '../../../state/customers/selectors.ts'
 import {getSources} from '../../../state/widgets/selectors'
 
 class CustomerInfobarContainer extends React.Component {

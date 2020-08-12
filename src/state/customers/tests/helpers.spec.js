@@ -1,6 +1,6 @@
 import {fromJS} from 'immutable'
 
-import * as helpers from '../helpers'
+import * as helpers from '../helpers.ts'
 import {EMAIL_CHANNEL} from '../../../config/ticket'
 
 describe('customers helpers', () => {

@@ -2,16 +2,11 @@ import {fromJS, Map, List} from 'immutable'
 import {createSelector, Selector} from 'reselect'
 
 import {createImmutableSelector} from '../../utils.js'
-import {getCurrentUser} from '../currentUser/selectors.js'
+import {getCurrentUser} from '../currentUser/selectors'
 import {CurrentUser, RootState} from '../types'
 
 import {Agent, Agents, AgentsState} from './types'
 
-//$TsFixMe remove once currentUser/selectors is migrated
-const typeSafeGetCurrentUser = getCurrentUser as Selector<
-    RootState,
-    CurrentUser
->
 //$TsFixMe remove once state/utils are migrated
 const typeSafeCreateImmutableCreator = createImmutableSelector as typeof createSelector
 
@@ -52,7 +47,7 @@ export const getOtherAgents = createSelector<
     CurrentUser
 >(
     getAgents,
-    typeSafeGetCurrentUser,
+    getCurrentUser,
     (agents: Agents, currentUser: CurrentUser) =>
         agents.filter(
             (agent: Map<any, any> = fromJS({})) =>
@@ -220,7 +215,7 @@ export const getAgentsTypingOnTicket = (ticketId?: string) =>
 // Agents typing on a specific ticket EXCEPT current user
 export const getOtherAgentsTypingOnTicket = (ticketId?: string) =>
     createSelector<RootState, Agents, CurrentUser, Agents>(
-        typeSafeGetCurrentUser,
+        getCurrentUser,
         getAgentsTypingOnTicket(ticketId),
         (currentUser: CurrentUser, agents: Agents) => {
             return agents.filter(

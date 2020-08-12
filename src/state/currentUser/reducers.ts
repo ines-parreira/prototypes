@@ -1,15 +1,13 @@
-// @flow
-import {fromJS} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
 
-// types
-import type {Map} from 'immutable'
+import {UserSetting} from '../../config/types/user'
+import {GorgiasAction} from '../types'
 
-import type {actionType} from '../types'
+import * as constants from './constants.js'
+import {CurrentUserState} from './types'
 
-import * as constants from './constants'
-
-export const initialState = fromJS({
+export const initialState: CurrentUserState = fromJS({
     settings: [],
     _internal: {
         loading: {
@@ -20,9 +18,9 @@ export const initialState = fromJS({
 })
 
 export default function reducer(
-    state: Map<*, *> = initialState,
-    action: actionType
-): Map<*, *> {
+    state: CurrentUserState = initialState,
+    action: GorgiasAction
+): CurrentUserState {
     if (!action) {
         return state
     }
@@ -38,7 +36,7 @@ export default function reducer(
 
         case constants.SUBMIT_CURRENT_USER_SUCCESS:
         case constants.CHANGE_PASSWORD_SUCCESS:
-            return fromJS(action.resp).setIn(
+            return (fromJS(action.resp) as Map<any, any>).setIn(
                 ['_internal', 'loading', 'currentUser'],
                 false
             )
@@ -61,16 +59,22 @@ export default function reducer(
                 false
             )
             if (action.isUpdate) {
-                return newState.update('settings', (settings) => {
-                    return settings.map((setting) => {
-                        if (setting.get('id') === action.resp.id) {
-                            return setting.set('data', fromJS(action.resp.data))
+                return newState.update('settings', (settings: List<any>) => {
+                    return settings.map((setting: Map<any, any>) => {
+                        if (
+                            setting.get('id') ===
+                            (action.resp as UserSetting).id
+                        ) {
+                            return setting.set(
+                                'data',
+                                fromJS((action.resp as UserSetting).data)
+                            )
                         }
                         return setting
                     })
                 })
             }
-            return newState.update('settings', (settings) =>
+            return newState.update('settings', (settings: List<any>) =>
                 settings.push(fromJS(action.resp))
             )
         }

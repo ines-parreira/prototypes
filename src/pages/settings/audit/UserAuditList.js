@@ -18,7 +18,7 @@ import {
     getUserAuditPagination,
     getUserAuditUserIdOptions,
 } from '../../../state/usersAudit/selectors'
-import * as currentUserSelectors from '../../../state/currentUser/selectors'
+import * as currentUserSelectors from '../../../state/currentUser/selectors.ts'
 import {formatDatetime} from '../../../utils'
 import {getMoment} from '../../../utils/date'
 

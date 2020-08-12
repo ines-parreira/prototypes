@@ -1,8 +1,8 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 
-import * as selectors from '../selectors'
-import {initialState} from '../reducers'
+import * as selectors from '../selectors.ts'
+import {initialState} from '../reducers.ts'
 import * as usersFixtures from '../../../fixtures/users'
 
 import {DEFAULT_PREFERENCES} from './../../../config'

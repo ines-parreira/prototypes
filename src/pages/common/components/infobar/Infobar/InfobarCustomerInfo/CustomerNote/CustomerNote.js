@@ -3,7 +3,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
 
-import * as customerActions from '../../../../../../../state/customers/actions'
+import * as customerActions from '../../../../../../../state/customers/actions.ts'
 import * as segmentTracker from '../../../../../../../store/middlewares/segmentTracker'
 import {countLines} from '../../../../../../../utils/string'
 

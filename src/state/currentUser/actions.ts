@@ -1,42 +1,43 @@
-// @flow
-import axios from 'axios'
+import axios, {AxiosError} from 'axios'
 import _isUndefined from 'lodash/isUndefined'
 import _get from 'lodash/get'
 
-import {notify} from '../notifications/actions'
+import {notify} from '../notifications/actions.js'
 
-// types
-import type {Dispatch, getStateType} from '../types'
-import {fetchChats} from '../chats/actions.ts'
+import type {StoreDispatch, RootState} from '../types'
+import {fetchChats} from '../chats/actions'
+import {NotificationStatus} from '../notifications/types'
+import {User, EditableUserProfile} from '../../config/types/user'
 
-import * as constants from './constants'
+import * as constants from './constants.js'
 import * as currentUserSelectors from './selectors'
+import {UserPreferencesForm} from './types'
 
 export const changePassword = (oldPassword: string, newPassword: string) => (
-    dispatch: Dispatch
-): Promise<Dispatch> => {
+    dispatch: StoreDispatch
+): Promise<ReturnType<StoreDispatch>> => {
     dispatch({type: constants.CHANGE_PASSWORD_START})
 
     return axios
-        .put('/api/users/0/', {
+        .put<User>('/api/users/0/', {
             old_password: oldPassword,
             new_password: newPassword,
         })
-        .then((json = {}) => json.data)
+        .then((json) => json?.data)
         .then(
             (resp) => {
                 dispatch({
                     type: constants.CHANGE_PASSWORD_SUCCESS,
                     resp,
                 })
-                dispatch(
+                void dispatch(
                     notify({
-                        status: 'success',
+                        status: NotificationStatus.Success,
                         message: 'Password successfully changed!',
                     })
                 )
             },
-            (error) => {
+            (error: AxiosError) => {
                 return dispatch({
                     type: constants.CHANGE_PASSWORD_ERROR,
                     error,
@@ -46,38 +47,33 @@ export const changePassword = (oldPassword: string, newPassword: string) => (
         )
 }
 
-export function updateCurrentUser(data: Object) {
-    return (dispatch: Dispatch): Promise<Dispatch> => {
+export function updateCurrentUser(data: EditableUserProfile) {
+    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         dispatch({
             type: constants.SUBMIT_CURRENT_USER_START,
         })
 
         return axios
-            .put('/api/users/0/', data)
-            .then((json = {}) => json.data)
+            .put<User>('/api/users/0/', data)
+            .then((json) => json?.data)
             .then(
                 (resp) => {
                     dispatch({
                         type: constants.SUBMIT_CURRENT_USER_SUCCESS,
                         resp,
                     })
-
-                    let message
-                    if (_get(data, ['meta', 'profile_picture_url'])) {
-                        message = 'User picture successfully updated'
-                    } else {
-                        message = 'User successfully updated'
-                    }
-                    dispatch(
+                    void dispatch(
                         notify({
-                            status: 'success',
-                            message,
+                            status: NotificationStatus.Success,
+                            message: _get(data, ['meta', 'profile_picture_url'])
+                                ? 'User picture successfully updated'
+                                : 'User successfully updated',
                         })
                     )
 
                     return resp
                 },
-                (error) => {
+                (error: AxiosError) => {
                     return dispatch({
                         type: constants.SUBMIT_CURRENT_USER_ERROR,
                         error,
@@ -90,15 +86,14 @@ export function updateCurrentUser(data: Object) {
 }
 
 export function submitSetting(
-    data: {id?: string, type: string, data: Object},
+    data: UserPreferencesForm,
     notification: boolean
 ) {
     return (
-        dispatch: Dispatch,
-        getState: getStateType
-    ): Promise<Dispatch | {}> => {
-        const isUpdate = !!data.id
-        const prevIsAvailableForChat = currentUserSelectors.isAvailable(
+        dispatch: StoreDispatch,
+        getState: () => RootState
+    ): Promise<ReturnType<StoreDispatch>> => {
+        const prevIsAvailableForChat: boolean = currentUserSelectors.isAvailable(
             getState()
         )
         let promise
@@ -108,33 +103,38 @@ export function submitSetting(
             settingType: data.type,
         })
 
-        if (isUpdate) {
-            // $FlowFixMe
-            promise = axios.put(`/api/users/0/settings/${data.id}/`, data)
+        if (data.id != null) {
+            promise = axios.put<UserPreferencesForm>(
+                `/api/users/0/settings/${data.id}/`,
+                data
+            )
         } else {
-            promise = axios.post('/api/users/0/settings/', data)
+            promise = axios.post<UserPreferencesForm>(
+                '/api/users/0/settings/',
+                data
+            )
         }
 
         return promise
-            .then((json = {}) => json.data)
+            .then((json) => json?.data)
             .then(
                 (resp) => {
                     dispatch({
                         type: constants.SUBMIT_SETTING_SUCCESS,
                         settingType: data.type,
-                        isUpdate,
+                        isUpdate: data.id != null,
                         resp,
                     })
 
                     // Refresh chat tickets if the current user updates his availability
                     if (prevIsAvailableForChat !== data.data.available) {
-                        dispatch(fetchChats())
+                        void dispatch(fetchChats())
                     }
 
                     if (notification) {
-                        dispatch(
+                        void dispatch(
                             notify({
-                                status: 'success',
+                                status: NotificationStatus.Success,
                                 message: 'Settings successfully updated',
                             })
                         )
@@ -142,7 +142,7 @@ export function submitSetting(
 
                     return resp
                 },
-                (error) => {
+                (error: AxiosError) => {
                     return dispatch({
                         type: constants.SUBMIT_SETTING_ERROR,
                         settingType: data.type,
@@ -154,9 +154,9 @@ export function submitSetting(
     }
 }
 
-export const toggleActiveStatus = (status: ?boolean) => (
-    dispatch: Dispatch,
-    getState: getStateType
+export const toggleActiveStatus = (status: Maybe<boolean>) => (
+    dispatch: StoreDispatch,
+    getState: () => RootState
 ) => {
     const {currentUser} = getState()
     const currentStatus = currentUser.get('is_active')

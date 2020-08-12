@@ -7,7 +7,7 @@ import {Button} from 'reactstrap'
 
 import {compactInteger} from '../../../utils'
 import {isCreationUrl, isSearchUrl} from '../../common/utils/url'
-import {getCustomers} from '../../../state/customers/selectors'
+import {getCustomers} from '../../../state/customers/selectors.ts'
 
 import * as viewsActions from '../../../state/views/actions'
 import * as viewsSelectors from '../../../state/views/selectors'

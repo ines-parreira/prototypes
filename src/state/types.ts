@@ -8,6 +8,7 @@ import {MacrosAction} from './entities/macros/types'
 import {EntitiesState} from './entities/reducers'
 import {InfobarActionsState} from './infobarActions/types'
 import rootReducer from './reducers'
+import {HTTPIntegrationEvent} from './HTTPIntegrationEvents/types'
 
 export type StoreState = {
     activity: Map<any, any>
@@ -19,6 +20,7 @@ export type StoreState = {
     customers: Map<any, any>
     entities: EntitiesState
     facebookAds: Map<any, any>
+    HTTPIntegrationEvents: Map<any, any>
     infobar: Map<any, any>
     infobarActions: InfobarActionsState
     integrations: Map<any, any>
@@ -55,6 +57,14 @@ export type GorgiasAction = {
     subscription?: Subscription
     setting?: AccountSetting
     isUpdate?: boolean
+    settingType?: string
+    status?: boolean
+    viewType?: string
+    customerId?: number
+    shouldDisplayHistoryOnNextPage?: boolean
+    ids?: number[]
+    events?: HTTPIntegrationEvent[]
+    event?: HTTPIntegrationEvent
 }
 
 export type CurrentUser = Map<any, any>

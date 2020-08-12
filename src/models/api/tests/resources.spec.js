@@ -1,7 +1,7 @@
 //@flow
 import MockAdapter from 'axios-mock-adapter'
 
-import client from '../resources'
+import client from '../resources.ts'
 
 const mockedServer = new MockAdapter(client)
 

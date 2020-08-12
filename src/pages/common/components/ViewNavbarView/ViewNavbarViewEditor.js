@@ -11,7 +11,7 @@ import _isUndefined from 'lodash/isUndefined'
 import BooleanField from '../../forms/BooleanField'
 
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
-import {submitSetting} from '../../../../state/currentUser/actions'
+import {submitSetting} from '../../../../state/currentUser/actions.ts'
 
 import ReactSortable from './../../../common/components/dragging/ReactSortable'
 import {sortViews} from './utils'

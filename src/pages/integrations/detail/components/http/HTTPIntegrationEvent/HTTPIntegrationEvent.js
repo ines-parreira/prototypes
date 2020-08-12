@@ -9,8 +9,8 @@ import InputField from '../../../../../common/forms/InputField'
 import Loader from '../../../../../common/components/Loader/Loader'
 
 import {countLines} from '../../../../../../utils/string'
-import {fetchHTTPIntegrationEvent} from '../../../../../../state/HTTPIntegrationEvents/actions'
-import {getHTTPIntegrationEvent} from '../../../../../../state/HTTPIntegrationEvents/selectors'
+import {fetchHTTPIntegrationEvent} from '../../../../../../state/HTTPIntegrationEvents/actions.ts'
+import {getHTTPIntegrationEvent} from '../../../../../../state/HTTPIntegrationEvents/selectors.ts'
 
 import HTTPParams from './HTTPIntegrationEventParams'
 import HTTPItem from './HTTPIntegrationEventItem'

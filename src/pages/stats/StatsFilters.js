@@ -17,7 +17,7 @@ import {getTags} from '../../state/tags/selectors'
 import {getIntegrations} from '../../state/integrations/selectors'
 import {CHANNELS} from '../../config/ticket'
 import {getAgents} from '../../state/agents/selectors.ts'
-import {getDisplayName} from '../../state/customers/helpers'
+import {getDisplayName} from '../../state/customers/helpers.ts'
 
 import Popover from '../common/components/Popover'
 import withCancellableRequest from '../common/utils/withCancellableRequest'

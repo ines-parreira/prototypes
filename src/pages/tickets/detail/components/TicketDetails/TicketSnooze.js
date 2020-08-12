@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import Tooltip from '../../../../common/components/Tooltip'
 import {formatDatetime} from '../../../../../utils'
 
-import * as currentUserSelectors from '../../../../../state/currentUser/selectors'
+import * as currentUserSelectors from '../../../../../state/currentUser/selectors.ts'
 
 type Props = {
     className: ?string,

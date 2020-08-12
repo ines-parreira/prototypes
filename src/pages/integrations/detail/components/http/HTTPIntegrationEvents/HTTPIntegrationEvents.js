@@ -12,8 +12,8 @@ import ForwardIcon from '../../ForwardIcon'
 import {DatetimeLabel} from '../../../../../common/utils/labels'
 import HTTPStatusLabel from '../../../../../common/components/HTTPStatusLabel'
 
-import {fetchHTTPIntegrationEvents} from '../../../../../../state/HTTPIntegrationEvents/actions'
-import {getHTTPIntegrationEvents} from '../../../../../../state/HTTPIntegrationEvents/selectors'
+import {fetchHTTPIntegrationEvents} from '../../../../../../state/HTTPIntegrationEvents/actions.ts'
+import {getHTTPIntegrationEvents} from '../../../../../../state/HTTPIntegrationEvents/selectors.ts'
 
 type Props = {
     events?: Object,

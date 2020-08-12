@@ -5,8 +5,8 @@ import {
     getHTTPIntegrationEvent,
     getHTTPIntegrationEvents,
     getHTTPIntegrationEventsState,
-} from '../selectors'
-import {initialState} from '../reducers'
+} from '../selectors.ts'
+import {initialState} from '../reducers.ts'
 
 jest.addMatchers(immutableMatchers)
 

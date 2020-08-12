@@ -7,10 +7,10 @@ import classnames from 'classnames'
 import shortcutManager from '../../../../../services/shortcutManager'
 import keymap from '../../../../../config/shortcuts'
 
-import * as currentUserActions from '../../../../../state/currentUser/actions'
+import * as currentUserActions from '../../../../../state/currentUser/actions.ts'
 
 import * as currentAccountSelectors from '../../../../../state/currentAccount/selectors.ts'
-import * as currentUserSelectors from '../../../../../state/currentUser/selectors'
+import * as currentUserSelectors from '../../../../../state/currentUser/selectors.ts'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 
 import Tooltip from '../../../../common/components/Tooltip'

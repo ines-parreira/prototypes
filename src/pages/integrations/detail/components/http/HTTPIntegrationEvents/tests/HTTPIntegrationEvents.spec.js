@@ -5,7 +5,7 @@ import {shallow} from 'enzyme'
 import HTTPIntegrationEventsContainer, {
     HTTPIntegrationEvents,
 } from '../HTTPIntegrationEvents'
-import {initialState} from '../../../../../../../state/HTTPIntegrationEvents/reducers'
+import {initialState} from '../../../../../../../state/HTTPIntegrationEvents/reducers.ts'
 import {mockStore, shallowWithStore} from '../../../../../../../utils/testing'
 import {getMomentNow} from '../../../../../../../utils/date'
 

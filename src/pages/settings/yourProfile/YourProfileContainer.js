@@ -8,8 +8,8 @@ import _pick from 'lodash/pick'
 import {
     submitSetting,
     updateCurrentUser,
-} from '../../../state/currentUser/actions'
-import {getPreferences} from '../../../state/currentUser/selectors'
+} from '../../../state/currentUser/actions.ts'
+import {getPreferences} from '../../../state/currentUser/selectors.ts'
 
 import YourProfileView from './components/YourProfileView'
 

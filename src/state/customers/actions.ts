@@ -1,26 +1,29 @@
-// @flow
-import axios from 'axios'
+import axios, {AxiosError} from 'axios'
 import _isUndefined from 'lodash/isUndefined'
-import type {List} from 'immutable'
+import {List} from 'immutable'
 import {updateNotification} from 'reapop'
 
-import * as viewsConfig from '../../config/views'
+import * as viewsConfig from '../../config/views.js'
 
-import {notify} from '../notifications/actions'
-import type {Dispatch, getStateType, stateType, thunkActionType} from '../types'
+import {ApiListResponsePagination} from '../../models/api/types'
+import {Ticket} from '../../models/ticket/types'
+import {notify} from '../notifications/actions.js'
+import {NotificationStatus} from '../notifications/types'
+import type {StoreDispatch, RootState} from '../types'
 
-import * as types from './constants'
+import * as types from './constants.js'
 import {mergeChannels} from './helpers'
+import {Customer, CustomerDraft} from './types'
 
 export function fetchCustomer(customerId: number) {
-    return (dispatch: Dispatch): Promise<Dispatch> => {
+    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         dispatch({
             type: types.FETCH_CUSTOMER_START,
         })
 
         return axios
-            .get(`/api/customers/${customerId}/`)
-            .then((json = {}) => json.data)
+            .get<Customer>(`/api/customers/${customerId}/`)
+            .then((json) => json?.data)
             .then(
                 (resp) => {
                     return dispatch({
@@ -28,7 +31,7 @@ export function fetchCustomer(customerId: number) {
                         resp,
                     })
                 },
-                (error) => {
+                (error: AxiosError) => {
                     return dispatch({
                         type: types.FETCH_CUSTOMER_ERROR,
                         error,
@@ -39,8 +42,8 @@ export function fetchCustomer(customerId: number) {
     }
 }
 
-export function submitCustomer(data: {}, customerId: number) {
-    return (dispatch: Dispatch): Promise<Dispatch> => {
+export function submitCustomer(data: CustomerDraft, customerId: number) {
+    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         const isUpdate = !_isUndefined(customerId)
         let promise
 
@@ -49,13 +52,16 @@ export function submitCustomer(data: {}, customerId: number) {
         })
 
         if (isUpdate) {
-            promise = axios.put(`/api/customers/${customerId}/`, data)
+            promise = axios.put<CustomerDraft>(
+                `/api/customers/${customerId}/`,
+                data
+            )
         } else {
-            promise = axios.post('/api/customers/', data)
+            promise = axios.post<CustomerDraft>('/api/customers/', data)
         }
 
         return promise
-            .then((json = {}) => json.data)
+            .then((json) => json?.data)
             .then(
                 (resp) => {
                     dispatch({
@@ -64,9 +70,9 @@ export function submitCustomer(data: {}, customerId: number) {
                         resp,
                     })
 
-                    dispatch(
+                    void dispatch(
                         notify({
-                            status: 'success',
+                            status: NotificationStatus.Success,
                             message: `Customer successfully ${
                                 isUpdate ? 'updated' : 'created'
                             }`,
@@ -75,7 +81,7 @@ export function submitCustomer(data: {}, customerId: number) {
 
                     return resp
                 },
-                (error) => {
+                (error: AxiosError) => {
                     return dispatch({
                         type: types.SUBMIT_CUSTOMER_ERROR,
                         error,
@@ -90,79 +96,80 @@ export function submitCustomer(data: {}, customerId: number) {
 }
 
 export function deleteCustomer(customerId: number) {
-    return (dispatch: Dispatch): Promise<Dispatch> => {
+    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         dispatch({
             type: types.DELETE_CUSTOMER_START,
         })
 
-        return axios
-            .delete(`/api/customers/${customerId}/`)
-            .then((json = {}) => json.data)
-            .then(
-                (resp) => {
-                    dispatch({
-                        type: types.DELETE_CUSTOMER_SUCCESS,
-                        customerId,
-                        resp,
-                    })
+        return axios.delete(`/api/customers/${customerId}/`).then(
+            () => {
+                dispatch({
+                    type: types.DELETE_CUSTOMER_SUCCESS,
+                    customerId,
+                })
 
-                    dispatch(
-                        notify({
-                            status: 'success',
-                            message: 'Customer successfully deleted',
-                        })
-                    )
-                },
-                (error) => {
-                    return dispatch({
-                        type: types.DELETE_CUSTOMER_ERROR,
-                        error,
-                        reason: 'Failed to update the customer',
+                void dispatch(
+                    notify({
+                        status: NotificationStatus.Success,
+                        message: 'Customer successfully deleted',
                     })
-                }
-            )
+                )
+            },
+            (error: AxiosError) => {
+                return dispatch({
+                    type: types.DELETE_CUSTOMER_ERROR,
+                    error,
+                    reason: 'Failed to update the customer',
+                })
+            }
+        )
     }
 }
 
-export function bulkDeleteCustomer(ids: List<*>): thunkActionType {
-    return (dispatch: Dispatch): Promise<Dispatch> => {
+export function bulkDeleteCustomer(ids: List<any>) {
+    return (dispatch: StoreDispatch): Promise<void> => {
         dispatch({
             type: types.BULK_DELETE_START,
         })
 
         const activeViewType = 'customer-list'
-        const viewConfig = viewsConfig.getConfigByType(activeViewType)
+        const viewConfig = viewsConfig.getConfigByType(activeViewType) as Map<
+            any,
+            any
+        >
 
         const notification = dispatch(
             notify({
-                status: 'info',
+                status: NotificationStatus.Info,
                 dismissAfter: 0,
-                message: `Deleting ${viewConfig.get('plural')}...`,
+                message: `Deleting ${viewConfig.get('plural') as string}...`,
             })
-        )
+        ) as Promise<any> & {status: NotificationStatus; message: string}
 
         return axios
-            .delete(`/api/${viewConfig.get('api')}/`, {data: {ids}})
+            .delete(`/api/${viewConfig.get('api') as string}/`, {data: {ids}})
             .then(
                 () => {
-                    notification.status = 'success'
-                    notification.message = `${ids.size} ${viewConfig.get(
-                        'plural'
-                    )} successfully deleted!`
+                    notification.status = NotificationStatus.Success
+                    notification.message = `${ids.size} ${
+                        viewConfig.get('plural') as string
+                    } successfully deleted!`
                     dispatch({
                         type: types.BULK_DELETE_SUCCESS,
                         viewType: activeViewType,
                         ids,
                     })
-                    return dispatch(updateNotification(notification))
+                    //eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                    void dispatch(updateNotification(notification))
                 },
                 () => {
-                    notification.status = 'error'
-                    notification.message = `Couldn\'t delete selected ${viewConfig.get(
-                        'plural'
-                    )}`
+                    notification.status = NotificationStatus.Error
+                    notification.message = `Couldn\'t delete selected ${
+                        viewConfig.get('plural') as string
+                    }`
                     dispatch({type: types.BULK_DELETE_ERROR})
-                    return dispatch(updateNotification(notification))
+                    //eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                    void dispatch(updateNotification(notification))
                 }
             )
     }
@@ -170,16 +177,18 @@ export function bulkDeleteCustomer(ids: List<*>): thunkActionType {
 
 export function fetchCustomerHistory(
     customerId: number,
-    options: {successCondition?: (T: stateType) => boolean} = {}
+    options: {successCondition?: (T: RootState) => boolean} = {}
 ) {
-    return (dispatch: Dispatch, getState: getStateType) => {
+    return (dispatch: StoreDispatch, getState: () => RootState) => {
         dispatch({
             type: types.FETCH_CUSTOMER_HISTORY_START,
         })
 
         return axios
-            .get(`/api/customers/${customerId}/tickets/`)
-            .then((json = {}) => json.data)
+            .get<ApiListResponsePagination<Ticket>>(
+                `/api/customers/${customerId}/tickets/`
+            )
+            .then((json) => json?.data)
             .then(
                 (resp) => {
                     const state = getState()
@@ -198,7 +207,7 @@ export function fetchCustomerHistory(
 
                     return Promise.resolve(resp)
                 },
-                (error) => {
+                (error: AxiosError<{response?: {status: number}}>) => {
                     // TODO(customers-migration): remove these lines when the migration is done
                     if (
                         error &&
@@ -208,12 +217,12 @@ export function fetchCustomerHistory(
                         return Promise.resolve()
                     }
 
-                    return dispatch({
+                    return (dispatch({
                         type: types.FETCH_CUSTOMER_HISTORY_ERROR,
                         error,
                         reason:
                             "Couldn't fetch customer's tickets. Please try again in a few minutes.",
-                    })
+                    }) as unknown) as Promise<void>
                 }
             )
     }
@@ -222,9 +231,9 @@ export function fetchCustomerHistory(
 export function mergeCustomers(
     baseCustomerId: number,
     mergeCustomerId: number,
-    data: Object = {}
+    data: Customer
 ) {
-    return (dispatch: Dispatch): Promise<Dispatch> => {
+    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         dispatch({
             type: types.MERGE_CUSTOMERS_START,
         })
@@ -232,11 +241,11 @@ export function mergeCustomers(
         data.channels = mergeChannels(data.channels)
 
         return axios
-            .put(
+            .put<Customer>(
                 `/api/customers/merge?target_id=${baseCustomerId}&source_id=${mergeCustomerId}`,
                 data
             )
-            .then((json = {}) => json.data)
+            .then((json) => json?.data)
             .then(
                 (resp) => {
                     dispatch({
@@ -244,16 +253,16 @@ export function mergeCustomers(
                         resp,
                     })
 
-                    dispatch(
+                    void dispatch(
                         notify({
-                            status: 'success',
+                            status: NotificationStatus.Success,
                             message: 'Customers successfully merged.',
                         })
                     )
 
                     return Promise.resolve(resp)
                 },
-                (error) => {
+                (error: AxiosError) => {
                     return dispatch({
                         type: types.MERGE_CUSTOMERS_ERROR,
                         error,

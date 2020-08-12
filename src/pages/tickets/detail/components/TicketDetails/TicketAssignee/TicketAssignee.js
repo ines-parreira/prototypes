@@ -6,7 +6,7 @@ import {connect} from 'react-redux'
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 import _isUndefined from 'lodash/isUndefined'
 
-import * as currentUserSelectors from '../../../../../../state/currentUser/selectors'
+import * as currentUserSelectors from '../../../../../../state/currentUser/selectors.ts'
 import * as agentSelectors from '../../../../../../state/agents/selectors.ts'
 import * as teamsSelectors from '../../../../../../state/teams/selectors'
 

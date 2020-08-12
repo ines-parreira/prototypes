@@ -4,11 +4,11 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
 import * as widgetsActions from '../../../state/widgets/actions'
-import * as customersActions from '../../../state/customers/actions'
+import * as customersActions from '../../../state/customers/actions.ts'
 
 import SourceWrapper from '../../common/components/sourceWidgets/SourceWrapper'
 
-import {getActiveCustomerId} from '../../../state/customers/selectors'
+import {getActiveCustomerId} from '../../../state/customers/selectors.ts'
 import {getSources} from '../../../state/widgets/selectors'
 
 class CustomerSourceContainer extends React.Component {

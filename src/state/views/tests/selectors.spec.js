@@ -5,7 +5,7 @@ import * as immutableMatchers from 'jest-immutable-matchers'
 import {initialState} from '../reducers'
 import * as selectors from '../selectors'
 import {currentUser} from '../../../fixtures/users'
-import {initialState as currentUserInitialState} from '../../currentUser/reducers'
+import {initialState as currentUserInitialState} from '../../currentUser/reducers.ts'
 
 jest.addMatchers(immutableMatchers)
 

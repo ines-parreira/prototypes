@@ -1,20 +1,18 @@
-// @flow
+import {Map} from 'immutable'
 import _trim from 'lodash/trim'
 
-import {isImmutable, toImmutable} from '../../utils'
-import type {CustomerChannel} from '../../models/customerChannel'
-import {EMAIL_CHANNEL} from '../../config/ticket'
+import {TicketChannel} from '../../business/types/ticket'
+import {CustomerChannel} from '../../models/customerChannel/types'
+import {isImmutable, toImmutable} from '../../utils.js'
 
 /**
  * Return name of customer
- * @param customer
- * @returns {string}
  */
 export const getDisplayName = (customer: {
-    name: string,
-    id: string,
-}): string => {
-    const immutableCustomer = toImmutable(customer)
+    name: string
+    id: string
+}): Map<any, any> | string => {
+    const immutableCustomer = toImmutable(customer) as Map<any, any>
 
     // TODO toImmutable should always return a map.
     // if not an immutable map
@@ -28,10 +26,10 @@ export const getDisplayName = (customer: {
     )
 
     return (
-        formattedCustomer.get('name') ||
-        formattedCustomer.get('email') ||
+        (formattedCustomer.get('name') as string) ||
+        (formattedCustomer.get('email') as string) ||
         (formattedCustomer.get('id')
-            ? `Customer #${formattedCustomer.get('id')}`
+            ? `Customer #${formattedCustomer.get('id') as number}`
             : 'Unknown customer')
     )
 }
@@ -42,14 +40,14 @@ export const getDisplayName = (customer: {
 export const mergeChannels = (
     ...channelsLists: Array<Array<CustomerChannel>>
 ): Array<CustomerChannel> => {
-    const results = {}
+    const results: {[key: string]: CustomerChannel} = {}
 
     channelsLists
         .filter((channels) => !!channels)
         .forEach((channels) => {
             channels.forEach((channel) => {
                 const address =
-                    channel.type === EMAIL_CHANNEL
+                    channel.type === TicketChannel.Email
                         ? channel.address.toLowerCase()
                         : channel.address
                 const result = results[address]

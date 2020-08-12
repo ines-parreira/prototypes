@@ -79,7 +79,6 @@ Array [
   },
   Object {
     "customerId": 2,
-    "resp": undefined,
     "type": "DELETE_CUSTOMER_SUCCESS",
   },
 ]

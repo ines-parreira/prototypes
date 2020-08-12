@@ -4,7 +4,7 @@ import {type List, type Map} from 'immutable'
 import classnames from 'classnames'
 import {Card, CardBody, CardTitle, Badge} from 'reactstrap'
 
-import {getDisplayName} from '../../../../../state/customers/helpers'
+import {getDisplayName} from '../../../../../state/customers/helpers.ts'
 
 import css from '../Infobar.less'
 

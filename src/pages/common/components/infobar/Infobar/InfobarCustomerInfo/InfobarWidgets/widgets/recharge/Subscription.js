@@ -17,7 +17,7 @@ import {
     RECHARGE_CANCELLATION_REASONS,
     RECHARGE_DEFAULT_CANCELLATION_REASON,
 } from '../../../../../../../../../config/integrations/recharge'
-import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../../../../state/customers/selectors'
+import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../../../../state/customers/selectors.ts'
 import * as ticketSelectors from '../../../../../../../../../state/ticket/selectors'
 
 import {DatetimeLabel} from '../../../../../../../utils/labels'

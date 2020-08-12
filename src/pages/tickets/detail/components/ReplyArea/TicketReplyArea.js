@@ -18,7 +18,7 @@ import {
     getCurrentMacro,
     getDefaultSelectedMacroId,
 } from '../../../common/macros/utils'
-import {getPreferences} from '../../../../../state/currentUser/selectors'
+import {getPreferences} from '../../../../../state/currentUser/selectors.ts'
 import {
     fetchMacros,
     type fetchMacrosParamsTypes,

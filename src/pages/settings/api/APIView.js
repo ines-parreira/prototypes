@@ -12,7 +12,7 @@ import {
     FormText,
 } from 'reactstrap'
 
-import * as currentUserSelectors from '../../../state/currentUser/selectors'
+import * as currentUserSelectors from '../../../state/currentUser/selectors.ts'
 import * as authsSelectors from '../../../state/auths/selectors.ts'
 import * as currentAccountSelectors from '../../../state/currentAccount/selectors.ts'
 import {fetchCurrentAuths, resetApiKey} from '../../../state/auths/actions.ts'

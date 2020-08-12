@@ -6,7 +6,7 @@ import {fromJS} from 'immutable'
 import {Button} from 'reactstrap'
 import {Link} from 'react-router'
 
-import * as customersActions from '../../../state/customers/actions'
+import * as customersActions from '../../../state/customers/actions.ts'
 
 import Loader from '../../common/components/Loader'
 import CustomerForm from '../common/components/CustomerForm'
@@ -17,8 +17,8 @@ import {
     getCustomerHistory,
     getActiveCustomer,
     makeIsLoading,
-} from '../../../state/customers/selectors'
-import * as customersHelpers from '../../../state/customers/helpers'
+} from '../../../state/customers/selectors.ts'
+import * as customersHelpers from '../../../state/customers/helpers.ts'
 
 class CustomerDetailContainer extends React.Component {
     state = {

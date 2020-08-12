@@ -12,7 +12,7 @@ import _clone from 'lodash/clone'
 import _isError from 'lodash/isError'
 import {Form, Button} from 'reactstrap'
 
-import {submitCustomer} from '../../../../state/customers/actions'
+import {submitCustomer} from '../../../../state/customers/actions.ts'
 import InputField from '../../../common/forms/InputField'
 
 import CustomerChannelFieldArray from './CustomerChannelFieldArray'

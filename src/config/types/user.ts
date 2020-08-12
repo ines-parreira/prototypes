@@ -35,4 +35,28 @@ export type User = UserDraft & {
     meta: MetaByAgentRole
     updated_datetime: string
     roles: {id: number; name: UserRole}[]
+    settings: UserSetting[]
+}
+
+export type EditableUserProfile = {
+    bio: string
+    email: string
+    language: string
+    name: string
+    timezone: string
+}
+
+enum UserSettingType {
+    Preferences = 'preferences',
+}
+
+export type UserSetting = {
+    id: number
+    type: UserSettingType.Preferences
+    data: UserPreferences
+}
+
+export type UserPreferences = {
+    available: boolean
+    show_macros: boolean
 }

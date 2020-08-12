@@ -9,7 +9,7 @@ import * as viewsConfig from '../../config/views'
 import {
     getSettingsByType as getCurrentUserSettingsByType,
     makeGetSettingsByType,
-} from '../currentUser/selectors'
+} from '../currentUser/selectors.ts'
 
 import type {stateType} from '../types'
 

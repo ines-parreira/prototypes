@@ -7,7 +7,7 @@ import classnames from 'classnames'
 import {Form, Button, Container} from 'reactstrap'
 import type {Map} from 'immutable'
 
-import {changePassword} from '../../../state/currentUser/actions'
+import {changePassword} from '../../../state/currentUser/actions.ts'
 import InputField from '../../common/forms/InputField'
 import PageHeader from '../../common/components/PageHeader'
 

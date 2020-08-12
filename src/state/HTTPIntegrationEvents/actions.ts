@@ -1,21 +1,21 @@
-// @flow
-import axios from 'axios'
+import axios, {AxiosError} from 'axios'
 
-import type {Dispatch} from '../types'
+import {ApiListResponsePagination} from '../../models/api/types'
+import {StoreDispatch} from '../types'
 
-import * as constants from './constants'
+import * as constants from './constants.js'
+import {HTTPIntegrationEvent} from './types'
 
 /**
  * Fetch events of a HTTP integration
- *
- * @param {number} integrationId - the id of the integration for which we want to fetch its events
- * @returns {Promise}
  */
-export function fetchHTTPIntegrationEvents(integrationId: number): Function {
-    return (dispatch: Dispatch): Promise<Dispatch> => {
+export function fetchHTTPIntegrationEvents(integrationId: number) {
+    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return axios
-            .get(`/api/integrations/${integrationId}/events/`)
-            .then((json = {}) => json.data)
+            .get<ApiListResponsePagination<HTTPIntegrationEvent[]>>(
+                `/api/integrations/${integrationId}/events/`
+            )
+            .then((json) => json?.data)
             .then(
                 (resp) => {
                     return dispatch({
@@ -23,7 +23,7 @@ export function fetchHTTPIntegrationEvents(integrationId: number): Function {
                         events: resp.data,
                     })
                 },
-                (error) => {
+                (error: AxiosError) => {
                     return dispatch({
                         type: 'ERROR',
                         error,
@@ -36,18 +36,16 @@ export function fetchHTTPIntegrationEvents(integrationId: number): Function {
 
 /**
  * Fetch an event of a HTTP integration
- *
- * @param {number} integrationId - the id of the integration for which we want to fetch its events
- * @param {number} eventId - the id of the event
- * @returns {Promise}
  */
 export function fetchHTTPIntegrationEvent(
     integrationId: number,
     eventId: number
-): Function {
-    return (dispatch: Dispatch): Promise<Dispatch> => {
+) {
+    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         return axios
-            .get(`/api/integrations/${integrationId}/events/${eventId}`)
+            .get<HTTPIntegrationEvent>(
+                `/api/integrations/${integrationId}/events/${eventId}`
+            )
             .then(
                 (resp) => {
                     return dispatch({
@@ -55,7 +53,7 @@ export function fetchHTTPIntegrationEvent(
                         event: resp.data,
                     })
                 },
-                (error) => {
+                (error: AxiosError) => {
                     return dispatch({
                         type: 'ERROR',
                         error,

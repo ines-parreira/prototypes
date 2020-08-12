@@ -9,7 +9,7 @@ import _noop from 'lodash/noop'
 
 import * as infobarActions from '../../../../../state/infobar/actions'
 import * as infobarConstants from '../../../../../state/infobar/constants'
-import * as customersActions from '../../../../../state/customers/actions'
+import * as customersActions from '../../../../../state/customers/actions.ts'
 import * as ticketActions from '../../../../../state/ticket/actions'
 import withCancellableRequest from '../../../../common/utils/withCancellableRequest'
 import {
