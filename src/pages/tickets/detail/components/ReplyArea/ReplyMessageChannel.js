@@ -10,7 +10,7 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import * as integrationSelectors from '../../../../../state/integrations/selectors'
+import * as integrationSelectors from '../../../../../state/integrations/selectors.ts'
 import * as newMessageActions from '../../../../../state/newMessage/actions'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
 import {getMessages} from '../../../../../state/ticket/selectors'

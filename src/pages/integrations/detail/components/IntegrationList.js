@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import {Breadcrumb, BreadcrumbItem, Table, Button, Container} from 'reactstrap'
 
-import {getIntegrationsList} from '../../../../state/integrations/helpers'
+import {getIntegrationsList} from '../../../../state/integrations/helpers.ts'
 import {notify} from '../../../../state/notifications/actions'
 import PageHeader from '../../../common/components/PageHeader'
 

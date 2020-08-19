@@ -8,7 +8,7 @@ import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import {Link} from 'react-router'
 
-import {getCreateOrderState} from '../../../../../../../../../../../state/infobarActions/shopify/createOrder/selectors'
+import {getCreateOrderState} from '../../../../../../../../../../../state/infobarActions/shopify/createOrder/selectors.ts'
 import {
     addCustomRow,
     addRow,
@@ -19,9 +19,9 @@ import {
     onPayloadChange,
     onReset,
     onSubmitCleanUp,
-} from '../../../../../../../../../../../state/infobarActions/shopify/createOrder/actions'
+} from '../../../../../../../../../../../state/infobarActions/shopify/createOrder/actions.ts'
 import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager'
-import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors'
+import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors.ts'
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../constants/integration'
 import type {IntegrationDataItem} from '../../../../../../../../../../../models/integration'
 import type {

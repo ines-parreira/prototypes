@@ -6,7 +6,7 @@ import {Alert, Container, Row, Col} from 'reactstrap'
 import type {Map} from 'immutable'
 
 import PageHeader from '../../../common/components/PageHeader'
-import {getIntegrationsList} from '../../../../state/integrations/helpers'
+import {getIntegrationsList} from '../../../../state/integrations/helpers.ts'
 
 import IntegrationListRow from './IntegrationListRow'
 

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import {browserHistory} from 'react-router'
 
-import {onUpdateSuccess, fetchIntegration} from '../integrations/actions'
+import {onUpdateSuccess, fetchIntegration} from '../integrations/actions.ts'
 import * as types from '../integrations/constants'
 
 export function createCampaign(campaign, integration) {

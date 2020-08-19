@@ -2,7 +2,7 @@ import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../constants/integration'
-import {getChannels} from '../../integrations/selectors'
+import {getChannels} from '../../integrations/selectors.ts'
 import {integrationsState} from '../../../fixtures/integrations'
 import {
     guessReceiversFromTicket,

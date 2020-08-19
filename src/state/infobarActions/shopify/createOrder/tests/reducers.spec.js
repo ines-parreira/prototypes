@@ -6,8 +6,8 @@ import {
     shopifyDraftOrderPayloadFixture,
     shopifyShippingLineFixture,
 } from '../../../../../fixtures/shopify'
-import reducer, {initialState} from '../reducers'
-import * as constants from '../constants'
+import reducer, {initialState} from '../reducers.ts'
+import * as constants from '../constants.ts'
 
 jest.addMatchers(immutableMatchers)
 

@@ -30,7 +30,7 @@ import {convertToHTML} from '../../../../../../utils/editor'
 
 import {notify} from '../../../../../../state/notifications/actions'
 import * as campaignActions from '../../../../../../state/campaigns/actions'
-import * as integrationsSelectors from '../../../../../../state/integrations/selectors'
+import * as integrationsSelectors from '../../../../../../state/integrations/selectors.ts'
 import * as agentSelectors from '../../../../../../state/agents/selectors.ts'
 
 import ChatIntegrationNavigation from '../ChatIntegrationNavigation'

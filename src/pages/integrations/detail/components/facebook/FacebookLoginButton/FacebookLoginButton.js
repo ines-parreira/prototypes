@@ -4,7 +4,7 @@ import * as React from 'react'
 import {Button} from 'reactstrap'
 import {connect} from 'react-redux'
 
-import {getFacebookRedirectUri} from '../../../../../../state/integrations/selectors'
+import {getFacebookRedirectUri} from '../../../../../../state/integrations/selectors.ts'
 
 type Props = {
     redirectUri: string,

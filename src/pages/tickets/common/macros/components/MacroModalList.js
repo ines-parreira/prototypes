@@ -8,7 +8,7 @@ import shortcutManager from '../../../../../services/shortcutManager'
 import {moveIndex} from '../../../../common/utils/keyboard'
 import {isMacroDisabled} from '../utils'
 
-import {fetchMacros} from '../../../../../state/macro/actions'
+import {fetchMacros} from '../../../../../state/macro/actions.ts'
 
 import css from './MacroModalList.less'
 

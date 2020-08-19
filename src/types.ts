@@ -1,5 +1,7 @@
 import {Map} from 'immutable'
 
+import {MacroActionName} from './models/macroAction/types'
+
 enum ActionTemplateExecution {
     Front = 'front',
     Back = 'back',
@@ -7,7 +9,7 @@ enum ActionTemplateExecution {
 
 export type ActionTemplate = {
     execution: ActionTemplateExecution
-    name: string
+    name: MacroActionName
     title: string
     notes?: string[]
     integrationType?: string

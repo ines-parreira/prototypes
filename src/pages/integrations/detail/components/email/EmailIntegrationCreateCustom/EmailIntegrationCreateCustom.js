@@ -8,7 +8,7 @@ import classnames from 'classnames'
 import {Container, Form, Button, Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
 import {EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS} from '../../../../../../constants/integration'
-import {getRedirectUri} from '../../../../../../state/integrations/selectors'
+import {getRedirectUri} from '../../../../../../state/integrations/selectors.ts'
 import {displayRestrictedSymbols} from '../../../../../../utils'
 import {notify} from '../../../../../../state/notifications/actions'
 

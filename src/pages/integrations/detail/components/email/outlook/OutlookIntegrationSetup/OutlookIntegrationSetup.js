@@ -12,7 +12,7 @@ import ToggleButton from '../../../../../../common/components/ToggleButton'
 import PageHeader from '../../../../../../common/components/PageHeader'
 import Pagination from '../../../../../../common/components/Pagination'
 import Search from '../../../../../../common/components/Search'
-import * as integrationsSelectors from '../../../../../../../state/integrations/selectors'
+import * as integrationsSelectors from '../../../../../../../state/integrations/selectors.ts'
 
 type Props = {
     integrations: List<Map<*, *>>,

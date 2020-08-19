@@ -1,7 +1,7 @@
 import {CancelToken} from 'axios'
 import _snakeCase from 'lodash/snakeCase'
 
-import {deepMapKeysToSnakeCase} from '../api/index.js'
+import {deepMapKeysToSnakeCase} from '../api/utils'
 import client from '../api/resources'
 import {ApiListResponsePagination} from '../api/types'
 

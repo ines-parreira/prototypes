@@ -13,7 +13,7 @@ import {
 
 import ForwardIcon from '../ForwardIcon'
 import IntegrationList from '../IntegrationList'
-import {getIntegrationsByTypes} from '../../../../../state/integrations/helpers'
+import {getIntegrationsByTypes} from '../../../../../state/integrations/helpers.ts'
 import gmailImg from '../../../../../../img/integrations/gmail.png'
 import outlookImg from '../../../../../../img/integrations/outlook.png'
 

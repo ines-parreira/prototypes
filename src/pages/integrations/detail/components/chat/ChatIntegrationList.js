@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import {type List, type Map} from 'immutable'
 
 import {SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../../constants/integration'
-import * as integrationsActions from '../../../../../state/integrations/actions'
+import * as integrationsActions from '../../../../../state/integrations/actions.ts'
 
 import ToggleButton from '../../../../common/components/ToggleButton'
 import IntegrationList from '../IntegrationList'

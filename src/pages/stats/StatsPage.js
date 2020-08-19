@@ -6,7 +6,7 @@ import {fromJS, List} from 'immutable'
 
 import {getHashOfObj} from '../../utils'
 import {views, STORE_INTEGRATION_TYPES} from '../../config/stats'
-import {getIntegrations} from '../../state/integrations/selectors'
+import {getIntegrations} from '../../state/integrations/selectors.ts'
 import {resetStatsFilters, setStatsFilters} from '../../state/stats/actions'
 import {getFilters} from '../../state/stats/selectors'
 

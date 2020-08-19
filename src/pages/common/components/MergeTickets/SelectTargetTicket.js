@@ -5,7 +5,7 @@ import {fromJS, Map, List} from 'immutable'
 
 import Search from '../Search'
 import Table from '../ViewTable/Table'
-import {searchTickets} from '../../../../state/mergeTickets/actions'
+import {searchTickets} from '../../../../state/mergeTickets/actions.ts'
 import * as viewsConfig from '../../../../config/views'
 
 import css from './SelectTargetTicket.less'

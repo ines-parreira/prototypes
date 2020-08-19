@@ -9,8 +9,8 @@ import {Alert} from 'reactstrap'
 import ToggleButton from '../../../../common/components/ToggleButton'
 import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'
-import * as integrationsActions from '../../../../../state/integrations/actions'
-import * as integrationsSelectors from '../../../../../state/integrations/selectors'
+import * as integrationsActions from '../../../../../state/integrations/actions.ts'
+import * as integrationsSelectors from '../../../../../state/integrations/selectors.ts'
 
 import Carousel from './../../../common/Carousel'
 

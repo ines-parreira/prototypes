@@ -20,8 +20,8 @@ import {
 
 import {compare} from '../../../utils'
 
-import * as IntegrationsActions from '../../../state/integrations/actions'
-import * as IntegrationsSelectors from '../../../state/integrations/selectors'
+import * as IntegrationsActions from '../../../state/integrations/actions.ts'
+import * as IntegrationsSelectors from '../../../state/integrations/selectors.ts'
 
 import AircallIntegrationList from './components/aircall/AircallIntegrationList'
 import AircallIntegrationCreate from './components/aircall/AircallIntegrationCreate'

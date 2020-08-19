@@ -1,9 +1,9 @@
 //@flow
 import {fromJS} from 'immutable'
 
-import {initialState as createOrderInitialState} from '../state/infobarActions/shopify/createOrder/reducers'
-import {initialState as cancelOrderInitialState} from '../state/infobarActions/shopify/cancelOrder/reducers'
-import {initialState as refundOrderInitialState} from '../state/infobarActions/shopify/refundOrder/reducers'
+import {initialState as createOrderInitialState} from '../state/infobarActions/shopify/createOrder/reducers.ts'
+import {initialState as cancelOrderInitialState} from '../state/infobarActions/shopify/cancelOrder/reducers.ts'
+import {initialState as refundOrderInitialState} from '../state/infobarActions/shopify/refundOrder/reducers.ts'
 import type {CreateOrderState} from '../state/infobarActions/shopify/createOrder/types'
 import type {CancelOrderState} from '../state/infobarActions/shopify/cancelOrder/types'
 import type {RefundOrderState} from '../state/infobarActions/shopify/refundOrder/types'

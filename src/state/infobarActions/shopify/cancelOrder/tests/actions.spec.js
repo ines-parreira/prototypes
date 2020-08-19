@@ -10,8 +10,8 @@ import {
     shopifyOrderFixture,
     shopifySuggestedRefundFixture,
 } from '../../../../../fixtures/shopify'
-import {initialState} from '../reducers'
-import * as actions from '../../cancelOrder/actions'
+import {initialState} from '../reducers.ts'
+import * as actions from '../../cancelOrder/actions.ts'
 import {initRefundOrderLineItems} from '../../../../../business/shopify/order'
 
 jest.mock('lodash/debounce', () => (fn) => {

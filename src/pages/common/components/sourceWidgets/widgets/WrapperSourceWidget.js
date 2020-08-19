@@ -7,7 +7,7 @@ import {Card, CardBody, CardTitle} from 'reactstrap'
 
 import DragWrapper from '../../dragging/WidgetsDragWrapper'
 import {humanizeString} from '../../../../../utils'
-import * as integrationsSelectors from '../../../../../state/integrations/selectors'
+import * as integrationsSelectors from '../../../../../state/integrations/selectors.ts'
 
 import SourceWidget from '../SourceWidget'
 

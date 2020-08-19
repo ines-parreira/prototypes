@@ -13,7 +13,7 @@ import {FORM_CONTENT_TYPE} from './../../../../../config'
 import {
     getIconUrl,
     getIconFromUrl,
-} from './../../../../../state/integrations/helpers'
+} from './../../../../../state/integrations/helpers.ts'
 
 import css from './TicketReplyAction.less'
 

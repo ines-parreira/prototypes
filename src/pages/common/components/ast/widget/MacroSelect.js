@@ -6,7 +6,7 @@ import {fromJS, List} from 'immutable'
 import {type CancelToken} from 'axios'
 
 import {getActionTemplate} from '../../../../../utils'
-import {fetchMacros, getMacro} from '../../../../../state/macro/actions'
+import {fetchMacros, getMacro} from '../../../../../state/macro/actions.ts'
 import {useCancellableRequest} from '../../../../../hooks'
 import {
     type State as MacrosState,

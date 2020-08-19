@@ -8,9 +8,9 @@ import PageHeader from '../../common/components/PageHeader'
 
 import ImportDataList from './ImportDataList'
 
-import * as integrationSelectors from './../../../state/integrations/selectors'
+import * as integrationSelectors from './../../../state/integrations/selectors.ts'
 
-import * as integrationActions from './../../../state/integrations/actions'
+import * as integrationActions from './../../../state/integrations/actions.ts'
 
 @connect(
     (state) => {

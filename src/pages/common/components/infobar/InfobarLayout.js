@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import classnames from 'classnames'
 import _max from 'lodash/max'
 
-import * as layoutSelectors from '../../../../state/layout/selectors'
+import * as layoutSelectors from '../../../../state/layout/selectors.ts'
 import {ErrorBoundary} from '../../../ErrorBoundary'
 
 import css from './Infobar.less'

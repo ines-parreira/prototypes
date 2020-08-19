@@ -7,8 +7,8 @@ import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import hash from 'object-hash'
 
-import {getCreateOrderState} from '../../../../../../../../../../../../../state/infobarActions/shopify/createOrder/selectors'
-import {onPayloadChange} from '../../../../../../../../../../../../../state/infobarActions/shopify/createOrder/actions'
+import {getCreateOrderState} from '../../../../../../../../../../../../../state/infobarActions/shopify/createOrder/selectors.ts'
+import {onPayloadChange} from '../../../../../../../../../../../../../state/infobarActions/shopify/createOrder/actions.ts'
 import {
     getSubtotal,
     getTaxLinesTotals,

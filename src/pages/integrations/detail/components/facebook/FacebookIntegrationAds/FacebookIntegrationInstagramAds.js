@@ -16,7 +16,7 @@ import type {Map} from 'immutable'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
 
-import {getFacebookMaxAccountAds} from '../../../../../../state/integrations/selectors'
+import {getFacebookMaxAccountAds} from '../../../../../../state/integrations/selectors.ts'
 import FacebookIntegrationNavigation from '../FacebookIntegrationNavigation'
 import PageHeader from '../../../../../common/components/PageHeader'
 import ToggleButton from '../../../../../common/components/ToggleButton'

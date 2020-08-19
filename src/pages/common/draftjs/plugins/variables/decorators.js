@@ -1,7 +1,7 @@
 import React from 'react'
 import classnames from 'classnames'
 
-import * as integrationsHelpers from '../../../../../state/integrations/helpers'
+import * as integrationsHelpers from '../../../../../state/integrations/helpers.ts'
 
 import {setVariableEditable} from './utils'
 

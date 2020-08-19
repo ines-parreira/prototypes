@@ -31,7 +31,7 @@ import {
     SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS,
 } from '../../../../../../config/integrations/smooch_inside'
 
-import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions'
+import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions.ts'
 import PageHeader from '../../../../../common/components/PageHeader'
 import ToggleButton from '../../../../../common/components/ToggleButton'
 import RadioField from '../../../../../common/forms/RadioField'
@@ -43,7 +43,7 @@ import OptionalEmailCapturePreview from '../ChatIntegrationPreview/OptionalEmail
 import RequiredEmailCapturePreview from '../ChatIntegrationPreview/RequiredEmailCapture'
 import AutoResponderPreview from '../ChatIntegrationPreview/AutoResponder'
 import {EMAIL_INTEGRATION_TYPES} from '../../../../../../constants/integration'
-import {getIntegrationsByTypes} from '../../../../../../state/integrations/selectors'
+import {getIntegrationsByTypes} from '../../../../../../state/integrations/selectors.ts'
 
 const emailCaptureOptions = [
     {

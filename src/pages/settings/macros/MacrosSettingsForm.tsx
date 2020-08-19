@@ -30,7 +30,7 @@ import {
     macroFetched,
     macroUpdated,
 } from '../../../state/entities/macros/actions'
-import {getDefaultMacro} from '../../../state/macro/utils.js'
+import {getDefaultMacro} from '../../../state/macro/utils'
 import {notify} from '../../../state/notifications/actions.js'
 import {NotificationStatus} from '../../../state/notifications/types'
 import {RootState, StoreDispatch} from '../../../state/types'
@@ -58,7 +58,7 @@ export function MacrosSettingsFormContainer({
     params: {macroId},
 }: OwnProps & ConnectedProps<typeof connector>) {
     const [macroForm, setMacroForm] = useState<MacroDraft>(
-        (getDefaultMacro as () => Map<any, any>)().toJS()
+        getDefaultMacro().toJS()
     )
     const [
         {loading: isFetchPending},

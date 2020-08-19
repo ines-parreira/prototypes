@@ -5,7 +5,7 @@ import {Link, browserHistory} from 'react-router'
 import {connect} from 'react-redux'
 
 import {MAGENTO2_INTEGRATION_TYPE} from '../../../../../constants/integration'
-import * as integrationsActions from '../../../../../state/integrations/actions'
+import * as integrationsActions from '../../../../../state/integrations/actions.ts'
 import ToggleButton from '../../../../common/components/ToggleButton'
 import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'

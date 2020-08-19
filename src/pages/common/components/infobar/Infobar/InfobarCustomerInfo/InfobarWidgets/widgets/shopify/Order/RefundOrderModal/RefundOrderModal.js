@@ -14,10 +14,10 @@ import {
     onPayloadChange,
     onReset,
     setPayload,
-} from '../../../../../../../../../../../state/infobarActions/shopify/refundOrder/actions'
-import {getRefundOrderState} from '../../../../../../../../../../../state/infobarActions/shopify/refundOrder/selectors'
+} from '../../../../../../../../../../../state/infobarActions/shopify/refundOrder/actions.ts'
+import {getRefundOrderState} from '../../../../../../../../../../../state/infobarActions/shopify/refundOrder/selectors.ts'
 import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager'
-import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors'
+import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors.ts'
 import {getFinalRefundOrderPayload} from '../../../../../../../../../../../business/shopify/order'
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../constants/integration'
 import type {

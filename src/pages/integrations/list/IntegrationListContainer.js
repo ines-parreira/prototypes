@@ -3,12 +3,12 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 
-import * as IntegrationsActions from '../../../state/integrations/actions'
+import * as IntegrationsActions from '../../../state/integrations/actions.ts'
 import {
     planIntegrations,
     currentPlan,
 } from '../../../state/billing/selectors.ts'
-import {getActiveIntegrations} from '../../../state/integrations/selectors'
+import {getActiveIntegrations} from '../../../state/integrations/selectors.ts'
 
 import IntegrationList from './components/IntegrationList'
 

@@ -10,7 +10,7 @@ import {
     PREV_VIEW_NAV_DIRECTION,
 } from '../../../constants/view'
 
-import {mergeTickets, searchTickets} from '../actions'
+import {mergeTickets, searchTickets} from '../actions.ts'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

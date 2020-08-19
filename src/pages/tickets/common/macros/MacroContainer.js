@@ -10,7 +10,7 @@ import type {Map, List} from 'immutable'
 import withCancellableRequest from '../../../common/utils/withCancellableRequest'
 import * as ViewsActions from '../../../../state/views/actions'
 import * as viewsSelectors from '../../../../state/views/selectors'
-import * as MacroActions from '../../../../state/macro/actions'
+import * as MacroActions from '../../../../state/macro/actions.ts'
 import * as TicketsActions from '../../../../state/tickets/actions'
 import {getAgents} from '../../../../state/agents/selectors.ts'
 

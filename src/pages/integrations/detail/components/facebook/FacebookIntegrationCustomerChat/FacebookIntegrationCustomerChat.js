@@ -10,7 +10,7 @@ import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../constants/integration'
 import {notify} from '../../../../../../state/notifications/actions'
 import PageHeader from '../../../../../common/components/PageHeader'
 
-import * as integrationSelectors from '../../../../../../state/integrations/selectors'
+import * as integrationSelectors from '../../../../../../state/integrations/selectors.ts'
 import CustomInstallationCard from '../../../../common/CustomInstallationCard/CustomInstallationCard'
 import FacebookIntegrationNavigation from '../FacebookIntegrationNavigation'
 import InstallOnIntegrationsCard from '../../../../common/InstallOnIntegrationsCard'

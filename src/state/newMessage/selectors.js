@@ -191,7 +191,7 @@ export const isReady = createSelector(
 export const getNewMessageSignature = (state: stateType) => {
     const sourceType = getNewMessageType(state)
     const sourceFrom = getNewMessageSourceProperty('from')(state)
-    return require('../integrations/selectors').getChannelSignature(
+    return require('../integrations/selectors.ts').getChannelSignature(
         sourceType,
         sourceFrom.get('address')
     )(state)

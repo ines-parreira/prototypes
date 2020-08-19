@@ -1,6 +1,6 @@
 import {fromJS} from 'immutable'
 
-import {getDefaultMacro, generateDefaultAction} from '../utils'
+import {getDefaultMacro, generateDefaultAction} from '../utils.ts'
 
 describe('macro utils', () => {
     describe('generateDefaultAction', () => {

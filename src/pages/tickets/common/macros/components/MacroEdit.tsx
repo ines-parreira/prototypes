@@ -10,11 +10,11 @@ import {
     DropdownItem,
 } from 'reactstrap'
 
-import {generateDefaultAction} from '../../../../../state/macro/utils.js'
+import {generateDefaultAction} from '../../../../../state/macro/utils'
 
 import * as ticketTypes from '../../../../../state/ticket/constants.js'
 import * as newMessageTypes from '../../../../../state/newMessage/constants.js'
-import * as integrationsSelectors from '../../../../../state/integrations/selectors.js'
+import * as integrationsSelectors from '../../../../../state/integrations/selectors'
 import {ACTION_TEMPLATES} from '../../../../../config.js'
 import RichDropdown from '../../../../common/components/RichDropdown/RichDropdown.js'
 import {OptionGroup} from '../../../../common/components/RichDropdown/types'
@@ -23,7 +23,9 @@ import {getSortedIntegrationActionsNames} from '../../utils.js'
 import {Attachment, ActionTemplate} from '../../../../../types'
 import {getActionTemplate, humanizeString} from '../../../../../utils.js'
 import {RootState} from '../../../../../state/types.js'
+import {IntegrationType} from '../../../../../models/integration/types'
 import {IntentName} from '../../../../../models/intent/types'
+import {MacroActionName} from '../../../../../models/macroAction/types'
 
 import SetStatusAction from './actions/SetStatusAction.js'
 import SetSubjectAction from './actions/SetSubjectAction.js'
@@ -70,7 +72,7 @@ export class MacroEdit extends React.Component<
         this.props.setActions(actions)
     }
 
-    _addAction = (actionName: string) => {
+    _addAction = (actionName: MacroActionName) => {
         const actions = this.props.actions.push(
             generateDefaultAction(actionName)
         )
@@ -453,66 +455,71 @@ export class MacroEdit extends React.Component<
                         </UncontrolledButtonDropdown>
 
                         {integrationMenus
-                            .map((actions: Map<any, any>, key: string) => {
-                                if (!hasIntegrationOfTypes(key)) {
-                                    return null
-                                }
+                            .map(
+                                (
+                                    actions: Map<any, any>,
+                                    key: IntegrationType
+                                ) => {
+                                    if (!hasIntegrationOfTypes(key)) {
+                                        return null
+                                    }
 
-                                // remove actions that have already been used
-                                const filteredActions = actions.filter(
-                                    (action) =>
-                                        !this.props.actions.find(
-                                            (usedActions: Map<any, any>) =>
-                                                usedActions.get('name') ===
-                                                action
-                                        )
-                                )
+                                    // remove actions that have already been used
+                                    const filteredActions = actions.filter(
+                                        (action) =>
+                                            !this.props.actions.find(
+                                                (usedActions: Map<any, any>) =>
+                                                    usedActions.get('name') ===
+                                                    action
+                                            )
+                                    )
 
-                                if (filteredActions.isEmpty()) {
-                                    return null
-                                }
+                                    if (filteredActions.isEmpty()) {
+                                        return null
+                                    }
 
-                                return (
-                                    <UncontrolledButtonDropdown
-                                        key={key}
-                                        className="mr-2"
-                                    >
-                                        <DropdownToggle
-                                            color="secondary"
-                                            caret
-                                            type="button"
+                                    return (
+                                        <UncontrolledButtonDropdown
+                                            key={key}
+                                            className="mr-2"
                                         >
-                                            Add {humanizeString(key)} action
-                                        </DropdownToggle>
-                                        <DropdownMenu>
-                                            {filteredActions.map(
-                                                (actionName) => {
-                                                    return (
-                                                        <DropdownItem
-                                                            key={actionName}
-                                                            type="button"
-                                                            onClick={() =>
-                                                                this._addAction(
+                                            <DropdownToggle
+                                                color="secondary"
+                                                caret
+                                                type="button"
+                                            >
+                                                Add {humanizeString(key)} action
+                                            </DropdownToggle>
+                                            <DropdownMenu>
+                                                {filteredActions.map(
+                                                    (actionName) => {
+                                                        return (
+                                                            <DropdownItem
+                                                                key={actionName}
+                                                                type="button"
+                                                                onClick={() =>
+                                                                    this._addAction(
+                                                                        actionName
+                                                                    )
+                                                                }
+                                                            >
+                                                                {(getActionTemplate(
                                                                     actionName
-                                                                )
-                                                            }
-                                                        >
-                                                            {(getActionTemplate(
-                                                                actionName
-                                                            ) as Maybe<
-                                                                ActionTemplate
-                                                            >)?.title ||
-                                                                humanizeString(
-                                                                    actionName
-                                                                )}
-                                                        </DropdownItem>
-                                                    )
-                                                }
-                                            )}
-                                        </DropdownMenu>
-                                    </UncontrolledButtonDropdown>
-                                )
-                            })
+                                                                ) as Maybe<
+                                                                    ActionTemplate
+                                                                >)?.title ||
+                                                                    humanizeString(
+                                                                        actionName
+                                                                    )}
+                                                            </DropdownItem>
+                                                        )
+                                                    }
+                                                )}
+                                            </DropdownMenu>
+                                        </UncontrolledButtonDropdown>
+                                    )
+                                }
+                            )
                             .toList()}
                     </div>
                 </div>

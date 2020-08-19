@@ -7,7 +7,7 @@ import _truncate from 'lodash/truncate'
 import ToggleButton from '../../../../common/components/ToggleButton'
 import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'
-import * as integrationsActions from '../../../../../state/integrations/actions'
+import * as integrationsActions from '../../../../../state/integrations/actions.ts'
 
 @connect(null, {
     activate: integrationsActions.activateIntegration,

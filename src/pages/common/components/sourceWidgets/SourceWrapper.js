@@ -16,7 +16,7 @@ import {
 
 import {areSourcesReady, jsonToWidgets} from '../infobar/utils'
 
-import * as integrationsSelectors from './../../../../state/integrations/selectors'
+import * as integrationsSelectors from './../../../../state/integrations/selectors.ts'
 
 import SourceWidgets from './SourceWidgets'
 

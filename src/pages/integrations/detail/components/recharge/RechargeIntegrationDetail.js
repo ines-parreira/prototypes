@@ -13,7 +13,7 @@ import {
     Row,
 } from 'reactstrap'
 
-import * as integrationHelpers from '../../../../../state/integrations/helpers'
+import * as integrationHelpers from '../../../../../state/integrations/helpers.ts'
 
 import Loader from '../../../../common/components/Loader'
 import ConfirmButton from '../../../../common/components/ConfirmButton'

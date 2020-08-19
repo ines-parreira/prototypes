@@ -13,7 +13,7 @@ import {jsonToWidgets} from '../../pages/common/components/infobar/utils'
 import {notify} from '../notifications/actions'
 import type {Dispatch, getStateType} from '../types'
 
-import * as integrationsSelectors from './../integrations/selectors'
+import * as integrationsSelectors from './../integrations/selectors.ts'
 import * as types from './constants'
 type widgetUpdateType = {
     title: string,

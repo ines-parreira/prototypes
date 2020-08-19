@@ -6,7 +6,7 @@ import classnames from 'classnames'
 
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 
-import {getIconFromUrl} from '../../../../state/integrations/helpers'
+import {getIconFromUrl} from '../../../../state/integrations/helpers.ts'
 import SourceIcon from '../../../common/components/SourceIcon'
 
 import css from './IntegrationListRow.less'

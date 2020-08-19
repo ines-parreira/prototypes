@@ -17,7 +17,7 @@ import {
     getOptionalContactProperties,
     areNewMessageContactPropertiesFulfilled,
 } from '../../../../../../state/newMessage/selectors'
-import * as integrationSelectors from '../../../../../../state/integrations/selectors'
+import * as integrationSelectors from '../../../../../../state/integrations/selectors.ts'
 import {getPersonLabelFromSource} from '../../../../common/utils'
 
 import SenderSelectField from './components/SenderSelectField'

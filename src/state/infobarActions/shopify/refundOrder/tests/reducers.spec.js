@@ -8,8 +8,8 @@ import {
     shopifySuggestedRefundFixture,
 } from '../../../../../fixtures/shopify'
 import {initRefundOrderLineItems} from '../../../../../business/shopify/order'
-import reducer, {initialState} from '../reducers'
-import * as constants from '../constants'
+import reducer, {initialState} from '../reducers.ts'
+import * as constants from '../constants.ts'
 
 jest.addMatchers(immutableMatchers)
 

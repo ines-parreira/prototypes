@@ -5,7 +5,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import FacebookIntegrationSetup from '../FacebookIntegrationSetup'
-import {initialState} from '../../../../../../../state/integrations/reducers'
+import {initialState} from '../../../../../../../state/integrations/reducers.ts'
 
 const mockStore = configureMockStore([thunk])
 

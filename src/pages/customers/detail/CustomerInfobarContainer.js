@@ -6,7 +6,7 @@ import {bindActionCreators} from 'redux'
 import Infobar from '../../common/components/infobar/Infobar'
 
 import * as WidgetActions from '../../../state/widgets/actions'
-import * as InfobarActions from '../../../state/infobar/actions'
+import * as InfobarActions from '../../../state/infobar/actions.ts'
 
 import {
     getActiveCustomer,

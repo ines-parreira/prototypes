@@ -29,7 +29,7 @@ import {
 import {
     getForwardingEmailAddress,
     getRedirectUri,
-} from '../../../../../../state/integrations/selectors'
+} from '../../../../../../state/integrations/selectors.ts'
 
 import {
     isGorgiasSupportAddress,
@@ -38,7 +38,7 @@ import {
 import {convertToHTML} from '../../../../../../utils/editor'
 import Loader from '../../../../../common/components/Loader'
 import * as segmentTracker from '../../../../../../store/middlewares/segmentTracker'
-import * as integrationActions from '../../../../../../state/integrations/actions'
+import * as integrationActions from '../../../../../../state/integrations/actions.ts'
 import {
     GMAIL_IMPORTED_EMAILS_FOR_YEARS,
     OUTLOOK_IMPORTED_EMAILS_FOR_YEARS,

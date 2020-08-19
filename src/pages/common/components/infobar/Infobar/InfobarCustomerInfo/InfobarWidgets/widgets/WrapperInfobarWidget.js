@@ -7,7 +7,7 @@ import _last from 'lodash/last'
 import classnames from 'classnames'
 import {Card, CardBody} from 'reactstrap'
 
-import * as integrationsSelectors from '../../../../../../../../state/integrations/selectors'
+import * as integrationsSelectors from '../../../../../../../../state/integrations/selectors.ts'
 import DragWrapper from '../../../../../dragging/WidgetsDragWrapper'
 import {WIDGET_COLOR_SUPPORTED_TYPES} from '../constants'
 import InfobarWidget from '../InfobarWidget'

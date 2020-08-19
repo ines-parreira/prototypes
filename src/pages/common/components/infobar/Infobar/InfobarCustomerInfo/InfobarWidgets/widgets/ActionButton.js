@@ -26,9 +26,9 @@ import InputField from '../../../../../../forms/InputField'
 
 import {getActionByName} from '../../../../../../../../config/actions'
 import * as segmentTracker from '../../../../../../../../store/middlewares/segmentTracker'
-import * as infobarActions from '../../../../../../../../state/infobar/actions'
-import * as infobarSelectors from '../../../../../../../../state/infobar/selectors'
-import * as infobarUtils from '../../../../../../../../state/infobar/utils'
+import * as infobarActions from '../../../../../../../../state/infobar/actions.ts'
+import * as infobarSelectors from '../../../../../../../../state/infobar/selectors.ts'
+import * as infobarUtils from '../../../../../../../../state/infobar/utils.ts'
 
 import css from './ActionButton.less'
 import type {InfobarModalProps, OptionType, ParameterType} from './types'

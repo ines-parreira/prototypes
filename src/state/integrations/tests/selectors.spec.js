@@ -27,7 +27,7 @@ import {
     getShopifyIntegrationByShopName,
     getShopifyIntegrationsWithoutChat,
     getShopifyIntegrationsWithoutFacebook,
-} from '../selectors'
+} from '../selectors.ts'
 import {integrationsState} from '../../../fixtures/integrations'
 
 const state = {

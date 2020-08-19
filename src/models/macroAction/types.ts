@@ -1,4 +1,4 @@
-enum MacroActionName {
+export enum MacroActionName {
     AddAttachments = 'addAttachments',
     AddTags = 'addTags',
     Http = 'http',

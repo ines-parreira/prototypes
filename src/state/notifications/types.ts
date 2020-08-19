@@ -14,6 +14,7 @@ export type Notification = {
     dismissAfter?: number
     closeOnNext?: boolean
     buttons?: NotificationButton[]
+    allowHTML?: boolean
 }
 
 type NotificationButton = {

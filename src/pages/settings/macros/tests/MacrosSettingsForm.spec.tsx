@@ -11,7 +11,7 @@ import {
     fetchMacro,
     updateMacro,
 } from '../../../../models/macro/resources'
-import {getDefaultMacro} from '../../../../state/macro/utils.js'
+import {getDefaultMacro} from '../../../../state/macro/utils'
 import ConfirmButton from '../../../common/components/ConfirmButton.js'
 import {MacrosSettingsFormContainer} from '../MacrosSettingsForm'
 
@@ -142,7 +142,7 @@ describe('<MacrosSettingsForm/>', () => {
         component.find(Button).simulate('submit')
         expect(mockCreateMacro).toHaveBeenNthCalledWith(
             1,
-            (getDefaultMacro as () => Map<any, any>)().toJS()
+            getDefaultMacro().toJS()
         )
         setImmediate(() => {
             expect(mockMacroCreated).toHaveBeenNthCalledWith(1, newMacroFixture)

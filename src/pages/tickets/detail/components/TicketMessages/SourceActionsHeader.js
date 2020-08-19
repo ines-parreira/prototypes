@@ -3,7 +3,7 @@ import React from 'react'
 import classNamesBind from 'classnames/bind'
 import {connect} from 'react-redux'
 
-import * as infobarActions from '../../../../../state/infobar/actions'
+import * as infobarActions from '../../../../../state/infobar/actions.ts'
 import type {Meta, Source} from '../../../../../models/ticket/types'
 import hideIcon from '../../../../../../img/integrations/facebook-action-hide.svg'
 import unhideIcon from '../../../../../../img/integrations/facebook-action-unhide.svg'

@@ -8,7 +8,7 @@ import type {Map} from 'immutable'
 import InfiniteScroll from '../../../../common/components/InfiniteScroll'
 import {scrollToReactNode} from '../../../../common/utils/keyboard'
 import {isMacroDisabled} from '../utils'
-import {fetchMacros} from '../../../../../state/macro/actions'
+import {fetchMacros} from '../../../../../state/macro/actions.ts'
 
 import css from './MacroList.less'
 

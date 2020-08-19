@@ -4,7 +4,7 @@ import Promise from 'promise-polyfill'
 import includes from 'array-includes'
 
 import {resendVerificationEmail} from './state/currentAccount/actions.ts'
-import {getBaseEmailIntegration} from './state/integrations/selectors'
+import {getBaseEmailIntegration} from './state/integrations/selectors.ts'
 import {recentViewsStorage} from './state/views/utils'
 import {notify} from './state/notifications/actions'
 import configureStore from './store/configureStore'

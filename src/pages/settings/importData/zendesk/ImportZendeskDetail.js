@@ -12,7 +12,7 @@ import {ZENDESK_IMPORTED_TICKETS_FOR_YEARS} from '../../../../config'
 import * as utils from '../../../../utils'
 import PageHeader from '../../../common/components/PageHeader'
 
-import * as integrationActions from './../../../../state/integrations/actions'
+import * as integrationActions from './../../../../state/integrations/actions.ts'
 
 @connect(null, {
     createIntegration: integrationActions.createImportIntegration,

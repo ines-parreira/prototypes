@@ -7,13 +7,13 @@ import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
 import _debounce from 'lodash/debounce'
 
-import {getCreateOrderState} from '../../../../../../../../../../../../state/infobarActions/shopify/createOrder/selectors'
-import {onPayloadChange} from '../../../../../../../../../../../../state/infobarActions/shopify/createOrder/actions'
+import {getCreateOrderState} from '../../../../../../../../../../../../state/infobarActions/shopify/createOrder/selectors.ts'
+import {onPayloadChange} from '../../../../../../../../../../../../state/infobarActions/shopify/createOrder/actions.ts'
 import MultiSelectOptionsField, {
     type Option,
 } from '../../../../../../../../../../forms/MultiSelectOptionsField'
 import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker'
-import type {DraftOrder} from '../../../../../../../../../../../../constants/integrations/types/shopify'
+import type {DraftOrder} from '../../../../../../../../../../../../constants/integrations/types/shopify.ts'
 import {ShopifyAction} from '../../../constants'
 
 import OrderTotals from './OrderTotals'

@@ -22,16 +22,16 @@ import {
 } from '../../../../../constants/integration'
 import {DRAFT_ORDER_DELETE_AFTER} from '../../../../../config/integrations/shopify'
 import localStorageManager from '../../../../../services/localStorageManager'
-import {executeAction} from '../../../../infobar/actions'
-import {initialState} from '../reducers'
-import * as actions from '../actions'
+import {executeAction} from '../../../../infobar/actions.ts'
+import {initialState} from '../reducers.ts'
+import * as actions from '../actions.ts'
 
 jest.mock('lodash/debounce', () => (fn) => {
     fn.cancel = jest.fn()
     return fn
 })
 
-jest.mock('../../../../infobar/actions')
+jest.mock('../../../../infobar/actions.ts')
 jest.useFakeTimers()
 
 describe('infobarActions.shopify.createOrder actions', () => {
@@ -518,7 +518,7 @@ describe('infobarActions.shopify.createOrder actions', () => {
 
             executeAction.mockImplementation((...args) => (...reduxArgs) => {
                 const {executeAction: realImplementation} = jest.requireActual(
-                    '../../../../infobar/actions'
+                    '../../../../infobar/actions.ts'
                 )
                 const result = realImplementation(...args)(...reduxArgs)
                 const callback = args[4]

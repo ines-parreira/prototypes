@@ -14,10 +14,10 @@ import {
     onPayloadChange,
     onReset,
     setPayload,
-} from '../../../../../../../../../../../state/infobarActions/shopify/cancelOrder/actions'
-import {getCancelOrderState} from '../../../../../../../../../../../state/infobarActions/shopify/cancelOrder/selectors'
+} from '../../../../../../../../../../../state/infobarActions/shopify/cancelOrder/actions.ts'
+import {getCancelOrderState} from '../../../../../../../../../../../state/infobarActions/shopify/cancelOrder/selectors.ts'
 import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager'
-import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors'
+import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors.ts'
 import {getFinalCancelOrderPayload} from '../../../../../../../../../../../business/shopify/order'
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../constants/integration'
 import type {

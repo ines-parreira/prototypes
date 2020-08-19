@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 
 import {Badge} from 'reactstrap'
 
-import * as infobarActions from '../../../../../state/infobar/actions'
+import * as infobarActions from '../../../../../state/infobar/actions.ts'
 import type {
     FacebookReactionCounter,
     Meta,

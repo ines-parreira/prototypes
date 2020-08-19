@@ -24,7 +24,7 @@ import PageHeader from '../../../../../common/components/PageHeader'
 import Pagination from '../../../../../common/components/Pagination'
 import BooleanField from '../../../../../common/forms/BooleanField'
 
-import * as integrationsSelectors from '../../../../../../state/integrations/selectors'
+import * as integrationsSelectors from '../../../../../../state/integrations/selectors.ts'
 
 import pageIconDefault from '../../../../../../../img/integrations/facebook-page.png'
 

@@ -12,7 +12,7 @@ import {
 } from '../../../../../../models/ticket/tests/mocks'
 
 import SourceActionsFooter from '../SourceActionsFooter'
-import * as infobarActions from '../../../../../../state/infobar/actions'
+import * as infobarActions from '../../../../../../state/infobar/actions.ts'
 
 describe('<SourceActionsFooter/>', () => {
     const mockStore = configureMockStore()

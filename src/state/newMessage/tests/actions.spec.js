@@ -15,7 +15,7 @@ import {initialState as ticketInitialState} from '../../ticket/reducers'
 import type {StoreAction} from '../../types'
 
 import {integrationsState} from '../../../fixtures/integrations'
-import * as integrationSelectors from '../../integrations/selectors'
+import * as integrationSelectors from '../../integrations/selectors.ts'
 import {getLastSenderChannel, getPreferredChannel} from '../../ticket/utils'
 import {
     smoochTicket,

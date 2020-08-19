@@ -7,8 +7,8 @@ import {
 } from '../../../constants/integration'
 
 import {integrationsState} from '../../../fixtures/integrations'
-import {getIntegrationsState, getEmailIntegrations} from '../selectors'
-import reducer, {initialState} from '../reducers'
+import {getIntegrationsState, getEmailIntegrations} from '../selectors.ts'
+import reducer, {initialState} from '../reducers.ts'
 import * as types from '../constants'
 
 const state = {

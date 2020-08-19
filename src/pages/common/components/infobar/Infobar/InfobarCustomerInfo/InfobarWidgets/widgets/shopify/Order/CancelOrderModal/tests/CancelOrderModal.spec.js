@@ -7,8 +7,8 @@ import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import {Form} from 'reactstrap'
 
-import {getCancelOrderState} from '../../../../../../../../../../../../state/infobarActions/shopify/cancelOrder/selectors'
-import {getIntegrationsByTypes} from '../../../../../../../../../../../../state/integrations/selectors'
+import {getCancelOrderState} from '../../../../../../../../../../../../state/infobarActions/shopify/cancelOrder/selectors.ts'
+import {getIntegrationsByTypes} from '../../../../../../../../../../../../state/integrations/selectors.ts'
 import {integrationsStateWithShopify} from '../../../../../../../../../../../../fixtures/integrations'
 import {
     cancelOrderStateFixture,

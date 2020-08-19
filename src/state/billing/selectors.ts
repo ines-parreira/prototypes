@@ -1,18 +1,13 @@
 import {createSelector} from 'reselect'
 import {fromJS, Map, List} from 'immutable'
 
-import {getActiveIntegrations} from '../integrations/selectors.js'
+import {getActiveIntegrations} from '../integrations/selectors'
 
 import {RootState} from '../types'
 import {getCurrentAccountState} from '../currentAccount/selectors'
 import {CurrentAccountState} from '../currentAccount/types'
 
 import {BillingState} from './types'
-
-//$TsFixMe remove once state/integrations/selectors is migrated
-const typeSafeGetActiveIntegrations = getActiveIntegrations as (
-    state: RootState
-) => List<any>
 
 export const DEFAULT_PLAN = 'standard-usd-1'
 
@@ -114,7 +109,7 @@ export const isAllowedToCreateIntegration = createSelector<
     List<any>
 >(
     planIntegrations,
-    typeSafeGetActiveIntegrations,
+    getActiveIntegrations,
     (integrations, activeIntegrations) => {
         return integrations > activeIntegrations.size
     }
@@ -123,7 +118,7 @@ export const isAllowedToCreateIntegration = createSelector<
 export const isAllowedToChangePlan = (planId: string) =>
     createSelector<RootState, boolean, Map<any, any>, List<any>>(
         getPlan(planId),
-        typeSafeGetActiveIntegrations,
+        getActiveIntegrations,
         (plan, activeIntegrations) => {
             return plan.get('integrations', 0) >= activeIntegrations.size
         }

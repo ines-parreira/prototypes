@@ -11,7 +11,7 @@ import {
 
 import {attachEntitiesToVariables} from '../../../../../common/draftjs/plugins/variables/utils'
 
-import * as integrationsSelectors from '../../../../../../state/integrations/selectors'
+import * as integrationsSelectors from '../../../../../../state/integrations/selectors.ts'
 
 import RichField from '../../../../../common/forms/RichField'
 

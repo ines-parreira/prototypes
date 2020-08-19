@@ -17,7 +17,7 @@ import {
 import type {TicketMessageSourceType} from '../../../../../business/types/ticket'
 import {isRichType} from '../../../../../config/ticket'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
-import {deleteMacro, fetchMacros} from '../../../../../state/macro/actions'
+import {deleteMacro, fetchMacros} from '../../../../../state/macro/actions.ts'
 import Preview from '../../../common/macros/Preview'
 import Tooltip from '../../../../common/components/Tooltip'
 import Loader from '../../../../common/components/Loader'

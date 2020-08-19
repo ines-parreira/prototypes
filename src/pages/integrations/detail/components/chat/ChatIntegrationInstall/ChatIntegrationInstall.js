@@ -12,7 +12,7 @@ import PageHeader from '../../../../../common/components/PageHeader'
 import CustomInstallationCard from '../../../../common/CustomInstallationCard/CustomInstallationCard'
 import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
 
-import * as integrationSelectors from '../../../../../../state/integrations/selectors'
+import * as integrationSelectors from '../../../../../../state/integrations/selectors.ts'
 import InstallOnIntegrationsCard from '../../../../common/InstallOnIntegrationsCard'
 
 import {renderChatCodeSnippet} from './utils'

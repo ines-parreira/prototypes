@@ -1,7 +1,7 @@
 import {fromJS} from 'immutable'
 
 import {UPSERT_MACRO, DELETE_MACRO, UPSERT_MACROS} from '../constants'
-import reducer from '../reducer'
+import reducer from '../reducer.ts'
 
 describe('macro reducer', () => {
     describe('UPSERT_MACRO', () => {

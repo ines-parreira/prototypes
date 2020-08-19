@@ -8,7 +8,7 @@ import type {Map} from 'immutable'
 
 import {Card, CardBody} from 'reactstrap'
 
-import * as integrationSelectors from '../../../../../../../../state/integrations/selectors'
+import * as integrationSelectors from '../../../../../../../../state/integrations/selectors.ts'
 
 import css from './CardInfobarWidget.less'
 

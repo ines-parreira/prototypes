@@ -15,7 +15,7 @@ import {
 } from 'reactstrap'
 import Clipboard from 'clipboard'
 
-import * as integrationsSelectors from '../../../../../state/integrations/selectors'
+import * as integrationsSelectors from '../../../../../state/integrations/selectors.ts'
 import PageHeader from '../../../../common/components/PageHeader'
 
 @connect((state) => {

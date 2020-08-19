@@ -19,7 +19,7 @@ import {
 
 import {itemsWithContext} from '../../../../../../state/widgets/utils'
 import {getDisplayName} from '../../../../../../state/customers/helpers.ts'
-import * as integrationsSelectors from '../../../../../../state/integrations/selectors'
+import * as integrationsSelectors from '../../../../../../state/integrations/selectors.ts'
 
 import Avatar from '../../../Avatar'
 import css from '../../Infobar.less'

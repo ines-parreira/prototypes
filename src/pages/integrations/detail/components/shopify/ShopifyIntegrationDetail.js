@@ -26,7 +26,7 @@ import PageHeader from '../../../../common/components/PageHeader'
 import * as utils from '../../../../../utils'
 
 import {notify} from '../../../../../state/notifications/actions'
-import * as integrationSelectors from '../../../../../state/integrations/selectors'
+import * as integrationSelectors from '../../../../../state/integrations/selectors.ts'
 import {PENDING_AUTHENTICATION_STATUS} from '../../../../../constants/integration'
 
 type Props = {

@@ -7,8 +7,8 @@ import {Input} from 'reactstrap'
 import SelectField from '../../../forms/SelectField'
 import {RenderLabel} from '../../../utils/labels'
 
-import * as integrationsSelectors from './../../../../../state/integrations/selectors'
-import * as integrationsActions from './../../../../../state/integrations/actions'
+import * as integrationsSelectors from './../../../../../state/integrations/selectors.ts'
+import * as integrationsActions from './../../../../../state/integrations/actions.ts'
 
 const mapStateToProps = (state) => ({
     integrations: integrationsSelectors.getMessagingIntegrations(state),

@@ -23,7 +23,7 @@ import {
     fetchMacros,
     type fetchMacrosParamsTypes,
     type MacrosSearchResult,
-} from '../../../../../state/macro/actions'
+} from '../../../../../state/macro/actions.ts'
 import {notify} from '../../../../../state/notifications/actions'
 import RichField from '../../../../common/forms/RichField'
 

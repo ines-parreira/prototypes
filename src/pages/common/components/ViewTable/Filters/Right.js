@@ -6,7 +6,7 @@ import {connect} from 'react-redux'
 import {IntegrationsDetailLabel} from '../../../utils/labels'
 import {getLanguageDisplayName} from '../../../../../utils'
 
-import {getMessagingIntegrations} from '../../../../../state/integrations/selectors'
+import {getMessagingIntegrations} from '../../../../../state/integrations/selectors.ts'
 import * as viewsSelectors from '../../../../../state/views/selectors'
 import {getTags} from '../../../../../state/tags/selectors'
 

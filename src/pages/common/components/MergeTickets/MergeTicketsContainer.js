@@ -8,7 +8,7 @@ import {Button, Form} from 'reactstrap'
 import Modal from '../Modal'
 import ConfirmButton from '../ConfirmButton'
 
-import {mergeTickets} from '../../../../state/mergeTickets/actions'
+import {mergeTickets} from '../../../../state/mergeTickets/actions.ts'
 import shortcutManager from '../../../../services/shortcutManager/shortcutManager'
 
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'

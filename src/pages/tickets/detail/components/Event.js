@@ -13,7 +13,7 @@ import {getActionByName} from '../../../../config/actions'
 import {AgentLabel, DatetimeLabel} from '../../../common/utils/labels'
 import {humanizeString, stripErrorMessage} from '../../../../utils'
 
-import * as integrationsSelectors from '../../../../state/integrations/selectors'
+import * as integrationsSelectors from '../../../../state/integrations/selectors.ts'
 import * as ticketSelectors from '../../../../state/ticket/selectors'
 
 import css from './Event.less'

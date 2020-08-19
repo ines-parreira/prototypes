@@ -24,7 +24,7 @@ import {
 import {removeSuffix} from '../../../../utils/string'
 import TimedeltaPicker from '../../forms/TimedeltaPicker'
 import RichFieldWithVariables from '../../forms/RichFieldWithVariables'
-import {makeHasIntegrationOfTypes} from '../../../../state/integrations/selectors'
+import {makeHasIntegrationOfTypes} from '../../../../state/integrations/selectors.ts'
 
 import TagsSelect from './widget/TagsSelect'
 import IntegrationSelect from './widget/IntegrationSelect'

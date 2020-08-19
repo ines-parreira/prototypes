@@ -11,7 +11,7 @@ import {
 import {TagLabel, AgentLabel, StatusLabel} from '../../../common/utils/labels'
 import RichField from '../../../common/forms/RichField'
 
-import {getIconFromType} from './../../../../state/integrations/helpers'
+import {getIconFromType} from './../../../../state/integrations/helpers.ts'
 import {getActionTemplate} from './../../../../utils'
 
 import css from './Preview.less'

@@ -32,7 +32,7 @@ import {
     persistLastSenderChannel,
 } from '../ticket/utils'
 
-import * as integrationSelectors from '../integrations/selectors'
+import * as integrationSelectors from '../integrations/selectors.ts'
 import * as ticketSelectors from '../ticket/selectors'
 import * as agentSelectors from '../agents/selectors.ts'
 import {

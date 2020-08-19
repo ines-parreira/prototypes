@@ -38,7 +38,7 @@ import {
     SMOOCH_INSIDE_INTEGRATION_TYPE,
 } from '../../../../../../constants/integration'
 
-import * as integrationSelectors from '../../../../../../state/integrations/selectors'
+import * as integrationSelectors from '../../../../../../state/integrations/selectors.ts'
 
 import ConfirmButton from '../../../../../common/components/ConfirmButton'
 import ColorField from '../../../../../common/forms/ColorField'

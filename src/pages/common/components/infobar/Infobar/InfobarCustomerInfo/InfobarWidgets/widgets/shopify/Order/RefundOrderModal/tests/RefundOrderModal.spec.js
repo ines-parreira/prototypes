@@ -7,7 +7,7 @@ import configureMockStore from 'redux-mock-store'
 import {fromJS} from 'immutable'
 import {Form} from 'reactstrap'
 
-import {getRefundOrderState} from '../../../../../../../../../../../../state/infobarActions/shopify/refundOrder/selectors'
+import {getRefundOrderState} from '../../../../../../../../../../../../state/infobarActions/shopify/refundOrder/selectors.ts'
 import {
     infobarActionsStateFixture,
     refundOrderStateFixture,
@@ -23,7 +23,7 @@ import {
     initRefundOrderLineItems,
     initRefundOrderPayload,
 } from '../../../../../../../../../../../../business/shopify/order'
-import {getIntegrationsByTypes} from '../../../../../../../../../../../../state/integrations/selectors'
+import {getIntegrationsByTypes} from '../../../../../../../../../../../../state/integrations/selectors.ts'
 import {integrationsStateWithShopify} from '../../../../../../../../../../../../fixtures/integrations'
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../../constants/integration'
 import RefundOrderModal, {RefundOrderModalComponent} from '../RefundOrderModal'
