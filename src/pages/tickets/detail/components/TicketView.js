@@ -271,12 +271,13 @@ export default class TicketView extends React.Component {
             ticket,
             customers,
             customersIsLoading,
+            currentUser,
             actions,
             isTicketHidden,
             setStatus,
             isHistoryDisplayed,
         } = this.props
-        const isCreating = !ticket.get('id')
+        const isExistingTicket = !!ticket.get('id')
 
         const customerHistory = customers.get('customerHistory') || fromJS({})
         const hideHistoryButton = !ticket.get('id')
@@ -340,12 +341,12 @@ export default class TicketView extends React.Component {
                 <div
                     className={classnames(css.ticketContent, {
                         [css.historyDisplayed]: isHistoryDisplayed,
-                        'mt-3': isCreating,
+                        'mt-3': !isExistingTicket,
                     })}
                     ref={(ref) => (this.ticketContentRef = ref)}
                     tabIndex="1"
                 >
-                    {!isCreating && (
+                    {isExistingTicket && (
                         <TicketBody
                             elements={this.props.ticketBody}
                             setStatus={setStatus}
@@ -363,10 +364,10 @@ export default class TicketView extends React.Component {
                         <ReplyMessageChannel actions={this.props.actions} />
 
                         <TicketReplyArea
-                            actions={this.props.actions}
-                            currentUser={this.props.currentUser}
-                            customers={this.props.customers}
-                            ticket={this.props.ticket}
+                            actions={actions}
+                            currentUser={currentUser}
+                            customers={customers}
+                            ticket={ticket}
                         />
 
                         <TicketSubmitButtons

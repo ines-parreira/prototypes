@@ -946,6 +946,17 @@ exports[`ReplyMessageChannel component new ticket 1`] = `
           />
           Reply via email
         </DropdownItem>
+        <DropdownItem
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          <SourceIcon
+            type="internal-note"
+          />
+          Leave an internal note
+        </DropdownItem>
       </DropdownMenu>
     </UncontrolledDropdown>
   </div>

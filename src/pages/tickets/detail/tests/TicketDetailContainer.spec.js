@@ -530,6 +530,35 @@ describe('TicketDetailContainer component', () => {
         expect(setCustomer).toBeCalledWith(null)
     })
 
+    it('should not unset the customer because the ticket is new and the new message is an internal note', () => {
+        const component = shallow(
+            <TicketDetailContainer
+                {...minProps}
+                store={mockStore({
+                    ticket: fromJS({
+                        messages: [],
+                    }),
+                    newMessage: fromJS({
+                        newMessage: {
+                            source: {
+                                type: 'internal-note',
+                                to: [],
+                            },
+                        },
+                    }),
+                })}
+            />
+        )
+            .dive()
+            .dive()
+
+        component.setProps({
+            newMessageSource: fromJS({to: [], type: 'internal-note'}),
+        })
+
+        expect(setCustomer).toBeCalledTimes(0)
+    })
+
     it('should set the customer as first recipient because the ticket is new and the customer has changed', () => {
         const component = shallow(
             <TicketDetailContainer

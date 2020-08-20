@@ -304,7 +304,12 @@ class TicketDetailContainer extends React.Component<Props, State> {
 
         // When we're on a new ticket and the agent has removed the receivers of the new message, empty the
         // customer of the ticket
-        if (nextTicketIsNew && recipientsHaveBeenRemoved) {
+        // If the channel change to internal-note we don't want to unset the customer set by the user
+        if (
+            nextTicketIsNew &&
+            recipientsHaveBeenRemoved &&
+            nextProps.newMessageSource.get('type') !== 'internal-note'
+        ) {
             setCustomer(null)
         }
 
@@ -437,12 +442,18 @@ class TicketDetailContainer extends React.Component<Props, State> {
         if (!ticket.get('id')) {
             const receiver = newMessage.getIn(['newMessage', 'receiver'])
             const sender = {id: currentUser.get('id')}
-            ticket = ticket.mergeDeep({
-                customer: receiver,
-                newMessage: {
-                    sender,
-                },
-            })
+
+            const sourceType = newMessage.getIn([
+                'newMessage',
+                'source',
+                'type',
+            ])
+            ticket = ticket.setIn(['newMessage', 'sender'], sender)
+
+            // Ensure that a customer is always set on the ticket when created
+            if (sourceType !== 'internal-note') {
+                ticket = ticket.set('customer', receiver)
+            }
 
             promise = submitTicket(
                 ticket,

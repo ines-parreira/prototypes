@@ -68,7 +68,7 @@ const minProps = {
     selectMacro: _noop,
     fetchMacrosCancellable: () => Promise.resolve(),
     applyMacro: _noop,
-    currentTicket: {},
+    currentTicket: fromJS({}),
     cacheAdded: false,
 }
 
@@ -102,6 +102,16 @@ describe('<TicketReplyArea/>', () => {
 
         component.setProps({newMessageType: 'internal-note'})
         expect(TicketReply.mocks.focusEditor).not.toHaveBeenCalled()
+    })
+
+    it('should block the reply area because the customer is required on ticket creation with an internal-note', () => {
+        const testProps = {
+            ...minProps,
+            newMessageType: 'internal-note',
+            currentTicket: fromJS({id: null, customer: null}),
+        }
+        const component = mount(<TicketReplyArea {...testProps} />)
+        expect(component).toMatchSnapshot()
     })
 
     describe('_hideMacrosAndFocusEditor()', () => {

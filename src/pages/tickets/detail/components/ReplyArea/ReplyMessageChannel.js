@@ -49,7 +49,6 @@ import css from './ReplyMessageChannel.less'
             hasRecipients: newMessageSelectors.hasNewMessageRecipients(state),
             isForward: newMessageSelectors.isForward(state),
             isNewMessagePublic: newMessageSelectors.isNewMessagePublic(state),
-            isUpdate: !!ticket.get('id'),
             messages: getMessages(state),
             sourceType,
             ticket,
@@ -66,7 +65,6 @@ export default class ReplyMessageChannel extends React.Component {
         hasRecipients: PropTypes.bool.isRequired,
         isForward: PropTypes.bool.isRequired,
         isNewMessagePublic: PropTypes.bool.isRequired,
-        isUpdate: PropTypes.bool.isRequired,
         messages: PropTypes.object.isRequired,
         sourceType: PropTypes.string.isRequired,
         ticket: PropTypes.object.isRequired,
@@ -198,7 +196,7 @@ export default class ReplyMessageChannel extends React.Component {
 
         const isInputEnabled =
             !disabledSources.includes(this.props.sourceType) ||
-            !this.props.isUpdate
+            !this.props.ticket.get('id')
 
         return (
             <MessageSourceFields
@@ -218,7 +216,6 @@ export default class ReplyMessageChannel extends React.Component {
 
     render() {
         const {
-            isUpdate,
             messages,
             prepareNewMessage,
             isForward,
@@ -226,25 +223,26 @@ export default class ReplyMessageChannel extends React.Component {
             ticket,
         } = this.props
 
-        if (isUpdate && messages.isEmpty()) {
+        const isTicketExisting = !!ticket.get('id')
+
+        if (isTicketExisting && messages.isEmpty()) {
             return null
         }
 
         const replyOptions = ticket.get('reply_options')
 
-        const suggestEmail = !isUpdate || !!replyOptions.get('email')
-        const suggestChat = isUpdate && !!replyOptions.get('chat')
+        const suggestEmail = !isTicketExisting || !!replyOptions.get('email')
+        const suggestInternalNote = !!replyOptions.get('internal-note')
+        const suggestChat = isTicketExisting && !!replyOptions.get('chat')
         const suggestFacebookComment =
-            isUpdate && !!replyOptions.get('facebook-comment')
+            isTicketExisting && !!replyOptions.get('facebook-comment')
         const suggestFacebookMessenger =
-            isUpdate && !!replyOptions.get('facebook-messenger')
+            isTicketExisting && !!replyOptions.get('facebook-messenger')
         const suggestInstagram =
-            isUpdate && !!replyOptions.get('instagram-comment')
+            isTicketExisting && !!replyOptions.get('instagram-comment')
         const suggestInstagramAd =
-            isUpdate && !!replyOptions.get('instagram-ad-comment')
-        const suggestInternalNote =
-            isUpdate && !!replyOptions.get('internal-note')
-        const suggestForwardByEmail = isUpdate
+            isTicketExisting && !!replyOptions.get('instagram-ad-comment')
+        const suggestForwardByEmail = isTicketExisting
         const iconLabel = isForward ? 'email-forward' : this.props.sourceType
 
         return (

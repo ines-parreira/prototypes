@@ -336,6 +336,12 @@ export class TicketReplyArea extends React.Component<Props, State> {
             this.state.macros,
             this.state.selectedMacroId
         )
+        const {currentTicket, newMessageType} = this.props
+
+        const requireCustomerSelection =
+            !currentTicket.get('id') &&
+            newMessageType === 'internal-note' &&
+            currentTicket.get('customer') == null
 
         return (
             <div
@@ -361,10 +367,31 @@ export class TicketReplyArea extends React.Component<Props, State> {
                         onKeyDown={this._handleSearchKeyDown}
                         onFocus={this._showMacros}
                         placeholder="Search macros by name, tags or body..."
+                        disabled={requireCustomerSelection}
                     />
                 </div>
                 <div className={css.content}>
-                    {macrosVisible ? (
+                    {requireCustomerSelection ? (
+                        <div
+                            className={classnames(
+                                css.replyAreaAlertMessage,
+                                'alert-warning'
+                            )}
+                        >
+                            <span>
+                                To create a ticket with an internal note, please
+                                <a
+                                    href="https://docs.gorgias.com/video-tutorials/manually-set-the-requester-of-a-ticket-in-gorgias"
+                                    rel="noopener noreferrer"
+                                    target="_blank"
+                                >
+                                    {' '}
+                                    set a customer{' '}
+                                </a>
+                                first in the infobar
+                            </span>
+                        </div>
+                    ) : macrosVisible ? (
                         <TicketMacros
                             ticket={this.props.ticket}
                             macros={macros}

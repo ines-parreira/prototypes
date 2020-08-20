@@ -50,6 +50,9 @@ export const initialState = fromJS({
         email: {
             answerable: true,
         },
+        'internal-note': {
+            answerable: true,
+        },
     },
 })
 

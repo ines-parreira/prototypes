@@ -55,6 +55,9 @@ Array [
         "email": Immutable.Map {
           "answerable": true,
         },
+        "internal-note": Immutable.Map {
+          "answerable": true,
+        },
       },
       "spam": false,
       "subject": "",
@@ -103,6 +106,9 @@ Array [
       "priority": "normal",
       "reply_options": Immutable.Map {
         "email": Immutable.Map {
+          "answerable": true,
+        },
+        "internal-note": Immutable.Map {
           "answerable": true,
         },
       },
@@ -185,6 +191,9 @@ Object {
     "priority": "normal",
     "reply_options": Immutable.Map {
       "email": Immutable.Map {
+        "answerable": true,
+      },
+      "internal-note": Immutable.Map {
         "answerable": true,
       },
     },
@@ -358,6 +367,9 @@ Array [
         "email": Immutable.Map {
           "answerable": true,
         },
+        "internal-note": Immutable.Map {
+          "answerable": true,
+        },
       },
       "spam": false,
       "subject": "",
@@ -474,6 +486,9 @@ Array [
         "email": Immutable.Map {
           "answerable": true,
         },
+        "internal-note": Immutable.Map {
+          "answerable": true,
+        },
       },
       "spam": false,
       "subject": "",
@@ -540,6 +555,9 @@ Array [
       "priority": "normal",
       "reply_options": Immutable.Map {
         "email": Immutable.Map {
+          "answerable": true,
+        },
+        "internal-note": Immutable.Map {
           "answerable": true,
         },
       },
@@ -649,6 +667,9 @@ Array [
         "email": Immutable.Map {
           "answerable": true,
         },
+        "internal-note": Immutable.Map {
+          "answerable": true,
+        },
       },
       "spam": false,
       "subject": "",
@@ -746,6 +767,9 @@ Array [
       "priority": "normal",
       "reply_options": Immutable.Map {
         "email": Immutable.Map {
+          "answerable": true,
+        },
+        "internal-note": Immutable.Map {
           "answerable": true,
         },
       },
@@ -854,6 +878,9 @@ Array [
         "email": Immutable.Map {
           "answerable": true,
         },
+        "internal-note": Immutable.Map {
+          "answerable": true,
+        },
       },
       "spam": false,
       "subject": "",
@@ -957,6 +984,9 @@ Array [
         "email": Immutable.Map {
           "answerable": true,
         },
+        "internal-note": Immutable.Map {
+          "answerable": true,
+        },
       },
       "spam": false,
       "subject": "",
@@ -1054,6 +1084,9 @@ Array [
       "priority": "normal",
       "reply_options": Immutable.Map {
         "email": Immutable.Map {
+          "answerable": true,
+        },
+        "internal-note": Immutable.Map {
           "answerable": true,
         },
       },
@@ -1162,6 +1195,9 @@ Array [
         "email": Immutable.Map {
           "answerable": true,
         },
+        "internal-note": Immutable.Map {
+          "answerable": true,
+        },
       },
       "spam": false,
       "subject": "",
@@ -1256,6 +1292,9 @@ Array [
         "email": Immutable.Map {
           "answerable": true,
         },
+        "internal-note": Immutable.Map {
+          "answerable": true,
+        },
       },
       "spam": false,
       "subject": "",
@@ -1342,6 +1381,9 @@ Array [
       "priority": "normal",
       "reply_options": Immutable.Map {
         "email": Immutable.Map {
+          "answerable": true,
+        },
+        "internal-note": Immutable.Map {
           "answerable": true,
         },
       },

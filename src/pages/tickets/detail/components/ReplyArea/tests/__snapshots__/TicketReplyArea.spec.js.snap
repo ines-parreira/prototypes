@@ -15,7 +15,7 @@ exports[`<TicketReplyArea/> _hideMacrosAndFocusEditor() should hide macros and f
   applyMacro={[Function]}
   cacheAdded={false}
   currentMacro={Object {}}
-  currentTicket={Object {}}
+  currentTicket={Immutable.Map {}}
   currentUser={Immutable.Map {}}
   customers={Object {}}
   fetchMacrosCancellable={[Function]}
@@ -40,6 +40,7 @@ exports[`<TicketReplyArea/> _hideMacrosAndFocusEditor() should hide macros and f
         flash_on
       </i>
       <Input
+        disabled={false}
         innerRef={[Function]}
         onChange={[Function]}
         onFocus={[Function]}
@@ -50,6 +51,7 @@ exports[`<TicketReplyArea/> _hideMacrosAndFocusEditor() should hide macros and f
       >
         <input
           className="form-control"
+          disabled={false}
           onChange={[Function]}
           onFocus={[Function]}
           onKeyDown={[Function]}
@@ -86,6 +88,97 @@ exports[`<TicketReplyArea/> _hideMacrosAndFocusEditor() should hide macros and f
 </TicketReplyArea>
 `;
 
+exports[`<TicketReplyArea/> should block the reply area because the customer is required on ticket creation with an internal-note 1`] = `
+<TicketReplyArea
+  actions={
+    Object {
+      "customers": Object {},
+      "macro": Object {},
+      "newMessage": Object {},
+      "tag": Object {},
+      "ticket": Object {},
+      "views": Object {},
+    }
+  }
+  applyMacro={[Function]}
+  cacheAdded={false}
+  currentMacro={Object {}}
+  currentTicket={
+    Immutable.Map {
+      "id": null,
+      "customer": null,
+    }
+  }
+  currentUser={Immutable.Map {}}
+  customers={Object {}}
+  fetchMacrosCancellable={[Function]}
+  newMessage={Object {}}
+  newMessageType="internal-note"
+  notify={[Function]}
+  page={1}
+  preferences={Object {}}
+  selectMacro={[Function]}
+  ticket={Immutable.Map {}}
+  totalPages={1}
+>
+  <div
+    className="component"
+  >
+    <div
+      className="search"
+    >
+      <i
+        className="searchIcon material-icons md-2 text-info"
+      >
+        flash_on
+      </i>
+      <Input
+        disabled={true}
+        innerRef={[Function]}
+        onChange={[Function]}
+        onFocus={[Function]}
+        onKeyDown={[Function]}
+        placeholder="Search macros by name, tags or body..."
+        tabIndex="3"
+        type="text"
+      >
+        <input
+          className="form-control"
+          disabled={true}
+          onChange={[Function]}
+          onFocus={[Function]}
+          onKeyDown={[Function]}
+          placeholder="Search macros by name, tags or body..."
+          tabIndex="3"
+          type="text"
+        />
+      </Input>
+    </div>
+    <div
+      className="content"
+    >
+      <div
+        className="replyAreaAlertMessage alert-warning"
+      >
+        <span>
+          To create a ticket with an internal note, please
+          <a
+            href="https://docs.gorgias.com/video-tutorials/manually-set-the-requester-of-a-ticket-in-gorgias"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+             
+            set a customer
+             
+          </a>
+          first in the infobar
+        </span>
+      </div>
+    </div>
+  </div>
+</TicketReplyArea>
+`;
+
 exports[`<TicketReplyArea/> should render 1`] = `
 <div
   className="component"
@@ -99,6 +192,7 @@ exports[`<TicketReplyArea/> should render 1`] = `
       flash_on
     </i>
     <Input
+      disabled={false}
       innerRef={[Function]}
       onChange={[Function]}
       onFocus={[Function]}
