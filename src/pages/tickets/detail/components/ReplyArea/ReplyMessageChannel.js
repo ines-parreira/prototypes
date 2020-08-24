@@ -11,8 +11,8 @@ import {
 } from 'reactstrap'
 
 import * as integrationSelectors from '../../../../../state/integrations/selectors.ts'
-import * as newMessageActions from '../../../../../state/newMessage/actions'
-import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
+import * as newMessageActions from '../../../../../state/newMessage/actions.ts'
+import * as newMessageSelectors from '../../../../../state/newMessage/selectors.ts'
 import {getMessages} from '../../../../../state/ticket/selectors'
 import {guessReceiversFromTicket} from '../../../../../state/ticket/utils'
 import KeyboardShortcuts from '../../../../common/components/KeyboardShortcuts'

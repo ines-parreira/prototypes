@@ -14,7 +14,7 @@ import {getPersonLabelFromSource} from '../../pages/tickets/common/utils'
 import {getActionTemplate, toImmutable} from '../../utils'
 import {renderTemplate} from '../../pages/common/utils/template'
 
-import * as responseUtils from '../newMessage/responseUtils'
+import * as responseUtils from '../newMessage/responseUtils.ts'
 
 import {getProperty} from './selectors'
 

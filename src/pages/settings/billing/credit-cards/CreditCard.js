@@ -34,7 +34,7 @@ import {Plan} from '../plans/Plan'
 import GorgiasApi from '../../../../services/gorgiasApi'
 
 import {setCurrentSubscription} from '../../../../state/currentAccount/actions.ts'
-import {notify} from '../../../../state/notifications/actions'
+import {notify} from '../../../../state/notifications/actions.ts'
 import {createStripeCardToken} from '../../../../utils/stripe'
 
 import {

@@ -5,7 +5,7 @@ import _throttle from 'lodash/throttle'
 import {removeNotification} from 'reapop'
 
 import * as socketEvents from '../../config/socketEvents'
-import {notify} from '../../state/notifications/actions'
+import {notify} from '../../state/notifications/actions.ts'
 import {store} from '../../init'
 import {devLog} from '../../utils'
 import {ROOM_JOINED, ROOM_LEFT} from '../../config/socketConstants'

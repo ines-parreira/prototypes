@@ -18,7 +18,7 @@ import {
 } from '../../../state/billing/actions.ts'
 import Loader from '../../common/components/Loader'
 import GorgiasApi from '../../../services/gorgiasApi'
-import {notify} from '../../../state/notifications/actions'
+import {notify} from '../../../state/notifications/actions.ts'
 
 type Props = {
     fetchInvoices: () => Promise<Dispatch>,

@@ -1,10 +1,10 @@
 import {fromJS, List, Map} from 'immutable'
-import {createSelector} from 'reselect'
+import {createSelector, Selector} from 'reselect'
 import _isArray from 'lodash/isArray'
 
 import {IntegrationType} from '../../models/integration/types'
 import {compare} from '../../utils.js'
-import {RootState} from '../types'
+import {RootState, StoreState} from '../types'
 import {getCurrentUserState} from '../currentUser/selectors'
 import {getTicketState} from '../ticket/selectors.js'
 import {nestedReplace} from '../ticket/utils.js'

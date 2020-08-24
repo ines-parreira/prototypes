@@ -8,7 +8,7 @@ import classnames from 'classnames'
 import Tooltip from '../../../../common/components/Tooltip'
 
 import * as TicketActions from '../../../../../state/ticket/actions'
-import * as NewMessageActions from '../../../../../state/newMessage/actions'
+import * as NewMessageActions from '../../../../../state/newMessage/actions.ts'
 import {getActionTemplate, stripErrorMessage} from '../../../../../utils'
 
 import css from './Error.less'

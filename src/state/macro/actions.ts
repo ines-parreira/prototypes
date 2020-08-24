@@ -5,7 +5,7 @@ import _get from 'lodash/get'
 import {Macro} from '../../models/macro/types'
 import {ApiListResponsePagination} from '../../models/api/types'
 import {NotificationStatus} from '../notifications/types'
-import {notify} from '../notifications/actions.js'
+import {notify} from '../notifications/actions'
 import {StoreDispatch} from '../types'
 
 import * as constants from './constants.js'

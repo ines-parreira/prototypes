@@ -2,7 +2,7 @@ import axios from 'axios'
 import {Map} from 'immutable'
 
 import {ApiListResponsePagination} from '../../models/api/types'
-import {notify} from '../notifications/actions.js'
+import {notify} from '../notifications/actions'
 import {NotificationStatus} from '../notifications/types'
 import {StoreDispatch} from '../types'
 

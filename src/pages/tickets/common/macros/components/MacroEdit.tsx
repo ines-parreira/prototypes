@@ -13,7 +13,7 @@ import {
 import {generateDefaultAction} from '../../../../../state/macro/utils'
 
 import * as ticketTypes from '../../../../../state/ticket/constants.js'
-import * as newMessageTypes from '../../../../../state/newMessage/constants.js'
+import * as newMessageTypes from '../../../../../state/newMessage/constants'
 import * as integrationsSelectors from '../../../../../state/integrations/selectors'
 import {ACTION_TEMPLATES} from '../../../../../config.js'
 import RichDropdown from '../../../../common/components/RichDropdown/RichDropdown.js'

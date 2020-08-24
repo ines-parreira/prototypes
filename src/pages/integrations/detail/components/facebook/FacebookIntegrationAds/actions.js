@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import {notify} from '../../../../../../state/notifications/actions'
+import {notify} from '../../../../../../state/notifications/actions.ts'
 import {
     addFacebookAdsLoadingAd,
     removeFacebookAdsLoadingAd,

@@ -1,7 +1,7 @@
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {INITIAL_MESSAGE, notify, handleUsageBanner} from '../actions'
+import {INITIAL_MESSAGE, notify, handleUsageBanner} from '../actions.ts'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

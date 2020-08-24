@@ -1,36 +1,55 @@
-//@flow
-import configureMockStore from 'redux-mock-store'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import {ContentState} from 'draft-js'
-import {fromJS} from 'immutable'
-import axios, {CancelToken} from 'axios'
+import {fromJS, Map} from 'immutable'
+import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
-import {TicketMessageSourceTypes} from '../../../business/ticket'
-import * as utils from '../../../utils'
+import {TicketMessageSourceType} from '../../../business/types/ticket'
+import * as utils from '../../../utils.js'
 import * as actions from '../actions'
 import * as types from '../constants'
 import {initialState} from '../reducers'
-import {initialState as ticketInitialState} from '../../ticket/reducers'
-import type {StoreAction} from '../../types'
+import {initialState as ticketInitialState} from '../../ticket/reducers.js'
+import {GorgiasAction, StoreDispatch, RootState} from '../../types'
 
-import {integrationsState} from '../../../fixtures/integrations'
-import * as integrationSelectors from '../../integrations/selectors.ts'
-import {getLastSenderChannel, getPreferredChannel} from '../../ticket/utils'
+import {integrationsState} from '../../../fixtures/integrations.js'
+import * as integrationSelectors from '../../integrations/selectors'
+import {getLastSenderChannel, getPreferredChannel} from '../../ticket/utils.js'
 import {
     smoochTicket,
     emailTicket,
     instagramMedia,
-} from '../../ticket/tests/fixtures'
+} from '../../ticket/tests/fixtures.js'
+import socketManager from '../../../services/socketManager/socketManager.js'
+import {Integration} from '../../../models/integration/types'
+
+type MockedRootState = {
+    agents?: Map<any, any>
+    integrations?: Map<any, any>
+    ticket?: Map<any, any>
+    newMessage?: Map<any, any>
+    currentUser?: Map<any, any>
+}
+
+//$TsFixMe remove casting once ticket/fixtures is migrated
+const typeSafeSmoochTicket = smoochTicket as Map<any, any>
+const typeSafeEmailTicket = emailTicket as Map<any, any>
+const typeSafeInstagramMedia = instagramMedia as Map<any, any>
+
+//$TsFixMe remove casting once ticket/reducers is migrated
+const typeSafeTicketInitialState = ticketInitialState as Map<any, any>
 
 const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
+const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
+    middlewares
+)
 const mockedUploadFiles = jest.spyOn(utils, 'uploadFiles')
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => 'someRandomKey')
 
-jest.mock('../../../services/socketManager', () => {
+jest.mock('../../../services/socketManager/socketManager.js', () => {
     return {
         join: jest.fn(),
         leave: jest.fn(),
@@ -38,11 +57,9 @@ jest.mock('../../../services/socketManager', () => {
     }
 })
 
-import socketManager from '../../../services/socketManager'
-
 describe('actions', () => {
-    let mockServer
-    let store
+    let mockServer: MockAdapter
+    let store: MockStoreEnhanced<MockedRootState, StoreDispatch>
 
     beforeEach(() => {
         mockServer = new MockAdapter(axios)
@@ -51,11 +68,11 @@ describe('actions', () => {
     describe('new message', () => {
         const channels = integrationSelectors.getChannels({
             integrations: fromJS(integrationsState),
-        })
+        } as RootState)
 
         describe('setSender action', () => {
             it('with address', () => {
-                store = mockStore<*, StoreAction>({
+                store = mockStore({
                     integrations: fromJS(integrationsState),
                     ticket: emailTicket,
                     newMessage: initialState,
@@ -66,19 +83,19 @@ describe('actions', () => {
             })
 
             it('`from` field from last message from agent (chat, messenger)', () => {
-                const from = smoochTicket.getIn([
+                const from = typeSafeSmoochTicket.getIn([
                     'messages',
                     1,
                     'source',
                     'from',
-                ])
+                ]) as Map<any, any>
                 const expectedSender = fromJS({
                     name: from.get('name'),
                     address: from.get('address'),
                 })
-                store = mockStore<*, StoreAction>({
+                store = mockStore({
                     integrations: fromJS(integrationsState),
-                    ticket: smoochTicket,
+                    ticket: typeSafeSmoochTicket,
                     newMessage: initialState.setIn(
                         ['newMessage', 'source', 'type'],
                         'chat'
@@ -95,19 +112,22 @@ describe('actions', () => {
             })
 
             it('`to` field from last message from customer (chat, messenger)', () => {
-                const _smoochTicket = smoochTicket.deleteIn(['messages', 1]) // delete last message from agent
+                const _smoochTicket = typeSafeSmoochTicket.deleteIn([
+                    'messages',
+                    1,
+                ]) // delete last message from agent
                 const from = _smoochTicket.getIn([
                     'messages',
                     0,
                     'source',
                     'to',
                     0,
-                ])
+                ]) as Map<any, any>
                 const expectedSender = fromJS({
                     name: from.get('name'),
                     address: from.get('address'),
                 })
-                store = mockStore<*, StoreAction>({
+                store = mockStore({
                     integrations: fromJS(integrationsState),
                     ticket: _smoochTicket,
                     newMessage: initialState.setIn(
@@ -127,13 +147,19 @@ describe('actions', () => {
 
             it('preferred channel', () => {
                 // remove messages, to simulate a new ticket
-                const _emailTicket = emailTicket.set('messages', fromJS([]))
-                const preferred = getPreferredChannel('email', channels)
+                const _emailTicket = typeSafeEmailTicket.set(
+                    'messages',
+                    fromJS([])
+                )
+                const preferred = getPreferredChannel('email', channels) as Map<
+                    any,
+                    any
+                >
                 const expectedSender = fromJS({
                     name: preferred.get('name'),
                     address: preferred.get('address'),
-                })
-                store = mockStore<*, StoreAction>({
+                }) as Map<any, any>
+                store = mockStore({
                     integrations: fromJS(integrationsState),
                     ticket: _emailTicket,
                     newMessage: initialState.setIn(
@@ -152,17 +178,17 @@ describe('actions', () => {
             })
 
             it('`from` field from last message from agent', () => {
-                const from = emailTicket.getIn([
+                const from = typeSafeEmailTicket.getIn([
                     'messages',
                     1,
                     'source',
                     'from',
-                ])
+                ]) as Map<any, any>
                 const expectedSender = fromJS({
                     name: from.get('name'),
                     address: from.get('address'),
-                })
-                store = mockStore<*, StoreAction>({
+                }) as Map<any, any>
+                store = mockStore({
                     integrations: fromJS(integrationsState),
                     ticket: emailTicket,
                     newMessage: initialState.setIn(
@@ -182,19 +208,22 @@ describe('actions', () => {
 
             it('`to` field from last message from customer (email found in `to`)', () => {
                 // delete last message from agent
-                const _emailTicket = emailTicket.deleteIn(['messages', 1])
+                const _emailTicket = typeSafeEmailTicket.deleteIn([
+                    'messages',
+                    1,
+                ])
                 const from = _emailTicket.getIn([
                     'messages',
                     0,
                     'source',
                     'to',
                     1,
-                ])
+                ]) as Map<any, any>
                 const expectedSender = fromJS({
                     name: from.get('name'),
                     address: from.get('address'),
                 })
-                store = mockStore<*, StoreAction>({
+                store = mockStore({
                     integrations: fromJS(integrationsState),
                     ticket: _emailTicket,
                     newMessage: initialState.setIn(
@@ -215,25 +244,28 @@ describe('actions', () => {
             it('should return channel in `cc` field from last message from customer (email found in `cc`)', () => {
                 // delete last message from agent
                 // and move `To` addresses in `Cc` and remove `To` addresses
-                const _emailTicket = emailTicket
+                const _emailTicket = typeSafeEmailTicket
                     .deleteIn(['messages', 1])
-                    .updateIn(['messages', 0, 'source'], (source) => {
-                        return source
-                            .set('cc', source.get('to'))
-                            .set('to', fromJS([]))
-                    })
+                    .updateIn(
+                        ['messages', 0, 'source'],
+                        (source: Map<any, any>) => {
+                            return source
+                                .set('cc', source.get('to'))
+                                .set('to', fromJS([]))
+                        }
+                    )
                 const from = _emailTicket.getIn([
                     'messages',
                     0,
                     'source',
                     'cc',
                     1,
-                ])
+                ]) as Map<any, any>
                 const expectedSender = fromJS({
                     name: from.get('name'),
                     address: from.get('address'),
                 })
-                store = mockStore<*, StoreAction>({
+                store = mockStore({
                     integrations: fromJS(integrationsState),
                     ticket: _emailTicket,
                     newMessage: initialState.setIn(
@@ -253,13 +285,19 @@ describe('actions', () => {
 
             it('preferred email (email not found in `to`)', () => {
                 // remove address that can match
-                const _emailTicket = emailTicket.deleteIn(['messages', 1])
-                const from = getPreferredChannel('email', channels)
+                const _emailTicket = typeSafeEmailTicket.deleteIn([
+                    'messages',
+                    1,
+                ])
+                const from = getPreferredChannel('email', channels) as Map<
+                    any,
+                    any
+                >
                 const expectedSender = fromJS({
                     name: from.get('name'),
                     address: from.get('address'),
                 })
-                store = mockStore<*, StoreAction>({
+                store = mockStore({
                     integrations: fromJS(integrationsState),
                     ticket: _emailTicket,
                     newMessage: initialState.setIn(
@@ -278,9 +316,9 @@ describe('actions', () => {
             })
 
             it('empty name and address (internal-note)', () => {
-                store = mockStore<*, StoreAction>({
+                store = mockStore({
                     integrations: fromJS(integrationsState),
-                    ticket: emailTicket,
+                    ticket: typeSafeEmailTicket,
                     newMessage: initialState.setIn(
                         ['newMessage', 'source', 'type'],
                         'internal-note'
@@ -300,21 +338,25 @@ describe('actions', () => {
             })
 
             it('should reject any channel which is not verified and replace it with any verified channel', () => {
-                const unverifiedChannel = integrationsState.integrations.find(
+                const unverifiedChannel = (integrationsState as {
+                    integrations: Integration[]
+                }).integrations.find(
                     (integration) => integration.meta.verified === false
-                )
+                ) as Integration
 
-                const _emailTicket = emailTicket
+                const _emailTicket = typeSafeEmailTicket
                     .deleteIn(['messages', 1]) // delete last message from agent
                     .setIn(
                         ['messages', 0, 'source', 'to', 0],
                         fromJS({
                             name: unverifiedChannel.name,
-                            address: unverifiedChannel.address,
+                            address: ((unverifiedChannel as unknown) as {
+                                address: unknown
+                            }).address,
                         })
                     )
 
-                store = mockStore<*, StoreAction>({
+                store = mockStore({
                     integrations: fromJS(integrationsState),
                     ticket: _emailTicket,
                     newMessage: initialState.setIn(
@@ -328,16 +370,23 @@ describe('actions', () => {
 
                 expect(storeActions.length).toEqual(1)
 
-                const setSenderAction = storeActions[0]
-                const sender = setSenderAction.sender
-                const senderChannel = integrationsState.integrations.find(
+                const setSenderAction = storeActions[0] as Record<
+                    string,
+                    unknown
+                >
+                const sender = setSenderAction.sender as Map<any, any>
+                //$TsFixMe remove casting once fixtures/integrations is migrated
+                const senderChannel = (integrationsState as {
+                    integrations: Integration[]
+                }).integrations.find(
                     (integration) =>
                         integration.meta.address === sender.get('address')
                 )
 
-                expect(senderChannel.meta.verified).toBe(true)
-                expect(senderChannel.meta.address).not.toEqual(
-                    unverifiedChannel.address
+                expect(senderChannel?.meta.verified).toBe(true)
+                expect(senderChannel?.meta.address).not.toEqual(
+                    ((unverifiedChannel as unknown) as {address: unknown})
+                        .address
                 )
             })
 
@@ -346,7 +395,7 @@ describe('actions', () => {
                     name: 'an integration which does not exist',
                     address: 'notexist@gorgi.us',
                 }
-                const _emailTicket = emailTicket
+                const _emailTicket = typeSafeEmailTicket
                     .setIn(
                         ['messages', 0, 'source', 'to'],
                         fromJS([
@@ -364,7 +413,7 @@ describe('actions', () => {
                         })
                     )
 
-                store = mockStore<*, StoreAction>({
+                store = mockStore({
                     integrations: fromJS(integrationsState),
                     ticket: _emailTicket,
                     newMessage: initialState.setIn(
@@ -378,23 +427,29 @@ describe('actions', () => {
 
                 expect(storeActions.length).toEqual(1)
 
-                const setSenderAction = storeActions[0]
-                const sender = setSenderAction.sender
-                const senderChannel = integrationsState.integrations.find(
+                const setSenderAction = storeActions[0] as Record<
+                    string,
+                    unknown
+                >
+                const sender = setSenderAction.sender as Map<any, any>
+                //$TsFixMe remove casting once fixtures/integrations is migrated
+                const senderChannel = (integrationsState as {
+                    integrations: Integration[]
+                }).integrations.find(
                     (integration) =>
                         integration.meta.address === sender.get('address')
                 )
 
-                expect(senderChannel.meta.verified).toBe(true)
-                expect(senderChannel.meta.address).not.toEqual(
+                expect(senderChannel?.meta.verified).toBe(true)
+                expect(senderChannel?.meta.address).not.toEqual(
                     unexistingChannel.address
                 )
             })
 
             it('should persist the sender channel in the localStorage', () => {
-                store = mockStore<*, StoreAction>({
+                store = mockStore({
                     integrations: fromJS(integrationsState),
-                    ticket: emailTicket,
+                    ticket: typeSafeEmailTicket,
                     newMessage: initialState,
                 })
                 expect(getLastSenderChannel()).toBe(null)
@@ -403,7 +458,10 @@ describe('actions', () => {
                 // it should still be null because we didn't specify a sender param
                 expect(getLastSenderChannel()).toBe(null)
 
-                const from = getPreferredChannel('email', channels)
+                const from = getPreferredChannel('email', channels) as Map<
+                    any,
+                    any
+                >
                 const expectedChannel = fromJS({
                     name: from.get('name'),
                     address: from.get('address'),
@@ -437,12 +495,14 @@ describe('actions', () => {
         describe('prepare()', () => {
             describe('email-forward', () => {
                 it('should prepare an email forward', () => {
-                    store = mockStore<*, StoreAction>({
-                        ticket: emailTicket,
+                    store = mockStore({
+                        ticket: typeSafeEmailTicket,
                         newMessage: initialState,
                         integrations: fromJS(integrationsState),
                     })
-                    store.dispatch(actions.prepare('email-forward'))
+                    store.dispatch(
+                        actions.prepare(TicketMessageSourceType.EmailForward)
+                    )
 
                     expect(store.getActions()).toMatchSnapshot()
                 })
@@ -451,8 +511,8 @@ describe('actions', () => {
                     const attachments = fromJS([{url: 'foo'}, {url: 'bar'}])
                     const attachments2 = fromJS([{url: 'baz'}, {url: 'far'}])
 
-                    store = mockStore<*, StoreAction>({
-                        ticket: emailTicket
+                    store = mockStore({
+                        ticket: typeSafeEmailTicket
                             .setIn(['messages', 0, 'attachments'], attachments)
                             .setIn(
                                 ['messages', 1, 'attachments'],
@@ -461,7 +521,9 @@ describe('actions', () => {
                         newMessage: initialState,
                         integrations: fromJS(integrationsState),
                     })
-                    store.dispatch(actions.prepare('email-forward'))
+                    store.dispatch(
+                        actions.prepare(TicketMessageSourceType.EmailForward)
+                    )
 
                     expect(store.getActions()).toMatchSnapshot()
                 })
@@ -470,8 +532,8 @@ describe('actions', () => {
                     const attachments = fromJS([{url: 'foo'}, {url: 'bar'}])
                     const newMessageAttachments = fromJS([{url: 'foo'}])
 
-                    store = mockStore<*, StoreAction>({
-                        ticket: emailTicket.setIn(
+                    store = mockStore({
+                        ticket: typeSafeEmailTicket.setIn(
                             ['messages', 0, 'attachments'],
                             attachments
                         ),
@@ -481,7 +543,9 @@ describe('actions', () => {
                         ),
                         integrations: fromJS(integrationsState),
                     })
-                    store.dispatch(actions.prepare('email-forward'))
+                    store.dispatch(
+                        actions.prepare(TicketMessageSourceType.EmailForward)
+                    )
 
                     expect(store.getActions()).toMatchSnapshot()
                 })
@@ -489,14 +553,18 @@ describe('actions', () => {
 
             describe('instagram comment', () => {
                 it('should not add prefix if there is no receiver name', () => {
-                    store = mockStore<*, StoreAction>({
-                        ticket: instagramMedia,
+                    store = mockStore({
+                        ticket: typeSafeInstagramMedia,
                         newMessage: initialState.setIn(
                             ['newMessage', 'source', 'type'],
                             'instagram-comment'
                         ),
                     })
-                    store.dispatch(actions.prepare('instagram-comment'))
+                    store.dispatch(
+                        actions.prepare(
+                            TicketMessageSourceType.InstagramComment
+                        )
+                    )
 
                     expect(store.getActions()).toMatchSnapshot()
                 })
@@ -517,11 +585,15 @@ describe('actions', () => {
                             ContentState.createFromText('foo')
                         )
 
-                    store = mockStore<*, StoreAction>({
-                        ticket: instagramMedia,
+                    store = mockStore({
+                        ticket: typeSafeInstagramMedia,
                         newMessage,
                     })
-                    store.dispatch(actions.prepare('instagram-comment'))
+                    store.dispatch(
+                        actions.prepare(
+                            TicketMessageSourceType.InstagramComment
+                        )
+                    )
 
                     expect(store.getActions()).toMatchSnapshot()
                 })
@@ -538,11 +610,15 @@ describe('actions', () => {
                             fromJS([{address: 'as6d5as', name: 'instauser'}])
                         )
 
-                    store = mockStore<*, StoreAction>({
-                        ticket: instagramMedia,
+                    store = mockStore({
+                        ticket: typeSafeInstagramMedia,
                         newMessage,
                     })
-                    store.dispatch(actions.prepare('instagram-comment'))
+                    store.dispatch(
+                        actions.prepare(
+                            TicketMessageSourceType.InstagramComment
+                        )
+                    )
 
                     expect(store.getActions()).toMatchSnapshot()
                 })
@@ -550,15 +626,15 @@ describe('actions', () => {
 
             it('other types', () => {
                 const sourceTypes = [
-                    'email',
-                    'chat',
-                    'facebook-comment',
-                    'facebook-message',
+                    TicketMessageSourceType.Email,
+                    TicketMessageSourceType.Chat,
+                    TicketMessageSourceType.FacebookComment,
+                    TicketMessageSourceType.FacebookMessage,
                 ]
 
                 sourceTypes.forEach((sourceType) => {
-                    store = mockStore<*, StoreAction>({
-                        ticket: emailTicket,
+                    store = mockStore({
+                        ticket: typeSafeEmailTicket,
                         newMessage: initialState,
                         integrations: fromJS(integrationsState),
                     })
@@ -571,14 +647,14 @@ describe('actions', () => {
 
         describe('setResponseText()', () => {
             beforeEach(() => {
-                socketManager.join.mockReset()
-                socketManager.leave.mockReset()
-                socketManager.send.mockReset()
+                ;(socketManager.join as jest.Mock).mockReset()
+                ;(socketManager.leave as jest.Mock).mockReset()
+                ;(socketManager.send as jest.Mock).mockReset()
             })
 
             it('should always pass the args to the reducer', () => {
-                store = mockStore<*, StoreAction>({
-                    ticket: emailTicket,
+                store = mockStore({
+                    ticket: typeSafeEmailTicket,
                     newMessage: initialState,
                 })
 
@@ -589,10 +665,10 @@ describe('actions', () => {
             })
 
             it('should send typing event when the user is typing', () => {
-                store = mockStore<*, StoreAction>({
+                store = mockStore({
                     newMessage: initialState.setIn(
                         ['newMessage', 'source', 'type'],
-                        TicketMessageSourceTypes.CHAT
+                        TicketMessageSourceType.Chat
                     ),
                     ticket: fromJS({id: 1}),
                     agents: fromJS({
@@ -613,14 +689,16 @@ describe('actions', () => {
                 )
 
                 expect(store.getActions()).toMatchSnapshot()
-                expect(socketManager.send.mock.calls.length).toBe(1)
+                expect(
+                    (socketManager.send as jest.Mock).mock.calls.length
+                ).toBe(1)
             })
 
             it('should not send a typing event when the user is typing in an internal note', () => {
-                store = mockStore<*, StoreAction>({
+                store = mockStore({
                     newMessage: initialState.setIn(
                         ['newMessage', 'source', 'type'],
-                        TicketMessageSourceTypes.INTERNAL_NOTE
+                        TicketMessageSourceType.InternalNote
                     ),
                     ticket: fromJS({id: 1}),
                 })
@@ -634,11 +712,13 @@ describe('actions', () => {
                 )
 
                 expect(store.getActions()).toMatchSnapshot()
-                expect(socketManager.send.mock.calls.length).toBe(0)
+                expect(
+                    (socketManager.send as jest.Mock).mock.calls.length
+                ).toBe(0)
             })
 
             it('should not send a typing event when the reply area only contains a signature', () => {
-                store = mockStore<*, StoreAction>({
+                store = mockStore({
                     newMessage: initialState,
                     ticket: fromJS({id: 1}),
                     agents: fromJS({
@@ -661,11 +741,13 @@ describe('actions', () => {
                 )
 
                 expect(store.getActions()).toMatchSnapshot()
-                expect(socketManager.send.mock.calls.length).toBe(0)
+                expect(
+                    (socketManager.send as jest.Mock).mock.calls.length
+                ).toBe(0)
             })
 
             it('should send an end typing event on ticket when the user is not typing but is in the room', () => {
-                store = mockStore<*, StoreAction>({
+                store = mockStore({
                     newMessage: initialState,
                     ticket: fromJS({id: 1}),
                     agents: fromJS({
@@ -694,12 +776,16 @@ describe('actions', () => {
                 )
 
                 expect(store.getActions()).toMatchSnapshot()
-                expect(socketManager.join.mock.calls.length).toBe(0)
-                expect(socketManager.send.mock.calls.length).toBe(1)
+                expect(
+                    (socketManager.join as jest.Mock).mock.calls.length
+                ).toBe(0)
+                expect(
+                    (socketManager.send as jest.Mock).mock.calls.length
+                ).toBe(1)
             })
 
             it('should not send an end typing event when the user is not typing and not in ticket', () => {
-                store = mockStore<*, StoreAction>({
+                store = mockStore({
                     newMessage: initialState,
                     ticket: fromJS({id: 1}),
                     agents: fromJS({
@@ -724,16 +810,18 @@ describe('actions', () => {
                 )
 
                 expect(store.getActions()).toMatchSnapshot()
-                expect(socketManager.send.mock.calls.length).toBe(0)
+                expect(
+                    (socketManager.send as jest.Mock).mock.calls.length
+                ).toBe(0)
             })
         })
 
         describe('prepareTicketDataToSend()', () => {
-            let data: ?Object = {}
+            let data: Record<string, unknown> = {}
 
             beforeEach(() => {
                 const contentState = ContentState.createFromText('Hi ')
-                store = mockStore<*, StoreAction>({
+                store = mockStore({
                     integrations: fromJS(integrationsState),
                     newMessage: fromJS({
                         state: {contentState},
@@ -763,9 +851,9 @@ describe('actions', () => {
                         getState().ticket,
                         getState().newMessage,
                         '',
-                        [],
+                        fromJS([]),
                         fromJS({})
-                    )
+                    ) as Record<string, unknown>
                 })
             })
 
@@ -775,7 +863,9 @@ describe('actions', () => {
                     throw new Error('data should not be null or undefined')
                 }
                 // BUG because generateRandomKey is mocked newlines not added
-                expect(data.newMessage.body_text).toBe('Hi cheers, Steve')
+                expect((data.newMessage as {body_text: string}).body_text).toBe(
+                    'Hi cheers, Steve'
+                )
             })
 
             it('should add html signature to message', () => {
@@ -784,7 +874,7 @@ describe('actions', () => {
                     throw new Error('data should not be null or undefined')
                 }
                 // BUG because generateRandomKey is mocked <br>s are not added
-                expect(data.newMessage.body_html).toBe(
+                expect((data.newMessage as {body_html: string}).body_html).toBe(
                     '<div>Hi cheers, <strong>Steve</strong></div>'
                 )
             })
@@ -792,7 +882,7 @@ describe('actions', () => {
 
         describe('addSignature()', () => {
             it('should dispatch NEW_MESSAGE_ADD_SIGNATURE action', () => {
-                store = mockStore<*, StoreAction>({
+                store = mockStore({
                     newMessage: initialState,
                 })
                 const contentState = ContentState.createFromText('foo')
@@ -809,7 +899,7 @@ describe('actions', () => {
         describe('prepareTicketMessage', () => {
             it('should prepare next new message after we submitted an instagram comment', () => {
                 store = mockStore({
-                    ticket: instagramMedia.set('id', 12),
+                    ticket: typeSafeInstagramMedia.set('id', 12),
                     newMessage: initialState.setIn(
                         ['newMessage', 'source'],
                         fromJS({
@@ -828,11 +918,14 @@ describe('actions', () => {
                     integrations: fromJS(integrationsState),
                 })
 
-                return store
-                    .dispatch(actions.prepareTicketMessage())
-                    .then(({messageToSend}) => {
-                        expect(messageToSend).toMatchSnapshot()
-                    })
+                return (
+                    store
+                        //@ts-ignore
+                        .dispatch(actions.prepareTicketMessage())
+                        .then(({messageToSend}) => {
+                            expect(messageToSend).toMatchSnapshot()
+                        })
+                )
             })
         })
 
@@ -842,7 +935,7 @@ describe('actions', () => {
                     .onPost('/api/tickets/12/messages/')
                     .reply(201, {ticket_id: 12, messages: []})
                 store = mockStore({
-                    ticket: ticketInitialState.set('id', 12),
+                    ticket: typeSafeTicketInitialState.set('id', 12),
                     newMessage: initialState,
                     currentUser: fromJS({
                         id: 1,
@@ -851,14 +944,18 @@ describe('actions', () => {
                     integrations: fromJS(integrationsState),
                 })
 
-                return store
-                    .dispatch(actions.prepareTicketMessage())
-                    .then(({messageId, messageToSend}) =>
-                        actions.sendTicketMessage(messageId, messageToSend)
-                    )
-                    .then(() => {
-                        expect(store.getActions()).toMatchSnapshot()
-                    })
+                return (
+                    store
+                        //@ts-ignore
+                        .dispatch(actions.prepareTicketMessage())
+                        .then(({messageId, messageToSend}) =>
+                            //@ts-ignore
+                            actions.sendTicketMessage(messageId, messageToSend)
+                        )
+                        .then(() => {
+                            expect(store.getActions()).toMatchSnapshot()
+                        })
+                )
             })
         })
 
@@ -868,7 +965,9 @@ describe('actions', () => {
                     newMessage: initialState,
                 })
                 store.dispatch(
-                    actions.newMessageResetFromMessage({body_text: 'foo'})
+                    actions.newMessageResetFromMessage({
+                        body_text: 'foo',
+                    } as any)
                 )
                 expect(store.getActions()).toMatchSnapshot()
             })
@@ -876,26 +975,29 @@ describe('actions', () => {
 
         describe('addAttachments()', () => {
             const createFile = (name: string, type: string): File => {
-                const blob: any = new Blob(['foo'], {type: 'any'})
+                const blob = (new Blob(['foo'], {
+                    type: 'any',
+                }) as unknown) as Record<string, unknown> & {
+                    slice: (i: number, j: number, type: string) => File
+                }
                 blob.name = name
-                return blob.slice(0, blob.size, type)
+                return blob.slice(0, blob.size as number, type)
             }
             const fileFoo = createFile('foo', 'image/png')
             const fileBar = createFile('bar', 'video/mp4')
-            const fileList: FileList = ({
-                //$FlowFixMe
+            const fileList = ({
                 0: fileFoo,
-            }: any)
+            } as unknown) as FileList
             it('should dispatch NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS when successfully adding attachments', (done) => {
                 mockedUploadFiles.mockReturnValue(Promise.resolve())
-                store = mockStore<*, StoreAction>({
+                store = mockStore({
                     newMessage: initialState,
-                    ticket: ticketInitialState.set('id', 1),
+                    ticket: typeSafeTicketInitialState.set('id', 1),
                 })
                 store.dispatch(
                     actions.addAttachments(
-                        ticketInitialState.set('id', 1),
-                        (fileList: any)
+                        typeSafeTicketInitialState.set('id', 1),
+                        fileList
                     )
                 )
 
@@ -908,14 +1010,14 @@ describe('actions', () => {
 
             it('should not dispatch NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS when successfully adding attachments in another ticket', (done) => {
                 mockedUploadFiles.mockReturnValue(Promise.resolve())
-                store = mockStore<*, StoreAction>({
+                store = mockStore({
                     newMessage: initialState,
-                    ticket: ticketInitialState.set('id', 2),
+                    ticket: typeSafeTicketInitialState.set('id', 2),
                 })
                 store.dispatch(
                     actions.addAttachments(
-                        ticketInitialState.set('id', 1),
-                        (fileList: any)
+                        typeSafeTicketInitialState.set('id', 1),
+                        fileList
                     )
                 )
 
@@ -932,14 +1034,14 @@ describe('actions', () => {
                         response: {},
                     })
                 )
-                store = mockStore<*, StoreAction>({
+                store = mockStore({
                     newMessage: initialState,
-                    ticket: ticketInitialState.set('id', 1),
+                    ticket: typeSafeTicketInitialState.set('id', 1),
                 })
                 store.dispatch(
                     actions.addAttachments(
-                        ticketInitialState.set('id', 1),
-                        (fileList: any)
+                        typeSafeTicketInitialState.set('id', 1),
+                        fileList
                     )
                 )
 
@@ -958,14 +1060,14 @@ describe('actions', () => {
                         },
                     })
                 )
-                store = mockStore<*, StoreAction>({
+                store = mockStore({
                     newMessage: initialState,
-                    ticket: ticketInitialState.set('id', 1),
+                    ticket: typeSafeTicketInitialState.set('id', 1),
                 })
                 store.dispatch(
                     actions.addAttachments(
-                        ticketInitialState.set('id', 1),
-                        (fileList: any)
+                        typeSafeTicketInitialState.set('id', 1),
+                        fileList
                     )
                 )
 
@@ -979,20 +1081,19 @@ describe('actions', () => {
             it('should dispatch NEW_MESSAGE_ADD_ATTACHMENT_ERROR when source is facebook comment and file has wrong type', (done) => {
                 const fileBaz = createFile('baz', 'baz')
                 mockedUploadFiles.mockReturnValue(Promise.resolve())
-                store = mockStore<*, StoreAction>({
+                store = mockStore({
                     newMessage: initialState.setIn(
                         ['newMessage', 'source', 'type'],
-                        TicketMessageSourceTypes.FACEBOOK_COMMENT
+                        TicketMessageSourceType.FacebookComment
                     ),
-                    ticket: ticketInitialState.set('id', 1),
+                    ticket: typeSafeTicketInitialState.set('id', 1),
                 })
                 store.dispatch(
                     actions.addAttachments(
-                        ticketInitialState.set('id', 1),
+                        typeSafeTicketInitialState.set('id', 1),
                         ({
-                            //$FlowFixMe
                             0: fileBaz,
-                        }: any)
+                        } as unknown) as FileList
                     )
                 )
 
@@ -1005,22 +1106,20 @@ describe('actions', () => {
 
             it('should dispatch NEW_MESSAGE_ADD_ATTACHMENT_ERROR when adding more than 1 attachement in a facebook comment', (done) => {
                 mockedUploadFiles.mockReturnValue(Promise.resolve())
-                store = mockStore<*, StoreAction>({
+                store = mockStore({
                     newMessage: initialState.setIn(
                         ['newMessage', 'source', 'type'],
-                        TicketMessageSourceTypes.FACEBOOK_COMMENT
+                        TicketMessageSourceType.FacebookComment
                     ),
-                    ticket: ticketInitialState.set('id', 1),
+                    ticket: typeSafeTicketInitialState.set('id', 1),
                 })
                 store.dispatch(
                     actions.addAttachments(
-                        ticketInitialState.set('id', 1),
+                        typeSafeTicketInitialState.set('id', 1),
                         ({
-                            //$FlowFixMe
                             0: fileFoo,
-                            //$FlowFixMe
                             1: fileBar,
-                        }: any)
+                        } as unknown) as FileList
                     )
                 )
 
@@ -1049,7 +1148,7 @@ describe('actions', () => {
                 uri: '',
                 meta: {},
             })
-            store = mockStore<*, StoreAction>({})
+            store = mockStore({})
 
             return store
                 .dispatch(actions.updatePotentialCustomers('foo'))
@@ -1071,8 +1170,8 @@ describe('actions', () => {
                 uri: '',
                 meta: {},
             })
-            store = mockStore<*, StoreAction>({})
-            const source = CancelToken.source()
+            store = mockStore({})
+            const source = axios.CancelToken.source()
             source.cancel()
 
             return store

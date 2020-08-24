@@ -12,7 +12,7 @@ import {
 
 import {setFieldVisibility} from '../../../../state/views/actions'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
-import {notify} from '../../../../state/notifications/actions'
+import {notify} from '../../../../state/notifications/actions.ts'
 
 import BooleanField from '../../forms/BooleanField'
 

@@ -17,7 +17,7 @@ import {
 
 import classnames from 'classnames'
 
-import {notify} from '../../../../state/notifications/actions'
+import {notify} from '../../../../state/notifications/actions.ts'
 import {updateSubscription} from '../../../../state/currentAccount/actions.ts'
 import * as billingSelectors from '../../../../state/billing/selectors.ts'
 import * as currentAccountSelectors from '../../../../state/currentAccount/selectors.ts'

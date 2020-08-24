@@ -2,7 +2,7 @@ import _some from 'lodash/some'
 import _get from 'lodash/get'
 
 import {stripErrorMessage, errorToChildren} from '../../utils'
-import {notify} from '../../state/notifications/actions'
+import {notify} from '../../state/notifications/actions.ts'
 
 /**
  * Middleware displaying errors from server when the error property exists

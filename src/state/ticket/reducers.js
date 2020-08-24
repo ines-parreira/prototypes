@@ -2,8 +2,8 @@
 import {fromJS, type Map} from 'immutable'
 
 import * as customerTypes from '../customers/constants'
-import ticketReplyCache from '../newMessage/ticketReplyCache'
-import * as newMessageTypes from '../newMessage/constants'
+import ticketReplyCache from '../newMessage/ticketReplyCache.ts'
+import * as newMessageTypes from '../newMessage/constants.ts'
 import {TICKET_AUDIT_LOG_EVENTS} from '../../constants/event'
 import {compare} from '../../utils'
 import type {actionType} from '../types'

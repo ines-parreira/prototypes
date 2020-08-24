@@ -2,7 +2,7 @@
 // The code below checks if we have a new Gorgias release
 import axios from 'axios'
 
-import {notify} from '../state/notifications/actions'
+import {notify} from '../state/notifications/actions.ts'
 import type {dispatchType} from '../state/types'
 
 let currentRelease = window.GORGIAS_RELEASE
@@ -26,7 +26,7 @@ export const injectInterceptor = () => (dispatch: dispatchType) => {
                             window.location.reload()
                         },
                         allowHtml: true,
-                        message: `An update is available for Gorgias. Click <a>here</a> to reload the page and get the 
+                        message: `An update is available for Gorgias. Click <a>here</a> to reload the page and get the
             latest improvements.`,
                     })
                 )

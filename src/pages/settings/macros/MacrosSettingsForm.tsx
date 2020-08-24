@@ -31,7 +31,7 @@ import {
     macroUpdated,
 } from '../../../state/entities/macros/actions'
 import {getDefaultMacro} from '../../../state/macro/utils'
-import {notify} from '../../../state/notifications/actions.js'
+import {notify} from '../../../state/notifications/actions'
 import {NotificationStatus} from '../../../state/notifications/types'
 import {RootState, StoreDispatch} from '../../../state/types'
 import ConfirmButton from '../../common/components/ConfirmButton.js'

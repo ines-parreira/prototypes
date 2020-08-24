@@ -7,7 +7,7 @@ import _uniq from 'lodash/uniq'
 import _difference from 'lodash/difference'
 import _xor from 'lodash/xor'
 
-import * as newMessageActions from '../../../../../../state/newMessage/actions'
+import * as newMessageActions from '../../../../../../state/newMessage/actions.ts'
 import {
     getNewMessageType,
     getNewMessageChannel,
@@ -16,7 +16,7 @@ import {
     getContactProperties,
     getOptionalContactProperties,
     areNewMessageContactPropertiesFulfilled,
-} from '../../../../../../state/newMessage/selectors'
+} from '../../../../../../state/newMessage/selectors.ts'
 import * as integrationSelectors from '../../../../../../state/integrations/selectors.ts'
 import {getPersonLabelFromSource} from '../../../../common/utils'
 

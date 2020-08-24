@@ -15,7 +15,7 @@ import {SegmentEvent} from '../../../../store/middlewares/types/segmentTracker'
 import {formatPrice} from '../../../../business/shopify/number.js'
 import {StoreDispatch, RootState} from '../../../types'
 import GorgiasApi from '../../../../services/gorgiasApi.js'
-import {notify} from '../../../notifications/actions.js'
+import {notify} from '../../../notifications/actions'
 import {NotificationStatus} from '../../../notifications/types'
 
 import {

@@ -27,7 +27,7 @@ import URLSafeBase64 from 'urlsafe-base64'
 import {humanize} from './business/format'
 import {ACTION_TEMPLATES} from './config'
 import TICKET_LANGUAGES from './config/ticketLanguages'
-import {AUTHORIZED_NOTIFICATION_TYPES} from './state/notifications/actions'
+import {AUTHORIZED_NOTIFICATION_TYPES} from './state/notifications/actions.ts'
 import type {Notification} from './state/notifications/types'
 import type {viewsStateType} from './state/views/types'
 import type {

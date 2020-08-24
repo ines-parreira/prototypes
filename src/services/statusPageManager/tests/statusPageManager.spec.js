@@ -9,11 +9,11 @@ import {
     COMPONENTS_NOTIFICATION_ID,
     MAINTENANCE_NOTIFICATION_ID,
 } from '../constants'
-import {notify} from '../../../state/notifications/actions'
+import {notify} from '../../../state/notifications/actions.ts'
 
-jest.mock('../../../state/notifications/actions', () => {
+jest.mock('../../../state/notifications/actions.ts', () => {
     const notificationActions = require.requireActual(
-        '../../../state/notifications/actions'
+        '../../../state/notifications/actions.ts'
     )
 
     return {

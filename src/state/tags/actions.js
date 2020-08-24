@@ -3,7 +3,7 @@ import axios from 'axios'
 
 import type {List} from 'immutable'
 
-import {notify} from '../notifications/actions'
+import {notify} from '../notifications/actions.ts'
 import {createErrorNotification} from '../utils'
 
 import type {

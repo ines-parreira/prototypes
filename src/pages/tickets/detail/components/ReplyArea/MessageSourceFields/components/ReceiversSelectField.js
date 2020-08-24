@@ -9,7 +9,7 @@ import {
     receiversValueFromState,
     receiversStateFromValue,
 } from '../../../../../../../state/ticket/utils'
-import {updatePotentialCustomers} from '../../../../../../../state/newMessage/actions'
+import {updatePotentialCustomers} from '../../../../../../../state/newMessage/actions.ts'
 import withCancellableRequest from '../../../../../../common/utils/withCancellableRequest'
 
 import MultiSelectAsyncField from './MultiSelectAsyncField/index'

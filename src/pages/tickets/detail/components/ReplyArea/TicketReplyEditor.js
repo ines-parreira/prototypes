@@ -11,16 +11,16 @@ import {type TicketMessageSourceType} from '../../../../../business/types/ticket
 import {canLeaveInternalNote, isRichType} from '../../../../../config/ticket'
 import {getOtherAgents} from '../../../../../state/agents/selectors.ts'
 import type {agentsType} from '../../../../../state/agents/types'
-import * as newMessageActions from '../../../../../state/newMessage/actions'
-import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
-import {notify} from '../../../../../state/notifications/actions'
+import * as newMessageActions from '../../../../../state/newMessage/actions.ts'
+import * as newMessageSelectors from '../../../../../state/newMessage/selectors.ts'
+import {notify} from '../../../../../state/notifications/actions.ts'
 import type {attachmentType} from '../../../../../types'
 import {
     getFileTooLargeError,
     getMaxAttachmentSize,
 } from '../../../../../utils/file'
 import RichField from '../../../../common/forms/RichField'
-import {getContext} from '../../../../../state/prediction/selectors'
+import {getContext} from '../../../../../state/prediction/selectors.ts'
 
 import css from './TicketReplyEditor.less'
 

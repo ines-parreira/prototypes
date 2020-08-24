@@ -6,7 +6,7 @@ import {fromJS} from 'immutable'
 import {Breadcrumb, BreadcrumbItem, Table, Button, Container} from 'reactstrap'
 
 import {getIntegrationsList} from '../../../../state/integrations/helpers.ts'
-import {notify} from '../../../../state/notifications/actions'
+import {notify} from '../../../../state/notifications/actions.ts'
 import PageHeader from '../../../common/components/PageHeader'
 
 import NoIntegration from './NoIntegration'

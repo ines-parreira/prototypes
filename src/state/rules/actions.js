@@ -2,7 +2,7 @@
 import axios from 'axios'
 import {fromJS, List} from 'immutable'
 
-import {notify} from '../notifications/actions'
+import {notify} from '../notifications/actions.ts'
 
 import type {Dispatch, getStateType} from '../types'
 import {createErrorNotification} from '../utils'

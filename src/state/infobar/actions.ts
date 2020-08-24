@@ -2,7 +2,7 @@ import axios, {CancelToken, AxiosError, AxiosResponse} from 'axios'
 import {browserHistory} from 'react-router'
 import _noop from 'lodash/noop'
 
-import {notify} from '../notifications/actions.js'
+import {notify} from '../notifications/actions'
 import {isCurrentlyOnTicket, stripErrorMessage} from '../../utils.js'
 
 import {ApiListResponsePagination} from '../../models/api/types'

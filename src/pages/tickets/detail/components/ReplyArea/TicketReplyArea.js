@@ -11,7 +11,7 @@ import type {Macro} from '../../../../../business/types/macro'
 import {type TicketMessageSourceType} from '../../../../../business/types/ticket'
 import shortcutManager from '../../../../../services/shortcutManager'
 import withCancellableRequest from '../../../../common/utils/withCancellableRequest'
-import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
+import * as newMessageSelectors from '../../../../../state/newMessage/selectors.ts'
 import {applyMacro} from '../../../../../state/ticket/actions'
 import * as ticketSelectors from '../../../../../state/ticket/selectors'
 import {
@@ -24,7 +24,7 @@ import {
     type fetchMacrosParamsTypes,
     type MacrosSearchResult,
 } from '../../../../../state/macro/actions.ts'
-import {notify} from '../../../../../state/notifications/actions'
+import {notify} from '../../../../../state/notifications/actions.ts'
 import RichField from '../../../../common/forms/RichField'
 
 import TicketMacros from './TicketMacros'

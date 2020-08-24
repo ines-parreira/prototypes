@@ -15,8 +15,8 @@ import {
     prepareTicketMessage,
     sendTicketMessage,
     setReceivers,
-} from '../../../../state/newMessage/actions'
-import {notify} from '../../../../state/notifications/actions'
+} from '../../../../state/newMessage/actions.ts'
+import {notify} from '../../../../state/notifications/actions.ts'
 import {
     findAndSetCustomer,
     messageDeleted,
@@ -35,7 +35,7 @@ const mockNotify = (notify: any)
 
 jest.useFakeTimers()
 
-jest.mock('../../../../state/notifications/actions', () => {
+jest.mock('../../../../state/notifications/actions.ts', () => {
     const _identity = require('lodash/identity')
 
     return {
@@ -52,7 +52,7 @@ jest.mock('../../../../state/customers/actions.ts', () => {
     }
 })
 
-jest.mock('../../../../state/newMessage/actions', () => {
+jest.mock('../../../../state/newMessage/actions.ts', () => {
     const _identity = require('lodash/identity')
 
     return {

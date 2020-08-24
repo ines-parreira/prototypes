@@ -2,7 +2,7 @@ import type {List} from 'immutable'
 import axios from 'axios'
 import {updateNotification} from 'reapop'
 
-import {notify} from '../notifications/actions'
+import {notify} from '../notifications/actions.ts'
 import type {Dispatch, thunkActionType} from '../types'
 import {buildJobMessage} from '../../utils/notificationUtils'
 

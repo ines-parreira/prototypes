@@ -1,7 +1,7 @@
 import {ContentState} from 'draft-js'
 import {fromJS} from 'immutable'
 
-import * as responseUtils from '../responseUtils'
+import * as responseUtils from '../responseUtils.ts'
 import {convertToHTML} from '../../../utils/editor'
 
 describe('addSignature', () => {

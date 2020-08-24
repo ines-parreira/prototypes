@@ -1,4 +1,3 @@
-// @flow
 import _words from 'lodash/words'
 import _max from 'lodash/max'
 import _isEqual from 'lodash/isEqual'
@@ -12,9 +11,9 @@ import {
     removeNotification as hide,
 } from 'reapop'
 
-import type {Dispatch, getStateType} from '../types'
+import {StoreDispatch, RootState} from '../types'
 
-import type {Notification, HandleUsageBanner} from './types'
+import {Notification, HandleUsageBanner, NotificationStatus} from './types'
 
 export const AUTHORIZED_NOTIFICATION_TYPES = [
     'success',
@@ -36,7 +35,8 @@ export const INITIAL_MESSAGE = {
 }
 
 // clean-up notification for comparison
-const cleanNotification = (n): {} => _omit(n, _functions(n).concat(['id']))
+const cleanNotification = (n: Notification) =>
+    _omit(n, _functions(n).concat(['id']))
 
 // detect duplicate notifications
 const isDuplicate = (
@@ -55,12 +55,11 @@ const isDuplicate = (
  *
  * set dismissAfter = 0 to make the notification not leave until the user clicks on it
  * set closeOnNext = true to make the notification close on next notification addition
- * @param message
  */
 export const notify = (message: Notification) => (
-    dispatch: Dispatch,
-    getState: getStateType
-): Promise<Dispatch> => {
+    dispatch: StoreDispatch,
+    getState: () => RootState
+): Promise<ReturnType<StoreDispatch>> => {
     // don't add empty notifications
     if (!message) {
         return Promise.resolve()
@@ -68,9 +67,9 @@ export const notify = (message: Notification) => (
 
     const status = AUTHORIZED_NOTIFICATION_TYPES.includes(message.status)
         ? message.status
-        : 'info'
+        : NotificationStatus.Info
 
-    const finalMessage = {
+    const finalMessage: Notification = {
         ...INITIAL_MESSAGE,
         ...message,
         ...{status},
@@ -90,16 +89,17 @@ export const notify = (message: Notification) => (
             finalMessage.message || ''
         }`
         let readingTime = (_words(readText).length * 60) / wordsPerMinute
-        readingTime = _max([3, Math.ceil(readingTime)])
+        readingTime = _max([3, Math.ceil(readingTime)]) as number
         finalMessage.dismissAfter = readingTime * 1000
     }
 
     const notificationsState = (getState() || {}).notifications || []
     let duplicate = false
 
-    notificationsState.forEach((notification) => {
+    notificationsState.forEach((notification: Notification) => {
         // close previous notifications that were closeOnNext = true
         if (notification.closeOnNext) {
+            //eslint-disable-next-line @typescript-eslint/no-unsafe-call
             dispatch(removeNotification(notification.id))
         }
 
@@ -114,27 +114,30 @@ export const notify = (message: Notification) => (
     if (duplicate) {
         return Promise.resolve()
     }
-
-    return dispatch(addNotification(finalMessage))
+    //eslint-disable-next-line @typescript-eslint/no-unsafe-call
+    return dispatch(addNotification(finalMessage)) as Promise<
+        ReturnType<StoreDispatch>
+    >
 }
 
 export const handleUsageBanner = ({
     newAccountStatus,
     notification,
     currentAccountStatus,
-}: HandleUsageBanner) => (dispatch: Dispatch) => {
+}: HandleUsageBanner) => (dispatch: StoreDispatch) => {
     const USAGE_NOTIFICATION_BANNER = 99
 
     if (currentAccountStatus !== newAccountStatus) {
+        //eslint-disable-next-line @typescript-eslint/no-unsafe-call
         dispatch(hide(USAGE_NOTIFICATION_BANNER))
     }
 
     if (notification) {
-        dispatch(
+        void dispatch(
             notify({
                 id: USAGE_NOTIFICATION_BANNER.toString(),
                 style: 'banner',
-                status: notification.type || 'warning',
+                status: notification.type || NotificationStatus.Warning,
                 dismissible: false,
                 message: notification.message,
                 onClick: () => {

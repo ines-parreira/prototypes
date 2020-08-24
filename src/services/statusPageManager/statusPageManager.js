@@ -3,7 +3,7 @@ import moment from 'moment'
 import {removeNotification} from 'reapop'
 
 import {store as reduxStore} from '../../init'
-import {notify} from '../../state/notifications/actions'
+import {notify} from '../../state/notifications/actions.ts'
 
 import {
     PAGE_ID,

@@ -7,7 +7,7 @@ import * as viewsConfig from '../../config/views.js'
 
 import {ApiListResponsePagination} from '../../models/api/types'
 import {Ticket} from '../../models/ticket/types'
-import {notify} from '../notifications/actions.js'
+import {notify} from '../notifications/actions'
 import {NotificationStatus} from '../notifications/types'
 import type {StoreDispatch, RootState} from '../types'
 

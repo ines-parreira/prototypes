@@ -12,7 +12,7 @@ import {
     views as statViewsConfig,
 } from '../../config/stats'
 import GorgiasApi from '../../services/gorgiasApi'
-import {notify} from '../../state/notifications/actions'
+import {notify} from '../../state/notifications/actions.ts'
 import {getViewFilters} from '../../state/stats/selectors'
 
 import {errorToChildren} from '../../utils'

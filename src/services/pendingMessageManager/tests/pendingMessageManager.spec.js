@@ -7,7 +7,7 @@ import {removeNotification} from 'reapop'
 import {
     newMessageResetFromMessage,
     sendTicketMessage,
-} from '../../../state/newMessage/actions'
+} from '../../../state/newMessage/actions.ts'
 import {applyMacro, messageDeleted} from '../../../state/ticket/actions'
 import pendingMessageManager, {
     PendingMessageManager,
@@ -30,8 +30,8 @@ jest.mock('../../../init', () => {
         },
     }
 })
-jest.mock('../../../state/newMessage/actions')
-jest.mock('../../../state/notifications/actions')
+jest.mock('../../../state/newMessage/actions.ts')
+jest.mock('../../../state/notifications/actions.ts')
 jest.mock('../../../state/ticket/actions')
 jest.useFakeTimers()
 

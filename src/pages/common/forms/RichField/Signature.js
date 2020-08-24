@@ -3,9 +3,9 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {EditorState} from 'draft-js'
 
-import * as newMessageSelectors from '../../../../state/newMessage/selectors'
-import * as newMessageActions from '../../../../state/newMessage/actions'
-import * as responseUtils from '../../../../state/newMessage/responseUtils'
+import * as newMessageSelectors from '../../../../state/newMessage/selectors.ts'
+import * as newMessageActions from '../../../../state/newMessage/actions.ts'
+import * as responseUtils from '../../../../state/newMessage/responseUtils.ts'
 import Ellipsis from '../../components/Ellipsis'
 
 type Props = {

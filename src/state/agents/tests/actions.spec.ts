@@ -21,7 +21,7 @@ const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
 
 jest.addMatchers(immutableMatchers)
 
-jest.mock('../../notifications/actions', () => {
+jest.mock('../../notifications/actions.ts', () => {
     return {
         notify: jest.fn(() => <T>(args: T): T => args),
     }

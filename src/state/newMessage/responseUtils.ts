@@ -1,23 +1,24 @@
-// @flow
 import {
     ContentState,
     convertFromRaw,
     convertToRaw,
     Modifier,
     SelectionState,
+    ContentBlock,
+    RawDraftContentBlock,
 } from 'draft-js'
-import type {Map} from 'immutable'
-import {fromJS} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 import _findIndex from 'lodash/findIndex'
 import _pick from 'lodash/pick'
 import _pickBy from 'lodash/pickBy'
 import _take from 'lodash/take'
 import _takeRight from 'lodash/takeRight'
 
-import {isRichType} from '../../config/ticket'
-import {renderTemplate} from '../../pages/common/utils/template'
-import {convertFromHTML} from '../../utils/editor'
-import type {currentUserType} from '../types'
+import {TicketMessageSourceType} from '../../business/types/ticket'
+import {isRichType} from '../../config/ticket.js'
+import {renderTemplate} from '../../pages/common/utils/template.js'
+import {convertFromHTML} from '../../utils/editor.js'
+import {CurrentUser, StoreState} from '../types'
 
 import * as selectors from './selectors'
 import ticketReplyCache from './ticketReplyCache'
@@ -25,32 +26,32 @@ import ticketReplyCache from './ticketReplyCache'
 const signatureHTMLPrefix = '<div></div><div></div>'
 const signatureTextPrefix = '\n\n'
 
-type contextType = {
+export type MessageContext = {
     action: {
-        fromMacro: boolean,
-        ticketId: string,
-        currentUser: currentUserType,
-        ticket: Map<*, *>,
-        args: Map<*, *>,
-        signature: Map<*, *>,
-    },
-    appliedMacro: {},
-    contentState: ContentState,
-    forceUpdate: boolean,
-    forceFocus: boolean,
-    state: Map<*, *>,
-    signatureAdded?: boolean,
-    cacheAdded?: boolean,
-    selectionState?: SelectionState,
-    sourceType?: string,
+        fromMacro: boolean
+        ticketId: string
+        currentUser: CurrentUser
+        ticket: Map<any, any>
+        args: Map<any, any>
+        signature: Map<any, any>
+    }
+    appliedMacro: Map<any, any>
+    contentState: ContentState
+    forceUpdate: boolean
+    forceFocus: boolean
+    state: Map<any, any>
+    signatureAdded?: boolean
+    cacheAdded?: boolean
+    selectionState?: SelectionState
+    sourceType?: string
 }
 
 export const getSignatureContentState = (
-    signature: Map<*, *>
+    signature: Map<any, any>
 ): ContentState => {
-    let signatureBlocks = null
-    const text = signature.get('text')
-    const html = signature.get('html')
+    let signatureBlocks: Maybe<ContentBlock[]> = null
+    const text = signature.get('text') as Maybe<string>
+    const html = signature.get('html') as Maybe<string>
 
     if (html) {
         signatureBlocks = convertFromHTML(
@@ -69,7 +70,7 @@ export const getSignatureContentState = (
     // mark blocks with signature meta flag - useful later for removing it when switching to chat or internal note
     signatureBlocks = signatureBlocks.map((b) =>
         b.set('data', fromJS({signature: true}))
-    )
+    ) as ContentBlock[]
 
     // Concat the signature blocks at the end of the content
     return ContentState.createFromBlockArray(signatureBlocks)
@@ -80,6 +81,7 @@ function findContentState(
     parentContentState: ContentState,
     contentState: ContentState
 ): SelectionState {
+    //@ts-ignore
     let selectionState = SelectionState.createEmpty()
     const parentBlocks = parentContentState.getBlocksAsArray()
     const blocks = contentState.getBlocksAsArray()
@@ -96,14 +98,17 @@ function findContentState(
             j++
 
             if (!selectionState.getAnchorKey()) {
-                selectionState = selectionState.set('anchorKey', key)
+                selectionState = selectionState.set(
+                    'anchorKey',
+                    key
+                ) as SelectionState
             }
 
             if (j === blocks.length) {
                 selectionState = selectionState.merge({
                     focusKey: key,
                     focusOffset: block.getLength(),
-                })
+                }) as SelectionState
                 return true
             }
         } else {
@@ -119,8 +124,8 @@ function findContentState(
  * Test if the given signature is in the content state
  */
 export const isSignatureAdded = (
-    contentState: ?ContentState,
-    textSignature: ?string = ''
+    contentState: Maybe<ContentState>,
+    textSignature = ''
 ): boolean => {
     if (!contentState || !textSignature) {
         return false
@@ -134,8 +139,8 @@ export const isSignatureAdded = (
  * Test if the contentState only has the signature and nothing else
  */
 export const hasOnlySignature = (
-    contentState: ?ContentState,
-    textSignature: ?string
+    contentState: Maybe<ContentState>,
+    textSignature: Maybe<string>
 ): boolean => {
     if (!contentState || !textSignature) {
         return false
@@ -143,8 +148,12 @@ export const hasOnlySignature = (
     return contentState.getPlainText() === signatureTextPrefix + textSignature
 }
 
-export const getSourceTypeCache = (ticketId: string): string => {
-    return ticketReplyCache.get(ticketId).get('sourceType')
+export const getSourceTypeCache = (
+    ticketId: string
+): TicketMessageSourceType => {
+    return ticketReplyCache
+        .get(ticketId)
+        .get('sourceType') as TicketMessageSourceType
 }
 
 export const setSourceTypeCache = (
@@ -161,7 +170,7 @@ export const deleteReplyCache = (ticketId: string): void => {
 /**
  * Get the initial editor state (contentState + selectionState) from cache or return an empty state
  */
-export const getCache = (context: contextType): contextType => {
+export const getCache = (context: MessageContext): MessageContext => {
     const {action} = context
 
     // Proceed only if the change didn't come from a macro
@@ -172,7 +181,9 @@ export const getCache = (context: contextType): contextType => {
     // We're fetching the cached state from the localStorage here
     const cachedContent = ticketReplyCache.get(action.ticketId)
     if (cachedContent && !cachedContent.isEmpty()) {
-        const cachedContentState = cachedContent.get('contentState')
+        const cachedContentState = cachedContent.get(
+            'contentState'
+        ) as ContentState
         if (cachedContentState) {
             context.contentState = convertFromRaw(cachedContentState.toJS())
             context.forceUpdate = true
@@ -180,9 +191,10 @@ export const getCache = (context: contextType): contextType => {
             const cachedSelectionState = cachedContent.get('selectionState')
             if (cachedSelectionState) {
                 // create a new selection and just copy the props from the cached state
+                //@ts-ignore
                 context.selectionState = SelectionState.createEmpty().merge(
                     cachedSelectionState
-                )
+                ) as SelectionState
             }
         }
     }
@@ -193,7 +205,7 @@ export const getCache = (context: contextType): contextType => {
 /**
  * Update the cache by saving the contentState and selectionState
  */
-export const updateCache = (context: contextType) => {
+export const updateCache = (context: MessageContext) => {
     const {
         contentState,
         selectionState,
@@ -224,12 +236,8 @@ export const updateCache = (context: contextType) => {
 
 /**
  * Mark the context with cache added fields so we don't add the cache twice
- *
- * @param context
- * @returns {*}
- * @private
  */
-const _markCacheAdded = (context: contextType): contextType => {
+const _markCacheAdded = (context: MessageContext): MessageContext => {
     context.cacheAdded = true
     context.state = context.state.setIn(['state', 'cacheAdded'], true)
     return context
@@ -237,11 +245,8 @@ const _markCacheAdded = (context: contextType): contextType => {
 
 /**
  * Add a cache (if any) as the content state
- *
- * @param context
- * @returns {*}
  */
-export const addCache = (context: contextType): contextType => {
+export const addCache = (context: MessageContext): MessageContext => {
     const {state} = context
 
     context.cacheAdded = state.getIn(['state', 'cacheAdded'], false)
@@ -255,14 +260,14 @@ export const addCache = (context: contextType): contextType => {
 
 /**
  * Return a raw content state without any prediction entities
- *
- * @param contentState
- * @return {{blocks: Array, entityMap: {}}}
  */
 export const convertToRawWithoutPredictions = (contentState: ContentState) => {
     // don't cache predictions
     const rawContent = convertToRaw(contentState)
-    let newRaw = {blocks: [], entityMap: {}}
+    const newRaw: {
+        blocks: RawDraftContentBlock[]
+        entityMap: Record<string, unknown>
+    } = {blocks: [], entityMap: {}}
 
     newRaw.blocks = rawContent.blocks.slice()
     newRaw.entityMap = _pickBy(rawContent.entityMap, (val) => {
@@ -274,9 +279,6 @@ export const convertToRawWithoutPredictions = (contentState: ContentState) => {
 
 /**
  * Return a selectionState before the first ContentBlock
- *
- * @param blocks
- * @private
  */
 // const _selectionBefore = (blocks) => {
 //     if (blocks && blocks.length) {
@@ -288,19 +290,17 @@ export const convertToRawWithoutPredictions = (contentState: ContentState) => {
 
 /**
  * Return a selectionState after the last ContentBlock
- * @param blocks
- * @private
  */
 export const selectionAfter = (
-    blocks: Array<{key: string, text: string}>
-): ?SelectionState => {
+    blocks: Array<{key: string; text: string}>
+): Maybe<SelectionState> => {
     if (blocks && blocks.length) {
         // we only want the last block, we put the selection after it
         const block = blocks.slice(-1)[0]
         return SelectionState.createEmpty(block.key).merge({
             focusOffset: block.text.length,
             anchorOffset: block.text.length,
-        })
+        }) as SelectionState
     }
     return null
 }
@@ -308,7 +308,10 @@ export const selectionAfter = (
 /**
  * Add a signature (if any) at the end of the content state
  */
-export const addSignature = (contentState: ?Object, signature: Object): any => {
+export const addSignature = (
+    contentState: Maybe<ContentState>,
+    signature: Map<any, any>
+): Maybe<ContentState> => {
     if (!contentState) {
         return contentState
     }
@@ -322,8 +325,12 @@ export const addSignature = (contentState: ?Object, signature: Object): any => {
     // using contentState.getSelectionAfter inserts the signature at the start,
     // when the content is loaded from cache.
     const selectionState =
-        selectionAfter(contentState.getBlocksAsArray()) ||
-        contentState.getSelectionAfter()
+        selectionAfter(
+            (contentState.getBlocksAsArray() as unknown) as {
+                key: string
+                text: string
+            }[]
+        ) || contentState.getSelectionAfter()
     // add the signature contentState at the end of the existing content
     return Modifier.replaceWithFragment(
         contentState,
@@ -337,13 +344,14 @@ export const addSignature = (contentState: ?Object, signature: Object): any => {
  */
 export const removeSignature = (
     contentState: ContentState,
-    signature: Map<*, *>
+    signature: Map<any, any>
 ): ContentState => {
     const signatureContentState = getSignatureContentState(signature)
     const selectionState = findContentState(contentState, signatureContentState)
 
     // check if selection is empty
     if (selectionState.getAnchorKey() && selectionState.getFocusKey()) {
+        //@ts-ignore
         return Modifier.removeRange(contentState, selectionState)
     }
 
@@ -352,11 +360,8 @@ export const removeSignature = (
 
 /**
  * Add macro text and return the new editor state (contentState and selectionState).
- *
- * @param context
- * @returns {*}
  */
-export const applyMacro = (context: contextType): contextType => {
+export const applyMacro = (context: MessageContext): MessageContext => {
     const {contentState, selectionState, action, state} = context
 
     // Only when it's from a macro
@@ -382,7 +387,12 @@ export const applyMacro = (context: contextType): contextType => {
     const html = renderTemplate(action.args.get('body_html', ''), variables)
 
     let blocks = []
-    if (html && isRichType(selectors.getNewMessageType({newMessage: state}))) {
+    if (
+        html &&
+        isRichType(
+            selectors.getNewMessageType({newMessage: state} as StoreState)
+        )
+    ) {
         blocks = convertFromHTML(html).getBlocksAsArray()
     } else {
         blocks = ContentState.createFromText(text).getBlocksAsArray()
@@ -394,11 +404,17 @@ export const applyMacro = (context: contextType): contextType => {
         if (selectionState) {
             // Here we cut the current content at the cursor position to insert the macro.
             // Ex. : content is [1, 2, 3, 4, 5], we want to insert the macro ['a', 'b'] at index 2
-            let idx = _findIndex(currBlocks, {key: selectionState.focusKey})
+            let idx = _findIndex(currBlocks, {
+                key: (selectionState as SelectionState & {focusKey: string})
+                    .focusKey,
+            } as any)
 
             // if the focusOffset is bigger than 0 it means that the cursor is not at the beginning of the block
             // so we have to add our macro after the block
-            if (selectionState.focusOffset > 0) {
+            if (
+                (selectionState as SelectionState & {focusOffset: number})
+                    .focusOffset > 0
+            ) {
                 idx += 1
             }
 
@@ -412,7 +428,9 @@ export const applyMacro = (context: contextType): contextType => {
             blocks = left.concat(blocks)
 
             // Set the selection just after the macro content was inserted
-            context.selectionState = selectionAfter(blocks)
+            context.selectionState = selectionAfter(
+                blocks as any
+            ) as SelectionState
 
             // => [1, 2, 'a', 'b', 3, 4, 5]
             blocks = blocks.concat(right)
@@ -420,11 +438,13 @@ export const applyMacro = (context: contextType): contextType => {
             blocks = currBlocks.concat(blocks)
 
             // selection should be at the end here because we had no selection before
-            context.selectionState = selectionAfter(blocks)
+            context.selectionState = selectionAfter(
+                blocks as any
+            ) as SelectionState
         }
     } else {
         // selection should be at the end here because no content means no selection
-        context.selectionState = selectionAfter(blocks)
+        context.selectionState = selectionAfter(blocks as any) as SelectionState
     }
 
     context.contentState = ContentState.createFromBlockArray(blocks)

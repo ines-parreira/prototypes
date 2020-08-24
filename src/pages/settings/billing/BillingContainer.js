@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {withRouter, browserHistory} from 'react-router'
 import {Container} from 'reactstrap'
 
-import {notify} from '../../../state/notifications/actions'
+import {notify} from '../../../state/notifications/actions.ts'
 import PageHeader from '../../common/components/PageHeader'
 import * as currentAccountSelectors from '../../../state/currentAccount/selectors.ts'
 

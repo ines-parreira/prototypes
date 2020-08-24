@@ -3,7 +3,7 @@ import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS, type Record} from 'immutable'
 
 import reducer, {initialState} from '../reducers'
-import * as newMessageTypes from '../../newMessage/constants'
+import * as newMessageTypes from '../../newMessage/constants.ts'
 import * as customerTypes from '../../customers/constants'
 import * as types from '../constants'
 import * as ticketFixtures from '../../../fixtures/ticket'
@@ -19,7 +19,7 @@ const DATE_TO_USE = new Date('2017')
 global.Date = (jest.fn(() => DATE_TO_USE): any)
 global.Date.toISOString = (Date: any).toISOString
 
-jest.mock('../../newMessage/ticketReplyCache', () => {
+jest.mock('../../newMessage/ticketReplyCache.ts', () => {
     //$FlowFixMe
     const Immutable = require.requireActual('immutable')
 

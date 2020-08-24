@@ -2,7 +2,7 @@ import axios, {AxiosError} from 'axios'
 import _isUndefined from 'lodash/isUndefined'
 import _get from 'lodash/get'
 
-import {notify} from '../notifications/actions.js'
+import {notify} from '../notifications/actions'
 
 import type {StoreDispatch, RootState} from '../types'
 import {fetchChats} from '../chats/actions'

@@ -3,10 +3,12 @@ import {fromJS} from 'immutable'
 import {createSelector} from 'reselect'
 
 import {createImmutableSelector} from '../../utils'
-import {getNewMessageState} from '../newMessage/selectors'
 import type {stateType} from '../types'
 
 export const getTicketState = (state: stateType) => state.ticket || fromJS({})
+
+//$TsFixMe replace with getNewMessageState from newMessage/selectors during migration
+const getNewMessageState = (state: stateType) => state.newMessage || fromJS({})
 
 export const getProperty = (property: string) =>
     createSelector([getTicketState], (state) => state.get(property))

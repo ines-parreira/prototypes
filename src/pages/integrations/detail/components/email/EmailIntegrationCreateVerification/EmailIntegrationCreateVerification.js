@@ -10,7 +10,7 @@ import PageHeader from '../../../../../common/components/PageHeader'
 import socketManager from '../../../../../../services/socketManager'
 import * as accountActions from '../../../../../../state/currentAccount/actions.ts'
 import * as integrationActions from '../../../../../../state/integrations/actions.ts'
-import * as notificationActions from '../../../../../../state/notifications/actions'
+import * as notificationActions from '../../../../../../state/notifications/actions.ts'
 import {getForwardingEmailAddress} from '../../../../../../state/integrations/selectors.ts'
 
 type Props = {

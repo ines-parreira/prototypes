@@ -3,7 +3,7 @@ import {removeNotification} from 'reapop'
 
 import * as socketConstants from '../../../config/socketConstants'
 import * as socketEvents from '../../../config/socketEvents'
-import {notify} from '../../../state/notifications/actions'
+import {notify} from '../../../state/notifications/actions.ts'
 import {
     BROADCAST_CHANNEL_NAME,
     BROADCAST_CHANNEL_EVENTS,
@@ -11,9 +11,9 @@ import {
 } from '../constants'
 import {SocketManager} from '../socketManager'
 
-jest.mock('../../../state/notifications/actions', () => {
+jest.mock('../../../state/notifications/actions.ts', () => {
     return {
-        ...require.requireActual('../../../state/notifications/actions'),
+        ...require.requireActual('../../../state/notifications/actions.ts'),
         notify: jest.fn(),
     }
 })

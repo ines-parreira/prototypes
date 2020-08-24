@@ -10,7 +10,7 @@ import type {Map} from 'immutable'
 import {getSources, getSourcesWithCustomer} from '../widgets/selectors'
 
 import {jsonToWidgets} from '../../pages/common/components/infobar/utils'
-import {notify} from '../notifications/actions'
+import {notify} from '../notifications/actions.ts'
 import type {Dispatch, getStateType} from '../types'
 
 import * as integrationsSelectors from './../integrations/selectors.ts'

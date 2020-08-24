@@ -4,7 +4,7 @@ import type {Map, Set} from 'immutable'
 
 import {toImmutable, toJS} from '../../utils'
 import * as constants from '../teams/constants'
-import {notify} from '../notifications/actions'
+import {notify} from '../notifications/actions.ts'
 import type {Dispatch} from '../types'
 
 import {type teamType} from './types'

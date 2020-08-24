@@ -10,7 +10,7 @@ import {initialState} from '../reducers.ts'
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
-jest.mock('../../notifications/actions', () => {
+jest.mock('../../notifications/actions.ts', () => {
     return {
         notify: jest.fn((args) => ({...args, type: 'NOTIFY-MOCK'})),
     }

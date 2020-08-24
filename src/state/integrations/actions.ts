@@ -7,7 +7,7 @@ import _sortBy from 'lodash/sortBy'
 
 import {ApiListResponsePagination} from '../../models/api/types'
 import {Integration, IntegrationType} from '../../models/integration/types'
-import {notify} from '../notifications/actions.js'
+import {notify} from '../notifications/actions'
 import {NotificationStatus} from '../notifications/types'
 import type {StoreDispatch, RootState} from '../types'
 
@@ -341,7 +341,7 @@ export function deleteIntegration(integration: Map<any, any>) {
                         error,
                     })
                 }
-            ) as Promise<ReturnType<StoreDispatch>>
+            )
     }
 }
 
@@ -625,7 +625,7 @@ export function verifyEmailIntegration(token: string) {
                         })
                     )
                 }
-            ) as Promise<ReturnType<StoreDispatch>>
+            )
     }
 }
 

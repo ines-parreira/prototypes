@@ -7,7 +7,7 @@ import ToggleButton from '../../../../common/components/ToggleButton'
 import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'
 import * as integrationsActions from '../../../../../state/integrations/actions.ts'
-import {notify} from '../../../../../state/notifications/actions'
+import {notify} from '../../../../../state/notifications/actions.ts'
 
 @withRouter
 @connect(null, {

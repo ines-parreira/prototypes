@@ -5,8 +5,8 @@
 import {fromJS} from 'immutable'
 import {ContentState} from 'draft-js'
 
-import reducer, {initialState} from '../reducers'
-import * as types from '../constants'
+import reducer, {initialState} from '../reducers.ts'
+import * as types from '../constants.ts'
 import {convertToHTML} from '../../../utils/editor'
 
 describe('New message reducers', () => {

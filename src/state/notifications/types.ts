@@ -15,6 +15,10 @@ export type Notification = {
     closeOnNext?: boolean
     buttons?: NotificationButton[]
     allowHTML?: boolean
+    dismissible?: boolean
+    style?: string
+    type?: NotificationStatus
+    onClick?: () => void
 }
 
 type NotificationButton = {
@@ -22,7 +26,8 @@ type NotificationButton = {
     onClick: () => void
     primary: boolean
 }
-type HandleUsageBanner = {
+
+export type HandleUsageBanner = {
     newAccountStatus: string
     currentAccountStatus: string
     notification: Maybe<Notification>

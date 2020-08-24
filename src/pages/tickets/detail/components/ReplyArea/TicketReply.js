@@ -6,8 +6,8 @@ import {connect} from 'react-redux'
 
 import {canReply} from '../../../../../business/ticket'
 import type {TicketMessageSourceType} from '../../../../../business/types/ticket'
-import * as newMessageActions from '../../../../../state/newMessage/actions'
-import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
+import * as newMessageActions from '../../../../../state/newMessage/actions.ts'
+import * as newMessageSelectors from '../../../../../state/newMessage/selectors.ts'
 import {getActionTemplate} from '../../../../../utils'
 
 import TicketAttachments from './TicketAttachments'

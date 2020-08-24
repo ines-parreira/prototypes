@@ -4,6 +4,7 @@ export enum TicketMessageSourceType {
     Chat = 'chat',
     Email = 'email',
     EmailForward = 'email-forward',
+    Facebook = 'facebook',
     FacebookComment = 'facebook-comment',
     FacebookMessage = 'facebook-message',
     FacebookMessenger = 'facebook-messenger',

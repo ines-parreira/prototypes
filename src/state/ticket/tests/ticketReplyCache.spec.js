@@ -4,7 +4,7 @@ import {
     TicketReplyCache,
     defaultTicket,
     CACHE_MAX_ITEMS,
-} from '../../newMessage/ticketReplyCache'
+} from '../../newMessage/ticketReplyCache.ts'
 
 // Storage Mock
 const storageMock = () => {

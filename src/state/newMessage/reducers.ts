@@ -1,5 +1,4 @@
-// @flow
-import {fromJS} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 import {convertToRaw, ContentState, SelectionState} from 'draft-js'
 
 import _pick from 'lodash/pick'
@@ -8,25 +7,27 @@ import _omit from 'lodash/omit'
 import _forOwn from 'lodash/forOwn'
 import _get from 'lodash/get'
 
-import type {Map} from 'immutable'
-
 import {
     getSourceTypeOfResponse,
     getChannelFromSourceType,
-} from '../ticket/utils'
+} from '../ticket/utils.js'
 
-import type {TicketMessageSourceType} from '../../business/types/ticket'
-import * as ticketTypes from '../ticket/constants'
-import * as ticketConfig from '../../config/ticket'
-import {convertToHTML} from '../../utils/editor'
-import type {actionType} from '../types'
+import {
+    TicketMessageSourceType,
+    TicketChannel,
+} from '../../business/types/ticket'
+import * as ticketTypes from '../ticket/constants.js'
+import * as ticketConfig from '../../config/ticket.js'
+import {convertToHTML} from '../../utils/editor.js'
+import {GorgiasAction} from '../types'
 
 import {getReceiversProperties} from './selectors'
 import * as responseUtils from './responseUtils'
 import * as types from './constants'
+import {NewMessageState} from './types'
 
 export const makeNewMessage = (
-    channel: string,
+    channel: TicketChannel,
     sourceType: TicketMessageSourceType
 ) => {
     return fromJS({
@@ -48,10 +49,10 @@ export const makeNewMessage = (
         attachments: [],
         macros: [],
         mention_ids: [],
-    })
+    }) as Map<any, any>
 }
 
-export const initialState = fromJS({
+export const initialState: NewMessageState = fromJS({
     state: {
         dirty: false,
         signatureAdded: false,
@@ -69,10 +70,13 @@ export const initialState = fromJS({
             submitMessage: false,
         },
     },
-    newMessage: makeNewMessage('email', 'email'),
+    newMessage: makeNewMessage(
+        TicketChannel.Email,
+        TicketMessageSourceType.Email
+    ),
 })
 
-const resetContentState = (state: Map<*, *>) => {
+const resetContentState = (state: Map<any, any>): NewMessageState => {
     return state
         .mergeDeep({
             state: {
@@ -86,9 +90,9 @@ const resetContentState = (state: Map<*, *>) => {
 }
 
 export default function reducer(
-    state: Map<*, *> = initialState,
-    action: actionType
-): Map<*, *> {
+    state: NewMessageState = initialState,
+    action: GorgiasAction
+): NewMessageState {
     switch (action.type) {
         case types.NEW_MESSAGE_ADD_ATTACHMENT_START: {
             return state.setIn(['_internal', 'loading', 'addAttachment'], true)
@@ -97,9 +101,10 @@ export default function reducer(
         case types.NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS: {
             return state.mergeDeep({
                 newMessage: {
-                    attachments: state
-                        .getIn(['newMessage', 'attachments'], fromJS([]))
-                        .concat(fromJS(action.resp)),
+                    attachments: (state.getIn(
+                        ['newMessage', 'attachments'],
+                        fromJS([])
+                    ) as List<any>).concat(fromJS(action.resp)),
                 },
                 state: {
                     dirty: true,
@@ -116,8 +121,8 @@ export default function reducer(
             return state.updateIn(
                 ['newMessage', 'attachments'],
                 fromJS([]),
-                (attachements) => {
-                    return attachements.concat(action.args.get('attachments'))
+                (attachements: List<any>) => {
+                    return attachements.concat(action.args?.get('attachments'))
                 }
             )
         }
@@ -130,24 +135,31 @@ export default function reducer(
             return state
                 .setIn(
                     ['newMessage', 'attachments'],
-                    state
-                        .getIn(['newMessage', 'attachments'], fromJS([]))
-                        .delete(action.index)
+                    (state.getIn(
+                        ['newMessage', 'attachments'],
+                        fromJS([])
+                    ) as List<any>).delete(action.index as number)
                 )
                 .setIn(['state', 'dirty'], true)
         }
 
         case types.NEW_MESSAGE_RECORD_MACRO: {
-            const macroId = action.macro.get('id')
-            const macros = state.getIn(['newMessage', 'macros']) || fromJS([])
+            const macroId = action.macro?.get('id') as number
+            const macros = (state.getIn(['newMessage', 'macros']) ||
+                fromJS([])) as List<any>
 
             // if macro already added, do not do anything
-            if (macros.find((macro) => macro.id === macroId)) {
+            if (
+                macros.find(
+                    (macro: Record<string, unknown>) => macro.id === macroId
+                )
+            ) {
                 return state
             }
 
-            return state.updateIn(['newMessage', 'macros'], (macros) =>
-                macros.push({id: macroId})
+            return state.updateIn(
+                ['newMessage', 'macros'],
+                (macros: unknown[]) => macros.push({id: macroId})
             )
         }
 
@@ -162,11 +174,13 @@ export default function reducer(
         }
 
         case types.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START: {
-            let messages = fromJS(action.messages)
+            const messages = fromJS(action.messages) as List<any>
             // clear the reply cache
-            responseUtils.deleteReplyCache(action.ticketId)
+            responseUtils.deleteReplyCache(
+                (action.ticketId as unknown) as string
+            )
 
-            let newState = resetContentState(state).mergeDeep({
+            const newState = resetContentState(state).mergeDeep({
                 state: {
                     forceUpdate: false,
                     forceFocus: false,
@@ -178,11 +192,18 @@ export default function reducer(
                 return newState
             }
 
-            const sourceType = getSourceTypeOfResponse(messages)
+            //$TsFixMe remove casting once getSourceTypeOfResponse is migrated
+            const sourceType = getSourceTypeOfResponse(
+                messages
+            ) as TicketMessageSourceType
             return resetContentState(state).set(
                 'newMessage',
                 makeNewMessage(
-                    getChannelFromSourceType(sourceType, messages),
+                    //$TsFixMe remove casting once getChannelFromSourceType is migrated
+                    getChannelFromSourceType(
+                        sourceType,
+                        messages
+                    ) as TicketChannel,
                     sourceType
                 )
             )
@@ -194,13 +215,14 @@ export default function reducer(
 
         case types.NEW_MESSAGE_RESET_FROM_TICKET: {
             const {ticket} = action
-            const messages = ticket.get('messages', fromJS([]))
+            const messages = ticket?.get('messages') || fromJS([])
 
             const messageType = state.getIn(['newMessage', 'source', 'type'])
             const sourceType = messageType || getSourceTypeOfResponse(messages)
 
             const newMessage = makeNewMessage(
-                getChannelFromSourceType(sourceType),
+                //$TsFixMe remove casting once getChannelFromSourceType is migrated
+                getChannelFromSourceType(sourceType) as TicketChannel,
                 sourceType
             )
                 .set('subject', state.getIn(['newMessage', 'subject']))
@@ -213,8 +235,10 @@ export default function reducer(
         }
 
         case types.NEW_MESSAGE_SUBMIT_TICKET_SUCCESS: {
-            const {channel} = action.resp
-            let messages = fromJS(action.resp.messages)
+            const {channel} = action.resp as {channel: TicketChannel}
+            const messages = fromJS(
+                (action.resp as {messages: unknown[]}).messages
+            )
 
             const newState = resetContentState(state)
                 .mergeDeep({
@@ -232,18 +256,29 @@ export default function reducer(
 
             return newState.set(
                 'newMessage',
-                makeNewMessage(channel, getSourceTypeOfResponse(messages))
+                //$TsFixMe remove casting once getSourceTypeOfResponse is migrated
+                makeNewMessage(
+                    channel,
+                    getSourceTypeOfResponse(messages) as TicketMessageSourceType
+                )
             )
         }
 
         case types.NEW_MESSAGE_FETCH_TICKET_SUCCESS: {
-            const {messages} = action.resp
-            const sourceType = getSourceTypeOfResponse(messages)
+            const {messages} = action.resp as {messages: unknown[]}
+            //$TsFixMe remove casting once getSourceTypeOfResponse is migrated
+            const sourceType = getSourceTypeOfResponse(
+                messages
+            ) as TicketMessageSourceType
 
             return resetContentState(state).set(
                 'newMessage',
                 makeNewMessage(
-                    getChannelFromSourceType(sourceType, messages),
+                    //$TsFixMe remove casting once getChannelFromSourceType is migrated
+                    getChannelFromSourceType(
+                        sourceType,
+                        messages
+                    ) as TicketChannel,
                     sourceType
                 )
             )
@@ -258,7 +293,7 @@ export default function reducer(
                 .setIn(['newMessage', 'source', 'type'], sourceType)
                 .setIn(
                     ['newMessage', 'public'],
-                    ticketConfig.isPublic(sourceType)
+                    ticketConfig.isPublic(sourceType as TicketMessageSourceType)
                 )
         }
 
@@ -270,39 +305,42 @@ export default function reducer(
         }
 
         case types.SET_RESPONSE_TEXT: {
-            let contentState =
-                action.args.get('contentState') ||
+            let contentState: ContentState =
+                action.args?.get('contentState') ||
                 state.getIn(['state', 'contentState'])
             let selectionState =
-                action.args.get('selectionState') ||
+                action.args?.get('selectionState') ||
                 state.getIn(['state', 'selectionState'])
             const {appliedMacro, forceFocus, forceUpdate} = action
-            const source = state.getIn(['newMessage', 'source'], fromJS({}))
+            const source = state.getIn(
+                ['newMessage', 'source'],
+                fromJS({})
+            ) as Map<any, any>
 
             // email-forward uses email source type
             const forward = source.getIn(['extra', 'forward'])
             const sourceType = forward ? 'email-forward' : source.get('type')
 
-            let context = {
-                action,
+            let context: responseUtils.MessageContext = {
+                action: action as any,
                 state,
                 contentState,
                 selectionState,
-                appliedMacro,
-                forceUpdate,
-                forceFocus,
+                appliedMacro: appliedMacro as Map<any, any>,
+                forceUpdate: forceUpdate as boolean,
+                forceFocus: forceFocus as boolean,
                 sourceType,
             }
 
             context = responseUtils.addCache(context)
-            context = responseUtils.applyMacro(context)
-            responseUtils.updateCache(context)
+            context = responseUtils.applyMacro(context as any)
+            responseUtils.updateCache(context as any)
 
             contentState = context.contentState
             selectionState = context.selectionState
 
             // get ids of all mentions within any entities in contentState, only if in internal note
-            let ids = fromJS([])
+            let ids: List<any> = fromJS([])
             const isInternalNote = ticketConfig.canLeaveInternalNote(
                 state.getIn(['newMessage', 'source', 'type'])
             )
@@ -353,9 +391,9 @@ export default function reducer(
         case types.NEW_MESSAGE_ADD_SIGNATURE: {
             const {contentState, signature} = action
             const newContentState = responseUtils.addSignature(
-                contentState,
-                signature
-            )
+                contentState as ContentState,
+                signature as Map<any, any>
+            ) as ContentState
 
             return state
                 .mergeDeep({
@@ -387,9 +425,10 @@ export default function reducer(
             const receivers = _pick(action.receivers, getReceiversProperties())
             const replaceAll = action.replaceAll
 
-            const currentSource = state
-                .getIn(['newMessage', 'source'], fromJS({}))
-                .toJS()
+            const currentSource = (state.getIn(
+                ['newMessage', 'source'],
+                fromJS({})
+            ) as Map<any, any>).toJS()
 
             let newReceivers = {}
 
@@ -427,11 +466,20 @@ export default function reducer(
                         forceUpdate: true,
                         forceFocus: true,
                     },
-                    newMessage: fromJS(action.payload.newMessage),
+                    newMessage: fromJS(
+                        (action.payload as {
+                            newMessage: Record<string, unknown>
+                        }).newMessage
+                    ),
                 })
-                .setIn(['state', 'contentState'], action.payload.contentState)
+                .setIn(
+                    ['state', 'contentState'],
+                    (action.payload as {contentState: Map<any, any>})
+                        .contentState
+                )
                 .setIn(
                     ['state', 'selectionState'],
+                    //@ts-ignore
                     SelectionState.createEmpty()
                 )
         }

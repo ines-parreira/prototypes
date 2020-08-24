@@ -33,7 +33,7 @@ import {
 import {StoreDispatch, RootState} from '../../../types'
 import GorgiasApi from '../../../../services/gorgiasApi.js'
 import {executeAction} from '../../../infobar/actions'
-import {notify} from '../../../notifications/actions.js'
+import {notify} from '../../../notifications/actions'
 import {NotificationStatus} from '../../../notifications/types'
 import {SegmentEvent} from '../../../../store/middlewares/types/segmentTracker'
 import {IntegrationDataItemType} from '../../../../models/integration/types'

@@ -3,7 +3,7 @@ import {Map} from 'immutable'
 
 import {UserRole, User, UserDraft} from '../../config/types/user'
 import {toImmutable, toJS} from '../../utils.js'
-import {notify} from '../notifications/actions.js'
+import {notify} from '../notifications/actions'
 import {NotificationStatus} from '../notifications/types'
 import {StoreDispatch} from '../types'
 
@@ -174,7 +174,7 @@ export const inviteAgent = (id: number) => (
                 reason: 'Failed to invite team member',
             })
         }
-    ) as Promise<ReturnType<StoreDispatch>>
+    )
 }
 
 export const updateAgent = (id: number, agent: UserDraft) => (

@@ -2,7 +2,7 @@ import axios, {AxiosError} from 'axios'
 import {Map} from 'immutable'
 
 import {StoreDispatch} from '../types'
-import {notify} from '../notifications/actions.js'
+import {notify} from '../notifications/actions'
 import {createErrorNotification} from '../utils.js'
 import {defaultMergeTicketsView} from '../../config/views.js'
 import {

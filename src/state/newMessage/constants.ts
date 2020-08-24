@@ -1,4 +1,3 @@
-//@flow
 // Reply to a ticket
 export const NEW_MESSAGE_SUBMIT_TICKET_START = 'NEW_MESSAGE_SUBMIT_TICKET_START'
 export const NEW_MESSAGE_SUBMIT_TICKET_SUCCESS =

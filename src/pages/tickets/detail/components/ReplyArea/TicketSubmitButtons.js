@@ -11,7 +11,7 @@ import * as currentUserActions from '../../../../../state/currentUser/actions.ts
 
 import * as currentAccountSelectors from '../../../../../state/currentAccount/selectors.ts'
 import * as currentUserSelectors from '../../../../../state/currentUser/selectors.ts'
-import * as newMessageSelectors from '../../../../../state/newMessage/selectors'
+import * as newMessageSelectors from '../../../../../state/newMessage/selectors.ts'
 
 import Tooltip from '../../../../common/components/Tooltip'
 import ConfirmButton from '../../../../common/components/ConfirmButton'

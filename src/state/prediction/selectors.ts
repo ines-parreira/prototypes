@@ -1,20 +1,34 @@
-// @flow
 import {createSelector} from 'reselect'
-import {fromJS} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 
-import {getCurrentAccountState} from '../currentAccount/selectors.ts'
-import {getCurrentUser} from '../currentUser/selectors.ts'
-import {getTicket, getCustomerMessages} from '../ticket/selectors'
+import {getCurrentAccountState} from '../currentAccount/selectors'
+import {CurrentAccountState} from '../currentAccount/types'
+import {getCurrentUser} from '../currentUser/selectors'
+import {CurrentUserState} from '../currentUser/types'
+import {getTicket, getCustomerMessages} from '../ticket/selectors.js'
+import {RootState} from '../types'
 
-export const getContext = createSelector(
-    [getCurrentUser, getTicket, getCurrentAccountState, getCustomerMessages],
+import {PredictionContext} from './types'
+
+export const getContext = createSelector<
+    RootState,
+    PredictionContext,
+    CurrentUserState,
+    Map<any, any>,
+    CurrentAccountState,
+    List<any>
+>(
+    getCurrentUser,
+    getTicket,
+    getCurrentAccountState,
+    getCustomerMessages,
     (user, ticket, account, customerMessages) => {
         let lastMessageIdFromCustomer = null
         if (customerMessages && !customerMessages.isEmpty()) {
-            lastMessageIdFromCustomer = customerMessages
-                .sortBy((message) => message.get('created_datetime'))
-                .last()
-                .get('id')
+            lastMessageIdFromCustomer = ((customerMessages.sortBy(
+                (message: Map<any, any>) =>
+                    message.get('created_datetime') as string
+            ) as List<any>).last() as Map<any, any>).get('id') as number
         }
 
         let context = fromJS({
@@ -33,7 +47,7 @@ export const getContext = createSelector(
             account: {
                 domain: account.get('domain'),
             },
-        })
+        }) as Map<any, any>
 
         if (ticket && ticket.get('id')) {
             context = context.mergeDeep({
@@ -45,15 +59,17 @@ export const getContext = createSelector(
         }
 
         // if the customer has a shopify integration get it's last order name
-        const integrations = ticket.getIn(['customer', 'integrations'])
+        const integrations = ticket.getIn(['customer', 'integrations']) as List<
+            any
+        >
         if (integrations) {
-            integrations.forEach((integration) => {
+            integrations.forEach((integration: Map<any, any>) => {
                 if (
                     integration &&
                     integration.get('__integration_type__') === 'shopify'
                 ) {
-                    const lastOrder =
-                        integration.getIn(['orders', 0]) || fromJS({})
+                    const lastOrder = (integration.getIn(['orders', 0]) ||
+                        fromJS({})) as Map<any, any>
                     if (!lastOrder.isEmpty()) {
                         context = context.mergeDeep({
                             customer: {
@@ -66,10 +82,12 @@ export const getContext = createSelector(
                                                 0,
                                                 'tracking_number',
                                             ]) || null,
-                                        product_names: lastOrder
-                                            .get('line_items')
-                                            .map((item) => item.get('name'))
-                                            .toJS(),
+                                        product_names: ((lastOrder.get(
+                                            'line_items'
+                                        ) as List<any>).map(
+                                            (item: Map<any, any>) =>
+                                                item.get('name') as string
+                                        ) as List<any>).toJS(),
                                     },
                                 },
                             },

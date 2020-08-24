@@ -2,6 +2,7 @@ import {Map, List} from 'immutable'
 import {Action} from 'redux'
 import {ThunkDispatch} from 'redux-thunk'
 
+import {TicketMessageSourceType} from '../business/types/ticket'
 import {Integration, IntegrationType} from '../models/integration/types'
 
 import {BillingContactResponse, Subscription} from './billing/types'
@@ -9,6 +10,7 @@ import {AccountSetting} from './currentAccount/types'
 import {MacrosAction} from './entities/macros/types'
 import {EntitiesState} from './entities/reducers'
 import {InfobarActionsState} from './infobarActions/types'
+import {Message} from './newMessage/types'
 import rootReducer from './reducers'
 import {HTTPIntegrationEvent} from './HTTPIntegrationEvents/types'
 
@@ -85,6 +87,22 @@ export type GorgiasAction = {
     integrationType?: IntegrationType
     forceOverride?: boolean
     panelName?: string
+    args?: Map<any, any>
+    index?: number
+    macro?: Map<any, any>
+    messages?: Message[]
+    resetMessage?: boolean
+    sourceType?: TicketMessageSourceType
+    extra?: Record<string, unknown>
+    appliedMacro?: Map<any, any>
+    forceFocus?: boolean
+    forceUpdate?: boolean
+    signature?: Map<any, any>
+    contentState?: Map<any, any>
+    sender?: Map<any, any>
+    subject?: string
+    receivers?: List<any>
+    replaceAll?: boolean
 }
 
 export type CurrentUser = Map<any, any>

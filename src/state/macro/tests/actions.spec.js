@@ -9,7 +9,7 @@ import * as constants from '../constants'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
-jest.mock('../../notifications/actions', () => {
+jest.mock('../../notifications/actions.ts', () => {
     return {
         notify: jest.fn(() => (args) => args),
     }

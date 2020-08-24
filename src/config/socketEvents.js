@@ -8,7 +8,7 @@ import * as agentsActions from '../state/agents/actions.ts'
 import * as chatsActions from '../state/chats/actions.ts'
 import * as infobarActions from '../state/infobar/actions.ts'
 import * as integrationsActions from '../state/integrations/actions.ts'
-import * as notificationsActions from '../state/notifications/actions'
+import * as notificationsActions from '../state/notifications/actions.ts'
 import * as ticketActions from '../state/ticket/actions'
 import * as viewsActions from '../state/views/actions'
 

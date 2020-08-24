@@ -12,7 +12,7 @@ import {
     macroCreated,
     macroDeleted,
 } from '../../../state/entities/macros/actions'
-import {notify} from '../../../state/notifications/actions.js'
+import {notify} from '../../../state/notifications/actions'
 import {NotificationStatus} from '../../../state/notifications/types'
 import {RootState, StoreDispatch} from '../../../state/types'
 import Loader from '../../common/components/Loader/index.js'

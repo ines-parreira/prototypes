@@ -14,8 +14,8 @@ import {removeNotification} from 'reapop'
 
 import * as actions from '../actions'
 import {initialState} from '../reducers'
-import {notify} from '../../notifications/actions'
-import {initialState as newMessageState} from '../../newMessage/reducers'
+import {notify} from '../../notifications/actions.ts'
+import {initialState as newMessageState} from '../../newMessage/reducers.ts'
 import {TICKET_REOPENED} from '../../../constants/event'
 import type {AuditLogEvent} from '../../../models/event'
 import type {dispatchType} from '../../types'
@@ -27,7 +27,10 @@ const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 
 jest.mock('reapop', () => {
+    const reapop = jest.requireActual('reapop')
+
     return {
+        ...reapop,
         removeNotification: jest.fn(() => (args) => args),
     }
 })
@@ -55,7 +58,7 @@ jest.mock('../../../services/socketManager', () => {
     }
 })
 
-jest.mock('../../notifications/actions', () => {
+jest.mock('../../notifications/actions.ts', () => {
     return {
         notify: jest.fn(() => (args) => args),
     }

@@ -10,7 +10,7 @@ import type {attachmentType} from '../../../state/types'
 import {uploadFiles} from '../../../utils'
 import {getFileTooLargeError} from '../../../utils/file'
 
-import {notify} from './../../../state/notifications/actions'
+import {notify} from './../../../state/notifications/actions.ts'
 
 import InputField from './InputField'
 

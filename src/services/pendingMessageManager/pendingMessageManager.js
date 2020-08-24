@@ -7,8 +7,8 @@ import {store as reduxStore} from '../../init'
 import {
     newMessageResetFromMessage,
     sendTicketMessage,
-} from '../../state/newMessage/actions'
-import {notify} from '../../state/notifications/actions'
+} from '../../state/newMessage/actions.ts'
+import {notify} from '../../state/notifications/actions.ts'
 import {applyMacro, messageDeleted} from '../../state/ticket/actions'
 import {logEvent, EVENTS} from '../../store/middlewares/segmentTracker'
 

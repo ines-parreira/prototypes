@@ -13,7 +13,7 @@ import {
     PREV_VIEW_NAV_DIRECTION,
     VIEW_NAV_DIRECTIONS,
 } from '../../constants/view'
-import {notify} from '../notifications/actions'
+import {notify} from '../notifications/actions.ts'
 import socketManager from '../../services/socketManager'
 import {
     getHashOfObj,

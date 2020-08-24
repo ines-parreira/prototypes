@@ -28,7 +28,7 @@ import {AgentLabel} from '../../../../../common/utils/labels'
 import {sanitizeHtmlDefault} from '../../../../../../utils/html'
 import {convertToHTML} from '../../../../../../utils/editor'
 
-import {notify} from '../../../../../../state/notifications/actions'
+import {notify} from '../../../../../../state/notifications/actions.ts'
 import * as campaignActions from '../../../../../../state/campaigns/actions'
 import * as integrationsSelectors from '../../../../../../state/integrations/selectors.ts'
 import * as agentSelectors from '../../../../../../state/agents/selectors.ts'
