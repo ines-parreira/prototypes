@@ -8,6 +8,7 @@ import {
     MAINTENANCE_STATUSES,
     COMPONENTS_NOTIFICATION_ID,
     MAINTENANCE_NOTIFICATION_ID,
+    CLUSTER_GROUP_ID,
 } from '../constants'
 import {notify} from '../../../state/notifications/actions.ts'
 
@@ -93,17 +94,96 @@ describe('statusPageManager', () => {
                 components: [
                     {
                         name: 'REST API',
-                        status: 'degraded_performance',
+                        status: COMPONENT_STATUSES.DEGRADED_PERFORMANCE,
                         group_id: Object.keys(HELPDESK_GROUP_IDS)[0],
                     },
                     {
                         name: 'GraphQL API',
-                        status: 'major_outage',
+                        status: COMPONENT_STATUSES.MAJOR_OUTAGE,
                         group_id: Object.keys(HELPDESK_GROUP_IDS)[0],
                     },
                 ],
             })
             expect(notify.mock.calls).toMatchSnapshot()
+        })
+
+        describe('cluster filtering', () => {
+            it('should not notify if cluster not matched', () => {
+                const clusterName = 'us-east1-abc'
+                window.GORGIAS_CLUSTER = 'us-east4-123'
+
+                statusPageManager.processComponents({
+                    page: {
+                        url: 'https://status.gorgias.com/',
+                    },
+                    components: [
+                        {
+                            name: 'REST API',
+                            status: COMPONENT_STATUSES.MAJOR_OUTAGE,
+                            group_id: Object.keys(HELPDESK_GROUP_IDS)[0],
+                        },
+                        {
+                            name: clusterName,
+                            status: COMPONENT_STATUSES.MAJOR_OUTAGE,
+                            group_id: CLUSTER_GROUP_ID,
+                        },
+                    ],
+                })
+                expect(notify.mock.calls).toMatchSnapshot()
+            })
+
+            it('should notify if matches the cluster', () => {
+                const clusterName = 'us-east1-abc'
+                window.GORGIAS_CLUSTER = clusterName
+
+                statusPageManager.processComponents({
+                    page: {
+                        url: 'https://status.gorgias.com/',
+                    },
+                    components: [
+                        {
+                            name: 'REST API',
+                            status: COMPONENT_STATUSES.MAJOR_OUTAGE,
+                            group_id: Object.keys(HELPDESK_GROUP_IDS)[0],
+                        },
+                        {
+                            name: clusterName,
+                            status: COMPONENT_STATUSES.MAJOR_OUTAGE,
+                            group_id: CLUSTER_GROUP_ID,
+                        },
+                    ],
+                })
+                expect(notify.mock.calls).toMatchSnapshot()
+            })
+
+            it('should notify if matches the second cluster', () => {
+                const clusterName = 'us-east1-abc'
+                statusPageManager.cluster = clusterName
+
+                statusPageManager.processComponents({
+                    page: {
+                        url: 'https://status.gorgias.com/',
+                    },
+                    components: [
+                        {
+                            name: 'REST API',
+                            status: COMPONENT_STATUSES.MAJOR_OUTAGE,
+                            group_id: Object.keys(HELPDESK_GROUP_IDS)[0],
+                        },
+                        {
+                            name: 'us-random-cluster',
+                            status: COMPONENT_STATUSES.MAJOR_OUTAGE,
+                            group_id: CLUSTER_GROUP_ID,
+                        },
+                        {
+                            name: clusterName,
+                            status: COMPONENT_STATUSES.MAJOR_OUTAGE,
+                            group_id: CLUSTER_GROUP_ID,
+                        },
+                    ],
+                })
+                expect(notify.mock.calls).toMatchSnapshot()
+            })
         })
     })
 

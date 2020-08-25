@@ -1,5 +1,45 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`statusPageManager processComponents() cluster filtering should not notify if cluster not matched 1`] = `Array []`;
+
+exports[`statusPageManager processComponents() cluster filtering should notify if matches the cluster 1`] = `
+Array [
+  Array [
+    Object {
+      "allowHTML": true,
+      "closable": true,
+      "dismissible": false,
+      "id": "status-page-components",
+      "message": "
+Currently experiencing a major outage in our API affecting
+REST API components.
+Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a></u>.",
+      "status": "error",
+      "style": "banner",
+    },
+  ],
+]
+`;
+
+exports[`statusPageManager processComponents() cluster filtering should notify if matches the second cluster 1`] = `
+Array [
+  Array [
+    Object {
+      "allowHTML": true,
+      "closable": true,
+      "dismissible": false,
+      "id": "status-page-components",
+      "message": "
+Currently experiencing a major outage in our API affecting
+REST API components.
+Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a></u>.",
+      "status": "error",
+      "style": "banner",
+    },
+  ],
+]
+`;
+
 exports[`statusPageManager processComponents() should dispatch notification with the highest error level 1`] = `
 Array [
   Array [

@@ -2,6 +2,9 @@
 const isProduction = process.env.NODE_ENV === 'production'
 
 export const PAGE_ID = isProduction ? '2lqy3hys4460' : '35qcq6ntxgz6'
+
+export const CLUSTER_GROUP_ID = isProduction ? '88h5zd5h2mgt' : 'nydnlcqwbz23'
+
 // We're grouping our components (ex: REST API, Facebook Comments, etc..) into groups below (used for filtering).
 export const HELPDESK_GROUP_IDS = isProduction
     ? {

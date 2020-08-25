@@ -16,6 +16,7 @@ import {
     MAINTENANCE_NOTIFICATION_BEFORE_MINUTES,
     COMPONENTS_NOTIFICATION_ID,
     MAINTENANCE_NOTIFICATION_ID,
+    CLUSTER_GROUP_ID,
 } from './constants'
 import type {
     StatusPageComponentsResponseData,
@@ -96,9 +97,32 @@ export class StatusPageManager {
             groupNames: new Set(),
             componentNames: new Set(),
         }
+        let clustersAffected = false
+        let foundCluster = false
 
         // remove all previous notifications
         this.store.dispatch(removeNotification(COMPONENTS_NOTIFICATION_ID))
+
+        // Filter incidents per cluster.
+        for (const component of data.components) {
+            if (component.status === COMPONENT_STATUSES.OPERATIONAL) {
+                continue
+            }
+
+            if (component.group_id === CLUSTER_GROUP_ID) {
+                clustersAffected = true
+
+                if (component.name === window.GORGIAS_CLUSTER) {
+                    foundCluster = true
+                    break
+                }
+            }
+        }
+
+        // if no clusters components are affected then show the notification - meaning that it affects all clusters.
+        if (clustersAffected && !foundCluster) {
+            return
+        }
 
         // We're only interested in certain components
         for (const component of data.components) {
