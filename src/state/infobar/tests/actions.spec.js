@@ -61,14 +61,32 @@ describe('infobar actions', () => {
         })
     })
 
-    it('similar customer', () => {
-        mockServer
-            .onGet('/api/customers/1/similar/')
-            .reply(200, {id: 1, name: 'alex'})
+    describe('similarCustomer', () => {
+        it('should resolve with a similar customer', () => {
+            mockServer
+                .onGet('/api/customers/1/similar/')
+                .reply(200, {id: 1, name: 'alex'})
 
-        return store
-            .dispatch(actions.similarCustomer(2))
-            .then(() => expect(store.getActions()).toMatchSnapshot())
+            return store
+                .dispatch(actions.similarCustomer(1))
+                .then(() => expect(store.getActions()).toMatchSnapshot())
+        })
+
+        it('should resolve to undefined on 404', () => {
+            mockServer.onGet('/api/customers/2/similar/').reply(404)
+
+            return store
+                .dispatch(actions.similarCustomer(2))
+                .then((res) => expect(res).toBe(undefined))
+        })
+
+        it('should reject on any error', () => {
+            mockServer.onGet('/api/customers/2/similar/').reply(505)
+
+            return store
+                .dispatch(actions.similarCustomer(2))
+                .then(() => expect(store.getActions()).toMatchSnapshot())
+        })
     })
 
     describe('execute action', () => {

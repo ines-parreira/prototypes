@@ -65,19 +65,7 @@ export const similarCustomer = (customerId: string) => (
                 })
             },
             (error: AxiosError) => {
-                // TODO(customers-migration): remove these lines when the migration is done
                 if (error && error.response && error.response.status === 404) {
-                    if (window.Raven) {
-                        window.Raven.captureMessage(
-                            'Agent has a customer profile',
-                            {
-                                level: 'error',
-                                extra: {
-                                    customerId,
-                                },
-                            }
-                        )
-                    }
                     return Promise.resolve()
                 }
 

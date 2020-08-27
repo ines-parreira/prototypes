@@ -181,10 +181,29 @@ Array [
 ]
 `;
 
-exports[`infobar actions similar customer 1`] = `
+exports[`infobar actions similarCustomer should reject on any error 1`] = `
 Array [
   Object {
     "type": "SEARCH_SIMILAR_CUSTOMER_START",
+  },
+  Object {
+    "reason": "Failed to search for similar customers. Please try again...",
+    "type": "SEARCH_SIMILAR_CUSTOMER_ERROR",
+  },
+]
+`;
+
+exports[`infobar actions similarCustomer should resolve with a similar customer 1`] = `
+Array [
+  Object {
+    "type": "SEARCH_SIMILAR_CUSTOMER_START",
+  },
+  Object {
+    "customer": Object {
+      "id": 1,
+      "name": "alex",
+    },
+    "type": "SEARCH_SIMILAR_CUSTOMER_SUCCESS",
   },
 ]
 `;
