@@ -22,6 +22,7 @@ exports[`Container should render container 1`] = `
       hasError={false}
       id="some-header"
       isLastRead={false}
+      isMessageDeleted={false}
       isMessageHidden={false}
       message={
         Object {
@@ -54,7 +55,164 @@ exports[`Container should render container 1`] = `
     />
     <Footer
       id="some-header"
+      isMessageDeleted={false}
       isMessageHidden={false}
+      message={
+        Object {
+          "channel": "email",
+          "created_datetime": "",
+          "from_agent": false,
+          "id": 1,
+          "isMessage": true,
+          "public": true,
+          "receiver": Object {
+            "email": "mary.poppins@example.com",
+            "firstname": "Mary",
+            "id": 2,
+            "lastname": "Poppins",
+            "name": "Mary Poppins",
+          },
+          "sender": Object {
+            "email": "john.doe@example.com",
+            "firstname": "John",
+            "id": 1,
+            "lastname": "Doe",
+            "name": "John Doe",
+          },
+          "subject": "Some subject",
+          "uri": "http://example.com/messages/1",
+          "via": "email",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`Container should render container without an avatar because the message is deleted 1`] = `
+<div
+  className="ticket-message component"
+>
+  <div
+    className="bodyWrapper bodyWrapperForHiddenOrDeletedMessage"
+  >
+    <Header
+      hasError={false}
+      id="some-header"
+      isLastRead={false}
+      isMessageDeleted={true}
+      isMessageHidden={false}
+      message={
+        Object {
+          "channel": "email",
+          "created_datetime": "",
+          "from_agent": false,
+          "id": 1,
+          "isMessage": true,
+          "public": true,
+          "receiver": Object {
+            "email": "mary.poppins@example.com",
+            "firstname": "Mary",
+            "id": 2,
+            "lastname": "Poppins",
+            "name": "Mary Poppins",
+          },
+          "sender": Object {
+            "email": "john.doe@example.com",
+            "firstname": "John",
+            "id": 1,
+            "lastname": "Doe",
+            "name": "John Doe",
+          },
+          "subject": "Some subject",
+          "uri": "http://example.com/messages/1",
+          "via": "email",
+        }
+      }
+      timezone="America/Los_Angeles"
+    />
+    <Footer
+      id="some-header"
+      isMessageDeleted={true}
+      isMessageHidden={false}
+      message={
+        Object {
+          "channel": "email",
+          "created_datetime": "",
+          "from_agent": false,
+          "id": 1,
+          "isMessage": true,
+          "public": true,
+          "receiver": Object {
+            "email": "mary.poppins@example.com",
+            "firstname": "Mary",
+            "id": 2,
+            "lastname": "Poppins",
+            "name": "Mary Poppins",
+          },
+          "sender": Object {
+            "email": "john.doe@example.com",
+            "firstname": "John",
+            "id": 1,
+            "lastname": "Doe",
+            "name": "John Doe",
+          },
+          "subject": "Some subject",
+          "uri": "http://example.com/messages/1",
+          "via": "email",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
+exports[`Container should render container without an avatar because the message is hidden 1`] = `
+<div
+  className="ticket-message component"
+>
+  <div
+    className="bodyWrapper bodyWrapperForHiddenOrDeletedMessage"
+  >
+    <Header
+      hasError={false}
+      id="some-header"
+      isLastRead={false}
+      isMessageDeleted={false}
+      isMessageHidden={true}
+      message={
+        Object {
+          "channel": "email",
+          "created_datetime": "",
+          "from_agent": false,
+          "id": 1,
+          "isMessage": true,
+          "public": true,
+          "receiver": Object {
+            "email": "mary.poppins@example.com",
+            "firstname": "Mary",
+            "id": 2,
+            "lastname": "Poppins",
+            "name": "Mary Poppins",
+          },
+          "sender": Object {
+            "email": "john.doe@example.com",
+            "firstname": "John",
+            "id": 1,
+            "lastname": "Doe",
+            "name": "John Doe",
+          },
+          "subject": "Some subject",
+          "uri": "http://example.com/messages/1",
+          "via": "email",
+        }
+      }
+      timezone="America/Los_Angeles"
+    />
+    <Footer
+      id="some-header"
+      isMessageDeleted={false}
+      isMessageHidden={true}
       message={
         Object {
           "channel": "email",

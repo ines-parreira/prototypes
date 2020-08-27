@@ -24,6 +24,7 @@ type Props = {
     timezone: string,
     isLastRead: boolean,
     isMessageHidden: boolean,
+    isMessageDeleted: boolean,
 }
 
 export default class Container extends React.Component<Props> {
@@ -36,11 +37,16 @@ export default class Container extends React.Component<Props> {
     }
 
     render() {
-        const {children, message, isMessageHidden} = this.props
+        const {
+            children,
+            message,
+            isMessageHidden,
+            isMessageDeleted,
+        } = this.props
         const sender = fromJS(message.sender || {})
         let avatar
 
-        if (!isMessageHidden) {
+        if (!isMessageHidden && !isMessageDeleted) {
             avatar = (
                 <div className={css.avatar}>
                     <Avatar
@@ -80,7 +86,8 @@ export default class Container extends React.Component<Props> {
                 {avatar}
                 <div
                     className={classNames(css.bodyWrapper, {
-                        bodyWrapperForHiddenMessage: isMessageHidden,
+                        bodyWrapperForHiddenOrDeletedMessage:
+                            isMessageHidden || isMessageDeleted,
                     })}
                 >
                     <Header
@@ -90,12 +97,14 @@ export default class Container extends React.Component<Props> {
                         timezone={this.props.timezone}
                         hasError={isFailed(message)}
                         isMessageHidden={isMessageHidden}
+                        isMessageDeleted={isMessageDeleted}
                     />
                     {children}
                     <Footer
                         id={this.props.id}
                         message={message}
                         isMessageHidden={isMessageHidden}
+                        isMessageDeleted={isMessageDeleted}
                     />
                 </div>
             </div>

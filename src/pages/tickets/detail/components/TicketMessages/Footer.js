@@ -13,16 +13,18 @@ type Props = {
     id: string,
     message: TicketMessage,
     isMessageHidden: boolean,
+    isMessageDeleted: boolean,
 }
 
 export default function Footer(props: Props) {
-    const {message, isMessageHidden} = props
+    const {message, isMessageHidden, isMessageDeleted} = props
     return (
         <div className={classNames(css.footer)}>
             <SourceDetailsFooter
                 className={css.sourceDetails}
                 message={message}
                 isMessageHidden={isMessageHidden}
+                isMessageDeleted={isMessageDeleted}
             />
         </div>
     )

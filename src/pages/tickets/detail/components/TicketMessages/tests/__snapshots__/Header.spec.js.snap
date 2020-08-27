@@ -29,6 +29,137 @@ exports[`Header should display header 1`] = `
   <SourceDetailsHeader
     className="sourceDetails"
     isLastRead={false}
+    isMessageDeleted={false}
+    message={
+      Object {
+        "channel": "email",
+        "created_datetime": "",
+        "from_agent": false,
+        "id": 1,
+        "isMessage": true,
+        "public": true,
+        "receiver": Object {
+          "email": "mary.poppins@example.com",
+          "firstname": "Mary",
+          "id": 2,
+          "lastname": "Poppins",
+          "name": "Mary Poppins",
+        },
+        "sender": Object {
+          "email": "john.doe@example.com",
+          "firstname": "John",
+          "id": 1,
+          "lastname": "Doe",
+          "name": "John Doe",
+        },
+        "subject": "Some subject",
+        "uri": "http://example.com/messages/1",
+        "via": "email",
+      }
+    }
+    timezone="America/Los_Angeles"
+  />
+</div>
+`;
+
+exports[`Header should display header with metaContent = "Comment deleted on Facebook" 1`] = `
+<div
+  className="header"
+>
+  <div
+    className="headerDetails"
+  >
+    <div
+      className="author deletedMessage"
+    >
+      <CustomerLabel
+        customer={
+          Immutable.Map {
+            "id": 1,
+            "email": "john.doe@example.com",
+            "name": "John Doe",
+            "firstname": "John",
+            "lastname": "Doe",
+          }
+        }
+      />
+    </div>
+    <span
+      className="deletedMessage ml-1"
+    >
+       
+      Comment deleted on Facebook
+    </span>
+  </div>
+  <SourceDetailsHeader
+    className="sourceDetails"
+    isLastRead={false}
+    isMessageDeleted={true}
+    message={
+      Object {
+        "channel": "email",
+        "created_datetime": "",
+        "from_agent": false,
+        "id": 1,
+        "isMessage": true,
+        "public": true,
+        "receiver": Object {
+          "email": "mary.poppins@example.com",
+          "firstname": "Mary",
+          "id": 2,
+          "lastname": "Poppins",
+          "name": "Mary Poppins",
+        },
+        "sender": Object {
+          "email": "john.doe@example.com",
+          "firstname": "John",
+          "id": 1,
+          "lastname": "Doe",
+          "name": "John Doe",
+        },
+        "subject": "Some subject",
+        "uri": "http://example.com/messages/1",
+        "via": "email",
+      }
+    }
+    timezone="America/Los_Angeles"
+  />
+</div>
+`;
+
+exports[`Header should display header with metaContent = "Message hidden" 1`] = `
+<div
+  className="header"
+>
+  <div
+    className="headerDetails"
+  >
+    <div
+      className="author hiddenMessage"
+    >
+      <CustomerLabel
+        customer={
+          Immutable.Map {
+            "id": 1,
+            "email": "john.doe@example.com",
+            "name": "John Doe",
+            "firstname": "John",
+            "lastname": "Doe",
+          }
+        }
+      />
+    </div>
+    <span
+      className="hiddenMessage ml-1"
+    >
+       
+      Message hidden
+    </span>
+  </div>
+  <SourceDetailsHeader
+    className="sourceDetails"
+    isLastRead={false}
+    isMessageDeleted={false}
     message={
       Object {
         "channel": "email",

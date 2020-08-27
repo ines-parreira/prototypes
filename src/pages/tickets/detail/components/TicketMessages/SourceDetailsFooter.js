@@ -11,10 +11,11 @@ type Props = {
     message: TicketMessage,
     className?: string,
     isMessageHidden: boolean,
+    isMessageDeleted: boolean,
 }
 
 export default function SourceDetailsFooter(props: Props) {
-    const {message, isMessageHidden} = props
+    const {message, isMessageHidden, isMessageDeleted} = props
     return (
         <div className={classnames(css.wrapper, props.className)}>
             <SourceActionsFooter
@@ -23,6 +24,7 @@ export default function SourceDetailsFooter(props: Props) {
                 integrationId={message.integration_id}
                 messageId={message.message_id}
                 isMessageHidden={isMessageHidden}
+                isMessageDeleted={isMessageDeleted}
             />
         </div>
     )

@@ -2,6 +2,7 @@
 import React from 'react'
 
 import {
+    isTicketMessageDeleted,
     isTicketMessageHidden,
     TicketMessage,
 } from '../../../../../models/ticket'
@@ -39,6 +40,7 @@ export default class TicketMessages extends React.Component<Props> {
 
         const message = messages[0]
         const isMessageHidden = isTicketMessageHidden(message)
+        const isMessageDeleted = isTicketMessageDeleted(message)
 
         return (
             <Container
@@ -51,6 +53,7 @@ export default class TicketMessages extends React.Component<Props> {
                 timezone={this.props.timezone}
                 isLastRead={this._isLastReadMessage(message)}
                 isMessageHidden={isMessageHidden}
+                isMessageDeleted={isMessageDeleted}
             >
                 {messages.map((message: TicketMessage, index: number) => (
                     <Message

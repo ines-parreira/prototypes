@@ -14,12 +14,15 @@ type Props = {
     isLastRead: boolean,
     timezone: string,
     className?: string,
+    isMessageDeleted?: boolean,
 }
 
 export default function SourceDetailsHeader(props: Props) {
-    const {message, isLastRead, timezone} = props
-    return (
-        <div className={classnames(css.wrapper, props.className)}>
+    const {message, isLastRead, timezone, isMessageDeleted} = props
+    let actionHeader
+
+    if (!isMessageDeleted) {
+        actionHeader = (
             <SourceActionsHeader
                 source={message.source}
                 meta={message.meta}
@@ -27,6 +30,12 @@ export default function SourceDetailsHeader(props: Props) {
                 messageId={message.message_id}
                 fromAgent={message.from_agent}
             />
+        )
+    }
+
+    return (
+        <div className={classnames(css.wrapper, props.className)}>
+            {actionHeader}
             {message.from_agent && isLastRead && (
                 <SeenIndicator
                     openedDatetime={message.opened_datetime}

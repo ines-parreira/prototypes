@@ -63,3 +63,14 @@ export const isTicketMessageHidden = (message: TicketMessage): boolean => {
     }
     return false
 }
+
+export const isTicketMessageDeleted = (message: TicketMessage): boolean => {
+    if (message && message.source && message.source.type) {
+        if (message.source.type === FACEBOOK_COMMENT_SOURCE) {
+            if (message.meta && message.meta.deleted_datetime) {
+                return true
+            }
+        }
+    }
+    return false
+}

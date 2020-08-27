@@ -1,5 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<SourceActionsFooter/> should not render any reactions because the message is deleted 1`] = `null`;
+
 exports[`<SourceActionsFooter/> should not render any reactions because the message is hidden 1`] = `null`;
 
 exports[`<SourceActionsFooter/> should only render a \`Like\` action because it's a Facebook message with no meta 1`] = `

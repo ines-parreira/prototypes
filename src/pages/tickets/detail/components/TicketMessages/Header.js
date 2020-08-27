@@ -23,19 +23,22 @@ type Props = {
     isLastRead: boolean,
     hasError?: boolean,
     isMessageHidden?: boolean,
+    isMessageDeleted?: boolean,
 }
 
 export default function Header(props: Props) {
-    const {message, timezone, isLastRead, hasError, isMessageHidden} = props
+    const {
+        message,
+        timezone,
+        isLastRead,
+        hasError,
+        isMessageHidden,
+        isMessageDeleted,
+    } = props
     const sender = fromJS(message.sender || {})
     const isForwarded = isForwardedMessage(message)
 
-    const metaContent = isMessageHidden ? (
-        <span className={classnames(css.hiddenMessage, 'ml-1')}>
-            {' '}
-            Message hidden
-        </span>
-    ) : (
+    let metaContent = (
         <Meta
             messageId={message.message_id}
             meta={message.meta}
@@ -45,6 +48,22 @@ export default function Header(props: Props) {
             ruleId={message.rule_id}
         />
     )
+
+    if (isMessageDeleted) {
+        metaContent = (
+            <span className={classnames(css.deletedMessage, 'ml-1')}>
+                {' '}
+                Comment deleted on Facebook
+            </span>
+        )
+    } else if (isMessageHidden) {
+        metaContent = (
+            <span className={classnames(css.hiddenMessage, 'ml-1')}>
+                {' '}
+                Message hidden
+            </span>
+        )
+    }
 
     return (
         <div
@@ -57,6 +76,7 @@ export default function Header(props: Props) {
                     className={classNames(css.author, {
                         isAgent: message.from_agent,
                         hiddenMessage: isMessageHidden,
+                        deletedMessage: isMessageDeleted,
                     })}
                 >
                     {message.from_agent ? (
@@ -84,6 +104,7 @@ export default function Header(props: Props) {
                 message={message}
                 isLastRead={isLastRead}
                 timezone={timezone}
+                isMessageDeleted={isMessageDeleted}
             />
         </div>
     )

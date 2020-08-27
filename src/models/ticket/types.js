@@ -128,6 +128,7 @@ export type Meta = {
     page_id?: string,
     parent_id?: string,
     facebook_reactions?: FacebookReactions,
+    deleted_datetime?: string,
 }
 
 export type FacebookReactions = {

@@ -28,6 +28,7 @@ describe('<SourceActionsFooter/>', () => {
                 integrationId={facebookMessageNoMeta.integration_id}
                 messageId={facebookMessageNoMeta.message_id}
                 isMessageHidden={false}
+                isMessageDeleted={false}
                 store={store}
             />
         )
@@ -42,6 +43,7 @@ describe('<SourceActionsFooter/>', () => {
                 integrationId={facebookMessageWithPageReaction.integration_id}
                 messageId={facebookMessageWithPageReaction.message_id}
                 isMessageHidden={false}
+                isMessageDeleted={false}
                 store={store}
             />
         )
@@ -58,6 +60,7 @@ describe('<SourceActionsFooter/>', () => {
                 }
                 messageId={facebookMessageWithCustomerReaction.message_id}
                 isMessageHidden={false}
+                isMessageDeleted={false}
                 store={store}
             />
         )
@@ -76,6 +79,7 @@ describe('<SourceActionsFooter/>', () => {
                     facebookMessageWithPageAndCustomerReactions.message_id
                 }
                 isMessageHidden={false}
+                isMessageDeleted={false}
                 store={store}
             />
         )
@@ -90,6 +94,22 @@ describe('<SourceActionsFooter/>', () => {
                 integrationId={hiddenFacebookMessage.integration_id}
                 messageId={hiddenFacebookMessage.message_id}
                 isMessageHidden={true}
+                isMessageDeleted={false}
+                store={store}
+            />
+        )
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should not render any reactions because the message is deleted', () => {
+        const component = render(
+            <SourceActionsFooter
+                source={hiddenFacebookMessage.source}
+                meta={hiddenFacebookMessage.meta}
+                integrationId={hiddenFacebookMessage.integration_id}
+                messageId={hiddenFacebookMessage.message_id}
+                isMessageHidden={false}
+                isMessageDeleted={true}
                 store={store}
             />
         )
@@ -113,6 +133,7 @@ describe('<SourceActionsFooter/>', () => {
                     facebookMessageWithPageAndCustomerReactions.message_id
                 }
                 isMessageHidden={false}
+                isMessageDeleted={false}
                 store={store}
             />
         )
@@ -133,6 +154,7 @@ describe('<SourceActionsFooter/>', () => {
                     facebookMessageWithPageAndCustomerReactions.message_id
                 }
                 isMessageHidden={false}
+                isMessageDeleted={false}
                 store={store}
             />
         )

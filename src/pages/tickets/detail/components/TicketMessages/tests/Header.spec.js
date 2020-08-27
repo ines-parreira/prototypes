@@ -14,6 +14,36 @@ describe('Header', () => {
                 message={message}
                 timezone="America/Los_Angeles"
                 isLastRead={false}
+                isMessageHidden={false}
+                isMessageDeleted={false}
+            />
+        )
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should display header with metaContent = "Message hidden"', () => {
+        const component = shallow(
+            <Header
+                id="some-header"
+                message={message}
+                timezone="America/Los_Angeles"
+                isLastRead={false}
+                isMessageHidden={true}
+                isMessageDeleted={false}
+            />
+        )
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should display header with metaContent = "Comment deleted on Facebook"', () => {
+        const component = shallow(
+            <Header
+                id="some-header"
+                message={message}
+                timezone="America/Los_Angeles"
+                isLastRead={false}
+                isMessageHidden={false}
+                isMessageDeleted={true}
             />
         )
         expect(component).toMatchSnapshot()
@@ -26,6 +56,8 @@ describe('Header', () => {
                 message={message}
                 timezone="America/Los_Angeles"
                 isLastRead={false}
+                isMessageHidden={false}
+                isMessageDeleted={false}
             />
         )
         const messageId = component.find(Meta).prop('messageId')

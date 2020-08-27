@@ -40,6 +40,7 @@ type Props = {
     integrationId?: string,
     messageId?: string,
     isMessageHidden?: boolean,
+    isMessageDeleted?: boolean,
     executeAction: typeof infobarActions.executeAction,
 }
 
@@ -268,13 +269,14 @@ export class SourceActionsFooter extends React.Component<Props> {
     }
 
     render() {
-        const {source, meta, isMessageHidden} = this.props
+        const {source, meta, isMessageHidden, isMessageDeleted} = this.props
         const widgets = []
 
         if (
             !source ||
             !source.type ||
             isMessageHidden ||
+            isMessageDeleted ||
             source.type !== FACEBOOK_COMMENT_SOURCE
         ) {
             return widgets

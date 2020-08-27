@@ -129,6 +129,7 @@ export type Meta = {
     post_id?: string
     page_id?: string
     parent_id?: string
+    deleted_datetime?: string
 }
 
 export type LastSendingError = {
