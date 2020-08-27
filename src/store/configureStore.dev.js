@@ -19,5 +19,13 @@ export default function configureStore(initialState = {}) {
         middlewares = compose(middlewares, window.devToolsExtension())
     }
 
-    return createStore(rootReducer, initialState, middlewares)
+    const store = createStore(rootReducer, initialState, middlewares)
+
+    if (module.hot) {
+        module.hot.accept('../state/reducers.ts', () => {
+            const nextReducer = require('../state/reducers.ts').default
+            store.replaceReducer(nextReducer)
+        })
+    }
+    return store
 }
