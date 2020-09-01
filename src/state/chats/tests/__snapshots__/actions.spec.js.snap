@@ -15,18 +15,6 @@ Array [
 ]
 `;
 
-exports[`actions chats addChat() should add chat with notifications 2`] = `
-Array [
-  Object {
-    "body": "Hi",
-    "icon": "/static/private/img/icons/logo.png",
-    "onClick": [Function],
-    "timeout": 5000,
-    "title": "Mark Frizeli",
-  },
-]
-`;
-
 exports[`actions chats addChat() should add chat without notifications 1`] = `
 Array [
   Object {
@@ -41,8 +29,6 @@ Array [
   },
 ]
 `;
-
-exports[`actions chats addChat() should add chat without notifications 2`] = `Array []`;
 
 exports[`actions chats fetchChats() should fetch chats 1`] = `
 Array [

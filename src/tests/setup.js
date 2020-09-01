@@ -20,6 +20,14 @@ Object.defineProperty(window, 'matchMedia', {
     }),
 })
 
+//jsdom does not support HTMLMediaElement
+Object.defineProperty(window.HTMLMediaElement.prototype, 'load', {
+    value: jest.fn(),
+})
+Object.defineProperty(window.HTMLMediaElement.prototype, 'play', {
+    value: jest.fn().mockResolvedValue(),
+})
+
 // Mock of the localStorage API
 // to be able to test portion of code which access the localStorage API
 class LocalStorageMock {

@@ -15,7 +15,7 @@ import {
     INSTAGRAM_AD_COMMENT_SOURCE,
     INSTAGRAM_COMMENT_SOURCE,
 } from '../../config/ticket'
-import browserNotification from '../../services/browserNotification'
+import browserNotification from '../../services/browserNotification.ts'
 import GorgiasApi from '../../services/gorgiasApi'
 import socketManager from '../../services/socketManager'
 import {isCurrentlyOnTicket, isTabActive} from '../../utils'

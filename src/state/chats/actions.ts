@@ -1,7 +1,7 @@
 import axios from 'axios'
 import _throttle from 'lodash/throttle'
 
-import browserNotification from '../../services/browserNotification.js'
+import browserNotification from '../../services/browserNotification'
 
 import {RecentChatTicket} from '../../business/types/recentChats'
 import {Ticket} from '../../models/ticket/types'

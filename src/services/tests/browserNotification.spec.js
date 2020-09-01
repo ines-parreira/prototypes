@@ -1,6 +1,6 @@
 import PushJS from 'push.js'
 
-import browserNotification from '../browserNotification'
+import browserNotification from '../browserNotification.ts'
 
 describe('services', () => {
     describe('browserNotification', () => {
@@ -24,6 +24,14 @@ describe('services', () => {
                 expect(PushJS.getAll()).toMatchSnapshot()
             })
 
+            it('should create a browser notification with default values (empty values)', () => {
+                browserNotification.newMessage({
+                    title: '',
+                    body: '',
+                })
+                expect(PushJS.getAll()).toMatchSnapshot()
+            })
+
             it('should create a browser notification with default values (invalid values)', () => {
                 browserNotification.newMessage({
                     title: 1234,
@@ -39,6 +47,24 @@ describe('services', () => {
                     ticketId: 12,
                 })
                 expect(PushJS.getAll()).toMatchSnapshot()
+            })
+
+            it('should not throw unhandled promise rejection when the audio playing fails', (done) => {
+                jest.spyOn(
+                    global.HTMLMediaElement.prototype,
+                    'play'
+                ).mockRejectedValueOnce()
+
+                browserNotification.newMessage({
+                    title: 'title',
+                    body: 'body',
+                    ticketId: 12,
+                })
+
+                setImmediate(() => {
+                    expect(PushJS.getAll()).toMatchSnapshot()
+                    done()
+                })
             })
         })
     })

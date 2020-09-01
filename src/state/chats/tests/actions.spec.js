@@ -2,8 +2,9 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-import browserNotification from 'push.js'
+import PushJS from 'push.js'
 
+import browserNotification from '../../../services/browserNotification.ts'
 import * as actions from '../actions.ts'
 import {initialState} from '../reducers.ts'
 
@@ -16,6 +17,12 @@ jest.mock('../../notifications/actions.ts', () => {
     }
 })
 
+jest.mock('../../../services/browserNotification', () => {
+    return {
+        newMessage: jest.fn(),
+    }
+})
+
 describe('actions', () => {
     let store
     let mockServer
@@ -23,6 +30,7 @@ describe('actions', () => {
     beforeEach(() => {
         store = mockStore({currentAccount: initialState})
         mockServer = new MockAdapter(axios)
+        jest.clearAllMocks()
     })
 
     describe('chats', () => {
@@ -53,13 +61,13 @@ describe('actions', () => {
                 ]
                 store.dispatch(actions.setChats(chats))
                 expect(store.getActions()).toMatchSnapshot()
-                expect(browserNotification.getAll()).toMatchSnapshot()
+                expect(PushJS.getAll()).toMatchSnapshot()
             })
         })
 
         describe('addChat()', () => {
             beforeEach(() => {
-                browserNotification.clear()
+                PushJS.clear()
             })
 
             const chat = {
@@ -73,13 +81,20 @@ describe('actions', () => {
             it('should add chat with notifications', () => {
                 store.dispatch(actions.addChat(chat, true))
                 expect(store.getActions()).toMatchSnapshot()
-                expect(browserNotification.getAll()).toMatchSnapshot()
+                expect(browserNotification.newMessage).toHaveBeenNthCalledWith(
+                    1,
+                    {
+                        body: 'Hi',
+                        ticketId: 1,
+                        title: 'Mark Frizeli',
+                    }
+                )
             })
 
             it('should add chat without notifications', () => {
                 store.dispatch(actions.addChat(chat, false))
                 expect(store.getActions()).toMatchSnapshot()
-                expect(browserNotification.getAll()).toMatchSnapshot()
+                expect(browserNotification.newMessage).not.toHaveBeenCalled()
             })
         })
 
