@@ -25,7 +25,7 @@ describe('FacebookIntegrationSetup', () => {
         data: [
             {
                 id: 1,
-                facebook: {
+                meta: {
                     name: 'My page',
                     about: 'A page about stuff',
                     picture: {
@@ -96,7 +96,7 @@ describe('FacebookIntegrationSetup', () => {
                 selectedIntegrations: fromJS({}).set(
                     onboardingIntegrations.getIn(['data', 0, 'id']),
                     onboardingIntegrations.getIn(['data', 0]).setIn(
-                        ['facebook', 'settings'],
+                        ['meta', 'settings'],
                         fromJS({
                             messenger_enabled: true,
                             posts_enabled: true,
@@ -135,7 +135,7 @@ describe('FacebookIntegrationSetup', () => {
                 selectedIntegrations: fromJS({}).set(
                     onboardingIntegrations.getIn(['data', 0, 'id']),
                     onboardingIntegrations.getIn(['data', 0]).setIn(
-                        ['facebook', 'settings'],
+                        ['meta', 'settings'],
                         fromJS({
                             messenger_enabled: true,
                             posts_enabled: true,

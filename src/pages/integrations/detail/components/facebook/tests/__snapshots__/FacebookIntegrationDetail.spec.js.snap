@@ -67,18 +67,16 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         "id": 1,
         "type": "facebook",
         "name": "My facebook page",
-        "facebook": Immutable.Map {
-          "name": "My facebook page",
-          "settings": Immutable.Map {
-            "instagram_ads_enabled": true,
-          },
-        },
         "meta": Immutable.Map {
           "oauth": Immutable.Map {
             "scope": "business_management,manage_pages,instagram_basic,instagram_manage_comments,ads_read,ads_management",
           },
           "instagram": Immutable.Map {
             "id": "178941234975",
+          },
+          "name": "My facebook page",
+          "settings": Immutable.Map {
+            "instagram_ads_enabled": true,
           },
         },
       }
@@ -343,9 +341,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         "id": 1,
         "type": "facebook",
         "name": "My facebook page",
-        "facebook": Immutable.Map {
-          "name": "My facebook page",
-        },
         "meta": Immutable.Map {
           "oauth": Immutable.Map {
             "scope": "business_management,manage_pages,instagram_basic,instagram_manage_comments",
@@ -353,6 +348,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           "instagram": Immutable.Map {
             "id": null,
           },
+          "name": "My facebook page",
         },
       }
     }
@@ -659,9 +655,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         "id": 1,
         "type": "facebook",
         "name": "My facebook page",
-        "facebook": Immutable.Map {
-          "name": "My facebook page",
-        },
         "meta": Immutable.Map {
           "oauth": Immutable.Map {
             "scope": "business_management,manage_pages",
@@ -669,6 +662,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           "instagram": Immutable.Map {
             "id": "178941234975",
           },
+          "name": "My facebook page",
         },
       }
     }
@@ -978,9 +972,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         "id": 1,
         "type": "facebook",
         "name": "My facebook page",
-        "facebook": Immutable.Map {
-          "name": "My facebook page",
-        },
         "meta": Immutable.Map {
           "oauth": Immutable.Map {
             "scope": "business_management,manage_pages,instagram_basic,instagram_manage_comments",
@@ -988,6 +979,7 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           "instagram": Immutable.Map {
             "id": "178941234975",
           },
+          "name": "My facebook page",
         },
       }
     }
@@ -1297,10 +1289,8 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         "id": 1,
         "type": "facebook",
         "name": "My facebook page",
-        "facebook": Immutable.Map {
-          "name": "My facebook page",
-        },
         "meta": Immutable.Map {
+          "name": "My facebook page",
           "oauth": Immutable.Map {
             "scope": "business_management,manage_pages,instagram_basic,instagram_manage_comments",
           },

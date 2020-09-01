@@ -60,7 +60,7 @@ class FacebookIntegrationCustomerChat extends React.Component<Props, State> {
                                 </Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem>
-                                {integration.getIn(['facebook', 'name'])}
+                                {integration.getIn(['meta', 'name'])}
                             </BreadcrumbItem>
                             <BreadcrumbItem active>
                                 Customer chat
@@ -106,7 +106,7 @@ class FacebookIntegrationCustomerChat extends React.Component<Props, State> {
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             href={`https://business.facebook.com/${integration.getIn(
-                                                ['facebook', 'page_id'],
+                                                ['meta', 'page_id'],
                                                 ''
                                             )}/settings/?tab=messenger_platform`}
                                         >

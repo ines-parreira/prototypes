@@ -6,7 +6,7 @@ exports[`<FacebookIntegrationNavigation/> should display the Ads tab when Instag
     Immutable.Map {
       "id": 1,
       "type": "facebook",
-      "facebook": Immutable.Map {
+      "meta": Immutable.Map {
         "settings": Immutable.Map {
           "instagram_ads_enabled": true,
         },

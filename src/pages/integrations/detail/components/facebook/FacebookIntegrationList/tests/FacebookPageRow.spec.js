@@ -28,7 +28,7 @@ describe('FacebookPageRow component', () => {
             name: 'mylittleintegration',
             type: FACEBOOK_INTEGRATION_TYPE,
             created_datetime: '2018-01-01 00:00:00',
-            facebook: {
+            meta: {
                 name: 'My Page',
                 picture: {
                     data: {

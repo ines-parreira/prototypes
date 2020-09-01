@@ -6,7 +6,7 @@ describe('facebook customer chat utils', () => {
     describe('renderFacebookCodeSnippet', () => {
         it('should render correctly', () => {
             const integration = fromJS({
-                facebook: {
+                meta: {
                     page_id: 'mylittlepageid',
                 },
             })

@@ -105,7 +105,7 @@ export default class FacebookIntegrationSetup extends React.Component<
             selectedIntegrations = selectedIntegrations.set(
                 id,
                 integration.setIn(
-                    ['facebook', 'settings'],
+                    ['meta', 'settings'],
                     fromJS({
                         messenger_enabled: true,
                         posts_enabled: true,
@@ -133,7 +133,7 @@ export default class FacebookIntegrationSetup extends React.Component<
         return (
             this.state.selectedIntegrations.getIn([
                 id,
-                'facebook',
+                'meta',
                 'settings',
                 key,
             ]) || false
@@ -143,7 +143,7 @@ export default class FacebookIntegrationSetup extends React.Component<
     _setSettingValue = (id: number, key: string, value: boolean) => {
         this.setState({
             selectedIntegrations: this.state.selectedIntegrations.setIn(
-                [id, 'facebook', 'settings', key],
+                [id, 'meta', 'settings', key],
                 value
             ),
         })
@@ -184,7 +184,6 @@ export default class FacebookIntegrationSetup extends React.Component<
                     ) : (
                         integrations.map((integration) => {
                             const id = integration.get('id')
-                            const page = integration.get('facebook')
 
                             const instagramIsDisabled = !integration.getIn([
                                 'meta',
@@ -209,8 +208,9 @@ export default class FacebookIntegrationSetup extends React.Component<
                                                         'image rounded mr-3 mb-2 mb-md-0',
                                                         css.icon
                                                     )}
-                                                    src={page.getIn(
+                                                    src={integration.getIn(
                                                         [
+                                                            'meta',
                                                             'picture',
                                                             'data',
                                                             'url',
@@ -230,11 +230,17 @@ export default class FacebookIntegrationSetup extends React.Component<
                                                             'mr-3'
                                                         )}
                                                     >
-                                                        {page.get('name')}
+                                                        {integration.getIn([
+                                                            'meta',
+                                                            'name',
+                                                        ])}
                                                     </h3>
                                                     <span>
                                                         {_truncate(
-                                                            page.get('about'),
+                                                            integration.getIn([
+                                                                'meta',
+                                                                'about',
+                                                            ]),
                                                             {length: 100}
                                                         )}
                                                     </span>

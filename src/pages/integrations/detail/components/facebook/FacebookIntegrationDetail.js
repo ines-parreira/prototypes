@@ -64,7 +64,7 @@ export default class FacebookIntegrationDetail extends React.Component<
     }
 
     _updateState = (integration: Map<*, *>) => {
-        const settings = integration.getIn(['facebook', 'settings'], fromJS({}))
+        const settings = integration.getIn(['meta', 'settings'], fromJS({}))
         const language = integration.getIn(['meta', 'language'])
 
         const newState = {}
@@ -118,8 +118,7 @@ export default class FacebookIntegrationDetail extends React.Component<
         const {actions, integration} = this.props
         const {settings, language} = this.state
         const updated = integration.mergeDeep({
-            facebook: {settings},
-            meta: {language},
+            meta: {language, settings},
         })
         actions.updateOrCreateIntegration(updated)
     }
@@ -127,7 +126,7 @@ export default class FacebookIntegrationDetail extends React.Component<
     render() {
         const {integration, loading, actions} = this.props
 
-        const integrationFacebook = integration.get('facebook') || fromJS({})
+        const integrationMeta = integration.get('meta') || fromJS({})
 
         const integrationScope =
             integration.getIn(['meta', 'oauth', 'scope']) || fromJS([])
@@ -222,7 +221,7 @@ export default class FacebookIntegrationDetail extends React.Component<
                             alt="facebook logo"
                             className="image rounded mr-3"
                             width="30"
-                            src={integrationFacebook.getIn(
+                            src={integrationMeta.getIn(
                                 ['picture', 'data', 'url'],
                                 pageIconDefault
                             )}
@@ -232,7 +231,7 @@ export default class FacebookIntegrationDetail extends React.Component<
                                 {integration.get('name')}
                             </h2>
                             <span>
-                                {_truncate(integrationFacebook.get('about'), {
+                                {_truncate(integrationMeta.get('about'), {
                                     length: 100,
                                 })}
                             </span>

@@ -14,9 +14,9 @@ export default class FacebookPageRow extends React.Component {
     render() {
         const {integration} = this.props
         const isDisabled = integration.get('deactivated_datetime')
-        const page = integration.get('facebook')
+        const integrationMeta = integration.get('meta')
 
-        if (!page || page.isEmpty()) {
+        if (!integrationMeta || integrationMeta.isEmpty()) {
             return null
         }
 
@@ -34,16 +34,18 @@ export default class FacebookPageRow extends React.Component {
                             overflow: 'hidden',
                         }}
                         className="rounded"
-                        alt={page.get('name')}
-                        src={page.getIn(['picture', 'data', 'url'])}
+                        alt={integrationMeta.get('name')}
+                        src={integrationMeta.getIn(['picture', 'data', 'url'])}
                     />
                 </td>
                 <td className="link-full-td">
                     <Link to={editLink}>
                         <div>
-                            <b className="mr-2">{page.get('name')}</b>
+                            <b className="mr-2">
+                                {integrationMeta.get('name')}
+                            </b>
                             <span className="text-faded">
-                                {page.get('category')}
+                                {integrationMeta.get('category')}
                             </span>
                         </div>
                     </Link>

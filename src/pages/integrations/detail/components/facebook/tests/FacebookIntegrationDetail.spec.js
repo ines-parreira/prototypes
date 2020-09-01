@@ -64,7 +64,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                 <FacebookIntegrationDetail
                     {...defaultProps}
                     integration={fromJS({
-                        facebook: {
+                        meta: {
                             settings: newSettings,
                         },
                     })}
@@ -108,11 +108,9 @@ describe('<FacebookIntegrationDetail/>', () => {
                 <FacebookIntegrationDetail
                     {...defaultProps}
                     integration={fromJS({
-                        facebook: {
-                            settings: newSettings,
-                        },
                         meta: {
                             language: SPANISH_LANGUAGE,
+                            settings: newSettings,
                         },
                     })}
                 />
@@ -129,15 +127,6 @@ describe('<FacebookIntegrationDetail/>', () => {
                 id: 1,
                 type: FACEBOOK_INTEGRATION_TYPE,
                 name: 'My facebook page',
-                facebook: {
-                    name: 'My facebook page',
-                    settings: {
-                        posts_enabled: true,
-                        messenger_enabled: true,
-                        import_history_enabled: true,
-                        instagram_comments_enabled: false,
-                    },
-                },
                 meta: {
                     oauth: {
                         scope:
@@ -147,6 +136,13 @@ describe('<FacebookIntegrationDetail/>', () => {
                         id: '178941234975',
                     },
                     language: SPANISH_LANGUAGE,
+                    name: 'My facebook page',
+                    settings: {
+                        posts_enabled: true,
+                        messenger_enabled: true,
+                        import_history_enabled: true,
+                        instagram_comments_enabled: false,
+                    },
                 },
             })
 
@@ -172,16 +168,6 @@ describe('<FacebookIntegrationDetail/>', () => {
                 id: 1,
                 type: FACEBOOK_INTEGRATION_TYPE,
                 name: 'My facebook page',
-                facebook: {
-                    name: 'My facebook page',
-                    settings: {
-                        posts_enabled: true,
-                        messenger_enabled: true,
-                        import_history_enabled: true,
-                        instagram_comments_enabled: false,
-                        instagram_ads_enabled: false,
-                    },
-                },
                 meta: {
                     oauth: {
                         scope:
@@ -191,12 +177,20 @@ describe('<FacebookIntegrationDetail/>', () => {
                         id: '178941234975',
                     },
                     language: SPANISH_LANGUAGE,
+                    name: 'My facebook page',
+                    settings: {
+                        posts_enabled: true,
+                        messenger_enabled: true,
+                        import_history_enabled: true,
+                        instagram_comments_enabled: false,
+                        instagram_ads_enabled: false,
+                    },
                 },
             })
 
             const newIntegration = oldIntegration
                 .setIn(
-                    ['facebook', 'settings'],
+                    ['meta', 'settings'],
                     fromJS({
                         posts_enabled: false,
                         messenger_enabled: true,
@@ -217,7 +211,7 @@ describe('<FacebookIntegrationDetail/>', () => {
             const prevState = component.state()
 
             expect(prevState.settings).toEqual(
-                oldIntegration.getIn(['facebook', 'settings']).toJS()
+                oldIntegration.getIn(['meta', 'settings']).toJS()
             )
             expect(prevState.language).toEqual(
                 oldIntegration.getIn(['meta', 'language'])
@@ -229,7 +223,7 @@ describe('<FacebookIntegrationDetail/>', () => {
             })
 
             const expectedState = fromJS(prevState)
-                .set('settings', newIntegration.getIn(['facebook', 'settings']))
+                .set('settings', newIntegration.getIn(['meta', 'settings']))
                 .set('language', newIntegration.getIn(['meta', 'language']))
                 .toJS()
 
@@ -244,16 +238,6 @@ describe('<FacebookIntegrationDetail/>', () => {
                 id: 1,
                 type: FACEBOOK_INTEGRATION_TYPE,
                 name: 'My facebook page',
-                facebook: {
-                    name: 'My facebook page',
-                    settings: {
-                        posts_enabled: postsEnabled,
-                        messenger_enabled: true,
-                        import_history_enabled: true,
-                        instagram_comments_enabled: false,
-                        instagram_ads_enabled: false,
-                    },
-                },
                 meta: {
                     oauth: {
                         scope:
@@ -263,6 +247,14 @@ describe('<FacebookIntegrationDetail/>', () => {
                         id: '178941234975',
                     },
                     language: SPANISH_LANGUAGE,
+                    name: 'My facebook page',
+                    settings: {
+                        posts_enabled: postsEnabled,
+                        messenger_enabled: true,
+                        import_history_enabled: true,
+                        instagram_comments_enabled: false,
+                        instagram_ads_enabled: false,
+                    },
                 },
             })
 
@@ -276,7 +268,7 @@ describe('<FacebookIntegrationDetail/>', () => {
             const prevState = component.state()
 
             expect(prevState.settings).toEqual(
-                integration.getIn(['facebook', 'settings']).toJS()
+                integration.getIn(['meta', 'settings']).toJS()
             )
 
             component
@@ -304,15 +296,6 @@ describe('<FacebookIntegrationDetail/>', () => {
                 id: 1,
                 type: FACEBOOK_INTEGRATION_TYPE,
                 name: 'My facebook page',
-                facebook: {
-                    name: 'My facebook page',
-                    settings: {
-                        posts_enabled: true,
-                        messenger_enabled: true,
-                        import_history_enabled: true,
-                        instagram_comments_enabled: false,
-                    },
-                },
                 meta: {
                     oauth: {
                         scope:
@@ -322,6 +305,13 @@ describe('<FacebookIntegrationDetail/>', () => {
                         id: '178941234975',
                     },
                     language: SPANISH_LANGUAGE,
+                    name: 'My facebook page',
+                    settings: {
+                        posts_enabled: true,
+                        messenger_enabled: true,
+                        import_history_enabled: true,
+                        instagram_comments_enabled: false,
+                    },
                 },
             })
 
@@ -346,8 +336,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                 defaultProps.actions.updateOrCreateIntegration
             ).toHaveBeenCalledWith(
                 integration.mergeDeep({
-                    facebook: {settings: newSettings},
-                    meta: {language: DANISH_LANGUAGE},
+                    meta: {language: DANISH_LANGUAGE, settings: newSettings},
                 })
             )
         })
@@ -390,9 +379,6 @@ describe('<FacebookIntegrationDetail/>', () => {
                     id: 1,
                     type: FACEBOOK_INTEGRATION_TYPE,
                     name: 'My facebook page',
-                    facebook: {
-                        name: 'My facebook page',
-                    },
                     meta: {
                         oauth: {
                             scope: 'business_management,manage_pages',
@@ -400,6 +386,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                         instagram: {
                             id: '178941234975',
                         },
+                        name: 'My facebook page',
                     },
                 })
 
@@ -422,9 +409,6 @@ describe('<FacebookIntegrationDetail/>', () => {
                     id: 1,
                     type: FACEBOOK_INTEGRATION_TYPE,
                     name: 'My facebook page',
-                    facebook: {
-                        name: 'My facebook page',
-                    },
                     meta: {
                         oauth: {
                             scope:
@@ -433,6 +417,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                         instagram: {
                             id: null,
                         },
+                        name: 'My facebook page',
                     },
                 })
 
@@ -452,9 +437,6 @@ describe('<FacebookIntegrationDetail/>', () => {
                 id: 1,
                 type: FACEBOOK_INTEGRATION_TYPE,
                 name: 'My facebook page',
-                facebook: {
-                    name: 'My facebook page',
-                },
                 meta: {
                     oauth: {
                         scope:
@@ -463,6 +445,7 @@ describe('<FacebookIntegrationDetail/>', () => {
                     instagram: {
                         id: '178941234975',
                     },
+                    name: 'My facebook page',
                 },
             })
 
@@ -481,12 +464,6 @@ describe('<FacebookIntegrationDetail/>', () => {
                 id: 1,
                 type: FACEBOOK_INTEGRATION_TYPE,
                 name: 'My facebook page',
-                facebook: {
-                    name: 'My facebook page',
-                    settings: {
-                        instagram_ads_enabled: true,
-                    },
-                },
                 meta: {
                     oauth: {
                         scope:
@@ -495,6 +472,10 @@ describe('<FacebookIntegrationDetail/>', () => {
                     },
                     instagram: {
                         id: '178941234975',
+                    },
+                    name: 'My facebook page',
+                    settings: {
+                        instagram_ads_enabled: true,
                     },
                 },
             })
@@ -517,10 +498,8 @@ describe('<FacebookIntegrationDetail/>', () => {
                     id: 1,
                     type: FACEBOOK_INTEGRATION_TYPE,
                     name: 'My facebook page',
-                    facebook: {
-                        name: 'My facebook page',
-                    },
                     meta: {
+                        name: 'My facebook page',
                         oauth: {
                             scope:
                                 'business_management,manage_pages,instagram_basic,instagram_manage_comments',

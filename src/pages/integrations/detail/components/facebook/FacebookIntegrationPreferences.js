@@ -138,7 +138,7 @@ export class FacebookIntegrationPreferences extends React.Component<
                                 </Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem>
-                                {integration.getIn(['facebook', 'name'])}
+                                {integration.getIn(['meta', 'name'])}
                             </BreadcrumbItem>
                             <BreadcrumbItem active>Preferences</BreadcrumbItem>
                         </Breadcrumb>

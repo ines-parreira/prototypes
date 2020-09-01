@@ -15,7 +15,7 @@ export default class FacebookIntegrationNavigation extends React.Component<Props
         const integrationId = integration.get('id')
         const baseURL = `/app/settings/integrations/facebook/${integrationId}`
         const instagramAdsEnabled = integration.getIn([
-            'facebook',
+            'meta',
             'settings',
             'instagram_ads_enabled',
         ])

@@ -21,7 +21,7 @@ export const renderFacebookCodeSnippet = (integration) => {
 </script>
 
 <div class="fb-customerchat"
-     page_id="${integration.getIn(['facebook', 'page_id'])}"
+     page_id="${integration.getIn(['meta', 'page_id'])}"
      minimized="false"
      ref="g"
 >

@@ -22,7 +22,7 @@ describe('<FacebookIntegrationNavigation/>', () => {
         const integration = fromJS({
             id: 1,
             type: FACEBOOK_INTEGRATION_TYPE,
-            facebook: {
+            meta: {
                 settings: {
                     instagram_ads_enabled: true,
                 },
