@@ -5,7 +5,7 @@ import MockAdapter from 'axios-mock-adapter'
 
 import {fromJS} from 'immutable'
 
-import * as actions from '../actions'
+import * as actions from '../actions.ts'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

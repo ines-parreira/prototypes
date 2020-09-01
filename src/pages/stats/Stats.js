@@ -13,7 +13,7 @@ import {
 } from '../../config/stats'
 import GorgiasApi from '../../services/gorgiasApi'
 import {notify} from '../../state/notifications/actions.ts'
-import {getViewFilters} from '../../state/stats/selectors'
+import {getViewFilters} from '../../state/stats/selectors.ts'
 
 import {errorToChildren} from '../../utils'
 import type {Notification} from '../../state/notifications/types'

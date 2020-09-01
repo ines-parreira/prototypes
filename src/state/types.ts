@@ -13,6 +13,7 @@ import {InfobarActionsState} from './infobarActions/types'
 import {Message} from './newMessage/types'
 import rootReducer from './reducers'
 import {HTTPIntegrationEvent} from './HTTPIntegrationEvents/types'
+import {Rule, RulePriority, RuleOperation} from './rules/types'
 
 export type StoreState = {
     activity: Map<any, any>
@@ -103,6 +104,15 @@ export type GorgiasAction = {
     subject?: string
     receivers?: List<any>
     replaceAll?: boolean
+    rule?: Rule
+    priorities?: RulePriority[]
+    rules?: Rule[]
+    path?: List<any>
+    value?: string
+    operation?: RuleOperation
+    schemas?: Map<any, any>
+    ruleId?: number
+    filters?: Map<any, any>
 }
 
 export type CurrentUser = Map<any, any>

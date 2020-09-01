@@ -3,8 +3,8 @@ import {withRouter} from 'react-router'
 
 import {bindActionCreators} from 'redux'
 
-import * as RuleActions from '../../../../state/rules/actions'
-import {getRules} from '../../../../state/rules/selectors'
+import * as RuleActions from '../../../../state/rules/actions.ts'
+import {getRules} from '../../../../state/rules/selectors.ts'
 
 import RulesView from './components/RulesView'
 

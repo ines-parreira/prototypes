@@ -1,28 +1,26 @@
-// @flow
-import {fromJS, OrderedMap} from 'immutable'
+import {fromJS, OrderedMap, Map} from 'immutable'
 import _fromPairs from 'lodash/fromPairs'
 import _find from 'lodash/find'
 
-import type {Map} from 'immutable'
+import {getCode, getAST} from '../../utils.js'
+import {updateCodeAst} from '../../pages/common/components/ast/utils.js'
 
-import {getCode, getAST} from '../../utils'
-import {updateCodeAst} from '../../pages/common/components/ast/utils'
+import {GorgiasAction} from '../types'
 
-import type {actionType} from '../types'
+import * as constants from './constants.js'
+import {RulesState, Rule} from './types'
 
-import * as constants from './constants'
-
-export const initialState = fromJS({
+export const initialState: RulesState = fromJS({
     rules: {},
 })
 
 export default function reducer(
-    state: Map<*, *> = initialState,
-    action: actionType
-): Map<*, *> {
+    state: RulesState = initialState,
+    action: GorgiasAction
+): RulesState {
     switch (action.type) {
         case constants.ADD_RULE_END: {
-            const rule = action.rule
+            const rule = action.rule as Rule
             if (rule.code) {
                 rule.code_ast = getAST(rule.code)
             }
@@ -33,21 +31,24 @@ export default function reducer(
         }
 
         case constants.ACTIVATE_RULE: {
-            return state.updateIn(['rules', action.id.toString()], (rule) =>
-                rule.set('deactivated_datetime', null)
+            return state.updateIn(
+                ['rules', action.id?.toString()],
+                (rule: Map<any, any>) => rule.set('deactivated_datetime', null)
             )
         }
 
         case constants.DEACTIVATE_RULE: {
-            return state.updateIn(['rules', action.id.toString()], (rule) =>
-                rule.set('deactivated_datetime', new Date().toISOString())
+            return state.updateIn(
+                ['rules', action.id?.toString()],
+                (rule: Map<any, any>) =>
+                    rule.set('deactivated_datetime', new Date().toISOString())
             )
         }
 
         case constants.UPDATE_ORDER_START: {
             const {priorities} = action
-            return state.update('rules', (rules) => {
-                return rules.map((rule) => {
+            return state.update('rules', (rules: OrderedMap<any, any>) => {
+                return rules.map((rule: Map<any, any>) => {
                     const newPriorityData = _find(priorities, {
                         id: rule.get('id'),
                     })
@@ -64,13 +65,15 @@ export default function reducer(
         case constants.REMOVE_RULE: {
             return state.set(
                 'rules',
-                state.get('rules').remove(action.id.toString())
+                (state.get('rules') as OrderedMap<any, any>).remove(
+                    action.id?.toString()
+                )
             )
         }
 
         case constants.RULES_RECEIVE_POSTS: {
             // Given the code of the rules received from server convert the code to AST
-            const rules = action.rules.map((ruleItem) => {
+            const rules = action.rules?.map((ruleItem) => {
                 if (ruleItem.code) {
                     ruleItem.code_ast = getAST(ruleItem.code)
                 }
@@ -79,39 +82,43 @@ export default function reducer(
             })
             return state.set(
                 'rules',
-                fromJS(_fromPairs(rules))
-                    .sort(
-                        (a, b) =>
-                            a.get('created_datetime') <
-                            b.get('created_datetime')
-                    )
-                    .sort((a, b) => a.get('type') < b.get('type')) // system rules at the end
+                ((fromJS(_fromPairs(rules)) as OrderedMap<any, any>).sort(
+                    ((a: Map<any, any>, b: Map<any, any>) =>
+                        a.get('created_datetime') <
+                        b.get('created_datetime')) as any
+                ) as OrderedMap<any, any>).sort(
+                    ((a: Map<any, any>, b: Map<any, any>) =>
+                        a.get('type') < b.get('type')) as any
+                ) // system rules at the end
             )
         }
 
         case constants.RULES_INITIALISE_CODE_AST: {
             const {id} = action
-            let stateItem = state.getIn(['rules', id.toString()], fromJS({}))
+            let stateItem = state.getIn(
+                ['rules', id?.toString()],
+                fromJS({})
+            ) as Map<any, any>
 
             // let ast = constants.DEFAULT_IF_STATEMENT
             let ast = constants.DEFAULT_STATEMENT
-            const code = getCode(ast)
+            const code = getCode(ast as any)
             ast = getAST(code)
 
             stateItem = stateItem.set('code_ast', fromJS(ast))
             stateItem = stateItem.set('code', code)
 
-            return state.setIn(['rules', id.toString()], stateItem)
+            return state.setIn(['rules', id?.toString()], stateItem)
         }
 
         case constants.RULES_UPDATE_CODE_AST: {
             const {path, value, operation, schemas} = action
-            const id = action.id.toString()
+            const id = action.id?.toString()
             const ast = state.getIn(['rules', id, 'code_ast'])
 
             const updatedCodeAst = fromJS(
                 updateCodeAst(schemas, ast, path, value, operation)
-            )
+            ) as Map<any, any>
 
             return state
                 .setIn(['rules', id, 'code'], updatedCodeAst.get('code'))
@@ -119,20 +126,25 @@ export default function reducer(
         }
 
         case constants.UPDATE_RULE_START: {
-            return state.updateIn(['rules', String(action.ruleId)], (rule) => {
-                return rule.mergeDeep(action.rule)
-            })
+            return state.updateIn(
+                ['rules', String(action.ruleId)],
+                (rule: Map<any, any>) => {
+                    return rule.mergeDeep(
+                        (action.rule as unknown) as Map<any, any>
+                    )
+                }
+            )
         }
 
         case constants.UPDATE_RULE_SUCCESS: {
-            return state.update('rules', (rules) =>
-                rules.set(action.ruleId.toString(), action.rule)
+            return state.update('rules', (rules: OrderedMap<any, any>) =>
+                rules.set(action.ruleId?.toString(), action.rule)
             )
         }
 
         case constants.RESET_RULE_SUCCESS:
             return state.setIn(
-                ['rules', action.rule.id.toString()],
+                ['rules', action.rule?.id.toString()],
                 fromJS(action.rule)
             )
 

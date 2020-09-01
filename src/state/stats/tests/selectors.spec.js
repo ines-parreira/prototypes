@@ -1,7 +1,7 @@
 import {fromJS} from 'immutable'
 
-import {initialState} from '../reducers'
-import * as selectors from '../selectors'
+import {initialState} from '../reducers.ts'
+import * as selectors from '../selectors.ts'
 import {EMAIL_CHANNEL} from '../../../config/ticket'
 
 describe('selectors', () => {

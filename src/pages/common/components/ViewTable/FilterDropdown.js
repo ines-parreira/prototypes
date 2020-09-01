@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 
 import * as customersHelpers from '../../../../state/customers/helpers.ts'
-import * as schemasSelectors from '../../../../state/schemas/selectors'
+import * as schemasSelectors from '../../../../state/schemas/selectors.ts'
 import {fieldEnumSearch} from '../../../../state/views/actions'
 import {
     fieldPath,

@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 
-import * as schemasSelectors from '../../../../../state/schemas/selectors'
+import * as schemasSelectors from '../../../../../state/schemas/selectors.ts'
 
 import CallExpression from './CallExpression'
 

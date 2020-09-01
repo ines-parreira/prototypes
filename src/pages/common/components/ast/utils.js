@@ -4,7 +4,7 @@ import {ACTION_DEFAULT_STATE} from '../../../../state/rules/constants'
 import {
     updateCallExpression,
     getObjectExpression,
-} from '../../../../state/rules/utils'
+} from '../../../../state/rules/utils.ts'
 import {getCode, getAST, toJS, toImmutable} from '../../../../utils'
 
 export const BASIC_PADDING = 59

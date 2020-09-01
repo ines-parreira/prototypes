@@ -24,7 +24,7 @@ import Program from '../../../../../common/components/ast/Program'
 import Errors from '../../../../../common/components/ast/Errors'
 import ConfirmButton from '../../../../../common/components/ConfirmButton'
 
-import * as rulesHelpers from '../../../../../../state/rules/helpers'
+import * as rulesHelpers from '../../../../../../state/rules/helpers.ts'
 
 import {toJS} from '../../../../../../utils'
 import ToggleButton from '../../../../../common/components/ToggleButton'

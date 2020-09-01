@@ -1,20 +1,18 @@
-// @flow
 import {fromJS} from 'immutable'
 
-import type {Map} from 'immutable'
+import {GorgiasAction} from '../types'
 
-import type {actionType} from '../types'
+import * as constants from './constants.js'
+import {StatsState} from './types'
 
-import * as constants from './constants'
-
-export const initialState = fromJS({
+export const initialState: StatsState = fromJS({
     filters: null,
 })
 
 export default function reducer(
-    state: Map<*, *> = initialState,
-    action: actionType
-): Map<*, *> {
+    state: StatsState = initialState,
+    action: GorgiasAction
+): StatsState {
     switch (action.type) {
         case constants.RESET_STATS_FILTERS:
             return state.set('filters', null)
@@ -23,7 +21,7 @@ export default function reducer(
             return state.set('filters', action.filters)
 
         case constants.MERGE_STATS_FILTERS:
-            return state.mergeIn(['filters'], action.filters)
+            return state.mergeIn(['filters'], action.filters as any)
 
         default:
             return state

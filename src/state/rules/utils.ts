@@ -1,26 +1,27 @@
-// @flow
-import {fromJS} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 import drop from 'lodash/drop'
 import _isUndefined from 'lodash/isUndefined'
 import _isArray from 'lodash/isArray'
 import _isString from 'lodash/isString'
 import _isInteger from 'lodash/isInteger'
+import _isNil from 'lodash/isNil'
 
-import type {Map, List} from 'immutable'
-
-import {getAST, getFirstExpressionOfAST} from '../../utils'
+import {getAST, getFirstExpressionOfAST} from '../../utils.js'
+import {Schemas} from '../../types'
 import {
-    collectionOperators,
-    deprecatedOperators,
-    timedeltaOperators,
-} from '../../config/rules'
+    UNARY_OPERATORS,
+    TIMEDELTA_OPERATOR_DEFAULT_VALUE,
+} from '../../config.js'
+import {isTimedelta} from '../../utils/ast.js'
 
-import type {schemasType} from '../../types'
-import {UNARY_OPERATORS, TIMEDELTA_OPERATOR_DEFAULT_VALUE} from '../../config'
-import {isTimedelta} from '../../utils/ast'
-
-import {OBJECT_DEFINITIONS} from './constants'
-type argPathType = Array<?string>
+import {OBJECT_DEFINITIONS} from './constants.js'
+import {
+    CollectionOperator,
+    DeprecatedOperator,
+    TimedeltaOperator,
+    ObjectExpression,
+    ObjectExpressionProperty,
+} from './types'
 
 /**
  * Generate a path until the stop path was reached.
@@ -40,19 +41,15 @@ type argPathType = Array<?string>
  *      `ticket.source.to`
  *
  *  This is done by traversing the `memberExpression` and stopping at the `stopPath` thus keeping the first part.
- *
- * @param memberExpression
- * @param stopPath
- * @returns {Array}
  */
 function partialPath(
-    memberExpression: ?Map<*, *>,
-    stopPath: List<*>
-): Array<?string> {
-    const objectPath = []
+    memberExpression: Maybe<Map<any, any>>,
+    stopPath: List<any>
+): Array<Maybe<string>> {
+    const objectPath: Maybe<string>[] = []
     let fullStop = false
 
-    function walk(expr: ?Map<*, *>, path: argPathType) {
+    function walk(expr: Maybe<Map<any, any>>, path: Maybe<string>[]) {
         if (fullStop || stopPath.equals(fromJS(path))) {
             fullStop = true
             return
@@ -74,7 +71,7 @@ function partialPath(
                 break
             }
             default:
-                console.error(`Unexpected node ${expr.get('type')}`)
+                console.error(`Unexpected node ${expr.get('type') as string}`)
                 break
         }
     }
@@ -85,24 +82,19 @@ function partialPath(
 
 /**
  * Since we only have paths like: `ticket.customer` we need to resolve them to the path in the `schemas`
- *
- * @param leftPath - firstArg path
- * @param schemas - OpenAPI schema
- * @returns {Array}
  */
 const resolveArgSchema = (
-    leftPath: argPathType,
-    schemas: schemasType
-): argPathType => {
+    leftPath: Maybe<string>[],
+    schemas: Schemas
+): Maybe<string>[] => {
     const path = []
     let left = leftPath
 
-    // TODO(@ghinda): Flow will throw an error for this,
-    // remove when sure.
     if (!(Array.isArray(left) && left.length)) {
         throw Error(
-            // $FlowFixMe
-            `leftPath is expected to be {Array}, instead got ${leftPath}`
+            `leftPath is expected to be {Array}, instead got ${
+                (leftPath as unknown) as string
+            }`
         )
     }
 
@@ -110,8 +102,11 @@ const resolveArgSchema = (
         left = ['definitions', ...left]
     }
 
-    if (OBJECT_DEFINITIONS.hasOwnProperty(left[1])) {
-        left[1] = OBJECT_DEFINITIONS[left[1]]
+    if (
+        !_isNil(left[1]) &&
+        Object.prototype.hasOwnProperty.call(OBJECT_DEFINITIONS, left[1])
+    ) {
+        left[1] = OBJECT_DEFINITIONS[left[1] as keyof typeof OBJECT_DEFINITIONS]
     }
 
     // Counts how much we have to remove from the right side of the `leftPath`
@@ -120,7 +115,7 @@ const resolveArgSchema = (
         path.push(item)
         pathLen += 1
 
-        let schema = schemas.getIn(path)
+        let schema = schemas.getIn(path) as Map<any, any>
         if (
             schema &&
             schema.get('type') === 'object' &&
@@ -144,7 +139,10 @@ const resolveArgSchema = (
                 // get the remaining path
                 const newLeft = ['definitions', def, 'properties']
                 const newRight = drop(left, pathLen)
-                return resolveArgSchema(newLeft.concat(newRight), schemas)
+                return resolveArgSchema(
+                    newLeft.concat(newRight as string[]),
+                    schemas
+                )
             }
         }
     }
@@ -161,37 +159,29 @@ let fullStop = false
  *
  * Because there can be multiple levels of definitions (EX: refs) we're recurse to find the
  * shortest valid property that has `meta.operators`.
- *
- * @param props - Properties of a definition
- * @param firstArg - Path of the first argument of the callExpresion []
- * @param schemas - OpenAPI schemas
- * @returns {Array}
  */
 function resolveProperties(
-    props: {},
-    firstArg: argPathType,
-    schemas: schemasType
-): ?argPathType {
+    props: Record<string, unknown>,
+    firstArg: Maybe<string>[],
+    schemas: Schemas
+): Array<Maybe<Maybe<string>[] | Map<any, any>>> | undefined {
     if (fullStop) {
         return [null, null]
     }
 
     for (const key of Object.keys(props)) {
-        const prop = fromJS(props[key])
+        const prop = fromJS(props[key]) as Map<any, any>
         if (typeof prop === 'object' && prop.getIn(['meta', 'operators'])) {
             const newFirstArg = [...firstArg, key]
             // we found an arg, so we perform a fullStop for the recursive function
             fullStop = true
-            // TODO flow can't understand Array<Array<string> | string>
-            // because Array<string> and string are not compatible.
-            // $FlowFixMe
             return [newFirstArg, schemas]
         }
     }
 
     // This part is for deeper nested props
     for (const key of Object.keys(props)) {
-        const prop = fromJS(props[key])
+        const prop = fromJS(props[key]) as Map<any, any>
 
         let ref = ''
         if (prop.get('type') === 'array') {
@@ -203,7 +193,7 @@ function resolveProperties(
         if (ref) {
             const def = ref.split('/')[2]
             const path = ['definitions', def, 'properties']
-            const defProps = schemas.getIn(path, {}).toJS()
+            const defProps = (schemas.getIn(path, {}) as Map<any, any>).toJS()
             return resolveProperties(defProps, [...firstArg, key], schemas)
         }
     }
@@ -214,49 +204,44 @@ function resolveProperties(
  * need to generate a valid `firstArg` by looking at the schema and selecting the first valid property that supports
  * operations.
  * Ex: `ticket.sender` -> `ticket.sender.channel`
- *
- * @param firstArg - Partial argument path
- * @param schemas - OpenAPI schemas
- * @returns {Array}
  */
 function resolveFirstArgSchema(
-    firstArg: argPathType,
-    schemas: schemasType
-): [argPathType, null] {
+    firstArg: Maybe<string>[],
+    schemas: Schemas
+): [Maybe<string>[], Maybe<Map<any, any>>] {
     // Based on the first arg, try to get our schema
     const schemaPath = resolveArgSchema(firstArg, schemas)
-    const firstArgSchema = schemas.getIn(schemaPath)
+    const firstArgSchema = schemas.getIn(schemaPath) as Map<any, any>
 
     if (firstArgSchema) {
         // if the schemas supports operators all good, return the schema and the path
-        const operators = firstArgSchema.getIn(['meta', 'operators'])
+        const operators = firstArgSchema.getIn(['meta', 'operators']) as string
         if (operators) {
             return [firstArg, firstArgSchema]
         }
 
         // no operators means we have to dig deeper into it's properties
-        const props = firstArgSchema.toJS()
+        const props = firstArgSchema.toJS() as Record<string, unknown>
         const args = resolveProperties(props, firstArg, schemas)
-        // $FlowFixMe
-        return resolveFirstArgSchema(...args)
+        return resolveFirstArgSchema(
+            ...(args as ArgumentsOf<typeof resolveFirstArgSchema>)
+        )
     }
     return [firstArg, null]
 }
 
 /**
  * Figure out the first argument of the `callExpression` and it's schema.
- *
- * @param callExpression - the callExpression that will be changed
- * @param stopPath - when we need to stop the iteration
- * @param schemas - OpenAPI schemas
- * @returns {Array} a new firstArg and it's schema
  */
 function resolveFirstArg(
-    callExpression: Map<*, *>,
-    stopPath: List<*>,
-    schemas: schemasType
+    callExpression: Map<any, any>,
+    stopPath: List<any>,
+    schemas: Schemas
 ) {
-    const memberExpression = callExpression.getIn(['arguments', 0])
+    const memberExpression = callExpression.getIn(['arguments', 0]) as Map<
+        any,
+        any
+    >
 
     // Get a partial path of the `memberExpression` based on the stopPath.
     // Ex: `ticket.customer.email` -> `ticket.sender` (meaning that `customer` prop changed)
@@ -272,21 +257,20 @@ function resolveFirstArg(
  * Figure out the second argument of the `callExpression`.
  *
  * We're trying to keep the existing callee if the `firstArgSchema` allows it, otherwise default to the first one found.
- *
- * @param callExpression - callExpression that we need to change
- * @param firstArgSchema - schema of the first argument of the callExpression that is used to get possible vals
- * @returns {String} The new callee.
  */
 export function resolveCallee(
-    callExpression: Map<*, *>,
-    firstArgSchema: schemasType
+    callExpression: Map<any, any>,
+    firstArgSchema: Schemas
 ): string {
-    const oldCallee = callExpression.getIn(['callee', 'name'], '')
-    let callee = oldCallee
+    const oldCallee = callExpression.getIn(['callee', 'name'], '') as string
+    let callee: Maybe<string> = oldCallee
 
     if (firstArgSchema && firstArgSchema.getIn(['meta', 'operators'])) {
         const operators = Object.keys(
-            firstArgSchema.getIn(['meta', 'operators']).toJS()
+            (firstArgSchema.getIn(['meta', 'operators']) as Map<
+                any,
+                any
+            >).toJS()
         )
 
         callee = operators.find((operator) => operator === oldCallee)
@@ -294,18 +278,18 @@ export function resolveCallee(
         const defaultOperator = firstArgSchema.getIn([
             'meta',
             'defaultOperator',
-        ])
+        ]) as string
         if (
             !callee &&
             defaultOperator &&
-            !deprecatedOperators.includes(defaultOperator)
+            !Object.values(DeprecatedOperator).includes(defaultOperator as any)
         ) {
             callee = operators.find((operator) => operator === defaultOperator)
         }
 
         if (!callee) {
             callee = operators.filter(
-                (op) => !deprecatedOperators.includes(op)
+                (op) => !Object.values(DeprecatedOperator).includes(op as any)
             )[0]
         }
     }
@@ -318,42 +302,42 @@ export function resolveCallee(
  *
  * What happens here is we try to keep the old value if we can. Otherwise we look into possible
  * values based on `firstArgSchema`
- *
- * @param callExpression - callExpression that we need to change
- * @param firstArgSchema - schema of the first argument of the callExpression that is used to get possible vals
- * @param callee - callee name. E.g: contains, eq, etc...
- * @param reset - reset or not the current value to the default one
- * @returns {String} The new value of the second argument.
  */
 function resolveSecondArg(
-    callExpression: Map<*, *>,
-    firstArgSchema: schemasType,
-    callee,
-    reset
+    callExpression: Map<any, any>,
+    firstArgSchema: Schemas,
+    callee: string,
+    reset: boolean
 ) {
     // empty operators have only one argument
     if (Object.keys(UNARY_OPERATORS).includes(callee)) {
         return null
     }
 
-    const isCollectionCallee = collectionOperators.includes(callee)
-    const isTimedeltaCallee = timedeltaOperators.includes(callee)
-    const args = callExpression.getIn(['arguments', 1]) || fromJS({})
+    const isCollectionCallee = Object.values(CollectionOperator).includes(
+        callee as any
+    )
+    const isTimedeltaCallee = Object.values(TimedeltaOperator).includes(
+        callee as any
+    )
+    const args = (callExpression.getIn(['arguments', 1]) || fromJS({})) as Map<
+        any,
+        any
+    >
     let curDefault = 'null'
-    let curValue = undefined
+    let curValue: Maybe<string[] | string> = undefined
 
     // define the current default and value
     switch (args.get('type')) {
         case 'ArrayExpression':
             curDefault = '[]'
-            curValue = args
-                .get('elements')
-                .map((elem) => elem.get('value'))
-                .toJS()
+            curValue = (args.get('elements') as List<any>)
+                .map((elem: Map<any, any>) => elem.get('value') as string)
+                .toJS() as string[]
             break
         case 'Literal':
             curDefault = "''"
-            curValue = args.get('value')
+            curValue = args.get('value') as string
             break
         default:
     }
@@ -368,15 +352,16 @@ function resolveSecondArg(
 
         // current value is an array so we just create the raw value
         if (_isArray(curValue)) {
-            return `[${args
-                .get('elements')
-                .map((elem) => elem.get('raw'))
-                .toJS()}]`
+            return `[${
+                (args.get('elements') as List<any>)
+                    .map((elem: Map<any, any>) => elem.get('raw') as string)
+                    .toJS() as string
+            }]`
         }
 
         // argument is not an array but new callee needs one
         // so we transform the current value to an array
-        return `[${args.get('raw')}]`
+        return `[${args.get('raw') as string}]`
     } else if (isTimedeltaCallee && !isTimedelta(curValue)) {
         return `'${TIMEDELTA_OPERATOR_DEFAULT_VALUE}'`
     }
@@ -385,30 +370,30 @@ function resolveSecondArg(
         switch (firstArgSchema.get('type')) {
             case 'string':
                 if (firstArgSchema.getIn(['meta', 'enum'])) {
-                    const possibleLiterals = firstArgSchema
-                        .getIn(['meta', 'enum'])
-                        .toJS()
+                    const possibleLiterals = (firstArgSchema.getIn([
+                        'meta',
+                        'enum',
+                    ]) as List<any>).toJS() as unknown[]
                     const firstLit = possibleLiterals[0]
 
                     if (!reset) {
                         for (const lit of possibleLiterals.slice(1)) {
                             // just leave the same value as before
                             if (lit === curValue) {
-                                return `'${lit}'`
+                                return `'${lit as string}'`
                             }
                         }
                     }
-                    return `'${firstLit}'`
+                    return `'${firstLit as string}'`
                 }
 
-                // $FlowFixMe
                 return useCurValue && _isString(curValue)
                     ? `'${curValue}'`
                     : "''"
 
             case 'integer':
                 return useCurValue && _isInteger(curValue)
-                    ? args.get('raw')
+                    ? (args.get('raw') as string)
                     : curDefault
 
             case 'boolean':
@@ -458,16 +443,11 @@ function resolveSecondArg(
  *
  * Again, we try to keep the existing second argument if it's valid for the new `first argument`.
  * If it's not we'll have to look in the schemas for possible values (enum, object type, etc..)
- *
- * @param state - AST code
- * @param path - index in the AST code where the change happened
- * @param schemas - OpenAPI schemas
- * @returns {*}
  */
 export function updateCallExpression(
-    state: Map<*, *>,
-    path: List<*>,
-    schemas: schemasType
+    state: Map<any, any>,
+    path: List<any>,
+    schemas: Schemas
 ) {
     // nothing to do if it's just a value change, just return the same state
     // `value`: value of an AST Literal
@@ -479,32 +459,40 @@ export function updateCallExpression(
     const argumentsIndex = path.lastIndexOf('arguments')
     const calleeIndex = path.lastIndexOf('callee')
     let callExpressionPath = path
-    let stopPath = fromJS({})
+    let stopPath = fromJS({}) as List<any>
     // Property is the first argument of a call expression.
     // E.g: message.from_agent, ticket.subject, etc...
-    const hasPropertyChanged =
-        ~argumentsIndex && path.get(argumentsIndex + 1) === 0
+    const hasPropertyChanged = (~argumentsIndex &&
+        path.get(argumentsIndex + 1) === 0) as boolean
 
     if (~argumentsIndex) {
         // an argument has changed
         callExpressionPath = path.setSize(argumentsIndex)
-        stopPath = path.takeLast(path.size - callExpressionPath.size - 2)
+        stopPath = path.takeLast(
+            path.size - callExpressionPath.size - 2
+        ) as List<any>
     } else if (~calleeIndex) {
         // callee has changed
         callExpressionPath = path.setSize(calleeIndex)
-        stopPath = path.takeLast(path.size - callExpressionPath.size)
+        stopPath = path.takeLast(path.size - callExpressionPath.size) as List<
+            any
+        >
     }
 
-    const callExpression = state.getIn(callExpressionPath.toJS()) || fromJS({})
+    const callExpression = (state.getIn(callExpressionPath.toJS()) ||
+        fromJS({})) as Map<any, any>
     const [firstArg, firstArgSchema] = resolveFirstArg(
         callExpression,
         stopPath,
         schemas
     )
-    const callee = resolveCallee(callExpression, firstArgSchema)
+    const callee = resolveCallee(
+        callExpression,
+        firstArgSchema as Map<any, any>
+    )
     const secondArg = resolveSecondArg(
         callExpression,
-        firstArgSchema,
+        firstArgSchema as Map<any, any>,
         callee,
         hasPropertyChanged
     )
@@ -520,44 +508,27 @@ export function updateCallExpression(
     return state.setIn(callExpressionPath, newCallExpression)
 }
 
-type objectPropertyType = {
-    type: 'Property',
-    key: {
-        type: 'Identifier',
-        name: string,
-    },
-    computed: false,
-    value: {
-        type: 'Literal',
-        value: string,
-        raw: string,
-    },
-    kind: 'init',
-    method: false,
-    shorthand: false,
-}
-type objectExpressionType = {
-    type: 'ObjectExpression',
-    properties: Array<objectPropertyType>,
-}
-
-export function getObjectExpression(actionDict: {}): objectExpressionType {
-    const properties = Object.keys(actionDict).map((keyItem) => ({
-        type: 'Property',
-        key: {
-            type: 'Identifier',
-            name: keyItem,
-        },
-        computed: false,
-        value: {
-            type: 'Literal',
-            value: `${actionDict[keyItem]}`,
-            raw: `\'${actionDict[keyItem]}\'`,
-        },
-        kind: 'init',
-        method: false,
-        shorthand: false,
-    }))
+export function getObjectExpression(
+    actionDict: Record<string, unknown>
+): ObjectExpression {
+    const properties: ObjectExpressionProperty[] = Object.keys(actionDict).map(
+        (keyItem) => ({
+            type: 'Property',
+            key: {
+                type: 'Identifier',
+                name: keyItem,
+            },
+            computed: false,
+            value: {
+                type: 'Literal',
+                value: `${actionDict[keyItem] as string}`,
+                raw: `\'${actionDict[keyItem] as string}\'`,
+            },
+            kind: 'init',
+            method: false,
+            shorthand: false,
+        })
+    )
 
     return {type: 'ObjectExpression', properties}
 }

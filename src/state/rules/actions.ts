@@ -1,20 +1,14 @@
-// @flow
-import axios from 'axios'
+import axios, {AxiosError} from 'axios'
 import {fromJS, List} from 'immutable'
 
-import {notify} from '../notifications/actions.ts'
+import {ApiListResponsePagination} from '../../models/api/types'
+import {notify} from '../notifications/actions'
+import {StoreDispatch, RootState} from '../types'
+import {createErrorNotification} from '../utils.js'
+import {NotificationStatus} from '../notifications/types'
 
-import type {Dispatch, getStateType} from '../types'
-import {createErrorNotification} from '../utils'
-
-import type {ruleType} from './types'
-import * as constants from './constants'
-type operationType =
-    | 'UPDATE'
-    | 'INSERT'
-    | 'DELETE'
-    | 'UPDATE_LOGICAL_OPERATOR'
-    | 'DELETE_BINARY_EXPRESSION'
+import {Rule, RuleOperation, RuleDraft, RulePriority} from './types'
+import * as constants from './constants.js'
 
 export const addRuleStart = (type: string, code: string) => ({
     type: constants.ADD_RULE_START,
@@ -22,7 +16,7 @@ export const addRuleStart = (type: string, code: string) => ({
     code,
 })
 
-export const addRuleEnd = (rule: ruleType) => ({
+export const addRuleEnd = (rule: Rule) => ({
     type: constants.ADD_RULE_END,
     rule,
 })
@@ -32,17 +26,20 @@ export const requestRules = (url: string) => ({
     url,
 })
 
-export const receiveRules = (rules: Array<ruleType>) => ({
+export const receiveRules = (rules: Rule[]) => ({
     type: constants.RULES_RECEIVE_POSTS,
     rules,
 })
 
 export const modifyCodeAST = (
     id: string,
-    path: List<*>,
+    path: List<any>,
     value: string,
-    operation: operationType
-) => (dispatch: Dispatch, getState: getStateType): Dispatch =>
+    operation: RuleOperation
+) => (
+    dispatch: StoreDispatch,
+    getState: () => RootState
+): ReturnType<StoreDispatch> =>
     dispatch({
         type: constants.RULES_UPDATE_CODE_AST,
         schemas: getState().schemas,
@@ -59,16 +56,15 @@ export const initialiseCodeAST = (id: string) => ({
 
 /**
  * Create a rule
- * @param data: the data of the rule to create
  */
-export const create = (data: ruleType) => (
-    dispatch: Dispatch
-): Promise<Dispatch> => {
-    return axios.post('/api/rules/', data).then(
+export const create = (data: RuleOperation) => (
+    dispatch: StoreDispatch
+): Promise<ReturnType<StoreDispatch>> => {
+    return axios.post<Rule>('/api/rules/', data).then(
         (response) => {
             return dispatch(addRuleEnd(response.data))
         },
-        (error) => {
+        (error: AxiosError) => {
             return dispatch(
                 createErrorNotification(error, 'Unable to create the rule')
             )
@@ -78,11 +74,10 @@ export const create = (data: ruleType) => (
 
 /**
  * Save a rule
- * @param data
  */
-export const save = (data: ruleType) => (
-    dispatch: Dispatch
-): Promise<Dispatch> => {
+export const save = (data: RuleDraft) => (
+    dispatch: StoreDispatch
+): Promise<ReturnType<StoreDispatch>> => {
     dispatch({
         type: constants.UPDATE_RULE_START,
         ruleId: data.id,
@@ -90,13 +85,13 @@ export const save = (data: ruleType) => (
     })
 
     return axios
-        .put(`/api/rules/${data.id}/`, data)
-        .then((json = {}) => json.data)
+        .put<Rule>(`/api/rules/${data.id || ''}/`, data)
+        .then((json) => json?.data)
         .then(
             (resp) => {
-                dispatch(
+                void dispatch(
                     notify({
-                        status: 'success',
+                        status: NotificationStatus.Success,
                         message: 'Rule saved successfully',
                     })
                 )
@@ -107,7 +102,7 @@ export const save = (data: ruleType) => (
                     rule: fromJS(resp),
                 })
             },
-            (error) => {
+            (error: AxiosError) => {
                 dispatch(
                     createErrorNotification(error, 'Unable to save the rule')
                 )
@@ -122,19 +117,18 @@ export const save = (data: ruleType) => (
 
 /**
  * Activate a rule
- * @param id rule id
  */
 export const activate = (id: string) => (
-    dispatch: Dispatch
-): Promise<Dispatch> =>
+    dispatch: StoreDispatch
+): Promise<ReturnType<StoreDispatch>> =>
     axios
-        .put(`/api/rules/${id}/`, {deactivated_datetime: null})
-        .then((json = {}) => json.data)
+        .put<Rule>(`/api/rules/${id}/`, {deactivated_datetime: null})
+        .then((json) => json?.data)
         .then(
             () => {
-                dispatch(
+                void dispatch(
                     notify({
-                        status: 'success',
+                        status: NotificationStatus.Success,
                         message: 'Rule activated successfully',
                     })
                 )
@@ -144,7 +138,7 @@ export const activate = (id: string) => (
                     id,
                 })
             },
-            (error) => {
+            (error: AxiosError) => {
                 return dispatch(
                     createErrorNotification(
                         error,
@@ -156,19 +150,18 @@ export const activate = (id: string) => (
 
 /**
  * Deactivate a rule
- * @param id
  */
 export const deactivate = (id: string) => (
-    dispatch: Dispatch
-): Promise<Dispatch> =>
+    dispatch: StoreDispatch
+): Promise<ReturnType<StoreDispatch>> =>
     axios
-        .put(`/api/rules/${id}/`, {deactivated_datetime: new Date()})
-        .then((json = {}) => json.data)
+        .put<Rule>(`/api/rules/${id}/`, {deactivated_datetime: new Date()})
+        .then((json) => json?.data)
         .then(
             () => {
-                dispatch(
+                void dispatch(
                     notify({
-                        status: 'success',
+                        status: NotificationStatus.Success,
                         message: 'Rule deactivated successfully',
                     })
                 )
@@ -190,41 +183,40 @@ export const deactivate = (id: string) => (
 
 /**
  * Delete a rule
- * @param id
  */
-export const remove = (id: string) => (dispatch: Dispatch): Promise<Dispatch> =>
-    axios
-        .delete(`/api/rules/${id}/`)
-        .then((json = {}) => json.data)
-        .then(
-            () => {
-                dispatch(
-                    notify({
-                        status: 'success',
-                        message: 'Rule deleted successfully',
-                    })
-                )
-
-                return dispatch({
-                    type: constants.REMOVE_RULE,
-                    id,
+export const remove = (id: string) => (
+    dispatch: StoreDispatch
+): Promise<ReturnType<StoreDispatch>> =>
+    axios.delete<void>(`/api/rules/${id}/`).then(
+        () => {
+            void dispatch(
+                notify({
+                    status: NotificationStatus.Success,
+                    message: 'Rule deleted successfully',
                 })
-            },
-            (error) => {
-                return dispatch(
-                    createErrorNotification(error, 'Unable to delete the rule')
-                )
-            }
-        )
+            )
+
+            return dispatch({
+                type: constants.REMOVE_RULE,
+                id,
+            })
+        },
+        (error: AxiosError) => {
+            return dispatch(
+                createErrorNotification(error, 'Unable to delete the rule')
+            )
+        }
+    )
 
 /**
  * Reset the code ast of a rule
- * @param id
  */
-export const reset = (id: string) => (dispatch: Dispatch): Promise<Dispatch> =>
+export const reset = (id: string) => (
+    dispatch: StoreDispatch
+): Promise<ReturnType<StoreDispatch>> =>
     axios
-        .get(`/api/rules/${id}`)
-        .then((json = {}) => json.data)
+        .get<Rule>(`/api/rules/${id}`)
+        .then((json) => json?.data)
         .then((response) => {
             return dispatch({
                 type: constants.RESET_RULE_SUCCESS,
@@ -234,17 +226,17 @@ export const reset = (id: string) => (dispatch: Dispatch): Promise<Dispatch> =>
 
 export function fetchRules() {
     const url = '/api/rules/'
-    return (dispatch: Dispatch): Promise<Dispatch> => {
+    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         dispatch(requestRules(url))
 
         return axios
-            .get(url)
-            .then((json = {}) => json.data)
+            .get<ApiListResponsePagination<Rule[]>>(url)
+            .then((json) => json?.data)
             .then(
                 (resp) => {
                     return dispatch(receiveRules(resp.data))
                 },
-                (error) => {
+                (error: AxiosError) => {
                     return dispatch(
                         createErrorNotification(
                             error,
@@ -256,21 +248,21 @@ export function fetchRules() {
     }
 }
 
-export function updateOrder(priorities: {}) {
-    return (dispatch: Dispatch): Promise<Dispatch> => {
+export function updateOrder(priorities: RulePriority[]) {
+    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         dispatch({
             type: constants.UPDATE_ORDER_START,
             priorities,
         })
 
         return axios
-            .post('/api/rules/priorities/', {priorities})
-            .then((json = {}) => json.data)
+            .post<Rule[]>('/api/rules/priorities/', {priorities})
+            .then((json) => json?.data)
             .then(
                 (resp) => {
                     return dispatch(receiveRules(resp))
                 },
-                (error) => {
+                (error: AxiosError) => {
                     return dispatch({
                         type: constants.UPDATE_ORDER_ERROR,
                         error,

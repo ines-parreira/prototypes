@@ -1,6 +1,6 @@
 import {fromJS} from 'immutable'
 
-import statsReducer, {initialState} from '../reducers'
+import statsReducer, {initialState} from '../reducers.ts'
 import * as constants from '../constants'
 
 jest.mock('moment', () => {
