@@ -3,6 +3,7 @@ import {fromJS} from 'immutable'
 import {
     EMAIL_INTEGRATION_TYPE,
     FACEBOOK_INTEGRATION_TYPE,
+    GMAIL_INTEGRATION_TYPE,
     MAGENTO2_INTEGRATION_TYPE,
     OUTLOOK_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
@@ -27,6 +28,7 @@ import {
     getShopifyIntegrationByShopName,
     getShopifyIntegrationsWithoutChat,
     getShopifyIntegrationsWithoutFacebook,
+    isImportAllowed,
 } from '../selectors.ts'
 import {integrationsState} from '../../../fixtures/integrations'
 
@@ -537,6 +539,79 @@ describe('integrations selectors', () => {
             expect(getForwardingEmailAddress(state)).toEqual(
                 forwardingEmailAddress
             )
+        })
+    })
+
+    describe('isImportAllowed()', () => {
+        const testadress = {address: 'testaddress@email.com'}
+
+        it.each([
+            [
+                [
+                    {
+                        type: EMAIL_INTEGRATION_TYPE,
+                        meta: {verified: true, ...testadress},
+                    },
+                ],
+                true,
+            ],
+            [
+                [
+                    {
+                        type: GMAIL_INTEGRATION_TYPE,
+                        meta: testadress,
+                    },
+                ],
+                true,
+            ],
+            [
+                [
+                    {
+                        type: OUTLOOK_INTEGRATION_TYPE,
+                        meta: testadress,
+                    },
+                ],
+                true,
+            ],
+            [
+                [
+                    {
+                        type: EMAIL_INTEGRATION_TYPE,
+                        meta: {verified: false, ...testadress},
+                    },
+                ],
+                false,
+            ],
+            [
+                [
+                    {
+                        type: EMAIL_INTEGRATION_TYPE,
+                        meta: {
+                            verified: true,
+                            address: `testadress@${window.EMAIL_FORWARDING_DOMAIN}`,
+                        },
+                    },
+                ],
+                false,
+            ],
+            [
+                [
+                    {
+                        type: GMAIL_INTEGRATION_TYPE,
+                        deactivated_datetime: 'sometime',
+                        meta: testadress,
+                    },
+                ],
+                false,
+            ],
+        ])('Import allowed', (integrationsJSON, expectedResult) => {
+            const state = {
+                integrations: fromJS({
+                    integrations: integrationsJSON,
+                }),
+            }
+
+            expect(isImportAllowed(state)).toBe(expectedResult)
         })
     })
 })

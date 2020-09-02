@@ -9,6 +9,8 @@ import {getCurrentUserState} from '../currentUser/selectors'
 import {getTicketState} from '../ticket/selectors.js'
 import {nestedReplace} from '../ticket/utils.js'
 
+import {EMAIL_INTEGRATION_TYPE} from '../../constants/integration.js'
+
 import {IntegrationsState} from './types'
 
 export const getIntegrationsState = (state: RootState) =>
@@ -424,3 +426,17 @@ export const getChatIntegrationCampaignById = (
                 (campaign: Map<any, any>) => campaign.get('id') === campaignId
             ) || fromJS({})) as Map<any, any>
     )
+
+export const isImportAllowed = (state: RootState) =>
+    getEmailIntegrations(state).filter((integration: Map<any, any>) => {
+        const isBaseIntegration = (integration.getIn(
+            ['meta', 'address'],
+            ''
+        ) as string).includes(window.EMAIL_FORWARDING_DOMAIN)
+        const isDeactivated = !!integration.get('deactivated_datetime')
+        const isNotVerified =
+            integration.get('type') === EMAIL_INTEGRATION_TYPE &&
+            !integration.getIn(['meta', 'verified'])
+
+        return !isBaseIntegration && !isDeactivated && !isNotVerified
+    }).size > 0
