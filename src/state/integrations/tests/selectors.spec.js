@@ -29,6 +29,7 @@ import {
     getShopifyIntegrationsWithoutChat,
     getShopifyIntegrationsWithoutFacebook,
     isImportAllowed,
+    getMessagingIntegrations,
 } from '../selectors.ts'
 import {integrationsState} from '../../../fixtures/integrations'
 
@@ -50,6 +51,25 @@ describe('integrations selectors', () => {
         const expected = getIntegrationsState(state).get('integrations')
 
         expect(integrations.equals(expected)).toEqual(true)
+    })
+
+    describe('getMessagingIntegrations()', () => {
+        it('should get messaging integrations', () => {
+            const integrations = getMessagingIntegrations(state)
+            const expected = getIntegrations(state).filter((inte) =>
+                [
+                    'email',
+                    'outlook',
+                    'gmail',
+                    'aircall',
+                    'smooch_inside',
+                    'smooch',
+                    'facebook',
+                ].includes(inte.get('type', ''))
+            )
+
+            expect(integrations.equals(expected)).toEqual(true)
+        })
     })
 
     describe('getEmailIntegrations()', () => {

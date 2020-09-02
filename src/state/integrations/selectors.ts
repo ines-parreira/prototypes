@@ -113,10 +113,7 @@ export const getFacebookIntegrations = createSelector<
                     integration.get('type') === 'facebook'
             )
             .sort((a: Map<any, any>, b: Map<any, any>) =>
-                compare(
-                    a.getIn(['facebook', 'name']),
-                    b.getIn(['facebook', 'name'])
-                )
+                compare(a.getIn(['meta', 'name']), b.getIn(['meta', 'name']))
             ) as List<any>
 )
 
@@ -318,7 +315,7 @@ export const getMessagingIntegrations = createSelector<
     (integrations) => {
         return integrations.map((inte: Map<any, any>) => {
             if (inte.get('type') === IntegrationType.FacebookIntegrationType) {
-                return inte.set('name', inte.getIn(['facebook', 'name']))
+                return inte.set('name', inte.getIn(['meta', 'name']))
             }
             return inte
         }) as List<any>
