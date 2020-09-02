@@ -1,0 +1,241 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ViewSharingModal/> render() should render as private 1`] = `
+<Modal
+  autoFocus={true}
+  backdrop={true}
+  backdropTransition={
+    Object {
+      "mountOnEnter": true,
+      "timeout": 150,
+    }
+  }
+  centered={false}
+  fade={true}
+  isOpen={true}
+  keyboard={true}
+  modalTransition={
+    Object {
+      "timeout": 300,
+    }
+  }
+  onClosed={[Function]}
+  onOpened={[Function]}
+  role="dialog"
+  toggle={[MockFunction]}
+  zIndex={1050}
+>
+  <ModalHeader
+    closeAriaLabel="Close"
+    tag="h5"
+    toggle={[MockFunction]}
+    wrapTag="div"
+  >
+    Update view sharing: 
+    <b />
+  </ModalHeader>
+  <ModalBody
+    className="p-0"
+    tag="div"
+  >
+    <Connect(ViewSharingModalBody)
+      error={null}
+      initialTeams={Immutable.List []}
+      initialUsers={Immutable.List []}
+      isLoading={true}
+      onRemoveTeam={[Function]}
+      onRemoveUser={[Function]}
+      onTeamClick={[Function]}
+      onUserClick={[Function]}
+      selectedTeams={Immutable.List []}
+      selectedUsers={Immutable.List []}
+      setVisibility={[Function]}
+      visibility="private"
+    />
+  </ModalBody>
+  <ModalFooter
+    tag="div"
+  >
+    <Button
+      className="submit"
+      color="success"
+      disabled={true}
+      href="#"
+      id="view-sharing-submit"
+      onClick={[Function]}
+      tag="button"
+    >
+      Update view sharing
+    </Button>
+    <Button
+      color="secondary"
+      onClick={[MockFunction]}
+      tag="button"
+    >
+      Cancel
+    </Button>
+  </ModalFooter>
+</Modal>
+`;
+
+exports[`<ViewSharingModal/> render() should render as public 1`] = `
+<Modal
+  autoFocus={true}
+  backdrop={true}
+  backdropTransition={
+    Object {
+      "mountOnEnter": true,
+      "timeout": 150,
+    }
+  }
+  centered={false}
+  fade={true}
+  isOpen={true}
+  keyboard={true}
+  modalTransition={
+    Object {
+      "timeout": 300,
+    }
+  }
+  onClosed={[Function]}
+  onOpened={[Function]}
+  role="dialog"
+  toggle={[MockFunction]}
+  zIndex={1050}
+>
+  <ModalHeader
+    closeAriaLabel="Close"
+    tag="h5"
+    toggle={[MockFunction]}
+    wrapTag="div"
+  >
+    Update view sharing: 
+    <b />
+  </ModalHeader>
+  <ModalBody
+    className="p-0"
+    tag="div"
+  >
+    <Connect(ViewSharingModalBody)
+      error={null}
+      initialTeams={Immutable.List []}
+      initialUsers={Immutable.List []}
+      isLoading={true}
+      onRemoveTeam={[Function]}
+      onRemoveUser={[Function]}
+      onTeamClick={[Function]}
+      onUserClick={[Function]}
+      selectedTeams={Immutable.List []}
+      selectedUsers={Immutable.List []}
+      setVisibility={[Function]}
+      visibility="public"
+    />
+  </ModalBody>
+  <ModalFooter
+    tag="div"
+  >
+    <Button
+      className="submit"
+      color="success"
+      disabled={true}
+      href="#"
+      id="view-sharing-submit"
+      onClick={[Function]}
+      tag="button"
+    >
+      Update view sharing
+    </Button>
+    <Button
+      color="secondary"
+      onClick={[MockFunction]}
+      tag="button"
+    >
+      Cancel
+    </Button>
+  </ModalFooter>
+</Modal>
+`;
+
+exports[`<ViewSharingModal/> render() should render as shared 1`] = `
+<Modal
+  autoFocus={true}
+  backdrop={true}
+  backdropTransition={
+    Object {
+      "mountOnEnter": true,
+      "timeout": 150,
+    }
+  }
+  centered={false}
+  fade={true}
+  isOpen={true}
+  keyboard={true}
+  modalTransition={
+    Object {
+      "timeout": 300,
+    }
+  }
+  onClosed={[Function]}
+  onOpened={[Function]}
+  role="dialog"
+  toggle={[MockFunction]}
+  zIndex={1050}
+>
+  <ModalHeader
+    closeAriaLabel="Close"
+    tag="h5"
+    toggle={[MockFunction]}
+    wrapTag="div"
+  >
+    Update view sharing: 
+    <b />
+  </ModalHeader>
+  <ModalBody
+    className="p-0"
+    tag="div"
+  >
+    <Connect(ViewSharingModalBody)
+      error={null}
+      initialTeams={Immutable.List []}
+      initialUsers={Immutable.List []}
+      isLoading={true}
+      onRemoveTeam={[Function]}
+      onRemoveUser={[Function]}
+      onTeamClick={[Function]}
+      onUserClick={[Function]}
+      selectedTeams={Immutable.List []}
+      selectedUsers={Immutable.List []}
+      setVisibility={[Function]}
+      visibility="shared"
+    />
+  </ModalBody>
+  <ModalFooter
+    tag="div"
+  >
+    <Button
+      className="submit"
+      color="success"
+      disabled={true}
+      href="#"
+      id="view-sharing-submit"
+      onClick={[Function]}
+      tag="button"
+    >
+      Update view sharing
+    </Button>
+    <Button
+      color="secondary"
+      onClick={[MockFunction]}
+      tag="button"
+    >
+      Cancel
+    </Button>
+  </ModalFooter>
+  <UncontrolledTooltip
+    placement="top"
+    target="view-sharing-submit"
+  >
+    Please select at least one team or one user
+  </UncontrolledTooltip>
+</Modal>
+`;

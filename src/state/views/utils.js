@@ -6,15 +6,18 @@ import _isArray from 'lodash/isArray'
 import _isInteger from 'lodash/isInteger'
 
 import {UNARY_OPERATORS, TIMEDELTA_OPERATOR_DEFAULT_VALUE} from '../../config'
-
 import type {agentsType} from '../agents/types'
-import {getAST, getFirstExpressionOfAST, toJS} from '../../utils'
+import {getAST, getFirstExpressionOfAST, hasRole, toJS} from '../../utils'
 import {
     datetimeOperators,
     timedeltaOperators,
     collectionOperators,
 } from '../../config/rules'
 import {isTimedelta} from '../../utils/ast'
+import {ViewVisibility} from '../../constants/view'
+import type {userType} from '../../utils'
+import {Team} from '../teams/types.ts'
+import {AGENT_ROLE} from '../../config/user'
 
 import type {filterType} from './types'
 
@@ -390,4 +393,38 @@ export function addViewIfMissing(
 ): List<Map<*, *>> {
     const existing = views.find((view) => view.get('id') === newView.id)
     return existing ? views : views.push(fromJS(newView))
+}
+
+export function isViewSharedWithUser(
+    view: {
+        visibility: string,
+        shared_with_users: Array<{id: number}>,
+        shared_with_teams: Array<{id: number}>,
+    },
+    user: userType,
+    teams: Team[]
+): boolean {
+    const isAgent = hasRole(user, AGENT_ROLE)
+    const userId = user.get('id')
+    const userTeams = teams.filter((team) =>
+        team.get('members', []).some((member) => member.get('id') === userId)
+    )
+
+    const isViewPublic = view.visibility === ViewVisibility.PUBLIC
+    const isViewShared = view.visibility === ViewVisibility.SHARED
+    const isViewPrivate = view.visibility === ViewVisibility.PRIVATE
+
+    const isSharedWithUser = view.shared_with_users.some(
+        (sharedWithUser) => sharedWithUser.id === userId
+    )
+
+    const isSharedWithTeam = view.shared_with_teams.some((sharedWithTeam) =>
+        userTeams.some((userTeam) => userTeam.get('id') === sharedWithTeam.id)
+    )
+
+    return (
+        isViewPublic ||
+        (isViewShared && (isAgent || isSharedWithUser || isSharedWithTeam)) ||
+        (isViewPrivate && isSharedWithUser)
+    )
 }

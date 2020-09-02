@@ -6,6 +6,7 @@ import {initialState} from '../reducers'
 import * as selectors from '../selectors'
 import {currentUser} from '../../../fixtures/users'
 import {initialState as currentUserInitialState} from '../../currentUser/reducers.ts'
+import {SYSTEM_VIEW_CATEGORY} from '../../../constants/view'
 
 jest.addMatchers(immutableMatchers)
 
@@ -16,7 +17,7 @@ describe('selectors', () => {
                 views: initialState.set(
                     'active',
                     fromJS({
-                        category: 'system',
+                        category: SYSTEM_VIEW_CATEGORY,
                         name: 'Trash',
                     })
                 ),
@@ -42,7 +43,7 @@ describe('selectors', () => {
                 views: initialState.set(
                     'active',
                     fromJS({
-                        category: 'system',
+                        category: SYSTEM_VIEW_CATEGORY,
                         name: 'Spam',
                     })
                 ),

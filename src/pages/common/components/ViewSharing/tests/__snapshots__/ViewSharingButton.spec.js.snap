@@ -1,0 +1,146 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ViewSharingButton/> render() should render as disabled because this is a system view 1`] = `
+<Fragment>
+  <Button
+    className="container foo"
+    color="secondary"
+    disabled={true}
+    href="#"
+    id="view-sharing-button"
+    onClick={[Function]}
+    tag="button"
+  >
+    <i
+      className="material-icons"
+    >
+      person_add
+    </i>
+     Sharing:
+     
+    <b>
+      Public
+    </b>
+  </Button>
+  <ViewSharingButtonTooltip
+    isAllowed={true}
+    isSystem={true}
+  />
+</Fragment>
+`;
+
+exports[`<ViewSharingButton/> render() should render as disabled because user is not allowed 1`] = `
+<Fragment>
+  <Button
+    className="container foo"
+    color="secondary"
+    disabled={true}
+    href="#"
+    id="view-sharing-button"
+    onClick={[Function]}
+    tag="button"
+  >
+    <i
+      className="material-icons"
+    >
+      person_add
+    </i>
+     Sharing:
+     
+    <b>
+      Public
+    </b>
+  </Button>
+  <ViewSharingButtonTooltip
+    isAllowed={false}
+    isSystem={false}
+  />
+</Fragment>
+`;
+
+exports[`<ViewSharingButton/> render() should render as private 1`] = `
+<Fragment>
+  <Button
+    className="container foo"
+    color="secondary"
+    disabled={false}
+    href="#"
+    id="view-sharing-button"
+    onClick={[Function]}
+    tag="button"
+  >
+    <i
+      className="material-icons"
+    >
+      person_add
+    </i>
+     Sharing:
+     
+    <b>
+      Private
+    </b>
+  </Button>
+  <ViewSharingButtonTooltip
+    isAllowed={true}
+    isSystem={false}
+  />
+</Fragment>
+`;
+
+exports[`<ViewSharingButton/> render() should render as public 1`] = `
+<Fragment>
+  <Button
+    className="container foo"
+    color="secondary"
+    disabled={false}
+    href="#"
+    id="view-sharing-button"
+    onClick={[Function]}
+    tag="button"
+  >
+    <i
+      className="material-icons"
+    >
+      person_add
+    </i>
+     Sharing:
+     
+    <b>
+      Public
+    </b>
+  </Button>
+  <ViewSharingButtonTooltip
+    isAllowed={true}
+    isSystem={false}
+  />
+</Fragment>
+`;
+
+exports[`<ViewSharingButton/> render() should render as shared 1`] = `
+<Fragment>
+  <Button
+    className="container foo"
+    color="secondary"
+    disabled={false}
+    href="#"
+    id="view-sharing-button"
+    onClick={[Function]}
+    tag="button"
+  >
+    <i
+      className="material-icons"
+    >
+      person_add
+    </i>
+     Sharing:
+     
+    <b>
+      Shared
+    </b>
+  </Button>
+  <ViewSharingButtonTooltip
+    isAllowed={true}
+    isSystem={false}
+  />
+</Fragment>
+`;

@@ -40,7 +40,7 @@ import {ADMIN_ROLE, USER_ROLES_ORDERED_BY_PRIVILEGES} from './config/user'
 import {getHighestRole} from './state/agents/helpers.ts'
 import type {attachmentType} from './state/types'
 
-type userType = Map<*, *>
+export type userType = Map<*, *>
 type messageType = {
     created_datetime: Date,
     source: {type: string},

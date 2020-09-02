@@ -6,6 +6,7 @@ import * as fixtures from '../../../fixtures/views'
 import * as types from '../constants'
 import * as utils from '../utils'
 import * as selectors from '../selectors'
+import {SYSTEM_VIEW_CATEGORY} from '../../../constants/view'
 
 describe('reducers', () => {
     describe('views', () => {
@@ -196,7 +197,7 @@ describe('reducers', () => {
                 resp: fixtures.view,
             })
 
-            fixtures.view.type = 'system'
+            fixtures.view.type = SYSTEM_VIEW_CATEGORY
 
             expect(
                 reducers(state, {

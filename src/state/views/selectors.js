@@ -10,7 +10,7 @@ import {
     getSettingsByType as getCurrentUserSettingsByType,
     makeGetSettingsByType,
 } from '../currentUser/selectors.ts'
-
+import {SYSTEM_VIEW_CATEGORY} from '../../constants/view'
 import type {stateType} from '../types'
 
 import {sortViews} from './utils'
@@ -45,7 +45,7 @@ export const isDirty = createSelector(
 export const isActiveViewTrashView = createSelector(
     [getActiveView],
     (state) =>
-        state.get('category') === 'system' &&
+        state.get('category') === SYSTEM_VIEW_CATEGORY &&
         state.get('name').toLocaleLowerCase() === 'trash'
 )
 

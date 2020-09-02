@@ -203,6 +203,42 @@ Object {
 }
 `;
 
+exports[`services GorgiasApi getViewSharing() should fetch view's sharing options 1`] = `
+Object {
+  "delete": Array [],
+  "get": Array [
+    Object {
+      "cancelToken": CancelToken {
+        "promise": Promise {},
+      },
+      "data": undefined,
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+      },
+      "maxContentLength": -1,
+      "method": "get",
+      "timeout": 0,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/api/views/1",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [],
+  "put": Array [],
+}
+`;
+
 exports[`services GorgiasApi payInvoice() should make an HTTP request to pay an invoice. 1`] = `
 Object {
   "delete": Array [],
@@ -232,6 +268,43 @@ Object {
         [Function],
       ],
       "url": "/api/billing/invoices/in_1dj2801j2d/pay/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+}
+`;
+
+exports[`services GorgiasApi setViewSharing() should update view's sharing options 1`] = `
+Object {
+  "delete": Array [],
+  "get": Array [],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [],
+  "put": Array [
+    Object {
+      "cancelToken": CancelToken {
+        "promise": Promise {},
+      },
+      "data": "{\\"visibility\\":\\"public\\",\\"shared_with_teams\\":[2],\\"shared_with_users\\":[3]}",
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      "maxContentLength": -1,
+      "method": "put",
+      "timeout": 0,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/api/views/1",
       "validateStatus": [Function],
       "xsrfCookieName": "XSRF-TOKEN",
       "xsrfHeaderName": "X-XSRF-TOKEN",

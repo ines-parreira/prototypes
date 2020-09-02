@@ -6,6 +6,7 @@ import thunk from 'redux-thunk'
 
 import TicketListActions from '../TicketListActions'
 import {LITE_AGENT_ROLE, AGENT_ROLE} from '../../../../../config/user'
+import {SYSTEM_VIEW_CATEGORY} from '../../../../../constants/view'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -120,7 +121,7 @@ describe('TicketListActions component', () => {
             currentUser: currentUserStore,
             views: fromJS({
                 active: {
-                    category: 'system',
+                    category: SYSTEM_VIEW_CATEGORY,
                     name: 'Trash',
                 },
             }),

@@ -13,3 +13,11 @@ export const VIEW_NAV_DIRECTIONS = {
 }
 
 export const BASE_VIEW_ID = 0
+
+export const SYSTEM_VIEW_CATEGORY = 'system'
+
+export const ViewVisibility = Object.freeze({
+    PUBLIC: 'public',
+    SHARED: 'shared',
+    PRIVATE: 'private',
+})

@@ -1,0 +1,195 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ViewSharingModalBody/> render() should render an error 1`] = `
+<Fragment>
+  <div
+    className="m-3"
+  >
+    <Alert
+      closeAriaLabel="Close"
+      color="danger"
+      isOpen={true}
+      tag="div"
+      transition={
+        Object {
+          "timeout": 0,
+        }
+      }
+    >
+      Error: foo bar
+    </Alert>
+  </div>
+  <div
+    className="m-3"
+  >
+    <RadioChoiceField
+      choices={
+        Array [
+          Object {
+            "label": "Public",
+            "value": "public",
+          },
+          Object {
+            "label": "Shared",
+            "value": "shared",
+          },
+          Object {
+            "label": "Private",
+            "value": "private",
+          },
+        ]
+      }
+      onChange={[MockFunction]}
+      value="public"
+    />
+  </div>
+  <PublicBody />
+</Fragment>
+`;
+
+exports[`<ViewSharingModalBody/> render() should render as a spinner 1`] = `
+<div
+  className="m-3"
+>
+  <Loader
+    inline={false}
+    minHeight="110px"
+    size="40px"
+  />
+</div>
+`;
+
+exports[`<ViewSharingModalBody/> render() should render private body 1`] = `
+<Fragment>
+  <div
+    className="m-3"
+  >
+    <RadioChoiceField
+      choices={
+        Array [
+          Object {
+            "label": "Public",
+            "value": "public",
+          },
+          Object {
+            "label": "Shared",
+            "value": "shared",
+          },
+          Object {
+            "label": "Private",
+            "value": "private",
+          },
+        ]
+      }
+      onChange={[MockFunction]}
+      value="private"
+    />
+  </div>
+  <PrivateBody />
+</Fragment>
+`;
+
+exports[`<ViewSharingModalBody/> render() should render public body 1`] = `
+<Fragment>
+  <div
+    className="m-3"
+  >
+    <RadioChoiceField
+      choices={
+        Array [
+          Object {
+            "label": "Public",
+            "value": "public",
+          },
+          Object {
+            "label": "Shared",
+            "value": "shared",
+          },
+          Object {
+            "label": "Private",
+            "value": "private",
+          },
+        ]
+      }
+      onChange={[MockFunction]}
+      value="public"
+    />
+  </div>
+  <PublicBody />
+</Fragment>
+`;
+
+exports[`<ViewSharingModalBody/> render() should render shared body 1`] = `
+<Fragment>
+  <div
+    className="m-3"
+  >
+    <RadioChoiceField
+      choices={
+        Array [
+          Object {
+            "label": "Public",
+            "value": "public",
+          },
+          Object {
+            "label": "Shared",
+            "value": "shared",
+          },
+          Object {
+            "label": "Private",
+            "value": "private",
+          },
+        ]
+      }
+      onChange={[MockFunction]}
+      value="shared"
+    />
+  </div>
+  <Alert
+    className="m-3"
+    closeAriaLabel="Close"
+    color="info"
+    isOpen={true}
+    tag="div"
+    transition={
+      Object {
+        "appear": true,
+        "baseClass": "fade",
+        "baseClassActive": "show",
+        "enter": true,
+        "exit": true,
+        "in": true,
+        "mountOnEnter": false,
+        "onEnter": [Function],
+        "onEntered": [Function],
+        "onEntering": [Function],
+        "onExit": [Function],
+        "onExited": [Function],
+        "onExiting": [Function],
+        "tag": "div",
+        "timeout": 150,
+        "unmountOnExit": true,
+      }
+    }
+  >
+    Lead agents and admins see all the shared views.
+  </Alert>
+  <ViewSharingModalWarning
+    initialTeams={Immutable.List []}
+    initialUsers={Immutable.List []}
+    selectedTeams={Immutable.List []}
+    selectedUsers={Immutable.List []}
+    visibility="shared"
+  />
+  <SharedBody
+    availableTeams={Immutable.List []}
+    availableUsers={Immutable.List []}
+    onRemoveTeam={[MockFunction]}
+    onRemoveUser={[MockFunction]}
+    onTeamClick={[MockFunction]}
+    onUserClick={[MockFunction]}
+    selectedTeams={Immutable.List []}
+    selectedUsers={Immutable.List []}
+  />
+</Fragment>
+`;

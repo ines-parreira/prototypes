@@ -17,9 +17,11 @@ import * as currentAccountConstants from '../state/currentAccount/constants'
 
 import * as currentAccountSelectors from '../state/currentAccount/selectors.ts'
 import * as currentUserSelectors from '../state/currentUser/selectors.ts'
+import {getTeams} from '../state/teams/selectors'
 
 import {isCurrentlyOnTicket} from '../utils'
 import {store as reduxStore} from '../init'
+import {isViewSharedWithUser} from '../state/views/utils'
 import * as socketEventTypes from '../services/socketManager/types.js'
 
 import {MAX_RECENT_CHATS} from './recentChats'
@@ -258,10 +260,19 @@ export const receivedEvents: ReceivedEvent[] = [
     {
         name: 'view-updated',
         onReceive: function (json: socketEventTypes.ViewUpdatedEvent) {
-            reduxStore.dispatch({
-                type: viewsConstants.UPDATE_VIEW_SUCCESS,
-                resp: json.view,
-            })
+            const state = reduxStore.getState()
+            const currentUser = currentUserSelectors.getCurrentUser(state)
+            const teams = getTeams(state)
+            const {view} = json
+
+            if (isViewSharedWithUser(view, currentUser, teams)) {
+                reduxStore.dispatch({
+                    type: viewsConstants.UPDATE_VIEW_SUCCESS,
+                    resp: view,
+                })
+            } else {
+                reduxStore.dispatch(viewsActions.deleteViewSuccess(view.id))
+            }
         },
     },
     {

@@ -18,6 +18,7 @@ import {
     shopifyCancelOrderPayloadFixture,
     shopifyInvoicePayloadFixture,
 } from '../../fixtures/shopify'
+import {ViewVisibility} from '../../constants/view'
 
 describe('services', () => {
     describe('GorgiasApi', () => {
@@ -551,6 +552,47 @@ describe('services', () => {
                 )
 
                 expect(refund).toEqual(fromJS(expectedRefund))
+            })
+        })
+
+        describe('getViewSharing()', () => {
+            it("should fetch view's sharing options", async () => {
+                const viewId = 1
+                const expectedData = {
+                    id: viewId,
+                    visibility: ViewVisibility.PUBLIC,
+                    shared_with_teams: [],
+                    shared_with_users: [],
+                }
+
+                apiMock.onGet(`/api/views/${viewId}`).reply(200, expectedData)
+
+                const gorgiasApi = new GorgiasApi()
+                const result = await gorgiasApi.getViewSharing(viewId)
+
+                expect(result).toEqual(fromJS(expectedData))
+                expect(apiMock.history).toMatchSnapshot()
+            })
+        })
+
+        describe('setViewSharing()', () => {
+            it("should update view's sharing options", async () => {
+                const viewId = 1
+                const visibility = ViewVisibility.PUBLIC
+                const teams = fromJS([{id: 2}])
+                const users = fromJS([{id: 3}])
+
+                apiMock.onPut(`/api/views/${viewId}`).reply(202)
+
+                const gorgiasApi = new GorgiasApi()
+                await gorgiasApi.setViewSharing(
+                    viewId,
+                    visibility,
+                    teams,
+                    users
+                )
+
+                expect(apiMock.history).toMatchSnapshot()
             })
         })
     })

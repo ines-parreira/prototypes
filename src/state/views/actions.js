@@ -12,6 +12,7 @@ import {
     NEXT_VIEW_NAV_DIRECTION,
     PREV_VIEW_NAV_DIRECTION,
     VIEW_NAV_DIRECTIONS,
+    ViewVisibility,
 } from '../../constants/view'
 import {notify} from '../notifications/actions.ts'
 import socketManager from '../../services/socketManager'
@@ -201,7 +202,7 @@ export function setPage(page: number) {
 
 export function submitView(view: viewType): thunkActionType {
     return (dispatch: Dispatch, getState: getStateType): Promise<Dispatch> => {
-        const {views} = getState()
+        const {views, currentUser} = getState()
         const isUpdate = !!view.get('id')
         const objectName = getPluralObjectName(view.get('type', ''))
 
@@ -218,6 +219,9 @@ export function submitView(view: viewType): thunkActionType {
                     .delete('dirty')
                     .delete('editMode')
                     .delete('allItemsSelected')
+                    .delete('visibility')
+                    .delete('shared_with_teams')
+                    .delete('shared_with_users')
                     .toJS()
             )
         } else {
@@ -230,6 +234,8 @@ export function submitView(view: viewType): thunkActionType {
                 '/api/views/',
                 view
                     .set('display_order', _max(orders) + 1)
+                    .set('visibility', ViewVisibility.PRIVATE)
+                    .set('shared_with_users', [currentUser.get('id')])
                     .delete('id')
                     .delete('dirty')
                     .delete('editMode')

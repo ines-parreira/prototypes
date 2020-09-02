@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PublicBody/> render() should render 1`] = `
+<div
+  className="m-3"
+>
+  <p>
+    <b>
+      Everyone can access this view.
+    </b>
+    <br />
+    Only lead agents and admins can edit it.
+  </p>
+</div>
+`;

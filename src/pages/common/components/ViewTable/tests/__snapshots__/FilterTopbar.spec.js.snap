@@ -473,6 +473,14 @@ exports[`<FilterTopbar/> render() should render correctly when updating a view (
     className="filter-topbar-content"
     tag="div"
   >
+    <Connect(ViewSharingButton)
+      className="float-right"
+      view={
+        Immutable.Map {
+          "editMode": true,
+        }
+      }
+    />
     <p
       className="subtitle"
     >

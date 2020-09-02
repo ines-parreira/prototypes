@@ -22,6 +22,7 @@ import {
 import ConfirmButton from '../ConfirmButton'
 import {fieldPath, getDefaultOperator, slugify} from '../../../../utils'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
+import ViewSharingButton from '../ViewSharing'
 
 import * as viewsActions from '../../../../state/views/actions'
 import * as viewsSelectors from '../../../../state/views/selectors'
@@ -30,6 +31,7 @@ import * as teamSelectors from '../../../../state/teams/selectors'
 import * as schemasSelectors from '../../../../state/schemas/selectors.ts'
 
 import * as viewsConfig from '../../../../config/views'
+import {SYSTEM_VIEW_CATEGORY} from '../../../../constants/view'
 
 import Filters from './Filters'
 
@@ -189,7 +191,7 @@ export class FilterTopbarComponent extends React.Component {
             currentUser,
         } = this.props
         const {isSubmitting} = this.state
-        const isSystemView = activeView.get('category') === 'system'
+        const isSystemView = activeView.get('category') === SYSTEM_VIEW_CATEGORY
 
         if (!activeView.get('editMode') && !isSearch) {
             return null
@@ -206,6 +208,12 @@ export class FilterTopbarComponent extends React.Component {
         return (
             <Card className={css.component}>
                 <CardBody className="filter-topbar-content">
+                    {isUpdate && !isSearch && (
+                        <ViewSharingButton
+                            view={activeView}
+                            className="float-right"
+                        />
+                    )}
                     <p className={css.subtitle}>ADVANCED FILTERS</p>
                     <Filters
                         view={activeView}

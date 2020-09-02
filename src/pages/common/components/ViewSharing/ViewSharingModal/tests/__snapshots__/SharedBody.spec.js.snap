@@ -1,0 +1,154 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SharedBody/> render() should render 1`] = `
+<Fragment>
+  <div
+    className="mt-4 mr-3 mb-2 ml-3"
+  >
+    <p>
+      <b>
+        Sharing restricted to specific people or teams.
+      </b>
+    </p>
+    <UncontrolledPeopleSearchInput
+      className="mb-4"
+      onTeamClick={[MockFunction]}
+      onUserClick={[MockFunction]}
+      teams={
+        Immutable.List [
+          Immutable.Map {
+            "id": 1,
+            "name": "Team 1",
+          },
+        ]
+      }
+      users={
+        Immutable.List [
+          Immutable.Map {
+            "id": 1,
+            "name": "User 1",
+          },
+        ]
+      }
+    />
+    <h6
+      className="selectedHeader"
+    >
+      Teams
+    </h6>
+  </div>
+  <ListGroup
+    tag="ul"
+  >
+    <ListGroupItem
+      className="listGroupItem"
+      key="2"
+      tag="li"
+    >
+      <Button
+        className="float-right text-danger"
+        color="link"
+        onClick={[Function]}
+        tag="button"
+      >
+        <i
+          className="material-icons"
+        >
+          close
+        </i>
+      </Button>
+      <TeamLabel
+        className=""
+        name="Team 2"
+        shouldDisplayAvatar={true}
+        shouldDisplayTeamIcon={false}
+      />
+    </ListGroupItem>
+    <ListGroupItem
+      className="listGroupItem"
+      key="3"
+      tag="li"
+    >
+      <Button
+        className="float-right text-danger"
+        color="link"
+        onClick={[Function]}
+        tag="button"
+      >
+        <i
+          className="material-icons"
+        >
+          close
+        </i>
+      </Button>
+      <TeamLabel
+        className=""
+        name="Team 3"
+        shouldDisplayAvatar={true}
+        shouldDisplayTeamIcon={false}
+      />
+    </ListGroupItem>
+  </ListGroup>
+  <div
+    className="mt-4 mr-3 mb-2 ml-3"
+  >
+    <h6
+      className="selectedHeader"
+    >
+      Users
+    </h6>
+  </div>
+  <ListGroup
+    tag="ul"
+  >
+    <ListGroupItem
+      className="listGroupItem userListGroupItem"
+      key="2"
+      tag="li"
+    >
+      <Button
+        className="float-right text-danger"
+        color="link"
+        onClick={[Function]}
+        tag="button"
+      >
+        <i
+          className="material-icons"
+        >
+          close
+        </i>
+      </Button>
+      <AgentLabel
+        className=""
+        name="User 2"
+        profilePictureUrl=""
+        shouldDisplayAvatar={true}
+      />
+    </ListGroupItem>
+    <ListGroupItem
+      className="listGroupItem userListGroupItem"
+      key="3"
+      tag="li"
+    >
+      <Button
+        className="float-right text-danger"
+        color="link"
+        onClick={[Function]}
+        tag="button"
+      >
+        <i
+          className="material-icons"
+        >
+          close
+        </i>
+      </Button>
+      <AgentLabel
+        className=""
+        name="User 3"
+        profilePictureUrl=""
+        shouldDisplayAvatar={true}
+      />
+    </ListGroupItem>
+  </ListGroup>
+</Fragment>
+`;

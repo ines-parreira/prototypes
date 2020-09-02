@@ -18,6 +18,7 @@ import {
     NEXT_VIEW_NAV_DIRECTION,
     PREV_VIEW_NAV_DIRECTION,
     TICKET_LIST_VIEW_TYPE,
+    ViewVisibility,
 } from '../../../constants/view'
 
 const mockStore = configureMockStore([thunk])
@@ -769,10 +770,16 @@ describe('actions', () => {
                 .onPost('/api/views/')
                 .reply(() => [200, {id: 1, slug: 'my-tickets'}])
 
-            const store = mockStore({views: initialState})
+            const store = mockStore({
+                views: initialState,
+                currentUser: fromJS({id: 1}),
+            })
+            const currentUserId = 1
             await store.dispatch(actions.submitView(view))
 
             expect(JSON.parse(mockServer.history.post[0].data)).toMatchObject({
+                visibility: ViewVisibility.PRIVATE,
+                shared_with_users: [currentUserId],
                 display_order: null,
                 type: TICKET_LIST_VIEW_TYPE,
                 name: 'My Tickets',

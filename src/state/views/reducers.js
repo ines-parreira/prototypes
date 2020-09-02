@@ -242,7 +242,11 @@ export default function reducer(
             if (newState.getIn(['active', 'id']) === action.resp.id) {
                 newState = newState.set('active', fromJS(action.resp))
             }
-            return newState
+
+            // if the view wasn't shared with current user, add it to the list of views
+            return newState.update('items', (items) =>
+                addViewIfMissing(items, action.resp)
+            )
         }
 
         case constants.DELETE_VIEW_SUCCESS: {

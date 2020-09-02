@@ -20,6 +20,8 @@ import type {
     Refund,
 } from '../constants/integrations/types/shopify'
 import type {AuditLogEvent} from '../models/event'
+import type {teamType} from '../state/teams/types'
+import type {userType} from '../utils'
 
 type GorgiasApiOptions = {
     requestsCancellation: boolean,
@@ -404,5 +406,23 @@ export default class GorgiasApi {
         )
 
         return fromJS(response.data.refund)
+    }
+
+    async getViewSharing(viewId: number): Promise<Map<*, *>> {
+        const response = await this._api.get(`/api/views/${viewId}`)
+        return fromJS(response.data)
+    }
+
+    async setViewSharing(
+        viewId: number,
+        visibility: string,
+        teams: List<teamType>,
+        users: List<userType>
+    ): Promise<Map<*, *>> {
+        await this._api.put(`/api/views/${viewId}`, {
+            visibility,
+            shared_with_teams: teams.map((team) => team.get('id')),
+            shared_with_users: users.map((user) => user.get('id')),
+        })
     }
 }
