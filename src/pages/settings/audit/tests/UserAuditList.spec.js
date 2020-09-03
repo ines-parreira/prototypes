@@ -9,7 +9,7 @@ import {
     getUserAuditEventTypeOptions,
     getUserAuditObjectTypeOptions,
     getUserAuditUserIdOptions,
-} from '../../../../state/usersAudit/selectors'
+} from '../../../../state/usersAudit/selectors.ts'
 import UserAuditRow from '../UserAuditRow'
 
 describe('UserAuditList component', () => {

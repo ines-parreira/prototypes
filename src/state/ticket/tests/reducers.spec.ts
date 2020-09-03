@@ -1,56 +1,55 @@
-//@flow
 import * as immutableMatchers from 'jest-immutable-matchers'
-import {fromJS, type Record} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
-import reducer, {initialState} from '../reducers.ts'
-import * as newMessageTypes from '../../newMessage/constants.ts'
-import * as customerTypes from '../../customers/constants'
-import * as types from '../constants.ts'
-import * as ticketFixtures from '../../../fixtures/ticket'
-import type {AuditLogEvent} from '../../../models/event'
-import {
-    TICKET_CLOSED,
-    TICKET_CREATED,
-    TICKET_REOPENED,
-} from '../../../constants/event'
+import reducer, {initialState} from '../reducers'
+import * as newMessageTypes from '../../newMessage/constants'
+import * as customerTypes from '../../customers/constants.js'
+import * as types from '../constants'
+import * as ticketFixtures from '../../../fixtures/ticket.js'
+import {AuditLogEvent, AuditLogEventType} from '../../../models/event/types'
+import {GorgiasAction} from '../../types'
 
 // mock Date object
 const DATE_TO_USE = new Date('2017')
-global.Date = (jest.fn(() => DATE_TO_USE): any)
-global.Date.toISOString = (Date: any).toISOString
+global.Date = jest.fn(() => DATE_TO_USE) as any
+;(global.Date as typeof global.Date & {
+    toISOString: () => string
+}).toISOString = ((Date as unknown) as {toISOString: () => string}).toISOString
 
-jest.mock('../../newMessage/ticketReplyCache.ts', () => {
-    //$FlowFixMe
-    const Immutable = require.requireActual('immutable')
+jest.mock('../../newMessage/ticketReplyCache', () => {
+    const Immutable: {fromJS: typeof fromJS} = require.requireActual(
+        'immutable'
+    )
 
     return {
         _keys: jest.fn(),
         _id: jest.fn(),
         set: jest.fn(),
-        get: jest.fn(() => Immutable.fromJS({})),
+        get: jest.fn(() => Immutable.fromJS({}) as Map<any, any>),
         delete: jest.fn(),
     }
 })
 
 jest.mock('../helpers', () => {
-    //$FlowFixMe
     const helpers = require.requireActual('../helpers')
 
     return {
         ...helpers,
         shouldDeduplicateAuditLogEvents: () => false,
+    } as {
+        shouldDeduplicateAuditLogEvents: () => boolean
     }
 })
 
-jest.mock('moment', () => (date) => date)
+jest.mock('moment', () => (date: Date) => date)
 
-//$FlowFixMe
 jest.addMatchers(immutableMatchers)
 
 describe('ticket reducers', () => {
     it('initial state', () => {
-        //$FlowFixMe
-        expect(reducer(undefined, {})).toEqualImmutable(initialState)
+        expect(
+            reducer(undefined, ({} as unknown) as GorgiasAction)
+        ).toEqualImmutable(initialState)
     })
 
     it('should handle UPDATE_TICKET_MESSAGE_START', () => {
@@ -79,13 +78,13 @@ describe('ticket reducers', () => {
 
         // start
         expect(
-            reducer(initialState, {
+            reducer(initialState, ({
                 type: newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START,
                 message: newMessage,
                 messageId: '123', // fake message id attributed in submit action,
                 retry: false,
                 status: 'open',
-            }).toJS()
+            } as unknown) as GorgiasAction).toJS()
         ).toMatchSnapshot()
 
         const retryMessage = {
@@ -106,12 +105,12 @@ describe('ticket reducers', () => {
                         pendingMessages: [retryMessage],
                     },
                 }),
-                {
+                ({
                     type:
                         newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_ERROR,
                     message: newMessage,
                     messageId: 1,
-                }
+                } as unknown) as GorgiasAction
             ).toJS()
         ).toMatchSnapshot()
 
@@ -128,14 +127,14 @@ describe('ticket reducers', () => {
                         ],
                     },
                 }),
-                {
+                ({
                     type:
                         newMessageTypes.NEW_MESSAGE_SUBMIT_TICKET_MESSAGE_START,
                     message: retryMessage.originalMessage,
                     messageId: 1,
                     retry: true,
                     status: 'open',
-                }
+                } as unknown) as GorgiasAction
             ).toJS()
         ).toMatchSnapshot()
     })
@@ -350,7 +349,6 @@ describe('ticket reducers', () => {
                 type: types.SET_TRASHED_START,
                 trashed_datetime: 'trashed_datetime',
             })
-            //$FlowFixMe
         ).toEqualImmutable(
             initialState
                 .set('trashed_datetime', 'trashed_datetime')
@@ -364,22 +362,18 @@ describe('ticket reducers', () => {
                 initialState.setIn(['_internal', 'loading', 'setTrash'], true),
                 {type: types.SET_TRASHED_SUCCESS}
             )
-            //$FlowFixMe
         ).toEqualImmutable(
             initialState.setIn(['_internal', 'loading', 'setTrash'], false)
         )
     })
 
     it('should handle SET_SNOOZE', () => {
-        const action = {
+        const action = ({
             type: types.SET_SNOOZE,
             snooze_datetime: '2017-01-21 18:20:02',
             status: 'closed',
-        }
-        expect(
-            reducer(initialState, action)
-            //$FlowFixMe
-        ).toEqualImmutable(
+        } as unknown) as GorgiasAction
+        expect(reducer(initialState, action)).toEqualImmutable(
             initialState
                 .set('snooze_datetime', action.snooze_datetime)
                 .set('status', action.status)
@@ -507,14 +501,14 @@ describe('ticket reducers', () => {
                         appliedMacro: {id: 1},
                     },
                 }),
-                {
+                ({
                     type: types.UPDATE_ACTION_ARGS_ON_APPLIED,
                     actionIndex: 0,
                     value: {
                         hello: 'world',
                     },
                     ticketId: 1,
-                }
+                } as unknown) as GorgiasAction
             ).toJS()
         ).toMatchSnapshot()
     })
@@ -598,10 +592,10 @@ describe('ticket reducers', () => {
 
     it('should handle TOGGLE_HISTORY', () => {
         expect(
-            reducer(initialState, {
+            reducer(initialState, ({
                 type: types.TOGGLE_HISTORY,
                 state: true,
-            }).toJS()
+            } as unknown) as GorgiasAction).toJS()
         ).toMatchSnapshot()
 
         // set false
@@ -612,10 +606,10 @@ describe('ticket reducers', () => {
                         displayHistory: true,
                     },
                 }),
-                {
+                ({
                     type: types.TOGGLE_HISTORY,
                     state: false,
-                }
+                } as unknown) as GorgiasAction
             ).toJS()
         ).toMatchSnapshot()
 
@@ -636,10 +630,10 @@ describe('ticket reducers', () => {
 
     it('should handle DISPLAY_HISTORY_ON_NEXT_PAGE', () => {
         expect(
-            reducer(initialState, {
+            reducer(initialState, ({
                 type: types.DISPLAY_HISTORY_ON_NEXT_PAGE,
                 state: true,
-            }).toJS()
+            } as unknown) as GorgiasAction).toJS()
         ).toMatchSnapshot()
 
         // set false
@@ -650,10 +644,10 @@ describe('ticket reducers', () => {
                         shouldDisplayHistoryOnNextPage: true,
                     },
                 }),
-                {
+                ({
                     type: types.DISPLAY_HISTORY_ON_NEXT_PAGE,
                     state: false,
-                }
+                } as unknown) as GorgiasAction
             ).toJS()
         ).toMatchSnapshot()
     })
@@ -716,7 +710,7 @@ describe('ticket reducers', () => {
                 id: 1,
                 data: {hello: 'world!'},
             },
-        })
+        }) as Map<any, any>
 
         // merge ticket and order messages
         expect(
@@ -740,11 +734,11 @@ describe('ticket reducers', () => {
                         ],
                     },
                 }),
-                {
+                ({
                     type: types.MERGE_TICKET,
                     ticket,
                     messagesDifference: 1,
-                }
+                } as unknown) as GorgiasAction
             ).toJS()
         ).toMatchSnapshot()
 
@@ -754,9 +748,18 @@ describe('ticket reducers', () => {
                 initialState.set(
                     'events',
                     fromJS([
-                        {object_id: ticket.get('id'), type: TICKET_CREATED},
-                        {object_id: ticket.get('id'), type: TICKET_CLOSED},
-                        {object_id: ticket.get('id'), type: TICKET_REOPENED},
+                        {
+                            object_id: ticket.get('id'),
+                            type: AuditLogEventType.TicketCreated,
+                        },
+                        {
+                            object_id: ticket.get('id'),
+                            type: AuditLogEventType.TicketClosed,
+                        },
+                        {
+                            object_id: ticket.get('id'),
+                            type: AuditLogEventType.TicketReopened,
+                        },
                     ])
                 ),
                 {
@@ -770,13 +773,13 @@ describe('ticket reducers', () => {
     it('should handle MERGE_CUSTOMER', () => {
         // should do nothing since there is no customer in state for now
         expect(
-            reducer(initialState, {
+            reducer(initialState, ({
                 type: types.MERGE_CUSTOMER,
                 customer: {
                     id: 1,
                     name: 'Alex',
                 },
-            }).toJS()
+            } as unknown) as GorgiasAction).toJS()
         ).toMatchSnapshot()
 
         // should replace customer
@@ -788,13 +791,13 @@ describe('ticket reducers', () => {
                         name: 'Romain',
                     },
                 }),
-                {
+                ({
                     type: types.MERGE_CUSTOMER,
                     customer: {
                         id: 1,
                         name: 'Alex',
                     },
-                }
+                } as unknown) as GorgiasAction
             ).toJS()
         ).toMatchSnapshot()
     })
@@ -840,7 +843,7 @@ describe('ticket reducers', () => {
     })
 
     describe('action ADD_TICKET_AUDIT_LOG_EVENTS', () => {
-        const getEvent = (id: number): Record<AuditLogEvent> =>
+        const getEvent = (id: number) =>
             fromJS({
                 id,
                 account_id: 1,
@@ -849,9 +852,9 @@ describe('ticket reducers', () => {
                 object_id: 1,
                 data: null,
                 context: 'foo',
-                type: TICKET_REOPENED,
+                type: AuditLogEventType.TicketReopened,
                 created_datetime: '2019-11-15 19:00:00.000000',
-            })
+            }) as Map<any, any>
 
         it('should add received event when it is not in the store yet', () => {
             const action = {
@@ -882,7 +885,7 @@ describe('ticket reducers', () => {
         it('should add new received event, and update existing one', () => {
             const initialEvent = getEvent(1)
             const updatedEvent = initialEvent
-                .set('type', TICKET_CLOSED)
+                .set('type', AuditLogEventType.TicketClosed)
                 .set('data', {foo: 'bar'})
             const newEvent = getEvent(2)
 
@@ -900,7 +903,7 @@ describe('ticket reducers', () => {
     })
 
     describe('action REMOVE_TICKET_AUDIT_LOG_EVENTS', () => {
-        const getEvent = (id: number, type: string): Record<AuditLogEvent> =>
+        const getEvent = (id: number, type: string) =>
             fromJS({
                 id,
                 account_id: 1,
@@ -911,10 +914,10 @@ describe('ticket reducers', () => {
                 context: 'foo',
                 type,
                 created_datetime: '2019-11-15 19:00:00.000000',
-            })
+            }) as Map<any, any>
 
         it('should remove audit log events', () => {
-            const auditLogEvent = getEvent(1, TICKET_REOPENED)
+            const auditLogEvent = getEvent(1, AuditLogEventType.TicketReopened)
             const randomEvent = getEvent(2, 'foo')
 
             const action = {

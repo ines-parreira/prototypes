@@ -10,14 +10,14 @@ import PageHeader from '../../common/components/PageHeader'
 import DatePicker from '../../common/forms/DatePicker'
 import SearchableSelectField from '../../stats/common/SearchableSelectField'
 import Pagination from '../../common/components/Pagination'
-import {fetchUsersAudit} from '../../../state/usersAudit/actions'
+import {fetchUsersAudit} from '../../../state/usersAudit/actions.ts'
 import {
     getUserAuditEvents,
     getUserAuditEventTypeOptions,
     getUserAuditObjectTypeOptions,
     getUserAuditPagination,
     getUserAuditUserIdOptions,
-} from '../../../state/usersAudit/selectors'
+} from '../../../state/usersAudit/selectors.ts'
 import * as currentUserSelectors from '../../../state/currentUser/selectors.ts'
 import {formatDatetime} from '../../../utils'
 import {getMoment} from '../../../utils/date'

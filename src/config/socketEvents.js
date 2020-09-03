@@ -17,7 +17,7 @@ import * as currentAccountConstants from '../state/currentAccount/constants'
 
 import * as currentAccountSelectors from '../state/currentAccount/selectors.ts'
 import * as currentUserSelectors from '../state/currentUser/selectors.ts'
-import {getTeams} from '../state/teams/selectors'
+import {getTeams} from '../state/teams/selectors.ts'
 
 import {isCurrentlyOnTicket} from '../utils'
 import {store as reduxStore} from '../init'

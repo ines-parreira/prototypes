@@ -1,7 +1,7 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 
-import * as selectors from '../selectors'
+import * as selectors from '../selectors.ts'
 import {initialState as currentUserInitialState} from '../../currentUser/reducers.ts'
 import * as userFixtures from '../../../fixtures/users'
 

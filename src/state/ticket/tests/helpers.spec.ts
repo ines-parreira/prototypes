@@ -1,14 +1,15 @@
-// @flow
-
 import {fromJS} from 'immutable'
 import moment from 'moment'
 
-import * as constants from '../../../constants/event'
+import * as constants from '../../../constants/event.js'
 import {
     deduplicateAuditLogEvents,
     shouldDeduplicateAuditLogEvents,
-} from '../helpers.ts'
-import {TAGS_ADDED_KEY, TAGS_REMOVED_KEY} from '../../../models/event'
+} from '../helpers'
+import {
+    TAGS_ADDED_KEY,
+    TAGS_REMOVED_KEY,
+} from '../../../models/event/constants.js'
 
 describe('ticket helpers', () => {
     describe('shouldDeduplicateAuditLogEvents()', () => {

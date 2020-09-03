@@ -4,6 +4,7 @@ import {ThunkDispatch} from 'redux-thunk'
 
 import {TicketMessageSourceType} from '../business/types/ticket'
 import {Integration, IntegrationType} from '../models/integration/types'
+import {PaginationMeta} from '../models/api/types'
 
 import {BillingContactResponse, Subscription} from './billing/types'
 import {AccountSetting} from './currentAccount/types'
@@ -130,6 +131,8 @@ export type GorgiasAction = {
     state?: Map<any, any>
     messagesDifference?: boolean
     customer?: Customer
+    cursor?: string
+    meta?: PaginationMeta
 }
 
 export type CurrentUser = Map<any, any>

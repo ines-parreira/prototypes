@@ -1,37 +1,55 @@
-//@flow
 import querystring from 'querystring'
 import url from 'url'
 
-import configureMockStore from 'redux-mock-store'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import axios from 'axios'
 import moment from 'moment'
 import MockAdapter from 'axios-mock-adapter'
 import thunk from 'redux-thunk'
 import {browserHistory} from 'react-router'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {removeNotification} from 'reapop'
 
-import * as actions from '../actions.ts'
-import {initialState} from '../reducers.ts'
-import {notify} from '../../notifications/actions.ts'
-import {initialState as newMessageState} from '../../newMessage/reducers.ts'
-import {TICKET_REOPENED} from '../../../constants/event'
-import type {AuditLogEvent} from '../../../models/event'
-import type {dispatchType} from '../../types'
+import * as actions from '../actions'
+import {initialState} from '../reducers'
+import {notify} from '../../notifications/actions'
+import {initialState as newMessageState} from '../../newMessage/reducers'
+import {
+    AuditLogEventType,
+    AuditLogEvent,
+    AuditLogEventObjectType,
+} from '../../../models/event/types'
+import {StoreDispatch} from '../../types'
+import {Ticket, TicketMessage} from '../../../models/ticket/types'
+import {TicketMessageFailedEvent} from '../../../services/socketManager/types'
 
-//$FlowFixMe
+type MockedRootState = {
+    ticket: Map<any, any>
+    newMessage?: Map<any, any>
+    currentUser?: Map<any, any>
+    views?: Map<any, any>
+}
+
 jest.addMatchers(immutableMatchers)
 
 const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
+const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
+    middlewares
+)
 
 jest.mock('reapop', () => {
     const reapop = jest.requireActual('reapop')
 
     return {
         ...reapop,
-        removeNotification: jest.fn(() => (args) => args),
+        removeNotification: jest.fn(() => (args: Record<string, unknown>) =>
+            args
+        ),
+    } as {
+        removeNotification: jest.MockedFunction<
+            typeof reapop.removeNotification
+        >
     }
 })
 jest.mock('push.js', () => {
@@ -40,36 +58,40 @@ jest.mock('push.js', () => {
     }
 })
 
-jest.mock('../../../utils', () => {
-    //$FlowFixMe
-    const utils = require.requireActual('../../../utils')
+jest.mock('../../../utils.js', () => {
+    const utils = require.requireActual('../../../utils.js')
 
     return {
         ...utils,
         isTabActive: jest.fn(() => false),
-        isCurrentlyOnTicket: jest.fn((ticketId) => ticketId === '1'),
+        isCurrentlyOnTicket: jest.fn((ticketId: string) => ticketId === '1'),
+    } as {
+        isTabActive: jest.MockedFunction<typeof utils.isTabActive>
+        isCurrentlyOnTicket: jest.MockedFunction<
+            typeof utils.isCurrentlyOnTicket
+        >
     }
 })
 
-jest.mock('../../../services/socketManager', () => {
+jest.mock('../../../services/socketManager/socketManager.js', () => {
     return {
         join: jest.fn(),
         send: jest.fn(),
     }
 })
 
-jest.mock('../../notifications/actions.ts', () => {
+jest.mock('../../notifications/actions', () => {
     return {
-        notify: jest.fn(() => (args) => args),
+        notify: jest.fn(() => (args: Record<string, unknown>) => args),
     }
 })
 
 describe('ticket actions', () => {
-    let store
-    let mockServer
+    let store: MockStoreEnhanced<MockedRootState, StoreDispatch>
+    let mockServer: MockAdapter
 
     beforeEach(() => {
-        store = mockStore<*, any>({
+        store = mockStore({
             ticket: initialState,
             newMessage: newMessageState,
         })
@@ -77,7 +99,7 @@ describe('ticket actions', () => {
         jest.clearAllMocks()
     })
 
-    const ticket = {
+    const ticket = ({
         id: 1,
         subject: 'title',
         messages: [
@@ -92,7 +114,7 @@ describe('ticket actions', () => {
             id: 1,
             data: {hello: 'world!'},
         },
-    }
+    } as unknown) as Ticket
 
     describe('mergeTicket()', () => {
         it('fails because not current ticket', () => {
@@ -102,16 +124,15 @@ describe('ticket actions', () => {
         })
 
         it('success', () => {
-            store = mockStore<*, dispatchType>({
+            store = mockStore({
                 ticket: fromJS({
                     id: 1,
                     messages: [],
                 }),
-                newMessage: newMessageState.setIn([
-                    'newMessage',
-                    'source',
-                    'type',
-                ]),
+                newMessage: newMessageState.setIn(
+                    ['newMessage', 'source', 'type'],
+                    undefined
+                ),
             })
 
             return store
@@ -121,7 +142,7 @@ describe('ticket actions', () => {
     })
 
     it('mergeCustomer()', () => {
-        store.dispatch(actions.mergeCustomer({id: 1}))
+        store.dispatch(actions.mergeCustomer({id: 1} as any))
         return expect(store.getActions()).toMatchSnapshot()
     })
 
@@ -142,7 +163,7 @@ describe('ticket actions', () => {
         it('success', () => {
             mockServer.onPut('/api/tickets/1/').reply(200, {data: {id: 1}})
 
-            store = mockStore<*, dispatchType>({
+            store = mockStore({
                 ticket: fromJS({id: 1}),
             })
 
@@ -168,7 +189,7 @@ describe('ticket actions', () => {
 
     describe('setSpam()', () => {
         it('fails because same status', () => {
-            store = mockStore<*, dispatchType>({
+            store = mockStore({
                 ticket: initialState.set('spam', true),
             })
             return store
@@ -177,7 +198,7 @@ describe('ticket actions', () => {
         })
 
         it('success', () => {
-            store = mockStore<*, dispatchType>({
+            store = mockStore({
                 ticket: initialState.set('id', 1),
             })
             mockServer.onPut(/\/api\/tickets\/\d+\//).reply(202, {data: {}})
@@ -187,25 +208,31 @@ describe('ticket actions', () => {
         })
 
         it('should undo when clicking on notification button', () => {
-            store = mockStore<*, dispatchType>({
+            store = mockStore({
                 ticket: initialState.set('id', 1),
             })
             mockServer.onPut(/\/api\/tickets\/\d+\//).reply(202, {data: {}})
 
             return store.dispatch(actions.setSpam(true)).then(() => {
-                ;(notify: any).mock.calls[0][0].buttons[0]
-                    .onClick()
-                    .then(() => {
-                        expect(removeNotification).toHaveBeenNthCalledWith(
-                            1,
-                            'spam-1'
-                        )
-                        expect(browserHistory.push).toHaveBeenNthCalledWith(
-                            1,
-                            '/app/ticket/1'
-                        )
-                        expect(store.getActions()).toMatchSnapshot()
-                    })
+                const button = ((notify as jest.MockedFunction<typeof notify>)
+                    .mock.calls[0][0].buttons?.[0] as unknown) as {
+                    onClick: () => Promise<void>
+                }
+
+                if (!button) {
+                    throw new Error('property buttons is undefined')
+                }
+                return button.onClick().then(() => {
+                    expect(removeNotification).toHaveBeenNthCalledWith(
+                        1,
+                        'spam-1'
+                    )
+                    expect(browserHistory.push).toHaveBeenNthCalledWith(
+                        1,
+                        '/app/ticket/1'
+                    )
+                    expect(store.getActions()).toMatchSnapshot()
+                })
             })
         })
     })
@@ -250,26 +277,32 @@ describe('ticket actions', () => {
             mockServer.onPut(/\/api\/tickets\/\d+\//).reply(202, {data: {}})
 
             return store.dispatch(actions.setTrashed(date)).then(() => {
-                ;(notify: any).mock.calls[0][0].buttons[0]
-                    .onClick()
-                    .then(() => {
-                        expect(removeNotification).toHaveBeenNthCalledWith(
-                            1,
-                            'trash-1'
-                        )
-                        expect(browserHistory.push).toHaveBeenNthCalledWith(
-                            1,
-                            '/app/ticket/1'
-                        )
-                        expect(store.getActions()).toMatchSnapshot()
-                    })
+                const button = ((notify as jest.MockedFunction<typeof notify>)
+                    .mock.calls[0][0].buttons?.[0] as unknown) as {
+                    onClick: () => Promise<void>
+                }
+
+                if (!button) {
+                    throw new Error('property buttons is undefined')
+                }
+                return button.onClick().then(() => {
+                    expect(removeNotification).toHaveBeenNthCalledWith(
+                        1,
+                        'trash-1'
+                    )
+                    expect(browserHistory.push).toHaveBeenNthCalledWith(
+                        1,
+                        '/app/ticket/1'
+                    )
+                    expect(store.getActions()).toMatchSnapshot()
+                })
             })
         })
     })
 
     describe('setSnooze()', () => {
         it('should snooze ticket', () => {
-            store = mockStore<*, dispatchType>({
+            store = mockStore({
                 ticket: initialState.set('snooze_datetime', null),
             })
 
@@ -282,7 +315,7 @@ describe('ticket actions', () => {
 
         it('should snooze ticket and call the callback', () => {
             const callbackSpy = jest.fn()
-            store = mockStore<*, dispatchType>({
+            store = mockStore({
                 ticket: initialState.set('snooze_datetime', null),
             })
 
@@ -357,7 +390,7 @@ describe('ticket actions', () => {
             },
         })
 
-        store = mockStore<*, dispatchType>({ticket: initialState.set('id', 1)})
+        store = mockStore({ticket: initialState.set('id', 1)})
         return expect(
             store.dispatch(actions.applyMacroAction(action))
         ).toMatchSnapshot()
@@ -385,7 +418,7 @@ describe('ticket actions', () => {
             ],
         })
 
-        store = mockStore<*, dispatchType>({
+        store = mockStore({
             ticket: initialState.set('id', 1),
             currentUser: fromJS({id: 1}),
         })
@@ -410,7 +443,7 @@ describe('ticket actions', () => {
             mockServer
                 .onGet('/api/tickets/1/')
                 .reply(200, {id: 1, messages: []})
-            store = mockStore<*, dispatchType>({
+            store = mockStore({
                 newMessage: newMessageState,
                 ticket: initialState.set('id', 1),
                 currentUser: fromJS({id: 1}),
@@ -425,7 +458,7 @@ describe('ticket actions', () => {
                 id: 1,
                 messages: [{source: {type: 'instagram-comment'}}],
             })
-            store = mockStore<*, dispatchType>({
+            store = mockStore({
                 newMessage: newMessageState,
                 ticket: initialState.set('id', 1),
                 currentUser: fromJS({id: 1}),
@@ -440,7 +473,7 @@ describe('ticket actions', () => {
                 id: 1,
                 messages: [{source: {type: 'instagram-comment'}}],
             })
-            store = mockStore<*, dispatchType>({
+            store = mockStore({
                 newMessage: newMessageState.mergeDeep({
                     newMessage: {
                         body_text: 'foo',
@@ -456,7 +489,7 @@ describe('ticket actions', () => {
                         store
                             .getActions()
                             .find(
-                                (action) =>
+                                (action: {type: string}) =>
                                     action.type ===
                                     'NEW_MESSAGE_FETCH_TICKET_SUCCESS'
                             )
@@ -470,7 +503,7 @@ describe('ticket actions', () => {
             mockServer
                 .onGet('/api/tickets/1/')
                 .reply(200, {id: 1, messages: []})
-            let json = {
+            const json = ({
                 ticket_id: '1',
                 event: {
                     data: {
@@ -479,7 +512,7 @@ describe('ticket actions', () => {
                         },
                     },
                 },
-            }
+            } as unknown) as TicketMessageFailedEvent
             return store
                 .dispatch(actions.handleMessageError(json))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
@@ -490,7 +523,7 @@ describe('ticket actions', () => {
                 .onGet('/api/tickets/2/')
                 .reply(200, {id: 2, messages: []})
 
-            let json = {
+            const json = ({
                 ticket_id: 2,
                 event: {
                     data: {
@@ -499,7 +532,7 @@ describe('ticket actions', () => {
                         },
                     },
                 },
-            }
+            } as unknown) as TicketMessageFailedEvent
 
             return store
                 .dispatch(actions.handleMessageError(json))
@@ -534,7 +567,14 @@ describe('ticket actions', () => {
             .onPut('/api/tickets/1/messages/10/?action=retry')
             .reply(200, {id: 10})
         return store
-            .dispatch(actions.updateTicketMessage('1', 10, {id: 10}, 'retry'))
+            .dispatch(
+                actions.updateTicketMessage(
+                    '1',
+                    10,
+                    {id: 10} as TicketMessage,
+                    'retry'
+                )
+            )
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
@@ -562,7 +602,7 @@ describe('ticket actions', () => {
     })
 
     it('deleteTicketPendingMessage()', () => {
-        store.dispatch(actions.deleteTicketPendingMessage({id: 1}))
+        store.dispatch(actions.deleteTicketPendingMessage({id: 1} as any))
         return expect(store.getActions()).toMatchSnapshot()
     })
 
@@ -572,7 +612,7 @@ describe('ticket actions', () => {
         })
 
         it('should go to first view because there is no active view', (done) => {
-            store.dispatch(actions.goToNextTicket(1)).then(() => {
+            void store.dispatch(actions.goToNextTicket(1)).then(() => {
                 expect(store.getActions()).toMatchSnapshot()
                 expect(browserHistory.push).toHaveBeenCalledWith('/app')
                 done()
@@ -581,12 +621,12 @@ describe('ticket actions', () => {
 
         it('should fetch next ticket and go to the active view because there is no ticket', (done) => {
             mockServer.onPut('/api/views/1/tickets/1/next').reply(200)
-            store = mockStore<*, dispatchType>({
+            store = mockStore({
                 ticket: initialState,
                 views: fromJS({active: {id: 1}}),
             })
 
-            store.dispatch(actions.goToNextTicket(1)).then(() => {
+            void store.dispatch(actions.goToNextTicket(1)).then(() => {
                 expect(store.getActions()).toMatchSnapshot()
                 expect(browserHistory.push).toHaveBeenCalledWith(
                     '/app/tickets/1'
@@ -598,7 +638,7 @@ describe('ticket actions', () => {
         it('should fetch next ticket and go to this ticket', (done) => {
             const ticket = {id: 2, customerId: 1, messages: []}
             mockServer.onPut('/api/views/1/tickets/1/next').reply(200, ticket)
-            store = mockStore<*, dispatchType>({
+            store = mockStore({
                 ticket: initialState,
                 views: fromJS({active: {id: 1}}),
             })
@@ -607,7 +647,7 @@ describe('ticket actions', () => {
 
             expect(store.getActions()).not.toEqual([])
 
-            fetchTicketPromise.then(() => {
+            void fetchTicketPromise.then(() => {
                 expect(store.getActions()).toMatchSnapshot()
                 expect(browserHistory.push).toHaveBeenCalledWith(
                     '/app/ticket/2'
@@ -628,7 +668,7 @@ describe('ticket actions', () => {
                 mockServer
                     .onPut('/api/views/1/tickets/1/next')
                     .reply(200, ticket)
-                store = mockStore<*, dispatchType>({
+                store = mockStore({
                     ticket: initialState,
                     views: fromJS({active: {id: 1}}),
                 })
@@ -637,7 +677,7 @@ describe('ticket actions', () => {
                     actions.goToNextTicket(1)
                 )
 
-                fetchTicketPromise.then(() => {
+                void fetchTicketPromise.then(() => {
                     expect(store.getActions()).toMatchSnapshot()
                     expect(browserHistory.push).toHaveBeenCalledWith(
                         '/app/ticket/2'
@@ -651,7 +691,7 @@ describe('ticket actions', () => {
             mockServer
                 .onPut('/api/views/1/tickets/1/next')
                 .reply(200, {id: 2, messages: []})
-            store = mockStore<*, dispatchType>({
+            store = mockStore({
                 ticket: initialState,
                 views: fromJS({active: {id: 1}}),
             })
@@ -661,7 +701,7 @@ describe('ticket actions', () => {
                 actions.goToNextTicket(1, promise)
             )
 
-            fetchTicketPromise.then(() => {
+            void fetchTicketPromise.then(() => {
                 expect(store.getActions()).toMatchSnapshot()
                 expect(browserHistory.push).toHaveBeenCalledWith(
                     '/app/ticket/2'
@@ -677,7 +717,7 @@ describe('ticket actions', () => {
         })
 
         it('should go to first view because there is no active view', (done) => {
-            store.dispatch(actions.goToPrevTicket(2)).then(() => {
+            void store.dispatch(actions.goToPrevTicket(2)).then(() => {
                 expect(store.getActions()).toMatchSnapshot()
                 expect(browserHistory.push).toHaveBeenCalledWith('/app')
                 done()
@@ -686,12 +726,12 @@ describe('ticket actions', () => {
 
         it('should fetch previous ticket and go to the active view because there is no ticket', (done) => {
             mockServer.onPut('/api/views/1/tickets/2/prev').reply(200)
-            store = mockStore<*, dispatchType>({
+            store = mockStore({
                 ticket: initialState,
                 views: fromJS({active: {id: 1}}),
             })
 
-            store.dispatch(actions.goToPrevTicket(2)).then(() => {
+            void store.dispatch(actions.goToPrevTicket(2)).then(() => {
                 expect(store.getActions()).toMatchSnapshot()
                 expect(browserHistory.push).toHaveBeenCalledWith(
                     '/app/tickets/1'
@@ -703,7 +743,7 @@ describe('ticket actions', () => {
         it('should fetch previous ticket and go to this ticket', (done) => {
             const ticket = {id: 1, customerId: 1, messages: []}
             mockServer.onPut('/api/views/1/tickets/2/prev').reply(200, ticket)
-            store = mockStore<*, dispatchType>({
+            store = mockStore({
                 ticket: initialState,
                 views: fromJS({active: {id: 1}}),
             })
@@ -712,7 +752,7 @@ describe('ticket actions', () => {
 
             expect(store.getActions()).not.toEqual([])
 
-            fetchTicketPromise.then(() => {
+            void fetchTicketPromise.then(() => {
                 expect(store.getActions()).toMatchSnapshot()
                 expect(browserHistory.push).toHaveBeenCalledWith(
                     '/app/ticket/1'
@@ -733,7 +773,7 @@ describe('ticket actions', () => {
                 mockServer
                     .onPut('/api/views/1/tickets/2/prev')
                     .reply(200, ticket)
-                store = mockStore<*, dispatchType>({
+                store = mockStore({
                     ticket: initialState,
                     views: fromJS({active: {id: 1}}),
                 })
@@ -744,7 +784,7 @@ describe('ticket actions', () => {
 
                 expect(store.getActions()).not.toEqual([])
 
-                fetchTicketPromise.then(() => {
+                void fetchTicketPromise.then(() => {
                     expect(store.getActions()).toMatchSnapshot()
                     expect(browserHistory.push).toHaveBeenCalledWith(
                         '/app/ticket/1'
@@ -758,7 +798,7 @@ describe('ticket actions', () => {
             mockServer
                 .onPut('/api/views/1/tickets/2/prev')
                 .reply(200, {id: 1, messages: []})
-            store = mockStore<*, dispatchType>({
+            store = mockStore({
                 ticket: initialState,
                 views: fromJS({active: {id: 1}}),
             })
@@ -770,7 +810,7 @@ describe('ticket actions', () => {
 
             expect(store.getActions()).toEqual([])
 
-            fetchTicketPromise.then(() => {
+            void fetchTicketPromise.then(() => {
                 expect(store.getActions()).toMatchSnapshot()
                 expect(browserHistory.push).toHaveBeenCalledWith(
                     '/app/ticket/1'
@@ -783,7 +823,7 @@ describe('ticket actions', () => {
     describe('findAndSetCustomer()', () => {
         it('should not set the customer because we did not find any customer with this email address', () => {
             mockServer.onPost('/api/search/').reply(200, {data: []})
-            store = mockStore<*, dispatchType>({
+            store = mockStore({
                 ticket: initialState,
             })
 
@@ -798,7 +838,7 @@ describe('ticket actions', () => {
             mockServer
                 .onPost('/api/search/')
                 .reply(200, {data: [{user: {id: 1}}, {user: {id: 2}}]})
-            store = mockStore<*, dispatchType>({
+            store = mockStore({
                 ticket: initialState,
             })
 
@@ -815,7 +855,7 @@ describe('ticket actions', () => {
                 .reply(200, {data: [{user: {id: 1}}]})
                 .onGet('/api/customers/1/')
                 .reply(200, {id: 1, name: 'foo', email: 'foo@gorgias.io'})
-            store = mockStore<*, dispatchType>({
+            store = mockStore({
                 ticket: initialState,
             })
 
@@ -832,11 +872,11 @@ describe('ticket actions', () => {
             id,
             account_id: 1,
             user_id: 1,
-            object_type: 'Ticket',
+            object_type: AuditLogEventObjectType.Ticket,
             object_id: 1,
             data: null,
             context: 'foo',
-            type: TICKET_REOPENED,
+            type: AuditLogEventType.TicketReopened,
             created_datetime: '2019-11-15 19:00:00.000000',
         })
 
@@ -858,11 +898,11 @@ describe('ticket actions', () => {
             ]
 
             mockServer.onGet(matcher).reply((config) => {
-                const parsedUrl = url.parse(config.url)
+                const parsedUrl = url.parse(config.url || '')
                 const parsedQuery = querystring.parse(parsedUrl.query || '')
                 const page =
                     parsedQuery && parsedQuery.page
-                        ? parseInt(parsedQuery.page)
+                        ? parseInt(parsedQuery.page as string)
                         : 1
                 const index = page - 1
                 return [200, mocks[index]]
@@ -896,7 +936,7 @@ describe('ticket actions', () => {
 
     describe('messageDeleted()', () => {
         it('should dispatch TICKET_MESSAGE_DELETED action', () => {
-            store.dispatch(actions.messageDeleted('123'))
+            store.dispatch(actions.messageDeleted('123' as any))
             expect(store.getActions()).toMatchSnapshot()
         })
     })

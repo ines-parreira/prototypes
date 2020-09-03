@@ -3,7 +3,7 @@ import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 
 import * as types from '../constants'
-import reducer, {initialState} from '../reducers'
+import reducer, {initialState} from '../reducers.ts'
 import * as viewTypes from '../../views/constants'
 import * as ticketTypes from '../../ticket/constants.ts'
 

@@ -15,7 +15,7 @@ import {
     ViewVisibility,
 } from '../../constants/view'
 import {notify} from '../notifications/actions.ts'
-import socketManager from '../../services/socketManager/socketManager'
+import socketManager from '../../services/socketManager/socketManager.js'
 import {
     getHashOfObj,
     getPluralObjectName,

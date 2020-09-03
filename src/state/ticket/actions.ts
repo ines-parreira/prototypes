@@ -18,7 +18,7 @@ import * as newMessageActions from '../newMessage/actions'
 import * as newMessageTypes from '../newMessage/constants'
 import {getSourceTypeCache} from '../newMessage/responseUtils'
 import {notify} from '../notifications/actions'
-import * as ticketsSelectors from '../tickets/selectors.js'
+import * as ticketsSelectors from '../tickets/selectors'
 import * as viewsSelectors from '../views/selectors.js'
 import * as segmentTracker from '../../store/middlewares/segmentTracker.js'
 
@@ -157,7 +157,7 @@ export const ticketPartialUpdate = (args: Record<string, unknown>) => (
 export const addTags = (tags: string) => (
     dispatch: StoreDispatch,
     getState: () => RootState
-): ReturnType<StoreDispatch> => {
+): Promise<ReturnType<StoreDispatch>> => {
     dispatch({
         type: types.ADD_TICKET_TAGS,
         args: fromJS({tags}),
@@ -171,7 +171,7 @@ export const addTags = (tags: string) => (
 export const removeTag = (tag: string) => (
     dispatch: StoreDispatch,
     getState: () => RootState
-): ReturnType<StoreDispatch> => {
+): Promise<ReturnType<StoreDispatch>> => {
     dispatch({
         type: types.REMOVE_TICKET_TAG,
         args: fromJS({tag}),
@@ -303,7 +303,7 @@ export const setTrashed = (
 export const setAgent = (assigneeUser: Maybe<Record<string, unknown>>) => (
     dispatch: StoreDispatch,
     getState: () => RootState
-): ReturnType<StoreDispatch> => {
+): Promise<ReturnType<StoreDispatch>> => {
     dispatch({
         type: types.SET_AGENT,
         args: fromJS({assignee_user: assigneeUser}),
@@ -319,7 +319,7 @@ export const setAgent = (assigneeUser: Maybe<Record<string, unknown>>) => (
 export const setTeam = (assigneeTeam: Maybe<Record<string, unknown>>) => (
     dispatch: StoreDispatch,
     getState: () => RootState
-): ReturnType<StoreDispatch> => {
+): Promise<ReturnType<StoreDispatch>> => {
     dispatch({
         type: types.SET_TEAM,
         args: fromJS({assignee_team: assigneeTeam}),
@@ -358,7 +358,7 @@ export const setCustomer = (customer: Maybe<Map<any, any>>) => (
 export const setStatus = (status: string, callback: () => void = _noop) => (
     dispatch: StoreDispatch,
     getState: () => RootState
-): ReturnType<StoreDispatch> => {
+): Promise<ReturnType<StoreDispatch>> => {
     dispatch({
         type: types.SET_STATUS,
         args: fromJS({status}),
@@ -692,10 +692,7 @@ export const _goToNextOrPrevTicket = (
         const viewId = (viewsSelectors.getActiveView as (
             state: RootState
         ) => Map<any, any>)(getState()).get('id') as string
-        //$TsFixMe remove casting once tickets/selectors is migrated
-        const viewCursor = (ticketsSelectors.getCursor as (
-            state: RootState
-        ) => Map<any, any>)(getState())
+        const viewCursor = ticketsSelectors.getCursor(getState())
         const url = `/api/views/${viewId}/tickets/${ticketId}/${direction}`
 
         if (!viewId) {
