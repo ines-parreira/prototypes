@@ -7,7 +7,7 @@ import * as constants from '../../../constants/event'
 import {
     deduplicateAuditLogEvents,
     shouldDeduplicateAuditLogEvents,
-} from '../helpers'
+} from '../helpers.ts'
 import {TAGS_ADDED_KEY, TAGS_REMOVED_KEY} from '../../../models/event'
 
 describe('ticket helpers', () => {

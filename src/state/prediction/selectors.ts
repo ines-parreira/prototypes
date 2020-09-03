@@ -5,7 +5,7 @@ import {getCurrentAccountState} from '../currentAccount/selectors'
 import {CurrentAccountState} from '../currentAccount/types'
 import {getCurrentUser} from '../currentUser/selectors'
 import {CurrentUserState} from '../currentUser/types'
-import {getTicket, getCustomerMessages} from '../ticket/selectors.js'
+import {getTicket, getCustomerMessages} from '../ticket/selectors'
 import {RootState} from '../types'
 
 import {PredictionContext} from './types'

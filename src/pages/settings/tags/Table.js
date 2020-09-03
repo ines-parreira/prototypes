@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {List, Map} from 'immutable'
 import classnames from 'classnames'
 
-import * as tagsSelectors from '../../../state/tags/selectors'
+import * as tagsSelectors from '../../../state/tags/selectors.ts'
 
 import Row from './Row'
 

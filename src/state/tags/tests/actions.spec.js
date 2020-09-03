@@ -5,9 +5,9 @@ import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import _isEqual from 'lodash/isEqual'
 
-import * as actions from '../actions'
+import * as actions from '../actions.ts'
 import * as types from '../constants'
-import {initialState} from '../reducers'
+import {initialState} from '../reducers.ts'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

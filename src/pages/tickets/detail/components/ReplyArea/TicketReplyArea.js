@@ -12,8 +12,8 @@ import {type TicketMessageSourceType} from '../../../../../business/types/ticket
 import shortcutManager from '../../../../../services/shortcutManager'
 import withCancellableRequest from '../../../../common/utils/withCancellableRequest'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors.ts'
-import {applyMacro} from '../../../../../state/ticket/actions'
-import * as ticketSelectors from '../../../../../state/ticket/selectors'
+import {applyMacro} from '../../../../../state/ticket/actions.ts'
+import * as ticketSelectors from '../../../../../state/ticket/selectors.ts'
 import {
     getCurrentMacro,
     getDefaultSelectedMacroId,

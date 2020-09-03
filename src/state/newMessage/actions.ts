@@ -8,9 +8,9 @@ import _pick from 'lodash/pick'
 import _throttle from 'lodash/throttle'
 import axios, {CancelToken, AxiosError} from 'axios'
 
-import * as ticketConstants from '../ticket/constants.js'
+import * as ticketConstants from '../ticket/constants'
 import {notify} from '../notifications/actions'
-import * as ticketActions from '../ticket/actions.js'
+import * as ticketActions from '../ticket/actions'
 import {renderTemplate} from '../../pages/common/utils/template.js'
 import {getActionTemplate, uploadFiles, toJS} from '../../utils.js'
 import {convertToHTML} from '../../utils/editor.js'
@@ -24,7 +24,7 @@ import {
     persistLastSenderChannel,
 } from '../ticket/utils.js'
 import * as integrationSelectors from '../integrations/selectors'
-import * as ticketSelectors from '../ticket/selectors.js'
+import * as ticketSelectors from '../ticket/selectors'
 import * as agentSelectors from '../agents/selectors'
 import {
     AGENT_TYPING_STARTED,

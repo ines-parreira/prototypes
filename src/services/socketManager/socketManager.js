@@ -164,7 +164,7 @@ export class SocketManager {
 
         devLog('socket send', configName, args)
 
-        this._sendToServer(config.dataToSend(...args))
+        this._sendToServer(config.dataToSend(...(args: any)))
     }
 
     /**

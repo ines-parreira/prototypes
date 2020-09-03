@@ -22,9 +22,9 @@ import {
     TAGS_REMOVED_KEY,
 } from '../../../../models/event'
 import {getAgents} from '../../../../state/agents/selectors.ts'
-import {getTeams} from '../../../../state/teams/selectors'
-import {getTags} from '../../../../state/tags/selectors'
-import {getEvents} from '../../../../state/ticket/selectors'
+import {getTeams} from '../../../../state/teams/selectors.ts'
+import {getTags} from '../../../../state/tags/selectors.ts'
+import {getEvents} from '../../../../state/ticket/selectors.ts'
 
 import type {agentType} from '../../../../state/agents/types'
 import type {teamType} from '../../../../state/teams/types'

@@ -5,7 +5,7 @@ import {Button} from 'reactstrap'
 import {connect} from 'react-redux'
 import axios from 'axios'
 
-import * as tagsSelectors from '../../../../../state/tags/selectors'
+import * as tagsSelectors from '../../../../../state/tags/selectors.ts'
 import {TICKETS_PER_TAG} from '../../../../../config/stats'
 import css from '../../../style.less'
 import Tooltip from '../../../../common/components/Tooltip'

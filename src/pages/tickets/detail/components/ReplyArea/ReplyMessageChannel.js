@@ -13,7 +13,7 @@ import {
 import * as integrationSelectors from '../../../../../state/integrations/selectors.ts'
 import * as newMessageActions from '../../../../../state/newMessage/actions.ts'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors.ts'
-import {getMessages} from '../../../../../state/ticket/selectors'
+import {getMessages} from '../../../../../state/ticket/selectors.ts'
 import {guessReceiversFromTicket} from '../../../../../state/ticket/utils'
 import KeyboardShortcuts from '../../../../common/components/KeyboardShortcuts'
 import SourceIcon from '../../../../common/components/SourceIcon'

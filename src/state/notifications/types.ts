@@ -21,7 +21,7 @@ export type Notification = {
     onClick?: () => void
 }
 
-type NotificationButton = {
+export type NotificationButton = {
     name: string
     onClick: () => void
     primary: boolean

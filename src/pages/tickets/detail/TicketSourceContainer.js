@@ -4,7 +4,7 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
 import * as widgetsActions from '../../../state/widgets/actions'
-import * as ticketActions from '../../../state/ticket/actions'
+import * as ticketActions from '../../../state/ticket/actions.ts'
 import * as customersActions from '../../../state/customers/actions.ts'
 
 import SourceWrapper from '../../common/components/sourceWidgets/SourceWrapper'

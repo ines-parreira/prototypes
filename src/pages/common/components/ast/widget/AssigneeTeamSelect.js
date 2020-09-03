@@ -3,7 +3,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import {fromJS, List, Map} from 'immutable'
 
-import * as selectors from '../../../../../state/teams/selectors'
+import * as selectors from '../../../../../state/teams/selectors.ts'
 
 import Select from './ReactSelect'
 

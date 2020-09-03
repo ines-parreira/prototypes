@@ -22,8 +22,8 @@ import PageHeader from '../../common/components/PageHeader'
 import Video from '../../common/components/Video'
 import Search from '../../common/components/Search'
 
-import * as tagsActions from '../../../state/tags/actions'
-import * as tagsSelectors from '../../../state/tags/selectors'
+import * as tagsActions from '../../../state/tags/actions.ts'
+import * as tagsSelectors from '../../../state/tags/selectors.ts'
 
 import Table from './Table'
 import css from './ManageTags.less'

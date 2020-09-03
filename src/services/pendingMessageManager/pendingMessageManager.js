@@ -9,7 +9,7 @@ import {
     sendTicketMessage,
 } from '../../state/newMessage/actions.ts'
 import {notify} from '../../state/notifications/actions.ts'
-import {applyMacro, messageDeleted} from '../../state/ticket/actions'
+import {applyMacro, messageDeleted} from '../../state/ticket/actions.ts'
 import {logEvent, EVENTS} from '../../store/middlewares/segmentTracker'
 
 import type {SendMessageArgs} from './types'

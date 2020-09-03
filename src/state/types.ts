@@ -14,6 +14,8 @@ import {Message} from './newMessage/types'
 import rootReducer from './reducers'
 import {HTTPIntegrationEvent} from './HTTPIntegrationEvents/types'
 import {Rule, RulePriority, RuleOperation} from './rules/types'
+import {Tag} from './tags/types'
+import {Customer} from './customers/types'
 
 export type StoreState = {
     activity: Map<any, any>
@@ -37,6 +39,7 @@ export type StoreState = {
     schemas: Map<any, any>
     stats: Map<any, any>
     tags: Map<any, any>
+    teams: Map<any, any>
     ticket: Map<any, any>
     tickets: Map<any, any>
     usersAudit: Map<any, any>
@@ -57,7 +60,7 @@ export type GorgiasAction = {
     billingContact?: BillingContactResponse
     tickets?: List<any>
     ticket?: Map<any, any>
-    ticketId?: number
+    ticketId?: number | string
     userId?: number
     subscription?: Subscription
     setting?: AccountSetting
@@ -113,6 +116,20 @@ export type GorgiasAction = {
     schemas?: Map<any, any>
     ruleId?: number
     filters?: Map<any, any>
+    tags?: Tag[]
+    tag?: Tag
+    page?: number
+    retry?: boolean
+    messageId?: number
+    requestId?: number
+    spam?: boolean
+    trashed_datetime?: string
+    snooze_datetime?: string
+    actionIndex?: number
+    dirty?: boolean
+    state?: Map<any, any>
+    messagesDifference?: boolean
+    customer?: Customer
 }
 
 export type CurrentUser = Map<any, any>

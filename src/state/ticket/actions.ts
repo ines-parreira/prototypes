@@ -1,51 +1,53 @@
-// @flow
-
-import {fromJS, type Map, type Record} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 import {browserHistory} from 'react-router'
 import _isEmpty from 'lodash/isEmpty'
 import _noop from 'lodash/noop'
-import axios from 'axios'
+import axios, {AxiosError} from 'axios'
 import {createAction} from '@reduxjs/toolkit'
 import {removeNotification} from 'reapop'
+import {Moment} from 'moment'
 
-import type Moment from 'moment'
-
-import {DEFAULT_ACTIONS} from '../../config'
-import {
-    INSTAGRAM_AD_COMMENT_SOURCE,
-    INSTAGRAM_COMMENT_SOURCE,
-} from '../../config/ticket'
-import browserNotification from '../../services/browserNotification.ts'
+import {TicketMessageSourceType} from '../../business/types/ticket'
+import {DEFAULT_ACTIONS} from '../../config.js'
+import browserNotification from '../../services/browserNotification'
 import GorgiasApi from '../../services/gorgiasApi'
-import socketManager from '../../services/socketManager'
-import {isCurrentlyOnTicket, isTabActive} from '../../utils'
-import {markChatAsRead} from '../chats/actions.ts'
-import * as newMessageActions from '../newMessage/actions.ts'
-import * as newMessageTypes from '../newMessage/constants.ts'
-import {getSourceTypeCache} from '../newMessage/responseUtils.ts'
-import {notify} from '../notifications/actions.ts'
-import * as ticketsSelectors from '../tickets/selectors'
-import * as viewsSelectors from '../views/selectors'
-import * as segmentTracker from '../../store/middlewares/segmentTracker'
+import socketManager from '../../services/socketManager/socketManager.js'
+import {isCurrentlyOnTicket, isTabActive} from '../../utils.js'
+import {markChatAsRead} from '../chats/actions'
+import * as newMessageActions from '../newMessage/actions'
+import * as newMessageTypes from '../newMessage/constants'
+import {getSourceTypeCache} from '../newMessage/responseUtils'
+import {notify} from '../notifications/actions'
+import * as ticketsSelectors from '../tickets/selectors.js'
+import * as viewsSelectors from '../views/selectors.js'
+import * as segmentTracker from '../../store/middlewares/segmentTracker.js'
 
-import type {Action, Ticket, TicketMessage} from '../../models/ticket'
-import type {Macro} from '../macro/types'
-import type {Dispatch, getStateType, thunkActionType} from '../types'
+import {ApiListResponsePagination} from '../../models/api/types'
+import {Action, Ticket, TicketMessage} from '../../models/ticket/types'
+import {Macro} from '../macro/types'
+import {StoreDispatch, RootState} from '../types'
 
-import * as socketEventTypes from '../../services/socketManager/types.js'
+import * as socketEventTypes from '../../services/socketManager/types'
+import {Customer} from '../customers/types'
+import {UserSearchResult} from '../newMessage/types'
+import {
+    NotificationStatus,
+    Notification,
+    NotificationButton,
+} from '../notifications/types'
 
 import {
     buildPartialUpdateFromAction,
     getSourceTypeOfResponse,
     nestedReplace,
-} from './utils'
+} from './utils.js'
 import * as types from './constants'
 
 export const mergeTicket = (ticket: Ticket) => (
-    dispatch: Dispatch,
-    getState: getStateType
-) => {
-    const ticketRecord = fromJS(ticket)
+    dispatch: StoreDispatch,
+    getState: () => RootState
+): Promise<ReturnType<StoreDispatch>> => {
+    const ticketRecord = fromJS(ticket) as Map<any, any>
     const state = getState()
     const {ticket: ticketState} = state
 
@@ -58,28 +60,34 @@ export const mergeTicket = (ticket: Ticket) => (
     if (!isTabActive()) {
         const {ticket: previousTicket} = getState()
 
-        const messagesLength = ticketRecord.get('messages', fromJS([])).size
-        const previousMessagesLength = previousTicket.get(
+        const messagesLength = (ticketRecord.get(
             'messages',
             fromJS([])
-        ).size
+        ) as List<any>).size
+        const previousMessagesLength = (previousTicket.get(
+            'messages',
+            fromJS([])
+        ) as List<any>).size
 
-        const newMessage = ticketRecord.get('messages', fromJS([])).last()
+        const newMessage = (ticketRecord.get('messages', fromJS([])) as List<
+            any
+        >).last() as Map<any, any>
 
         if (
             messagesLength !== previousMessagesLength &&
             newMessage &&
             !newMessage.get('from_agent')
         ) {
-            const title = newMessage.getIn(['sender', 'name'])
-            const body = newMessage.get('body_text')
+            const title = newMessage.getIn(['sender', 'name']) as string
+            const body = newMessage.get('body_text') as string
             browserNotification.newMessage({title, body})
         }
     }
 
-    const currentMessages = ticketState.get('messages', fromJS([]))
+    const currentMessages = ticketState.get('messages', fromJS([])) as List<any>
     const messagesDifference =
-        ticketRecord.get('messages', fromJS([])).size - currentMessages.size
+        (ticketRecord.get('messages', fromJS([])) as List<any>).size -
+        currentMessages.size
 
     const mergeDispatch = dispatch({
         type: types.MERGE_TICKET,
@@ -94,7 +102,7 @@ export const mergeTicket = (ticket: Ticket) => (
     return Promise.resolve(mergeDispatch)
 }
 
-export const mergeCustomer = (customer: Map<*, *>) => {
+export const mergeCustomer = (customer: Map<any, any>) => {
     return {
         type: types.MERGE_CUSTOMER,
         customer,
@@ -105,16 +113,16 @@ export const fetchTicketReplyMacro = () => ({
     type: types.FETCH_TICKET_REPLY_MACRO,
 })
 
-export const ticketPartialUpdate = (args: Object) => (
-    dispatch: Dispatch,
-    getState: getStateType
-) => {
+export const ticketPartialUpdate = (args: Record<string, unknown>) => (
+    dispatch: StoreDispatch,
+    getState: () => RootState
+): Promise<ReturnType<StoreDispatch>> => {
     if (_isEmpty(args)) {
         return Promise.resolve()
     }
 
     const {ticket} = getState()
-    const ticketId = ticket.get('id')
+    const ticketId = ticket.get('id') as number
 
     // do not send to server if it's a partial update on a new ticket
     if (!ticketId) {
@@ -127,8 +135,8 @@ export const ticketPartialUpdate = (args: Object) => (
     })
 
     return axios
-        .put(`/api/tickets/${ticketId}/`, args)
-        .then((json = {}) => json.data)
+        .put<Ticket>(`/api/tickets/${ticketId}/`, args)
+        .then((json) => json?.data)
         .then(
             (resp) => {
                 return dispatch({
@@ -136,7 +144,7 @@ export const ticketPartialUpdate = (args: Object) => (
                     resp,
                 })
             },
-            (error) => {
+            (error: AxiosError) => {
                 return dispatch({
                     type: types.TICKET_PARTIAL_UPDATE_ERROR,
                     error,
@@ -147,9 +155,9 @@ export const ticketPartialUpdate = (args: Object) => (
 }
 
 export const addTags = (tags: string) => (
-    dispatch: Dispatch,
-    getState: getStateType
-) => {
+    dispatch: StoreDispatch,
+    getState: () => RootState
+): ReturnType<StoreDispatch> => {
     dispatch({
         type: types.ADD_TICKET_TAGS,
         args: fromJS({tags}),
@@ -161,9 +169,9 @@ export const addTags = (tags: string) => (
 }
 
 export const removeTag = (tag: string) => (
-    dispatch: Dispatch,
-    getState: getStateType
-) => {
+    dispatch: StoreDispatch,
+    getState: () => RootState
+): ReturnType<StoreDispatch> => {
     dispatch({
         type: types.REMOVE_TICKET_TAG,
         args: fromJS({tag}),
@@ -175,12 +183,12 @@ export const removeTag = (tag: string) => (
 }
 
 export const setSpam = (spam: boolean, callback: () => void = _noop) => (
-    dispatch: Dispatch,
-    getState: getStateType
-) => {
+    dispatch: StoreDispatch,
+    getState: () => RootState
+): Promise<ReturnType<StoreDispatch>> => {
     const {ticket} = getState()
-    const ticketId = ticket.get('id')
-    const currentSpam = ticket.get('spam')
+    const ticketId = ticket.get('id') as string
+    const currentSpam = ticket.get('spam') as boolean
 
     if (currentSpam === spam) {
         return Promise.resolve()
@@ -194,7 +202,7 @@ export const setSpam = (spam: boolean, callback: () => void = _noop) => (
     // execute callback immediately, do not wait for server answer
     callback()
 
-    return dispatch(ticketPartialUpdate({spam})).then(() => {
+    return (dispatch(ticketPartialUpdate({spam})) as Promise<void>).then(() => {
         dispatch({
             type: types.SET_SPAM_SUCCESS,
         })
@@ -207,18 +215,21 @@ export const setSpam = (spam: boolean, callback: () => void = _noop) => (
                         {
                             name: 'Undo',
                             onClick: () => {
-                                dispatch(removeNotification(`spam-${ticketId}`))
+                                void dispatch(
+                                    //eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                                    removeNotification(`spam-${ticketId}`)
+                                )
                                 browserHistory.push(`/app/ticket/${ticketId}`)
                                 return dispatch(fetchTicket(ticketId)).then(
                                     () => {
-                                        dispatch(setSpam(false))
+                                        void dispatch(setSpam(false))
                                     }
                                 )
                             },
                             primary: true,
                         },
                     ],
-                    status: 'success',
+                    status: NotificationStatus.Success,
                     message: 'Ticket has been marked as spam',
                 })
             )
@@ -227,11 +238,14 @@ export const setSpam = (spam: boolean, callback: () => void = _noop) => (
 }
 
 export const setTrashed = (
-    datetime: ?Moment,
+    datetime: Maybe<Moment>,
     callback: () => void = _noop
-): thunkActionType => (dispatch: Dispatch, getState: getStateType) => {
+) => (
+    dispatch: StoreDispatch,
+    getState: () => RootState
+): Promise<ReturnType<StoreDispatch>> => {
     const {ticket} = getState()
-    const ticketId = ticket.get('id')
+    const ticketId = ticket.get('id') as string
     const isTrashed = !!ticket.get('trashed_datetime')
 
     if (isTrashed && !!datetime) {
@@ -262,6 +276,7 @@ export const setTrashed = (
                                 name: 'Undo',
                                 onClick: () => {
                                     dispatch(
+                                        //eslint-disable-next-line @typescript-eslint/no-unsafe-call
                                         removeNotification(`trash-${ticketId}`)
                                     )
                                     browserHistory.push(
@@ -269,14 +284,14 @@ export const setTrashed = (
                                     )
                                     return dispatch(fetchTicket(ticketId)).then(
                                         () => {
-                                            dispatch(setTrashed(null))
+                                            void dispatch(setTrashed(null))
                                         }
                                     )
                                 },
                                 primary: true,
                             },
                         ],
-                        status: 'success',
+                        status: NotificationStatus.Success,
                         message: 'Ticket has been deleted',
                     })
                 )
@@ -285,10 +300,10 @@ export const setTrashed = (
     )
 }
 
-export const setAgent = (assigneeUser: ?Object) => (
-    dispatch: Dispatch,
-    getState: getStateType
-) => {
+export const setAgent = (assigneeUser: Maybe<Record<string, unknown>>) => (
+    dispatch: StoreDispatch,
+    getState: () => RootState
+): ReturnType<StoreDispatch> => {
     dispatch({
         type: types.SET_AGENT,
         args: fromJS({assignee_user: assigneeUser}),
@@ -301,10 +316,10 @@ export const setAgent = (assigneeUser: ?Object) => (
     )
 }
 
-export const setTeam = (assigneeTeam: ?Object) => (
-    dispatch: Dispatch,
-    getState: getStateType
-) => {
+export const setTeam = (assigneeTeam: Maybe<Record<string, unknown>>) => (
+    dispatch: StoreDispatch,
+    getState: () => RootState
+): ReturnType<StoreDispatch> => {
     dispatch({
         type: types.SET_TEAM,
         args: fromJS({assignee_team: assigneeTeam}),
@@ -317,9 +332,9 @@ export const setTeam = (assigneeTeam: ?Object) => (
     )
 }
 
-export const setCustomer = (customer: ?Object): thunkActionType => (
-    dispatch: Dispatch
-) => {
+export const setCustomer = (customer: Maybe<Map<any, any>>) => (
+    dispatch: StoreDispatch
+): Promise<ReturnType<StoreDispatch>> => {
     dispatch({
         type: types.SET_CUSTOMER,
         args: fromJS({customer}),
@@ -341,9 +356,9 @@ export const setCustomer = (customer: ?Object): thunkActionType => (
 }
 
 export const setStatus = (status: string, callback: () => void = _noop) => (
-    dispatch: Dispatch,
-    getState: getStateType
-) => {
+    dispatch: StoreDispatch,
+    getState: () => RootState
+): ReturnType<StoreDispatch> => {
     dispatch({
         type: types.SET_STATUS,
         args: fromJS({status}),
@@ -362,8 +377,8 @@ export const setStatus = (status: string, callback: () => void = _noop) => (
 }
 
 export const setSubject = (subject: string) => (
-    dispatch: Dispatch,
-    getState: getStateType
+    dispatch: StoreDispatch,
+    getState: () => RootState
 ) => {
     dispatch({
         type: types.SET_SUBJECT,
@@ -378,8 +393,8 @@ export const setSubject = (subject: string) => (
 }
 
 export const setSnooze = (datetime: Moment, callback: () => void = _noop) => (
-    dispatch: Dispatch
-) => {
+    dispatch: StoreDispatch
+): Promise<ReturnType<StoreDispatch>> => {
     const data = {
         snooze_datetime: datetime,
         status: 'closed',
@@ -394,9 +409,9 @@ export const setSnooze = (datetime: Moment, callback: () => void = _noop) => (
     callback()
 
     return dispatch(ticketPartialUpdate(data)).then(() => {
-        dispatch(
+        void dispatch(
             notify({
-                status: 'success',
+                status: NotificationStatus.Success,
                 message: 'The ticket has been closed and snoozed.',
             })
         )
@@ -404,26 +419,23 @@ export const setSnooze = (datetime: Moment, callback: () => void = _noop) => (
 }
 
 export const deleteMessage = (ticketId: number, messageId: number) => (
-    dispatch: Dispatch
-) => {
-    return axios
-        .delete(`/api/tickets/${ticketId}/messages/${messageId}/`)
-        .then((json = {}) => json.data)
-        .then(
-            () => {
-                dispatch({
-                    type: types.DELETE_TICKET_MESSAGE_SUCCESS,
-                    messageId,
-                })
-            },
-            (error) => {
-                return dispatch({
-                    type: types.DELETE_TICKET_MESSAGE_ERROR,
-                    error,
-                    reason: `Failed to delete message ${messageId} from ticket ${ticketId}`,
-                })
-            }
-        )
+    dispatch: StoreDispatch
+): Promise<ReturnType<StoreDispatch>> => {
+    return axios.delete(`/api/tickets/${ticketId}/messages/${messageId}/`).then(
+        () => {
+            dispatch({
+                type: types.DELETE_TICKET_MESSAGE_SUCCESS,
+                messageId,
+            })
+        },
+        (error: AxiosError) => {
+            return dispatch({
+                type: types.DELETE_TICKET_MESSAGE_ERROR,
+                error,
+                reason: `Failed to delete message ${messageId} from ticket ${ticketId}`,
+            })
+        }
+    )
 }
 
 export const deleteActionOnApplied = (
@@ -446,19 +458,19 @@ export const updateActionArgsOnApplied = (
     ticketId,
 })
 
-export const applyMacroAction = (action: Record<Action>) => (
-    dispatch: Dispatch,
-    getState: getStateType
-) => {
+export const applyMacroAction = (action: Map<any, any>) => (
+    dispatch: StoreDispatch,
+    getState: () => RootState
+): ReturnType<StoreDispatch> => {
     const state = getState()
     const {ticket, currentUser} = state
 
-    const {type, name} = action.toJS()
+    const {type, name} = action.toJS() as Action
     if (type === 'user' && !DEFAULT_ACTIONS.includes(name)) {
         console.error('Applying unknown macro action', name)
     }
 
-    const args = action.get('arguments')
+    const args = action.get('arguments') as List<any>
 
     // should have the same params in state/newMessage/actions/setResponseText
     return dispatch({
@@ -475,17 +487,27 @@ export const applyMacroAction = (action: Record<Action>) => (
 export const applyMacro = (
     macro: Macro,
     ticketId: number,
-    shouldUpdateNewMessage?: boolean = true
-) => (dispatch: Dispatch, getState: getStateType) => {
+    shouldUpdateNewMessage = true
+) => (
+    dispatch: StoreDispatch,
+    getState: () => RootState
+): Promise<ReturnType<StoreDispatch>> => {
     // render macro action arguments
     let state = getState()
 
-    const renderedMacro = macro.update('actions', (actions) => {
-        return actions.map((action) => {
-            return action.update('arguments', (args) =>
-                nestedReplace(args, state.ticket, state.currentUser, (args) => {
-                    return dispatch(notify(args))
-                })
+    const renderedMacro = macro.update('actions', (actions: List<any>) => {
+        return actions.map((action: Map<any, any>) => {
+            return action.update(
+                'arguments',
+                (args: List<any>) =>
+                    nestedReplace(
+                        args,
+                        state.ticket,
+                        state.currentUser,
+                        (args: Notification) => {
+                            return dispatch(notify(args))
+                        }
+                    ) as List<any>
             )
         })
     })
@@ -496,9 +518,9 @@ export const applyMacro = (
         ticketId,
     })
 
-    const actions = renderedMacro.get('actions', fromJS([]))
+    const actions = renderedMacro.get('actions', fromJS([])) as List<any>
 
-    actions.forEach((action) => {
+    actions.forEach((action: Map<any, any>) => {
         if (
             !shouldUpdateNewMessage &&
             ['addAttachments', 'setResponseText'].includes(action.get('name'))
@@ -510,10 +532,15 @@ export const applyMacro = (
 
     state = getState() // refetch state after macro actions has been applied
 
-    const actionNames = actions.map((action) => action.get('name')).toJS()
-    const partialUpdate = buildPartialUpdateFromAction(actionNames, state)
+    const actionNames = (actions.map(
+        (action: Map<any, any>) => action.get('name') as string
+    ) as List<any>).toJS() as string[]
+    const partialUpdate = buildPartialUpdateFromAction(
+        actionNames,
+        state
+    ) as Map<any, any>
 
-    dispatch(ticketPartialUpdate(partialUpdate))
+    void dispatch(ticketPartialUpdate(partialUpdate))
     if (shouldUpdateNewMessage) {
         dispatch({
             type: newMessageTypes.NEW_MESSAGE_RECORD_MACRO,
@@ -531,17 +558,13 @@ export const clearAppliedMacro = (ticketId: number) => ({
 
 /**
  * Fetch a ticket from the API, and put it in the `ticket` store.
- *
- * @param ticketId: the id of the ticket to fetch
- * @param error: the error message
- * @param discreetly: (default: false) whether or not the function should dispatch `FETCH_TICKET_START`
  */
-export const fetchTicket = (ticketId: string, discreetly: boolean = false) => (
-    dispatch: Dispatch,
-    getState: getStateType
+export const fetchTicket = (ticketId: string, discreetly = false) => (
+    dispatch: StoreDispatch,
+    getState: () => RootState
 ) => {
     if (ticketId === 'new') {
-        return new Promise<thunkActionType>((resolve) => {
+        return new Promise<ReturnType<StoreDispatch>>((resolve) => {
             // wait next tick before initializing the draft
             // so that draft-js is mounted (and Editor plugins are ran) before we initialize message content
             // otherwise on a new ticket plugins are not applied to the Editor
@@ -551,7 +574,7 @@ export const fetchTicket = (ticketId: string, discreetly: boolean = false) => (
         })
     }
 
-    const parsedTicketId: number = parseInt(ticketId)
+    const parsedTicketId = parseInt(ticketId)
 
     if (!discreetly) {
         dispatch({
@@ -564,8 +587,8 @@ export const fetchTicket = (ticketId: string, discreetly: boolean = false) => (
     const url = `/api/tickets/${parsedTicketId}/`
 
     return axios
-        .get(url)
-        .then((json = {}) => json.data)
+        .get<Ticket>(url)
+        .then((json) => json?.data)
         .then(
             (resp) => {
                 if (_isEmpty(resp)) {
@@ -576,7 +599,10 @@ export const fetchTicket = (ticketId: string, discreetly: boolean = false) => (
                     return Promise.resolve()
                 }
 
-                const customerId = fromJS(resp).getIn(['customer', 'id'])
+                const customerId = (fromJS(resp) as Map<any, any>).getIn([
+                    'customer',
+                    'id',
+                ]) as number
 
                 if (parsedTicketId) {
                     socketManager.join('ticket', parsedTicketId)
@@ -595,8 +621,10 @@ export const fetchTicket = (ticketId: string, discreetly: boolean = false) => (
 
                 // dispatch for newMessage reducer branch
                 if (
-                    getState().newMessage.getIn(['newMessage', 'body_text'], '')
-                        .length === 0
+                    (getState().newMessage.getIn(
+                        ['newMessage', 'body_text'],
+                        ''
+                    ) as string).length === 0
                 ) {
                     dispatch({
                         type: newMessageTypes.NEW_MESSAGE_FETCH_TICKET_SUCCESS,
@@ -618,8 +646,8 @@ export const fetchTicket = (ticketId: string, discreetly: boolean = false) => (
 
                 if (
                     [
-                        INSTAGRAM_COMMENT_SOURCE,
-                        INSTAGRAM_AD_COMMENT_SOURCE,
+                        TicketMessageSourceType.InstagramComment,
+                        TicketMessageSourceType.InstagramAdComment,
                     ].includes(sourceTypeOfResponse)
                 ) {
                     dispatch(newMessageActions.prepare(sourceTypeOfResponse))
@@ -643,18 +671,13 @@ export const fetchTicket = (ticketId: string, discreetly: boolean = false) => (
 /**
  * Fetch the next or the previous ticket immediately
  * but wait for the Promise (`promise` argument) to be resolved to display it
- *
- * @param {number} ticketId - the id of the ticket from which we want the next or the previous ticket
- * @param {String} direction - `next` or `prev` to get the ticket after or before the current ticket
- * @param {String} promise - promise to resolve before displaying the ticket fetched
- * @returns {Promise}
  */
 export const _goToNextOrPrevTicket = (
     ticketId: number,
     direction: string,
-    promise?: Promise<?Dispatch>
+    promise?: Promise<Maybe<ReturnType<StoreDispatch>>>
 ) => {
-    return (dispatch: Dispatch, getState: getStateType) => {
+    return (dispatch: StoreDispatch, getState: () => RootState) => {
         if (!promise) {
             // we do not display the loading state if there is a promise to resolve
             // because we want to do it discreetly: while something else is happening.
@@ -662,10 +685,17 @@ export const _goToNextOrPrevTicket = (
                 type: types.FETCH_TICKET_START,
             })
         }
-        let returnedPromise: Promise<?Dispatch> = promise || Promise.resolve()
+        const returnedPromise: Promise<Maybe<ReturnType<StoreDispatch>>> =
+            promise || Promise.resolve()
 
-        const viewId = viewsSelectors.getActiveView(getState()).get('id')
-        const viewCursor = ticketsSelectors.getCursor(getState())
+        //$TsFixMe remove casting once views/selectors is migrated
+        const viewId = (viewsSelectors.getActiveView as (
+            state: RootState
+        ) => Map<any, any>)(getState()).get('id') as string
+        //$TsFixMe remove casting once tickets/selectors is migrated
+        const viewCursor = (ticketsSelectors.getCursor as (
+            state: RootState
+        ) => Map<any, any>)(getState())
         const url = `/api/views/${viewId}/tickets/${ticketId}/${direction}`
 
         if (!viewId) {
@@ -676,72 +706,68 @@ export const _goToNextOrPrevTicket = (
         }
 
         return axios
-            .put(url, {cursor: viewCursor})
-            .then((json = {}) => json.data)
+            .put<Ticket>(url, {cursor: viewCursor})
+            .then((json) => json?.data)
             .then(
                 (ticket) => {
                     // wait for the promise to be resolved to go to the ticket
-                    return ((returnedPromise: any): Promise<?Dispatch>).then(
-                        () => {
-                            if (!ticket) {
-                                // there is no other ticket the user can handle so we go back to the view
-                                browserHistory.push(`/app/tickets/${viewId}`)
-                                return
-                            }
-
-                            const customerId = fromJS(ticket).getIn([
-                                'customer',
-                                'id',
-                            ])
-
-                            if (ticketId) {
-                                socketManager.join('ticket', ticket.id)
-                            }
-
-                            if (customerId) {
-                                socketManager.join('customer', customerId)
-                            }
-
-                            dispatch({
-                                type: types.FETCH_TICKET_SUCCESS,
-                                resp: ticket,
-                                ticketId: ticket.id,
-                            })
-
-                            dispatch({
-                                type:
-                                    newMessageTypes.NEW_MESSAGE_FETCH_TICKET_SUCCESS,
-                                resp: ticket,
-                            })
-
-                            dispatch(newMessageActions.initializeMessageDraft())
-
-                            const sourceTypeOfResponse = getSourceTypeOfResponse(
-                                ticket.messages
-                            )
-
-                            if (
-                                [
-                                    INSTAGRAM_COMMENT_SOURCE,
-                                    INSTAGRAM_AD_COMMENT_SOURCE,
-                                ].includes(sourceTypeOfResponse)
-                            ) {
-                                dispatch(
-                                    newMessageActions.prepare(
-                                        sourceTypeOfResponse
-                                    )
-                                )
-                            }
-
-                            // Notify the server that we viewed this ticket
-                            socketManager.send('ticket-viewed', ticket.id)
-                            dispatch(newMessageActions.resetReceiversAndSender)
-
-                            browserHistory.push(`/app/ticket/${ticket.id}`)
+                    return returnedPromise.then(() => {
+                        if (!ticket) {
+                            // there is no other ticket the user can handle so we go back to the view
+                            browserHistory.push(`/app/tickets/${viewId}`)
+                            return
                         }
-                    )
+
+                        const customerId = (fromJS(ticket) as Map<
+                            any,
+                            any
+                        >).getIn(['customer', 'id'])
+
+                        if (ticketId) {
+                            socketManager.join('ticket', ticket.id)
+                        }
+
+                        if (customerId) {
+                            socketManager.join('customer', customerId)
+                        }
+
+                        dispatch({
+                            type: types.FETCH_TICKET_SUCCESS,
+                            resp: ticket,
+                            ticketId: ticket.id,
+                        })
+
+                        dispatch({
+                            type:
+                                newMessageTypes.NEW_MESSAGE_FETCH_TICKET_SUCCESS,
+                            resp: ticket,
+                        })
+
+                        dispatch(newMessageActions.initializeMessageDraft())
+
+                        const sourceTypeOfResponse = getSourceTypeOfResponse(
+                            ticket.messages
+                        )
+
+                        if (
+                            [
+                                TicketMessageSourceType.InstagramComment,
+                                TicketMessageSourceType.InstagramAdComment,
+                            ].includes(sourceTypeOfResponse)
+                        ) {
+                            dispatch(
+                                newMessageActions.prepare(sourceTypeOfResponse)
+                            )
+                        }
+
+                        // Notify the server that we viewed this ticket
+                        socketManager.send('ticket-viewed', ticket.id)
+                        dispatch(newMessageActions.resetReceiversAndSender)
+
+                        browserHistory.push(`/app/ticket/${ticket.id}`)
+                    })
                 },
-                (error) => {
+                (error: AxiosError) => {
                     return dispatch({
                         type: types.FETCH_TICKET_ERROR,
                         error,
@@ -758,8 +784,8 @@ export const _goToNextOrPrevTicket = (
  */
 export const goToPrevTicket = (
     ticketId: number,
-    promise?: Promise<?Dispatch>
-) => (dispatch: Dispatch) => {
+    promise?: Promise<Maybe<ReturnType<StoreDispatch>>>
+) => (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
     return dispatch(_goToNextOrPrevTicket(ticketId, 'prev', promise))
 }
 
@@ -769,13 +795,13 @@ export const goToPrevTicket = (
  */
 export const goToNextTicket = (
     ticketId: number,
-    promise?: Promise<?Dispatch>
-) => (dispatch: Dispatch) => {
+    promise?: Promise<Maybe<ReturnType<StoreDispatch>>>
+) => (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
     return dispatch(_goToNextOrPrevTicket(ticketId, 'next', promise))
 }
 
 export const displayAuditLogEvents = (ticketId: number) => async (
-    dispatch: Dispatch
+    dispatch: StoreDispatch
 ) => {
     segmentTracker.logEvent(segmentTracker.EVENTS.DISPLAY_ALL_EVENTS_CLICKED, {
         ticketId,
@@ -789,10 +815,10 @@ export const displayAuditLogEvents = (ticketId: number) => async (
         type: types.DISPLAY_TICKET_AUDIT_LOG_EVENTS,
     })
 
-    for await (const events of generator) {
-        total += events.size
+    for await (const events of generator as any) {
+        total += (events as List<any>).size
 
-        if (events.size) {
+        if ((events as List<any>).size) {
             dispatch({
                 type: types.ADD_TICKET_AUDIT_LOG_EVENTS,
                 payload: events,
@@ -801,9 +827,9 @@ export const displayAuditLogEvents = (ticketId: number) => async (
     }
 
     if (!total) {
-        dispatch(
+        void dispatch(
             notify({
-                status: 'info',
+                status: NotificationStatus.Info,
                 message: 'No event for this ticket',
             })
         )
@@ -814,7 +840,7 @@ export const displayAuditLogEvents = (ticketId: number) => async (
     }
 }
 
-export const hideAuditLogEvents = () => (dispatch: Dispatch) => {
+export const hideAuditLogEvents = () => (dispatch: StoreDispatch) => {
     dispatch({
         type: types.HIDE_TICKET_AUDIT_LOG_EVENTS,
     })
@@ -825,9 +851,9 @@ export const hideAuditLogEvents = () => (dispatch: Dispatch) => {
 }
 
 export const handleMessageActionError = (ticketId: string) => (
-    dispatch: Dispatch
+    dispatch: StoreDispatch
 ) => {
-    let buttons = []
+    let buttons: NotificationButton[] = []
     let fetchPromise = null
 
     if (!isCurrentlyOnTicket(ticketId)) {
@@ -844,9 +870,9 @@ export const handleMessageActionError = (ticketId: string) => (
         fetchPromise = dispatch(fetchTicket(ticketId, true))
     }
 
-    dispatch(
+    void dispatch(
         notify({
-            status: 'error',
+            status: NotificationStatus.Error,
             dismissAfter: 0,
             allowHTML: true,
             message:
@@ -860,8 +886,8 @@ export const handleMessageActionError = (ticketId: string) => (
 
 export const handleMessageError = (
     json: socketEventTypes.TicketMessageFailedEvent
-) => (dispatch: Dispatch) => {
-    let buttons = []
+) => (dispatch: StoreDispatch) => {
+    let buttons: NotificationButton[] = []
     let fetchPromise = null
 
     if (!isCurrentlyOnTicket(json.ticket_id)) {
@@ -875,12 +901,14 @@ export const handleMessageError = (
             },
         ]
     } else {
-        fetchPromise = dispatch(fetchTicket(json.ticket_id, true))
+        fetchPromise = dispatch(
+            fetchTicket((json.ticket_id as unknown) as string, true)
+        )
     }
 
-    dispatch(
+    void dispatch(
         notify({
-            status: 'error',
+            status: NotificationStatus.Error,
             dismissAfter: 0,
             allowHTML: true,
             message:
@@ -896,10 +924,10 @@ export const handleMessageError = (
 export function updateTicketMessage(
     ticketId: string,
     messageId: number,
-    data: Object,
-    action: ?string = null
+    data: TicketMessage,
+    action: Maybe<string> = null
 ) {
-    return (dispatch: Dispatch) => {
+    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         dispatch({
             type: types.UPDATE_TICKET_MESSAGE_START,
             messageId,
@@ -912,8 +940,8 @@ export function updateTicketMessage(
         }
 
         return axios
-            .put(url, data)
-            .then((json = {}) => json.data)
+            .put<TicketMessage>(url, data)
+            .then((json) => json?.data)
             .then(
                 (resp) => {
                     return dispatch({
@@ -922,7 +950,7 @@ export function updateTicketMessage(
                         resp,
                     })
                 },
-                (error) => {
+                (error: AxiosError) => {
                     return dispatch({
                         type: types.UPDATE_TICKET_MESSAGE_ERROR,
                         messageId,
@@ -936,7 +964,7 @@ export function updateTicketMessage(
 }
 
 export function clearTicket() {
-    return (dispatch: Dispatch, getState: getStateType) => {
+    return (dispatch: StoreDispatch, getState: () => RootState) => {
         const state = getState()
 
         const shouldDisplayHistoryOnNextPage = state.ticket.getIn([
@@ -960,7 +988,7 @@ export function toggleHistory(state: boolean) {
     }
 }
 
-export function displayHistoryOnNextPage(state: boolean = true) {
+export function displayHistoryOnNextPage(state = true) {
     return {
         type: types.DISPLAY_HISTORY_ON_NEXT_PAGE,
         state,
@@ -968,31 +996,28 @@ export function displayHistoryOnNextPage(state: boolean = true) {
 }
 
 export function deleteTicket(id: number) {
-    return (dispatch: Dispatch) => {
-        return axios
-            .delete(`/api/tickets/${id}/`)
-            .then((json = {}) => json.data)
-            .then(
-                () => {
-                    return dispatch(
-                        notify({
-                            status: 'success',
-                            message: 'Ticket deleted',
-                        })
-                    )
-                },
-                (error) => {
-                    return dispatch({
-                        type: types.DELETE_TICKET_ERROR,
-                        error,
-                        reason: `Failed to delete the ticket ${id}`,
+    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
+        return axios.delete(`/api/tickets/${id}/`).then(
+            () => {
+                return dispatch(
+                    notify({
+                        status: NotificationStatus.Success,
+                        message: 'Ticket deleted',
                     })
-                }
-            )
+                )
+            },
+            (error: AxiosError) => {
+                return dispatch({
+                    type: types.DELETE_TICKET_ERROR,
+                    error,
+                    reason: `Failed to delete the ticket ${id}`,
+                })
+            }
+        )
     }
 }
 
-export function deleteTicketPendingMessage(message: Record<TicketMessage>) {
+export function deleteTicketPendingMessage(message: Map<any, any>) {
     return {
         type: types.DELETE_TICKET_PENDING_MESSAGE,
         message,
@@ -1001,12 +1026,16 @@ export function deleteTicketPendingMessage(message: Record<TicketMessage>) {
 
 /**
  * Search a customer by email, and then fetch it and set it as customer of the current ticket.
- * @param email: the email of the customer we want to set as customer
  */
-export const findAndSetCustomer = (email: string) => (dispatch: Dispatch) =>
+export const findAndSetCustomer = (email: string) => (
+    dispatch: StoreDispatch
+): Promise<ReturnType<StoreDispatch>> =>
     axios
-        .post('/api/search/', {type: 'user_channel_email', query: email})
-        .then((json = {}) => json.data)
+        .post<ApiListResponsePagination<UserSearchResult[]>>('/api/search/', {
+            type: 'user_channel_email',
+            query: email,
+        })
+        .then((json) => json?.data)
         .then((resp) => {
             if (resp.data.length !== 1) {
                 // We can't do anything if we are not sure which customer should be set as customer of the current
@@ -1018,11 +1047,13 @@ export const findAndSetCustomer = (email: string) => (dispatch: Dispatch) =>
             const channel = resp.data[0]
 
             return axios
-                .get(`/api/customers/${channel.user.id}/`)
-                .then((json = {}) => json.data)
-                .then((resp): Promise<Dispatch> => {
-                    return dispatch(setCustomer(fromJS(resp)))
-                })
+                .get<Customer>(`/api/customers/${channel.user?.id || ''}/`)
+                .then((json) => json?.data)
+                .then(
+                    (resp): Promise<ReturnType<StoreDispatch>> => {
+                        return dispatch(setCustomer(fromJS(resp)))
+                    }
+                )
         })
 
 export const messageDeleted = createAction<

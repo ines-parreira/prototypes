@@ -1,4 +1,3 @@
-//@flow
 // Update a message (retry failed actions or sending, or force sending)
 export const UPDATE_TICKET_MESSAGE_START = 'UPDATE_TICKET_MESSAGE_START'
 export const UPDATE_TICKET_MESSAGE_SUCCESS = 'UPDATE_TICKET_MESSAGE_SUCCESS'

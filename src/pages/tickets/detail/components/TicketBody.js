@@ -6,7 +6,7 @@ import {connect} from 'react-redux'
 import _debounce from 'lodash/debounce'
 import {fromJS, List, Map} from 'immutable'
 
-import * as ticketSelectors from '../../../../state/ticket/selectors'
+import * as ticketSelectors from '../../../../state/ticket/selectors.ts'
 import shortcutManager from '../../../../services/shortcutManager'
 import {
     moveIndex,

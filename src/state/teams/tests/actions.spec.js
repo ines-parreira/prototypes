@@ -5,7 +5,7 @@ import thunk from 'redux-thunk'
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 
-import * as actions from '../../teams/actions'
+import * as actions from '../../teams/actions.ts'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

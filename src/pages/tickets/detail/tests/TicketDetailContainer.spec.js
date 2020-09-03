@@ -21,7 +21,7 @@ import {
     findAndSetCustomer,
     messageDeleted,
     setCustomer,
-} from '../../../../state/ticket/actions'
+} from '../../../../state/ticket/actions.ts'
 
 import TicketDetailContainer from '../TicketDetailContainer'
 import * as ticketsActions from '../../../../state/tickets/actions'
@@ -71,7 +71,7 @@ jest.mock('../../../../state/tickets/actions', () => {
     }
 })
 
-jest.mock('../../../../state/ticket/actions', () => {
+jest.mock('../../../../state/ticket/actions.ts', () => {
     const _identity = require('lodash/identity')
 
     return {

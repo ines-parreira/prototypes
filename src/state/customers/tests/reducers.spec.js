@@ -5,7 +5,7 @@ import {OPEN_STATUS, CLOSED_STATUS} from '../../../config/ticket'
 import reducer, {initialState} from '../reducers.ts'
 import * as newMessageTypes from '../../newMessage/constants.ts'
 import * as viewTypes from '../../views/constants'
-import * as ticketTypes from '../../ticket/constants'
+import * as ticketTypes from '../../ticket/constants.ts'
 import * as types from '../constants'
 
 jest.addMatchers(immutableMatchers)

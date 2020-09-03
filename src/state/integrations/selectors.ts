@@ -6,7 +6,6 @@ import {IntegrationType} from '../../models/integration/types'
 import {compare} from '../../utils.js'
 import {RootState, StoreState} from '../types'
 import {getCurrentUserState} from '../currentUser/selectors'
-import {getTicketState} from '../ticket/selectors.js'
 import {nestedReplace} from '../ticket/utils.js'
 
 import {EMAIL_INTEGRATION_TYPE} from '../../constants/integration.js'
@@ -193,7 +192,7 @@ export const getChannels = createSelector<
     Map<any, any>,
     List<any>
 >(
-    getTicketState,
+    (state: RootState) => state.ticket || fromJS({}),
     getCurrentUserState,
     getEmailIntegrations,
     (currentTicket, currentUser, integrations) => {

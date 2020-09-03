@@ -8,7 +8,7 @@ import {
     newMessageResetFromMessage,
     sendTicketMessage,
 } from '../../../state/newMessage/actions.ts'
-import {applyMacro, messageDeleted} from '../../../state/ticket/actions'
+import {applyMacro, messageDeleted} from '../../../state/ticket/actions.ts'
 import pendingMessageManager, {
     PendingMessageManager,
 } from '../pendingMessageManager'
@@ -32,7 +32,7 @@ jest.mock('../../../init', () => {
 })
 jest.mock('../../../state/newMessage/actions.ts')
 jest.mock('../../../state/notifications/actions.ts')
-jest.mock('../../../state/ticket/actions')
+jest.mock('../../../state/ticket/actions.ts')
 jest.useFakeTimers()
 
 describe('services', () => {

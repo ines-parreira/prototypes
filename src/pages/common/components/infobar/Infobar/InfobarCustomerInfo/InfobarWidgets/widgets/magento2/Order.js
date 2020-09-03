@@ -7,7 +7,7 @@ import {Badge, CardBody} from 'reactstrap'
 
 import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../../../../state/customers/selectors.ts'
 import * as currentUserSelectors from '../../../../../../../../../state/currentUser/selectors.ts'
-import * as ticketSelectors from '../../../../../../../../../state/ticket/selectors'
+import * as ticketSelectors from '../../../../../../../../../state/ticket/selectors.ts'
 
 import {
     devLog,

@@ -3,7 +3,7 @@ import _sortBy from 'lodash/sortBy'
 
 import {Ticket, TicketElement} from '../../models/ticket/types'
 import * as newMessageConstants from '../newMessage/constants'
-import * as ticketConstants from '../ticket/constants.js'
+import * as ticketConstants from '../ticket/constants'
 import * as viewsConstants from '../views/constants.js'
 
 import {GorgiasAction} from '../types'

@@ -16,7 +16,7 @@ import {renderTemplate} from '../../pages/common/utils/template'
 
 import * as responseUtils from '../newMessage/responseUtils.ts'
 
-import {getProperty} from './selectors'
+import {getProperty} from './selectors.ts'
 
 /**
  * Get the most recent messages which have the matching sourceType

@@ -2,10 +2,10 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS, type Record} from 'immutable'
 
-import reducer, {initialState} from '../reducers'
+import reducer, {initialState} from '../reducers.ts'
 import * as newMessageTypes from '../../newMessage/constants.ts'
 import * as customerTypes from '../../customers/constants'
-import * as types from '../constants'
+import * as types from '../constants.ts'
 import * as ticketFixtures from '../../../fixtures/ticket'
 import type {AuditLogEvent} from '../../../models/event'
 import {

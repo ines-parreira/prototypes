@@ -1,33 +1,25 @@
-// @flow
+import moment, {Moment} from 'moment'
+import {fromJS, List, Map} from 'immutable'
 
-import moment from 'moment'
-import {fromJS, type List, Record} from 'immutable'
-
-import {
-    AuditLogEvent,
-    TAGS_ADDED_KEY,
-    TAGS_REMOVED_KEY,
-} from '../../models/event'
-import * as constants from '../../constants/event'
-import {CLOSED_STATUS, OPEN_STATUS} from '../../config/ticket'
+import {TicketStatus} from '../../business/types/ticket'
+import {TicketAuditLogEvent} from '../../constants/integrations/types/event'
+import {TAGS_ADDED_KEY, TAGS_REMOVED_KEY} from '../../models/event/constants.js'
 
 const MAX_DIFF_SECONDS = 5
 
 type TicketState = {
-    assigneeUserId: number | null,
-    assigneeTeamId: number | null,
-    status: string | null,
-    spam: boolean | null,
-    trashed: boolean | null,
-    snoozedAt: moment | null,
-    tags: Array<number>,
+    assigneeUserId: number | null
+    assigneeTeamId: number | null
+    status: string | null
+    spam: boolean | null
+    trashed: boolean | null
+    snoozedAt: Moment | null
+    tags: Array<number>
 }
 
 /**
  * Return `true` if we should deduplicate audit log events for the given ticket.
  * Fix for duplicated events has been deployed at 2019-12-10T00:06:02Z UTC (Dec 9, 2019, 4:06 PM PST).
- * @param {string} ticketCreatedDatetime
- * @returns {boolean}
  */
 export function shouldDeduplicateAuditLogEvents(
     ticketCreatedDatetime: string
@@ -38,8 +30,8 @@ export function shouldDeduplicateAuditLogEvents(
 }
 
 // TODO(@samy): delete in a few months
-export function deduplicateAuditLogEvents(events: List<Record<AuditLogEvent>>) {
-    const results = []
+export function deduplicateAuditLogEvents(events: List<any>) {
+    const results: Map<any, any>[] = []
     const ticketState: TicketState = {
         assigneeUserId: null,
         assigneeTeamId: null,
@@ -50,16 +42,19 @@ export function deduplicateAuditLogEvents(events: List<Record<AuditLogEvent>>) {
         tags: [],
     }
 
-    const sortedEvents = events.sortBy((event) =>
+    const sortedEvents = events.sortBy((event: Map<any, any>) =>
         moment(event.get('created_datetime'))
     )
 
-    sortedEvents.forEach((event) => {
-        const type = event.get('type')
+    sortedEvents.forEach((event: Map<any, any>) => {
+        const type = event.get('type') as TicketAuditLogEvent
 
         switch (type) {
-            case constants.TICKET_ASSIGNED: {
-                const assigneeUserId = event.getIn(['data', 'assignee_user_id'])
+            case TicketAuditLogEvent.TicketAssigned: {
+                const assigneeUserId = event.getIn([
+                    'data',
+                    'assignee_user_id',
+                ]) as number
 
                 if (ticketState.assigneeUserId !== assigneeUserId) {
                     ticketState.assigneeUserId = assigneeUserId
@@ -69,35 +64,35 @@ export function deduplicateAuditLogEvents(events: List<Record<AuditLogEvent>>) {
                 break
             }
 
-            case constants.TICKET_CLOSED:
-                if (ticketState.status !== CLOSED_STATUS) {
-                    ticketState.status = CLOSED_STATUS
+            case TicketAuditLogEvent.TicketClosed:
+                if (ticketState.status !== TicketStatus.Closed) {
+                    ticketState.status = TicketStatus.Closed
                     results.push(event)
                 }
                 break
 
-            case constants.TICKET_CREATED:
-                if (ticketState.status !== OPEN_STATUS) {
-                    ticketState.status = OPEN_STATUS
+            case TicketAuditLogEvent.TicketCreated:
+                if (ticketState.status !== TicketStatus.Open) {
+                    ticketState.status = TicketStatus.Open
                     results.push(event)
                 }
                 break
 
-            case constants.TICKET_MARKED_SPAM:
+            case TicketAuditLogEvent.TicketMarkedSpam:
                 if (ticketState.spam !== true) {
                     ticketState.spam = true
                     results.push(event)
                 }
                 break
 
-            case constants.TICKET_REOPENED:
-                if (ticketState.status !== OPEN_STATUS) {
-                    ticketState.status = OPEN_STATUS
+            case TicketAuditLogEvent.TicketReopened:
+                if (ticketState.status !== TicketStatus.Open) {
+                    ticketState.status = TicketStatus.Open
                     results.push(event)
                 }
                 break
 
-            case constants.TICKET_SNOOZED: {
+            case TicketAuditLogEvent.TicketSnoozed: {
                 const snoozedAt = moment(event.get('created_datetime'))
 
                 if (ticketState.snoozedAt) {
@@ -117,9 +112,11 @@ export function deduplicateAuditLogEvents(events: List<Record<AuditLogEvent>>) {
                 break
             }
 
-            case constants.TICKET_TAGS_ADDED: {
-                const tagsAdded = event.getIn(['data', TAGS_ADDED_KEY])
-                const deduplicatedTagsAdded = []
+            case TicketAuditLogEvent.TicketTagsAdded: {
+                const tagsAdded = event.getIn(['data', TAGS_ADDED_KEY]) as List<
+                    any
+                >
+                const deduplicatedTagsAdded: Map<any, any>[] = []
 
                 tagsAdded.forEach((tagAdded) => {
                     if (!ticketState.tags.includes(tagAdded)) {
@@ -140,9 +137,12 @@ export function deduplicateAuditLogEvents(events: List<Record<AuditLogEvent>>) {
                 break
             }
 
-            case constants.TICKET_TAGS_REMOVED: {
-                const tagsRemoved = event.getIn(['data', TAGS_REMOVED_KEY])
-                const deduplicatedTagsRemoved = []
+            case TicketAuditLogEvent.TicketTagsRemoved: {
+                const tagsRemoved = event.getIn([
+                    'data',
+                    TAGS_REMOVED_KEY,
+                ]) as List<any>
+                const deduplicatedTagsRemoved: Map<any, any>[] = []
 
                 tagsRemoved.forEach((tagRemoved) => {
                     if (ticketState.tags.includes(tagRemoved)) {
@@ -165,7 +165,7 @@ export function deduplicateAuditLogEvents(events: List<Record<AuditLogEvent>>) {
                 break
             }
 
-            case constants.TICKET_TEAM_ASSIGNED: {
+            case TicketAuditLogEvent.TicketTeamAssigned: {
                 const assigneeTeamId = event.getIn(['data', 'assignee_team_id'])
 
                 if (ticketState.assigneeTeamId !== assigneeTeamId) {
@@ -176,35 +176,35 @@ export function deduplicateAuditLogEvents(events: List<Record<AuditLogEvent>>) {
                 break
             }
 
-            case constants.TICKET_TEAM_UNASSIGNED:
+            case TicketAuditLogEvent.TicketTeamUnassigned:
                 if (ticketState.assigneeTeamId !== null) {
                     ticketState.assigneeTeamId = null
                     results.push(event)
                 }
                 break
 
-            case constants.TICKET_TRASHED:
+            case TicketAuditLogEvent.TicketTrashed:
                 if (ticketState.trashed !== true) {
                     ticketState.trashed = true
                     results.push(event)
                 }
                 break
 
-            case constants.TICKET_UNASSIGNED:
+            case TicketAuditLogEvent.TicketUnassigned:
                 if (ticketState.assigneeUserId !== null) {
                     ticketState.assigneeUserId = null
                     results.push(event)
                 }
                 break
 
-            case constants.TICKET_UNMARKED_SPAM:
+            case TicketAuditLogEvent.TicketUnmarkedSpam:
                 if (ticketState.spam !== false) {
                     ticketState.spam = false
                     results.push(event)
                 }
                 break
 
-            case constants.TICKET_UNTRASHED:
+            case TicketAuditLogEvent.TicketUntrashed:
                 if (ticketState.trashed !== false) {
                     ticketState.trashed = false
                     results.push(event)
@@ -217,5 +217,5 @@ export function deduplicateAuditLogEvents(events: List<Record<AuditLogEvent>>) {
         }
     })
 
-    return fromJS(results)
+    return fromJS(results) as List<any>
 }

@@ -14,7 +14,7 @@ import {AgentLabel, DatetimeLabel} from '../../../common/utils/labels'
 import {humanizeString, stripErrorMessage} from '../../../../utils'
 
 import * as integrationsSelectors from '../../../../state/integrations/selectors.ts'
-import * as ticketSelectors from '../../../../state/ticket/selectors'
+import * as ticketSelectors from '../../../../state/ticket/selectors.ts'
 
 import css from './Event.less'
 

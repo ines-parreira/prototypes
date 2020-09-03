@@ -12,7 +12,7 @@ import {
 
 import {generateDefaultAction} from '../../../../../state/macro/utils'
 
-import * as ticketTypes from '../../../../../state/ticket/constants.js'
+import * as ticketTypes from '../../../../../state/ticket/constants'
 import * as newMessageTypes from '../../../../../state/newMessage/constants'
 import * as integrationsSelectors from '../../../../../state/integrations/selectors'
 import {ACTION_TEMPLATES} from '../../../../../config.js'

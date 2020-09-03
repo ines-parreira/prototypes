@@ -15,7 +15,7 @@ import classnames from 'classnames'
 
 import PageHeader from '../../../common/components/PageHeader'
 import SecondaryNavbar from '../../../common/components/SecondaryNavbar/SecondaryNavbar'
-import * as actions from '../../../../state/teams/actions'
+import * as actions from '../../../../state/teams/actions.ts'
 import Pagination from '../../../common/components/Pagination'
 import Loader from '../../../common/components/Loader'
 import Search from '../../../common/components/Search'

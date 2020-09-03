@@ -28,7 +28,7 @@ import {DEFAULT_TAG_COLOR} from '../../../config'
 import SourceIcon from '../components/SourceIcon'
 import type {SourceType} from '../../../models/ticket/types'
 import {getAgents} from '../../../state/agents/selectors.ts'
-import {getTeams} from '../../../state/teams/selectors'
+import {getTeams} from '../../../state/teams/selectors.ts'
 
 import css from './labels.less'
 

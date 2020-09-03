@@ -8,7 +8,7 @@ import {getLanguageDisplayName} from '../../../../../utils'
 
 import {getMessagingIntegrations} from '../../../../../state/integrations/selectors.ts'
 import * as viewsSelectors from '../../../../../state/views/selectors'
-import {getTags} from '../../../../../state/tags/selectors'
+import {getTags} from '../../../../../state/tags/selectors.ts'
 
 import {timedeltaOperators} from '../../../../../config/rules'
 import TagDropdownMenu from '../../TagDropdownMenu/TagDropdownMenu'

@@ -5,7 +5,7 @@ import _isString from 'lodash/isString'
 
 import MultiSelectField from '../../../forms/MultiSelectField'
 import SelectField from '../../../forms/SelectField'
-import * as TagsActions from '../../../../../state/tags/actions'
+import * as TagsActions from '../../../../../state/tags/actions.ts'
 import TagDropdownMenu from '../../TagDropdownMenu/TagDropdownMenu'
 
 type Props = {

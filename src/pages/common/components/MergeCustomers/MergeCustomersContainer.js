@@ -8,7 +8,7 @@ import {makeIsLoading} from '../../../../state/customers/selectors.ts'
 
 import MergeCustomersModal from './MergeCustomersModal'
 
-import {getMessages} from './../../../../state/ticket/selectors'
+import {getMessages} from './../../../../state/ticket/selectors.ts'
 
 class MergeCustomersContainer extends React.Component {
     render() {

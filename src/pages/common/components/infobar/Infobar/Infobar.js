@@ -10,7 +10,7 @@ import _noop from 'lodash/noop'
 import * as infobarActions from '../../../../../state/infobar/actions.ts'
 import * as infobarConstants from '../../../../../state/infobar/constants'
 import * as customersActions from '../../../../../state/customers/actions.ts'
-import * as ticketActions from '../../../../../state/ticket/actions'
+import * as ticketActions from '../../../../../state/ticket/actions.ts'
 import withCancellableRequest from '../../../../common/utils/withCancellableRequest'
 import {
     startEditionMode,

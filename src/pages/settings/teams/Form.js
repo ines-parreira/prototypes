@@ -19,7 +19,7 @@ import {
 import {browserHistory, Link} from 'react-router'
 import classnames from 'classnames'
 
-import * as actions from '../../../state/teams/actions'
+import * as actions from '../../../state/teams/actions.ts'
 import Loader from '../../common/components/Loader'
 import PageHeader from '../../common/components/PageHeader'
 import InputField from '../../common/forms/InputField'

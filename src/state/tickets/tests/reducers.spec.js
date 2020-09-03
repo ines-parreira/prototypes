@@ -5,7 +5,7 @@ import {fromJS} from 'immutable'
 import * as types from '../constants'
 import reducer, {initialState} from '../reducers'
 import * as viewTypes from '../../views/constants'
-import * as ticketTypes from '../../ticket/constants'
+import * as ticketTypes from '../../ticket/constants.ts'
 
 jest.addMatchers(immutableMatchers)
 

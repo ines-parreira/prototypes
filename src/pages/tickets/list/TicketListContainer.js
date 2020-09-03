@@ -12,7 +12,7 @@ import MacroContainer from '../common/macros/MacroContainer'
 import {compactInteger} from '../../../utils'
 import {isCreationUrl, isSearchUrl} from '../../common/utils/url'
 
-import * as tagsActions from '../../../state/tags/actions'
+import * as tagsActions from '../../../state/tags/actions.ts'
 
 import * as ticketsSelectors from '../../../state/tickets/selectors'
 import * as viewsSelectors from '../../../state/views/selectors'

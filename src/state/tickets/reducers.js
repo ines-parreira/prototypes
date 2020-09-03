@@ -2,7 +2,7 @@
 import {fromJS} from 'immutable'
 import type {Map} from 'immutable'
 
-import * as ticketTypes from '../ticket/constants'
+import * as ticketTypes from '../ticket/constants.ts'
 import * as viewsTypes from '../views/constants'
 import type {actionType} from '../types'
 

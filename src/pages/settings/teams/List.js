@@ -10,7 +10,7 @@ import {fromJS, type Map, type List} from 'immutable'
 
 import PageHeader from '../../common/components/PageHeader'
 
-import * as actions from '../../../state/teams/actions'
+import * as actions from '../../../state/teams/actions.ts'
 import Avatar from '../../common/components/Avatar'
 import Loader from '../../common/components/Loader'
 import Pagination from '../../common/components/Pagination'

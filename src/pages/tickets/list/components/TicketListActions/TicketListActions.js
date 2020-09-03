@@ -28,7 +28,7 @@ import * as ticketsActions from '../../../../../state/tickets/actions'
 import * as viewsSelectors from '../../../../../state/views/selectors'
 
 import {getAgents} from '../../../../../state/agents/selectors.ts'
-import {getTeams} from '../../../../../state/teams/selectors'
+import {getTeams} from '../../../../../state/teams/selectors.ts'
 
 import type {currentUserType} from '../../../../../state/types'
 import type {teamsType} from '../../../../../state/teams/types'

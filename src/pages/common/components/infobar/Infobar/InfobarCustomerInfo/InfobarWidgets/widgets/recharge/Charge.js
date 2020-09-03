@@ -10,7 +10,7 @@ import _lowerCase from 'lodash/lowerCase'
 import _groupBy from 'lodash/groupBy'
 
 import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../../../../state/customers/selectors.ts'
-import * as ticketSelectors from '../../../../../../../../../state/ticket/selectors'
+import * as ticketSelectors from '../../../../../../../../../state/ticket/selectors.ts'
 
 import {
     devLog,

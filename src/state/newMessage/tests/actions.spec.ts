@@ -10,7 +10,7 @@ import * as utils from '../../../utils.js'
 import * as actions from '../actions'
 import * as types from '../constants'
 import {initialState} from '../reducers'
-import {initialState as ticketInitialState} from '../../ticket/reducers.js'
+import {initialState as ticketInitialState} from '../../ticket/reducers'
 import {GorgiasAction, StoreDispatch, RootState} from '../../types'
 
 import {integrationsState} from '../../../fixtures/integrations.js'

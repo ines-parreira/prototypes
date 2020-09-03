@@ -10,7 +10,7 @@ import ColorPicker from '../../common/components/ColorPicker'
 import {TagLabel} from '../../common/utils/labels'
 import {toJS} from '../../../utils'
 import {DEFAULT_TAG_COLOR} from '../../../config'
-import * as tagsActions from '../../../state/tags/actions'
+import * as tagsActions from '../../../state/tags/actions.ts'
 
 import css from './Row.style.less'
 

@@ -9,10 +9,10 @@ import {Button} from 'reactstrap'
 import {AgentLabel} from '../../../common/utils/labels'
 import Timeline from '../../../common/components/timeline/Timeline'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
-import * as tagsSelectors from '../../../../state/tags/selectors'
+import * as tagsSelectors from '../../../../state/tags/selectors.ts'
 import * as customersSelectors from '../../../../state/customers/selectors.ts'
 import * as agentSelectors from '../../../../state/agents/selectors.ts'
-import * as ticketSelectors from '../../../../state/ticket/selectors'
+import * as ticketSelectors from '../../../../state/ticket/selectors.ts'
 
 import appCss from '../../../App.less'
 

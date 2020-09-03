@@ -12,7 +12,7 @@ import {
     humanizeString,
     isCurrentlyOnTicket,
 } from '../../../../../../../../../utils'
-import * as ticketSelectors from '../../../../../../../../../state/ticket/selectors'
+import * as ticketSelectors from '../../../../../../../../../state/ticket/selectors.ts'
 import {renderTemplate} from '../../../../../../../utils/template'
 import {DatetimeLabel} from '../../../../../../../utils/labels'
 import ActionButtonsGroup from '../ActionButtonsGroup'
