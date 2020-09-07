@@ -15,7 +15,7 @@ import {
     makeGetView,
     makeGetViewCount,
     makeGetViewsByType,
-} from '../../../../state/views/selectors'
+} from '../../../../state/views/selectors.ts'
 import {makeGetSettingsByType} from '../../../../state/currentUser/selectors.ts'
 import ViewName from '../ViewName'
 import ViewCount from '../ViewCount'

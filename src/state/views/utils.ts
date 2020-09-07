@@ -1,37 +1,27 @@
-// @flow
 import esprima from 'esprima'
-import {fromJS, type List, Map} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 import moment from 'moment'
 import _isArray from 'lodash/isArray'
 import _isInteger from 'lodash/isInteger'
 
-import {UNARY_OPERATORS, TIMEDELTA_OPERATOR_DEFAULT_VALUE} from '../../config'
-import type {agentsType} from '../agents/types'
-import {getAST, getFirstExpressionOfAST, hasRole, toJS} from '../../utils'
 import {
-    datetimeOperators,
-    timedeltaOperators,
-    collectionOperators,
-} from '../../config/rules'
-import {isTimedelta} from '../../utils/ast'
-import {ViewVisibility} from '../../constants/view'
-import type {userType} from '../../utils'
-import {Team} from '../teams/types.ts'
-import {AGENT_ROLE} from '../../config/user'
+    UNARY_OPERATORS,
+    TIMEDELTA_OPERATOR_DEFAULT_VALUE,
+} from '../../config.js'
 
-import type {filterType} from './types'
+import {Agents} from '../agents/types'
+import {UserRole} from '../../config/types/user'
+import {getAST, getFirstExpressionOfAST, toJS, hasRole} from '../../utils.js'
+import {
+    CollectionOperator,
+    TimedeltaOperator,
+    DatetimeOperator,
+} from '../rules/types'
+import {isTimedelta} from '../../utils/ast.js'
 
-type viewType = Map<*, *>
-type astType = Map<*, *>
-type pathType = Array<string | number>
-type nodeType = Map<*, *>
+import {ViewFilter, ViewType, ViewVisibility} from './types'
 
-type currentLocationType = {
-    pathname: string,
-    search: string,
-}
-
-export const rawify = (data: string | number | null): string => {
+export const rawify = (data: Maybe<string | number>): string => {
     if (typeof data === 'string') {
         // escape ' and \ chars so that it's a valid string
         return `'${data.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`
@@ -46,16 +36,23 @@ export const rawify = (data: string | number | null): string => {
 
 /**
  * Resolve the right argument of a filter being added or updated.
- * @param callee: the operator of the filter
- * @param rightValue: the current value of the filter, if any
- * @returns {*}: the `right` value to set in the filter. If null, it means the filter should not have a `right` value
  */
-function resolveSecondArg(callee: string, rightValue: ?Object): string | null {
-    const isTimedeltaCallee = timedeltaOperators.includes(callee)
-    const isDatetimeCallee = datetimeOperators.includes(callee)
+function resolveSecondArg(
+    callee: string,
+    rightValue: Maybe<Record<string, unknown>>
+): Maybe<string> {
+    const isTimedeltaCallee = Object.values(TimedeltaOperator).includes(
+        callee as any
+    )
+    const isDatetimeCallee = Object.values(DatetimeOperator).includes(
+        callee as any
+    )
     const isUnaryCallee = Object.keys(UNARY_OPERATORS).includes(callee)
-    const isCollectionOperator = collectionOperators.includes(callee)
-    let currentRawValue = rightValue && rightValue.raw ? rightValue.raw : null
+    const isCollectionOperator = Object.values(CollectionOperator).includes(
+        callee as any
+    )
+    const currentRawValue =
+        rightValue && rightValue.raw ? (rightValue.raw as string) : null
 
     if (isTimedeltaCallee && !isTimedelta(currentRawValue, true)) {
         return `\'${TIMEDELTA_OPERATOR_DEFAULT_VALUE}\'`
@@ -71,7 +68,9 @@ function resolveSecondArg(callee: string, rightValue: ?Object): string | null {
         if (rightValue && rightValue.type === 'ArrayExpression') {
             return (
                 '[' +
-                rightValue.elements.map((elem) => elem.raw).join(', ') +
+                (rightValue.elements as {raw: string}[])
+                    .map((elem) => elem.raw)
+                    .join(', ') +
                 ']'
             )
         }
@@ -80,7 +79,7 @@ function resolveSecondArg(callee: string, rightValue: ?Object): string | null {
     return currentRawValue || "''"
 }
 
-function buildRawCallExpression(filter: filterType) {
+function buildRawCallExpression(filter: ViewFilter) {
     if (filter.right === null) {
         return `${filter.operator}(${filter.left})`
     }
@@ -89,34 +88,39 @@ function buildRawCallExpression(filter: filterType) {
 }
 
 // traverse filters_ast, find all the call expressions and return a new tree
-export function addFilterAST(view: viewType, filter: filterType): Map<*, *> {
+export function addFilterAST(view: Map<any, any>, filter: ViewFilter) {
     // generate a new call expression for the new filter as a string
-    filter.right = resolveSecondArg(filter.operator, null)
+    filter.right = resolveSecondArg(filter.operator, null) as string
     const newCallExprCode = buildRawCallExpression(filter)
     // since we only ever have AND operators just concatenate existing expressions
-    const oldCode = view.get('filters') ? `${view.get('filters')} && ` : ''
+    const oldCode = view.get('filters')
+        ? `${view.get('filters') as string} && `
+        : ''
     const newCode = `${oldCode}${newCallExprCode}`
-    return fromJS(esprima.parse(newCode))
+    return fromJS(esprima.parse(newCode)) as Map<any, any>
 }
 
 // traverse filters_ast, remove the call expressions and return a new tree
-export function removeFilterAST(view: viewType, index: number): ?Map<*, *> {
+export function removeFilterAST(
+    view: Map<any, any>,
+    index: number
+): Maybe<Map<any, any>> {
     // As always, we assume that we only have && operators
-    const codeSplit = view.get('filters').split('&&')
+    const codeSplit = (view.get('filters') as string).split('&&')
     codeSplit.splice(index, 1)
-    return fromJS(esprima.parse(codeSplit.join('&&')))
+    return fromJS(esprima.parse(codeSplit.join('&&'))) as Maybe<Map<any, any>>
 }
 
 // Update a node (CallExpression) in the ast
 function setIn(
-    ast: astType,
+    ast: Map<any, any>,
     index: number,
-    path: pathType,
-    value: any
-): nodeType {
+    path: Array<string | number>,
+    value: unknown
+): Map<any, any> {
     let count = 0
 
-    function walker(node: nodeType): nodeType {
+    function walker(node: Map<any, any>): Map<any, any> {
         switch (node.get('type')) {
             case 'Program':
                 return node.setIn(
@@ -145,10 +149,14 @@ function setIn(
 }
 
 // Get a node (CallExpression)
-function getIn(ast: astType, index: number, path: pathType): any {
+function getIn(
+    ast: Map<any, any>,
+    index: number,
+    path: Array<string | number>
+): Maybe<Map<any, any>> {
     let count = 0
 
-    function walker(node: Map<*, *>): Map<*, *> | typeof undefined {
+    function walker(node: Map<any, any>): Map<any, any> | typeof undefined {
         switch (node.get('type')) {
             case 'Program':
                 return walker(node.getIn(['body', 0], fromJS({})))
@@ -169,7 +177,7 @@ function getIn(ast: astType, index: number, path: pathType): any {
             case 'CallExpression':
                 count++
                 if (count - 1 === index) {
-                    return node.getIn(path)
+                    return node.getIn(path) as Map<any, any>
                 }
                 break
             default:
@@ -183,39 +191,41 @@ function getIn(ast: astType, index: number, path: pathType): any {
 // traverse filters_ast and replace the callee name of the CallExpression found at `index
 // once replaced, we return the new AST
 export function updateFilterOperator(
-    ast: astType,
+    ast: Map<any, any>,
     index: number,
     operator: string
-): nodeType {
-    let filter = getIn(ast, index, [])
-    let rightArgs = filter.getIn(['arguments', 1])
+): Map<any, any> {
+    let filter = getIn(ast, index, []) as Map<any, any>
+    const rightArgs = filter.getIn(['arguments', 1])
     const rightRaw = resolveSecondArg(operator, toJS(rightArgs))
 
     filter = filter
         .setIn(['callee', 'name'], operator)
-        .update('arguments', (args) => args.delete(1))
+        .update('arguments', (args: List<any>) => args.delete(1))
 
     if (rightRaw) {
         const secondArg = getFirstExpressionOfAST(getAST(rightRaw))
-        filter = filter.update('arguments', (args) => args.push(secondArg))
+        filter = filter.update('arguments', (args: List<any>) =>
+            args.push(secondArg)
+        )
     }
 
     return setIn(ast, index, [], filter)
 }
 
 export function updateFilterValue(
-    ast: astType,
+    ast: Map<any, any>,
     index: number,
-    value: string | number | Array<any> | null
-): nodeType {
+    value: string | number | Array<string | number> | null
+): Map<any, any> {
     if (_isArray(value)) {
-        let astLiterals = value.map((item) => ({
+        const astLiterals = value.map((item) => ({
             type: 'Literal',
             value: item,
             raw: rawify(item),
         }))
 
-        let arrayExpression = {
+        const arrayExpression = {
             type: 'ArrayExpression',
             elements: astLiterals,
         }
@@ -234,11 +244,8 @@ export function updateFilterValue(
 /**
  * Sort view by `hide` and `display_order` property.
  * hidden views are at the bottom.
- * @param {Map} view1
- * @param {Map} view2
- * @returns {number}
  */
-export function sortViews(view1: viewType, view2: viewType): number {
+export function sortViews(view1: Map<any, any>, view2: Map<any, any>): number {
     const isView1Hidden = view1.get('hide', false)
     const isView2Hidden = view2.get('hide', false)
 
@@ -251,19 +258,23 @@ export function sortViews(view1: viewType, view2: viewType): number {
     return view1.get('display_order', 0) - view2.get('display_order', 0)
 }
 
-export function agentsViewingMessage(agents: agentsType): string {
-    const agentsNames = agents.map((agent) => agent.get('name')).join(', ')
+export function agentsViewingMessage(agents: Agents): string {
+    const agentsNames = agents
+        .map((agent: Map<any, any>) => agent.get('name') as string)
+        .join(', ')
     return `${agentsNames} ${agents.size > 1 ? 'are' : 'is'} viewing`
 }
 
-export function agentsTypingMessage(agents: agentsType): string {
-    const agentsNames = agents.map((agent) => agent.get('name')).join(', ')
+export function agentsTypingMessage(agents: Agents): string {
+    const agentsNames = agents
+        .map((agent: Map<any, any>) => agent.get('name') as string)
+        .join(', ')
     return `${agentsNames} ${agents.size > 1 ? 'are' : 'is'} typing`
 }
 
 // Class responsible for getting and storing recent views
 class RecentViewsStorage {
-    storage: ?Object
+    storage: Maybe<Storage>
     storageKey: string
 
     constructor() {
@@ -275,7 +286,7 @@ class RecentViewsStorage {
         }
     }
 
-    get(): ?Object {
+    get(): Maybe<Record<string, unknown>> {
         if (!this.storage) {
             return
         }
@@ -283,7 +294,9 @@ class RecentViewsStorage {
         let recentViews = null
 
         try {
-            recentViews = JSON.parse(this.storage.getItem(this.storageKey))
+            recentViews = JSON.parse(
+                this.storage.getItem(this.storageKey) as string
+            )
         } catch (error) {
             console.error(error)
             return
@@ -293,10 +306,10 @@ class RecentViewsStorage {
             return
         }
 
-        const views = {}
+        const views: Record<string, unknown> = {}
         const now = moment.utc().toISOString()
 
-        recentViews.forEach((viewId) => {
+        recentViews.forEach((viewId: number) => {
             if (_isInteger(viewId)) {
                 views[viewId] = {
                     inserted_datetime: now,
@@ -321,7 +334,9 @@ class RecentViewsStorage {
 
 export const recentViewsStorage = new RecentViewsStorage()
 
-function getViewTypeUrl(viewType: string): ?{detail: string, list: string} {
+function getViewTypeUrl(
+    viewType: ViewType
+): Maybe<{detail: string; list: string}> {
     const typeMap = {
         'ticket-list': {
             detail: 'ticket',
@@ -338,15 +353,14 @@ function getViewTypeUrl(viewType: string): ?{detail: string, list: string} {
 
 /**
  * Map view type to individual item route
- * @param view
- * @param currentLocation
- * @param navigation
- * @returns {string}
  */
 export function activeViewUrl(
-    view: viewType,
-    currentLocation: currentLocationType,
-    navigation: Map<*, *>
+    view: Map<any, any>,
+    currentLocation: {
+        pathname: string
+        search: string
+    },
+    navigation: Map<any, any>
 ): string {
     const viewType = view.get('type', '')
     const viewId = view.get('id')
@@ -362,15 +376,15 @@ export function activeViewUrl(
         if (currentLocation.pathname.includes(`/${typeUrl.detail}/`)) {
             url += `/${typeUrl.list}`
             if (viewSearch) {
-                query.push(`q=${viewSearch}`)
+                query.push(`q=${viewSearch as string}`)
 
                 url += '/search'
             } else {
-                url += `/${viewId}`
+                url += `/${viewId as string}`
             }
 
             if (cursor) {
-                query.push(`cursor=${cursor}`)
+                query.push(`cursor=${cursor as string}`)
             }
 
             if (query.length) {
@@ -388,38 +402,45 @@ export function activeViewUrl(
 }
 
 export function addViewIfMissing(
-    views: List<Map<*, *>>,
+    views: List<any>,
     newView: {id: number}
-): List<Map<*, *>> {
-    const existing = views.find((view) => view.get('id') === newView.id)
+): List<any> {
+    const existing = views.find(
+        (view: Map<any, any>) => view.get('id') === newView.id
+    )
     return existing ? views : views.push(fromJS(newView))
 }
 
 export function isViewSharedWithUser(
     view: {
-        visibility: string,
-        shared_with_users: Array<{id: number}>,
-        shared_with_teams: Array<{id: number}>,
+        visibility: string
+        shared_with_users: Array<{id: number}>
+        shared_with_teams: Array<{id: number}>
     },
-    user: userType,
-    teams: Team[]
+    user: Map<any, any>,
+    teams: List<any>
 ): boolean {
-    const isAgent = hasRole(user, AGENT_ROLE)
+    const isAgent = hasRole(user, UserRole.Agent)
     const userId = user.get('id')
-    const userTeams = teams.filter((team) =>
-        team.get('members', []).some((member) => member.get('id') === userId)
+    const userTeams = teams.filter((team: Map<any, any>) =>
+        (team.get('members', []) as List<any>).some(
+            (member: Map<any, any>) => member.get('id') === userId
+        )
     )
 
-    const isViewPublic = view.visibility === ViewVisibility.PUBLIC
-    const isViewShared = view.visibility === ViewVisibility.SHARED
-    const isViewPrivate = view.visibility === ViewVisibility.PRIVATE
+    const isViewPublic = view.visibility === ViewVisibility.Public
+    const isViewShared = view.visibility === ViewVisibility.Shared
+    const isViewPrivate = view.visibility === ViewVisibility.Private
 
     const isSharedWithUser = view.shared_with_users.some(
         (sharedWithUser) => sharedWithUser.id === userId
     )
 
     const isSharedWithTeam = view.shared_with_teams.some((sharedWithTeam) =>
-        userTeams.some((userTeam) => userTeam.get('id') === sharedWithTeam.id)
+        userTeams.some(
+            (userTeam: Map<any, any>) =>
+                userTeam.get('id') === sharedWithTeam.id
+        )
     )
 
     return (

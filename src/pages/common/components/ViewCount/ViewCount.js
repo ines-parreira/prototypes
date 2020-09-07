@@ -8,7 +8,7 @@ import {UncontrolledTooltip} from 'reactstrap'
 
 import {MAX_TICKET_COUNT_PER_VIEW} from '../../../../config/views'
 import {compactInteger} from '../../../../utils'
-import {makeGetViewCount} from '../../../../state/views/selectors'
+import {makeGetViewCount} from '../../../../state/views/selectors.ts'
 
 import css from './ViewCount.less'
 

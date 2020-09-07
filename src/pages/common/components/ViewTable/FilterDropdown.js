@@ -6,7 +6,7 @@ import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 
 import * as customersHelpers from '../../../../state/customers/helpers.ts'
 import * as schemasSelectors from '../../../../state/schemas/selectors.ts'
-import {fieldEnumSearch} from '../../../../state/views/actions'
+import {fieldEnumSearch} from '../../../../state/views/actions.ts'
 import {
     fieldPath,
     getLanguageDisplayName,

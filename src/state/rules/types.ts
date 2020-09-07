@@ -84,3 +84,8 @@ export enum TimedeltaOperator {
     GTETimedelta = 'gteTimedelta',
     LTETimedelta = 'lteTimedelta',
 }
+
+export enum DatetimeOperator {
+    GTE = 'gte',
+    LTE = 'lte',
+}

@@ -6,10 +6,7 @@ import {
     deduplicateAuditLogEvents,
     shouldDeduplicateAuditLogEvents,
 } from '../helpers'
-import {
-    TAGS_ADDED_KEY,
-    TAGS_REMOVED_KEY,
-} from '../../../models/event/constants.js'
+import {TAGS_ADDED_KEY, TAGS_REMOVED_KEY} from '../../../models/event/constants'
 
 describe('ticket helpers', () => {
     describe('shouldDeduplicateAuditLogEvents()', () => {

@@ -5,7 +5,7 @@ import includes from 'array-includes'
 
 import {resendVerificationEmail} from './state/currentAccount/actions.ts'
 import {getBaseEmailIntegration} from './state/integrations/selectors.ts'
-import {recentViewsStorage} from './state/views/utils'
+import {recentViewsStorage} from './state/views/utils.ts'
 import {notify} from './state/notifications/actions.ts'
 import configureStore from './store/configureStore'
 import * as segmentTracker from './store/middlewares/segmentTracker'

@@ -10,7 +10,7 @@ import * as infobarActions from '../state/infobar/actions.ts'
 import * as integrationsActions from '../state/integrations/actions.ts'
 import * as notificationsActions from '../state/notifications/actions.ts'
 import * as ticketActions from '../state/ticket/actions.ts'
-import * as viewsActions from '../state/views/actions'
+import * as viewsActions from '../state/views/actions.ts'
 
 import * as viewsConstants from '../state/views/constants'
 import * as currentAccountConstants from '../state/currentAccount/constants'
@@ -21,7 +21,7 @@ import {getTeams} from '../state/teams/selectors.ts'
 
 import {isCurrentlyOnTicket} from '../utils'
 import {store as reduxStore} from '../init'
-import {isViewSharedWithUser} from '../state/views/utils'
+import {isViewSharedWithUser} from '../state/views/utils.ts'
 import * as socketEventTypes from '../services/socketManager/types.js'
 
 import {MAX_RECENT_CHATS} from './recentChats'

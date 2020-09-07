@@ -1,7 +1,7 @@
 import moment from 'moment'
 import {fromJS} from 'immutable'
 
-import * as utils from '../utils'
+import * as utils from '../utils.ts'
 
 describe('utils', () => {
     describe('RecentViewStorage', () => {

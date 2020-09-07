@@ -16,8 +16,8 @@ import {
 import shortcutManager from '../../../../services/shortcutManager'
 import {moveIndex} from '../../../common/utils/keyboard'
 
-import * as viewsActions from '../../../../state/views/actions'
-import {areAllActiveViewItemsSelected} from '../../../../state/views/selectors'
+import * as viewsActions from '../../../../state/views/actions.ts'
+import {areAllActiveViewItemsSelected} from '../../../../state/views/selectors.ts'
 
 import type {viewType} from '../../../../state/views/types'
 

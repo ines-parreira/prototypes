@@ -2,7 +2,7 @@ import {
     fetchActiveViewCount,
     fetchActiveViewTickets,
     fetchRecentViewsCounts,
-} from '../state/views/actions'
+} from '../state/views/actions.ts'
 import {store as reduxStore} from '../init'
 
 class PollingManager {

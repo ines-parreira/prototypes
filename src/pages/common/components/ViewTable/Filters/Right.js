@@ -7,7 +7,7 @@ import {IntegrationsDetailLabel} from '../../../utils/labels'
 import {getLanguageDisplayName} from '../../../../../utils'
 
 import {getMessagingIntegrations} from '../../../../../state/integrations/selectors.ts'
-import * as viewsSelectors from '../../../../../state/views/selectors'
+import * as viewsSelectors from '../../../../../state/views/selectors.ts'
 import {getTags} from '../../../../../state/tags/selectors.ts'
 
 import {timedeltaOperators} from '../../../../../config/rules'

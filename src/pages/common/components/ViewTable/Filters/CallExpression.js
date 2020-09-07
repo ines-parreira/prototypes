@@ -9,7 +9,7 @@ import _pickBy from 'lodash/pickBy'
 
 import {BASIC_OPERATORS, UNARY_OPERATORS} from '../../../../../config'
 import {fieldPath, findProperty} from '../../../../../utils'
-import * as viewsSelectors from '../../../../../state/views/selectors'
+import * as viewsSelectors from '../../../../../state/views/selectors.ts'
 
 import Left from './Left'
 import Right from './Right'

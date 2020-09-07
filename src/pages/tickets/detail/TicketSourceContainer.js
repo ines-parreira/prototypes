@@ -3,12 +3,12 @@ import PropTypes from 'prop-types'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
-import * as widgetsActions from '../../../state/widgets/actions'
+import * as widgetsActions from '../../../state/widgets/actions.ts'
 import * as ticketActions from '../../../state/ticket/actions.ts'
 import * as customersActions from '../../../state/customers/actions.ts'
 
 import SourceWrapper from '../../common/components/sourceWidgets/SourceWrapper'
-import {getSourcesWithCustomer} from '../../../state/widgets/selectors'
+import {getSourcesWithCustomer} from '../../../state/widgets/selectors.ts'
 
 class TicketSourceContainer extends React.Component {
     componentWillMount() {

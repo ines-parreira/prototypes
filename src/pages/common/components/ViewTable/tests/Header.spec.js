@@ -7,11 +7,11 @@ import {browserHistory} from 'react-router'
 import Search from '../../Search'
 import configureStore from '../../../../../store/configureStore'
 import * as viewsFixtures from '../../../../../fixtures/views'
-import * as viewsActions from '../../../../../state/views/actions'
+import * as viewsActions from '../../../../../state/views/actions.ts'
 import Header from '../Header'
 import EmojiSelect from '../EmojiSelect'
 
-jest.mock('../../../../../state/views/actions', () => {
+jest.mock('../../../../../state/views/actions.ts', () => {
     const _identity = require('lodash/identity')
 
     return {

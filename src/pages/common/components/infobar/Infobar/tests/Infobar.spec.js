@@ -12,7 +12,7 @@ import {
     startEditionMode,
     stopEditionMode,
     submitWidgets,
-} from '../../../../../../state/widgets/actions'
+} from '../../../../../../state/widgets/actions.ts'
 import Search from '../../../Search'
 
 jest.mock(

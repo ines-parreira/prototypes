@@ -19,7 +19,7 @@ import * as newMessageTypes from '../newMessage/constants'
 import {getSourceTypeCache} from '../newMessage/responseUtils'
 import {notify} from '../notifications/actions'
 import * as ticketsSelectors from '../tickets/selectors'
-import * as viewsSelectors from '../views/selectors.js'
+import * as viewsSelectors from '../views/selectors'
 import * as segmentTracker from '../../store/middlewares/segmentTracker.js'
 
 import {ApiListResponsePagination} from '../../models/api/types'

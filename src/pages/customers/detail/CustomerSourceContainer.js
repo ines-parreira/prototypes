@@ -3,13 +3,13 @@ import PropTypes from 'prop-types'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
-import * as widgetsActions from '../../../state/widgets/actions'
+import * as widgetsActions from '../../../state/widgets/actions.ts'
 import * as customersActions from '../../../state/customers/actions.ts'
 
 import SourceWrapper from '../../common/components/sourceWidgets/SourceWrapper'
 
 import {getActiveCustomerId} from '../../../state/customers/selectors.ts'
-import {getSources} from '../../../state/widgets/selectors'
+import {getSources} from '../../../state/widgets/selectors.ts'
 
 class CustomerSourceContainer extends React.Component {
     componentWillMount() {

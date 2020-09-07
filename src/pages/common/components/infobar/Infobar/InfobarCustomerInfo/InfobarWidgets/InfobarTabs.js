@@ -4,7 +4,7 @@ import React from 'react'
 import {type List} from 'immutable'
 import {Nav, Navbar, NavItem, NavLink} from 'reactstrap'
 
-import {getWidgetLabel} from '../../../../../../../state/widgets/predicates'
+import {getWidgetLabel} from '../../../../../../../state/widgets/predicates.ts'
 
 import css from './InfobarTabs.less'
 

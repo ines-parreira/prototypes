@@ -1,47 +1,39 @@
-// @flow
-import axios from 'axios'
+import axios, {AxiosError} from 'axios'
 import _pick from 'lodash/pick'
 import _size from 'lodash/size'
 import _last from 'lodash/last'
 import _isUndefined from 'lodash/isUndefined'
-
-import type {Map} from 'immutable'
+import {Map} from 'immutable'
 
 import {getSources, getSourcesWithCustomer} from '../widgets/selectors'
 
-import {jsonToWidgets} from '../../pages/common/components/infobar/utils'
-import {notify} from '../notifications/actions.ts'
-import type {Dispatch, getStateType} from '../types'
+import {jsonToWidgets} from '../../pages/common/components/infobar/utils.js'
+import * as integrationsSelectors from '../integrations/selectors'
+import {notify} from '../notifications/actions'
+import {NotificationStatus} from '../notifications/types'
+import {StoreDispatch, RootState} from '../types'
 
-import * as integrationsSelectors from './../integrations/selectors.ts'
-import * as types from './constants'
-type widgetUpdateType = {
-    title: string,
-    meta: {
-        link: string,
-        displayCard: boolean,
-    },
-}
-type widgetType = {
-    order: number,
-    type: string,
-    context: {},
-    template: {},
-}
+import * as types from './constants.js'
+import {
+    Widget,
+    WidgetContextType,
+    WidgetTemplateWidget,
+    WidgetDraft,
+} from './types'
 
 export function fetchWidgets() {
-    return (dispatch: Dispatch): Promise<Dispatch> => {
+    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         dispatch({
             type: types.FETCH_WIDGETS_START,
         })
 
         return axios
-            .get('/api/widgets/', {
+            .get<{data: Widget[]}>('/api/widgets/', {
                 data: {
                     type: 'ticket-list',
                 },
             })
-            .then((json = {}) => json.data)
+            .then((json) => json?.data)
             .then(
                 (resp) => {
                     return dispatch({
@@ -49,7 +41,7 @@ export function fetchWidgets() {
                         items: resp.data,
                     })
                 },
-                (error) => {
+                (error: AxiosError) => {
                     return dispatch({
                         type: types.FETCH_WIDGETS_ERROR,
                         error,
@@ -60,7 +52,7 @@ export function fetchWidgets() {
     }
 }
 
-export function startEditionMode(context: string = 'ticket') {
+export function startEditionMode(context = WidgetContextType.Ticket) {
     return {
         type: types.START_EDITION_MODE,
         context,
@@ -87,10 +79,10 @@ export function stopWidgetEdition() {
 }
 
 export function generateAndSetWidgets(
-    sources: Map<*, *>,
-    context: string = 'ticket'
+    sources: Map<any, any>,
+    context = WidgetContextType.Ticket
 ) {
-    return (dispatch: Dispatch): Dispatch => {
+    return (dispatch: StoreDispatch): ReturnType<StoreDispatch> => {
         // generate template
         const items = jsonToWidgets(sources.toJS(), context)
 
@@ -102,7 +94,7 @@ export function generateAndSetWidgets(
     }
 }
 
-export function setEditedWidgets(items: Array<Map<*, *>>) {
+export function setEditedWidgets(items: Map<any, any>[]) {
     return {
         type: types.SET_EDITED_WIDGETS,
         items,
@@ -115,7 +107,7 @@ export function setEditionAsDirty() {
     }
 }
 
-export function selectContext(context: string = 'ticket') {
+export function selectContext(context = WidgetContextType.Ticket) {
     return {
         type: types.SELECT_CONTEXT,
         context,
@@ -137,12 +129,12 @@ export function cancelDrag() {
 
 export function drop(
     eventType: 'add' | 'update',
-    targetParentTemplatePath: string = '',
-    key: string = '',
-    toIndex: number = 0,
-    fromIndex: number = 0
+    targetParentTemplatePath = '',
+    key = '',
+    toIndex = 0,
+    fromIndex = 0
 ) {
-    return (dispatch: Dispatch, getState: getStateType): Dispatch => {
+    return (dispatch: StoreDispatch, getState: () => RootState) => {
         const state = getState()
         const splitKey = key.split('.')
         let type = null
@@ -152,7 +144,7 @@ export function drop(
         // include its id in the call to the reducer; this way we can set the `integration_id` correctly in the new
         // widget, and filter out widget that are already present in the list.
         if (splitKey.includes('integrations')) {
-            const currentIntegrationId = parseInt(_last(splitKey))
+            const currentIntegrationId = parseInt(_last(splitKey) || '')
 
             if (!isNaN(currentIntegrationId)) {
                 const integration = integrationsSelectors.getIntegrationById(
@@ -189,17 +181,14 @@ export function drop(
     }
 }
 
-export function updateEditedWidget(data: widgetUpdateType) {
+export function updateEditedWidget(data: WidgetTemplateWidget) {
     return {
         type: types.UPDATE_EDITED_WIDGET,
         item: data,
     }
 }
 
-export function removeEditedWidget(
-    templatePath: string = '',
-    absolutePath: string = ''
-) {
+export function removeEditedWidget(templatePath = '', absolutePath = '') {
     return {
         type: types.REMOVE_EDITED_WIDGET,
         templatePath,
@@ -207,15 +196,18 @@ export function removeEditedWidget(
     }
 }
 
-export function submitWidgets(data: ?Array<widgetType>) {
-    return (dispatch: Dispatch, getState: getStateType): Promise<Dispatch> => {
+export function submitWidgets(data: Maybe<Widget[]>) {
+    return (
+        dispatch: StoreDispatch,
+        getState: () => RootState
+    ): Promise<ReturnType<StoreDispatch>> => {
         const context = getState().widgets.get('currentContext', 'ticket')
 
         dispatch({
             type: types.SUBMIT_WIDGET_START,
         })
 
-        let items = data || []
+        let items: Array<Widget | WidgetDraft> = data || []
 
         // clear widgets, remove those with empty template
         items = items.filter((item) => {
@@ -245,12 +237,12 @@ export function submitWidgets(data: ?Array<widgetType>) {
                 'context',
                 'type',
                 'integration_id',
-            ])
+            ]) as Widget | WidgetDraft
         })
 
         return axios
-            .put('/api/widgets/', items)
-            .then((json = {}) => json.data)
+            .put<{data: Widget[]}>('/api/widgets/', items)
+            .then((json) => json?.data)
             .then(
                 (resp) => {
                     dispatch({
@@ -259,14 +251,14 @@ export function submitWidgets(data: ?Array<widgetType>) {
                         context,
                     })
 
-                    dispatch(
+                    void dispatch(
                         notify({
-                            status: 'success',
+                            status: NotificationStatus.Success,
                             message: 'Widgets successfully updated',
                         })
                     )
                 },
-                (error) => {
+                (error: AxiosError) => {
                     return dispatch({
                         type: types.SUBMIT_WIDGET_ERROR,
                         error,

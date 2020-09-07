@@ -17,7 +17,7 @@ import _isUndefined from 'lodash/isUndefined'
 import shortcutManager from '../../../../services/shortcutManager'
 
 import * as customersActions from '../../../../state/customers/actions.ts'
-import * as viewsSelectors from '../../../../state/views/selectors'
+import * as viewsSelectors from '../../../../state/views/selectors.ts'
 
 class CustomerListActions extends React.Component {
     state = {

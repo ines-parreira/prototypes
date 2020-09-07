@@ -1,12 +1,12 @@
 import {fromJS} from 'immutable'
 import moment from 'moment'
 
-import reducers, {initialState} from '../reducers'
+import {SYSTEM_VIEW_CATEGORY} from '../../../constants/view'
+import reducers, {initialState} from '../reducers.ts'
 import * as fixtures from '../../../fixtures/views'
 import * as types from '../constants'
-import * as utils from '../utils'
-import * as selectors from '../selectors'
-import {SYSTEM_VIEW_CATEGORY} from '../../../constants/view'
+import * as utils from '../utils.ts'
+import * as selectors from '../selectors.ts'
 
 describe('reducers', () => {
     describe('views', () => {

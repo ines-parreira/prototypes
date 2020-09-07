@@ -16,7 +16,7 @@ import {
     startEditionMode,
     stopEditionMode,
     submitWidgets,
-} from '../../../../../state/widgets/actions'
+} from '../../../../../state/widgets/actions.ts'
 
 import type {reactRouterLocation} from '../../../../../types'
 import * as segmentTracker from '../../../../../store/middlewares/segmentTracker'

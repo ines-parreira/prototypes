@@ -7,10 +7,10 @@ import configureStore from '../../../../../store/configureStore'
 import * as viewsConfig from '../../../../../config/views'
 import * as viewsFixtures from '../../../../../fixtures/views'
 import * as ticketFixtures from '../../../../../fixtures/ticket'
-import * as viewsActions from '../../../../../state/views/actions'
+import * as viewsActions from '../../../../../state/views/actions.ts'
 import Table from '../Table'
 
-jest.mock('../../../../../state/views/actions', () => {
+jest.mock('../../../../../state/views/actions.ts', () => {
     const _identity = require('lodash/identity')
 
     return {

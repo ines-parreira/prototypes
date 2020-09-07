@@ -7,9 +7,9 @@ import {withRouter} from 'react-router'
 
 import Infobar from '../../common/components/infobar/Infobar'
 
-import * as WidgetActions from '../../../state/widgets/actions'
+import * as WidgetActions from '../../../state/widgets/actions.ts'
 import * as InfobarActions from '../../../state/infobar/actions.ts'
-import {getSourcesWithCustomer} from '../../../state/widgets/selectors'
+import {getSourcesWithCustomer} from '../../../state/widgets/selectors.ts'
 
 class TicketInfobarContainer extends React.Component {
     componentWillMount() {

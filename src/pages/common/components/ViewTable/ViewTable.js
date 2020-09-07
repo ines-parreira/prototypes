@@ -8,8 +8,8 @@ import _get from 'lodash/get'
 
 import Loader from '../Loader'
 import withCancellableRequest from '../../../common/utils/withCancellableRequest'
-import * as viewsActions from '../../../../state/views/actions'
-import * as viewsSelectors from '../../../../state/views/selectors'
+import * as viewsActions from '../../../../state/views/actions.ts'
+import * as viewsSelectors from '../../../../state/views/selectors.ts'
 import * as viewsConfig from '../../../../config/views'
 import type {viewType} from '../../../../state/views/types'
 

@@ -1,12 +1,12 @@
 import moment from 'moment'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import axios, {Cancel, CancelToken} from 'axios'
+import axios, {CancelToken, Cancel} from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 import {fromJS} from 'immutable'
 
-import * as actions from '../actions'
-import {initialState} from '../reducers'
+import * as actions from '../actions.ts'
+import {initialState} from '../reducers.ts'
 import {
     ACTIVE_VIEW_COUNT_TIMEOUT,
     baseView,
@@ -65,8 +65,10 @@ describe('actions', () => {
             const field = fromJS({filter: {type: 'customer'}})
             const query = 'foo'
 
-            await store.dispatch(actions.fieldEnumSearch(field, query))
-            expect(store.getActions()).toMatchSnapshot()
+            const res = await store.dispatch(
+                actions.fieldEnumSearch(field, query)
+            )
+            expect(res).toMatchSnapshot()
         })
 
         it('should dispatch error', async () => {
@@ -78,7 +80,9 @@ describe('actions', () => {
             try {
                 await store.dispatch(actions.fieldEnumSearch(field, query))
             } catch (e) {
-                expect(store.getActions()).toMatchSnapshot()
+                expect(e).toEqual(
+                    new Error('Request failed with status code 500')
+                )
             }
         })
 
@@ -759,10 +763,13 @@ describe('actions', () => {
     })
 
     describe('submitView()', () => {
+        const currentUserId = 1
         const view = fromJS({
             id: 0,
             type: TICKET_LIST_VIEW_TYPE,
             name: 'My Tickets',
+            shared_with_users: [currentUserId],
+            visibility: ViewVisibility.PRIVATE,
         })
 
         it('should create view when id is 0', async () => {
@@ -774,7 +781,6 @@ describe('actions', () => {
                 views: initialState,
                 currentUser: fromJS({id: 1}),
             })
-            const currentUserId = 1
             await store.dispatch(actions.submitView(view))
 
             expect(JSON.parse(mockServer.history.post[0].data)).toMatchObject({

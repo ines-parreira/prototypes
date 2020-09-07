@@ -23,9 +23,9 @@ import _isUndefined from 'lodash/isUndefined'
 
 import shortcutManager from '../../../../../services/shortcutManager/index'
 
-import * as viewsActions from '../../../../../state/views/actions'
+import * as viewsActions from '../../../../../state/views/actions.ts'
 import * as ticketsActions from '../../../../../state/tickets/actions'
-import * as viewsSelectors from '../../../../../state/views/selectors'
+import * as viewsSelectors from '../../../../../state/views/selectors.ts'
 
 import {getAgents} from '../../../../../state/agents/selectors.ts'
 import {getTeams} from '../../../../../state/teams/selectors.ts'

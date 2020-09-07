@@ -11,7 +11,7 @@ import thunk from 'redux-thunk'
 
 import {TICKET_LIST_VIEW_TYPE} from '../../../../../constants/view'
 import * as ticketFixtures from '../../../../../fixtures/ticket'
-import * as viewsActions from '../../../../../state/views/actions'
+import * as viewsActions from '../../../../../state/views/actions.ts'
 import * as viewsConfig from '../../../../../config/views'
 import * as viewsFixtures from '../../../../../fixtures/views'
 import ViewTable, {ViewTableContainer} from '../ViewTable'
@@ -20,7 +20,7 @@ const mockStore = configureMockStore([thunk])
 
 jest.addMatchers(immutableMatchers)
 
-jest.mock('../../../../../state/views/actions', () => {
+jest.mock('../../../../../state/views/actions.ts', () => {
     const _identity = require('lodash/identity')
 
     return {

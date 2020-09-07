@@ -5,14 +5,14 @@ import {bindActionCreators} from 'redux'
 
 import Infobar from '../../common/components/infobar/Infobar'
 
-import * as WidgetActions from '../../../state/widgets/actions'
+import * as WidgetActions from '../../../state/widgets/actions.ts'
 import * as InfobarActions from '../../../state/infobar/actions.ts'
 
 import {
     getActiveCustomer,
     getActiveCustomerId,
 } from '../../../state/customers/selectors.ts'
-import {getSources} from '../../../state/widgets/selectors'
+import {getSources} from '../../../state/widgets/selectors.ts'
 
 class CustomerInfobarContainer extends React.Component {
     componentWillMount() {

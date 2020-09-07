@@ -1,13 +1,13 @@
-// @flow
-import {fromJS, type Map} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 import moment from 'moment'
 import _isNumber from 'lodash/isNumber'
+import _isNil from 'lodash/isNil'
 
-import {getCode} from '../../utils'
-import type {actionType} from '../types'
-import {MAX_RECENT_VIEWS} from '../../config/views'
+import {getCode} from '../../utils.js'
+import {GorgiasAction, RootState} from '../types'
+import {MAX_RECENT_VIEWS} from '../../config/views.js'
 
-import * as constants from './constants'
+import * as constants from './constants.js'
 import {
     addFilterAST,
     addViewIfMissing,
@@ -17,8 +17,9 @@ import {
     updateFilterValue,
 } from './utils'
 import * as selectors from './selectors'
+import {ViewsState, View} from './types'
 
-export const initialState = fromJS({
+export const initialState: ViewsState = fromJS({
     items: [],
     counts: {},
     active: {},
@@ -36,13 +37,12 @@ export const initialState = fromJS({
 })
 
 export default function reducer(
-    state: Map<*, *> = initialState,
-    action: actionType
-): Map<*, *> {
+    state: ViewsState = initialState,
+    action: GorgiasAction
+): ViewsState {
     let items
-    let ast = ''
     let code = ''
-    let activeView = state.get('active', fromJS({}))
+    let activeView = state.get('active', fromJS({})) as Map<any, any>
 
     switch (action.type) {
         case constants.ADD_RECENT_VIEW: {
@@ -51,27 +51,32 @@ export default function reducer(
             }
 
             // update recent views
-            const newState = state.update('recent', (views) => {
+            const newState = state.update('recent', (views: Map<any, any>) => {
                 const now = moment.utc().toISOString()
                 // merge the new view and keep the most recent ones
                 return views
                     .mergeDeep(
                         fromJS({
-                            [action.viewId]: {
+                            [action.viewId as number]: {
                                 inserted_datetime: now,
                                 updated_datetime: now,
                             },
                         })
                     )
-                    .sortBy((view) => view.get('insert_datetime'))
+                    .sortBy(
+                        (view: Map<any, any>) =>
+                            view.get('insert_datetime') as string
+                    )
                     .slice(-MAX_RECENT_VIEWS)
             })
 
             // store recent view on the client
-            const recentViews = selectors.getRecentViews({views: newState})
+            const recentViews = selectors.getRecentViews({
+                views: newState,
+            } as RootState)
             const viewIds = recentViews
                 .keySeq()
-                .map((viewId) => parseInt(viewId))
+                .map((viewId: string) => parseInt(viewId))
                 .toJS()
             recentViewsStorage.set(viewIds)
 
@@ -80,9 +85,9 @@ export default function reducer(
 
         case constants.UPDATE_RECENT_VIEWS: {
             // update datetime of given recent views
-            return state.update('recent', (views) => {
-                return views.map((view, viewId) => {
-                    if (action.viewIds.includes(parseInt(viewId))) {
+            return state.update('recent', (views: Map<any, any>) => {
+                return views.map((view: Map<any, any>, viewId: string) => {
+                    if (action.viewIds?.includes(parseInt(viewId))) {
                         return view.set(
                             'updated_datetime',
                             moment.utc().toISOString()
@@ -114,7 +119,9 @@ export default function reducer(
         }
 
         case constants.SET_FIELD_VISIBILITY: {
-            const visibleFields = activeView.get('fields', fromJS([]))
+            const visibleFields = activeView.get('fields', fromJS([])) as List<
+                any
+            >
 
             const fields = action.state
                 ? visibleFields.push(action.name)
@@ -137,9 +144,11 @@ export default function reducer(
 
         case constants.ADD_VIEW_FIELD_FILTER: {
             // given a filter and our code+ast => generate new code/ast and save it to the state
-            ast = addFilterAST(activeView, action.filter)
-            code = getCode(ast.toJS())
-            activeView = activeView.set('filters_ast', ast).set('filters', code)
+            const nextAst = addFilterAST(activeView, action.filter as any)
+            code = getCode(nextAst.toJS())
+            activeView = activeView
+                .set('filters_ast', nextAst)
+                .set('filters', code)
 
             // enter edit mode
             activeView = activeView.set('editMode', true)
@@ -148,27 +157,46 @@ export default function reducer(
         }
 
         case constants.REMOVE_VIEW_FIELD_FILTER: {
-            ast = removeFilterAST(activeView, action.index)
-            if (ast) {
-                code = getCode(ast.toJS())
+            if (_isNil(action.index)) {
+                return state
             }
-            activeView = activeView.set('filters_ast', ast).set('filters', code)
+            const nextAst = removeFilterAST(activeView, action.index)
+            if (nextAst) {
+                code = getCode(nextAst.toJS())
+            }
+            activeView = activeView
+                .set('filters_ast', nextAst)
+                .set('filters', code)
             return state.set('active', activeView.set('dirty', true))
         }
 
         case constants.UPDATE_VIEW_FIELD_FILTER: {
-            let ast = activeView.get('filters_ast')
-            ast = updateFilterValue(ast, action.index, action.value)
-            code = getCode(ast.toJS())
-            activeView = activeView.set('filters_ast', ast).set('filters', code)
+            const ast = activeView.get('filters_ast') as Map<any, any>
+            if (_isNil(action.index) || _isNil(action.value)) {
+                return state
+            }
+            const nextAst = updateFilterValue(ast, action.index, action.value)
+            code = getCode(nextAst.toJS())
+            activeView = activeView
+                .set('filters_ast', nextAst)
+                .set('filters', code)
             return state.set('active', activeView.set('dirty', true))
         }
 
         case constants.UPDATE_VIEW_FIELD_FILTER_OPERATOR: {
-            let ast = activeView.get('filters_ast')
-            ast = updateFilterOperator(ast, action.index, action.operator)
-            code = getCode(ast.toJS())
-            activeView = activeView.set('filters_ast', ast).set('filters', code)
+            const ast = activeView.get('filters_ast') as Map<any, any>
+            if (_isNil(action.index) || _isNil(action.operator)) {
+                return state
+            }
+            const nextAst = updateFilterOperator(
+                ast,
+                action.index,
+                action.operator
+            )
+            code = getCode(nextAst.toJS())
+            activeView = activeView
+                .set('filters_ast', nextAst)
+                .set('filters', code)
             return state.set('active', activeView.set('dirty', true))
         }
 
@@ -177,7 +205,7 @@ export default function reducer(
             let original = selectors.getView(
                 activeView.get('id'),
                 action.configName
-            )({views: state})
+            )({views: state} as RootState)
 
             // if it's a new view, it's ID should be 0
             const isUpdate = original.get('id') !== 0
@@ -195,8 +223,14 @@ export default function reducer(
 
         case constants.SUBMIT_NEW_VIEW_SUCCESS: {
             return state.merge({
-                items: addViewIfMissing(state.get('items'), action.resp),
-                active: fromJS(action.resp).set('dirty', false),
+                items: addViewIfMissing(
+                    state.get('items'),
+                    action.resp as {id: number}
+                ),
+                active: (fromJS(action.resp) as Map<any, any>).set(
+                    'dirty',
+                    false
+                ),
             })
         }
 
@@ -205,12 +239,14 @@ export default function reducer(
         }
 
         case constants.FETCH_VIEW_LIST_SUCCESS: {
-            items = fromJS(action.resp.data)
+            items = fromJS((action.resp as {data: View[]}).data) as List<any>
 
             // also populate the active view state
             if (action.currentViewId) {
                 activeView = items.find(
-                    (item) => item.get('id') === parseInt(action.currentViewId),
+                    (item: Map<any, any>) =>
+                        item.get('id') ===
+                        parseInt(action.currentViewId as string),
                     null,
                     fromJS({})
                 )
@@ -224,36 +260,39 @@ export default function reducer(
         }
 
         case constants.CREATE_VIEW_SUCCESS: {
-            return state.update('items', (items) =>
-                addViewIfMissing(items, action.resp)
+            return state.update('items', (items: List<any>) =>
+                addViewIfMissing(items, action.resp as {id: number})
             )
         }
 
         case constants.UPDATE_VIEW_SUCCESS: {
-            let newState = state.update('items', (items) =>
-                items.map((view) => {
-                    if (view.get('id') === action.resp.id) {
-                        return fromJS(action.resp)
+            let newState = state.update('items', (items: List<any>) =>
+                items.map((view: Map<any, any>) => {
+                    if (view.get('id') === (action.resp as {id: number}).id) {
+                        return fromJS(action.resp) as Map<any, any>
                     }
                     return view
                 })
             )
             // also update the active view if we're on it
-            if (newState.getIn(['active', 'id']) === action.resp.id) {
+            if (
+                newState.getIn(['active', 'id']) ===
+                (action.resp as {id: number}).id
+            ) {
                 newState = newState.set('active', fromJS(action.resp))
             }
 
             // if the view wasn't shared with current user, add it to the list of views
             return newState.update('items', (items) =>
-                addViewIfMissing(items, action.resp)
+                addViewIfMissing(items, action.resp as any)
             )
         }
 
         case constants.DELETE_VIEW_SUCCESS: {
             return state.merge({
-                items: state
-                    .get('items')
-                    .filter((item) => item.get('id') !== action.viewId),
+                items: (state.get('items') as List<any>).filter(
+                    (item: Map<any, any>) => item.get('id') !== action.viewId
+                ),
             })
         }
 
@@ -286,7 +325,10 @@ export default function reducer(
             const payload = action.data
 
             return state
-                .setIn(['_internal', 'navigation'], fromJS(payload.meta))
+                .setIn(
+                    ['_internal', 'navigation'],
+                    fromJS((payload as {meta: Record<string, unknown>}).meta)
+                )
                 .setIn(['_internal', 'loading', 'fetchList'], false)
                 .setIn(['_internal', 'loading', 'fetchListDiscreet'], false)
         }
@@ -304,7 +346,7 @@ export default function reducer(
             const currentlySelected = state.getIn(
                 ['_internal', 'selectedItemsIds'],
                 fromJS([])
-            )
+            ) as List<any>
 
             const idx = currentlySelected.indexOf(action.id)
 
@@ -339,7 +381,7 @@ export default function reducer(
         }
 
         case constants.UPDATE_COUNTS: {
-            const viewIds = Object.keys(action.counts)
+            const viewIds = Object.keys(action.counts || {})
             return (
                 state
                     // update view counts
@@ -347,16 +389,18 @@ export default function reducer(
                         counts: action.counts,
                     })
                     // update datetime when we receive count for a recent view
-                    .update('recent', (views) => {
-                        return views.map((view, viewId) => {
-                            if (viewIds.includes(viewId)) {
-                                return view.set(
-                                    'updated_datetime',
-                                    moment.utc().toISOString()
-                                )
+                    .update('recent', (views: Map<any, any>) => {
+                        return views.map(
+                            (view: Map<any, any>, viewId: string) => {
+                                if (viewIds.includes(viewId)) {
+                                    return view.set(
+                                        'updated_datetime',
+                                        moment.utc().toISOString()
+                                    )
+                                }
+                                return view
                             }
-                            return view
-                        })
+                        )
                     })
             )
         }

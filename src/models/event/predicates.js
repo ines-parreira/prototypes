@@ -4,7 +4,7 @@ import type {List, Record} from 'immutable'
 
 import {RULE_EXECUTED} from '../../constants/event'
 
-import {SYSTEM_RULE_TYPE} from './constants'
+import {SYSTEM_RULE_TYPE} from './constants.ts'
 
 import type {AuditLogEvent} from './types'
 

@@ -3,7 +3,7 @@ import {fromJS, List, Map} from 'immutable'
 
 import {TicketStatus} from '../../business/types/ticket'
 import {TicketAuditLogEvent} from '../../constants/integrations/types/event'
-import {TAGS_ADDED_KEY, TAGS_REMOVED_KEY} from '../../models/event/constants.js'
+import {TAGS_ADDED_KEY, TAGS_REMOVED_KEY} from '../../models/event/constants'
 
 const MAX_DIFF_SECONDS = 5
 

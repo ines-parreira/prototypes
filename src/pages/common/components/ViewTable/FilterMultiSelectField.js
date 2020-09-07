@@ -3,7 +3,7 @@ import type {Map, List} from 'immutable'
 import _debounce from 'lodash/debounce'
 import React, {type ComponentType} from 'react'
 
-import {fieldEnumSearch} from '../../../../state/views/actions'
+import {fieldEnumSearch} from '../../../../state/views/actions.ts'
 import withCancellableRequest from '../../../common/utils/withCancellableRequest'
 import MultiSelectOptionsField, {
     type Option,

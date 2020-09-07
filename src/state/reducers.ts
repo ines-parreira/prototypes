@@ -25,8 +25,8 @@ import teamReducer from './teams/reducers'
 import ticketReducer from './ticket/reducers'
 import ticketsReducer from './tickets/reducers'
 import usersAuditReducer from './usersAudit/reducers'
-import viewsReducer from './views/reducers.js'
-import widgetsReducer from './widgets/reducers.js'
+import viewsReducer from './views/reducers'
+import widgetsReducer from './widgets/reducers'
 import {StoreState} from './types'
 
 const rootReducer = combineReducers<StoreState>({

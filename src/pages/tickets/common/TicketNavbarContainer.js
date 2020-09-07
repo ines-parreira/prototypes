@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 
-import * as ViewsActions from '../../../state/views/actions'
+import * as ViewsActions from '../../../state/views/actions.ts'
 import RecentChats from '../../common/components/RecentChats'
 import Navbar from '../../common/components/Navbar'
 

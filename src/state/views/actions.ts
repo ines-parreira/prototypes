@@ -1,44 +1,48 @@
-// @flow
-import axios, {type CancelToken} from 'axios'
-import {fromJS, type List, type Map} from 'immutable'
+import axios, {CancelToken, AxiosError} from 'axios'
+import {fromJS, List, Map} from 'immutable'
 import _max from 'lodash/max'
+import {Moment} from 'moment'
 import {browserHistory} from 'react-router'
 import {updateNotification} from 'reapop'
 
-import * as viewsConfig from '../../config/views'
-import * as socketConstants from '../../config/socketConstants'
-import {
-    BASE_VIEW_ID,
-    NEXT_VIEW_NAV_DIRECTION,
-    PREV_VIEW_NAV_DIRECTION,
-    VIEW_NAV_DIRECTIONS,
-    ViewVisibility,
-} from '../../constants/view'
-import {notify} from '../notifications/actions.ts'
+import * as viewsConfig from '../../config/views.js'
+import * as socketConstants from '../../config/socketConstants.js'
+import {BASE_VIEW_ID} from '../../constants/view.js'
+import {OrderDirection, ApiListResponsePagination} from '../../models/api/types'
+import {Job, JobType} from '../../models/job/types'
+import {Ticket} from '../../models/ticket/types'
+import {notify} from '../notifications/actions'
+import {NotificationStatus, Notification} from '../notifications/types'
 import socketManager from '../../services/socketManager/socketManager.js'
 import {
     getHashOfObj,
     getPluralObjectName,
     isCurrentlyOnTicket,
     isCurrentlyOnView,
-} from '../../utils'
-import {buildJobMessage} from '../../utils/notificationUtils'
-import {getMoment} from '../../utils/date'
-import type {Dispatch, getStateType, thunkActionType} from '../types'
+} from '../../utils.js'
+import {buildJobMessage} from '../../utils/notificationUtils.js'
+import {getMoment} from '../../utils/date.js'
+import {StoreDispatch, RootState} from '../types'
 
 import {activeViewUrl} from './utils'
 import * as viewsSelectors from './selectors'
-import * as types from './constants'
-import type {filterType, viewType} from './types'
+import * as types from './constants.js'
+import {
+    ViewFilter,
+    ViewImmutable,
+    ViewNavDirection,
+    View,
+    ViewType,
+} from './types'
 
-export const setViewActive = (view: viewType) => (
-    dispatch: Dispatch
-): Dispatch => {
+export const setViewActive = (view: ViewImmutable) => (
+    dispatch: StoreDispatch
+): ReturnType<StoreDispatch> => {
     if (view) {
         socketManager.join('view', view.get('id'))
     }
 
-    dispatch(addRecentView(view.get('id')))
+    dispatch(addRecentView(view.get('id') as number) as any)
 
     return dispatch({
         type: types.SET_VIEW_ACTIVE,
@@ -46,13 +50,13 @@ export const setViewActive = (view: viewType) => (
     })
 }
 
-export const updateView = (view: ?viewType, edit: boolean = true) => ({
+export const updateView = (view?: Maybe<ViewImmutable>, edit = true) => ({
     type: types.UPDATE_VIEW,
     view,
     edit,
 })
 
-export const setViewEditMode = (view: ?viewType) => ({
+export const setViewEditMode = (view: Maybe<ViewImmutable>) => ({
     type: types.ACTIVATE_VIEW_EDIT_MODE,
     view,
 })
@@ -63,8 +67,8 @@ export const toggleViewSelection = () => ({
 
 export const setOrderDirection = (
     fieldPath: string,
-    direction: 'asc' | 'desc' = 'asc'
-) => (dispatch: Dispatch) => {
+    direction: OrderDirection = OrderDirection.Asc
+) => (dispatch: StoreDispatch) => {
     dispatch({
         type: types.SET_ORDER_DIRECTION,
         fieldPath,
@@ -75,7 +79,7 @@ export const setOrderDirection = (
 }
 
 export const setFieldVisibility = (name: string, state: boolean) => (
-    dispatch: Dispatch
+    dispatch: StoreDispatch
 ) => {
     dispatch({
         type: types.SET_FIELD_VISIBILITY,
@@ -87,7 +91,7 @@ export const setFieldVisibility = (name: string, state: boolean) => (
 }
 
 // add filter for 1 field
-export const addFieldFilter = (field: string, filter: filterType) => ({
+export const addFieldFilter = (field: string, filter: ViewFilter) => ({
     type: types.ADD_VIEW_FIELD_FILTER,
     field,
     filter,
@@ -117,41 +121,27 @@ export const updateFieldFilterOperator = (index: number, operator: string) => ({
 })
 
 export function fieldEnumSearch(
-    field: Map<*, *>,
+    field: Map<any, any>,
     query: string,
     cancelToken?: CancelToken
-): thunkActionType {
-    return (dispatch: Dispatch): Promise<void> => {
-        dispatch({
-            type: types.UPDATE_VIEW_FIELD_ENUM_START,
-        })
-
-        const data = field.get('filter').toJS()
+) {
+    return (): Promise<ReturnType<StoreDispatch>> => {
+        const data = (field.get('filter') as Map<any, any>).toJS() as Record<
+            string,
+            unknown
+        >
         data.query = query
 
         return axios
-            .post('/api/search/', data, {
+            .post<ApiListResponsePagination<unknown[]>>('/api/search/', data, {
                 cancelToken,
             })
-            .then((json = {}) => json.data)
+            .then((json) => json?.data)
             .then(
                 (resp) => {
-                    dispatch({
-                        type: types.UPDATE_VIEW_FIELD_ENUM_SUCCESS,
-                        field,
-                        resp,
-                    })
-                    return fromJS(resp.data)
+                    return fromJS(resp.data) as List<any>
                 },
-                (error) => {
-                    if (!axios.isCancel(error)) {
-                        dispatch({
-                            type: types.UPDATE_VIEW_FIELD_ENUM_ERROR,
-                            error,
-                            reason: 'Failed to select this filter',
-                        })
-                    }
-
+                (error: AxiosError) => {
                     return Promise.reject(error)
                 }
             )
@@ -165,15 +155,15 @@ export const resetView = (configName: string) => {
     }
 }
 
-export function fetchViews(currentViewId: string): thunkActionType {
-    return (dispatch: Dispatch): Promise<Dispatch> => {
+export function fetchViews(currentViewId: string) {
+    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         dispatch({
             type: types.FETCH_VIEW_LIST_START,
         })
 
         return axios
-            .get('/api/views/')
-            .then((json = {}) => json.data)
+            .get<{data: View[]}>('/api/views/')
+            .then((json) => json?.data)
             .then(
                 (resp) => {
                     dispatch({
@@ -200,9 +190,12 @@ export function setPage(page: number) {
     }
 }
 
-export function submitView(view: viewType): thunkActionType {
-    return (dispatch: Dispatch, getState: getStateType): Promise<Dispatch> => {
-        const {views, currentUser} = getState()
+export function submitView(view: ViewImmutable) {
+    return (
+        dispatch: StoreDispatch,
+        getState: () => RootState
+    ): Promise<ReturnType<StoreDispatch>> => {
+        const {views} = getState()
         const isUpdate = !!view.get('id')
         const objectName = getPluralObjectName(view.get('type', ''))
 
@@ -213,8 +206,8 @@ export function submitView(view: viewType): thunkActionType {
         let promise
 
         if (isUpdate) {
-            promise = axios.put(
-                `/api/views/${view.get('id')}/`,
+            promise = axios.put<View>(
+                `/api/views/${view.get('id') as number}/`,
                 view
                     .delete('dirty')
                     .delete('editMode')
@@ -225,17 +218,20 @@ export function submitView(view: viewType): thunkActionType {
                     .toJS()
             )
         } else {
-            const orders = views
-                .get('items', fromJS([]))
-                .filter((item) => item.get('type') === view.get('type'))
-                .map((item) => item.get('display_order', 0))
-                .toJS() || [0]
-            promise = axios.post(
+            const orders = ((views.get('items', fromJS([])) as List<any>)
+                .filter(
+                    (item: Map<any, any>) =>
+                        item.get('type') === view.get('type')
+                )
+                .map(
+                    (item: Map<any, any>) =>
+                        item.get('display_order', 0) as number
+                )
+                .toJS() as number[]) || [0]
+            promise = axios.post<View>(
                 '/api/views/',
                 view
-                    .set('display_order', _max(orders) + 1)
-                    .set('visibility', ViewVisibility.PRIVATE)
-                    .set('shared_with_users', [currentUser.get('id')])
+                    .set('display_order', (_max(orders) as number) + 1)
                     .delete('id')
                     .delete('dirty')
                     .delete('editMode')
@@ -245,7 +241,7 @@ export function submitView(view: viewType): thunkActionType {
         }
 
         return promise
-            .then((json = {}) => json.data)
+            .then((json) => json?.data)
             .then(
                 (resp) => {
                     // redirect to the view created
@@ -274,21 +270,25 @@ export function submitView(view: viewType): thunkActionType {
     }
 }
 
-export function deleteView(view: viewType): thunkActionType {
-    return (dispatch: Dispatch, getState: getStateType): Promise<Dispatch> => {
-        const vType = view.get('type', 'ticket-list')
-        const otherViewsOfType = getState()
-            .views.get('items', fromJS([]))
-            .filter(
-                (v) =>
-                    v.get('type', 'ticket-list') === vType &&
-                    v.get('id') !== view.get('id')
-            )
+export function deleteView(view: ViewImmutable) {
+    return (
+        dispatch: StoreDispatch,
+        getState: () => RootState
+    ): Promise<ReturnType<StoreDispatch>> => {
+        const vType = view.get('type', 'ticket-list') as ViewType
+        const otherViewsOfType = (getState().views.get(
+            'items',
+            fromJS([])
+        ) as List<any>).filter(
+            (v: Map<any, any>) =>
+                v.get('type', 'ticket-list') === vType &&
+                v.get('id') !== view.get('id')
+        ) as List<any>
 
         if (otherViewsOfType.size === 0) {
             return dispatch(
                 notify({
-                    status: 'error',
+                    status: NotificationStatus.Error,
                     title: 'This view cannot be deleted',
                     message:
                         'This is your last view, it needs to exist in order for the helpdesk to function correctly.',
@@ -296,13 +296,21 @@ export function deleteView(view: viewType): thunkActionType {
             )
         }
 
-        return axios.delete(`/api/views/${view.get('id')}/`).then(
+        return axios.delete(`/api/views/${view.get('id') as number}/`).then(
             () => {
-                const viewConfig = viewsConfig.getConfigByType(vType)
-                const destinationView = otherViewsOfType.first()
-                const destinationRoute = `/app/${viewConfig.get(
-                    'routeList'
-                )}/${destinationView.get('id')}/${destinationView.get('slug')}`
+                const viewConfig = viewsConfig.getConfigByType(vType) as Map<
+                    any,
+                    any
+                >
+                const destinationView = otherViewsOfType.first() as Map<
+                    any,
+                    any
+                >
+                const destinationRoute = `/app/${
+                    viewConfig.get('routeList') as string
+                }/${destinationView.get('id') as number}/${
+                    destinationView.get('slug') as string
+                }`
                 dispatch(setViewActive(destinationView))
                 browserHistory.push(destinationRoute)
                 return Promise.resolve()
@@ -311,16 +319,18 @@ export function deleteView(view: viewType): thunkActionType {
                 return dispatch({
                     type: 'ERROR',
                     error,
-                    reason: `Failed to delete the view ${view.get('name')}`,
+                    reason: `Failed to delete the view ${
+                        view.get('name') as string
+                    }`,
                 })
             }
         )
     }
 }
 
-export const deleteViewSuccess = (viewId: number): thunkActionType => (
-    dispatch: Dispatch,
-    getState: getStateType
+export const deleteViewSuccess = (viewId: number) => (
+    dispatch: StoreDispatch,
+    getState: () => RootState
 ) => {
     dispatch({
         type: types.DELETE_VIEW_SUCCESS,
@@ -332,52 +342,54 @@ export const deleteViewSuccess = (viewId: number): thunkActionType => (
     if (state.getIn(['active', 'id']) === viewId) {
         const viewConfig = viewsConfig.getConfigByType(
             state.getIn(['active', 'type'])
-        )
-        const destinationView = state.get('items').find((v) => {
-            return v.get('type') === state.getIn(['active', 'type'])
-        })
-        const destinationRoute = `/app/${viewConfig.get(
-            'routeList'
-        )}/${destinationView.get('id')}/${destinationView.get('slug')}`
+        ) as Map<any, any>
+        const destinationView = (state.get('items') as List<any>).find(
+            (v: Map<any, any>) => {
+                return v.get('type') === state.getIn(['active', 'type'])
+            }
+        ) as Map<any, any>
+        const destinationRoute = `/app/${
+            viewConfig.get('routeList') as string
+        }/${destinationView.get('id') as number}/${
+            destinationView.get('slug') as string
+        }`
         dispatch(setViewActive(destinationView))
         browserHistory.push(destinationRoute)
     }
 }
 
-/** Fetch a page of items of a view (tickets or customers) based on the provided cursor and direction.
- *
- * @param direction: next or prev; indicates which items should be fetched compared to the provided cursor
- * @param cursor: the point from which to fetch items
- * @param isPolling: whether or not this was triggered by the polling
- * @returns {Function}
- */
+// Fetch a page of items of a view (tickets or customers) based on the provided cursor and direction.
 export function fetchViewItems(
-    direction: ?$Values<typeof VIEW_NAV_DIRECTIONS> = null,
-    cursor: ?number,
-    isPolling: ?boolean = false,
+    direction: Maybe<ViewNavDirection> = null,
+    cursor: Maybe<number>,
+    isPolling: Maybe<boolean> = false,
     cancelToken?: CancelToken
-): thunkActionType {
-    return (dispatch: Dispatch, getState: getStateType): Promise<Dispatch> => {
+) {
+    return (
+        dispatch: StoreDispatch,
+        getState: () => RootState
+    ): Promise<ReturnType<StoreDispatch>> => {
         const options = cancelToken ? {cancelToken} : {}
         let state = getState()
         const activeView = viewsSelectors.getActiveView(state)
         const activeViewType = activeView.get('type')
-        const viewConfig = viewsConfig.getConfigByType(activeViewType)
+        const viewConfig = viewsConfig.getConfigByType(activeViewType) as Map<
+            any,
+            any
+        >
+        const navigation = viewsSelectors.getNavigation(state)
 
-        let navigation = viewsSelectors.getNavigation(state)
-
-        const viewId = activeView.get('id')
+        const viewId = activeView.get('id') as number
 
         let url = `/api/views/${viewId}/items/`
 
         if (cursor) {
             url = `${url}?cursor=${cursor}`
-        } else if (direction === NEXT_VIEW_NAV_DIRECTION) {
+        } else if (direction === ViewNavDirection.NextView) {
             url = navigation.get('next_items')
-        } else if (direction === PREV_VIEW_NAV_DIRECTION) {
+        } else if (direction === ViewNavDirection.PrevView) {
             url = navigation.get('prev_items')
         }
-
         const isDirty = viewsSelectors.isDirty(state)
 
         if (activeView.get('deactivated_datetime')) {
@@ -407,7 +419,7 @@ export function fetchViewItems(
         // when a view is dirty, just send the whole view data rather than just the id
         // this will allow us to test a view before submitting it to the DB
         if (isDirty) {
-            promise = axios.put(
+            promise = axios.put<ApiListResponsePagination<Ticket[]>>(
                 url,
                 {
                     view: activeView
@@ -419,11 +431,14 @@ export function fetchViewItems(
                 options
             )
         } else {
-            promise = axios.get(url, options)
+            promise = axios.get<ApiListResponsePagination<Ticket[]>>(
+                url,
+                options
+            )
         }
 
         return promise
-            .then((json = {}) => json.data)
+            .then((json) => json?.data)
             .then(
                 (data) => {
                     state = getState()
@@ -452,23 +467,23 @@ export function fetchViewItems(
                         data,
                     })
                 },
-                (error) => {
+                (error: AxiosError) => {
                     if (axios.isCancel(error)) {
                         return Promise.resolve()
                     }
-                    return dispatch({
+                    return (dispatch({
                         type: types.FETCH_LIST_VIEW_ERROR,
                         error,
-                        reason: `Failed to fetch list of ${viewConfig.get(
-                            'plural'
-                        )}`,
-                    })
+                        reason: `Failed to fetch list of ${
+                            viewConfig.get('plural') as string
+                        }`,
+                    }) as unknown) as Promise<ReturnType<StoreDispatch>>
                 }
             )
     }
 }
 
-export function updateSelectedItemsIds(ids: List<*>) {
+export function updateSelectedItemsIds(ids: List<any>) {
     return {
         type: types.UPDATE_PAGE_SELECTION,
         ids,
@@ -483,16 +498,20 @@ export function toggleIdInSelectedItemsIds(id: number) {
 }
 
 export function createJob(
-    view: viewType,
-    jobType: string,
-    jobPartialParams: Object
-): thunkActionType {
-    return (dispatch: Dispatch): Promise<Dispatch> => {
-        let requestPayload
+    view: ViewImmutable,
+    jobType: JobType,
+    jobPartialParams: Record<string, unknown>
+) {
+    return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
+        let requestPayload: {
+            type: JobType
+            scheduled_datetime: Moment
+            params: Record<string, unknown>
+        }
         if (view.get('dirty', false)) {
             requestPayload = {
                 type: jobType,
-                scheduled_datetime: getMoment().add(15, 'second'),
+                scheduled_datetime: (getMoment() as Moment).add(15, 'second'),
                 params: Object.assign(
                     {},
                     {
@@ -511,7 +530,7 @@ export function createJob(
         } else {
             requestPayload = {
                 type: jobType,
-                scheduled_datetime: getMoment().add(15, 'second'),
+                scheduled_datetime: (getMoment() as Moment).add(15, 'second'),
                 params: Object.assign(
                     {},
                     {view_id: view.get('id')},
@@ -520,51 +539,60 @@ export function createJob(
             }
         }
 
-        const notification = dispatch(
+        const notification = (dispatch(
             notify({
-                status: 'loading',
+                status: NotificationStatus.Loading,
                 dismissAfter: 10000,
                 closeOnNext: true,
                 message: buildJobMessage(
                     jobType,
                     true,
-                    viewsConfig.getConfigByType(view.get('type')).get('plural'),
+                    (viewsConfig.getConfigByType(view.get('type')) as Map<
+                        any,
+                        any
+                    >).get('plural'),
                     jobPartialParams
                 ),
                 buttons: [],
             })
-        )
+        ) as unknown) as Notification
 
         return axios
-            .post('/api/jobs/', requestPayload)
-            .then((json = {}) => json.data)
+            .post<Job>('/api/jobs/', requestPayload)
+            .then((json) => json?.data)
             .then(
                 (job) => {
-                    notification.status = 'success'
+                    notification.status = NotificationStatus.Success
                     notification.buttons = [
                         {
                             name: 'Cancel',
                             primary: true,
                             onClick: () => {
                                 return axios
-                                    .delete('/api/jobs/' + job.id)
-                                    .then((json = {}) => {
+                                    .delete<void>(`/api/jobs/${job.id}`)
+                                    .then((json) => {
                                         notification.buttons = []
                                         return json.data
                                     })
                                     .then(
                                         () => {
-                                            notification.status = 'success'
+                                            notification.status =
+                                                NotificationStatus.Success
                                             notification.message =
                                                 'The job has been canceled.'
                                             return dispatch(
                                                 notify(notification)
                                             )
                                         },
-                                        (error) => {
-                                            notification.status = 'error'
+                                        (
+                                            error: AxiosError<{
+                                                error: {msg: string}
+                                            }>
+                                        ) => {
+                                            notification.status =
+                                                NotificationStatus.Error
                                             notification.message =
-                                                error.response.data.error.msg
+                                                error.response?.data.error.msg
                                             return dispatch(
                                                 notify(notification)
                                             )
@@ -573,20 +601,24 @@ export function createJob(
                             },
                         },
                     ]
-                    return dispatch(updateNotification(notification))
+                    return dispatch(
+                        //eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                        updateNotification(notification)
+                    ) as Promise<ReturnType<StoreDispatch>>
                 },
-                (error) => {
-                    notification.status = 'error'
-                    if (error.response.status === 403) {
+                (error: AxiosError<{error: {msg: string}}>) => {
+                    notification.status = NotificationStatus.Error
+                    if (error.response?.status === 403) {
                         notification.message = error.response.data.error.msg
                     } else {
                         notification.message =
                             'Failed to apply action on ' +
-                            viewsConfig
-                                .getConfigByType(view.get('type'))
-                                .get('plural') +
+                            ((viewsConfig.getConfigByType(
+                                view.get('type')
+                            ) as Map<any, any>).get('plural') as string) +
                             ' view. Please try again.'
                     }
+                    //eslint-disable-next-line @typescript-eslint/no-unsafe-call
                     dispatch(updateNotification(notification))
                     throw error
                 }
@@ -596,9 +628,10 @@ export function createJob(
 
 /**
  * Handle views item count update
- * @param response
  */
-export const handleViewsCount = (counts: {counts: number}): Object => ({
+export const handleViewsCount = (counts: {
+    counts: number
+}): ReturnType<StoreDispatch> => ({
     type: types.UPDATE_COUNTS,
     counts,
 })
@@ -606,15 +639,15 @@ export const handleViewsCount = (counts: {counts: number}): Object => ({
 /**
  * Add a view to the recent views
  */
-export const addRecentView = (viewId: number): Object => ({
+export const addRecentView = (viewId: number): ReturnType<StoreDispatch> => ({
     type: types.ADD_RECENT_VIEW,
     viewId,
 })
 
 export const fetchActiveViewTickets = () => (
-    dispatch: Dispatch,
-    getState: getStateType
-): ?Promise<Dispatch> => {
+    dispatch: StoreDispatch,
+    getState: () => RootState
+): Maybe<Promise<ReturnType<StoreDispatch>>> => {
     const state = getState()
     const viewsState = viewsSelectors.getViewsState(state)
     const activeView = viewsSelectors.getActiveView(state)
@@ -636,11 +669,11 @@ export const fetchActiveViewTickets = () => (
 }
 
 export const fetchVisibleViewsCounts = () => (
-    dispatch: Dispatch,
-    getState: getStateType
+    dispatch: StoreDispatch,
+    getState: () => RootState
 ) => {
     const state = getState()
-    const viewIds = viewsSelectors.getVisibleViewIds()(state).toJS()
+    const viewIds = viewsSelectors.getVisibleViewIds()(state).toJS() as number[]
     socketManager.send(socketConstants.VIEWS_COUNTS_EXPIRED, {
         viewIds,
         all: true,
@@ -648,8 +681,8 @@ export const fetchVisibleViewsCounts = () => (
 }
 
 export const fetchRecentViewsCounts = () => (
-    dispatch: Dispatch,
-    getState: getStateType
+    dispatch: StoreDispatch,
+    getState: () => RootState
 ) => {
     // do not fetch views counts when the current user is not doing support
     if (!isCurrentlyOnTicket() && !isCurrentlyOnView()) {
@@ -683,8 +716,8 @@ export const fetchRecentViewsCounts = () => (
 }
 
 export const fetchActiveViewCount = () => (
-    dispatch: Dispatch,
-    getState: getStateType
+    dispatch: StoreDispatch,
+    getState: () => RootState
 ) => {
     const state = getState()
     const activeViewId = viewsSelectors.getActiveView(state).get('id')
@@ -703,7 +736,7 @@ export const fetchActiveViewCount = () => (
 /**
  * Update updated datetime of recent views
  */
-export const updateRecentViews = (viewIds) => ({
+export const updateRecentViews = (viewIds: number[]) => ({
     type: types.UPDATE_RECENT_VIEWS,
     viewIds,
 })
@@ -712,8 +745,8 @@ export const updateRecentViews = (viewIds) => ({
  * Go to the parent view
  */
 export const gotoActiveView = () => (
-    dispatch: Dispatch,
-    getState: getStateType
+    dispatch: StoreDispatch,
+    getState: () => RootState
 ) => {
     const state = getState()
     const activeView = viewsSelectors.getActiveView(state)

@@ -28,7 +28,7 @@ import * as utils from '../../../../utils'
 import {
     getContextFromSourcePath,
     getSourcePathFromContext,
-} from '../../../../state/widgets/utils'
+} from '../../../../state/widgets/utils.ts'
 
 const Raven = window.Raven
 

@@ -7,7 +7,7 @@ import {
     getActiveView,
     makeGetViewCount,
     isDirty,
-} from '../../../../../state/views/selectors'
+} from '../../../../../state/views/selectors.ts'
 
 class ViewSelection extends React.Component {
     static propTypes = {

@@ -10,8 +10,8 @@ import {fieldPath as getFieldPath} from '../../../../../utils'
 
 import ShowMoreFieldsDropdown from '../ShowMoreFieldsDropdown'
 
-import * as viewsActions from '../../../../../state/views/actions'
-import * as viewsSelectors from '../../../../../state/views/selectors'
+import * as viewsActions from '../../../../../state/views/actions.ts'
+import * as viewsSelectors from '../../../../../state/views/selectors.ts'
 
 import * as viewsConfig from '../../../../../config/views'
 

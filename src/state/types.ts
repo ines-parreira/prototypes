@@ -4,7 +4,7 @@ import {ThunkDispatch} from 'redux-thunk'
 
 import {TicketMessageSourceType} from '../business/types/ticket'
 import {Integration, IntegrationType} from '../models/integration/types'
-import {PaginationMeta} from '../models/api/types'
+import {PaginationMeta, OrderDirection} from '../models/api/types'
 
 import {BillingContactResponse, Subscription} from './billing/types'
 import {AccountSetting} from './currentAccount/types'
@@ -17,6 +17,7 @@ import {HTTPIntegrationEvent} from './HTTPIntegrationEvents/types'
 import {Rule, RulePriority, RuleOperation} from './rules/types'
 import {Tag} from './tags/types'
 import {Customer} from './customers/types'
+import {Widget, WidgetContextType} from './widgets/types'
 
 export type StoreState = {
     activity: Map<any, any>
@@ -133,6 +134,32 @@ export type GorgiasAction = {
     customer?: Customer
     cursor?: string
     meta?: PaginationMeta
+    viewId?: number
+    viewIds?: number[]
+    view?: Map<any, any>
+    edit?: boolean
+    name?: string
+    fieldPath?: string
+    direction?: OrderDirection
+    filter?: Record<string, unknown>
+    operator?: string
+    configName?: string
+    currentViewId?: string
+    discreet?: boolean
+    counts?: Record<string, unknown>
+    items?: Widget[]
+    context?: WidgetContextType
+    group?: string
+    eventType?: 'add' | 'update'
+    key?: string
+    toIndex?: number
+    fromIndex?: number
+    targetParentTemplatePath?: string
+    source?: Map<any, any>
+    widgetType?: Maybe<IntegrationType | 'custom'>
+    templatePath?: string
+    absolutePath?: string[]
+    item?: Map<any, any>
 }
 
 export type CurrentUser = Map<any, any>

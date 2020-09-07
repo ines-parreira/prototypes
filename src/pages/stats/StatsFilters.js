@@ -9,7 +9,7 @@ import {withRouter} from 'react-router'
 
 import {views as statViewsConfig} from '../../config/stats'
 import {mergeStatsFilters} from '../../state/stats/actions.ts'
-import {fieldEnumSearch} from '../../state/views/actions'
+import {fieldEnumSearch} from '../../state/views/actions.ts'
 import PageHeader from '../common/components/PageHeader'
 import TagDropdownMenu from '../common/components/TagDropdownMenu/TagDropdownMenu'
 import {getViewFilters} from '../../state/stats/selectors.ts'

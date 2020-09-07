@@ -11,9 +11,9 @@ import {scrollToReactNode} from '../../../utils/keyboard'
 import css from '../Table.less'
 
 import * as agentSelectors from '../../../../../state/agents/selectors.ts'
-import * as viewsActions from '../../../../../state/views/actions'
+import * as viewsActions from '../../../../../state/views/actions.ts'
 
-import * as viewsUtils from '../../../../../state/views/utils'
+import * as viewsUtils from '../../../../../state/views/utils.ts'
 
 import Cell from './Cell'
 

@@ -1,17 +1,15 @@
-// @flow
-import {fromJS} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 import _isObject from 'lodash/isObject'
 import _last from 'lodash/last'
 import _initial from 'lodash/initial'
-import type {Map} from 'immutable'
 
 import {
     isRootSource,
     stripLastListsFromPath,
     jsonToWidget,
     makeWrapper,
-} from '../../pages/common/components/infobar/utils'
-import type {actionType} from '../types'
+} from '../../pages/common/components/infobar/utils.js'
+import {GorgiasAction} from '../types'
 
 import {
     itemsWithContext,
@@ -19,9 +17,10 @@ import {
     reorderWidgets,
 } from './utils'
 
-import * as types from './constants'
+import * as types from './constants.js'
+import {WidgetsState, WidgetContextType} from './types'
 
-export const initialState = fromJS({
+export const initialState: WidgetsState = fromJS({
     items: [],
     currentContext: 'ticket',
     _internal: {
@@ -40,9 +39,9 @@ export const initialState = fromJS({
 })
 
 export default function reducer(
-    state: Map<*, *> = initialState,
-    action: actionType
-): Map<*, *> {
+    state: WidgetsState = initialState,
+    action: GorgiasAction
+): WidgetsState {
     switch (action.type) {
         case types.FETCH_WIDGETS_SUCCESS: {
             const receivedItems = fromJS(action.items)
@@ -60,7 +59,10 @@ export default function reducer(
         case types.START_EDITION_MODE: {
             // put current template as edited template
             const items = state.get('items', fromJS([]))
-            const ticketWidgets = itemsWithContext(items, action.context)
+            const ticketWidgets = itemsWithContext(
+                items,
+                action.context as WidgetContextType
+            )
 
             return state
                 .set('currentContext', action.context)
@@ -94,7 +96,7 @@ export default function reducer(
                     'items',
                     itemsWithUpdatedWidgets(
                         items,
-                        action.context,
+                        action.context as WidgetContextType,
                         fromJS(action.items)
                     )
                 )
@@ -141,7 +143,7 @@ export default function reducer(
                 integrationId,
             } = action
 
-            const currentGroup =
+            const currentGroup: string =
                 state.getIn(['_internal', 'drag', 'group']) || ''
 
             const isDraggingARootSource = isRootSource(currentGroup)
@@ -149,7 +151,7 @@ export default function reducer(
             // build absolute path of dragged property
             let sourceFlattenAbsolutePath = currentGroup
             if (isDraggingARootSource) {
-                sourceFlattenAbsolutePath = key
+                sourceFlattenAbsolutePath = key as string
             } else if (key) {
                 sourceFlattenAbsolutePath += `.${key}`
             }
@@ -159,7 +161,9 @@ export default function reducer(
                 /\[]/g,
                 '0'
             )
-            const sourceData = source.getIn(relativeSourcePath.split('.'))
+            const sourceData = (source as Map<any, any>).getIn(
+                relativeSourcePath.split('.')
+            )
 
             // drag is off
             let newState = state
@@ -167,20 +171,24 @@ export default function reducer(
                 .setIn(['_internal', 'drag', 'group'], '')
 
             // key (so the path) is calculated from the difference between the source and the target paths
-            const strippedKey = stripLastListsFromPath(key)
+            const strippedKey: string = stripLastListsFromPath(key as any)
 
             // prepare data to be transformed into widget
             const isSimpleField = !_isObject(sourceData)
             const preparedData = {
-                [strippedKey]: isSimpleField ? sourceData : sourceData.toJS(),
+                [strippedKey]: isSimpleField
+                    ? sourceData
+                    : (sourceData as Map<any, any>).toJS(),
             }
 
             // generate the widget we are going to put with the others
             let widget = fromJS(
                 jsonToWidget(
-                    isDraggingARootSource ? preparedData[key] : preparedData
+                    isDraggingARootSource
+                        ? preparedData[key as string]
+                        : preparedData
                 )
-            )
+            ) as Map<any, any>
 
             // path where to put generated widgets
             // if dragging a root source, dragged items are real widgets items (coming from server)
@@ -188,23 +196,24 @@ export default function reducer(
             const widgetsItems = isDraggingARootSource
                 ? ['_internal', 'editedItems']
                 : ['_internal', 'editedItems']
-                      .concat(targetParentTemplatePath.split('.'))
+                      .concat((targetParentTemplatePath as string).split('.'))
                       .concat(['widgets'])
 
             // if is a dragging source, wrap it in a wrapper
             if (isDraggingARootSource) {
                 const context = state.get('currentContext', '')
+                //$TsFixMe remove casting once components/infobar/utils is migrated
                 const strippedSourceFlattenAbsolutePath = stripLastListsFromPath(
-                    sourceFlattenAbsolutePath
-                )
-
+                    sourceFlattenAbsolutePath as any
+                ) as string
+                //$TsFixMe remove casting once components/infobar/utils is migrated
                 widget = makeWrapper({
                     order: widgetsItems.length,
                     context,
                     child: widget,
                     sourcePath: strippedSourceFlattenAbsolutePath.split('.'),
                     widgetType,
-                })
+                } as any) as Map<any, any>
 
                 if (integrationId) {
                     widget = widget.set('integration_id', integrationId)
@@ -212,18 +221,28 @@ export default function reducer(
             }
 
             // get first child widget, may be useful later
-            const childWidget = widget.get('widgets', fromJS([])).first()
+            const childWidget = (widget.get('widgets', fromJS([])) as List<
+                any
+            >).first()
 
             // current list at the path to put generated widgets
-            const currentList = newState.getIn(widgetsItems, fromJS([]))
+            const currentList = newState.getIn(
+                widgetsItems,
+                fromJS([])
+            ) as List<any>
 
             if (eventType === 'add') {
                 // on add, insert the element at previously calculated path
-                const element = isDraggingARootSource ? widget : childWidget
+                const element: Map<any, any> = isDraggingARootSource
+                    ? widget
+                    : childWidget
                 let shouldAddWidget = true
 
                 if (isDraggingARootSource) {
-                    newState.getIn(widgetsItems, []).forEach((widget) => {
+                    ;(newState.getIn(widgetsItems, []) as Map<
+                        any,
+                        any
+                    >[]).forEach((widget: Map<any, any>) => {
                         const type = element.get('type')
                         const integrationId = element.get('integration_id')
                         const typeIsAlreadyPresent =
@@ -246,15 +265,19 @@ export default function reducer(
                     newState = newState
                         .setIn(
                             widgetsItems,
-                            reorderWidgets(currentList.insert(toIndex, element))
+                            reorderWidgets(
+                                currentList.insert(toIndex as number, element)
+                            )
                         )
                         .setIn(['_internal', 'isDirty'], true)
                 }
             } else if (eventType === 'update') {
                 // on update, move the element in previously calculated path
-                const oldItem = currentList.get(fromIndex)
+                const oldItem = currentList.get(fromIndex as number)
                 const newList = reorderWidgets(
-                    currentList.delete(fromIndex).insert(toIndex, oldItem)
+                    currentList
+                        .delete(fromIndex as number)
+                        .insert(toIndex as number, oldItem)
                 )
 
                 newState = newState
@@ -268,8 +291,8 @@ export default function reducer(
         case types.REMOVE_EDITED_WIDGET: {
             const {templatePath, absolutePath} = action
 
-            let newAbsolutePath = absolutePath
-            let newTemplatePath = templatePath
+            let newAbsolutePath = absolutePath as string[]
+            let newTemplatePath = templatePath as string
 
             // remove last lists in source absolute path, since objects and arrays are here considered the same
             let listCounter = 0
@@ -290,10 +313,10 @@ export default function reducer(
 
             // we guess the target is a root source if the template path never goes under as 'widgets' key
             // it means the target is the highest element
-            const isRootTarget = !~templatePath.indexOf('widgets')
+            const isRootTarget = !~(templatePath as string).indexOf('widgets')
             // if the target is a root widget, remove the whole item and not only the template
-            if (isRootTarget && templatePath.length) {
-                newTemplatePath = templatePath.split('.')[0]
+            if (isRootTarget && (templatePath as string).length) {
+                newTemplatePath = (templatePath as string).split('.')[0]
             }
 
             const widgetsPath = ['_internal', 'editedItems']
@@ -303,9 +326,12 @@ export default function reducer(
                 .setIn(
                     widgetsPath,
                     reorderWidgets(
-                        state
-                            .getIn(widgetsPath, fromJS({}))
-                            .removeIn(newTemplatePath.split('.'))
+                        ((state.getIn(widgetsPath, fromJS({})) as Map<
+                            any,
+                            any
+                        >).removeIn(
+                            newTemplatePath.split('.')
+                        ) as unknown) as List<any>
                     )
                 )
                 .setIn(['_internal', 'isDirty'], true)
@@ -316,16 +342,19 @@ export default function reducer(
 
             // get edited widget path
             const widgetsItems = ['_internal', 'editedItems']
-            let widgetPath = state.getIn(
+            let widgetPath: string | string[] = state.getIn(
                 ['_internal', 'currentlyEditedWidgetPath'],
                 ''
-            )
+            ) as string
             widgetPath = widgetsItems.concat(widgetPath.split('.'))
 
             return state
                 .setIn(
                     widgetPath,
-                    state.getIn(widgetPath, fromJS({})).mergeDeep(item)
+                    (state.getIn(widgetPath, fromJS({})) as Map<
+                        any,
+                        any
+                    >).mergeDeep(item as Map<any, any>)
                 )
                 .setIn(['_internal', 'isDirty'], true)
         }
@@ -335,10 +364,10 @@ export default function reducer(
         }
 
         case types.SUBMIT_WIDGET_SUCCESS: {
-            const items = state.get('items', fromJS([]))
-            let updatedItems = itemsWithUpdatedWidgets(
+            const items = state.get('items', fromJS([])) as List<any>
+            const updatedItems = itemsWithUpdatedWidgets(
                 items,
-                action.context,
+                action.context as WidgetContextType,
                 fromJS(action.items)
             )
 

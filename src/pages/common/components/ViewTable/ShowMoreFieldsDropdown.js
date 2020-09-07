@@ -10,7 +10,7 @@ import {
     DropdownItem,
 } from 'reactstrap'
 
-import {setFieldVisibility} from '../../../../state/views/actions'
+import {setFieldVisibility} from '../../../../state/views/actions.ts'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 import {notify} from '../../../../state/notifications/actions.ts'
 

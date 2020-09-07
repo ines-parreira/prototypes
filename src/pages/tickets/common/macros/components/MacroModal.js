@@ -17,7 +17,7 @@ import shortcutManager from '../../../../../services/shortcutManager'
 
 import * as macroActions from '../../../../../state/macro/actions.ts'
 import * as ticketsActions from '../../../../../state/tickets/actions'
-import * as viewsActions from '../../../../../state/views/actions'
+import * as viewsActions from '../../../../../state/views/actions.ts'
 
 import css from './MacroModal.less'
 import MacroNoResults from './MacroNoResults'

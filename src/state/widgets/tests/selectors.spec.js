@@ -11,7 +11,7 @@ import {
     hasWidgets,
     hasWidgetsWithContext,
     isEditing,
-} from '../selectors'
+} from '../selectors.ts'
 
 jest.addMatchers(immutableMatchers)
 
