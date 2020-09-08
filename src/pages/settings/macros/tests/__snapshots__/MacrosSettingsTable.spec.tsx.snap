@@ -1,0 +1,215 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MacrosSettingsTable/> should display a list of macros 1`] = `
+<TableWrapper>
+  <TableHead
+    className="tableHead"
+  >
+    <HeaderCellProperty
+      direction="asc"
+      isOrderedBy={false}
+      onClick={[Function]}
+      title="Macro"
+    />
+    <HeaderCellProperty
+      direction="asc"
+      isOrderedBy={false}
+      onClick={[Function]}
+      title="Usage count"
+    />
+    <HeaderCellProperty
+      direction="asc"
+      isOrderedBy={false}
+      onClick={[Function]}
+      title="Last updated"
+    />
+    <HeaderCell />
+  </TableHead>
+  <TableBody>
+    <TableBodyRow
+      className="tableBodyRow"
+      key="1"
+      onClick={[Function]}
+    >
+      <BodyCell
+        className="macroTitle"
+      >
+        Waive Fee
+      </BodyCell>
+      <BodyCell>
+        1
+      </BodyCell>
+      <BodyCell
+        className="dateCell"
+      >
+        2017-08-01
+      </BodyCell>
+      <BodyCell
+        className="smallest actions"
+      >
+        <Button
+          className="mr-1 btn-transparent"
+          color="secondary"
+          onClick={[Function]}
+          tag="button"
+          title="Duplicate macro"
+          type="button"
+        >
+          <i
+            className="material-icons"
+          >
+            file_copy
+          </i>
+        </Button>
+        <Button
+          className="mr-1 btn-transparent deleteButton"
+          color="secondary"
+          id="delete-button-1"
+          onClick={[Function]}
+          tag="button"
+          title="Delete macro"
+          type="button"
+        >
+          <i
+            className="material-icons"
+          >
+            delete
+          </i>
+        </Button>
+        <Popover
+          delay={
+            Object {
+              "hide": 0,
+              "show": 0,
+            }
+          }
+          hideArrow={false}
+          isOpen={false}
+          placement="left"
+          placementPrefix="bs-popover"
+          target="delete-button-1"
+          toggle={[Function]}
+        >
+          <PopoverHeader
+            tag="h3"
+          >
+            Are you sure?
+          </PopoverHeader>
+          <PopoverBody
+            tag="div"
+          >
+            <p>
+              You are about to delete
+               
+              <b>
+                Waive Fee
+              </b>
+               macro.
+            </p>
+            <Button
+              color="danger"
+              onClick={[Function]}
+              tag="button"
+              type="submit"
+            >
+              Confirm
+            </Button>
+          </PopoverBody>
+        </Popover>
+      </BodyCell>
+    </TableBodyRow>
+    <TableBodyRow
+      className="tableBodyRow"
+      key="2"
+      onClick={[Function]}
+    >
+      <BodyCell
+        className="macroTitle"
+      >
+        Do Not Waive Fee
+      </BodyCell>
+      <BodyCell>
+        3
+      </BodyCell>
+      <BodyCell
+        className="dateCell"
+      >
+        2017-08-01
+      </BodyCell>
+      <BodyCell
+        className="smallest actions"
+      >
+        <Button
+          className="mr-1 btn-transparent"
+          color="secondary"
+          onClick={[Function]}
+          tag="button"
+          title="Duplicate macro"
+          type="button"
+        >
+          <i
+            className="material-icons"
+          >
+            file_copy
+          </i>
+        </Button>
+        <Button
+          className="mr-1 btn-transparent deleteButton"
+          color="secondary"
+          id="delete-button-2"
+          onClick={[Function]}
+          tag="button"
+          title="Delete macro"
+          type="button"
+        >
+          <i
+            className="material-icons"
+          >
+            delete
+          </i>
+        </Button>
+        <Popover
+          delay={
+            Object {
+              "hide": 0,
+              "show": 0,
+            }
+          }
+          hideArrow={false}
+          isOpen={false}
+          placement="left"
+          placementPrefix="bs-popover"
+          target="delete-button-2"
+          toggle={[Function]}
+        >
+          <PopoverHeader
+            tag="h3"
+          >
+            Are you sure?
+          </PopoverHeader>
+          <PopoverBody
+            tag="div"
+          >
+            <p>
+              You are about to delete
+               
+              <b>
+                Do Not Waive Fee
+              </b>
+               macro.
+            </p>
+            <Button
+              color="danger"
+              onClick={[Function]}
+              tag="button"
+              type="submit"
+            >
+              Confirm
+            </Button>
+          </PopoverBody>
+        </Popover>
+      </BodyCell>
+    </TableBodyRow>
+  </TableBody>
+</TableWrapper>
+`;

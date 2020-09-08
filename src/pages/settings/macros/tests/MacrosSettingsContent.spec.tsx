@@ -6,15 +6,13 @@ import {browserHistory} from 'react-router'
 import {Button} from 'reactstrap'
 
 import {macros as macrosFixtures} from '../../../../fixtures/macro.js'
-import {OrderDirection} from '../../../../models/api/types'
 import {fetchMacros} from '../../../../models/macro/resources'
-import {Macro, MacroSortableProperties} from '../../../../models/macro/types'
 import Pagination from '../../../common/components/Pagination.js'
 import Search from '../../../common/components/Search.js'
 import {MacrosSettingsContentContainer} from '../MacrosSettingsContent'
 import MacroSettingsTable from '../MacrosSettingsTable'
 
-jest.mock('../../../../models/macro')
+jest.mock('../../../../models/macro/resources')
 jest.mock(
     '../../../common/components/Pagination',
     //$TsFixMe Replace Props type to ComponentProps<typeof Pagination> on Pagination migration
@@ -29,22 +27,31 @@ jest.mock(
         <div onChange={(e) => onChange((e.target as HTMLInputElement).value)} />
     )
 )
-/* eslint-enable */
 jest.mock('react-router')
 jest.mock(
     '../MacrosSettingsTable',
     () => ({
         onSortOptionsChange,
-    }: ComponentProps<typeof MacroSettingsTable>) => (
-        <div
-            onClick={() =>
-                onSortOptionsChange(
-                    MacroSortableProperties.Name,
-                    OrderDirection.Asc
-                )
-            }
-        />
-    )
+    }: ComponentProps<typeof MacroSettingsTable>) => {
+        //eslint-disable-next-line  @typescript-eslint/no-var-requires
+        const {OrderDirection} = require('../../../../models/api/types')
+        const {
+            MacroSortableProperties,
+            //eslint-disable-next-line  @typescript-eslint/no-var-requires
+        } = require('../../../../models/macro/types')
+        return (
+            <div
+                onClick={() =>
+                    onSortOptionsChange(
+                        //eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                        MacroSortableProperties.Name,
+                        //eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+                        OrderDirection.Asc
+                    )
+                }
+            />
+        )
+    }
 )
 
 const mockToken = axios.CancelToken.source().token

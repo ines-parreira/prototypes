@@ -16,7 +16,7 @@ import ConfirmButton from '../../../common/components/ConfirmButton.js'
 import {MacrosSettingsFormContainer} from '../MacrosSettingsForm'
 
 jest.mock('react-router')
-jest.mock('../../../../models/macro')
+jest.mock('../../../../models/macro/resources')
 jest.mock(
     '../../../common/components/ConfirmButton',
     () => ({children, confirm}: ComponentProps<typeof ConfirmButton>) => (
