@@ -1,8 +1,7 @@
 import {fromJS} from 'immutable'
 import moment from 'moment-timezone'
-import Promise from 'promise-polyfill'
-import includes from 'array-includes'
 
+import './polyfills'
 import {resendVerificationEmail} from './state/currentAccount/actions.ts'
 import {getBaseEmailIntegration} from './state/integrations/selectors.ts'
 import {recentViewsStorage} from './state/views/utils.ts'
@@ -10,10 +9,6 @@ import {notify} from './state/notifications/actions.ts'
 import configureStore from './store/configureStore'
 import * as segmentTracker from './store/middlewares/segmentTracker'
 import {transformSystemMessagesToNotifications} from './utils'
-
-// Polyfills
-Array.prototype.includes = Array.prototype.includes || includes // eslint-disable-line no-extend-native
-window.Promise = window.Promise || Promise
 
 const initMoment = (currentUser) => {
     // set default locale and timezone
