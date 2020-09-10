@@ -41,7 +41,7 @@ export default function ViewSharingModalWarning({
 
     return (
         <div className="m-3">
-            <Alert color="warning" transition={{timeout: 0}}>
+            <Alert color="warning" transition={{baseClass: '', timeout: 0}}>
                 {!!missingTeams.size && (
                     <>
                         <span

@@ -12,6 +12,7 @@ exports[`<ViewSharingModalBody/> render() should render an error 1`] = `
       tag="div"
       transition={
         Object {
+          "baseClass": "",
           "timeout": 0,
         }
       }
@@ -153,22 +154,8 @@ exports[`<ViewSharingModalBody/> render() should render shared body 1`] = `
     tag="div"
     transition={
       Object {
-        "appear": true,
-        "baseClass": "fade",
-        "baseClassActive": "show",
-        "enter": true,
-        "exit": true,
-        "in": true,
-        "mountOnEnter": false,
-        "onEnter": [Function],
-        "onEntered": [Function],
-        "onEntering": [Function],
-        "onExit": [Function],
-        "onExited": [Function],
-        "onExiting": [Function],
-        "tag": "div",
-        "timeout": 150,
-        "unmountOnExit": true,
+        "baseClass": "",
+        "timeout": 0,
       }
     }
   >

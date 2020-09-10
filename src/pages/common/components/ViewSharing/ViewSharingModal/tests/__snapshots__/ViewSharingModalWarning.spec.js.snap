@@ -15,6 +15,7 @@ exports[`<ViewSharingModalWarning/> render() should render one missing team 1`] 
     tag="div"
     transition={
       Object {
+        "baseClass": "",
         "timeout": 0,
       }
     }
@@ -55,6 +56,7 @@ exports[`<ViewSharingModalWarning/> render() should render one missing user 1`] 
     tag="div"
     transition={
       Object {
+        "baseClass": "",
         "timeout": 0,
       }
     }
@@ -95,6 +97,7 @@ exports[`<ViewSharingModalWarning/> render() should render one missing user and 
     tag="div"
     transition={
       Object {
+        "baseClass": "",
         "timeout": 0,
       }
     }
@@ -155,6 +158,7 @@ exports[`<ViewSharingModalWarning/> render() should render two missing teams 1`]
     tag="div"
     transition={
       Object {
+        "baseClass": "",
         "timeout": 0,
       }
     }
@@ -202,6 +206,7 @@ exports[`<ViewSharingModalWarning/> render() should render two missing users 1`]
     tag="div"
     transition={
       Object {
+        "baseClass": "",
         "timeout": 0,
       }
     }
@@ -249,6 +254,7 @@ exports[`<ViewSharingModalWarning/> render() should render two missing users and
     tag="div"
     transition={
       Object {
+        "baseClass": "",
         "timeout": 0,
       }
     }

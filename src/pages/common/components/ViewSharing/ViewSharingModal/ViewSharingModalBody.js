@@ -93,7 +93,10 @@ function ViewSharingModalBody({
         <>
             {error && (
                 <div className="m-3">
-                    <Alert color="danger" transition={{timeout: 0}}>
+                    <Alert
+                        color="danger"
+                        transition={{baseClass: '', timeout: 0}}
+                    >
                         {error.toString()}
                     </Alert>
                 </div>
@@ -108,7 +111,11 @@ function ViewSharingModalBody({
             {isPublic && <PublicBody />}
             {isShared && (
                 <>
-                    <Alert color="info" className="m-3">
+                    <Alert
+                        color="info"
+                        className="m-3"
+                        transition={{baseClass: '', timeout: 0}}
+                    >
                         Lead agents and admins see all the shared views.
                     </Alert>
                     <ViewSharingModalWarning
