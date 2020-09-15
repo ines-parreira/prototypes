@@ -44,7 +44,7 @@ describe('initDraftOrderPayload()', () => {
             })
         ) as Map<any, any>
 
-        const products = new globalThis.Map([[product.get('id'), product]])
+        const products = new window.Map([[product.get('id'), product]])
         const order = fromJS(shopifyOrderFixture())
         const customer = fromJS(shopifyCustomerFixture())
         const payload = initDraftOrderPayload(customer, order, products)
@@ -54,7 +54,7 @@ describe('initDraftOrderPayload()', () => {
     it('should return draft order payload for the given order when products are missing', () => {
         const order = fromJS(shopifyOrderFixture())
         const customer = fromJS(shopifyCustomerFixture())
-        const products = new globalThis.Map()
+        const products = new window.Map()
         const payload = initDraftOrderPayload(customer, order, products)
         expect(payload).toMatchSnapshot()
     })
