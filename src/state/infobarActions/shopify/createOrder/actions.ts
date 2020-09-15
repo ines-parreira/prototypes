@@ -10,16 +10,16 @@ import {
     addCustomLineItem,
     addVariant,
     initDraftOrderPayload,
-} from '../../../../business/shopify/draftOrder.js'
+} from '../../../../business/shopify/draftOrder'
 import {
     getDiscountAmount,
     refreshAppliedDiscounts,
-} from '../../../../business/shopify/discount.js'
-import {getDraftOrderTotalLineItemsPrice} from '../../../../business/shopify/lineItem.js'
+} from '../../../../business/shopify/discount'
+import {getDraftOrderTotalLineItemsPrice} from '../../../../business/shopify/lineItem'
 import {
     formatPercentage,
     formatPrice,
-} from '../../../../business/shopify/number.js'
+} from '../../../../business/shopify/number'
 import {DRAFT_ORDER_DELETE_AFTER} from '../../../../config/integrations/shopify.js'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
 import localStorageManager from '../../../../services/localStorageManager.js'
@@ -140,8 +140,7 @@ export const onInit = (
             customer,
             order,
             products as any
-            //$TsFixMe remove casting when initDraftOrderPayload is migrated
-        ) as Map<any, any>
+        )
         const defaultShippingLine =
             (draftOrderPayload.get('shipping_line') as Map<any, any>) || null
         const payload = getDuplicateOrderPayload(draftOrderPayload)
@@ -158,7 +157,7 @@ export const onInit = (
     }
 
     // Create order from scratch:
-    let payload = initDraftOrderPayload(customer) as Map<any, any>
+    let payload = initDraftOrderPayload(customer)
 
     if (!payload.get('currency')) {
         payload = payload.set('currency', currencyCode)
@@ -459,7 +458,7 @@ export const addCustomRow = (
 ) => (dispatch: StoreDispatch, getState: () => RootState) => {
     const state = getState()
     const payload = getCreateOrderState(state).get('payload') as Map<any, any>
-    const newPayload = addCustomLineItem(payload, lineItem) as Map<any, any>
+    const newPayload = addCustomLineItem(payload, lineItem)
 
     return dispatch(onPayloadChange(integrationId, newPayload))
 }

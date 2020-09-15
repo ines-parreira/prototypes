@@ -1,5 +1,4 @@
-//@flow
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
 import {
     shopifyCancelOrderPayloadFixture,
@@ -9,7 +8,7 @@ import {
     shopifyRefundLineItemFixture,
     shopifyRefundOrderPayloadFixture,
     shopifySuggestedRefundFixture,
-} from '../../../fixtures/shopify'
+} from '../../../fixtures/shopify.js'
 import {
     getFinalCancelOrderPayload,
     getFinalRefundOrderPayload,
@@ -45,8 +44,8 @@ describe('initCancelOrderLineItems()', () => {
 
 describe('getLineItemQuantity()', () => {
     it('should return original quantity because there is no refund', () => {
-        const order = fromJS(shopifyOrderFixture())
-        const lineItem = order.getIn(['line_items', 0])
+        const order = fromJS(shopifyOrderFixture()) as Map<any, any>
+        const lineItem = order.getIn(['line_items', 0]) as Map<any, any>
         const quantity = getLineItemQuantity(order, lineItem)
 
         expect(quantity).toMatchSnapshot()
@@ -55,11 +54,11 @@ describe('getLineItemQuantity()', () => {
     it('should return adjusted quantity because there is a refund', () => {
         const refundLineItems = fromJS([shopifyRefundLineItemFixture()])
         const refund = fromJS(shopifyRefundFixture({refundLineItems}))
-        const order = fromJS(shopifyOrderFixture()).setIn(
+        const order = (fromJS(shopifyOrderFixture()) as Map<any, any>).setIn(
             ['refunds', 0],
             refund
         )
-        const lineItem = order.getIn(['line_items', 0])
+        const lineItem = order.getIn(['line_items', 0]) as Map<any, any>
         const quantity = getLineItemQuantity(order, lineItem)
 
         expect(quantity).toMatchSnapshot()

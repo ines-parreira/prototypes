@@ -27,7 +27,7 @@ import {
     getFinalCancelOrderPayload,
     initRefundOrderLineItems,
     initCancelOrderPayload,
-} from '../../../../../../../../../../../../business/shopify/order'
+} from '../../../../../../../../../../../../business/shopify/order.ts'
 
 function initActions() {
     return {

@@ -13,15 +13,15 @@ import {
     getSubtotal,
     getTaxLinesTotals,
     getTotalShippingPrice,
-} from '../../../../../../../../../../../../../business/shopify/draftOrder'
-import {getDraftOrderTotalLineItemsPrice} from '../../../../../../../../../../../../../business/shopify/lineItem'
-import {getTotalDiscountAmount} from '../../../../../../../../../../../../../business/shopify/discount'
+} from '../../../../../../../../../../../../../business/shopify/draftOrder.ts'
+import {getDraftOrderTotalLineItemsPrice} from '../../../../../../../../../../../../../business/shopify/lineItem.ts'
+import {getTotalDiscountAmount} from '../../../../../../../../../../../../../business/shopify/discount.ts'
 import type {
     DraftOrder,
     ShippingLine,
     AppliedDiscount,
 } from '../../../../../../../../../../../../../constants/integrations/types/shopify'
-import {formatPrice} from '../../../../../../../../../../../../../business/shopify/number'
+import {formatPrice} from '../../../../../../../../../../../../../business/shopify/number.ts'
 import DiscountPopover from '../../DiscountPopover'
 import ShippingPopover from '../../ShippingPopover'
 import MoneyAmount from '../../../../../MoneyAmount'

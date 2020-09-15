@@ -1,13 +1,12 @@
-// @flow
+import {fromJS, Map} from 'immutable'
 
-import {fromJS} from 'immutable'
-
+import {DiscountType} from '../../../constants/integrations/types/shopify'
 import {
     shopifyAppliedDiscountFixture,
     shopifyCustomLineItemFixture,
     shopifyDraftOrderPayloadFixture,
     shopifyLineItemFixture,
-} from '../../../fixtures/shopify'
+} from '../../../fixtures/shopify.js'
 import {addCustomLineItem} from '../draftOrder'
 import {
     getDiscountAmount,
@@ -19,7 +18,7 @@ import {formatPrice} from '../number'
 describe('getDiscountAmount()', () => {
     it('should return the discount amount for fixed amount discount', () => {
         const amount = 50
-        const discountType = 'fixed_amount'
+        const discountType = DiscountType.FixedAmount
         const discountAmount = '10.0'
         const currencyCode = 'USD'
         const result = formatPrice(
@@ -32,7 +31,7 @@ describe('getDiscountAmount()', () => {
 
     it('should return the discount amount for percentage discount', () => {
         const amount = 50
-        const discountType = 'percentage'
+        const discountType = DiscountType.Percentage
         const discountAmount = '10.0'
         const currencyCode = 'USD'
         const result = formatPrice(
@@ -52,10 +51,10 @@ describe('getTotalDiscountAmount()', () => {
     })
 
     it('should return the total discount amount of given payload when there is no applied discount', () => {
-        const payload = fromJS(shopifyDraftOrderPayloadFixture()).set(
-            'applied_discount',
-            null
-        )
+        const payload = (fromJS(shopifyDraftOrderPayloadFixture()) as Map<
+            any,
+            any
+        >).set('applied_discount', null)
         const total = getTotalDiscountAmount(payload)
         expect(total).toMatchSnapshot()
     })
@@ -81,7 +80,10 @@ describe('refreshAppliedDiscounts()', () => {
 
     it('should work without rounding errors', () => {
         // Payload has a 100% discount applied
-        const payload = fromJS(shopifyDraftOrderPayloadFixture()).set(
+        const payload = (fromJS(shopifyDraftOrderPayloadFixture()) as Map<
+            any,
+            any
+        >).set(
             'line_items',
             fromJS([
                 shopifyLineItemFixture({price: '98.99'}),
@@ -123,7 +125,10 @@ describe('refreshAppliedDiscounts()', () => {
                     appliedDiscount,
                 })
             )
-            const payload = fromJS(shopifyDraftOrderPayloadFixture())
+            const payload = (fromJS(shopifyDraftOrderPayloadFixture()) as Map<
+                any,
+                any
+            >)
                 .set('applied_discount', null)
                 .set('line_items', fromJS([lineItem]))
 
@@ -167,7 +172,10 @@ describe('refreshAppliedDiscounts()', () => {
                     appliedDiscount,
                 })
             )
-            const payload = fromJS(shopifyDraftOrderPayloadFixture())
+            const payload = (fromJS(shopifyDraftOrderPayloadFixture()) as Map<
+                any,
+                any
+            >)
                 .set('applied_discount', null)
                 .set('line_items', fromJS([lineItem]))
                 .set('currency', 'JPY')

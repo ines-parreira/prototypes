@@ -1,21 +1,19 @@
-// @flow
-
 import _floor from 'lodash/floor'
 
-import {NON_FRACTIONAL_CURRENCIES} from '../../constants/integrations/shopify'
+import {NonFractionalCurrency} from '../../constants/integrations/types/shopify'
 
 export function formatPrice(
     price: number | string,
     currencyCode: string,
-    shouldFloor: boolean = false
+    shouldFloor = false
 ): string {
-    const isNonFractional = NON_FRACTIONAL_CURRENCIES.includes(
-        currencyCode.toUpperCase()
+    const isNonFractional = Object.values(NonFractionalCurrency).includes(
+        currencyCode.toUpperCase() as NonFractionalCurrency
     )
     const decimals = isNonFractional ? 0 : 2
 
     // See https://floating-point-gui.de/
-    const parsedPrice = parseFloat(parseFloat(price).toFixed(3))
+    const parsedPrice = parseFloat(parseFloat(price as string).toFixed(3))
 
     return shouldFloor
         ? _floor(parsedPrice, decimals).toFixed(decimals)
@@ -23,5 +21,5 @@ export function formatPrice(
 }
 
 export function formatPercentage(value: number | string): string {
-    return parseFloat(value).toFixed(2)
+    return parseFloat(value as string).toFixed(2)
 }

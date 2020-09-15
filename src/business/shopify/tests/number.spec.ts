@@ -1,4 +1,3 @@
-//@flow
 import {formatPercentage, formatPrice} from '../number'
 
 describe('formatPrice()', () => {

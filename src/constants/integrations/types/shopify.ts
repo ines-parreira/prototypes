@@ -1,3 +1,22 @@
+export enum NonFractionalCurrency {
+    Bif = 'BIF',
+    Clp = 'CLP',
+    Djf = 'DJF',
+    Gnf = 'GNF',
+    Jpy = 'JPY',
+    Kmf = 'KMF',
+    Krw = 'KRW',
+    Mga = 'MGA',
+    Pyg = 'PYG',
+    Rwf = 'RWF',
+    Ugx = 'UGX',
+    Vnd = 'VND',
+    Vuv = 'VUV',
+    Xaf = 'XAF',
+    Xof = 'XOF',
+    Xpf = 'XPF',
+}
+
 export enum FinancialStatus {
     Pending = 'pending',
     Authorized = 'authorized',

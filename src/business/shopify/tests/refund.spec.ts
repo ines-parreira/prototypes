@@ -1,11 +1,10 @@
-//@flow
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
 import {
     shopifyLineItemFixture,
     shopifyRefundOrderPayloadFixture,
     shopifySuggestedRefundFixture,
-} from '../../../fixtures/shopify'
+} from '../../../fixtures/shopify.js'
 import {
     getRefundAmount,
     getRestockType,
@@ -36,17 +35,17 @@ describe('getTotalCartDiscountAmount()', () => {
 
 describe('getTotalTax()', () => {
     it('should return total tax', () => {
-        const refund = fromJS(shopifySuggestedRefundFixture())
+        const refund = fromJS(shopifySuggestedRefundFixture()) as Map<any, any>
         const total = getTotalTax(refund)
 
         expect(total).toMatchSnapshot()
     })
 
     it('should return total tax, including tax if shipping line', () => {
-        const refund = fromJS(shopifySuggestedRefundFixture()).setIn(
-            ['shipping', 'tax'],
-            '00.90'
-        )
+        const refund = (fromJS(shopifySuggestedRefundFixture()) as Map<
+            any,
+            any
+        >).setIn(['shipping', 'tax'], '00.90')
         const total = getTotalTax(refund)
 
         expect(total).toMatchSnapshot()
@@ -107,10 +106,10 @@ describe('getRestockType()', () => {
     })
 
     it('should return `"return"` because the line item has been fulfilled', () => {
-        const lineItem = fromJS(shopifyLineItemFixture()).set(
-            'fulfillment_status',
-            'fulfilled'
-        )
+        const lineItem = (fromJS(shopifyLineItemFixture()) as Map<
+            any,
+            any
+        >).set('fulfillment_status', 'fulfilled')
         const restock = true
         const restockType = getRestockType(lineItem, restock)
 
@@ -118,10 +117,10 @@ describe('getRestockType()', () => {
     })
 
     it('should return `"cancel"` because the line item has not been fulfilled', () => {
-        const lineItem = fromJS(shopifyLineItemFixture()).set(
-            'fulfillment_status',
-            null
-        )
+        const lineItem = (fromJS(shopifyLineItemFixture()) as Map<
+            any,
+            any
+        >).set('fulfillment_status', null)
         const restock = true
         const restockType = getRestockType(lineItem, restock)
 

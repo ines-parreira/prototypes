@@ -9,12 +9,12 @@ import _debounce from 'lodash/debounce'
 import {
     getOrderLineItemDiscountedPrice,
     getOrderLineItemPrice,
-} from '../../../../../../../../../../../../business/shopify/lineItem'
+} from '../../../../../../../../../../../../business/shopify/lineItem.ts'
 import type {
     LineItem,
     Refund,
 } from '../../../../../../../../../../../../constants/integrations/types/shopify'
-import {formatPrice} from '../../../../../../../../../../../../business/shopify/number'
+import {formatPrice} from '../../../../../../../../../../../../business/shopify/number.ts'
 import MoneyAmount from '../../../../MoneyAmount'
 
 import css from './OrderLineItemRow.less'

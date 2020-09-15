@@ -7,7 +7,7 @@ import {
     shopifyOrderFixture,
     shopifySuggestedRefundFixture,
 } from '../../../../../fixtures/shopify'
-import {initRefundOrderLineItems} from '../../../../../business/shopify/order'
+import {initRefundOrderLineItems} from '../../../../../business/shopify/order.ts'
 import reducer, {initialState} from '../reducers.ts'
 import * as constants from '../constants.ts'
 

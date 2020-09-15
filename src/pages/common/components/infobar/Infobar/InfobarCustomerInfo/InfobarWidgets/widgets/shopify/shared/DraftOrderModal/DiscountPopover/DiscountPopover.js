@@ -16,7 +16,7 @@ import {fromJS, type Record} from 'immutable'
 import classnames from 'classnames'
 
 import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker'
-import {getDiscountAmount} from '../../../../../../../../../../../../business/shopify/discount'
+import {getDiscountAmount} from '../../../../../../../../../../../../business/shopify/discount.ts'
 import type {
     AppliedDiscount,
     DiscountType,
@@ -24,7 +24,7 @@ import type {
 import {
     formatPercentage,
     formatPrice,
-} from '../../../../../../../../../../../../business/shopify/number'
+} from '../../../../../../../../../../../../business/shopify/number.ts'
 import {focusElement} from '../../../../../../../../../../../../utils/html'
 import ShopifyMoneySymbol from '../../MoneySymbol'
 import AmountInput from '../../AmountInput'

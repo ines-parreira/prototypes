@@ -10,7 +10,7 @@ import _debounce from 'lodash/debounce'
 import {
     getDraftOrderLineItemDiscountedPrice,
     getDraftOrderLineItemTotal,
-} from '../../../../../../../../../../../../business/shopify/lineItem'
+} from '../../../../../../../../../../../../business/shopify/lineItem.ts'
 import defaultImage from '../../../../../../../../../../../../../img/presentationals/shopify-product-default-image.png'
 import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker'
 import type {
@@ -18,7 +18,7 @@ import type {
     Product,
     AppliedDiscount,
 } from '../../../../../../../../../../../../constants/integrations/types/shopify'
-import {formatPrice} from '../../../../../../../../../../../../business/shopify/number'
+import {formatPrice} from '../../../../../../../../../../../../business/shopify/number.ts'
 import DiscountPopover from '../DiscountPopover'
 import MoneyAmount from '../../../../MoneyAmount'
 import {ShopifyAction} from '../../../constants'

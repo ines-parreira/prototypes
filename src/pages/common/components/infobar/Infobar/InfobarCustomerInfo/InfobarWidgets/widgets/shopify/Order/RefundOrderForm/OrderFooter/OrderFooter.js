@@ -16,7 +16,7 @@ import {
     getRefundAmount,
     getTotalAvailableToRefund,
     getTotalQuantities,
-} from '../../../../../../../../../../../../business/shopify/refund'
+} from '../../../../../../../../../../../../business/shopify/refund.ts'
 import type {
     Refund,
     RefundOrderPayload,

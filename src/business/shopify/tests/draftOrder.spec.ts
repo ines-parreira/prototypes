@@ -1,6 +1,4 @@
-// @flow
-
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
 import {
     shopifyCustomerFixture,
@@ -11,7 +9,7 @@ import {
     shopifyShippingLineFixture,
     shopifyTaxLineFixture,
     shopifyVariantFixture,
-} from '../../../fixtures/shopify'
+} from '../../../fixtures/shopify.js'
 import {
     addCustomLineItem,
     addVariant,
@@ -44,9 +42,9 @@ describe('initDraftOrderPayload()', () => {
                     }),
                 ],
             })
-        )
+        ) as Map<any, any>
 
-        const products = new Map([[product.get('id'), product]])
+        const products = new globalThis.Map([[product.get('id'), product]])
         const order = fromJS(shopifyOrderFixture())
         const customer = fromJS(shopifyCustomerFixture())
         const payload = initDraftOrderPayload(customer, order, products)
@@ -56,7 +54,7 @@ describe('initDraftOrderPayload()', () => {
     it('should return draft order payload for the given order when products are missing', () => {
         const order = fromJS(shopifyOrderFixture())
         const customer = fromJS(shopifyCustomerFixture())
-        const products = new Map()
+        const products = new globalThis.Map()
         const payload = initDraftOrderPayload(customer, order, products)
         expect(payload).toMatchSnapshot()
     })
@@ -109,10 +107,10 @@ describe('getSubtotal()', () => {
     })
 
     it('should return the sub total when there is no applied discount', () => {
-        const payload = fromJS(shopifyDraftOrderPayloadFixture()).set(
-            'applied_discount',
-            null
-        )
+        const payload = (fromJS(shopifyDraftOrderPayloadFixture()) as Map<
+            any,
+            any
+        >).set('applied_discount', null)
         const subtotal = getSubtotal(payload)
         expect(subtotal).toMatchSnapshot()
     })
@@ -126,11 +124,14 @@ describe('getTotalShippingPrice()', () => {
     })
 
     it('should return the total shipping price when it is set', () => {
-        const shippingLine = fromJS(shopifyShippingLineFixture())
-        const payload = fromJS(shopifyDraftOrderPayloadFixture()).set(
-            'shipping_line',
-            shippingLine
-        )
+        const shippingLine = fromJS(shopifyShippingLineFixture()) as Map<
+            any,
+            any
+        >
+        const payload = (fromJS(shopifyDraftOrderPayloadFixture()) as Map<
+            any,
+            any
+        >).set('shipping_line', shippingLine)
         const total = getTotalShippingPrice(payload)
         expect(total).toMatchSnapshot()
     })
@@ -171,10 +172,10 @@ describe('getTotalTaxes()', () => {
 
 describe('getTaxLinesTotals()', () => {
     it('should return tax lines when array is empty', () => {
-        const payload = fromJS(shopifyDraftOrderPayloadFixture()).set(
-            'tax_lines',
-            []
-        )
+        const payload = (fromJS(shopifyDraftOrderPayloadFixture()) as Map<
+            any,
+            any
+        >).set('tax_lines', [])
         const results = getTaxLinesTotals(payload)
         expect(results).toEqual([])
     })
@@ -185,10 +186,10 @@ describe('getTaxLinesTotals()', () => {
             shopifyTaxLineFixture({price: '2.00'}),
         ])
 
-        const payload = fromJS(shopifyDraftOrderPayloadFixture()).set(
-            'tax_lines',
-            taxLines
-        )
+        const payload = (fromJS(shopifyDraftOrderPayloadFixture()) as Map<
+            any,
+            any
+        >).set('tax_lines', taxLines)
         const results = getTaxLinesTotals(payload)
 
         expect(results).toEqual([{label: 'TVA 20.00%', total: 3}])
@@ -200,7 +201,10 @@ describe('getTaxLinesTotals()', () => {
             shopifyTaxLineFixture({price: '2.00'}),
         ])
 
-        const payload = fromJS(shopifyDraftOrderPayloadFixture())
+        const payload = (fromJS(shopifyDraftOrderPayloadFixture()) as Map<
+            any,
+            any
+        >)
             .set('tax_lines', taxLines)
             .set('taxes_included', true)
 
@@ -217,10 +221,10 @@ describe('getTaxLinesTotals()', () => {
             shopifyTaxLineFixture({rate: 0.3, title: 'Tax Z', price: '4.00'}),
         ])
 
-        const payload = fromJS(shopifyDraftOrderPayloadFixture()).set(
-            'tax_lines',
-            taxLines
-        )
+        const payload = (fromJS(shopifyDraftOrderPayloadFixture()) as Map<
+            any,
+            any
+        >).set('tax_lines', taxLines)
         const results = getTaxLinesTotals(payload)
 
         expect(results).toEqual([
@@ -239,7 +243,10 @@ describe('getTaxLinesTotals()', () => {
             shopifyTaxLineFixture({rate: 0.3, title: 'Tax Z', price: '4.00'}),
         ])
 
-        const payload = fromJS(shopifyDraftOrderPayloadFixture())
+        const payload = (fromJS(shopifyDraftOrderPayloadFixture()) as Map<
+            any,
+            any
+        >)
             .set('tax_lines', taxLines)
             .set('taxes_included', true)
 

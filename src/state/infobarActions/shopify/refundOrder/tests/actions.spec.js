@@ -12,7 +12,7 @@ import {
 } from '../../../../../fixtures/shopify'
 import {initialState} from '../reducers.ts'
 import * as actions from '../../refundOrder/actions.ts'
-import {initRefundOrderLineItems} from '../../../../../business/shopify/order'
+import {initRefundOrderLineItems} from '../../../../../business/shopify/order.ts'
 
 jest.mock('lodash/debounce', () => (fn) => {
     fn.cancel = jest.fn()

@@ -1,6 +1,4 @@
-// @flow
-
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
 import {
     shopifyAppliedDiscountFixture,
@@ -10,7 +8,7 @@ import {
     shopifyLineItemFixture,
     shopifyOrderFixture,
     shopifyPriceSetFixture,
-} from '../../../fixtures/shopify'
+} from '../../../fixtures/shopify.js'
 import {
     getDraftOrderLineItemDiscountedPrice,
     getDraftOrderLineItemTotal,
@@ -24,14 +22,14 @@ describe('initLineItemAppliedDiscount()', () => {
     it('should return the applied discount with percentage amount', () => {
         const discountAllocation = fromJS(shopifyDiscountAllocationFixture())
         const discountApplication = fromJS(shopifyDiscountApplicationFixture())
-        const order = fromJS(shopifyOrderFixture())
+        const order = (fromJS(shopifyOrderFixture()) as Map<any, any>)
             .setIn(['line_items', 0, 'total_discount'], '0.50')
             .setIn(
                 ['line_items', 0, 'discount_allocations', 0],
                 discountAllocation
             )
             .setIn(['discount_applications', 0], discountApplication)
-        const lineItem = order.getIn(['line_items', 0])
+        const lineItem = order.getIn(['line_items', 0]) as Map<any, any>
 
         const appliedDiscount = initLineItemAppliedDiscount(lineItem, order)
         expect(appliedDiscount).toMatchSnapshot()
@@ -47,7 +45,7 @@ describe('initLineItemAppliedDiscount()', () => {
                 type: 'fixed_amount',
             })
         )
-        const order = fromJS(shopifyOrderFixture())
+        const order = (fromJS(shopifyOrderFixture()) as Map<any, any>)
             .setIn(['line_items', 0, 'quantity'], 2)
             .setIn(['line_items', 0, 'total_discount'], '0.20')
             .setIn(
@@ -55,15 +53,15 @@ describe('initLineItemAppliedDiscount()', () => {
                 discountAllocation
             )
             .setIn(['discount_applications', 0], discountApplication)
-        const lineItem = order.getIn(['line_items', 0])
+        const lineItem = order.getIn(['line_items', 0]) as Map<any, any>
 
         const appliedDiscount = initLineItemAppliedDiscount(lineItem, order)
         expect(appliedDiscount).toMatchSnapshot()
     })
 
     it('should return null because there is no discount allocation', () => {
-        const order = fromJS(shopifyOrderFixture())
-        const lineItem = order.getIn(['line_items', 0])
+        const order = fromJS(shopifyOrderFixture()) as Map<any, any>
+        const lineItem = order.getIn(['line_items', 0]) as Map<any, any>
 
         const appliedDiscount = initLineItemAppliedDiscount(lineItem, order)
         expect(appliedDiscount).toBe(null)
@@ -85,10 +83,10 @@ describe('getDraftOrderLineItemDiscountedPrice()', () => {
         const appliedDiscount = fromJS(
             shopifyAppliedDiscountFixture({value: '50.0', amount: '0.50'})
         )
-        const lineItem = fromJS(shopifyLineItemFixture()).set(
-            'applied_discount',
-            appliedDiscount
-        )
+        const lineItem = (fromJS(shopifyLineItemFixture()) as Map<
+            any,
+            any
+        >).set('applied_discount', appliedDiscount)
         const currencyCode = 'USD'
         const price = getDraftOrderLineItemDiscountedPrice(
             lineItem,
@@ -191,7 +189,10 @@ describe('getDraftOrderTotalLineItemsPrice()', () => {
     })
 
     it('should return the correct value without rounding errors', () => {
-        const payload = fromJS(shopifyDraftOrderPayloadFixture()).set(
+        const payload = (fromJS(shopifyDraftOrderPayloadFixture()) as Map<
+            any,
+            any
+        >).set(
             'line_items',
             fromJS([
                 shopifyLineItemFixture({price: '27.99'}),
@@ -230,9 +231,9 @@ describe('getOrderLineItemDiscountedPrice()', () => {
         const totalDiscountSet = fromJS(
             shopifyPriceSetFixture({amount: '0.00'})
         )
-        const lineItem = fromJS(
+        const lineItem = (fromJS(
             shopifyLineItemFixture({quantity, currencyCode: 'USD'})
-        ).set('total_discount_set', totalDiscountSet)
+        ) as Map<any, any>).set('total_discount_set', totalDiscountSet)
         const price = getOrderLineItemDiscountedPrice(
             lineItem,
             currencyCode,
@@ -248,9 +249,9 @@ describe('getOrderLineItemDiscountedPrice()', () => {
         const totalDiscountSet = fromJS(
             shopifyPriceSetFixture({amount: '0.50'})
         )
-        const lineItem = fromJS(
+        const lineItem = (fromJS(
             shopifyLineItemFixture({quantity, currencyCode: 'USD'})
-        ).set('total_discount_set', totalDiscountSet)
+        ) as Map<any, any>).set('total_discount_set', totalDiscountSet)
         const price = getOrderLineItemDiscountedPrice(
             lineItem,
             currencyCode,

@@ -5,14 +5,14 @@ import axios, {AxiosError} from 'axios'
 import {
     initCancelOrderPayload,
     initRefundOrderLineItems,
-} from '../../../../business/shopify/order.js'
+} from '../../../../business/shopify/order'
 import {
     getRefundAmount,
     getTotalQuantities,
-} from '../../../../business/shopify/refund.js'
+} from '../../../../business/shopify/refund'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
 import {SegmentEvent} from '../../../../store/middlewares/types/segmentTracker'
-import {formatPrice} from '../../../../business/shopify/number.js'
+import {formatPrice} from '../../../../business/shopify/number'
 import {StoreDispatch, RootState} from '../../../types'
 import GorgiasApi from '../../../../services/gorgiasApi.js'
 import {notify} from '../../../notifications/actions'
@@ -84,8 +84,8 @@ export const onInit = (integrationId: number, order: Map<any, any>) => async (
     dispatch: StoreDispatch
 ) => {
     try {
-        let payload = initCancelOrderPayload(order) as Map<any, any>
-        const lineItems = initRefundOrderLineItems(order) as List<any>
+        let payload = initCancelOrderPayload(order)
+        const lineItems = initRefundOrderLineItems(order)
         const api = getApi()
         const orderId = order.get('id') as number
         api.cancelPendingRequests(true)

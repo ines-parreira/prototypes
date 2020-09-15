@@ -18,7 +18,7 @@ import {
 import {getCancelOrderState} from '../../../../../../../../../../../state/infobarActions/shopify/cancelOrder/selectors.ts'
 import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager'
 import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors.ts'
-import {getFinalCancelOrderPayload} from '../../../../../../../../../../../business/shopify/order'
+import {getFinalCancelOrderPayload} from '../../../../../../../../../../../business/shopify/order.ts'
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../constants/integration'
 import type {
     CancelOrderPayload,

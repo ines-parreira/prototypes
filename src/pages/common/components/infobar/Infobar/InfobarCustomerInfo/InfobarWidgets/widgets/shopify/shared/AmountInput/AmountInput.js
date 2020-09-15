@@ -6,7 +6,7 @@ import classnames from 'classnames'
 import _noop from 'lodash/noop'
 
 import {NON_FRACTIONAL_CURRENCIES} from '../../../../../../../../../../../constants/integrations/shopify'
-import {formatPrice} from '../../../../../../../../../../../business/shopify/number'
+import {formatPrice} from '../../../../../../../../../../../business/shopify/number.ts'
 import ShopifyMoneySymbol from '../MoneySymbol'
 
 import css from './AmountInput.less'

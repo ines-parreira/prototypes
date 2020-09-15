@@ -10,13 +10,13 @@ import type {
     Refund,
     RefundOrderPayload,
 } from '../../../../../../../../../../../../../constants/integrations/types/shopify'
-import {formatPrice} from '../../../../../../../../../../../../../business/shopify/number'
+import {formatPrice} from '../../../../../../../../../../../../../business/shopify/number.ts'
 import {
     getSubtotal,
     getTotalAvailableToRefund,
     getTotalCartDiscountAmount,
     getTotalTax,
-} from '../../../../../../../../../../../../../business/shopify/refund'
+} from '../../../../../../../../../../../../../business/shopify/refund.ts'
 import MoneyAmount from '../../../../../MoneyAmount'
 import AmountInput from '../../../../shared/AmountInput'
 

@@ -22,7 +22,7 @@ import {
     getFinalRefundOrderPayload,
     initRefundOrderLineItems,
     initRefundOrderPayload,
-} from '../../../../../../../../../../../../business/shopify/order'
+} from '../../../../../../../../../../../../business/shopify/order.ts'
 import {getIntegrationsByTypes} from '../../../../../../../../../../../../state/integrations/selectors.ts'
 import {integrationsStateWithShopify} from '../../../../../../../../../../../../fixtures/integrations'
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../../constants/integration'

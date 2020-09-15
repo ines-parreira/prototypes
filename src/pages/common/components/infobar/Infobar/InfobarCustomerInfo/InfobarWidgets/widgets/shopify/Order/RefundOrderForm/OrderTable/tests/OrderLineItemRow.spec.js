@@ -10,7 +10,7 @@ import {
     shopifyPriceSetFixture,
     shopifySuggestedRefundFixture,
 } from '../../../../../../../../../../../../../fixtures/shopify'
-import {initRefundOrderLineItems} from '../../../../../../../../../../../../../business/shopify/order'
+import {initRefundOrderLineItems} from '../../../../../../../../../../../../../business/shopify/order.ts'
 import {OrderLineItemRow} from '../OrderLineItemRow'
 
 jest.mock('lodash/debounce', () => (fn) => fn)
