@@ -2,7 +2,7 @@
 import {fromJS} from 'immutable'
 import _find from 'lodash/find'
 
-import {shouldTicketBeDisplayedInRecentChats} from '../business/recentChats'
+import {shouldTicketBeDisplayedInRecentChats} from '../business/recentChats.ts'
 
 import * as agentsActions from '../state/agents/actions.ts'
 import * as chatsActions from '../state/chats/actions.ts'

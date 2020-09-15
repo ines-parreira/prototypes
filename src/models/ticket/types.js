@@ -4,7 +4,7 @@ import {
     TicketChannels,
     TicketMessageSourceTypes,
     TicketStatuses,
-} from '../../business/ticket'
+} from '../../business/ticket.ts'
 
 export type Ticket = {
     id: number,

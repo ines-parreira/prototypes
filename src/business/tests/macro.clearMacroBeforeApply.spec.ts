@@ -1,9 +1,9 @@
-// @flow
-import {fromJS} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 
+import {Macro} from '../../models/macro/types'
+import {MacroActionName, MacroActionType} from '../../models/macroAction/types'
 import {clearMacroBeforeApply} from '../macro'
-import type {Macro} from '../types/macro'
-import {TicketMessageSourceTypes} from '../ticket'
+import {TicketMessageSourceType} from '../types/ticket'
 
 describe('Business', () => {
     describe('macro', () => {
@@ -23,21 +23,21 @@ describe('Business', () => {
                                     },
                                 ],
                             },
-                            name: 'addAttachments',
+                            name: MacroActionName.AddAttachments,
                             title: 'Add pictures',
-                            type: 'user',
+                            type: MacroActionType.User,
                         },
                         {
                             arguments: {
                                 body_html: '<p>Hello</p>',
                                 body_text: 'Hello',
                             },
-                            name: 'setResponseText',
+                            name: MacroActionName.SetResponseText,
                             title: 'Say Hello',
-                            type: 'user',
+                            type: MacroActionType.User,
                         },
                     ],
-                }
+                } as Macro
             })
 
             it('should clear attachments when applied on facebook-messenger', () => {
@@ -45,45 +45,52 @@ describe('Business', () => {
 
                 // When
                 const result = clearMacroBeforeApply(
-                    TicketMessageSourceTypes.FACEBOOK_MESSENGER,
+                    TicketMessageSourceType.FacebookMessenger,
                     fromJS(macro)
                 )
 
                 // Then
-                // $FlowFixMe
-                expect(result.notification.message).toEqual(
+                expect(result.notification?.message).toEqual(
                     'We have removed the attachment from this message, because you cannot send text and ' +
                         'attachments at the same time on Messenger.'
                 )
-                expect(result.macro.get('actions').size).toEqual(1)
-                expect(result.macro.get('actions').get(0).get('name')).toEqual(
-                    'setResponseText'
+                expect((result.macro.get('actions') as List<any>).size).toEqual(
+                    1
                 )
+                expect(
+                    ((result.macro.get('actions') as List<any>).get(0) as Map<
+                        any,
+                        any
+                    >).get('name')
+                ).toEqual('setResponseText')
             })
 
             it('should clear attachments when applied on chat with more than one', () => {
                 // Given
-                // $FlowFixMe
-                macro.actions[0].arguments.attachments.push({
+                macro.actions[0].arguments.attachments?.push({
                     url: 'https://dev.gorgias.io/img2.png',
                 })
 
                 // When
                 const result = clearMacroBeforeApply(
-                    TicketMessageSourceTypes.CHAT,
+                    TicketMessageSourceType.Chat,
                     fromJS(macro)
                 )
 
                 // Then
-                // $FlowFixMe
-                expect(result.notification.message).toEqual(
+                expect(result.notification?.message).toEqual(
                     'We have removed the attachments from this message, because you cannot send multiple ' +
                         'attachments at the same time on Chat.'
                 )
-                expect(result.macro.get('actions').size).toEqual(1)
-                expect(result.macro.get('actions').get(0).get('name')).toEqual(
-                    'setResponseText'
+                expect((result.macro.get('actions') as List<any>).size).toEqual(
+                    1
                 )
+                expect(
+                    ((result.macro.get('actions') as List<any>).get(0) as Map<
+                        any,
+                        any
+                    >).get('name')
+                ).toEqual('setResponseText')
             })
 
             it('should not clear attachments when applied on chat with only one', () => {
@@ -91,13 +98,15 @@ describe('Business', () => {
 
                 // When
                 const result = clearMacroBeforeApply(
-                    TicketMessageSourceTypes.CHAT,
+                    TicketMessageSourceType.Chat,
                     fromJS(macro)
                 )
 
                 // Then
                 expect(result.notification).toBeFalsy()
-                expect(result.macro.get('actions').size).toEqual(2)
+                expect((result.macro.get('actions') as List<any>).size).toEqual(
+                    2
+                )
             })
         })
     })

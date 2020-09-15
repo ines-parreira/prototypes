@@ -1,4 +1,3 @@
-// @flow
 import _trim from 'lodash/trim'
 import _upperFirst from 'lodash/upperFirst'
 

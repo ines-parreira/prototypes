@@ -24,7 +24,7 @@ import moment from 'moment-timezone'
 import {createSelectorCreator, defaultMemoize} from 'reselect'
 import URLSafeBase64 from 'urlsafe-base64'
 
-import {humanize} from './business/format'
+import {humanize} from './business/format.ts'
 import {ACTION_TEMPLATES} from './config'
 import TICKET_LANGUAGES from './config/ticketLanguages'
 import {AUTHORIZED_NOTIFICATION_TYPES} from './state/notifications/actions.ts'

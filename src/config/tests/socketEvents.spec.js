@@ -4,8 +4,8 @@ import _find from 'lodash/find'
 import _isArray from 'lodash/isArray'
 import _isObject from 'lodash/isObject'
 
-import {TicketStatuses} from '../../business/ticket'
-import {shouldTicketBeDisplayedInRecentChats} from '../../business/recentChats'
+import {TicketStatuses} from '../../business/ticket.ts'
+import {shouldTicketBeDisplayedInRecentChats} from '../../business/recentChats.ts'
 
 import * as chatActions from '../../state/chats/actions.ts'
 import * as currentAccountConstants from '../../state/currentAccount/constants'
@@ -61,10 +61,10 @@ jest.mock('../../state/currentAccount/selectors.ts', () => {
     }
 })
 
-jest.mock('../../business/recentChats', () => {
+jest.mock('../../business/recentChats.ts', () => {
     return {
         //$FlowFixMe
-        ...require.requireActual('../../business/recentChats'),
+        ...require.requireActual('../../business/recentChats.ts'),
         shouldTicketBeDisplayedInRecentChats: jest.fn(),
     }
 })

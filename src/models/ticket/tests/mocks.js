@@ -1,6 +1,6 @@
 //@flow
 import type {Action, TicketMessage} from '../types'
-import {TicketMessageSourceTypes} from '../../../business/ticket'
+import {TicketMessageSourceTypes} from '../../../business/ticket.ts'
 
 export const message: TicketMessage = {
     id: 1,

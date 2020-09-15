@@ -6,7 +6,7 @@ import React, {type ElementRef} from 'react'
 import {connect} from 'react-redux'
 import {Input} from 'reactstrap'
 
-import {clearMacroBeforeApply} from '../../../../../business/macro'
+import {clearMacroBeforeApply} from '../../../../../business/macro.ts'
 import type {Macro} from '../../../../../business/types/macro'
 import {type TicketMessageSourceType} from '../../../../../business/types/ticket'
 import shortcutManager from '../../../../../services/shortcutManager'

@@ -2,7 +2,7 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 
-import {FACEBOOK_LANGUAGE_DEFAULT} from '../../../../../../config/integrations/facebook'
+import {FACEBOOK_LANGUAGE_DEFAULT} from '../../../../../../config/integrations/facebook.ts'
 import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../constants/integration'
 import {
     DANISH_LANGUAGE,

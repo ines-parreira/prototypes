@@ -8,7 +8,7 @@ import thunk from 'redux-thunk'
 
 const mockStore = configureMockStore([thunk])
 
-import {TicketMessageSourceTypes} from '../../../../../business/ticket'
+import {TicketMessageSourceTypes} from '../../../../../business/ticket.ts'
 import Signature from '../Signature'
 
 // mock random key generation so they match from a snapshot to the other

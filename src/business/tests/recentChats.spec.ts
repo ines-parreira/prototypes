@@ -1,13 +1,12 @@
-//@flow
 import {fromJS} from 'immutable'
 
 import {shouldTicketBeDisplayedInRecentChats} from '../recentChats'
-import {TicketChannels, TicketStatuses} from '../ticket'
+import {TicketChannel, TicketStatus} from '../types/ticket'
 
 const defaultTicket = {
     id: 1,
-    status: TicketStatuses.OPEN,
-    channel: TicketChannels.CHAT,
+    status: TicketStatus.Open,
+    channel: TicketChannel.Chat,
     spam: false,
     trashed_datetime: '',
     deleted_datetime: '',
@@ -31,8 +30,8 @@ describe('Business', () => {
                     data: {
                         auto_assign_to_teams: true,
                         assignment_channels: [
-                            TicketChannels.CHAT,
-                            TicketChannels.FACEBOOK_MESSENGER,
+                            TicketChannel.Chat,
+                            TicketChannel.FacebookMessenger,
                         ],
                     },
                 }),
@@ -40,15 +39,15 @@ describe('Business', () => {
                     data: {
                         auto_assign_to_teams: false,
                         assignment_channels: [
-                            TicketChannels.CHAT,
-                            TicketChannels.FACEBOOK_MESSENGER,
+                            TicketChannel.Chat,
+                            TicketChannel.FacebookMessenger,
                         ],
                     },
                 }),
                 channelsDontIncludeChat: fromJS({
                     data: {
                         auto_assign_to_teams: true,
-                        assignment_channels: [TicketChannels.EMAIL],
+                        assignment_channels: [TicketChannel.Email],
                     },
                 }),
             }
@@ -84,7 +83,7 @@ describe('Business', () => {
             it('should return false because the ticket is closed', () => {
                 const ticket = {
                     ...defaultTicket,
-                    status: TicketStatuses.CLOSED,
+                    status: TicketStatus.Closed,
                 }
 
                 const res = shouldTicketBeDisplayedInRecentChats(

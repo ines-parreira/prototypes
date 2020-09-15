@@ -1,26 +1,19 @@
-// @flow
-import {fromJS, type Map} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 
-import {TicketStatuses} from './ticket'
-import type {RecentChatTicket} from './types/recentChats'
+import {TicketStatus} from './types/ticket'
+import {RecentChatTicket} from './types/recentChats'
 
 /**
  * Return whether or not a ticket update received via websockets should be displayed in the current user's recent chats.
- * @param ticket: the ticket we received via websocket
- * @param ticketAssignmentSetting: the ticket assignment setting of the current account
- * @param currentUser: the current user
- * @param currentUserIsAvailable: whether or not the current user is available
- * @returns {boolean}: whether or not a ticket update received via websockets should be displayed in the current
- *  user's recent chats
  */
 export function shouldTicketBeDisplayedInRecentChats(
     ticket: RecentChatTicket,
-    ticketAssignmentSetting: Map<*, *>,
-    currentUser: Map<*, *>,
+    ticketAssignmentSetting: Map<any, any>,
+    currentUser: Map<any, any>,
     currentUserIsAvailable: boolean
 ) {
     const ticketShouldBeHidden =
-        ticket.status === TicketStatuses.CLOSED ||
+        ticket.status === TicketStatus.Closed ||
         ticket.spam ||
         !!ticket.trashed_datetime ||
         !!ticket.deleted_datetime
@@ -38,10 +31,11 @@ export function shouldTicketBeDisplayedInRecentChats(
     const autoAssignEnabled = ticketAssignmentSetting.getIn([
         'data',
         'auto_assign_to_teams',
-    ])
-    const channelSetForTicketAssignmentSettings = ticketAssignmentSetting
-        .getIn(['data', 'assignment_channels'], fromJS([]))
-        .includes(ticket.channel)
+    ]) as boolean
+    const channelSetForTicketAssignmentSettings = (ticketAssignmentSetting.getIn(
+        ['data', 'assignment_channels'],
+        fromJS([])
+    ) as List<any>).includes(ticket.channel)
     const autoAssignIsEnabledForTicketChannel =
         autoAssignEnabled && channelSetForTicketAssignmentSettings
 

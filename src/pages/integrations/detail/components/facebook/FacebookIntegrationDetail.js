@@ -16,7 +16,7 @@ import {
 import {
     FACEBOOK_LANGUAGE_OPTIONS,
     FACEBOOK_LANGUAGE_DEFAULT,
-} from '../../../../../config/integrations/facebook'
+} from '../../../../../config/integrations/facebook.ts'
 
 import InputField from '../../../../common/forms/InputField'
 import BooleanField from '../../../../common/forms/BooleanField'

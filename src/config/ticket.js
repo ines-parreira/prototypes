@@ -6,7 +6,7 @@ import {
     TicketMessageSourceTypes,
     TicketStatuses,
     TicketChannels,
-} from '../business/ticket'
+} from '../business/ticket.ts'
 import type {
     TicketMessageSourceType,
     TicketChannel,

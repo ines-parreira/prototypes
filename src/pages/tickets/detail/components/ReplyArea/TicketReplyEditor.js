@@ -6,7 +6,7 @@ import _noop from 'lodash/noop'
 import React, {type Node} from 'react'
 import {connect} from 'react-redux'
 
-import {canAddAttachments} from '../../../../../business/ticket'
+import {canAddAttachments} from '../../../../../business/ticket.ts'
 import {type TicketMessageSourceType} from '../../../../../business/types/ticket'
 import {canLeaveInternalNote, isRichType} from '../../../../../config/ticket'
 import {getOtherAgents} from '../../../../../state/agents/selectors.ts'

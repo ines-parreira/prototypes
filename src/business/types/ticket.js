@@ -3,7 +3,7 @@ import {
     TicketChannels,
     TicketStatuses,
     TicketMessageSourceTypes,
-} from '../ticket'
+} from '../ticket.ts'
 
 export type TicketChannel = $Values<typeof TicketChannels>
 

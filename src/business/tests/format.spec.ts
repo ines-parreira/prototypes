@@ -1,4 +1,3 @@
-// @flow
 import {humanize} from '../format'
 
 describe('Business', () => {

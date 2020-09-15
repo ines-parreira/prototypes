@@ -5,11 +5,11 @@ import _noop from 'lodash/noop'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {TicketMessageSourceTypes} from '../../../../../../business/ticket'
+import {TicketMessageSourceTypes} from '../../../../../../business/ticket.ts'
 import TicketReply from '../TicketReply'
 
-jest.unmock('../../../../../../business/ticket')
-const businessTicket = require('../../../../../../business/ticket')
+jest.unmock('../../../../../../business/ticket.ts')
+const businessTicket = require('../../../../../../business/ticket.ts')
 
 const mockStore = configureMockStore([thunk])
 

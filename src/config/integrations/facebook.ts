@@ -1,5 +1,4 @@
-//@flow
-import {fromJS} from 'immutable'
+import {fromJS, List} from 'immutable'
 
 import {
     DANISH_LANGUAGE,
@@ -11,7 +10,7 @@ import {
     NORWEGIAN_LANGUAGE,
     SPANISH_LANGUAGE,
     SWEDISH_LANGUAGE,
-} from '../../constants/languages'
+} from '../../constants/languages.js'
 
 export const FACEBOOK_LANGUAGE_DEFAULT = ENGLISH_US_LANGUAGE
 export const FACEBOOK_LANGUAGE_OPTIONS = fromJS([
@@ -24,4 +23,4 @@ export const FACEBOOK_LANGUAGE_OPTIONS = fromJS([
     {value: DUTCH_LANGUAGE, label: 'Dutch'},
     {value: GERMAN_LANGUAGE, label: 'German'},
     {value: NORWEGIAN_LANGUAGE, label: 'Norwegian'},
-])
+]) as List<any>

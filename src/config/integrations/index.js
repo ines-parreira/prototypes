@@ -1,5 +1,5 @@
 // @flow
-import * as facebook from './facebook'
+import * as facebook from './facebook.ts'
 import * as magento2 from './magento2'
 import * as recharge from './recharge'
 import * as shopify from './shopify'

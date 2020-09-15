@@ -1,17 +1,15 @@
-// @flow
 import {humanize} from './format'
-
-import type {Notification} from './types/notification'
-import type {TicketMessageSourceType} from './types/ticket'
+import {Notification} from './types/notification'
+import {TicketMessageSourceType} from './types/ticket'
 
 // Public functions
 export function canAddAttachments(
     messageType: TicketMessageSourceType,
     newMessage: string,
     attachmentCount: number
-): ?Notification {
+): Maybe<Notification> {
     let isInvalid =
-        messageType === TicketMessageSourceTypes.FACEBOOK_MESSENGER &&
+        messageType === TicketMessageSourceType.FacebookMessenger &&
         !!newMessage &&
         attachmentCount > 0
 
@@ -28,9 +26,9 @@ export function canAddAttachments(
 
     isInvalid =
         [
-            TicketMessageSourceTypes.CHAT,
-            TicketMessageSourceTypes.FACEBOOK_COMMENT,
-            TicketMessageSourceTypes.FACEBOOK_MESSENGER,
+            TicketMessageSourceType.Chat,
+            TicketMessageSourceType.FacebookComment,
+            TicketMessageSourceType.FacebookMessenger,
         ].includes(messageType) && attachmentCount > 1
 
     if (isInvalid) {
@@ -48,8 +46,8 @@ export function canAddAttachments(
 export function canReply(
     messageType: TicketMessageSourceType,
     attachmentCount: number,
-    explicitReason: ?string
-): ?Notification {
+    explicitReason: Maybe<string>
+): Maybe<Notification> {
     if (!!explicitReason) {
         return {
             message: explicitReason,
@@ -57,8 +55,8 @@ export function canReply(
         }
     }
 
-    let isInvalid =
-        messageType === TicketMessageSourceTypes.FACEBOOK_MESSENGER &&
+    const isInvalid =
+        messageType === TicketMessageSourceType.FacebookMessenger &&
         attachmentCount > 0
 
     if (isInvalid) {
@@ -75,6 +73,7 @@ export function canReply(
     return null
 }
 
+//$TsFixMe legacy constant for flow usage, use enum at g/static/private/js/business/types/ticket.ts instead
 export const TicketMessageSourceTypes = Object.freeze({
     AIRCALL: 'aircall',
     API: 'api',
@@ -96,11 +95,13 @@ export const TicketMessageSourceTypes = Object.freeze({
     TWITTER: 'twitter',
 })
 
+//$TsFixMe legacy constant for flow usage, use enum at g/static/private/js/business/types/ticket.ts instead
 export const TicketStatuses = Object.freeze({
     OPEN: 'open',
     CLOSED: 'closed',
 })
 
+//$TsFixMe legacy constant for flow usage, use enum at g/static/private/js/business/types/ticket.ts instead
 export const TicketChannels = Object.freeze({
     AIRCALL: 'aircall',
     API: 'api',

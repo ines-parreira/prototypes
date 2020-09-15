@@ -2,7 +2,7 @@ import {fromJS} from 'immutable'
 import React from 'react'
 import {shallow} from 'enzyme'
 
-import {TicketChannels} from '../../../../business/ticket'
+import {TicketChannels} from '../../../../business/ticket.ts'
 import * as currentAccountConstants from '../../../../state/currentAccount/constants'
 
 import {TicketAssignment} from '../TicketAssignment'
