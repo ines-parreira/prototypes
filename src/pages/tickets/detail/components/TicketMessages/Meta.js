@@ -62,6 +62,7 @@ export default function Meta(props: Props) {
         source.extra &&
         GO_TO_WIDGET_SOURCES.includes(source.type)
     ) {
+        const pageId = source.extra.page_id
         const fullPostId = source.extra.post_id
         const parentId = source.extra.parent_id
         const permalink = source.extra.permalink
@@ -80,7 +81,7 @@ export default function Meta(props: Props) {
         if (isFacebookPost) {
             const postId = getId(fullPostId)
             type = 'post'
-            link = `https://facebook.com/${postId}`
+            link = `https://facebook.com/${pageId}/posts/${postId}`
         } else if (isInstagramMedia || isInstagramAdMedia) {
             type = 'media'
             link = permalink
@@ -88,13 +89,13 @@ export default function Meta(props: Props) {
             const postId = getId(fullPostId)
             const commentId = getId(messageId)
             type = 'comment'
-            link = `https://facebook.com/${postId}?comment_id=${commentId}`
+            link = `https://facebook.com/${pageId}/posts/${postId}?comment_id=${commentId}`
         } else if (!!messageId) {
             const postId = getId(fullPostId)
             const commentId = getId(parentId)
             const replyId = getId(messageId)
             type = 'reply'
-            link = `https://facebook.com/${postId}?comment_id=${commentId}&reply_comment_id=${replyId}`
+            link = `https://facebook.com/${pageId}/posts/${postId}?comment_id=${commentId}&reply_comment_id=${replyId}`
         }
 
         if (type && link) {

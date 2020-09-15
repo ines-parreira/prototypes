@@ -52,7 +52,7 @@ describe('ticket message meta', () => {
             const from = component.find('From').dive()
             expect(from.text()).toBe('go to post')
             expect(from.find('a').prop('href')).toEqual(
-                `https://facebook.com/${postId}`
+                `https://facebook.com/${pageId}/posts/${postId}`
             )
         })
 
@@ -84,7 +84,7 @@ describe('ticket message meta', () => {
             const from = component.find('From').dive()
             expect(from.text()).toBe('go to comment')
             expect(from.find('a').prop('href')).toEqual(
-                `https://facebook.com/${postId}?comment_id=${commentId}`
+                `https://facebook.com/${pageId}/posts/${postId}?comment_id=${commentId}`
             )
         })
 
@@ -117,7 +117,7 @@ describe('ticket message meta', () => {
             const from = component.find('From').dive()
             expect(from.text()).toBe('go to reply')
             expect(from.find('a').prop('href')).toEqual(
-                `https://facebook.com/${postId}?comment_id=${commentId}&reply_comment_id=${replyId}`
+                `https://facebook.com/${pageId}/posts/${postId}?comment_id=${commentId}&reply_comment_id=${replyId}`
             )
         })
 
