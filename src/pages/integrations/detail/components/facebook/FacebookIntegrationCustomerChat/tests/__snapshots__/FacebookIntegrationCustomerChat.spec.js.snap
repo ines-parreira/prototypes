@@ -501,31 +501,29 @@ exports[`FacebookIntegrationCustomerChat component should display the list of Sh
                                   Javascript
                                 </h3>
                                 <p>
-                                  <p>
-                                    To install the Messenger widget on your website manually, you first need to whitelist your website's domain for your Facebook page on Facebook. You can do so
-                                     
-                                    <a
-                                      href="https://business.facebook.com//settings/?tab=messenger_platform"
-                                      rel="noopener noreferrer"
-                                      target="_blank"
-                                    >
-                                      here
-                                    </a>
-                                    . In the 
-                                    <b>
-                                      Whitelisted Domains
-                                    </b>
-                                     
-                                    section, just add the address of you website.
-                                    <br />
-                                    <br />
-                                    Then, copy the code below and paste it on your website above the
-                                     
-                                    <b>
-                                      &lt;/body&gt;
-                                    </b>
-                                     tag:
-                                  </p>
+                                  To install the Messenger widget on your website manually, you first need to whitelist your website's domain for your Facebook page on Facebook. You can do so
+                                   
+                                  <a
+                                    href="https://business.facebook.com//settings/?tab=messenger_platform"
+                                    rel="noopener noreferrer"
+                                    target="_blank"
+                                  >
+                                    here
+                                  </a>
+                                  . In the 
+                                  <b>
+                                    Whitelisted Domains
+                                  </b>
+                                   
+                                  section, just add the address of you website.
+                                  <br />
+                                  <br />
+                                  Then, copy the code below and paste it on your website above the
+                                   
+                                  <b>
+                                    &lt;/body&gt;
+                                  </b>
+                                   tag:
                                 </p>
                               </div>
                             </div>

@@ -73,7 +73,7 @@ export default class CustomInstallationCard extends React.Component<
                         </div>
                         <div>
                             <h3>Javascript</h3>
-                            <p>{description}</p>
+                            {description}
                         </div>
                     </div>
                     <Alert className={css['code-wrapper']}>

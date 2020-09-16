@@ -140,6 +140,16 @@ export const getOnboardingMeta = (integrationType: IntegrationType) =>
             ]) as Map<any, any>) || fromJS({})
     )
 
+export const getIntegrationTypeExtraState = (
+    integrationType: IntegrationType
+) =>
+    createSelector<RootState, Map<any, any>, IntegrationsState>(
+        getIntegrationsState,
+        (state) =>
+            (state.getIn(['extra', integrationType]) as Map<any, any>) ||
+            fromJS({})
+    )
+
 export const getFacebookMaxAccountAds = createSelector<
     RootState,
     number,

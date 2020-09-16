@@ -7,6 +7,7 @@ import {
     EMAIL_INTEGRATION_TYPE,
     FACEBOOK_INTEGRATION_TYPE,
     GMAIL_INTEGRATION_TYPE,
+    GORGIAS_CHAT_INTEGRATION_TYPE,
     OUTLOOK_INTEGRATION_TYPE,
     SMOOCH_INSIDE_INTEGRATION_TYPE,
     SMOOCH_INTEGRATION_TYPE,
@@ -60,6 +61,7 @@ const sourceTypeToIcon = (sourceType?: SourceType | IntegrationType) => {
             icon.name = 'forward'
             break
         case CHAT_SOURCE:
+        case GORGIAS_CHAT_INTEGRATION_TYPE:
         case SMOOCH_INTEGRATION_TYPE:
         case SMOOCH_INSIDE_INTEGRATION_TYPE:
             icon.name = 'forum'

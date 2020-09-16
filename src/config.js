@@ -11,6 +11,7 @@ import {
 import {
     EMAIL_INTEGRATION_TYPE,
     EMAIL_INTEGRATION_TYPES,
+    GORGIAS_CHAT_INTEGRATION_TYPE,
     MAGENTO2_INTEGRATION_TYPE,
     RECHARGE_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
@@ -145,6 +146,12 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         title: 'Email',
         description:
             'Connect your support email addresses and respond to your customers from Gorgias',
+    },
+    {
+        type: GORGIAS_CHAT_INTEGRATION_TYPE,
+        title: 'Gorgias Chat (BETA)',
+        description: 'Add a chat on your website',
+        hide: true,
     },
     {
         type: 'smooch_inside',

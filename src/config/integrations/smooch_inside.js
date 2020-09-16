@@ -11,6 +11,7 @@ import {
     SWEDISH_LANGUAGE,
     GERMAN_LANGUAGE,
     NORWEGIAN_LANGUAGE,
+    CZECH_LANGUAGE,
 } from '../../constants/languages'
 
 export const SMOOCH_INSIDE_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH = 50
@@ -26,9 +27,10 @@ export const SMOOCH_INSIDE_WIDGET_LANGUAGE_OPTIONS = fromJS([
     {value: DUTCH_LANGUAGE, label: 'Dutch'},
     {value: GERMAN_LANGUAGE, label: 'German'},
     {value: NORWEGIAN_LANGUAGE, label: 'Norwegian'},
+    {value: CZECH_LANGUAGE, label: 'Czech'},
 ])
 
-export const SMOOCH_INSIDE_WIDGET_TEXTS = require('../../../../../integrations/smooch_inside/texts/widget_texts.json')
+export const SMOOCH_INSIDE_WIDGET_TEXTS = require('../../../../../integrations/common/texts/widget_texts.json')
 export const SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS =
     SMOOCH_INSIDE_WIDGET_TEXTS[SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT]
 export const SMOOCH_INSIDE_DEFAULT_COLOR = '#0d87dd'

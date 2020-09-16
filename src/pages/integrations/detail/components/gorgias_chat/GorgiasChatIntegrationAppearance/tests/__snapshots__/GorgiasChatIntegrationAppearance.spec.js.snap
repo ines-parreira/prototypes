@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<ChatIntegrationAppearance/> render() should display correctly when creating a new chat integration 1`] = `
+exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly when creating a new chat integration 1`] = `
 <div
   className="full-width"
 >
@@ -26,9 +26,9 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when cre
           <Link
             onlyActiveOnIndex={false}
             style={Object {}}
-            to="/app/settings/integrations/smooch_inside"
+            to="/app/settings/integrations/gorgias_chat"
           >
-            Chat
+            Gorgias Chat
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -143,10 +143,6 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when cre
                       "value": "de",
                     },
                     Object {
-                      "label": "Norwegian",
-                      "value": "no",
-                    },
-                    Object {
                       "label": "Czech",
                       "value": "cz",
                     },
@@ -202,12 +198,6 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when cre
                   value="de"
                 >
                   German
-                </option>
-                <option
-                  key="no"
-                  value="no"
-                >
-                  Norwegian
                 </option>
                 <option
                   key="cz"
@@ -296,7 +286,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when cre
 </div>
 `;
 
-exports[`<ChatIntegrationAppearance/> render() should display correctly when integration is loading 1`] = `
+exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly when integration is loading 1`] = `
 <div
   className="full-width"
 >
@@ -322,15 +312,15 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when int
           <Link
             onlyActiveOnIndex={false}
             style={Object {}}
-            to="/app/settings/integrations/smooch_inside"
+            to="/app/settings/integrations/gorgias_chat"
           >
-            Chat
+            Gorgias Chat
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
           tag="li"
         >
-          hellosmoochintegration
+          hellochatintegration
         </BreadcrumbItem>
         <BreadcrumbItem
           active={true}
@@ -341,12 +331,12 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when int
       </Breadcrumb>
     }
   />
-  <ChatIntegrationNavigation
+  <GorgiasChatIntegrationNavigation
     integration={
       Immutable.Map {
         "id": 2,
-        "name": "hellosmoochintegration",
-        "type": "smooch_inside",
+        "name": "hellochatintegration",
+        "type": "gorgias_chat",
         "meta": Immutable.Map {
           "language": "en-US",
         },
@@ -389,7 +379,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when int
                 placeholder="Ex: Company Support"
                 required={true}
                 type="text"
-                value="hellosmoochintegration"
+                value="hellochatintegration"
               />
               <InputField
                 label="Introduction text during business hours"
@@ -477,10 +467,6 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when int
                       "value": "de",
                     },
                     Object {
-                      "label": "Norwegian",
-                      "value": "no",
-                    },
-                    Object {
                       "label": "Czech",
                       "value": "cz",
                     },
@@ -536,12 +522,6 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when int
                   value="de"
                 >
                   German
-                </option>
-                <option
-                  key="no"
-                  value="no"
-                >
-                  Norwegian
                 </option>
                 <option
                   key="cz"
@@ -635,7 +615,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when int
           isOnline={true}
           language="en-US"
           mainColor="#0d87dd"
-          name="hellosmoochintegration"
+          name="hellochatintegration"
           offlineIntroductionText="We'll be back tomorrow"
           renderFooter={true}
         >
@@ -650,7 +630,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when int
 </div>
 `;
 
-exports[`<ChatIntegrationAppearance/> render() should display correctly when updating an existing integration 1`] = `
+exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly when updating an existing integration 1`] = `
 <div
   className="full-width"
 >
@@ -676,15 +656,15 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when upd
           <Link
             onlyActiveOnIndex={false}
             style={Object {}}
-            to="/app/settings/integrations/smooch_inside"
+            to="/app/settings/integrations/gorgias_chat"
           >
-            Chat
+            Gorgias Chat
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
           tag="li"
         >
-          hellosmoochintegration
+          hellochatintegration
         </BreadcrumbItem>
         <BreadcrumbItem
           active={true}
@@ -695,12 +675,12 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when upd
       </Breadcrumb>
     }
   />
-  <ChatIntegrationNavigation
+  <GorgiasChatIntegrationNavigation
     integration={
       Immutable.Map {
         "id": 2,
-        "name": "hellosmoochintegration",
-        "type": "smooch_inside",
+        "name": "hellochatintegration",
+        "type": "gorgias_chat",
         "meta": Immutable.Map {
           "language": "en-US",
         },
@@ -743,7 +723,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when upd
                 placeholder="Ex: Company Support"
                 required={true}
                 type="text"
-                value="hellosmoochintegration"
+                value="hellochatintegration"
               />
               <InputField
                 label="Introduction text during business hours"
@@ -831,10 +811,6 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when upd
                       "value": "de",
                     },
                     Object {
-                      "label": "Norwegian",
-                      "value": "no",
-                    },
-                    Object {
                       "label": "Czech",
                       "value": "cz",
                     },
@@ -890,12 +866,6 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when upd
                   value="de"
                 >
                   German
-                </option>
-                <option
-                  key="no"
-                  value="no"
-                >
-                  Norwegian
                 </option>
                 <option
                   key="cz"
@@ -989,7 +959,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when upd
           isOnline={true}
           language="en-US"
           mainColor="#0d87dd"
-          name="hellosmoochintegration"
+          name="hellochatintegration"
           offlineIntroductionText="We'll be back tomorrow"
           renderFooter={true}
         >
@@ -1004,7 +974,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when upd
 </div>
 `;
 
-exports[`<ChatIntegrationAppearance/> render() should mark the file field for team picture as required because the avatar type is \`team-picture\` and there is no team picture set 1`] = `
+exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field for team picture as required because the avatar type is \`team-picture\` and there is no team picture set 1`] = `
 <div
   className="full-width"
 >
@@ -1030,15 +1000,15 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
           <Link
             onlyActiveOnIndex={false}
             style={Object {}}
-            to="/app/settings/integrations/smooch_inside"
+            to="/app/settings/integrations/gorgias_chat"
           >
-            Chat
+            Gorgias Chat
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
           tag="li"
         >
-          hellosmoochintegration
+          hellochatintegration
         </BreadcrumbItem>
         <BreadcrumbItem
           active={true}
@@ -1049,12 +1019,12 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
       </Breadcrumb>
     }
   />
-  <ChatIntegrationNavigation
+  <GorgiasChatIntegrationNavigation
     integration={
       Immutable.Map {
         "id": 2,
-        "name": "hellosmoochintegration",
-        "type": "smooch_inside",
+        "name": "hellochatintegration",
+        "type": "gorgias_chat",
         "decoration": Immutable.Map {
           "avatar_type": "team-picture",
           "avatar_team_picture_url": null,
@@ -1101,7 +1071,7 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
                 placeholder="Ex: Company Support"
                 required={true}
                 type="text"
-                value="hellosmoochintegration"
+                value="hellochatintegration"
               />
               <InputField
                 label="Introduction text during business hours"
@@ -1207,10 +1177,6 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
                       "value": "de",
                     },
                     Object {
-                      "label": "Norwegian",
-                      "value": "no",
-                    },
-                    Object {
                       "label": "Czech",
                       "value": "cz",
                     },
@@ -1266,12 +1232,6 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
                   value="de"
                 >
                   German
-                </option>
-                <option
-                  key="no"
-                  value="no"
-                >
-                  Norwegian
                 </option>
                 <option
                   key="cz"
@@ -1365,7 +1325,7 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
           isOnline={true}
           language="en-US"
           mainColor="#0d87dd"
-          name="hellosmoochintegration"
+          name="hellochatintegration"
           offlineIntroductionText="We'll be back tomorrow"
           renderFooter={true}
         >
@@ -1380,7 +1340,7 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
 </div>
 `;
 
-exports[`<ChatIntegrationAppearance/> render() should not mark the file field for team picture as required because the avatar type is \`team-members\` 1`] = `
+exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file field for team picture as required because the avatar type is \`team-members\` 1`] = `
 <div
   className="full-width"
 >
@@ -1406,15 +1366,15 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
           <Link
             onlyActiveOnIndex={false}
             style={Object {}}
-            to="/app/settings/integrations/smooch_inside"
+            to="/app/settings/integrations/gorgias_chat"
           >
-            Chat
+            Gorgias Chat
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
           tag="li"
         >
-          hellosmoochintegration
+          hellochatintegration
         </BreadcrumbItem>
         <BreadcrumbItem
           active={true}
@@ -1425,12 +1385,12 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
       </Breadcrumb>
     }
   />
-  <ChatIntegrationNavigation
+  <GorgiasChatIntegrationNavigation
     integration={
       Immutable.Map {
         "id": 2,
-        "name": "hellosmoochintegration",
-        "type": "smooch_inside",
+        "name": "hellochatintegration",
+        "type": "gorgias_chat",
         "decoration": Immutable.Map {
           "avatar_type": "team-members",
           "avatar_team_picture_url": null,
@@ -1477,7 +1437,7 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
                 placeholder="Ex: Company Support"
                 required={true}
                 type="text"
-                value="hellosmoochintegration"
+                value="hellochatintegration"
               />
               <InputField
                 label="Introduction text during business hours"
@@ -1565,10 +1525,6 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
                       "value": "de",
                     },
                     Object {
-                      "label": "Norwegian",
-                      "value": "no",
-                    },
-                    Object {
                       "label": "Czech",
                       "value": "cz",
                     },
@@ -1624,12 +1580,6 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
                   value="de"
                 >
                   German
-                </option>
-                <option
-                  key="no"
-                  value="no"
-                >
-                  Norwegian
                 </option>
                 <option
                   key="cz"
@@ -1723,7 +1673,7 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
           isOnline={true}
           language="en-US"
           mainColor="#0d87dd"
-          name="hellosmoochintegration"
+          name="hellochatintegration"
           offlineIntroductionText="We'll be back tomorrow"
           renderFooter={true}
         >
@@ -1738,7 +1688,7 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
 </div>
 `;
 
-exports[`<ChatIntegrationAppearance/> render() should not mark the file field for team picture as required because the avatar type is \`team-picture\` but there is a team picture set 1`] = `
+exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file field for team picture as required because the avatar type is \`team-picture\` but there is a team picture set 1`] = `
 <div
   className="full-width"
 >
@@ -1764,15 +1714,15 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
           <Link
             onlyActiveOnIndex={false}
             style={Object {}}
-            to="/app/settings/integrations/smooch_inside"
+            to="/app/settings/integrations/gorgias_chat"
           >
-            Chat
+            Gorgias Chat
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
           tag="li"
         >
-          hellosmoochintegration
+          hellochatintegration
         </BreadcrumbItem>
         <BreadcrumbItem
           active={true}
@@ -1783,12 +1733,12 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
       </Breadcrumb>
     }
   />
-  <ChatIntegrationNavigation
+  <GorgiasChatIntegrationNavigation
     integration={
       Immutable.Map {
         "id": 2,
-        "name": "hellosmoochintegration",
-        "type": "smooch_inside",
+        "name": "hellochatintegration",
+        "type": "gorgias_chat",
         "decoration": Immutable.Map {
           "avatar_type": "team-picture",
           "avatar_team_picture_url": "https://gorgias.io/teampicture.png",
@@ -1835,7 +1785,7 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
                 placeholder="Ex: Company Support"
                 required={true}
                 type="text"
-                value="hellosmoochintegration"
+                value="hellochatintegration"
               />
               <InputField
                 label="Introduction text during business hours"
@@ -1951,10 +1901,6 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
                       "value": "de",
                     },
                     Object {
-                      "label": "Norwegian",
-                      "value": "no",
-                    },
-                    Object {
                       "label": "Czech",
                       "value": "cz",
                     },
@@ -2010,12 +1956,6 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
                   value="de"
                 >
                   German
-                </option>
-                <option
-                  key="no"
-                  value="no"
-                >
-                  Norwegian
                 </option>
                 <option
                   key="cz"
@@ -2109,7 +2049,7 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
           isOnline={true}
           language="en-US"
           mainColor="#0d87dd"
-          name="hellosmoochintegration"
+          name="hellochatintegration"
           offlineIntroductionText="We'll be back tomorrow"
           renderFooter={true}
         >

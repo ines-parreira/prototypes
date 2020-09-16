@@ -1,0 +1,491 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<ChatIntegrationPreview/> render() should display auto responder 1`] = `
+<div
+  className="preview"
+>
+  <div
+    className="titlebar"
+  />
+  <div
+    className="dialog"
+  >
+    <div
+      className="header"
+      style={
+        Object {
+          "backgroundColor": "#123456",
+        }
+      }
+    >
+      <ChatIntegrationAvatar
+        isOnline={true}
+        mainColor="#123456"
+        offlineColor="#A1A9B6"
+      />
+      <div
+        className="details"
+      >
+        <div
+          className="appName"
+        >
+          My little chat integration
+        </div>
+        <div
+          className="introductionText"
+        >
+          intro
+        </div>
+      </div>
+    </div>
+    <OptionalEmailCapture
+      autoResponderReply="reply-shortly"
+      conversationColor="#456789"
+      language="en-US"
+      name="My little chat integration"
+    />
+    <div
+      className="poweredby"
+    >
+      Powered by Gorgias
+    </div>
+  </div>
+  <div
+    className="button"
+    style={
+      Object {
+        "backgroundColor": "#123456",
+      }
+    }
+  >
+    <div
+      className="iconWrapper"
+    >
+      <i
+        className="icon"
+      />
+      <div
+        className="shadow"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ChatIntegrationPreview/> render() should display optional email capture 1`] = `
+<div
+  className="preview"
+>
+  <div
+    className="titlebar"
+  />
+  <div
+    className="dialog"
+  >
+    <div
+      className="header"
+      style={
+        Object {
+          "backgroundColor": "#123456",
+        }
+      }
+    >
+      <ChatIntegrationAvatar
+        isOnline={true}
+        mainColor="#123456"
+        offlineColor="#A1A9B6"
+      />
+      <div
+        className="details"
+      >
+        <div
+          className="appName"
+        >
+          My little chat integration
+        </div>
+        <div
+          className="introductionText"
+        >
+          intro
+        </div>
+      </div>
+    </div>
+    <OptionalEmailCapture
+      conversationColor="#456789"
+      language="en-US"
+      name="My little chat integration"
+    />
+    <div
+      className="poweredby"
+    >
+      Powered by Gorgias
+    </div>
+    <div
+      className="footer"
+    >
+      <div
+        className="placeholder"
+      >
+        Type a message...
+      </div>
+      <i
+        className="icon camera"
+      />
+    </div>
+  </div>
+  <div
+    className="button"
+    style={
+      Object {
+        "backgroundColor": "#123456",
+      }
+    }
+  >
+    <div
+      className="iconWrapper"
+    >
+      <i
+        className="icon"
+      />
+      <div
+        className="shadow"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ChatIntegrationPreview/> render() should display required email capture 1`] = `
+<div
+  className="preview"
+>
+  <div
+    className="titlebar"
+  />
+  <div
+    className="dialog"
+  >
+    <div
+      className="header"
+      style={
+        Object {
+          "backgroundColor": "#123456",
+        }
+      }
+    >
+      <ChatIntegrationAvatar
+        isOnline={true}
+        mainColor="#123456"
+        offlineColor="#A1A9B6"
+      />
+      <div
+        className="details"
+      >
+        <div
+          className="appName"
+        >
+          My little chat integration
+        </div>
+        <div
+          className="introductionText"
+        >
+          intro
+        </div>
+      </div>
+    </div>
+    <RequiredEmailCapture
+      conversationColor="#456789"
+      language="en-US"
+    />
+    <div
+      className="poweredby"
+    >
+      Powered by Gorgias
+    </div>
+  </div>
+  <div
+    className="button"
+    style={
+      Object {
+        "backgroundColor": "#123456",
+      }
+    }
+  >
+    <div
+      className="iconWrapper"
+    >
+      <i
+        className="icon"
+      />
+      <div
+        className="shadow"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ChatIntegrationPreview/> render() should display the avatar team picture in the header because the URL is set and the option is enabled 1`] = `
+<div
+  className="preview"
+>
+  <div
+    className="titlebar"
+  />
+  <div
+    className="dialog"
+  >
+    <div
+      className="header"
+      style={
+        Object {
+          "backgroundColor": "#123456",
+        }
+      }
+    >
+      <ChatIntegrationAvatar
+        avatarTeamPictureUrl="https://gorgias.io/avatar.png"
+        avatarType="team-picture"
+        isOnline={true}
+        mainColor="#123456"
+        offlineColor="#A1A9B6"
+      />
+      <div
+        className="details"
+      >
+        <div
+          className="appName"
+        >
+          My little chat integration
+        </div>
+        <div
+          className="introductionText"
+        >
+          intro
+        </div>
+      </div>
+    </div>
+    <MessageContent
+      conversationColor="#456789"
+      currentUser={
+        Immutable.Map {
+          "name": "Charles",
+        }
+      }
+    />
+    <div
+      className="poweredby"
+    >
+      Powered by Gorgias
+    </div>
+    <div
+      className="footer"
+    >
+      <div
+        className="placeholder"
+      >
+        Type a message...
+      </div>
+      <i
+        className="icon camera"
+      />
+    </div>
+  </div>
+  <div
+    className="button"
+    style={
+      Object {
+        "backgroundColor": "#123456",
+      }
+    }
+  >
+    <div
+      className="iconWrapper"
+    >
+      <i
+        className="icon"
+      />
+      <div
+        className="shadow"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ChatIntegrationPreview/> render() should display the offline status because chat is offline 1`] = `
+<div
+  className="preview"
+>
+  <div
+    className="titlebar"
+  />
+  <div
+    className="dialog"
+  >
+    <div
+      className="header"
+      style={
+        Object {
+          "backgroundColor": "#A1A9B6",
+        }
+      }
+    >
+      <ChatIntegrationAvatar
+        isOnline={false}
+        mainColor="#123456"
+        offlineColor="#A1A9B6"
+      />
+      <div
+        className="details"
+      >
+        <div
+          className="appName"
+        >
+          My little chat integration
+        </div>
+        <div
+          className="introductionText"
+        >
+           
+        </div>
+        <div
+          className="business-hours-back-badge"
+        >
+          Back tomorrow
+        </div>
+      </div>
+    </div>
+    <MessageContent
+      conversationColor="#456789"
+      currentUser={
+        Immutable.Map {
+          "name": "Charles",
+        }
+      }
+    />
+    <div
+      className="poweredby"
+    >
+      Powered by Gorgias
+    </div>
+    <div
+      className="footer"
+    >
+      <div
+        className="placeholder"
+      >
+        Type a message...
+      </div>
+      <i
+        className="icon camera"
+      />
+    </div>
+  </div>
+  <div
+    className="button"
+    style={
+      Object {
+        "backgroundColor": "#123456",
+      }
+    }
+  >
+    <div
+      className="iconWrapper"
+    >
+      <i
+        className="icon"
+      />
+      <div
+        className="shadow"
+      />
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<ChatIntegrationPreview/> render() should display the online status because chat is online 1`] = `
+<div
+  className="preview"
+>
+  <div
+    className="titlebar"
+  />
+  <div
+    className="dialog"
+  >
+    <div
+      className="header"
+      style={
+        Object {
+          "backgroundColor": "#123456",
+        }
+      }
+    >
+      <ChatIntegrationAvatar
+        isOnline={true}
+        mainColor="#123456"
+        offlineColor="#A1A9B6"
+      />
+      <div
+        className="details"
+      >
+        <div
+          className="appName"
+        >
+          My little chat integration
+        </div>
+        <div
+          className="introductionText"
+        >
+          intro
+        </div>
+      </div>
+    </div>
+    <MessageContent
+      conversationColor="#456789"
+      currentUser={
+        Immutable.Map {
+          "name": "Charles",
+        }
+      }
+    />
+    <div
+      className="poweredby"
+    >
+      Powered by Gorgias
+    </div>
+    <div
+      className="footer"
+    >
+      <div
+        className="placeholder"
+      >
+        Type a message...
+      </div>
+      <i
+        className="icon camera"
+      />
+    </div>
+  </div>
+  <div
+    className="button"
+    style={
+      Object {
+        "backgroundColor": "#123456",
+      }
+    }
+  >
+    <div
+      className="iconWrapper"
+    >
+      <i
+        className="icon"
+      />
+      <div
+        className="shadow"
+      />
+    </div>
+  </div>
+</div>
+`;

@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ChatIntegrationInstall component should display the list of Shopify stores with the toggle checked or not depending on the installation status 1`] = `
-<Connect(ChatIntegrationInstall)
+exports[`<GorgiasChatIntegrationInstall/> should display the list of Shopify stores with the toggle checked or not depending on the installation status 1`] = `
+<Connect(GorgiasChatIntegrationInstall)
   actions={Object {}}
   integration={
     Immutable.Map {
       "id": 2,
       "name": "mychat",
-      "type": "smooch_inside",
+      "type": "gorgias_chat",
       "meta": Immutable.Map {
         "shopify_integration_ids": Immutable.List [
           3,
@@ -28,15 +28,16 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
     }
   }
 >
-  <ChatIntegrationInstall
+  <GorgiasChatIntegrationInstall
     actions={Object {}}
     domain="acme"
     getIntegrationsByTypes={[Function]}
+    gorgiasChatExtraState={Immutable.Map {}}
     integration={
       Immutable.Map {
         "id": 2,
         "name": "mychat",
-        "type": "smooch_inside",
+        "type": "gorgias_chat",
         "meta": Immutable.Map {
           "shopify_integration_ids": Immutable.List [
             3,
@@ -82,9 +83,9 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
               <Link
                 onlyActiveOnIndex={false}
                 style={Object {}}
-                to="/app/settings/integrations/smooch_inside"
+                to="/app/settings/integrations/gorgias_chat"
               >
-                Chat
+                Gorgias Chat
               </Link>
             </BreadcrumbItem>
             <BreadcrumbItem
@@ -139,13 +140,13 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                   <Link
                     onlyActiveOnIndex={false}
                     style={Object {}}
-                    to="/app/settings/integrations/smooch_inside"
+                    to="/app/settings/integrations/gorgias_chat"
                   >
                     <a
                       onClick={[Function]}
                       style={Object {}}
                     >
-                      Chat
+                      Gorgias Chat
                     </a>
                   </Link>
                 </li>
@@ -173,12 +174,12 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
           </Breadcrumb>
         </div>
       </PageHeader>
-      <ChatIntegrationNavigation
+      <GorgiasChatIntegrationNavigation
         integration={
           Immutable.Map {
             "id": 2,
             "name": "mychat",
-            "type": "smooch_inside",
+            "type": "gorgias_chat",
             "meta": Immutable.Map {
               "shopify_integration_ids": Immutable.List [
                 3,
@@ -203,7 +204,7 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                 key=".0"
                 onlyActiveOnIndex={false}
                 style={Object {}}
-                to="/app/settings/integrations/smooch_inside/2/appearance"
+                to="/app/settings/integrations/gorgias_chat/2/appearance"
               >
                 <a
                   className="nav-link"
@@ -219,7 +220,7 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                 key=".1"
                 onlyActiveOnIndex={false}
                 style={Object {}}
-                to="/app/settings/integrations/smooch_inside/2/installation"
+                to="/app/settings/integrations/gorgias_chat/2/installation"
               >
                 <a
                   className="nav-link"
@@ -235,7 +236,7 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                 key=".2"
                 onlyActiveOnIndex={false}
                 style={Object {}}
-                to="/app/settings/integrations/smooch_inside/2/preferences"
+                to="/app/settings/integrations/gorgias_chat/2/preferences"
               >
                 <a
                   className="nav-link"
@@ -251,23 +252,7 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                 key=".3"
                 onlyActiveOnIndex={false}
                 style={Object {}}
-                to="/app/settings/integrations/smooch_inside/2/campaigns"
-              >
-                <a
-                  className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
-                >
-                  Campaigns
-                </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
-                key=".4"
-                onlyActiveOnIndex={false}
-                style={Object {}}
-                to="/app/settings/integrations/smooch_inside/2/quick-replies"
+                to="/app/settings/integrations/gorgias_chat/2/quick_replies"
               >
                 <a
                   className="nav-link"
@@ -280,7 +265,7 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
             </nav>
           </Navbar>
         </SecondaryNavbar>
-      </ChatIntegrationNavigation>
+      </GorgiasChatIntegrationNavigation>
       <Container
         className="page-container"
         fluid={true}
@@ -316,7 +301,7 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                       Immutable.Map {
                         "id": 2,
                         "name": "mychat",
-                        "type": "smooch_inside",
+                        "type": "gorgias_chat",
                         "meta": Immutable.Map {
                           "shopify_integration_ids": Immutable.List [
                             3,
@@ -374,7 +359,7 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                               </h3>
                               <p>
                                 Install the 
-                                chat
+                                customer chat
                                  widget on your
                                  
                                 Shopify
@@ -451,12 +436,7 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                     </Card>
                   </InstallOnIntegrationsCard>
                   <CustomInstallationCard
-                    code="<!-- Gorgias Chat Widget Start -->
-<div id=\\"gorgias-chat\\">
-<script>window.gorgiasChatParameters = {}</script>
-<script src=\\"config.gorgias.io/foo/chat/bar\\" defer></script>
-</div>
-<!-- Gorgias Chat Widget End -->"
+                    code="<!--Gorgias Chat Widget Start--><script>!function(_){_.GORGIAS_CHAT_APP_ID=\\"undefined\\",_.GORGIAS_CHAT_BASE_URL=\\"undefined\\",_.GORGIAS_API_BASE_URL=\\"\\";var e=new XMLHttpRequest;e.open(\\"GET\\",\\"https:///applications/undefined\\",!0),e.onload=function(t){if(4===e.readyState)if(200===e.status){var n=JSON.parse(e.responseText);if(!n.application||!n.bundleVersion)throw new Error(\\"Missing fields in the response body - https:///applications/undefined\\");if(_.GORGIAS_CHAT_APP=n.application,_.GORGIAS_CHAT_BUNDLE_VERSION=n.bundleVersion,n&&n.texts&&(_.GORGIAS_CHAT_TEXTS=n.texts),!document.getElementById(\\"gorgias-chat-container\\")){var o=document.createElement(\\"div\\");o.id=\\"gorgias-chat-container\\",document.body.appendChild(o);const _=document.createElement(\\"script\\");_.setAttribute(\\"defer\\",!0),_.src=\\"undefined/static/js/bundle.js\\".replace(\\"{bundleVersion}\\",n.bundleVersion),document.body.appendChild(_)}}else console.error(\\"Failed request GET - https:///applications/undefined\\")},e.onerror=function(_){console.error(_)},e.send()}(window||{});</script><!--Gorgias Chat Widget End-->"
                     description={
                       <p>
                         Copy the code below and paste it on your website above the 
@@ -467,7 +447,7 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                         tag:
                       </p>
                     }
-                    integrationType="smooch_inside"
+                    integrationType="gorgias_chat"
                   >
                     <Card
                       className="integration-card"
@@ -577,12 +557,7 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                                       className="code"
                                       id="code-snippet"
                                     >
-                                      &lt;!-- Gorgias Chat Widget Start --&gt;
-&lt;div id="gorgias-chat"&gt;
-&lt;script&gt;window.gorgiasChatParameters = {}&lt;/script&gt;
-&lt;script src="config.gorgias.io/foo/chat/bar" defer&gt;&lt;/script&gt;
-&lt;/div&gt;
-&lt;!-- Gorgias Chat Widget End --&gt;
+                                      &lt;!--Gorgias Chat Widget Start--&gt;&lt;script&gt;!function(_){_.GORGIAS_CHAT_APP_ID="undefined",_.GORGIAS_CHAT_BASE_URL="undefined",_.GORGIAS_API_BASE_URL="";var e=new XMLHttpRequest;e.open("GET","https:///applications/undefined",!0),e.onload=function(t){if(4===e.readyState)if(200===e.status){var n=JSON.parse(e.responseText);if(!n.application||!n.bundleVersion)throw new Error("Missing fields in the response body - https:///applications/undefined");if(_.GORGIAS_CHAT_APP=n.application,_.GORGIAS_CHAT_BUNDLE_VERSION=n.bundleVersion,n&&n.texts&&(_.GORGIAS_CHAT_TEXTS=n.texts),!document.getElementById("gorgias-chat-container")){var o=document.createElement("div");o.id="gorgias-chat-container",document.body.appendChild(o);const _=document.createElement("script");_.setAttribute("defer",!0),_.src="undefined/static/js/bundle.js".replace("{bundleVersion}",n.bundleVersion),document.body.appendChild(_)}}else console.error("Failed request GET - https:///applications/undefined")},e.onerror=function(_){console.error(_)},e.send()}(window||{});&lt;/script&gt;&lt;!--Gorgias Chat Widget End--&gt;
                                     </pre>
                                   </div>
                                 </Transition>
@@ -623,6 +598,8 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
         </div>
       </Container>
     </div>
-  </ChatIntegrationInstall>
-</Connect(ChatIntegrationInstall)>
+  </GorgiasChatIntegrationInstall>
+</Connect(GorgiasChatIntegrationInstall)>
 `;
+
+exports[`renderChatCodeSnippet() should render correctly with new format 1`] = `"<!--Gorgias Chat Widget Start--><script>!function(_){_.GORGIAS_CHAT_APP_ID=\\"undefined\\",_.GORGIAS_CHAT_BASE_URL=\\"undefined\\",_.GORGIAS_API_BASE_URL=\\"\\";var e=new XMLHttpRequest;e.open(\\"GET\\",\\"https:///applications/undefined\\",!0),e.onload=function(t){if(4===e.readyState)if(200===e.status){var n=JSON.parse(e.responseText);if(!n.application||!n.bundleVersion)throw new Error(\\"Missing fields in the response body - https:///applications/undefined\\");if(_.GORGIAS_CHAT_APP=n.application,_.GORGIAS_CHAT_BUNDLE_VERSION=n.bundleVersion,n&&n.texts&&(_.GORGIAS_CHAT_TEXTS=n.texts),!document.getElementById(\\"gorgias-chat-container\\")){var o=document.createElement(\\"div\\");o.id=\\"gorgias-chat-container\\",document.body.appendChild(o);const _=document.createElement(\\"script\\");_.setAttribute(\\"defer\\",!0),_.src=\\"undefined/static/js/bundle.js\\".replace(\\"{bundleVersion}\\",n.bundleVersion),document.body.appendChild(_)}}else console.error(\\"Failed request GET - https:///applications/undefined\\")},e.onerror=function(_){console.error(_)},e.send()}(window||{});</script><!--Gorgias Chat Widget End-->"`;

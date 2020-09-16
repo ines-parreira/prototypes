@@ -9,6 +9,7 @@ import {
     EMAIL_INTEGRATION_TYPE,
     FACEBOOK_INTEGRATION_TYPE,
     GMAIL_INTEGRATION_TYPE,
+    GORGIAS_CHAT_INTEGRATION_TYPE,
     HTTP_INTEGRATION_TYPE,
     MAGENTO2_INTEGRATION_TYPE,
     RECHARGE_INTEGRATION_TYPE,
@@ -34,6 +35,12 @@ import FacebookIntegrationPreferences from './components/facebook/FacebookIntegr
 import FacebookIntegrationInstagramAds from './components/facebook/FacebookIntegrationAds'
 import FacebookIntegrationSetup from './components/facebook/FacebookIntegrationSetup'
 import FacebookIntegrationCustomerChat from './components/facebook/FacebookIntegrationCustomerChat'
+
+import GorgiasChatIntegrationAppearance from './components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasChatIntegrationAppearance'
+import GorgiasChatIntegrationInstall from './components/gorgias_chat/GorgiasChatIntegrationInstall'
+import GorgiasChatIntegrationList from './components/gorgias_chat/GorgiasChatIntegrationList'
+import GorgiasChatIntegrationPreferences from './components/gorgias_chat/GorgiasChatIntegrationPreferences'
+import GorgiasChatIntegrationQuickReplies from './components/gorgias_chat/GorgiasChatIntegrationQuickReplies'
 
 import HTTPIntegrationList from './components/http/HTTPIntegrationList'
 
@@ -323,6 +330,55 @@ class IntegrationDetailContainer extends React.Component {
 
                 return (
                     <HTTPIntegrationList
+                        actions={actions}
+                        integrations={commonProps.integrations}
+                        loading={commonProps.loading}
+                    />
+                )
+
+            case GORGIAS_CHAT_INTEGRATION_TYPE:
+                if (isDetail) {
+                    if (params.extra === 'installation') {
+                        return (
+                            <GorgiasChatIntegrationInstall
+                                actions={actions}
+                                loading={commonProps.loading}
+                                integration={commonProps.integration}
+                            />
+                        )
+                    }
+
+                    if (params.extra === 'preferences') {
+                        return (
+                            <GorgiasChatIntegrationPreferences
+                                actions={actions}
+                                loading={commonProps.loading}
+                                integration={commonProps.integration}
+                            />
+                        )
+                    }
+
+                    if (params.extra === 'quick_replies') {
+                        return (
+                            <GorgiasChatIntegrationQuickReplies
+                                integration={commonProps.integration}
+                            />
+                        )
+                    }
+
+                    return (
+                        <GorgiasChatIntegrationAppearance
+                            actions={actions}
+                            integration={commonProps.integration}
+                            isUpdate={isUpdate}
+                            loading={commonProps.loading}
+                            currentUser={currentUser}
+                        />
+                    )
+                }
+
+                return (
+                    <GorgiasChatIntegrationList
                         actions={actions}
                         integrations={commonProps.integrations}
                         loading={commonProps.loading}

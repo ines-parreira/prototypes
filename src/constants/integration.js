@@ -6,6 +6,7 @@ export const FACEBOOK_INTEGRATION_TYPE = 'facebook'
 export const EMAIL_INTEGRATION_TYPE = 'email'
 export const GMAIL_INTEGRATION_TYPE = 'gmail'
 export const OUTLOOK_INTEGRATION_TYPE = 'outlook'
+export const GORGIAS_CHAT_INTEGRATION_TYPE = 'gorgias_chat'
 
 export const HTTP_INTEGRATION_TYPE = 'http'
 export const MAGENTO2_INTEGRATION_TYPE = 'magento2'
