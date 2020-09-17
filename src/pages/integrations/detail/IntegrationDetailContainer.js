@@ -37,6 +37,8 @@ import FacebookIntegrationSetup from './components/facebook/FacebookIntegrationS
 import FacebookIntegrationCustomerChat from './components/facebook/FacebookIntegrationCustomerChat'
 
 import GorgiasChatIntegrationAppearance from './components/gorgias_chat/GorgiasChatIntegrationAppearance/GorgiasChatIntegrationAppearance'
+import GorgiasChatCampaignDetail from './components/gorgias_chat/GorgiasChatIntegrationCampaigns/GorgiasChatCampaignDetail'
+import GorgiasChatIntegrationCampaigns from './components/gorgias_chat/GorgiasChatIntegrationCampaigns/GorgiasChatIntegrationCampaigns'
 import GorgiasChatIntegrationInstall from './components/gorgias_chat/GorgiasChatIntegrationInstall'
 import GorgiasChatIntegrationList from './components/gorgias_chat/GorgiasChatIntegrationList'
 import GorgiasChatIntegrationPreferences from './components/gorgias_chat/GorgiasChatIntegrationPreferences'
@@ -361,6 +363,23 @@ class IntegrationDetailContainer extends React.Component {
                     if (params.extra === 'quick_replies') {
                         return (
                             <GorgiasChatIntegrationQuickReplies
+                                integration={commonProps.integration}
+                            />
+                        )
+                    }
+
+                    if (params.extra === 'campaigns') {
+                        if (params.subId) {
+                            return (
+                                <GorgiasChatCampaignDetail
+                                    integration={commonProps.integration}
+                                    id={params.subId}
+                                />
+                            )
+                        }
+
+                        return (
+                            <GorgiasChatIntegrationCampaigns
                                 integration={commonProps.integration}
                             />
                         )

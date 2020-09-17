@@ -8,7 +8,9 @@ export function createCampaign(campaign, integration) {
     return (dispatch) => {
         return axios
             .post(
-                `/api/integrations/${integration.get('id')}/campaigns/`,
+                `/api/integrations/${integration.get('type')}/${integration.get(
+                    'id'
+                )}/campaigns/`,
                 campaign.toJS()
             )
             .then((json = {}) => json.data)
@@ -43,7 +45,7 @@ export function updateCampaign(campaign, integration) {
     return (dispatch) => {
         return axios
             .put(
-                `/api/integrations/${integration.get(
+                `/api/integrations/${integration.get('type')}/${integration.get(
                     'id'
                 )}/campaigns/${campaign.get('id')}`,
                 campaign.toJS()
@@ -74,7 +76,7 @@ export function deleteCampaign(campaign, integration) {
     return (dispatch) => {
         return axios
             .delete(
-                `/api/integrations/${integration.get(
+                `/api/integrations/${integration.get('type')}/${integration.get(
                     'id'
                 )}/campaigns/${campaign.get('id')}`
             )

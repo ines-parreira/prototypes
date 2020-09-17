@@ -3,6 +3,7 @@ import classnames from 'classnames'
 import React, {type Node} from 'react'
 import {Link} from 'react-router'
 
+import {TicketVias} from '../../../../../business/ticket.ts'
 import type {Meta as MetaType, Source} from '../../../../../models/ticket/types'
 
 import {
@@ -31,7 +32,7 @@ const From = ({label, children}: {label: string, children?: Node}) => (
 )
 
 export default function Meta(props: Props) {
-    const {meta, source, messageId} = props
+    const {meta, source, messageId, via} = props
     const widgets = []
 
     if (meta && meta.current_page) {
@@ -122,7 +123,12 @@ export default function Meta(props: Props) {
         sentViaLink = `/app/settings/rules?ruleId=${props.ruleId}`
     } else if (meta && meta.campaign_id && props.integrationId) {
         sentViaLabel = 'Campaign'
-        sentViaLink = `/app/settings/integrations/smooch_inside/${props.integrationId}/campaigns/${meta.campaign_id}`
+
+        if (via === TicketVias.GORGIAS_CHAT) {
+            sentViaLink = `/app/settings/integrations/gorgias_chat/${props.integrationId}/campaigns/${meta.campaign_id}`
+        } else {
+            sentViaLink = `/app/settings/integrations/smooch_inside/${props.integrationId}/campaigns/${meta.campaign_id}`
+        }
     }
 
     if (sentViaLabel && sentViaLink) {

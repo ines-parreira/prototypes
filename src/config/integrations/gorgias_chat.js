@@ -54,3 +54,48 @@ export const QUICK_REPLIES_DEFAULTS = fromJS([
 ])
 export const QUICK_REPLIES_MAX_ITEMS = 3
 export const QUICK_REPLIES_MAX_ITEM_LENGTH = 20
+
+// Campaigns
+export const CAMPAIGNS_TRIGGER_KEYS = fromJS([
+    {
+        label: 'Current URL',
+        name: 'current_url',
+        operators: {
+            eq: {
+                label: 'is',
+            },
+            neq: {
+                label: 'is not',
+            },
+            contains: {
+                label: 'contains',
+            },
+            notContains: {
+                label: 'does not contain',
+            },
+            startsWith: {
+                label: 'starts with',
+            },
+            endsWith: {
+                label: 'ends with',
+            },
+        },
+        value: {
+            input: 'text',
+            default: '',
+        },
+    },
+    {
+        label: 'Time spent on page',
+        name: 'time_spent_on_page',
+        operators: {
+            gt: {
+                label: 'is greater than',
+            },
+        },
+        value: {
+            input: 'number',
+            default: 0,
+        },
+    },
+])

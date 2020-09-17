@@ -1,0 +1,1032 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<GorgiasChatCampaignDetail/> render() should display default value when it's a new campaign 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/gorgias_chat/1"
+          >
+            Gorgias Chat
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          My new chat
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/gorgias_chat/1/campaigns"
+          >
+            Campaigns
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          New campaign
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <GorgiasChatIntegrationNavigation
+    integration={
+      Immutable.Map {
+        "id": 1,
+        "type": "gorgias_chat",
+        "name": "My new chat",
+        "decoration": Immutable.Map {
+          "main_color": "#fefefe",
+        },
+      }
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <Row
+      tag="div"
+    >
+      <Col
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <Form
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <div
+            className="mb-4"
+          >
+            <InputField
+              label="Campaign name"
+              name="name"
+              onChange={[Function]}
+              placeholder="My new campaign"
+              required={true}
+              type="input"
+            />
+          </div>
+          <h5>
+            Choose your audience
+          </h5>
+          <div
+            className="mb-4"
+          >
+            <TriggerRow
+              idx={0}
+              key="0"
+              nbOfTriggers={1}
+              onDelete={[Function]}
+              onOperatorChange={[Function]}
+              onValueChange={[Function]}
+              trigger={
+                Immutable.Map {
+                  "key": "current_url",
+                  "operator": "eq",
+                  "value": "",
+                }
+              }
+            />
+            <UncontrolledDropdown>
+              <DropdownToggle
+                aria-haspopup={true}
+                caret={true}
+                className="mr-2"
+                color="secondary"
+                type="button"
+              >
+                <i
+                  className="material-icons mr-2"
+                >
+                  add
+                </i>
+                Add condition
+              </DropdownToggle>
+              <DropdownMenu
+                flip={true}
+                tag="div"
+              >
+                <DropdownItem
+                  key="current_url"
+                  onClick={[Function]}
+                  tag="button"
+                  toggle={true}
+                  type="button"
+                >
+                  Current URL
+                </DropdownItem>
+                <DropdownItem
+                  key="time_spent_on_page"
+                  onClick={[Function]}
+                  tag="button"
+                  toggle={true}
+                  type="button"
+                >
+                  Time spent on page
+                </DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
+          </div>
+          <h5>
+            Write your message
+          </h5>
+          <div
+            className="mb-4"
+          >
+            <div
+              className="mb-2 authorWrapper"
+            >
+              <span>
+                From: 
+              </span>
+              <SelectField
+                allowCustomValue={false}
+                className="authorInput"
+                fixedWidth={false}
+                fullWidth={false}
+                onChange={[Function]}
+                onSearchChange={[Function]}
+                options={
+                  Array [
+                    Object {
+                      "label": <AgentLabel
+                        className=""
+                        maxWidth="100"
+                        name="John"
+                        profilePictureUrl=""
+                        shouldDisplayAvatar={false}
+                      />,
+                      "text": "John",
+                      "value": "john@gorgias.io",
+                    },
+                    Object {
+                      "label": <AgentLabel
+                        className=""
+                        maxWidth="100"
+                        name="Doe"
+                        profilePictureUrl=""
+                        shouldDisplayAvatar={false}
+                      />,
+                      "text": "Doe",
+                      "value": "doe@gorgias.io",
+                    },
+                    Object {
+                      "label": "Random agent",
+                      "text": "randomagent",
+                      "value": null,
+                    },
+                  ]
+                }
+                placeholder="Select an option"
+                singular="option"
+                style={Object {}}
+                value={null}
+              />
+            </div>
+            <RichField
+              displayedActions={
+                Array [
+                  "BOLD",
+                  "ITALIC",
+                  "UNDERLINE",
+                  "IMAGE",
+                  "EMOJI",
+                ]
+              }
+              onChange={[Function]}
+              placeholder="Write your message"
+              required={true}
+              rows="8"
+              type="text"
+              value={
+                Object {
+                  "html": undefined,
+                }
+              }
+            />
+          </div>
+          <Button
+            className=""
+            color="success"
+            tag="button"
+          >
+            Create & activate campaign
+          </Button>
+        </Form>
+      </Col>
+      <Col
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <CampaignPreview
+          mainColor="#fefefe"
+          translatedTexts={
+            Object {
+              "actionPostbackError": "An error occurred while processing your action. Please try again.",
+              "backLabelBackInAMinute": "Back in 1 minute",
+              "backLabelBackInAnHour": "Back in 1 hour",
+              "backLabelBackInDays": "Back in {value} days",
+              "backLabelBackInHours": "Back in {value} hours",
+              "backLabelBackInMinutes": "Back in {value} minutes",
+              "backLabelBackTomorrow": "Back tomorrow",
+              "campaignClickToReply": "Click to reply",
+              "clickToRetry": "Message not delivered. Click to retry.",
+              "conversationTimestampHeaderFormat": "MMMM D",
+              "emailCaptureInputLabel": "Get notified by email",
+              "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
+              "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
+              "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
+              "emailCaptureOnlineTriggerText": "Leave us your email and we will reply soon.",
+              "emailCapturePlaceholder": "your@email.com",
+              "emailCaptureRequiredEmailPlaceholder": "Leave your email",
+              "emailCaptureRequiredMessagePlaceholder": "Write your message",
+              "fetchHistory": "Load more",
+              "fetchingHistory": "Retrieving history...",
+              "headerText": "Gorgias Team",
+              "inputPlaceholder": "Type a message...",
+              "introductionText": "How can we help?",
+              "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
+              "messageDelivered": "Delivered",
+              "messageError": "An error occurred while sending your message. Please try again.",
+              "messageIndicatorTitlePlural": "({count}) New messages",
+              "messageIndicatorTitleSingular": "({count}) New message",
+              "messageRelativeTimeDay": "{value}d ago",
+              "messageRelativeTimeHour": "{value}h ago",
+              "messageRelativeTimeJustNow": "Just now",
+              "messageRelativeTimeMinute": "{value}m ago",
+              "messageSending": "Sending...",
+              "messageTimestampFormat": "h:mm A",
+              "offlineIntroductionText": "We'll be back tomorrow",
+              "poweredByGorgias": "Powered by Gorgias",
+              "send": "Send",
+              "tapToRetry": "Message not delivered. Tap to retry.",
+              "unsupportedActionType": "Unsupported action type.",
+              "unsupportedMessageType": "Unsupported message type.",
+            }
+          }
+        />
+      </Col>
+    </Row>
+  </Container>
+</div>
+`;
+
+exports[`<GorgiasChatCampaignDetail/> render() should display the campaign correctly when updating it 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/gorgias_chat/1"
+          >
+            Gorgias Chat
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          My new chat
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/gorgias_chat/1/campaigns"
+          >
+            Campaigns
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          My little campaign
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <GorgiasChatIntegrationNavigation
+    integration={
+      Immutable.Map {
+        "id": 1,
+        "type": "gorgias_chat",
+        "name": "My new chat",
+        "decoration": Immutable.Map {
+          "main_color": "#fefefe",
+        },
+      }
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <Row
+      tag="div"
+    >
+      <Col
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <Form
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <div
+            className="mb-4"
+          >
+            <InputField
+              label="Campaign name"
+              name="name"
+              onChange={[Function]}
+              placeholder="My new campaign"
+              required={true}
+              type="input"
+              value="My little campaign"
+            />
+          </div>
+          <h5>
+            Choose your audience
+          </h5>
+          <div
+            className="mb-4"
+          >
+            <TriggerRow
+              idx={0}
+              key="0"
+              nbOfTriggers={2}
+              onDelete={[Function]}
+              onOperatorChange={[Function]}
+              onValueChange={[Function]}
+              trigger={
+                Immutable.Map {
+                  "key": "current_url",
+                  "operator": "contains",
+                  "value": "gorgias",
+                }
+              }
+            />
+            <TriggerRow
+              idx={1}
+              key="1"
+              nbOfTriggers={2}
+              onDelete={[Function]}
+              onOperatorChange={[Function]}
+              onValueChange={[Function]}
+              trigger={
+                Immutable.Map {
+                  "key": "time_spent_on_page",
+                  "operator": "gt",
+                  "value": 42,
+                }
+              }
+            />
+            <UncontrolledDropdown>
+              <DropdownToggle
+                aria-haspopup={true}
+                caret={true}
+                className="mr-2"
+                color="secondary"
+                type="button"
+              >
+                <i
+                  className="material-icons mr-2"
+                >
+                  add
+                </i>
+                Add condition
+              </DropdownToggle>
+              <DropdownMenu
+                flip={true}
+                tag="div"
+              >
+                <DropdownItem
+                  key="current_url"
+                  onClick={[Function]}
+                  tag="button"
+                  toggle={true}
+                  type="button"
+                >
+                  Current URL
+                </DropdownItem>
+                <DropdownItem
+                  key="time_spent_on_page"
+                  onClick={[Function]}
+                  tag="button"
+                  toggle={true}
+                  type="button"
+                >
+                  Time spent on page
+                </DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
+          </div>
+          <h5>
+            Write your message
+          </h5>
+          <div
+            className="mb-4"
+          >
+            <div
+              className="mb-2 authorWrapper"
+            >
+              <span>
+                From: 
+              </span>
+              <SelectField
+                allowCustomValue={false}
+                className="authorInput"
+                fixedWidth={false}
+                fullWidth={false}
+                onChange={[Function]}
+                onSearchChange={[Function]}
+                options={
+                  Array [
+                    Object {
+                      "label": <AgentLabel
+                        className=""
+                        maxWidth="100"
+                        name="John"
+                        profilePictureUrl=""
+                        shouldDisplayAvatar={false}
+                      />,
+                      "text": "John",
+                      "value": "john@gorgias.io",
+                    },
+                    Object {
+                      "label": <AgentLabel
+                        className=""
+                        maxWidth="100"
+                        name="Doe"
+                        profilePictureUrl=""
+                        shouldDisplayAvatar={false}
+                      />,
+                      "text": "Doe",
+                      "value": "doe@gorgias.io",
+                    },
+                    Object {
+                      "label": "Random agent",
+                      "text": "randomagent",
+                      "value": null,
+                    },
+                  ]
+                }
+                placeholder="Select an option"
+                singular="option"
+                style={Object {}}
+                value="john@gorgias.io"
+              />
+            </div>
+            <RichField
+              displayedActions={
+                Array [
+                  "BOLD",
+                  "ITALIC",
+                  "UNDERLINE",
+                  "IMAGE",
+                  "EMOJI",
+                ]
+              }
+              onChange={[Function]}
+              placeholder="Write your message"
+              required={true}
+              rows="8"
+              type="text"
+              value={
+                Object {
+                  "html": "<div><img onerror=\\"alert(1)\\" src=\\"#\\"/>My little message</div>",
+                }
+              }
+            />
+          </div>
+          <Button
+            className=""
+            color="success"
+            tag="button"
+          >
+            Save
+          </Button>
+          <ConfirmButton
+            className="float-right"
+            color="secondary"
+            confirm={[Function]}
+            confirmColor="success"
+            content="Are you sure you want to delete this campaign?"
+            disabled={false}
+            id="delete-campaign-button"
+            loading={false}
+            placement="bottom right"
+            skip={false}
+            title="Are you sure?"
+            type="button"
+          >
+            <i
+              className="material-icons mr-1 text-danger"
+            >
+              delete
+            </i>
+            Delete campaign
+          </ConfirmButton>
+        </Form>
+      </Col>
+      <Col
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <CampaignPreview
+          authorAvatarUrl="https://gravatar.docker/as74d6as4d86as4dasd/avatar.jpg"
+          authorName="John"
+          html="<div><img src=\\"#\\" />My little message</div>"
+          mainColor="#fefefe"
+          translatedTexts={
+            Object {
+              "actionPostbackError": "An error occurred while processing your action. Please try again.",
+              "backLabelBackInAMinute": "Back in 1 minute",
+              "backLabelBackInAnHour": "Back in 1 hour",
+              "backLabelBackInDays": "Back in {value} days",
+              "backLabelBackInHours": "Back in {value} hours",
+              "backLabelBackInMinutes": "Back in {value} minutes",
+              "backLabelBackTomorrow": "Back tomorrow",
+              "campaignClickToReply": "Click to reply",
+              "clickToRetry": "Message not delivered. Click to retry.",
+              "conversationTimestampHeaderFormat": "MMMM D",
+              "emailCaptureInputLabel": "Get notified by email",
+              "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
+              "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
+              "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
+              "emailCaptureOnlineTriggerText": "Leave us your email and we will reply soon.",
+              "emailCapturePlaceholder": "your@email.com",
+              "emailCaptureRequiredEmailPlaceholder": "Leave your email",
+              "emailCaptureRequiredMessagePlaceholder": "Write your message",
+              "fetchHistory": "Load more",
+              "fetchingHistory": "Retrieving history...",
+              "headerText": "Gorgias Team",
+              "inputPlaceholder": "Type a message...",
+              "introductionText": "How can we help?",
+              "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
+              "messageDelivered": "Delivered",
+              "messageError": "An error occurred while sending your message. Please try again.",
+              "messageIndicatorTitlePlural": "({count}) New messages",
+              "messageIndicatorTitleSingular": "({count}) New message",
+              "messageRelativeTimeDay": "{value}d ago",
+              "messageRelativeTimeHour": "{value}h ago",
+              "messageRelativeTimeJustNow": "Just now",
+              "messageRelativeTimeMinute": "{value}m ago",
+              "messageSending": "Sending...",
+              "messageTimestampFormat": "h:mm A",
+              "offlineIntroductionText": "We'll be back tomorrow",
+              "poweredByGorgias": "Powered by Gorgias",
+              "send": "Send",
+              "tapToRetry": "Message not delivered. Tap to retry.",
+              "unsupportedActionType": "Unsupported action type.",
+              "unsupportedMessageType": "Unsupported message type.",
+            }
+          }
+        />
+      </Col>
+    </Row>
+  </Container>
+</div>
+`;
+
+exports[`<GorgiasChatCampaignDetail/> render() should display the campaign correctly when updating it and strip the html 1`] = `
+<div
+  className="full-width"
+>
+  <PageHeader
+    title={
+      <Breadcrumb
+        tag="ol"
+      >
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/gorgias_chat/1"
+          >
+            Gorgias Chat
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          My new chat
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          tag="li"
+        >
+          <Link
+            onlyActiveOnIndex={false}
+            style={Object {}}
+            to="/app/settings/integrations/gorgias_chat/1/campaigns"
+          >
+            Campaigns
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem
+          active={true}
+          tag="li"
+        >
+          My little campaign
+        </BreadcrumbItem>
+      </Breadcrumb>
+    }
+  />
+  <GorgiasChatIntegrationNavigation
+    integration={
+      Immutable.Map {
+        "id": 1,
+        "type": "gorgias_chat",
+        "name": "My new chat",
+        "decoration": Immutable.Map {
+          "main_color": "#fefefe",
+        },
+      }
+    }
+  />
+  <Container
+    className="page-container"
+    fluid={true}
+    tag="div"
+  >
+    <Row
+      tag="div"
+    >
+      <Col
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <Form
+          onSubmit={[Function]}
+          tag="form"
+        >
+          <div
+            className="mb-4"
+          >
+            <InputField
+              label="Campaign name"
+              name="name"
+              onChange={[Function]}
+              placeholder="My new campaign"
+              required={true}
+              type="input"
+              value="My little campaign"
+            />
+          </div>
+          <h5>
+            Choose your audience
+          </h5>
+          <div
+            className="mb-4"
+          >
+            <TriggerRow
+              idx={0}
+              key="0"
+              nbOfTriggers={2}
+              onDelete={[Function]}
+              onOperatorChange={[Function]}
+              onValueChange={[Function]}
+              trigger={
+                Immutable.Map {
+                  "key": "current_url",
+                  "operator": "contains",
+                  "value": "gorgias",
+                }
+              }
+            />
+            <TriggerRow
+              idx={1}
+              key="1"
+              nbOfTriggers={2}
+              onDelete={[Function]}
+              onOperatorChange={[Function]}
+              onValueChange={[Function]}
+              trigger={
+                Immutable.Map {
+                  "key": "time_spent_on_page",
+                  "operator": "gt",
+                  "value": 42,
+                }
+              }
+            />
+            <UncontrolledDropdown>
+              <DropdownToggle
+                aria-haspopup={true}
+                caret={true}
+                className="mr-2"
+                color="secondary"
+                type="button"
+              >
+                <i
+                  className="material-icons mr-2"
+                >
+                  add
+                </i>
+                Add condition
+              </DropdownToggle>
+              <DropdownMenu
+                flip={true}
+                tag="div"
+              >
+                <DropdownItem
+                  key="current_url"
+                  onClick={[Function]}
+                  tag="button"
+                  toggle={true}
+                  type="button"
+                >
+                  Current URL
+                </DropdownItem>
+                <DropdownItem
+                  key="time_spent_on_page"
+                  onClick={[Function]}
+                  tag="button"
+                  toggle={true}
+                  type="button"
+                >
+                  Time spent on page
+                </DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
+          </div>
+          <h5>
+            Write your message
+          </h5>
+          <div
+            className="mb-4"
+          >
+            <div
+              className="mb-2 authorWrapper"
+            >
+              <span>
+                From: 
+              </span>
+              <SelectField
+                allowCustomValue={false}
+                className="authorInput"
+                fixedWidth={false}
+                fullWidth={false}
+                onChange={[Function]}
+                onSearchChange={[Function]}
+                options={
+                  Array [
+                    Object {
+                      "label": <AgentLabel
+                        className=""
+                        maxWidth="100"
+                        name="John"
+                        profilePictureUrl=""
+                        shouldDisplayAvatar={false}
+                      />,
+                      "text": "John",
+                      "value": "john@gorgias.io",
+                    },
+                    Object {
+                      "label": <AgentLabel
+                        className=""
+                        maxWidth="100"
+                        name="Doe"
+                        profilePictureUrl=""
+                        shouldDisplayAvatar={false}
+                      />,
+                      "text": "Doe",
+                      "value": "doe@gorgias.io",
+                    },
+                    Object {
+                      "label": "Random agent",
+                      "text": "randomagent",
+                      "value": null,
+                    },
+                  ]
+                }
+                placeholder="Select an option"
+                singular="option"
+                style={Object {}}
+                value="john@gorgias.io"
+              />
+            </div>
+            <RichField
+              displayedActions={
+                Array [
+                  "BOLD",
+                  "ITALIC",
+                  "UNDERLINE",
+                  "IMAGE",
+                  "EMOJI",
+                ]
+              }
+              onChange={[Function]}
+              placeholder="Write your message"
+              required={true}
+              rows="8"
+              type="text"
+              value={
+                Object {
+                  "html": "<div><img onerror=\\"alert(1)\\" src=\\"#\\"/>My little message</div>",
+                }
+              }
+            />
+          </div>
+          <Button
+            className=""
+            color="success"
+            tag="button"
+          >
+            Save
+          </Button>
+          <ConfirmButton
+            className="float-right"
+            color="secondary"
+            confirm={[Function]}
+            confirmColor="success"
+            content="Are you sure you want to delete this campaign?"
+            disabled={false}
+            id="delete-campaign-button"
+            loading={false}
+            placement="bottom right"
+            skip={false}
+            title="Are you sure?"
+            type="button"
+          >
+            <i
+              className="material-icons mr-1 text-danger"
+            >
+              delete
+            </i>
+            Delete campaign
+          </ConfirmButton>
+        </Form>
+      </Col>
+      <Col
+        tag="div"
+        widths={
+          Array [
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl",
+          ]
+        }
+      >
+        <CampaignPreview
+          authorAvatarUrl="https://gravatar.docker/as74d6as4d86as4dasd/avatar.jpg"
+          authorName="John"
+          html="<div><img src=\\"#\\" />My little message</div>"
+          mainColor="#fefefe"
+          translatedTexts={
+            Object {
+              "actionPostbackError": "An error occurred while processing your action. Please try again.",
+              "backLabelBackInAMinute": "Back in 1 minute",
+              "backLabelBackInAnHour": "Back in 1 hour",
+              "backLabelBackInDays": "Back in {value} days",
+              "backLabelBackInHours": "Back in {value} hours",
+              "backLabelBackInMinutes": "Back in {value} minutes",
+              "backLabelBackTomorrow": "Back tomorrow",
+              "campaignClickToReply": "Click to reply",
+              "clickToRetry": "Message not delivered. Click to retry.",
+              "conversationTimestampHeaderFormat": "MMMM D",
+              "emailCaptureInputLabel": "Get notified by email",
+              "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
+              "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
+              "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
+              "emailCaptureOnlineTriggerText": "Leave us your email and we will reply soon.",
+              "emailCapturePlaceholder": "your@email.com",
+              "emailCaptureRequiredEmailPlaceholder": "Leave your email",
+              "emailCaptureRequiredMessagePlaceholder": "Write your message",
+              "fetchHistory": "Load more",
+              "fetchingHistory": "Retrieving history...",
+              "headerText": "Gorgias Team",
+              "inputPlaceholder": "Type a message...",
+              "introductionText": "How can we help?",
+              "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
+              "messageDelivered": "Delivered",
+              "messageError": "An error occurred while sending your message. Please try again.",
+              "messageIndicatorTitlePlural": "({count}) New messages",
+              "messageIndicatorTitleSingular": "({count}) New message",
+              "messageRelativeTimeDay": "{value}d ago",
+              "messageRelativeTimeHour": "{value}h ago",
+              "messageRelativeTimeJustNow": "Just now",
+              "messageRelativeTimeMinute": "{value}m ago",
+              "messageSending": "Sending...",
+              "messageTimestampFormat": "h:mm A",
+              "offlineIntroductionText": "We'll be back tomorrow",
+              "poweredByGorgias": "Powered by Gorgias",
+              "send": "Send",
+              "tapToRetry": "Message not delivered. Tap to retry.",
+              "unsupportedActionType": "Unsupported action type.",
+              "unsupportedMessageType": "Unsupported message type.",
+            }
+          }
+        />
+      </Col>
+    </Row>
+  </Container>
+</div>
+`;

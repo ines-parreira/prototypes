@@ -1,3 +1,51 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`ticket message meta facebook should not display link when IDs are missing 1`] = `null`;
+
+exports[`ticket message meta should add a -sent via campaign- label because the message was sent by a campaign on a gorgias-chat integration 1`] = `
+<From
+  key="via-widget"
+  label="sent via a"
+>
+  <b>
+    <Link
+      onlyActiveOnIndex={false}
+      style={Object {}}
+      tag="a"
+      title="Campaign"
+      to="/app/settings/integrations/gorgias_chat/118/campaigns/123"
+    >
+      <i
+        className="material-icons mr-1"
+      >
+        settings
+      </i>
+      Campaign
+    </Link>
+  </b>
+</From>
+`;
+
+exports[`ticket message meta should add a -sent via campaign- label because the message was sent by a campaign on a smooch_inside integration 1`] = `
+<From
+  key="via-widget"
+  label="sent via a"
+>
+  <b>
+    <Link
+      onlyActiveOnIndex={false}
+      style={Object {}}
+      tag="a"
+      title="Campaign"
+      to="/app/settings/integrations/smooch_inside/118/campaigns/123"
+    >
+      <i
+        className="material-icons mr-1"
+      >
+        settings
+      </i>
+      Campaign
+    </Link>
+  </b>
+</From>
+`;

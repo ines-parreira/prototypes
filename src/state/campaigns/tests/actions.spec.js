@@ -39,7 +39,7 @@ describe('Campaign actions', () => {
     describe('createCampaign', () => {
         it('should fetch the integration and execute onUpdateSuccess when creating a campaign successfully', () => {
             mockServer
-                .onPost('/api/integrations/1/campaigns/')
+                .onPost('/api/integrations/smooch_inside/1/campaigns/')
                 .reply(201, {data: {id: '123-456'}})
             mockServer.onGet('/api/integrations/1').reply(200, {data: {}})
             mockServer.onGet('/api/integrations/').reply(200, {data: {}})
@@ -62,7 +62,11 @@ describe('Campaign actions', () => {
 
         it('should notify an error when creating a campaign fails', () => {
             mockServer
-                .onPost(`/api/integrations/${integration.get('id')}/campaigns/`)
+                .onPost(
+                    `/api/integrations/${integration.get(
+                        'type'
+                    )}/${integration.get('id')}/campaigns/`
+                )
                 .reply(400, {errors: 'stuff'})
 
             return store
@@ -87,8 +91,8 @@ describe('Campaign actions', () => {
             mockServer
                 .onPut(
                     `/api/integrations/${integration.get(
-                        'id'
-                    )}/campaigns/${campaign.get('id')}`
+                        'type'
+                    )}/${integration.get('id')}/campaigns/${campaign.get('id')}`
                 )
                 .reply(202, {})
             mockServer.onGet('/api/integrations/1').reply(200, {data: {}})
@@ -114,8 +118,8 @@ describe('Campaign actions', () => {
             mockServer
                 .onPut(
                     `/api/integrations/${integration.get(
-                        'id'
-                    )}/campaigns/${campaign.get('id')}`
+                        'type'
+                    )}/${integration.get('id')}/campaigns/${campaign.get('id')}`
                 )
                 .reply(400, {errors: 'stuff'})
 
@@ -141,8 +145,8 @@ describe('Campaign actions', () => {
             mockServer
                 .onDelete(
                     `/api/integrations/${integration.get(
-                        'id'
-                    )}/campaigns/${campaign.get('id')}`
+                        'type'
+                    )}/${integration.get('id')}/campaigns/${campaign.get('id')}`
                 )
                 .reply(204, {})
             mockServer.onGet('/api/integrations/1').reply(200, {data: {}})
@@ -167,8 +171,8 @@ describe('Campaign actions', () => {
             mockServer
                 .onDelete(
                     `/api/integrations/${integration.get(
-                        'id'
-                    )}/campaigns/${campaign.get('id')}`
+                        'type'
+                    )}/${integration.get('id')}/campaigns/${campaign.get('id')}`
                 )
                 .reply(400, {errors: 'stuff'})
 

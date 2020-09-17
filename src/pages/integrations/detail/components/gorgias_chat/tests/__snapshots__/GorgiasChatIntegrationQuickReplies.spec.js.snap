@@ -254,6 +254,22 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                   Quick replies
                 </a>
               </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".4"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/gorgias_chat/7/campaigns"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Campaigns
+                </a>
+              </Link>
             </nav>
           </Navbar>
         </SecondaryNavbar>
@@ -1146,6 +1162,22 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                   style={Object {}}
                 >
                   Quick replies
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".4"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/gorgias_chat/7/campaigns"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Campaigns
                 </a>
               </Link>
             </nav>

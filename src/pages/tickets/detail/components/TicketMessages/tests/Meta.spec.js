@@ -2,6 +2,7 @@
 import {shallow} from 'enzyme'
 import React from 'react'
 
+import {TicketVias} from '../../../../../../business/ticket.ts'
 import Meta from '../Meta'
 
 describe('ticket message meta', () => {
@@ -16,23 +17,43 @@ describe('ticket message meta', () => {
         expect(html.text()).toBe('sent via a Rule')
     })
 
-    it('should add a -sent via campaign- label because the message was sent by a campaign', () => {
-        const component = shallow(
-            <Meta
-                messageId="some-id"
-                via="something"
-                integrationId="118"
-                meta={{
-                    campaign_id: '123',
-                }}
-            />
-        )
-        const fromVia = component.find('From')
+    it(
+        'should add a -sent via campaign- label because the message was sent by a campaign on a ' +
+            'smooch_inside integration',
+        () => {
+            const component = shallow(
+                <Meta
+                    messageId="some-id"
+                    via="something"
+                    integrationId="118"
+                    meta={{
+                        campaign_id: '123',
+                    }}
+                />
+            )
+            const fromVia = component.find('From')
+            expect(fromVia).toMatchSnapshot()
+        }
+    )
 
-        const html = fromVia.render()
-        html.find('.material-icons').remove()
-        expect(html.text()).toBe('sent via a Campaign')
-    })
+    it(
+        'should add a -sent via campaign- label because the message was sent by a campaign on a ' +
+            'gorgias-chat integration',
+        () => {
+            const component = shallow(
+                <Meta
+                    messageId="some-id"
+                    via={TicketVias.GORGIAS_CHAT}
+                    integrationId="118"
+                    meta={{
+                        campaign_id: '123',
+                    }}
+                />
+            )
+            const fromVia = component.find('From')
+            expect(fromVia).toMatchSnapshot()
+        }
+    )
 
     describe('facebook', () => {
         it('should display "go to post" link', () => {

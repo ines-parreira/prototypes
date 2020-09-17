@@ -115,3 +115,8 @@ export const TicketChannels = Object.freeze({
     SMS: 'sms',
     TWITTER: 'twitter',
 })
+
+//$TsFixMe legacy constant for flow usage, use enum at g/static/private/js/business/types/ticket.ts instead
+export const TicketVias = Object.freeze({
+    GORGIAS_CHAT: 'gorgias_chat',
+})

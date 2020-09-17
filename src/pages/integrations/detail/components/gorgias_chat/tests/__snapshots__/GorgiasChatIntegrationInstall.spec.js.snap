@@ -262,6 +262,22 @@ exports[`<GorgiasChatIntegrationInstall/> should display the list of Shopify sto
                   Quick replies
                 </a>
               </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".4"
+                onlyActiveOnIndex={false}
+                style={Object {}}
+                to="/app/settings/integrations/gorgias_chat/2/campaigns"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Campaigns
+                </a>
+              </Link>
             </nav>
           </Navbar>
         </SecondaryNavbar>

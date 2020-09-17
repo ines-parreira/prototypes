@@ -38,3 +38,7 @@ export enum TicketChannel {
     Sms = 'sms',
     Twitter = 'twitter',
 }
+
+export enum TicketVia {
+    GorgiasChat = 'gorgias_chat',
+}
