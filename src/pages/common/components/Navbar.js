@@ -21,6 +21,7 @@ import * as layoutActions from '../../../state/layout/actions.ts'
 
 import * as layoutSelectors from '../../../state/layout/selectors.ts'
 import * as currentUserSelectors from '../../../state/currentUser/selectors.ts'
+import * as billingSelectors from '../../../state/billing/selectors.ts'
 
 import ToggleButton from '../../../pages/common/components/ToggleButton'
 import './Navbar.less'
@@ -84,6 +85,7 @@ const mainMenu = [
 type NavbarProps = {
     currentUser: Map<*, *>,
     currentUserPreferences: Map<*, *>,
+    currentPlan: Map<*, *>,
     available: boolean,
     activeContent: ?string,
     children: ?Array<Node> | ?Node,
@@ -101,6 +103,7 @@ type NavbarState = {
     (state) => ({
         currentUser: currentUserSelectors.getCurrentUser(state),
         currentUserPreferences: currentUserSelectors.getPreferences(state),
+        currentPlan: billingSelectors.currentPlan(state),
         available: currentUserSelectors.isAvailable(state),
         isOpenedPanel: layoutSelectors.isOpenedPanel('navbar')(state),
     }),
@@ -153,7 +156,11 @@ export default class Navbar extends React.Component<NavbarProps, NavbarState> {
     }
 
     render() {
-        const {currentUser, available} = this.props
+        const {currentUser, currentPlan, available} = this.props
+        const currentPlanName = currentPlan.get('name') || ''
+        const isBasicOrPro = ['pro', 'basic'].includes(
+            currentPlanName.toLowerCase()
+        )
 
         return (
             <div
@@ -267,6 +274,18 @@ export default class Navbar extends React.Component<NavbarProps, NavbarState> {
                             </i>
                             Help center
                         </DropdownItem>
+                        {isBasicOrPro && (
+                            // show office hours link for basic/pro customers because they don't have a dedicated CSM
+                            <DropdownItem
+                                tag="a"
+                                href="https://calendly.com/gorgias-office-hours"
+                                target="_blank"
+                                title="Book a meeting with a Customer Success Manager at Gorgias."
+                            >
+                                <i className="material-icons mr-2">event</i>
+                                Book office hours
+                            </DropdownItem>
+                        )}
                         <DropdownItem
                             tag="a"
                             href="https://portal.productboard.com/gorgias/1-gorgias-product-roadmap/tabs/3-planned/"
