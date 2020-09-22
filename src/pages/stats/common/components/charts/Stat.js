@@ -13,7 +13,7 @@ import Loader from '../../../../common/components/Loader/Loader'
 import {notify} from '../../../../../state/notifications/actions.ts'
 import GorgiasApi from '../../../../../services/gorgiasApi'
 
-import {saveFileAsDownloaded} from '../../../../../utils/file'
+import {saveFileAsDownloaded} from '../../../../../utils/file.ts'
 
 import LineStat from './LineStat'
 import TableStat from './TableStat/TableStat'

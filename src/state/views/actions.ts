@@ -20,8 +20,8 @@ import {
     isCurrentlyOnTicket,
     isCurrentlyOnView,
 } from '../../utils.js'
-import {buildJobMessage} from '../../utils/notificationUtils.js'
-import {getMoment} from '../../utils/date.js'
+import {buildJobMessage} from '../../utils/notificationUtils'
+import {getMoment} from '../../utils/date'
 import {StoreDispatch, RootState} from '../types'
 
 import {activeViewUrl} from './utils'

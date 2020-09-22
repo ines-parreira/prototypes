@@ -14,7 +14,7 @@ import {
     humanizeString,
     isCurrentlyOnTicket,
 } from '../../../../../../../../../utils'
-import {getTrackingUrl} from '../../../../../../../../../utils/delivery'
+import {getTrackingUrl} from '../../../../../../../../../utils/delivery.ts'
 import {DatetimeLabel} from '../../../../../../../utils/labels'
 import {displayLabel, guessFieldValueFromRawData} from '../../../../../utils'
 

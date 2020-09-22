@@ -8,9 +8,9 @@ import {uploadFiles} from '../../../../utils'
 import {
     getFileTooLargeError,
     getMaxAttachmentSize,
-} from '../../../../utils/file'
+} from '../../../../utils/file.ts'
 import {DEFAULT_IMAGE_WIDTH} from '../../../../config/editor'
-import {getEntitySelectionState} from '../../../../utils/editor'
+import {getEntitySelectionState} from '../../../../utils/editor.ts'
 
 import type {PluginMethods} from './types'
 

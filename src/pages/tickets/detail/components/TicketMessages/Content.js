@@ -8,7 +8,7 @@ import {
     linkifyHtml,
     linkifyString,
     sanitizeHtmlDefault,
-} from '../../../../../utils/html'
+} from '../../../../../utils/html.ts'
 import Ellipsis from '../../../../common/components/Ellipsis'
 
 type Props = {

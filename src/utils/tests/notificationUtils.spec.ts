@@ -1,16 +1,11 @@
-//@flow
 import {buildJobMessage} from '../notificationUtils'
-import {
-    APPLY_MACRO_JOB_TYPE,
-    UPDATE_TICKET_JOB_TYPE,
-    EXPORT_TICKET_JOB_TYPE,
-} from '../../constants/job'
+import {JobType} from '../../models/job/types'
 
 describe('Notification utils', () => {
     describe('buildActionNotificationMessage()', () => {
         it('Should return the message for a assignee update', () => {
             expect(
-                buildJobMessage(UPDATE_TICKET_JOB_TYPE, true, 'tickets', {
+                buildJobMessage(JobType.UpdateTicket, true, 'tickets', {
                     updates: {
                         assignee_user: {name: 'John Snow'},
                     },
@@ -21,7 +16,7 @@ describe('Notification utils', () => {
         it('Should return the message for a status update', () => {
             expect(
                 buildJobMessage(
-                    UPDATE_TICKET_JOB_TYPE,
+                    JobType.UpdateTicket,
                     false,
                     'tickets',
                     {
@@ -37,7 +32,7 @@ describe('Notification utils', () => {
         it('Should return the message for one tag update', () => {
             expect(
                 buildJobMessage(
-                    UPDATE_TICKET_JOB_TYPE,
+                    JobType.UpdateTicket,
                     false,
                     'ticket',
                     {
@@ -52,7 +47,7 @@ describe('Notification utils', () => {
 
         it('Should return the message for multiple tags update', () => {
             expect(
-                buildJobMessage(UPDATE_TICKET_JOB_TYPE, true, 'ticket', {
+                buildJobMessage(JobType.UpdateTicket, true, 'ticket', {
                     updates: {
                         tags: ['Tag one', 'Tag two'],
                     },
@@ -63,7 +58,7 @@ describe('Notification utils', () => {
         it('Should return the message for priority update', () => {
             expect(
                 buildJobMessage(
-                    UPDATE_TICKET_JOB_TYPE,
+                    JobType.UpdateTicket,
                     false,
                     'tickets',
                     {
@@ -78,7 +73,7 @@ describe('Notification utils', () => {
 
         it('Should return the message for when we trash an item', () => {
             expect(
-                buildJobMessage(UPDATE_TICKET_JOB_TYPE, true, 'tickets', {
+                buildJobMessage(JobType.UpdateTicket, true, 'tickets', {
                     updates: {
                         trashed_datetime: '2018-01-01T14:00:00',
                     },
@@ -88,7 +83,7 @@ describe('Notification utils', () => {
 
         it('Should return the message for when we untrash an item', () => {
             expect(
-                buildJobMessage(UPDATE_TICKET_JOB_TYPE, true, 'tickets', {
+                buildJobMessage(JobType.UpdateTicket, true, 'tickets', {
                     updates: {
                         trashed_datetime: null,
                     },
@@ -99,7 +94,7 @@ describe('Notification utils', () => {
         it('Should return the message for unhandled update', () => {
             expect(
                 buildJobMessage(
-                    UPDATE_TICKET_JOB_TYPE,
+                    JobType.UpdateTicket,
                     false,
                     'tickets',
                     {
@@ -114,7 +109,7 @@ describe('Notification utils', () => {
 
         it('Should return the message for multiple updates', () => {
             expect(
-                buildJobMessage(UPDATE_TICKET_JOB_TYPE, true, 'tickets', {
+                buildJobMessage(JobType.UpdateTicket, true, 'tickets', {
                     updates: {
                         status: 'open',
                         subject: 'new subject',
@@ -126,7 +121,7 @@ describe('Notification utils', () => {
         it('Should return the message for an apply macro action that also close items', () => {
             expect(
                 buildJobMessage(
-                    APPLY_MACRO_JOB_TYPE,
+                    JobType.ApplyMacro,
                     false,
                     'tickets',
                     {
@@ -141,7 +136,7 @@ describe('Notification utils', () => {
         it("Should return the message for an apply macro action that don't close the items", () => {
             expect(
                 buildJobMessage(
-                    APPLY_MACRO_JOB_TYPE,
+                    JobType.ApplyMacro,
                     false,
                     'tickets',
                     {
@@ -155,7 +150,7 @@ describe('Notification utils', () => {
 
         it('Should return the message for an unknown action', () => {
             expect(
-                buildJobMessage(UPDATE_TICKET_JOB_TYPE, true, 'tickets', {
+                buildJobMessage(JobType.UpdateTicket, true, 'tickets', {
                     random_key: {},
                 })
             ).toMatchSnapshot()
@@ -163,7 +158,7 @@ describe('Notification utils', () => {
 
         it('Should return the message for an export tickets job', () => {
             expect(
-                buildJobMessage(EXPORT_TICKET_JOB_TYPE, true, 'tickets', {})
+                buildJobMessage(JobType.ExportTicket, true, 'tickets', {})
             ).toMatchSnapshot()
         })
 

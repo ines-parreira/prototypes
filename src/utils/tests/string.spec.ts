@@ -1,14 +1,13 @@
-//@flow
 import {countLines, removeSuffix} from '../string'
 
 describe('string util', () => {
     describe('removeSuffix', () => {
         it("should return the data if it's not a string", () => {
-            expect(removeSuffix((null: any), 'hey')).toEqual(null)
-            expect(removeSuffix(({foo: 'bar'}: any), 'hey')).toEqual({
+            expect(removeSuffix(null as any, 'hey')).toEqual(null)
+            expect(removeSuffix({foo: 'bar'} as any, 'hey')).toEqual({
                 foo: 'bar',
             })
-            expect(removeSuffix((1: any), 'hey')).toEqual(1)
+            expect(removeSuffix(1 as any, 'hey')).toEqual(1)
         })
 
         it('should return the data if the suffix does not end with it', () => {
@@ -24,11 +23,11 @@ describe('string util', () => {
 
     describe('countLines', () => {
         it('should return 0 because given values are not string', () => {
-            expect(countLines((undefined: any))).toEqual(0)
-            expect(countLines((null: any))).toEqual(0)
-            expect(countLines(([]: any))).toEqual(0)
-            expect(countLines(({}: any))).toEqual(0)
-            expect(countLines((12: any))).toEqual(0)
+            expect(countLines(undefined as any)).toEqual(0)
+            expect(countLines(null as any)).toEqual(0)
+            expect(countLines([] as any)).toEqual(0)
+            expect(countLines({} as any)).toEqual(0)
+            expect(countLines(12 as any)).toEqual(0)
         })
 
         it('should return the number of lines in the given text', () => {

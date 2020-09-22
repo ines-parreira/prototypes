@@ -4,7 +4,7 @@ import {updateNotification} from 'reapop'
 
 import {notify} from '../notifications/actions.ts'
 import type {Dispatch, thunkActionType} from '../types'
-import {buildJobMessage} from '../../utils/notificationUtils'
+import {buildJobMessage} from '../../utils/notificationUtils.ts'
 
 import * as types from './constants'
 

@@ -1,13 +1,10 @@
-//@flow
 /**
  * Wrapper function using JS promises to create a token for a card using Stripe.js
- *
- * @param creditCard - The data of the credit card to encode.
- * @returns - A Stripe card token.
  */
-export const createStripeCardToken = (creditCard: Object): Promise<Object> => {
+export const createStripeCardToken = (
+    creditCard: stripe.StripeCardTokenData
+): Promise<stripe.StripeCardTokenResponse> => {
     return new Promise((resolve, reject) => {
-        //$FlowFixMe
         Stripe.card.createToken(creditCard, (status, response) => {
             if (response.error) {
                 reject(response)

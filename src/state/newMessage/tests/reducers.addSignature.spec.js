@@ -7,7 +7,7 @@ import {ContentState} from 'draft-js'
 
 import reducer, {initialState} from '../reducers.ts'
 import * as types from '../constants.ts'
-import {convertToHTML} from '../../../utils/editor'
+import {convertToHTML} from '../../../utils/editor.ts'
 
 describe('New message reducers', () => {
     describe('NEW_MESSAGE_ADD_SIGNATURE action', () => {

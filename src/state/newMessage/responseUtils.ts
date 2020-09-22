@@ -17,7 +17,7 @@ import _takeRight from 'lodash/takeRight'
 import {TicketMessageSourceType} from '../../business/types/ticket'
 import {isRichType} from '../../config/ticket.js'
 import {renderTemplate} from '../../pages/common/utils/template.js'
-import {convertFromHTML} from '../../utils/editor.js'
+import {convertFromHTML} from '../../utils/editor'
 import {CurrentUser, StoreState} from '../types'
 
 import * as selectors from './selectors'

@@ -1,4 +1,3 @@
-//@flow
 import {getFileTooLargeError} from '../file'
 
 describe('file util', () => {

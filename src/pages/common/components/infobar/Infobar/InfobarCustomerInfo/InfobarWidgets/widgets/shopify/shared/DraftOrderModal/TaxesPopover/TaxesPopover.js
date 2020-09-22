@@ -13,7 +13,7 @@ import {
 } from 'reactstrap'
 
 import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker'
-import {focusElement} from '../../../../../../../../../../../../utils/html'
+import {focusElement} from '../../../../../../../../../../../../utils/html.ts'
 import {ShopifyAction} from '../../../constants'
 
 import css from './TaxesPopover.less'

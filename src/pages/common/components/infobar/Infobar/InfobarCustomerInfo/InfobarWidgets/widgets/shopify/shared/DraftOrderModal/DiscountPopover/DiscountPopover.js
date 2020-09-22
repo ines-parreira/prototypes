@@ -25,7 +25,7 @@ import {
     formatPercentage,
     formatPrice,
 } from '../../../../../../../../../../../../business/shopify/number.ts'
-import {focusElement} from '../../../../../../../../../../../../utils/html'
+import {focusElement} from '../../../../../../../../../../../../utils/html.ts'
 import ShopifyMoneySymbol from '../../MoneySymbol'
 import AmountInput from '../../AmountInput'
 import {ShopifyAction} from '../../../constants'

@@ -1,5 +1,3 @@
-// @flow
-
 import linkifyjsElement from 'linkifyjs/element'
 import linkifyjsString from 'linkifyjs/string'
 import _get from 'lodash/get'
@@ -17,10 +15,7 @@ const linkifyOptions = {
  * - Doesn't run scripts or inline event handlers
  * global is required for testing in a separate jsdom instance.
  */
-export const parseHtml = (
-    html: string = '',
-    global: window = window
-): Document => {
+export const parseHtml = (html = '', global = window): Document => {
     const parser = new global.DOMParser()
     return parser.parseFromString(html, 'text/html')
 }

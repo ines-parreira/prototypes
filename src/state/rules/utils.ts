@@ -12,7 +12,7 @@ import {
     UNARY_OPERATORS,
     TIMEDELTA_OPERATOR_DEFAULT_VALUE,
 } from '../../config.js'
-import {isTimedelta} from '../../utils/ast.js'
+import {isTimedelta} from '../../utils/ast'
 
 import {OBJECT_DEFINITIONS} from './constants.js'
 import {

@@ -18,7 +18,7 @@ import {
 } from '../../business/types/ticket'
 import * as ticketTypes from '../ticket/constants'
 import * as ticketConfig from '../../config/ticket.js'
-import {convertToHTML} from '../../utils/editor.js'
+import {convertToHTML} from '../../utils/editor'
 import {GorgiasAction} from '../types'
 
 import {getReceiversProperties} from './selectors'

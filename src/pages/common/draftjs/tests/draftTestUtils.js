@@ -12,7 +12,7 @@ import _isArray from 'lodash/isArray'
 import _noop from 'lodash/noop'
 
 import type {PluginMethods} from '../plugins/types'
-import {convertFromHTML} from '../../../../utils/editor'
+import {convertFromHTML} from '../../../../utils/editor.ts'
 
 export const mockPluginMethods = (initialState: EditorState): PluginMethods => {
     let state = initialState || EditorState.createEmpty()

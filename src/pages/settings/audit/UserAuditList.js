@@ -20,7 +20,7 @@ import {
 } from '../../../state/usersAudit/selectors.ts'
 import * as currentUserSelectors from '../../../state/currentUser/selectors.ts'
 import {formatDatetime} from '../../../utils'
-import {getMoment} from '../../../utils/date'
+import {getMoment} from '../../../utils/date.ts'
 
 import UserAuditRow from './UserAuditRow'
 import {DATETIME_LABEL_FORMAT} from './constants'

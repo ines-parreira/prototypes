@@ -1,43 +1,45 @@
-// @flow
 // The code below checks if we have a new Gorgias release
-import axios from 'axios'
+import axios, {AxiosResponse} from 'axios'
 
-import {notify} from '../state/notifications/actions.ts'
-import type {dispatchType} from '../state/types'
+import {notify} from '../state/notifications/actions'
+import {NotificationStatus} from '../state/notifications/types'
+import {StoreDispatch} from '../state/types'
 
 let currentRelease = window.GORGIAS_RELEASE
 
-export const injectInterceptor = () => (dispatch: dispatchType) => {
+export const injectInterceptor = () => (dispatch: StoreDispatch) => {
     // intercept xhr requests and check if they have a special HTTP header
     axios.interceptors.response.use(function (response) {
         // see if we have a new release of Gorgias
-        const newRelease = response.headers['x-gorgias-release']
+        const newRelease = (response.headers as {'x-gorgias-release': string})[
+            'x-gorgias-release'
+        ]
 
         if (newRelease && newRelease !== currentRelease) {
             currentRelease = newRelease
             // wait 15s after we first see a new release (so that the deployment finishes).
             setTimeout(() => {
-                dispatch(
+                void dispatch(
                     notify({
                         style: 'banner',
-                        status: 'info',
+                        status: NotificationStatus.Info,
                         dismissible: false,
                         onClick: () => {
                             window.location.reload()
                         },
-                        allowHtml: true,
+                        allowHTML: true,
                         message: `An update is available for Gorgias. Click <a>here</a> to reload the page and get the
             latest improvements.`,
                     })
                 )
 
                 setTimeout(() => {
-                    dispatch(
+                    void dispatch(
                         notify({
                             dismissAfter: 0,
-                            status: 'warning',
+                            status: NotificationStatus.Warning,
                             dismissible: false,
-                            allowHtml: true,
+                            allowHTML: true,
                             message:
                                 'An update is available for Gorgias. The app will be reloaded automatically in few seconds.',
                             buttons: [

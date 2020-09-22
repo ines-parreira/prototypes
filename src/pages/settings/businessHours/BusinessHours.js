@@ -8,7 +8,7 @@ import classnames from 'classnames'
 
 import PageHeader from '../../common/components/PageHeader'
 import InputField from '../../common/forms/InputField'
-import {getMomentTimezoneNames} from '../../../utils/date'
+import {getMomentTimezoneNames} from '../../../utils/date.ts'
 
 import * as currentAccountActions from '../../../state/currentAccount/actions.ts'
 import * as currentAccountConstants from '../../../state/currentAccount/constants'

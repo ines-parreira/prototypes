@@ -18,7 +18,7 @@ import type {attachmentType} from '../../../../../types'
 import {
     getFileTooLargeError,
     getMaxAttachmentSize,
-} from '../../../../../utils/file'
+} from '../../../../../utils/file.ts'
 import RichField from '../../../../common/forms/RichField'
 import {getContext} from '../../../../../state/prediction/selectors.ts'
 

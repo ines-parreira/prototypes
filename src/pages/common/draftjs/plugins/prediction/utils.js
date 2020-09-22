@@ -1,7 +1,7 @@
 // @flow
 import {ContentState, EditorState, Modifier} from 'draft-js'
 
-import {getEntitySelectionState} from '../../../../../utils/editor'
+import {getEntitySelectionState} from '../../../../../utils/editor.ts'
 
 import {setCachedSelection, setPredictionKey} from './index'
 

@@ -13,7 +13,7 @@ import DatetimePicker from '../../../common/forms/DatetimePicker'
 import InputField from '../../forms/InputField'
 
 import {humanizeString} from '../../../../utils'
-import {convertToHTML, getPlainText} from '../../../../utils/editor'
+import {convertToHTML, getPlainText} from '../../../../utils/editor.ts'
 import MultiSelectField from '../../forms/MultiSelectField'
 import {
     caseInsensitiveOperators,
@@ -21,7 +21,7 @@ import {
     deprecatedOperators,
     timedeltaOperators,
 } from '../../../../config/rules'
-import {removeSuffix} from '../../../../utils/string'
+import {removeSuffix} from '../../../../utils/string.ts'
 import TimedeltaPicker from '../../forms/TimedeltaPicker'
 import RichFieldWithVariables from '../../forms/RichFieldWithVariables'
 import {makeHasIntegrationOfTypes} from '../../../../state/integrations/selectors.ts'

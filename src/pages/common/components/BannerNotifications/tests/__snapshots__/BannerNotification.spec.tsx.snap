@@ -1,0 +1,32 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<BannerNotification/> should render 1`] = `
+<div
+  className="banner-notification banner-notification--success banner-notification--active"
+>
+  <span
+    className="banner-notification-message"
+    onClick={[Function]}
+  >
+    foobar
+  </span>
+</div>
+`;
+
+exports[`<BannerNotification/> should render html message 1`] = `
+<div
+  className="banner-notification banner-notification--success banner-notification--active"
+>
+  <span
+    className="banner-notification-message"
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": <div>
+          foo
+        </div>,
+      }
+    }
+    onClick={[Function]}
+  />
+</div>
+`;

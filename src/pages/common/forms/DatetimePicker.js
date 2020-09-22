@@ -5,7 +5,7 @@ import DateRangePicker from 'react-bootstrap-daterangepicker'
 
 import {Input} from 'reactstrap'
 
-import {stringToDatetime} from '../../../utils/date'
+import {stringToDatetime} from '../../../utils/date.ts'
 
 type Props = {
     datetime: string,

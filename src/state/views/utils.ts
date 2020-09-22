@@ -17,7 +17,7 @@ import {
     TimedeltaOperator,
     DatetimeOperator,
 } from '../rules/types'
-import {isTimedelta} from '../../utils/ast.js'
+import {isTimedelta} from '../../utils/ast'
 
 import {ViewFilter, ViewType, ViewVisibility} from './types'
 

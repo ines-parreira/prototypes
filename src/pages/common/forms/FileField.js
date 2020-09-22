@@ -8,7 +8,7 @@ import _isArray from 'lodash/isArray'
 
 import type {attachmentType} from '../../../state/types'
 import {uploadFiles} from '../../../utils'
-import {getFileTooLargeError} from '../../../utils/file'
+import {getFileTooLargeError} from '../../../utils/file.ts'
 
 import {notify} from './../../../state/notifications/actions.ts'
 

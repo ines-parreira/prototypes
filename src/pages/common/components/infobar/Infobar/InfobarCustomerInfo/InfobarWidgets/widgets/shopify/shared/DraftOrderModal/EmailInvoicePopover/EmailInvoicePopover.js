@@ -15,7 +15,7 @@ import classnames from 'classnames'
 
 import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker'
 import type {DraftOrderInvoice} from '../../../../../../../../../../../../constants/integrations/types/shopify'
-import {focusElement} from '../../../../../../../../../../../../utils/html'
+import {focusElement} from '../../../../../../../../../../../../utils/html.ts'
 import {ShopifyAction} from '../../../constants'
 
 import css from './EmailInvoicePopover.less'

@@ -5,7 +5,7 @@ import classnames from 'classnames'
 
 import * as customerActions from '../../../../../../../state/customers/actions.ts'
 import * as segmentTracker from '../../../../../../../store/middlewares/segmentTracker'
-import {countLines} from '../../../../../../../utils/string'
+import {countLines} from '../../../../../../../utils/string.ts'
 
 import css from './CustomerNote.less'
 

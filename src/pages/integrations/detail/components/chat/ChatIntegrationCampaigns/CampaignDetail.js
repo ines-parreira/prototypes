@@ -25,8 +25,8 @@ import ConfirmButton from '../../../../../common/components/ConfirmButton'
 import PageHeader from '../../../../../common/components/PageHeader'
 import {AgentLabel} from '../../../../../common/utils/labels'
 
-import {sanitizeHtmlDefault} from '../../../../../../utils/html'
-import {convertToHTML} from '../../../../../../utils/editor'
+import {sanitizeHtmlDefault} from '../../../../../../utils/html.ts'
+import {convertToHTML} from '../../../../../../utils/editor.ts'
 
 import {notify} from '../../../../../../state/notifications/actions.ts'
 import * as campaignActions from '../../../../../../state/campaigns/actions'

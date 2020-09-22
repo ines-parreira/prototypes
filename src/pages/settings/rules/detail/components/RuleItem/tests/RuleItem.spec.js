@@ -3,7 +3,7 @@ import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
 import RuleItem from '../RuleItem'
-import {getMomentUtcISOString} from '../../../../../../../utils/date'
+import {getMomentUtcISOString} from '../../../../../../../utils/date.ts'
 
 const commonProps = {
     rule: fromJS({

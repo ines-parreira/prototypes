@@ -1,12 +1,9 @@
-// @flow
-import moment from 'moment-timezone'
+import moment, {Moment} from 'moment-timezone'
 
 /**
  * Convert a string to a moment object if the string represents a valid datetime, else returns null.
- * @param data: the string representing a datetime
- * @returns {moment, null}: the moment object or null
  */
-export const stringToDatetime = (data: string): moment | null => {
+export const stringToDatetime = (data: string): Moment | null => {
     let datetime = null
 
     if (data) {
@@ -35,7 +32,6 @@ export const getMoment = () => {
  * We encapsulate it here so that it's easy to mock during tests.
  */
 export const getMomentNow = () => {
-    //$FlowFixMe
     return moment.now()
 }
 
@@ -54,6 +50,5 @@ export const getMomentUtcISOString = () => {
  * We encapsulate it here so that it's easy to mock during tests.
  */
 export const getMomentTimezoneNames = () => {
-    //$FlowFixMe
     return moment.tz.names()
 }

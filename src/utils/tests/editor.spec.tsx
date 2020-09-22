@@ -1,4 +1,3 @@
-//@flow
 import {
     AtomicBlockUtils,
     CompositeDecorator,
@@ -8,7 +7,7 @@ import {
     Modifier,
     SelectionState,
 } from 'draft-js'
-import React, {type Node} from 'react'
+import React, {ReactNode} from 'react'
 
 import * as utils from '../editor'
 
@@ -64,7 +63,7 @@ describe('editor utils', () => {
             const entityKey = ContentState.createFromText('')
                 .createEntity('img', 'IMMUTABLE', {src: ''})
                 .getLastCreatedEntityKey()
-            let editorState = AtomicBlockUtils.insertAtomicBlock(
+            const editorState = AtomicBlockUtils.insertAtomicBlock(
                 EditorState.createEmpty(),
                 entityKey,
                 ' '
@@ -76,7 +75,13 @@ describe('editor utils', () => {
             // convert resulted html back to ContentState
             const contentState = utils.convertFromHTML(wrappedHTML)
             expect(
-                contentState.getBlocksAsArray().find((b) => b.type === 'atomic')
+                contentState
+                    .getBlocksAsArray()
+                    .find(
+                        (b) =>
+                            ((b as unknown) as Record<string, unknown>).type ===
+                            'atomic'
+                    )
             ).toBeTruthy()
         })
 
@@ -202,7 +207,7 @@ describe('editor utils', () => {
             const [start, end] = [3, 14]
             const selection = SelectionState.createEmpty(block.getKey())
                 .set('anchorOffset', start)
-                .set('focusOffset', end)
+                .set('focusOffset', end) as SelectionState
             const selectedText = utils.getSelectedText(contentState, selection)
             expect(selectedText).toBe(text.slice(start, end))
         })
@@ -226,7 +231,7 @@ describe('editor utils', () => {
             const selection = SelectionState.createEmpty(block.getKey()).set(
                 'focusOffset',
                 3
-            )
+            ) as SelectionState
             const entityKey = utils.getSelectedEntityKey(
                 contentState,
                 selection
@@ -240,7 +245,7 @@ describe('editor utils', () => {
             const block = contentState.getFirstBlock()
             const selection = SelectionState.createEmpty(block.getKey())
                 .set('anchorOffset', 1)
-                .set('focusOffset', 2)
+                .set('focusOffset', 2) as SelectionState
             const entityKey = utils.getSelectedEntityKey(
                 contentState,
                 selection
@@ -266,7 +271,7 @@ describe('editor utils', () => {
             const block = contentState.getFirstBlock()
             const selection = SelectionState.createEmpty(block.getKey())
                 .set('anchorOffset', 4)
-                .set('focusOffset', 4)
+                .set('focusOffset', 4) as SelectionState
             const entityKey = utils.getSelectedEntityKey(
                 contentState,
                 selection
@@ -280,7 +285,7 @@ describe('editor utils', () => {
             const block = contentState.getFirstBlock()
             const selection = SelectionState.createEmpty(block.getKey())
                 .set('anchorOffset', 5)
-                .set('focusOffset', 5)
+                .set('focusOffset', 5) as SelectionState
             const entityKey = utils.getSelectedEntityKey(
                 contentState,
                 selection
@@ -295,7 +300,7 @@ describe('editor utils', () => {
             const selection = SelectionState.createEmpty(block.getKey()).set(
                 'focusOffset',
                 9
-            )
+            ) as SelectionState
             const entityKey = utils.getSelectedEntityKey(
                 contentState,
                 selection
@@ -313,12 +318,12 @@ describe('editor utils', () => {
             const entityKey = contentState.getLastCreatedEntityKey()
             const selection = SelectionState.createEmpty(
                 contentState.getFirstBlock().getKey()
-            ).set('focusOffset', 4)
+            ).set('focusOffset', 4) as SelectionState
             contentState = Modifier.replaceText(
                 contentState,
                 selection,
                 '@Foo',
-                null, // no inline style needed
+                null as any, // no inline style needed
                 entityKey
             )
             const editorState = EditorState.createWithContent(contentState)
@@ -336,7 +341,7 @@ describe('editor utils', () => {
                 {
                     strategy: (contentBlock: ContentBlock, callback) =>
                         callback(0, 1),
-                    component: (props: {children: Node}) => (
+                    component: (props: {children: ReactNode}) => (
                         <span>{props.children}</span>
                     ),
                 },
@@ -405,7 +410,7 @@ describe('editor utils', () => {
         it('should return false if anchor key is valid but focus key is not', () => {
             const selection = editorState1
                 .getSelection()
-                .set('focusKey', 'blabla')
+                .set('focusKey', 'blabla') as SelectionState
             expect(utils.isValidSelectionKey(editorState1, selection)).toBe(
                 false
             )
@@ -413,6 +418,7 @@ describe('editor utils', () => {
 
         it('should return false for selection not updated after pushing new state', () => {
             const contentState = ContentState.createFromText('baz')
+            //@ts-ignore EditorState.push should have 3 args
             const newEditorState = EditorState.push(editorState1, contentState)
             expect(
                 utils.isValidSelectionKey(

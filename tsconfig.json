@@ -15,7 +15,14 @@
         "checkJs": false,
         "strict": true,
         "experimentalDecorators": true,
-        "emitDecoratorMetadata": true
+        "emitDecoratorMetadata": true,
+        "paths": {
+            "moment-timezone": [
+                "node_modules/@types/moment-timezone/node_modules/moment-timezone/index.d.ts"
+            ]
+        },
+        "baseUrl": ".",
+        "types": ["stripe-v2", "webpack-env"]
     },
     "include": [
         "g/static/private/js/**/*.ts",

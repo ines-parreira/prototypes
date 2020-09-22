@@ -1,7 +1,7 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
 
-import {convertFromHTML} from '../../../../utils/editor'
+import {convertFromHTML} from '../../../../utils/editor.ts'
 import createToolbarPlugin from '../plugins/toolbar'
 import {variable as variableDecorator} from '../plugins/variables/decorators'
 import {attachEntitiesToVariables} from '../plugins/variables/utils'

@@ -16,7 +16,7 @@ import classnames from 'classnames'
 import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker'
 import type {LineItem} from '../../../../../../../../../../../../constants/integrations/types/shopify'
 import {formatPrice} from '../../../../../../../../../../../../business/shopify/number.ts'
-import {focusElement} from '../../../../../../../../../../../../utils/html'
+import {focusElement} from '../../../../../../../../../../../../utils/html.ts'
 import AmountInput from '../../AmountInput'
 import {ShopifyAction} from '../../../constants'
 

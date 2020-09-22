@@ -1,18 +1,14 @@
-// @flow
-import {EditorState} from 'draft-js'
+import {EditorState, ContentBlock} from 'draft-js'
 import _get from 'lodash/get'
+import {Map} from 'immutable'
 
-import {MAX_ATTACHMENTS_SIZE} from '../config/editor'
+import {MAX_ATTACHMENTS_SIZE} from '../config/editor.js'
 
 /**
  * Save a file like it has been downloaded.
  *
  * We simulate a click on an `a` tag to let the browser
  * captures data attached to the link and saves it as a file.
- *
- * @param {String} name - Name of the file to save
- * @param {String} contentType - content type of the file to save
- * @param {String} data - Date to save
  */
 export const saveFileAsDownloaded = (
     name: string,
@@ -34,37 +30,29 @@ export const saveFileAsDownloaded = (
         link.setAttribute('target', '_blank')
     }
 
-    // $FlowFixMe
     body.appendChild(link)
     link.click()
-    // $FlowFixMe
     body.removeChild(link)
     window.URL.revokeObjectURL(blobURL)
 }
 
 /**
  * Take the size in bytes and return it formatted appropriately (kB/MB)
- *
- * @param {Number} size - Size in bytes
- *
- * @return {String} - Formatted text representing the size.
  */
 const getFormattedSize = (size: number) => {
     let formattedSize = ''
     if (size < 1000 * 1000) {
-        formattedSize = `${parseInt(size / 1000)}kB.`
+        formattedSize = `${parseInt(((size / 1000) as unknown) as string)}kB.`
     } else {
-        formattedSize = `${parseInt(size / (1000 * 1000))}MB.`
+        formattedSize = `${parseInt(
+            ((size / (1000 * 1000)) as unknown) as string
+        )}MB.`
     }
     return formattedSize
 }
 
 /**
  * Get error text message for attachment that takes up too much space.
- *
- * @param {number} size - The maximum allowed size in bytes for the error msg
- *
- * @return {String} - Text message representing the error message for too large files
  */
 export const getFileTooLargeError = (size: number) => {
     return `Failed to upload files. Attached files must be smaller than ${getFormattedSize(
@@ -80,15 +68,19 @@ const getInlineImagesSize = (editorState: EditorState): number => {
     const blocks = contentState.getBlockMap()
     let size = 0
     blocks.forEach((block) => {
-        block.findEntityRanges((character) => {
+        //@ts-ignore ContentBlock.findEntityRanges should have 2 arguments
+        ;(block as ContentBlock).findEntityRanges((character) => {
             const key = character.getEntity()
             if (!key) {
                 return false
             }
-            const entity = contentState.getEntity(key)
+            const entity = (contentState.getEntity(key) as unknown) as Map<
+                any,
+                any
+            >
             if (entity.get('type') === 'img') {
                 const data = entity.get('data')
-                size = size + _get(data, 'size', 0)
+                size = size + (_get(data, 'size', 0) as number)
             }
             return false
         })

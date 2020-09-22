@@ -1,4 +1,3 @@
-//@flow
 import {isTimedelta} from '../ast'
 
 describe('ast util', () => {

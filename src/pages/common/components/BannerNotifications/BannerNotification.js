@@ -9,13 +9,13 @@ type Props = {
     message: string | Node,
     dismissible: boolean,
     closable: boolean,
-    allowHtml: boolean,
+    allowHTML: boolean,
     hide: (string | number) => void,
 }
 
 class BannerNotification extends Component<Props> {
     static defaultProps = {
-        allowHtml: true,
+        allowHTML: true,
         closable: false,
         dismissible: true,
     }
@@ -38,7 +38,7 @@ class BannerNotification extends Component<Props> {
     }
 
     render() {
-        const {status, message, allowHtml, closable} = this.props
+        const {status, message, allowHTML, closable} = this.props
         const classnames = classNames(
             'banner-notification',
             `banner-notification--${status}`,
@@ -49,7 +49,7 @@ class BannerNotification extends Component<Props> {
 
         return (
             <div className={classnames}>
-                {allowHtml ? (
+                {allowHTML ? (
                     <span
                         onClick={this._onClick}
                         className="banner-notification-message"

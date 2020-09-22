@@ -35,7 +35,7 @@ import GorgiasApi from '../../../../services/gorgiasApi'
 
 import {setCurrentSubscription} from '../../../../state/currentAccount/actions.ts'
 import {notify} from '../../../../state/notifications/actions.ts'
-import {createStripeCardToken} from '../../../../utils/stripe'
+import {createStripeCardToken} from '../../../../utils/stripe.ts'
 
 import {
     creditCardCVCNormalizer,

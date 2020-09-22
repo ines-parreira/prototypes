@@ -8,7 +8,7 @@ import HTTPStatusLabel from '../../../../../common/components/HTTPStatusLabel'
 import InputField from '../../../../../common/forms/InputField'
 import Loader from '../../../../../common/components/Loader/Loader'
 
-import {countLines} from '../../../../../../utils/string'
+import {countLines} from '../../../../../../utils/string.ts'
 import {fetchHTTPIntegrationEvent} from '../../../../../../state/HTTPIntegrationEvents/actions.ts'
 import {getHTTPIntegrationEvent} from '../../../../../../state/HTTPIntegrationEvents/selectors.ts'
 

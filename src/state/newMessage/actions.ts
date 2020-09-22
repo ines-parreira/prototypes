@@ -13,7 +13,7 @@ import {notify} from '../notifications/actions'
 import * as ticketActions from '../ticket/actions'
 import {renderTemplate} from '../../pages/common/utils/template.js'
 import {getActionTemplate, uploadFiles, toJS} from '../../utils.js'
-import {convertToHTML} from '../../utils/editor.js'
+import {convertToHTML} from '../../utils/editor'
 import {
     guessReceiversFromTicket,
     receiversValueFromState,
@@ -33,7 +33,7 @@ import {
 import socketManager from '../../services/socketManager/socketManager.js'
 import {Attachment, ActionTemplate} from '../../types'
 import type {StoreDispatch, RootState, CurrentUser} from '../types'
-import {getMomentNow} from '../../utils/date.js'
+import {getMomentNow} from '../../utils/date'
 import {TicketMessageSourceType} from '../../business/types/ticket'
 import {IntegrationType} from '../../models/integration/types'
 import {ApiListResponse} from '../../models/api/types'

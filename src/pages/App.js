@@ -20,7 +20,7 @@ import * as viewsSelectors from '../state/views/selectors.ts'
 import * as segmentTracker from '../store/middlewares/segmentTracker'
 import type {reactRouterLocation} from '../types'
 import * as utils from '../utils'
-import {injectInterceptor} from '../utils/axios'
+import {injectInterceptor} from '../utils/axios.ts'
 import {handleUsageBanner} from '../state/notifications/actions.ts'
 
 import css from './App.less'

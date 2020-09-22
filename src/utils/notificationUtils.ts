@@ -1,51 +1,68 @@
-//@flow
-import {
-    APPLY_MACRO_JOB_TYPE,
-    EXPORT_TICKET_JOB_TYPE,
-    UPDATE_TICKET_JOB_TYPE,
-} from '../constants/job'
+import {JobType} from '../models/job/types'
 
 export function buildJobMessage(
     jobType: string,
     allViewItemsSelected: boolean,
     objectType: string,
-    changes: Object,
-    changesCount: number = 0
+    changes: Record<string, unknown>,
+    changesCount = 0
 ): string {
     let message = ''
     if (allViewItemsSelected) {
         message += 'All the ' + objectType + ' in this view will be '
     } else {
+        //eslint-disable-next-line  @typescript-eslint/restrict-plus-operands
         message += changesCount + ' ' + objectType + ' will be '
     }
 
     switch (jobType) {
-        case UPDATE_TICKET_JOB_TYPE:
+        case JobType.UpdateTicket:
             if ('updates' in changes) {
-                if (Object.keys(changes.updates).length !== 1) {
+                if (
+                    Object.keys(changes.updates as Record<string, unknown>)
+                        .length !== 1
+                ) {
                     message += 'updated'
                     message += allViewItemsSelected ? '.' : ' in a few seconds.'
                     return message
                 }
-                const objectPropertyName = Object.keys(changes.updates)[0]
-                const objectPropertyValue = changes.updates[objectPropertyName]
+                const objectPropertyName = Object.keys(
+                    changes.updates as Record<string, string>
+                )[0]
+                const objectPropertyValue = (changes.updates as Record<
+                    string,
+                    unknown
+                >)[objectPropertyName]
                 switch (objectPropertyName) {
                     case 'assignee_user':
-                        message += changes.updates[objectPropertyName]
-                            ? `assigned to ${objectPropertyValue.name}`
+                        message += (changes.updates as Record<string, string>)[
+                            objectPropertyName
+                        ]
+                            ? `assigned to ${
+                                  (objectPropertyValue as Record<
+                                      string,
+                                      string
+                                  >).name
+                              }`
                             : 'unassigned'
                         break
                     case 'status':
-                        message += `marked as ${objectPropertyValue}`
+                        message += `marked as ${objectPropertyValue as string}`
                         break
                     case 'tags':
                         message +=
-                            objectPropertyValue.length === 1
-                                ? `tagged with the "${objectPropertyValue[0]}" tag`
-                                : `tagged with ${objectPropertyValue.length} tags`
+                            (objectPropertyValue as string[]).length === 1
+                                ? `tagged with the "${
+                                      (objectPropertyValue as string[])[0]
+                                  }" tag`
+                                : `tagged with ${
+                                      (objectPropertyValue as string[]).length
+                                  } tags`
                         break
                     case 'priority':
-                        message += `marked as ${objectPropertyValue} priority`
+                        message += `marked as ${
+                            objectPropertyValue as string
+                        } priority`
                         break
                     case 'trashed_datetime':
                         message += objectPropertyValue
@@ -60,7 +77,7 @@ export function buildJobMessage(
                 return message
             }
             break
-        case APPLY_MACRO_JOB_TYPE:
+        case JobType.ApplyMacro:
             if ('macro_id' in changes) {
                 message +=
                     'updated with the macro' +
@@ -69,7 +86,7 @@ export function buildJobMessage(
                 return message
             }
             break
-        case EXPORT_TICKET_JOB_TYPE:
+        case JobType.ExportTicket:
             message +=
                 'exported. You will receive the download link via email once the export is done.'
             return message

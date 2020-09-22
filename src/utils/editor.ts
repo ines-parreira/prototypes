@@ -1,4 +1,3 @@
-// @flow
 import linkifyhtml from 'linkifyjs/html'
 import {
     convertToHTML as _convertToHTML,
@@ -12,9 +11,10 @@ import {
     SelectionState,
     convertToRaw,
 } from 'draft-js'
+import {Map} from 'immutable'
 
-import {DEFAULT_IMAGE_WIDTH} from '../config/editor'
-import {availableVariables} from '../config/rules'
+import {DEFAULT_IMAGE_WIDTH} from '../config/editor.js'
+import {availableVariables} from '../config/rules.js'
 
 // note that 2 letters tlds are automatically interpreted
 const tlds = 'com edu gov ru org net de jp uk br it pl in fr au ir nl info cn es cz kr ca ua eu co gr za ro biz ch se io'.split(
@@ -26,10 +26,6 @@ export const linkify = linkifyIt().tlds(tlds)
  * Temporarily adds an uid at the end of each {{variable}} (eg. {{variable}}123),
  * runs the callback on the new string, then removes the uid.
  * Required for supporting links ending with variables (eg. www.google.com/{{ticket.id}}).
- *
- * @param {String} field the field path. E.g: ticket.customer.id
- * @param {Function} function to run on the string
- * @returns {String} parsed string with removed uids
  */
 const fixLinkVars = (html: string, callback: (T: string) => string): string => {
     // use a uid, so we don't accidentally replace something else.
@@ -46,7 +42,6 @@ const fixLinkVars = (html: string, callback: (T: string) => string): string => {
 
 /**
  * Single convertToHTML config for the entire app (same options everywhere if needed)
- * @param contentState
  */
 export function convertToHTML(contentState: ContentState): string {
     return fixLinkVars(
@@ -61,12 +56,14 @@ export function convertToHTML(contentState: ContentState): string {
                     start: '<figure style="display: inline-block; margin: 0">',
                     end: '</figure>',
                 },
-            },
+            } as any,
             entityToHTML: (entity, originalText) => {
                 if (entity.type === 'link') {
                     // keep the start/end way of doing until https://github.com/HubSpot/draft-convert/issues/47 is fixed
                     return {
-                        start: `<a href="${entity.data.url}" target="_blank">`,
+                        start: `<a href="${
+                            entity.data.url as string
+                        }" target="_blank">`,
                         end: '</a>',
                     }
                 }
@@ -75,7 +72,9 @@ export function convertToHTML(contentState: ContentState): string {
                     const width = entity.data.width || DEFAULT_IMAGE_WIDTH
 
                     // keep the start/end way of doing until https://github.com/HubSpot/draft-convert/issues/47 is fixed
-                    return `<img src="${entity.data.src}" width="${width}px" style="max-width: 100%" />`
+                    return `<img src="${entity.data.src as string}" width="${
+                        width as number
+                    }px" style="max-width: 100%" />`
                 }
 
                 if (entity.type === 'mention') {
@@ -92,7 +91,7 @@ export function convertToHTML(contentState: ContentState): string {
 
                 return originalText
             },
-        })(contentState),
+        })(contentState as any),
         (str) => {
             // linkify transforms linkified urls into actual HTML links
             return linkifyhtml(str, {
@@ -122,7 +121,7 @@ export function unescapeTemplateVars(string: string): string {
         'g'
     )
     return string.replace(reg, (_, match) => {
-        return `{{${match}}}`
+        return `{{${match as string}}}`
     })
 }
 
@@ -131,23 +130,24 @@ export function unescapeTemplateVars(string: string): string {
  * @param html
  */
 export function convertFromHTML(html: string): ContentState {
-    let converted = _convertFromHTML({
-        htmlToBlock: (nodeName) => {
+    let converted: ContentState = _convertFromHTML({
+        htmlToBlock: (((nodeName: string) => {
             if (nodeName === 'figure' || nodeName === 'img') {
                 return 'atomic'
             }
-        },
-        htmlToEntity: (nodeName, node, createEntity) => {
+        }) as unknown) as (nodeName: string) => string | false,
+        htmlToEntity: (nodeName: string, node: HTMLElement, createEntity) => {
             if (nodeName === 'a') {
                 return createEntity('link', 'MUTABLE', {
-                    url: unescapeTemplateVars(node.href),
+                    url: unescapeTemplateVars((node as HTMLLinkElement).href),
                 })
             }
 
             if (nodeName === 'img') {
                 return createEntity('img', 'MUTABLE', {
-                    src: node.src,
-                    width: node.width || DEFAULT_IMAGE_WIDTH,
+                    src: (node as HTMLImageElement).src,
+                    width:
+                        (node as HTMLImageElement).width || DEFAULT_IMAGE_WIDTH,
                 })
             }
         },
@@ -163,16 +163,19 @@ export function convertFromHTML(html: string): ContentState {
             // remove the default 'a' character in atomic blocks so that text from getPlainText() of this contentState that not
             // carry a 'a' where images are supposed to be displayed
             // see https://github.com/HubSpot/draft-convert/issues/30
-            newBlock = newBlock.set('text', ' ')
+            newBlock = newBlock.set('text', ' ') as ContentBlock
         } else if (type === 'unstyled') {
             // remove the last newline in a block,
             // otherwise it appears as an extra newline in the editor,
             // because draft-uses uses white-space: pre-wrap.
-            let text = newBlock.get('text')
+            const text = newBlock.get('text') as string
             lineBreaks.some((char) => {
                 const lastPos = text.length - char.length
                 if (text.substring(lastPos) === char) {
-                    newBlock = newBlock.set('text', text.substring(0, lastPos))
+                    newBlock = newBlock.set(
+                        'text',
+                        text.substring(0, lastPos)
+                    ) as ContentBlock
                     return true
                 }
             })
@@ -207,18 +210,20 @@ export function contentStateFromTextOrHTML(
 export function getEntitySelectionState(
     contentState: ContentState,
     entityKey: string
-): ?SelectionState {
-    let entitySelection
+): Maybe<SelectionState> {
+    let entitySelection: Maybe<SelectionState>
     const blocks = contentState.getBlockMap()
     blocks.some((block) => {
-        block.findEntityRanges(
+        ;(block as ContentBlock).findEntityRanges(
             (character) => {
                 return character.getEntity() === entityKey
             },
             (start, end) => {
-                entitySelection = SelectionState.createEmpty(block.getKey())
+                entitySelection = SelectionState.createEmpty(
+                    (block as ContentBlock).getKey()
+                )
                     .set('anchorOffset', start)
-                    .set('focusOffset', end)
+                    .set('focusOffset', end) as SelectionState
             }
         )
 
@@ -235,12 +240,12 @@ export function getSelectedText(
     const endKey = selection.getEndKey()
     const blockMap = contentState.getBlockMap()
     return blockMap
-        .skipUntil((b: ContentBlock) => b.getKey() === startKey)
-        .takeUntil((b: ContentBlock) => b.getKey() === endKey)
+        .skipUntil((b) => (b as ContentBlock).getKey() === startKey)
+        .takeUntil((b) => (b as ContentBlock).getKey() === endKey)
         .concat([[endKey, blockMap.get(endKey)]])
-        .reduce((acc: string, block: ContentBlock) => {
-            const key = block.getKey()
-            const text = block.getText()
+        .reduce((acc = '', block) => {
+            const key = (block as ContentBlock).getKey()
+            const text = (block as ContentBlock).getText()
             return (
                 acc +
                 text.slice(
@@ -255,7 +260,7 @@ export function getSelectedText(
 export function getSelectedEntityKey(
     contentState: ContentState,
     selection: SelectionState
-): ?string {
+): Maybe<string> {
     const block = contentState.getBlockForKey(selection.getStartKey())
     const endOffset = selection.getEndOffset() - 1
 
@@ -347,13 +352,19 @@ export function getPlainText(
                 const entity = ContentState.getEntity(entityKey)
 
                 // Links like <a href="http://x.io">x</a> will output as x: http://x.io plain text.
-                if (entity.get('type') === 'link') {
+                if (
+                    ((entity as unknown) as Map<any, any>).get('type') ===
+                    'link'
+                ) {
                     const entityOffset = rawEntity.offset + totalOffset
                     const linkContent = blockText.slice(
                         entityOffset,
                         entityOffset + rawEntity.length
                     )
-                    const linkURL = entity.getData().url
+                    const linkURL = (entity.getData() as Record<
+                        string,
+                        unknown
+                    >).url as string
 
                     // only append the URL if it's different from the content of the link.
                     // Ex: <a href="https://gorgias.io/">https://gorgias.io</a> -> https://gorgias.io

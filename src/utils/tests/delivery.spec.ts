@@ -1,4 +1,3 @@
-//@flow
 import {getTrackingUrl} from '../delivery'
 
 describe('getTrackingUrl()', () => {

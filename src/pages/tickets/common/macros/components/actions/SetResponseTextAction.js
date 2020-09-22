@@ -16,7 +16,7 @@ import * as integrationsSelectors from '../../../../../../state/integrations/sel
 import RichField from '../../../../../common/forms/RichField'
 
 import {insertText} from '../../../../../../utils'
-import {convertToHTML, getPlainText} from '../../../../../../utils/editor'
+import {convertToHTML, getPlainText} from '../../../../../../utils/editor.ts'
 
 import {getVariables} from '../../../../../../config/ticket'
 

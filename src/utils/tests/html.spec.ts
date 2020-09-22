@@ -1,5 +1,4 @@
-//@flow
-import jsdom from 'jsdom'
+import jsdom, {JSDOM} from 'jsdom'
 
 import {
     focusElement,
@@ -15,18 +14,20 @@ describe('html util', () => {
         const domOptions = {
             runScripts: 'dangerously',
             resources: 'usable',
-        }
+        } as any
         const htmlWithEvent =
             '<iframe src="/" onload="window._xss=true;"></iframe>'
-        let dom
+        let dom: JSDOM
+        let domWindow: typeof window
 
         beforeEach(() => {
             dom = new JSDOM(doc, domOptions)
+            domWindow = (dom.window as unknown) as typeof window
         })
 
         it('should run inline event handlers', (done) => {
             const dom = new JSDOM('<body></body>', domOptions)
-            var div = dom.window.document.createElement('div')
+            const div = dom.window.document.createElement('div')
             div.innerHTML = htmlWithEvent
             dom.window.document.body.appendChild(div)
             // timeout required for jsdom to trigger the event
@@ -40,7 +41,7 @@ describe('html util', () => {
         })
 
         it('should not run inline event handlers', (done) => {
-            parseHtml(htmlWithEvent, dom.window)
+            parseHtml(htmlWithEvent, domWindow)
             // timeout required for jsdom to trigger the event
             global.jestSetTimeout(
                 () => {
@@ -61,7 +62,7 @@ describe('html util', () => {
 
         it('should not run script tags in parsed html', () => {
             const html = '<script>window._xss=true<script/>'
-            parseHtml(html, dom.window)
+            parseHtml(html, domWindow)
             expect(dom.window._xss).toBe(undefined)
         })
 
@@ -82,7 +83,7 @@ describe('html util', () => {
                     </body>
                 </html>
             `
-            const parsed = parseHtml(html, dom.window)
+            const parsed = parseHtml(html, domWindow)
             if (parsed.documentElement == null) {
                 throw new Error('parsed.documentElement is undefined')
             }
@@ -91,7 +92,7 @@ describe('html util', () => {
 
         it('should not remove invalid characters', () => {
             const html = 'Thank you <3 you are the best'
-            const parsed = parseHtml(html, dom.window)
+            const parsed = parseHtml(html, domWindow)
             if (parsed.documentElement == null) {
                 throw new Error('parsed.documentElement is undefined')
             }
@@ -100,7 +101,7 @@ describe('html util', () => {
 
         it('should not remove quotes', () => {
             const html = 'these "quotes" here'
-            const parsed = parseHtml(html, dom.window)
+            const parsed = parseHtml(html, domWindow)
             if (parsed.documentElement == null) {
                 throw new Error('parsed.documentElement is undefined')
             }
@@ -161,9 +162,9 @@ describe('html util', () => {
 
     describe('sanitizeHtmlDefault', () => {
         it("should return entry parameter if it's not a string", () => {
-            expect(sanitizeHtmlDefault((undefined: any))).toBe(undefined)
-            expect(sanitizeHtmlDefault((null: any))).toBe(null)
-            expect(sanitizeHtmlDefault((12: any))).toBe(12)
+            expect(sanitizeHtmlDefault(undefined as any)).toBe(undefined)
+            expect(sanitizeHtmlDefault(null as any)).toBe(null)
+            expect(sanitizeHtmlDefault(12 as any)).toBe(12)
         })
 
         it('should remove comments from html', () => {
@@ -211,7 +212,7 @@ describe('html util', () => {
     describe('focusElement()', () => {
         it('should focus given element', (done) => {
             const focus = jest.fn()
-            focusElement(() => ({focus}: any))
+            focusElement(() => (({focus} as unknown) as HTMLElement))
 
             setTimeout(() => {
                 expect(focus).toHaveBeenCalled()

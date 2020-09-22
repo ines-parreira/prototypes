@@ -2,7 +2,7 @@ import {ContentState} from 'draft-js'
 import {fromJS} from 'immutable'
 
 import * as responseUtils from '../responseUtils.ts'
-import {convertToHTML} from '../../../utils/editor'
+import {convertToHTML} from '../../../utils/editor.ts'
 
 describe('addSignature', () => {
     it('should add plain text signature', () => {

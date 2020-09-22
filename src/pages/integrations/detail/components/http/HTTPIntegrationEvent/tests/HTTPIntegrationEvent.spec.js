@@ -6,8 +6,11 @@ import HTTPIntegrationEventContainer, {
     HTTPIntegrationEvent,
 } from '../HTTPIntegrationEvent'
 import {initialState} from '../../../../../../../state/HTTPIntegrationEvents/reducers.ts'
-import {mockStore, shallowWithStore} from '../../../../../../../utils/testing'
-import {getMomentNow} from '../../../../../../../utils/date'
+import {
+    mockStore,
+    shallowWithStore,
+} from '../../../../../../../utils/testing.ts'
+import {getMomentNow} from '../../../../../../../utils/date.ts'
 
 const HTTPEventWithHTMLResp = fromJS({
     created_datetime: getMomentNow(),

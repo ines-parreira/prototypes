@@ -7,7 +7,7 @@ import Editor from 'draft-js-plugins-editor'
 
 import {RichFieldEditor} from '../RichFieldEditor'
 import createToolbarPlugin from '../../../draftjs/plugins/toolbar'
-import {convertFromHTML} from '../../../../../utils/editor'
+import {convertFromHTML} from '../../../../../utils/editor.ts'
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')

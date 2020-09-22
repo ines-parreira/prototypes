@@ -5,7 +5,7 @@ import {Button} from 'reactstrap'
 
 import FileField from '../../../../forms/FileField'
 import type {ActionInjectedProps} from '../types'
-import {getMaxAttachmentSize} from '../../../../../../utils/file'
+import {getMaxAttachmentSize} from '../../../../../../utils/file.ts'
 import {addImage} from '../../utils'
 
 import css from './AddImage.less'
