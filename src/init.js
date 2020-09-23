@@ -89,6 +89,7 @@ export const notifyAccountNotVerified = (reduxStore) => {
     if (!baseEmailIntegration.getIn(['meta', 'verified'], true)) {
         reduxStore.dispatch(
             notify({
+                allowHTML: true,
                 id: 'account-not-verified-notification',
                 style: 'banner',
                 status: 'warning',

@@ -4,7 +4,7 @@ exports[`init notifyAccountNotVerified() should dispatch a notification because 
 Array [
   Object {
     "payload": Object {
-      "allowHTML": false,
+      "allowHTML": true,
       "buttons": Array [],
       "closeButton": false,
       "dismissAfter": 0,
