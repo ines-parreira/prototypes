@@ -1,4 +1,4 @@
-import jsdom, {JSDOM} from 'jsdom'
+import jsdom from 'jsdom'
 
 import {
     focusElement,
@@ -17,7 +17,7 @@ describe('html util', () => {
         } as any
         const htmlWithEvent =
             '<iframe src="/" onload="window._xss=true;"></iframe>'
-        let dom: JSDOM
+        let dom: jsdom.JSDOM
         let domWindow: typeof window
 
         beforeEach(() => {

@@ -1,6 +1,6 @@
 import axios, {AxiosError} from 'axios'
 
-import {List, Map} from 'immutable'
+import {List} from 'immutable'
 
 import {ApiListResponsePagination} from '../../models/api/types'
 import {notify} from '../notifications/actions'

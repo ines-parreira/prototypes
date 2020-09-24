@@ -1,12 +1,7 @@
 import {fromJS, Map, List} from 'immutable'
 
 import {TicketMessageSourceType} from './types/ticket'
-import {
-    Macro,
-    MacroAction,
-    MacroClearingResult,
-    MacroActionName,
-} from './types/macro'
+import {MacroClearingResult, MacroActionName} from './types/macro'
 
 // Public functions
 export function clearMacroBeforeApply(

@@ -7,7 +7,7 @@ import {
     ContentBlock,
     RawDraftContentBlock,
 } from 'draft-js'
-import {fromJS, Map, List} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import _findIndex from 'lodash/findIndex'
 import _pick from 'lodash/pick'
 import _pickBy from 'lodash/pickBy'

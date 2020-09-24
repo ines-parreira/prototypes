@@ -1,5 +1,5 @@
 // The code below checks if we have a new Gorgias release
-import axios, {AxiosResponse} from 'axios'
+import axios from 'axios'
 
 import {notify} from '../state/notifications/actions'
 import {NotificationStatus} from '../state/notifications/types'

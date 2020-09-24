@@ -1,5 +1,5 @@
 import {mount, shallow} from 'enzyme'
-import {fromJS, Map} from 'immutable'
+import {fromJS} from 'immutable'
 import React, {ComponentProps} from 'react'
 import {browserHistory} from 'react-router'
 import {Button} from 'reactstrap'

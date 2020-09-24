@@ -1,8 +1,6 @@
 import {fromJS} from 'immutable'
 import {createSelector} from 'reselect'
 
-import type {Map} from 'immutable'
-
 import type {RootState} from '../types'
 
 import {LayoutState} from './types'

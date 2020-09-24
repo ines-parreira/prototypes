@@ -20,7 +20,7 @@ import {NotificationStatus} from '../../../state/notifications/types'
 import PageHeader from '../../common/components/PageHeader.js'
 import Pagination from '../../common/components/Pagination.js'
 import Search from '../../common/components/Search.js'
-import {RootState, StoreDispatch} from '../../../state/types.js'
+import {RootState} from '../../../state/types.js'
 
 import css from './MacrosSettingsContent.less'
 import MacrosSettingsTable from './MacrosSettingsTable'

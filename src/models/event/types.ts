@@ -1,5 +1,3 @@
-import {TICKET_AUDIT_LOG_EVENTS_MAP} from '../../constants/event.js'
-
 export type TicketTagsAddedEventData = {
     tags_added: number[]
 }

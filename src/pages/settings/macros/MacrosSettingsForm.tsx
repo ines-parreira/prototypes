@@ -33,7 +33,7 @@ import {
 import {getDefaultMacro} from '../../../state/macro/utils'
 import {notify} from '../../../state/notifications/actions'
 import {NotificationStatus} from '../../../state/notifications/types'
-import {RootState, StoreDispatch} from '../../../state/types'
+import {RootState} from '../../../state/types'
 import ConfirmButton from '../../common/components/ConfirmButton.js'
 import Loader from '../../common/components/Loader/index.js'
 import PageHeader from '../../common/components/PageHeader.js'

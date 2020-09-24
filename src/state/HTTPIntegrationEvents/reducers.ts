@@ -1,4 +1,4 @@
-import {fromJS, Map} from 'immutable'
+import {fromJS} from 'immutable'
 
 import {GorgiasAction} from '../types'
 

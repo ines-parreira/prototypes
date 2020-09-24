@@ -14,7 +14,7 @@ import {
 } from '../../../state/entities/macros/actions'
 import {notify} from '../../../state/notifications/actions'
 import {NotificationStatus} from '../../../state/notifications/types'
-import {RootState, StoreDispatch} from '../../../state/types'
+import {RootState} from '../../../state/types'
 import Loader from '../../common/components/Loader/index.js'
 import BodyCell from '../../common/components/table/cells/BodyCell.js'
 import HeaderCell from '../../common/components/table/cells/HeaderCell.js'
