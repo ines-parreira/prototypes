@@ -58,8 +58,8 @@ jest.mock('push.js', () => {
     }
 })
 
-jest.mock('../../../utils.js', () => {
-    const utils = require.requireActual('../../../utils.js')
+jest.mock('../../../utils', () => {
+    const utils = require.requireActual('../../../utils')
 
     return {
         ...utils,

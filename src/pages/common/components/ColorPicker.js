@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import _uniqueId from 'lodash/uniqueId'
 import {Button, Popover, PopoverBody, Input} from 'reactstrap'
 
-import {DEFAULT_TAG_COLOR} from '../../../config'
+import {DEFAULT_TAG_COLOR} from '../../../config.ts'
 
 import css from './ColorPicker.less'
 

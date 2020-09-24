@@ -11,7 +11,7 @@ import css from '../../../style.less'
 import Tooltip from '../../../../common/components/Tooltip'
 import Loader from '../../../../common/components/Loader/Loader'
 import {notify} from '../../../../../state/notifications/actions.ts'
-import GorgiasApi from '../../../../../services/gorgiasApi'
+import GorgiasApi from '../../../../../services/gorgiasApi.ts'
 
 import {saveFileAsDownloaded} from '../../../../../utils/file.ts'
 

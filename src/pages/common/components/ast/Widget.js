@@ -12,7 +12,7 @@ import DatetimePicker from '../../../common/forms/DatetimePicker'
 
 import InputField from '../../forms/InputField'
 
-import {humanizeString} from '../../../../utils'
+import {humanizeString} from '../../../../utils.ts'
 import {convertToHTML, getPlainText} from '../../../../utils/editor.ts'
 import MultiSelectField from '../../forms/MultiSelectField'
 import {

@@ -21,7 +21,7 @@ import {notify} from '../../../../state/notifications/actions.ts'
 import {updateSubscription} from '../../../../state/currentAccount/actions.ts'
 import * as billingSelectors from '../../../../state/billing/selectors.ts'
 import * as currentAccountSelectors from '../../../../state/currentAccount/selectors.ts'
-import {openChat} from '../../../../utils'
+import {openChat} from '../../../../utils.ts'
 import PageHeader from '../../../common/components/PageHeader'
 import {setFutureSubscriptionPlan} from '../../../../state/billing/actions.ts'
 

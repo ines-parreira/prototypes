@@ -18,7 +18,7 @@ import {
 
 import Loader from '../../common/components/Loader'
 import {fetchCurrentUsage} from '../../../state/billing/actions.ts'
-import {openChat} from '../../../utils'
+import {openChat} from '../../../utils.ts'
 import * as integrationSelectors from '../../../state/integrations/selectors.ts'
 import * as billingSelectors from '../../../state/billing/selectors.ts'
 import * as currentAccountSelectors from '../../../state/currentAccount/selectors.ts'

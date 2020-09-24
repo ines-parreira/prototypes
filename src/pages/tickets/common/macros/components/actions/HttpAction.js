@@ -8,7 +8,7 @@ import {
     JSON_CONTENT_TYPE,
     FORM_CONTENT_TYPE,
     HTTP_METHOD_GET,
-} from '../../../../../../config'
+} from '../../../../../../config.ts'
 
 import ParametersEditor from '../ParametersEditor'
 
@@ -19,7 +19,7 @@ import JsonField from '../../../../../common/forms/JsonField'
 import {
     validateWebhookURL,
     validateWebhookURLToPattern,
-} from '../../../../../../utils'
+} from '../../../../../../utils.ts'
 
 export default class HttpAction extends React.Component {
     _setTitle = (title) => {

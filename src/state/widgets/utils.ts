@@ -3,7 +3,7 @@ import _difference from 'lodash/difference'
 import _values from 'lodash/values'
 import _forEach from 'lodash/forEach'
 
-import {DEFAULT_SOURCE_PATHS} from '../../config.js'
+import {DEFAULT_SOURCE_PATHS} from '../../config'
 
 import {WidgetContextType} from './types'
 

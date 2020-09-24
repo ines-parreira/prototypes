@@ -4,7 +4,7 @@ import 'emoji-mart/css/emoji-mart.css'
 import {EditorState} from 'draft-js'
 
 import type {ActionInjectedProps} from '../types'
-import {insertText} from '../../../../../../utils'
+import {insertText} from '../../../../../../utils.ts'
 import EmojiPicker from '../../../../components/EmojiPicker'
 
 import Popover from './ButtonPopover'

@@ -5,7 +5,7 @@ import _isUndefined from 'lodash/isUndefined'
 
 import {EMAIL_INTEGRATION_TYPES} from '../constants/integration'
 import {BASE_VIEW_ID} from '../constants/view'
-import {getAST, getLanguageDisplayName, stripHTML} from '../utils'
+import {getAST, getLanguageDisplayName, stripHTML} from '../utils.ts'
 import {getMomentUtcISOString} from '../utils/date.ts'
 
 import * as ticketConfig from './ticket'

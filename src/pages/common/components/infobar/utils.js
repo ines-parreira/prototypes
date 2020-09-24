@@ -24,7 +24,7 @@ import _forIn from 'lodash/forIn'
 import _toLower from 'lodash/toLower'
 
 import {DatetimeLabel} from '../../utils/labels'
-import * as utils from '../../../../utils'
+import * as utils from '../../../../utils.ts'
 import {
     getContextFromSourcePath,
     getSourcePathFromContext,

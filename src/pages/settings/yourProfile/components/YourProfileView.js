@@ -27,7 +27,7 @@ import FileField from '../../../common/forms/FileField'
 import SelectField from '../../../common/forms/SelectField'
 import PageHeader from '../../../common/components/PageHeader'
 
-import {AVAILABLE_LANGUAGES} from './../../../../config'
+import {AVAILABLE_LANGUAGES} from './../../../../config.ts'
 
 const defaultContent = {
     name: '',

@@ -5,7 +5,7 @@ import _sample from 'lodash/sample'
 import classnames from 'classnames'
 
 import shortcutManager from '../../../../../services/shortcutManager'
-import keymap from '../../../../../config/shortcuts'
+import keymap from '../../../../../config/shortcuts.ts'
 
 import * as currentUserActions from '../../../../../state/currentUser/actions.ts'
 

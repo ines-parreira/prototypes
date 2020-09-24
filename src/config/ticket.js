@@ -12,7 +12,7 @@ import type {
     TicketChannel,
 } from '../business/types/ticket'
 import type {TicketMessage} from '../models/ticket'
-import {compare, getLastMessage, toImmutable} from '../utils'
+import {compare, getLastMessage, toImmutable} from '../utils.ts'
 import {isForwardedMessage} from '../state/ticket/utils'
 
 import {

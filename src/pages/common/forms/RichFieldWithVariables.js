@@ -9,7 +9,7 @@ import {
 } from 'reactstrap'
 
 import {attachEntitiesToVariables} from '../draftjs/plugins/variables/utils'
-import {insertText} from '../../../utils'
+import {insertText} from '../../../utils.ts'
 import {getVariables} from '../../../config/ticket'
 
 import RichField from './RichField'

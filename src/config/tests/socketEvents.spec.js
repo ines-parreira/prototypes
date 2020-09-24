@@ -15,7 +15,7 @@ import * as notificationActions from '../../state/notifications/actions.ts'
 import * as socketConstants from '../socketConstants'
 import * as socketEvents from '../socketEvents'
 
-import {isCurrentlyOnTicket} from '../../utils'
+import {isCurrentlyOnTicket} from '../../utils.ts'
 import {store as reduxStore} from '../../init'
 
 const mockedCurrentAccountSelectors = (currentAccountSelectors: any)

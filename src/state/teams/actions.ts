@@ -2,7 +2,7 @@ import axios, {AxiosError} from 'axios'
 import type {Map, Set} from 'immutable'
 
 import {ApiListResponsePagination} from '../../models/api/types'
-import {toImmutable, toJS} from '../../utils.js'
+import {toImmutable, toJS} from '../../utils'
 import {NotificationStatus} from '../notifications/types'
 import * as constants from '../teams/constants.js'
 import {notify} from '../notifications/actions'
@@ -25,7 +25,7 @@ export const fetchTeamsPagination = (page = 1) => (
         .then((json) => json?.data)
         .then(
             (resp) => {
-                return toImmutable(resp) as Map<any, any>
+                return toImmutable<Map<any, any>>(resp)
             },
             (error: AxiosError) => {
                 dispatch({
@@ -59,7 +59,7 @@ export const fetchTeamMembersPagination = (
         .then((json) => json?.data)
         .then(
             (resp) => {
-                return toImmutable(resp) as Map<any, any>
+                return toImmutable<Map<any, any>>(resp)
             },
             (error: AxiosError) => {
                 dispatch({
@@ -90,7 +90,7 @@ export const addTeamMember = (teamId: number, userId: number) => (
                     })
                 )
 
-                return toImmutable(resp) as Map<any, any>
+                return toImmutable<Map<any, any>>(resp)
             },
             (error: AxiosError) => {
                 dispatch({
@@ -174,7 +174,7 @@ export const fetchTeam = (teamId: number) => (
                     payload: resp,
                 })
 
-                return toImmutable(resp) as Map<any, any>
+                return toImmutable<Map<any, any>>(resp)
             },
             (error: AxiosError) => {
                 dispatch({
@@ -210,7 +210,7 @@ export const updateTeam = (team: Map<any, any>) => (
                     payload: resp,
                 })
 
-                return toImmutable(resp) as Map<any, any>
+                return toImmutable<Map<any, any>>(resp)
             },
             (error: AxiosError) => {
                 dispatch({
@@ -245,7 +245,7 @@ export const createTeam = (team: Map<any, any>) => (
                     payload: resp,
                 })
 
-                return toImmutable(resp) as Map<any, any>
+                return toImmutable<Map<any, any>>(resp)
             },
             (error: AxiosError) => {
                 dispatch({

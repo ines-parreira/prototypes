@@ -10,7 +10,7 @@ import {
     devLog,
     humanizeString,
     isCurrentlyOnTicket,
-} from '../../../../../../../../../utils'
+} from '../../../../../../../../../utils.ts'
 import {renderTemplate} from '../../../../../../../utils/template'
 
 import {

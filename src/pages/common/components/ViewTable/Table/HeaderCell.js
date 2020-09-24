@@ -6,7 +6,7 @@ import {fromJS} from 'immutable'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
 
-import {fieldPath as getFieldPath} from '../../../../../utils'
+import {fieldPath as getFieldPath} from '../../../../../utils.ts'
 
 import ShowMoreFieldsDropdown from '../ShowMoreFieldsDropdown'
 

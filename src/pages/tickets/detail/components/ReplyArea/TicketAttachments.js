@@ -7,7 +7,7 @@ import type {List} from 'immutable'
 import {fileIconFromContentType} from '../../../common/utils'
 import shortcutManager from '../../../../../services/shortcutManager'
 
-import {proxifyURL} from '../../../../../utils'
+import {proxifyURL} from '../../../../../utils.ts'
 
 import css from './TicketAttachments.less'
 

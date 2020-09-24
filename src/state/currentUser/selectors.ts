@@ -2,13 +2,11 @@ import {fromJS, List, Map} from 'immutable'
 import {createSelector} from 'reselect'
 
 import {RootState} from '../types'
-import {DEFAULT_PREFERENCES} from '../../config.js'
-import {createImmutableSelector} from '../../utils.js'
+import {DEFAULT_PREFERENCES} from '../../config'
+import {createImmutableSelector} from '../../utils'
 
 import {CurrentUserState} from './types'
 
-//$TsFixMe remove once state/utils are migrated
-const typeSafeCreateImmutableCreator = createImmutableSelector as typeof createSelector
 //$TsFixMe replace with getViews selector once state/views/selectors are migrated
 const typeSafeGetViews = (state: RootState) =>
     (state.views || fromJS({})).get('items', fromJS([])) as List<any>
@@ -64,7 +62,7 @@ const _getSettingsByType = (
 }
 
 export const makeGetSettingsByType = () =>
-    typeSafeCreateImmutableCreator<
+    createImmutableSelector<
         RootState,
         Map<any, any>,
         List<any>,
@@ -79,13 +77,10 @@ export const makeGetSettingsByType = () =>
 
 // used to get ticket-views and customer-views user preferences
 export const getSettingsByType = (type: string) =>
-    typeSafeCreateImmutableCreator<
-        RootState,
-        Map<any, any>,
-        List<any>,
-        List<any>
-    >(typeSafeGetViews, getSettings, (views, settings) =>
-        _getSettingsByType(views, settings, type)
+    createImmutableSelector<RootState, Map<any, any>, List<any>, List<any>>(
+        typeSafeGetViews,
+        getSettings,
+        (views, settings) => _getSettingsByType(views, settings, type)
     )
 
 export const getApiKey = createSelector<RootState, string, CurrentUserState>(

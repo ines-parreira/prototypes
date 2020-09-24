@@ -5,7 +5,7 @@ import {connect} from 'react-redux'
 import {fromJS, List} from 'immutable'
 import {type CancelToken} from 'axios'
 
-import {getActionTemplate} from '../../../../../utils'
+import {getActionTemplate} from '../../../../../utils.ts'
 import {fetchMacros, getMacro} from '../../../../../state/macro/actions.ts'
 import {useCancellableRequest} from '../../../../../hooks'
 import {

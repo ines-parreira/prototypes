@@ -5,7 +5,7 @@ import * as selectors from '../selectors.ts'
 import {initialState} from '../reducers.ts'
 import * as usersFixtures from '../../../fixtures/users'
 
-import {DEFAULT_PREFERENCES} from './../../../config'
+import {DEFAULT_PREFERENCES} from './../../../config.ts'
 
 jest.addMatchers(immutableMatchers)
 

@@ -15,7 +15,7 @@ import * as currentAccountActions from '../../../state/currentAccount/actions.ts
 import * as currentAccountConstants from '../../../state/currentAccount/constants'
 import RestrictedSatisfactionSurvey from '../../stats/common/RestrictedSatisfactionSurvey'
 
-import {DELAY_SURVEY_FOR} from './../../../config'
+import {DELAY_SURVEY_FOR} from './../../../config.ts'
 
 type Props = {
     currentAccount: Object,

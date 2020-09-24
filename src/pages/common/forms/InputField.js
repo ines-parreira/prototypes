@@ -5,7 +5,7 @@ import _omit from 'lodash/omit'
 import _uniqueId from 'lodash/uniqueId'
 import {FormGroup, Label, Input as BootstrapInput, FormText} from 'reactstrap'
 
-import {defined} from '../../../utils'
+import {defined} from '../../../utils.ts'
 
 import Errors from './Errors'
 import FormField from './FormField'

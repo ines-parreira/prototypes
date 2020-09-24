@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import {Link, withRouter} from 'react-router'
 import {fromJS} from 'immutable'
 
-import {isCurrentlyOnTicket} from '../../../utils'
+import {isCurrentlyOnTicket} from '../../../utils.ts'
 import * as segmentTracker from '../../../store/middlewares/segmentTracker'
 
 import {MAX_RECENT_CHATS} from '../../../config/recentChats'

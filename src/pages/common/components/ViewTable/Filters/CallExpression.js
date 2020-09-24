@@ -7,8 +7,8 @@ import {connect} from 'react-redux'
 import _get from 'lodash/get'
 import _pickBy from 'lodash/pickBy'
 
-import {BASIC_OPERATORS, UNARY_OPERATORS} from '../../../../../config'
-import {fieldPath, findProperty} from '../../../../../utils'
+import {BASIC_OPERATORS, UNARY_OPERATORS} from '../../../../../config.ts'
+import {fieldPath, findProperty} from '../../../../../utils.ts'
 import * as viewsSelectors from '../../../../../state/views/selectors.ts'
 
 import Left from './Left'

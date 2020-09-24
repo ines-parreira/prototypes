@@ -1,8 +1,9 @@
 import {Map} from 'immutable'
 
 import {MacroActionName} from './models/macroAction/types'
+import {Customer} from './state/customers/types'
 
-enum ActionTemplateExecution {
+export enum ActionTemplateExecution {
     Front = 'front',
     Back = 'back',
 }
@@ -15,7 +16,7 @@ export type ActionTemplate = {
     integrationType?: string
     arguments?: unknown
     validators?: Array<{
-        validate: (value: {integrations: any[]}) => unknown | boolean
+        validate: (value: Customer) => unknown | boolean
         error: string
     }>
 }

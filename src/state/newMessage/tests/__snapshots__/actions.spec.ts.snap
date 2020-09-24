@@ -104,7 +104,7 @@ Array [
     "type": "NEW_MESSAGE_ADD_ATTACHMENT_START",
   },
   Object {
-    "resp": undefined,
+    "resp": Array [],
     "type": "NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS",
   },
 ]

@@ -13,9 +13,12 @@ import _debounce from 'lodash/debounce'
 import _noop from 'lodash/noop'
 import classnames from 'classnames'
 
-import GorgiasApi, {
-    type SearchResultType,
-} from '../../../../services/gorgiasApi'
+import GorgiasApi from '../../../../services/gorgiasApi.ts'
+
+//$TsFixMe on migration import type SearchResultType from gorgiasApi.ts
+type SearchResultType = {
+    id: number,
+}
 
 import type {SearchInputResultProps, SearchInputSubResultProps} from './types'
 import css from './SearchInput.less'

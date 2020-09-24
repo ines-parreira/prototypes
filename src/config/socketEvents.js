@@ -19,7 +19,7 @@ import * as currentAccountSelectors from '../state/currentAccount/selectors.ts'
 import * as currentUserSelectors from '../state/currentUser/selectors.ts'
 import {getTeams} from '../state/teams/selectors.ts'
 
-import {isCurrentlyOnTicket} from '../utils'
+import {isCurrentlyOnTicket} from '../utils.ts'
 import {store as reduxStore} from '../init'
 import {isViewSharedWithUser} from '../state/views/utils.ts'
 import * as socketEventTypes from '../services/socketManager/types.js'

@@ -6,7 +6,7 @@ import throttle from 'lodash/throttle'
 
 import {fromJS} from 'immutable'
 
-import GorgiasApi from '../../../../services/gorgiasApi'
+import GorgiasApi from '../../../../services/gorgiasApi.ts'
 import {TICKETS_CLOSED_PER_AGENT} from '../../../../config/stats'
 
 import BlankState from './components/BlankState'

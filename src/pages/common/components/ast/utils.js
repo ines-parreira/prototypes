@@ -5,7 +5,7 @@ import {
     updateCallExpression,
     getObjectExpression,
 } from '../../../../state/rules/utils.ts'
-import {getCode, getAST, toJS, toImmutable} from '../../../../utils'
+import {getCode, getAST, toJS, toImmutable} from '../../../../utils.ts'
 
 export const BASIC_PADDING = 59
 export const PADDING_STEP = 15

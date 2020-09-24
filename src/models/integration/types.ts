@@ -10,6 +10,7 @@ export enum IntegrationType {
     GmailIntegrationType = 'gmail',
     OutlookIntegrationType = 'outlook',
     AircallIntegrationType = 'aircall',
+    GorgiasChatIntegrationType = 'gorgias_chat',
     SmoochIntegrationType = 'smooch',
     SmoochInsideIntegrationType = 'smooch_inside',
     FacebookIntegrationType = 'facebook',

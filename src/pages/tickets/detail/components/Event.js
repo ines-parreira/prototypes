@@ -11,7 +11,7 @@ import JSONPretty from 'react-json-pretty'
 
 import {getActionByName} from '../../../../config/actions'
 import {AgentLabel, DatetimeLabel} from '../../../common/utils/labels'
-import {humanizeString, stripErrorMessage} from '../../../../utils'
+import {humanizeString, stripErrorMessage} from '../../../../utils.ts'
 
 import * as integrationsSelectors from '../../../../state/integrations/selectors.ts'
 import * as ticketSelectors from '../../../../state/ticket/selectors.ts'

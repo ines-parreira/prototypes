@@ -20,7 +20,7 @@ import {
 } from 'reactstrap'
 
 import ConfirmButton from '../ConfirmButton'
-import {fieldPath, getDefaultOperator, slugify} from '../../../../utils'
+import {fieldPath, getDefaultOperator, slugify} from '../../../../utils.ts'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 import ViewSharingButton from '../ViewSharing'
 

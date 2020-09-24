@@ -1,8 +1,8 @@
 import axios, {CancelToken} from 'axios'
-import {Map} from 'immutable'
+import {Map, List} from 'immutable'
 
 import {UserRole, User, UserDraft} from '../../config/types/user'
-import {toImmutable, toJS} from '../../utils.js'
+import {toImmutable, toJS} from '../../utils'
 import {notify} from '../notifications/actions'
 import {NotificationStatus} from '../notifications/types'
 import {StoreDispatch} from '../types'
@@ -51,7 +51,7 @@ export const createAgent = (agent: UserDraft) => (
         .then((json) => json.data)
         .then(
             (data) => {
-                const resp: Map<any, any> = toImmutable(data)
+                const resp = toImmutable<Map<any, any>>(data)
 
                 void dispatch(
                     notify({
@@ -113,7 +113,7 @@ export const fetchAgent = (id: number, cancelToken?: CancelToken) => (
         .then((json) => json.data)
         .then(
             (resp) => {
-                return Promise.resolve(toImmutable(resp))
+                return Promise.resolve(toImmutable<Map<any, any>>(resp))
             },
             (error) => {
                 if (!axios.isCancel(error)) {
@@ -142,7 +142,7 @@ export const fetchPagination = (page = 1) => (
             (resp) => {
                 return dispatch({
                     type: constants.FETCH_AGENTS_PAGINATION_SUCCESS,
-                    resp: toImmutable(resp),
+                    resp: toImmutable<List<any>>(resp),
                 })
             },
             (error) => {
@@ -194,7 +194,7 @@ export const updateAgent = (id: number, agent: UserDraft) => (
 
                 return dispatch({
                     type: constants.UPDATE_AGENT_SUCCESS,
-                    resp: toImmutable(resp),
+                    resp: toImmutable<Map<any, any>>(resp),
                 })
             },
             (error) => {

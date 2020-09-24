@@ -11,7 +11,7 @@ import {
     devLog,
     humanizeString,
     isCurrentlyOnTicket,
-} from '../../../../../../../../../utils'
+} from '../../../../../../../../../utils.ts'
 import * as ticketSelectors from '../../../../../../../../../state/ticket/selectors.ts'
 import {renderTemplate} from '../../../../../../../utils/template'
 import {DatetimeLabel} from '../../../../../../../utils/labels'

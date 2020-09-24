@@ -12,7 +12,7 @@ import type {
     FulfillmentStatusType,
     FinancialStatusType,
 } from '../../../../../../../../../../constants/integrations/types/shopify.js'
-import {humanizeString} from '../../../../../../../../../../utils'
+import {humanizeString} from '../../../../../../../../../../utils.ts'
 
 import css from './OrderStatus.less'
 

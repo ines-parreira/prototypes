@@ -14,7 +14,7 @@ import {
     FormGroup,
 } from 'reactstrap'
 
-import {DEFAULT_ACTIONS} from '../../../config.js'
+import {DEFAULT_ACTIONS} from '../../../config'
 import {IntentName} from '../../../models/intent/types'
 import {
     createMacro,

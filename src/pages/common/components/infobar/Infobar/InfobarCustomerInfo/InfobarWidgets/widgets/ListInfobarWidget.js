@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import {List} from 'immutable'
 
-import {compare} from '../../../../../../../../utils'
+import {compare} from '../../../../../../../../utils.ts'
 import InfobarWidget from '../InfobarWidget'
 import {ShowMore} from '../../ShowMore'
 

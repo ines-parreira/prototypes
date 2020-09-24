@@ -1,4 +1,3 @@
-// @flow
 import Mousetrap from 'mousetrap'
 import _merge from 'lodash/merge'
 import _clone from 'lodash/clone'
@@ -12,18 +11,22 @@ import {isEditable} from '../common/utils'
 
 import {getModifier, isButton, closest} from './utils'
 
-//$FlowFixMe
 const mousetrap = new Mousetrap()
 
-type keyboardActionType = {
-    key: string,
-    action: (e: Event) => void,
-    description?: string,
-    component?: string,
+type KeyboardAction = {
+    key: string | string[]
+    action?: (e: Event) => void
+    description?: string
+    component?: string
 }
 
-type keymapActionsType = {
-    [string]: keyboardActionType,
+type KeymapActions = {
+    [key: string]: KeyboardAction
+}
+
+type KeyMap = {
+    description?: string
+    actions: KeymapActions
 }
 
 export class ShortcutManager {
@@ -31,7 +34,11 @@ export class ShortcutManager {
         mousetrap.stopCallback = this._stopCallback
     }
 
-    _stopCallback = (e: Event, element: HTMLElement, combo: string) => {
+    _stopCallback = (
+        e: ExtendedKeyboardEvent,
+        element: Element,
+        combo: string
+    ) => {
         // if one of the element's parents
         // has the class "shortcuts-enable" then no need to stop.
         // or, if the combo includes 'mod' or 'meta',
@@ -52,7 +59,9 @@ export class ShortcutManager {
         return isEditable(element) || isButton(element)
     }
 
-    _keymap = _clone(keymap)
+    _keymap: typeof keymap & {[key: string]: {actions: KeymapActions}} = _clone(
+        keymap
+    )
 
     _getComponentKeymap(component: string) {
         if (!this._keymap[component] || !this._keymap[component].actions) {
@@ -64,12 +73,12 @@ export class ShortcutManager {
         return this._keymap[component]
     }
 
-    _setComponentKeymap(component: string, keymap: {}) {
+    _setComponentKeymap(component: string, keymap: KeyMap) {
         this._keymap[component] = keymap
     }
 
-    _bound = []
-    bind(component: string = 'global', actions: keymapActionsType = {}) {
+    _bound: {name: string; paused: boolean}[] = []
+    bind(component = 'global', actions: KeymapActions = {}) {
         // allow overwriting shortcut properties from components and
         // merge actions into the keymap object,
         // so we can to rebind previously bound component actions
@@ -140,7 +149,7 @@ export class ShortcutManager {
     }
 
     _bindMousetrap() {
-        const keys = []
+        const keys: string[] = []
         Object.keys(this._keymap).forEach((c) => {
             const keymap = this._getComponentKeymap(c)
             Object.keys(keymap.actions).forEach((a) => {
@@ -157,7 +166,7 @@ export class ShortcutManager {
         mousetrap.bind(keys, this._globalAction)
     }
 
-    triggerAction(component: string = 'global', actionName: string) {
+    triggerAction(component = 'global', actionName: string) {
         const config = _get(
             this._keymap,
             [component, 'actions', actionName],
@@ -168,7 +177,7 @@ export class ShortcutManager {
             return
         }
 
-        return this.trigger(config.key)
+        return this.trigger((config as KeyboardAction).key as string)
     }
 
     trigger(key: string) {
@@ -176,7 +185,7 @@ export class ShortcutManager {
     }
 
     parseKeyPart(keyPart: string) {
-        const modifiers = {
+        const modifiers: Record<string, string> = {
             mod: 'Ctrl',
             meta: 'Meta',
         }
@@ -197,12 +206,13 @@ export class ShortcutManager {
         return keyString
             .split('+')
             .map((keyPart) => {
+                //eslint-disable-next-line @typescript-eslint/unbound-method
                 return keyPart.split(' ').map(this.parseKeyPart).join(' ')
             })
             .join(' + ')
     }
 
-    getActionKeys(action: keyboardActionType) {
+    getActionKeys(action: KeyboardAction) {
         if (typeof action.key === 'object') {
             return action.key
                 .map((keyString) => {

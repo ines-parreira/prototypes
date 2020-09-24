@@ -12,7 +12,7 @@ import * as ticketConstants from '../ticket/constants'
 import {notify} from '../notifications/actions'
 import * as ticketActions from '../ticket/actions'
 import {renderTemplate} from '../../pages/common/utils/template.js'
-import {getActionTemplate, uploadFiles, toJS} from '../../utils.js'
+import {getActionTemplate, uploadFiles, toJS} from '../../utils'
 import {convertToHTML} from '../../utils/editor'
 import {
     guessReceiversFromTicket,
@@ -38,6 +38,7 @@ import {TicketMessageSourceType} from '../../business/types/ticket'
 import {IntegrationType} from '../../models/integration/types'
 import {ApiListResponse} from '../../models/api/types'
 import {Ticket as TicketResponse} from '../../models/ticket/types'
+import {Customer} from '../customers/types'
 import {NotificationStatus} from '../notifications/types'
 
 import * as responseUtils from './responseUtils'
@@ -375,7 +376,9 @@ export const prepare = (sourceType: TicketMessageSourceType) => (
 
             messages.forEach((message: Map<any, any>) => {
                 attachments = (attachments as Array<Attachment>).concat(
-                    toJS(message.get('attachments') || fromJS([]))
+                    toJS<Attachment[]>(
+                        (message.get('attachments') || fromJS([])) as List<any>
+                    )
                 )
             })
 
@@ -546,8 +549,8 @@ export function prepareTicketDataToSend(
     actionsForMacro: Maybe<MacroActions>,
     currentUser: CurrentUser
 ): Maybe<{ticket: Ticket; newMessage: NewMessage}> {
-    const data: Ticket = toJS(ticket)
-    data.newMessage = (toJS(newMessage) as {newMessage: NewMessage}).newMessage
+    const data = toJS<Ticket>(ticket)
+    data.newMessage = toJS<{newMessage: NewMessage}>(newMessage).newMessage
     data.status = status || data.status
     if (data.assignee_user) {
         data.assignee_user = {id: data.assignee_user.id}
@@ -795,7 +798,7 @@ export function prepareTicketMessage(
                     if (template && template.validators) {
                         for (const validator of template.validators) {
                             const res = validator.validate(
-                                (customer as unknown) as {integrations: any[]}
+                                (customer as unknown) as Customer
                             )
 
                             if (!res) {
@@ -849,7 +852,7 @@ export function sendTicketMessage(
     messageToSend: NewMessage,
     action: Maybe<string>,
     resetMessage = true,
-    ticketId?: string
+    ticketId?: Maybe<string>
 ) {
     return (
         dispatch: StoreDispatch,

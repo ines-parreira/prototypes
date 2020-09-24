@@ -1,9 +1,7 @@
-// @flow
-
 import moment from 'moment'
 
 import localStorageManager from '../localStorageManager'
-import {SHOPIFY_INTEGRATION_TYPE} from '../../constants/integration'
+import {IntegrationType} from '../../models/integration/types'
 
 describe('localStorageManager', () => {
     const now = moment().format()
@@ -21,8 +19,9 @@ describe('localStorageManager', () => {
         describe('[SHOPIFY_INTEGRATION_TYPE]', () => {
             describe('draftOrders', () => {
                 const methods =
-                    localStorageManager.integrations[SHOPIFY_INTEGRATION_TYPE]
-                        .draftOrders
+                    localStorageManager.integrations[
+                        IntegrationType.ShopifyIntegrationType
+                    ].draftOrders
                 const key = methods._key
 
                 describe('getMap()', () => {
@@ -49,18 +48,18 @@ describe('localStorageManager', () => {
                         const values = methods.getMap()
 
                         // Then
-                        expect(values).toEqual(new Map(entries))
+                        expect(values).toEqual(new Map(entries as any))
                     })
                 })
 
                 describe('setMapItem()', () => {
                     it('should set value when map is not defined', () => {
                         // When
-                        methods.setMapItem(1, now)
+                        methods.setMapItem(1 as any, now)
 
                         // Then
                         const values = JSON.parse(
-                            window.localStorage.getItem(key)
+                            window.localStorage.getItem(key) as any
                         )
                         expect(values).toEqual([[1, now]])
                     })
@@ -73,11 +72,11 @@ describe('localStorageManager', () => {
                         )
 
                         // When
-                        methods.setMapItem(2, soon)
+                        methods.setMapItem(2 as any, soon)
 
                         // Then
                         const values = JSON.parse(
-                            window.localStorage.getItem(key)
+                            window.localStorage.getItem(key) as any
                         )
                         expect(values).toEqual([
                             [1, now],
@@ -89,11 +88,11 @@ describe('localStorageManager', () => {
                 describe('deleteMapItem()', () => {
                     it('should remove value when map is not defined', () => {
                         // When
-                        methods.deleteMapItem(1)
+                        methods.deleteMapItem(1 as any)
 
                         // Then
                         const values = JSON.parse(
-                            window.localStorage.getItem(key)
+                            window.localStorage.getItem(key) as any
                         )
                         expect(values).toEqual([])
                     })
@@ -109,11 +108,11 @@ describe('localStorageManager', () => {
                         )
 
                         // When
-                        methods.deleteMapItem(1)
+                        methods.deleteMapItem(1 as any)
 
                         // Then
                         const values = JSON.parse(
-                            window.localStorage.getItem(key)
+                            window.localStorage.getItem(key) as any
                         )
                         expect(values).toEqual([[2, soon]])
                     })

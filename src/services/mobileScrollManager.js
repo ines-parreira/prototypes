@@ -8,7 +8,7 @@ import {
     isMediumOrSmallScreen,
 } from '../pages/common/utils/mobile'
 
-import {isEditable} from './common/utils'
+import {isEditable} from './common/utils.ts'
 
 window.addEventListener('focusin', () => {
     // if focused element is editable,

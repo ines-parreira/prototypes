@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import {Card, CardBody} from 'reactstrap'
 
 import {StatusLabel, AgentLabel, DatetimeLabel} from '../../utils/labels'
-import {stripHTML} from '../../../../utils'
+import {stripHTML} from '../../../../utils.ts'
 
 import SourceIcon from '../SourceIcon'
 

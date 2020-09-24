@@ -2,7 +2,7 @@ import {fromJS, Map, List} from 'immutable'
 import {createSelector} from 'reselect'
 import moment from 'moment'
 
-import {createImmutableSelector} from '../../utils.js'
+import {createImmutableSelector} from '../../utils'
 import * as viewsConfig from '../../config/views.js'
 import {
     getSettingsByType as getCurrentUserSettingsByType,
@@ -14,19 +14,16 @@ import {RootState} from '../types'
 import {sortViews} from './utils'
 import {ViewsState, ViewType} from './types'
 
-//$TsFixMe remove once createImmutableSelector is migrated
-const typeSafeCreateImmutableSelector = createImmutableSelector as typeof createSelector
-
 export const getViewsState = (state: RootState): ViewsState =>
     state.views || fromJS({})
 
-export const getViews = typeSafeCreateImmutableSelector<
+export const getViews = createImmutableSelector<
     RootState,
     List<any>,
     ViewsState
 >(getViewsState, (state) => state.get('items', fromJS([])) as List<any>)
 
-export const getActiveView = typeSafeCreateImmutableSelector<
+export const getActiveView = createImmutableSelector<
     RootState,
     Map<any, any>,
     ViewsState
@@ -116,7 +113,7 @@ export const areAllActiveViewItemsSelected = createSelector<
  * This way we have the pristine view which is currently active, before it has been copied in the "active" property and
  * probably modified
  */
-export const getPristineActiveView = typeSafeCreateImmutableSelector<
+export const getPristineActiveView = createImmutableSelector<
     RootState,
     Map<any, any>,
     List<any>,
@@ -130,7 +127,7 @@ export const getPristineActiveView = typeSafeCreateImmutableSelector<
         ) || fromJS({})) as Map<any, any>
 )
 
-export const getSelectedItemsIds = typeSafeCreateImmutableSelector<
+export const getSelectedItemsIds = createImmutableSelector<
     RootState,
     List<any>,
     ViewsState
@@ -140,7 +137,7 @@ export const getSelectedItemsIds = typeSafeCreateImmutableSelector<
         state.getIn(['_internal', 'selectedItemsIds'], fromJS([])) as List<any>
 )
 
-export const getNavigation = typeSafeCreateImmutableSelector<
+export const getNavigation = createImmutableSelector<
     RootState,
     Map<any, any>,
     ViewsState
@@ -156,7 +153,7 @@ export const getNavigation = typeSafeCreateImmutableSelector<
 /**
  * If there is no previous items, it means we're on the first items of the active view.
  */
-export const isOnFirstPage = typeSafeCreateImmutableSelector<
+export const isOnFirstPage = createImmutableSelector<
     RootState,
     boolean,
     Map<any, any>
@@ -218,7 +215,7 @@ const _getViewsByType = (
 
 export const makeGetViewsByType = () => {
     const getSettingsByType = makeGetSettingsByType()
-    return typeSafeCreateImmutableSelector<
+    return createImmutableSelector<
         RootState,
         List<any>,
         List<any>,
@@ -234,12 +231,7 @@ export const makeGetViewsByType = () => {
 }
 
 export const getViewsByType = (type: ViewType) =>
-    typeSafeCreateImmutableSelector<
-        RootState,
-        List<any>,
-        List<any>,
-        Map<any, any>
-    >(
+    createImmutableSelector<RootState, List<any>, List<any>, Map<any, any>>(
         getViews,
         getCurrentUserSettingsByType(type.replace('list', 'views')),
         (views, currentUserSettings) =>
@@ -280,7 +272,7 @@ export const makeGetViewIdToDisplay = (state: RootState) => (
  * Return view of asked id, if id is 'new' it generates a new view according to config
  */
 export const getView = (id: string, configName: Maybe<string> = '') =>
-    typeSafeCreateImmutableSelector<RootState, Map<any, any>, List<any>>(
+    createImmutableSelector<RootState, Map<any, any>, List<any>>(
         getViews,
         (views) => {
             if (id === 'new' || !id) {

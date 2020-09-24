@@ -17,7 +17,7 @@ import {
     humanizeString,
     isCurrentlyOnTicket,
     toJS,
-} from '../../../../../../../../../utils'
+} from '../../../../../../../../../utils.ts'
 import {renderTemplate} from '../../../../../../../utils/template'
 
 import ActionButtonsGroup from '../ActionButtonsGroup'

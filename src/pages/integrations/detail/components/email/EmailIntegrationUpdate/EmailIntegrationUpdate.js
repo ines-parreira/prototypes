@@ -34,7 +34,7 @@ import {
 import {
     isGorgiasSupportAddress,
     displayRestrictedSymbols,
-} from '../../../../../../utils'
+} from '../../../../../../utils.ts'
 import {convertToHTML} from '../../../../../../utils/editor.ts'
 import Loader from '../../../../../common/components/Loader'
 import * as segmentTracker from '../../../../../../store/middlewares/segmentTracker'
@@ -42,7 +42,7 @@ import * as integrationActions from '../../../../../../state/integrations/action
 import {
     GMAIL_IMPORTED_EMAILS_FOR_YEARS,
     OUTLOOK_IMPORTED_EMAILS_FOR_YEARS,
-} from '../../../../../../config'
+} from '../../../../../../config.ts'
 import ConfirmButton from '../../../../../common/components/ConfirmButton'
 
 import InputField from '../../../../../common/forms/InputField'

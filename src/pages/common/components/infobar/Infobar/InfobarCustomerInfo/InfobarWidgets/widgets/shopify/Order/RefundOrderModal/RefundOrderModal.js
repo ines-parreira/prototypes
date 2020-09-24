@@ -16,7 +16,7 @@ import {
     setPayload,
 } from '../../../../../../../../../../../state/infobarActions/shopify/refundOrder/actions.ts'
 import {getRefundOrderState} from '../../../../../../../../../../../state/infobarActions/shopify/refundOrder/selectors.ts'
-import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager'
+import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager.ts'
 import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors.ts'
 import {getFinalRefundOrderPayload} from '../../../../../../../../../../../business/shopify/order.ts'
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../constants/integration'

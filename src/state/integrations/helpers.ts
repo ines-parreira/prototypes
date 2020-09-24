@@ -1,7 +1,7 @@
 import {fromJS, List, Map} from 'immutable'
 import _find from 'lodash/find'
 
-import {INTEGRATION_TYPE_DESCRIPTIONS} from '../../config.js'
+import {INTEGRATION_TYPE_DESCRIPTIONS} from '../../config'
 import {IntegrationType} from '../../models/integration/types'
 
 type IntegrationsCountMap = {

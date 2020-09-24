@@ -6,7 +6,7 @@ import _last from 'lodash/last'
 import {Card, CardBody, CardTitle} from 'reactstrap'
 
 import DragWrapper from '../../dragging/WidgetsDragWrapper'
-import {humanizeString} from '../../../../../utils'
+import {humanizeString} from '../../../../../utils.ts'
 import * as integrationsSelectors from '../../../../../state/integrations/selectors.ts'
 
 import SourceWidget from '../SourceWidget'

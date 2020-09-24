@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {browserHistory} from 'react-router'
 
-import {hasRole} from '../../../utils'
+import {hasRole} from '../../../utils.ts'
 
 import NotAllowed from './NotAllowed'
 // check user role before render the desired component

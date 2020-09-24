@@ -8,7 +8,7 @@ import classnames from 'classnames'
 
 import EditableTitle from '../EditableTitle'
 import Search from '../Search'
-import {slugify} from '../../../../utils'
+import {slugify} from '../../../../utils.ts'
 import * as viewsActions from '../../../../state/views/actions.ts'
 import * as viewsSelectors from '../../../../state/views/selectors.ts'
 import * as viewsConfig from '../../../../config/views'

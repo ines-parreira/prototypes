@@ -4,7 +4,7 @@ import {fromJS} from 'immutable'
 import {Button} from 'reactstrap'
 import _capitalize from 'lodash/capitalize'
 
-import {humanizeString} from '../../../../../utils'
+import {humanizeString} from '../../../../../utils.ts'
 
 import * as viewsConfig from '../../../../../config/views'
 

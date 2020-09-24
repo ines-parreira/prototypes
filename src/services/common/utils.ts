@@ -1,4 +1,3 @@
-// @flow
 /**
  * Check if element is editable (form elements, contentEditable)
  */
@@ -15,12 +14,15 @@ const nonEditableInputTypes = [
     'submit',
 ]
 
-export function isEditable(element: HTMLElement): boolean {
+export function isEditable(element: Element): boolean {
     return (
         (element.tagName === 'INPUT' &&
-            !nonEditableInputTypes.includes(element.getAttribute('type'))) ||
+            !nonEditableInputTypes.includes(
+                element.getAttribute('type') as any
+            )) ||
         element.tagName === 'SELECT' ||
         element.tagName === 'TEXTAREA' ||
-        (!!element.contentEditable && element.contentEditable === 'true')
+        (!!(element as HTMLElement).contentEditable &&
+            (element as HTMLElement).contentEditable === 'true')
     )
 }

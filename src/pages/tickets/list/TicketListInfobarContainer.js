@@ -15,7 +15,7 @@ import {
     SMOOCH_INTEGRATION_TYPE,
 } from '../../../constants/integration'
 
-import {isAdmin} from '../../../utils'
+import {isAdmin} from '../../../utils.ts'
 
 import InfobarLayout from '../../common/components/infobar/InfobarLayout'
 

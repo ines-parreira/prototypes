@@ -1,17 +1,13 @@
 import {fromJS, List, Map} from 'immutable'
-import {createSelector} from 'reselect'
 
-import {createImmutableSelector} from '../../utils.js'
+import {createImmutableSelector} from '../../utils'
 import {RootState} from '../types'
 
 import {InfobarState} from './types'
 
-//$TsFixMe remove once state/utils are migrated
-const typeSafeCreateImmutableCreator = createImmutableSelector as typeof createSelector
-
 export const getInfobarState = (state: RootState) => state.infobar || fromJS({})
 
-export const getPendingActionsCallbacks = typeSafeCreateImmutableCreator<
+export const getPendingActionsCallbacks = createImmutableSelector<
     RootState,
     List<any>,
     InfobarState
@@ -21,7 +17,7 @@ export const getPendingActionsCallbacks = typeSafeCreateImmutableCreator<
 )
 
 export const getPendingActionCallbacks = (id: string) =>
-    typeSafeCreateImmutableCreator<RootState, Map<any, any>, List<any>>(
+    createImmutableSelector<RootState, Map<any, any>, List<any>>(
         getPendingActionsCallbacks,
         (state) =>
             state.find(

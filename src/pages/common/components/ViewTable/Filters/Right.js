@@ -4,7 +4,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
 
 import {IntegrationsDetailLabel} from '../../../utils/labels'
-import {getLanguageDisplayName} from '../../../../../utils'
+import {getLanguageDisplayName} from '../../../../../utils.ts'
 
 import {getMessagingIntegrations} from '../../../../../state/integrations/selectors.ts'
 import * as viewsSelectors from '../../../../../state/views/selectors.ts'

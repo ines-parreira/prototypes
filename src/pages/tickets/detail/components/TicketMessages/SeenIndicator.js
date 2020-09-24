@@ -1,7 +1,7 @@
 //@flow
 import React from 'react'
 
-import {formatDatetime} from '../../../../../utils'
+import {formatDatetime} from '../../../../../utils.ts'
 import Tooltip from '../../../../common/components/Tooltip'
 
 import css from './SeenIndicator.style.less'

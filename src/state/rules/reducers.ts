@@ -1,8 +1,9 @@
+import esprima from 'esprima'
 import {fromJS, OrderedMap, Map} from 'immutable'
 import _fromPairs from 'lodash/fromPairs'
 import _find from 'lodash/find'
 
-import {getCode, getAST} from '../../utils.js'
+import {getCode, getAST} from '../../utils'
 import {updateCodeAst} from '../../pages/common/components/ast/utils.js'
 
 import {GorgiasAction} from '../types'
@@ -101,7 +102,9 @@ export default function reducer(
             ) as Map<any, any>
 
             // let ast = constants.DEFAULT_IF_STATEMENT
-            let ast = constants.DEFAULT_STATEMENT
+            let ast = constants.DEFAULT_STATEMENT as ReturnType<
+                typeof esprima.parse
+            >
             const code = getCode(ast as any)
             ast = getAST(code)
 

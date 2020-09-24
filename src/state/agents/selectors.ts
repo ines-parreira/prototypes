@@ -1,14 +1,11 @@
 import {fromJS, Map, List} from 'immutable'
 import {createSelector, Selector} from 'reselect'
 
-import {createImmutableSelector} from '../../utils.js'
+import {createImmutableSelector} from '../../utils'
 import {getCurrentUser} from '../currentUser/selectors'
 import {CurrentUser, RootState} from '../types'
 
 import {Agent, Agents, AgentsState} from './types'
-
-//$TsFixMe remove once state/utils are migrated
-const typeSafeCreateImmutableCreator = createImmutableSelector as typeof createSelector
 
 export const getState = (state: RootState): AgentsState =>
     state.agents || fromJS({})
@@ -16,7 +13,7 @@ export const getState = (state: RootState): AgentsState =>
 export const getPaginatedAgents: Selector<
     RootState,
     Agents
-> = typeSafeCreateImmutableCreator<RootState, List<any>, AgentsState>(
+> = createImmutableSelector<RootState, List<any>, AgentsState>(
     getState,
     (state: AgentsState) =>
         (state.getIn(['pagination', 'data']) as List<any>) || fromJS([])
@@ -25,13 +22,13 @@ export const getPaginatedAgents: Selector<
 export const getPagination: Selector<
     RootState,
     Map<any, any>
-> = typeSafeCreateImmutableCreator<RootState, Map<any, any>, AgentsState>(
+> = createImmutableSelector<RootState, Map<any, any>, AgentsState>(
     getState,
     (state: AgentsState) =>
         (state.getIn(['pagination', 'meta']) as Map<any, any>) || fromJS({})
 )
 
-export const getAgents = typeSafeCreateImmutableCreator<
+export const getAgents = createImmutableSelector<
     RootState,
     List<any>,
     AgentsState

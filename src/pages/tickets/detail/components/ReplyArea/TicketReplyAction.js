@@ -7,9 +7,9 @@ import InputField from '../../../../common/forms/InputField'
 import BooleanField from '../../../../common/forms/BooleanField'
 import SelectField from '../../../../common/forms/SelectField'
 
-import {getActionTemplate} from './../../../../../utils'
+import {getActionTemplate} from './../../../../../utils.ts'
 
-import {FORM_CONTENT_TYPE} from './../../../../../config'
+import {FORM_CONTENT_TYPE} from './../../../../../config.ts'
 import {
     getIconUrl,
     getIconFromUrl,

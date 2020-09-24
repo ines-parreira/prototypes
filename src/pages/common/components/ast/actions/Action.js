@@ -11,7 +11,7 @@ import {templateRegex} from '../../../utils/template'
 
 import Errors from '../Errors'
 
-import {isEmailList, findProperty} from '../../../../../utils'
+import {isEmailList, findProperty} from '../../../../../utils.ts'
 
 import ActionSelect from './ActionSelect'
 

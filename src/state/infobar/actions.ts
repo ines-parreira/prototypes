@@ -3,7 +3,7 @@ import {browserHistory} from 'react-router'
 import _noop from 'lodash/noop'
 
 import {notify} from '../notifications/actions'
-import {isCurrentlyOnTicket, stripErrorMessage} from '../../utils.js'
+import {isCurrentlyOnTicket, stripErrorMessage} from '../../utils'
 
 import {ApiListResponsePagination} from '../../models/api/types'
 import {Customer} from '../customers/types'

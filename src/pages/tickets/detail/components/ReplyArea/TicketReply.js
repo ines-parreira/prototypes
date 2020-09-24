@@ -8,7 +8,7 @@ import {canReply} from '../../../../../business/ticket.ts'
 import type {TicketMessageSourceType} from '../../../../../business/types/ticket.ts'
 import * as newMessageActions from '../../../../../state/newMessage/actions.ts'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors.ts'
-import {getActionTemplate} from '../../../../../utils'
+import {getActionTemplate} from '../../../../../utils.ts'
 
 import TicketAttachments from './TicketAttachments'
 import css from './TicketReply.less'

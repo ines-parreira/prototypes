@@ -15,13 +15,13 @@ import {generateDefaultAction} from '../../../../../state/macro/utils'
 import * as ticketTypes from '../../../../../state/ticket/constants'
 import * as newMessageTypes from '../../../../../state/newMessage/constants'
 import * as integrationsSelectors from '../../../../../state/integrations/selectors'
-import {ACTION_TEMPLATES} from '../../../../../config.js'
+import {ACTION_TEMPLATES} from '../../../../../config'
 import RichDropdown from '../../../../common/components/RichDropdown/RichDropdown.js'
 import {OptionGroup} from '../../../../common/components/RichDropdown/types'
 import InputField from '../../../../common/forms/InputField.js'
 import {getSortedIntegrationActionsNames} from '../../utils.js'
 import {Attachment, ActionTemplate} from '../../../../../types'
-import {getActionTemplate, humanizeString} from '../../../../../utils.js'
+import {getActionTemplate, humanizeString} from '../../../../../utils'
 import {RootState} from '../../../../../state/types.js'
 import {IntegrationType} from '../../../../../models/integration/types'
 import {IntentName} from '../../../../../models/intent/types'
@@ -402,9 +402,7 @@ export class MacroEdit extends React.Component<
                                     break
                                 default: {
                                     const integrationType =
-                                        (getActionTemplate(
-                                            action.get('name')
-                                        ) as Maybe<ActionTemplate>)
+                                        getActionTemplate(action.get('name'))
                                             ?.integrationType || ''
                                     config = {
                                         title: `Action ${integrationType.toUpperCase()}`,
@@ -503,11 +501,9 @@ export class MacroEdit extends React.Component<
                                                                     )
                                                                 }
                                                             >
-                                                                {(getActionTemplate(
+                                                                {getActionTemplate(
                                                                     actionName
-                                                                ) as Maybe<
-                                                                    ActionTemplate
-                                                                >)?.title ||
+                                                                )?.title ||
                                                                     humanizeString(
                                                                         actionName
                                                                     )}

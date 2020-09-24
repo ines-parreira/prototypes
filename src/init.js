@@ -8,7 +8,7 @@ import {recentViewsStorage} from './state/views/utils.ts'
 import {notify} from './state/notifications/actions.ts'
 import configureStore from './store/configureStore'
 import * as segmentTracker from './store/middlewares/segmentTracker'
-import {transformSystemMessagesToNotifications} from './utils'
+import {transformSystemMessagesToNotifications} from './utils.ts'
 
 const initMoment = (currentUser) => {
     // set default locale and timezone

@@ -3,7 +3,7 @@ import _trim from 'lodash/trim'
 
 import {TicketChannel} from '../../business/types/ticket'
 import {CustomerChannel} from '../../models/customerChannel/types'
-import {isImmutable, toImmutable} from '../../utils.js'
+import {isImmutable, toImmutable} from '../../utils'
 
 /**
  * Return name of customer
@@ -12,7 +12,7 @@ export const getDisplayName = (customer: {
     name: string
     id: string
 }): Map<any, any> | string => {
-    const immutableCustomer = toImmutable(customer) as Map<any, any>
+    const immutableCustomer = toImmutable<Map<any, any>>(customer)
 
     // TODO toImmutable should always return a map.
     // if not an immutable map

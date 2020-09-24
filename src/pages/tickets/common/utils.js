@@ -2,7 +2,7 @@ import {fromJS} from 'immutable'
 
 import {getValuePropFromSourceType} from '../../../state/ticket/utils'
 
-import {getActionTemplate} from './../../../utils'
+import {getActionTemplate} from './../../../utils.ts'
 
 /**
  * Return the label of the given person

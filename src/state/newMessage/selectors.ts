@@ -7,22 +7,19 @@ import {
     TicketChannel,
 } from '../../business/types/ticket'
 import {IntegrationType} from '../../models/integration/types'
-import {isImmutable, createImmutableSelector} from '../../utils.js'
+import {isImmutable, createImmutableSelector} from '../../utils'
 import {getChannelSignature} from '../integrations/selectors'
 import {isForwardedMessage} from '../ticket/utils.js'
 import {RootState} from '../types'
 
 import {NewMessageState, ReceiverProperty} from './types'
 
-//$TsFixMe remove once state/utils are migrated
-const typeSafeCreateImmutableCreator = createImmutableSelector as typeof createSelector
-
 export const getReceiversProperties = () => Object.values(ReceiverProperty)
 
 export const getNewMessageState = (state: RootState): NewMessageState =>
     state.newMessage || fromJS({})
 
-export const getLoading = typeSafeCreateImmutableCreator<
+export const getLoading = createImmutableSelector<
     RootState,
     Map<any, any>,
     NewMessageState
@@ -55,7 +52,7 @@ export const isCacheAdded = createSelector<RootState, boolean, NewMessageState>(
     (state) => state.getIn(['state', 'cacheAdded'], false) as boolean
 )
 
-export const getNewMessage = typeSafeCreateImmutableCreator<
+export const getNewMessage = createImmutableSelector<
     RootState,
     Map<any, any>,
     NewMessageState
@@ -64,7 +61,7 @@ export const getNewMessage = typeSafeCreateImmutableCreator<
     (state) => (state.get('newMessage') || fromJS({})) as Map<any, any>
 )
 
-export const getNewMessageContentState = typeSafeCreateImmutableCreator<
+export const getNewMessageContentState = createImmutableSelector<
     RootState,
     ContentState,
     NewMessageState
@@ -93,7 +90,7 @@ export const getNewMessageChannel = createSelector<
     (state) => (state.get('channel') as TicketChannel) || TicketChannel.Email
 )
 
-export const getNewMessageSource = typeSafeCreateImmutableCreator<
+export const getNewMessageSource = createImmutableSelector<
     RootState,
     Map<any, any>,
     Map<any, any>
@@ -102,7 +99,7 @@ export const getNewMessageSource = typeSafeCreateImmutableCreator<
     (state) => (state.get('source') || fromJS({})) as Map<any, any>
 )
 
-export const getNewMessageAttachments = typeSafeCreateImmutableCreator<
+export const getNewMessageAttachments = createImmutableSelector<
     RootState,
     List<any>,
     Map<any, any>
@@ -111,7 +108,7 @@ export const getNewMessageAttachments = typeSafeCreateImmutableCreator<
     (state) => (state.get('attachments') || fromJS([])) as List<any>
 )
 
-export const isNewMessagePublic = typeSafeCreateImmutableCreator<
+export const isNewMessagePublic = createImmutableSelector<
     RootState,
     boolean,
     Map<any, any>
@@ -128,7 +125,7 @@ export const isForward = createSelector<RootState, boolean, Map<any, any>>(
 // property like 'to', 'from', 'cc', etc.
 // ex: newMessageTo: getNewMessageSourceProperty('to')(state)
 export const getNewMessageSourceProperty = (property: string) =>
-    typeSafeCreateImmutableCreator<RootState, Map<any, any>, Map<any, any>>(
+    createImmutableSelector<RootState, Map<any, any>, Map<any, any>>(
         getNewMessageSource,
         (state) => (state.get(property) || fromJS({})) as Map<any, any>
     )
@@ -154,7 +151,7 @@ export const getOptionalContactProperties = (
 
 // return all contact properties (mandatory + optional) for a source type
 export const getContactProperties = (sourceType: TicketMessageSourceType) =>
-    typeSafeCreateImmutableCreator<
+    createImmutableSelector<
         RootState,
         ReceiverProperty[],
         ReceiverProperty[],
@@ -165,13 +162,13 @@ export const getContactProperties = (sourceType: TicketMessageSourceType) =>
         (mandatory, optional) => mandatory.concat(optional)
     )
 
-export const getNewMessageMandatoryContactProperties = typeSafeCreateImmutableCreator<
+export const getNewMessageMandatoryContactProperties = createImmutableSelector<
     RootState,
     ReceiverProperty[],
     ReceiverProperty[]
 >(getMandatoryContactProperties(), (contactProperties) => contactProperties)
 
-export const getNewMessageContactProperties = typeSafeCreateImmutableCreator<
+export const getNewMessageContactProperties = createImmutableSelector<
     RootState,
     ReceiverProperty[],
     TicketMessageSourceType
@@ -180,7 +177,7 @@ export const getNewMessageContactProperties = typeSafeCreateImmutableCreator<
 )
 
 // true if mandatory contact properties (such as 'to') are not empty for current new message
-export const areNewMessageContactPropertiesFulfilled = typeSafeCreateImmutableCreator<
+export const areNewMessageContactPropertiesFulfilled = createImmutableSelector<
     RootState,
     boolean,
     ReceiverProperty[],
@@ -197,7 +194,7 @@ export const areNewMessageContactPropertiesFulfilled = typeSafeCreateImmutableCr
 )
 
 // return all recipients values merged in an immutable array
-export const getNewMessageRecipients = typeSafeCreateImmutableCreator<
+export const getNewMessageRecipients = createImmutableSelector<
     RootState,
     List<any>,
     ReceiverProperty[],

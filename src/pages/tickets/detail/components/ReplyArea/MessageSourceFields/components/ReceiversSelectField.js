@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import _debounce from 'lodash/debounce'
 
-import {isEmail} from '../../../../../../../utils'
+import {isEmail} from '../../../../../../../utils.ts'
 import {
     getValuePropFromSourceType,
     receiversValueFromState,

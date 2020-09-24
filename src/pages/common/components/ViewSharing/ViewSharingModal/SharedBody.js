@@ -8,19 +8,18 @@ import classnames from 'classnames'
 import {UncontrolledPeopleSearchInput} from '../../../forms/PeopleSearchInput'
 import {AgentLabel, TeamLabel} from '../../../utils/labels'
 import type {teamType} from '../../../../../state/teams/types'
-import type {userType} from '../../../../../utils'
 
 import css from './SharedBody.less'
 
 type Props = {
     availableTeams: List<teamType>,
-    availableUsers: List<userType>,
+    availableUsers: List<any>,
     selectedTeams: List<teamType>,
-    selectedUsers: List<userType>,
+    selectedUsers: List<any>,
     onTeamClick: (team: teamType) => void,
-    onUserClick: (user: userType) => void,
+    onUserClick: (user: any) => void,
     onRemoveTeam: (team: teamType) => void,
-    onRemoveUser: (user: userType) => void,
+    onRemoveUser: (user: any) => void,
 }
 
 export default function SharedBody({

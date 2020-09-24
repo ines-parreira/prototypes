@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import {FormGroup, Label, Input as BootstrapInput, FormText} from 'reactstrap'
 
-import {defined} from '../../../utils'
+import {defined} from '../../../utils.ts'
 
 import Errors from './Errors'
 

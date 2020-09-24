@@ -2,6 +2,8 @@ import {Map} from 'immutable'
 
 import {Order} from '../../constants/integrations/types/shopify'
 import {CustomerChannel} from '../../models/customerChannel/types'
+import {IntegrationType} from '../../models/integration/types'
+import {Subscription} from '../billing/types'
 
 type CustomerInformation = {
     city: string
@@ -22,6 +24,17 @@ export type CustomerDraft = {
     note: string
 }
 
+export type CustomerIntegration = {
+    args: Record<string, unknown>
+    headers: Record<string, unknown>
+    origin: string
+    url: string
+    __integration_type__: IntegrationType
+    orders?: Order[]
+    subscriptions?: Subscription[]
+    charges?: Record<string, unknown>[]
+}
+
 export type Customer = CustomerDraft & {
     active: boolean
     created_datetime: string
@@ -31,7 +44,9 @@ export type Customer = CustomerDraft & {
     external_id: string
     firstname: string
     id: number
-    integration: unknown
+    integrations: {
+        [key: string]: CustomerIntegration
+    }
     language: string
     lastname: string
     meta: unknown

@@ -10,7 +10,6 @@ import * as teamsSelectors from '../../../../../state/teams/selectors.ts'
 import type {teamType} from '../../../../../state/teams/types'
 import RadioChoiceField from '../../../forms/RadioChoiceField'
 import {ViewVisibility} from '../../../../../constants/view'
-import type {userType} from '../../../../../utils'
 import Loader from '../../Loader'
 
 import SharedBody from './SharedBody'
@@ -23,16 +22,16 @@ type Props = {
     isLoading: boolean,
     error: Error,
     teams: List<teamType>,
-    users: List<userType>,
+    users: List<any>,
     initialTeams: List<teamType>,
-    initialUsers: List<userType>,
+    initialUsers: List<any>,
     selectedTeams: List<teamType>,
-    selectedUsers: List<userType>,
+    selectedUsers: List<any>,
     setVisibility: (visibility: string) => void,
     onTeamClick: (team: teamType) => void,
-    onUserClick: (user: userType) => void,
+    onUserClick: (user: any) => void,
     onRemoveTeam: (team: teamType) => void,
-    onRemoveUser: (user: userType) => void,
+    onRemoveUser: (user: any) => void,
 }
 
 const choices = [

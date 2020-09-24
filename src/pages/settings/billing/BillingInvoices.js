@@ -17,7 +17,7 @@ import {
     updateInvoiceInList,
 } from '../../../state/billing/actions.ts'
 import Loader from '../../common/components/Loader'
-import GorgiasApi from '../../../services/gorgiasApi'
+import GorgiasApi from '../../../services/gorgiasApi.ts'
 import {notify} from '../../../state/notifications/actions.ts'
 
 type Props = {

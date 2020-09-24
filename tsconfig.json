@@ -22,7 +22,7 @@
             ]
         },
         "baseUrl": ".",
-        "types": ["stripe-v2", "webpack-env"]
+        "types": ["stripe-v2", "webpack-env", "twemoji"]
     },
     "include": [
         "g/static/private/js/**/*.ts",

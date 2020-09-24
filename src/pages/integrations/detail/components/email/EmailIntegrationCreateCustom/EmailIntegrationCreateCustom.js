@@ -9,7 +9,7 @@ import {Container, Form, Button, Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
 import {EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS} from '../../../../../../constants/integration'
 import {getRedirectUri} from '../../../../../../state/integrations/selectors.ts'
-import {displayRestrictedSymbols} from '../../../../../../utils'
+import {displayRestrictedSymbols} from '../../../../../../utils.ts'
 import {notify} from '../../../../../../state/notifications/actions.ts'
 
 import InputField from '../../../../../common/forms/InputField'

@@ -3,7 +3,7 @@ import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
 import {AddLogicalCondition} from '../AddLogicalCondition'
-import {toJS} from '../../../../../../utils'
+import {toJS} from '../../../../../../utils.ts'
 
 describe('AddLogicalCondition component', () => {
     const commonProps = {

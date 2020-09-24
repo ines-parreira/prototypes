@@ -5,7 +5,7 @@ import * as customerTypes from '../customers/constants.js'
 import ticketReplyCache from '../newMessage/ticketReplyCache'
 import * as newMessageTypes from '../newMessage/constants'
 import {TICKET_AUDIT_LOG_EVENTS} from '../../constants/event.js'
-import {compare} from '../../utils.js'
+import {compare} from '../../utils'
 import {GorgiasAction} from '../types'
 
 import {getPendingMessageIndex} from './utils.js'

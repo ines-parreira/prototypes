@@ -1,4 +1,3 @@
-//@flow
 import {ContentState} from 'draft-js'
 import {fromJS} from 'immutable'
 import {browserHistory} from 'react-router'
@@ -7,25 +6,26 @@ import {removeNotification} from 'reapop'
 import {
     newMessageResetFromMessage,
     sendTicketMessage,
-} from '../../../state/newMessage/actions.ts'
-import {applyMacro, messageDeleted} from '../../../state/ticket/actions.ts'
+} from '../../../state/newMessage/actions'
+import {applyMacro, messageDeleted} from '../../../state/ticket/actions'
 import pendingMessageManager, {
     PendingMessageManager,
 } from '../pendingMessageManager'
-import type {SendMessageArgs} from '../types'
+import {SendMessageArgs} from '../types'
+
+type fromJSType = typeof fromJS
 
 jest.spyOn(window, 'addEventListener')
 jest.spyOn(window, 'removeEventListener')
 jest.mock('react-router')
 jest.mock('reapop')
-jest.mock('../../../init', () => {
-    //$FlowFixMe
+jest.mock('../../../init.js', () => {
     const {fromJS} = require.requireActual('immutable')
     return {
         store: {
             dispatch: jest.fn(),
             getState: () => ({
-                macros: fromJS({'1': {id: 1}}),
+                macros: (fromJS as fromJSType)({'1': {id: 1}}),
             }),
         },
     }
@@ -38,13 +38,7 @@ jest.useFakeTimers()
 describe('services', () => {
     const emptyContentState = ContentState.createFromText('')
     describe('pendingMessageManager', () => {
-        const sendMessageArgs: SendMessageArgs = ([
-            '1',
-            {},
-            null,
-            true,
-            '1',
-        ]: any)
+        const sendMessageArgs: SendMessageArgs = [1, {}, null, true, '1'] as any
         beforeEach(() => {
             jest.clearAllMocks()
         })
@@ -63,13 +57,13 @@ describe('services', () => {
         })
 
         it('should send the pending message when sending a new message', () => {
-            const secondSendMessageArgs: SendMessageArgs = ([
-                '2',
+            const secondSendMessageArgs: SendMessageArgs = [
+                2,
                 {},
                 null,
                 true,
                 '1',
-            ]: any)
+            ] as any
             pendingMessageManager.sendMessage(
                 emptyContentState,
                 ...sendMessageArgs
@@ -108,8 +102,8 @@ describe('services', () => {
             )
             pendingMessageManager.undoMessage()
 
-            expect(removeNotification).toHaveBeenNthCalledWith(1, '1')
-            expect(messageDeleted).toHaveBeenNthCalledWith(1, '1')
+            expect(removeNotification).toHaveBeenNthCalledWith(1, 1)
+            expect(messageDeleted).toHaveBeenNthCalledWith(1, 1)
             expect(browserHistory.push).toHaveBeenNthCalledWith(
                 1,
                 '/app/ticket/1'
@@ -122,8 +116,8 @@ describe('services', () => {
         })
 
         it('should apply macro when undoing a message using macro', () => {
-            const args = [...sendMessageArgs]
-            args[1] = ({macros: [{id: '1'}]}: any)
+            const args: SendMessageArgs = [...sendMessageArgs]
+            args[1] = {macros: [{id: '1'}]} as any
             pendingMessageManager.sendMessage(emptyContentState, ...args)
             pendingMessageManager.undoMessage()
 
@@ -151,7 +145,9 @@ describe('services', () => {
 
         it('should prevent redirection when a message is pending', () => {
             const newPendingMessageManager = new PendingMessageManager('foo')
-            const beforeUnloadHandler = window.addEventListener.mock.calls[0][1]
+            const beforeUnloadHandler = (window.addEventListener as jest.MockedFunction<
+                typeof window.addEventListener
+            >).mock.calls[0][1] as (event: BeforeUnloadEvent) => void
             const event = new Event('beforeUnload')
 
             expect(beforeUnloadHandler(event)).toBe(undefined)

@@ -1,4 +1,4 @@
-import * as utils from '../utils'
+import * as utils from '../utils.ts'
 
 describe('Services common utils', () => {
     describe('is editable', () => {

@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import _noop from 'lodash/noop'
 
-import {uploadFiles} from '../../../../utils'
+import {uploadFiles} from '../../../../utils.ts'
 import {FileField} from '../FileField'
 
 jest.mock('../../../../utils', () => {

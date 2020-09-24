@@ -19,7 +19,7 @@ import {
     getPluralObjectName,
     isCurrentlyOnTicket,
     isCurrentlyOnView,
-} from '../../utils.js'
+} from '../../utils'
 import {buildJobMessage} from '../../utils/notificationUtils'
 import {getMoment} from '../../utils/date'
 import {StoreDispatch, RootState} from '../types'

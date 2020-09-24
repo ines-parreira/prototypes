@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import {getIconFromType} from './../../../../../../state/integrations/helpers.ts'
-import {getActionTemplate} from './../../../../../../utils'
+import {getActionTemplate} from './../../../../../../utils.ts'
 
 class IntegrationAction extends React.Component {
     render() {

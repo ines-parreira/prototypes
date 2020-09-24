@@ -4,7 +4,7 @@ import {withRouter} from 'react-router'
 import moment from 'moment'
 import {fromJS, List} from 'immutable'
 
-import {getHashOfObj} from '../../utils'
+import {getHashOfObj} from '../../utils.ts'
 import {views, STORE_INTEGRATION_TYPES} from '../../config/stats'
 import {getIntegrations} from '../../state/integrations/selectors.ts'
 import {resetStatsFilters, setStatsFilters} from '../../state/stats/actions.ts'

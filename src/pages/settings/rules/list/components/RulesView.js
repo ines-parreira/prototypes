@@ -10,7 +10,7 @@ import Modal from '../../../../common/components/Modal'
 import PageHeader from '../../../../common/components/PageHeader'
 
 import ReactSortable from '../../../../common/components/dragging/ReactSortable'
-import {getAST, getCode} from '../../../../../utils'
+import {getAST, getCode} from '../../../../../utils.ts'
 import Video from '../../../../common/components/Video'
 
 import RuleRow from './RuleRow/RuleRow'

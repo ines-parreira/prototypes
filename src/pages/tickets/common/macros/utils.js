@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 
 import type {Map} from 'immutable'
 
-import {getActionTemplate} from '../../../../utils'
+import {getActionTemplate} from '../../../../utils.ts'
 import {getDefaultMacro} from '../../../../state/macro/utils.ts'
 
 export const isMacroDisabled = (

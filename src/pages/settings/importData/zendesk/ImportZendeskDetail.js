@@ -7,9 +7,9 @@ import classnames from 'classnames'
 import {Breadcrumb, BreadcrumbItem, Button, Container, Form} from 'reactstrap'
 
 import InputField from '../../../common/forms/InputField'
-import {ZENDESK_IMPORTED_TICKETS_FOR_YEARS} from '../../../../config'
+import {ZENDESK_IMPORTED_TICKETS_FOR_YEARS} from '../../../../config.ts'
 
-import * as utils from '../../../../utils'
+import * as utils from '../../../../utils.ts'
 import PageHeader from '../../../common/components/PageHeader'
 
 import * as integrationActions from './../../../../state/integrations/actions.ts'

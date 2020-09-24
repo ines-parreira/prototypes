@@ -1,58 +1,48 @@
-// @flow
-
 import axios, {
-    type AxiosInstance,
-    type AxiosRequestConfig,
-    type AxiosResponse,
-    type CancelTokenSource,
+    AxiosInstance,
+    AxiosRequestConfig,
+    AxiosResponse,
+    CancelTokenSource,
 } from 'axios'
-import {fromJS, type List, type Map, type Record} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 
-import type {
-    IntegrationDataItem,
-    IntegrationDataItemType,
-} from '../models/integration'
-import type {ApiListResponsePagination} from '../models/api'
+import {IntegrationDataItemType} from '../models/integration/types'
+import {ApiListResponsePagination} from '../models/api/types'
 import type {
     PollingConfig,
-    DraftOrder,
-    DraftOrderInvoice,
     Refund,
 } from '../constants/integrations/types/shopify'
-import type {AuditLogEvent} from '../models/event'
-import type {teamType} from '../state/teams/types'
-import type {userType} from '../utils'
+import {AuditLogEvent} from '../models/event/types'
 
 type GorgiasApiOptions = {
-    requestsCancellation: boolean,
+    requestsCancellation?: boolean
 }
 
 export type SearchResultType = {
-    id: number,
+    id: number
 }
 
 export default class GorgiasApi {
     _api: AxiosInstance
+    //@ts-ignore ts(2564)
     _requestCanceller: CancelTokenSource
 
     static _getDraftOrderPollingConfig(
         responseData: PollingConfig
-    ): ?PollingConfig {
-        let pollingConfig: ?PollingConfig = null
+    ): Maybe<PollingConfig> {
+        let pollingConfig: Maybe<PollingConfig> = null
 
         if (responseData.retry_after) {
             pollingConfig = {
                 location: responseData.location,
-                retry_after: parseInt(responseData.retry_after, 10),
+                retry_after: parseInt(responseData.retry_after as any, 10),
             }
         }
 
         return pollingConfig
     }
 
-    constructor({
-        requestsCancellation: requestsCancellation = true,
-    }: GorgiasApiOptions = {}) {
+    constructor({requestsCancellation = true}: GorgiasApiOptions = {}) {
         this._api = axios.create()
 
         if (requestsCancellation) {
@@ -68,7 +58,7 @@ export default class GorgiasApi {
     /**
      * Cancel all pending requests
      */
-    cancelPendingRequests(refreshToken: boolean = false) {
+    cancelPendingRequests(refreshToken = false) {
         if (!this._requestCanceller) {
             throw new Error(
                 'Cannot call `.cancelPendingRequests()` on this instance ' +
@@ -85,21 +75,17 @@ export default class GorgiasApi {
 
     /**
      * Yield each page of requested items until last page is reached
-     *
-     * @param {string} url - URL of the endpoint to call
-     * @param {AxiosRequestConfig} [config] Axios config
-     * @returns {AsyncGenerator<Array<T>, void, void>}
      */
     async *paginate<T>(
         url: string,
         config?: AxiosRequestConfig
     ): AsyncGenerator<Array<T>, void, void> {
-        let path: ?string = url
+        let path: Maybe<string> = url
 
         while (path) {
-            const response: AxiosResponse<
-                ApiListResponsePagination<T>
-            > = await this._api.get(path, config)
+            const response: AxiosResponse<ApiListResponsePagination<
+                T[]
+            >> = await this._api.get(path, config)
             const {
                 data: {data, meta},
             } = response
@@ -110,31 +96,21 @@ export default class GorgiasApi {
 
     /**
      * Fetch a statistic
-     *
-     * @param {String} name - the name of the statistic to fetch
-     * @param {Map} data - The data to sent. Available parameters:
-     *  - {Map} filters: the filters to apply on the statistics
-     * @returns {Promise}
      */
-    async getStatistic(name: string, data: Map<*, *>) {
+    async getStatistic(name: string, data: Map<any, any>) {
         const config = {timeout: 60000 * 3}
         const resp = await this._api.post(
             `/api/stats/${name}/`,
             data.toJS(),
             config
         )
-        return fromJS(resp.data)
+        return fromJS(resp.data) as Map<any, any>
     }
 
     /**
      * Download a statistic
-     *
-     * @param {String} name - The name of the statistic to download.
-     * @param {Map} data - The data to sent. Available parameters:
-     *  - {Map} filters: the filters to apply on the statistic
-     * @returns {Promise}
      */
-    async downloadStatistic(name: string, data: Map<*, *>) {
+    async downloadStatistic(name: string, data: Map<any, any>) {
         const params = {
             ...data.toJS(),
         }
@@ -145,77 +121,69 @@ export default class GorgiasApi {
             config
         )
         const reFilename = /filename[^;=\n]*=(?:(\\?['"])(.*?)\1|(?:[^\s]+'.*?')?([^;\n]*))/
-        const contentDisposition = resp.headers['content-disposition'] || ''
-        const matches = contentDisposition.match(reFilename)
+        const contentDisposition =
+            ((resp.headers as Record<string, unknown>)[
+                'content-disposition'
+            ] as string) || ''
+        //eslint-disable-next-line @typescript-eslint/prefer-regexp-exec
+        const matches = contentDisposition.match(reFilename) as RegExpMatchArray
         const filename = matches.length ? matches.pop() : `${name}.csv`
         return fromJS({
             name: filename,
-            contentType: resp.headers['content-type'],
+            contentType: (resp.headers as Record<string, unknown>)[
+                'content-type'
+            ],
             data: resp.data,
-        })
+        }) as Map<any, any>
     }
 
     /**
      * Create a new subscription with no trial period or end the trial period of an existing subscription.
-     *
-     * @return - A Gorgias Subscription and its last payment.
      */
-    async startSubscription(): Map<*, *> {
+    async startSubscription() {
         const resp = await this._api.put('/api/billing/subscription/start/', {})
-        return fromJS(resp.data)
+        return fromJS(resp.data) as Map<any, any>
     }
 
     /**
      * Pay an invoice.
-     *
-     * @param {string} invoiceId - The ID of the invoice to pay.
-     * @return - The invoice attempted to be paid.
      */
-    async payInvoice(invoiceId: string): Map<*, *> {
+    async payInvoice(invoiceId: string) {
         const resp = await this._api.put(
             `/api/billing/invoices/${invoiceId}/pay/`,
             {}
         )
-        return fromJS(resp.data)
+        return fromJS(resp.data) as Map<any, any>
     }
 
     /**
      * Confirm the payment of an invoice.
-     *
-     * @param {string} invoiceId - the ID of the invoice to confirm the payment for.
-     * @return - The information related to the payment.
      */
-    async confirmInvoicePayment(invoiceId: string): Map<*, *> {
+    async confirmInvoicePayment(invoiceId: string) {
         const resp = await this._api.put(
             `/api/billing/invoices/${invoiceId}/confirm-payment/`,
             {}
         )
-        return fromJS(resp.data)
+        return fromJS(resp.data) as Map<any, any>
     }
 
     /**
      * Update the credit card of the current account.
-     *
-     * @param {Map} data - The data to sent.
-     * @return - A Stripe credit card.
      */
-    async updateCreditCard(data: Map<*, *>): Map<*, *> {
+    async updateCreditCard(data: Map<any, any>) {
         const resp = await this._api.put(
             '/api/billing/credit-card/',
             data.toJS()
         )
-        return fromJS(resp.data)
+        return fromJS(resp.data) as Map<any, any>
     }
 
     /**
      * Yield each page of events until last page is reached
-     *
-     * @param {number} ticketId
-     * @returns {AsyncGenerator<List<Record<AuditLogEvent>>, void, Array<AuditLogEvent>>}
      */
     async *getTicketEvents(
         ticketId: number
-    ): AsyncGenerator<List<Record<AuditLogEvent>>, void, Array<AuditLogEvent>> {
+    ): AsyncGenerator<List<any>, void, Array<AuditLogEvent>> {
         const pages = this.paginate(`/api/tickets/${ticketId}/events/`)
 
         for await (const events of pages) {
@@ -229,38 +197,22 @@ export default class GorgiasApi {
 
     /**
      * Call the given API endpoint with the given filter parameter, and return results
-     *
-     * @param {string} endpoint
-     * @param {string} filter
-     * @returns {Promise<Array<SearchResultType>>}
      */
-    async search(
-        endpoint: string,
-        filter: string
-    ): Promise<Array<SearchResultType>> {
+    async search(endpoint: string, filter: string) {
         const params = filter.length ? {filter} : {}
         const response = await this._api.get(endpoint, {params})
 
-        return response.data.data
+        return (response.data as {data: SearchResultType[]}).data
     }
 
     /**
      * Yield integration data items that match given IDs
-     *
-     * @param {number} integrationId
-     * @param {IntegrationDataItemType} integrationDataItemType
-     * @param {Array<string | number>} externalIds
-     * @returns {AsyncGenerator<List<IntegrationDataItem<T>>, void, Array<IntegrationDataItem<T>>>}
      */
-    async *getIntegrationDataItems<T>(
+    async *getIntegrationDataItems(
         integrationId: number,
         integrationDataItemType: IntegrationDataItemType,
         externalIds: Array<string | number>
-    ): AsyncGenerator<
-        List<IntegrationDataItem<T>>,
-        void,
-        Array<IntegrationDataItem<T>>
-    > {
+    ) {
         const pages = this.paginate(
             `/api/integrations/${integrationId}/${integrationDataItemType}`,
             {
@@ -271,25 +223,27 @@ export default class GorgiasApi {
         )
 
         for await (const items of pages) {
-            yield fromJS(items)
+            yield fromJS(items) as List<any>
         }
     }
 
     async _upsertDraftOder(
         integrationId: number,
-        payload: Record<$Shape<DraftOrder>>,
+        payload: Map<any, any>,
         {
             draftOrderId,
             params = {},
-        }: {draftOrderId?: ?number, params?: Object} = {}
-    ): Promise<[Record<DraftOrder>, ?PollingConfig]> {
+        }: {draftOrderId?: Maybe<number>; params?: Record<string, unknown>} = {}
+    ): Promise<[Map<any, any>, Maybe<PollingConfig>]> {
         let method
         let url
 
         if (draftOrderId) {
+            //eslint-disable-next-line @typescript-eslint/unbound-method
             method = this._api.put
             url = `/integrations/shopify/order/draft/${draftOrderId}/`
         } else {
+            //eslint-disable-next-line @typescript-eslint/unbound-method
             method = this._api.post
             url = '/integrations/shopify/order/draft/'
         }
@@ -302,32 +256,34 @@ export default class GorgiasApi {
         })
 
         return [
-            fromJS(response.data.draft_order),
+            fromJS((response.data as {draft_order: Map<any, any>}).draft_order),
             GorgiasApi._getDraftOrderPollingConfig(response.data),
         ]
     }
 
     async createDraftOrder(
         integrationId: number,
-        payload: Record<$Shape<DraftOrder>>,
-        orderId?: ?number
-    ): Promise<[Record<DraftOrder>, ?PollingConfig]> {
+        payload: Map<any, any>,
+        orderId?: Maybe<number>
+    ): Promise<[Map<any, any>, Maybe<PollingConfig>]> {
         const params = orderId ? {order_id: orderId} : {}
         return await this._upsertDraftOder(integrationId, payload, {params})
     }
 
     async upsertDraftOrder(
         integrationId: number,
-        payload: Record<$Shape<DraftOrder>>,
-        draftOrderId: ?number
-    ): Promise<[Record<DraftOrder>, ?PollingConfig]> {
+        payload: Map<any, any>,
+        draftOrderId: Maybe<number>
+    ): Promise<[Map<any, any>, Maybe<PollingConfig>]> {
         // TODO(@samy): remove warning if it never happens
-        const variantIds = payload
-            .get('line_items', [])
-            .map((lineItem) => lineItem.get('variant_id'))
+        const variantIds = (payload.get('line_items', []) as List<any>)
+            .map(
+                (lineItem: Map<any, any>) =>
+                    lineItem.get('variant_id') as number
+            )
             .filter((variantId) => !!variantId)
 
-        const uniqueVariantIds = new Set(variantIds)
+        const uniqueVariantIds = new Set(variantIds as any)
 
         if (variantIds.size !== uniqueVariantIds.size) {
             console.warn(
@@ -344,7 +300,7 @@ export default class GorgiasApi {
     async getDraftOrder(
         integrationId: number,
         draftOrderId: number
-    ): Promise<[Record<DraftOrder>, ?PollingConfig]> {
+    ): Promise<[Map<any, any>, Maybe<PollingConfig>]> {
         const response = await this._api.get(
             `/integrations/shopify/order/draft/${draftOrderId}/`,
             {
@@ -355,7 +311,7 @@ export default class GorgiasApi {
         )
 
         return [
-            fromJS(response.data.draft_order),
+            fromJS((response.data as {draft_order: Map<any, any>}).draft_order),
             GorgiasApi._getDraftOrderPollingConfig(response.data),
         ]
     }
@@ -377,7 +333,7 @@ export default class GorgiasApi {
     async emailDraftOrderInvoice(
         integrationId: number,
         draftOrderId: number,
-        invoicePayload: Record<DraftOrderInvoice>
+        invoicePayload: Map<any, any>
     ): Promise<void> {
         await this._api.post(
             `/integrations/shopify/order/draft/${draftOrderId}/send-invoice/`,
@@ -393,8 +349,8 @@ export default class GorgiasApi {
     async calculateRefund(
         integrationId: number,
         orderId: number,
-        payload: Record<$Shape<Refund>>
-    ): Promise<Record<Refund>> {
+        payload: Map<any, any>
+    ) {
         const response = await this._api.post(
             `/integrations/shopify/order/${orderId}/refunds/calculate/`,
             payload.toJS(),
@@ -405,24 +361,31 @@ export default class GorgiasApi {
             }
         )
 
-        return fromJS(response.data.refund)
+        return fromJS((response.data as {refund: Refund}).refund) as Map<
+            any,
+            any
+        >
     }
 
-    async getViewSharing(viewId: number): Promise<Map<*, *>> {
+    async getViewSharing(viewId: number) {
         const response = await this._api.get(`/api/views/${viewId}`)
-        return fromJS(response.data)
+        return fromJS(response.data) as Map<any, any>
     }
 
     async setViewSharing(
         viewId: number,
         visibility: string,
-        teams: List<teamType>,
-        users: List<userType>
-    ): Promise<Map<*, *>> {
+        teams: List<any>,
+        users: List<any>
+    ) {
         await this._api.put(`/api/views/${viewId}`, {
             visibility,
-            shared_with_teams: teams.map((team) => team.get('id')),
-            shared_with_users: users.map((user) => user.get('id')),
+            shared_with_teams: teams.map(
+                (team: Map<any, any>) => team.get('id') as number
+            ),
+            shared_with_users: users.map(
+                (user: Map<any, any>) => user.get('id') as number
+            ),
         })
     }
 }

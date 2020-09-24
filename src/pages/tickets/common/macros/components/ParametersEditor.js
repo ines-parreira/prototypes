@@ -6,8 +6,8 @@ import {Row, Col, Button} from 'reactstrap'
 
 import Tooltip from '../../../../common/components/Tooltip'
 import InputField from '../../../../common/forms/InputField'
-import {MAX_HEADER_LENGTH} from '../../../../../config'
-import {hasUnicodeChars} from '../../../../../utils'
+import {MAX_HEADER_LENGTH} from '../../../../../config.ts'
+import {hasUnicodeChars} from '../../../../../utils.ts'
 
 import css from './ParametersEditor.less'
 

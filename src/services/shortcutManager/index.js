@@ -1,2 +1,2 @@
-import shortcutManager from './shortcutManager'
+import shortcutManager from './shortcutManager.ts'
 export default shortcutManager

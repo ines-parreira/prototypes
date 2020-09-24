@@ -1,7 +1,7 @@
 import _some from 'lodash/some'
 import _get from 'lodash/get'
 
-import {stripErrorMessage, errorToChildren} from '../../utils'
+import {stripErrorMessage, errorToChildren} from '../../utils.ts'
 import {notify} from '../../state/notifications/actions.ts'
 
 /**

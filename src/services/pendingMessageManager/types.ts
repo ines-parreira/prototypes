@@ -1,7 +1,7 @@
 import {NewMessage} from '../../state/newMessage/types'
 
 export type SendMessageArgs = [
-    string,
+    number,
     NewMessage,
     Maybe<string>,
     boolean,

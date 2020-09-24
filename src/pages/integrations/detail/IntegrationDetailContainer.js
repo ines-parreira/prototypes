@@ -19,7 +19,7 @@ import {
     SMOOCH_INTEGRATION_TYPE,
 } from '../../../constants/integration'
 
-import {compare} from '../../../utils'
+import {compare} from '../../../utils.ts'
 
 import * as IntegrationsActions from '../../../state/integrations/actions.ts'
 import * as IntegrationsSelectors from '../../../state/integrations/selectors.ts'

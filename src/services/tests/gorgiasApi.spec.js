@@ -6,7 +6,7 @@ import axios from 'axios/index'
 
 import {fromJS} from 'immutable'
 
-import GorgiasApi from '../gorgiasApi'
+import GorgiasApi from '../gorgiasApi.ts'
 import type {AuditLogEvent} from '../../models/event'
 import {TICKET_REOPENED} from '../../constants/event'
 import type {IntegrationDataItem} from '../../models/integration'

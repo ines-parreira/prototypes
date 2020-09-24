@@ -4,14 +4,11 @@ import moment from 'moment'
 import _isArray from 'lodash/isArray'
 import _isInteger from 'lodash/isInteger'
 
-import {
-    UNARY_OPERATORS,
-    TIMEDELTA_OPERATOR_DEFAULT_VALUE,
-} from '../../config.js'
+import {UNARY_OPERATORS, TIMEDELTA_OPERATOR_DEFAULT_VALUE} from '../../config'
 
 import {Agents} from '../agents/types'
 import {UserRole} from '../../config/types/user'
-import {getAST, getFirstExpressionOfAST, toJS, hasRole} from '../../utils.js'
+import {getAST, getFirstExpressionOfAST, toJS, hasRole} from '../../utils'
 import {
     CollectionOperator,
     TimedeltaOperator,

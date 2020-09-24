@@ -13,7 +13,7 @@ import {isTimedelta} from '../../../utils/ast.ts'
 import {
     TIMEDELTA_OPERATOR_DEFAULT_QUANTITY,
     TIMEDELTA_OPERATOR_DEFAULT_UNIT,
-} from '../../../config'
+} from '../../../config.ts'
 
 type Props = {
     value: string,

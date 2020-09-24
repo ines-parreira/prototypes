@@ -1,15 +1,12 @@
 import {fromJS, Map, List} from 'immutable'
 import {createSelector} from 'reselect'
 
-import {createImmutableSelector} from '../../utils.js'
+import {createImmutableSelector} from '../../utils'
 import {getNewMessageState} from '../newMessage/selectors'
 import {NewMessageState} from '../newMessage/types'
 import {RootState} from '../types'
 
 import {TicketState} from './types'
-
-//$TsFixMe remove once createImmutableSelector is migrated
-const typeSafeCreateImmutableSelector = createImmutableSelector as typeof createSelector
 
 export const getTicketState = (state: RootState): TicketState =>
     state.ticket || fromJS({})
@@ -20,7 +17,7 @@ export const getProperty = (property: string) =>
         (state) => state.get(property) as Map<any, any>
     )
 
-export const getTicket = typeSafeCreateImmutableSelector<
+export const getTicket = createImmutableSelector<
     RootState,
     Map<any, any>,
     TicketState
@@ -49,7 +46,7 @@ export const getIntegrationDataByIntegrationId = (integrationId: number) =>
             (state.get(String(integrationId)) || fromJS({})) as Map<any, any>
     )
 
-export const getLoading = typeSafeCreateImmutableSelector<
+export const getLoading = createImmutableSelector<
     RootState,
     Map<any, any>,
     TicketState
@@ -59,7 +56,7 @@ export const getLoading = typeSafeCreateImmutableSelector<
         (state.getIn(['_internal', 'loading']) || fromJS({})) as Map<any, any>
 )
 
-export const getDisplayHistory = typeSafeCreateImmutableSelector<
+export const getDisplayHistory = createImmutableSelector<
     RootState,
     boolean,
     TicketState
@@ -68,7 +65,7 @@ export const getDisplayHistory = typeSafeCreateImmutableSelector<
     (state) => state.getIn(['_internal', 'displayHistory']) as boolean
 )
 
-export const shouldDisplayAuditLogEvents = typeSafeCreateImmutableSelector<
+export const shouldDisplayAuditLogEvents = createImmutableSelector<
     RootState,
     boolean,
     TicketState
@@ -103,13 +100,13 @@ export const isDirty = (state: RootState) =>
         }
     )(state)
 
-export const getMessages = typeSafeCreateImmutableSelector<
+export const getMessages = createImmutableSelector<
     RootState,
     List<any>,
     TicketState
 >(getTicketState, (state) => (state.get('messages') || fromJS([])) as List<any>)
 
-export const getCustomerMessages = typeSafeCreateImmutableSelector<
+export const getCustomerMessages = createImmutableSelector<
     RootState,
     List<any>,
     List<any>
@@ -120,7 +117,7 @@ export const getCustomerMessages = typeSafeCreateImmutableSelector<
             fromJS([])) as List<any>
 )
 
-export const getPendingMessages = typeSafeCreateImmutableSelector<
+export const getPendingMessages = createImmutableSelector<
     RootState,
     List<any>,
     TicketState
@@ -132,7 +129,7 @@ export const getPendingMessages = typeSafeCreateImmutableSelector<
         >
 )
 
-export const getLastMessage = typeSafeCreateImmutableSelector<
+export const getLastMessage = createImmutableSelector<
     RootState,
     Map<any, any>,
     List<any>
@@ -147,7 +144,7 @@ export const getLastMessage = typeSafeCreateImmutableSelector<
             .last() || fromJS({})) as Map<any, any>
 )
 
-export const getReadMessages = typeSafeCreateImmutableSelector<
+export const getReadMessages = createImmutableSelector<
     RootState,
     List<any>,
     List<any>
@@ -160,7 +157,7 @@ export const getReadMessages = typeSafeCreateImmutableSelector<
         ) || fromJS([])) as List<any>
 )
 
-export const getLastReadMessage = typeSafeCreateImmutableSelector<
+export const getLastReadMessage = createImmutableSelector<
     RootState,
     Map<any, any>,
     List<any>
@@ -172,13 +169,13 @@ export const getLastReadMessage = typeSafeCreateImmutableSelector<
         ) || fromJS({})) as Map<any, any>
 )
 
-export const getEvents = typeSafeCreateImmutableSelector<
+export const getEvents = createImmutableSelector<
     RootState,
     List<any>,
     TicketState
 >(getTicketState, (state) => (state.get('events') || fromJS([])) as List<any>)
 
-export const getSatisfactionSurveys = typeSafeCreateImmutableSelector<
+export const getSatisfactionSurveys = createImmutableSelector<
     RootState,
     List<any>,
     TicketState
@@ -193,7 +190,7 @@ export const getSatisfactionSurveys = typeSafeCreateImmutableSelector<
 )
 
 // return elements we display in the body of a ticket (messages, events, etc.)
-export const getBody = typeSafeCreateImmutableSelector<
+export const getBody = createImmutableSelector<
     RootState,
     List<any>,
     List<any>,

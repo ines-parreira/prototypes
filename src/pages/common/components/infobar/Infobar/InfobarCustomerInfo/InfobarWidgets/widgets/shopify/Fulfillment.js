@@ -3,7 +3,7 @@ import type {Map} from 'immutable'
 import {Badge} from 'reactstrap'
 import classnames from 'classnames'
 
-import {humanizeString} from '../../../../../../../../../utils'
+import {humanizeString} from '../../../../../../../../../utils.ts'
 
 export default function Fulfillment() {
     return {

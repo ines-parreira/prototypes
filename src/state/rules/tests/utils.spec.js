@@ -2,7 +2,7 @@ import {fromJS} from 'immutable'
 
 import * as utils from '../utils.ts'
 import schemasJSON from '../../../fixtures/openapi.json'
-import {findProperty, toImmutable} from '../../../utils'
+import {findProperty, toImmutable} from '../../../utils.ts'
 
 describe('resolveCallee function', () => {
     const schemas = fromJS(schemasJSON)

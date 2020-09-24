@@ -3,7 +3,7 @@ import type {Map} from 'immutable'
 
 import {MAGENTO2_INTEGRATION_TYPE} from '../../constants/integration'
 import {LDMLToMomentFormat} from '../../pages/common/utils/template'
-import {formatDatetime} from '../../utils'
+import {formatDatetime} from '../../utils.ts'
 import {getTrackingUrl} from '../../utils/delivery.ts'
 
 export const MACRO_VARIABLES = {

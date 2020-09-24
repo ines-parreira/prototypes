@@ -26,7 +26,7 @@ import ConfirmButton from '../../../../../common/components/ConfirmButton'
 
 import * as rulesHelpers from '../../../../../../state/rules/helpers.ts'
 
-import {toJS} from '../../../../../../utils'
+import {toJS} from '../../../../../../utils.ts'
 import ToggleButton from '../../../../../common/components/ToggleButton'
 import {getMomentUtcISOString} from '../../../../../../utils/date.ts'
 

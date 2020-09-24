@@ -17,7 +17,7 @@ import {
     Label,
 } from 'reactstrap'
 
-import {toJS} from '../../../utils'
+import {toJS} from '../../../utils.ts'
 import Loader from '../../common/components/Loader'
 import ConfirmButton from '../../common/components/ConfirmButton'
 import RichDropdown, {type Option} from '../../common/components/RichDropdown'

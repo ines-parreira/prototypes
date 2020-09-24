@@ -9,7 +9,7 @@ import Modal from '../Modal'
 import ConfirmButton from '../ConfirmButton'
 
 import {mergeTickets} from '../../../../state/mergeTickets/actions.ts'
-import shortcutManager from '../../../../services/shortcutManager/shortcutManager'
+import shortcutManager from '../../../../services/shortcutManager/shortcutManager.ts'
 
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 

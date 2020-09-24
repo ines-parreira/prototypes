@@ -5,7 +5,7 @@ import {Link} from 'react-router'
 import {Container, Table} from 'reactstrap'
 import _truncate from 'lodash/truncate'
 
-import {HTTP_METHOD_GET} from '../../../../../../config'
+import {HTTP_METHOD_GET} from '../../../../../../config.ts'
 
 import Loader from '../../../../../common/components/Loader'
 import ForwardIcon from '../../ForwardIcon'

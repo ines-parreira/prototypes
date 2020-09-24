@@ -2,7 +2,7 @@ import {fromJS, Map} from 'immutable'
 import _forEach from 'lodash/forEach'
 
 import {MacroActionName} from '../../models/macroAction/types'
-import {getActionTemplate} from '../../utils.js'
+import {getActionTemplate} from '../../utils'
 
 export function generateDefaultAction(
     actionType: MacroActionName

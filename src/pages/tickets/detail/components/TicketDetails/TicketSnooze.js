@@ -3,7 +3,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 
 import Tooltip from '../../../../common/components/Tooltip'
-import {formatDatetime} from '../../../../../utils'
+import {formatDatetime} from '../../../../../utils.ts'
 
 import * as currentUserSelectors from '../../../../../state/currentUser/selectors.ts'
 

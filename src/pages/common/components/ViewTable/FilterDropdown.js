@@ -12,7 +12,7 @@ import {
     getLanguageDisplayName,
     isImmutable,
     resolveLiteral,
-} from '../../../../utils'
+} from '../../../../utils.ts'
 import {RenderLabel} from '../../utils/labels'
 import withCancellableRequest from '../../utils/withCancellableRequest'
 import Search from '../Search'

@@ -3,7 +3,7 @@ import {createSelector} from 'reselect'
 import _noop from 'lodash/noop'
 
 import {RootState} from '../types'
-import {humanizeString} from '../../utils.js'
+import {humanizeString} from '../../utils'
 import {getAgents} from '../agents/selectors'
 
 import {UsersAuditState} from './types'

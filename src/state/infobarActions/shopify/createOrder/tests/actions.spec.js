@@ -21,7 +21,7 @@ import {
     SHOPIFY_INTEGRATION_TYPE,
 } from '../../../../../constants/integration'
 import {DRAFT_ORDER_DELETE_AFTER} from '../../../../../config/integrations/shopify'
-import localStorageManager from '../../../../../services/localStorageManager'
+import localStorageManager from '../../../../../services/localStorageManager.ts'
 import {executeAction} from '../../../../infobar/actions.ts'
 import {initialState} from '../reducers.ts'
 import * as actions from '../actions.ts'

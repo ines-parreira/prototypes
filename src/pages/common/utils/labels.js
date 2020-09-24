@@ -22,9 +22,14 @@ import {
 import * as currentUserSelectors from '../../../state/currentUser/selectors.ts'
 import Tooltip from '../components/Tooltip'
 import Avatar from '../components/Avatar'
-import {formatDatetime, humanizeString, isImmutable, toJS} from '../../../utils'
+import {
+    formatDatetime,
+    humanizeString,
+    isImmutable,
+    toJS,
+} from '../../../utils.ts'
 import * as customersHelpers from '../../../state/customers/helpers.ts'
-import {DEFAULT_TAG_COLOR} from '../../../config'
+import {DEFAULT_TAG_COLOR} from '../../../config.ts'
 import SourceIcon from '../components/SourceIcon'
 import type {SourceType} from '../../../models/ticket/types'
 import {getAgents} from '../../../state/agents/selectors.ts'

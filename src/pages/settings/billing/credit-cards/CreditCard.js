@@ -21,7 +21,7 @@ import {setCreditCard} from '../../../../state/billing/actions.ts'
 import {currentPlan as currentPlanSelector} from '../../../../state/billing/selectors.ts'
 
 import Loader from '../../../common/components/Loader'
-import {loadScript} from '../../../../utils'
+import {loadScript} from '../../../../utils.ts'
 
 import Errors from '../../../common/forms/Errors'
 import InputField from '../../../common/forms/InputField'
@@ -31,7 +31,7 @@ import PageHeader from '../../../common/components/PageHeader'
 import * as currentAccountSelectors from '../../../../state/currentAccount/selectors.ts'
 import {Plan} from '../plans/Plan'
 
-import GorgiasApi from '../../../../services/gorgiasApi'
+import GorgiasApi from '../../../../services/gorgiasApi.ts'
 
 import {setCurrentSubscription} from '../../../../state/currentAccount/actions.ts'
 import {notify} from '../../../../state/notifications/actions.ts'

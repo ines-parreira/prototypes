@@ -23,7 +23,7 @@ import BooleanField from '../../../../common/forms/BooleanField'
 import InputField from '../../../../common/forms/InputField'
 import PageHeader from '../../../../common/components/PageHeader'
 
-import * as utils from '../../../../../utils'
+import * as utils from '../../../../../utils.ts'
 
 import {notify} from '../../../../../state/notifications/actions.ts'
 import * as integrationSelectors from '../../../../../state/integrations/selectors.ts'

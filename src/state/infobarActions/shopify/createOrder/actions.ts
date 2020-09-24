@@ -5,7 +5,6 @@ import axios, {AxiosResponse, AxiosError} from 'axios'
 import moment from 'moment'
 
 import {ShopifyActionType} from '../../../../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
-import {SHOPIFY_INTEGRATION_TYPE} from '../../../../constants/integration.js'
 import {
     addCustomLineItem,
     addVariant,
@@ -22,7 +21,7 @@ import {
 } from '../../../../business/shopify/number'
 import {DRAFT_ORDER_DELETE_AFTER} from '../../../../config/integrations/shopify.js'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
-import localStorageManager from '../../../../services/localStorageManager.js'
+import localStorageManager from '../../../../services/localStorageManager'
 import {
     AppliedDiscount,
     PollingConfig,
@@ -31,12 +30,15 @@ import {
     DiscountType,
 } from '../../../../constants/integrations/types/shopify'
 import {StoreDispatch, RootState} from '../../../types'
-import GorgiasApi from '../../../../services/gorgiasApi.js'
+import GorgiasApi from '../../../../services/gorgiasApi'
 import {executeAction} from '../../../infobar/actions'
 import {notify} from '../../../notifications/actions'
 import {NotificationStatus} from '../../../notifications/types'
 import {SegmentEvent} from '../../../../store/middlewares/types/segmentTracker'
-import {IntegrationDataItemType} from '../../../../models/integration/types'
+import {
+    IntegrationDataItemType,
+    IntegrationType,
+} from '../../../../models/integration/types'
 
 import {getCreateOrderState} from './selectors'
 import {
@@ -49,7 +51,7 @@ import {
 } from './constants'
 
 const shopifyLocalStorage =
-    localStorageManager.integrations[SHOPIFY_INTEGRATION_TYPE]
+    localStorageManager.integrations[IntegrationType.ShopifyIntegrationType]
 let _apiInstances: {[key: string]: GorgiasApi} = {}
 
 const getApiInstance = (key: string) => () => {
@@ -202,7 +204,7 @@ const deleteTemporaryDraftOrder = async (
 ) => {
     const api = new GorgiasApi()
     await api.deleteDraftOrder(integrationId, draftOrderId)
-    shopifyLocalStorage.draftOrders.deleteMapItem(draftOrderId)
+    shopifyLocalStorage.draftOrders.deleteMapItem(draftOrderId as any)
 }
 
 export const createDraftOrder = (
@@ -502,7 +504,7 @@ export const onSubmitCleanUp = () => (
         any
     >
     const id = draftOrder.get('id') as number
-    shopifyLocalStorage.draftOrders.deleteMapItem(id)
+    shopifyLocalStorage.draftOrders.deleteMapItem(id as any)
 }
 
 export const onReset = () => (dispatch: StoreDispatch) => resetState(dispatch)
@@ -554,7 +556,7 @@ export const onEmailInvoice = (
             }, 0)
         }
 
-        shopifyLocalStorage.draftOrders.deleteMapItem(draftOrderId)
+        shopifyLocalStorage.draftOrders.deleteMapItem(draftOrderId as any)
 
         void dispatch(
             executeAction(

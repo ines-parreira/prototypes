@@ -7,7 +7,7 @@ import {StyleSheetTestUtils} from 'aphrodite'
 import {fromJS} from 'immutable'
 
 import TicketAttachments from '../TicketAttachments'
-import {proxifyURL} from '../../../../../../utils'
+import {proxifyURL} from '../../../../../../utils.ts'
 
 describe('TicketAttachments component', () => {
     // attachments is an immutable list of pojos

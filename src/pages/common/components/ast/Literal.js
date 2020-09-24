@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 
-import {UNARY_OPERATORS} from '../../../../config'
+import {UNARY_OPERATORS} from '../../../../config.ts'
 
 import Errors from './Errors'
 import Widget from './Widget'

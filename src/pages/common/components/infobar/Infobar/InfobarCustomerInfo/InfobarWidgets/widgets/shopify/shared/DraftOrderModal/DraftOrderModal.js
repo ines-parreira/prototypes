@@ -20,7 +20,7 @@ import {
     onReset,
     onSubmitCleanUp,
 } from '../../../../../../../../../../../state/infobarActions/shopify/createOrder/actions.ts'
-import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager'
+import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager.ts'
 import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors.ts'
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../constants/integration'
 import type {IntegrationDataItem} from '../../../../../../../../../../../models/integration'

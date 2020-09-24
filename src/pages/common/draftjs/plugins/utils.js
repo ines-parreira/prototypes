@@ -4,7 +4,7 @@ import {fromJS} from 'immutable'
 import _noop from 'lodash/noop'
 import _get from 'lodash/get'
 
-import {uploadFiles} from '../../../../utils'
+import {uploadFiles} from '../../../../utils.ts'
 import {
     getFileTooLargeError,
     getMaxAttachmentSize,

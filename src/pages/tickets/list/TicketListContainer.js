@@ -9,7 +9,7 @@ import decorateComponentWithProps from 'decorate-component-with-props'
 import type {Map, List} from 'immutable'
 
 import MacroContainer from '../common/macros/MacroContainer'
-import {compactInteger} from '../../../utils'
+import {compactInteger} from '../../../utils.ts'
 import {isCreationUrl, isSearchUrl} from '../../common/utils/url'
 
 import * as tagsActions from '../../../state/tags/actions.ts'

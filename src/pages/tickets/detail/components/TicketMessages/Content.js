@@ -3,7 +3,7 @@ import React from 'react'
 import classNames from 'classnames'
 import _trim from 'lodash/trim'
 
-import {proxifyImages} from '../../../../../utils'
+import {proxifyImages} from '../../../../../utils.ts'
 import {
     linkifyHtml,
     linkifyString,

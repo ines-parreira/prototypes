@@ -1,4 +1,3 @@
-// @flow
 import crypto from 'crypto'
 
 import axios from 'axios'
@@ -6,7 +5,7 @@ import {EditorState, Modifier} from 'draft-js'
 import escodegen from 'escodegen'
 import esprima from 'esprima'
 import htmlparser from 'htmlparser2'
-import Immutable, {fromJS, type Iterable, type Map} from 'immutable'
+import Immutable, {fromJS, Iterable, Map, List} from 'immutable'
 import _filter from 'lodash/filter'
 import _find from 'lodash/find'
 import _flatMapDeep from 'lodash/flatMapDeep'
@@ -21,42 +20,35 @@ import _trim from 'lodash/trim'
 import _upperFirst from 'lodash/upperFirst'
 import md5 from 'md5'
 import moment from 'moment-timezone'
-import {createSelectorCreator, defaultMemoize} from 'reselect'
+import {createSelectorCreator, defaultMemoize, createSelector} from 'reselect'
+import {Route} from 'react-router'
 import URLSafeBase64 from 'urlsafe-base64'
 
-import {humanize} from './business/format.ts'
+import {humanize} from './business/format'
 import {ACTION_TEMPLATES} from './config'
-import TICKET_LANGUAGES from './config/ticketLanguages'
-import {AUTHORIZED_NOTIFICATION_TYPES} from './state/notifications/actions.ts'
-import type {Notification} from './state/notifications/types'
-import type {viewsStateType} from './state/views/types'
-import type {
-    actionTemplateType,
-    esprimaParse,
-    reactRouterRoute,
-    schemasType,
-} from './types'
-import {ADMIN_ROLE, USER_ROLES_ORDERED_BY_PRIVILEGES} from './config/user'
-import {getHighestRole} from './state/agents/helpers.ts'
-import type {attachmentType} from './state/types'
+import TICKET_LANGUAGES from './config/ticketLanguages.js'
+import {AUTHORIZED_NOTIFICATION_TYPES} from './state/notifications/actions'
+import {Notification, NotificationStatus} from './state/notifications/types'
+import {ViewsState} from './state/views/types'
+import {ActionTemplate, Schemas, Attachment} from './types'
+import {USER_ROLES_ORDERED_BY_PRIVILEGES} from './config/user.js'
+import {UserRole} from './config/types/user'
+import {getHighestRole} from './state/agents/helpers'
 
-export type userType = Map<*, *>
-type messageType = {
-    created_datetime: Date,
-    source: {type: string},
+type Message = {
+    created_datetime: Date
+    source: {type: string}
 }
-type propertyType = {
-    type: string,
-    format: 'email',
-    meta: {},
-    items: {$ref: {}},
+type Property = {
+    type: string
+    format: 'email'
+    meta: Record<string, unknown>
+    items: {$ref: Record<string, unknown>}
+    $ref?: string
 }
-type systemMessage = [
-    'success' | 'error' | 'warning' | 'info' | 'loading',
-    string
-]
+type SystemMessage = [NotificationStatus, string]
 
-type datetimeType = Date | number | string
+type Datetime = Date | number | string
 
 // monitor if tab is active or not
 let activeTab = true
@@ -66,7 +58,6 @@ export const isTabActive = () => activeTab
 
 /**
  * Console log info only on dev environment
- * @param args
  */
 export const devLog = (...args: Array<any>) => {
     if (window.DEVELOPMENT || window.STAGING) {
@@ -81,14 +72,11 @@ export const defined = (item: any): boolean => {
 
 /**
  * Serialize an object and return it's md5 hash.
- * @param obj the object of which we want the hash
  */
 export const getHashOfObj = (obj: any): string => md5(JSON.stringify(obj))
 
 /**
  * Guess if a passed string is a url
- * @param string
- * @returns {boolean|*}
  */
 export function isUrl(string: string): boolean {
     if (!_isString(string)) {
@@ -100,8 +88,6 @@ export function isUrl(string: string): boolean {
 
 /**
  * Guess if a passed string is an email
- * @param string
- * @returns {boolean|*}
  */
 export function isEmail(string: string): boolean {
     if (!_isString(string)) {
@@ -113,11 +99,8 @@ export function isEmail(string: string): boolean {
 
 /**
  * Validate if string is a list of emails
- * @param string
- * @param delimiter
- * @returns {boolean}
  */
-export function isEmailList(string: string, delimiter: string = ','): boolean {
+export function isEmailList(string: string, delimiter = ','): boolean {
     if (!string) {
         return false
     }
@@ -135,8 +118,6 @@ export function isEmailList(string: string, delimiter: string = ','): boolean {
 
 /**
  * check if an email integration is our base email integration
- * @param address
- * @return {boolean}
  */
 export function isGorgiasSupportAddress(address: string): boolean {
     if (!_isString(address)) {
@@ -147,15 +128,15 @@ export function isGorgiasSupportAddress(address: string): boolean {
 }
 
 export function formatDatetime(
-    datetime: datetimeType,
-    timezone: ?string,
-    format: string = 'calendar'
-): datetimeType {
+    datetime: Datetime,
+    timezone: Maybe<string>,
+    format = 'calendar'
+): Datetime {
     try {
         let momentDate = moment.utc(datetime)
 
         // if the input is a UNIX timestamp, force moment to interpret it as a timestamp (not automatic)
-        const unix = moment.unix(datetime)
+        const unix = moment.unix(datetime as any)
         if (unix.isValid()) {
             momentDate = unix
         }
@@ -177,15 +158,19 @@ export function formatDatetime(
     }
 }
 
-export function getAST(code: string): esprimaParse {
+export function getAST(code: string) {
     if (!_isString(code)) {
         console.error('Not a string:', code)
     }
     return esprima.parse(code, {loc: true})
 }
 
-export function getFirstExpressionOfAST(ast: esprimaParse): Map<*, *> {
-    return fromJS(ast).getIn(['body', 0, 'expression'])
+export function getFirstExpressionOfAST(ast: ReturnType<typeof esprima.parse>) {
+    return (fromJS(ast) as Map<any, any>).getIn([
+        'body',
+        0,
+        'expression',
+    ]) as Map<any, any>
 }
 
 export function getCode(ast: {type: 'Program'}): string {
@@ -201,14 +186,11 @@ export function getCode(ast: {type: 'Program'}): string {
 
 /**
  * Return last message from a list of messages
- * @param {Array} messages an array of messages
- * @param {Object} options filters to apply on messages
- * @returns {Object|Array}
  */
 export function getLastMessage(
-    messages: Array<messageType>,
+    messages: Array<Message>,
     options: any = null
-): ?messageType {
+): Maybe<Message> {
     if (!messages || !messages.length) {
         return
     }
@@ -219,7 +201,7 @@ export function getLastMessage(
     )[0]
 }
 
-export function resolvePropertyName(name: string = ''): string {
+export function resolvePropertyName(name = ''): string {
     switch (name) {
         case 'Message':
             return 'TicketMessage'
@@ -230,24 +212,16 @@ export function resolvePropertyName(name: string = ''): string {
 
 /**
  * Find API spec data of the last property of the given field
- *
- * @param {String} field the field path. E.g: ticket.customer.id
- * @param {Object} schemas OpenID Schemas
- * @param {Boolean} alwaysRef always use `$ref` of each property to resolve field
- *     E.g:
- *      true: return properties of `Customer.id` because `customer` is a `Customer`
- *      false: return properties of `ticket.customer.id` field
- * @returns {Object} API spec data of the last property
  */
 export function findProperty(
     field: string,
-    schemas: schemasType,
-    alwaysRef: boolean = false
-): ?propertyType {
+    schemas: Schemas,
+    alwaysRef = false
+): Maybe<Property> {
     const parts = field.split('.')
     const firstPart = resolvePropertyName(_upperFirst(parts.shift()))
-    const definitions = schemas.get('definitions')
-    let def = definitions.get(firstPart)
+    const definitions = schemas.get('definitions') as Map<any, any>
+    let def = definitions.get(firstPart) as Map<any, any>
     let prop
 
     if (!def) {
@@ -255,13 +229,13 @@ export function findProperty(
     }
 
     while (parts.length !== 0) {
-        prop = def.getIn(['properties', parts.shift()])
+        prop = def.getIn(['properties', parts.shift()]) as Map<any, any>
 
         if (!prop) {
             return null
         }
 
-        prop = prop.toJS()
+        prop = prop.toJS() as Property
 
         // if the current nested property has a `meta` field,
         // then we use it instead of the `meta` of it's definition
@@ -269,7 +243,8 @@ export function findProperty(
             break
         }
 
-        const subDef = prop.$ref || (prop.items ? prop.items.$ref : null)
+        const subDef = (prop.$ref ||
+            (prop.items ? prop.items.$ref : null)) as Maybe<string>
         // if we have a ref then we need to redo the whole definition thing
         if (subDef) {
             def = definitions.get(subDef.replace('#/definitions/', ''))
@@ -281,22 +256,29 @@ export function findProperty(
 
 export function getDefaultOperator(
     field: string,
-    schemas: schemasType
-): ?string {
-    const prop: ?Object = findProperty(field, schemas)
+    schemas: Schemas
+): Maybe<string> {
+    const prop: Maybe<Record<string, unknown>> = findProperty(field, schemas)
 
     if (!prop) {
         return null
     }
 
     // return the default operator defined in the meta of the field, or the first if there's no default
-    if (prop.meta && prop.meta.operators) {
-        const operators = Object.keys(prop.meta.operators)
+    if (prop.meta && (prop.meta as Record<string, unknown>).operators) {
+        const operators = Object.keys(
+            (prop.meta as Record<string, unknown>).operators as Record<
+                string,
+                unknown
+            >
+        )
 
         if (operators.length) {
-            if (prop.meta.defaultOperator) {
+            if ((prop.meta as Record<string, unknown>).defaultOperator) {
                 return operators.find(
-                    (operatorName) => operatorName === prop.meta.defaultOperator
+                    (operatorName) =>
+                        operatorName ===
+                        (prop.meta as Record<string, unknown>).defaultOperator
                 )
             }
             return operators[0]
@@ -309,8 +291,13 @@ export function getDefaultOperator(
             return 'eq'
         case 'array':
         case 'string':
-            if (prop.meta && prop.meta.operators) {
-                if (_has(prop.meta.operators, 'containsAll')) {
+            if (prop.meta && (prop.meta as Record<string, unknown>).operators) {
+                if (
+                    _has(
+                        (prop.meta as Record<string, unknown>).operators,
+                        'containsAll'
+                    )
+                ) {
                     return 'containsAll'
                 }
             }
@@ -320,16 +307,22 @@ export function getDefaultOperator(
     }
 }
 
-export function resolveLiteral(value: {} | string, path: string): string {
+export function resolveLiteral(
+    value: Record<string, unknown> | string,
+    path: string
+): string {
     switch (typeof value) {
         case 'object':
-            return resolveLiteral(value[path.split('.').reverse()[0]], path)
+            return resolveLiteral(
+                value[path.split('.').reverse()[0]] as any,
+                path
+            )
         default:
             return value
     }
 }
 
-export function compactInteger(input: number, digits: number = 0): string {
+export function compactInteger(input: number, digits = 0): string {
     if (!_isNumber(input)) {
         return input
     }
@@ -356,7 +349,7 @@ export function compactInteger(input: number, digits: number = 0): string {
     return result
 }
 
-export function stripHTML(text: string): ?string {
+export function stripHTML(text: string): Maybe<string> {
     try {
         const doc = document.implementation.createHTMLDocument()
         const body = doc.createElement('div')
@@ -369,7 +362,7 @@ export function stripHTML(text: string): ?string {
         }
         return body.textContent || body.innerText
     } catch (e) {
-        console.error(`Failed stripHTML: ${e}`, text)
+        console.error(`Failed stripHTML: ${e as string}`, text)
         return text
     }
 }
@@ -400,9 +393,9 @@ const _proxyImageSignedURL = (url: string): string => {
  * imageproxy has no explicit option for it.
  * https://godoc.org/willnorris.com/go/imageproxy#ParseOptions
  */
-export const proxifyURL = (urlStr: string, format: string = 'cw-1'): string => {
+export const proxifyURL = (urlStr: string, format = 'cw-1'): string => {
     const url = new URL(urlStr)
-    let escapedURL = `${url.origin}${url.pathname}${url.search}`
+    const escapedURL = `${url.origin}${url.pathname}${url.search}`
     return `${window.IMAGE_PROXY_URL}${format},${_proxyImageSignedURL(
         escapedURL
     )}/${escapedURL}`
@@ -410,14 +403,8 @@ export const proxifyURL = (urlStr: string, format: string = 'cw-1'): string => {
 
 /**
  * Append a proxy URL before the images src so we can control their width and protect our agents privacy
- *
- * @param html - the html body that contains the images
- * @param format
  */
-export const proxifyImages = (
-    html: string,
-    format: string = '1000x'
-): string => {
+export const proxifyImages = (html: string, format = '1000x'): string => {
     if (html.indexOf('img') === -1) {
         return html
     }
@@ -440,7 +427,7 @@ export const proxifyImages = (
 
     let result = ''
     const parser = new htmlparser.Parser({
-        onopentag: (name, attributes) => {
+        onopentag: (name: string, attributes: Record<string, unknown>) => {
             result += `<${name}`
             const attributesKeys = Object.keys(attributes)
             // Add a space if we have attributes so we have nicely formatted tags: <tag attr="val">
@@ -448,12 +435,12 @@ export const proxifyImages = (
                 result += ' '
             }
 
-            const attributePairs = []
+            const attributePairs: string[] = []
             attributesKeys.forEach((k) => {
-                let v = attributes[k]
+                let v = attributes[k] as string
                 if (name === 'img' && k === 'src') {
                     try {
-                        v = proxifyURL(attributes.src, format)
+                        v = proxifyURL(attributes.src as string, format)
                     } catch (error) {
                         console.error(error)
                     }
@@ -468,14 +455,14 @@ export const proxifyImages = (
                 result += '>'
             }
         },
-        ontext: (text) => {
+        ontext: (text: string) => {
             result += text
         },
-        onclosetag: (name) => {
+        onclosetag: ((name: string) => {
             if (selfClosing.indexOf(name) === -1) {
                 result += `</${name}>`
             }
-        },
+        }) as any,
     })
     parser.write(html)
     parser.end()
@@ -483,17 +470,7 @@ export const proxifyImages = (
 }
 
 /**
- * Convert camelCase text to Title Case text
- */
-export const camelCaseToTitleCase = (text: string): string =>
-    text.replace(/^[a-z]|[A-Z]/g, (value, index) => {
-        return index === 0 ? value.toUpperCase() : ` ${value.toUpperCase()}`
-    })
-
-/**
  * Slugify a string
- * @param string
- * @returns {*}
  */
 export function slugify(string: string): string {
     if (!_isString(string)) {
@@ -507,9 +484,6 @@ export function slugify(string: string): string {
 
 /**
  * Insert text in editorState
- * @param editorState
- * @param text
- * @returns {EditorState}
  */
 export function insertText(
     editorState: EditorState,
@@ -529,42 +503,44 @@ export const isImmutable = (value: any): boolean =>
 
 /**
  * Return a passed object as immutable
- * @param object
  */
-export const toImmutable = (object: {} | Iterable<*, *>): any =>
-    isImmutable(object) ? object : fromJS(object)
+export const toImmutable = <T>(
+    object: Record<string, unknown> | Iterable<any, any> | unknown[]
+) => (isImmutable(object) ? object : fromJS(object)) as T
 
 /**
  * Return a passed object as plain JS (not Immutable)
- * @param object
  */
 // throws error on missing toJS() for plain object.
-// $FlowFixMe
-export const toJS = (object: {} | Iterable<*, *> | void): any =>
-    isImmutable(object) ? object.toJS() : object
+export const toJS = <T>(
+    object:
+        | Record<string, unknown>
+        | Iterable<any, any>
+        | void
+        | Map<any, any>
+        | List<any>
+) => (isImmutable(object) ? (object as Iterable<any, any>).toJS() : object) as T
 
 /**
  * Return field path
- * @param field
- * @returns {*|string|string|string}
  */
-export const fieldPath = (field: {} | Iterable<*, *> = {}): string => {
-    const formattedField = toJS(field)
-    return formattedField.path || formattedField.name
+export const fieldPath = (
+    field: Record<string, unknown> | Iterable<any, any> = {}
+): string => {
+    const formattedField = toJS<Record<string, unknown>>(field)
+    return (formattedField.path || formattedField.name) as string
 }
 
 /**
  * Test if user is admin
- * @param user
- * @returns {boolean}
  */
-export const isAdmin = (user: userType): boolean => {
-    return hasRole(user, ADMIN_ROLE)
+export const isAdmin = (user: Map<any, any>): boolean => {
+    return hasRole(user, UserRole.Admin)
 }
 
 // Check if a user has a role
-export function hasRole(user: userType, requiredRole: string): boolean {
-    const userRole = getHighestRole(user)
+export function hasRole(user: Map<any, any>, requiredRole: string): boolean {
+    const userRole = getHighestRole(user) as UserRole
     return (
         USER_ROLES_ORDERED_BY_PRIVILEGES.indexOf(userRole) >=
         USER_ROLES_ORDERED_BY_PRIVILEGES.indexOf(requiredRole)
@@ -573,10 +549,10 @@ export function hasRole(user: userType, requiredRole: string): boolean {
 
 /**
  * Return true if user is currently on ticket of passed ticket id, based on url
- * @param ticketId
- * @returns {boolean}
  */
-export const isCurrentlyOnTicket = (ticketId?: ?(string | number)): boolean => {
+export const isCurrentlyOnTicket = (
+    ticketId?: Maybe<string | number>
+): boolean => {
     let matchUrl = '/app/ticket/'
 
     if (ticketId) {
@@ -588,13 +564,10 @@ export const isCurrentlyOnTicket = (ticketId?: ?(string | number)): boolean => {
 
 /**
  * Return true if user is currently on tickets view of passed view id, based on url
- * @param viewId
- * @param viewsState - state branch "views"
- * @returns {boolean}
  */
 export const isCurrentlyOnView = (
-    viewId: string = '',
-    viewsState: viewsStateType = fromJS({})
+    viewId = '',
+    viewsState: ViewsState = fromJS({})
 ): boolean => {
     const prefix = [
         '/app/tickets',
@@ -623,8 +596,6 @@ export const isCurrentlyOnView = (
 
 /**
  * return plural object name of a given view type
- * @param {String} viewType E.g: customer-list, ticket-list
- * @returns {String} plural object name E.g: customers, tickets
  */
 export function getPluralObjectName(viewType: string): string {
     return viewType.replace('-list', 's')
@@ -632,49 +603,45 @@ export function getPluralObjectName(viewType: string): string {
 
 /**
  * Check if user has reach maximum limit of a plan
- * @param limit name fo the limit, E.g: min, default, max
- * @param tickets number of tickets used for a period
- * @param plan A plan in `config.py` - billing section
- * @returns {boolean}
  */
 export function hasReachedLimit(
     limit: string,
     tickets: number,
-    plan: Iterable<*, *>
+    plan: Iterable<any, any>
 ): boolean {
     const freeTickets = plan.get('free_tickets', 0)
     return tickets >= plan.getIn(['limits', limit], freeTickets)
 }
 
-export function toQueryParams(obj: {}): string {
+export function toQueryParams(obj: Record<string, unknown>): string {
     return Object.keys(obj)
-        .map((key) => `${key}=${encodeURIComponent(obj[key])}`)
+        .map((key) => `${key}=${encodeURIComponent(obj[key] as any)}`)
         .join('&')
 }
 
 /**
  * Convert emoji chars to <img/> tags using Twitter Emoji (twemoji).
- * @param {String|Object} emojiContainer string or dom node with emojis
- * @returns {String|Object}
  */
-export function emoji(emojiContainer: string | {}): string | {} {
+export function emoji(
+    emojiContainer: string | HTMLElement
+): string | HTMLElement {
     if (typeof window.twemoji === 'undefined') {
         return emojiContainer
     }
 
     return window.twemoji.parse(emojiContainer, {
-        base: `${window.GORGIAS_ASSETS_URL}/static/emoji/`,
+        base: `${window.GORGIAS_ASSETS_URL as string}/static/emoji/`,
     })
 }
 
-export function getActionTemplate(actionName: string): ?actionTemplateType {
+export function getActionTemplate(actionName: string): Maybe<ActionTemplate> {
     return ACTION_TEMPLATES.find((template) => template.name === actionName)
 }
 
 export const createImmutableSelector = createSelectorCreator(
     defaultMemoize,
     Immutable.is
-)
+) as typeof createSelector
 
 export function loadScript(url: string, callback: () => void) {
     const elem = document.createElement('script')
@@ -685,35 +652,30 @@ export function loadScript(url: string, callback: () => void) {
         elem.addEventListener('load', callback)
     }
 
-    // $FlowFixMe
-    script.parentNode.insertBefore(elem, script)
+    script.parentNode?.insertBefore(elem, script)
 }
 
 /**
  * Upload file action meant to be used by another action
- * @param files
- * @param params: the additional GET parameters to include in the query
- * @return {Array} - [{content_type, name, size, url}]
  */
 export const uploadFiles = (
-    files: FileList | Array<attachmentType>,
-    params: ?Object = null
-): Promise<*> => {
+    files: FileList | Array<Attachment>,
+    params: Maybe<Record<string, unknown>> = null
+): Promise<Attachment[]> => {
     const formData = new window.FormData()
 
     for (let i = 0; i < files.length; i++) {
         const file = files[i]
-        formData.append(file.name, file)
+        formData.append(file.name, file as any)
     }
 
     return axios
-        .post('/api/upload/', formData, {params: params || {}})
-        .then((json = {}) => json.data)
+        .post<Attachment[]>('/api/upload/', formData, {params: params || {}})
+        .then((json) => json?.data)
 }
 
 /**
  * Clean error message sent from server before we display it
- * @param text
  */
 export const stripErrorMessage = (text: string): string => {
     // Match all tags like [SHOPIFY] [full-refund] [STUFF-FOO-bar]
@@ -725,8 +687,6 @@ export const stripErrorMessage = (text: string): string => {
 
 /**
  * Transform object key to better like 'mainSteps' and 'order_id' to 'Main steps' and 'Order id'
- * @param text
- * @returns {*}
  */
 export function humanizeString(text: string): string {
     return humanize(text)
@@ -734,11 +694,8 @@ export function humanizeString(text: string): string {
 
 /**
  * Compare two values and return order symbol, used in sort for Immutable
- * @param a
- * @param b
- * @returns {number}
  */
-export const compare = (a: *, b: *): number => {
+export const compare = (a: any, b: any): number => {
     if (a < b) {
         return -1
     }
@@ -752,18 +709,14 @@ export const compare = (a: *, b: *): number => {
 
 /**
  * Return current route object from routes config
- * @param routes (this.props.routes in a component)
  */
-export const currentRoute = (
-    routes: Array<reactRouterRoute>
-): reactRouterRoute => {
-    return _last(routes)
+export const currentRoute = (routes: Array<Route>) => {
+    return _last(routes) as Route
 }
 
 /**
  * Return subdomain of passed url
  * ex: 'acme' for 'http://acme.shopify.com'
- * @param url (full url, part of url, subdomain (without url))
  */
 export const subdomain = (url: string): string => {
     if (!url) {
@@ -774,19 +727,19 @@ export const subdomain = (url: string): string => {
     const split = url.split('.')[0]
 
     // split url on `://` and keep the last part
-    return _last(split.split('://'))
+    return _last(split.split('://')) as string
 }
 
 /**
  * Deep flatten object, keeping only values.
  */
-const _valuesDeep = (obj: {}): {} => {
+const _valuesDeep = (obj: unknown[] | Record<string, unknown>): unknown[] => {
+    //eslint-disable-next-line no-prototype-builtins
     if (typeof obj === 'object' && !obj.hasOwnProperty('length')) {
-        //$FlowFixMe
         return _flatMapDeep(obj, _valuesDeep)
     }
 
-    return obj
+    return obj as unknown[]
 }
 
 /**
@@ -801,11 +754,10 @@ const _valuesDeep = (obj: {}): {} => {
  * - receiver: Missing data
  * - receiver: Invalid value
  * "
- * @param incomingError server error
  */
 export const errorToChildren = (incomingError: {
-    response: {data: {error: {data: {}}}},
-}): ?string => {
+    response: {data: {error: {data: Record<string, unknown>}}}
+}): Maybe<string> => {
     const error = _get(incomingError, 'response.data.error', {})
     const {data} = error
     const hasErrors = !!data
@@ -816,26 +768,21 @@ export const errorToChildren = (incomingError: {
 
     return `
         <ul className="m-0">
-            ${
-                //$FlowFixMe
-                _map(data, (fieldErrors, fieldName) => {
-                    // $FlowFixMe
-                    return _valuesDeep(fieldErrors)
-                        .map((fieldError) => {
-                            return `<li>${fieldName}: ${fieldError}</li>`
-                        })
-                        .join('')
-                }).join('')
-            }
+            ${_map(data, (fieldErrors: Record<string, string>, fieldName) => {
+                return (_valuesDeep(fieldErrors) as string[])
+                    .map((fieldError) => {
+                        return `<li>${fieldName}: ${fieldError}</li>`
+                    })
+                    .join('')
+            }).join('')}
         </ul>
     `
 }
 
 /**
  * Convert hours to seconds.
- * @param hours number of hours
  */
-export function hoursToSeconds(hours: number = 0): number {
+export function hoursToSeconds(hours = 0): number {
     if (typeof hours !== 'number') {
         return 0
     }
@@ -845,9 +792,8 @@ export function hoursToSeconds(hours: number = 0): number {
 
 /**
  * Convert days to hours.
- * @param days number of days
  */
-export function daysToHours(days: number = 0): number {
+export function daysToHours(days = 0): number {
     if (typeof days !== 'number') {
         return 0
     }
@@ -857,10 +803,8 @@ export function daysToHours(days: number = 0): number {
 
 /**
  * Function that wraps functionality for cheking webhook url and return a valid or invalid pattern
- * @param val - url string
- * @returns invalid pattern if there are errors with url
  */
-export const validateWebhookURLToPattern = (val: string): ?string => {
+export const validateWebhookURLToPattern = (val: string): Maybe<string> => {
     if (validateWebhookURL(val)) {
         // Will look for "a" after the end of the string -> impossible
         return '$a'
@@ -870,10 +814,8 @@ export const validateWebhookURLToPattern = (val: string): ?string => {
 
 /**
  * Function that wraps functionality for checking webhook urls
- * @param val - url string
- * @returns string of error messages if there are errors with url
  */
-export const validateWebhookURL = (val: string): ?string => {
+export const validateWebhookURL = (val: string): Maybe<string> => {
     const rules = [
         {
             test: /^((?!(\..)).)*$/,
@@ -893,7 +835,7 @@ export const validateWebhookURL = (val: string): ?string => {
         },
     ]
 
-    const errors = []
+    const errors: string[] = []
 
     if (val) {
         const url = val.toLowerCase()
@@ -914,10 +856,8 @@ export const validateWebhookURL = (val: string): ?string => {
 
 /**
  * Get the display name of a language from its locale name
- * @param locale: string
- * @returns: displayName: string
  */
-export const getLanguageDisplayName = (locale: string): ?string => {
+export const getLanguageDisplayName = (locale: string): Maybe<string> => {
     if (!locale) {
         return null
     }
@@ -931,8 +871,6 @@ export const getLanguageDisplayName = (locale: string): ?string => {
 
 /**
  * Check if the given string contains unicode characters
- * @param needle: string
- * @returns: bool
  */
 export const hasUnicodeChars = (needle: string): boolean => {
     const needleLength = needle.length
@@ -957,21 +895,19 @@ export const openChat = (e: Event) => {
 }
 
 export const transformSystemMessagesToNotifications = (
-    systemMessages: Array<systemMessage>
+    systemMessages: Array<SystemMessage>
 ): Array<Notification> => {
     return systemMessages.map((systemMessage) => ({
         status:
             AUTHORIZED_NOTIFICATION_TYPES.indexOf(systemMessage[0]) > -1
                 ? systemMessage[0]
-                : 'info',
+                : NotificationStatus.Info,
         message: systemMessage[1],
     }))
 }
 
 /*
  * Remove '/' symbols used for escaping in regex.
- * @param symbols: array
- * @returns: string
  */
 export const displayRestrictedSymbols = (symbols: Array<string>): string => {
     return symbols.join('').replace(/\\/g, '')

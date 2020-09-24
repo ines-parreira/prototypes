@@ -1,7 +1,7 @@
 import {fromJS} from 'immutable'
 
 import type {stateType} from '../types'
-import {createImmutableSelector} from '../../utils'
+import {createImmutableSelector} from '../../utils.ts'
 
 const getState = (state: stateType) => state.facebookAds
 

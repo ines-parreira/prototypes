@@ -41,7 +41,7 @@ import {
     UPDATE_TICKET_JOB_TYPE,
 } from '../../../../../constants/job'
 import {AgentLabel, TeamLabel} from '../../../../common/utils/labels'
-import {hasRole} from '../../../../../utils'
+import {hasRole} from '../../../../../utils.ts'
 import TagDropdownMenu from '../../../../common/components/TagDropdownMenu/TagDropdownMenu'
 import withCancellableRequest from '../../../../common/utils/withCancellableRequest'
 

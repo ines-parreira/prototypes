@@ -1,9 +1,10 @@
+import esprima from 'esprima'
 import {Map} from 'immutable'
 
 export type RuleDraft = {
     id?: number
     code: string
-    code_ast: Record<string, unknown>
+    code_ast: ReturnType<typeof esprima.parse>
     deactivated_datetime: Maybe<string>
     description: string
     event_types: RuleEvent | string

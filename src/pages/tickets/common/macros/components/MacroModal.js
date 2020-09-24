@@ -9,7 +9,7 @@ import type {Map, List} from 'immutable'
 
 import Loader from '../../../../common/components/Loader'
 import Modal from '../../../../common/components/Modal'
-import {DEFAULT_ACTIONS} from '../../../../../config'
+import {DEFAULT_ACTIONS} from '../../../../../config.ts'
 import {APPLY_MACRO_JOB_TYPE} from '../../../../../constants/job'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 import * as segmentTracker from '../../../../../store/middlewares/segmentTracker'

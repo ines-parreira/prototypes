@@ -2,7 +2,7 @@ import axios, {AxiosError} from 'axios'
 import _capitalize from 'lodash/capitalize'
 
 import {Subscription} from '../billing/types'
-import GorgiasApi from '../../services/gorgiasApi.js'
+import GorgiasApi from '../../services/gorgiasApi'
 import {notify} from '../notifications/actions'
 import {NotificationStatus} from '../notifications/types'
 import {StoreDispatch} from '../types'

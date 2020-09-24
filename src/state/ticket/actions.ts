@@ -8,11 +8,11 @@ import {removeNotification} from 'reapop'
 import {Moment} from 'moment'
 
 import {TicketMessageSourceType} from '../../business/types/ticket'
-import {DEFAULT_ACTIONS} from '../../config.js'
+import {DEFAULT_ACTIONS} from '../../config'
 import browserNotification from '../../services/browserNotification'
 import GorgiasApi from '../../services/gorgiasApi'
 import socketManager from '../../services/socketManager/socketManager.js'
-import {isCurrentlyOnTicket, isTabActive} from '../../utils.js'
+import {isCurrentlyOnTicket, isTabActive} from '../../utils'
 import {markChatAsRead} from '../chats/actions'
 import * as newMessageActions from '../newMessage/actions'
 import * as newMessageTypes from '../newMessage/constants'
@@ -1053,7 +1053,4 @@ export const findAndSetCustomer = (email: string) => (
                 )
         })
 
-export const messageDeleted = createAction<
-    typeof types.TICKET_MESSAGE_DELETED,
-    string
->(types.TICKET_MESSAGE_DELETED)
+export const messageDeleted = createAction<string>(types.TICKET_MESSAGE_DELETED)

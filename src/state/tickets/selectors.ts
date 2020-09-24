@@ -1,24 +1,20 @@
 import {fromJS, List} from 'immutable'
-import {createSelector} from 'reselect'
 
-import {createImmutableSelector} from '../../utils.js'
+import {createImmutableSelector} from '../../utils'
 import {RootState} from '../types'
 
 import {TicketsState} from './types'
 
-//$TsFixMe remove once createImmutableSelector is migrated
-const typeSafeCreateImmutableSelector = createImmutableSelector as typeof createSelector
-
 export const getTicketsState = (state: RootState): TicketsState =>
     state.tickets || fromJS({})
 
-export const getTickets = typeSafeCreateImmutableSelector<
+export const getTickets = createImmutableSelector<
     RootState,
     List<any>,
     TicketsState
 >(getTicketsState, (state) => (state.get('items') || fromJS([])) as List<any>)
 
-export const getCursor = typeSafeCreateImmutableSelector<
+export const getCursor = createImmutableSelector<
     RootState,
     Maybe<string>,
     TicketsState

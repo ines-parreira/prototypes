@@ -6,12 +6,9 @@ import _isString from 'lodash/isString'
 import _isInteger from 'lodash/isInteger'
 import _isNil from 'lodash/isNil'
 
-import {getAST, getFirstExpressionOfAST} from '../../utils.js'
+import {getAST, getFirstExpressionOfAST} from '../../utils'
 import {Schemas} from '../../types'
-import {
-    UNARY_OPERATORS,
-    TIMEDELTA_OPERATOR_DEFAULT_VALUE,
-} from '../../config.js'
+import {UNARY_OPERATORS, TIMEDELTA_OPERATOR_DEFAULT_VALUE} from '../../config'
 import {isTimedelta} from '../../utils/ast'
 
 import {OBJECT_DEFINITIONS} from './constants.js'

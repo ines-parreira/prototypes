@@ -9,7 +9,7 @@ import Tooltip from '../../../../common/components/Tooltip'
 
 import * as TicketActions from '../../../../../state/ticket/actions.ts'
 import * as NewMessageActions from '../../../../../state/newMessage/actions.ts'
-import {getActionTemplate, stripErrorMessage} from '../../../../../utils'
+import {getActionTemplate, stripErrorMessage} from '../../../../../utils.ts'
 
 import css from './Error.less'
 

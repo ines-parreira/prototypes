@@ -9,7 +9,7 @@ import {
     GMAIL_INTEGRATION_TYPE,
     OUTLOOK_INTEGRATION_TYPE,
 } from '../../../../../../constants/integration'
-import {GMAIL_IMPORTED_EMAILS_FOR_YEARS} from '../../../../../../config'
+import {GMAIL_IMPORTED_EMAILS_FOR_YEARS} from '../../../../../../config.ts'
 import {getRedirectUri} from '../../../../../../state/integrations/selectors.ts'
 
 import PageHeader from '../../../../../common/components/PageHeader'

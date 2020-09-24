@@ -11,7 +11,7 @@ import {
     FORM_CONTENT_TYPE,
     HTTP_METHOD_GET,
     JSON_CONTENT_TYPE,
-} from '../../../../../../config'
+} from '../../../../../../config.ts'
 import {
     TICKET_CREATED,
     TICKET_MESSAGE_CREATED,
@@ -21,7 +21,7 @@ import {
     toJS,
     validateWebhookURL,
     validateWebhookURLToPattern,
-} from '../../../../../../utils'
+} from '../../../../../../utils.ts'
 
 import Loader from '../../../../../common/components/Loader'
 import ObjectListField from '../ObjectListField'

@@ -13,7 +13,7 @@ import {
     devLog,
     humanizeString,
     isCurrentlyOnTicket,
-} from '../../../../../../../../../utils'
+} from '../../../../../../../../../utils.ts'
 import {getTrackingUrl} from '../../../../../../../../../utils/delivery.ts'
 import {DatetimeLabel} from '../../../../../../../utils/labels'
 import {displayLabel, guessFieldValueFromRawData} from '../../../../../utils'

@@ -7,7 +7,7 @@ import classnames from 'classnames'
 import _isArray from 'lodash/isArray'
 
 import type {attachmentType} from '../../../state/types'
-import {uploadFiles} from '../../../utils'
+import {uploadFiles} from '../../../utils.ts'
 import {getFileTooLargeError} from '../../../utils/file.ts'
 
 import {notify} from './../../../state/notifications/actions.ts'

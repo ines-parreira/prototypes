@@ -3,7 +3,7 @@ import {createSelector} from 'reselect'
 import _isArray from 'lodash/isArray'
 
 import {IntegrationType} from '../../models/integration/types'
-import {compare} from '../../utils.js'
+import {compare} from '../../utils'
 import {RootState} from '../types'
 import {getCurrentUserState} from '../currentUser/selectors'
 import {nestedReplace} from '../ticket/utils.js'

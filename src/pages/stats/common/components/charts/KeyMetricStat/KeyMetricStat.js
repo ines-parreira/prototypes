@@ -16,7 +16,7 @@ import {
 import Loader from '../../../../../common/components/Loader'
 
 import statsCss from '../../../../style.less'
-import {isImmutable} from '../../../../../../utils'
+import {isImmutable} from '../../../../../../utils.ts'
 
 import css from './KeyMetricStat.less'
 import DonutKeyMetricStat from './DonutKeyMetricStat'

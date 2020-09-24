@@ -13,7 +13,7 @@ import {fromJS} from 'immutable'
 import {connect} from 'react-redux'
 
 import type {viewType} from '../../../../../state/views/types'
-import GorgiasApi from '../../../../../services/gorgiasApi'
+import GorgiasApi from '../../../../../services/gorgiasApi.ts'
 import type {notificationType} from '../../../../../state/notifications/actions.ts'
 import {notify} from '../../../../../state/notifications/actions.ts'
 import type {currentUserType} from '../../../../../state/types'

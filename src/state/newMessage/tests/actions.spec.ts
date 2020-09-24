@@ -6,7 +6,7 @@ import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
 import {TicketMessageSourceType} from '../../../business/types/ticket'
-import * as utils from '../../../utils.js'
+import * as utils from '../../../utils'
 import * as actions from '../actions'
 import * as types from '../constants'
 import {initialState} from '../reducers'
@@ -989,7 +989,7 @@ describe('actions', () => {
                 0: fileFoo,
             } as unknown) as FileList
             it('should dispatch NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS when successfully adding attachments', (done) => {
-                mockedUploadFiles.mockReturnValue(Promise.resolve())
+                mockedUploadFiles.mockReturnValue(Promise.resolve([]))
                 store = mockStore({
                     newMessage: initialState,
                     ticket: typeSafeTicketInitialState.set('id', 1),
@@ -1009,7 +1009,7 @@ describe('actions', () => {
             })
 
             it('should not dispatch NEW_MESSAGE_ADD_ATTACHMENT_SUCCESS when successfully adding attachments in another ticket', (done) => {
-                mockedUploadFiles.mockReturnValue(Promise.resolve())
+                mockedUploadFiles.mockReturnValue(Promise.resolve([]))
                 store = mockStore({
                     newMessage: initialState,
                     ticket: typeSafeTicketInitialState.set('id', 2),
@@ -1080,7 +1080,7 @@ describe('actions', () => {
 
             it('should dispatch NEW_MESSAGE_ADD_ATTACHMENT_ERROR when source is facebook comment and file has wrong type', (done) => {
                 const fileBaz = createFile('baz', 'baz')
-                mockedUploadFiles.mockReturnValue(Promise.resolve())
+                mockedUploadFiles.mockReturnValue(Promise.resolve([]))
                 store = mockStore({
                     newMessage: initialState.setIn(
                         ['newMessage', 'source', 'type'],
@@ -1105,7 +1105,7 @@ describe('actions', () => {
             })
 
             it('should dispatch NEW_MESSAGE_ADD_ATTACHMENT_ERROR when adding more than 1 attachement in a facebook comment', (done) => {
-                mockedUploadFiles.mockReturnValue(Promise.resolve())
+                mockedUploadFiles.mockReturnValue(Promise.resolve([]))
                 store = mockStore({
                     newMessage: initialState.setIn(
                         ['newMessage', 'source', 'type'],

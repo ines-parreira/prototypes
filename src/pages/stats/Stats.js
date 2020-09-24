@@ -11,11 +11,11 @@ import {
     stats as statsConfig,
     views as statViewsConfig,
 } from '../../config/stats'
-import GorgiasApi from '../../services/gorgiasApi'
+import GorgiasApi from '../../services/gorgiasApi.ts'
 import {notify} from '../../state/notifications/actions.ts'
 import {getViewFilters} from '../../state/stats/selectors.ts'
 
-import {errorToChildren} from '../../utils'
+import {errorToChildren} from '../../utils.ts'
 import type {Notification} from '../../state/notifications/types'
 
 import Stat from './common/components/charts/Stat'

@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import _noop from 'lodash/noop'
 
-import {isEmail} from '../../../../../../../../utils'
+import {isEmail} from '../../../../../../../../utils.ts'
 
 import MultiSelectAsyncField from './'
 

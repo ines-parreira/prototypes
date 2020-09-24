@@ -3,7 +3,7 @@ import moment from 'moment'
 import _isNumber from 'lodash/isNumber'
 import _isNil from 'lodash/isNil'
 
-import {getCode} from '../../utils.js'
+import {getCode} from '../../utils'
 import {GorgiasAction, RootState} from '../types'
 import {MAX_RECENT_VIEWS} from '../../config/views.js'
 
