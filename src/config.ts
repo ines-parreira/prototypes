@@ -223,10 +223,10 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         image: 'integrations/swell.png',
     },
     {
-        title: 'Amazon',
-        description: 'Respond to support requests from Amazon',
-        url: 'https://docs.gorgias.com/ecommerce-integrations/amazon',
-        image: 'integrations/amazon.png',
+        title: 'Amazon & eBay by ChannelReply',
+        description: 'Respond to eBay and Amazon inquiries',
+        url: 'https://docs.gorgias.com/ecommerce-integrations/channel-reply',
+        image: 'integrations/channelreply.png',
     },
     {
         title: 'Slack',
@@ -258,6 +258,19 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         title: 'Smooch',
         description: 'Connect your own Smooch to Gorgias',
         image: 'integrations/smooch.png',
+    },
+    {
+        title: 'Omnisend',
+        description:
+            'Create customer segments based on customer support data from Gorgias',
+        url: 'https://docs.gorgias.io/ecommerce-integrations/omnisend',
+        image: 'integrations/omnisend.png',
+    },
+    {
+        title: 'Postscript',
+        description: 'Respond to Postscript SMS conversations from Gorgias',
+        url: 'https://docs.gorgias.com/sms-integration/postscript',
+        image: 'integrations/postscript.png',
     },
 ]
 
