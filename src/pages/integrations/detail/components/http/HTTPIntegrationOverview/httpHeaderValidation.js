@@ -9,10 +9,30 @@ export function validateHeaderName(headerName) {
         return false
     }
 
-    //The field-name must be composed of printable ASCII characters
-    //(i.e., characters that have values between 33. and 126,
-    //decimal, except colon).
-    let validCharCodes = [].concat(_range(33, 44)).concat(_range(45, 127))
+    // via https://tools.ietf.org/html/rfc822.html#section-3.2
+    let printableCharCodes = _range(33, 127) // no need to filter out the colon( : ) code here
+
+    // list created using javascript's Header class, by appending each printable ASCII code as a header name
+    // and filtering the ones that threw an error (58 is the colon char code)
+    let invalidCharCodes = [
+        34,
+        40,
+        41,
+        44,
+        47,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        91,
+        92,
+        93,
+        123,
+        125,
+    ]
 
     return headerName
         .split('')
@@ -20,6 +40,9 @@ export function validateHeaderName(headerName) {
             return character.charCodeAt(0)
         })
         .every(function (charCode) {
-            return validCharCodes.indexOf(charCode) !== -1
+            return (
+                invalidCharCodes.indexOf(charCode) === -1 &&
+                printableCharCodes.indexOf(charCode) !== -1
+            )
         })
 }

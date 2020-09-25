@@ -58,6 +58,9 @@ export default class ObjectListField extends React.Component<Props> {
                                     validate ? validate('key', header.key) : ''
                                 }
                                 required
+                                pattern={
+                                    validate ? validate('key', header.key) : ''
+                                }
                                 onChange={(value) => {
                                     this._update(index, 'key', _trim(value))
                                 }}

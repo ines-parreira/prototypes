@@ -243,9 +243,16 @@ export default class HTTPIntegrationOverview extends React.Component<
         return this.props.actions.updateOrCreateIntegration(fromJS(integration))
     }
 
-    _validateHeaderName = (name: string, value: string): ?string => {
-        if (value && name === 'key' && !validateHeaderName(value)) {
-            return "Header's name needs to be printable ASCII characters"
+    _validateHeaderName = (inputType: string, value: string): ?string => {
+        /*
+            Method is passed as a 'validate' function to all key and value fields of the ObjectListField class.
+        Because we only want to validate the header name (key) fields, we have to check if the inputType is 'key'.
+
+        inputType: string: ['key', 'value']
+        */
+
+        if (inputType === 'key' && value && !validateHeaderName(value)) {
+            return 'Header name contains invalid characters'
         }
     }
 

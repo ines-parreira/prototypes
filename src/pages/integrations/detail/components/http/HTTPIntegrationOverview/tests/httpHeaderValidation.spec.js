@@ -61,6 +61,16 @@ describe('httpHeaderValidation', () => {
         'X-Request-ID',
         'X-Correlation-ID',
         'Save-Data',
+        '__+++++__',
+        'non*standard',
+    ]
+
+    const invalid = [
+        'alfa:beta',
+        'theta(nps',
+        'Invalid:colon',
+        'Invalid space',
+        '∅',
     ]
 
     describe('validates HTTP header names', () => {
@@ -82,7 +92,7 @@ describe('httpHeaderValidation', () => {
             }
         )
 
-        it.each(['Invalid-colon,', 'Invalid space', '∅'])(
+        it.each(invalid)(
             'should return false for invalid header names',
             (headerName) => {
                 expect(

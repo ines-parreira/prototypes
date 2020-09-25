@@ -11,6 +11,7 @@ describe('ObjectListField component', () => {
                 fieldName="field"
                 title="Form field"
                 fields={[]}
+                pattern={() => {}}
                 onChange={() => {}}
             />
         )
@@ -25,6 +26,7 @@ describe('ObjectListField component', () => {
                 fieldName="field"
                 title="Form field"
                 fields={[{foo: 'bar', baz: 'foo'}]}
+                pattern={() => {}}
                 onChange={() => {}}
             />
         )
