@@ -1,60 +1,47 @@
-// @flow
 import React from 'react'
-import {fromJS, Map, List} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 import classnames from 'classnames'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import {browserHistory} from 'react-router'
 
-import Loader from '../Loader'
-import BlankState from '../BlankState'
-import Navigation from '../Navigation'
-
-import {
-    NEXT_VIEW_NAV_DIRECTION,
-    PREV_VIEW_NAV_DIRECTION,
-} from '../../../../constants/view'
+import Loader from '../Loader/index.js'
+import BlankState from '../BlankState/index.js'
+import Navigation from '../Navigation/index.js'
+import {RootState} from '../../../../state/types'
 import shortcutManager from '../../../../services/shortcutManager'
-import {moveIndex} from '../../../common/utils/keyboard'
-
-import * as viewsActions from '../../../../state/views/actions.ts'
-import {areAllActiveViewItemsSelected} from '../../../../state/views/selectors.ts'
-
-import type {viewType} from '../../../../state/views/types'
-
-import type {MoveIndexDirection} from '../../utils/keyboard'
+import {moveIndex, MoveIndexDirection} from '../../../common/utils/keyboard'
+import * as viewsActions from '../../../../state/views/actions'
+import {areAllActiveViewItemsSelected} from '../../../../state/views/selectors'
+import {ViewImmutable, ViewNavDirection} from '../../../../state/views/types'
 
 import css from './Table.less'
+import HeaderCell from './Table/HeaderCell.js'
+import Row from './Table/Row.js'
+import ViewSelection from './Table/ViewSelection.js'
 
-import HeaderCell from './Table/HeaderCell'
-import Row from './Table/Row'
-import ViewSelection from './Table/ViewSelection'
-
-type Props = {
-    view: viewType,
-    config: Map<*, *>,
-    isLoading: (T: string) => boolean,
-    navigation: Map<*, *>,
-    selectedItemsIds: ?List<*>,
-    fields: List<*>,
-    items: List<*>,
-    isSearch: boolean,
-    type: string,
-    viewSelected: boolean,
-    selectable: ?boolean,
-    onItemClick: ?(number) => void,
-    getItemUrl: ?(Map<*, *>) => string,
-
-    fetchViewItems: typeof viewsActions.fetchViewItems,
-    resetView: typeof viewsActions.resetView,
-    updatePageSelection: typeof viewsActions.updateSelectedItemsIds,
-    toggleIdInPageSelection: typeof viewsActions.toggleIdInSelectedItemsIds,
-    toggleViewSelection: typeof viewsActions.toggleViewSelection,
-
-    ActionsComponent?: () => void,
+type OwnProps = {
+    view: ViewImmutable
+    config: Map<any, any>
+    isLoading: (list: string) => boolean
+    isSearch: boolean
+    selectable: boolean
+    navigation: Map<any, any>
+    selectedItemsIds: List<any>
+    type: string
+    items: List<any>
+    fields: List<any>
+    ActionsComponent: Maybe<React.ComponentType>
+    getItemUrl: (item: Map<any, any>) => string
+    fetchViewItems: (
+        ...args: Parameters<typeof viewsActions.fetchViewItems>
+    ) => ReturnType<ReturnType<typeof viewsActions.fetchViewItems>>
+    onItemClick?: (item: Map<any, any>) => void
 }
 
+type Props = OwnProps & ConnectedProps<typeof connector>
+
 type State = {
-    rowCursor: number,
+    rowCursor: number
 }
 
 class Table extends React.Component<Props, State> {
@@ -89,15 +76,17 @@ class Table extends React.Component<Props, State> {
             this.setState({rowCursor: 0})
             if (nextProps.viewSelected) {
                 nextProps.updatePageSelection(
-                    nextProps.items.map((item) => item.get('id'))
+                    nextProps.items.map(
+                        (item: Map<any, any>) => item.get('id') as number
+                    ) as List<any>
                 )
             } else if (nextProps.selectedItemsIds) {
                 nextProps.updatePageSelection(
                     nextProps.selectedItemsIds.filter((itemId) =>
                         nextProps.items.some(
-                            (item) => item.get('id') === itemId
+                            (item: Map<any, any>) => item.get('id') === itemId
                         )
-                    )
+                    ) as List<any>
                 )
             }
         }
@@ -109,13 +98,13 @@ class Table extends React.Component<Props, State> {
                 action: () => this._movePage(),
             },
             GO_PREV_PAGE: {
-                action: () => this._movePage(PREV_VIEW_NAV_DIRECTION),
+                action: () => this._movePage(ViewNavDirection.PrevView),
             },
             GO_NEXT_ROW: {
                 action: () => this._moveCursor(),
             },
             GO_PREV_ROW: {
-                action: () => this._moveCursor('previous'),
+                action: () => this._moveCursor(MoveIndexDirection.Prev),
             },
             CHECK_ITEM: {
                 action: () => {
@@ -144,7 +133,7 @@ class Table extends React.Component<Props, State> {
         })
     }
 
-    _moveCursor = (direction: MoveIndexDirection = NEXT_VIEW_NAV_DIRECTION) => {
+    _moveCursor = (direction: MoveIndexDirection = MoveIndexDirection.Next) => {
         this.setState({
             rowCursor: moveIndex(this.state.rowCursor, this.props.items.size, {
                 direction,
@@ -153,7 +142,9 @@ class Table extends React.Component<Props, State> {
     }
 
     _toggleSelectAllPageItems = () => {
-        const itemsIds = this.props.items.map((item) => item.get('id'))
+        const itemsIds = this.props.items.map(
+            (item: Map<any, any>) => item.get('id') as number
+        ) as List<any>
         if (
             this.props.selectedItemsIds &&
             this.props.selectedItemsIds.size > 0
@@ -164,20 +155,20 @@ class Table extends React.Component<Props, State> {
         }
     }
 
-    _movePage = (direction: MoveIndexDirection = NEXT_VIEW_NAV_DIRECTION) => {
+    _movePage = (direction: ViewNavDirection = ViewNavDirection.NextView) => {
         const {navigation, fetchViewItems, isLoading} = this.props
 
         if (
-            (direction === PREV_VIEW_NAV_DIRECTION &&
+            (direction === ViewNavDirection.PrevView &&
                 !navigation.get('prev_items')) ||
-            (direction === NEXT_VIEW_NAV_DIRECTION &&
+            (direction === ViewNavDirection.NextView &&
                 !navigation.get('next_items')) ||
             isLoading('fetchList')
         ) {
             return
         }
 
-        fetchViewItems(direction)
+        void fetchViewItems(direction)
     }
 
     render() {
@@ -217,7 +208,7 @@ class Table extends React.Component<Props, State> {
                             <a
                                 onClick={() => {
                                     resetView(config.get('name'))
-                                    fetchViewItems()
+                                    void fetchViewItems()
                                 }}
                             >
                                 Reset view
@@ -234,10 +225,10 @@ class Table extends React.Component<Props, State> {
                         hasNextItems={!!navigation.get('next_items')}
                         hasPrevItems={!!navigation.get('prev_items')}
                         fetchNextItems={() =>
-                            fetchViewItems(NEXT_VIEW_NAV_DIRECTION)
+                            fetchViewItems(ViewNavDirection.NextView)
                         }
                         fetchPrevItems={() =>
-                            fetchViewItems(PREV_VIEW_NAV_DIRECTION)
+                            fetchViewItems(ViewNavDirection.PrevView)
                         }
                     />
                 </div>
@@ -250,7 +241,6 @@ class Table extends React.Component<Props, State> {
             !!selectedItemsIds &&
             selectedItemsIds.size > 0 &&
             selectedItemsIds.size < items.size
-
         return (
             <div>
                 <table className={classnames(css.table, 'view-table')}>
@@ -272,14 +262,17 @@ class Table extends React.Component<Props, State> {
                                     />
                                 </td>
                             ) : null}
-                            {fields.map((field, index) => {
+                            {fields.map((field: Map<any, any>, index) => {
                                 return (
                                     <HeaderCell
                                         key={field.get('name')}
                                         field={field}
                                         fields={fields}
                                         type={type}
-                                        isLast={fields.size === index + 1}
+                                        isLast={
+                                            fields.size ===
+                                            (index as number) + 1
+                                        }
                                         isSearch={isSearch}
                                         ActionsComponent={ActionsComponent}
                                     />
@@ -302,7 +295,7 @@ class Table extends React.Component<Props, State> {
                         ) : null}
                     </thead>
                     <tbody>
-                        {items.map((item: Map<*, *>, index: number) => {
+                        {items.map((item: Map<any, any>, index) => {
                             const id = item.get('id')
 
                             return (
@@ -331,10 +324,10 @@ class Table extends React.Component<Props, State> {
                     hasNextItems={!!navigation.get('next_items')}
                     hasPrevItems={!!navigation.get('prev_items')}
                     fetchNextItems={() =>
-                        fetchViewItems(NEXT_VIEW_NAV_DIRECTION)
+                        fetchViewItems(ViewNavDirection.NextView)
                     }
                     fetchPrevItems={() =>
-                        fetchViewItems(PREV_VIEW_NAV_DIRECTION)
+                        fetchViewItems(ViewNavDirection.PrevView)
                     }
                 />
             </div>
@@ -342,8 +335,8 @@ class Table extends React.Component<Props, State> {
     }
 }
 
-export default connect(
-    (state) => {
+const connector = connect(
+    (state: RootState) => {
         return {
             viewSelected: areAllActiveViewItemsSelected(state),
         }
@@ -354,4 +347,6 @@ export default connect(
         toggleViewSelection: viewsActions.toggleViewSelection,
         resetView: viewsActions.resetView,
     }
-)(Table)
+)
+
+export default connector(Table)

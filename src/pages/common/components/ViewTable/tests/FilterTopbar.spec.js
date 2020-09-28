@@ -5,7 +5,7 @@ import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import FilterTopbar, {FilterTopbarComponent} from '../FilterTopbar'
+import FilterTopbar, {FilterTopbarComponent} from '../FilterTopbar.tsx'
 import * as viewsConfig from '../../../../../config/views'
 
 const mockStore = configureMockStore([thunk])

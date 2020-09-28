@@ -4,8 +4,8 @@ import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
 import {Input} from 'reactstrap'
 
-import shortcutManager from '../../../../../services/shortcutManager'
-import {moveIndex} from '../../../../common/utils/keyboard'
+import shortcutManager from '../../../../../services/shortcutManager/index.ts'
+import {moveIndex} from '../../../../common/utils/keyboard.ts'
 import {isMacroDisabled} from '../utils'
 
 import {fetchMacros} from '../../../../../state/macro/actions.ts'

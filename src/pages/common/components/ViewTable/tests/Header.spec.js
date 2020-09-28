@@ -8,7 +8,7 @@ import Search from '../../Search'
 import configureStore from '../../../../../store/configureStore'
 import * as viewsFixtures from '../../../../../fixtures/views'
 import * as viewsActions from '../../../../../state/views/actions.ts'
-import Header from '../Header'
+import Header from '../Header.tsx'
 import EmojiSelect from '../EmojiSelect'
 
 jest.mock('../../../../../state/views/actions.ts', () => {

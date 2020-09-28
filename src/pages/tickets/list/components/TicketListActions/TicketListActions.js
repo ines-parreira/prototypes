@@ -21,7 +21,7 @@ import {
 import _debounce from 'lodash/debounce'
 import _isUndefined from 'lodash/isUndefined'
 
-import shortcutManager from '../../../../../services/shortcutManager/index'
+import shortcutManager from '../../../../../services/shortcutManager/index.ts'
 
 import * as viewsActions from '../../../../../state/views/actions.ts'
 import * as ticketsActions from '../../../../../state/tickets/actions'

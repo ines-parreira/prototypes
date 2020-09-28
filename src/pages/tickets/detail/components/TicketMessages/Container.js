@@ -4,7 +4,7 @@ import classNamesBind from 'classnames/bind'
 import moment from 'moment'
 import {fromJS} from 'immutable/dist/immutable'
 
-import {scrollToReactNode} from '../../../../common/utils/keyboard'
+import {scrollToReactNode} from '../../../../common/utils/keyboard.ts'
 import Avatar from '../../../../common/components/Avatar'
 import {TicketMessage, isFailed, isPending} from '../../../../../models/ticket'
 

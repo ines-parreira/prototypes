@@ -7,11 +7,11 @@ import _debounce from 'lodash/debounce'
 import {fromJS, List, Map} from 'immutable'
 
 import * as ticketSelectors from '../../../../state/ticket/selectors.ts'
-import shortcutManager from '../../../../services/shortcutManager'
+import shortcutManager from '../../../../services/shortcutManager/index.ts'
 import {
     moveIndex,
     type MoveIndexDirection,
-} from '../../../common/utils/keyboard'
+} from '../../../common/utils/keyboard.ts'
 import type {stateType} from '../../../../state/types'
 import type {
     Channel,

@@ -1,31 +1,35 @@
-// @flow
 import type {Map, List} from 'immutable'
 import _debounce from 'lodash/debounce'
-import React, {type ComponentType} from 'react'
+import React, {ComponentType} from 'react'
 
-import {fieldEnumSearch} from '../../../../state/views/actions.ts'
-import withCancellableRequest from '../../../common/utils/withCancellableRequest'
-import MultiSelectOptionsField, {
-    type Option,
-} from '../../forms/MultiSelectOptionsField'
+import {fieldEnumSearch} from '../../../../state/views/actions'
+import withCancellableRequest, {
+    CancellableRequestInjectedProps,
+} from '../../../common/utils/withCancellableRequest.js'
+import MultiSelectOptionsField from '../../forms/MultiSelectOptionsField/index.js'
+import {Option} from '../../forms/MultiSelectOptionsField/types'
 
 type Props = {
-    plural: string,
-    singular: string,
-    selectedOptions: Option[],
-    onChange: (Option[]) => void,
-    field: Map<*, *>,
+    plural: string
+    singular: string
+    selectedOptions: Option[]
+    onChange: (options: Option[]) => void
+    field: Map<any, any>
     fieldEnumSearchCancellable: (
-        field: Map<*, *>,
+        field: Map<any, any>,
         query: string
-    ) => Promise<?List<*>>,
-    mapSearchResults: <T>(searchResults: T[]) => Option[],
-    dropdownMenu?: ComponentType<*>,
-}
+    ) => Promise<Maybe<List<any>>>
+    mapSearchResults: <T>(searchResults: T[]) => Option[]
+    dropdownMenu?: ComponentType<any>
+} & CancellableRequestInjectedProps<
+    'fieldEnumSearchCancellable',
+    'cancelFieldEnumSearchCancellable',
+    typeof fieldEnumSearch
+>
 
 type State = {
-    options: Option[],
-    isLoading: boolean,
+    options: Option[]
+    isLoading: boolean
 }
 
 export class FilterMultiSelectField extends React.Component<Props, State> {
@@ -35,7 +39,7 @@ export class FilterMultiSelectField extends React.Component<Props, State> {
     }
 
     componentDidMount() {
-        this._onSearch('')
+        void this._onSearch('')
     }
 
     _onSearch = async (query: string) => {
@@ -60,12 +64,12 @@ export class FilterMultiSelectField extends React.Component<Props, State> {
     }
 
     _onInputChange = _debounce((input: string) => {
-        this._onSearch(input)
+        void this._onSearch(input)
     }, 300)
 
     _onChange = (options: Option[]) => {
         this.props.onChange(options)
-        this._onSearch('')
+        void this._onSearch('')
     }
 
     render() {
@@ -76,7 +80,7 @@ export class FilterMultiSelectField extends React.Component<Props, State> {
                 loading={this.state.isLoading}
                 options={this.state.options}
                 selectedOptions={this.props.selectedOptions}
-                onInputChange={(input) => this._onInputChange(input)}
+                onInputChange={(input: string) => this._onInputChange(input)}
                 onChange={this._onChange}
                 dropdownMenu={this.props.dropdownMenu}
             />
@@ -84,7 +88,11 @@ export class FilterMultiSelectField extends React.Component<Props, State> {
     }
 }
 
-export default withCancellableRequest<Props>(
+export default withCancellableRequest<
+    'fieldEnumSearchCancellable',
+    'cancelFieldEnumSearchCancellable',
+    typeof fieldEnumSearch
+>(
     'fieldEnumSearchCancellable',
     fieldEnumSearch
 )(FilterMultiSelectField)

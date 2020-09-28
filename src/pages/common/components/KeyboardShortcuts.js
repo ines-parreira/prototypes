@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 
-import shortcutManager from '../../../services/shortcutManager'
+import shortcutManager from '../../../services/shortcutManager/index.ts'
 
 type Props = {
     name: string,

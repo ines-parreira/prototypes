@@ -125,7 +125,7 @@ export function fieldEnumSearch(
     query: string,
     cancelToken?: CancelToken
 ) {
-    return (): Promise<ReturnType<StoreDispatch>> => {
+    return (): Promise<List<any>> => {
         const data = (field.get('filter') as Map<any, any>).toJS() as Record<
             string,
             unknown
@@ -148,7 +148,7 @@ export function fieldEnumSearch(
     }
 }
 
-export const resetView = (configName: string) => {
+export const resetView = (configName?: string) => {
     return {
         type: types.RESET_VIEW,
         configName,
@@ -361,7 +361,7 @@ export const deleteViewSuccess = (viewId: number) => (
 // Fetch a page of items of a view (tickets or customers) based on the provided cursor and direction.
 export function fetchViewItems(
     direction: Maybe<ViewNavDirection> = null,
-    cursor: Maybe<number>,
+    cursor?: Maybe<string>,
     isPolling: Maybe<boolean> = false,
     cancelToken?: CancelToken
 ) {

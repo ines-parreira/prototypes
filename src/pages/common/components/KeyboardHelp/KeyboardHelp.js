@@ -6,7 +6,7 @@ import classnames from 'classnames'
 
 import Modal from '../../components/Modal'
 
-import shortcutManager from '../../../../services/shortcutManager'
+import shortcutManager from '../../../../services/shortcutManager/index.ts'
 import keymap from '../../../../config/shortcuts.ts'
 
 import css from './KeyboardHelp.less'

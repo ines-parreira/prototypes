@@ -301,7 +301,7 @@ export const getView = (id: string, configName: Maybe<string> = '') =>
 
 export const makeGetView = (state: RootState) => (
     id: string,
-    configName: Maybe<string>
+    configName?: Maybe<string>
 ) => getView(id, configName)(state)
 
 /**

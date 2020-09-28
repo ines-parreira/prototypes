@@ -6,7 +6,7 @@ import {fromJS} from 'immutable'
 
 import type {Map, List} from 'immutable'
 
-import {scrollToReactNode} from '../../../utils/keyboard'
+import {scrollToReactNode} from '../../../utils/keyboard.ts'
 
 import css from '../Table.less'
 

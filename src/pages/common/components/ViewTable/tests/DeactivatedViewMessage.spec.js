@@ -1,7 +1,7 @@
 import React from 'react'
 import {render} from 'enzyme'
 
-import DeactivatedViewMessage from '../DeactivatedViewMessage'
+import DeactivatedViewMessage from '../DeactivatedViewMessage.tsx'
 
 describe('<DeactivatedViewMessage/>', () => {
     describe('render()', () => {

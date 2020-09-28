@@ -1,47 +1,38 @@
-// @flow
-import React, {type Node} from 'react'
-import {connect} from 'react-redux'
+import React from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 import {browserHistory, Link, withRouter} from 'react-router'
-import {fromJS, Map} from 'immutable'
+import {Map} from 'immutable'
 import _get from 'lodash/get'
 import classnames from 'classnames'
 
-import EditableTitle from '../EditableTitle'
-import Search from '../Search'
-import {slugify} from '../../../../utils.ts'
-import * as viewsActions from '../../../../state/views/actions.ts'
-import * as viewsSelectors from '../../../../state/views/selectors.ts'
-import * as viewsConfig from '../../../../config/views'
+import EditableTitle from '../EditableTitle.js'
+import Search from '../Search.js'
+import {slugify} from '../../../../utils'
+import * as viewsActions from '../../../../state/views/actions'
+import * as viewsSelectors from '../../../../state/views/selectors'
+import * as viewsConfig from '../../../../config/views.js'
 import shortcutManager from '../../../../services/shortcutManager'
-import ViewName from '../ViewName'
-import Tooltip from '../Tooltip'
+import ViewName from '../ViewName/index.js'
+import Tooltip from '../Tooltip.js'
+import {RootState} from '../../../../state/types'
 
-import EmojiSelect from './EmojiSelect'
+import EmojiSelect from './EmojiSelect/index.js'
 import css from './Header.less'
 
-type Props = {
-    activeView: Map<*, *>,
-    config: Map<*, *>,
-    deleteView: (Map<*, *>) => Promise<void>,
-    isSearch: boolean,
-    isUpdate: boolean,
-    item: Map<*, *>,
-    lastViewId: number,
-    type: string,
-    updateView: (Map<*, *>) => void,
-    setViewEditMode: (Map<*, *>) => void,
-    viewButtons: Node,
+type OwnProps = {
+    isSearch: boolean
+    isUpdate: boolean
+    type: string
+    viewButtons: React.ReactNode
 }
 
+type Props = OwnProps & ConnectedProps<typeof connector>
+
 type State = {
-    askDeleteConfirmation: boolean,
+    askDeleteConfirmation: boolean
 }
 
 class Header extends React.Component<Props, State> {
-    static defaultProps = {
-        item: fromJS({}),
-    }
-
     state = {
         askDeleteConfirmation: false,
     }
@@ -62,7 +53,7 @@ class Header extends React.Component<Props, State> {
     _goBackUrl = () => {
         const {config, lastViewId} = this.props
 
-        let url = `/app/${config.get('routeList')}`
+        let url = `/app/${config.get('routeList') as string}`
 
         if (lastViewId) {
             url += `/${lastViewId}`
@@ -72,7 +63,7 @@ class Header extends React.Component<Props, State> {
     }
 
     _searchQuery = (): string => {
-        return _get(this.props, 'location.query.q', '')
+        return _get(this.props, 'location.query.q', '') as string
     }
 
     _search = (searchQuery: string) => {
@@ -84,9 +75,9 @@ class Header extends React.Component<Props, State> {
         if (this._searchQuery() !== searchQuery) {
             // add search to view and ask page of view (will return search result)
             browserHistory.push(
-                `/app/${config.get('routeList')}/search?q=${encodeURIComponent(
-                    searchQuery
-                )}`
+                `/app/${
+                    config.get('routeList') as string
+                }/search?q=${encodeURIComponent(searchQuery)}`
             )
         }
     }
@@ -126,7 +117,9 @@ class Header extends React.Component<Props, State> {
         const {config} = this.props
 
         if (!this._searchQuery()) {
-            browserHistory.push(`/app/${config.get('routeList')}/search?q=`)
+            browserHistory.push(
+                `/app/${config.get('routeList') as string}/search?q=`
+            )
         }
     }
 
@@ -184,7 +177,7 @@ class Header extends React.Component<Props, State> {
                                                 placeholder="View name"
                                                 disabled={isSearch}
                                                 select={!isUpdate}
-                                                update={(name) => {
+                                                update={(name: string) => {
                                                     if (
                                                         name !==
                                                         activeView.get('name')
@@ -228,11 +221,13 @@ class Header extends React.Component<Props, State> {
                         <Search
                             bindKey
                             onChange={this._search}
-                            placeholder={`Search ${config.get('plural')}...`}
+                            placeholder={`Search ${
+                                config.get('plural') as string
+                            }...`}
                             searchDebounceTime={400}
-                            location={`${(activeView.get('id'): any)}${
-                                !!isSearch ? '(s)' : ''
-                            }`}
+                            location={`${
+                                (activeView.get('id') as unknown) as string
+                            }${isSearch ? '(s)' : ''}`}
                             forcedQuery={this._searchQuery()}
                             className={classnames(css.headerSearch, 'mr-2', {
                                 [css.isSearching]: isSearch,
@@ -269,18 +264,18 @@ class Header extends React.Component<Props, State> {
     }
 }
 
-export default withRouter(
-    connect(
-        (state, ownProps) => ({
-            activeView: viewsSelectors.getActiveView(state),
-            config: viewsConfig.getConfigByName(ownProps.type),
-            lastViewId: viewsSelectors.getLastViewId(state),
-        }),
-        {
-            deleteView: viewsActions.deleteView,
-            removeFieldFilter: viewsActions.removeFieldFilter,
-            updateView: viewsActions.updateView,
-            setViewEditMode: viewsActions.setViewEditMode,
-        }
-    )(Header)
+const connector = connect(
+    (state: RootState, ownProps: OwnProps) => ({
+        activeView: viewsSelectors.getActiveView(state),
+        config: viewsConfig.getConfigByName(ownProps.type) as Map<any, any>,
+        lastViewId: viewsSelectors.getLastViewId(state),
+    }),
+    {
+        deleteView: viewsActions.deleteView,
+        removeFieldFilter: viewsActions.removeFieldFilter,
+        updateView: viewsActions.updateView,
+        setViewEditMode: viewsActions.setViewEditMode,
+    }
 )
+
+export default withRouter(connector(Header))

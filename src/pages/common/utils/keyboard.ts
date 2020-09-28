@@ -1,11 +1,5 @@
-// @flow
 import {findDOMNode} from 'react-dom'
 import scrollIntoView from 'scroll-into-view-if-needed'
-
-import {
-    NEXT_VIEW_NAV_DIRECTION,
-    PREV_VIEW_NAV_DIRECTION,
-} from '../../../constants/view'
 
 /**
  * Scroll DOM node into view
@@ -21,29 +15,28 @@ function scrollToNode(node: HTMLElement) {
 /**
  * Scroll React component into view
  */
-export function scrollToReactNode(node: any) {
-    // findDOMNode has a null return type
-    // $FlowFixMe
-    return scrollToNode(findDOMNode(node))
+export function scrollToReactNode(node: HTMLElement) {
+    return scrollToNode(findDOMNode(node) as HTMLElement)
+}
+
+export enum MoveIndexDirection {
+    Next = 'next',
+    Prev = 'prev',
+}
+
+type MoveIndexOptions = {
+    direction: MoveIndexDirection
+    rotate?: boolean
 }
 
 /**
  * Returns the next/previous possible index in a list
  */
-type optionsType = {
-    direction: MoveIndexDirection,
-    rotate?: boolean,
-}
-
-export type MoveIndexDirection =
-    | typeof NEXT_VIEW_NAV_DIRECTION
-    | typeof PREV_VIEW_NAV_DIRECTION
-
 export function moveIndex(
-    currentIndex: number = 0,
-    length: number = 0,
-    options: optionsType = {
-        direction: 'next',
+    currentIndex = 0,
+    length = 0,
+    options: MoveIndexOptions = {
+        direction: MoveIndexDirection.Next,
         rotate: false,
     }
 ) {

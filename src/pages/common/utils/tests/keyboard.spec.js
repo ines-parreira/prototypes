@@ -1,4 +1,4 @@
-import * as utils from '../keyboard'
+import * as utils from '../keyboard.ts'
 
 describe('keyboard utils', () => {
     describe('moveIndex', () => {

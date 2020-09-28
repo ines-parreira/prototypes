@@ -59,9 +59,7 @@ export class ShortcutManager {
         return isEditable(element) || isButton(element)
     }
 
-    _keymap: typeof keymap & {[key: string]: {actions: KeymapActions}} = _clone(
-        keymap
-    )
+    _keymap: typeof keymap & {[key: string]: KeyMap} = _clone(keymap)
 
     _getComponentKeymap(component: string) {
         if (!this._keymap[component] || !this._keymap[component].actions) {
@@ -78,7 +76,10 @@ export class ShortcutManager {
     }
 
     _bound: {name: string; paused: boolean}[] = []
-    bind(component = 'global', actions: KeymapActions = {}) {
+    bind(
+        component = 'global',
+        actions: {[key: string]: Partial<KeyboardAction>} = {}
+    ) {
         // allow overwriting shortcut properties from components and
         // merge actions into the keymap object,
         // so we can to rebind previously bound component actions

@@ -6,7 +6,7 @@ import _noop from 'lodash/noop'
 import type {Map} from 'immutable'
 
 import InfiniteScroll from '../../../../common/components/InfiniteScroll'
-import {scrollToReactNode} from '../../../../common/utils/keyboard'
+import {scrollToReactNode} from '../../../../common/utils/keyboard.ts'
 import {isMacroDisabled} from '../utils'
 import {fetchMacros} from '../../../../../state/macro/actions.ts'
 

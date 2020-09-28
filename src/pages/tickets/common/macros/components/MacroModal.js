@@ -13,7 +13,7 @@ import {DEFAULT_ACTIONS} from '../../../../../config.ts'
 import {APPLY_MACRO_JOB_TYPE} from '../../../../../constants/job'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 import * as segmentTracker from '../../../../../store/middlewares/segmentTracker'
-import shortcutManager from '../../../../../services/shortcutManager'
+import shortcutManager from '../../../../../services/shortcutManager/index.ts'
 
 import * as macroActions from '../../../../../state/macro/actions.ts'
 import * as ticketsActions from '../../../../../state/tickets/actions'

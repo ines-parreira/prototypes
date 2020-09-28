@@ -6,7 +6,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import {Dropdown, DropdownItem, DropdownToggle, Input} from 'reactstrap'
 
-import shortcutManager from '../../../../../services/shortcutManager'
+import shortcutManager from '../../../../../services/shortcutManager/index.ts'
 import {fieldEnumSearch} from '../../../../../state/views/actions.ts'
 import TagDropdownMenu from '../../../../common/components/TagDropdownMenu/TagDropdownMenu'
 import {TagLabel} from '../../../../common/utils/labels'

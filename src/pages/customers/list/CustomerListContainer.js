@@ -12,7 +12,7 @@ import {getCustomers} from '../../../state/customers/selectors.ts'
 import * as viewsActions from '../../../state/views/actions.ts'
 import * as viewsSelectors from '../../../state/views/selectors.ts'
 
-import ViewTable from '../../common/components/ViewTable/ViewTable'
+import ViewTable from '../../common/components/ViewTable/ViewTable.tsx'
 
 import CustomerForm from '../common/components/CustomerForm'
 import Modal from '../../common/components/Modal'

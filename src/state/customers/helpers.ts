@@ -8,10 +8,14 @@ import {isImmutable, toImmutable} from '../../utils'
 /**
  * Return name of customer
  */
-export const getDisplayName = (customer: {
-    name: string
-    id: string
-}): Map<any, any> | string => {
+export const getDisplayName = (
+    customer:
+        | {
+              name: string
+              id: string
+          }
+        | Map<any, any>
+): Map<any, any> | string => {
     const immutableCustomer = toImmutable<Map<any, any>>(customer)
 
     // TODO toImmutable should always return a map.

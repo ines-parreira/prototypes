@@ -10,7 +10,7 @@ import _pick from 'lodash/pick'
 
 import DocumentTitle from 'react-document-title'
 
-import shortcutManager from '../../../services/shortcutManager'
+import shortcutManager from '../../../services/shortcutManager/index.ts'
 import Loader from '../../common/components/Loader'
 import * as ViewsActions from '../../../state/views/actions.ts'
 import * as TicketActions from '../../../state/ticket/actions.ts'

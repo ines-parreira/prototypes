@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {fromJS, Map, List} from 'immutable'
 
 import Search from '../Search'
-import Table from '../ViewTable/Table'
+import Table from '../ViewTable/Table.tsx'
 import {searchTickets} from '../../../../state/mergeTickets/actions.ts'
 import * as viewsConfig from '../../../../config/views'
 

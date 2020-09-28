@@ -17,7 +17,7 @@ import * as tagsActions from '../../../state/tags/actions.ts'
 import * as ticketsSelectors from '../../../state/tickets/selectors.ts'
 import * as viewsSelectors from '../../../state/views/selectors.ts'
 
-import ViewTable from '../../common/components/ViewTable/ViewTable'
+import ViewTable from '../../common/components/ViewTable/ViewTable.tsx'
 
 import type {reactRouterLocation, reactRouterRoute} from '../../../types'
 

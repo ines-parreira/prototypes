@@ -14,7 +14,7 @@ import {
 } from 'reactstrap'
 import _isUndefined from 'lodash/isUndefined'
 
-import shortcutManager from '../../../../services/shortcutManager'
+import shortcutManager from '../../../../services/shortcutManager/index.ts'
 
 import * as customersActions from '../../../../state/customers/actions.ts'
 import * as viewsSelectors from '../../../../state/views/selectors.ts'

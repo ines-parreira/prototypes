@@ -4,8 +4,8 @@ import {Map} from 'immutable'
 import _noop from 'lodash/noop'
 import React from 'react'
 
-import MultiSelectOptionsField from '../../../forms/MultiSelectOptionsField'
-import {FilterMultiSelectField} from '../FilterMultiSelectField'
+import MultiSelectOptionsField from '../../../forms/MultiSelectOptionsField/index.js'
+import {FilterMultiSelectField} from '../FilterMultiSelectField.tsx'
 
 describe('FilterMultiSelectField', () => {
     const defaultProps = {

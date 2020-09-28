@@ -14,7 +14,7 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import shortcutManager from '../../../services/shortcutManager'
+import shortcutManager from '../../../services/shortcutManager/index.ts'
 
 import * as currentUserActions from '../../../state/currentUser/actions.ts'
 import * as layoutActions from '../../../state/layout/actions.ts'

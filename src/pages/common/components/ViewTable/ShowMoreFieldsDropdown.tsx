@@ -1,7 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import ImmutablePropTypes from 'react-immutable-proptypes'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {
     UncontrolledDropdown,
@@ -9,18 +7,29 @@ import {
     DropdownMenu,
     DropdownItem,
 } from 'reactstrap'
+import {Map} from 'immutable'
 
-import {setFieldVisibility} from '../../../../state/views/actions.ts'
-import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
-import {notify} from '../../../../state/notifications/actions.ts'
+import {setFieldVisibility} from '../../../../state/views/actions'
+import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
+import {notify} from '../../../../state/notifications/actions'
 
-import BooleanField from '../../forms/BooleanField'
+import BooleanField from '../../forms/BooleanField.js'
+import {GorgiasThunkDispatch} from '../../../../../../../../types/redux-thunk'
+import {NotificationStatus} from '../../../../state/notifications/types'
 
-class ShowMoreFieldsDropdown extends React.Component {
-    _setFieldVisibility = (name, state) => {
+type OwnProps = {
+    config: Map<any, any>
+    fields: Map<any, any>
+    visibleFields: Map<any, any>
+}
+
+type Props = OwnProps & ConnectedProps<typeof connector>
+
+class ShowMoreFieldsDropdown extends React.Component<Props> {
+    _setFieldVisibility = (name: string, state: boolean) => {
         if (!state && this.props.visibleFields.size <= 1) {
             return this.props.notify({
-                status: 'error',
+                status: NotificationStatus.Error,
                 message: 'You can not remove all columns of a view',
             })
         }
@@ -29,8 +38,8 @@ class ShowMoreFieldsDropdown extends React.Component {
     }
 
     render() {
-        const visibleFieldsNames = this.props.visibleFields.map((field) =>
-            field.get('name')
+        const visibleFieldsNames = this.props.visibleFields.map(
+            (field: Map<any, any>) => field.get('name') as string
         )
 
         return (
@@ -54,14 +63,14 @@ class ShowMoreFieldsDropdown extends React.Component {
                     <DropdownItem className="pb-2" header>
                         COLUMNS
                     </DropdownItem>
-                    {this.props.fields.map((field) => {
+                    {this.props.fields.map((field: Map<any, any>) => {
                         const isMandatory =
                             this.props.config.get('mainField') ===
                             field.get('name')
                         const isChecked =
                             visibleFieldsNames.includes(field.get('name')) ||
                             isMandatory
-                        let setFieldVisibility = (value) =>
+                        const setFieldVisibility = (value: boolean) =>
                             this._setFieldVisibility(field.get('name'), value)
 
                         return (
@@ -87,19 +96,13 @@ class ShowMoreFieldsDropdown extends React.Component {
     }
 }
 
-ShowMoreFieldsDropdown.propTypes = {
-    config: ImmutablePropTypes.map.isRequired,
-    setFieldVisibility: PropTypes.func,
-    fields: PropTypes.object,
-    visibleFields: PropTypes.object.isRequired,
-    notify: PropTypes.func.isRequired,
-}
-
-function mapDispatchToProps(dispatch) {
+function mapDispatchToProps(dispatch: GorgiasThunkDispatch<any, any, any>) {
     return {
         setFieldVisibility: bindActionCreators(setFieldVisibility, dispatch),
         notify: bindActionCreators(notify, dispatch),
     }
 }
 
-export default connect(null, mapDispatchToProps)(ShowMoreFieldsDropdown)
+const connector = connect(null, mapDispatchToProps)
+
+export default connector(ShowMoreFieldsDropdown)

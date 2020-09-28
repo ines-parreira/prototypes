@@ -1,7 +1,6 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import ImmutablePropTypes from 'react-immutable-proptypes'
-import {connect} from 'react-redux'
+import {Map, List} from 'immutable'
+import {connect, ConnectedProps} from 'react-redux'
 import {browserHistory} from 'react-router'
 import classnames from 'classnames'
 import {
@@ -19,53 +18,42 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import ConfirmButton from '../ConfirmButton'
-import {fieldPath, getDefaultOperator, slugify} from '../../../../utils.ts'
-import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
-import ViewSharingButton from '../ViewSharing'
+import ConfirmButton from '../ConfirmButton.js'
+import {fieldPath, getDefaultOperator, slugify} from '../../../../utils'
+import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
+import ViewSharingButton from '../ViewSharing/index.js'
+import * as viewsActions from '../../../../state/views/actions'
+import * as viewsSelectors from '../../../../state/views/selectors'
+import * as agentSelectors from '../../../../state/agents/selectors'
+import * as teamSelectors from '../../../../state/teams/selectors'
+import * as schemasSelectors from '../../../../state/schemas/selectors'
+import * as viewsConfig from '../../../../config/views.js'
+import {SYSTEM_VIEW_CATEGORY} from '../../../../constants/view.js'
+import {RootState} from '../../../../state/types'
 
-import * as viewsActions from '../../../../state/views/actions.ts'
-import * as viewsSelectors from '../../../../state/views/selectors.ts'
-import * as agentSelectors from '../../../../state/agents/selectors.ts'
-import * as teamSelectors from '../../../../state/teams/selectors.ts'
-import * as schemasSelectors from '../../../../state/schemas/selectors.ts'
-
-import * as viewsConfig from '../../../../config/views'
-import {SYSTEM_VIEW_CATEGORY} from '../../../../constants/view'
-
-import Filters from './Filters'
-
+import Filters from './Filters/index.js'
 import css from './FilterTopbar.less'
 
-export class FilterTopbarComponent extends React.Component {
-    static propTypes = {
-        activeView: ImmutablePropTypes.map.isRequired,
-        addFieldFilter: PropTypes.func.isRequired,
-        agents: PropTypes.object.isRequired,
-        teams: PropTypes.object.isRequired,
-        areFiltersValid: PropTypes.bool.isRequired,
-        config: ImmutablePropTypes.map.isRequired,
-        currentUser: PropTypes.object.isRequired,
-        fetchViewItems: PropTypes.func.isRequired,
-        isDirty: PropTypes.bool.isRequired,
-        isUpdate: PropTypes.bool.isRequired,
-        isSearch: PropTypes.bool.isRequired,
-        pristineActiveView: ImmutablePropTypes.map.isRequired,
-        removeFieldFilter: PropTypes.func.isRequired,
-        updateFieldFilter: PropTypes.func.isRequired,
-        updateFieldFilterOperator: PropTypes.func.isRequired,
-        resetView: PropTypes.func.isRequired,
-        schemas: PropTypes.object.isRequired,
-        submitView: PropTypes.func.isRequired,
-        deleteView: PropTypes.func.isRequired,
-    }
+type OwnProps = {
+    isUpdate: boolean
+    isSearch: boolean
+    type: string
+}
 
+type Props = OwnProps & ConnectedProps<typeof connector>
+
+type State = {
+    isSubmitting: boolean
+    askUpdateConfirmation: boolean
+}
+
+export class FilterTopbarComponent extends React.Component<Props, State> {
     state = {
         isSubmitting: false,
         askUpdateConfirmation: false,
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props) {
         // fetch page again when filters changed and that filters are valid
         const isSameView =
             this.props.activeView.get('id') === nextProps.activeView.get('id')
@@ -74,7 +62,7 @@ export class FilterTopbarComponent extends React.Component {
             nextProps.activeView.get('filters')
 
         if (isSameView && filtersHaveChanged && nextProps.areFiltersValid) {
-            this.props.fetchViewItems()
+            void this.props.fetchViewItems()
         }
     }
 
@@ -108,7 +96,7 @@ export class FilterTopbarComponent extends React.Component {
 
         // if the name wasn't changed, add (copy) to it
         if (original.get('name') === activeView.get('name')) {
-            const newName = `${activeView.get('name', '')} - copy`
+            const newName = `${activeView.get('name', '') as string} - copy`
             const newSlug = slugify(newName)
 
             activeView = activeView.set('name', newName).set('slug', newSlug)
@@ -117,14 +105,14 @@ export class FilterTopbarComponent extends React.Component {
         this._submitView(activeView)
     }
 
-    _left = (field) => {
+    _left = (field: Map<any, any>) => {
         const viewConfig = this.props.config
-        return `${viewConfig.get('singular')}.${fieldPath(field)}`
+        return `${viewConfig.get('singular') as string}.${fieldPath(field)}`
     }
 
-    _onClickFilter = (field) => {
+    _onClickFilter = (field: Map<any, any>) => {
         const left = this._left(field)
-        const operator = getDefaultOperator(left, this.props.schemas)
+        const operator = getDefaultOperator(left, this.props.schemas) as string
         const filter = {
             left,
             operator,
@@ -138,10 +126,10 @@ export class FilterTopbarComponent extends React.Component {
         if (isUpdate) {
             // if is updating an existing view, on cancel we reset current view
             resetView()
-            fetchViewItems()
+            void fetchViewItems()
         } else {
             // if is updating an existing view, on cancel we leave edition
-            browserHistory.push(`/app/${config.get('routeList')}/`)
+            browserHistory.push(`/app/${config.get('routeList') as string}/`)
         }
     }
 
@@ -164,8 +152,8 @@ export class FilterTopbarComponent extends React.Component {
         this._submitView(activeView)
     }
 
-    _submitView = (view) => {
-        this.props.submitView(view).then(() => {
+    _submitView = (view: Map<any, any>) => {
+        void this.props.submitView(view).then(() => {
             this.setState({
                 isSubmitting: false,
             })
@@ -197,13 +185,13 @@ export class FilterTopbarComponent extends React.Component {
             return null
         }
 
-        const filterableFields = config
-            .get('fields')
+        const filterableFields = (config.get('fields') as List<any>)
             .filter(
-                (field) =>
-                    field.get('filter') && field.getIn(['filter', 'show'], true)
+                (field: Map<any, any>) =>
+                    field.get('filter') &&
+                    (field.getIn(['filter', 'show'], true) as boolean)
             )
-            .sortBy((field) => field.get('title'))
+            .sortBy((field: Map<any, any>) => field.get('title') as string)
 
         return (
             <Card className={css.component}>
@@ -245,7 +233,7 @@ export class FilterTopbarComponent extends React.Component {
                             Add filter
                         </DropdownToggle>
                         <DropdownMenu>
-                            {filterableFields.map((field) => {
+                            {filterableFields.map((field: Map<any, any>) => {
                                 return (
                                     <DropdownItem
                                         key={field.get('name')}
@@ -395,13 +383,13 @@ export class FilterTopbarComponent extends React.Component {
     }
 }
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
     return {
         agents: agentSelectors.getAgents(state),
         teams: teamSelectors.getTeams(state),
         activeView: viewsSelectors.getActiveView(state),
         areFiltersValid: viewsSelectors.areFiltersValid(state),
-        config: viewsConfig.getConfigByName(ownProps.type),
+        config: viewsConfig.getConfigByName(ownProps.type) as Map<any, any>,
         currentUser: state.currentUser,
         isDirty: viewsSelectors.isDirty(state),
         pristineActiveView: viewsSelectors.getPristineActiveView(state),
@@ -421,7 +409,6 @@ const mapDispatchToProps = {
     updateFieldFilterOperator: viewsActions.updateFieldFilterOperator,
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(FilterTopbarComponent)
+const connector = connect(mapStateToProps, mapDispatchToProps)
+
+export default connector(FilterTopbarComponent)

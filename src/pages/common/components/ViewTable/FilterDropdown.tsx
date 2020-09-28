@@ -1,48 +1,50 @@
-// @flow
-import {fromJS, type List, type Map} from 'immutable'
-import React, {type ComponentType} from 'react'
+import {fromJS, List, Map} from 'immutable'
+import React, {ComponentType} from 'react'
 import {connect} from 'react-redux'
 import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap'
 
-import * as customersHelpers from '../../../../state/customers/helpers.ts'
-import * as schemasSelectors from '../../../../state/schemas/selectors.ts'
-import {fieldEnumSearch} from '../../../../state/views/actions.ts'
+import * as customersHelpers from '../../../../state/customers/helpers'
+import * as schemasSelectors from '../../../../state/schemas/selectors'
+import {fieldEnumSearch} from '../../../../state/views/actions'
 import {
     fieldPath,
     getLanguageDisplayName,
     isImmutable,
     resolveLiteral,
-} from '../../../../utils.ts'
-import {RenderLabel} from '../../utils/labels'
-import withCancellableRequest from '../../utils/withCancellableRequest'
-import Search from '../Search'
+} from '../../../../utils'
+import {RenderLabel} from '../../utils/labels.js'
+import withCancellableRequest, {
+    CancellableRequestInjectedProps,
+} from '../../utils/withCancellableRequest'
+import Search from '../Search.js'
+import {RootState} from '../../../../state/types'
 
 import css from './FilterDropdown.less'
 
 type Props = {
-    viewConfig: Map<*, *>,
-    field: Map<*, *>,
-    schemas: Map<*, *>,
-    updateFieldFilter: (string) => void,
-    fieldEnumSearchCancellable: (
-        field: Map<*, *>,
-        query: string
-    ) => Promise<?List<*>>,
-    toggleDropdown: () => void,
-    menu: ComponentType<*>,
-}
+    viewConfig: Map<any, any>
+    field: Map<any, any>
+    schemas: Map<any, any>
+    updateFieldFilter: (field: string) => void
+    toggleDropdown: () => void
+    menu: ComponentType<any>
+} & CancellableRequestInjectedProps<
+    'fieldEnumSearchCancellable',
+    'cancelFieldEnumSearchCancellable',
+    typeof fieldEnumSearch
+>
 
 type State = {
-    isLoading: boolean,
-    enum: List<*>,
+    isLoading: boolean
+    enum: Maybe<List<any>>
 }
 
 class FilterDropdown extends React.Component<Props, State> {
-    static defaultProps: $Shape<Props> = {
+    static defaultProps: Partial<Props> = {
         menu: DropdownMenu,
     }
 
-    constructor(props) {
+    constructor(props: Props) {
         super(props)
         this.state = {
             isLoading: false,
@@ -56,16 +58,18 @@ class FilterDropdown extends React.Component<Props, State> {
 
     _left = () => {
         const viewConfig = this.props.viewConfig
-        return `${viewConfig.get('singular')}.${fieldPath(this.props.field)}`
+        return `${viewConfig.get('singular') as string}.${fieldPath(
+            this.props.field
+        )}`
     }
 
-    onClick = (newValue) => {
+    onClick = (newValue: Record<string, unknown>) => {
         const left = this._left()
         // if value cannot be resolved, we use the `id` attribute of the object given
         // Useful with `ticket.messages.integration_id` field
         // because `newValue` do not have an `integration_id` attribute
         const right = resolveLiteral(newValue, left) || newValue.id
-        this.props.updateFieldFilter(right)
+        this.props.updateFieldFilter(right as string)
     }
 
     _onClickMe = () => {
@@ -151,11 +155,13 @@ class FilterDropdown extends React.Component<Props, State> {
             // special displays for some columns in the dropdown
             if (field.get('name') === 'tags') {
                 // display tags as tags
-                renderValue = value.get('name')
+                renderValue = (value as Map<any, any>).get('name')
             } else if (field.get('name') === 'customer') {
-                renderValue = customersHelpers.getDisplayName(value)
+                renderValue = customersHelpers.getDisplayName(
+                    value as Map<any, any>
+                )
             } else if (field.get('name') === 'language') {
-                renderValue = getLanguageDisplayName(value)
+                renderValue = getLanguageDisplayName(value as string)
             } else if (
                 typeof value === 'object' ||
                 field.get('name') === 'roles'
@@ -163,7 +169,9 @@ class FilterDropdown extends React.Component<Props, State> {
                 renderValue = <RenderLabel field={field} value={value} />
             }
 
-            const passedValue = isImmutable(value) ? value.toJS() : value
+            const passedValue = isImmutable(value)
+                ? (value as Map<any, any>).toJS()
+                : value
 
             return (
                 <DropdownItem
@@ -175,7 +183,7 @@ class FilterDropdown extends React.Component<Props, State> {
                     {renderValue}
                 </DropdownItem>
             )
-        })
+        }) as List<any>
 
         // special option added for some columns in the dropdown
         if (field.get('name') === 'assignee') {
@@ -205,7 +213,7 @@ class FilterDropdown extends React.Component<Props, State> {
         }
 
         if (field.get('name') === 'language') {
-            Object.assign((style: any), {height: '230px', overflow: 'scroll'})
+            Object.assign(style, {height: '230px', overflow: 'scroll'})
         }
 
         return (
@@ -220,13 +228,17 @@ class FilterDropdown extends React.Component<Props, State> {
     }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state: RootState) => {
     return {
         schemas: schemasSelectors.getSchemas(state),
     }
 }
 
-export default withCancellableRequest(
+export default withCancellableRequest<
+    'fieldEnumSearchCancellable',
+    'cancelFieldEnumSearchCancellable',
+    typeof fieldEnumSearch
+>(
     'fieldEnumSearchCancellable',
     fieldEnumSearch
 )(connect(mapStateToProps)(FilterDropdown))

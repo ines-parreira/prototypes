@@ -81,7 +81,7 @@ function buildRawCallExpression(filter: ViewFilter) {
         return `${filter.operator}(${filter.left})`
     }
 
-    return `${filter.operator}(${filter.left}, ${filter.right})`
+    return `${filter.operator}(${filter.left}, ${filter.right as string})`
 }
 
 // traverse filters_ast, find all the call expressions and return a new tree

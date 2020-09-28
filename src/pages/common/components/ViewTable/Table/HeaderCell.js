@@ -8,7 +8,7 @@ import _noop from 'lodash/noop'
 
 import {fieldPath as getFieldPath} from '../../../../../utils.ts'
 
-import ShowMoreFieldsDropdown from '../ShowMoreFieldsDropdown'
+import ShowMoreFieldsDropdown from '../ShowMoreFieldsDropdown.tsx'
 
 import * as viewsActions from '../../../../../state/views/actions.ts'
 import * as viewsSelectors from '../../../../../state/views/selectors.ts'

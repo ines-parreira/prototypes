@@ -10,7 +10,7 @@ import _isEqual from 'lodash/isEqual'
 import _noop from 'lodash/noop'
 import React, {type ElementRef} from 'react'
 
-import {scrollToReactNode} from '../../../common/utils/keyboard'
+import {scrollToReactNode} from '../../../common/utils/keyboard.ts'
 
 import createConnectedLinksPlugin from '../../draftjs/plugins/connectedLinks'
 import createDndUploadPlugin from '../../draftjs/plugins/dndUpload'

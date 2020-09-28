@@ -13,11 +13,11 @@ import {getTags} from '../../../../../state/tags/selectors.ts'
 import {timedeltaOperators} from '../../../../../config/rules.ts'
 import TagDropdownMenu from '../../TagDropdownMenu/TagDropdownMenu'
 
-import FilterDropdown from '../FilterDropdown'
+import FilterDropdown from '../FilterDropdown.tsx'
 import DatetimePicker from '../../../forms/DatetimePicker'
 import TimedeltaPicker from '../../../forms/TimedeltaPicker'
 import MultiSelectField from '../../../forms/MultiSelectField'
-import FilterMultiSelectField from '../FilterMultiSelectField'
+import FilterMultiSelectField from '../FilterMultiSelectField.tsx'
 
 @connect((state) => {
     return {

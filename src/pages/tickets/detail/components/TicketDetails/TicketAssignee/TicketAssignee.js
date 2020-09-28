@@ -10,7 +10,7 @@ import * as currentUserSelectors from '../../../../../../state/currentUser/selec
 import * as agentSelectors from '../../../../../../state/agents/selectors.ts'
 import * as teamsSelectors from '../../../../../../state/teams/selectors.ts'
 
-import shortcutManager from '../../../../../../services/shortcutManager/index'
+import shortcutManager from '../../../../../../services/shortcutManager/index.ts'
 import {AgentLabel, TeamLabel} from '../../../../../common/utils/labels'
 import {setAgent, setTeam} from '../../../../../../state/ticket/actions.ts'
 import PeopleSearchInput from '../../../../../common/forms/PeopleSearchInput'

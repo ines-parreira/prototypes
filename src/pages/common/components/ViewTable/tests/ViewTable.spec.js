@@ -14,7 +14,7 @@ import * as ticketFixtures from '../../../../../fixtures/ticket'
 import * as viewsActions from '../../../../../state/views/actions.ts'
 import * as viewsConfig from '../../../../../config/views'
 import * as viewsFixtures from '../../../../../fixtures/views'
-import ViewTable, {ViewTableContainer} from '../ViewTable'
+import ViewTable, {ViewTableContainer} from '../ViewTable.tsx'
 
 const mockStore = configureMockStore([thunk])
 

@@ -1,54 +1,43 @@
-// @flow
-import React from 'react'
+import React, {ComponentType, ReactNode} from 'react'
 import {fromJS, List, Map} from 'immutable'
-import {connect} from 'react-redux'
-import {browserHistory, withRouter} from 'react-router'
+import {connect, ConnectedProps} from 'react-redux'
+import {browserHistory, withRouter, WithRouterProps} from 'react-router'
 import classnames from 'classnames'
 import _get from 'lodash/get'
 
-import Loader from '../Loader'
-import withCancellableRequest from '../../../common/utils/withCancellableRequest'
-import * as viewsActions from '../../../../state/views/actions.ts'
-import * as viewsSelectors from '../../../../state/views/selectors.ts'
-import * as viewsConfig from '../../../../config/views'
-import type {viewType} from '../../../../state/views/types'
+import Loader from '../Loader/index.js'
+import withCancellableRequest, {
+    CancellableRequestInjectedProps,
+} from '../../../common/utils/withCancellableRequest'
+import * as viewsActions from '../../../../state/views/actions'
+import * as viewsSelectors from '../../../../state/views/selectors'
+import * as viewsConfig from '../../../../config/views.js'
+import {RootState} from '../../../../state/types'
 
 import Header from './Header'
 import Table from './Table'
 import FilterTopbar from './FilterTopbar'
 import DeactivatedViewMessage from './DeactivatedViewMessage'
-
 import css from './ViewTable.less'
 
-type Props = {
-    ActionsComponent: ?() => {},
-    activeView: viewType,
-    config: Map<*, *>,
-    currentCursor: string,
-    fetchViewItems: typeof viewsActions.fetchViewItems,
-    getViewIdToDisplay: typeof viewsSelectors.getViewIdToDisplay,
-    getView: typeof viewsSelectors.getView,
-    fetchViewItemsCancellable: typeof viewsActions.fetchViewItems,
-    hasActiveView: boolean,
+type OwnProps = {
+    className?: string
+    type: string
+    items: List<any>
+    isUpdate: boolean
+    isSearch: boolean
+    urlViewId: Maybe<string>
+    ActionsComponent: Maybe<ComponentType>
+    viewButtons: ReactNode
+} & CancellableRequestInjectedProps<
+    'fetchViewItemsCancellable',
+    'cancelFetchViewItemsCancellable',
+    typeof viewsActions.fetchViewItems
+>
 
-    isLoading: (string) => boolean,
-    isOnFirstPage: boolean,
-    navigation: Map<*, *>,
-    selectedItemsIds: List<*>,
-
-    location: Object,
-
-    isSearch: boolean,
-    isUpdate: boolean,
-    items: List<*>,
-    setViewActive: typeof viewsActions.setViewActive,
-    type: string,
-    suggestedViewId: ?string,
-    urlViewId: ?string,
-    updateView: typeof viewsActions.updateView,
-    viewButtons: ?Object,
-    className: ?string,
-}
+type Props = OwnProps &
+    WithRouterProps<any, {cursor?: string; q?: string}> &
+    ConnectedProps<typeof connector>
 
 export class ViewTableContainer extends React.Component<Props> {
     static defaultProps = {
@@ -72,7 +61,9 @@ export class ViewTableContainer extends React.Component<Props> {
 
         if (isSearch) {
             updateView(
-                config.get('searchView')(this._searchQuery(this.props)),
+                (config.get('searchView') as (query: string) => Map<any, any>)(
+                    this._searchQuery(this.props)
+                ),
                 false
             )
         } else if (activeView.isEmpty() || urlViewId) {
@@ -89,11 +80,10 @@ export class ViewTableContainer extends React.Component<Props> {
                 browserHistory.push('/app')
             }
 
-            //$FlowFixMe
-            setViewActive(getView(suggestedViewId))
+            setViewActive(getView((suggestedViewId as unknown) as string))
         }
 
-        fetchViewItems(null, location.query.cursor)
+        void fetchViewItems(null, location.query.cursor)
     }
 
     componentWillReceiveProps(nextProps: Props) {
@@ -154,13 +144,15 @@ export class ViewTableContainer extends React.Component<Props> {
         if (!wasSearch && isSearch) {
             // entering "search" mode
             updateView(
-                config.get('searchView')(this._searchQuery(nextProps)),
+                (config.get('searchView') as (query: string) => Map<any, any>)(
+                    this._searchQuery(nextProps)
+                ),
                 false
             )
             shouldFetchViewItems = true
         } else if (wasUpdate && !isUpdate) {
             // entering "add new" mode
-            updateView(config.get('newView')())
+            updateView((config.get('newView') as () => Map<any, any>)())
             shouldFetchViewItems = true
         } else if (
             isSearch &&
@@ -168,7 +160,9 @@ export class ViewTableContainer extends React.Component<Props> {
         ) {
             // in "search" mode, if search query has changed, research again
             updateView(
-                config.get('searchView')(this._searchQuery(nextProps)),
+                (config.get('searchView') as (query: string) => Map<any, any>)(
+                    this._searchQuery(nextProps)
+                ),
                 false
             )
             shouldFetchViewItems = true
@@ -178,8 +172,7 @@ export class ViewTableContainer extends React.Component<Props> {
             suggestedViewChanged ||
             noActiveView
         ) {
-            //$FlowFixMe
-            setViewActive(getView(nextSuggestedViewId))
+            setViewActive(getView((nextSuggestedViewId as unknown) as string))
             shouldFetchViewItems = true
         } else if (leavingDeactivatedMode && !idChanged) {
             shouldFetchViewItems = true
@@ -215,16 +208,18 @@ export class ViewTableContainer extends React.Component<Props> {
     }
 
     _searchQuery = (props: Props = this.props) => {
-        return _get(props, 'location.query.q', '')
+        return _get(props, 'location.query.q', '') as string
     }
 
-    _getItemUrl = (item: Map<*, *>): string => {
+    _getItemUrl = (item: Map<any, any>): string => {
         const {config} = this.props
         if (!config) {
             return ''
         }
 
-        return `/app/${config.get('routeItem')}/${item.get('id')}`
+        return `/app/${config.get('routeItem') as string}/${
+            (item.get('id') as unknown) as number
+        }`
     }
 
     _renderTable = () => {
@@ -241,18 +236,18 @@ export class ViewTableContainer extends React.Component<Props> {
             navigation,
         } = this.props
 
-        const displayedFields = config
-            .get('fields', fromJS([]))
-            .filter((field) => {
-                // display field if mandatory from config
-                if (config.get('mainField') === field.get('name')) {
-                    return true
-                }
+        const displayedFields = (config.get('fields', fromJS([])) as List<
+            any
+        >).filter((field: Map<any, any>) => {
+            // display field if mandatory from config
+            if (config.get('mainField') === field.get('name')) {
+                return true
+            }
 
-                return activeView
-                    .get('fields', fromJS([]))
-                    .contains(field.get('name'))
-            })
+            return (activeView.get('fields', fromJS([])) as List<any>).contains(
+                field.get('name')
+            )
+        })
 
         if (activeView.get('deactivated_datetime')) {
             return <DeactivatedViewMessage />
@@ -267,10 +262,9 @@ export class ViewTableContainer extends React.Component<Props> {
                 selectedItemsIds={selectedItemsIds}
                 type={type}
                 items={items}
-                fields={displayedFields}
+                fields={displayedFields as List<any>}
                 isSearch={isSearch}
                 ActionsComponent={ActionsComponent}
-                onPageChange={fetchViewItems}
                 getItemUrl={this._getItemUrl}
                 fetchViewItems={fetchViewItems}
             />
@@ -305,38 +299,41 @@ export class ViewTableContainer extends React.Component<Props> {
     }
 }
 
+const connector = connect(
+    (state: RootState, ownProps: OwnProps) => {
+        const config = viewsConfig.getConfigByName(ownProps.type) as Map<
+            any,
+            any
+        >
+
+        return {
+            activeView: viewsSelectors.getActiveView(state),
+            config,
+            getView: viewsSelectors.makeGetView(state),
+            getViewIdToDisplay: viewsSelectors.makeGetViewIdToDisplay(state),
+            hasActiveView: viewsSelectors.hasActiveViewOfType(
+                config.get('type')
+            )(state),
+            isLoading: viewsSelectors.makeIsLoading(state),
+            isOnFirstPage: viewsSelectors.isOnFirstPage(state),
+            navigation: viewsSelectors.getNavigation(state),
+            selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),
+        }
+    },
+    {
+        fetchViewItems: viewsActions.fetchViewItems,
+        setViewActive: viewsActions.setViewActive,
+        updateView: viewsActions.updateView,
+    }
+)
+
 export default withRouter(
-    withCancellableRequest<Props>(
+    withCancellableRequest<
+        'fetchViewItemsCancellable',
+        'cancelFetchViewItemsCancellable',
+        typeof viewsActions.fetchViewItems
+    >(
         'fetchViewItemsCancellable',
         viewsActions.fetchViewItems
-    )(
-        connect(
-            (state, ownProps) => {
-                const config = viewsConfig.getConfigByName(ownProps.type)
-
-                return {
-                    activeView: viewsSelectors.getActiveView(state),
-                    config,
-                    location: ownProps.location,
-                    getView: viewsSelectors.makeGetView(state),
-                    getViewIdToDisplay: viewsSelectors.makeGetViewIdToDisplay(
-                        state
-                    ),
-                    hasActiveView: viewsSelectors.hasActiveViewOfType(
-                        config.get('type')
-                    )(state),
-
-                    isLoading: viewsSelectors.makeIsLoading(state),
-                    isOnFirstPage: viewsSelectors.isOnFirstPage(state),
-                    navigation: viewsSelectors.getNavigation(state),
-                    selectedItemsIds: viewsSelectors.getSelectedItemsIds(state),
-                }
-            },
-            {
-                fetchViewItems: viewsActions.fetchViewItems,
-                setViewActive: viewsActions.setViewActive,
-                updateView: viewsActions.updateView,
-            }
-        )(ViewTableContainer)
-    )
+    )(connector(ViewTableContainer))
 )

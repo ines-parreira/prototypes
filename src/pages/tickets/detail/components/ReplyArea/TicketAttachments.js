@@ -5,7 +5,7 @@ import Lightbox from 'react-images'
 import type {List} from 'immutable'
 
 import {fileIconFromContentType} from '../../../common/utils'
-import shortcutManager from '../../../../../services/shortcutManager'
+import shortcutManager from '../../../../../services/shortcutManager/index.ts'
 
 import {proxifyURL} from '../../../../../utils.ts'
 

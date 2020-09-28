@@ -16,7 +16,7 @@ import {
 
 import type {Map} from 'immutable'
 
-import shortcutManager from '../../../../services/shortcutManager'
+import shortcutManager from '../../../../services/shortcutManager/index.ts'
 import EditableTitle from '../../../common/components/EditableTitle'
 import MergeTicketsContainer from '../../../common/components/MergeTickets/MergeTicketsContainer'
 import {notify} from '../../../../state/notifications/actions.ts'

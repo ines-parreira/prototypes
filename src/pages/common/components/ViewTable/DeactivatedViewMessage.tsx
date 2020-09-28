@@ -1,5 +1,3 @@
-// @flow
-
 import React from 'react'
 
 import icon from '../../../../../img/icons/invalid-filters.svg'

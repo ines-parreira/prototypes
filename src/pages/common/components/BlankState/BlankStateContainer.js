@@ -1,5 +1,5 @@
 // @flow
-import React from 'react'
+import React, {type Node as ReactNode} from 'react'
 import {connect} from 'react-redux'
 import moment from 'moment'
 import throttle from 'lodash/throttle'
@@ -16,7 +16,7 @@ export const TICKET_CLOSED_BY_CURRENT_AGENT_7_DAYS =
 
 type Props = {
     currentUser: Map<*, *>,
-    message: ?Object | ?string,
+    message: ReactNode,
 }
 
 type State = {
