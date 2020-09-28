@@ -8,7 +8,7 @@ import {fromJS} from 'immutable'
 import {isCurrentlyOnTicket} from '../../../utils.ts'
 import * as segmentTracker from '../../../store/middlewares/segmentTracker'
 
-import {MAX_RECENT_CHATS} from '../../../config/recentChats'
+import {MAX_RECENT_CHATS} from '../../../config/recentChats.ts'
 
 import Tooltip from './Tooltip'
 import SourceIcon from './SourceIcon'

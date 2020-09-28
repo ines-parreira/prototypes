@@ -1,4 +1,3 @@
-// @flow
 import {fromJS} from 'immutable'
 
 export const events = fromJS([
@@ -24,6 +23,7 @@ export const events = fromJS([
 export const availableVariables = ['ticket', 'message', 'event']
 
 // collections operators
+//$TsFixMe fallback for js files use CollectionOperator enum instead
 export const collectionOperators = [
     'containsAll',
     'containsAny',
@@ -31,10 +31,13 @@ export const collectionOperators = [
     'notContainsAny',
 ]
 
+//$TsFixMe fallback for js files use DeprecatedOperator enum instead
 export const deprecatedOperators = ['contains', 'notContains']
 
+//$TsFixMe fallback for js files use TimedeltaOperator enum instead
 export const timedeltaOperators = ['gteTimedelta', 'lteTimedelta']
 
+//$TsFixMe fallback for js files use TimedeltaOperator and DatetimeOperator enums instead
 export const datetimeOperators = ['gte', 'lte', ...timedeltaOperators]
 
 export const caseInsensitiveOperators = [

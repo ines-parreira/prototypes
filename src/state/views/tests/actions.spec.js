@@ -13,7 +13,7 @@ import {
     RECENT_VIEWS_COUNTS_TIMEOUT,
 } from '../../../config/views'
 import socketManager from '../../../services/socketManager'
-import * as socketConstants from '../../../config/socketConstants'
+import * as socketConstants from '../../../config/socketConstants.ts'
 import {
     NEXT_VIEW_NAV_DIRECTION,
     PREV_VIEW_NAV_DIRECTION,

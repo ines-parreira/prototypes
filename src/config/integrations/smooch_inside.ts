@@ -1,4 +1,3 @@
-//@flow
 import {fromJS} from 'immutable'
 
 import {
@@ -12,7 +11,7 @@ import {
     GERMAN_LANGUAGE,
     NORWEGIAN_LANGUAGE,
     CZECH_LANGUAGE,
-} from '../../constants/languages'
+} from '../../constants/languages.js'
 
 export const SMOOCH_INSIDE_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH = 50
 
@@ -30,7 +29,11 @@ export const SMOOCH_INSIDE_WIDGET_LANGUAGE_OPTIONS = fromJS([
     {value: CZECH_LANGUAGE, label: 'Czech'},
 ])
 
-export const SMOOCH_INSIDE_WIDGET_TEXTS = require('../../../../../integrations/common/texts/widget_texts.json')
+//eslint-disable-next-line @typescript-eslint/no-var-requires
+export const SMOOCH_INSIDE_WIDGET_TEXTS = require('../../../../../integrations/common/texts/widget_texts.json') as Record<
+    string,
+    Record<string, string>
+>
 export const SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS =
     SMOOCH_INSIDE_WIDGET_TEXTS[SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT]
 export const SMOOCH_INSIDE_DEFAULT_COLOR = '#0d87dd'

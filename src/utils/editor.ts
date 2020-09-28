@@ -13,8 +13,8 @@ import {
 } from 'draft-js'
 import {Map} from 'immutable'
 
-import {DEFAULT_IMAGE_WIDTH} from '../config/editor.js'
-import {availableVariables} from '../config/rules.js'
+import {DEFAULT_IMAGE_WIDTH} from '../config/editor'
+import {availableVariables} from '../config/rules'
 
 // note that 2 letters tlds are automatically interpreted
 const tlds = 'com edu gov ru org net de jp uk br it pl in fr au ir nl info cn es cz kr ca ua eu co gr za ro biz ch se io'.split(

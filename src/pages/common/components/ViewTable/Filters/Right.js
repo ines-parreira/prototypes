@@ -10,7 +10,7 @@ import {getMessagingIntegrations} from '../../../../../state/integrations/select
 import * as viewsSelectors from '../../../../../state/views/selectors.ts'
 import {getTags} from '../../../../../state/tags/selectors.ts'
 
-import {timedeltaOperators} from '../../../../../config/rules'
+import {timedeltaOperators} from '../../../../../config/rules.ts'
 import TagDropdownMenu from '../../TagDropdownMenu/TagDropdownMenu'
 
 import FilterDropdown from '../FilterDropdown'

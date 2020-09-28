@@ -29,7 +29,7 @@ import {
     SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT,
     SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_OPTIONAL,
     SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_REQUIRED_OUTSIDE_BUSINESS_HOURS,
-} from '../../../../../../config/integrations/smooch_inside'
+} from '../../../../../../config/integrations/smooch_inside.ts'
 
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions.ts'
 import PageHeader from '../../../../../common/components/PageHeader'

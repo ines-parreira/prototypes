@@ -1,8 +1,7 @@
-//@flow
-import {SHOPIFY_INTEGRATION_TYPE} from '../../constants/integration'
+import {IntegrationType} from '../../models/integration/types'
 
 export const MACRO_VARIABLES = {
-    type: SHOPIFY_INTEGRATION_TYPE,
+    type: IntegrationType.ShopifyIntegrationType,
     name: 'Shopify',
     integration: true,
     children: [
@@ -54,7 +53,7 @@ export const MACRO_VARIABLES = {
 }
 
 export const MACRO_HIDDEN_VARIABLES = {
-    type: SHOPIFY_INTEGRATION_TYPE,
+    type: IntegrationType.ShopifyIntegrationType,
     name: 'Shopify',
     integration: true,
     children: [
@@ -87,7 +86,7 @@ export const MACRO_HIDDEN_VARIABLES = {
 }
 
 export const MACRO_PREVIOUS_VARIABLES = {
-    type: SHOPIFY_INTEGRATION_TYPE,
+    type: IntegrationType.ShopifyIntegrationType,
     name: 'Shopify',
     integration: true,
     children: [

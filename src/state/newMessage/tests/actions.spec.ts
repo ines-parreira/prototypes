@@ -21,7 +21,7 @@ import {
     emailTicket,
     instagramMedia,
 } from '../../ticket/tests/fixtures.js'
-import socketManager from '../../../services/socketManager/socketManager.js'
+import socketManager from '../../../services/socketManager/socketManager'
 import {Integration} from '../../../models/integration/types'
 
 type MockedRootState = {
@@ -49,7 +49,7 @@ const mockedUploadFiles = jest.spyOn(utils, 'uploadFiles')
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => 'someRandomKey')
 
-jest.mock('../../../services/socketManager/socketManager.js', () => {
+jest.mock('../../../services/socketManager/socketManager', () => {
     return {
         join: jest.fn(),
         leave: jest.fn(),

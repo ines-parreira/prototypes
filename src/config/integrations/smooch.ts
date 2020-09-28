@@ -1,4 +1,3 @@
-//@flow
 import {fromJS} from 'immutable'
 
 import {
@@ -11,7 +10,7 @@ import {
     NORWEGIAN_LANGUAGE,
     SPANISH_LANGUAGE,
     SWEDISH_LANGUAGE,
-} from '../../constants/languages'
+} from '../../constants/languages.js'
 
 export const SMOOCH_LANGUAGE_DEFAULT = ENGLISH_US_LANGUAGE
 export const SMOOCH_LANGUAGE_OPTIONS = fromJS([

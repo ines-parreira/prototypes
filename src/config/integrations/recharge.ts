@@ -1,5 +1,4 @@
-//@flow
-import {RECHARGE_INTEGRATION_TYPE} from '../../constants/integration'
+import {IntegrationType} from '../../models/integration/types'
 
 export const RECHARGE_DEFAULT_CANCELLATION_REASON = 'Cancelled with Gorgias'
 export const RECHARGE_CANCELLATION_REASONS = [
@@ -13,7 +12,7 @@ export const RECHARGE_CANCELLATION_REASONS = [
 ]
 
 export const MACRO_VARIABLES = {
-    type: RECHARGE_INTEGRATION_TYPE,
+    type: IntegrationType.RechargeIntegrationType,
     integration: true,
     name: 'Recharge',
     children: [
@@ -55,7 +54,7 @@ export const MACRO_VARIABLES = {
 }
 
 export const MACRO_PREVIOUS_VARIABLES = {
-    type: RECHARGE_INTEGRATION_TYPE,
+    type: IntegrationType.RechargeIntegrationType,
     name: 'Recharge',
     integration: true,
     children: [

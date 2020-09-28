@@ -6,7 +6,7 @@ import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from '../../../../../../../config/int
 import {
     SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
     SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
-} from '../../../../../../../config/integrations/smooch_inside'
+} from '../../../../../../../config/integrations/smooch_inside.ts'
 
 import AutoResponder from '../AutoResponder'
 import ChatIntegrationPreview from '../ChatIntegrationPreview'

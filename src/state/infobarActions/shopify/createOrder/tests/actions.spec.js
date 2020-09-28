@@ -20,7 +20,7 @@ import {
     INTEGRATION_DATA_ITEM_TYPE_PRODUCT,
     SHOPIFY_INTEGRATION_TYPE,
 } from '../../../../../constants/integration'
-import {DRAFT_ORDER_DELETE_AFTER} from '../../../../../config/integrations/shopify'
+import {DRAFT_ORDER_DELETE_AFTER} from '../../../../../config/integrations/shopify.ts'
 import localStorageManager from '../../../../../services/localStorageManager.ts'
 import {executeAction} from '../../../../infobar/actions.ts'
 import {initialState} from '../reducers.ts'

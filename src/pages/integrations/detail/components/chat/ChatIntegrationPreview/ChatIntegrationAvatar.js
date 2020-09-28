@@ -2,7 +2,7 @@
 import React from 'react'
 import classnames from 'classnames'
 
-import {SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE} from '../../../../../../config/integrations/smooch_inside'
+import {SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE} from '../../../../../../config/integrations/smooch_inside.ts'
 
 import css from './ChatIntegrationPreview.less'
 

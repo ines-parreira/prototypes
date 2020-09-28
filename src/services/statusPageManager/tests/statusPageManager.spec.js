@@ -1,7 +1,7 @@
 import {removeNotification} from 'reapop'
 import moment from 'moment'
 
-import statusPageManager from '../statusPageManager'
+import statusPageManager from '../statusPageManager.ts'
 import {
     HELPDESK_GROUP_IDS,
     COMPONENT_STATUSES,
@@ -9,7 +9,7 @@ import {
     COMPONENTS_NOTIFICATION_ID,
     MAINTENANCE_NOTIFICATION_ID,
     CLUSTER_GROUP_ID,
-} from '../constants'
+} from '../constants.ts'
 import {notify} from '../../../state/notifications/actions.ts'
 
 jest.mock('../../../state/notifications/actions.ts', () => {

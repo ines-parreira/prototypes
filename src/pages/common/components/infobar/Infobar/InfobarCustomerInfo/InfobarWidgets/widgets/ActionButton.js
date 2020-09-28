@@ -24,7 +24,7 @@ import SelectField from '../../../../../../forms/SelectField'
 import BooleanField from '../../../../../../forms/BooleanField'
 import InputField from '../../../../../../forms/InputField'
 
-import {getActionByName} from '../../../../../../../../config/actions'
+import {getActionByName} from '../../../../../../../../config/actions.ts'
 import * as segmentTracker from '../../../../../../../../store/middlewares/segmentTracker'
 import * as infobarActions from '../../../../../../../../state/infobar/actions.ts'
 import * as infobarSelectors from '../../../../../../../../state/infobar/selectors.ts'

@@ -6,14 +6,14 @@ import {browserHistory} from 'react-router'
 import {updateNotification} from 'reapop'
 
 import * as viewsConfig from '../../config/views.js'
-import * as socketConstants from '../../config/socketConstants.js'
 import {BASE_VIEW_ID} from '../../constants/view.js'
 import {OrderDirection, ApiListResponsePagination} from '../../models/api/types'
 import {Job, JobType} from '../../models/job/types'
 import {Ticket} from '../../models/ticket/types'
 import {notify} from '../notifications/actions'
 import {NotificationStatus, Notification} from '../notifications/types'
-import socketManager from '../../services/socketManager/socketManager.js'
+import socketManager from '../../services/socketManager/socketManager'
+import {SocketEventType} from '../../services/socketManager/types'
 import {
     getHashOfObj,
     getPluralObjectName,
@@ -674,7 +674,7 @@ export const fetchVisibleViewsCounts = () => (
 ) => {
     const state = getState()
     const viewIds = viewsSelectors.getVisibleViewIds()(state).toJS() as number[]
-    socketManager.send(socketConstants.VIEWS_COUNTS_EXPIRED, {
+    socketManager.send(SocketEventType.ViewsCountExpired, {
         viewIds,
         all: true,
     })
@@ -709,7 +709,7 @@ export const fetchRecentViewsCounts = () => (
 
     if (!viewIds.isEmpty()) {
         dispatch(updateRecentViews(viewIds.toJS()))
-        socketManager.send(socketConstants.VIEWS_COUNTS_EXPIRED, {
+        socketManager.send(SocketEventType.ViewsCountExpired, {
             viewIds: viewIds.toJS(),
         })
     }
@@ -727,7 +727,7 @@ export const fetchActiveViewCount = () => (
 
     if (viewIds.includes(activeViewId)) {
         dispatch(updateRecentViews([activeViewId]))
-        socketManager.send(socketConstants.VIEWS_COUNTS_EXPIRED, {
+        socketManager.send(SocketEventType.ViewsCountExpired, {
             viewIds: [activeViewId],
         })
     }

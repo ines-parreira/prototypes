@@ -1,11 +1,11 @@
 // @flow
 import * as facebook from './facebook.ts'
-import * as magento2 from './magento2'
-import * as recharge from './recharge'
-import * as shopify from './shopify'
-import * as smile from './smile'
-import * as smooch from './smooch'
-import * as smoochInside from './smooch_inside'
+import * as magento2 from './magento2.ts'
+import * as recharge from './recharge.ts'
+import * as shopify from './shopify.ts'
+import * as smile from './smile.ts'
+import * as smooch from './smooch.ts'
+import * as smoochInside from './smooch_inside.ts'
 
 const allIntegrations = [
     facebook,

@@ -11,7 +11,7 @@ import {
     SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_DEFAULT,
     SMOOCH_INSIDE_WIDGET_EMAIL_CAPTURE_ALWAYS_REQUIRED,
     SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
-} from '../../../../../../../config/integrations/smooch_inside'
+} from '../../../../../../../config/integrations/smooch_inside.ts'
 
 import {SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../../../../constants/integration'
 import {SPANISH_LANGUAGE} from '../../../../../../../constants/languages'

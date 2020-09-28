@@ -26,11 +26,7 @@ import {
 import * as integrationSelectors from '../integrations/selectors'
 import * as ticketSelectors from '../ticket/selectors'
 import * as agentSelectors from '../agents/selectors'
-import {
-    AGENT_TYPING_STARTED,
-    AGENT_TYPING_STOPPED,
-} from '../../config/socketConstants.js'
-import socketManager from '../../services/socketManager/socketManager.js'
+import socketManager from '../../services/socketManager/socketManager'
 import {Attachment, ActionTemplate} from '../../types'
 import type {StoreDispatch, RootState, CurrentUser} from '../types'
 import {getMomentNow} from '../../utils/date'
@@ -40,6 +36,7 @@ import {ApiListResponse} from '../../models/api/types'
 import {Ticket as TicketResponse} from '../../models/ticket/types'
 import {Customer} from '../customers/types'
 import {NotificationStatus} from '../notifications/types'
+import {SocketEventType} from '../../services/socketManager/types'
 
 import * as responseUtils from './responseUtils'
 import * as selectors from './selectors'
@@ -152,7 +149,7 @@ export const deleteAttachment = (index: number) => ({
 
 const _throttledIsTyping = _throttle(
     (ticketId: string) => {
-        socketManager.send(AGENT_TYPING_STARTED, ticketId)
+        socketManager.send(SocketEventType.AgentTypingStarted, ticketId)
     },
     5000,
     {trailing: false}
@@ -184,7 +181,7 @@ export const setResponseText = (args: Map<any, any> = fromJS({})) => (
             _throttledIsTyping(ticketId)
         } else if (agentSelectors.isAgentTypingOnTicket(ticketId)(state)) {
             _throttledIsTyping.cancel()
-            socketManager.send(AGENT_TYPING_STOPPED, ticketId)
+            socketManager.send(SocketEventType.AgentTypingStopped, ticketId)
         }
     }
 

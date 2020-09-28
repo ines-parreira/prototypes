@@ -24,8 +24,8 @@ import {store as reduxStore} from '../init'
 import {isViewSharedWithUser} from '../state/views/utils.ts'
 import * as socketEventTypes from '../services/socketManager/types.js'
 
-import {MAX_RECENT_CHATS} from './recentChats'
-import * as socketConstants from './socketConstants'
+import {MAX_RECENT_CHATS} from './recentChats.ts'
+import * as socketConstants from './socketConstants.ts'
 
 type SendEvent = {
     name: string,

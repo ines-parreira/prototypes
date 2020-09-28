@@ -1,33 +1,37 @@
-// @flow
 import _noop from 'lodash/noop'
 import _find from 'lodash/find'
 import _throttle from 'lodash/throttle'
 import {removeNotification} from 'reapop'
+import {EnhancedStore} from '@reduxjs/toolkit'
 
-import * as socketEvents from '../../config/socketEvents'
-import {notify} from '../../state/notifications/actions.ts'
-import {store} from '../../init'
-import {devLog} from '../../utils.ts'
-import {ROOM_JOINED, ROOM_LEFT} from '../../config/socketConstants'
+import * as socketEvents from '../../config/socketEvents.js'
+import {notify} from '../../state/notifications/actions'
+import {store} from '../../init.js'
+import {devLog} from '../../utils'
+import {NotificationStatus} from '../../state/notifications/types'
+import {StoreDispatch} from '../../state/types'
 
-import {
-    BROADCAST_CHANNEL_EVENTS,
-    BROADCAST_CHANNEL_NAME,
-    MESSAGE_PORT_EVENTS,
-} from './constants'
+import {BROADCAST_CHANNEL_NAME} from './constants.js'
 import {
     fallbackBroadcastChannelAdapter,
     fallbackWorkerAdapter,
-} from './fallbackWorkerAdapter'
-import type {ServerMessage} from './types'
-
-type BroadcastEvents = $Values<typeof BROADCAST_CHANNEL_EVENTS>
-type PortEvents = $Values<typeof MESSAGE_PORT_EVENTS>
+} from './fallbackWorkerAdapter.js'
+import {
+    BroadcastChannelEvent,
+    ServerMessage,
+    MessagePortEvent,
+    SocketEventType,
+} from './types'
 
 type WSMessage = {
-    type: BroadcastEvents | PortEvents,
-    json: ?ServerMessage,
+    type: BroadcastChannelEvent | MessagePortEvent
+    json: Maybe<ServerMessage>
 }
+
+//$TsFixMe remove on ./fallbackWorkerAdapter.js
+const typeSafeFallbackBroadcastChannelAdapter = (fallbackBroadcastChannelAdapter as unknown) as BroadcastChannel
+//$TsFixMe remove once init.js is migrated
+const typeSafeReduxStore = store as EnhancedStore
 
 const CONNECTION_TIMEOUT = 10
 
@@ -40,10 +44,10 @@ const currentBrowserSupportsSharedWorker =
 export class SocketManager {
     broadcastChannel = currentBrowserSupportsSharedWorker
         ? new window.BroadcastChannel(BROADCAST_CHANNEL_NAME)
-        : fallbackBroadcastChannelAdapter
+        : typeSafeFallbackBroadcastChannelAdapter
     isConnected = false
     disconnectedNotificationId = '696480246'
-    rooms: Array<*> = [] // rooms currently joined
+    rooms: Array<any> = [] // rooms currently joined
     worker = currentBrowserSupportsSharedWorker
         ? new window.SharedWorker(
               window.SHARED_WORKER_BUILD_URL,
@@ -53,7 +57,8 @@ export class SocketManager {
 
     constructor() {
         this.worker.port.start()
-        this.worker.port.onmessage = (event) => this.onMessage(event.data)
+        this.worker.port.onmessage = (event: MessageEvent) =>
+            this.onMessage(event.data)
 
         /**
          * If the connection has not been established after `CONNECTION_TIMEOUT` seconds, we call the `onDisconnect`
@@ -65,12 +70,15 @@ export class SocketManager {
             }
         }, CONNECTION_TIMEOUT * 1000)
 
-        this.broadcastChannel.addEventListener('message', (event) => {
-            this.onMessage(event.data)
-        })
+        this.broadcastChannel.addEventListener(
+            'message',
+            (event: MessageEvent) => {
+                this.onMessage(event.data)
+            }
+        )
 
         this.worker.port.postMessage({
-            type: MESSAGE_PORT_EVENTS.CLIENT_CONNECTED,
+            type: MessagePortEvent.ClientConnected,
             wsUrl: window.WS_URL,
             clientId: window.CLIENT_ID,
         })
@@ -78,28 +86,28 @@ export class SocketManager {
 
     onMessage = (message: WSMessage) => {
         switch (message.type) {
-            case BROADCAST_CHANNEL_EVENTS.WS_CONNECTED:
+            case BroadcastChannelEvent.WsConnected:
                 this.onConnect()
                 break
-            case BROADCAST_CHANNEL_EVENTS.WS_DISCONNECTED:
+            case BroadcastChannelEvent.WsDisconnected:
                 this.onDisconnect()
                 break
-            case MESSAGE_PORT_EVENTS.HEALTH_CHECK:
+            case MessagePortEvent.HealthCheck:
                 this.onHealthCheck()
                 break
-            case BROADCAST_CHANNEL_EVENTS.SERVER_MESSAGE:
-                this.onServerMessage(message.json)
+            case BroadcastChannelEvent.ServerMessage:
+                this.onServerMessage(message.json as any)
         }
     }
 
     onHealthCheck = () => {
         this.worker.port.postMessage({
-            type: MESSAGE_PORT_EVENTS.HEALTH_CHECK,
+            type: MessagePortEvent.HealthCheck,
             data: window.CLIENT_ID,
         })
     }
 
-    onServerMessage = (json: ?ServerMessage) => {
+    onServerMessage = (json: Maybe<ServerMessage>) => {
         if (!json || !json.event || !json.event.type) {
             return
         }
@@ -124,7 +132,7 @@ export class SocketManager {
             notify({
                 id: this.disconnectedNotificationId,
                 style: 'banner',
-                status: 'error',
+                status: NotificationStatus.Error,
                 dismissible: false,
                 message:
                     'You are not connected to live ticket updates. <u>Please reload the page</u>',
@@ -138,6 +146,7 @@ export class SocketManager {
         this.isConnected = true
 
         this.dispatchReduxAction(
+            //eslint-disable-next-line @typescript-eslint/no-unsafe-call
             removeNotification(this.disconnectedNotificationId)
         )
 
@@ -151,11 +160,9 @@ export class SocketManager {
     /**
      * Send an event from sendEvents configuration
      * @example
-     * socketManagerInstance.send('ticket-viewed', 12)
-     * @param configName
-     * @param args all other arguments passed to the function
+     * socketManagerInstance.send('ticket-viewed', 12
      */
-    send = (configName: string, ...args: Array<*>) => {
+    send = (configName: string, ...args: Array<any>) => {
         const config = _find(socketEvents.sendEvents, {name: configName})
 
         if (!config) {
@@ -164,17 +171,15 @@ export class SocketManager {
 
         devLog('socket send', configName, args)
 
-        this._sendToServer(config.dataToSend(...(args: any)))
+        this._sendToServer(config.dataToSend(...(args as any)))
     }
 
     /**
      * Send data needed to join a room on server from joinEvents configuration
      * @example
-     * socketManagerInstance.join('ticket', 12)
-     * @param configName
-     * @param args all other arguments passed to the function
+     * socketManagerInstance.join('ticket', 12
      */
-    join = (configName: string, ...args: Array<*>) => {
+    join = (configName: string, ...args: Array<any>) => {
         const config = _find(socketEvents.joinEvents, {name: configName})
 
         if (!config) {
@@ -188,10 +193,8 @@ export class SocketManager {
      * Send data needed to leave a room on server from joinEvents configuration
      * @example
      * socketManagerInstance.leave('ticket', 12)
-     * @param configName
-     * @param args all other arguments passed to the function
      */
-    leave = (configName: string, ...args: Array<*>) => {
+    leave = (configName: string, ...args: Array<any>) => {
         const config = _find(socketEvents.joinEvents, {name: configName})
 
         if (!config) {
@@ -211,17 +214,15 @@ export class SocketManager {
      * Throttled to prevent a too high frequency of state refresh
      */
     dispatchReduxAction = _throttle((data) => {
-        return store.dispatch(data)
+        return typeSafeReduxStore.dispatch(data) as ReturnType<StoreDispatch>
     }, 100)
 
     /**
      * Send data to server via socket
      * @example
      * socketManagerInstance._sendToServer({event: 'ticket-viewed', ticketId: 12})
-     * @param data
-     * @param callback
      */
-    _sendToServer = (data: Object, callback?: () => *) => {
+    _sendToServer = (data: Record<string, unknown>, callback?: () => void) => {
         this.worker.port.postMessage(data)
 
         if (callback) {
@@ -234,10 +235,11 @@ export class SocketManager {
      * Add this data to array of current joined rooms (used when reconnecting)
      * @example
      * socketManagerInstance._joinRoom({dataType: 'Ticket', data: 12})
-     * @param data
-     * @param callback
      */
-    _joinRoom = (data: Object, callback?: () => * = _noop) => {
+    _joinRoom = (
+        data: Record<string, unknown>,
+        callback: () => void = _noop
+    ) => {
         // if no object id or object type, we don't join anything
         if (!data.data || !data.dataType) {
             return
@@ -245,7 +247,7 @@ export class SocketManager {
 
         const roomData = {
             clientId: window.CLIENT_ID,
-            event: ROOM_JOINED,
+            event: SocketEventType.RoomJoined,
             dataType: data.dataType,
             data: data.data,
         }
@@ -266,9 +268,8 @@ export class SocketManager {
      * Add room data to array of current joined rooms (used when reconnecting)
      * @example
      * socketManagerInstance._saveJoinRoom({event: 'join-room', dataType: 'Ticket', data: 12})
-     * @param data
      */
-    _saveJoinRoom = (data: Object) => {
+    _saveJoinRoom = (data: Record<string, unknown>) => {
         // leave other rooms of same dataType
         this._saveLeaveRoom(data)
         // add this room to current rooms
@@ -280,10 +281,11 @@ export class SocketManager {
      * Remove this data from array of current joined rooms (used when reconnecting)
      * @example
      * socketManagerInstance._leaveRoom({dataType: 'Ticket', data: 12})
-     * @param data
-     * @param callback
      */
-    _leaveRoom = (data: Object, callback?: () => * = _noop) => {
+    _leaveRoom = (
+        data: Record<string, unknown>,
+        callback: () => void = _noop
+    ) => {
         // if no object id or object type, we don't leave anything
         if (!data.data || !data.dataType) {
             return
@@ -291,7 +293,7 @@ export class SocketManager {
 
         const roomData = {
             clientId: window.CLIENT_ID,
-            event: ROOM_LEFT,
+            event: SocketEventType.RoomLeft,
             dataType: data.dataType,
             data: data.data,
         }
@@ -312,12 +314,12 @@ export class SocketManager {
      * Remove room data from array of current joined rooms (used when reconnecting)
      * @example
      * socketManagerInstance._saveJoinRoom({event: 'leave-room', dataType: 'Ticket', data: 12})
-     * @param data
      */
-    _saveLeaveRoom = (data: Object) => {
+    _saveLeaveRoom = (data: Record<string, unknown>) => {
         // remove all rooms of same dataType as passed data
         this.rooms = this.rooms.filter(
-            (roomData: Object): boolean => roomData.dataType !== data.dataType
+            (roomData: Record<string, unknown>): boolean =>
+                roomData.dataType !== data.dataType
         )
     }
 }

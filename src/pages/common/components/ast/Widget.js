@@ -20,7 +20,7 @@ import {
     collectionOperators,
     deprecatedOperators,
     timedeltaOperators,
-} from '../../../../config/rules'
+} from '../../../../config/rules.ts'
 import {removeSuffix} from '../../../../utils/string.ts'
 import TimedeltaPicker from '../../forms/TimedeltaPicker'
 import RichFieldWithVariables from '../../forms/RichFieldWithVariables'

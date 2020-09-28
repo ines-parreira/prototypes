@@ -1,5 +1,33 @@
 import {RecentChatTicket} from '../../business/types/recentChats'
-import * as socketConstants from '../../config/socketConstants.js'
+
+export enum BroadcastChannelEvent {
+    ServerMessage = 'SERVER_MESSAGE',
+    WsConnected = 'WS_CONNECTED',
+    WsDisconnected = 'WS_DISCONNECTED',
+}
+
+export enum MessagePortEvent {
+    ClientConnected = 'CLIENT_CONNECTED',
+    HealthCheck = 'HEALTH_CHECK',
+}
+
+export enum SocketEventType {
+    AgentActive = 'agent-active',
+    AgentInactive = 'agent-inactive',
+    AccountUpdated = 'account-updated',
+    TicketViewed = 'ticket-viewed',
+    RoomJoined = 'room-joined',
+    RoomLeft = 'room-left',
+    AgentTypingStarted = 'agent-typing-started',
+    AgentTypingStopped = 'agent-typing-stopped',
+    ViewsCountExpired = 'views-counts-expired',
+    SidUpdated = 'sid-updated',
+    TicketMessageChatCreated = 'ticket-message-chat-created',
+    TicketChatUpdated = 'ticket-chat-updated',
+    EmailIntegrationVerified = 'email.integration-verified',
+    FacebookIntegrationsReconnected = 'facebook-integrations-reconnected',
+    ViewsDeactivated = 'views-deactivated',
+}
 
 export type CustomerUpdatedEvent = {
     event: {
@@ -95,7 +123,7 @@ export type ViewCountUpdatedEvent = {
 
 export type AccountUpdatedEvent = {
     event: {
-        type: typeof socketConstants.ACCOUNT_UPDATED
+        type: SocketEventType.AccountUpdated
     }
     account: {
         settings: Array<Record<string, unknown>>
@@ -104,41 +132,41 @@ export type AccountUpdatedEvent = {
 
 export type SIDUpdatedEvent = {
     event: {
-        type: typeof socketConstants.SID_UPDATED
+        type: SocketEventType.SidUpdated
     }
 }
 
 export type TicketMessageChatCreatedEvent = {
     event: {
-        type: typeof socketConstants.TICKET_MESSAGE_CHAT_CREATED
+        type: SocketEventType.TicketMessageChatCreated
     }
     data: RecentChatTicket
 }
 
 export type TicketChatUpdatedEvent = {
     event: {
-        type: typeof socketConstants.TICKET_CHAT_UPDATED
+        type: SocketEventType.TicketChatUpdated
     }
     data: RecentChatTicket
 }
 
 export type EmailIntegrationVerifiedEvent = {
     event: {
-        type: typeof socketConstants.EMAIL_INTEGRATION_VERIFIED
+        type: SocketEventType.EmailIntegrationVerified
     }
     integration_id: number
 }
 
 export type FacebookIntegrationsReconnected = {
     event: {
-        type: typeof socketConstants.FACEBOOK_INTEGRATIONS_RECONNECTED
+        type: SocketEventType.FacebookIntegrationsReconnected
         total: number
     }
 }
 
 export type ViewsDeactivated = {
     event: {
-        type: typeof socketConstants.VIEWS_DEACTIVATED
+        type: SocketEventType.ViewsDeactivated
         names: string[]
     }
 }

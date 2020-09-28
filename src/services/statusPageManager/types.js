@@ -1,6 +1,6 @@
 // @flow
 
-import {MAINTENANCE_STATUSES, COMPONENT_STATUSES} from './constants'
+import {MAINTENANCE_STATUSES, COMPONENT_STATUSES} from './constants.ts'
 
 export type StatusPage = {
     id: string,

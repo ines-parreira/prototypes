@@ -73,7 +73,7 @@ jest.mock('../../../utils', () => {
     }
 })
 
-jest.mock('../../../services/socketManager/socketManager.js', () => {
+jest.mock('../../../services/socketManager/socketManager', () => {
     return {
         join: jest.fn(),
         send: jest.fn(),

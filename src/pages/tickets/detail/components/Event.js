@@ -9,7 +9,7 @@ import _capitalize from 'lodash/capitalize'
 import _isObject from 'lodash/isObject'
 import JSONPretty from 'react-json-pretty'
 
-import {getActionByName} from '../../../../config/actions'
+import {getActionByName} from '../../../../config/actions.ts'
 import {AgentLabel, DatetimeLabel} from '../../../common/utils/labels'
 import {humanizeString, stripErrorMessage} from '../../../../utils.ts'
 

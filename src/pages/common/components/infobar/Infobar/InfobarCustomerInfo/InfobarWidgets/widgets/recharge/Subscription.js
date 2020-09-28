@@ -16,7 +16,7 @@ import {renderTemplate} from '../../../../../../../utils/template'
 import {
     RECHARGE_CANCELLATION_REASONS,
     RECHARGE_DEFAULT_CANCELLATION_REASON,
-} from '../../../../../../../../../config/integrations/recharge'
+} from '../../../../../../../../../config/integrations/recharge.ts'
 import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../../../../state/customers/selectors.ts'
 import * as ticketSelectors from '../../../../../../../../../state/ticket/selectors.ts'
 

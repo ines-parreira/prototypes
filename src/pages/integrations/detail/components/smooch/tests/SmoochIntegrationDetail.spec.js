@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {SMOOCH_LANGUAGE_DEFAULT} from '../../../../../../config/integrations/smooch'
+import {SMOOCH_LANGUAGE_DEFAULT} from '../../../../../../config/integrations/smooch.ts'
 import {
     SMOOCH_INTEGRATION_TYPE,
     SUCCESS_AUTHENTICATION_STATUS,

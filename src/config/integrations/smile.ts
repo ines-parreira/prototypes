@@ -1,8 +1,7 @@
-//@flow
-import {SMILE_INTEGRATION_TYPE} from '../../constants/integration'
+import {IntegrationType} from '../../models/integration/types'
 
 export const MACRO_VARIABLES = {
-    type: SMILE_INTEGRATION_TYPE,
+    type: IntegrationType.SmileIntegrationType,
     integration: true,
     name: 'Smile',
     children: [

@@ -1,51 +1,47 @@
-//@flow
-import {ShopifyAction} from '../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/constants'
+import {ShopifyActionType} from '../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
 
 export const actions = [
     {
-        name: ShopifyAction.REFUND_SHIPPING_COST_OF_ORDER,
+        name: ShopifyActionType.RefundShippingCostOfOrder,
         label: 'Refund shipping cost of order',
         objectType: 'order',
     },
     {
-        name: ShopifyAction.CANCEL_ORDER,
+        name: ShopifyActionType.CancelOrder,
         label: 'Cancel order',
         objectType: 'order',
     },
     {
-        name: ShopifyAction.REFUND_ORDER,
+        name: ShopifyActionType.RefundOrder,
         label: 'Refund order',
         objectType: 'order',
     },
     {
-        name: ShopifyAction.FULL_REFUND_ORDER,
+        name: ShopifyActionType.FullRefundOrder,
         label: 'Full refund order',
         objectType: 'order',
     },
     {
-        name: ShopifyAction.CREATE_ORDER,
+        name: ShopifyActionType.CreateOrder,
         label: 'Create order',
         objectType: 'order',
     },
     {
-        name: ShopifyAction.DUPLICATE_ORDER,
+        name: ShopifyActionType.DuplicateOrder,
         label: 'Duplicate order',
         objectType: 'order',
     },
     {
-        name: ShopifyAction.SEND_DRAFT_ORDER_INVOICE,
+        name: ShopifyActionType.SendDraftOrderInvoice,
         label: 'Send invoice for draft order',
         objectType: 'draftOrder',
     },
     {
-        name: ShopifyAction.PARTIAL_REFUND_ORDER,
+        name: ShopifyActionType.PartialRefundOrder,
         label: 'Partial refund order',
         objectType: 'order',
     },
     {
-        //     name: 'shopifyCreateGiftCard',
-        //     label: 'Create gift card',
-        // }, {
         name: 'rechargeCancelSubscription',
         label: 'Cancel subscription',
         objectType: 'subscription',

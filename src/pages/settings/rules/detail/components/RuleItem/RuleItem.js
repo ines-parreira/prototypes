@@ -17,7 +17,7 @@ import {
 
 import InputField from '../../../../../common/forms/InputField'
 import SelectField from '../../../../../common/forms/MultiSelectField'
-import * as rulesConfig from '../../../../../../config/rules'
+import * as rulesConfig from '../../../../../../config/rules.ts'
 
 import EditableTitle from '../../../../../common/components/EditableTitle'
 import Program from '../../../../../common/components/ast/Program'

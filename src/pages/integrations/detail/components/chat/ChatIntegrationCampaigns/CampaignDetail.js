@@ -39,7 +39,7 @@ import {
     CAMPAIGNS_TRIGGER_KEYS,
     SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
     SMOOCH_INSIDE_WIDGET_TEXTS,
-} from '../../../../../../config/integrations/smooch_inside'
+} from '../../../../../../config/integrations/smooch_inside.ts'
 
 import CampaignPreview from './CampaignPreview'
 import css from './CampaignDetail.less'

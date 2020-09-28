@@ -2,7 +2,7 @@
 import _isArray from 'lodash/isArray'
 import _isObject from 'lodash/isObject'
 
-import * as rulesConfig from '../rules'
+import * as rulesConfig from '../rules.ts'
 
 describe('Config: rules', () => {
     describe('triggers', () => {

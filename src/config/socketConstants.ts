@@ -1,4 +1,4 @@
-//@flow
+//$TsFixMe fallback constants for js files use SocketEventType enum instead
 export const AGENT_ACTIVE = 'agent-active'
 export const AGENT_INACTIVE = 'agent-inactive'
 export const ACCOUNT_UPDATED = 'account-updated'

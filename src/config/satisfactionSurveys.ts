@@ -1,4 +1,3 @@
-// @flow
 import {fromJS} from 'immutable'
 
 export const intervals = fromJS([

@@ -2,7 +2,7 @@ import {EditorState, ContentBlock} from 'draft-js'
 import _get from 'lodash/get'
 import {Map} from 'immutable'
 
-import {MAX_ATTACHMENTS_SIZE} from '../config/editor.js'
+import {MAX_ATTACHMENTS_SIZE} from '../config/editor'
 
 /**
  * Save a file like it has been downloaded.

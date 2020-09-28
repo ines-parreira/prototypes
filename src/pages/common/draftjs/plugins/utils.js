@@ -9,7 +9,7 @@ import {
     getFileTooLargeError,
     getMaxAttachmentSize,
 } from '../../../../utils/file.ts'
-import {DEFAULT_IMAGE_WIDTH} from '../../../../config/editor'
+import {DEFAULT_IMAGE_WIDTH} from '../../../../config/editor.ts'
 import {getEntitySelectionState} from '../../../../utils/editor.ts'
 
 import type {PluginMethods} from './types'

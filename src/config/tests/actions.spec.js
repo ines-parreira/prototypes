@@ -2,7 +2,7 @@
 import _isArray from 'lodash/isArray'
 import _isObject from 'lodash/isObject'
 
-import * as actionsConfig from '../actions'
+import * as actionsConfig from '../actions.ts'
 
 describe('Config: actions', () => {
     describe('triggers', () => {

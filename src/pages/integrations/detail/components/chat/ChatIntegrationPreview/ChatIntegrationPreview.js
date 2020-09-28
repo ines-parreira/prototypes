@@ -6,7 +6,7 @@ import classnames from 'classnames'
 import {
     SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
     SMOOCH_INSIDE_WIDGET_TEXTS,
-} from '../../../../../../config/integrations/smooch_inside'
+} from '../../../../../../config/integrations/smooch_inside.ts'
 
 import ChatIntegrationAvatar from './ChatIntegrationAvatar'
 import css from './ChatIntegrationPreview.less'

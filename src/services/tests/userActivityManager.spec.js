@@ -4,7 +4,7 @@ import thunk from 'redux-thunk'
 
 import userActivityManager from '../userActivityManager'
 import socketManager from '../socketManager'
-import * as socketConstants from '../../config/socketConstants'
+import * as socketConstants from '../../config/socketConstants.ts'
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
 

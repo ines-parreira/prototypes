@@ -7,7 +7,7 @@ import {
     SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_MEMBERS,
     SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
     SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
-} from '../../../../../../../config/integrations/smooch_inside'
+} from '../../../../../../../config/integrations/smooch_inside.ts'
 import {
     SHOPIFY_INTEGRATION_TYPE,
     SMOOCH_INSIDE_INTEGRATION_TYPE,

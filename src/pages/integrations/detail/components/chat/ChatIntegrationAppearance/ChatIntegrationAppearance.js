@@ -31,7 +31,7 @@ import {
     SMOOCH_INSIDE_WIDGET_TEXTS_DEFAULTS,
     SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_TEAM_PICTURE,
     SMOOCH_INSIDE_WIDGET_AVATAR_TYPE_DEFAULT,
-} from '../../../../../../config/integrations/smooch_inside'
+} from '../../../../../../config/integrations/smooch_inside.ts'
 import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from '../../../../../../config/integrations'
 import {
     SHOPIFY_INTEGRATION_TYPE,

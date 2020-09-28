@@ -5,7 +5,7 @@ import _get from 'lodash/get'
 import {
     RECHARGE_CANCELLATION_REASONS,
     RECHARGE_DEFAULT_CANCELLATION_REASON,
-} from './config/integrations/recharge.js'
+} from './config/integrations/recharge'
 import {Order} from './constants/integrations/types/shopify'
 
 import {IntegrationType} from './models/integration/types'

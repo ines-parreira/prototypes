@@ -19,7 +19,7 @@ import {
     formatPercentage,
     formatPrice,
 } from '../../../../business/shopify/number'
-import {DRAFT_ORDER_DELETE_AFTER} from '../../../../config/integrations/shopify.js'
+import {DRAFT_ORDER_DELETE_AFTER} from '../../../../config/integrations/shopify'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
 import localStorageManager from '../../../../services/localStorageManager'
 import {

@@ -1,16 +1,15 @@
-// @flow
 import moment from 'moment'
 import {removeNotification} from 'reapop'
+import {EnhancedStore} from '@reduxjs/toolkit'
 
-import {store as reduxStore} from '../../init'
-import {notify} from '../../state/notifications/actions.ts'
+import {store as reduxStore} from '../../init.js'
+import {notify} from '../../state/notifications/actions'
+import {NotificationStatus} from '../../state/notifications/types'
 
 import {
     PAGE_ID,
     COMPONENT_STATUS_LABEL,
     HELPDESK_GROUP_IDS,
-    COMPONENT_STATUSES,
-    MAINTENANCE_STATUSES,
     COMPONENTS_POLLING_INTERVAL_SECONDS,
     MAINTENANCE_POLLING_INTERVAL_SECONDS,
     MAINTENANCE_NOTIFICATION_BEFORE_MINUTES,
@@ -18,10 +17,16 @@ import {
     MAINTENANCE_NOTIFICATION_ID,
     CLUSTER_GROUP_ID,
 } from './constants'
-import type {
+import {
+    ComponentStatus,
+    MaintenanceStatus,
     StatusPageComponentsResponseData,
     StatusPageScheduledMaintenanceResponseData,
+    Page,
 } from './types'
+
+//$TsFixMe remove once init.js is migrated
+const typeSafeReduxStore = reduxStore as EnhancedStore
 
 /**
  * Display notifications to users about incidents (with our components or maintenance cycle) from our status page:
@@ -30,10 +35,10 @@ import type {
  * StatusPage JS SDK documentation: https://status.gorgias.com/api
  */
 export class StatusPageManager {
-    statusPage = null
-    store = reduxStore
-    fetchComponentsInterval = null
-    fetchScheduledMaintenancesInterval = null
+    statusPage: Maybe<Page> = null
+    store = typeSafeReduxStore
+    fetchComponentsInterval: Maybe<number> = null
+    fetchScheduledMaintenancesInterval: Maybe<number> = null
 
     constructor() {
         if (window.StatusPage) {
@@ -63,8 +68,8 @@ export class StatusPageManager {
     }
 
     stopPolling = () => {
-        window.clearInterval(this.fetchComponentsInterval)
-        window.clearInterval(this.fetchScheduledMaintenancesInterval)
+        window.clearInterval(this.fetchComponentsInterval as number)
+        window.clearInterval(this.fetchScheduledMaintenancesInterval as number)
     }
 
     /**
@@ -92,7 +97,7 @@ export class StatusPageManager {
     processComponents = (data: StatusPageComponentsResponseData) => {
         const notification = {
             level: -1,
-            status: 'info',
+            status: NotificationStatus.Info,
             label: '',
             groupNames: new Set(),
             componentNames: new Set(),
@@ -101,11 +106,12 @@ export class StatusPageManager {
         let foundCluster = false
 
         // remove all previous notifications
+        //eslint-disable-next-line @typescript-eslint/no-unsafe-call
         this.store.dispatch(removeNotification(COMPONENTS_NOTIFICATION_ID))
 
         // Filter incidents per cluster.
         for (const component of data.components) {
-            if (component.status === COMPONENT_STATUSES.OPERATIONAL) {
+            if (component.status === ComponentStatus.Operational) {
                 continue
             }
 
@@ -133,8 +139,8 @@ export class StatusPageManager {
             if (
                 !groupName ||
                 [
-                    COMPONENT_STATUSES.OPERATIONAL,
-                    COMPONENT_STATUSES.DEGRADED_PERFORMANCE,
+                    ComponentStatus.Operational,
+                    ComponentStatus.DegradedPerformance,
                 ].includes(component.status)
             ) {
                 continue
@@ -174,7 +180,7 @@ Find out more on our <u><a href="${
                     allowHTML: true,
                     dismissible: false,
                     closable: true,
-                })
+                } as any) as any
             )
         }
     }
@@ -189,6 +195,7 @@ Find out more on our <u><a href="${
         }
 
         // remove all previous maintenance notifications
+        //eslint-disable-next-line @typescript-eslint/no-unsafe-call
         this.store.dispatch(removeNotification(MAINTENANCE_NOTIFICATION_ID))
 
         for (const maintenance of data.scheduled_maintenances) {
@@ -199,13 +206,13 @@ Find out more on our <u><a href="${
                 'minutes'
             )
 
-            if (maintenance.status === MAINTENANCE_STATUSES.COMPLETED) {
+            if (maintenance.status === MaintenanceStatus.Completed) {
                 continue
             }
 
             // don't show maintenance events that are scheduled in the distant future.
             if (
-                maintenance.status === MAINTENANCE_STATUSES.SCHEDULED &&
+                maintenance.status === MaintenanceStatus.Scheduled &&
                 startsInMinutes > MAINTENANCE_NOTIFICATION_BEFORE_MINUTES
             ) {
                 continue
@@ -244,14 +251,14 @@ Find out more on our <u><a href="${
                 notify({
                     id: MAINTENANCE_NOTIFICATION_ID,
                     status:
-                        maintenance.status === MAINTENANCE_STATUSES.SCHEDULED
-                            ? 'info'
-                            : 'warning',
+                        maintenance.status === MaintenanceStatus.Scheduled
+                            ? NotificationStatus.Info
+                            : NotificationStatus.Warning,
                     style: 'banner',
                     message: message,
                     allowHTML: true,
                     dismissible: false,
-                })
+                }) as any
             )
 
             return // only take a single maintenance at a time.

@@ -3,7 +3,7 @@ import React from 'react'
 import classnames from 'classnames'
 
 import {CHAT_AUTO_RESPONDER_TEXTS} from '../../../../../../config/integrations'
-import {SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT} from '../../../../../../config/integrations/smooch_inside'
+import {SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT} from '../../../../../../config/integrations/smooch_inside.ts'
 
 import css from './ChatIntegrationPreview.less'
 import CustomerInitialMessages from './CustomerInitialMessages'

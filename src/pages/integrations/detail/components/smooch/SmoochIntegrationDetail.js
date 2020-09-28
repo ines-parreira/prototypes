@@ -16,7 +16,7 @@ import {
 import {
     SMOOCH_LANGUAGE_DEFAULT,
     SMOOCH_LANGUAGE_OPTIONS,
-} from '../../../../../config/integrations/smooch'
+} from '../../../../../config/integrations/smooch.ts'
 
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 import InputField from '../../../../common/forms/InputField'

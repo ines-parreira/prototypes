@@ -1,7 +1,7 @@
 import _find from 'lodash/find'
 import {removeNotification} from 'reapop'
 
-import * as socketConstants from '../../../config/socketConstants'
+import * as socketConstants from '../../../config/socketConstants.ts'
 import * as socketEvents from '../../../config/socketEvents'
 import {notify} from '../../../state/notifications/actions.ts'
 import {
@@ -9,7 +9,7 @@ import {
     BROADCAST_CHANNEL_EVENTS,
     MESSAGE_PORT_EVENTS,
 } from '../constants'
-import {SocketManager} from '../socketManager'
+import {SocketManager} from '../socketManager.ts'
 
 jest.mock('../../../state/notifications/actions.ts', () => {
     return {

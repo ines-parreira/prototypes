@@ -1,13 +1,12 @@
-//@flow
-import type {Map} from 'immutable'
+import {Map, List} from 'immutable'
 
-import {MAGENTO2_INTEGRATION_TYPE} from '../../constants/integration'
-import {LDMLToMomentFormat} from '../../pages/common/utils/template'
-import {formatDatetime} from '../../utils.ts'
-import {getTrackingUrl} from '../../utils/delivery.ts'
+import {LDMLToMomentFormat} from '../../pages/common/utils/template.js'
+import {formatDatetime} from '../../utils'
+import {getTrackingUrl} from '../../utils/delivery'
+import {IntegrationType} from '../../models/integration/types'
 
 export const MACRO_VARIABLES = {
-    type: MAGENTO2_INTEGRATION_TYPE,
+    type: IntegrationType.Magento2IntegrationType,
     name: 'Magento 2',
     integration: true,
     children: [
@@ -25,7 +24,7 @@ export const MACRO_VARIABLES = {
             name: 'Tracking url of last order',
             value:
                 '{{ticket.customer.integrations.magento2.orders[0].last_shipment.last_track.tracking_url}}',
-            replace: (context: Map<*, *>, integrationId: number) => {
+            replace: (context: Map<any, any>, integrationId: number) => {
                 const lastOrder = context.getIn([
                     'ticket',
                     'customer',
@@ -33,31 +32,34 @@ export const MACRO_VARIABLES = {
                     integrationId,
                     'orders',
                     0,
-                ])
+                ]) as Map<any, any>
                 const shipments = context.getIn([
                     'ticket',
                     'customer',
                     'integrations',
                     integrationId,
                     'shipments',
-                ])
+                ]) as List<any>
                 if (!lastOrder || !shipments) {
                     return ''
                 }
 
                 const lastOrderLastShipment = shipments
                     .filter(
-                        (shipment) =>
+                        (shipment: Map<any, any>) =>
                             shipment.get('order_id') ===
                             lastOrder.get('entity_id')
                     )
-                    .first()
+                    .first() as Map<any, any>
 
                 if (!lastOrderLastShipment || lastOrderLastShipment.isEmpty()) {
                     return ''
                 }
 
-                const lastTrack = lastOrderLastShipment.getIn(['tracks', 0])
+                const lastTrack = lastOrderLastShipment.getIn([
+                    'tracks',
+                    0,
+                ]) as Map<any, any>
                 if (!lastTrack) {
                     return ''
                 }
@@ -71,7 +73,7 @@ export const MACRO_VARIABLES = {
             name: 'Tracking number of last order',
             value:
                 '{{ticket.customer.integrations.magento2.orders[0].last_shipment.last_track.track_number}}',
-            replace: (context: Map<*, *>, integrationId: number) => {
+            replace: (context: Map<any, any>, integrationId: number) => {
                 const lastOrder = context.getIn([
                     'ticket',
                     'customer',
@@ -79,43 +81,46 @@ export const MACRO_VARIABLES = {
                     integrationId,
                     'orders',
                     0,
-                ])
+                ]) as Map<any, any>
                 const shipments = context.getIn([
                     'ticket',
                     'customer',
                     'integrations',
                     integrationId,
                     'shipments',
-                ])
+                ]) as List<any>
                 if (!lastOrder || !shipments) {
                     return ''
                 }
 
                 const lastOrderLastShipment = shipments
                     .filter(
-                        (shipment) =>
+                        (shipment: Map<any, any>) =>
                             shipment.get('order_id') ===
                             lastOrder.get('entity_id')
                     )
-                    .first()
+                    .first() as Map<any, any>
 
                 if (!lastOrderLastShipment || lastOrderLastShipment.isEmpty()) {
                     return ''
                 }
 
-                const lastTrack = lastOrderLastShipment.getIn(['tracks', 0])
+                const lastTrack = lastOrderLastShipment.getIn([
+                    'tracks',
+                    0,
+                ]) as Map<any, any>
                 if (!lastTrack) {
                     return ''
                 }
 
-                return lastTrack.get('track_number')
+                return lastTrack.get('track_number') as string
             },
         },
         {
             name: 'Shipping date of last order',
             value:
                 '{{ticket.customer.integrations.magento2.orders[0].last_shipment.last_track.created_at}}',
-            replace: (context: Map<*, *>, integrationId: number) => {
+            replace: (context: Map<any, any>, integrationId: number) => {
                 const lastOrder = context.getIn([
                     'ticket',
                     'customer',
@@ -123,31 +128,34 @@ export const MACRO_VARIABLES = {
                     integrationId,
                     'orders',
                     0,
-                ])
+                ]) as Map<any, any>
                 const shipments = context.getIn([
                     'ticket',
                     'customer',
                     'integrations',
                     integrationId,
                     'shipments',
-                ])
+                ]) as List<any>
                 if (!lastOrder || !shipments) {
                     return ''
                 }
 
                 const lastOrderLastShipment = shipments
                     .filter(
-                        (shipment) =>
+                        (shipment: Map<any, any>) =>
                             shipment.get('order_id') ===
                             lastOrder.get('entity_id')
                     )
-                    .first()
+                    .first() as Map<any, any>
 
                 if (!lastOrderLastShipment || lastOrderLastShipment.isEmpty()) {
                     return ''
                 }
 
-                const lastTrack = lastOrderLastShipment.getIn(['tracks', 0])
+                const lastTrack = lastOrderLastShipment.getIn([
+                    'tracks',
+                    0,
+                ]) as Map<any, any>
                 if (!lastTrack) {
                     return ''
                 }
@@ -173,7 +181,7 @@ export const MACRO_VARIABLES = {
 }
 
 export const MACRO_HIDDEN_VARIABLES = {
-    type: MAGENTO2_INTEGRATION_TYPE,
+    type: IntegrationType.Magento2IntegrationType,
     name: 'Magento 2',
     integration: true,
     children: [

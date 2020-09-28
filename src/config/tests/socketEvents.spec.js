@@ -12,7 +12,7 @@ import * as currentAccountConstants from '../../state/currentAccount/constants'
 import * as currentAccountSelectors from '../../state/currentAccount/selectors.ts'
 import * as integrationActions from '../../state/integrations/actions.ts'
 import * as notificationActions from '../../state/notifications/actions.ts'
-import * as socketConstants from '../socketConstants'
+import * as socketConstants from '../socketConstants.ts'
 import * as socketEvents from '../socketEvents'
 
 import {isCurrentlyOnTicket} from '../../utils.ts'
