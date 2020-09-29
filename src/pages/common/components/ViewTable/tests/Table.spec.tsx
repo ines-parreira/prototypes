@@ -1,17 +1,25 @@
-import React from 'react'
+import React, {ComponentProps, ComponentType, ReactElement} from 'react'
 import {shallow} from 'enzyme'
-import {fromJS} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
+import {Store} from 'redux'
 
-import BlankState from '../../BlankState'
-import configureStore from '../../../../../store/configureStore'
-import * as viewsConfig from '../../../../../config/views'
-import * as viewsFixtures from '../../../../../fixtures/views'
-import * as ticketFixtures from '../../../../../fixtures/ticket'
-import * as viewsActions from '../../../../../state/views/actions.ts'
-import Table from '../Table.tsx'
+import BlankState from '../../BlankState/index.js'
+import untypedConfigureStore from '../../../../../store/configureStore.js'
+import * as viewsConfig from '../../../../../config/views.js'
+import * as viewsFixtures from '../../../../../fixtures/views.js'
+import * as ticketFixtures from '../../../../../fixtures/ticket.js'
+import * as viewsActions from '../../../../../state/views/actions'
+import Table from '../Table'
+import {RootState} from '../../../../../state/types'
 
-jest.mock('../../../../../state/views/actions.ts', () => {
-    const _identity = require('lodash/identity')
+// $TsFixMe: Remove on store/configureStore migration
+const configureStore = (untypedConfigureStore as unknown) as (
+    store: Partial<RootState>
+) => Store<RootState>
+
+jest.mock('../../../../../state/views/actions', () => {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const _identity: <T>(arg: T) => T = require('lodash/identity')
 
     return {
         updateSelectedItemsIds: jest.fn(() => _identity),
@@ -19,19 +27,23 @@ jest.mock('../../../../../state/views/actions.ts', () => {
     }
 })
 
+const TableMock = (Table as unknown) as ComponentType<
+    ComponentProps<typeof Table> & {store?: any; location?: any}
+>
+
 describe('ViewTable::Table', () => {
     const minStore = {
         views: fromJS({
             active: viewsFixtures.view,
-        }),
+        }) as Map<any, any>,
     }
 
-    const viewConfig = viewsConfig.views.first()
+    const viewConfig = (viewsConfig.views as List<any>).first() as Map<any, any>
 
     const minProps = {
         view: fromJS({}),
         type: viewConfig.get('name'),
-        fields: viewConfig.get('fields').take(3),
+        fields: (viewConfig.get('fields') as List<any>).take(3) as List<any>,
         config: viewsConfig.getConfigByName('ticket'),
         items: fromJS([ticketFixtures.ticket]),
         isSearch: false,
@@ -39,6 +51,10 @@ describe('ViewTable::Table', () => {
         isLoading: () => false,
         navigation: fromJS({hasPrevItems: false, hasNextItems: false}),
         fetchViewItems: jest.fn(),
+        getItemUrl: () => '',
+        onItemClick: () => undefined,
+        ActionsComponent: null,
+        selectedItemsIds: fromJS([]),
     }
 
     beforeEach(() => {
@@ -47,33 +63,33 @@ describe('ViewTable::Table', () => {
 
     it('should display a view with no fields', () => {
         const component = shallow(
-            <Table {...minProps} fields={fromJS([])} />
+            <TableMock {...minProps} fields={fromJS([])} />
         ).dive()
         expect(component).toMatchSnapshot()
     })
 
     it('should display a default view', () => {
-        const component = shallow(<Table {...minProps} />).dive()
+        const component = shallow(<TableMock {...minProps} />).dive()
         expect(component).toMatchSnapshot()
     })
 
     it('should display a default view with option selectable set to false', () => {
         const component = shallow(
-            <Table {...minProps} selectable={false} />
+            <TableMock {...minProps} selectable={false} />
         ).dive()
         expect(component).toMatchSnapshot()
     })
 
     it('should display a default view with no items', () => {
         const component = shallow(
-            <Table {...minProps} items={fromJS([])} />
+            <TableMock {...minProps} items={fromJS([])} />
         ).dive()
         expect(component).toMatchSnapshot()
     })
 
     it('should display a modified view with no items, should reset the view and fetch first items ', () => {
         const component = shallow(
-            <Table
+            <TableMock
                 {...minProps}
                 items={fromJS([])}
                 view={fromJS({dirty: true})}
@@ -81,7 +97,10 @@ describe('ViewTable::Table', () => {
         ).dive()
         expect(component).toMatchSnapshot()
 
-        const message = shallow(component.find(BlankState).props().message)
+        const message = shallow(
+            (component.find(BlankState).props() as {message: ReactElement})
+                .message
+        )
         message.find('a').simulate('click')
         expect(viewsActions.resetView).toBeCalled()
         expect(minProps.fetchViewItems).toBeCalledWith()
@@ -91,7 +110,7 @@ describe('ViewTable::Table', () => {
         'should select all items on the current page of the active view when there is a click on the "select all"' +
             ' checkbox',
         () => {
-            const component = shallow(<Table {...minProps} />).dive()
+            const component = shallow(<TableMock {...minProps} />).dive()
             const selectAllButton = component.find('thead').find('td').first()
             selectAllButton.simulate('click')
             expect(viewsActions.updateSelectedItemsIds).toBeCalledWith(
@@ -102,7 +121,7 @@ describe('ViewTable::Table', () => {
 
     it('should display all checkboxes as checked when all items are selected', () => {
         const component = shallow(
-            <Table
+            <TableMock
                 {...minProps}
                 selectedItemsIds={fromJS([ticketFixtures.ticket.id])}
                 store={configureStore({

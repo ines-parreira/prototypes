@@ -7,10 +7,11 @@ exports[`ViewTable::ViewTable component default view 1`] = `
   <div
     className="container-padding"
   >
-    <withRouter(Connect(Header))
+    <withRouter(Connect(HeaderContainer))
       isSearch={false}
       isUpdate={true}
       type="ticket"
+      viewButtons={null}
     />
   </div>
   <Connect(FilterTopbarComponent)
@@ -22,6 +23,7 @@ exports[`ViewTable::ViewTable component default view 1`] = `
     className="table"
   >
     <Connect(Table)
+      ActionsComponent={null}
       config={
         Immutable.Map {
           "mainField": "details",
@@ -975,10 +977,11 @@ exports[`ViewTable::ViewTable component render() should render a warning because
   <div
     className="container-padding"
   >
-    <withRouter(Connect(Header))
+    <withRouter(Connect(HeaderContainer))
       isSearch={false}
       isUpdate={true}
       type="ticket"
+      viewButtons={null}
     />
   </div>
   <Connect(FilterTopbarComponent)

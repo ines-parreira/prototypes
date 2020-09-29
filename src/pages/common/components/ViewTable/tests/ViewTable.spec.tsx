@@ -1,27 +1,30 @@
-import {CancelToken} from 'axios'
-import React from 'react'
-import {shallow} from 'enzyme'
+import axios from 'axios'
+import React, {ComponentProps, ComponentType} from 'react'
+import {shallow, ShallowWrapper} from 'enzyme'
 import * as immutableMatchers from 'jest-immutable-matchers'
-import {fromJS} from 'immutable'
-import _identity from 'lodash/identity'
+import {fromJS, Map, List} from 'immutable'
 import _merge from 'lodash/merge'
-import {browserHistory} from 'react-router'
+import {browserHistory, InjectedRouter} from 'react-router'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+import {Location} from 'history'
+import _identity from 'lodash/identity'
 
-import {TICKET_LIST_VIEW_TYPE} from '../../../../../constants/view'
-import * as ticketFixtures from '../../../../../fixtures/ticket'
-import * as viewsActions from '../../../../../state/views/actions.ts'
-import * as viewsConfig from '../../../../../config/views'
-import * as viewsFixtures from '../../../../../fixtures/views'
-import ViewTable, {ViewTableContainer} from '../ViewTable.tsx'
+import {TICKET_LIST_VIEW_TYPE} from '../../../../../constants/view.js'
+import * as ticketFixtures from '../../../../../fixtures/ticket.js'
+import * as viewsActions from '../../../../../state/views/actions'
+import * as viewsConfig from '../../../../../config/views.js'
+import * as viewsFixtures from '../../../../../fixtures/views.js'
+import ViewTable, {ViewTableContainer} from '../ViewTable'
+import {View} from '../../../../../state/views/types'
 
 const mockStore = configureMockStore([thunk])
 
 jest.addMatchers(immutableMatchers)
 
 jest.mock('../../../../../state/views/actions.ts', () => {
-    const _identity = require('lodash/identity')
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const _identity: <T>(arg: T) => T = require('lodash/identity')
 
     return {
         fetchViewItems: jest.fn(() => _identity),
@@ -29,7 +32,15 @@ jest.mock('../../../../../state/views/actions.ts', () => {
         updateView: jest.fn(() => _identity),
     }
 })
-const mockToken = CancelToken.source().token
+const mockToken = axios.CancelToken.source().token
+
+const ViewTableMock = (ViewTable as unknown) as ComponentType<
+    ComponentProps<typeof ViewTable> & {
+        store?: any
+        location?: any
+        navigation?: any
+    }
+>
 
 browserHistory.push = jest.fn()
 
@@ -49,17 +60,25 @@ describe('ViewTable::ViewTable', () => {
                     fetchList: false,
                 },
             },
-        }),
+        }) as Map<any, any>,
     }
 
     const minContainerProps = {
+        updateView: viewsActions.updateView,
         activeView: fromJS({}),
         config: fromJS({}),
         fetchViewItems: jest.fn(),
         getViewIdToDisplay: jest.fn(),
         getView: jest.fn(),
-        location: {query: {}},
+        location: {query: {}} as Location<any>,
         setViewActive: jest.fn(),
+        params: {},
+        router: {} as InjectedRouter,
+        routes: [],
+        isOnFirstPage: true,
+        navigation: fromJS({}),
+        hasActiveView: true,
+        selectedItemsIds: fromJS([]),
     }
 
     const minProps = {
@@ -68,8 +87,12 @@ describe('ViewTable::ViewTable', () => {
         isUpdate: true,
         isSearch: false,
         urlViewId: fixtureView.id.toString(), // id of view coming from url
+        ActionsComponent: null,
+        viewButtons: null,
+        fetchViewItemsCancellable: () => Promise.resolve(null),
+        cancelFetchViewItemsCancellable: () => null,
         store: mockStore(minStore),
-        location: {query: {}},
+        location: {query: {}} as Location<any>,
         config: fromJS({
             type: TICKET_LIST_VIEW_TYPE,
         }),
@@ -85,7 +108,7 @@ describe('ViewTable::ViewTable', () => {
     describe('component', () => {
         it('empty view', () => {
             const component = shallow(
-                <ViewTable
+                <ViewTableMock
                     {...minProps}
                     store={mockStore({
                         ...minStore,
@@ -102,7 +125,7 @@ describe('ViewTable::ViewTable', () => {
         })
 
         it('default view', () => {
-            const component = shallow(<ViewTable {...minProps} />)
+            const component = shallow(<ViewTableMock {...minProps} />)
                 .dive()
                 .dive()
                 .dive()
@@ -119,10 +142,10 @@ describe('ViewTable::ViewTable', () => {
                     const searchQuery = 'foo'
                     const ticketListConfig = viewsConfig.getConfigByName(
                         'ticket'
-                    )
+                    ) as Map<any, any>
 
                     shallow(
-                        <ViewTable
+                        <ViewTableMock
                             {...minProps}
                             isSearch={true}
                             location={{query: {cursor, q: searchQuery}}}
@@ -134,7 +157,9 @@ describe('ViewTable::ViewTable', () => {
                         .dive()
 
                     expect(viewsActions.updateView).toBeCalledWith(
-                        ticketListConfig.get('searchView')(searchQuery),
+                        (ticketListConfig.get('searchView') as (
+                            name: string
+                        ) => View)(searchQuery),
                         false
                     )
                     expect(viewsActions.fetchViewItems).toBeCalledWith(
@@ -149,7 +174,7 @@ describe('ViewTable::ViewTable', () => {
                     'there is no active view',
                 () => {
                     shallow(
-                        <ViewTable
+                        <ViewTableMock
                             {...minProps}
                             store={mockStore({
                                 views: minStore.views.delete('active'),
@@ -164,7 +189,7 @@ describe('ViewTable::ViewTable', () => {
                         .dive()
 
                     expect(viewsActions.setViewActive).toBeCalledWith(
-                        minStore.views.get('items').first()
+                        (minStore.views.get('items') as List<any>).first()
                     )
                     expect(viewsActions.fetchViewItems).toBeCalledWith(
                         null,
@@ -180,7 +205,7 @@ describe('ViewTable::ViewTable', () => {
                     const suggestedViewIndex = 1
 
                     shallow(
-                        <ViewTable
+                        <ViewTableMock
                             {...minProps}
                             store={mockStore({
                                 views: minStore.views.delete('active'),
@@ -215,7 +240,7 @@ describe('ViewTable::ViewTable', () => {
                     const suggestedViewIndex = 1
 
                     shallow(
-                        <ViewTable
+                        <ViewTableMock
                             {...minProps}
                             isSearch={false}
                             urlViewId={minStore.views.getIn([
@@ -245,7 +270,7 @@ describe('ViewTable::ViewTable', () => {
                     'the URL',
                 () => {
                     shallow(
-                        <ViewTable
+                        <ViewTableMock
                             {...minProps}
                             isSearch={false}
                             urlViewId={null}
@@ -271,14 +296,16 @@ describe('ViewTable::ViewTable', () => {
                 'of URL cursor, and we are not on the first page',
             () => {
                 const cursor = '1234'
-                const component = shallow(<ViewTable {...minProps} />)
+                const component: ShallowWrapper<
+                    typeof minProps & typeof minContainerProps
+                > = shallow(<ViewTableMock {...minProps} />)
                     .dive()
                     .dive()
                     .dive()
                     .dive()
 
                 component.setProps({
-                    location: {query: {cursor: '789456'}},
+                    location: {query: {cursor: '789456'}} as Location<any>,
                     navigation: fromJS({current_cursor: cursor}),
                     isLoading: () => true,
                     isOnFirstPage: false,
@@ -288,7 +315,7 @@ describe('ViewTable::ViewTable', () => {
                 jest.clearAllMocks()
 
                 component.setProps({
-                    location: {query: {cursor: '1256'}},
+                    location: {query: {cursor: '1256'}} as Location<any>,
                     navigation: fromJS({
                         current_cursor: cursor,
                         prev_items: 'foo',
@@ -309,20 +336,22 @@ describe('ViewTable::ViewTable', () => {
                 'of URL cursor, and there is no previous items',
             () => {
                 const cursor = '1234'
-                const component = shallow(<ViewTable {...minProps} />)
+                const component: ShallowWrapper<typeof minProps> = shallow(
+                    <ViewTableMock {...minProps} />
+                )
                     .dive()
                     .dive()
                     .dive()
                     .dive()
 
                 component.setProps({
-                    location: {query: {cursor: '789456'}},
+                    location: {query: {cursor: '789456'}} as Location<any>,
                     navigation: fromJS({current_cursor: cursor}),
                     isLoading: () => true,
                 })
 
                 component.setProps({
-                    location: {query: {cursor: '1256'}},
+                    location: {query: {cursor: '1256'}} as Location<any>,
                     navigation: fromJS({current_cursor: cursor}),
                     isLoading: () => false,
                 })
@@ -335,13 +364,17 @@ describe('ViewTable::ViewTable', () => {
         )
 
         it('should call fetchViewItems with the URL cursor when URL cursor changes', () => {
-            const component = shallow(<ViewTable {...minProps} />)
+            const component: ShallowWrapper<typeof minProps> = shallow(
+                <ViewTableMock {...minProps} />
+            )
                 .dive()
                 .dive()
                 .dive()
                 .dive()
             const cursor = '1523467'
-            component.setProps({location: {query: {cursor}}})
+            component.setProps({
+                location: {query: {cursor}} as Location<any>,
+            })
             expect(viewsActions.fetchViewItems).toBeCalledWith(
                 null,
                 cursor,
@@ -354,7 +387,9 @@ describe('ViewTable::ViewTable', () => {
             'should call fetchViewItems with default parameters when there is a stored cursor and no URL cursor ' +
                 'and we are not currently on the first page',
             () => {
-                const component = shallow(<ViewTable {...minProps} />)
+                const component: ShallowWrapper<typeof minContainerProps> = shallow(
+                    <ViewTableMock {...minProps} />
+                )
                     .dive()
                     .dive()
                     .dive()
@@ -379,7 +414,9 @@ describe('ViewTable::ViewTable', () => {
             'should not call fetchViewItems when there is a stored cursor and no URL cursor and we are not currently ' +
                 'on the first page because a request is currently loading',
             () => {
-                const component = shallow(<ViewTable {...minProps} />)
+                const component: ShallowWrapper<
+                    typeof minContainerProps & typeof minProps
+                > = shallow(<ViewTableMock {...minProps} />)
                     .dive()
                     .dive()
                     .dive()
@@ -400,8 +437,10 @@ describe('ViewTable::ViewTable', () => {
             'should not call fetchViewItems when the stored cursor and URL cursor are different and we are not ' +
                 'currently on the first page because a request is currently loading',
             () => {
-                const component = shallow(
-                    <ViewTable
+                const component: ShallowWrapper<
+                    typeof minProps & typeof minContainerProps
+                > = shallow(
+                    <ViewTableMock
                         {...minProps}
                         location={{query: {cursor: '1256'}}}
                         navigation={fromJS({current_cursor: '1256'})}
@@ -415,7 +454,7 @@ describe('ViewTable::ViewTable', () => {
                 jest.clearAllMocks()
 
                 component.setProps({
-                    location: {query: {cursor: '12345678'}},
+                    location: {query: {cursor: '12345678'}} as Location<any>,
                     isOnFirstPage: false,
                     isLoading: () => true,
                 })
@@ -424,8 +463,8 @@ describe('ViewTable::ViewTable', () => {
         )
 
         it('should update the view and call fetchViewItems with default parameters when entering "search" mode', () => {
-            const component = shallow(
-                <ViewTable {...minProps} isSearch={false} />
+            const component: ShallowWrapper<typeof minProps> = shallow(
+                <ViewTableMock {...minProps} isSearch={false} />
             )
                 .dive()
                 .dive()
@@ -447,7 +486,9 @@ describe('ViewTable::ViewTable', () => {
             'should set the new view as active and call fetchViewItems with default parameters when entering "add new" ' +
                 'mode',
             () => {
-                const component = shallow(<ViewTable {...minProps} isUpdate />)
+                const component: ShallowWrapper<typeof minProps> = shallow(
+                    <ViewTableMock {...minProps} isUpdate />
+                )
                     .dive()
                     .dive()
                     .dive()
@@ -469,15 +510,17 @@ describe('ViewTable::ViewTable', () => {
             'should update the view and call fetchViewItems with default parameters because the search query changed ' +
                 'while in search mode',
             () => {
-                const component = shallow(
-                    <ViewTable
+                const component: ShallowWrapper<typeof minProps> = shallow(
+                    <ViewTableMock
                         {...minProps}
                         isSearch={true}
-                        location={_merge({}, minProps.location, {
-                            query: {
-                                q: 'term1',
-                            },
-                        })}
+                        location={
+                            _merge({}, minProps.location, {
+                                query: {
+                                    q: 'term1',
+                                },
+                            }) as Location<any>
+                        }
                     />
                 )
                     .dive()
@@ -489,7 +532,7 @@ describe('ViewTable::ViewTable', () => {
                         query: {
                             q: 'term2',
                         },
-                    }),
+                    }) as Location<any>,
                 })
                 expect(viewsActions.updateView).toBeCalled()
                 expect(viewsActions.fetchViewItems).toBeCalledWith(
@@ -505,7 +548,9 @@ describe('ViewTable::ViewTable', () => {
             'should set the suggested view as active and call fetchViewItems with default parameters when leaving ' +
                 '"search" mode',
             () => {
-                const component = shallow(<ViewTable {...minProps} isSearch />)
+                const component: ShallowWrapper<typeof minProps> = shallow(
+                    <ViewTableMock {...minProps} isSearch />
+                )
                     .dive()
                     .dive()
                     .dive()
@@ -527,8 +572,8 @@ describe('ViewTable::ViewTable', () => {
             'should set the suggested view as active and call fetchViewItems with default parameters when leaving ' +
                 '"add new" mode',
             () => {
-                const component = shallow(
-                    <ViewTable {...minProps} isUpdate={false} />
+                const component: ShallowWrapper<typeof minProps> = shallow(
+                    <ViewTableMock {...minProps} isUpdate={false} />
                 )
                     .dive()
                     .dive()
@@ -551,8 +596,8 @@ describe('ViewTable::ViewTable', () => {
             'should set the suggested view as active and call fetchViewItems with default parameters when suggested ' +
                 'view changed',
             () => {
-                const component = shallow(
-                    <ViewTable {...minProps} urlViewId={'1'} />
+                const component: ShallowWrapper<typeof minProps> = shallow(
+                    <ViewTableMock {...minProps} urlViewId={'1'} />
                 )
                     .dive()
                     .dive()
@@ -579,8 +624,8 @@ describe('ViewTable::ViewTable', () => {
                 ),
             }
 
-            const component = shallow(
-                <ViewTable {...minProps} store={mockStore(store)} />
+            const component: ShallowWrapper<typeof minContainerProps> = shallow(
+                <ViewTableMock {...minProps} store={mockStore(store)} />
             )
                 .dive()
                 .dive()
@@ -590,9 +635,10 @@ describe('ViewTable::ViewTable', () => {
             expect(viewsActions.fetchViewItems).toBeCalledTimes(1)
 
             component.setProps({
-                activeView: store.views
-                    .get('active')
-                    .set('deactivated_datetime', null),
+                activeView: (store.views.get('active') as Map<any, any>).set(
+                    'deactivated_datetime',
+                    null
+                ),
             })
 
             expect(viewsActions.fetchViewItems).toBeCalledTimes(2)
@@ -608,8 +654,8 @@ describe('ViewTable::ViewTable', () => {
                     ),
             }
 
-            const component = shallow(
-                <ViewTable {...minProps} store={mockStore(store)} />
+            const component: ShallowWrapper<typeof minContainerProps> = shallow(
+                <ViewTableMock {...minProps} store={mockStore(store)} />
             )
                 .dive()
                 .dive()
@@ -619,8 +665,7 @@ describe('ViewTable::ViewTable', () => {
             expect(viewsActions.fetchViewItems).toBeCalledTimes(1)
 
             component.setProps({
-                activeView: store.views
-                    .get('active')
+                activeView: (store.views.get('active') as Map<any, any>)
                     .set('id', 20)
                     .set('deactivated_datetime', null),
             })
@@ -631,9 +676,11 @@ describe('ViewTable::ViewTable', () => {
         it('should handle /app/customers selecting the right view and without redirecting', () => {
             shallow(
                 <ViewTableContainer
+                    {...minProps}
                     {...minContainerProps}
+                    urlViewId="42"
                     getViewIdToDisplay={jest.fn(() => 42)}
-                    getView={jest.fn(_identity)}
+                    getView={jest.fn(_identity) as any}
                 />
             )
 
@@ -651,7 +698,7 @@ describe('ViewTable::ViewTable', () => {
                 }
 
                 const component = shallow(
-                    <ViewTable {...minProps} store={mockStore(store)} />
+                    <ViewTableMock {...minProps} store={mockStore(store)} />
                 )
                     .dive()
                     .dive()

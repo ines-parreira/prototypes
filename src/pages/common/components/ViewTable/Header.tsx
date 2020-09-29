@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {browserHistory, Link, withRouter} from 'react-router'
+import {browserHistory, Link, withRouter, WithRouterProps} from 'react-router'
 import {Map} from 'immutable'
 import _get from 'lodash/get'
 import classnames from 'classnames'
@@ -23,16 +23,18 @@ type OwnProps = {
     isSearch: boolean
     isUpdate: boolean
     type: string
-    viewButtons: React.ReactNode
+    viewButtons?: React.ReactNode
 }
 
-type Props = OwnProps & ConnectedProps<typeof connector>
+type Props = OwnProps &
+    ConnectedProps<typeof connector> &
+    WithRouterProps<Record<string, unknown>, {q?: string}>
 
 type State = {
     askDeleteConfirmation: boolean
 }
 
-class Header extends React.Component<Props, State> {
+export class HeaderContainer extends React.Component<Props, State> {
     state = {
         askDeleteConfirmation: false,
     }
@@ -278,4 +280,4 @@ const connector = connect(
     }
 )
 
-export default withRouter(connector(Header))
+export default withRouter(connector(HeaderContainer))

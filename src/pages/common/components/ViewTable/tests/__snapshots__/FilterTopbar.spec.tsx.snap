@@ -272,7 +272,14 @@ exports[`<FilterTopbar/> render() should render correctly when creating a view (
       ADVANCED FILTERS
     </p>
     <Connect(ViewFilters)
+      agents={Immutable.Map {}}
+      currentUser={
+        Immutable.Map {
+          "first_name": "Steve",
+        }
+      }
       removeFieldFilter={[Function]}
+      teams={Immutable.Map {}}
       updateFieldFilter={[Function]}
       updateFieldFilterOperator={[Function]}
       view={
@@ -441,7 +448,7 @@ exports[`<FilterTopbar/> render() should render correctly when creating a view (
         <Button
           className=""
           color="primary"
-          disabled={true}
+          disabled={false}
           onClick={[Function]}
           tag="button"
           type="submit"
@@ -487,7 +494,14 @@ exports[`<FilterTopbar/> render() should render correctly when updating a view (
       ADVANCED FILTERS
     </p>
     <Connect(ViewFilters)
+      agents={Immutable.Map {}}
+      currentUser={
+        Immutable.Map {
+          "first_name": "Steve",
+        }
+      }
       removeFieldFilter={[Function]}
+      teams={Immutable.Map {}}
       updateFieldFilter={[Function]}
       updateFieldFilterOperator={[Function]}
       view={
@@ -716,7 +730,7 @@ exports[`<FilterTopbar/> render() should render correctly when updating a view (
             tag="div"
           >
             <DropdownItem
-              disabled={true}
+              disabled={false}
               key="open"
               onClick={[Function]}
               tag="button"

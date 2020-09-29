@@ -125,7 +125,10 @@ module.exports = {
     setupFiles: ['./g/static/private/js/tests/setup.js'],
 
     // The path to a module that runs some code to configure or set up the testing framework before each test
-    setupFilesAfterEnv: ['<rootDir>/node_modules/jest-enzyme/lib/index.js'],
+    setupFilesAfterEnv: [
+        '<rootDir>/node_modules/jest-enzyme/lib/index.js',
+        '<rootDir>/g/static/private/js/tests/jest-enzyme-setup.ts',
+    ],
 
     // A list of paths to snapshot serializer modules Jest should use for snapshot testing
     // snapshotSerializers: [],

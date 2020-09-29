@@ -125,7 +125,7 @@ export function fieldEnumSearch(
     query: string,
     cancelToken?: CancelToken
 ) {
-    return (): Promise<List<any>> => {
+    return (): Promise<Maybe<List<any>>> => {
         const data = (field.get('filter') as Map<any, any>).toJS() as Record<
             string,
             unknown

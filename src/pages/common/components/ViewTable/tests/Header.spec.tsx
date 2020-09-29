@@ -1,18 +1,26 @@
-import React from 'react'
-import {shallow} from 'enzyme'
-import {fromJS} from 'immutable'
-
+import React, {ComponentProps, ComponentType} from 'react'
+import {shallow, ShallowWrapper} from 'enzyme'
+import {fromJS, Map} from 'immutable'
+import {Store} from 'redux'
 import {browserHistory} from 'react-router'
 
-import Search from '../../Search'
-import configureStore from '../../../../../store/configureStore'
-import * as viewsFixtures from '../../../../../fixtures/views'
-import * as viewsActions from '../../../../../state/views/actions.ts'
-import Header from '../Header.tsx'
-import EmojiSelect from '../EmojiSelect'
+import Search from '../../Search.js'
+import untypedConfigureStore from '../../../../../store/configureStore.js'
+import * as viewsFixtures from '../../../../../fixtures/views.js'
+import * as viewsActions from '../../../../../state/views/actions'
+import Header, {HeaderContainer} from '../Header'
+import EmojiSelect from '../EmojiSelect/index.js'
+import {View} from '../../../../../state/views/types'
+import {RootState} from '../../../../../state/types'
+
+// $TsFixMe: Remove on store/configureStore migration
+const configureStore = (untypedConfigureStore as unknown) as (
+    store: Partial<RootState>
+) => Store<RootState>
 
 jest.mock('../../../../../state/views/actions.ts', () => {
-    const _identity = require('lodash/identity')
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const _identity: <T>(arg: T) => T = require('lodash/identity')
 
     return {
         deleteView: jest.fn(() => _identity),
@@ -24,7 +32,10 @@ jest.mock('../../../../../state/views/actions.ts', () => {
 })
 
 jest.mock('react-router', () => {
-    const reactRouter = require.requireActual('react-router')
+    const reactRouter = require.requireActual('react-router') as Record<
+        string,
+        any
+    >
 
     return {
         ...reactRouter,
@@ -34,16 +45,20 @@ jest.mock('react-router', () => {
     }
 })
 
+const HeaderMock = (Header as unknown) as ComponentType<
+    ComponentProps<typeof Header> & {store?: any; location?: any}
+>
+
 describe('ViewTable::Header', () => {
     const fixtureView = viewsFixtures.view
 
-    const storeWithActiveView = (activeView) => ({
+    const storeWithActiveView = (activeView: View | Map<any, any>) => ({
         views: fromJS({
             active: activeView,
         }),
     })
 
-    const minStore = storeWithActiveView(fixtureView)
+    const minStore = storeWithActiveView((fixtureView as unknown) as View)
 
     const minProps = {
         type: 'ticket',
@@ -58,7 +73,7 @@ describe('ViewTable::Header', () => {
 
     it('empty view', () => {
         const component = shallow(
-            <Header
+            <HeaderMock
                 {...minProps}
                 store={configureStore({
                     ...minStore,
@@ -74,7 +89,7 @@ describe('ViewTable::Header', () => {
 
     it('search view', () => {
         const component = shallow(
-            <Header
+            <HeaderMock
                 {...minProps}
                 isSearch
                 location={{
@@ -90,9 +105,9 @@ describe('ViewTable::Header', () => {
     })
 
     describe('default view', () => {
-        let component
+        let component: ShallowWrapper
         beforeEach(() => {
-            component = shallow(<Header {...minProps} />)
+            component = shallow(<HeaderMock {...minProps} />)
                 .dive()
                 .dive()
         })
@@ -102,13 +117,15 @@ describe('ViewTable::Header', () => {
         })
 
         it('search term on change in search input', () => {
-            const searchOnChange = component.find(Search).props().onChange
+            const searchOnChange = (component.find(Search).props() as {
+                onChange: (search: string) => void
+            }).onChange
             searchOnChange('term1')
             expect(browserHistory.push).toBeCalled()
         })
 
         it('go in search mode when focusing the search input', () => {
-            component.find(Search).props().onFocus()
+            ;(component.find(Search).props() as {onFocus: () => void}).onFocus()
             expect(browserHistory.push).toHaveBeenNthCalledWith(
                 1,
                 '/app/tickets/search?q='
@@ -117,7 +134,7 @@ describe('ViewTable::Header', () => {
 
         it('get search query from url', () => {
             const component = shallow(
-                <Header
+                <HeaderMock
                     {...minProps}
                     location={{
                         query: {
@@ -128,17 +145,25 @@ describe('ViewTable::Header', () => {
             )
                 .dive()
                 .dive()
-            expect(component.instance()._searchQuery()).toBe('term1')
+            expect(
+                (component.instance() as InstanceType<
+                    typeof HeaderContainer
+                >)._searchQuery()
+            ).toBe('term1')
         })
 
         it('update view name', () => {
-            component.instance()._updateViewName('new name')
+            ;(component.instance() as InstanceType<
+                typeof HeaderContainer
+            >)._updateViewName('new name')
             expect(viewsActions.updateView).toBeCalled()
         })
 
         it('toggle delete confirmation', () => {
             expect(component.state('askDeleteConfirmation')).toBe(false)
-            component.instance()._toggleDeleteConfirmation()
+            ;(component.instance() as InstanceType<
+                typeof HeaderContainer
+            >)._toggleDeleteConfirmation()
             expect(component.state('askDeleteConfirmation')).toBe(true)
         })
     })
@@ -147,7 +172,7 @@ describe('ViewTable::Header', () => {
         const editModeActiveView = fromJS({
             ...fixtureView,
             editMode: true,
-        })
+        }) as Map<any, any>
 
         const emoji = '1'
 
@@ -157,7 +182,7 @@ describe('ViewTable::Header', () => {
                     decoration: {emoji: 'foo'},
                 })
                 const component = shallow(
-                    <Header
+                    <HeaderMock
                         {...minProps}
                         store={configureStore(storeWithActiveView(activeView))}
                     />
@@ -172,7 +197,7 @@ describe('ViewTable::Header', () => {
                     decoration: 'foo',
                 })
                 const component = shallow(
-                    <Header
+                    <HeaderMock
                         {...minProps}
                         store={configureStore(storeWithActiveView(activeView))}
                     />
@@ -189,7 +214,7 @@ describe('ViewTable::Header', () => {
                     },
                 })
                 const component = shallow(
-                    <Header
+                    <HeaderMock
                         {...minProps}
                         store={configureStore(storeWithActiveView(activeView))}
                     />
@@ -206,14 +231,16 @@ describe('ViewTable::Header', () => {
                     decoration: null,
                 })
                 const component = shallow(
-                    <Header
+                    <HeaderMock
                         {...minProps}
                         store={configureStore(storeWithActiveView(activeView))}
                     />
                 )
                     .dive()
                     .dive()
-                component.find(EmojiSelect).props().onEmojiSelect(emoji)
+                ;(component.find(EmojiSelect).props() as {
+                    onEmojiSelect: (emoji: string) => void
+                }).onEmojiSelect(emoji)
                 const expectedActiveView = activeView.merge({
                     decoration: {emoji},
                 })
@@ -226,14 +253,16 @@ describe('ViewTable::Header', () => {
                 const decoration = {foo: 'bar'}
                 const activeView = editModeActiveView.merge({decoration})
                 const component = shallow(
-                    <Header
+                    <HeaderMock
                         {...minProps}
                         store={configureStore(storeWithActiveView(activeView))}
                     />
                 )
                     .dive()
                     .dive()
-                component.find(EmojiSelect).props().onEmojiSelect(emoji)
+                ;(component.find(EmojiSelect).props() as {
+                    onEmojiSelect: (emoji: string) => void
+                }).onEmojiSelect(emoji)
                 const expectedActiveView = activeView.merge({
                     decoration: {
                         ...decoration,
@@ -252,7 +281,7 @@ describe('ViewTable::Header', () => {
                     decoration: {emoji},
                 })
                 const component = shallow(
-                    <Header
+                    <HeaderMock
                         {...minProps}
                         store={configureStore(storeWithActiveView(activeView))}
                     />
@@ -260,7 +289,9 @@ describe('ViewTable::Header', () => {
                     .dive()
                     .dive()
 
-                component.find(EmojiSelect).props().onEmojiClear()
+                ;(component.find(EmojiSelect).props() as {
+                    onEmojiClear: () => void
+                }).onEmojiClear()
                 const expectedActiveView = activeView.merge({
                     decoration: {},
                 })
@@ -274,7 +305,7 @@ describe('ViewTable::Header', () => {
                     decoration: null,
                 })
                 const component = shallow(
-                    <Header
+                    <HeaderMock
                         {...minProps}
                         store={configureStore(storeWithActiveView(activeView))}
                     />
@@ -282,7 +313,9 @@ describe('ViewTable::Header', () => {
                     .dive()
                     .dive()
 
-                component.find(EmojiSelect).props().onEmojiClear()
+                ;(component.find(EmojiSelect).props() as {
+                    onEmojiClear: () => void
+                }).onEmojiClear()
                 expect(viewsActions.updateView).not.toHaveBeenCalled()
             })
         })
