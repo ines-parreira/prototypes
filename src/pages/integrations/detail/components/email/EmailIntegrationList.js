@@ -24,11 +24,17 @@ type Props = {
     loading: Object,
     actions: Object,
     gmailRedirectUri: string,
+    outlookRedirectUri: string,
 }
 
 export default class EmailIntegrationList extends React.Component<Props> {
     render() {
-        const {integrations, loading, gmailRedirectUri} = this.props
+        const {
+            integrations,
+            loading,
+            gmailRedirectUri,
+            outlookRedirectUri,
+        } = this.props
 
         const longTypeDescription = (
             <span>
@@ -98,17 +104,18 @@ export default class EmailIntegrationList extends React.Component<Props> {
                                 </Button>
                             )}
                             {!active && isOutlook && (
-                                <div>
-                                    <i
-                                        className={classnames(
-                                            'material-icons mr-2 yellow'
-                                        )}
-                                    >
-                                        warning
-                                    </i>
-                                    This integration is deactivated, please
-                                    delete and re-add it.
-                                </div>
+                                <Button
+                                    tag="a"
+                                    color="success"
+                                    href={`${outlookRedirectUri}?integration_id=${integration.get(
+                                        'id'
+                                    )}`}
+                                    className={classnames({
+                                        'btn-loading': isRowSubmitting,
+                                    })}
+                                >
+                                    Reactivate
+                                </Button>
                             )}
                             {!isGmail && !isOutlook && !isVerified && (
                                 <div>

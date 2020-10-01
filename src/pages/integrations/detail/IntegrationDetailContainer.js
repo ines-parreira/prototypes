@@ -9,6 +9,7 @@ import {
     EMAIL_INTEGRATION_TYPE,
     FACEBOOK_INTEGRATION_TYPE,
     GMAIL_INTEGRATION_TYPE,
+    OUTLOOK_INTEGRATION_TYPE,
     GORGIAS_CHAT_INTEGRATION_TYPE,
     HTTP_INTEGRATION_TYPE,
     MAGENTO2_INTEGRATION_TYPE,
@@ -222,6 +223,9 @@ class IntegrationDetailContainer extends React.Component {
                         loading={commonProps.loading}
                         gmailRedirectUri={getRedirectUri(
                             GMAIL_INTEGRATION_TYPE
+                        )}
+                        outlookRedirectUri={getRedirectUri(
+                            OUTLOOK_INTEGRATION_TYPE
                         )}
                     />
                 )
