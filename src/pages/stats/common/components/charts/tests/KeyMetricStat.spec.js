@@ -7,7 +7,7 @@ import {
     REVENUE_OVERVIEW,
     SATISFACTION_SURVEYS,
     stats as statsConfig,
-} from '../../../../../../config/stats'
+} from '../../../../../../config/stats.tsx'
 import KeyMetricStat from '../KeyMetricStat'
 
 describe('KeyMetricStat', () => {

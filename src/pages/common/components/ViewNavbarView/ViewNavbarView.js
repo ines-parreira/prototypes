@@ -5,7 +5,7 @@ import {browserHistory, Link} from 'react-router'
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
 
-import {MAX_TICKET_COUNT_PER_VIEW} from '../../../../config/views'
+import {MAX_TICKET_COUNT_PER_VIEW} from '../../../../config/views.tsx'
 import {getPluralObjectName} from '../../../../utils.ts'
 import Tooltip from '../Tooltip'
 import shortcutManager from '../../../../services/shortcutManager/index.ts'

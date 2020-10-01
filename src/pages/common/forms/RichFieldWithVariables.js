@@ -10,7 +10,7 @@ import {
 
 import {attachEntitiesToVariables} from '../draftjs/plugins/variables/utils'
 import {insertText} from '../../../utils.ts'
-import {getVariables} from '../../../config/ticket'
+import {getVariables} from '../../../config/ticket.ts'
 
 import RichField from './RichField'
 

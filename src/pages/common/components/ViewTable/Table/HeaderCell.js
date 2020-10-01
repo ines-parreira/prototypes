@@ -13,7 +13,7 @@ import ShowMoreFieldsDropdown from '../ShowMoreFieldsDropdown.tsx'
 import * as viewsActions from '../../../../../state/views/actions.ts'
 import * as viewsSelectors from '../../../../../state/views/selectors.ts'
 
-import * as viewsConfig from '../../../../../config/views'
+import * as viewsConfig from '../../../../../config/views.tsx'
 
 @connect(
     (state, ownProps) => {

@@ -5,7 +5,7 @@ import {Moment} from 'moment'
 import {browserHistory} from 'react-router'
 import {updateNotification} from 'reapop'
 
-import * as viewsConfig from '../../config/views.js'
+import * as viewsConfig from '../../config/views'
 import {BASE_VIEW_ID} from '../../constants/view.js'
 import {OrderDirection, ApiListResponsePagination} from '../../models/api/types'
 import {Job, JobType} from '../../models/job/types'
@@ -13,7 +13,10 @@ import {Ticket} from '../../models/ticket/types'
 import {notify} from '../notifications/actions'
 import {NotificationStatus, Notification} from '../notifications/types'
 import socketManager from '../../services/socketManager/socketManager'
-import {SocketEventType} from '../../services/socketManager/types'
+import {
+    SocketEventType,
+    JoinEventType,
+} from '../../services/socketManager/types'
 import {
     getHashOfObj,
     getPluralObjectName,
@@ -39,7 +42,7 @@ export const setViewActive = (view: ViewImmutable) => (
     dispatch: StoreDispatch
 ): ReturnType<StoreDispatch> => {
     if (view) {
-        socketManager.join('view', view.get('id'))
+        socketManager.join(JoinEventType.View, view.get('id'))
     }
 
     dispatch(addRecentView(view.get('id') as number) as any)
@@ -298,10 +301,7 @@ export function deleteView(view: ViewImmutable) {
 
         return axios.delete(`/api/views/${view.get('id') as number}/`).then(
             () => {
-                const viewConfig = viewsConfig.getConfigByType(vType) as Map<
-                    any,
-                    any
-                >
+                const viewConfig = viewsConfig.getConfigByType(vType)
                 const destinationView = otherViewsOfType.first() as Map<
                     any,
                     any
@@ -342,7 +342,7 @@ export const deleteViewSuccess = (viewId: number) => (
     if (state.getIn(['active', 'id']) === viewId) {
         const viewConfig = viewsConfig.getConfigByType(
             state.getIn(['active', 'type'])
-        ) as Map<any, any>
+        )
         const destinationView = (state.get('items') as List<any>).find(
             (v: Map<any, any>) => {
                 return v.get('type') === state.getIn(['active', 'type'])
@@ -373,10 +373,7 @@ export function fetchViewItems(
         let state = getState()
         const activeView = viewsSelectors.getActiveView(state)
         const activeViewType = activeView.get('type')
-        const viewConfig = viewsConfig.getConfigByType(activeViewType) as Map<
-            any,
-            any
-        >
+        const viewConfig = viewsConfig.getConfigByType(activeViewType)
         const navigation = viewsSelectors.getNavigation(state)
 
         const viewId = activeView.get('id') as number
@@ -547,10 +544,7 @@ export function createJob(
                 message: buildJobMessage(
                     jobType,
                     true,
-                    (viewsConfig.getConfigByType(view.get('type')) as Map<
-                        any,
-                        any
-                    >).get('plural'),
+                    viewsConfig.getConfigByType(view.get('type')).get('plural'),
                     jobPartialParams
                 ),
                 buttons: [],
@@ -613,9 +607,9 @@ export function createJob(
                     } else {
                         notification.message =
                             'Failed to apply action on ' +
-                            ((viewsConfig.getConfigByType(
-                                view.get('type')
-                            ) as Map<any, any>).get('plural') as string) +
+                            (viewsConfig
+                                .getConfigByType(view.get('type'))
+                                .get('plural') as string) +
                             ' view. Please try again.'
                     }
                     //eslint-disable-next-line @typescript-eslint/no-unsafe-call

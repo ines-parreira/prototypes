@@ -1,4 +1,9 @@
+import {Map} from 'immutable'
+
 import {RecentChatTicket} from '../../business/types/recentChats'
+import {Ticket} from '../../models/ticket/types'
+import {View} from '../../state/views/types'
+import {Account} from '../../state/currentAccount/types'
 
 export enum BroadcastChannelEvent {
     ServerMessage = 'SERVER_MESSAGE',
@@ -29,11 +34,18 @@ export enum SocketEventType {
     ViewsDeactivated = 'views-deactivated',
 }
 
+export enum JoinEventType {
+    Ticket = 'ticket',
+    Customer = 'customer',
+    View = 'view',
+    Integration = 'integration',
+}
+
 export type CustomerUpdatedEvent = {
     event: {
         type: 'customer-updated'
     }
-    customer: Record<string, unknown>
+    customer: Map<any, any>
 }
 
 export type UserLocationUpdatedEvent = {
@@ -54,18 +66,14 @@ export type TicketUpdatedEvent = {
     event: {
         type: 'ticket-updated'
     }
-    ticket: {
-        id: number
-    }
+    ticket: Ticket
 }
 
 export type TicketMessageCreatedEvent = {
     event: {
         type: 'ticket-message-created'
     }
-    ticket: {
-        id: number
-    }
+    ticket: Ticket
 }
 
 export type TicketMessageActionFailedEvent = {
@@ -91,6 +99,10 @@ export type ActionExecutedEvent = {
     event: {
         type: 'action-executed'
     }
+    status: string
+    user_id: string
+    ticket_id: string
+    msg: string
 }
 
 export type ViewCreatedEvent = {
@@ -104,30 +116,29 @@ export type ViewUpdatedEvent = {
     event: {
         type: 'view-updated'
     }
-    view: Record<string, unknown>
+    view: View
 }
 
 export type ViewDeletedEvent = {
     event: {
         type: 'view-deleted'
     }
-    view: Record<string, unknown>
+    view: View
 }
 
 export type ViewCountUpdatedEvent = {
     event: {
         type: 'view-count-updated'
     }
-    view: Record<string, unknown>
+    view: View
+    counts: {counts: number}
 }
 
 export type AccountUpdatedEvent = {
     event: {
         type: SocketEventType.AccountUpdated
     }
-    account: {
-        settings: Array<Record<string, unknown>>
-    }
+    account: Account
 }
 
 export type SIDUpdatedEvent = {

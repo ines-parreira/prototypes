@@ -10,7 +10,7 @@ import {
     FACEBOOK_INTEGRATION_TYPE,
     GMAIL_INTEGRATION_TYPE,
 } from '../../../../constants/integration'
-import {EMAIL_CHANNEL, OPEN_STATUS} from '../../../../config/ticket'
+import {EMAIL_CHANNEL, OPEN_STATUS} from '../../../../config/ticket.ts'
 import * as labels from '../labels'
 
 /* DatetimeLabel uses Math.random.

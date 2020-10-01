@@ -5,7 +5,7 @@ import _isNil from 'lodash/isNil'
 
 import {getCode} from '../../utils'
 import {GorgiasAction, RootState} from '../types'
-import {MAX_RECENT_VIEWS} from '../../config/views.js'
+import {MAX_RECENT_VIEWS} from '../../config/views'
 
 import * as constants from './constants.js'
 import {

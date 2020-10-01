@@ -6,7 +6,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import FilterTopbar, {FilterTopbarComponent} from '../FilterTopbar'
-import * as viewsConfig from '../../../../../config/views.js'
+import * as viewsConfig from '../../../../../config/views'
 import {
     addFieldFilter,
     removeFieldFilter,

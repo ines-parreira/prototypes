@@ -7,7 +7,7 @@ import MockAdapter from 'axios-mock-adapter'
 import axios from 'axios'
 
 import {Stats} from '../Stats'
-import {views as statsViewsConfig} from '../../../config/stats'
+import {views as statsViewsConfig} from '../../../config/stats.tsx'
 import {firstResponseTimeStat} from '../../../fixtures/stats'
 
 describe('<Stats/>', () => {

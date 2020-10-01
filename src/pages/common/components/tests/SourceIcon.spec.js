@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 
 import SourceIcon from '../SourceIcon'
-import * as ticketConfig from '../../../../config/ticket'
+import * as ticketConfig from '../../../../config/ticket.ts'
 
 describe('SourceIcon component', () => {
     it('should show default icon', () => {

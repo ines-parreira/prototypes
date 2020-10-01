@@ -5,7 +5,7 @@ import moment from 'moment'
 import {fromJS, List} from 'immutable'
 
 import {getHashOfObj} from '../../utils.ts'
-import {views, STORE_INTEGRATION_TYPES} from '../../config/stats'
+import {views, STORE_INTEGRATION_TYPES} from '../../config/stats.tsx'
 import {getIntegrations} from '../../state/integrations/selectors.ts'
 import {resetStatsFilters, setStatsFilters} from '../../state/stats/actions.ts'
 import {getFilters} from '../../state/stats/selectors.ts'

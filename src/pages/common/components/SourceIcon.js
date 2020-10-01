@@ -33,7 +33,7 @@ import {
     PHONE_SOURCE,
     SYSTEM_MESSAGE_SOURCE,
     TWITTER_SOURCE,
-} from '../../../config/ticket'
+} from '../../../config/ticket.ts'
 
 type Props = {
     type?: SourceType,

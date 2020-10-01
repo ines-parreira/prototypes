@@ -2,7 +2,7 @@ import {Map} from 'immutable'
 import {createSelector} from 'reselect'
 
 import {RootState} from '../types'
-import {views as statViewsConfig} from '../../config/stats.js'
+import {views as statViewsConfig} from '../../config/stats'
 
 import {StatsState} from './types'
 

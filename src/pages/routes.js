@@ -2,7 +2,7 @@
 import React from 'react'
 import {IndexRedirect, IndexRoute, Route} from 'react-router'
 
-import {ADMIN_ROLE, AGENT_ROLE} from '../config/user'
+import {ADMIN_ROLE, AGENT_ROLE} from '../config/user.ts'
 
 import App from './App'
 import IntegrationDetailContainer from './integrations/detail/IntegrationDetailContainer'

@@ -24,6 +24,7 @@ export type StoreState = {
     agents: Map<any, any>
     auths: List<any>
     billing: Map<any, any>
+    chats: Map<any, any>
     currentAccount: Map<any, any>
     currentUser: Map<any, any>
     customers: Map<any, any>

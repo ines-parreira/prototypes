@@ -13,7 +13,7 @@ import _identity from 'lodash/identity'
 import {TICKET_LIST_VIEW_TYPE} from '../../../../../constants/view.js'
 import * as ticketFixtures from '../../../../../fixtures/ticket.js'
 import * as viewsActions from '../../../../../state/views/actions'
-import * as viewsConfig from '../../../../../config/views.js'
+import * as viewsConfig from '../../../../../config/views'
 import * as viewsFixtures from '../../../../../fixtures/views.js'
 import ViewTable, {ViewTableContainer} from '../ViewTable'
 import {View} from '../../../../../state/views/types'
@@ -142,7 +142,7 @@ describe('ViewTable::ViewTable', () => {
                     const searchQuery = 'foo'
                     const ticketListConfig = viewsConfig.getConfigByName(
                         'ticket'
-                    ) as Map<any, any>
+                    )
 
                     shallow(
                         <ViewTableMock

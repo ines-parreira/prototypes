@@ -18,7 +18,7 @@ import RichField from '../../../../../common/forms/RichField'
 import {insertText} from '../../../../../../utils.ts'
 import {convertToHTML, getPlainText} from '../../../../../../utils/editor.ts'
 
-import {getVariables} from '../../../../../../config/ticket'
+import {getVariables} from '../../../../../../config/ticket.ts'
 
 @connect((state) => {
     return {

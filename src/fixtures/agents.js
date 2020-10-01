@@ -1,5 +1,5 @@
 //@flow
-import {ADMIN_ROLE, AGENT_ROLE} from '../config/user'
+import {ADMIN_ROLE, AGENT_ROLE} from '../config/user.ts'
 
 export const agents = [
     {

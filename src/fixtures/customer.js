@@ -1,5 +1,5 @@
 //@flow
-import {USER_ROLE} from '../config/user'
+import {USER_ROLE} from '../config/user.ts'
 
 export const customer = {
     lastname: 'Bon',

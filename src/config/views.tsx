@@ -1,12 +1,13 @@
-//@flow
 import React from 'react'
-import {fromJS, type Map} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 import _isUndefined from 'lodash/isUndefined'
 
-import {EMAIL_INTEGRATION_TYPES} from '../constants/integration'
-import {BASE_VIEW_ID} from '../constants/view'
-import {getAST, getLanguageDisplayName, stripHTML} from '../utils.ts'
-import {getMomentUtcISOString} from '../utils/date.ts'
+import {EMAIL_INTEGRATION_TYPES} from '../constants/integration.js'
+import {BASE_VIEW_ID} from '../constants/view.js'
+import {OrderDirection} from '../models/api/types'
+import {ViewField, ViewType} from '../state/views/types'
+import {getAST, getLanguageDisplayName, stripHTML} from '../utils'
+import {getMomentUtcISOString} from '../utils/date'
 
 import * as ticketConfig from './ticket'
 import TICKET_LANGUAGES from './ticketLanguages'
@@ -23,8 +24,8 @@ export const MAX_RECENT_VIEWS = 8
 // Maximum number of tickets we count per view
 export const MAX_TICKET_COUNT_PER_VIEW = 5000
 
-export const defaultCell = (fieldName: string, item: Map<*, *>) => {
-    const value = item.get(fieldName)
+export const defaultCell = (fieldName: string, item: Map<any, any>) => {
+    const value = item.get(fieldName) as Maybe<string>
 
     if (_isUndefined(value)) {
         console.error('Invalid field type in view table cell', fieldName)
@@ -43,7 +44,7 @@ export const baseView = () =>
         order_by: 'updated_datetime',
         display_order: 1,
         created_datetime: getMomentUtcISOString(),
-        order_dir: 'desc',
+        order_dir: OrderDirection.Desc,
         filters: '',
         filters_ast: {
             sourceType: 'script',
@@ -60,34 +61,39 @@ export const baseView = () =>
             },
             type: 'Program',
         },
-    })
+    }) as Map<any, any>
 
 export const defaultMergeTicketsView = (
     ticketId: number,
     searchQuery?: string,
-    customerId: ?number
+    customerId?: Maybe<number>
 ) => {
-    let filters = customerId
+    const filters = customerId
         ? `neq(ticket.id, ${ticketId}) && eq(ticket.customer.id, ${customerId})`
         : `neq(ticket.id, ${ticketId})`
 
     return fromJS({
         id: BASE_VIEW_ID,
         search: customerId ? null : searchQuery,
-        fields: ['details', 'customer', 'channel', 'created'],
+        fields: [
+            ViewField.Details,
+            ViewField.Customer,
+            ViewField.Channel,
+            ViewField.Created,
+        ],
         filters,
         filters_ast: getAST(filters),
         order_by: 'created_datetime',
-        order_dir: 'desc',
-        type: 'ticket-list',
+        order_dir: OrderDirection.Desc,
+        type: ViewType.TicketList,
         slug: 'merge-tickets',
-    })
+    }) as Map<any, any>
 }
 
 export const views = fromJS([
     {
         name: 'ticket',
-        type: 'ticket-list',
+        type: ViewType.TicketList,
         routeItem: 'ticket', // UI route for this object
         routeList: 'tickets', // UI route for the list of those objects
         api: 'tickets', // api endpoint for this object
@@ -96,15 +102,15 @@ export const views = fromJS([
         mainField: 'details', // mandatory field (+ where are displayed bulk actions)
         fields: [
             {
-                name: 'details',
+                name: ViewField.Details,
                 title: 'Details',
             },
             {
-                name: 'subject',
+                name: ViewField.Subject,
                 title: 'Subject',
             },
             {
-                name: 'integrations',
+                name: ViewField.Integrations,
                 title: 'Integration',
                 path: 'messages.integration_id',
                 filter: {
@@ -115,7 +121,7 @@ export const views = fromJS([
                 },
             },
             {
-                name: 'tags',
+                name: ViewField.Tags,
                 title: 'Tags',
                 path: 'tags.name', // specify if different from name and if used in filters
                 filter: {
@@ -123,7 +129,7 @@ export const views = fromJS([
                 },
             },
             {
-                name: 'customer',
+                name: ViewField.Customer,
                 title: 'Customer',
                 path: 'customer.id',
                 filter: {
@@ -131,7 +137,7 @@ export const views = fromJS([
                 },
             },
             {
-                name: 'assignee_team',
+                name: ViewField.AssigneeTeam,
                 title: 'Assignee team',
                 path: 'assignee_team.id',
                 filter: {
@@ -139,7 +145,7 @@ export const views = fromJS([
                 },
             },
             {
-                name: 'assignee',
+                name: ViewField.Assignee,
                 title: 'Assignee user',
                 path: 'assignee_user.id',
                 filter: {
@@ -148,28 +154,28 @@ export const views = fromJS([
                 },
             },
             {
-                name: 'status',
+                name: ViewField.Status,
                 title: 'Status',
                 filter: {
                     enum: ticketConfig.STATUSES,
                 },
             },
             {
-                name: 'language',
+                name: ViewField.Language,
                 title: 'Language',
                 filter: {
                     enum: TICKET_LANGUAGES.map((lang) => lang.localeName),
                 },
             },
             {
-                name: 'channel',
+                name: ViewField.Channel,
                 title: 'Channel',
                 filter: {
                     enum: ticketConfig.CHANNELS,
                 },
             },
             {
-                name: 'created',
+                name: ViewField.Created,
                 title: 'Created',
                 path: 'created_datetime',
                 filter: {
@@ -179,7 +185,7 @@ export const views = fromJS([
                 },
             },
             {
-                name: 'updated',
+                name: ViewField.Updated,
                 title: 'Updated',
                 path: 'updated_datetime',
                 filter: {
@@ -189,7 +195,7 @@ export const views = fromJS([
                 },
             },
             {
-                name: 'last_message',
+                name: ViewField.LastMessage,
                 title: 'Last message',
                 path: 'last_message_datetime',
                 filter: {
@@ -199,7 +205,7 @@ export const views = fromJS([
                 },
             },
             {
-                name: 'last_received_message',
+                name: ViewField.LastReceivedMessage,
                 title: 'Last received message',
                 path: 'last_received_message_datetime',
                 filter: {
@@ -209,7 +215,7 @@ export const views = fromJS([
                 },
             },
             {
-                name: 'closed',
+                name: ViewField.Closed,
                 title: 'Closed',
                 path: 'closed_datetime',
                 filter: {
@@ -219,7 +225,7 @@ export const views = fromJS([
                 },
             },
             {
-                name: 'snooze',
+                name: ViewField.Snooze,
                 title: 'Snooze',
                 path: 'snooze_datetime',
                 filter: {
@@ -229,34 +235,46 @@ export const views = fromJS([
                 },
             },
         ],
-        cell: (fieldName, item) => {
+        cell: (fieldName: ViewField, item: Map<any, any>) => {
             switch (fieldName) {
-                case 'created':
-                    return item.get('created_datetime') || ''
-                case 'updated':
-                    return item.get('updated_datetime') || ''
-                case 'closed':
-                    return item.get('closed_datetime') || ''
-                case 'snooze':
-                    return item.get('snooze_datetime') || ''
-                case 'last_message':
-                    return item.get('last_message_datetime') || ''
-                case 'last_received_message':
-                    return item.get('last_received_message_datetime') || ''
-                case 'customer':
-                    return item.get('customer') || fromJS({})
-                case 'assignee_team':
-                    return item.get('assignee_team') || fromJS({})
-                case 'assignee':
-                    return item.get('assignee_user') || fromJS({})
-                case 'language': {
-                    return getLanguageDisplayName(item.get('language'))
+                case ViewField.Created:
+                    return (item.get('created_datetime') as string) || ''
+                case ViewField.Updated:
+                    return (item.get('updated_datetime') as string) || ''
+                case ViewField.Closed:
+                    return (item.get('closed_datetime') as string) || ''
+                case ViewField.Snooze:
+                    return (item.get('snooze_datetime') as string) || ''
+                case ViewField.LastMessage:
+                    return (item.get('last_message_datetime') as string) || ''
+                case ViewField.LastReceivedMessage:
+                    return (
+                        (item.get(
+                            'last_received_message_datetime'
+                        ) as string) || ''
+                    )
+                case ViewField.Customer:
+                    return (item.get('customer') as Map<any, any>) || fromJS({})
+                case ViewField.AssigneeTeam:
+                    return (
+                        (item.get('assignee_team') as Map<any, any>) ||
+                        fromJS({})
+                    )
+                case ViewField.Assignee:
+                    return (
+                        (item.get('assignee_user') as Map<any, any>) ||
+                        fromJS({})
+                    )
+                case ViewField.Language: {
+                    return getLanguageDisplayName(
+                        item.get('language')
+                    ) as string
                 }
-                case 'details': {
+                case ViewField.Details: {
                     let subject = stripHTML(item.get('subject'))
 
                     // Optionally show how many messages a ticket has in the subject
-                    const messageCount = item.get('messages_count')
+                    const messageCount = item.get('messages_count') as number
                     if (messageCount > 1) {
                         subject = `(${messageCount}) ${subject || ''}`
                     }
@@ -277,10 +295,9 @@ export const views = fromJS([
                         </div>
                     )
                 }
-                case 'integrations': {
-                    return item
-                        .get('integrations', fromJS([]))
-                        .map((inte) => {
+                case ViewField.Integrations: {
+                    return (item.get('integrations', fromJS([])) as List<any>)
+                        .map((inte: Maybe<Map<any, any>>) => {
                             if (!inte) {
                                 return ''
                             }
@@ -289,28 +306,31 @@ export const views = fromJS([
                                     inte.get('type')
                                 )
                             ) {
-                                return `${inte.get('name', '')} <${inte.get(
-                                    'address',
-                                    ''
-                                )}>`
+                                return `${inte.get('name', '') as string} <${
+                                    inte.get('address', '') as string
+                                }>`
                             }
-                            return inte.get('name', '')
+                            return inte.get('name', '') as string
                         })
                         .join(', ')
                 }
-                case 'tags': {
+                case ViewField.Tags: {
                     return (
                         <div className="d-flex">
-                            {item
-                                .get('tags', fromJS([]))
+                            {(item.get('tags', fromJS([])) as List<any>)
                                 .sort(
-                                    (a, b) =>
-                                        a.get('name').toLowerCase() >
-                                        b.get('name').toLowerCase()
+                                    ((a: Map<any, any>, b: Map<any, any>) =>
+                                        (a.get(
+                                            'name'
+                                        ) as string).toLowerCase() >
+                                        (b.get(
+                                            'name'
+                                        ) as string).toLowerCase()) as any
                                 )
-                                .map((tag) => {
+                                .map((tag: Map<any, any>) => {
                                     const {
                                         TagLabel,
+                                        //eslint-disable-next-line @typescript-eslint/no-var-requires
                                     } = require('../pages/common/utils/labels') // require cycle
                                     return (
                                         <TagLabel
@@ -332,39 +352,39 @@ export const views = fromJS([
         newView: () => {
             return baseView().merge({
                 fields: [
-                    'details',
-                    'channel',
-                    'assignee',
-                    'status',
-                    'customer',
-                    'created',
-                    'last_message',
+                    ViewField.Details,
+                    ViewField.Channel,
+                    ViewField.Assignee,
+                    ViewField.Status,
+                    ViewField.Customer,
+                    ViewField.Created,
+                    ViewField.LastMessage,
                 ],
-                type: 'ticket-list',
+                type: ViewType.TicketList,
                 order_by: 'last_message_datetime',
             })
         },
-        searchView: (query) => {
+        searchView: (query: string) => {
             return baseView().merge({
                 name: `Search "${query}"`,
                 search: query,
                 fields: [
-                    'details',
-                    'channel',
-                    'assignee',
-                    'status',
-                    'customer',
-                    'created',
-                    'last_message',
+                    ViewField.Details,
+                    ViewField.Channel,
+                    ViewField.Assignee,
+                    ViewField.Status,
+                    ViewField.Customer,
+                    ViewField.Created,
+                    ViewField.LastMessage,
                 ],
-                type: 'ticket-list',
+                type: ViewType.TicketList,
                 order_by: 'last_message_datetime',
             })
         },
     },
     {
         name: 'customer',
-        type: 'customer-list',
+        type: ViewType.CustomerList,
         routeItem: 'customer',
         routeList: 'customers',
         // TODO(customers-migration): update when we created REST API to search for customers in a view
@@ -374,15 +394,15 @@ export const views = fromJS([
         mainField: 'name',
         fields: [
             {
-                name: 'name',
+                name: ViewField.Name,
                 title: 'Name',
             },
             {
-                name: 'email',
+                name: ViewField.Email,
                 title: 'Email',
             },
             {
-                name: 'created',
+                name: ViewField.Created,
                 title: 'Created',
                 path: 'created_datetime',
                 filter: {
@@ -392,7 +412,7 @@ export const views = fromJS([
                 },
             },
             {
-                name: 'updated',
+                name: ViewField.Updated,
                 title: 'Updated',
                 path: 'updated_datetime',
                 filter: {
@@ -402,14 +422,17 @@ export const views = fromJS([
                 },
             },
         ],
-        cell: (fieldName, item) => {
+        cell: (fieldName: ViewField, item: Map<any, any>) => {
             switch (fieldName) {
-                case 'name':
-                    return item.get('name') || `Customer #${item.get('id')}`
-                case 'created':
-                    return item.get('created_datetime')
-                case 'updated':
-                    return item.get('updated_datetime')
+                case ViewField.Name:
+                    return (
+                        (item.get('name') as string) ||
+                        `Customer #${item.get('id') as number}`
+                    )
+                case ViewField.Created:
+                    return item.get('created_datetime') as string
+                case ViewField.Updated:
+                    return item.get('updated_datetime') as string
                 default: {
                     return defaultCell(fieldName, item)
                 }
@@ -417,38 +440,42 @@ export const views = fromJS([
         },
         newView: () => {
             return baseView().merge({
-                fields: ['name', 'email', 'created'],
-                type: 'customer-list',
+                fields: [ViewField.Name, ViewField.Email, ViewField.Created],
+                type: ViewType.CustomerList,
             })
         },
-        searchView: (query) => {
+        searchView: (query: string) => {
             return baseView().merge({
                 name: `Search "${query}"`,
                 search: query,
-                fields: ['name', 'email', 'created'],
-                type: 'customer-list',
+                fields: [ViewField.Name, ViewField.Email, ViewField.Created],
+                type: ViewType.CustomerList,
             })
         },
     },
-])
+]) as List<any>
 
 export const getConfigByName = (name: string) => {
-    const config = views.find((item) => item.get('name') === name)
+    const config = views.find(
+        (item: Map<any, any>) => item.get('name') === name
+    ) as Maybe<Map<any, any>>
 
     if (!config) {
         console.error(`There is no view configuration for name "${name}"`)
-        return fromJS({})
+        return fromJS({}) as Map<any, any>
     }
 
     return config
 }
 
 export const getConfigByType = (type: string) => {
-    const config = views.find((item) => item.get('type') === type)
+    const config = views.find(
+        (item: Map<any, any>) => item.get('type') === type
+    ) as Maybe<Map<any, any>>
 
     if (!config) {
         console.error(`There is no view configuration for type "${type}"`)
-        return fromJS({})
+        return fromJS({}) as Map<any, any>
     }
 
     return config

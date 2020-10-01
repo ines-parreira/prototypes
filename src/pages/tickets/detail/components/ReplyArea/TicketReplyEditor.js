@@ -8,7 +8,7 @@ import {connect} from 'react-redux'
 
 import {canAddAttachments} from '../../../../../business/ticket.ts'
 import {type TicketMessageSourceType} from '../../../../../business/types/ticket'
-import {canLeaveInternalNote, isRichType} from '../../../../../config/ticket'
+import {canLeaveInternalNote, isRichType} from '../../../../../config/ticket.ts'
 import {getOtherAgents} from '../../../../../state/agents/selectors.ts'
 import type {agentsType} from '../../../../../state/agents/types'
 import * as newMessageActions from '../../../../../state/newMessage/actions.ts'

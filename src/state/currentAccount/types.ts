@@ -1,6 +1,7 @@
 import {Map} from 'immutable'
 
 import {TicketChannel} from '../../business/types/ticket'
+import {Notification} from '../notifications/types'
 
 export type CurrentAccountState = Map<any, any>
 
@@ -55,5 +56,6 @@ export type Account = {
     settings: AccountSetting[]
     status: {
         status: AccountStatus
+        notification: Notification
     }
 }

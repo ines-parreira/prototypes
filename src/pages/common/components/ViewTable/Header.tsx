@@ -10,7 +10,7 @@ import Search from '../Search.js'
 import {slugify} from '../../../../utils'
 import * as viewsActions from '../../../../state/views/actions'
 import * as viewsSelectors from '../../../../state/views/selectors'
-import * as viewsConfig from '../../../../config/views.js'
+import * as viewsConfig from '../../../../config/views'
 import shortcutManager from '../../../../services/shortcutManager'
 import ViewName from '../ViewName/index.js'
 import Tooltip from '../Tooltip.js'
@@ -250,6 +250,8 @@ export class HeaderContainer extends React.Component<Props, State> {
                                     close
                                 </i>
                                 <Tooltip
+                                    //$TsFixMe: remove ignore once Tooltip is properly migrated
+                                    //@ts-ignore
                                     placement="top"
                                     target="leave-search-mode"
                                 >
@@ -269,7 +271,7 @@ export class HeaderContainer extends React.Component<Props, State> {
 const connector = connect(
     (state: RootState, ownProps: OwnProps) => ({
         activeView: viewsSelectors.getActiveView(state),
-        config: viewsConfig.getConfigByName(ownProps.type) as Map<any, any>,
+        config: viewsConfig.getConfigByName(ownProps.type),
         lastViewId: viewsSelectors.getLastViewId(state),
     }),
     {

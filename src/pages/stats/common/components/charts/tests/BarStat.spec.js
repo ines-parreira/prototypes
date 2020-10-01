@@ -6,7 +6,7 @@ import BarStat from '../BarStat'
 import {
     stats as statsConfig,
     SUPPORT_VOLUME,
-} from '../../../../../../config/stats'
+} from '../../../../../../config/stats.tsx'
 
 const barStatData = fromJS({
     name: 'stat_name',

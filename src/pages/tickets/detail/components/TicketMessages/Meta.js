@@ -11,7 +11,7 @@ import {
     FACEBOOK_POST_SOURCE,
     INSTAGRAM_AD_MEDIA_SOURCE,
     INSTAGRAM_MEDIA_SOURCE,
-} from '../../../../../config/ticket'
+} from '../../../../../config/ticket.ts'
 
 import css from './Meta.less'
 

@@ -3,7 +3,7 @@ import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
 import configureStore from '../../../../../../store/configureStore'
-import * as viewsConfig from '../../../../../../config/views'
+import * as viewsConfig from '../../../../../../config/views.tsx'
 import * as ticketFixtures from '../../../../../../fixtures/ticket'
 import * as agentsFixtures from '../../../../../../fixtures/agents'
 import * as viewsActions from '../../../../../../state/views/actions.ts'

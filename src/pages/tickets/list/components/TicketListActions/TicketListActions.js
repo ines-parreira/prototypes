@@ -34,7 +34,7 @@ import type {currentUserType} from '../../../../../state/types'
 import type {teamsType} from '../../../../../state/teams/types'
 import type {agentsType} from '../../../../../state/agents/types'
 import type {viewType} from '../../../../../state/views/types'
-import {AGENT_ROLE} from '../../../../../config/user'
+import {AGENT_ROLE} from '../../../../../config/user.ts'
 import {
     DELETE_TICKET_JOB_TYPE,
     EXPORT_TICKET_JOB_TYPE,

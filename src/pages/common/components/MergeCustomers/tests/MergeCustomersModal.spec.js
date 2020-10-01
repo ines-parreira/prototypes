@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 import _noop from 'lodash/noop'
 import {shallow} from 'enzyme'
 
-import {EMAIL_CHANNEL} from '../../../../../config/ticket'
+import {EMAIL_CHANNEL} from '../../../../../config/ticket.ts'
 import {mergeCustomers} from '../../../../../state/customers/actions.ts'
 import MergeCustomersModal from '../MergeCustomersModal'
 

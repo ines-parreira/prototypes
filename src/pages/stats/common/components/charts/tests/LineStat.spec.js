@@ -6,7 +6,7 @@ import LineStat from '../LineStat'
 import {
     stats as statsConfig,
     RESOLUTION_TIME,
-} from '../../../../../../config/stats'
+} from '../../../../../../config/stats.tsx'
 
 const barStat = fromJS({
     name: 'stat_name',

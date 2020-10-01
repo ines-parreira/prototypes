@@ -8,7 +8,7 @@ import {
     colors as colorsConfig,
     chartMaxHeight,
     chartPointRadius,
-} from '../../../../../config/stats'
+} from '../../../../../config/stats.tsx'
 
 export default class LineStat extends React.Component {
     static propTypes = {

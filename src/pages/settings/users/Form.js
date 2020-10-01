@@ -24,7 +24,7 @@ import RichDropdown, {type Option} from '../../common/components/RichDropdown'
 import {
     BASIC_AGENT_ROLE,
     ORDERED_ROLES_META_BY_USER_ROLE,
-} from '../../../config/user'
+} from '../../../config/user.ts'
 import type {MetaByAgentRole} from '../../../config/types/user'
 
 import InputField from '../../common/forms/InputField'

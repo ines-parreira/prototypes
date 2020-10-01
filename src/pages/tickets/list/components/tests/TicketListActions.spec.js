@@ -5,7 +5,7 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import TicketListActions from '../TicketListActions'
-import {LITE_AGENT_ROLE, AGENT_ROLE} from '../../../../../config/user'
+import {LITE_AGENT_ROLE, AGENT_ROLE} from '../../../../../config/user.ts'
 import {SYSTEM_VIEW_CATEGORY} from '../../../../../constants/view'
 
 const middlewares = [thunk]

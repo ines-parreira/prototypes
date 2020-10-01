@@ -18,7 +18,7 @@ import {
     BASIC_AGENT_ROLE,
     LITE_AGENT_ROLE,
     OBSERVER_AGENT_ROLE,
-} from '../../../config/user'
+} from '../../../config/user.ts'
 import * as currentUserSelectors from '../../../state/currentUser/selectors.ts'
 import Tooltip from '../components/Tooltip'
 import Avatar from '../components/Avatar'

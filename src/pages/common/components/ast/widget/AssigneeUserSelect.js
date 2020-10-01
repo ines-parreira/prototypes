@@ -4,7 +4,7 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {fromJS, List, Map} from 'immutable'
 
-import {USER_ROLES} from '../../../../../config/user'
+import {USER_ROLES} from '../../../../../config/user.ts'
 
 import Select from './ReactSelect'
 

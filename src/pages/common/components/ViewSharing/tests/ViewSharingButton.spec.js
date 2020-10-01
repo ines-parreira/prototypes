@@ -6,7 +6,7 @@ import configureMockStore from 'redux-mock-store'
 
 import ViewSharingButton from '../ViewSharingButton'
 import {currentUser} from '../../../../../fixtures/users'
-import {BASIC_AGENT_ROLE} from '../../../../../config/user'
+import {BASIC_AGENT_ROLE} from '../../../../../config/user.ts'
 import {
     SYSTEM_VIEW_CATEGORY,
     ViewVisibility,

@@ -1,29 +1,29 @@
-//@flow
 import {fromJS} from 'immutable'
 import _find from 'lodash/find'
 import _isArray from 'lodash/isArray'
 import _isObject from 'lodash/isObject'
+import {EnhancedStore} from '@reduxjs/toolkit'
 
-import {TicketStatuses} from '../../business/ticket.ts'
-import {shouldTicketBeDisplayedInRecentChats} from '../../business/recentChats.ts'
+import {TicketStatuses} from '../../business/ticket'
+import {shouldTicketBeDisplayedInRecentChats} from '../../business/recentChats'
 
-import * as chatActions from '../../state/chats/actions.ts'
-import * as currentAccountConstants from '../../state/currentAccount/constants'
-import * as currentAccountSelectors from '../../state/currentAccount/selectors.ts'
-import * as integrationActions from '../../state/integrations/actions.ts'
-import * as notificationActions from '../../state/notifications/actions.ts'
-import * as socketConstants from '../socketConstants.ts'
+import * as chatActions from '../../state/chats/actions'
+import * as currentAccountConstants from '../../state/currentAccount/constants.js'
+import * as currentAccountSelectors from '../../state/currentAccount/selectors'
+import * as integrationActions from '../../state/integrations/actions'
+import * as notificationActions from '../../state/notifications/actions'
+import {SocketEventType} from '../../services/socketManager/types'
 import * as socketEvents from '../socketEvents'
 
-import {isCurrentlyOnTicket} from '../../utils.ts'
-import {store as reduxStore} from '../../init'
+import {isCurrentlyOnTicket} from '../../utils'
+import {store as reduxStore} from '../../init.js'
 
-const mockedCurrentAccountSelectors = (currentAccountSelectors: any)
-const mockedShouldTicketBeDisplayedInRecentChats = (shouldTicketBeDisplayedInRecentChats: any)
-const mockedIsCurrentlyOnTicket = (isCurrentlyOnTicket: any)
+//$TsFixMe remove once init.js is migrated
+const typeSafeReduxStore = reduxStore as EnhancedStore
 
-jest.mock('../../state/chats/actions.ts', () => {
-    const _identity = require('lodash/identity')
+jest.mock('../../state/chats/actions', () => {
+    //eslint-disable-next-line @typescript-eslint/no-var-requires
+    const _identity: <T>(v: T) => T = require('lodash/identity')
 
     return {
         addChat: jest.fn(() => _identity),
@@ -32,11 +32,15 @@ jest.mock('../../state/chats/actions.ts', () => {
     }
 })
 
-jest.mock('../../init', () => {
-    const {fromJS} = require('immutable')
+jest.mock('../../init.js', () => {
+    /* eslint-disable @typescript-eslint/no-var-requires,@typescript-eslint/no-unsafe-member-access */
+    const {fromJS}: {fromJS: (value: any) => any} = require('immutable')
     const {MAX_RECENT_CHATS} = require('../recentChats')
-    const configureMockStore = require('redux-mock-store').default
+    const configureMockStore: (
+        t: any
+    ) => (y: any) => {dispatch: any} = require('redux-mock-store').default
     const thunk = require('redux-thunk').default
+    /* eslint-enable */
 
     const mockStore = configureMockStore([thunk])
     const store = mockStore({
@@ -53,28 +57,25 @@ jest.mock('../../init', () => {
     return {store}
 })
 
-jest.mock('../../state/currentAccount/selectors.ts', () => {
+jest.mock('../../state/currentAccount/selectors', () => {
     return {
-        //$FlowFixMe
-        ...require.requireActual('../../state/currentAccount/selectors.ts'),
+        ...require.requireActual('../../state/currentAccount/selectors'),
         getTicketAssignmentSettings: jest.fn(),
-    }
+    } as Record<string, unknown>
 })
 
-jest.mock('../../business/recentChats.ts', () => {
+jest.mock('../../business/recentChats', () => {
     return {
-        //$FlowFixMe
         ...require.requireActual('../../business/recentChats.ts'),
         shouldTicketBeDisplayedInRecentChats: jest.fn(),
-    }
+    } as Record<string, unknown>
 })
 
 jest.mock('../../utils', () => {
     return {
-        //$FlowFixMe
         ...require.requireActual('../../utils'),
         isCurrentlyOnTicket: jest.fn(),
-    }
+    } as Record<string, unknown>
 })
 
 describe('Config: socketEvents', () => {
@@ -149,7 +150,7 @@ describe('Config: socketEvents', () => {
 
         describe('ACCOUNT_UPDATED handler', () => {
             const accountUpdatedHandler = _find(receivedEvents, {
-                name: socketConstants.ACCOUNT_UPDATED,
+                name: SocketEventType.AccountUpdated,
             })
 
             beforeEach(() => {
@@ -159,15 +160,15 @@ describe('Config: socketEvents', () => {
             it('should dispatch handleUsageBanner', () => {
                 const spy = jest.spyOn(notificationActions, 'handleUsageBanner')
 
-                mockedCurrentAccountSelectors.getTicketAssignmentSettings.mockReturnValue(
-                    fromJS({})
-                )
+                ;(currentAccountSelectors.getTicketAssignmentSettings as jest.MockedFunction<
+                    typeof currentAccountSelectors.getTicketAssignmentSettings
+                >).mockReturnValue(fromJS({}))
 
                 if (accountUpdatedHandler) {
-                    accountUpdatedHandler.onReceive({account: {}})
+                    accountUpdatedHandler.onReceive({account: {}} as any)
                 }
 
-                expect(reduxStore.dispatch).toHaveBeenCalledTimes(2)
+                expect(typeSafeReduxStore.dispatch).toHaveBeenCalledTimes(2)
                 expect(spy).toHaveBeenCalledWith({
                     newAccountStatus: 'active',
                     currentAccountStatus: 'active',
@@ -179,15 +180,15 @@ describe('Config: socketEvents', () => {
                     settings: [],
                 }
 
-                mockedCurrentAccountSelectors.getTicketAssignmentSettings.mockReturnValue(
-                    fromJS({})
-                )
+                ;(currentAccountSelectors.getTicketAssignmentSettings as jest.MockedFunction<
+                    typeof currentAccountSelectors.getTicketAssignmentSettings
+                >).mockReturnValue(fromJS({}))
 
                 if (accountUpdatedHandler) {
-                    accountUpdatedHandler.onReceive({account: account})
+                    accountUpdatedHandler.onReceive({account: account} as any)
                 }
                 expect(chatActions.fetchChatsThrottled).not.toHaveBeenCalled()
-                expect(reduxStore.dispatch).toHaveBeenCalledWith({
+                expect(typeSafeReduxStore.dispatch).toHaveBeenCalledWith({
                     type: currentAccountConstants.UPDATE_ACCOUNT_SUCCESS,
                     resp: account,
                 })
@@ -204,15 +205,15 @@ describe('Config: socketEvents', () => {
                     ],
                 }
 
-                mockedCurrentAccountSelectors.getTicketAssignmentSettings.mockReturnValue(
-                    fromJS({})
-                )
+                ;(currentAccountSelectors.getTicketAssignmentSettings as jest.MockedFunction<
+                    typeof currentAccountSelectors.getTicketAssignmentSettings
+                >).mockReturnValue(fromJS({}))
 
                 if (accountUpdatedHandler) {
-                    accountUpdatedHandler.onReceive({account: account})
+                    accountUpdatedHandler.onReceive({account: account} as any)
                 }
                 expect(chatActions.fetchChatsThrottled).toHaveBeenCalled()
-                expect(reduxStore.dispatch).toHaveBeenCalledWith({
+                expect(typeSafeReduxStore.dispatch).toHaveBeenCalledWith({
                     type: currentAccountConstants.UPDATE_ACCOUNT_SUCCESS,
                     resp: account,
                 })
@@ -236,7 +237,9 @@ describe('Config: socketEvents', () => {
                         ],
                     }
 
-                    mockedCurrentAccountSelectors.getTicketAssignmentSettings.mockReturnValue(
+                    ;(currentAccountSelectors.getTicketAssignmentSettings as jest.MockedFunction<
+                        typeof currentAccountSelectors.getTicketAssignmentSettings
+                    >).mockReturnValue(
                         fromJS({
                             data: {
                                 auto_assign_to_teams: oldAutoAssignToTeams,
@@ -245,10 +248,12 @@ describe('Config: socketEvents', () => {
                     )
 
                     if (accountUpdatedHandler) {
-                        accountUpdatedHandler.onReceive({account: account})
+                        accountUpdatedHandler.onReceive({
+                            account: account,
+                        } as any)
                     }
                     expect(chatActions.fetchChatsThrottled).toHaveBeenCalled()
-                    expect(reduxStore.dispatch).toHaveBeenCalledWith({
+                    expect(typeSafeReduxStore.dispatch).toHaveBeenCalledWith({
                         type: currentAccountConstants.UPDATE_ACCOUNT_SUCCESS,
                         resp: account,
                     })
@@ -268,7 +273,9 @@ describe('Config: socketEvents', () => {
                         ],
                     }
 
-                    mockedCurrentAccountSelectors.getTicketAssignmentSettings.mockReturnValue(
+                    ;(currentAccountSelectors.getTicketAssignmentSettings as jest.MockedFunction<
+                        typeof currentAccountSelectors.getTicketAssignmentSettings
+                    >).mockReturnValue(
                         fromJS({
                             data: {
                                 auto_assign_to_teams: autoAssignToTeams,
@@ -277,12 +284,14 @@ describe('Config: socketEvents', () => {
                     )
 
                     if (accountUpdatedHandler) {
-                        accountUpdatedHandler.onReceive({account: account})
+                        accountUpdatedHandler.onReceive({
+                            account: account,
+                        } as any)
                     }
                     expect(
                         chatActions.fetchChatsThrottled
                     ).not.toHaveBeenCalled()
-                    expect(reduxStore.dispatch).toHaveBeenCalledWith({
+                    expect(typeSafeReduxStore.dispatch).toHaveBeenCalledWith({
                         type: currentAccountConstants.UPDATE_ACCOUNT_SUCCESS,
                         resp: account,
                     })
@@ -292,7 +301,7 @@ describe('Config: socketEvents', () => {
 
         describe('TICKET_MESSAGE_CHAT_CREATED handler', () => {
             const ticketMessageChatCreatedHandler = _find(receivedEvents, {
-                name: socketConstants.TICKET_MESSAGE_CHAT_CREATED,
+                name: SocketEventType.TicketMessageChatCreated,
             })
 
             class MockSocketManager {
@@ -308,10 +317,12 @@ describe('Config: socketEvents', () => {
                 'should add ticket to recent chats because `shouldTicketBeDisplayedInRecentChats` ' +
                     'returned `true`, and not have marked it as read because the current user is not viewing the ticket',
                 (lastMessageFromAgent) => {
-                    mockedShouldTicketBeDisplayedInRecentChats.mockReturnValue(
-                        true
-                    )
-                    mockedIsCurrentlyOnTicket.mockReturnValue(false)
+                    ;(shouldTicketBeDisplayedInRecentChats as jest.MockedFunction<
+                        typeof shouldTicketBeDisplayedInRecentChats
+                    >).mockReturnValue(true)
+                    ;(isCurrentlyOnTicket as jest.MockedFunction<
+                        typeof isCurrentlyOnTicket
+                    >).mockReturnValue(false)
 
                     const ticket = {
                         id: 1,
@@ -327,7 +338,7 @@ describe('Config: socketEvents', () => {
                     if (mockSocketManager.ticketMessageChatCreatedHandler) {
                         mockSocketManager.ticketMessageChatCreatedHandler({
                             data: ticket,
-                        })
+                        } as any)
                     }
                     expect(chatActions.addChat).toHaveBeenCalledWith(
                         ticket,
@@ -340,10 +351,12 @@ describe('Config: socketEvents', () => {
                 'should add ticket to recent chats because `shouldTicketBeDisplayedInRecentChats` ' +
                     'returned `true`,  and have marked it as read because the current user is viewing the ticket ',
                 (lastMessageFromAgent) => {
-                    mockedShouldTicketBeDisplayedInRecentChats.mockReturnValue(
-                        true
-                    )
-                    mockedIsCurrentlyOnTicket.mockReturnValue(true)
+                    ;(shouldTicketBeDisplayedInRecentChats as jest.MockedFunction<
+                        typeof shouldTicketBeDisplayedInRecentChats
+                    >).mockReturnValue(true)
+                    ;(isCurrentlyOnTicket as jest.MockedFunction<
+                        typeof isCurrentlyOnTicket
+                    >).mockReturnValue(true)
 
                     const ticket = {
                         id: 1,
@@ -364,7 +377,7 @@ describe('Config: socketEvents', () => {
                     if (mockSocketManager.ticketMessageChatCreatedHandler) {
                         mockSocketManager.ticketMessageChatCreatedHandler({
                             data: ticket,
-                        })
+                        } as any)
                     }
                     expect(chatActions.addChat).toHaveBeenCalledWith(
                         expectedTicket,
@@ -378,9 +391,9 @@ describe('Config: socketEvents', () => {
                     '`false`, and then fetch chats from the API because there is now a free slot available in the ' +
                     'recent chats section',
                 () => {
-                    mockedShouldTicketBeDisplayedInRecentChats.mockReturnValue(
-                        false
-                    )
+                    ;(shouldTicketBeDisplayedInRecentChats as jest.MockedFunction<
+                        typeof shouldTicketBeDisplayedInRecentChats
+                    >).mockReturnValue(false)
 
                     const ticket = {
                         id: 1,
@@ -394,25 +407,27 @@ describe('Config: socketEvents', () => {
                     if (mockSocketManager.ticketMessageChatCreatedHandler) {
                         mockSocketManager.ticketMessageChatCreatedHandler({
                             data: ticket,
-                        })
+                        } as any)
                     }
                     expect(chatActions.removeChat).toHaveBeenCalledWith(
                         ticket.id
                     )
                     expect(
                         chatActions.fetchChatsThrottled
-                    ).toHaveBeenCalledWith(reduxStore.dispatch)
+                    ).toHaveBeenCalledWith(typeSafeReduxStore.dispatch)
                 }
             )
         })
 
         describe('TICKET_CHAT_UPDATED handler', () => {
             const ticketChatUpdatedHandler = _find(receivedEvents, {
-                name: socketConstants.TICKET_CHAT_UPDATED,
+                name: SocketEventType.TicketChatUpdated,
             })
 
             it('should add ticket to recent chats because `shouldTicketBeDisplayedInRecentChats` returned `true`', () => {
-                mockedShouldTicketBeDisplayedInRecentChats.mockReturnValue(true)
+                ;(shouldTicketBeDisplayedInRecentChats as jest.MockedFunction<
+                    typeof shouldTicketBeDisplayedInRecentChats
+                >).mockReturnValue(true)
 
                 const ticket = {
                     id: 1,
@@ -424,15 +439,15 @@ describe('Config: socketEvents', () => {
                 }
 
                 if (ticketChatUpdatedHandler) {
-                    ticketChatUpdatedHandler.onReceive({data: ticket})
+                    ticketChatUpdatedHandler.onReceive({data: ticket} as any)
                 }
                 expect(chatActions.addChat).toHaveBeenCalledWith(ticket, false)
             })
 
             it('should remove ticket from recent chats because `shouldTicketBeDisplayedInRecentChats` returned `false`', () => {
-                mockedShouldTicketBeDisplayedInRecentChats.mockReturnValue(
-                    false
-                )
+                ;(shouldTicketBeDisplayedInRecentChats as jest.MockedFunction<
+                    typeof shouldTicketBeDisplayedInRecentChats
+                >).mockReturnValue(false)
 
                 const ticket = {
                     id: 1,
@@ -444,7 +459,7 @@ describe('Config: socketEvents', () => {
                 }
 
                 if (ticketChatUpdatedHandler) {
-                    ticketChatUpdatedHandler.onReceive({data: ticket})
+                    ticketChatUpdatedHandler.onReceive({data: ticket} as any)
                 }
                 expect(chatActions.removeChat).toHaveBeenCalledWith(ticket.id)
             })
@@ -453,9 +468,9 @@ describe('Config: socketEvents', () => {
                 'should fetch chats from the API because a ticket was removed from recent chats and there is now ' +
                     'a free slot available in the recent chats section',
                 () => {
-                    mockedShouldTicketBeDisplayedInRecentChats.mockReturnValue(
-                        false
-                    )
+                    ;(shouldTicketBeDisplayedInRecentChats as jest.MockedFunction<
+                        typeof shouldTicketBeDisplayedInRecentChats
+                    >).mockReturnValue(false)
 
                     const ticket = {
                         id: 1,
@@ -467,24 +482,26 @@ describe('Config: socketEvents', () => {
                     }
 
                     if (ticketChatUpdatedHandler) {
-                        ticketChatUpdatedHandler.onReceive({data: ticket})
+                        ticketChatUpdatedHandler.onReceive({
+                            data: ticket,
+                        } as any)
                     }
                     expect(
                         chatActions.fetchChatsThrottled
-                    ).toHaveBeenCalledWith(reduxStore.dispatch)
+                    ).toHaveBeenCalledWith(typeSafeReduxStore.dispatch)
                 }
             )
         })
 
         describe('FACEBOOK_INTEGRATIONS_RECONNECTED handler', () => {
             const handler = _find(receivedEvents, {
-                name: socketConstants.FACEBOOK_INTEGRATIONS_RECONNECTED,
+                name: SocketEventType.FacebookIntegrationsReconnected,
             })
 
             it('should fetch integrations', () => {
                 const spy = jest.spyOn(integrationActions, 'fetchIntegrations')
                 if (handler) {
-                    handler.onReceive({event: {total: 1}})
+                    handler.onReceive({event: {total: 1}} as any)
                 }
                 expect(spy).toHaveBeenCalled()
             })
@@ -493,7 +510,7 @@ describe('Config: socketEvents', () => {
                 const spy = jest.spyOn(notificationActions, 'notify')
 
                 if (handler) {
-                    handler.onReceive({event: {total: 1}})
+                    handler.onReceive({event: {total: 1}} as any)
                 }
                 expect(spy).toHaveBeenCalledWith({
                     status: 'success',
@@ -501,7 +518,7 @@ describe('Config: socketEvents', () => {
                 })
 
                 if (handler) {
-                    handler.onReceive({event: {total: 2}})
+                    handler.onReceive({event: {total: 2}} as any)
                 }
                 expect(spy).toHaveBeenCalledWith({
                     status: 'success',
@@ -512,14 +529,14 @@ describe('Config: socketEvents', () => {
 
         describe('VIEWS_DEACTIVATED handler', () => {
             const handler = _find(receivedEvents, {
-                name: socketConstants.VIEWS_DEACTIVATED,
+                name: SocketEventType.ViewsDeactivated,
             })
 
             it.each([[['Foo']], [['Foo', 'Bar']]])('should notify', (names) => {
                 const spy = jest.spyOn(notificationActions, 'notify')
 
                 if (handler) {
-                    handler.onReceive({event: {names}})
+                    handler.onReceive({event: {names}} as any)
                 }
 
                 expect(spy.mock.calls).toMatchSnapshot()

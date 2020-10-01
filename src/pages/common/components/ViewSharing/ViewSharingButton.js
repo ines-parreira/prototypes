@@ -10,7 +10,7 @@ import _capitalize from 'lodash/capitalize'
 import type {viewType} from '../../../../state/views/types'
 import type {currentUserType} from '../../../../state/types'
 import {hasRole} from '../../../../utils.ts'
-import {AGENT_ROLE} from '../../../../config/user'
+import {AGENT_ROLE} from '../../../../config/user.ts'
 import {SYSTEM_VIEW_CATEGORY} from '../../../../constants/view'
 
 import ViewSharingButtonTooltip from './ViewSharingButtonTooltip'

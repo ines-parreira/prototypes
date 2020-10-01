@@ -3,7 +3,7 @@ import {createSelector} from 'reselect'
 import moment from 'moment'
 
 import {createImmutableSelector} from '../../utils'
-import * as viewsConfig from '../../config/views.js'
+import * as viewsConfig from '../../config/views'
 import {
     getSettingsByType as getCurrentUserSettingsByType,
     makeGetSettingsByType,
@@ -99,7 +99,7 @@ export const getActiveViewConfig = createSelector<
     Map<any, any>,
     Map<any, any>
 >(getActiveView, (view) => {
-    return viewsConfig.getConfigByType(view.get('type')) as Map<any, any>
+    return viewsConfig.getConfigByType(view.get('type'))
 })
 
 export const areAllActiveViewItemsSelected = createSelector<
@@ -285,10 +285,9 @@ export const getView = (id: string, configName: Maybe<string> = '') =>
                     return fromJS({}) as Map<any, any>
                 }
 
-                return ((viewsConfig.getConfigByName(configName) as Map<
-                    any,
-                    any
-                >).get('newView') as () => Map<any, any>)()
+                return (viewsConfig
+                    .getConfigByName(configName)
+                    .get('newView') as () => Map<any, any>)()
             }
 
             return views.find(

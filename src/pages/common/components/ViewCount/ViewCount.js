@@ -6,7 +6,7 @@ import {connect} from 'react-redux'
 import classnames from 'classnames'
 import {UncontrolledTooltip} from 'reactstrap'
 
-import {MAX_TICKET_COUNT_PER_VIEW} from '../../../../config/views'
+import {MAX_TICKET_COUNT_PER_VIEW} from '../../../../config/views.tsx'
 import {compactInteger} from '../../../../utils.ts'
 import {makeGetViewCount} from '../../../../state/views/selectors.ts'
 

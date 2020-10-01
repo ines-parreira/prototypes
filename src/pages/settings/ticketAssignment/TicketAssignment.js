@@ -19,7 +19,7 @@ import {
     CHANNELS,
     CHAT_CHANNEL,
     FACEBOOK_MESSENGER_CHANNEL,
-} from '../../../config/ticket'
+} from '../../../config/ticket.ts'
 import MultiSelectOptionsField, {
     type Option,
 } from '../../common/forms/MultiSelectOptionsField'

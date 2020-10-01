@@ -6,7 +6,7 @@ import {Link} from 'react-router'
 
 import {RenderLabel} from '../../../utils/labels'
 
-import * as viewsConfig from '../../../../../config/views'
+import * as viewsConfig from '../../../../../config/views.tsx'
 
 import css from '../Table.less'
 

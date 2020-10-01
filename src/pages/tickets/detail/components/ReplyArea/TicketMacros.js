@@ -15,7 +15,7 @@ import {
 } from 'reactstrap'
 
 import type {TicketMessageSourceType} from '../../../../../business/types/ticket'
-import {isRichType} from '../../../../../config/ticket'
+import {isRichType} from '../../../../../config/ticket.ts'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors.ts'
 import {deleteMacro, fetchMacros} from '../../../../../state/macro/actions.ts'
 import Preview from '../../../common/macros/Preview'

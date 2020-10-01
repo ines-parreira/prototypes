@@ -27,7 +27,7 @@ import * as viewsSelectors from '../../../../state/views/selectors'
 import * as agentSelectors from '../../../../state/agents/selectors'
 import * as teamSelectors from '../../../../state/teams/selectors'
 import * as schemasSelectors from '../../../../state/schemas/selectors'
-import * as viewsConfig from '../../../../config/views.js'
+import * as viewsConfig from '../../../../config/views'
 import {SYSTEM_VIEW_CATEGORY} from '../../../../constants/view.js'
 import {RootState} from '../../../../state/types'
 
@@ -389,7 +389,7 @@ const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
         teams: teamSelectors.getTeams(state),
         activeView: viewsSelectors.getActiveView(state),
         areFiltersValid: viewsSelectors.areFiltersValid(state),
-        config: viewsConfig.getConfigByName(ownProps.type) as Map<any, any>,
+        config: viewsConfig.getConfigByName(ownProps.type),
         currentUser: state.currentUser,
         isDirty: viewsSelectors.isDirty(state),
         pristineActiveView: viewsSelectors.getPristineActiveView(state),

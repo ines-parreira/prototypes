@@ -5,7 +5,7 @@ import classnames from 'classnames'
 import {Link} from 'react-router'
 
 import {hasRole} from '../../../../utils.ts'
-import {ADMIN_ROLE, AGENT_ROLE} from '../../../../config/user'
+import {ADMIN_ROLE, AGENT_ROLE} from '../../../../config/user.ts'
 import type {UserRole} from '../../../../config/types/user'
 
 type Props = {

@@ -2,7 +2,7 @@ import _find from 'lodash/find'
 import {removeNotification} from 'reapop'
 
 import * as socketConstants from '../../../config/socketConstants.ts'
-import * as socketEvents from '../../../config/socketEvents'
+import * as socketEvents from '../../../config/socketEvents.ts'
 import {notify} from '../../../state/notifications/actions.ts'
 import {
     BROADCAST_CHANNEL_NAME,

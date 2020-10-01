@@ -6,7 +6,7 @@ import {Bar} from 'react-chartjs-2'
 import {
     colors as colorsConfig,
     chartMaxHeight,
-} from '../../../../../config/stats'
+} from '../../../../../config/stats.tsx'
 import Legend from '../Legend'
 
 type Props = {

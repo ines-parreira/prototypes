@@ -5,7 +5,7 @@ import {Store} from 'redux'
 
 import BlankState from '../../BlankState/index.js'
 import untypedConfigureStore from '../../../../../store/configureStore.js'
-import * as viewsConfig from '../../../../../config/views.js'
+import * as viewsConfig from '../../../../../config/views'
 import * as viewsFixtures from '../../../../../fixtures/views.js'
 import * as ticketFixtures from '../../../../../fixtures/ticket.js'
 import * as viewsActions from '../../../../../state/views/actions'
@@ -38,7 +38,7 @@ describe('ViewTable::Table', () => {
         }) as Map<any, any>,
     }
 
-    const viewConfig = (viewsConfig.views as List<any>).first() as Map<any, any>
+    const viewConfig = viewsConfig.views.first() as Map<any, any>
 
     const minProps = {
         view: fromJS({}),

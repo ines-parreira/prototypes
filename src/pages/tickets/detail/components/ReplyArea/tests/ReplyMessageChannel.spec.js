@@ -12,7 +12,7 @@ import {
     INSTAGRAM_AD_MEDIA_SOURCE,
     INSTAGRAM_COMMENT_SOURCE,
     INSTAGRAM_MEDIA_SOURCE,
-} from '../../../../../../config/ticket'
+} from '../../../../../../config/ticket.ts'
 
 import configureStore from '../../../../../../store/configureStore'
 import ReplyMessageChannel from '../ReplyMessageChannel'

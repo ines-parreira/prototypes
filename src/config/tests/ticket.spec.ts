@@ -1,9 +1,10 @@
-//@flow
 import _isString from 'lodash/isString'
 import _isArray from 'lodash/isArray'
 import _isObject from 'lodash/isObject'
 import _isBoolean from 'lodash/isBoolean'
+import {Map} from 'immutable'
 
+import {TicketMessage} from '../../models/ticket/types'
 import * as ticketConfig from '../ticket'
 
 describe('Config: ticket', () => {
@@ -43,10 +44,13 @@ describe('Config: ticket', () => {
         })
     })
 
-    const variables = ['VARIABLES', 'PREVIOUS_VARIABLES']
+    const variables: ['VARIABLES', 'PREVIOUS_VARIABLES'] = [
+        'VARIABLES',
+        'PREVIOUS_VARIABLES',
+    ]
 
     variables.forEach((name) => {
-        const value = ticketConfig[name] // eslint-disable-line import/namespace
+        const value = ticketConfig[name]
 
         describe(name, () => {
             it('is array', () => {
@@ -86,8 +90,10 @@ describe('Config: ticket', () => {
 
             expect(
                 ticketConfig
-                    .orderedMessages(messages)
-                    .map((message) => message.get('id'))
+                    .orderedMessages(messages as any)
+                    .map(
+                        (message: Map<any, any>) => message.get('id') as number
+                    )
                     .toJS()
             ).toEqual([1, 2])
 
@@ -104,8 +110,10 @@ describe('Config: ticket', () => {
 
             expect(
                 ticketConfig
-                    .orderedMessages(reversedMessages)
-                    .map((message) => message.get('id'))
+                    .orderedMessages(reversedMessages as any)
+                    .map(
+                        (message: Map<any, any>) => message.get('id') as number
+                    )
                     .toJS()
             ).toEqual([2, 1])
         })
@@ -114,13 +122,13 @@ describe('Config: ticket', () => {
     describe('isAnswerableType', () => {
         it('is correct', () => {
             const validTypes = ticketConfig.USABLE_SOURCE_TYPES
-            const invalidTypes: any = ['test', 123, undefined, null, {}, []]
+            const invalidTypes: any[] = ['test', 123, undefined, null, {}, []]
 
             validTypes.forEach((type) => {
                 expect(ticketConfig.isAnswerableType(type)).toEqual(true)
             })
 
-            invalidTypes.forEach((type) => {
+            invalidTypes.forEach((type: any) => {
                 expect(ticketConfig.isAnswerableType(type)).toEqual(false)
             })
         })
@@ -129,13 +137,13 @@ describe('Config: ticket', () => {
     describe('isSystemType', () => {
         it('is correct', () => {
             const validTypes = ticketConfig.SYSTEM_SOURCE_TYPES
-            const invalidTypes: any = ['test', 123, undefined, null, {}, []]
+            const invalidTypes: any[] = ['test', 123, undefined, null, {}, []]
 
             validTypes.forEach((type) => {
                 expect(ticketConfig.isSystemType(type)).toEqual(true)
             })
 
-            invalidTypes.forEach((type) => {
+            invalidTypes.forEach((type: any) => {
                 expect(ticketConfig.isSystemType(type)).toEqual(false)
             })
         })
@@ -143,7 +151,7 @@ describe('Config: ticket', () => {
 
     describe('lastNonSystemTypeMessage', () => {
         it('falsy if no message', () => {
-            const messages = []
+            const messages: TicketMessage[] = []
 
             expect(ticketConfig.lastNonSystemTypeMessage(messages)).toBeFalsy()
         })
@@ -158,7 +166,7 @@ describe('Config: ticket', () => {
                     id: 2,
                     created_datetime: '2017-07-02T18:00:00',
                 },
-            ])
+            ] as any)
 
             if (!lastMessage) {
                 throw new Error('lastMessage is undefined')
@@ -174,7 +182,7 @@ describe('Config: ticket', () => {
                     id: 2,
                     created_datetime: '2017-07-01T18:00:00',
                 },
-            ])
+            ] as any)
 
             if (!lastReversedMessage) {
                 throw new Error('lastReversedMessages is undefined')
@@ -201,7 +209,7 @@ describe('Config: ticket', () => {
                         type: systemType,
                     },
                 },
-            ])
+            ] as any)
 
             if (!lastMessage) {
                 throw new Error('lastMessage is undefined')
@@ -212,7 +220,7 @@ describe('Config: ticket', () => {
 
     describe('isPublic', () => {
         it('is boolean', () => {
-            const values: any = [
+            const values: any[] = [
                 'email',
                 'unknown-value',
                 1,
@@ -221,7 +229,7 @@ describe('Config: ticket', () => {
                 [],
             ]
 
-            values.forEach((value) => {
+            values.forEach((value: any) => {
                 expect(_isBoolean(ticketConfig.isPublic(value))).toBe(true)
             })
         })
@@ -229,7 +237,7 @@ describe('Config: ticket', () => {
 
     describe('isRichType', () => {
         it('is boolean', () => {
-            const values: any = [
+            const values: any[] = [
                 'email',
                 'unknown-value',
                 1,
@@ -238,7 +246,7 @@ describe('Config: ticket', () => {
                 [],
             ]
 
-            values.forEach((value) => {
+            values.forEach((value: any) => {
                 expect(_isBoolean(ticketConfig.isRichType(value))).toBe(true)
             })
         })
@@ -265,9 +273,9 @@ describe('Config: ticket', () => {
 
     describe('getVariableWithValue', () => {
         it('undefined if unknown value', () => {
-            const invalidValues: any = [undefined, null, 'unknown-variable']
+            const invalidValues: any[] = [undefined, null, 'unknown-variable']
 
-            invalidValues.forEach((value) => {
+            invalidValues.forEach((value: any) => {
                 expect(ticketConfig.getVariableWithValue(value)).toBe(undefined)
             })
         })

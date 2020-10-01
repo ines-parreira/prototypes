@@ -11,7 +11,7 @@ import {
     ACTIVE_VIEW_COUNT_TIMEOUT,
     baseView,
     RECENT_VIEWS_COUNTS_TIMEOUT,
-} from '../../../config/views'
+} from '../../../config/views.tsx'
 import socketManager from '../../../services/socketManager'
 import * as socketConstants from '../../../config/socketConstants.ts'
 import {

@@ -27,7 +27,11 @@ import {Action, Ticket, TicketMessage} from '../../models/ticket/types'
 import {Macro} from '../macro/types'
 import {StoreDispatch, RootState} from '../types'
 
-import * as socketEventTypes from '../../services/socketManager/types'
+import {
+    TicketMessageFailedEvent,
+    JoinEventType,
+    SocketEventType,
+} from '../../services/socketManager/types'
 import {Customer} from '../customers/types'
 import {UserSearchResult} from '../newMessage/types'
 import {
@@ -344,7 +348,7 @@ export const setCustomer = (customer: Maybe<Map<any, any>>) => (
         return Promise.resolve()
     }
 
-    socketManager.join('customer', customer.get('id'))
+    socketManager.join(JoinEventType.Customer, customer.get('id'))
 
     return dispatch(
         ticketPartialUpdate({
@@ -605,11 +609,11 @@ export const fetchTicket = (ticketId: string, discreetly = false) => (
                 ]) as number
 
                 if (parsedTicketId) {
-                    socketManager.join('ticket', parsedTicketId)
+                    socketManager.join(JoinEventType.Ticket, parsedTicketId)
                 }
 
                 if (customerId) {
-                    socketManager.join('customer', customerId)
+                    socketManager.join(JoinEventType.Customer, customerId)
                 }
 
                 // dispatch for ticket reducer branch
@@ -654,7 +658,7 @@ export const fetchTicket = (ticketId: string, discreetly = false) => (
                 }
 
                 // Notify the server that we viewed this ticket
-                socketManager.send('ticket-viewed', parsedTicketId)
+                socketManager.send(SocketEventType.TicketViewed, parsedTicketId)
 
                 return dispatch(newMessageActions.resetReceiversAndSender)
             },
@@ -721,11 +725,14 @@ export const _goToNextOrPrevTicket = (
                         >).getIn(['customer', 'id'])
 
                         if (ticketId) {
-                            socketManager.join('ticket', ticket.id)
+                            socketManager.join(JoinEventType.Ticket, ticket.id)
                         }
 
                         if (customerId) {
-                            socketManager.join('customer', customerId)
+                            socketManager.join(
+                                JoinEventType.Customer,
+                                customerId
+                            )
                         }
 
                         dispatch({
@@ -758,7 +765,10 @@ export const _goToNextOrPrevTicket = (
                         }
 
                         // Notify the server that we viewed this ticket
-                        socketManager.send('ticket-viewed', ticket.id)
+                        socketManager.send(
+                            SocketEventType.TicketViewed,
+                            ticket.id
+                        )
                         dispatch(newMessageActions.resetReceiversAndSender)
 
                         browserHistory.push(`/app/ticket/${ticket.id}`)
@@ -881,9 +891,9 @@ export const handleMessageActionError = (ticketId: string) => (
     return fetchPromise || Promise.resolve()
 }
 
-export const handleMessageError = (
-    json: socketEventTypes.TicketMessageFailedEvent
-) => (dispatch: StoreDispatch) => {
+export const handleMessageError = (json: TicketMessageFailedEvent) => (
+    dispatch: StoreDispatch
+) => {
     let buttons: NotificationButton[] = []
     let fetchPromise = null
 

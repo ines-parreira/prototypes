@@ -4,7 +4,7 @@ import {Map} from 'immutable'
 import {StoreDispatch} from '../types'
 import {notify} from '../notifications/actions'
 import {createErrorNotification} from '../utils.js'
-import {defaultMergeTicketsView} from '../../config/views.js'
+import {defaultMergeTicketsView} from '../../config/views'
 import {
     BASE_VIEW_ID,
     NEXT_VIEW_NAV_DIRECTION,
@@ -32,7 +32,7 @@ export function searchTickets(
             sourceTicketId,
             searchQuery,
             customerId
-        ) as Map<any, any>
+        )
         let url = `/api/views/${BASE_VIEW_ID}/items/`
 
         if (!navigation.isEmpty()) {

@@ -4,7 +4,7 @@ import {fromJS} from 'immutable'
 import _omit from 'lodash/omit'
 
 import configureStore from '../../../../../../store/configureStore'
-import * as viewsConfig from '../../../../../../config/views'
+import * as viewsConfig from '../../../../../../config/views.tsx'
 import * as ticketFixtures from '../../../../../../fixtures/ticket'
 import Cell from '../Cell'
 

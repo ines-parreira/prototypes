@@ -1,17 +1,14 @@
-//@flow
 import React from 'react'
-import {fromJS} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 import moment from 'moment'
 import _merge from 'lodash/merge'
 import _isString from 'lodash/isString'
 import {defaults} from 'react-chartjs-2'
 
-import {formatDuration} from '../pages/stats/common/utils'
-import {TagLabel} from '../pages/common/utils/labels'
-
-import {SHOPIFY_INTEGRATION_TYPE} from '../constants/integration'
-
-import {EMAIL_CHANNEL, CHAT_CHANNEL} from './ticket'
+import {TicketChannel} from '../business/types/ticket'
+import {formatDuration} from '../pages/stats/common/utils.js'
+import {TagLabel} from '../pages/common/utils/labels.js'
+import {IntegrationType} from '../models/integration/types'
 
 // Available Stats. These names should match names in `g/stats/config`
 export const OVERVIEW = 'overview'
@@ -68,7 +65,7 @@ export const SATISFACTION_SURVEY_MAX_COMMENT_LENGTH = 80
 
 export const TICKET_MAX_SUBJECT_LENGTH = 100
 
-export const STORE_INTEGRATION_TYPES = [SHOPIFY_INTEGRATION_TYPE]
+export const STORE_INTEGRATION_TYPES = [IntegrationType.ShopifyIntegrationType]
 
 // Default configuration for Chart.js
 _merge(defaults, {
@@ -110,7 +107,7 @@ _merge(defaults, {
             borderColor: '#e2e3ec',
             borderWidth: 1,
             callbacks: {
-                title: (tooltipItem) => {
+                title: (tooltipItem: {label: string}[]) => {
                     return formatDateAxeCb(tooltipItem[0].label)
                 },
             },
@@ -155,7 +152,7 @@ export const stats = fromJS({
         style: 'table',
         downloadable: true,
         callbacks: {
-            cell: (line, val) => {
+            cell: (line: any, val: any) => {
                 if (_isString(val) && val.toLowerCase() === 'without macro') {
                     return (
                         <i>
@@ -164,6 +161,7 @@ export const stats = fromJS({
                     )
                 }
 
+                //eslint-disable-next-line  @typescript-eslint/no-unsafe-return
                 return val
             },
         },
@@ -223,7 +221,7 @@ export const stats = fromJS({
                 color: '#69c473',
             },
         },
-        options: (legend) => ({
+        options: (legend: Map<any, any>) => ({
             scales: {
                 xAxes: [
                     {
@@ -263,7 +261,7 @@ export const stats = fromJS({
         style: 'table',
         downloadable: true,
         callbacks: {
-            cell: (line, val) => {
+            cell: (line: any, val: any) => {
                 if (_isString(val) && val.toLowerCase() === 'unassigned') {
                     return (
                         <i>
@@ -272,6 +270,7 @@ export const stats = fromJS({
                     )
                 }
 
+                //eslint-disable-next-line @typescript-eslint/no-unsafe-return
                 return val
             },
         },
@@ -281,15 +280,20 @@ export const stats = fromJS({
         style: 'table',
         downloadable: true,
         callbacks: {
-            cell: (line, val, {tagColors}) => {
+            cell: (
+                line: List<any>,
+                val: any,
+                {tagColors}: {tagColors: Map<any, any>}
+            ) => {
                 const tagName = line.first()
 
                 // current cell does not contain a tag name
                 if (tagName !== val) {
+                    //eslint-disable-next-line @typescript-eslint/no-unsafe-return
                     return val
                 }
 
-                if (tagName.toLowerCase() === 'untagged') {
+                if ((tagName as string).toLowerCase() === 'untagged') {
                     return (
                         <i>
                             <b>{val}</b>
@@ -298,6 +302,7 @@ export const stats = fromJS({
                 }
 
                 if (!tagColors) {
+                    //eslint-disable-next-line @typescript-eslint/no-unsafe-return
                     return val
                 }
                 return (
@@ -312,7 +317,7 @@ export const stats = fromJS({
         helpText: 'Number of tickets closed per assigned agent, per day',
         style: 'bar',
         downloadable: true,
-        options: (legend) => ({
+        options: (legend: Map<any, any>) => ({
             scales: {
                 xAxes: [
                     {
@@ -364,7 +369,7 @@ export const stats = fromJS({
                 color: '#a5e5ab',
             },
         },
-        options: (legend) => ({
+        options: (legend: Map<any, any>) => ({
             scales: {
                 xAxes: [
                     {
@@ -464,7 +469,7 @@ export const stats = fromJS({
                 borderColor: '#ff6b80',
             },
         },
-        options: (legend) => ({
+        options: (legend: Map<any, any>) => ({
             tooltips: {
                 callbacks: {
                     label: formatDurationTooltipCb,
@@ -519,7 +524,7 @@ export const stats = fromJS({
                 borderColor: '#ff6b80',
             },
         },
-        options: (legend) => ({
+        options: (legend: Map<any, any>) => ({
             tooltips: {
                 callbacks: {
                     label: formatDurationTooltipCb,
@@ -647,7 +652,7 @@ export const stats = fromJS({
                 color: '#ffb584',
             },
         },
-        options: (legend) => ({
+        options: (legend: Map<any, any>) => ({
             scales: {
                 xAxes: [
                     {
@@ -687,18 +692,21 @@ export const stats = fromJS({
 })
 
 // Callbacks to format values of datasets or axes
-const formatDurationAxeCb = (val) => formatDuration(val, 1)
+const formatDurationAxeCb = (val: any) => formatDuration(val, 1)
 
-const formatDateAxeCb = (val) => {
+const formatDateAxeCb = (val: any) => {
     return moment.unix(val).format('MMM Do')
 }
 
 // hide number of tickets if it's not an int
-const formatTicketAxeCb = (val) => {
-    return val % 1 === 0 ? val : ''
+const formatTicketAxeCb = (val: any) => {
+    return val % 1 === 0 ? (val as number) : ''
 }
 
-const formatDurationTooltipCb = (item, data) => {
+const formatDurationTooltipCb = (
+    item: {datasetIndex: number; yLabel: number},
+    data: {datasets: {label: string}[]}
+) => {
     return `${data.datasets[item.datasetIndex].label}: ${
         formatDuration(item.yLabel, 2) || '0'
     }`
@@ -780,7 +788,7 @@ How many surveys have been sent, response rate, average scores and more. `,
         filters: [
             {
                 type: 'channels',
-                options: [EMAIL_CHANNEL, CHAT_CHANNEL],
+                options: [TicketChannel.Email, TicketChannel.Chat],
             },
             {
                 type: 'score',

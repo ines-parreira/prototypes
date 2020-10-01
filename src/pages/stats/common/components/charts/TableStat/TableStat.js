@@ -14,7 +14,7 @@ import {
     SATISFACTION_SURVEY_MAX_SCORE,
     SATISFACTION_SURVEY_MIN_SCORE,
     TICKET_MAX_SUBJECT_LENGTH,
-} from '../../../../../../config/stats'
+} from '../../../../../../config/stats.tsx'
 import {
     comparedPeriodString,
     formatCurrency,

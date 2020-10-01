@@ -4,7 +4,7 @@ import _throttle from 'lodash/throttle'
 import {removeNotification} from 'reapop'
 import {EnhancedStore} from '@reduxjs/toolkit'
 
-import * as socketEvents from '../../config/socketEvents.js'
+import * as socketEvents from '../../config/socketEvents'
 import {notify} from '../../state/notifications/actions'
 import {store} from '../../init.js'
 import {devLog} from '../../utils'
@@ -21,6 +21,7 @@ import {
     ServerMessage,
     MessagePortEvent,
     SocketEventType,
+    JoinEventType,
 } from './types'
 
 type WSMessage = {
@@ -47,7 +48,7 @@ export class SocketManager {
         : typeSafeFallbackBroadcastChannelAdapter
     isConnected = false
     disconnectedNotificationId = '696480246'
-    rooms: Array<any> = [] // rooms currently joined
+    rooms: socketEvents.SendData[] = [] // rooms currently joined
     worker = currentBrowserSupportsSharedWorker
         ? new window.SharedWorker(
               window.SHARED_WORKER_BUILD_URL,
@@ -162,7 +163,7 @@ export class SocketManager {
      * @example
      * socketManagerInstance.send('ticket-viewed', 12
      */
-    send = (configName: string, ...args: Array<any>) => {
+    send = (configName: SocketEventType, ...args: Array<any>) => {
         const config = _find(socketEvents.sendEvents, {name: configName})
 
         if (!config) {
@@ -179,7 +180,7 @@ export class SocketManager {
      * @example
      * socketManagerInstance.join('ticket', 12
      */
-    join = (configName: string, ...args: Array<any>) => {
+    join = (configName: JoinEventType, ...args: Array<any>) => {
         const config = _find(socketEvents.joinEvents, {name: configName})
 
         if (!config) {
@@ -194,7 +195,7 @@ export class SocketManager {
      * @example
      * socketManagerInstance.leave('ticket', 12)
      */
-    leave = (configName: string, ...args: Array<any>) => {
+    leave = (configName: JoinEventType, ...args: Array<any>) => {
         const config = _find(socketEvents.joinEvents, {name: configName})
 
         if (!config) {
@@ -222,7 +223,7 @@ export class SocketManager {
      * @example
      * socketManagerInstance._sendToServer({event: 'ticket-viewed', ticketId: 12})
      */
-    _sendToServer = (data: Record<string, unknown>, callback?: () => void) => {
+    _sendToServer = (data: socketEvents.SendData, callback?: () => void) => {
         this.worker.port.postMessage(data)
 
         if (callback) {
@@ -236,10 +237,7 @@ export class SocketManager {
      * @example
      * socketManagerInstance._joinRoom({dataType: 'Ticket', data: 12})
      */
-    _joinRoom = (
-        data: Record<string, unknown>,
-        callback: () => void = _noop
-    ) => {
+    _joinRoom = (data: socketEvents.SendData, callback: () => void = _noop) => {
         // if no object id or object type, we don't join anything
         if (!data.data || !data.dataType) {
             return
@@ -269,7 +267,7 @@ export class SocketManager {
      * @example
      * socketManagerInstance._saveJoinRoom({event: 'join-room', dataType: 'Ticket', data: 12})
      */
-    _saveJoinRoom = (data: Record<string, unknown>) => {
+    _saveJoinRoom = (data: socketEvents.SendData) => {
         // leave other rooms of same dataType
         this._saveLeaveRoom(data)
         // add this room to current rooms
@@ -283,7 +281,7 @@ export class SocketManager {
      * socketManagerInstance._leaveRoom({dataType: 'Ticket', data: 12})
      */
     _leaveRoom = (
-        data: Record<string, unknown>,
+        data: socketEvents.SendData,
         callback: () => void = _noop
     ) => {
         // if no object id or object type, we don't leave anything
@@ -315,7 +313,7 @@ export class SocketManager {
      * @example
      * socketManagerInstance._saveJoinRoom({event: 'leave-room', dataType: 'Ticket', data: 12})
      */
-    _saveLeaveRoom = (data: Record<string, unknown>) => {
+    _saveLeaveRoom = (data: socketEvents.SendData) => {
         // remove all rooms of same dataType as passed data
         this.rooms = this.rooms.filter(
             (roomData: Record<string, unknown>): boolean =>

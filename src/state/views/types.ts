@@ -20,6 +20,16 @@ export enum ViewField {
     Tags = 'tags',
     Customer = 'customer',
     LastMessage = 'last_message',
+    Channel = 'channel',
+    Subject = 'subject',
+    Integrations = 'integrations',
+    AssigneeTeam = 'assignee_team',
+    Assignee = 'assignee',
+    Status = 'status',
+    Language = 'language',
+    LastReceivedMessage = 'last_received_message',
+    Closed = 'closed',
+    Snooze = 'snooze',
 }
 
 export enum ViewVisibility {

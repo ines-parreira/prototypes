@@ -2,7 +2,7 @@ import {fromJS} from 'immutable'
 import React from 'react'
 import {shallow} from 'enzyme'
 
-import * as viewsConfig from '../../../../../../config/views'
+import * as viewsConfig from '../../../../../../config/views.tsx'
 import ViewSelection from '../ViewSelection'
 import * as viewsFixtures from '../../../../../../fixtures/views'
 import configureStore from '../../../../../../store/configureStore'

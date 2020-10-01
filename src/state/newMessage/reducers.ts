@@ -17,7 +17,7 @@ import {
     TicketChannel,
 } from '../../business/types/ticket'
 import * as ticketTypes from '../ticket/constants'
-import * as ticketConfig from '../../config/ticket.js'
+import * as ticketConfig from '../../config/ticket'
 import {convertToHTML} from '../../utils/editor'
 import {GorgiasAction} from '../types'
 

@@ -1,11 +1,10 @@
-//@flow
-import {fromJS} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 import _isObject from 'lodash/isObject'
 
 import * as viewsConfig from '../views'
 
-import * as ticketFixtures from '../../fixtures/ticket'
-import {customer} from '../../fixtures/customer'
+import * as ticketFixtures from '../../fixtures/ticket.js'
+import {customer} from '../../fixtures/customer.js'
 
 global.console.error = jest.fn()
 
@@ -50,9 +49,9 @@ describe('Config: views', () => {
             customer,
         }
 
-        views.forEach((viewConfig) => {
+        views.forEach((viewConfig: Map<any, any>) => {
             it('view structure', () => {
-                const view = viewConfig.toJS()
+                const view = viewConfig.toJS() as Record<string, unknown>
 
                 expect(_isObject(view)).toBe(true)
                 expect(view).toHaveProperty('name')
@@ -70,7 +69,9 @@ describe('Config: views', () => {
             })
 
             it('view fields structure', () => {
-                const fields = viewConfig.get('fields').toJS()
+                const fields = (viewConfig.get('fields') as List<
+                    any
+                >).toJS() as Record<string, unknown>[]
 
                 fields.forEach((field) => {
                     expect(_isObject(field)).toBe(true)
@@ -80,8 +81,13 @@ describe('Config: views', () => {
             })
 
             it('cell function result', () => {
-                const viewConfigName = viewConfig.get('name')
-                const fixture = fromJS(fixtures[viewConfigName])
+                const viewConfigName = viewConfig.get(
+                    'name'
+                ) as keyof typeof fixtures
+                const fixture = fromJS(fixtures[viewConfigName]) as Map<
+                    any,
+                    any
+                >
 
                 // list of properties that return something else than a string
                 const fieldNameToType = {
@@ -98,23 +104,30 @@ describe('Config: views', () => {
                     },
                 }
 
-                const fieldNames = viewConfig
-                    .get('fields')
-                    .map((field) => field.get('name'))
-                const cellFunction = viewConfig.get('cell')
+                const fieldNames = (viewConfig.get('fields') as List<any>).map(
+                    (field: Map<any, any>) => field.get('name') as string
+                )
+                const cellFunction = viewConfig.get('cell') as (
+                    fieldName: any,
+                    fixture: any
+                ) => any
 
                 // check that each field renders the correct type once passed through the cell() function
                 fieldNames.forEach((fieldName) => {
                     expect(typeof fieldName).toBe('string')
                     const cellResult = cellFunction(fieldName, fixture)
                     const expectedType =
+                        //@ts-ignore fieldName is never undefined
                         fieldNameToType[viewConfigName][fieldName] || 'string'
                     expect(typeof cellResult).toBe(expectedType)
                 })
             })
 
             it('newView', () => {
-                const newView = viewConfig.get('newView')().toJS()
+                const newView = (viewConfig.get('newView') as () => Map<
+                    any,
+                    any
+                >)().toJS()
 
                 expect(newView).toHaveProperty('id', 0)
                 expect(newView).toHaveProperty('name')
@@ -131,7 +144,9 @@ describe('Config: views', () => {
 
             it('searchView', () => {
                 const term = 'term'
-                const searchView = viewConfig.get('searchView')(term).toJS()
+                const searchView = (viewConfig.get('searchView') as (
+                    term: string
+                ) => Map<any, any>)(term).toJS()
 
                 expect(searchView).toHaveProperty('id', 0)
                 expect(searchView).toHaveProperty('name')
@@ -151,7 +166,7 @@ describe('Config: views', () => {
 
     describe('getConfigByName', () => {
         it('returns correct config', () => {
-            const viewConfig = viewsConfig.views.last()
+            const viewConfig = viewsConfig.views.last() as Map<any, any>
             const name = viewConfig.get('name')
 
             expect(viewsConfig.getConfigByName(name)).toEqual(viewConfig)
@@ -160,7 +175,7 @@ describe('Config: views', () => {
 
     describe('getConfigByType', () => {
         it('returns correct config', () => {
-            const viewConfig = viewsConfig.views.last()
+            const viewConfig = viewsConfig.views.last() as Map<any, any>
             const type = viewConfig.get('type')
 
             expect(viewsConfig.getConfigByType(type)).toEqual(viewConfig)

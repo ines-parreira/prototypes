@@ -32,7 +32,7 @@ import {
     INSTAGRAM_COMMENT_SOURCE,
     INSTAGRAM_MEDIA_SOURCE,
     INTERNAL_NOTE_SOURCE,
-} from '../../../../../config/ticket'
+} from '../../../../../config/ticket.ts'
 
 import MessageSourceFields from './MessageSourceFields/'
 import css from './ReplyMessageChannel.less'

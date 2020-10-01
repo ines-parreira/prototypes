@@ -3,7 +3,7 @@ import _isUndefined from 'lodash/isUndefined'
 import {List} from 'immutable'
 import {updateNotification} from 'reapop'
 
-import * as viewsConfig from '../../config/views.js'
+import * as viewsConfig from '../../config/views'
 
 import {ApiListResponsePagination} from '../../models/api/types'
 import {Ticket} from '../../models/ticket/types'
@@ -133,10 +133,7 @@ export function bulkDeleteCustomer(ids: List<any>) {
         })
 
         const activeViewType = 'customer-list'
-        const viewConfig = viewsConfig.getConfigByType(activeViewType) as Map<
-            any,
-            any
-        >
+        const viewConfig = viewsConfig.getConfigByType(activeViewType)
 
         const notification = dispatch(
             notify({

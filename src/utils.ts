@@ -26,12 +26,12 @@ import URLSafeBase64 from 'urlsafe-base64'
 
 import {humanize} from './business/format'
 import {ACTION_TEMPLATES} from './config'
-import TICKET_LANGUAGES from './config/ticketLanguages.js'
+import TICKET_LANGUAGES from './config/ticketLanguages'
 import {AUTHORIZED_NOTIFICATION_TYPES} from './state/notifications/actions'
 import {Notification, NotificationStatus} from './state/notifications/types'
 import {ViewsState} from './state/views/types'
 import {ActionTemplate, Schemas, Attachment} from './types'
-import {USER_ROLES_ORDERED_BY_PRIVILEGES} from './config/user.js'
+import {USER_ROLES_ORDERED_BY_PRIVILEGES} from './config/user'
 import {UserRole} from './config/types/user'
 import {getHighestRole} from './state/agents/helpers'
 
@@ -539,7 +539,7 @@ export const isAdmin = (user: Map<any, any>): boolean => {
 }
 
 // Check if a user has a role
-export function hasRole(user: Map<any, any>, requiredRole: string): boolean {
+export function hasRole(user: Map<any, any>, requiredRole: UserRole): boolean {
     const userRole = getHighestRole(user) as UserRole
     return (
         USER_ROLES_ORDERED_BY_PRIVILEGES.indexOf(userRole) >=

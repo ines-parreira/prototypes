@@ -7,7 +7,7 @@ import {TableStat} from '../TableStat/TableStat'
 import {
     stats as statsConfig,
     TICKETS_PER_TAG,
-} from '../../../../../../config/stats'
+} from '../../../../../../config/stats.tsx'
 
 const tableStatData = fromJS({
     data: {

@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 
 import configureStore from '../../../../../../store/configureStore'
-import * as viewsConfig from '../../../../../../config/views'
+import * as viewsConfig from '../../../../../../config/views.tsx'
 import HeaderCell from '../HeaderCell'
 
 describe('ViewTable::Table::HeaderCell', () => {

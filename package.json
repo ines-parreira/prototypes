@@ -112,6 +112,7 @@
         "@babel/preset-typescript": "7.10.1",
         "@babel/register": "7.10.1",
         "@gorgias/javascript-shared-config": "0.0.1",
+        "@types/chart.js": "2.9.24",
         "@types/classnames": "2.2.10",
         "@types/domhandler": "2.4.1",
         "@types/draft-convert": "2.1.1",

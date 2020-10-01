@@ -1,4 +1,4 @@
-import {fromJS} from 'immutable'
+import {fromJS, List} from 'immutable'
 
 export const events = fromJS([
     {
@@ -17,7 +17,7 @@ export const events = fromJS([
         label: 'new message in ticket',
         value: 'ticket-message-created',
     },
-])
+]) as List<any>
 
 // variables available in rules
 export const availableVariables = ['ticket', 'message', 'event']

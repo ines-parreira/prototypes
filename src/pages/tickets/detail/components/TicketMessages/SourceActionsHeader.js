@@ -12,7 +12,7 @@ import {
     FACEBOOK_COMMENT_SOURCE,
     INSTAGRAM_AD_COMMENT_SOURCE,
     INSTAGRAM_COMMENT_SOURCE,
-} from '../../../../../config/ticket'
+} from '../../../../../config/ticket.ts'
 
 import css from './SourceActions.less'
 

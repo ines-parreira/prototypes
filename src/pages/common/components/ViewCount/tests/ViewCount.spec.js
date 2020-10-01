@@ -5,7 +5,7 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 
 import ViewCount from '../ViewCount'
-import {MAX_TICKET_COUNT_PER_VIEW} from '../../../../../config/views'
+import {MAX_TICKET_COUNT_PER_VIEW} from '../../../../../config/views.tsx'
 
 describe('<ViewCount/>', () => {
     const mockStore = configureMockStore([thunk])

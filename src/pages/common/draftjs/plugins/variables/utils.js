@@ -3,7 +3,7 @@ import findWithRegex from 'find-with-regex'
 import _get from 'lodash/get'
 
 import {templateRegex} from '../../../utils/template'
-import * as ticketConfig from '../../../../../config/ticket'
+import * as ticketConfig from '../../../../../config/ticket.ts'
 
 /**
  * Transform variables (ex: {ticket.customer.name}) in visual tag

@@ -1,4 +1,4 @@
-type AgentRoleMeta = {
+export type AgentRoleMeta = {
     description: string
     label: string
 }

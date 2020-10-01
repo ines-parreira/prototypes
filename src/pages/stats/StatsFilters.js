@@ -7,7 +7,7 @@ import {connect} from 'react-redux'
 import _upperFirst from 'lodash/upperFirst'
 import {withRouter} from 'react-router'
 
-import {views as statViewsConfig} from '../../config/stats'
+import {views as statViewsConfig} from '../../config/stats.tsx'
 import {mergeStatsFilters} from '../../state/stats/actions.ts'
 import {fieldEnumSearch} from '../../state/views/actions.ts'
 import PageHeader from '../common/components/PageHeader'
@@ -15,7 +15,7 @@ import TagDropdownMenu from '../common/components/TagDropdownMenu/TagDropdownMen
 import {getViewFilters} from '../../state/stats/selectors.ts'
 import {getTags} from '../../state/tags/selectors.ts'
 import {getIntegrations} from '../../state/integrations/selectors.ts'
-import {CHANNELS} from '../../config/ticket'
+import {CHANNELS} from '../../config/ticket.ts'
 import {getAgents} from '../../state/agents/selectors.ts'
 import {getDisplayName} from '../../state/customers/helpers.ts'
 

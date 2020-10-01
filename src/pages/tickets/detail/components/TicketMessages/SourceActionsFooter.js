@@ -12,7 +12,7 @@ import type {
     Source,
 } from '../../../../../models/ticket/types'
 
-import {FACEBOOK_COMMENT_SOURCE} from '../../../../../config/ticket'
+import {FACEBOOK_COMMENT_SOURCE} from '../../../../../config/ticket.ts'
 
 import FacebookReactionType from '../../../../../constants/integrations/facebook'
 

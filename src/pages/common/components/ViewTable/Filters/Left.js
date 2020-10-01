@@ -6,7 +6,7 @@ import _capitalize from 'lodash/capitalize'
 
 import {humanizeString} from '../../../../../utils.ts'
 
-import * as viewsConfig from '../../../../../config/views'
+import * as viewsConfig from '../../../../../config/views.tsx'
 
 export default class Left extends React.Component {
     static propTypes = {

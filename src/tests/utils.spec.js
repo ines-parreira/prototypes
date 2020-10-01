@@ -5,7 +5,7 @@ import MockAdapter from 'axios-mock-adapter'
 
 import plan from '../fixtures/plan'
 import * as utils from '../utils.ts'
-import TICKET_LANGUAGES from '../config/ticketLanguages'
+import TICKET_LANGUAGES from '../config/ticketLanguages.ts'
 import schemasJSON from '../fixtures/openapi.json'
 import {
     ADMIN_ROLE,
@@ -13,7 +13,7 @@ import {
     BASIC_AGENT_ROLE,
     LITE_AGENT_ROLE,
     OBSERVER_AGENT_ROLE,
-} from '../config/user'
+} from '../config/user.ts'
 
 describe('global utils', () => {
     describe('formatDatetime', () => {

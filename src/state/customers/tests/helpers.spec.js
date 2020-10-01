@@ -1,7 +1,7 @@
 import {fromJS} from 'immutable'
 
 import * as helpers from '../helpers.ts'
-import {EMAIL_CHANNEL} from '../../../config/ticket'
+import {EMAIL_CHANNEL} from '../../../config/ticket.ts'
 
 describe('customers helpers', () => {
     it('getDisplayName', () => {

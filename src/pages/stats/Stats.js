@@ -10,7 +10,7 @@ import axios from 'axios'
 import {
     stats as statsConfig,
     views as statViewsConfig,
-} from '../../config/stats'
+} from '../../config/stats.tsx'
 import GorgiasApi from '../../services/gorgiasApi.ts'
 import {notify} from '../../state/notifications/actions.ts'
 import {getViewFilters} from '../../state/stats/selectors.ts'

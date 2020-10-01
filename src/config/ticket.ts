@@ -1,72 +1,61 @@
-//@flow
-import {fromJS, type Map} from 'immutable'
+import {fromJS, Map, List} from 'immutable'
 import _find from 'lodash/find'
 
 import {
-    TicketMessageSourceTypes,
-    TicketStatuses,
-    TicketChannels,
-} from '../business/ticket.ts'
-import type {
     TicketMessageSourceType,
     TicketChannel,
+    TicketStatus,
 } from '../business/types/ticket'
-import type {TicketMessage} from '../models/ticket'
-import {compare, getLastMessage, toImmutable} from '../utils.ts'
-import {isForwardedMessage} from '../state/ticket/utils'
+import {TicketMessage} from '../models/ticket/types'
+import {compare, getLastMessage, toImmutable} from '../utils'
+import {isForwardedMessage} from '../state/ticket/utils.js'
 
 import {
     INTEGRATION_HIDDEN_VARIABLES,
     INTEGRATION_PREVIOUS_VARIABLES,
     INTEGRATION_VARIABLES,
-} from './integrations'
+} from './integrations/index.js'
 
 // TODO(business-extract): Deprecated constants => Use directly Channels.XXX in your code
-export const AIRCALL_CHANNEL = TicketChannels.AIRCALL
-export const API_CHANNEL = TicketChannels.API
-export const CHAT_CHANNEL = TicketChannels.CHAT
-export const EMAIL_CHANNEL = TicketChannels.EMAIL
-export const FACEBOOK_CHANNEL = TicketChannels.FACEBOOK
-export const FACEBOOK_MESSENGER_CHANNEL = TicketChannels.FACEBOOK_MESSENGER
-export const INSTAGRAM_AD_COMMENT_CHANNEL = TicketChannels.INSTAGRAM_AD_COMMENT
-export const INSTAGRAM_COMMENT_CHANNEL = TicketChannels.INSTAGRAM_COMMENT
-export const PHONE_CHANNEL = TicketChannels.PHONE
-export const SMS_CHANNEL = TicketChannels.SMS
+//$TsFixMe fallback constants for js files, remove once replaced with TicketChannel enum
+export const CHAT_CHANNEL = TicketChannel.Chat
+export const EMAIL_CHANNEL = TicketChannel.Email
+export const FACEBOOK_MESSENGER_CHANNEL = TicketChannel.FacebookMessenger
+export const CHANNELS = Object.values(TicketChannel)
 
-export const DEFAULT_CHANNEL = EMAIL_CHANNEL
-
-export const CHANNELS: TicketChannel[] = (Object.values(TicketChannels): any)
+export const DEFAULT_CHANNEL = TicketChannel.Email
 
 // TODO(business-extract): Deprecated constants => Use directly Statuses.XXX in your code
-export const OPEN_STATUS = TicketStatuses.OPEN
-export const CLOSED_STATUS = TicketStatuses.CLOSED
-export const STATUSES = Object.values(TicketStatuses)
+//$TsFixMe fallback constants for js files, remove once replaced with TicketStatus enum
+export const OPEN_STATUS = TicketStatus.Open
+export const CLOSED_STATUS = TicketStatus.Closed
+export const STATUSES = Object.values(TicketStatus)
 
 // TODO(business-extract): Deprecated constants => Use directly SourceTypes.XXX in your code
-export const AIRCALL_SOURCE = TicketMessageSourceTypes.AIRCALL
-export const API_SOURCE = TicketMessageSourceTypes.API
-export const CHAT_SOURCE = TicketMessageSourceTypes.CHAT
-export const EMAIL_FORWARD_SOURCE = TicketMessageSourceTypes.EMAIL_FORWARD
-export const EMAIL_SOURCE = TicketMessageSourceTypes.EMAIL
-export const FACEBOOK_COMMENT_SOURCE = TicketMessageSourceTypes.FACEBOOK_COMMENT
-export const FACEBOOK_MESSAGE_SOURCE = TicketMessageSourceTypes.FACEBOOK_MESSAGE
+//$TsFixMe fallback constants for js files, remove once replaced with TicketMessageSourceType enum
+export const AIRCALL_SOURCE = TicketMessageSourceType.Aircall
+export const API_SOURCE = TicketMessageSourceType.Api
+export const CHAT_SOURCE = TicketMessageSourceType.Chat
+export const EMAIL_FORWARD_SOURCE = TicketMessageSourceType.EmailForward
+export const EMAIL_SOURCE = TicketMessageSourceType.Email
+export const FACEBOOK_COMMENT_SOURCE = TicketMessageSourceType.FacebookComment
+export const FACEBOOK_MESSAGE_SOURCE = TicketMessageSourceType.FacebookMessage
 export const FACEBOOK_MESSENGER_SOURCE =
-    TicketMessageSourceTypes.FACEBOOK_MESSENGER
-export const FACEBOOK_POST_SOURCE = TicketMessageSourceTypes.FACEBOOK_POST
+    TicketMessageSourceType.FacebookMessenger
+export const FACEBOOK_POST_SOURCE = TicketMessageSourceType.FacebookPost
 export const INSTAGRAM_AD_COMMENT_SOURCE =
-    TicketMessageSourceTypes.INSTAGRAM_AD_COMMENT
+    TicketMessageSourceType.InstagramAdComment
 export const INSTAGRAM_AD_MEDIA_SOURCE =
-    TicketMessageSourceTypes.INSTAGRAM_AD_MEDIA
-export const INSTAGRAM_COMMENT_SOURCE =
-    TicketMessageSourceTypes.INSTAGRAM_COMMENT
-export const INSTAGRAM_MEDIA_SOURCE = TicketMessageSourceTypes.INSTAGRAM_MEDIA
-export const INTERNAL_NOTE_SOURCE = TicketMessageSourceTypes.INTERNAL_NOTE
-export const OTTSPOTT_CALL_SOURCE = TicketMessageSourceTypes.OTTSPOTT_CALL
-export const PHONE_SOURCE = TicketMessageSourceTypes.PHONE
-export const SYSTEM_MESSAGE_SOURCE = TicketMessageSourceTypes.SYSTEM_MESSAGE
-export const TWITTER_SOURCE = TicketMessageSourceTypes.TWITTER
+    TicketMessageSourceType.InstagramAdMedia
+export const INSTAGRAM_COMMENT_SOURCE = TicketMessageSourceType.InstagramComment
+export const INSTAGRAM_MEDIA_SOURCE = TicketMessageSourceType.InstagramMedia
+export const INTERNAL_NOTE_SOURCE = TicketMessageSourceType.InternalNote
+export const OTTSPOTT_CALL_SOURCE = TicketMessageSourceType.OttspottCall
+export const PHONE_SOURCE = TicketMessageSourceType.Phone
+export const SYSTEM_MESSAGE_SOURCE = TicketMessageSourceType.SystemMessage
+export const TWITTER_SOURCE = TicketMessageSourceType.Twitter
 
-export const SOURCE_TYPES = Object.values(TicketMessageSourceTypes)
+export const SOURCE_TYPES = Object.values(TicketMessageSourceType)
 
 export const SYSTEM_SOURCE_TYPES = [INTERNAL_NOTE_SOURCE, SYSTEM_MESSAGE_SOURCE]
 
@@ -82,14 +71,22 @@ export const USABLE_SOURCE_TYPES = [
     INTERNAL_NOTE_SOURCE,
 ]
 
-export const DEFAULT_SOURCE_TYPE = TicketMessageSourceTypes.EMAIL
+export const DEFAULT_SOURCE_TYPE = TicketMessageSourceType.Email
 
 type Variable = {
-    type: string,
-    name: string,
-    children?: {name: string, fullName: string, value: string}[],
-    value?: string,
-    explicit?: boolean,
+    type: string
+    name: string
+    children?: VariableChild[]
+    value?: string
+    explicit?: boolean
+    fullName?: string
+    integration?: string
+}
+
+type VariableChild = {
+    name: string
+    fullName: string
+    value: string
 }
 
 // available variables in macros
@@ -157,11 +154,11 @@ export const VARIABLES: Variable[] = [
         name: 'Satisfaction Survey',
         value: '{{satisfaction_survey_url}}',
     },
-    ...INTEGRATION_VARIABLES,
+    ...(INTEGRATION_VARIABLES as Variable[]),
 ]
 
 // variables used in some other variables, but which are never available to use on their own
-export const HIDDEN_VARIABLES = [...INTEGRATION_HIDDEN_VARIABLES]
+export const HIDDEN_VARIABLES = [...INTEGRATION_HIDDEN_VARIABLES] as Variable[]
 
 // previously available variables in macros: still displayed as variables but are not available in dropdowns anymore
 export const PREVIOUS_VARIABLES: Variable[] = [
@@ -191,23 +188,22 @@ export const PREVIOUS_VARIABLES: Variable[] = [
             },
         ],
     },
-    ...INTEGRATION_PREVIOUS_VARIABLES,
+    ...(INTEGRATION_PREVIOUS_VARIABLES as Variable[]),
 ]
 
 /**
  * Return passed messages ordered by created_datetime
- * @param messages
  */
-export function orderedMessages(messages: Array<TicketMessage>): Map<*, *> {
-    return toImmutable(messages).sort((a, b) =>
+export function orderedMessages(messages: Array<TicketMessage>): Map<any, any> {
+    return toImmutable<List<any>>(
+        messages
+    ).sort((a: Map<any, any>, b: Map<any, any>) =>
         compare(a.get('created_datetime'), b.get('created_datetime'))
-    )
+    ) as Map<any, any>
 }
 
 /**
  * Return true if passed source type can be used to answer (can be used as a source type in a new message)
- * @param sourceType
- * @returns {boolean}
  */
 export function isAnswerableType(sourceType: TicketMessageSourceType): boolean {
     return USABLE_SOURCE_TYPES.includes(sourceType)
@@ -215,8 +211,6 @@ export function isAnswerableType(sourceType: TicketMessageSourceType): boolean {
 
 /**
  * Return true if passed source type is a system source type
- * @param sourceType
- * @returns {boolean}
  */
 export function isSystemType(sourceType: TicketMessageSourceType): boolean {
     return SYSTEM_SOURCE_TYPES.includes(sourceType)
@@ -224,34 +218,27 @@ export function isSystemType(sourceType: TicketMessageSourceType): boolean {
 
 /**
  * Get the most recent message that was not a system-type message, if any
- * @param messages
- * @returns {?TicketMessage}
  */
-export function lastNonSystemTypeMessage(
-    messages: Array<TicketMessage>
-): ?Map<*, *> {
-    const filteredMessages = orderedMessages(messages).filter((message) => {
-        return (
-            !isSystemType(message.getIn(['source', 'type'])) &&
-            !isForwardedMessage(message)
-        )
-    })
-    return (
-        !filteredMessages.isEmpty() &&
-        fromJS(getLastMessage(filteredMessages.toJS()))
+export function lastNonSystemTypeMessage(messages: Array<TicketMessage>) {
+    const filteredMessages = orderedMessages(messages).filter(
+        (message: Map<any, any>) => {
+            return (
+                !isSystemType(message.getIn(['source', 'type'])) &&
+                !isForwardedMessage(message)
+            )
+        }
     )
+    return (!filteredMessages.isEmpty() &&
+        fromJS(getLastMessage(filteredMessages.toJS()))) as Maybe<Map<any, any>>
 }
 
 /**
  * Return channel of passed source type
- * @param sourceType: the source type from which we want to get the corresponding channel
- * @param messages: the messages for which we want to get a channel
- * @returns {string}: the channel corresponding to the passed source type
  */
 export function sourceTypeToChannel(
     sourceType: TicketMessageSourceType,
     messages: Array<TicketMessage> = []
-): string {
+): TicketChannel | TicketMessageSourceType {
     if (!sourceType) {
         return DEFAULT_CHANNEL
     }
@@ -269,21 +256,21 @@ export function sourceTypeToChannel(
 
     if (
         sourceType.startsWith('facebook') &&
-        sourceType !== TicketMessageSourceTypes.FACEBOOK_MESSENGER
+        sourceType !== TicketMessageSourceType.FacebookMessenger
     ) {
-        return FACEBOOK_CHANNEL
+        return TicketChannel.Facebook
     }
 
     if (sourceType.startsWith('instagram-ad')) {
-        return INSTAGRAM_AD_COMMENT_CHANNEL
+        return TicketChannel.InstagramAdComment
     }
 
     if (sourceType.startsWith('instagram')) {
-        return INSTAGRAM_COMMENT_CHANNEL
+        return TicketChannel.InstagramComment
     }
 
     if (sourceType === 'ottspott-call') {
-        return PHONE_CHANNEL
+        return TicketChannel.Phone
     }
 
     return sourceType
@@ -306,18 +293,21 @@ export function responseSourceType(
         return DEFAULT_SOURCE_TYPE
     }
 
-    const lastSourceType = lastMessage.getIn(['source', 'type'])
+    const lastSourceType = lastMessage.getIn([
+        'source',
+        'type',
+    ]) as TicketMessageSourceType
 
-    if (lastSourceType === TicketMessageSourceTypes.FACEBOOK_POST) {
-        return TicketMessageSourceTypes.FACEBOOK_COMMENT
+    if (lastSourceType === TicketMessageSourceType.FacebookPost) {
+        return TicketMessageSourceType.FacebookComment
     }
 
-    if (lastSourceType === TicketMessageSourceTypes.INSTAGRAM_MEDIA) {
-        return TicketMessageSourceTypes.INSTAGRAM_COMMENT
+    if (lastSourceType === TicketMessageSourceType.InstagramMedia) {
+        return TicketMessageSourceType.InstagramComment
     }
 
-    if (lastSourceType === TicketMessageSourceTypes.INSTAGRAM_AD_MEDIA) {
-        return TicketMessageSourceTypes.INSTAGRAM_AD_COMMENT
+    if (lastSourceType === TicketMessageSourceType.InstagramAdMedia) {
+        return TicketMessageSourceType.InstagramAdComment
     }
 
     if (!isAnswerableType(lastSourceType)) {
@@ -329,39 +319,32 @@ export function responseSourceType(
 
 /**
  * Return true if source type is public type
- * @param sourceType
- * @returns {boolean}
  */
 export function isPublic(sourceType: TicketMessageSourceType): boolean {
-    return sourceType !== TicketMessageSourceTypes.INTERNAL_NOTE
+    return sourceType !== TicketMessageSourceType.InternalNote
 }
 
 /**
  * Return true if type supports HTML content
- * @param sourceType
- * @returns {boolean}
  */
 export function isRichType(sourceType: TicketMessageSourceType): boolean {
     return [
-        TicketMessageSourceTypes.EMAIL,
-        TicketMessageSourceTypes.INTERNAL_NOTE,
+        TicketMessageSourceType.Email,
+        TicketMessageSourceType.InternalNote,
     ].includes(sourceType)
 }
 
 /**
  * Return true if can leave internal note
- * @param sourceType
- * @returns {boolean}
  */
 export function canLeaveInternalNote(
     sourceType: TicketMessageSourceType
 ): boolean {
-    return sourceType === TicketMessageSourceTypes.INTERNAL_NOTE
+    return sourceType === TicketMessageSourceType.InternalNote
 }
 
 /**
  * Return variables config
- * @returns {[*,*,*,*]}
  */
 export function getVariables(types: Array<string>): Array<Variable> {
     if (!types) {
@@ -374,13 +357,11 @@ export function getVariables(types: Array<string>): Array<Variable> {
 /**
  * Return array of configs of variables
  * Autocomplete fullName and type properties of each config
- * @param variablesList
- * @returns {Array}
  */
 export function getVariablesList(
-    variablesList: Array<Object> = VARIABLES
-): Array<Object> {
-    const variables = []
+    variablesList: Array<Variable> = VARIABLES
+): Array<Variable> {
+    const variables: Variable[] = []
 
     variablesList.forEach((category) => {
         if (category.children !== undefined) {
@@ -388,7 +369,7 @@ export function getVariablesList(
                 const object = {
                     ...variable,
                     fullName: variable.fullName || variable.name,
-                }
+                } as Variable
 
                 if (category.type) {
                     object.type = category.type
@@ -405,7 +386,7 @@ export function getVariablesList(
                 value: category.value,
                 type: category.type,
                 fullName: category.fullName || category.name,
-            })
+            } as Variable)
         }
     })
 
@@ -414,10 +395,8 @@ export function getVariablesList(
 
 /**
  * Return variable config with passed value
- * @param value
- * @returns {*}
  */
-export function getVariableWithValue(value: string): ?Object {
+export function getVariableWithValue(value: string) {
     const variables = getVariablesList()
     const hiddenVariables = getVariablesList(HIDDEN_VARIABLES)
     const previousVariables = getVariablesList(PREVIOUS_VARIABLES)

@@ -1,12 +1,14 @@
-//@flow
 import _isArray from 'lodash/isArray'
 import _isObject from 'lodash/isObject'
 
-import * as rulesConfig from '../rules.ts'
+import * as rulesConfig from '../rules'
 
 describe('Config: rules', () => {
     describe('triggers', () => {
-        const events = rulesConfig.events.toJS()
+        const events = rulesConfig.events.toJS() as {
+            label: string
+            value: string
+        }[]
 
         it('is array', () => {
             expect(_isArray(events)).toBe(true)
