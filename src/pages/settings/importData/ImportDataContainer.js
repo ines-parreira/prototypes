@@ -38,9 +38,18 @@ export default class ImportDataContainer extends React.Component {
         const {integrations} = this.props
 
         if (!integrations.isEmpty()) {
-            const integration = integrations.first()
-
-            if (integration.getIn(['meta', 'status']) === 'pending') {
+            const isPending =
+                integrations.filter(
+                    (integration) =>
+                        integration.getIn(['meta', 'status']) === 'pending'
+                ).size > 0
+            const isCompleted =
+                integrations.filter((integration) =>
+                    ['success', 'failure'].includes(
+                        integration.getIn(['meta', 'status'])
+                    )
+                ).size === integrations.size
+            if (isPending) {
                 return (
                     <Alert color="info" className="mb-4">
                         <p>
@@ -58,7 +67,7 @@ export default class ImportDataContainer extends React.Component {
                         </p>
                     </Alert>
                 )
-            } else if (integration.getIn(['meta', 'status']) === 'success') {
+            } else if (isCompleted) {
                 return (
                     <Alert color="success" className="mb-4">
                         <p>
