@@ -4,7 +4,6 @@ import _isUndefined from 'lodash/isUndefined'
 import _isArray from 'lodash/isArray'
 import _isString from 'lodash/isString'
 import _isInteger from 'lodash/isInteger'
-import _isNil from 'lodash/isNil'
 
 import {getAST, getFirstExpressionOfAST} from '../../utils'
 import {Schemas} from '../../types'
@@ -100,7 +99,7 @@ const resolveArgSchema = (
     }
 
     if (
-        !_isNil(left[1]) &&
+        left[1] != null &&
         Object.prototype.hasOwnProperty.call(OBJECT_DEFINITIONS, left[1])
     ) {
         left[1] = OBJECT_DEFINITIONS[left[1] as keyof typeof OBJECT_DEFINITIONS]

@@ -1,7 +1,6 @@
 import {fromJS, Map, List} from 'immutable'
 import moment from 'moment'
 import _isNumber from 'lodash/isNumber'
-import _isNil from 'lodash/isNil'
 
 import {getCode} from '../../utils'
 import {GorgiasAction, RootState} from '../types'
@@ -157,7 +156,7 @@ export default function reducer(
         }
 
         case constants.REMOVE_VIEW_FIELD_FILTER: {
-            if (_isNil(action.index)) {
+            if (action.index == null) {
                 return state
             }
             const nextAst = removeFilterAST(activeView, action.index)
@@ -172,7 +171,7 @@ export default function reducer(
 
         case constants.UPDATE_VIEW_FIELD_FILTER: {
             const ast = activeView.get('filters_ast') as Map<any, any>
-            if (_isNil(action.index) || _isNil(action.value)) {
+            if (action.index == null || action.value == null) {
                 return state
             }
             const nextAst = updateFilterValue(ast, action.index, action.value)
@@ -185,7 +184,7 @@ export default function reducer(
 
         case constants.UPDATE_VIEW_FIELD_FILTER_OPERATOR: {
             const ast = activeView.get('filters_ast') as Map<any, any>
-            if (_isNil(action.index) || _isNil(action.operator)) {
+            if (action.index == null || action.operator == null) {
                 return state
             }
             const nextAst = updateFilterOperator(
