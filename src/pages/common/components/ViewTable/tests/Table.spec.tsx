@@ -28,7 +28,7 @@ jest.mock('../../../../../state/views/actions', () => {
 })
 
 const TableMock = (Table as unknown) as ComponentType<
-    ComponentProps<typeof Table> & {store?: any; location?: any}
+    ComponentProps<typeof Table> & {store?: any}
 >
 
 describe('ViewTable::Table', () => {

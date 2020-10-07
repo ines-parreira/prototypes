@@ -28,6 +28,7 @@ jest.mock('../../../../../state/views/actions.ts', () => {
         removeFieldFilter: jest.fn(() => _identity),
         toggleSelection: jest.fn(() => _identity),
         updateView: jest.fn(() => _identity),
+        fetchViewItems: jest.fn(() => _identity),
     }
 })
 
@@ -46,7 +47,7 @@ jest.mock('react-router', () => {
 })
 
 const HeaderMock = (Header as unknown) as ComponentType<
-    ComponentProps<typeof Header> & {store?: any; location?: any}
+    ComponentProps<typeof Header> & {store?: any}
 >
 
 describe('ViewTable::Header', () => {
@@ -84,6 +85,7 @@ describe('ViewTable::Header', () => {
         )
             .dive()
             .dive()
+            .dive()
         expect(component).toMatchSnapshot()
     })
 
@@ -92,13 +94,15 @@ describe('ViewTable::Header', () => {
             <HeaderMock
                 {...minProps}
                 isSearch
-                location={{
-                    query: {
-                        q: 'term1',
-                    },
-                }}
+                store={configureStore(
+                    storeWithActiveView(({
+                        ...fixtureView,
+                        search: 'term1',
+                    } as unknown) as View)
+                )}
             />
         )
+            .dive()
             .dive()
             .dive()
         expect(component).toMatchSnapshot()
@@ -110,18 +114,32 @@ describe('ViewTable::Header', () => {
             component = shallow(<HeaderMock {...minProps} />)
                 .dive()
                 .dive()
+                .dive()
         })
 
         it('displays', () => {
             expect(component).toMatchSnapshot()
         })
 
-        it('search term on change in search input', () => {
+        it('should update search of the active view and fetch view items on search input change', () => {
+            const searchTerm = 'term1'
             const searchOnChange = (component.find(Search).props() as {
                 onChange: (search: string) => void
             }).onChange
-            searchOnChange('term1')
-            expect(browserHistory.push).toBeCalled()
+            searchOnChange(searchTerm)
+            expect(viewsActions.updateView).toHaveBeenLastCalledWith(
+                (fromJS(fixtureView) as Map<any, any>).set(
+                    'search',
+                    searchTerm
+                ),
+                false
+            )
+            expect(viewsActions.fetchViewItems).toHaveBeenLastCalledWith(
+                null,
+                null,
+                null,
+                expect.any(Object)
+            )
         })
 
         it('go in search mode when focusing the search input', () => {
@@ -132,24 +150,22 @@ describe('ViewTable::Header', () => {
             )
         })
 
-        it('get search query from url', () => {
+        it('get search query from active view', () => {
             const component = shallow(
                 <HeaderMock
                     {...minProps}
-                    location={{
-                        query: {
-                            q: 'term1',
-                        },
-                    }}
+                    store={configureStore(
+                        storeWithActiveView(({
+                            ...fixtureView,
+                            search: 'term1',
+                        } as unknown) as View)
+                    )}
                 />
             )
                 .dive()
                 .dive()
-            expect(
-                (component.instance() as InstanceType<
-                    typeof HeaderContainer
-                >)._searchQuery()
-            ).toBe('term1')
+                .dive()
+            expect(component).toMatchSnapshot()
         })
 
         it('update view name', () => {
@@ -189,6 +205,7 @@ describe('ViewTable::Header', () => {
                 )
                     .dive()
                     .dive()
+                    .dive()
                 expect(component).toMatchSnapshot()
             })
 
@@ -202,6 +219,7 @@ describe('ViewTable::Header', () => {
                         store={configureStore(storeWithActiveView(activeView))}
                     />
                 )
+                    .dive()
                     .dive()
                     .dive()
                 expect(component).toMatchSnapshot()
@@ -221,6 +239,7 @@ describe('ViewTable::Header', () => {
                 )
                     .dive()
                     .dive()
+                    .dive()
                 expect(component).toMatchSnapshot()
             })
         })
@@ -236,6 +255,7 @@ describe('ViewTable::Header', () => {
                         store={configureStore(storeWithActiveView(activeView))}
                     />
                 )
+                    .dive()
                     .dive()
                     .dive()
                 ;(component.find(EmojiSelect).props() as {
@@ -258,6 +278,7 @@ describe('ViewTable::Header', () => {
                         store={configureStore(storeWithActiveView(activeView))}
                     />
                 )
+                    .dive()
                     .dive()
                     .dive()
                 ;(component.find(EmojiSelect).props() as {
@@ -288,6 +309,7 @@ describe('ViewTable::Header', () => {
                 )
                     .dive()
                     .dive()
+                    .dive()
 
                 ;(component.find(EmojiSelect).props() as {
                     onEmojiClear: () => void
@@ -310,6 +332,7 @@ describe('ViewTable::Header', () => {
                         store={configureStore(storeWithActiveView(activeView))}
                     />
                 )
+                    .dive()
                     .dive()
                     .dive()
 

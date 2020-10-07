@@ -3,7 +3,6 @@ import {fromJS, List, Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 import {browserHistory, withRouter, WithRouterProps} from 'react-router'
 import classnames from 'classnames'
-import _get from 'lodash/get'
 
 import Loader from '../Loader/index.js'
 import withCancellableRequest, {
@@ -19,6 +18,9 @@ import Table from './Table'
 import FilterTopbar from './FilterTopbar'
 import DeactivatedViewMessage from './DeactivatedViewMessage'
 import css from './ViewTable.less'
+import withViewSearchUrlSync, {
+    ViewSearchUrlSyncInjectedProps,
+} from './withViewSearchUrlSync'
 
 type OwnProps = {
     className?: string
@@ -29,15 +31,17 @@ type OwnProps = {
     urlViewId: Maybe<string>
     ActionsComponent: Maybe<ComponentType>
     viewButtons: ReactNode
-} & CancellableRequestInjectedProps<
-    'fetchViewItemsCancellable',
-    'cancelFetchViewItemsCancellable',
-    typeof viewsActions.fetchViewItems
->
+}
 
 type Props = OwnProps &
     WithRouterProps<any, {cursor?: string; q?: string}> &
-    ConnectedProps<typeof connector>
+    ViewSearchUrlSyncInjectedProps &
+    ConnectedProps<typeof connector> &
+    CancellableRequestInjectedProps<
+        'fetchViewItemsCancellable',
+        'cancelFetchViewItemsCancellable',
+        typeof viewsActions.fetchViewItems
+    >
 
 export class ViewTableContainer extends React.Component<Props> {
     static defaultProps = {
@@ -52,20 +56,16 @@ export class ViewTableContainer extends React.Component<Props> {
             urlViewId,
             setViewActive,
             getView,
-            location,
             fetchViewItems,
             activeView,
-            updateView,
             isSearch,
+            location,
+            urlSearchView,
+            updateView,
         } = this.props
 
         if (isSearch) {
-            updateView(
-                (config.get('searchView') as (query: string) => Map<any, any>)(
-                    this._searchQuery(this.props)
-                ),
-                false
-            )
+            updateView(urlSearchView, false)
         } else if (activeView.isEmpty() || urlViewId) {
             const suggestedViewId = getViewIdToDisplay(
                 config.get('type'),
@@ -86,18 +86,7 @@ export class ViewTableContainer extends React.Component<Props> {
         void fetchViewItems(null, location.query.cursor)
     }
 
-    componentWillReceiveProps(nextProps: Props) {
-        const {
-            getViewIdToDisplay,
-            fetchViewItemsCancellable,
-            updateView,
-            setViewActive,
-            getView,
-            isLoading: wasLoading,
-            isUpdate: wasUpdate,
-            isSearch: wasSearch,
-            activeView: previousView,
-        } = this.props
+    componentDidUpdate(prevProps: Props) {
         const {
             config,
             navigation,
@@ -107,83 +96,60 @@ export class ViewTableContainer extends React.Component<Props> {
             isSearch,
             isOnFirstPage,
             activeView,
-        } = nextProps
+            getViewIdToDisplay,
+            fetchViewItemsCancellable,
+            updateView,
+            setViewActive,
+            getView,
+            hasActiveView,
+            urlSearchView,
+        } = this.props
 
+        const prevSuggestedViewId = getViewIdToDisplay(
+            prevProps.config.get('type'),
+            prevProps.urlViewId
+        )
         const currentSuggestedViewId = getViewIdToDisplay(
             this.props.config.get('type'),
             this.props.urlViewId
         )
-        const nextSuggestedViewId = getViewIdToDisplay(
-            nextProps.config.get('type'),
-            nextProps.urlViewId
-        )
 
         const urlCursor = location.query.cursor || null
         const storedCursor = navigation.get('current_cursor') || null
-        const cursorAreDifferent = urlCursor !== storedCursor
-
-        const justFinishedFetching =
-            wasLoading('fetchList') && !isLoading('fetchList')
-        const wasDeactivated =
-            previousView && !!previousView.get('deactivated_datetime')
-        const isDeactivated =
-            activeView && !!activeView.get('deactivated_datetime')
-        const previousId = previousView ? previousView.get('id') : null
-        const currentId = activeView ? activeView.get('id') : null
-        const idChanged = previousId !== currentId
-
-        const leavingSearchMode = wasSearch && !isSearch
-        const leavingAddNewMode = !wasUpdate && isUpdate
-        const leavingDeactivatedMode = wasDeactivated && !isDeactivated
-        const suggestedViewChanged =
-            currentSuggestedViewId !== nextSuggestedViewId
-        const noActiveView = !nextProps.hasActiveView
 
         let shouldFetchViewItems = false
 
-        if (!wasSearch && isSearch) {
+        if (!prevProps.isSearch && isSearch) {
             // entering "search" mode
-            updateView(
-                (config.get('searchView') as (query: string) => Map<any, any>)(
-                    this._searchQuery(nextProps)
-                ),
-                false
-            )
+            updateView(urlSearchView, false)
             shouldFetchViewItems = true
-        } else if (wasUpdate && !isUpdate) {
+        } else if (prevProps.isUpdate && !isUpdate) {
             // entering "add new" mode
             updateView((config.get('newView') as () => Map<any, any>)())
             shouldFetchViewItems = true
         } else if (
-            isSearch &&
-            this._searchQuery(this.props) !== this._searchQuery(nextProps)
+            (prevProps.isSearch && !isSearch) ||
+            (!prevProps.isUpdate && isUpdate) ||
+            prevSuggestedViewId !== currentSuggestedViewId ||
+            !hasActiveView
         ) {
-            // in "search" mode, if search query has changed, research again
-            updateView(
-                (config.get('searchView') as (query: string) => Map<any, any>)(
-                    this._searchQuery(nextProps)
-                ),
-                false
+            setViewActive(
+                getView((currentSuggestedViewId as unknown) as string)
             )
             shouldFetchViewItems = true
         } else if (
-            leavingSearchMode ||
-            leavingAddNewMode ||
-            suggestedViewChanged ||
-            noActiveView
+            !!prevProps.activeView.get('deactivated_datetime') &&
+            !activeView.get('deactivated_datetime') &&
+            prevProps.activeView.get('id') === activeView.get('id')
         ) {
-            setViewActive(getView((nextSuggestedViewId as unknown) as string))
-            shouldFetchViewItems = true
-        } else if (leavingDeactivatedMode && !idChanged) {
             shouldFetchViewItems = true
         }
 
-        if (cursorAreDifferent) {
-            if (justFinishedFetching) {
+        if (urlCursor !== storedCursor) {
+            if (prevProps.isLoading('fetchList') && !isLoading('fetchList')) {
                 // if the stored cursor has changed after a fetch, update the cursor in the URL
                 const query = location.query
                 const cursorToSet = !isOnFirstPage ? storedCursor : null
-
                 if (cursorToSet) {
                     query.cursor = cursorToSet
                     browserHistory.push({...location, query})
@@ -205,10 +171,6 @@ export class ViewTableContainer extends React.Component<Props> {
         if (shouldFetchViewItems) {
             return fetchViewItemsCancellable(null, null, null)
         }
-    }
-
-    _searchQuery = (props: Props = this.props) => {
-        return _get(props, 'location.query.q', '') as string
     }
 
     _getItemUrl = (item: Map<any, any>): string => {
@@ -332,5 +294,5 @@ export default withRouter(
     >(
         'fetchViewItemsCancellable',
         viewsActions.fetchViewItems
-    )(connector(ViewTableContainer))
+    )(connector(withViewSearchUrlSync(ViewTableContainer)))
 )

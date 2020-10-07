@@ -1,8 +1,7 @@
 import React from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {browserHistory, Link, withRouter, WithRouterProps} from 'react-router'
+import {browserHistory, Link} from 'react-router'
 import {Map} from 'immutable'
-import _get from 'lodash/get'
 import classnames from 'classnames'
 
 import EditableTitle from '../EditableTitle.js'
@@ -15,6 +14,9 @@ import shortcutManager from '../../../../services/shortcutManager'
 import ViewName from '../ViewName/index.js'
 import Tooltip from '../Tooltip.js'
 import {RootState} from '../../../../state/types'
+import withCancellableRequest, {
+    CancellableRequestInjectedProps,
+} from '../../utils/withCancellableRequest'
 
 import EmojiSelect from './EmojiSelect/index.js'
 import css from './Header.less'
@@ -28,7 +30,11 @@ type OwnProps = {
 
 type Props = OwnProps &
     ConnectedProps<typeof connector> &
-    WithRouterProps<Record<string, unknown>, {q?: string}>
+    CancellableRequestInjectedProps<
+        'fetchViewItemsCancellable',
+        'cancelFetchViewItemsCancellable',
+        typeof viewsActions.fetchViewItems
+    >
 
 type State = {
     askDeleteConfirmation: boolean
@@ -64,23 +70,17 @@ export class HeaderContainer extends React.Component<Props, State> {
         return url
     }
 
-    _searchQuery = (): string => {
-        return _get(this.props, 'location.query.q', '') as string
-    }
-
     _search = (searchQuery: string) => {
-        const {config} = this.props
+        const {updateView, activeView, fetchViewItemsCancellable} = this.props
 
-        // only if searchquery changed.
-        // Search triggers a change event on mount, because of forcedQuery,
-        // removing other querystrings from the url (eg. &page=1).
-        if (this._searchQuery() !== searchQuery) {
-            // add search to view and ask page of view (will return search result)
-            browserHistory.push(
-                `/app/${
-                    config.get('routeList') as string
-                }/search?q=${encodeURIComponent(searchQuery)}`
+        if (searchQuery !== activeView.get('search')) {
+            updateView(
+                activeView.merge({
+                    search: searchQuery,
+                }),
+                false
             )
+            void fetchViewItemsCancellable(null, null, null)
         }
     }
 
@@ -116,9 +116,9 @@ export class HeaderContainer extends React.Component<Props, State> {
     }
 
     handleFocus = () => {
-        const {config} = this.props
+        const {config, activeView} = this.props
 
-        if (!this._searchQuery()) {
+        if (!(activeView.get('search') as string)) {
             browserHistory.push(
                 `/app/${config.get('routeList') as string}/search?q=`
             )
@@ -230,7 +230,7 @@ export class HeaderContainer extends React.Component<Props, State> {
                             location={`${
                                 (activeView.get('id') as unknown) as string
                             }${isSearch ? '(s)' : ''}`}
-                            forcedQuery={this._searchQuery()}
+                            forcedQuery={activeView.get('search') || ''}
                             className={classnames(css.headerSearch, 'mr-2', {
                                 [css.isSearching]: isSearch,
                                 'flex-grow': isSearch,
@@ -282,4 +282,11 @@ const connector = connect(
     }
 )
 
-export default withRouter(connector(HeaderContainer))
+export default withCancellableRequest<
+    'fetchViewItemsCancellable',
+    'cancelFetchViewItemsCancellable',
+    typeof viewsActions.fetchViewItems
+>(
+    'fetchViewItemsCancellable',
+    viewsActions.fetchViewItems
+)(connector(HeaderContainer))

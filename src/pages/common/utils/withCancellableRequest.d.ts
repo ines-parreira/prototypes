@@ -35,7 +35,10 @@ declare function withCancellableRequest<
 ): <P>(
     WrappedComponent: ComponentType<P>
 ) => ComponentType<
-    P & CancellableRequestInjectedProps<RequestName, CancelName, Request>
+    Omit<
+        P,
+        keyof CancellableRequestInjectedProps<RequestName, CancelName, Request>
+    >
 >
 
 export default withCancellableRequest

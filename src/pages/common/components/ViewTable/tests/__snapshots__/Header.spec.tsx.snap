@@ -185,6 +185,191 @@ exports[`ViewTable::Header default view displays 1`] = `
 </div>
 `;
 
+exports[`ViewTable::Header default view get search query from active view 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="d-flex flex-grow"
+  >
+    <div
+      className="d-flex flex-grow mr-2 titleWrapper"
+    >
+      <div
+        className="title mr-2 h-100 cursor-pointer"
+        color="transparent"
+        id="settings-view-button"
+        onClick={[Function]}
+      >
+        <ViewName
+          view={
+            Immutable.Map {
+              "search": "term1",
+              "order_by": "updated_datetime",
+              "deactivated_datetime": null,
+              "name": "New & Open Tickets",
+              "slug": "new-&-open-tickets",
+              "uri": "/api/views/7/",
+              "user_id": 2,
+              "decoration": null,
+              "display_order": 1,
+              "created_datetime": "2017-07-31T21:43:10.610368+00:00",
+              "group_by": null,
+              "fields": Immutable.List [
+                "details",
+                "tags",
+                "customer",
+                "created",
+              ],
+              "type": "ticket-list",
+              "id": 7,
+              "filters": "neq(ticket.status, \\"closed\\")",
+              "order_dir": "desc",
+              "filters_ast": Immutable.Map {
+                "sourceType": "script",
+                "loc": Immutable.Map {
+                  "start": Immutable.Map {
+                    "column": 0,
+                    "line": 1,
+                  },
+                  "end": Immutable.Map {
+                    "column": 28,
+                    "line": 1,
+                  },
+                },
+                "type": "Program",
+                "body": Immutable.List [
+                  Immutable.Map {
+                    "loc": Immutable.Map {
+                      "start": Immutable.Map {
+                        "column": 0,
+                        "line": 1,
+                      },
+                      "end": Immutable.Map {
+                        "column": 28,
+                        "line": 1,
+                      },
+                    },
+                    "type": "ExpressionStatement",
+                    "expression": Immutable.Map {
+                      "arguments": Immutable.List [
+                        Immutable.Map {
+                          "object": Immutable.Map {
+                            "type": "Identifier",
+                            "loc": Immutable.Map {
+                              "start": Immutable.Map {
+                                "column": 4,
+                                "line": 1,
+                              },
+                              "end": Immutable.Map {
+                                "column": 10,
+                                "line": 1,
+                              },
+                            },
+                            "name": "ticket",
+                          },
+                          "property": Immutable.Map {
+                            "type": "Identifier",
+                            "loc": Immutable.Map {
+                              "start": Immutable.Map {
+                                "column": 11,
+                                "line": 1,
+                              },
+                              "end": Immutable.Map {
+                                "column": 17,
+                                "line": 1,
+                              },
+                            },
+                            "name": "status",
+                          },
+                          "loc": Immutable.Map {
+                            "start": Immutable.Map {
+                              "column": 4,
+                              "line": 1,
+                            },
+                            "end": Immutable.Map {
+                              "column": 17,
+                              "line": 1,
+                            },
+                          },
+                          "type": "MemberExpression",
+                          "computed": false,
+                        },
+                        Immutable.Map {
+                          "value": "closed",
+                          "loc": Immutable.Map {
+                            "start": Immutable.Map {
+                              "column": 19,
+                              "line": 1,
+                            },
+                            "end": Immutable.Map {
+                              "column": 27,
+                              "line": 1,
+                            },
+                          },
+                          "type": "Literal",
+                          "raw": "\\"closed\\"",
+                        },
+                      ],
+                      "callee": Immutable.Map {
+                        "type": "Identifier",
+                        "loc": Immutable.Map {
+                          "start": Immutable.Map {
+                            "column": 0,
+                            "line": 1,
+                          },
+                          "end": Immutable.Map {
+                            "column": 3,
+                            "line": 1,
+                          },
+                        },
+                        "name": "neq",
+                      },
+                      "loc": Immutable.Map {
+                        "start": Immutable.Map {
+                          "column": 0,
+                          "line": 1,
+                        },
+                        "end": Immutable.Map {
+                          "column": 28,
+                          "line": 1,
+                        },
+                      },
+                      "type": "CallExpression",
+                    },
+                  },
+                ],
+              },
+            }
+          }
+        />
+        <i
+          className="material-icons"
+        >
+          keyboard_arrow_down
+        </i>
+      </div>
+    </div>
+    <div
+      className="d-flex"
+    >
+      <Search
+        bindKey={true}
+        className="headerSearch mr-2"
+        disabled={false}
+        forcedQuery="term1"
+        location="7"
+        onChange={[Function]}
+        onFocus={[Function]}
+        placeholder="Search tickets..."
+        searchDebounceTime={400}
+        style={Object {}}
+      />
+    </div>
+  </div>
+</div>
+`;
+
 exports[`ViewTable::Header emoji picker .render() should not render emoji if decoration is not an object 1`] = `
 <div
   className="component"

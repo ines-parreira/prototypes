@@ -1,13 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`ViewTable::ViewTable component default view 1`] = `
+exports[`<ViewTable /> render default view 1`] = `
 <div
   className="page"
 >
   <div
     className="container-padding"
   >
-    <withRouter(Connect(HeaderContainer))
+    <Connect(Component)
       isSearch={false}
       isUpdate={true}
       type="ticket"
@@ -962,7 +962,7 @@ exports[`ViewTable::ViewTable component default view 1`] = `
 </div>
 `;
 
-exports[`ViewTable::ViewTable component empty view 1`] = `
+exports[`<ViewTable /> render empty view 1`] = `
 <Loader
   inline={false}
   minHeight="500px"
@@ -970,14 +970,14 @@ exports[`ViewTable::ViewTable component empty view 1`] = `
 />
 `;
 
-exports[`ViewTable::ViewTable component render() should render a warning because the view is deactivated 1`] = `
+exports[`<ViewTable /> render should render a warning because the view is deactivated 1`] = `
 <div
   className="page"
 >
   <div
     className="container-padding"
   >
-    <withRouter(Connect(HeaderContainer))
+    <Connect(Component)
       isSearch={false}
       isUpdate={true}
       type="ticket"
