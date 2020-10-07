@@ -15,6 +15,13 @@ Please respect those choices making your code contributions but
 also, feel free to post your ideas for improvements (in the form of a
 PR).
 
+## Table of contents
+
+* [Turn on the @flow type-checking in the modified files](#turn-on-the-flow-type-checking-in-the-modified-files)
+* [Migration from Js to Ts](#migration-from-js-to-ts)
+* [Don't use Enzyme in new code](#migration-from-enzyme-to-react-testing-library)
+
+
 ## Turn on the @flow type-checking in the modified files
 
 In the project, you need to have `// @flow` pragma comment at the
@@ -36,7 +43,7 @@ We are aiming to migrate them to TypeScript as it is a better tool.
 
 The general approach to migrating a file is:
 1. If the file contains some exported types, move the declarations into `types.js` and `types.ts` file
-  - When migrating existing types `type fooType` should become `type Foo` 
+  - When migrating existing types `type fooType` should become `type Foo`
 2. Change the file extension from `.js` to either `.ts` or `.tsx` if the file contains jsx
 3. Make adjustments
   - Remove the `@flow` pragma and all potential `$FlowFixMe`
@@ -82,3 +89,12 @@ enum Foo {
 - When importing `Object.freeze` constants, import Typescript enum instead.
 - You may want to keep some code in order to prevent existing JavaScript to break, (such as keeping a `Object.freeze` declaration instead of an `enum`). You can flag the relevant part with the `$TsFixMe explaination` comment.
 - When migrating types you may find some missing/wrong types, if the changes are too much for the current scope we are flagging these in issue [6221](https://github.com/gorgias/gorgias/issues/6221)
+
+## Migration from Enzyme to react-testing-library
+
+Please use [@testing-library/react](https://testing-library.com/docs/react-testing-library/intro)
+when writing new code.
+
+When working on tests that still use Enzyme, please migrate them to RTL first.
+If migrating test is non-trivial you may decide to postpone it and create a separate issue for migrating it
+as a subtask of [Migrate Enzyme to react-testing-library #6608](https://github.com/gorgias/gorgias/issues/6608).
