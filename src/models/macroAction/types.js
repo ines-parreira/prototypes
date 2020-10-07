@@ -1,15 +1,19 @@
 //@flow
 import {MACRO_ACTION_NAME, MACRO_ACTION_TYPE} from './constants'
 
+export type MacroActionName = $Values<typeof MACRO_ACTION_NAME>
+
+export type MacroActionType = $Values<typeof MACRO_ACTION_TYPE>
+
 export type MacroAction = {
     arguments: {
         attachments?: MacroActionAttachment[],
         body_html?: string,
         body_text?: string,
     },
-    name: $Values<typeof MACRO_ACTION_NAME>,
+    name: MacroActionName,
     title: string,
-    type: $Values<typeof MACRO_ACTION_TYPE>,
+    type: MacroActionType,
 }
 
 export type MacroActionAttachment = {

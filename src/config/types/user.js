@@ -11,3 +11,45 @@ export type MetaByAgentRole = {
 }
 
 export type UserRole = $Keys<typeof MAPPED_USER_ROLE>
+
+export type UserDraft = {
+    id?: ?number,
+    email: string,
+    name: string,
+    roles: {name: UserRole}[],
+}
+
+export type User = UserDraft & {
+    active: boolean,
+    bio: ?string,
+    created_datetime: string,
+    data: any,
+    deactivated_datetime: string,
+    external_id: string,
+    firstname: string,
+    id: number,
+    lastname: string,
+    meta: MetaByAgentRole,
+    updated_datetime: string,
+    roles: {id: number, name: UserRole}[],
+    settings: UserSetting[],
+}
+
+export type EditableUserProfile = {
+    bio: string,
+    email: string,
+    language: string,
+    name: string,
+    timezone: string,
+}
+
+export type UserSetting = {
+    id: number,
+    type: 'preferences',
+    data: UserPreferences,
+}
+
+export type UserPreferences = {
+    available: boolean,
+    show_macros: boolean,
+}

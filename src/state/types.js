@@ -1,16 +1,20 @@
-import type {Map} from 'immutable'
+import type {Map, List} from 'immutable'
 
 import type {MacrosAction} from './entities/macros'
 import type {InfobarActionsState} from './infobarActions/types'
+import type {EntitiesState} from './entities/types'
 
 export type stateType = {
     activity: Map<*, *>,
     agents: Map<*, *>,
+    auths: List<any>,
     billing: Map<*, *>,
     currentAccount: Map<*, *>,
     currentUser: Map<*, *>,
     customers: Map<*, *>,
+    entities: EntitiesState,
     facebookAds: Map<*, *>,
+    HTTPIntegrationEvents: Map<any, any>,
     infobar: Map<*, *>,
     infobarActions: InfobarActionsState,
     integrations: Map<*, *>,

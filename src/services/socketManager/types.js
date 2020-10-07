@@ -1,5 +1,14 @@
+//@flow
 import type {RecentChatTicket} from '../../business/types/recentChats'
 import * as socketConstants from '../../config/socketConstants.ts'
+
+import {BROADCAST_CHANNEL_EVENTS, MESSAGE_PORT_EVENTS} from './constants'
+
+export type BroadcastChannelEvent = $Values<typeof BROADCAST_CHANNEL_EVENTS>
+
+export type MessagePortEvent = $Values<typeof MESSAGE_PORT_EVENTS>
+
+export type SocketEventType = $Values<typeof socketConstants>
 
 export type CustomerUpdatedEvent = {
     event: {

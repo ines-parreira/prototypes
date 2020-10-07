@@ -2,6 +2,10 @@
 
 import {MAINTENANCE_STATUSES, COMPONENT_STATUSES} from './constants.ts'
 
+export type ComponentStatus = $Values<typeof COMPONENT_STATUSES>
+
+export type MaintenanceStatus = $Values<typeof MAINTENANCE_STATUSES>
+
 export type StatusPage = {
     id: string,
     name: string,
@@ -12,7 +16,7 @@ export type StatusPageComponent = {
     id: string,
     group_id: string,
     name: string,
-    status: $Values<typeof COMPONENT_STATUSES>,
+    status: ComponentStatus,
 }
 
 export type StatusPageComponentsResponseData = {
@@ -21,7 +25,7 @@ export type StatusPageComponentsResponseData = {
 }
 
 export type StatusPageScheduledMaintenance = {
-    status: $Values<typeof MAINTENANCE_STATUSES>,
+    status: MaintenanceStatus,
     scheduled_for: string,
     components: StatusPageComponent[],
 }

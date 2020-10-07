@@ -1,6 +1,12 @@
 //@flow
 import {ORDER_DIRECTION, META_SORT_OPTIONS} from './constants.ts'
 
+export type ContentType =
+    | 'application/json'
+    | 'application/x-www-form-urlencoded'
+
+export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE'
+
 export type ApiListResponse<T, Y> = {
     data: T,
     meta: Y,
