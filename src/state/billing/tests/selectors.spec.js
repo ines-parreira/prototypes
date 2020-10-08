@@ -5,7 +5,7 @@ import * as selectors from '../selectors.ts'
 import {initialState} from '../reducers.ts'
 import {initialState as initialCurrentAccountState} from '../../currentAccount/reducers.ts'
 
-import * as billingFixtures from '../../../fixtures/billing'
+import * as billingFixtures from '../../../fixtures/billing.ts'
 
 jest.addMatchers(immutableMatchers)
 

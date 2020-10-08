@@ -2,7 +2,7 @@ import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {EMAIL_INTEGRATION_TYPE} from '../constants/integration'
+import {EMAIL_INTEGRATION_TYPE} from '../constants/integration.ts'
 import {notifyAccountNotVerified, notifyDeprecatedTld} from '../init'
 
 const mockStore = configureMockStore([thunk])

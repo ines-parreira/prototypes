@@ -5,7 +5,7 @@ import {Input} from 'reactstrap'
 import classnames from 'classnames'
 import _noop from 'lodash/noop'
 
-import {NON_FRACTIONAL_CURRENCIES} from '../../../../../../../../../../../constants/integrations/shopify'
+import {NON_FRACTIONAL_CURRENCIES} from '../../../../../../../../../../../constants/integrations/shopify.ts'
 import {formatPrice} from '../../../../../../../../../../../business/shopify/number.ts'
 import ShopifyMoneySymbol from '../MoneySymbol'
 

@@ -1,7 +1,7 @@
 import {fromJS} from 'immutable'
 import moment from 'moment'
 
-import {SYSTEM_VIEW_CATEGORY} from '../../../constants/view'
+import {SYSTEM_VIEW_CATEGORY} from '../../../constants/view.ts'
 import reducers, {initialState} from '../reducers.ts'
 import * as fixtures from '../../../fixtures/views'
 import * as types from '../constants'

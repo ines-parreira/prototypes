@@ -5,7 +5,7 @@ import {fromJS} from 'immutable'
 import {
     FACEBOOK_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
-} from '../../../../../../../constants/integration'
+} from '../../../../../../../constants/integration.ts'
 import configureStore from '../../../../../../../store/configureStore'
 import FacebookIntegrationCustomerChat from '../FacebookIntegrationCustomerChat'
 

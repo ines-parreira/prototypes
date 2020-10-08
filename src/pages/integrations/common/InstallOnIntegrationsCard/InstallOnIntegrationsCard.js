@@ -6,7 +6,7 @@ import {fromJS, List, Map} from 'immutable'
 import moment from 'moment'
 import _capitalize from 'lodash/capitalize'
 
-import {SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../constants/integration'
+import {SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../constants/integration.ts'
 import * as integrationHelpers from '../../../../state/integrations/helpers.ts'
 import ToggleButton from '../../../common/components/ToggleButton'
 

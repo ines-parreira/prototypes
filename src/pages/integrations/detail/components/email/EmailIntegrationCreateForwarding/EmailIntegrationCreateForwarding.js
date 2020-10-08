@@ -14,7 +14,7 @@ import {
     Input,
 } from 'reactstrap'
 
-import {EMAIL_INTEGRATION_TYPE} from '../../../../../../constants/integration'
+import {EMAIL_INTEGRATION_TYPE} from '../../../../../../constants/integration.ts'
 import {getForwardingEmailAddress} from '../../../../../../state/integrations/selectors.ts'
 import * as notificationActions from '../../../../../../state/notifications/actions.ts'
 import * as integrationActions from '../../../../../../state/integrations/actions.ts'

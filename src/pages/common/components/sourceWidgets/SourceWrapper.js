@@ -12,7 +12,7 @@ import {
     SHOPIFY_INTEGRATION_TYPE,
     SMILE_INTEGRATION_TYPE,
     SMOOCH_INSIDE_INTEGRATION_TYPE,
-} from '../../../../constants/integration'
+} from '../../../../constants/integration.ts'
 
 import {areSourcesReady, jsonToWidgets} from '../infobar/utils'
 

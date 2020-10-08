@@ -18,7 +18,7 @@ import {
     SMILE_INTEGRATION_TYPE,
     SMOOCH_INSIDE_INTEGRATION_TYPE,
     SMOOCH_INTEGRATION_TYPE,
-} from '../../../constants/integration'
+} from '../../../constants/integration.ts'
 
 import {compare} from '../../../utils.ts'
 

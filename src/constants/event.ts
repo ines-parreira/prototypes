@@ -1,4 +1,3 @@
-//@flow
 export const RULE_EXECUTED = 'rule-executed'
 export const TICKET_ASSIGNED = 'ticket-assigned'
 export const TICKET_CLOSED = 'ticket-closed'
@@ -19,6 +18,7 @@ export const TICKET_UNMARKED_SPAM = 'ticket-unmarked-spam'
 export const TICKET_UNTRASHED = 'ticket-untrashed'
 export const TICKET_UPDATED = 'ticket-updated'
 
+//$TsFixMe fallback value for js, use TicketAuditLogEvent enum instead
 export const TICKET_AUDIT_LOG_EVENTS_MAP = Object.freeze({
     RULE_EXECUTED,
     TICKET_ASSIGNED,

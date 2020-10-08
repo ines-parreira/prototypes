@@ -36,7 +36,7 @@ import {CHAT_AUTO_RESPONDER_REPLY_DEFAULT} from '../../../../../../config/integr
 import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
-} from '../../../../../../constants/integration'
+} from '../../../../../../constants/integration.ts'
 
 import * as integrationSelectors from '../../../../../../state/integrations/selectors.ts'
 

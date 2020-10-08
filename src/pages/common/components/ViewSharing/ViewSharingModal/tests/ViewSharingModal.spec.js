@@ -5,7 +5,7 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 
 import ViewSharingModal from '../ViewSharingModal'
-import {ViewVisibility} from '../../../../../../constants/view'
+import {ViewVisibility} from '../../../../../../constants/view.ts'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

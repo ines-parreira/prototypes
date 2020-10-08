@@ -5,7 +5,7 @@ import {fromJS} from 'immutable'
 import configureStore from '../../../../../../store/configureStore'
 import * as viewsConfig from '../../../../../../config/views.tsx'
 import * as ticketFixtures from '../../../../../../fixtures/ticket'
-import * as agentsFixtures from '../../../../../../fixtures/agents'
+import * as agentsFixtures from '../../../../../../fixtures/agents.ts'
 import * as viewsActions from '../../../../../../state/views/actions.ts'
 import Row from '../Row'
 

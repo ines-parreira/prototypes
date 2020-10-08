@@ -4,7 +4,7 @@ import {Link, browserHistory} from 'react-router'
 import {connect} from 'react-redux'
 import {type List, type Map} from 'immutable'
 
-import {SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../../constants/integration'
+import {SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../../constants/integration.ts'
 import * as integrationsActions from '../../../../../state/integrations/actions.ts'
 
 import ToggleButton from '../../../../common/components/ToggleButton'

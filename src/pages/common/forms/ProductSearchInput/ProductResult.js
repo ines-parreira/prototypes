@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {SHOPIFY_INTEGRATION_TYPE} from '../../../../constants/integration'
+import {SHOPIFY_INTEGRATION_TYPE} from '../../../../constants/integration.ts'
 import type {IntegrationDataItem} from '../../../../models/integration'
 import type {Product} from '../../../../constants/integrations/types/shopify'
 import type {SearchInputResultProps} from '../SearchInput'

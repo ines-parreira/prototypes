@@ -8,7 +8,7 @@ import {Breadcrumb, BreadcrumbItem, Col, Container, Row} from 'reactstrap'
 import {
     GORGIAS_CHAT_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
-} from '../../../../../constants/integration'
+} from '../../../../../constants/integration.ts'
 
 import {notify} from '../../../../../state/notifications/actions.ts'
 import * as integrationSelectors from '../../../../../state/integrations/selectors.ts'

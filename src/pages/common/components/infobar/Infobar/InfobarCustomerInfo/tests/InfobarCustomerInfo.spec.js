@@ -10,7 +10,7 @@ import {
     RECHARGE_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
     SMILE_INTEGRATION_TYPE,
-} from '../../../../../../../constants/integration'
+} from '../../../../../../../constants/integration.ts'
 
 import InfobarCustomerInfoContainer, {
     InfobarCustomerInfo as InfobarCustomerInfoComponent,

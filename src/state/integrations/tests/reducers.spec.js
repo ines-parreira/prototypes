@@ -4,7 +4,7 @@ import {
     FACEBOOK_INTEGRATION_TYPE,
     OUTLOOK_INTEGRATION_TYPE,
     SMOOCH_INSIDE_INTEGRATION_TYPE,
-} from '../../../constants/integration'
+} from '../../../constants/integration.ts'
 
 import {integrationsState} from '../../../fixtures/integrations'
 import {getIntegrationsState, getEmailIntegrations} from '../selectors.ts'

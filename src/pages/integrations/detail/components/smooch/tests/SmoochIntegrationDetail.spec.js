@@ -6,11 +6,11 @@ import {SMOOCH_LANGUAGE_DEFAULT} from '../../../../../../config/integrations/smo
 import {
     SMOOCH_INTEGRATION_TYPE,
     SUCCESS_AUTHENTICATION_STATUS,
-} from '../../../../../../constants/integration'
+} from '../../../../../../constants/integration.ts'
 import {
     DANISH_LANGUAGE,
     SPANISH_LANGUAGE,
-} from '../../../../../../constants/languages'
+} from '../../../../../../constants/languages.ts'
 
 import {SmoochIntegrationDetail} from '../SmoochIntegrationDetail'
 

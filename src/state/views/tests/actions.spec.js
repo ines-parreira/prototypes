@@ -19,7 +19,7 @@ import {
     PREV_VIEW_NAV_DIRECTION,
     TICKET_LIST_VIEW_TYPE,
     ViewVisibility,
-} from '../../../constants/view'
+} from '../../../constants/view.ts'
 
 const mockStore = configureMockStore([thunk])
 

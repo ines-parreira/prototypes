@@ -7,7 +7,7 @@ import _capitalize from 'lodash/capitalize'
 import classnames from 'classnames'
 import {Container, Form, Button, Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
-import {EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS} from '../../../../../../constants/integration'
+import {EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS} from '../../../../../../constants/integration.ts'
 import {getRedirectUri} from '../../../../../../state/integrations/selectors.ts'
 import {displayRestrictedSymbols} from '../../../../../../utils.ts'
 import {notify} from '../../../../../../state/notifications/actions.ts'

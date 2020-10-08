@@ -11,7 +11,7 @@ import {
     OUTLOOK_INTEGRATION_TYPE,
     SMOOCH_INSIDE_INTEGRATION_TYPE,
     SMOOCH_INTEGRATION_TYPE,
-} from '../../../constants/integration'
+} from '../../../constants/integration.ts'
 
 import type {IntegrationType} from '../../../models/integration'
 import type {SourceType} from '../../../models/ticket/types'

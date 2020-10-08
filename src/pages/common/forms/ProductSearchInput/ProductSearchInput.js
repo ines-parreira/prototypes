@@ -8,7 +8,7 @@ import SearchInput from '../SearchInput'
 import {
     INTEGRATION_DATA_ITEM_TYPE_PRODUCT,
     SHOPIFY_INTEGRATION_TYPE,
-} from '../../../../constants/integration'
+} from '../../../../constants/integration.ts'
 import type {
     IntegrationDataItem,
     Product,

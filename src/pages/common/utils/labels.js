@@ -11,7 +11,7 @@ import _omit from 'lodash/omit'
 import {Badge} from 'reactstrap'
 import {Emoji} from 'emoji-mart'
 
-import {EMAIL_INTEGRATION_TYPES} from '../../../constants/integration'
+import {EMAIL_INTEGRATION_TYPES} from '../../../constants/integration.ts'
 import {
     ADMIN_ROLE,
     AGENT_ROLE,

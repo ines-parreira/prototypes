@@ -8,7 +8,7 @@ import {Breadcrumb, BreadcrumbItem, Button, Container} from 'reactstrap'
 import {
     GMAIL_INTEGRATION_TYPE,
     OUTLOOK_INTEGRATION_TYPE,
-} from '../../../../../../constants/integration'
+} from '../../../../../../constants/integration.ts'
 import {GMAIL_IMPORTED_EMAILS_FOR_YEARS} from '../../../../../../config.ts'
 import {getRedirectUri} from '../../../../../../state/integrations/selectors.ts'
 

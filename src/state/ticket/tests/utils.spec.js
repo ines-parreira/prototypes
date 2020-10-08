@@ -1,7 +1,7 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 
-import {SHOPIFY_INTEGRATION_TYPE} from '../../../constants/integration'
+import {SHOPIFY_INTEGRATION_TYPE} from '../../../constants/integration.ts'
 import {getChannels} from '../../integrations/selectors.ts'
 import {integrationsState} from '../../../fixtures/integrations'
 import {

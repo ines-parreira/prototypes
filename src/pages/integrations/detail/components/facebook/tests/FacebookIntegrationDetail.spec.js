@@ -3,11 +3,11 @@ import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 
 import {FACEBOOK_LANGUAGE_DEFAULT} from '../../../../../../config/integrations/facebook.ts'
-import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../constants/integration'
+import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../constants/integration.ts'
 import {
     DANISH_LANGUAGE,
     SPANISH_LANGUAGE,
-} from '../../../../../../constants/languages'
+} from '../../../../../../constants/languages.ts'
 import FacebookIntegrationDetail from '../FacebookIntegrationDetail'
 
 const defaultProps = {

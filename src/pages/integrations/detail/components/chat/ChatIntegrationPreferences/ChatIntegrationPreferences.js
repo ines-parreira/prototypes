@@ -42,7 +42,7 @@ import ChatIntegrationPreview from '../ChatIntegrationPreview'
 import OptionalEmailCapturePreview from '../ChatIntegrationPreview/OptionalEmailCapture'
 import RequiredEmailCapturePreview from '../ChatIntegrationPreview/RequiredEmailCapture'
 import AutoResponderPreview from '../ChatIntegrationPreview/AutoResponder'
-import {EMAIL_INTEGRATION_TYPES} from '../../../../../../constants/integration'
+import {EMAIL_INTEGRATION_TYPES} from '../../../../../../constants/integration.ts'
 import {getIntegrationsByTypes} from '../../../../../../state/integrations/selectors.ts'
 
 const emailCaptureOptions = [

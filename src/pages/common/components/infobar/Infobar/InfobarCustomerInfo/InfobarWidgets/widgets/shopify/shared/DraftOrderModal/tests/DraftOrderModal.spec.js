@@ -23,7 +23,7 @@ import {getCreateOrderState} from '../../../../../../../../../../../../state/inf
 import {getIntegrationsByTypes} from '../../../../../../../../../../../../state/integrations/selectors.ts'
 import {integrationsStateWithShopify} from '../../../../../../../../../../../../fixtures/integrations'
 import {initDraftOrderPayload} from '../../../../../../../../../../../../business/shopify/draftOrder.ts'
-import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../../constants/integration'
+import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../../constants/integration.ts'
 import type {DraftOrderInvoice} from '../../../../../../../../../../../../constants/integrations/types/shopify'
 import DraftOrderModal, {DraftOrderModalComponent} from '../DraftOrderModal'
 import {ShopifyAction} from '../../../constants'

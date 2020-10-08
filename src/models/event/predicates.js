@@ -2,7 +2,7 @@
 
 import type {List, Record} from 'immutable'
 
-import {RULE_EXECUTED} from '../../constants/event'
+import {RULE_EXECUTED} from '../../constants/event.ts'
 
 import {SYSTEM_RULE_TYPE} from './constants.ts'
 

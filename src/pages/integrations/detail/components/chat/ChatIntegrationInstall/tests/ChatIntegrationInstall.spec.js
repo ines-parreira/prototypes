@@ -5,7 +5,7 @@ import {fromJS} from 'immutable'
 import {
     SHOPIFY_INTEGRATION_TYPE,
     SMOOCH_INSIDE_INTEGRATION_TYPE,
-} from '../../../../../../../constants/integration'
+} from '../../../../../../../constants/integration.ts'
 
 import configureStore from '../../../../../../../store/configureStore'
 import ChatIntegrationInstall from '../ChatIntegrationInstall'

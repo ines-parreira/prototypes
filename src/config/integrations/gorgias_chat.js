@@ -10,7 +10,7 @@ import {
     SWEDISH_LANGUAGE,
     GERMAN_LANGUAGE,
     CZECH_LANGUAGE,
-} from '../../constants/languages'
+} from '../../constants/languages.ts'
 
 export const GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH = 50
 

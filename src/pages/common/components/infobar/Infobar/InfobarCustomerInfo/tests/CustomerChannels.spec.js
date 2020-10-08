@@ -5,7 +5,7 @@ import {mount, shallow} from 'enzyme'
 import {
     EMAIL_CUSTOMER_CHANNEL_TYPE,
     PHONE_CUSTOMER_CHANNEL_TYPE,
-} from '../../../../../../../constants/user'
+} from '../../../../../../../constants/user.ts'
 import CustomerChannels from '../CustomerChannels'
 
 describe('CustomerChannels component', () => {

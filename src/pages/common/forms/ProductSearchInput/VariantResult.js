@@ -5,7 +5,7 @@ import type {
     Product,
     Variant,
 } from '../../../../models/integration'
-import {SHOPIFY_INTEGRATION_TYPE} from '../../../../constants/integration'
+import {SHOPIFY_INTEGRATION_TYPE} from '../../../../constants/integration.ts'
 import type {
     Product as ShopifyProduct,
     Variant as ShopifyVariant,

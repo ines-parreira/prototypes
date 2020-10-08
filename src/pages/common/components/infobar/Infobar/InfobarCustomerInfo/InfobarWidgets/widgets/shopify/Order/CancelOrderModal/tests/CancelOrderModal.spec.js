@@ -14,7 +14,7 @@ import {
     cancelOrderStateFixture,
     infobarActionsStateFixture,
 } from '../../../../../../../../../../../../fixtures/infobarActions'
-import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../../constants/integration'
+import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../../constants/integration.ts'
 import {
     shopifyLineItemFixture,
     shopifyOrderFixture,

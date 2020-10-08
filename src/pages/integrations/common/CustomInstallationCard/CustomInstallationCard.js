@@ -4,7 +4,7 @@ import Clipboard from 'clipboard'
 import classnames from 'classnames'
 import {Alert, Button, Card, CardBody} from 'reactstrap'
 
-import {FACEBOOK_INTEGRATION_TYPE} from '../../../../constants/integration'
+import {FACEBOOK_INTEGRATION_TYPE} from '../../../../constants/integration.ts'
 
 import css from './CustomInstallationCard.less'
 

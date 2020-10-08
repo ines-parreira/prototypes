@@ -1,5 +1,5 @@
 //@flow
-import {FinancialStatus, FulfillmentStatus} from '../shopify'
+import {FinancialStatus, FulfillmentStatus} from '../shopify.ts'
 
 export type FinancialStatusType = $Values<typeof FinancialStatus>
 export type FulfillmentStatusType = $Values<typeof FulfillmentStatus> | null

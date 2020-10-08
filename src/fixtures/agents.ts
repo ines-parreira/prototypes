@@ -1,7 +1,6 @@
-//@flow
-import {ADMIN_ROLE, AGENT_ROLE} from '../config/user.ts'
+import {UserRole, User} from '../config/types/user'
 
-export const agents = [
+export const agents: User[] = [
     {
         lastname: 'Support',
         active: true,
@@ -14,15 +13,19 @@ export const agents = [
         email: 'support@acme.gorgias.io',
         roles: [
             {
-                name: AGENT_ROLE,
+                name: UserRole.Agent,
                 id: 2,
             },
             {
-                name: ADMIN_ROLE,
+                name: UserRole.Admin,
                 id: 3,
             },
         ],
         updated_datetime: '2017-07-31T21:43:05.502541+00:00',
+        settings: [],
+        bio: null,
+        data: null,
+        meta: {},
     },
     {
         lastname: 'Smith',
@@ -36,11 +39,15 @@ export const agents = [
         email: 'agent-smith@gorgias.io',
         roles: [
             {
-                name: AGENT_ROLE,
+                name: UserRole.Agent,
                 id: 2,
             },
         ],
         updated_datetime: '2017-07-31T21:43:08.033390+00:00',
+        bio: null,
+        data: null,
+        meta: {},
+        settings: [],
     },
 ]
 export const locations = {

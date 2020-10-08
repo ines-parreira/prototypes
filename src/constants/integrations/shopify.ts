@@ -1,5 +1,3 @@
-// @flow
-
 // List of non-fractional currencies (zero-decimal currencies). Source: https://stripe.com/docs/currencies#zero-decimal
 // Supported currencies on Shopify:
 // https://help.shopify.com/en/manual/payments/shopify-payments/multi-currency#supported-currencies
@@ -22,6 +20,7 @@ export const NON_FRACTIONAL_CURRENCIES = [
     'XPF',
 ]
 
+//$TsFixMe fallback value for js, use FinancialStatus enum instead
 export const FinancialStatus = Object.freeze({
     PENDING: 'pending',
     AUTHORIZED: 'authorized',
@@ -32,6 +31,7 @@ export const FinancialStatus = Object.freeze({
     VOIDED: 'voided',
 })
 
+//$TsFixMe fallback value for js, use FulfillmentStatus enum instead
 export const FulfillmentStatus = Object.freeze({
     FULFILLED: 'fulfilled',
     PARTIAL: 'partial',

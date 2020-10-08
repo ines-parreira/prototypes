@@ -5,7 +5,7 @@ import ImmutablePropTypes from 'react-immutable-proptypes'
 import {fromJS, type List, type Map} from 'immutable'
 
 import * as integrationsSelectors from '../../../../../../../../../state/integrations/selectors.ts'
-import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../constants/integration'
+import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../constants/integration.ts'
 import logo from '../../../../../../../../../../img/infobar/shopify.svg'
 import {CardHeaderSubtitle} from '../CardHeaderSubtitle'
 import ActionButtonsGroup from '../ActionButtonsGroup'

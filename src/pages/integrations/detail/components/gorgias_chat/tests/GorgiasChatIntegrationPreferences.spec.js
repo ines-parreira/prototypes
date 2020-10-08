@@ -13,8 +13,8 @@ import {
     GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT,
 } from '../../../../../../config/integrations/gorgias_chat'
 
-import {GORGIAS_CHAT_INTEGRATION_TYPE} from '../../../../../../constants/integration'
-import {SPANISH_LANGUAGE} from '../../../../../../constants/languages'
+import {GORGIAS_CHAT_INTEGRATION_TYPE} from '../../../../../../constants/integration.ts'
+import {SPANISH_LANGUAGE} from '../../../../../../constants/languages.ts'
 import {
     GorgiasChatIntegrationPreferencesComponent,
     PREVIEW_AUTO_RESPONDER,

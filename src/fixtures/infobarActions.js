@@ -8,7 +8,7 @@ import type {CreateOrderState} from '../state/infobarActions/shopify/createOrder
 import type {CancelOrderState} from '../state/infobarActions/shopify/cancelOrder/types'
 import type {RefundOrderState} from '../state/infobarActions/shopify/refundOrder/types'
 import type {InfobarActionsState} from '../state/infobarActions/types'
-import {SHOPIFY_INTEGRATION_TYPE} from '../constants/integration'
+import {SHOPIFY_INTEGRATION_TYPE} from '../constants/integration.ts'
 
 export const infobarActionsStateFixture = ({
     cancelOrderState = cancelOrderInitialState,
@@ -18,13 +18,14 @@ export const infobarActionsStateFixture = ({
     cancelOrderState?: typeof cancelOrderInitialState,
     createOrderState?: typeof createOrderInitialState,
     refundOrderState?: typeof refundOrderInitialState,
-} = {}): InfobarActionsState => ({
-    [SHOPIFY_INTEGRATION_TYPE]: {
-        cancelOrder: cancelOrderState,
-        createOrder: createOrderState,
-        refundOrder: refundOrderState,
-    },
-})
+} = {}): InfobarActionsState =>
+    ({
+        [SHOPIFY_INTEGRATION_TYPE]: {
+            cancelOrder: cancelOrderState,
+            createOrder: createOrderState,
+            refundOrder: refundOrderState,
+        },
+    }: any)
 
 export const createOrderStateFixture = ({
     loading = false,

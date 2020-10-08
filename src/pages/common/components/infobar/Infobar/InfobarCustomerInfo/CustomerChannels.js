@@ -9,7 +9,7 @@ import {
     INSTAGRAM_CUSTOMER_CHANNEL_TYPE,
     PHONE_CUSTOMER_CHANNEL_TYPE,
     TWITTER_CUSTOMER_CHANNEL_TYPE,
-} from '../../../../../../constants/user'
+} from '../../../../../../constants/user.ts'
 import SourceIcon from '../../../SourceIcon'
 import Tooltip from '../../../Tooltip'
 import css from '../../Infobar.less'

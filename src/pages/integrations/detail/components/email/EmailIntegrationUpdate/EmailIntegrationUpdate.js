@@ -25,7 +25,7 @@ import {
     GMAIL_INTEGRATION_TYPE,
     OUTLOOK_INTEGRATION_TYPE,
     EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS,
-} from '../../../../../../constants/integration'
+} from '../../../../../../constants/integration.ts'
 import {
     getForwardingEmailAddress,
     getRedirectUri,

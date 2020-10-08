@@ -16,7 +16,7 @@ import {
     TICKET_CREATED,
     TICKET_MESSAGE_CREATED,
     TICKET_UPDATED,
-} from '../../../../../../constants/event'
+} from '../../../../../../constants/event.ts'
 import {
     toJS,
     validateWebhookURL,

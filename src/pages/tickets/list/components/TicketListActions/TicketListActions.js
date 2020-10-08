@@ -39,7 +39,7 @@ import {
     DELETE_TICKET_JOB_TYPE,
     EXPORT_TICKET_JOB_TYPE,
     UPDATE_TICKET_JOB_TYPE,
-} from '../../../../../constants/job'
+} from '../../../../../constants/job.ts'
 import {AgentLabel, TeamLabel} from '../../../../common/utils/labels'
 import {hasRole} from '../../../../../utils.ts'
 import TagDropdownMenu from '../../../../common/components/TagDropdownMenu/TagDropdownMenu'

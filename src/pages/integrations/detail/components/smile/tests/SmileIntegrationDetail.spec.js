@@ -6,7 +6,7 @@ import {
     PENDING_AUTHENTICATION_STATUS,
     SMILE_INTEGRATION_TYPE,
     SUCCESS_AUTHENTICATION_STATUS,
-} from '../../../../../../constants/integration'
+} from '../../../../../../constants/integration.ts'
 
 import {SmileIntegrationDetailComponent} from '../SmileIntegrationDetail'
 

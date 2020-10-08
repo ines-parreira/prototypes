@@ -5,13 +5,10 @@ import {StoreDispatch} from '../types'
 import {notify} from '../notifications/actions'
 import {createErrorNotification} from '../utils.js'
 import {defaultMergeTicketsView} from '../../config/views'
-import {
-    BASE_VIEW_ID,
-    NEXT_VIEW_NAV_DIRECTION,
-    PREV_VIEW_NAV_DIRECTION,
-} from '../../constants/view.js'
+import {BASE_VIEW_ID} from '../../constants/view'
 import {ApiListResponsePagination} from '../../models/api/types'
 import {Ticket} from '../../models/ticket/types'
+import {MoveIndexDirection} from '../../pages/common/utils/keyboard'
 import {NotificationStatus} from '../notifications/types'
 
 export const LIMIT = 5
@@ -36,9 +33,9 @@ export function searchTickets(
         let url = `/api/views/${BASE_VIEW_ID}/items/`
 
         if (!navigation.isEmpty()) {
-            if (direction === NEXT_VIEW_NAV_DIRECTION) {
+            if (direction === MoveIndexDirection.Next) {
                 url = navigation.get('next_items')
-            } else if (direction === PREV_VIEW_NAV_DIRECTION) {
+            } else if (direction === MoveIndexDirection.Prev) {
                 url = navigation.get('prev_items')
             }
         }

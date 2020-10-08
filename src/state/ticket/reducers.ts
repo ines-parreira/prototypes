@@ -4,7 +4,6 @@ import {TicketAuditLogEvent} from '../../constants/integrations/types/event'
 import * as customerTypes from '../customers/constants.js'
 import ticketReplyCache from '../newMessage/ticketReplyCache'
 import * as newMessageTypes from '../newMessage/constants'
-import {TICKET_AUDIT_LOG_EVENTS} from '../../constants/event.js'
 import {compare} from '../../utils'
 import {GorgiasAction} from '../types'
 
@@ -387,7 +386,9 @@ export default function reducer(
             // keep audit log events
             const auditLogEvents = (state.get('events') as List<any>).filter(
                 (event: Map<any, any>) =>
-                    TICKET_AUDIT_LOG_EVENTS.includes(event.get('type')) &&
+                    Object.values(TicketAuditLogEvent).includes(
+                        event.get('type')
+                    ) &&
                     event.get('object_id') === ticket?.get('id') &&
                     (newState.get('events') as List<any>).every(
                         (existingEvent: Map<any, any>) =>

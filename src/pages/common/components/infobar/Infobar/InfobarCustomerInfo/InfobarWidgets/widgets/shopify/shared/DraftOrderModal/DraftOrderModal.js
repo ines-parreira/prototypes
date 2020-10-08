@@ -22,7 +22,7 @@ import {
 } from '../../../../../../../../../../../state/infobarActions/shopify/createOrder/actions.ts'
 import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager.ts'
 import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors.ts'
-import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../constants/integration'
+import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../constants/integration.ts'
 import type {IntegrationDataItem} from '../../../../../../../../../../../models/integration'
 import type {
     DraftOrder,

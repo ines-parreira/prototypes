@@ -6,7 +6,7 @@ import {browserHistory} from 'react-router'
 import {updateNotification} from 'reapop'
 
 import * as viewsConfig from '../../config/views'
-import {BASE_VIEW_ID} from '../../constants/view.js'
+import {BASE_VIEW_ID} from '../../constants/view'
 import {OrderDirection, ApiListResponsePagination} from '../../models/api/types'
 import {Job, JobType} from '../../models/job/types'
 import {Ticket} from '../../models/ticket/types'

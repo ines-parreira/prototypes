@@ -9,7 +9,7 @@ import {
     CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
 } from '../../../../../../config/integrations'
 import {SMOOCH_LANGUAGE_DEFAULT} from '../../../../../../config/integrations/smooch.ts'
-import {SMOOCH_INTEGRATION_TYPE} from '../../../../../../constants/integration'
+import {SMOOCH_INTEGRATION_TYPE} from '../../../../../../constants/integration.ts'
 import {SmoochIntegrationPreferences} from '../SmoochIntegrationPreferences'
 
 describe('<SmoochIntegrationPreferences/>', () => {

@@ -4,7 +4,7 @@ import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import {MAGENTO2_INTEGRATION_TYPE} from '../../../../../../constants/integration'
+import {MAGENTO2_INTEGRATION_TYPE} from '../../../../../../constants/integration.ts'
 import Magento2IntegrationDetail from '../Magento2IntegrationDetail'
 
 const mockStore = configureMockStore([thunk])

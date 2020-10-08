@@ -8,8 +8,6 @@ import {RootState} from '../types'
 import {getCurrentUserState} from '../currentUser/selectors'
 import {nestedReplace} from '../ticket/utils.js'
 
-import {EMAIL_INTEGRATION_TYPE} from '../../constants/integration.js'
-
 import {IntegrationsState} from './types'
 
 export const getIntegrationsState = (state: RootState) =>
@@ -441,7 +439,7 @@ export const isImportAllowed = (state: RootState) =>
         ) as string).includes(window.EMAIL_FORWARDING_DOMAIN)
         const isDeactivated = !!integration.get('deactivated_datetime')
         const isNotVerified =
-            integration.get('type') === EMAIL_INTEGRATION_TYPE &&
+            integration.get('type') === IntegrationType.EmailIntegrationType &&
             !integration.getIn(['meta', 'verified'])
 
         return !isBaseIntegration && !isDeactivated && !isNotVerified

@@ -8,7 +8,7 @@ import {
     BASE_VIEW_ID,
     NEXT_VIEW_NAV_DIRECTION,
     PREV_VIEW_NAV_DIRECTION,
-} from '../../../constants/view'
+} from '../../../constants/view.ts'
 
 import {mergeTickets, searchTickets} from '../actions.ts'
 

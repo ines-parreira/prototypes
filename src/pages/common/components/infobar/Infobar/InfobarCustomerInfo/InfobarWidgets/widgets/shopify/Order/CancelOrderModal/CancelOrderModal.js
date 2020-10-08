@@ -19,7 +19,7 @@ import {getCancelOrderState} from '../../../../../../../../../../../state/infoba
 import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager.ts'
 import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors.ts'
 import {getFinalCancelOrderPayload} from '../../../../../../../../../../../business/shopify/order.ts'
-import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../constants/integration'
+import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../constants/integration.ts'
 import type {
     CancelOrderPayload,
     LineItem,

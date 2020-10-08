@@ -5,7 +5,7 @@ import {fromJS, Map, List} from 'immutable'
 import {Link} from 'react-router'
 import {Breadcrumb, BreadcrumbItem, Col, Container, Row} from 'reactstrap'
 
-import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../constants/integration'
+import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../constants/integration.ts'
 
 import {notify} from '../../../../../../state/notifications/actions.ts'
 import PageHeader from '../../../../../common/components/PageHeader'

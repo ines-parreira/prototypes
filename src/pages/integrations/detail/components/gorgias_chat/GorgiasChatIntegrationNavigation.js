@@ -3,7 +3,7 @@ import React from 'react'
 import {type Map} from 'immutable'
 import {Link} from 'react-router'
 
-import {GORGIAS_CHAT_INTEGRATION_TYPE} from '../../../../../constants/integration'
+import {GORGIAS_CHAT_INTEGRATION_TYPE} from '../../../../../constants/integration.ts'
 import SecondaryNavbar from '../../../../common/components/SecondaryNavbar/SecondaryNavbar'
 
 type Props = {

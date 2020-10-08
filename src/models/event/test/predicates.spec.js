@@ -6,7 +6,7 @@ import {
     isSystemRuleEvent,
     isViaRuleEvent,
 } from '../predicates'
-import {RULE_EXECUTED, TICKET_ASSIGNED} from '../../../constants/event'
+import {RULE_EXECUTED, TICKET_ASSIGNED} from '../../../constants/event.ts'
 import type {AuditLogEvent, AuditLogEventType} from '../types'
 
 describe('Event predicates', () => {

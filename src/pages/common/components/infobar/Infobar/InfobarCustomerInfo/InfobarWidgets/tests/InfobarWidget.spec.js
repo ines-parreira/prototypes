@@ -6,7 +6,7 @@ import {
     MAGENTO2_INTEGRATION_TYPE,
     RECHARGE_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
-} from '../../../../../../../../constants/integration'
+} from '../../../../../../../../constants/integration.ts'
 
 import InfobarWidget from '../InfobarWidget'
 

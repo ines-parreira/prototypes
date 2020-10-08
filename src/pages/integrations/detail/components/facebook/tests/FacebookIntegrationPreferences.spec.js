@@ -9,7 +9,7 @@ import {
     CHAT_AUTO_RESPONDER_REPLY_IN_HOURS,
 } from '../../../../../../config/integrations'
 import {FACEBOOK_LANGUAGE_DEFAULT} from '../../../../../../config/integrations/facebook.ts'
-import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../constants/integration'
+import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../constants/integration.ts'
 import {FacebookIntegrationPreferences} from '../FacebookIntegrationPreferences'
 
 describe('<FacebookIntegrationPreferences/>', () => {

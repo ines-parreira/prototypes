@@ -6,7 +6,7 @@ import classnames from 'classnames'
 import {fromJS, type List, type Map} from 'immutable'
 import {Breadcrumb, BreadcrumbItem, Button, Container, Form} from 'reactstrap'
 
-import {OUTLOOK_INTEGRATION_TYPE} from '../../../../../../../constants/integration'
+import {OUTLOOK_INTEGRATION_TYPE} from '../../../../../../../constants/integration.ts'
 import Loader from '../../../../../../common/components/Loader'
 import ToggleButton from '../../../../../../common/components/ToggleButton'
 import PageHeader from '../../../../../../common/components/PageHeader'

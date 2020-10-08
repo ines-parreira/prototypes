@@ -2,7 +2,7 @@
 import {
     INTEGRATION_DATA_ITEM_TYPES_MAP,
     INTEGRATION_TYPES_MAP,
-} from '../../constants/integration'
+} from '../../constants/integration.ts'
 import type {
     Product as IntegrationProduct,
     Variant as IntegrationVariant,

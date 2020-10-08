@@ -8,17 +8,17 @@ import {fromJS} from 'immutable'
 
 import GorgiasApi from '../gorgiasApi.ts'
 import type {AuditLogEvent} from '../../models/event'
-import {TICKET_REOPENED} from '../../constants/event'
+import {TICKET_REOPENED} from '../../constants/event.ts'
 import type {IntegrationDataItem} from '../../models/integration'
 import {
     INTEGRATION_DATA_ITEM_TYPE_PRODUCT,
     SHOPIFY_INTEGRATION_TYPE,
-} from '../../constants/integration'
+} from '../../constants/integration.ts'
 import {
     shopifyCancelOrderPayloadFixture,
     shopifyInvoicePayloadFixture,
 } from '../../fixtures/shopify'
-import {ViewVisibility} from '../../constants/view'
+import {ViewVisibility} from '../../constants/view.ts'
 
 describe('services', () => {
     describe('GorgiasApi', () => {

@@ -11,7 +11,7 @@ import {
 import {
     SHOPIFY_INTEGRATION_TYPE,
     GORGIAS_CHAT_INTEGRATION_TYPE,
-} from '../../../../../../../constants/integration'
+} from '../../../../../../../constants/integration.ts'
 
 import {GorgiasChatIntegrationAppearanceComponent} from '../GorgiasChatIntegrationAppearance'
 

@@ -1,6 +1,6 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 
-import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../constants/integration'
+import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../constants/integration.ts'
 import * as selectors from '../selectors.ts'
 import {initialState} from '../reducers.ts'
 

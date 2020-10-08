@@ -13,7 +13,7 @@ import {
     Row,
 } from 'reactstrap'
 
-import {PENDING_AUTHENTICATION_STATUS} from '../../../../../constants/integration'
+import {PENDING_AUTHENTICATION_STATUS} from '../../../../../constants/integration.ts'
 import Loader from '../../../../common/components/Loader'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
 import InputField from '../../../../common/forms/InputField'

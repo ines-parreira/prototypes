@@ -3,7 +3,7 @@ import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
 import {Plan} from '../Plan'
-import {billingState} from '../../../../../fixtures/billing'
+import {billingState} from '../../../../../fixtures/billing.ts'
 
 describe('Plan component', () => {
     it('should render', () => {

@@ -10,7 +10,7 @@ import {BASIC_AGENT_ROLE} from '../../../../../config/user.ts'
 import {
     SYSTEM_VIEW_CATEGORY,
     ViewVisibility,
-} from '../../../../../constants/view'
+} from '../../../../../constants/view.ts'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

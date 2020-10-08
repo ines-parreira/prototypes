@@ -6,7 +6,7 @@ import {initialState} from '../reducers.ts'
 import * as selectors from '../selectors.ts'
 import {currentUser} from '../../../fixtures/users'
 import {initialState as currentUserInitialState} from '../../currentUser/reducers.ts'
-import {SYSTEM_VIEW_CATEGORY} from '../../../constants/view'
+import {SYSTEM_VIEW_CATEGORY} from '../../../constants/view.ts'
 
 jest.addMatchers(immutableMatchers)
 

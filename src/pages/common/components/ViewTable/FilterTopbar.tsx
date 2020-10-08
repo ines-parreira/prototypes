@@ -28,7 +28,7 @@ import * as agentSelectors from '../../../../state/agents/selectors'
 import * as teamSelectors from '../../../../state/teams/selectors'
 import * as schemasSelectors from '../../../../state/schemas/selectors'
 import * as viewsConfig from '../../../../config/views'
-import {SYSTEM_VIEW_CATEGORY} from '../../../../constants/view.js'
+import {SYSTEM_VIEW_CATEGORY} from '../../../../constants/view'
 import {RootState} from '../../../../state/types'
 
 import Filters from './Filters/index.js'

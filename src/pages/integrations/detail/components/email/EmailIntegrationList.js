@@ -9,7 +9,7 @@ import {
     EMAIL_INTEGRATION_TYPES,
     GMAIL_INTEGRATION_TYPE,
     OUTLOOK_INTEGRATION_TYPE,
-} from '../../../../../constants/integration'
+} from '../../../../../constants/integration.ts'
 
 import ForwardIcon from '../ForwardIcon'
 import IntegrationList from '../IntegrationList'

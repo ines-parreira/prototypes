@@ -9,7 +9,7 @@ import {
     EMAIL_INTEGRATION_TYPE,
     FACEBOOK_INTEGRATION_TYPE,
     GMAIL_INTEGRATION_TYPE,
-} from '../../../../constants/integration'
+} from '../../../../constants/integration.ts'
 import {EMAIL_CHANNEL, OPEN_STATUS} from '../../../../config/ticket.ts'
 import * as labels from '../labels'
 

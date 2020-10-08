@@ -16,7 +16,7 @@ import {
     Alert,
 } from 'reactstrap'
 
-import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../constants/integration'
+import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../constants/integration.ts'
 
 import Loader from '../../../../../common/components/Loader'
 import ToggleButton from '../../../../../common/components/ToggleButton'

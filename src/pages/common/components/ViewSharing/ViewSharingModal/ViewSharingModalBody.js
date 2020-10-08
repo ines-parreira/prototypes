@@ -9,7 +9,7 @@ import * as agentSelectors from '../../../../../state/agents/selectors.ts'
 import * as teamsSelectors from '../../../../../state/teams/selectors.ts'
 import type {teamType} from '../../../../../state/teams/types'
 import RadioChoiceField from '../../../forms/RadioChoiceField'
-import {ViewVisibility} from '../../../../../constants/view'
+import {ViewVisibility} from '../../../../../constants/view.ts'
 import Loader from '../../Loader'
 
 import SharedBody from './SharedBody'

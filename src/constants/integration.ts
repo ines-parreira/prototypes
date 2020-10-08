@@ -1,4 +1,4 @@
-//@flow
+//$TsFixMe fallback values for js, use IntegrationType enum instead
 export const AIRCALL_INTEGRATION_TYPE = 'aircall'
 export const SMOOCH_INTEGRATION_TYPE = 'smooch'
 export const SMOOCH_INSIDE_INTEGRATION_TYPE = 'smooch_inside'
@@ -7,13 +7,11 @@ export const EMAIL_INTEGRATION_TYPE = 'email'
 export const GMAIL_INTEGRATION_TYPE = 'gmail'
 export const OUTLOOK_INTEGRATION_TYPE = 'outlook'
 export const GORGIAS_CHAT_INTEGRATION_TYPE = 'gorgias_chat'
-
 export const HTTP_INTEGRATION_TYPE = 'http'
 export const MAGENTO2_INTEGRATION_TYPE = 'magento2'
 export const RECHARGE_INTEGRATION_TYPE = 'recharge'
 export const SHOPIFY_INTEGRATION_TYPE = 'shopify'
 export const SMILE_INTEGRATION_TYPE = 'smile'
-
 export const ZENDESK_INTEGRATION_TYPE = 'zendesk'
 
 export const EMAIL_INTEGRATION_TYPES = Object.freeze([

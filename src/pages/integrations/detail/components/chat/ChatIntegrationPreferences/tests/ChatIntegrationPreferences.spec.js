@@ -13,8 +13,8 @@ import {
     SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
 } from '../../../../../../../config/integrations/smooch_inside.ts'
 
-import {SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../../../../constants/integration'
-import {SPANISH_LANGUAGE} from '../../../../../../../constants/languages'
+import {SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../../../../constants/integration.ts'
+import {SPANISH_LANGUAGE} from '../../../../../../../constants/languages.ts'
 import {
     ChatIntegrationPreferences,
     PREVIEW_AUTO_RESPONDER,

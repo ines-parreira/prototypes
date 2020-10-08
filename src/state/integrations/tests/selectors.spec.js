@@ -7,7 +7,7 @@ import {
     MAGENTO2_INTEGRATION_TYPE,
     OUTLOOK_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
-} from '../../../constants/integration'
+} from '../../../constants/integration.ts'
 
 import {
     getBaseEmailIntegration,

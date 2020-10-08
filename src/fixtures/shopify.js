@@ -24,7 +24,7 @@ import type {IntegrationDataItem} from '../models/integration'
 import {
     INTEGRATION_DATA_ITEM_TYPE_PRODUCT,
     SHOPIFY_INTEGRATION_TYPE,
-} from '../constants/integration'
+} from '../constants/integration.ts'
 
 export const shopifyImageFixture = (): Image => ({
     id: 1,

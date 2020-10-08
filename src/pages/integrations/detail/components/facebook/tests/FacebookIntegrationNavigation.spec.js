@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 import {mount} from 'enzyme'
 
 import FacebookIntegrationNavigation from '../FacebookIntegrationNavigation'
-import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../constants/integration'
+import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../constants/integration.ts'
 
 describe('<FacebookIntegrationNavigation/>', () => {
     it('should not display the Ads tab when ads are disabled', () => {

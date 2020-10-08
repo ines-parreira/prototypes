@@ -4,7 +4,7 @@ import {type Map, type List} from 'immutable'
 import {Link, browserHistory} from 'react-router'
 import {connect} from 'react-redux'
 
-import {MAGENTO2_INTEGRATION_TYPE} from '../../../../../constants/integration'
+import {MAGENTO2_INTEGRATION_TYPE} from '../../../../../constants/integration.ts'
 import * as integrationsActions from '../../../../../state/integrations/actions.ts'
 import ToggleButton from '../../../../common/components/ToggleButton'
 import IntegrationList from '../IntegrationList'

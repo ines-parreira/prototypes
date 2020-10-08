@@ -1,32 +1,21 @@
 import {fromJS} from 'immutable'
 
-import {
-    DANISH_LANGUAGE,
-    DUTCH_LANGUAGE,
-    ENGLISH_US_LANGUAGE,
-    FRENCH_LANGUAGE,
-    ITALIAN_LANGUAGE,
-    SPANISH_LANGUAGE,
-    SWEDISH_LANGUAGE,
-    GERMAN_LANGUAGE,
-    NORWEGIAN_LANGUAGE,
-    CZECH_LANGUAGE,
-} from '../../constants/languages.js'
+import {Language} from '../../constants/languages'
 
 export const SMOOCH_INSIDE_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH = 50
 
-export const SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT = ENGLISH_US_LANGUAGE
+export const SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT = Language.EnglishUs
 export const SMOOCH_INSIDE_WIDGET_LANGUAGE_OPTIONS = fromJS([
-    {value: ENGLISH_US_LANGUAGE, label: 'English US'},
-    {value: FRENCH_LANGUAGE, label: 'French'},
-    {value: SPANISH_LANGUAGE, label: 'Spanish'},
-    {value: DANISH_LANGUAGE, label: 'Danish'},
-    {value: SWEDISH_LANGUAGE, label: 'Swedish'},
-    {value: ITALIAN_LANGUAGE, label: 'Italian'},
-    {value: DUTCH_LANGUAGE, label: 'Dutch'},
-    {value: GERMAN_LANGUAGE, label: 'German'},
-    {value: NORWEGIAN_LANGUAGE, label: 'Norwegian'},
-    {value: CZECH_LANGUAGE, label: 'Czech'},
+    {value: Language.EnglishUs, label: 'English US'},
+    {value: Language.French, label: 'French'},
+    {value: Language.Spanish, label: 'Spanish'},
+    {value: Language.Danish, label: 'Danish'},
+    {value: Language.Swedish, label: 'Swedish'},
+    {value: Language.Italian, label: 'Italian'},
+    {value: Language.Dutch, label: 'Dutch'},
+    {value: Language.German, label: 'German'},
+    {value: Language.Norwegian, label: 'Norwegian'},
+    {value: Language.Czech, label: 'Czech'},
 ])
 
 //eslint-disable-next-line @typescript-eslint/no-var-requires

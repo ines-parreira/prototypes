@@ -17,7 +17,7 @@ import GorgiasApi from '../../../../../services/gorgiasApi.ts'
 import type {notificationType} from '../../../../../state/notifications/actions.ts'
 import {notify} from '../../../../../state/notifications/actions.ts'
 import type {currentUserType} from '../../../../../state/types'
-import {ViewVisibility} from '../../../../../constants/view'
+import {ViewVisibility} from '../../../../../constants/view.ts'
 
 import ViewSharingModalBody from './ViewSharingModalBody'
 import css from './ViewSharingModal.less'

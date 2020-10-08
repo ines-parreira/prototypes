@@ -37,7 +37,7 @@ import PageHeader from '../../../../common/components/PageHeader'
 import ToggleButton from '../../../../common/components/ToggleButton'
 import RadioField from '../../../../common/forms/RadioField'
 import SelectField from '../../../../common/forms/SelectField'
-import {EMAIL_INTEGRATION_TYPES} from '../../../../../constants/integration'
+import {EMAIL_INTEGRATION_TYPES} from '../../../../../constants/integration.ts'
 
 import ChatIntegrationNavigation from './GorgiasChatIntegrationNavigation'
 import ChatIntegrationPreview from './GorgiasChatIntegrationPreview'

@@ -15,7 +15,7 @@ import {
     RECHARGE_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
     SMILE_INTEGRATION_TYPE,
-} from '../../../../../../constants/integration'
+} from '../../../../../../constants/integration.ts'
 
 import {itemsWithContext} from '../../../../../../state/widgets/utils.ts'
 import {getDisplayName} from '../../../../../../state/customers/helpers.ts'

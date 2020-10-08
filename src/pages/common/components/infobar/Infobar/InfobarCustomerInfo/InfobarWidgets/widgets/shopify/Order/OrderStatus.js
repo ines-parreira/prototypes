@@ -7,7 +7,7 @@ import classnames from 'classnames'
 import {
     FinancialStatus,
     FulfillmentStatus,
-} from '../../../../../../../../../../constants/integrations/shopify'
+} from '../../../../../../../../../../constants/integrations/shopify.ts'
 import type {
     FulfillmentStatusType,
     FinancialStatusType,

@@ -19,7 +19,7 @@ import {getRefundOrderState} from '../../../../../../../../../../../state/infoba
 import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager.ts'
 import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors.ts'
 import {getFinalRefundOrderPayload} from '../../../../../../../../../../../business/shopify/order.ts'
-import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../constants/integration'
+import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../constants/integration.ts'
 import type {
     RefundOrderPayload,
     LineItem,

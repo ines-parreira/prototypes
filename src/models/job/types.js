@@ -4,7 +4,7 @@ import {
     DELETE_TICKET_JOB_TYPE,
     EXPORT_TICKET_JOB_TYPE,
     UPDATE_TICKET_JOB_TYPE,
-} from '../../constants/job'
+} from '../../constants/job.ts'
 
 type JobStatus =
     | 'cancel_requested'

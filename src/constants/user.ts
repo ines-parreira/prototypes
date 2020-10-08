@@ -1,4 +1,4 @@
-//@flow
+//$TsFixMe fallback values, use TicketChannel enum instead
 export const EMAIL_CUSTOMER_CHANNEL_TYPE = 'email'
 export const TWITTER_CUSTOMER_CHANNEL_TYPE = 'twitter'
 export const PHONE_CUSTOMER_CHANNEL_TYPE = 'phone'

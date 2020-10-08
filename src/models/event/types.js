@@ -1,6 +1,6 @@
 // @flow
 
-import {TICKET_AUDIT_LOG_EVENTS_MAP} from '../../constants/event'
+import {TICKET_AUDIT_LOG_EVENTS_MAP} from '../../constants/event.ts'
 
 export type TicketTagsAddedEventData = {
     tags_added: Array<number>,

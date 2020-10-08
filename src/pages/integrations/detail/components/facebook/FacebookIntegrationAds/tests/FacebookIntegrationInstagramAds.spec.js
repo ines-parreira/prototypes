@@ -5,7 +5,7 @@ import {Provider} from 'react-redux'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 
-import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../../constants/integration'
+import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../../constants/integration.ts'
 import FacebookIntegrationInstagramAds from '../'
 
 describe('<FacebookIntegrationInstagramAds/>', () => {

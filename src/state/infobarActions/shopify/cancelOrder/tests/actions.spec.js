@@ -4,7 +4,7 @@ import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
 import axios from 'axios'
 
-import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../constants/integration'
+import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../constants/integration.ts'
 import {
     shopifyCancelOrderPayloadFixture,
     shopifyOrderFixture,

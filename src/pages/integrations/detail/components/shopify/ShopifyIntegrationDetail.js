@@ -27,7 +27,7 @@ import * as utils from '../../../../../utils.ts'
 
 import {notify} from '../../../../../state/notifications/actions.ts'
 import * as integrationSelectors from '../../../../../state/integrations/selectors.ts'
-import {PENDING_AUTHENTICATION_STATUS} from '../../../../../constants/integration'
+import {PENDING_AUTHENTICATION_STATUS} from '../../../../../constants/integration.ts'
 
 type Props = {
     integration: Map<*, *>,

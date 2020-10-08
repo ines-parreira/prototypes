@@ -10,7 +10,7 @@ import {Link} from 'react-router'
 
 import type {Dispatch} from '../../../state/types'
 
-import {SHOPIFY_PAYMENT_SERVICE} from '../../../constants/billing'
+import {SHOPIFY_PAYMENT_SERVICE} from '../../../constants/billing.ts'
 import * as billingSelectors from '../../../state/billing/selectors.ts'
 import {
     fetchInvoices,

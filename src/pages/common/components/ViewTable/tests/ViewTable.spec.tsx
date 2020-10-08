@@ -9,13 +9,12 @@ import thunk from 'redux-thunk'
 import {Location} from 'history'
 import _identity from 'lodash/identity'
 
-import {TICKET_LIST_VIEW_TYPE} from '../../../../../constants/view.js'
 import * as ticketFixtures from '../../../../../fixtures/ticket.js'
 import * as viewsActions from '../../../../../state/views/actions'
 import * as viewsConfig from '../../../../../config/views'
 import * as viewsFixtures from '../../../../../fixtures/views.js'
+import {View, ViewType} from '../../../../../state/views/types'
 import ViewTable, {ViewTableContainer} from '../ViewTable'
-import {View} from '../../../../../state/views/types'
 
 const mockStore = configureMockStore([thunk])
 
@@ -48,8 +47,8 @@ const minStore = {
     views: fromJS({
         active: fixtureView,
         items: [
-            {id: 1, type: TICKET_LIST_VIEW_TYPE},
-            {id: 2, type: TICKET_LIST_VIEW_TYPE},
+            {id: 1, type: ViewType.TicketList},
+            {id: 2, type: ViewType.TicketList},
             fixtureView,
         ],
         _internal: {
@@ -94,7 +93,7 @@ const minProps = {
     store: mockStore(minStore),
     location: {query: {}} as Location<any>,
     config: fromJS({
-        type: TICKET_LIST_VIEW_TYPE,
+        type: ViewType.TicketList,
     }),
     navigation: fromJS({}),
     isLoading: () => false,

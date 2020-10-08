@@ -12,7 +12,7 @@ import {
     TagLabel,
     TeamLabel,
 } from '../../../common/utils/labels'
-import * as constants from '../../../../constants/event'
+import * as constants from '../../../../constants/event.ts'
 import {
     type AuditLogEvent as AuditLogEventType,
     isRuleExecutedType,

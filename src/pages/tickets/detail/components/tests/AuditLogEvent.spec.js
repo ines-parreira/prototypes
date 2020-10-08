@@ -6,7 +6,7 @@ import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import * as constants from '../../../../../constants/event'
+import * as constants from '../../../../../constants/event.ts'
 import Component from '../AuditLogEvent'
 
 import {

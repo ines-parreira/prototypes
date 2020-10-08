@@ -5,7 +5,7 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 import {Provider} from 'react-redux'
 
-import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../../constants/integration'
+import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../../constants/integration.ts'
 import FacebookIntegrationList from '../'
 
 describe('FacebookIntegrationList component', () => {

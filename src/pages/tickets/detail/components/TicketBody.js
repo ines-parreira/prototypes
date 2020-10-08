@@ -26,7 +26,7 @@ import {
     isTicketSatisfactionSurvey,
 } from '../../../../models/ticket'
 import {TicketChannels} from '../../../../business/ticket.ts'
-import {TICKET_AUDIT_LOG_EVENTS} from '../../../../constants/event'
+import {TICKET_AUDIT_LOG_EVENTS} from '../../../../constants/event.ts'
 
 import TicketMessages from './TicketMessages'
 import SatisfactionSurvey from './SatisfactionSurvey'
