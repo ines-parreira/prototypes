@@ -210,6 +210,13 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         image: 'integrations/smile.svg',
     },
     {
+        title: 'BigCommerce',
+        description:
+            'Display customer profiles & orders next to tickets. Edit orders with macros.',
+        url: 'https://docs.gorgias.com/ecommerce-integrations/bigcommerce',
+        image: 'integrations/bigcommerce.png',
+    },
+    {
         title: 'Helpdocs',
         description: 'Create a knowledge base & connect it to Gorgias',
         url: 'https://docs.gorgias.com/other-integrations/helpdocs',
