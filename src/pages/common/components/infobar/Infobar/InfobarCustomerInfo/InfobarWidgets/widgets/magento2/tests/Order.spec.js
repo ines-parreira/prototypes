@@ -24,16 +24,233 @@ jest.mock('../../../../../../../../utils/labels', () => {
 
 describe('Order', () => {
     describe('<BeforeContent/>', () => {
+        const customerId = 1
+        const orderId = 2
+        const integrationId = 3
+
+        const shipments = [
+            {
+                order_id: orderId,
+                entity_id: 963,
+                updated_at: '2019-03-04 11:12',
+                tracks: [
+                    {
+                        track_number: '123ABC',
+                        carrier_code: 'UPS',
+                        tracking_url: 'https://foo.com',
+                    },
+                    {
+                        track_number: '456DEF',
+                        carrier_code: 'DHL',
+                        tracking_url: 'https://bar.com',
+                    },
+                ],
+                items: [
+                    {
+                        order_item_id: 118,
+                        qty: 4,
+                        name: 'Sneakers',
+                    },
+                    {
+                        order_item_id: 218,
+                        qty: 1,
+                        name: 'Pants',
+                    },
+                ],
+            },
+            {
+                order_id: orderId,
+                entity_id: 741,
+                updated_at: '2019-02-04 11:12',
+                tracks: [
+                    {
+                        track_number: '789GHJ',
+                        carrier_code: 'LaPoste',
+                        tracking_url: 'https://laposte.net',
+                    },
+                ],
+                items: [],
+            },
+        ]
+
+        const storeUrl = 'magento.gorgi.us'
+        const adminUrlSuffix = 'admin_123'
+        const createdAt = '"2020-10-07 09:30:03"'
+
         describe('render()', () => {
-            for (const state of Object.keys(statusColors)) {
-                it(`should render with a label for the ${state} state`, () => {
-                    const component = shallow(
-                        <BeforeContent source={fromJS({state})} />
+            it.each(Object.keys(statusColors))(
+                `should render with a label for the %s state and a created at date but no shipments because there are none`,
+                (state) => {
+                    const component = mount(
+                        <Provider
+                            store={mockStore({
+                                customers: fromJS({
+                                    active: {
+                                        id: customerId,
+                                        integrations: {
+                                            [integrationId.toString()]: {
+                                                customer: {id: customerId},
+                                                shipments: [],
+                                            },
+                                        },
+                                    },
+                                }),
+                            })}
+                        >
+                            <BeforeContent
+                                source={fromJS({
+                                    customer_id: customerId,
+                                    entity_id: orderId,
+                                    state: state,
+                                    created_at: createdAt,
+                                })}
+                            />
+                        </Provider>,
+                        {
+                            context: {
+                                integration: fromJS({
+                                    id: integrationId,
+                                }),
+                            },
+                            childContextTypes: {
+                                integration: ImmutablePropTypes.map.isRequired,
+                            },
+                        }
                     )
 
                     expect(component).toMatchSnapshot()
-                })
-            }
+                }
+            )
+
+            it(`should render the state and an empty created at date but no shipments because there are none`, () => {
+                const component = mount(
+                    <Provider
+                        store={mockStore({
+                            customers: fromJS({
+                                active: {
+                                    id: customerId,
+                                    integrations: {
+                                        [integrationId.toString()]: {
+                                            customer: {id: customerId},
+                                            shipments: [],
+                                        },
+                                    },
+                                },
+                            }),
+                        })}
+                    >
+                        <BeforeContent
+                            source={fromJS({
+                                customer_id: customerId,
+                                entity_id: orderId,
+                                state: statusColors.new,
+                            })}
+                        />
+                    </Provider>,
+                    {
+                        context: {
+                            integration: fromJS({
+                                id: integrationId,
+                            }),
+                        },
+                        childContextTypes: {
+                            integration: ImmutablePropTypes.map.isRequired,
+                        },
+                    }
+                )
+
+                expect(component).toMatchSnapshot()
+            })
+
+            it('should display shipments with links because there is an admin url suffix', () => {
+                const component = mount(
+                    <Provider
+                        store={mockStore({
+                            customers: fromJS({
+                                active: {
+                                    id: customerId,
+                                    integrations: {
+                                        [integrationId.toString()]: {
+                                            customer: {id: customerId},
+                                            shipments,
+                                        },
+                                    },
+                                },
+                            }),
+                        })}
+                    >
+                        <BeforeContent
+                            source={fromJS({
+                                customer_id: customerId,
+                                entity_id: orderId,
+                                state: statusColors.new,
+                                created_at: createdAt,
+                            })}
+                        />
+                    </Provider>,
+                    {
+                        context: {
+                            integration: fromJS({
+                                id: integrationId,
+                                meta: {
+                                    store_url: storeUrl,
+                                    admin_url_suffix: adminUrlSuffix,
+                                },
+                            }),
+                        },
+                        childContextTypes: {
+                            integration: ImmutablePropTypes.map.isRequired,
+                        },
+                    }
+                )
+
+                expect(component.children()).toMatchSnapshot()
+            })
+
+            it('should display shipments without links because there is no admin url suffix', () => {
+                const component = mount(
+                    <Provider
+                        store={mockStore({
+                            customers: fromJS({
+                                active: {
+                                    id: customerId,
+                                    integrations: {
+                                        [integrationId.toString()]: {
+                                            customer: {id: customerId},
+                                            shipments,
+                                        },
+                                    },
+                                },
+                            }),
+                        })}
+                    >
+                        <BeforeContent
+                            source={fromJS({
+                                customer_id: customerId,
+                                entity_id: orderId,
+                                state: statusColors.new,
+                                created_at: createdAt,
+                            })}
+                        />
+                    </Provider>,
+                    {
+                        context: {
+                            integration: fromJS({
+                                id: integrationId,
+                                meta: {
+                                    store_url: storeUrl,
+                                    admin_url_suffix: '',
+                                },
+                            }),
+                        },
+                        childContextTypes: {
+                            integration: ImmutablePropTypes.map.isRequired,
+                        },
+                    }
+                )
+
+                expect(component.children()).toMatchSnapshot()
+            })
         })
     })
 
@@ -86,51 +303,6 @@ describe('Order', () => {
         const orderId = 2
         const integrationId = 3
 
-        const shipments = [
-            {
-                order_id: orderId,
-                entity_id: 963,
-                updated_at: '2019-03-04 11:12',
-                tracks: [
-                    {
-                        track_number: '123ABC',
-                        carrier_code: 'UPS',
-                        tracking_url: 'https://foo.com',
-                    },
-                    {
-                        track_number: '456DEF',
-                        carrier_code: 'DHL',
-                        tracking_url: 'https://bar.com',
-                    },
-                ],
-                items: [
-                    {
-                        order_item_id: 118,
-                        qty: 4,
-                        name: 'Sneakers',
-                    },
-                    {
-                        order_item_id: 218,
-                        qty: 1,
-                        name: 'Pants',
-                    },
-                ],
-            },
-            {
-                order_id: orderId,
-                entity_id: 741,
-                updated_at: '2019-02-04 11:12',
-                tracks: [
-                    {
-                        track_number: '789GHJ',
-                        carrier_code: 'LaPoste',
-                        tracking_url: 'https://laposte.net',
-                    },
-                ],
-                items: [],
-            },
-        ]
-
         const creditMemos = [
             {
                 order_id: orderId,
@@ -182,94 +354,6 @@ describe('Order', () => {
                 )
 
                 expect(component).toEqual({})
-            })
-
-            it('should display shipments with links because there is an admin url suffix', () => {
-                const component = mount(
-                    <Provider
-                        store={mockStore({
-                            customers: fromJS({
-                                active: {
-                                    id: customerId,
-                                    integrations: {
-                                        [integrationId.toString()]: {
-                                            customer: {id: customerId},
-                                            shipments,
-                                            credit_memos: [],
-                                        },
-                                    },
-                                },
-                            }),
-                        })}
-                    >
-                        <AfterContent
-                            source={fromJS({
-                                customer_id: customerId,
-                                entity_id: orderId,
-                            })}
-                        />
-                    </Provider>,
-                    {
-                        context: {
-                            integration: fromJS({
-                                id: integrationId,
-                                meta: {
-                                    store_url: 'magento.gorgi.us',
-                                    admin_url_suffix: 'admin_123',
-                                },
-                            }),
-                        },
-                        childContextTypes: {
-                            integration: ImmutablePropTypes.map.isRequired,
-                        },
-                    }
-                )
-
-                expect(component.children()).toMatchSnapshot()
-            })
-
-            it('should display shipments without links because there is no admin url suffix', () => {
-                const component = mount(
-                    <Provider
-                        store={mockStore({
-                            customers: fromJS({
-                                active: {
-                                    id: customerId,
-                                    integrations: {
-                                        [integrationId.toString()]: {
-                                            customer: {id: customerId},
-                                            shipments,
-                                            credit_memos: [],
-                                        },
-                                    },
-                                },
-                            }),
-                        })}
-                    >
-                        <AfterContent
-                            source={fromJS({
-                                customer_id: customerId,
-                                entity_id: orderId,
-                            })}
-                        />
-                    </Provider>,
-                    {
-                        context: {
-                            integration: fromJS({
-                                id: integrationId,
-                                meta: {
-                                    store_url: 'magento.gorgi.us',
-                                    admin_url_suffix: '',
-                                },
-                            }),
-                        },
-                        childContextTypes: {
-                            integration: ImmutablePropTypes.map.isRequired,
-                        },
-                    }
-                )
-
-                expect(component.children()).toMatchSnapshot()
             })
 
             it('should display credit memos with links because there is an admin url suffix', () => {
@@ -348,50 +432,6 @@ describe('Order', () => {
                                 meta: {
                                     store_url: 'magento.gorgi.us',
                                     admin_url_suffix: '',
-                                },
-                            }),
-                        },
-                        childContextTypes: {
-                            integration: ImmutablePropTypes.map.isRequired,
-                        },
-                    }
-                )
-
-                expect(component.children()).toMatchSnapshot()
-            })
-
-            it('should display both shipments and credit memos with links because there is an admin url suffix', () => {
-                const component = mount(
-                    <Provider
-                        store={mockStore({
-                            customers: fromJS({
-                                active: {
-                                    id: customerId,
-                                    integrations: {
-                                        [integrationId.toString()]: {
-                                            customer: {id: customerId},
-                                            shipments,
-                                            credit_memos: creditMemos,
-                                        },
-                                    },
-                                },
-                            }),
-                        })}
-                    >
-                        <AfterContent
-                            source={fromJS({
-                                customer_id: customerId,
-                                entity_id: orderId,
-                            })}
-                        />
-                    </Provider>,
-                    {
-                        context: {
-                            integration: fromJS({
-                                id: integrationId,
-                                meta: {
-                                    store_url: 'magento.gorgi.us',
-                                    admin_url_suffix: 'admin_123',
                                 },
                             }),
                         },

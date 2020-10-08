@@ -26,6 +26,31 @@ export default function Order() {
     }
 }
 
+function getIntegrationData(
+    state: Map<*, *>,
+    integrationId: string,
+    customerId: number
+) {
+    const integrationData = isCurrentlyOnTicket()
+        ? ticketSelectors.getIntegrationDataByIntegrationId(integrationId)(
+              state
+          )
+        : getActiveCustomerIntegrationDataByIntegrationId(integrationId)(state)
+
+    if (integrationData.getIn(['customer', 'id']) !== customerId) {
+        devLog(
+            '[INFOBAR][magento2][order] Could not find integration data for customer.',
+            {
+                customerId,
+                integrationId,
+            }
+        )
+        return fromJS({})
+    }
+
+    return integrationData
+}
+
 export const statusColors = {
     new: 'info',
     pending: 'info',
@@ -38,13 +63,38 @@ export const statusColors = {
 
 type BeforeContentProps = {
     source: Map<*, *>,
+    getIntegrationData: (number, number) => Map<*, *>,
+    currentUserTimezone: string,
 }
 
+@connect((state) => {
+    return {
+        getIntegrationData: (integrationId, customerId) => {
+            return getIntegrationData(state, integrationId, customerId)
+        },
+    }
+})
 class BeforeContent extends React.Component<BeforeContentProps> {
+    static contextTypes = {
+        integration: ImmutablePropTypes.map.isRequired,
+    }
+
     render() {
-        const {source} = this.props
+        const {source, getIntegrationData, currentUserTimezone} = this.props
 
         const state = (source.get('state') || '').toLowerCase()
+
+        const {integration} = this.context
+
+        const customerIntegrationData = getIntegrationData(
+            integration.get('id'),
+            source.get('customer_id')
+        )
+
+        const shipments = customerIntegrationData.get('shipments') || fromJS([])
+        const orderShipments = shipments.filter(
+            (shipment) => shipment.get('order_id') === source.get('entity_id')
+        )
 
         return (
             <div>
@@ -55,6 +105,20 @@ class BeforeContent extends React.Component<BeforeContentProps> {
                             {humanizeString(state)}
                         </Badge>
                     </span>
+                </div>
+                <div className="simple-field">
+                    <span className="field-label">Created at:</span>
+                    <span className="field-value">
+                        <DatetimeLabel
+                            dateTime={source.get('created_at')}
+                            timezone={currentUserTimezone}
+                        />
+                    </span>
+                </div>
+                <div className="mt-3">
+                    {!orderShipments.isEmpty() ? (
+                        <Shipments shipments={orderShipments} />
+                    ) : null}
                 </div>
             </div>
         )
@@ -265,26 +329,7 @@ type AfterContentProps = {
 @connect((state) => {
     return {
         getIntegrationData: (integrationId, customerId) => {
-            const integrationData = isCurrentlyOnTicket()
-                ? ticketSelectors.getIntegrationDataByIntegrationId(
-                      integrationId
-                  )(state)
-                : getActiveCustomerIntegrationDataByIntegrationId(
-                      integrationId
-                  )(state)
-
-            if (integrationData.getIn(['customer', 'id']) !== customerId) {
-                devLog(
-                    '[INFOBAR][magento2][order] Could not find integration data for customer.',
-                    {
-                        customerId,
-                        integrationId,
-                    }
-                )
-                return fromJS({})
-            }
-
-            return integrationData
+            return getIntegrationData(state, integrationId, customerId)
         },
     }
 })
@@ -302,11 +347,6 @@ class AfterContent extends React.Component<AfterContentProps> {
             source.get('customer_id')
         )
 
-        const shipments = customerIntegrationData.get('shipments') || fromJS([])
-        const orderShipments = shipments.filter(
-            (shipment) => shipment.get('order_id') === source.get('entity_id')
-        )
-
         const creditMemos =
             customerIntegrationData.get('credit_memos') || fromJS([])
         const orderCreditMemos = creditMemos.filter(
@@ -314,15 +354,12 @@ class AfterContent extends React.Component<AfterContentProps> {
                 creditMemo.get('order_id') === source.get('entity_id')
         )
 
-        if (orderShipments.isEmpty() && orderCreditMemos.isEmpty()) {
+        if (orderCreditMemos.isEmpty()) {
             return null
         }
 
         return (
             <div className="mt-3">
-                {!orderShipments.isEmpty() ? (
-                    <Shipments shipments={orderShipments} />
-                ) : null}
                 {!orderCreditMemos.isEmpty() ? (
                     <CreditMemos creditMemos={orderCreditMemos} />
                 ) : null}
