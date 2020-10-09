@@ -1,604 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Order <AfterContent/> render() should display both shipments and credit memos with links because there is an admin url suffix 1`] = `
-<Connect(AfterContent)
-  source={
-    Immutable.Map {
-      "customer_id": 1,
-      "entity_id": 2,
-    }
-  }
->
-  <AfterContent
-    dispatch={[Function]}
-    getIntegrationData={[Function]}
-    source={
-      Immutable.Map {
-        "customer_id": 1,
-        "entity_id": 2,
-      }
-    }
-  >
-    <div
-      className="mt-3"
-    >
-      <Connect(Shipments)
-        shipments={
-          Immutable.List [
-            Immutable.Map {
-              "order_id": 2,
-              "entity_id": 963,
-              "updated_at": "2019-03-04 11:12",
-              "tracks": Immutable.List [
-                Immutable.Map {
-                  "track_number": "123ABC",
-                  "carrier_code": "UPS",
-                  "tracking_url": "https://foo.com",
-                },
-                Immutable.Map {
-                  "track_number": "456DEF",
-                  "carrier_code": "DHL",
-                  "tracking_url": "https://bar.com",
-                },
-              ],
-              "items": Immutable.List [
-                Immutable.Map {
-                  "order_item_id": 118,
-                  "qty": 4,
-                  "name": "Sneakers",
-                },
-                Immutable.Map {
-                  "order_item_id": 218,
-                  "qty": 1,
-                  "name": "Pants",
-                },
-              ],
-            },
-            Immutable.Map {
-              "order_id": 2,
-              "entity_id": 741,
-              "updated_at": "2019-02-04 11:12",
-              "tracks": Immutable.List [
-                Immutable.Map {
-                  "track_number": "789GHJ",
-                  "carrier_code": "LaPoste",
-                  "tracking_url": "https://laposte.net",
-                },
-              ],
-              "items": Immutable.List [],
-            },
-          ]
-        }
-      >
-        <Shipments
-          currentUserTimezone={null}
-          dispatch={[Function]}
-          shipments={
-            Immutable.List [
-              Immutable.Map {
-                "order_id": 2,
-                "entity_id": 963,
-                "updated_at": "2019-03-04 11:12",
-                "tracks": Immutable.List [
-                  Immutable.Map {
-                    "track_number": "123ABC",
-                    "carrier_code": "UPS",
-                    "tracking_url": "https://foo.com",
-                  },
-                  Immutable.Map {
-                    "track_number": "456DEF",
-                    "carrier_code": "DHL",
-                    "tracking_url": "https://bar.com",
-                  },
-                ],
-                "items": Immutable.List [
-                  Immutable.Map {
-                    "order_item_id": 118,
-                    "qty": 4,
-                    "name": "Sneakers",
-                  },
-                  Immutable.Map {
-                    "order_item_id": 218,
-                    "qty": 1,
-                    "name": "Pants",
-                  },
-                ],
-              },
-              Immutable.Map {
-                "order_id": 2,
-                "entity_id": 741,
-                "updated_at": "2019-02-04 11:12",
-                "tracks": Immutable.List [
-                  Immutable.Map {
-                    "track_number": "789GHJ",
-                    "carrier_code": "LaPoste",
-                    "tracking_url": "https://laposte.net",
-                  },
-                ],
-                "items": Immutable.List [],
-              },
-            ]
-          }
-        >
-          <div
-            className="card"
-            key="963"
-          >
-            <CardBody
-              className="header clearfix"
-              tag="div"
-            >
-              <div
-                className="header clearfix card-body"
-              >
-                <a
-                  href="https://magento.gorgi.us/admin_123/sales/shipment/view/shipment_id/963/"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <i
-                    className="material-icons"
-                  >
-                    local_shipping
-                  </i>
-                   
-                  <span>
-                    Shipment
-                  </span>
-                </a>
-              </div>
-            </CardBody>
-            <CardBody
-              className="content"
-              tag="div"
-            >
-              <div
-                className="content card-body"
-              >
-                <div
-                  className="simple-field"
-                >
-                  <span
-                    className="field-label"
-                  >
-                    Last updated:
-                  </span>
-                  <span
-                    className="field-value"
-                  >
-                    <DatetimeLabelMock
-                      dateTime="2019-03-04 11:12"
-                      timezone={null}
-                    />
-                  </span>
-                </div>
-                <div
-                  key="123ABC"
-                >
-                  <div
-                    className="simple-field"
-                  >
-                    <span
-                      className="field-label"
-                    >
-                      Carrier code:
-                    </span>
-                    <span
-                      className="field-value"
-                    >
-                      UPS
-                    </span>
-                  </div>
-                  <div
-                    className="simple-field"
-                  >
-                    <span
-                      className="field-label"
-                    >
-                      Tracking number:
-                    </span>
-                    <span
-                      className="field-value"
-                    >
-                      123ABC
-                    </span>
-                  </div>
-                  <div
-                    className="simple-field"
-                  >
-                    <span
-                      className="field-label"
-                    >
-                      Tracking URL:
-                    </span>
-                    <span
-                      className="field-value"
-                    >
-                      -
-                    </span>
-                  </div>
-                </div>
-                <div
-                  className="list mt-3"
-                >
-                  <div
-                    className="card"
-                    key="118"
-                  >
-                    <CardBody
-                      className="header clearfix"
-                      tag="div"
-                    >
-                      <div
-                        className="header clearfix card-body"
-                      >
-                        <span>
-                          4
-                           x
-                           
-                          Sneakers
-                        </span>
-                      </div>
-                    </CardBody>
-                  </div>
-                  <div
-                    className="card"
-                    key="218"
-                  >
-                    <CardBody
-                      className="header clearfix"
-                      tag="div"
-                    >
-                      <div
-                        className="header clearfix card-body"
-                      >
-                        <span>
-                          1
-                           x
-                           
-                          Pants
-                        </span>
-                      </div>
-                    </CardBody>
-                  </div>
-                </div>
-              </div>
-            </CardBody>
-          </div>
-          <div
-            className="card"
-            key="741"
-          >
-            <CardBody
-              className="header clearfix"
-              tag="div"
-            >
-              <div
-                className="header clearfix card-body"
-              >
-                <a
-                  href="https://magento.gorgi.us/admin_123/sales/shipment/view/shipment_id/741/"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <i
-                    className="material-icons"
-                  >
-                    local_shipping
-                  </i>
-                   
-                  <span>
-                    Shipment
-                  </span>
-                </a>
-              </div>
-            </CardBody>
-            <CardBody
-              className="content"
-              tag="div"
-            >
-              <div
-                className="content card-body"
-              >
-                <div
-                  className="simple-field"
-                >
-                  <span
-                    className="field-label"
-                  >
-                    Last updated:
-                  </span>
-                  <span
-                    className="field-value"
-                  >
-                    <DatetimeLabelMock
-                      dateTime="2019-02-04 11:12"
-                      timezone={null}
-                    />
-                  </span>
-                </div>
-                <div
-                  key="789GHJ"
-                >
-                  <div
-                    className="simple-field"
-                  >
-                    <span
-                      className="field-label"
-                    >
-                      Carrier code:
-                    </span>
-                    <span
-                      className="field-value"
-                    >
-                      LaPoste
-                    </span>
-                  </div>
-                  <div
-                    className="simple-field"
-                  >
-                    <span
-                      className="field-label"
-                    >
-                      Tracking number:
-                    </span>
-                    <span
-                      className="field-value"
-                    >
-                      789GHJ
-                    </span>
-                  </div>
-                  <div
-                    className="simple-field"
-                  >
-                    <span
-                      className="field-label"
-                    >
-                      Tracking URL:
-                    </span>
-                    <span
-                      className="field-value"
-                    >
-                      -
-                    </span>
-                  </div>
-                </div>
-                <div
-                  className="list mt-3"
-                >
-                  <Component />
-                </div>
-              </div>
-            </CardBody>
-          </div>
-        </Shipments>
-      </Connect(Shipments)>
-      <Connect(CreditMemos)
-        creditMemos={
-          Immutable.List [
-            Immutable.Map {
-              "order_id": 2,
-              "entity_id": 852,
-              "updated_at": "2018-11-07 05:22",
-              "items": Immutable.List [
-                Immutable.Map {
-                  "order_item_id": 741,
-                  "qty": 4,
-                  "name": "Sneakers",
-                },
-                Immutable.Map {
-                  "order_item_id": 753,
-                  "qty": 1,
-                  "name": "T-shirt",
-                },
-              ],
-            },
-            Immutable.Map {
-              "order_id": 2,
-              "entity_id": 852,
-              "updated_at": "2018-11-07 05:22",
-              "items": Immutable.List [],
-            },
-          ]
-        }
-      >
-        <CreditMemos
-          creditMemos={
-            Immutable.List [
-              Immutable.Map {
-                "order_id": 2,
-                "entity_id": 852,
-                "updated_at": "2018-11-07 05:22",
-                "items": Immutable.List [
-                  Immutable.Map {
-                    "order_item_id": 741,
-                    "qty": 4,
-                    "name": "Sneakers",
-                  },
-                  Immutable.Map {
-                    "order_item_id": 753,
-                    "qty": 1,
-                    "name": "T-shirt",
-                  },
-                ],
-              },
-              Immutable.Map {
-                "order_id": 2,
-                "entity_id": 852,
-                "updated_at": "2018-11-07 05:22",
-                "items": Immutable.List [],
-              },
-            ]
-          }
-          currentUserTimezone={null}
-          dispatch={[Function]}
-        >
-          <div
-            className="card"
-            key="852"
-          >
-            <CardBody
-              className="header clearfix"
-              tag="div"
-            >
-              <div
-                className="header clearfix card-body"
-              >
-                <a
-                  href="https://magento.gorgi.us/admin_123/sales/creditmemo/view/creditmemo_id/852/"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <span>
-                    <i
-                      className="material-icons"
-                    >
-                      redeem
-                    </i>
-                     Credit memo: 
-                     
-                  </span>
-                </a>
-              </div>
-            </CardBody>
-            <CardBody
-              className="content"
-              tag="div"
-            >
-              <div
-                className="content card-body"
-              >
-                <div
-                  className="simple-field"
-                >
-                  <span
-                    className="field-label"
-                  >
-                    Last updated:
-                  </span>
-                  <span
-                    className="field-value"
-                  >
-                    <DatetimeLabelMock
-                      dateTime="2018-11-07 05:22"
-                      timezone={null}
-                    />
-                  </span>
-                </div>
-                <div
-                  className="list mt-3"
-                >
-                  <div
-                    className="card"
-                    key="741"
-                  >
-                    <CardBody
-                      className="header clearfix"
-                      tag="div"
-                    >
-                      <div
-                        className="header clearfix card-body"
-                      >
-                        <span>
-                          4
-                           x
-                           
-                          Sneakers
-                        </span>
-                      </div>
-                    </CardBody>
-                  </div>
-                  <div
-                    className="card"
-                    key="753"
-                  >
-                    <CardBody
-                      className="header clearfix"
-                      tag="div"
-                    >
-                      <div
-                        className="header clearfix card-body"
-                      >
-                        <span>
-                          1
-                           x
-                           
-                          T-shirt
-                        </span>
-                      </div>
-                    </CardBody>
-                  </div>
-                </div>
-              </div>
-            </CardBody>
-          </div>
-          <div
-            className="card"
-            key="852"
-          >
-            <CardBody
-              className="header clearfix"
-              tag="div"
-            >
-              <div
-                className="header clearfix card-body"
-              >
-                <a
-                  href="https://magento.gorgi.us/admin_123/sales/creditmemo/view/creditmemo_id/852/"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <span>
-                    <i
-                      className="material-icons"
-                    >
-                      redeem
-                    </i>
-                     Credit memo: 
-                     
-                  </span>
-                </a>
-              </div>
-            </CardBody>
-            <CardBody
-              className="content"
-              tag="div"
-            >
-              <div
-                className="content card-body"
-              >
-                <div
-                  className="simple-field"
-                >
-                  <span
-                    className="field-label"
-                  >
-                    Last updated:
-                  </span>
-                  <span
-                    className="field-value"
-                  >
-                    <DatetimeLabelMock
-                      dateTime="2018-11-07 05:22"
-                      timezone={null}
-                    />
-                  </span>
-                </div>
-                <div
-                  className="list mt-3"
-                >
-                  <Component />
-                </div>
-              </div>
-            </CardBody>
-          </div>
-        </CreditMemos>
-      </Connect(CreditMemos)>
-    </div>
-  </AfterContent>
-</Connect(AfterContent)>
-`;
-
 exports[`Order <AfterContent/> render() should display credit memos with links because there is an admin url suffix 1`] = `
 <Connect(AfterContent)
   source={
@@ -1095,79 +496,74 @@ exports[`Order <AfterContent/> render() should display credit memos without link
 </Connect(AfterContent)>
 `;
 
-exports[`Order <AfterContent/> render() should display shipments with links because there is an admin url suffix 1`] = `
-<Connect(AfterContent)
+exports[`Order <BeforeContent/> render() should display shipments with links because there is an admin url suffix 1`] = `
+<Connect(BeforeContent)
   source={
     Immutable.Map {
       "customer_id": 1,
       "entity_id": 2,
+      "state": "info",
+      "created_at": "\\"2020-10-07 09:30:03\\"",
     }
   }
 >
-  <AfterContent
+  <BeforeContent
     dispatch={[Function]}
     getIntegrationData={[Function]}
     source={
       Immutable.Map {
         "customer_id": 1,
         "entity_id": 2,
+        "state": "info",
+        "created_at": "\\"2020-10-07 09:30:03\\"",
       }
     }
   >
-    <div
-      className="mt-3"
-    >
-      <Connect(Shipments)
-        shipments={
-          Immutable.List [
-            Immutable.Map {
-              "order_id": 2,
-              "entity_id": 963,
-              "updated_at": "2019-03-04 11:12",
-              "tracks": Immutable.List [
-                Immutable.Map {
-                  "track_number": "123ABC",
-                  "carrier_code": "UPS",
-                  "tracking_url": "https://foo.com",
-                },
-                Immutable.Map {
-                  "track_number": "456DEF",
-                  "carrier_code": "DHL",
-                  "tracking_url": "https://bar.com",
-                },
-              ],
-              "items": Immutable.List [
-                Immutable.Map {
-                  "order_item_id": 118,
-                  "qty": 4,
-                  "name": "Sneakers",
-                },
-                Immutable.Map {
-                  "order_item_id": 218,
-                  "qty": 1,
-                  "name": "Pants",
-                },
-              ],
-            },
-            Immutable.Map {
-              "order_id": 2,
-              "entity_id": 741,
-              "updated_at": "2019-02-04 11:12",
-              "tracks": Immutable.List [
-                Immutable.Map {
-                  "track_number": "789GHJ",
-                  "carrier_code": "LaPoste",
-                  "tracking_url": "https://laposte.net",
-                },
-              ],
-              "items": Immutable.List [],
-            },
-          ]
-        }
+    <div>
+      <div
+        className="simple-field"
       >
-        <Shipments
-          currentUserTimezone={null}
-          dispatch={[Function]}
+        <span
+          className="field-label"
+        >
+          State:
+        </span>
+        <span
+          className="field-value"
+        >
+          <Badge
+            color="secondary"
+            pill={true}
+            tag="span"
+          >
+            <span
+              className="badge badge-secondary badge-pill"
+            >
+              Info
+            </span>
+          </Badge>
+        </span>
+      </div>
+      <div
+        className="simple-field"
+      >
+        <span
+          className="field-label"
+        >
+          Created at:
+        </span>
+        <span
+          className="field-value"
+        >
+          <DatetimeLabelMock
+            dateTime="\\"2020-10-07 09:30:03\\""
+          />
+        </span>
+      </div>
+      <div
+        className="mt-3"
+      >
+        <Connect(Shipments)
           shipments={
             Immutable.List [
               Immutable.Map {
@@ -1215,60 +611,90 @@ exports[`Order <AfterContent/> render() should display shipments with links beca
             ]
           }
         >
-          <div
-            className="card"
-            key="963"
+          <Shipments
+            currentUserTimezone={null}
+            dispatch={[Function]}
+            shipments={
+              Immutable.List [
+                Immutable.Map {
+                  "order_id": 2,
+                  "entity_id": 963,
+                  "updated_at": "2019-03-04 11:12",
+                  "tracks": Immutable.List [
+                    Immutable.Map {
+                      "track_number": "123ABC",
+                      "carrier_code": "UPS",
+                      "tracking_url": "https://foo.com",
+                    },
+                    Immutable.Map {
+                      "track_number": "456DEF",
+                      "carrier_code": "DHL",
+                      "tracking_url": "https://bar.com",
+                    },
+                  ],
+                  "items": Immutable.List [
+                    Immutable.Map {
+                      "order_item_id": 118,
+                      "qty": 4,
+                      "name": "Sneakers",
+                    },
+                    Immutable.Map {
+                      "order_item_id": 218,
+                      "qty": 1,
+                      "name": "Pants",
+                    },
+                  ],
+                },
+                Immutable.Map {
+                  "order_id": 2,
+                  "entity_id": 741,
+                  "updated_at": "2019-02-04 11:12",
+                  "tracks": Immutable.List [
+                    Immutable.Map {
+                      "track_number": "789GHJ",
+                      "carrier_code": "LaPoste",
+                      "tracking_url": "https://laposte.net",
+                    },
+                  ],
+                  "items": Immutable.List [],
+                },
+              ]
+            }
           >
-            <CardBody
-              className="header clearfix"
-              tag="div"
+            <div
+              className="card"
+              key="963"
             >
-              <div
-                className="header clearfix card-body"
-              >
-                <a
-                  href="https://magento.gorgi.us/admin_123/sales/shipment/view/shipment_id/963/"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <i
-                    className="material-icons"
-                  >
-                    local_shipping
-                  </i>
-                   
-                  <span>
-                    Shipment
-                  </span>
-                </a>
-              </div>
-            </CardBody>
-            <CardBody
-              className="content"
-              tag="div"
-            >
-              <div
-                className="content card-body"
+              <CardBody
+                className="header clearfix"
+                tag="div"
               >
                 <div
-                  className="simple-field"
+                  className="header clearfix card-body"
                 >
-                  <span
-                    className="field-label"
+                  <a
+                    href="https://magento.gorgi.us/admin_123/sales/shipment/view/shipment_id/963/"
+                    rel="noopener noreferrer"
+                    target="_blank"
                   >
-                    Last updated:
-                  </span>
-                  <span
-                    className="field-value"
-                  >
-                    <DatetimeLabelMock
-                      dateTime="2019-03-04 11:12"
-                      timezone={null}
-                    />
-                  </span>
+                    <i
+                      className="material-icons"
+                    >
+                      local_shipping
+                    </i>
+                     
+                    <span>
+                      Shipment
+                    </span>
+                  </a>
                 </div>
+              </CardBody>
+              <CardBody
+                className="content"
+                tag="div"
+              >
                 <div
-                  key="123ABC"
+                  className="content card-body"
                 >
                   <div
                     className="simple-field"
@@ -1276,144 +702,144 @@ exports[`Order <AfterContent/> render() should display shipments with links beca
                     <span
                       className="field-label"
                     >
-                      Carrier code:
+                      Last updated:
                     </span>
                     <span
                       className="field-value"
                     >
-                      UPS
+                      <DatetimeLabelMock
+                        dateTime="2019-03-04 11:12"
+                        timezone={null}
+                      />
                     </span>
                   </div>
                   <div
-                    className="simple-field"
+                    key="123ABC"
                   >
-                    <span
-                      className="field-label"
+                    <div
+                      className="simple-field"
                     >
-                      Tracking number:
-                    </span>
-                    <span
-                      className="field-value"
-                    >
-                      123ABC
-                    </span>
-                  </div>
-                  <div
-                    className="simple-field"
-                  >
-                    <span
-                      className="field-label"
-                    >
-                      Tracking URL:
-                    </span>
-                    <span
-                      className="field-value"
-                    >
-                      -
-                    </span>
-                  </div>
-                </div>
-                <div
-                  className="list mt-3"
-                >
-                  <div
-                    className="card"
-                    key="118"
-                  >
-                    <CardBody
-                      className="header clearfix"
-                      tag="div"
-                    >
-                      <div
-                        className="header clearfix card-body"
+                      <span
+                        className="field-label"
                       >
-                        <span>
-                          4
-                           x
-                           
-                          Sneakers
-                        </span>
-                      </div>
-                    </CardBody>
-                  </div>
-                  <div
-                    className="card"
-                    key="218"
-                  >
-                    <CardBody
-                      className="header clearfix"
-                      tag="div"
-                    >
-                      <div
-                        className="header clearfix card-body"
+                        Carrier code:
+                      </span>
+                      <span
+                        className="field-value"
                       >
-                        <span>
-                          1
-                           x
-                           
-                          Pants
-                        </span>
-                      </div>
-                    </CardBody>
+                        UPS
+                      </span>
+                    </div>
+                    <div
+                      className="simple-field"
+                    >
+                      <span
+                        className="field-label"
+                      >
+                        Tracking number:
+                      </span>
+                      <span
+                        className="field-value"
+                      >
+                        123ABC
+                      </span>
+                    </div>
+                    <div
+                      className="simple-field"
+                    >
+                      <span
+                        className="field-label"
+                      >
+                        Tracking URL:
+                      </span>
+                      <span
+                        className="field-value"
+                      >
+                        -
+                      </span>
+                    </div>
+                  </div>
+                  <div
+                    className="list mt-3"
+                  >
+                    <div
+                      className="card"
+                      key="118"
+                    >
+                      <CardBody
+                        className="header clearfix"
+                        tag="div"
+                      >
+                        <div
+                          className="header clearfix card-body"
+                        >
+                          <span>
+                            4
+                             x
+                             
+                            Sneakers
+                          </span>
+                        </div>
+                      </CardBody>
+                    </div>
+                    <div
+                      className="card"
+                      key="218"
+                    >
+                      <CardBody
+                        className="header clearfix"
+                        tag="div"
+                      >
+                        <div
+                          className="header clearfix card-body"
+                        >
+                          <span>
+                            1
+                             x
+                             
+                            Pants
+                          </span>
+                        </div>
+                      </CardBody>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </CardBody>
-          </div>
-          <div
-            className="card"
-            key="741"
-          >
-            <CardBody
-              className="header clearfix"
-              tag="div"
+              </CardBody>
+            </div>
+            <div
+              className="card"
+              key="741"
             >
-              <div
-                className="header clearfix card-body"
-              >
-                <a
-                  href="https://magento.gorgi.us/admin_123/sales/shipment/view/shipment_id/741/"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <i
-                    className="material-icons"
-                  >
-                    local_shipping
-                  </i>
-                   
-                  <span>
-                    Shipment
-                  </span>
-                </a>
-              </div>
-            </CardBody>
-            <CardBody
-              className="content"
-              tag="div"
-            >
-              <div
-                className="content card-body"
+              <CardBody
+                className="header clearfix"
+                tag="div"
               >
                 <div
-                  className="simple-field"
+                  className="header clearfix card-body"
                 >
-                  <span
-                    className="field-label"
+                  <a
+                    href="https://magento.gorgi.us/admin_123/sales/shipment/view/shipment_id/741/"
+                    rel="noopener noreferrer"
+                    target="_blank"
                   >
-                    Last updated:
-                  </span>
-                  <span
-                    className="field-value"
-                  >
-                    <DatetimeLabelMock
-                      dateTime="2019-02-04 11:12"
-                      timezone={null}
-                    />
-                  </span>
+                    <i
+                      className="material-icons"
+                    >
+                      local_shipping
+                    </i>
+                     
+                    <span>
+                      Shipment
+                    </span>
+                  </a>
                 </div>
+              </CardBody>
+              <CardBody
+                className="content"
+                tag="div"
+              >
                 <div
-                  key="789GHJ"
+                  className="content card-body"
                 >
                   <div
                     className="simple-field"
@@ -1421,131 +847,147 @@ exports[`Order <AfterContent/> render() should display shipments with links beca
                     <span
                       className="field-label"
                     >
-                      Carrier code:
+                      Last updated:
                     </span>
                     <span
                       className="field-value"
                     >
-                      LaPoste
+                      <DatetimeLabelMock
+                        dateTime="2019-02-04 11:12"
+                        timezone={null}
+                      />
                     </span>
                   </div>
                   <div
-                    className="simple-field"
+                    key="789GHJ"
                   >
-                    <span
-                      className="field-label"
+                    <div
+                      className="simple-field"
                     >
-                      Tracking number:
-                    </span>
-                    <span
-                      className="field-value"
+                      <span
+                        className="field-label"
+                      >
+                        Carrier code:
+                      </span>
+                      <span
+                        className="field-value"
+                      >
+                        LaPoste
+                      </span>
+                    </div>
+                    <div
+                      className="simple-field"
                     >
-                      789GHJ
-                    </span>
+                      <span
+                        className="field-label"
+                      >
+                        Tracking number:
+                      </span>
+                      <span
+                        className="field-value"
+                      >
+                        789GHJ
+                      </span>
+                    </div>
+                    <div
+                      className="simple-field"
+                    >
+                      <span
+                        className="field-label"
+                      >
+                        Tracking URL:
+                      </span>
+                      <span
+                        className="field-value"
+                      >
+                        -
+                      </span>
+                    </div>
                   </div>
                   <div
-                    className="simple-field"
+                    className="list mt-3"
                   >
-                    <span
-                      className="field-label"
-                    >
-                      Tracking URL:
-                    </span>
-                    <span
-                      className="field-value"
-                    >
-                      -
-                    </span>
+                    <Component />
                   </div>
                 </div>
-                <div
-                  className="list mt-3"
-                >
-                  <Component />
-                </div>
-              </div>
-            </CardBody>
-          </div>
-        </Shipments>
-      </Connect(Shipments)>
+              </CardBody>
+            </div>
+          </Shipments>
+        </Connect(Shipments)>
+      </div>
     </div>
-  </AfterContent>
-</Connect(AfterContent)>
+  </BeforeContent>
+</Connect(BeforeContent)>
 `;
 
-exports[`Order <AfterContent/> render() should display shipments without links because there is no admin url suffix 1`] = `
-<Connect(AfterContent)
+exports[`Order <BeforeContent/> render() should display shipments without links because there is no admin url suffix 1`] = `
+<Connect(BeforeContent)
   source={
     Immutable.Map {
       "customer_id": 1,
       "entity_id": 2,
+      "state": "info",
+      "created_at": "\\"2020-10-07 09:30:03\\"",
     }
   }
 >
-  <AfterContent
+  <BeforeContent
     dispatch={[Function]}
     getIntegrationData={[Function]}
     source={
       Immutable.Map {
         "customer_id": 1,
         "entity_id": 2,
+        "state": "info",
+        "created_at": "\\"2020-10-07 09:30:03\\"",
       }
     }
   >
-    <div
-      className="mt-3"
-    >
-      <Connect(Shipments)
-        shipments={
-          Immutable.List [
-            Immutable.Map {
-              "order_id": 2,
-              "entity_id": 963,
-              "updated_at": "2019-03-04 11:12",
-              "tracks": Immutable.List [
-                Immutable.Map {
-                  "track_number": "123ABC",
-                  "carrier_code": "UPS",
-                  "tracking_url": "https://foo.com",
-                },
-                Immutable.Map {
-                  "track_number": "456DEF",
-                  "carrier_code": "DHL",
-                  "tracking_url": "https://bar.com",
-                },
-              ],
-              "items": Immutable.List [
-                Immutable.Map {
-                  "order_item_id": 118,
-                  "qty": 4,
-                  "name": "Sneakers",
-                },
-                Immutable.Map {
-                  "order_item_id": 218,
-                  "qty": 1,
-                  "name": "Pants",
-                },
-              ],
-            },
-            Immutable.Map {
-              "order_id": 2,
-              "entity_id": 741,
-              "updated_at": "2019-02-04 11:12",
-              "tracks": Immutable.List [
-                Immutable.Map {
-                  "track_number": "789GHJ",
-                  "carrier_code": "LaPoste",
-                  "tracking_url": "https://laposte.net",
-                },
-              ],
-              "items": Immutable.List [],
-            },
-          ]
-        }
+    <div>
+      <div
+        className="simple-field"
       >
-        <Shipments
-          currentUserTimezone={null}
-          dispatch={[Function]}
+        <span
+          className="field-label"
+        >
+          State:
+        </span>
+        <span
+          className="field-value"
+        >
+          <Badge
+            color="secondary"
+            pill={true}
+            tag="span"
+          >
+            <span
+              className="badge badge-secondary badge-pill"
+            >
+              Info
+            </span>
+          </Badge>
+        </span>
+      </div>
+      <div
+        className="simple-field"
+      >
+        <span
+          className="field-label"
+        >
+          Created at:
+        </span>
+        <span
+          className="field-value"
+        >
+          <DatetimeLabelMock
+            dateTime="\\"2020-10-07 09:30:03\\""
+          />
+        </span>
+      </div>
+      <div
+        className="mt-3"
+      >
+        <Connect(Shipments)
           shipments={
             Immutable.List [
               Immutable.Map {
@@ -1593,60 +1035,90 @@ exports[`Order <AfterContent/> render() should display shipments without links b
             ]
           }
         >
-          <div
-            className="card"
-            key="963"
+          <Shipments
+            currentUserTimezone={null}
+            dispatch={[Function]}
+            shipments={
+              Immutable.List [
+                Immutable.Map {
+                  "order_id": 2,
+                  "entity_id": 963,
+                  "updated_at": "2019-03-04 11:12",
+                  "tracks": Immutable.List [
+                    Immutable.Map {
+                      "track_number": "123ABC",
+                      "carrier_code": "UPS",
+                      "tracking_url": "https://foo.com",
+                    },
+                    Immutable.Map {
+                      "track_number": "456DEF",
+                      "carrier_code": "DHL",
+                      "tracking_url": "https://bar.com",
+                    },
+                  ],
+                  "items": Immutable.List [
+                    Immutable.Map {
+                      "order_item_id": 118,
+                      "qty": 4,
+                      "name": "Sneakers",
+                    },
+                    Immutable.Map {
+                      "order_item_id": 218,
+                      "qty": 1,
+                      "name": "Pants",
+                    },
+                  ],
+                },
+                Immutable.Map {
+                  "order_id": 2,
+                  "entity_id": 741,
+                  "updated_at": "2019-02-04 11:12",
+                  "tracks": Immutable.List [
+                    Immutable.Map {
+                      "track_number": "789GHJ",
+                      "carrier_code": "LaPoste",
+                      "tracking_url": "https://laposte.net",
+                    },
+                  ],
+                  "items": Immutable.List [],
+                },
+              ]
+            }
           >
-            <CardBody
-              className="header clearfix"
-              tag="div"
+            <div
+              className="card"
+              key="963"
             >
-              <div
-                className="header clearfix card-body"
-              >
-                <a
-                  href=""
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <i
-                    className="material-icons"
-                  >
-                    local_shipping
-                  </i>
-                   
-                  <span>
-                    Shipment
-                  </span>
-                </a>
-              </div>
-            </CardBody>
-            <CardBody
-              className="content"
-              tag="div"
-            >
-              <div
-                className="content card-body"
+              <CardBody
+                className="header clearfix"
+                tag="div"
               >
                 <div
-                  className="simple-field"
+                  className="header clearfix card-body"
                 >
-                  <span
-                    className="field-label"
+                  <a
+                    href=""
+                    rel="noopener noreferrer"
+                    target="_blank"
                   >
-                    Last updated:
-                  </span>
-                  <span
-                    className="field-value"
-                  >
-                    <DatetimeLabelMock
-                      dateTime="2019-03-04 11:12"
-                      timezone={null}
-                    />
-                  </span>
+                    <i
+                      className="material-icons"
+                    >
+                      local_shipping
+                    </i>
+                     
+                    <span>
+                      Shipment
+                    </span>
+                  </a>
                 </div>
+              </CardBody>
+              <CardBody
+                className="content"
+                tag="div"
+              >
                 <div
-                  key="123ABC"
+                  className="content card-body"
                 >
                   <div
                     className="simple-field"
@@ -1654,144 +1126,144 @@ exports[`Order <AfterContent/> render() should display shipments without links b
                     <span
                       className="field-label"
                     >
-                      Carrier code:
+                      Last updated:
                     </span>
                     <span
                       className="field-value"
                     >
-                      UPS
+                      <DatetimeLabelMock
+                        dateTime="2019-03-04 11:12"
+                        timezone={null}
+                      />
                     </span>
                   </div>
                   <div
-                    className="simple-field"
+                    key="123ABC"
                   >
-                    <span
-                      className="field-label"
+                    <div
+                      className="simple-field"
                     >
-                      Tracking number:
-                    </span>
-                    <span
-                      className="field-value"
-                    >
-                      123ABC
-                    </span>
-                  </div>
-                  <div
-                    className="simple-field"
-                  >
-                    <span
-                      className="field-label"
-                    >
-                      Tracking URL:
-                    </span>
-                    <span
-                      className="field-value"
-                    >
-                      -
-                    </span>
-                  </div>
-                </div>
-                <div
-                  className="list mt-3"
-                >
-                  <div
-                    className="card"
-                    key="118"
-                  >
-                    <CardBody
-                      className="header clearfix"
-                      tag="div"
-                    >
-                      <div
-                        className="header clearfix card-body"
+                      <span
+                        className="field-label"
                       >
-                        <span>
-                          4
-                           x
-                           
-                          Sneakers
-                        </span>
-                      </div>
-                    </CardBody>
-                  </div>
-                  <div
-                    className="card"
-                    key="218"
-                  >
-                    <CardBody
-                      className="header clearfix"
-                      tag="div"
-                    >
-                      <div
-                        className="header clearfix card-body"
+                        Carrier code:
+                      </span>
+                      <span
+                        className="field-value"
                       >
-                        <span>
-                          1
-                           x
-                           
-                          Pants
-                        </span>
-                      </div>
-                    </CardBody>
+                        UPS
+                      </span>
+                    </div>
+                    <div
+                      className="simple-field"
+                    >
+                      <span
+                        className="field-label"
+                      >
+                        Tracking number:
+                      </span>
+                      <span
+                        className="field-value"
+                      >
+                        123ABC
+                      </span>
+                    </div>
+                    <div
+                      className="simple-field"
+                    >
+                      <span
+                        className="field-label"
+                      >
+                        Tracking URL:
+                      </span>
+                      <span
+                        className="field-value"
+                      >
+                        -
+                      </span>
+                    </div>
+                  </div>
+                  <div
+                    className="list mt-3"
+                  >
+                    <div
+                      className="card"
+                      key="118"
+                    >
+                      <CardBody
+                        className="header clearfix"
+                        tag="div"
+                      >
+                        <div
+                          className="header clearfix card-body"
+                        >
+                          <span>
+                            4
+                             x
+                             
+                            Sneakers
+                          </span>
+                        </div>
+                      </CardBody>
+                    </div>
+                    <div
+                      className="card"
+                      key="218"
+                    >
+                      <CardBody
+                        className="header clearfix"
+                        tag="div"
+                      >
+                        <div
+                          className="header clearfix card-body"
+                        >
+                          <span>
+                            1
+                             x
+                             
+                            Pants
+                          </span>
+                        </div>
+                      </CardBody>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </CardBody>
-          </div>
-          <div
-            className="card"
-            key="741"
-          >
-            <CardBody
-              className="header clearfix"
-              tag="div"
+              </CardBody>
+            </div>
+            <div
+              className="card"
+              key="741"
             >
-              <div
-                className="header clearfix card-body"
-              >
-                <a
-                  href=""
-                  rel="noopener noreferrer"
-                  target="_blank"
-                >
-                  <i
-                    className="material-icons"
-                  >
-                    local_shipping
-                  </i>
-                   
-                  <span>
-                    Shipment
-                  </span>
-                </a>
-              </div>
-            </CardBody>
-            <CardBody
-              className="content"
-              tag="div"
-            >
-              <div
-                className="content card-body"
+              <CardBody
+                className="header clearfix"
+                tag="div"
               >
                 <div
-                  className="simple-field"
+                  className="header clearfix card-body"
                 >
-                  <span
-                    className="field-label"
+                  <a
+                    href=""
+                    rel="noopener noreferrer"
+                    target="_blank"
                   >
-                    Last updated:
-                  </span>
-                  <span
-                    className="field-value"
-                  >
-                    <DatetimeLabelMock
-                      dateTime="2019-02-04 11:12"
-                      timezone={null}
-                    />
-                  </span>
+                    <i
+                      className="material-icons"
+                    >
+                      local_shipping
+                    </i>
+                     
+                    <span>
+                      Shipment
+                    </span>
+                  </a>
                 </div>
+              </CardBody>
+              <CardBody
+                className="content"
+                tag="div"
+              >
                 <div
-                  key="789GHJ"
+                  className="content card-body"
                 >
                   <div
                     className="simple-field"
@@ -1799,231 +1271,753 @@ exports[`Order <AfterContent/> render() should display shipments without links b
                     <span
                       className="field-label"
                     >
-                      Carrier code:
+                      Last updated:
                     </span>
                     <span
                       className="field-value"
                     >
-                      LaPoste
+                      <DatetimeLabelMock
+                        dateTime="2019-02-04 11:12"
+                        timezone={null}
+                      />
                     </span>
                   </div>
                   <div
-                    className="simple-field"
+                    key="789GHJ"
                   >
-                    <span
-                      className="field-label"
+                    <div
+                      className="simple-field"
                     >
-                      Tracking number:
-                    </span>
-                    <span
-                      className="field-value"
+                      <span
+                        className="field-label"
+                      >
+                        Carrier code:
+                      </span>
+                      <span
+                        className="field-value"
+                      >
+                        LaPoste
+                      </span>
+                    </div>
+                    <div
+                      className="simple-field"
                     >
-                      789GHJ
-                    </span>
+                      <span
+                        className="field-label"
+                      >
+                        Tracking number:
+                      </span>
+                      <span
+                        className="field-value"
+                      >
+                        789GHJ
+                      </span>
+                    </div>
+                    <div
+                      className="simple-field"
+                    >
+                      <span
+                        className="field-label"
+                      >
+                        Tracking URL:
+                      </span>
+                      <span
+                        className="field-value"
+                      >
+                        -
+                      </span>
+                    </div>
                   </div>
                   <div
-                    className="simple-field"
+                    className="list mt-3"
                   >
-                    <span
-                      className="field-label"
-                    >
-                      Tracking URL:
-                    </span>
-                    <span
-                      className="field-value"
-                    >
-                      -
-                    </span>
+                    <Component />
                   </div>
                 </div>
-                <div
-                  className="list mt-3"
-                >
-                  <Component />
-                </div>
-              </div>
-            </CardBody>
-          </div>
-        </Shipments>
-      </Connect(Shipments)>
+              </CardBody>
+            </div>
+          </Shipments>
+        </Connect(Shipments)>
+      </div>
     </div>
-  </AfterContent>
-</Connect(AfterContent)>
+  </BeforeContent>
+</Connect(BeforeContent)>
 `;
 
-exports[`Order <BeforeContent/> render() should render with a label for the canceled state 1`] = `
-<div>
-  <div
-    className="simple-field"
+exports[`Order <BeforeContent/> render() should render the state and an empty created at date but no shipments because there are none 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <Connect(BeforeContent)
+    source={
+      Immutable.Map {
+        "customer_id": 1,
+        "entity_id": 2,
+        "state": "info",
+      }
+    }
   >
-    <span
-      className="field-label"
+    <BeforeContent
+      dispatch={[Function]}
+      getIntegrationData={[Function]}
+      source={
+        Immutable.Map {
+          "customer_id": 1,
+          "entity_id": 2,
+          "state": "info",
+        }
+      }
     >
-      State:
-    </span>
-    <span
-      className="field-value"
-    >
-      <Badge
-        color="danger"
-        pill={true}
-        tag="span"
-      >
-        Canceled
-      </Badge>
-    </span>
-  </div>
-</div>
+      <div>
+        <div
+          className="simple-field"
+        >
+          <span
+            className="field-label"
+          >
+            State:
+          </span>
+          <span
+            className="field-value"
+          >
+            <Badge
+              color="secondary"
+              pill={true}
+              tag="span"
+            >
+              <span
+                className="badge badge-secondary badge-pill"
+              >
+                Info
+              </span>
+            </Badge>
+          </span>
+        </div>
+        <div
+          className="simple-field"
+        >
+          <span
+            className="field-label"
+          >
+            Created at:
+          </span>
+          <span
+            className="field-value"
+          >
+            <DatetimeLabelMock />
+          </span>
+        </div>
+        <div
+          className="mt-3"
+        />
+      </div>
+    </BeforeContent>
+  </Connect(BeforeContent)>
+</Provider>
 `;
 
-exports[`Order <BeforeContent/> render() should render with a label for the closed state 1`] = `
-<div>
-  <div
-    className="simple-field"
+exports[`Order <BeforeContent/> render() should render with a label for the canceled state and a created at date but no shipments because there are none 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <Connect(BeforeContent)
+    source={
+      Immutable.Map {
+        "customer_id": 1,
+        "entity_id": 2,
+        "state": "canceled",
+        "created_at": "\\"2020-10-07 09:30:03\\"",
+      }
+    }
   >
-    <span
-      className="field-label"
+    <BeforeContent
+      dispatch={[Function]}
+      getIntegrationData={[Function]}
+      source={
+        Immutable.Map {
+          "customer_id": 1,
+          "entity_id": 2,
+          "state": "canceled",
+          "created_at": "\\"2020-10-07 09:30:03\\"",
+        }
+      }
     >
-      State:
-    </span>
-    <span
-      className="field-value"
-    >
-      <Badge
-        color="danger"
-        pill={true}
-        tag="span"
-      >
-        Closed
-      </Badge>
-    </span>
-  </div>
-</div>
+      <div>
+        <div
+          className="simple-field"
+        >
+          <span
+            className="field-label"
+          >
+            State:
+          </span>
+          <span
+            className="field-value"
+          >
+            <Badge
+              color="danger"
+              pill={true}
+              tag="span"
+            >
+              <span
+                className="badge badge-danger badge-pill"
+              >
+                Canceled
+              </span>
+            </Badge>
+          </span>
+        </div>
+        <div
+          className="simple-field"
+        >
+          <span
+            className="field-label"
+          >
+            Created at:
+          </span>
+          <span
+            className="field-value"
+          >
+            <DatetimeLabelMock
+              dateTime="\\"2020-10-07 09:30:03\\""
+            />
+          </span>
+        </div>
+        <div
+          className="mt-3"
+        />
+      </div>
+    </BeforeContent>
+  </Connect(BeforeContent)>
+</Provider>
 `;
 
-exports[`Order <BeforeContent/> render() should render with a label for the complete state 1`] = `
-<div>
-  <div
-    className="simple-field"
+exports[`Order <BeforeContent/> render() should render with a label for the closed state and a created at date but no shipments because there are none 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <Connect(BeforeContent)
+    source={
+      Immutable.Map {
+        "customer_id": 1,
+        "entity_id": 2,
+        "state": "closed",
+        "created_at": "\\"2020-10-07 09:30:03\\"",
+      }
+    }
   >
-    <span
-      className="field-label"
+    <BeforeContent
+      dispatch={[Function]}
+      getIntegrationData={[Function]}
+      source={
+        Immutable.Map {
+          "customer_id": 1,
+          "entity_id": 2,
+          "state": "closed",
+          "created_at": "\\"2020-10-07 09:30:03\\"",
+        }
+      }
     >
-      State:
-    </span>
-    <span
-      className="field-value"
-    >
-      <Badge
-        color="success"
-        pill={true}
-        tag="span"
-      >
-        Complete
-      </Badge>
-    </span>
-  </div>
-</div>
+      <div>
+        <div
+          className="simple-field"
+        >
+          <span
+            className="field-label"
+          >
+            State:
+          </span>
+          <span
+            className="field-value"
+          >
+            <Badge
+              color="danger"
+              pill={true}
+              tag="span"
+            >
+              <span
+                className="badge badge-danger badge-pill"
+              >
+                Closed
+              </span>
+            </Badge>
+          </span>
+        </div>
+        <div
+          className="simple-field"
+        >
+          <span
+            className="field-label"
+          >
+            Created at:
+          </span>
+          <span
+            className="field-value"
+          >
+            <DatetimeLabelMock
+              dateTime="\\"2020-10-07 09:30:03\\""
+            />
+          </span>
+        </div>
+        <div
+          className="mt-3"
+        />
+      </div>
+    </BeforeContent>
+  </Connect(BeforeContent)>
+</Provider>
 `;
 
-exports[`Order <BeforeContent/> render() should render with a label for the new state 1`] = `
-<div>
-  <div
-    className="simple-field"
+exports[`Order <BeforeContent/> render() should render with a label for the complete state and a created at date but no shipments because there are none 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <Connect(BeforeContent)
+    source={
+      Immutable.Map {
+        "customer_id": 1,
+        "entity_id": 2,
+        "state": "complete",
+        "created_at": "\\"2020-10-07 09:30:03\\"",
+      }
+    }
   >
-    <span
-      className="field-label"
+    <BeforeContent
+      dispatch={[Function]}
+      getIntegrationData={[Function]}
+      source={
+        Immutable.Map {
+          "customer_id": 1,
+          "entity_id": 2,
+          "state": "complete",
+          "created_at": "\\"2020-10-07 09:30:03\\"",
+        }
+      }
     >
-      State:
-    </span>
-    <span
-      className="field-value"
-    >
-      <Badge
-        color="info"
-        pill={true}
-        tag="span"
-      >
-        New
-      </Badge>
-    </span>
-  </div>
-</div>
+      <div>
+        <div
+          className="simple-field"
+        >
+          <span
+            className="field-label"
+          >
+            State:
+          </span>
+          <span
+            className="field-value"
+          >
+            <Badge
+              color="success"
+              pill={true}
+              tag="span"
+            >
+              <span
+                className="badge badge-success badge-pill"
+              >
+                Complete
+              </span>
+            </Badge>
+          </span>
+        </div>
+        <div
+          className="simple-field"
+        >
+          <span
+            className="field-label"
+          >
+            Created at:
+          </span>
+          <span
+            className="field-value"
+          >
+            <DatetimeLabelMock
+              dateTime="\\"2020-10-07 09:30:03\\""
+            />
+          </span>
+        </div>
+        <div
+          className="mt-3"
+        />
+      </div>
+    </BeforeContent>
+  </Connect(BeforeContent)>
+</Provider>
 `;
 
-exports[`Order <BeforeContent/> render() should render with a label for the on_hold state 1`] = `
-<div>
-  <div
-    className="simple-field"
+exports[`Order <BeforeContent/> render() should render with a label for the new state and a created at date but no shipments because there are none 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <Connect(BeforeContent)
+    source={
+      Immutable.Map {
+        "customer_id": 1,
+        "entity_id": 2,
+        "state": "new",
+        "created_at": "\\"2020-10-07 09:30:03\\"",
+      }
+    }
   >
-    <span
-      className="field-label"
+    <BeforeContent
+      dispatch={[Function]}
+      getIntegrationData={[Function]}
+      source={
+        Immutable.Map {
+          "customer_id": 1,
+          "entity_id": 2,
+          "state": "new",
+          "created_at": "\\"2020-10-07 09:30:03\\"",
+        }
+      }
     >
-      State:
-    </span>
-    <span
-      className="field-value"
-    >
-      <Badge
-        color="warning"
-        pill={true}
-        tag="span"
-      >
-        On hold
-      </Badge>
-    </span>
-  </div>
-</div>
+      <div>
+        <div
+          className="simple-field"
+        >
+          <span
+            className="field-label"
+          >
+            State:
+          </span>
+          <span
+            className="field-value"
+          >
+            <Badge
+              color="info"
+              pill={true}
+              tag="span"
+            >
+              <span
+                className="badge badge-info badge-pill"
+              >
+                New
+              </span>
+            </Badge>
+          </span>
+        </div>
+        <div
+          className="simple-field"
+        >
+          <span
+            className="field-label"
+          >
+            Created at:
+          </span>
+          <span
+            className="field-value"
+          >
+            <DatetimeLabelMock
+              dateTime="\\"2020-10-07 09:30:03\\""
+            />
+          </span>
+        </div>
+        <div
+          className="mt-3"
+        />
+      </div>
+    </BeforeContent>
+  </Connect(BeforeContent)>
+</Provider>
 `;
 
-exports[`Order <BeforeContent/> render() should render with a label for the pending state 1`] = `
-<div>
-  <div
-    className="simple-field"
+exports[`Order <BeforeContent/> render() should render with a label for the on_hold state and a created at date but no shipments because there are none 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <Connect(BeforeContent)
+    source={
+      Immutable.Map {
+        "customer_id": 1,
+        "entity_id": 2,
+        "state": "on_hold",
+        "created_at": "\\"2020-10-07 09:30:03\\"",
+      }
+    }
   >
-    <span
-      className="field-label"
+    <BeforeContent
+      dispatch={[Function]}
+      getIntegrationData={[Function]}
+      source={
+        Immutable.Map {
+          "customer_id": 1,
+          "entity_id": 2,
+          "state": "on_hold",
+          "created_at": "\\"2020-10-07 09:30:03\\"",
+        }
+      }
     >
-      State:
-    </span>
-    <span
-      className="field-value"
-    >
-      <Badge
-        color="info"
-        pill={true}
-        tag="span"
-      >
-        Pending
-      </Badge>
-    </span>
-  </div>
-</div>
+      <div>
+        <div
+          className="simple-field"
+        >
+          <span
+            className="field-label"
+          >
+            State:
+          </span>
+          <span
+            className="field-value"
+          >
+            <Badge
+              color="warning"
+              pill={true}
+              tag="span"
+            >
+              <span
+                className="badge badge-warning badge-pill"
+              >
+                On hold
+              </span>
+            </Badge>
+          </span>
+        </div>
+        <div
+          className="simple-field"
+        >
+          <span
+            className="field-label"
+          >
+            Created at:
+          </span>
+          <span
+            className="field-value"
+          >
+            <DatetimeLabelMock
+              dateTime="\\"2020-10-07 09:30:03\\""
+            />
+          </span>
+        </div>
+        <div
+          className="mt-3"
+        />
+      </div>
+    </BeforeContent>
+  </Connect(BeforeContent)>
+</Provider>
 `;
 
-exports[`Order <BeforeContent/> render() should render with a label for the processing state 1`] = `
-<div>
-  <div
-    className="simple-field"
+exports[`Order <BeforeContent/> render() should render with a label for the pending state and a created at date but no shipments because there are none 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <Connect(BeforeContent)
+    source={
+      Immutable.Map {
+        "customer_id": 1,
+        "entity_id": 2,
+        "state": "pending",
+        "created_at": "\\"2020-10-07 09:30:03\\"",
+      }
+    }
   >
-    <span
-      className="field-label"
+    <BeforeContent
+      dispatch={[Function]}
+      getIntegrationData={[Function]}
+      source={
+        Immutable.Map {
+          "customer_id": 1,
+          "entity_id": 2,
+          "state": "pending",
+          "created_at": "\\"2020-10-07 09:30:03\\"",
+        }
+      }
     >
-      State:
-    </span>
-    <span
-      className="field-value"
+      <div>
+        <div
+          className="simple-field"
+        >
+          <span
+            className="field-label"
+          >
+            State:
+          </span>
+          <span
+            className="field-value"
+          >
+            <Badge
+              color="info"
+              pill={true}
+              tag="span"
+            >
+              <span
+                className="badge badge-info badge-pill"
+              >
+                Pending
+              </span>
+            </Badge>
+          </span>
+        </div>
+        <div
+          className="simple-field"
+        >
+          <span
+            className="field-label"
+          >
+            Created at:
+          </span>
+          <span
+            className="field-value"
+          >
+            <DatetimeLabelMock
+              dateTime="\\"2020-10-07 09:30:03\\""
+            />
+          </span>
+        </div>
+        <div
+          className="mt-3"
+        />
+      </div>
+    </BeforeContent>
+  </Connect(BeforeContent)>
+</Provider>
+`;
+
+exports[`Order <BeforeContent/> render() should render with a label for the processing state and a created at date but no shipments because there are none 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [Function],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <Connect(BeforeContent)
+    source={
+      Immutable.Map {
+        "customer_id": 1,
+        "entity_id": 2,
+        "state": "processing",
+        "created_at": "\\"2020-10-07 09:30:03\\"",
+      }
+    }
+  >
+    <BeforeContent
+      dispatch={[Function]}
+      getIntegrationData={[Function]}
+      source={
+        Immutable.Map {
+          "customer_id": 1,
+          "entity_id": 2,
+          "state": "processing",
+          "created_at": "\\"2020-10-07 09:30:03\\"",
+        }
+      }
     >
-      <Badge
-        color="info"
-        pill={true}
-        tag="span"
-      >
-        Processing
-      </Badge>
-    </span>
-  </div>
-</div>
+      <div>
+        <div
+          className="simple-field"
+        >
+          <span
+            className="field-label"
+          >
+            State:
+          </span>
+          <span
+            className="field-value"
+          >
+            <Badge
+              color="info"
+              pill={true}
+              tag="span"
+            >
+              <span
+                className="badge badge-info badge-pill"
+              >
+                Processing
+              </span>
+            </Badge>
+          </span>
+        </div>
+        <div
+          className="simple-field"
+        >
+          <span
+            className="field-label"
+          >
+            Created at:
+          </span>
+          <span
+            className="field-value"
+          >
+            <DatetimeLabelMock
+              dateTime="\\"2020-10-07 09:30:03\\""
+            />
+          </span>
+        </div>
+        <div
+          className="mt-3"
+        />
+      </div>
+    </BeforeContent>
+  </Connect(BeforeContent)>
+</Provider>
 `;
 
 exports[`Order <TitleWrapper/> render() should not render link because there is no admin url suffix 1`] = `
