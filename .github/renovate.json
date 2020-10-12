@@ -8,6 +8,7 @@
       "flow-bin"
     ]
   },
+  "masterIssue": true,
   "semanticCommits": false,
   "labels": ["chore"],
   "vulnerabilityAlerts": {
