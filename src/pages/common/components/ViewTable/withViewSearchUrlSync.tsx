@@ -3,17 +3,19 @@ import {connect, ConnectedProps} from 'react-redux'
 import {browserHistory, withRouter, WithRouterProps} from 'react-router'
 import {useUpdateEffect} from 'react-use'
 import {Map} from 'immutable'
+import {
+    compressToEncodedURIComponent,
+    decompressFromEncodedURIComponent,
+} from 'lz-string'
 
 import * as viewsSelectors from '../../../../state/views/selectors'
 import {RootState} from '../../../../state/types'
 import * as viewsActions from '../../../../state/views/actions'
 import * as viewsConfig from '../../../../config/views'
-import withCancellableRequest, {
-    CancellableRequestInjectedProps,
-} from '../../utils/withCancellableRequest'
 
 type QueryString = {
     q?: string
+    filters?: string
 }
 
 type InjectedProps = {
@@ -22,12 +24,7 @@ type InjectedProps = {
 
 export type ViewSearchUrlSyncInjectedProps = InjectedProps &
     ConnectedProps<typeof connector> &
-    WithRouterProps<Record<string, unknown>, QueryString> &
-    CancellableRequestInjectedProps<
-        'fetchViewItemsCancellable',
-        'cancelFetchViewItemsCancellable',
-        typeof viewsActions.fetchViewItems
-    >
+    WithRouterProps<Record<string, unknown>, QueryString>
 
 type Props = {
     isSearch: boolean
@@ -45,24 +42,31 @@ export function withViewSearchUrlSyncContainer<P extends Props>(
             location,
             updateView,
             activeView,
-            fetchViewItemsCancellable,
             isSearch,
+            areFiltersValid,
         } = props
-        const {q: urlQuery = ''} = location.query
+        const {q: urlQuery = '', filters = ''} = location.query
         const viewQuery = activeView.get('search') || ''
+        const urlFilters = useMemo(() => {
+            return decompressFromEncodedURIComponent(filters) || ''
+        }, [filters])
+        const viewFilters = activeView.get('filters') || ''
 
         const urlSearchView = useMemo(() => {
             return (config.get('searchView') as (
-                query: string
-            ) => Map<any, any>)(urlQuery)
-        }, [urlQuery])
+                query: string,
+                filters: string
+            ) => Map<any, any>)(urlQuery, urlFilters)
+        }, [urlQuery, urlFilters])
 
         useUpdateEffect(() => {
-            if (isSearch && viewQuery !== urlQuery) {
+            if (
+                isSearch &&
+                (urlQuery !== viewQuery || urlFilters !== viewFilters)
+            ) {
                 updateView(urlSearchView, false)
-                void fetchViewItemsCancellable(null, null, null)
             }
-        }, [urlQuery])
+        }, [urlQuery, urlFilters])
 
         useUpdateEffect(() => {
             if (isSearch && viewQuery !== urlQuery) {
@@ -76,6 +80,20 @@ export function withViewSearchUrlSyncContainer<P extends Props>(
             }
         }, [viewQuery])
 
+        useUpdateEffect(() => {
+            if (isSearch && viewFilters !== urlFilters && areFiltersValid) {
+                browserHistory.push({
+                    ...location,
+                    query: {
+                        ...location.query,
+                        filters: viewFilters
+                            ? compressToEncodedURIComponent(viewFilters)
+                            : undefined,
+                    },
+                })
+            }
+        }, [viewFilters])
+
         return <WrappedComponent {...props} urlSearchView={urlSearchView} />
     }
 }
@@ -86,6 +104,7 @@ const connector = connect(
         return {
             config,
             activeView: viewsSelectors.getActiveView(state),
+            areFiltersValid: viewsSelectors.areFiltersValid(state),
         }
     },
     {
@@ -97,15 +116,6 @@ export default function withViewSearchUrlSync<P extends Props>(
     WrappedComponent: ComponentType<P & ViewSearchUrlSyncInjectedProps>
 ): ComponentType<P> {
     return connector(
-        withRouter(
-            withCancellableRequest<
-                'fetchViewItemsCancellable',
-                'cancelFetchViewItemsCancellable',
-                typeof viewsActions.fetchViewItems
-            >(
-                'fetchViewItemsCancellable',
-                viewsActions.fetchViewItems
-            )(withViewSearchUrlSyncContainer<P>(WrappedComponent)) as any
-        )
+        withRouter(withViewSearchUrlSyncContainer<P>(WrappedComponent) as any)
     ) as ComponentType<P>
 }

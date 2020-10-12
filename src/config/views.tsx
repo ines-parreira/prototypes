@@ -364,8 +364,8 @@ export const views = fromJS([
                 order_by: 'last_message_datetime',
             })
         },
-        searchView: (query: string) => {
-            return baseView().merge({
+        searchView: (query: string, filters?: string) => {
+            const searchView = baseView().merge({
                 name: `Search "${query}"`,
                 search: query,
                 fields: [
@@ -380,6 +380,15 @@ export const views = fromJS([
                 type: ViewType.TicketList,
                 order_by: 'last_message_datetime',
             })
+
+            if (filters) {
+                return searchView.merge({
+                    filters,
+                    filters_ast: getAST(filters),
+                })
+            }
+
+            return searchView
         },
     },
     {
@@ -444,13 +453,22 @@ export const views = fromJS([
                 type: ViewType.CustomerList,
             })
         },
-        searchView: (query: string) => {
-            return baseView().merge({
+        searchView: (query: string, filters?: string) => {
+            const searchView = baseView().merge({
                 name: `Search "${query}"`,
                 search: query,
                 fields: [ViewField.Name, ViewField.Email, ViewField.Created],
                 type: ViewType.CustomerList,
             })
+
+            if (filters) {
+                return searchView.merge({
+                    filters,
+                    filters_ast: getAST(filters),
+                })
+            }
+
+            return searchView
         },
     },
 ]) as List<any>

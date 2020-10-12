@@ -116,9 +116,9 @@ export class HeaderContainer extends React.Component<Props, State> {
     }
 
     handleFocus = () => {
-        const {config, activeView} = this.props
+        const {config, activeView, isSearch} = this.props
 
-        if (!(activeView.get('search') as string)) {
+        if (!isSearch && !(activeView.get('search') as string)) {
             browserHistory.push(
                 `/app/${config.get('routeList') as string}/search?q=`
             )

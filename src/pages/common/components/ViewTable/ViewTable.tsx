@@ -76,6 +76,7 @@ export class ViewTableContainer extends React.Component<Props> {
                 suggestedViewId &&
                 urlViewId &&
                 suggestedViewId.toString() !== urlViewId
+
             if (viewMissing) {
                 browserHistory.push('/app')
             }
@@ -126,6 +127,11 @@ export class ViewTableContainer extends React.Component<Props> {
         } else if (prevProps.isUpdate && !isUpdate) {
             // entering "add new" mode
             updateView((config.get('newView') as () => Map<any, any>)())
+            shouldFetchViewItems = true
+        } else if (
+            isSearch &&
+            prevProps.activeView.get('search') !== activeView.get('search')
+        ) {
             shouldFetchViewItems = true
         } else if (
             (prevProps.isSearch && !isSearch) ||

@@ -150,6 +150,17 @@ describe('ViewTable::Header', () => {
             )
         })
 
+        it('should not go to the search mode focusing the search input when already in search mode', () => {
+            const component = shallow(
+                <HeaderMock {...minProps} isSearch={true} />
+            )
+                .dive()
+                .dive()
+                .dive()
+            ;(component.find(Search).props() as {onFocus: () => void}).onFocus()
+            expect(browserHistory.push).not.toHaveBeenCalled()
+        })
+
         it('get search query from active view', () => {
             const component = shallow(
                 <HeaderMock

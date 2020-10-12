@@ -47,22 +47,23 @@ type State = {
     askUpdateConfirmation: boolean
 }
 
-export class FilterTopbarComponent extends React.Component<Props, State> {
+export class FilterTopbarContainer extends React.Component<Props, State> {
     state = {
         isSubmitting: false,
         askUpdateConfirmation: false,
     }
 
-    componentWillReceiveProps(nextProps: Props) {
+    componentDidUpdate(prevProps: Props) {
+        const {activeView, areFiltersValid, fetchViewItems} = this.props
+
         // fetch page again when filters changed and that filters are valid
         const isSameView =
-            this.props.activeView.get('id') === nextProps.activeView.get('id')
+            prevProps.activeView.get('id') === activeView.get('id')
         const filtersHaveChanged =
-            this.props.activeView.get('filters') !==
-            nextProps.activeView.get('filters')
+            prevProps.activeView.get('filters') !== activeView.get('filters')
 
-        if (isSameView && filtersHaveChanged && nextProps.areFiltersValid) {
-            void this.props.fetchViewItems()
+        if (isSameView && filtersHaveChanged && areFiltersValid) {
+            void fetchViewItems()
         }
     }
 
@@ -117,7 +118,6 @@ export class FilterTopbarComponent extends React.Component<Props, State> {
             left,
             operator,
         }
-
         this.props.addFieldFilter(field.toJS(), filter)
     }
 
@@ -206,13 +206,13 @@ export class FilterTopbarComponent extends React.Component<Props, State> {
                     <Filters
                         view={activeView}
                         removeFieldFilter={this.props.removeFieldFilter}
+                        updateFieldFilter={this.props.updateFieldFilter}
                         updateFieldFilterOperator={
                             this.props.updateFieldFilterOperator
                         }
                         agents={agents}
                         teams={teams}
                         currentUser={currentUser}
-                        updateFieldFilter={this.props.updateFieldFilter}
                     />
 
                     <UncontrolledDropdown>
@@ -398,17 +398,16 @@ const mapStateToProps = (state: RootState, ownProps: OwnProps) => {
 }
 
 const mapDispatchToProps = {
-    addFieldFilter: viewsActions.addFieldFilter,
     fetchViewItems: viewsActions.fetchViewItems,
-    updateView: viewsActions.updateView,
-    removeFieldFilter: viewsActions.removeFieldFilter,
     resetView: viewsActions.resetView,
     submitView: viewsActions.submitView,
     deleteView: viewsActions.deleteView,
+    addFieldFilter: viewsActions.addFieldFilter,
+    removeFieldFilter: viewsActions.removeFieldFilter,
     updateFieldFilter: viewsActions.updateFieldFilter,
     updateFieldFilterOperator: viewsActions.updateFieldFilterOperator,
 }
 
 const connector = connect(mapStateToProps, mapDispatchToProps)
 
-export default connector(FilterTopbarComponent)
+export default connector(FilterTopbarContainer)

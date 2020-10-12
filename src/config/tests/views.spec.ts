@@ -5,6 +5,7 @@ import * as viewsConfig from '../views'
 
 import * as ticketFixtures from '../../fixtures/ticket.js'
 import {customer} from '../../fixtures/customer.js'
+import {getAST} from '../../utils'
 
 global.console.error = jest.fn()
 
@@ -144,9 +145,11 @@ describe('Config: views', () => {
 
             it('searchView', () => {
                 const term = 'term'
+                const filters = 'eq("ticket.channel", "chat")'
                 const searchView = (viewConfig.get('searchView') as (
-                    term: string
-                ) => Map<any, any>)(term).toJS()
+                    term: string,
+                    filters?: string
+                ) => Map<any, any>)(term, filters).toJS()
 
                 expect(searchView).toHaveProperty('id', 0)
                 expect(searchView).toHaveProperty('name')
@@ -160,6 +163,11 @@ describe('Config: views', () => {
                 expect(searchView).toHaveProperty('fields')
                 expect(searchView).toHaveProperty('type')
                 expect(searchView).toHaveProperty('search', term)
+                expect(searchView).toHaveProperty('filters', filters)
+                expect(searchView).toHaveProperty(
+                    'filters_ast',
+                    getAST(filters)
+                )
             })
         })
     })
