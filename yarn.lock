@@ -1082,10 +1082,10 @@
   dependencies:
     emojis-list "^3.0.0"
 
-"@gorgias/javascript-shared-config@0.0.1":
-  version "0.0.1"
-  resolved "https://npm.pkg.github.com/download/@gorgias/javascript-shared-config/0.0.1/e0da36e83be46a03307cf010795fb21a8e80764727fb7bdd22f5c0fc5f98f5fc#93c03db3a9b7a42420d4d2f1254f2884d4097bba"
-  integrity sha512-sjI/S3gTC62ekAz11zddgLAk6EQ7SfNyPGLFeiwiRsycHXZSvEP5ahKzmxLVfG2WPHNj7icCio2a3RXMghNVeA==
+"@gorgias/javascript-shared-config@0.0.3":
+  version "0.0.3"
+  resolved "https://npm.pkg.github.com/download/@gorgias/javascript-shared-config/0.0.3/527c75e6d8dde7978d0052037ea53cac67e69a39843a23291d4b5e14662535dc#3e9cae2c16b910ac1c07c24a7620d777418e547a"
+  integrity sha512-pL/N69Qlz6u1cY8D5eJiwPAU9vh39x6pky9SPsUd2Fw/SznUtJp0J7SFNWp9cjTKBJZWRafeLUctcZWIwq36yg==
 
 "@hot-loader/react-dom@16.13.0":
   version "16.13.0"

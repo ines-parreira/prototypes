@@ -142,7 +142,7 @@ export class BillingInvoices extends Component<Props, State> {
                                 invoice.getIn([
                                     'metadata',
                                     'payment_service',
-                                ]) == SHOPIFY_PAYMENT_SERVICE
+                                ]) === SHOPIFY_PAYMENT_SERVICE
                             return (
                                 <tr key={invoice.get('id')}>
                                     <td>

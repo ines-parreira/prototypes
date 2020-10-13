@@ -98,7 +98,7 @@ export default class UserList extends React.Component<Props, State> {
                                     key={agentId}
                                     agent={agent}
                                     isAccountOwner={
-                                        agentId == this.props.accountOwnerId
+                                        agentId === this.props.accountOwnerId
                                     }
                                     deleteAgent={deleteAgent}
                                     fetchAgents={fetchAgents}
