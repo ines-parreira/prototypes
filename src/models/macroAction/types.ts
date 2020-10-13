@@ -1,3 +1,5 @@
+import {HttpMethod} from '../api/types'
+
 export enum MacroActionName {
     AddAttachments = 'addAttachments',
     AddTags = 'addTags',
@@ -30,7 +32,13 @@ export type MacroAction = {
         attachments?: MacroActionAttachment[]
         body_html?: string
         body_text?: string
+        tags?: string
+        method?: HttpMethod
+        headers?: Record<string, unknown>[]
+        url?: string
+        params?: Record<string, unknown>[]
     }
+    description?: string
     name: MacroActionName
     title: string
     type: MacroActionType

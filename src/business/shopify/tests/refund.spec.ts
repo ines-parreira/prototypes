@@ -4,7 +4,7 @@ import {
     shopifyLineItemFixture,
     shopifyRefundOrderPayloadFixture,
     shopifySuggestedRefundFixture,
-} from '../../../fixtures/shopify.js'
+} from '../../../fixtures/shopify'
 import {
     getRefundAmount,
     getRestockType,

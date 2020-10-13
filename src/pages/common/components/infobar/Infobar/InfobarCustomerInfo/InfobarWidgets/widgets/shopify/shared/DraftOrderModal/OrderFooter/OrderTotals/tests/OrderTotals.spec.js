@@ -8,7 +8,7 @@ import {
     shopifyDraftOrderFixture,
     shopifyDraftOrderPayloadFixture,
     shopifyShippingLineFixture,
-} from '../../../../../../../../../../../../../../fixtures/shopify'
+} from '../../../../../../../../../../../../../../fixtures/shopify.ts'
 import {OrderTotalsComponent} from '../OrderTotals'
 import {ShopifyAction} from '../../../../../constants'
 

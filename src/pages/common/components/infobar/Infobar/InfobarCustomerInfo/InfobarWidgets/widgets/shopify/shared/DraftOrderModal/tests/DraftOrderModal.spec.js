@@ -13,15 +13,15 @@ import {
     shopifyInvoicePayloadFixture,
     shopifyOrderFixture,
     shopifyProductFixture,
-} from '../../../../../../../../../../../../fixtures/shopify'
+} from '../../../../../../../../../../../../fixtures/shopify.ts'
 import {
     createOrderStateFixture,
     infobarActionsStateFixture,
-} from '../../../../../../../../../../../../fixtures/infobarActions'
+} from '../../../../../../../../../../../../fixtures/infobarActions.ts'
 import {getDuplicateOrderPayload} from '../../../../../../../../../../../../state/infobarActions/shopify/createOrder/actions.ts'
 import {getCreateOrderState} from '../../../../../../../../../../../../state/infobarActions/shopify/createOrder/selectors.ts'
 import {getIntegrationsByTypes} from '../../../../../../../../../../../../state/integrations/selectors.ts'
-import {integrationsStateWithShopify} from '../../../../../../../../../../../../fixtures/integrations'
+import {integrationsStateWithShopify} from '../../../../../../../../../../../../fixtures/integrations.ts'
 import {initDraftOrderPayload} from '../../../../../../../../../../../../business/shopify/draftOrder.ts'
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../../constants/integration.ts'
 import type {DraftOrderInvoice} from '../../../../../../../../../../../../constants/integrations/types/shopify'

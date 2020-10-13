@@ -9,7 +9,7 @@ import {getActionTemplate} from '../../../../../utils.ts'
 import Modal from '../../../../common/components/Modal'
 import {JSONTree} from '../../../../common/components/JSONTree'
 import {JSON_CONTENT_TYPE, FORM_CONTENT_TYPE} from '../../../../../config.ts'
-import {MACRO_ACTION_NAME} from '../../../../../models/macroAction/constants'
+import {MACRO_ACTION_NAME} from '../../../../../models/macroAction/constants.ts'
 
 import css from './Actions.less'
 

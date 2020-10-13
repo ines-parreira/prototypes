@@ -1,6 +1,8 @@
-//@flow
-import type {Action, TicketMessage} from '../types'
-import {TicketMessageSourceTypes} from '../../../business/ticket.ts'
+import {
+    TicketChannel,
+    TicketMessageSourceType,
+} from '../../../business/types/ticket'
+import {Action, TicketMessage, ActionStatus} from '../types'
 
 export const message: TicketMessage = {
     id: 1,
@@ -19,7 +21,7 @@ export const message: TicketMessage = {
         lastname: 'Poppins',
     },
     subject: 'Some subject',
-    channel: 'email',
+    channel: TicketChannel.Email,
     via: 'email',
     uri: 'http://example.com/messages/1',
     public: true,
@@ -45,7 +47,7 @@ export const facebookMessageNoMeta: TicketMessage = {
         lastname: 'Poppins',
     },
     subject: 'Some subject',
-    channel: 'facebook',
+    channel: TicketChannel.Facebook,
     via: 'facebook',
     uri: 'http://example.com/messages/1',
     public: true,
@@ -55,11 +57,11 @@ export const facebookMessageNoMeta: TicketMessage = {
     source: {
         to: [{name: 'Cust Omer', address: '657788504429455-4135481299826174'}],
         from: {name: 'Page', address: '657788504429455-657788504429455'},
-        type: TicketMessageSourceTypes.FACEBOOK_COMMENT,
+        type: TicketMessageSourceType.FacebookComment,
     },
 }
 
-export const facebookMessageWithCustomerReaction: TicketMessage = {
+export const facebookMessageWithCustomerReaction = ({
     id: 1,
     sender: {
         id: 1,
@@ -76,7 +78,7 @@ export const facebookMessageWithCustomerReaction: TicketMessage = {
         lastname: 'Poppins',
     },
     subject: 'Some subject',
-    channel: 'facebook',
+    channel: TicketChannel.Facebook,
     via: 'facebook',
     uri: 'http://example.com/messages/1',
     public: true,
@@ -86,7 +88,7 @@ export const facebookMessageWithCustomerReaction: TicketMessage = {
     source: {
         to: [{name: 'Cust Omer', address: '657788504429455-4135481299826174'}],
         from: {name: 'Page', address: '657788504429455-657788504429455'},
-        type: TicketMessageSourceTypes.FACEBOOK_COMMENT,
+        type: TicketMessageSourceType.FacebookComment,
     },
     meta: {
         facebook_reactions: {
@@ -103,9 +105,9 @@ export const facebookMessageWithCustomerReaction: TicketMessage = {
             },
         },
     },
-}
+} as unknown) as TicketMessage
 
-export const facebookMessageWithPageReaction: TicketMessage = {
+export const facebookMessageWithPageReaction = ({
     id: 1,
     sender: {
         id: 1,
@@ -122,7 +124,7 @@ export const facebookMessageWithPageReaction: TicketMessage = {
         lastname: 'Poppins',
     },
     subject: 'Some subject',
-    channel: 'facebook',
+    channel: TicketChannel.Facebook,
     via: 'facebook',
     uri: 'http://example.com/messages/1',
     public: true,
@@ -132,7 +134,7 @@ export const facebookMessageWithPageReaction: TicketMessage = {
     source: {
         to: [{name: 'Cust Omer', address: '657788504429455-4135481299826174'}],
         from: {name: 'Page', address: '657788504429455-657788504429455'},
-        type: TicketMessageSourceTypes.FACEBOOK_COMMENT,
+        type: TicketMessageSourceType.FacebookComment,
     },
     meta: {
         facebook_reactions: {
@@ -148,9 +150,9 @@ export const facebookMessageWithPageReaction: TicketMessage = {
             },
         },
     },
-}
+} as unknown) as TicketMessage
 
-export const facebookMessageWithPageAndCustomerReactions: TicketMessage = {
+export const facebookMessageWithPageAndCustomerReactions = ({
     id: 1,
     sender: {
         id: 1,
@@ -167,7 +169,7 @@ export const facebookMessageWithPageAndCustomerReactions: TicketMessage = {
         lastname: 'Poppins',
     },
     subject: 'Some subject',
-    channel: 'facebook',
+    channel: TicketChannel.Facebook,
     via: 'facebook',
     uri: 'http://example.com/messages/1',
     public: true,
@@ -196,11 +198,11 @@ export const facebookMessageWithPageAndCustomerReactions: TicketMessage = {
     source: {
         to: [{name: 'Cust Omer', address: '657788504429455-4135481299826174'}],
         from: {name: 'Page', address: '657788504429455-657788504429455'},
-        type: TicketMessageSourceTypes.FACEBOOK_COMMENT,
+        type: TicketMessageSourceType.FacebookComment,
     },
-}
+} as unknown) as TicketMessage
 
-export const hiddenFacebookMessage: TicketMessage = {
+export const hiddenFacebookMessage = ({
     id: 1,
     sender: {
         id: 1,
@@ -217,7 +219,7 @@ export const hiddenFacebookMessage: TicketMessage = {
         lastname: 'Poppins',
     },
     subject: 'Some subject',
-    channel: 'facebook',
+    channel: TicketChannel.Facebook,
     via: 'facebook',
     uri: 'http://example.com/messages/1',
     public: true,
@@ -247,12 +249,12 @@ export const hiddenFacebookMessage: TicketMessage = {
     source: {
         to: [{name: 'Cust Omer', address: '657788504429455-4135481299826174'}],
         from: {name: 'Page', address: '657788504429455-657788504429455'},
-        type: TicketMessageSourceTypes.FACEBOOK_COMMENT,
+        type: TicketMessageSourceType.FacebookComment,
     },
-}
+} as unknown) as TicketMessage
 
 export const action: Action = {
-    status: 'success',
+    status: ActionStatus.Success,
     name: 'foo',
     title: '',
     type: 'user',

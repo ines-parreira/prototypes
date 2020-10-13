@@ -5,7 +5,7 @@ import {
     isRuleExecutedType,
     isSystemRuleEvent,
     isViaRuleEvent,
-} from '../predicates'
+} from '../predicates.ts'
 import {RULE_EXECUTED, TICKET_ASSIGNED} from '../../../constants/event.ts'
 import type {AuditLogEvent, AuditLogEventType} from '../types'
 

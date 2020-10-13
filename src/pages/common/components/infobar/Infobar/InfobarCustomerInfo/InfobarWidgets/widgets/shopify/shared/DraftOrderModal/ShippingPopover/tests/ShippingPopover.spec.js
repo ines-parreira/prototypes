@@ -10,7 +10,7 @@ import {
     EVENTS,
     logEvent,
 } from '../../../../../../../../../../../../../store/middlewares/segmentTracker'
-import {shopifyShippingLineFixture} from '../../../../../../../../../../../../../fixtures/shopify'
+import {shopifyShippingLineFixture} from '../../../../../../../../../../../../../fixtures/shopify.ts'
 import AmountInput from '../../../AmountInput'
 import ShippingPopover from '../ShippingPopover'
 import {ShopifyAction} from '../../../../constants'

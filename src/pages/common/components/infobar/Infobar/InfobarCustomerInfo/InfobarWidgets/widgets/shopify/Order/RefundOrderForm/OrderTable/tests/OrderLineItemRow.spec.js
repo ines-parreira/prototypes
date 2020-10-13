@@ -9,7 +9,7 @@ import {
     shopifyOrderFixture,
     shopifyPriceSetFixture,
     shopifySuggestedRefundFixture,
-} from '../../../../../../../../../../../../../fixtures/shopify'
+} from '../../../../../../../../../../../../../fixtures/shopify.ts'
 import {initRefundOrderLineItems} from '../../../../../../../../../../../../../business/shopify/order.ts'
 import {OrderLineItemRow} from '../OrderLineItemRow'
 

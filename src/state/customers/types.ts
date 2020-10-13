@@ -38,10 +38,10 @@ export type CustomerIntegration = {
 export type Customer = CustomerDraft & {
     active: boolean
     created_datetime: string
-    customer: CustomerInformation
+    customer: Maybe<CustomerInformation>
     data: CustomerInformation
     email: string
-    external_id: string
+    external_id: Maybe<string>
     firstname: string
     id: number
     integrations: {

@@ -8,7 +8,7 @@ import {
     shopifyRefundLineItemFixture,
     shopifyRefundOrderPayloadFixture,
     shopifySuggestedRefundFixture,
-} from '../../../fixtures/shopify.js'
+} from '../../../fixtures/shopify'
 import {
     getFinalCancelOrderPayload,
     getFinalRefundOrderPayload,

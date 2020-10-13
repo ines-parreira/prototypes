@@ -7,7 +7,7 @@ import {shallow} from 'enzyme'
 import {
     shopifyDraftOrderPayloadFixture,
     shopifyProductFixture,
-} from '../../../../../../../../../../../../../fixtures/shopify'
+} from '../../../../../../../../../../../../../fixtures/shopify.ts'
 import DraftOrderTable from '../DraftOrderTable'
 import {ShopifyAction} from '../../../../constants'
 

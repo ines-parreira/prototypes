@@ -1,3 +1,3 @@
 //@flow
-export * from './constants'
+export * from './constants.ts'
 export * from './types.js'

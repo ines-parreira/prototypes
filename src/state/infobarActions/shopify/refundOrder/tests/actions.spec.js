@@ -9,7 +9,7 @@ import {
     shopifyOrderFixture,
     shopifyRefundOrderPayloadFixture,
     shopifySuggestedRefundFixture,
-} from '../../../../../fixtures/shopify'
+} from '../../../../../fixtures/shopify.ts'
 import {initialState} from '../reducers.ts'
 import * as actions from '../../refundOrder/actions.ts'
 import {initRefundOrderLineItems} from '../../../../../business/shopify/order.ts'

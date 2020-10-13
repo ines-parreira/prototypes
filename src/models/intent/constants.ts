@@ -1,4 +1,4 @@
-//@flow
+//$TsFixMe fallback value, use IntentName enum instead
 export const INTENT_NAME = Object.freeze({
     ACCOUNT_CANCEL: 'account/cancel',
     DISCOUNT_REQUEST: 'discount/request',

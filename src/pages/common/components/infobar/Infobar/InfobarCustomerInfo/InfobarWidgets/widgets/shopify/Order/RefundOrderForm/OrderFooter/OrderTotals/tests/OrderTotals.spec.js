@@ -7,7 +7,7 @@ import {fromJS} from 'immutable'
 import {
     shopifyRefundOrderPayloadFixture,
     shopifySuggestedRefundFixture,
-} from '../../../../../../../../../../../../../../fixtures/shopify'
+} from '../../../../../../../../../../../../../../fixtures/shopify.ts'
 import OrderTotals from '../OrderTotals'
 
 jest.mock('lodash/debounce', () => (fn) => fn)

@@ -13,7 +13,7 @@ import {initialState} from '../reducers'
 import {initialState as ticketInitialState} from '../../ticket/reducers'
 import {StoreDispatch, RootState} from '../../types'
 
-import {integrationsState} from '../../../fixtures/integrations.js'
+import {integrationsState} from '../../../fixtures/integrations'
 import * as integrationSelectors from '../../integrations/selectors'
 import {getLastSenderChannel, getPreferredChannel} from '../../ticket/utils.js'
 import {

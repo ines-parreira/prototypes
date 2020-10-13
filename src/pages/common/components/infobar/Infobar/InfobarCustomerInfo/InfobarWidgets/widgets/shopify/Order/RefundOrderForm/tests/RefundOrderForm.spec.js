@@ -8,7 +8,7 @@ import {
     shopifyOrderFixture,
     shopifyRefundOrderPayloadFixture,
     shopifySuggestedRefundFixture,
-} from '../../../../../../../../../../../../fixtures/shopify'
+} from '../../../../../../../../../../../../fixtures/shopify.ts'
 import RefundOrderForm from '../RefundOrderForm'
 import {ShopifyAction} from '../../../constants'
 

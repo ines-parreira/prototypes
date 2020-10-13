@@ -4,7 +4,7 @@ import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
 import {TicketBody} from '../TicketBody'
-import {message} from '../../../../../models/ticket/tests/mocks'
+import {message} from '../../../../../models/ticket/tests/mocks.ts'
 import {TICKET_ASSIGNED} from '../../../../../constants/event.ts'
 import type {TicketMessage} from '../../../../../models/ticket'
 import TicketMessages from '../TicketMessages/TicketMessages'

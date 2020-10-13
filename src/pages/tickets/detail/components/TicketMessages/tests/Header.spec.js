@@ -4,7 +4,7 @@ import {shallow} from 'enzyme'
 
 import Header from '../Header'
 import Meta from '../Meta'
-import {message} from '../../../../../../models/ticket/tests/mocks'
+import {message} from '../../../../../../models/ticket/tests/mocks.ts'
 
 describe('Header', () => {
     it('should display header', () => {

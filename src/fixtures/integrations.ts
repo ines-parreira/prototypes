@@ -1,7 +1,6 @@
-//@flow
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
-export const integrationsState: any = {
+export const integrationsState = {
     authentication: {
         facebook: {
             redirect_uri:
@@ -408,4 +407,4 @@ export const integrationsStateWithShopify = fromJS({
             updated_datetime: '2020-01-28T22:19:15.604157+00:00',
         },
     ],
-})
+}) as Map<any, any>

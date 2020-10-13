@@ -9,7 +9,7 @@ import {
     shopifyShippingLineFixture,
     shopifyTaxLineFixture,
     shopifyVariantFixture,
-} from '../../../fixtures/shopify.js'
+} from '../../../fixtures/shopify'
 import {
     addCustomLineItem,
     addVariant,

@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 
 import * as selectors from '../selectors.ts'
 import {initialState} from '../reducers.ts'
-import * as currentAccountFixtures from '../../../fixtures/currentAccount'
+import * as currentAccountFixtures from '../../../fixtures/currentAccount.ts'
 import {
     SETTING_TYPE_BUSINESS_HOURS,
     SETTING_TYPE_SATISFACTION_SURVEYS,

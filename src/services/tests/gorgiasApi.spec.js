@@ -17,7 +17,7 @@ import {
 import {
     shopifyCancelOrderPayloadFixture,
     shopifyInvoicePayloadFixture,
-} from '../../fixtures/shopify'
+} from '../../fixtures/shopify.ts'
 import {ViewVisibility} from '../../constants/view.ts'
 
 describe('services', () => {

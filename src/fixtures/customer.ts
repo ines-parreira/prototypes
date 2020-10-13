@@ -1,7 +1,14 @@
-//@flow
-import {USER_ROLE} from '../config/user.ts'
+import {TicketChannel} from '../business/types/ticket'
+import {USER_ROLE} from '../config/user'
+import {IntegrationType} from '../models/integration/types'
+import {Customer} from '../state/customers/types'
+import {
+    FinancialStatus,
+    OrderLineItem,
+    CustomerState,
+} from '../constants/integrations/types/shopify'
 
-export const customer = {
+export const customer: Customer = ({
     lastname: 'Bon',
     meta: null,
     active: true,
@@ -11,7 +18,7 @@ export const customer = {
     channels: [
         {
             deleted_datetime: null,
-            type: 'email',
+            type: TicketChannel.Email,
             address: 'jeanbon@gorgias.io',
             id: 55,
             updated_datetime: '2017-07-31T21:45:03.399828+00:00',
@@ -20,7 +27,7 @@ export const customer = {
         },
         {
             deleted_datetime: null,
-            type: 'phone',
+            type: TicketChannel.Phone,
             address: '+1 415-548-9999',
             id: 56,
             updated_datetime: '2017-07-31T21:45:03.416976+00:00',
@@ -46,7 +53,7 @@ export const customer = {
             args: {
                 name: 'Jean Bon',
             },
-            __integration_type__: 'http',
+            __integration_type__: IntegrationType.HttpIntegrationType,
             headers: {
                 Host: 'httpbin.org',
                 'Content-Type': 'application/json',
@@ -147,7 +154,7 @@ export const customer = {
                     location_id: null,
                     buyer_accepts_marketing: false,
                     closed_at: null,
-                    financial_status: 'paid',
+                    financial_status: FinancialStatus.Paid,
                     discount_codes: [],
                     number: 202,
                     cancel_reason: null,
@@ -200,7 +207,7 @@ export const customer = {
                     total_price_usd: '10.33',
                     fulfillments: [],
                     line_items: [
-                        {
+                        ({
                             variant_inventory_management: null,
                             taxable: true,
                             vendor: 'storegorgias3',
@@ -229,7 +236,7 @@ export const customer = {
                             variant_title: null,
                             gift_card: false,
                             requires_shipping: true,
-                        },
+                        } as unknown) as OrderLineItem,
                     ],
                     referring_site: null,
                     total_discounts: '0.00',
@@ -250,7 +257,7 @@ export const customer = {
                         verified_email: true,
                         created_at: '2017-03-17T21:26:16-04:00',
                         phone: '+14155489999',
-                        state: 'disabled',
+                        state: CustomerState.Disabled,
                         accepts_marketing: false,
                         note: 'Un grand jambon',
                         total_spent: '131.50',
@@ -315,7 +322,7 @@ export const customer = {
                     location_id: null,
                     buyer_accepts_marketing: false,
                     closed_at: null,
-                    financial_status: 'paid',
+                    financial_status: FinancialStatus.Paid,
                     discount_codes: [],
                     number: 199,
                     cancel_reason: null,
@@ -345,7 +352,7 @@ export const customer = {
                     total_price_usd: '0.11',
                     fulfillments: [],
                     line_items: [
-                        {
+                        ({
                             variant_inventory_management: null,
                             taxable: true,
                             vendor: 'storegorgias3',
@@ -368,7 +375,7 @@ export const customer = {
                             variant_title: null,
                             gift_card: false,
                             requires_shipping: true,
-                        },
+                        } as unknown) as OrderLineItem,
                     ],
                     referring_site: null,
                     total_discounts: '0.00',
@@ -389,7 +396,7 @@ export const customer = {
                         verified_email: true,
                         created_at: '2017-03-17T21:26:16-04:00',
                         phone: '+14155489999',
-                        state: 'disabled',
+                        state: CustomerState.Disabled,
                         accepts_marketing: false,
                         note: 'Un grand jambon',
                         total_spent: '131.50',
@@ -426,8 +433,8 @@ export const customer = {
                     confirmed: true,
                 },
             ],
-            __integration_type__: 'shopify',
+            __integration_type__: IntegrationType.ShopifyIntegrationType,
         },
     },
     updated_datetime: '2017-07-31T23:17:01.313273+00:00',
-}
+} as unknown) as Customer

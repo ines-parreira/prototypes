@@ -8,7 +8,7 @@ import thunk from 'redux-thunk'
 import PerHourPerWeekTableStat, {
     TableCells,
 } from '../PerHourPerWeekTableStat/PerHourPerWeekTableStat'
-import {currentAccountState} from '../../../../../../fixtures/currentAccount'
+import {currentAccountState} from '../../../../../../fixtures/currentAccount.ts'
 
 const mockStore = configureMockStore([thunk])
 

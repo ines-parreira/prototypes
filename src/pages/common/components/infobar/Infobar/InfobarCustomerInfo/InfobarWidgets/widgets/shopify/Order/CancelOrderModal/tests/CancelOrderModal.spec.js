@@ -9,18 +9,18 @@ import {Form} from 'reactstrap'
 
 import {getCancelOrderState} from '../../../../../../../../../../../../state/infobarActions/shopify/cancelOrder/selectors.ts'
 import {getIntegrationsByTypes} from '../../../../../../../../../../../../state/integrations/selectors.ts'
-import {integrationsStateWithShopify} from '../../../../../../../../../../../../fixtures/integrations'
+import {integrationsStateWithShopify} from '../../../../../../../../../../../../fixtures/integrations.ts'
 import {
     cancelOrderStateFixture,
     infobarActionsStateFixture,
-} from '../../../../../../../../../../../../fixtures/infobarActions'
+} from '../../../../../../../../../../../../fixtures/infobarActions.ts'
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../../constants/integration.ts'
 import {
     shopifyLineItemFixture,
     shopifyOrderFixture,
     shopifyRefundOrderPayloadFixture,
     shopifySuggestedRefundFixture,
-} from '../../../../../../../../../../../../fixtures/shopify'
+} from '../../../../../../../../../../../../fixtures/shopify.ts'
 import CancelOrderModal, {CancelOrderModalComponent} from '../CancelOrderModal'
 import {ShopifyAction} from '../../../constants'
 import {

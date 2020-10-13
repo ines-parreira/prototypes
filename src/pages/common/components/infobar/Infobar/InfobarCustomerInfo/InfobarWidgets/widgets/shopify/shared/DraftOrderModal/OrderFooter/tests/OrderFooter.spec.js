@@ -8,7 +8,7 @@ import {
     EVENTS,
     logEvent,
 } from '../../../../../../../../../../../../../store/middlewares/segmentTracker'
-import {shopifyDraftOrderPayloadFixture} from '../../../../../../../../../../../../../fixtures/shopify'
+import {shopifyDraftOrderPayloadFixture} from '../../../../../../../../../../../../../fixtures/shopify.ts'
 import {DuplicateOrderFooterComponent} from '../OrderFooter'
 import {ShopifyAction} from '../../../../constants'
 

@@ -9,7 +9,7 @@ import {
     facebookMessageNoMeta,
     facebookMessageWithPageAndCustomerReactions,
     hiddenFacebookMessage,
-} from '../../../../../../models/ticket/tests/mocks'
+} from '../../../../../../models/ticket/tests/mocks.ts'
 
 import SourceActionsFooter from '../SourceActionsFooter'
 import * as infobarActions from '../../../../../../state/infobar/actions.ts'

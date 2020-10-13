@@ -5,7 +5,7 @@ import {
     shopifyDraftOrderFixture,
     shopifyDraftOrderPayloadFixture,
     shopifyShippingLineFixture,
-} from '../../../../../fixtures/shopify'
+} from '../../../../../fixtures/shopify.ts'
 import reducer, {initialState} from '../reducers.ts'
 import * as constants from '../constants.ts'
 

@@ -1,5 +1,6 @@
 import {fromJS, Map} from 'immutable'
 
+import {DiscountType} from '../../../constants/integrations/types/shopify'
 import {
     shopifyAppliedDiscountFixture,
     shopifyDiscountAllocationFixture,
@@ -8,7 +9,7 @@ import {
     shopifyLineItemFixture,
     shopifyOrderFixture,
     shopifyPriceSetFixture,
-} from '../../../fixtures/shopify.js'
+} from '../../../fixtures/shopify'
 import {
     getDraftOrderLineItemDiscountedPrice,
     getDraftOrderLineItemTotal,
@@ -42,7 +43,7 @@ describe('initLineItemAppliedDiscount()', () => {
         const discountApplication = fromJS(
             shopifyDiscountApplicationFixture({
                 value: '0.20',
-                type: 'fixed_amount',
+                type: DiscountType.FixedAmount,
             })
         )
         const order = (fromJS(shopifyOrderFixture()) as Map<any, any>)

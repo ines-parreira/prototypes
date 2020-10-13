@@ -1,4 +1,4 @@
-//@flow
+//TsFixMe fallback value, use MacroActionName enum instead
 export const MACRO_ACTION_NAME = Object.freeze({
     ADD_ATTACHMENTS: 'addAttachments',
     ADD_TAGS: 'addTags',
@@ -24,6 +24,7 @@ export const MACRO_ACTION_NAME = Object.freeze({
     SHOPIFY_EDIT_NOTE_LAST_ORDER: 'shopifyEditNoteOfLastOrder',
 })
 
+//TsFixMe fallback value, use MacroActionType enum instead
 export const MACRO_ACTION_TYPE = Object.freeze({
     USER: 'user',
 })

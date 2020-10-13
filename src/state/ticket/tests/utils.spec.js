@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../constants/integration.ts'
 import {getChannels} from '../../integrations/selectors.ts'
-import {integrationsState} from '../../../fixtures/integrations'
+import {integrationsState} from '../../../fixtures/integrations.ts'
 import {
     guessReceiversFromTicket,
     receiversValueFromState,

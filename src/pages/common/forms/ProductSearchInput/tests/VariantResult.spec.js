@@ -7,7 +7,7 @@ import {
     integrationDataItemProductFixture,
     shopifyProductFixture,
     shopifyVariantFixture,
-} from '../../../../../fixtures/shopify'
+} from '../../../../../fixtures/shopify.ts'
 import type {IntegrationDataItem} from '../../../../../models/integration'
 import type {
     Variant,

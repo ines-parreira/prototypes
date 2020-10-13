@@ -31,7 +31,7 @@ import {
     isImportAllowed,
     getMessagingIntegrations,
 } from '../selectors.ts'
-import {integrationsState} from '../../../fixtures/integrations'
+import {integrationsState} from '../../../fixtures/integrations.ts'
 
 const state = {
     integrations: fromJS(integrationsState),

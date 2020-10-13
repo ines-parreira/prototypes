@@ -5,7 +5,7 @@ import {Button} from 'reactstrap'
 
 import {createMacro, deleteMacro} from '../../../../models/macro/resources'
 import {Macro} from '../../../../models/macro/types'
-import {macros as macrosFixtures} from '../../../../fixtures/macro.js'
+import {macros as macrosFixtures} from '../../../../fixtures/macro'
 import {MacrosState} from '../../../../state/entities/macros/types'
 import Loader from '../../../common/components/Loader/index.js'
 import HeaderCellProperty from '../../../common/components/table/cells/HeaderCellProperty.js'

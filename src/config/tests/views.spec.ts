@@ -4,7 +4,7 @@ import _isObject from 'lodash/isObject'
 import * as viewsConfig from '../views'
 
 import * as ticketFixtures from '../../fixtures/ticket.js'
-import {customer} from '../../fixtures/customer.js'
+import {customer} from '../../fixtures/customer'
 import {getAST} from '../../utils'
 
 global.console.error = jest.fn()

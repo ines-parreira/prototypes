@@ -39,7 +39,7 @@ export enum DiscountType {
     Shipping = 'shipping',
 }
 
-enum CustomerState {
+export enum CustomerState {
     Disabled = 'disabled',
     Invited = 'invited',
     Enabled = 'enabled',
@@ -52,43 +52,43 @@ enum CustomerMarketingLevel {
     Unknown = 'unknown',
 }
 
-enum DraftStatus {
+export enum DraftStatus {
     Open = 'open',
     InvoiceSent = 'invoice_sent',
     Completed = 'completed',
 }
 
-enum DiscountApplicationType {
+export enum DiscountApplicationType {
     Manual = 'manual',
     Script = 'script',
     DiscountCode = 'discount_code',
 }
 
-enum DiscountAllocationMethod {
+export enum DiscountAllocationMethod {
     Across = 'across',
     Each = 'each',
     One = 'one',
 }
 
-enum DiscountTargetSelection {
+export enum DiscountTargetSelection {
     All = 'all',
     Entitled = 'entitled',
     Explicit = 'explicit',
 }
 
-enum DiscountTargetType {
+export enum DiscountTargetType {
     LineItem = 'line_item',
     ShippingLine = 'shipping_line',
 }
 
-enum RestockType {
+export enum RestockType {
     LegacyRestock = 'legacy_restock',
     NoRestock = 'no_restock',
     Cancel = 'cancel',
     Return = 'return',
 }
 
-enum TransactionKind {
+export enum TransactionKind {
     Authorization = 'authorization',
     Capture = 'capture',
     Sale = 'sale',
@@ -126,7 +126,7 @@ enum DiscrepancyReason {
     Other = 'other',
 }
 
-enum CancelReason {
+export enum CancelReason {
     Customer = 'customer',
     Inventory = 'inventory',
     Fraud = 'fraud',

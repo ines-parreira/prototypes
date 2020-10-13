@@ -1,19 +1,17 @@
-//@flow
 import memoizeOne from 'memoize-one'
 
-import {
-    FACEBOOK_COMMENT_SOURCE,
-    INSTAGRAM_AD_COMMENT_SOURCE,
-    INSTAGRAM_COMMENT_SOURCE,
-} from '../../config/ticket.ts'
+import {TicketMessageSourceType} from '../../business/types/ticket'
 
 import type {TicketMessage} from './types'
 
-export const isTicketMessage = (obj: any) => obj.isMessage
+export const isTicketMessage = (obj: Record<string, unknown>) =>
+    obj.isMessage as boolean
 
-export const isTicketEvent = (obj: any) => obj.isEvent
+export const isTicketEvent = (obj: Record<string, unknown>) =>
+    obj.isEvent as boolean
 
-export const isTicketSatisfactionSurvey = (obj: any) => obj.isSatisfactionSurvey
+export const isTicketSatisfactionSurvey = (obj: Record<string, unknown>) =>
+    obj.isSatisfactionSurvey as boolean
 
 export const hasFailedAction = memoizeOne((message: TicketMessage): boolean => {
     if (!message.actions) {
@@ -50,11 +48,12 @@ export const isFailed = (message: TicketMessage): boolean => {
 export const isTicketMessageHidden = (message: TicketMessage): boolean => {
     if (message && message.source && message.source.type) {
         const isInstagramComment = [
-            INSTAGRAM_COMMENT_SOURCE,
-            INSTAGRAM_AD_COMMENT_SOURCE,
+            TicketMessageSourceType.InstagramComment,
+            TicketMessageSourceType.InstagramAdComment,
         ].includes(message.source.type)
         const isFacebookComment =
-            message.source && message.source.type === FACEBOOK_COMMENT_SOURCE
+            message.source &&
+            message.source.type === TicketMessageSourceType.FacebookComment
         if (isInstagramComment || isFacebookComment) {
             if (message.meta && message.meta.hidden_datetime) {
                 return true
@@ -66,7 +65,7 @@ export const isTicketMessageHidden = (message: TicketMessage): boolean => {
 
 export const isTicketMessageDeleted = (message: TicketMessage): boolean => {
     if (message && message.source && message.source.type) {
-        if (message.source.type === FACEBOOK_COMMENT_SOURCE) {
+        if (message.source.type === TicketMessageSourceType.FacebookComment) {
             if (message.meta && message.meta.deleted_datetime) {
                 return true
             }

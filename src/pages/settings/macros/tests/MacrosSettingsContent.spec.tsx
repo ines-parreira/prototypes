@@ -5,7 +5,7 @@ import React, {ComponentProps} from 'react'
 import {browserHistory} from 'react-router'
 import {Button} from 'reactstrap'
 
-import {macros as macrosFixtures} from '../../../../fixtures/macro.js'
+import {macros as macrosFixtures} from '../../../../fixtures/macro'
 import {fetchMacros} from '../../../../models/macro/resources'
 import Pagination from '../../../common/components/Pagination.js'
 import Search from '../../../common/components/Search.js'

@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
-import plan from '../fixtures/plan'
+import plan from '../fixtures/plan.ts'
 import * as utils from '../utils.ts'
 import TICKET_LANGUAGES from '../config/ticketLanguages.ts'
 import schemasJSON from '../fixtures/openapi.json'

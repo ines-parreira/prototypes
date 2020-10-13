@@ -7,7 +7,7 @@ import {shallow} from 'enzyme'
 import {
     shopifyDraftOrderPayloadFixture,
     shopifySuggestedRefundFixture,
-} from '../../../../../../../../../../../../../fixtures/shopify'
+} from '../../../../../../../../../../../../../fixtures/shopify.ts'
 import OrderTable from '../OrderTable'
 
 describe('<OrderTable/>', () => {

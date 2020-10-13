@@ -3,5 +3,9 @@ export {
     TAGS_ADDED_KEY,
     TAGS_REMOVED_KEY,
 } from './constants.ts'
-export * from './predicates'
+export {
+    isViaRuleEvent,
+    isRuleExecutedType,
+    isSystemRuleEvent,
+} from './predicates.ts'
 export * from './types.js'

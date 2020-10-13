@@ -6,7 +6,7 @@ import {
     SMOOCH_INSIDE_INTEGRATION_TYPE,
 } from '../../../constants/integration.ts'
 
-import {integrationsState} from '../../../fixtures/integrations'
+import {integrationsState} from '../../../fixtures/integrations.ts'
 import {getIntegrationsState, getEmailIntegrations} from '../selectors.ts'
 import reducer, {initialState} from '../reducers.ts'
 import * as types from '../constants'

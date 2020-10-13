@@ -11,20 +11,20 @@ import {getRefundOrderState} from '../../../../../../../../../../../../state/inf
 import {
     infobarActionsStateFixture,
     refundOrderStateFixture,
-} from '../../../../../../../../../../../../fixtures/infobarActions'
+} from '../../../../../../../../../../../../fixtures/infobarActions.ts'
 import {
     shopifyLineItemFixture,
     shopifyOrderFixture,
     shopifyRefundOrderPayloadFixture,
     shopifySuggestedRefundFixture,
-} from '../../../../../../../../../../../../fixtures/shopify'
+} from '../../../../../../../../../../../../fixtures/shopify.ts'
 import {
     getFinalRefundOrderPayload,
     initRefundOrderLineItems,
     initRefundOrderPayload,
 } from '../../../../../../../../../../../../business/shopify/order.ts'
 import {getIntegrationsByTypes} from '../../../../../../../../../../../../state/integrations/selectors.ts'
-import {integrationsStateWithShopify} from '../../../../../../../../../../../../fixtures/integrations'
+import {integrationsStateWithShopify} from '../../../../../../../../../../../../fixtures/integrations.ts'
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../../constants/integration.ts'
 import RefundOrderModal, {RefundOrderModalComponent} from '../RefundOrderModal'
 import {ShopifyAction} from '../../../constants'

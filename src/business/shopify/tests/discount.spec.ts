@@ -6,7 +6,7 @@ import {
     shopifyCustomLineItemFixture,
     shopifyDraftOrderPayloadFixture,
     shopifyLineItemFixture,
-} from '../../../fixtures/shopify.js'
+} from '../../../fixtures/shopify'
 import {addCustomLineItem} from '../draftOrder'
 import {
     getDiscountAmount,

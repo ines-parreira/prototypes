@@ -8,7 +8,7 @@ import {
     shopifyAppliedDiscountFixture,
     shopifyDraftOrderPayloadFixture,
     shopifyProductFixture,
-} from '../../../../../../../../../../../../../fixtures/shopify'
+} from '../../../../../../../../../../../../../fixtures/shopify.ts'
 import {
     EVENTS,
     logEvent,

@@ -1,4 +1,3 @@
-//@flow
 export const currentAccountState = {
     deleted_datetime: null,
     settings: [

@@ -4,7 +4,7 @@ import {shallow} from 'enzyme'
 import moment from 'moment'
 
 import Container from '../Container'
-import {message} from '../../../../../../models/ticket/tests/mocks'
+import {message} from '../../../../../../models/ticket/tests/mocks.ts'
 import css from '../Container.less'
 
 describe('Container', () => {

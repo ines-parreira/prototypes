@@ -14,7 +14,7 @@ import {
     shopifyProductFixture,
     shopifyShippingLineFixture,
     shopifyVariantFixture,
-} from '../../../../../fixtures/shopify'
+} from '../../../../../fixtures/shopify.ts'
 import {ShopifyAction} from '../../../../../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/constants'
 import {
     INTEGRATION_DATA_ITEM_TYPE_PRODUCT,
