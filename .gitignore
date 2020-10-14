@@ -76,7 +76,7 @@ target/
 .vscode/
 
 # js build files
-g/static/*/_build/*
+g/static/public/web-app/*
 
 # docker-compose env_file
 .env

@@ -13,24 +13,21 @@ const GORGIAS_ASSETS_URL = __PRODUCTION__ ? 'https://gorgias-assets.gorgias.io' 
 const BUNDLE_PUBLIC_PATH = 'http://acme.gorgias.docker:8080/'
 
 const srcDir = path.join(__dirname, 'g/static/private')
-const buildDir = path.join(srcDir, '_build')
-const jsBundleFile = __PRODUCTION__ ? `${HASH}.build.min.js` : 'build.js'
-const styleBundleFile = __PRODUCTION__ ? `${HASH}.build.min.css` : 'build.css'
-const vendorsBundleFile = __PRODUCTION__ ? `${HASH}.vendors.min.js` : 'vendors.js'
+const buildDir = path.join(__dirname, 'g/static/public/web-app')
+const jsBundleFile = __PRODUCTION__ ? `helpdesk.app.${HASH}.js` : 'helpdesk.app.js'
+const styleBundleFile = __PRODUCTION__ ? `helpdesk.app.${HASH}.css` : 'helpdesk.app.css'
+const vendorsBundleFile = __PRODUCTION__ ? `helpdesk.vendors.${HASH}.js` : 'helpdesk.vendors.js'
 
 const mode = __PRODUCTION__ ? 'production' : 'development'
 const devtool = __PRODUCTION__ ? 'source-map' : 'cheap-module-source-map'
 const devServer = {
-    contentBase: [
-        buildDir,
-        path.join(__dirname, 'g')
-    ],
+    contentBase: [buildDir, path.join(__dirname, 'g')],
     clientLogLevel: 'error',
     host: '0.0.0.0',
     // disable host check for dev env (if using proxy)
     disableHostCheck: !__PRODUCTION__,
     headers: {
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': '*',
     },
     stats: 'minimal',
 }
@@ -39,20 +36,20 @@ const optimization = {
         new TerserPlugin({
             cache: true,
             parallel: true,
-            sourceMap: true
+            sourceMap: true,
         }),
         new OptimizeCSSAssetsPlugin({
             cssProcessorOptions: {
                 map: {
-                    inline: false
-                }
-            }
-        })
-    ]
+                    inline: false,
+                },
+            },
+        }),
+    ],
 }
 const cssLoaderOptions = {
     sourceMap: true,
-    localIdentName: __PRODUCTION__ ? '[hash:base64]' : '[name]--[local]--[hash:base64:5]'
+    localIdentName: __PRODUCTION__ ? '[hash:base64]' : '[name]--[local]--[hash:base64:5]',
 }
 const urlLoader = {
     loader: 'url-loader',
@@ -61,16 +58,16 @@ const urlLoader = {
         fallback: 'file-loader',
         emitFile: false,
         name: `${GORGIAS_ASSETS_URL}/[path][name].[ext]`,
-        context: 'g/'
-    }
+        context: 'g/',
+    },
 }
 const imageExtRegex = /\.(jpe?g|png|gif)$/i
 const fontExtRegex = /\.(ttf|eot|svg|woff(2)?)$/i
 
 const cssOnlyPackages = ['bootstrap']
-const vendors = Object.keys(pkg.dependencies).filter(m => !cssOnlyPackages.includes(m))
+const vendors = Object.keys(pkg.dependencies).filter((m) => !cssOnlyPackages.includes(m))
 
-const outputOptions = __PRODUCTION__? {} : {publicPath: BUNDLE_PUBLIC_PATH}
+const outputOptions = __PRODUCTION__ ? {} : {publicPath: BUNDLE_PUBLIC_PATH}
 const aliasOptions = __PRODUCTION__ ? {} : {'react-dom': '@hot-loader/react-dom'}
 
 module.exports = (env = {}) => {
@@ -99,13 +96,10 @@ module.exports = (env = {}) => {
                 rules: [
                     {
                         test: /\.css$/,
-                        use: [
-                            'style-loader',
-                            'css-loader'
-                        ]
-                    }
-                ]
-            }
+                        use: ['style-loader', 'css-loader'],
+                    },
+                ],
+            },
         }
     }
 
@@ -115,7 +109,7 @@ module.exports = (env = {}) => {
         devServer,
         devtool,
         node: {
-            fs: 'empty'
+            fs: 'empty',
         },
         entry: {
             build: `${srcDir}/js/main.tsx`,
@@ -130,7 +124,7 @@ module.exports = (env = {}) => {
                 {
                     test: /\.(js|tsx?)$/i,
                     exclude: /node_modules/,
-                    loader: 'babel-loader?cacheDirectory'
+                    loader: 'babel-loader?cacheDirectory',
                 },
                 {
                     test: /\.css$/i,
@@ -138,9 +132,9 @@ module.exports = (env = {}) => {
                         MiniCssExtractPlugin.loader,
                         {
                             loader: 'css-loader',
-                            options: cssLoaderOptions
-                        }
-                    ]
+                            options: cssLoaderOptions,
+                        },
+                    ],
                 },
                 {
                     test: /\.less$/i,
@@ -150,56 +144,53 @@ module.exports = (env = {}) => {
                             options: {
                                 hmr: !__PRODUCTION__,
                                 reloadAll: false,
-                            }
+                            },
                         },
                         {
                             loader: 'css-loader',
-                            options: cssLoaderOptions
+                            options: cssLoaderOptions,
                         },
                         {
                             loader: 'less-loader',
-                            options: cssLoaderOptions
-                        }
-                    ]
+                            options: cssLoaderOptions,
+                        },
+                    ],
                 },
                 {
                     test: imageExtRegex,
                     exclude: /node_modules/,
-                    use: urlLoader
+                    use: urlLoader,
                 },
                 // custom fonts
                 {
                     test: fontExtRegex,
                     exclude: /node_modules/,
-                    loader: urlLoader
+                    loader: urlLoader,
                 },
                 // audio
                 {
                     test: /\.mp3$/i,
-                    loader: urlLoader
+                    loader: urlLoader,
                 },
                 // embed node_modules assets
                 {
                     test: {
-                        or: [
-                            imageExtRegex,
-                            fontExtRegex
-                        ]
+                        or: [imageExtRegex, fontExtRegex],
                     },
                     include: /node_modules/,
-                    loader: 'url-loader'
-                }
-            ]
+                    loader: 'url-loader',
+                },
+            ],
         },
         plugins: [
             new MiniCssExtractPlugin({
                 filename: styleBundleFile,
             }),
             new webpack.DllReferencePlugin({
-                manifest: require(`${buildDir}/vendors.${mode}.manifest.json`)
+                manifest: require(`${buildDir}/vendors.${mode}.manifest.json`),
             }),
             new ManifestPlugin({
-                seed: require(`${buildDir}/manifest.json`)
+                seed: require(`${buildDir}/manifest.json`),
             }),
             new webpack.ProvidePlugin({
                 Tether: 'tether',
@@ -211,6 +202,6 @@ module.exports = (env = {}) => {
                 css: `${srcDir}/css/`,
             },
             extensions: ['.ts', '.tsx', '.js'],
-        }
+        },
     }
 }
