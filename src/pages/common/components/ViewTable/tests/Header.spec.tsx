@@ -82,10 +82,7 @@ describe('ViewTable::Header', () => {
                 })}
                 isUpdate={false}
             />
-        )
-            .dive()
-            .dive()
-            .dive()
+        ).dive()
         expect(component).toMatchSnapshot()
     })
 
@@ -101,27 +98,21 @@ describe('ViewTable::Header', () => {
                     } as unknown) as View)
                 )}
             />
-        )
-            .dive()
-            .dive()
-            .dive()
+        ).dive()
         expect(component).toMatchSnapshot()
     })
 
     describe('default view', () => {
         let component: ShallowWrapper
         beforeEach(() => {
-            component = shallow(<HeaderMock {...minProps} />)
-                .dive()
-                .dive()
-                .dive()
+            component = shallow(<HeaderMock {...minProps} />).dive()
         })
 
         it('displays', () => {
             expect(component).toMatchSnapshot()
         })
 
-        it('should update search of the active view and fetch view items on search input change', () => {
+        it('should update search of the active view and not fetch view items on search input change', () => {
             const searchTerm = 'term1'
             const searchOnChange = (component.find(Search).props() as {
                 onChange: (search: string) => void
@@ -134,12 +125,7 @@ describe('ViewTable::Header', () => {
                 ),
                 false
             )
-            expect(viewsActions.fetchViewItems).toHaveBeenLastCalledWith(
-                null,
-                null,
-                null,
-                expect.any(Object)
-            )
+            expect(viewsActions.fetchViewItems).not.toHaveBeenCalled()
         })
 
         it('go in search mode when focusing the search input', () => {
@@ -153,10 +139,7 @@ describe('ViewTable::Header', () => {
         it('should not go to the search mode focusing the search input when already in search mode', () => {
             const component = shallow(
                 <HeaderMock {...minProps} isSearch={true} />
-            )
-                .dive()
-                .dive()
-                .dive()
+            ).dive()
             ;(component.find(Search).props() as {onFocus: () => void}).onFocus()
             expect(browserHistory.push).not.toHaveBeenCalled()
         })
@@ -172,10 +155,7 @@ describe('ViewTable::Header', () => {
                         } as unknown) as View)
                     )}
                 />
-            )
-                .dive()
-                .dive()
-                .dive()
+            ).dive()
             expect(component).toMatchSnapshot()
         })
 
@@ -213,10 +193,7 @@ describe('ViewTable::Header', () => {
                         {...minProps}
                         store={configureStore(storeWithActiveView(activeView))}
                     />
-                )
-                    .dive()
-                    .dive()
-                    .dive()
+                ).dive()
                 expect(component).toMatchSnapshot()
             })
 
@@ -229,10 +206,7 @@ describe('ViewTable::Header', () => {
                         {...minProps}
                         store={configureStore(storeWithActiveView(activeView))}
                     />
-                )
-                    .dive()
-                    .dive()
-                    .dive()
+                ).dive()
                 expect(component).toMatchSnapshot()
             })
 
@@ -247,10 +221,7 @@ describe('ViewTable::Header', () => {
                         {...minProps}
                         store={configureStore(storeWithActiveView(activeView))}
                     />
-                )
-                    .dive()
-                    .dive()
-                    .dive()
+                ).dive()
                 expect(component).toMatchSnapshot()
             })
         })
@@ -265,10 +236,7 @@ describe('ViewTable::Header', () => {
                         {...minProps}
                         store={configureStore(storeWithActiveView(activeView))}
                     />
-                )
-                    .dive()
-                    .dive()
-                    .dive()
+                ).dive()
                 ;(component.find(EmojiSelect).props() as {
                     onEmojiSelect: (emoji: string) => void
                 }).onEmojiSelect(emoji)
@@ -288,10 +256,7 @@ describe('ViewTable::Header', () => {
                         {...minProps}
                         store={configureStore(storeWithActiveView(activeView))}
                     />
-                )
-                    .dive()
-                    .dive()
-                    .dive()
+                ).dive()
                 ;(component.find(EmojiSelect).props() as {
                     onEmojiSelect: (emoji: string) => void
                 }).onEmojiSelect(emoji)
@@ -317,10 +282,7 @@ describe('ViewTable::Header', () => {
                         {...minProps}
                         store={configureStore(storeWithActiveView(activeView))}
                     />
-                )
-                    .dive()
-                    .dive()
-                    .dive()
+                ).dive()
 
                 ;(component.find(EmojiSelect).props() as {
                     onEmojiClear: () => void
@@ -342,10 +304,7 @@ describe('ViewTable::Header', () => {
                         {...minProps}
                         store={configureStore(storeWithActiveView(activeView))}
                     />
-                )
-                    .dive()
-                    .dive()
-                    .dive()
+                ).dive()
 
                 ;(component.find(EmojiSelect).props() as {
                     onEmojiClear: () => void

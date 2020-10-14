@@ -14,9 +14,6 @@ import shortcutManager from '../../../../services/shortcutManager'
 import ViewName from '../ViewName/index.js'
 import Tooltip from '../Tooltip.js'
 import {RootState} from '../../../../state/types'
-import withCancellableRequest, {
-    CancellableRequestInjectedProps,
-} from '../../utils/withCancellableRequest'
 
 import EmojiSelect from './EmojiSelect/index.js'
 import css from './Header.less'
@@ -28,13 +25,7 @@ type OwnProps = {
     viewButtons?: React.ReactNode
 }
 
-type Props = OwnProps &
-    ConnectedProps<typeof connector> &
-    CancellableRequestInjectedProps<
-        'fetchViewItemsCancellable',
-        'cancelFetchViewItemsCancellable',
-        typeof viewsActions.fetchViewItems
-    >
+type Props = OwnProps & ConnectedProps<typeof connector>
 
 type State = {
     askDeleteConfirmation: boolean
@@ -71,7 +62,7 @@ export class HeaderContainer extends React.Component<Props, State> {
     }
 
     _search = (searchQuery: string) => {
-        const {updateView, activeView, fetchViewItemsCancellable} = this.props
+        const {updateView, activeView} = this.props
 
         if (searchQuery !== activeView.get('search')) {
             updateView(
@@ -80,7 +71,6 @@ export class HeaderContainer extends React.Component<Props, State> {
                 }),
                 false
             )
-            void fetchViewItemsCancellable(null, null, null)
         }
     }
 
@@ -282,11 +272,4 @@ const connector = connect(
     }
 )
 
-export default withCancellableRequest<
-    'fetchViewItemsCancellable',
-    'cancelFetchViewItemsCancellable',
-    typeof viewsActions.fetchViewItems
->(
-    'fetchViewItemsCancellable',
-    viewsActions.fetchViewItems
-)(connector(HeaderContainer))
+export default connector(HeaderContainer)
