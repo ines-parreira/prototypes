@@ -12,6 +12,7 @@ exports[`SocketManager onDisconnect() should update the manager's \`isConnected\
 Array [
   Array [
     Object {
+      "allowHTML": true,
       "dismissible": false,
       "id": "696480246",
       "message": "You are not connected to live ticket updates. <u>Please reload the page</u>",

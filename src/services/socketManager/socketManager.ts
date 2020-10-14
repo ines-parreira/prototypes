@@ -138,6 +138,7 @@ export class SocketManager {
                 message:
                     'You are not connected to live ticket updates. <u>Please reload the page</u>',
                 onClick: () => window.location.reload(false),
+                allowHTML: true,
             })
         )
     }
