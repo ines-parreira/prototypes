@@ -20,7 +20,6 @@ import {Customer} from './customers/types'
 import {Widget, WidgetContextType} from './widgets/types'
 
 export type StoreState = {
-    activity: Map<any, any>
     agents: Map<any, any>
     auths: List<any>
     billing: Map<any, any>
