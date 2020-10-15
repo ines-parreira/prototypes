@@ -1,21 +1,29 @@
-import React, {ComponentProps} from 'react'
+// @flow
+import React from 'react'
 import {Button} from 'reactstrap'
-import {Map, List} from 'immutable'
 
-import {RuleItemActions} from '../../../../settings/rules/detail/components/RuleItem/RuleItem'
-import {getSyntaxTreeLeaves} from '../utils.js'
+import Expression from '../expression/Expression'
 
-import Expression from './Expression'
+import {getSyntaxTreeLeaves} from '../utils'
+
+/*
+ interface LogicalExpression <: Expression {
+ type: "LogicalExpression";
+ operator: LogicalOperator;
+ left: Expression;
+ right: Expression;
+ }
+ */
 
 type Props = {
-    rule: Map<any, any>
-    actions: RuleItemActions
-    left: Partial<ComponentProps<typeof Expression>> & {type: string}
-    leftsiblings?: List<any>
-    operator: string
-    parent: List<any>
-    right: Partial<ComponentProps<typeof Expression>> & {type: string}
-    schemas: Map<any, any>
+    rule: Object,
+    actions: Object,
+    left: Object,
+    leftsiblings?: Object,
+    operator: string,
+    parent: Object,
+    right: Object,
+    schemas: Object,
 }
 
 export default class LogicalExpression extends React.Component<Props> {
@@ -35,9 +43,7 @@ export default class LogicalExpression extends React.Component<Props> {
         let leftsiblings3
 
         if (leftsiblings) {
-            leftsiblings2 = leftsiblings.concat(
-                getSyntaxTreeLeaves(left)
-            ) as List<any>
+            leftsiblings2 = leftsiblings.concat(getSyntaxTreeLeaves(left))
             leftsiblings3 = leftsiblings2.push('operator')
         }
 

@@ -1,7 +1,7 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 
-import Expression from '../Expression.tsx'
+import Expression from '../Expression'
 
 describe('Expression component', () => {
     it('should render UnknownSyntax because the passed type is invalid, and pass all props to child', () => {

@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {AddLogicalCondition} from '../AddLogicalCondition.tsx'
+import {AddLogicalCondition} from '../AddLogicalCondition'
 import {toJS} from '../../../../../../utils.ts'
 
 describe('AddLogicalCondition component', () => {

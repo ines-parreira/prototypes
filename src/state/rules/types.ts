@@ -26,14 +26,12 @@ export type RulePriority = {
     priority: number
 }
 
-export type ObjectExpressionPropertyKey = {
-    type: 'Identifier'
-    name: string
-}
-
 export type ObjectExpressionProperty = {
     type: 'Property'
-    key: ObjectExpressionPropertyKey
+    key: {
+        type: 'Identifier'
+        name: string
+    }
     computed: boolean
     value: {
         type: 'Literal'
@@ -58,7 +56,6 @@ export enum RuleOperation {
     Delete = 'DELETE',
     UpdateLogicalOperator = 'UPDATE_LOGICAL_OPERATOR',
     DeleteBinaryExpression = 'DELETE_BINARY_EXPRESSION',
-    UpdateIfStatement = 'UPDATE_IF_STATEMENT',
 }
 
 export enum RuleEvent {
@@ -92,9 +89,4 @@ export enum TimedeltaOperator {
 export enum DatetimeOperator {
     GTE = 'gte',
     LTE = 'lte',
-}
-
-export enum RuleObjectType {
-    Ticket = 'Ticket',
-    TicketMessage = 'TicketMessage',
 }

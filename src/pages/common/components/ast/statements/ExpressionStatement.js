@@ -3,7 +3,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 
-import Expression from '../expression/Expression.tsx'
+import Expression from '../expression/Expression'
 import {DeleteBlockStatementItem} from '../operations'
 import Hoverable from '../../Hoverable'
 

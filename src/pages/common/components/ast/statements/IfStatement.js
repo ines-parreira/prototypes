@@ -7,7 +7,7 @@ import {
     AddLogicalCondition,
     DeleteBlockStatementItem,
 } from '../operations'
-import Expression from '../expression/Expression.tsx'
+import Expression from '../expression/Expression'
 import {computeLeftPadding} from '../utils'
 import Foldable from '../Foldable'
 

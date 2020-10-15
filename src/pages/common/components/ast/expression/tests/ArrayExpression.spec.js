@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import ArrayExpression from '../ArrayExpression.tsx'
+import ArrayExpression from '../ArrayExpression'
 
 describe('ast', () => {
     describe('expressions', () => {

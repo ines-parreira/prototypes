@@ -1,18 +1,16 @@
+// @flow
 import React from 'react'
-import {List, Map} from 'immutable'
 
-import Errors from '../Errors.js'
-import Widget from '../Widget.js'
-
-import {RuleItemActions} from '../../../../settings/rules/detail/components/RuleItem/RuleItem'
+import Errors from '../Errors'
+import Widget from '../Widget'
 
 type Props = {
-    actions: RuleItemActions
-    elements: {value?: Maybe<string>}[]
-    leftsiblings: List<any>
-    parent: List<any>
-    rule: Map<any, any>
-    schemas: Map<any, any>
+    actions: Object,
+    elements: Array<*>,
+    leftsiblings: Object,
+    parent: Object,
+    rule: Object,
+    schemas: Object,
 }
 
 export default class ArrayExpression extends React.Component<Props> {

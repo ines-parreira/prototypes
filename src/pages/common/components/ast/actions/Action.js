@@ -1,32 +1,23 @@
-import React, {ReactNode} from 'react'
+// @flow
+import React from 'react'
 import classnames from 'classnames'
-import {Map, List} from 'immutable'
 import {Card, CardBody} from 'reactstrap'
 
 import _isFunction from 'lodash/isFunction'
 import _isArray from 'lodash/isArray'
 
-import {computeLeftPadding} from '../utils.js'
-import {templateRegex} from '../../../utils/template.js'
+import {computeLeftPadding} from '../utils'
+import {templateRegex} from '../../../utils/template'
 
-import Errors from '../Errors.js'
+import Errors from '../Errors'
 
-import {isEmailList, findProperty} from '../../../../../utils'
-import {RuleItemActions} from '../../../../settings/rules/detail/components/RuleItem/RuleItem'
+import {isEmailList, findProperty} from '../../../../../utils.ts'
 
 import ActionSelect from './ActionSelect'
 
-type Email = {
-    body_text?: Maybe<string>
-    to?: Maybe<string[]>
-    cc?: Maybe<string[]>
-    bcc?: Maybe<string[]>
-    tags?: Maybe<string[]>
-}
-
 export function validateEmailList(
     value: string,
-    schemas: Map<any, any>
+    schemas: Object
 ): string | void {
     let emailList = value
 
@@ -52,13 +43,13 @@ export function validateEmailList(
     }
 }
 
-export function validateBody(values: Email): string | void {
+export function validateBody(values: Object): string | void {
     if (!values.body_text) {
         return 'Body must be filled'
     }
 }
 
-export function validateSendEmail(values: Email): Array<string> {
+export function validateSendEmail(values: Object): Array<string> {
     const errors = []
 
     if (!values.body_text) {
@@ -71,59 +62,13 @@ export function validateSendEmail(values: Email): Array<string> {
     return errors
 }
 
-export function validateTags(values: Email): string | void {
+export function validateTags(values: Object): string | void {
     if (!values.tags) {
         return 'Tags cannot be empty'
     }
 }
 
-type ValidateFn =
-    | typeof validateEmailList
-    | typeof validateBody
-    | typeof validateSendEmail
-    | typeof validateTags
-
-export type ActionConfig = {
-    type?: string
-    compact: boolean
-    name: string
-    args?: {
-        subject?: {
-            name?: string
-            widget?: string
-            placeholder?: string
-        }
-        body_text?: {
-            hide: boolean
-        }
-        body_html?: {
-            name: string
-            widget: string
-            textField: string
-        }
-        to?: {
-            name: string
-            placeholder: string
-            required: boolean
-            widget: string
-            validate: ValidateFn
-        }
-        cc?: {
-            name: string
-            widget: string
-            validate: ValidateFn
-        }
-        bcc?: {
-            name: string
-            widget: string
-            validate: ValidateFn
-        }
-    }
-    validate?: ValidateFn
-    note?: string
-}
-
-export const actionsConfig: {[key: string]: ActionConfig} = {
+export const actionsConfig = {
     notify: {
         type: 'system',
         compact: false,
@@ -247,14 +192,12 @@ export const actionsConfig: {[key: string]: ActionConfig} = {
 }
 
 type Props = {
-    rule: Map<any, any>
-    actions: RuleItemActions
-    children: ReactNode
-    parent: List<any>
-    value: keyof typeof actionsConfig
-    depth: number
-    schemas?: Map<any, any>
-    leftsiblings?: List<any>
+    rule: Object,
+    actions: Object,
+    children: Object,
+    parent: Object,
+    value: string,
+    depth: number,
 }
 
 export default class Action extends React.Component<Props> {
@@ -287,22 +230,16 @@ export default class Action extends React.Component<Props> {
             return null
         }
 
-        const values: {[key: string]: unknown} = {}
-        let errors: string[] | string = []
+        const values = {}
+        let errors = []
 
         // build an object with the keys and values of the action
-        ;(children as {
-            props: {
-                properties: {key: {name: string}; value: {value: unknown}}[]
-            }
-        }).props.properties.forEach((property) => {
+        children.props.properties.forEach((property) => {
             values[property.key.name] = property.value.value
         })
 
         if (values && _isFunction(config.validate)) {
-            errors = (config as {validate: (values: any) => string[]}).validate(
-                values
-            )
+            errors = config.validate(values)
         }
 
         if (!_isArray(errors)) {
@@ -311,7 +248,7 @@ export default class Action extends React.Component<Props> {
 
         // add 'compact' as a property of children
         children = React.Children.map(children, (child) =>
-            React.cloneElement(child as any, {compact: !!config.compact})
+            React.cloneElement(child, {compact: !!config.compact})
         )
 
         if (config.compact) {
@@ -365,7 +302,7 @@ export default class Action extends React.Component<Props> {
                     actions={actions}
                     rule={rule}
                     parent={parent.push('value')}
-                    value={value as any}
+                    value={value}
                 />
                 {this._renderBody()}
             </div>
