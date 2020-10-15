@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import ActionSelect from '../ActionSelect'
+import ActionSelect from '../ActionSelect.tsx'
 
 const commonProps = {
     actions: {

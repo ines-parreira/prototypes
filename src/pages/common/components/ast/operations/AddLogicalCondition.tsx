@@ -1,7 +1,6 @@
-// @flow
 import React from 'react'
 import PropTypes from 'prop-types'
-import type {List} from 'immutable'
+import {List, Map} from 'immutable'
 import {
     UncontrolledButtonDropdown,
     DropdownToggle,
@@ -10,13 +9,15 @@ import {
     Button,
 } from 'reactstrap'
 
-import Hoverable from '../../Hoverable'
+import {RuleOperation} from '../../../../../state/rules/types'
+import {RuleItemActions} from '../../../../settings/rules/detail/components/RuleItem/RuleItem'
+import Hoverable from '../../Hoverable.js'
 
 type Props = {
-    rule: Object,
-    actions: Object,
-    parent: List<*>,
-    title: string,
+    rule: Map<any, any>
+    actions: RuleItemActions
+    parent: List<any>
+    title: string
 }
 
 export class AddLogicalCondition extends React.Component<Props> {
@@ -58,7 +59,11 @@ export class AddLogicalCondition extends React.Component<Props> {
         }
 
         const {actions, parent} = this.props
-        actions.modifyCodeAST(parent, actionNode, 'UPDATE_LOGICAL_OPERATOR')
+        actions.modifyCodeAST(
+            parent,
+            actionNode,
+            RuleOperation.UpdateLogicalOperator
+        )
     }
 
     _handleOrClick = () => {
@@ -95,7 +100,11 @@ export class AddLogicalCondition extends React.Component<Props> {
         }
 
         const {actions, parent} = this.props
-        actions.modifyCodeAST(parent, actionNode, 'UPDATE_LOGICAL_OPERATOR')
+        actions.modifyCodeAST(
+            parent,
+            actionNode,
+            RuleOperation.UpdateLogicalOperator
+        )
     }
 
     /**
@@ -110,7 +119,11 @@ export class AddLogicalCondition extends React.Component<Props> {
         }
 
         const {actions, parent} = this.props
-        actions.modifyCodeAST(parent.pop(), actionNode, 'UPDATE_IF_STATEMENT')
+        actions.modifyCodeAST(
+            parent.pop(),
+            actionNode,
+            RuleOperation.UpdateIfStatement
+        )
     }
 
     /**
@@ -118,7 +131,7 @@ export class AddLogicalCondition extends React.Component<Props> {
      */
     _deleteIfStatement = () => {
         const {actions, parent} = this.props
-        actions.modifyCodeAST(parent.pop(), null, 'DELETE')
+        actions.modifyCodeAST(parent.pop(), null, RuleOperation.Delete)
     }
 
     render() {

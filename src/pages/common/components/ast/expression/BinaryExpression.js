@@ -5,7 +5,7 @@ import Widget from '../Widget'
 
 import {getSyntaxTreeLeaves} from '../utils'
 
-import Expression from './Expression'
+import Expression from './Expression.tsx'
 
 /*
  interface BinaryExpression <: Expression {

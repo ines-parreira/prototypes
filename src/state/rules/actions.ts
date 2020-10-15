@@ -34,7 +34,7 @@ export const receiveRules = (rules: Rule[]) => ({
 export const modifyCodeAST = (
     id: string,
     path: List<any>,
-    value: string,
+    value: Maybe<string | Record<string, unknown>>,
     operation: RuleOperation
 ) => (
     dispatch: StoreDispatch,
