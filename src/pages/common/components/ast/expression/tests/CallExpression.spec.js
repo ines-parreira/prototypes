@@ -2,7 +2,7 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 
-import {WrappedCallExpression} from '../CallExpression'
+import {WrappedCallExpression} from '../CallExpression.tsx'
 
 const commonProps = {
     rule: {foo: 'rule'},

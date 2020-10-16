@@ -10,7 +10,7 @@ import Action, {
     validateBody,
     validateSendEmail,
     validateTags,
-} from '../Action'
+} from '../Action.tsx'
 
 const schemas = fromJS(schemasJSON)
 

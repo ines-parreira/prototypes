@@ -1,4 +1,4 @@
-export AddActionOrIfStatement from './AddActionOrIfStatement'
-export AddLogicalCondition from './AddLogicalCondition'
+export AddActionOrIfStatement from './AddActionOrIfStatement.tsx'
+export AddLogicalCondition from './AddLogicalCondition.tsx'
 export DeleteBinaryExpression from './DeleteBinaryExpression'
-export DeleteBlockStatementItem from './DeleteBlockStatementItem'
+export DeleteBlockStatementItem from './DeleteBlockStatementItem.tsx'

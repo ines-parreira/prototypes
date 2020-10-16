@@ -25,6 +25,7 @@ type Props = {
     config?: Object,
     actions: Object,
     rule: Object,
+    leftsiblings: List<any>,
 }
 
 export default class Property extends React.Component<Props> {

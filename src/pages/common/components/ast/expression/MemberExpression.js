@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import Expression from '../expression/Expression'
+import Expression from '../expression/Expression.tsx'
 
 import {getSyntaxTreeLeaves} from '../utils'
 import {OBJECT_DEFINITIONS} from '../../../../../state/rules/constants'

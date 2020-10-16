@@ -1,6 +1,5 @@
-// @flow
 import React from 'react'
-import type {Map} from 'immutable'
+import {Map, List} from 'immutable'
 import {
     UncontrolledButtonDropdown,
     DropdownToggle,
@@ -8,19 +7,22 @@ import {
     DropdownItem,
 } from 'reactstrap'
 
+import {RuleOperation} from '../../../../../state/rules/types'
+import {RuleItemActions} from '../../../../settings/rules/detail/components/RuleItem/RuleItem'
+
 import {actionsConfig} from './Action'
 
 type Props = {
-    rule: Map<*, *>,
-    actions: Object,
-    parent: Object,
-    value: string,
+    rule: Map<any, any>
+    actions: RuleItemActions
+    parent: List<any>
+    value: string
 }
 
 export default class ActionSelect extends React.Component<Props> {
     _handleClick = (value: string) => {
         const {actions, parent} = this.props
-        actions.modifyCodeAST(parent, value, 'UPDATE')
+        actions.modifyCodeAST(parent, value, RuleOperation.Update)
     }
 
     render() {

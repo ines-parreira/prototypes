@@ -1,7 +1,6 @@
-// @flow
 import React from 'react'
 import PropTypes from 'prop-types'
-import type {List} from 'immutable'
+import {List} from 'immutable'
 import {
     UncontrolledButtonDropdown,
     DropdownToggle,
@@ -9,12 +8,27 @@ import {
     DropdownItem,
 } from 'reactstrap'
 
-import Hoverable from '../../Hoverable'
-import {computeLeftPadding} from '../utils'
+import {RuleOperation} from '../../../../../state/rules/types'
+import {RuleItemActions} from '../../../../settings/rules/detail/components/RuleItem/RuleItem'
+import Hoverable from '../../Hoverable.js'
+import {computeLeftPadding} from '../utils.js'
+
+type Props = {
+    rule: Map<any, any>
+    actions: RuleItemActions
+    parent: List<any>
+    title: string
+    depth: number
+    removable: boolean
+}
 
 export class AddActionOrIfStatement extends React.Component<Props> {
     static defaultProps = {
         removable: false,
+    }
+
+    static contextTypes = {
+        hovered: PropTypes.bool,
     }
 
     _addAction = () => {
@@ -41,7 +55,11 @@ export class AddActionOrIfStatement extends React.Component<Props> {
         }
 
         const {actions, parent} = this.props
-        actions.modifyCodeAST(parent.push('body'), actionNode, 'INSERT')
+        actions.modifyCodeAST(
+            parent.push('body'),
+            actionNode,
+            RuleOperation.Insert
+        )
     }
 
     _addIfStatement = () => {
@@ -80,7 +98,11 @@ export class AddActionOrIfStatement extends React.Component<Props> {
         }
 
         const {actions, parent} = this.props
-        actions.modifyCodeAST(parent.push('body'), actionNode, 'INSERT')
+        actions.modifyCodeAST(
+            parent.push('body'),
+            actionNode,
+            RuleOperation.Insert
+        )
     }
 
     /**
@@ -89,7 +111,7 @@ export class AddActionOrIfStatement extends React.Component<Props> {
      */
     _deleteStatement = () => {
         const {actions, parent} = this.props
-        actions.modifyCodeAST(parent, null, 'DELETE')
+        actions.modifyCodeAST(parent, null, RuleOperation.Delete)
     }
 
     render() {
@@ -132,19 +154,6 @@ export class AddActionOrIfStatement extends React.Component<Props> {
             </UncontrolledButtonDropdown>
         )
     }
-}
-
-type Props = {
-    rule: Object,
-    actions: Object,
-    parent: List<*>,
-    title: string,
-    depth: number,
-    removable: boolean,
-}
-
-AddActionOrIfStatement.contextTypes = {
-    hovered: PropTypes.bool,
 }
 
 export default Hoverable(AddActionOrIfStatement)

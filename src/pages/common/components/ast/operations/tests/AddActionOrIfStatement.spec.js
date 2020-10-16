@@ -1,7 +1,7 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 
-import {AddActionOrIfStatement} from '../AddActionOrIfStatement'
+import {AddActionOrIfStatement} from '../AddActionOrIfStatement.tsx'
 
 describe('AddActionOrIfStatement component', () => {
     const commonProps = {

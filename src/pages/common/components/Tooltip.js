@@ -1,5 +1,5 @@
 // @flow
-import React from 'react'
+import React, {type ElementProps as ComponentProps} from 'react'
 import {UncontrolledTooltip} from 'reactstrap'
 
 import type {Node} from 'react'
@@ -10,7 +10,7 @@ type Props = {
     children: Node,
     delay?: number | {show: number, hide: number},
     disabled?: boolean,
-}
+} & ComponentProps<typeof UncontrolledTooltip>
 
 export default class Tooltip extends React.Component<Props> {
     static defaultProps = {
