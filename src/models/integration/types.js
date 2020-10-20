@@ -32,23 +32,6 @@ export type IntegrationDataItem<T> = {
     deleted_datetime: ?string,
 }
 
-type IntegrationConnectionType = 'facebook-page'
-
-type IntegrationConnection = {
-    data: {
-        access_token: string,
-        id: string,
-        user_access_token: string,
-    },
-    id: number,
-    type: IntegrationConnectionType,
-    user: {
-        id: number,
-        name: string,
-    },
-    user_id: number,
-}
-
 type IntegrationDecoration = {
     avatar_team_picture_url: ?string,
     avatar_type: string,
@@ -100,7 +83,6 @@ type IntegrationHttp = {
 }
 
 export type Integration = {
-    connections: IntegrationConnection[],
     created_datetime: string,
     deactivated_datetime: ?string,
     decoration: ?IntegrationDecoration,

@@ -443,20 +443,6 @@ exports[`<DraftOrderModal/> render() should render as closed 1`] = `
         "decoration": null,
         "locked_datetime": null,
         "created_datetime": "2020-01-28T22:19:15.604153+00:00",
-        "connections": Immutable.List [
-          Immutable.Map {
-            "data": Immutable.Map {
-              "access_token": "sometoken",
-            },
-            "id": 2,
-            "type": "oauth2",
-            "user": Immutable.Map {
-              "id": 2,
-              "name": "Alex Plugaru",
-            },
-            "user_id": 2,
-          },
-        ],
         "type": "shopify",
         "id": 1,
         "description": null,
@@ -937,20 +923,6 @@ exports[`<DraftOrderModal/> render() should render as open 1`] = `
         "decoration": null,
         "locked_datetime": null,
         "created_datetime": "2020-01-28T22:19:15.604153+00:00",
-        "connections": Immutable.List [
-          Immutable.Map {
-            "data": Immutable.Map {
-              "access_token": "sometoken",
-            },
-            "id": 2,
-            "type": "oauth2",
-            "user": Immutable.Map {
-              "id": 2,
-              "name": "Alex Plugaru",
-            },
-            "user_id": 2,
-          },
-        ],
         "type": "shopify",
         "id": 1,
         "description": null,

@@ -26,10 +26,6 @@ export enum IntegrationDataItemType {
     IntegrationDataItemTypeProduct = 'product',
 }
 
-enum IntegrationConnectionType {
-    FacebookPage = 'facebook-page',
-}
-
 export type Product = IntegrationProduct
 export type Variant = IntegrationVariant
 
@@ -44,21 +40,6 @@ export type IntegrationDataItem<T> = {
     created_datetime: string
     updated_datetime: string
     deleted_datetime: Maybe<string>
-}
-
-type IntegrationConnection = {
-    data: {
-        access_token: string
-        id: string
-        user_access_token: string
-    }
-    id: number
-    type: IntegrationConnectionType
-    user: {
-        id: number
-        name: string
-    }
-    user_id: number
 }
 
 type IntegrationDecoration = {
@@ -112,7 +93,6 @@ type IntegrationHttp = {
 }
 
 export type Integration = {
-    connections: IntegrationConnection[]
     created_datetime: string
     deactivated_datetime: Maybe<string>
     decoration: Maybe<IntegrationDecoration>
