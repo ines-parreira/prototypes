@@ -18,6 +18,7 @@ import {TicketMessageSourceType} from '../../business/types/ticket'
 import {isRichType} from '../../config/ticket'
 import {renderTemplate} from '../../pages/common/utils/template.js'
 import {convertFromHTML} from '../../utils/editor'
+import {sanitizeHtmlForFacebookMessenger} from '../../utils/html'
 import {CurrentUser, StoreState} from '../types'
 
 import * as selectors from './selectors'
@@ -384,15 +385,18 @@ export const applyMacro = (context: MessageContext): MessageContext => {
 
     const text = renderTemplate(action.args.get('body_text', ''), variables)
 
-    const html = renderTemplate(action.args.get('body_html', ''), variables)
+    let html = renderTemplate(action.args.get('body_html', ''), variables)
 
-    let blocks = []
-    if (
-        html &&
-        isRichType(
-            selectors.getNewMessageType({newMessage: state} as StoreState)
-        )
-    ) {
+    const sourceType = selectors.getNewMessageType({
+        newMessage: state,
+    } as StoreState)
+
+    let blocks
+
+    if (html && sourceType === TicketMessageSourceType.FacebookMessenger) {
+        html = sanitizeHtmlForFacebookMessenger(html)
+        blocks = convertFromHTML(html).getBlocksAsArray()
+    } else if (html && isRichType(sourceType)) {
         blocks = convertFromHTML(html).getBlocksAsArray()
     } else {
         blocks = ContentState.createFromText(text).getBlocksAsArray()

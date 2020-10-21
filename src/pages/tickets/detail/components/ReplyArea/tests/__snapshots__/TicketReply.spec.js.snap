@@ -1,23 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<TicketReply/> shoud render alert if cannot reply 1`] = `
-<div
-  className="component alert-warning"
->
-  <div
-    className="alert"
-  >
-    You cannot respond.
-  </div>
-  <TicketAttachments
-    attachments={Immutable.List []}
-    className="p-2"
-    deleteAttachment={[Function]}
-    removable={true}
-  />
-</div>
-`;
-
 exports[`<TicketReply/> should render the editor 1`] = `
 <div
   className="component"

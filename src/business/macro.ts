@@ -8,24 +8,7 @@ export function clearMacroBeforeApply(
     messageType: TicketMessageSourceType,
     macro: Map<any, any>
 ): MacroClearingResult {
-    let isInvalid =
-        messageType === TicketMessageSourceType.FacebookMessenger &&
-        hasText(macro) &&
-        getAttachmentsCount(macro) > 0
-
-    if (isInvalid) {
-        return {
-            macro: removeAttachmentsFromActions(macro),
-            notification: {
-                message:
-                    'We have removed the attachment from this message, because you cannot send text and ' +
-                    'attachments at the same time on Messenger.',
-                status: 'warning',
-            },
-        }
-    }
-
-    isInvalid =
+    const isInvalid =
         messageType === TicketMessageSourceType.Chat &&
         getAttachmentsCount(macro) > 1
 
@@ -59,15 +42,6 @@ function getAttachmentsCount(macro: Map<any, any>): number {
                 >).size,
             0
         )
-}
-
-function hasText(macro: Map<any, any>): boolean {
-    return !(macro.get('actions', fromJS([])) as List<any>)
-        .filter(
-            (action: Map<any, any>) =>
-                action.get('name') === MacroActionName.SetResponseText
-        )
-        .isEmpty()
 }
 
 function removeAttachmentsFromActions(macro: Map<any, any>): Map<any, any> {

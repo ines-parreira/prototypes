@@ -4,7 +4,6 @@ import type {List, Map} from 'immutable'
 import React from 'react'
 import {connect} from 'react-redux'
 
-import {canReply} from '../../../../../business/ticket.ts'
 import type {TicketMessageSourceType} from '../../../../../business/types/ticket.ts'
 import * as newMessageActions from '../../../../../state/newMessage/actions.ts'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors.ts'
@@ -93,32 +92,19 @@ export default class TicketReply extends React.Component<Props> {
             actions,
             richAreaRef,
             className: passedClassName,
-            newMessageType,
-            newMessageAttachments,
         } = this.props
-
-        const canReplyResult = canReply(
-            newMessageType,
-            newMessageAttachments.size,
-            ticket.getIn(['reply_options', newMessageType, 'reason'])
-        )
 
         const className = classNames(css.component, passedClassName, {
             [css.internal]: !isNewMessagePublic,
-            'alert-warning': !!canReplyResult,
         })
 
         return (
             <div className={className}>
-                {!!canReplyResult ? (
-                    <div className={css.alert}>{canReplyResult.message}</div>
-                ) : (
-                    <TicketReplyEditor
-                        actions={actions}
-                        ticket={ticket}
-                        richAreaRef={richAreaRef}
-                    />
-                )}
+                <TicketReplyEditor
+                    actions={actions}
+                    ticket={ticket}
+                    richAreaRef={richAreaRef}
+                />
                 {this._renderAttachments()}
                 {this._renderActions()}
             </div>

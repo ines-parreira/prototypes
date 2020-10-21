@@ -6,7 +6,6 @@ import _noop from 'lodash/noop'
 import React, {type Node} from 'react'
 import {connect} from 'react-redux'
 
-import {canAddAttachments} from '../../../../../business/ticket.ts'
 import {type TicketMessageSourceType} from '../../../../../business/types/ticket'
 import {canLeaveInternalNote, isRichType} from '../../../../../config/ticket.ts'
 import {getOtherAgents} from '../../../../../state/agents/selectors.ts'
@@ -21,6 +20,7 @@ import {
 } from '../../../../../utils/file.ts'
 import RichField from '../../../../common/forms/RichField'
 import {getContext} from '../../../../../state/prediction/selectors.ts'
+import {TicketMessageSourceTypes} from '../../../../../business/ticket.ts'
 
 import css from './TicketReplyEditor.less'
 
@@ -138,20 +138,7 @@ export class TicketReplyEditor extends React.Component<Props, State> {
     _canAddAttachments = (fileList: filesType = []) => {
         // FileList does not have map
         const files = Array.from(fileList)
-        const {attachments, newMessage, newMessageType} = this.props
-
-        const notification = canAddAttachments(
-            newMessageType,
-            newMessage.getIn(['newMessage', 'body_text']),
-            attachments.size + files.length
-        )
-        if (notification) {
-            this.props.notify({
-                status: notification.status,
-                message: notification.message,
-            })
-            return false
-        }
+        const {attachments} = this.props
 
         // check total attachments size.
         const currentSize = this._getFilesSize(files)
@@ -289,6 +276,8 @@ export class TicketReplyEditor extends React.Component<Props, State> {
         } = this.props
 
         const isNewMessageRichType = isRichType(newMessageType)
+        const isNewMessageFacebookMessengerType =
+            newMessageType === TicketMessageSourceTypes.FACEBOOK_MESSENGER
         const canAddMention = canLeaveInternalNote(newMessageType)
 
         const mentionProps = {
@@ -296,13 +285,18 @@ export class TicketReplyEditor extends React.Component<Props, State> {
             mentionSuggestions: agents,
         }
 
-        let displayedActions
+        let displayedActions = []
 
         if (!isNewMessageRichType) {
-            displayedActions = ['EMOJI']
+            displayedActions.push('EMOJI')
         }
 
-        const canInsertInlineImages = newMessageType === 'email'
+        if (isNewMessageFacebookMessengerType) {
+            displayedActions.push('IMAGE')
+        }
+
+        let canInsertInlineImages =
+            newMessageType === 'email' || isNewMessageFacebookMessengerType
 
         let predictionProps = {
             predictionContext: this.props.predictionContext,

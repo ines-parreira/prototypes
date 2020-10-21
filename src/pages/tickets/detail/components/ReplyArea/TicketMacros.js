@@ -15,7 +15,6 @@ import {
 } from 'reactstrap'
 
 import type {TicketMessageSourceType} from '../../../../../business/types/ticket'
-import {isRichType} from '../../../../../config/ticket.ts'
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors.ts'
 import {deleteMacro, fetchMacros} from '../../../../../state/macro/actions.ts'
 import Preview from '../../../common/macros/Preview'
@@ -248,7 +247,7 @@ export class TicketMacros extends React.Component<Props, State> {
                         </Popover>
 
                         <Preview
-                            displayHTML={isRichType(newMessageType)}
+                            ticketMessageSourceType={newMessageType}
                             macro={currentMacro}
                             className={css.preview}
                         />

@@ -40,31 +40,6 @@ describe('Business', () => {
                 } as Macro
             })
 
-            it('should clear attachments when applied on facebook-messenger', () => {
-                // Given
-
-                // When
-                const result = clearMacroBeforeApply(
-                    TicketMessageSourceType.FacebookMessenger,
-                    fromJS(macro)
-                )
-
-                // Then
-                expect(result.notification?.message).toEqual(
-                    'We have removed the attachment from this message, because you cannot send text and ' +
-                        'attachments at the same time on Messenger.'
-                )
-                expect((result.macro.get('actions') as List<any>).size).toEqual(
-                    1
-                )
-                expect(
-                    ((result.macro.get('actions') as List<any>).get(0) as Map<
-                        any,
-                        any
-                    >).get('name')
-                ).toEqual('setResponseText')
-            })
-
             it('should clear attachments when applied on chat with more than one', () => {
                 // Given
                 macro.actions[0].arguments.attachments?.push({

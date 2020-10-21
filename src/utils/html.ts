@@ -123,6 +123,82 @@ export function sanitizeHtmlDefault(html: string): string {
     })
 }
 
+/**
+ * Remove all HTML tags except div, img, a and br.
+ * Convert <a> tags from `<a href="http://x.io">this is a link</a>` to `this is a link: http://x.io`
+ *
+ * @param html
+ */
+export function sanitizeHtmlForFacebookMessenger(html: string): string {
+    if (typeof html !== 'string') {
+        return html
+    }
+
+    // Remove broken HTML comment, valid comments will be removed below
+    let sanitizedHtml = html.replace('<!-->', '')
+
+    sanitizedHtml = sanitizeHtml(sanitizedHtml, {
+        allowedTags: ['div', 'img', 'a', 'br'],
+        allowedAttributes: {
+            // allow style/src and other meta attributes
+            '*': [
+                'id',
+                'src',
+                'alt',
+                'class',
+                'style',
+                'width',
+                'height',
+                'href',
+            ],
+        },
+        nonTextTags: [
+            'style',
+            'script',
+            'textarea',
+            'noscript',
+            'title',
+            'o:pixelsperinch', // outlook specific tag
+        ],
+        transformTags: {},
+    })
+
+    sanitizedHtml = sanitizedHtml
+        .replace(/&amp;/g, '&')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+
+    // Convert <a> tags from `<a href="http://x.io">this is a link</a>` to `this is a link: http://x.io`
+    sanitizedHtml = sanitizedHtml.replace(
+        /(<a[^>]*(href=[\"\'](.*?)[\"\'])[^>]*>)(.*?)(<\/a>)/gim,
+        (
+            full_match: string,
+            full_a_tag: string,
+            a_href: string,
+            a_url: string,
+            a_text: string
+        ) => {
+            // Remove trailing slash
+            const _a_url = a_url.endsWith('/') ? a_url.slice(0, -1) : a_url
+            const _a_text = a_text.endsWith('/') ? a_text.slice(0, -1) : a_text
+
+            // handle empty text or spaces only in-between <a> tag
+            if (!a_text.trim()) {
+                return ` ${a_url} `
+            }
+
+            // if the text is the url don't convert
+            if (_a_url.toLowerCase() === _a_text.toLowerCase()) {
+                return ` ${a_url} `
+            }
+
+            return ` ${a_text}: ${a_url} `
+        }
+    )
+
+    return sanitizedHtml
+}
+
 export function focusElement(getElement: () => HTMLElement) {
     setTimeout(() => {
         const element = getElement()

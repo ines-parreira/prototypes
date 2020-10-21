@@ -25,7 +25,7 @@ export default class MacroPreview extends React.Component {
                 <div className="mt-3 mb-3">
                     <h2>{currentMacro.get('name') || ''}</h2>
 
-                    <Preview macro={currentMacro} />
+                    <Preview displayHTML={true} macro={currentMacro} />
                 </div>
             </div>
         )

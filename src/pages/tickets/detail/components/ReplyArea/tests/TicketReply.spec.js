@@ -9,7 +9,6 @@ import {TicketMessageSourceTypes} from '../../../../../../business/ticket.ts'
 import TicketReply from '../TicketReply'
 
 jest.unmock('../../../../../../business/ticket.ts')
-const businessTicket = require('../../../../../../business/ticket.ts')
 
 const mockStore = configureMockStore([thunk])
 
@@ -44,25 +43,6 @@ describe('<TicketReply/>', () => {
     }
 
     it('should render the editor', () => {
-        const component = shallow(
-            <TicketReply
-                {...commonProps}
-                store={mockStore({
-                    newMessage: fromJS({
-                        newMessage: baseNewMessage,
-                    }),
-                })}
-            />
-        ).dive()
-
-        expect(component).toMatchSnapshot()
-    })
-
-    it('shoud render alert if cannot reply', () => {
-        businessTicket.canReply = () => ({
-            message: 'You cannot respond.',
-        })
-
         const component = shallow(
             <TicketReply
                 {...commonProps}

@@ -201,7 +201,6 @@ exports[`TicketMacros component should display macros list, and selected macro 1
       </Popover>
       <Preview
         className="preview"
-        displayHTML={true}
         macro={
           Immutable.Map {
             "id": 2,
@@ -209,6 +208,7 @@ exports[`TicketMacros component should display macros list, and selected macro 1
             "actions": Immutable.List [],
           }
         }
+        ticketMessageSourceType="email"
       />
     </div>
   </div>

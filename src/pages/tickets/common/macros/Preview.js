@@ -11,6 +11,10 @@ import {
 import {TagLabel, AgentLabel, StatusLabel} from '../../../common/utils/labels'
 import RichField from '../../../common/forms/RichField'
 
+import {isRichType} from '../../../../config/ticket.ts'
+import {sanitizeHtmlForFacebookMessenger} from '../../../../utils/html.ts'
+import {TicketMessageSourceType} from '../../../../business/types/ticket'
+
 import {getIconFromType} from './../../../../state/integrations/helpers.ts'
 import {getActionTemplate} from './../../../../utils.ts'
 
@@ -50,11 +54,32 @@ class Preview extends React.Component {
                 text: responseTextAction.getIn(['arguments', 'body_text']),
             }
 
-            if (this.props.displayHTML) {
+            const hasSourceType = !!this.props.ticketMessageSourceType
+
+            // If displayHTML is set to TRUE or
+            // ticketMessageSourceTypeisRichType property is passed to the element and supports HTML content
+            // then we don't strip the HTML tags, we use it as it is.
+            // This is used for macro preview.
+            if (
+                this.props.displayHTML ||
+                (hasSourceType &&
+                    isRichType(this.props.ticketMessageSourceType))
+            ) {
                 value.html = responseTextAction.getIn([
                     'arguments',
                     'body_html',
                 ])
+                // This is used for ticket macros
+            } else if (
+                hasSourceType &&
+                this.props.ticketMessageSourceType ===
+                    TicketMessageSourceType.FacebookMessenger
+            ) {
+                // Get body_html as text
+                let html = responseTextAction.getIn(['arguments', 'body_html'])
+
+                html = sanitizeHtmlForFacebookMessenger(html)
+                value.html = html
             }
 
             return (
@@ -230,13 +255,10 @@ class Preview extends React.Component {
 }
 
 Preview.propTypes = {
-    displayHTML: PropTypes.bool.isRequired,
+    displayHTML: PropTypes.bool,
     macro: PropTypes.object.isRequired,
+    ticketMessageSourceType: PropTypes.string,
     className: PropTypes.string,
-}
-
-Preview.defaultProps = {
-    displayHTML: true,
 }
 
 export default Preview

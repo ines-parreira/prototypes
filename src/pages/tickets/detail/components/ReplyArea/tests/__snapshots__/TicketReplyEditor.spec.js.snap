@@ -1,5 +1,65 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`TicketReplyEditor component should allow inline image 1`] = `
+<div
+  className="component"
+>
+  <RichField
+    attachFiles={[Function]}
+    attachments={Immutable.List []}
+    buttons={
+      Array [
+        <div
+          className="attachment"
+        >
+          <label
+            className="m-0"
+            htmlFor="attachments-input"
+            title="Add attachment"
+          >
+            <i
+              className="material-icons"
+            >
+              attach_file
+            </i>
+          </label>
+          <input
+            id="attachments-input"
+            multiple={true}
+            onChange={[Function]}
+            onClick={[Function]}
+            type="file"
+          />
+        </div>,
+      ]
+    }
+    canAddMention={false}
+    canDropFiles={true}
+    canInsertInlineImages={true}
+    displayedActions={
+      Array [
+        "EMOJI",
+        "IMAGE",
+      ]
+    }
+    mentionSuggestions={Array []}
+    notify={[Function]}
+    onChange={[Function]}
+    placeholder="Click here to reply, or press r."
+    signature={true}
+    spellCheck={true}
+    tabIndex="4"
+    type="text"
+    value={
+      Object {
+        "html": "",
+        "text": "",
+      }
+    }
+  />
+</div>
+`;
+
 exports[`TicketReplyEditor component should render empty ticket 1`] = `
 <div
   className="component"
@@ -36,6 +96,7 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
     canAddMention={false}
     canDropFiles={true}
     canInsertInlineImages={true}
+    displayedActions={Array []}
     mentionSuggestions={Immutable.List []}
     notify={[Function]}
     onChange={[Function]}

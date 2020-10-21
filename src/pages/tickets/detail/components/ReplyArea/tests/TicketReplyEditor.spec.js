@@ -8,6 +8,12 @@ import configureStore from '../../../../../../store/configureStore'
 import ConnectedTicketReplyEditor, {
     TicketReplyEditor,
 } from '../TicketReplyEditor'
+import {convertFromHTML, convertToHTML} from '../../../../../../utils/editor.ts'
+import {
+    TicketChannel,
+    TicketMessageSourceType,
+} from '../../../../../../business/types/ticket'
+import {sanitizeHtmlForFacebookMessenger} from '../../../../../../utils/html.ts'
 
 describe('TicketReplyEditor component', () => {
     it('should render empty ticket', () => {
@@ -87,6 +93,126 @@ describe('TicketReplyEditor component', () => {
             // Jest will throw an Timeout error if it fails
             // because expect throw()s
             expect(newMessageText).toBe('')
+            done()
+        }, 500)
+    })
+
+    it('should allow inline image', (done) => {
+        const ticket = fromJS({
+            id: 123,
+            events: [],
+            messages: [],
+            subject: 'Pepperoni Pizza',
+            via: 'helpdesk',
+            channel: TicketChannel.FacebookMessenger,
+            assignee_user: null,
+            status: 'open',
+            spam: false,
+            sender: null,
+            customer: null,
+            receiver: null,
+            priority: 'normal',
+            tags: [],
+            trashed_datetime: null,
+        })
+
+        const newMessage = fromJS({
+            state: {
+                contentState: null,
+                selectionState: null,
+                cacheAdded: true,
+            },
+            newMessage: {
+                body_text: '',
+                body_html: '',
+            },
+        })
+
+        let component = shallow(
+            <TicketReplyEditor
+                newMessageType={TicketMessageSourceType.FacebookMessenger}
+                newMessage={newMessage}
+                agents={[]}
+                actions={{}}
+                ticket={ticket}
+                addAttachments={_noop}
+                notify={_noop}
+                setMacrosVisible={_noop}
+                prepareNewMessage={_noop}
+            />
+        )
+
+        // needed for lifecycle
+        setTimeout(() => {
+            // Jest will throw an Timeout error if it fails
+            // because expect throw()s
+            expect(component).toMatchSnapshot()
+            done()
+        }, 500)
+    })
+
+    it('should render message with inline image', (done) => {
+        const ticket = fromJS({
+            id: 123,
+            events: [],
+            messages: [],
+            subject: 'Pepperoni Pizza',
+            via: 'helpdesk',
+            channel: TicketChannel.FacebookMessenger,
+            assignee_user: null,
+            status: 'open',
+            spam: false,
+            sender: null,
+            customer: null,
+            receiver: null,
+            priority: 'normal',
+            tags: [],
+            trashed_datetime: null,
+        })
+
+        const newMessage = fromJS({
+            state: {
+                contentState: null,
+                selectionState: null,
+                cacheAdded: true,
+            },
+            newMessage: {
+                body_text: '',
+                body_html: '',
+            },
+        })
+        let newEditorState = ''
+
+        let component = shallow(
+            <TicketReplyEditor
+                newMessageType={TicketMessageSourceType.Aircall}
+                newMessage={newMessage}
+                agents={[]}
+                actions={{}}
+                ticket={ticket}
+                addAttachments={_noop}
+                notify={_noop}
+                setMacrosVisible={_noop}
+                prepareNewMessage={_noop}
+                setResponseText={(props) => {
+                    newEditorState = props.get('contentState')
+                }}
+            />
+        )
+
+        let htmlString = `<b>this is an</b> inline image: <img alt="abc" src="https://this-is-a-link-of-image/and-this-is-the-image.png">`
+        htmlString = sanitizeHtmlForFacebookMessenger(htmlString)
+
+        // simulate RichField change event
+        const editorState = EditorState.createWithContent(
+            convertFromHTML(htmlString)
+        )
+        component.instance()._onEditorChange(editorState)
+
+        // needed for lifecycle
+        setTimeout(() => {
+            const expectedValue = `<div>this is an inline image: </div><figure style="display: inline-block; margin: 0"><img src="https://this-is-a-link-of-image/and-this-is-the-image.png" width="400px" style="max-width: 100%"></figure>`
+            expect(convertToHTML(newEditorState)).toBe(expectedValue)
             done()
         }, 500)
     })

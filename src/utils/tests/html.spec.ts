@@ -5,6 +5,7 @@ import {
     linkifyHtml,
     parseHtml,
     sanitizeHtmlDefault,
+    sanitizeHtmlForFacebookMessenger,
 } from '../html'
 
 describe('html util', () => {
@@ -206,6 +207,108 @@ describe('html util', () => {
                 </table>
             `
             expect(sanitizeHtmlDefault(tablehtml)).toBe(tablehtml)
+        })
+    })
+
+    describe('sanitizeHtmlForFacebookMessenger', () => {
+        it("should return entry parameter if it's not a string", () => {
+            expect(sanitizeHtmlDefault(undefined as any)).toBe(undefined)
+            expect(sanitizeHtmlDefault(null as any)).toBe(null)
+            expect(sanitizeHtmlDefault(12 as any)).toBe(12)
+        })
+
+        it('should remove comments from html', () => {
+            expect(sanitizeHtmlDefault('<p><!-->hey</p>')).toBe('<p>hey</p>')
+            expect(sanitizeHtmlDefault('<p><!--[if IE9]>hey</p>')).toBe(
+                '<p></p>'
+            )
+            expect(
+                sanitizeHtmlDefault('<p><!--[if IE9]>hey<![endif]--></p>')
+            ).toBe('<p></p>')
+            expect(sanitizeHtmlDefault('<p><!-- hola senor -->hey</p>')).toBe(
+                '<p>hey</p>'
+            )
+            expect(
+                sanitizeHtmlDefault('<p><!-- hola senor -->--> hey</p>')
+            ).toBe('<p>--&gt; hey</p>')
+        })
+
+        it('should remove all `o` - outlook tags', () => {
+            expect(
+                sanitizeHtmlDefault('<o:PixelsPerInch>96</o:PixelsPerInch>')
+            ).toBe('')
+        })
+
+        it.each([
+            [
+                {
+                    input_html: `<a href="https://this-is-a-test-url/">this is a test url</a>and should work`,
+                    expected_value: ` this is a test url: https://this-is-a-test-url/ and should work`,
+                },
+            ],
+            [
+                {
+                    input_html: `<a href="https://this-is-a-test-url/">https://this-is-a-test-url</a>and should work`,
+                    expected_value: ` https://this-is-a-test-url/ and should work`,
+                },
+            ],
+            [
+                {
+                    input_html: `
+                    <div>Testing this amazing div</div>
+                    <img src="https://this-is-a-test-url/and-this-is-the-image.png" alt="this is alt" />
+                    <a href="https://this-is-a-test-url/">this is a test url</a>and should work
+                    <br />
+                    <br />
+                    `,
+                    expected_value: `
+                    <div>Testing this amazing div</div>
+                    <img src="https://this-is-a-test-url/and-this-is-the-image.png" alt="this is alt" />
+                     this is a test url: https://this-is-a-test-url/ and should work
+                    <br />
+                    <br />
+                    `,
+                },
+            ],
+            [
+                {
+                    input_html: '<a href="https://messenger.com"> </a>',
+                    expected_value: ' https://messenger.com ',
+                },
+            ],
+            [
+                {
+                    input_html: '<a href="https://messenger.com"></a>',
+                    expected_value: ' https://messenger.com ',
+                },
+            ],
+            [
+                {
+                    input_html:
+                        '<a href="https://messenger.com^">This is a link</a>',
+                    expected_value: ' This is a link: https://messenger.com^ ',
+                },
+            ],
+            [
+                {
+                    input_html:
+                        '<a href="https://mess  enger.co  m ">This is a link with spaces inside URL</a>',
+                    expected_value:
+                        ' This is a link with spaces inside URL: https://mess  enger.co  m  ',
+                },
+            ],
+            [
+                {
+                    input_html:
+                        '<a Href="https://messenger.comfdasdas/!@#$%^&*()_-+=[]{}/\\`~§±;:,.<>">This is a link with special characters !@#$%^&*()_-+=[]{}/\\`~§±;:,.<></a>',
+                    expected_value:
+                        ' This is a link with special characters !@#$%^&*()_-+=[]{}/\\`~§±;:,.<>: https://messenger.comfdasdas/!@#$%^&*()_-+=[]{}/\\`~§±;:,.<> ',
+                },
+            ],
+        ])('should convert <a> tag', (testCase) => {
+            expect(sanitizeHtmlForFacebookMessenger(testCase.input_html)).toBe(
+                testCase.expected_value
+            )
         })
     })
 

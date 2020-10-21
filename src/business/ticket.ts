@@ -43,36 +43,6 @@ export function canAddAttachments(
     return null
 }
 
-export function canReply(
-    messageType: TicketMessageSourceType,
-    attachmentCount: number,
-    explicitReason: Maybe<string>
-): Maybe<Notification> {
-    if (!!explicitReason) {
-        return {
-            message: explicitReason,
-            status: 'warning',
-        }
-    }
-
-    const isInvalid =
-        messageType === TicketMessageSourceType.FacebookMessenger &&
-        attachmentCount > 0
-
-    if (isInvalid) {
-        return {
-            message:
-                `When using ${humanize(
-                    messageType
-                )}, you can either send a text message, or an attachment, ` +
-                'but not both at the same time. If you want to write a message, remove the attachment first.',
-            status: 'warning',
-        }
-    }
-
-    return null
-}
-
 //$TsFixMe legacy constant for flow usage, use enum at g/static/private/js/business/types/ticket.ts instead
 export const TicketMessageSourceTypes = Object.freeze({
     AIRCALL: 'aircall',
