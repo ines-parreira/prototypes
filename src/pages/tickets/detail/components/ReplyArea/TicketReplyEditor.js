@@ -285,13 +285,16 @@ export class TicketReplyEditor extends React.Component<Props, State> {
             mentionSuggestions: agents,
         }
 
-        let displayedActions = []
+        let displayedActions
 
         if (!isNewMessageRichType) {
-            displayedActions.push('EMOJI')
+            displayedActions = ['EMOJI']
         }
 
         if (isNewMessageFacebookMessengerType) {
+            if (!displayedActions) {
+                displayedActions = []
+            }
             displayedActions.push('IMAGE')
         }
 

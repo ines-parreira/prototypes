@@ -96,7 +96,6 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
     canAddMention={false}
     canDropFiles={true}
     canInsertInlineImages={true}
-    displayedActions={Array []}
     mentionSuggestions={Immutable.List []}
     notify={[Function]}
     onChange={[Function]}
