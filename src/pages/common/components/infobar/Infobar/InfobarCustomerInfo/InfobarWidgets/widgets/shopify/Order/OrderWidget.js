@@ -164,6 +164,10 @@ class AfterTitle extends React.Component<AfterTitleProps> {
             order_id: source.get('id') || '',
         }
 
+        let priceSetSource =
+            source.getIn(['current_total_price_set']) ||
+            source.getIn(['total_price_set'])
+
         return (
             <>
                 <OrderStatus
@@ -184,13 +188,11 @@ class AfterTitle extends React.Component<AfterTitleProps> {
                     </CardHeaderValue>
                     <CardHeaderValue label="Total">
                         <MoneyAmount
-                            amount={source.getIn([
-                                'total_price_set',
+                            amount={priceSetSource.getIn([
                                 'presentment_money',
                                 'amount',
                             ])}
-                            currencyCode={source.getIn([
-                                'total_price_set',
+                            currencyCode={priceSetSource.getIn([
                                 'presentment_money',
                                 'currency_code',
                             ])}
