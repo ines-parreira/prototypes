@@ -151,12 +151,6 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
             'Connect your support email addresses and respond to your customers from Gorgias',
     },
     {
-        type: IntegrationType.GorgiasChatIntegrationType,
-        title: 'Gorgias Chat (BETA)',
-        description: 'Add a chat on your website',
-        hide: true,
-    },
-    {
         type: 'smooch_inside',
         title: 'Chat',
         description: 'Add a chat on your website',
@@ -278,6 +272,11 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         description: 'Respond to Postscript SMS conversations from Gorgias',
         url: 'https://docs.gorgias.com/sms-integration/postscript',
         image: 'integrations/postscript.png',
+    },
+    {
+        type: IntegrationType.GorgiasChatIntegrationType,
+        title: 'Gorgias Chat (BETA)',
+        description: 'Add a chat on your website',
     },
 ]
 

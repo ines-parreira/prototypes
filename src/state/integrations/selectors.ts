@@ -3,6 +3,7 @@ import {createSelector} from 'reselect'
 import _isArray from 'lodash/isArray'
 
 import {IntegrationType} from '../../models/integration/types'
+import {MESSAGING_INTEGRATION_TYPES} from '../../models/integration/constants'
 import {compare} from '../../utils'
 import {RootState} from '../types'
 import {getCurrentUserState} from '../currentUser/selectors'
@@ -61,7 +62,7 @@ export const makeGetIntegrationById = (state: RootState) => (id: number) =>
     getIntegrationById(id)(state)
 
 export const getIntegrationsByTypes = (
-    types: IntegrationType[] | IntegrationType
+    types: readonly IntegrationType[] | IntegrationType[] | IntegrationType
 ) =>
     createSelector<RootState, List<any>, List<any>>(
         getIntegrations,
@@ -309,25 +310,16 @@ export const getMessagingIntegrations = createSelector<
     RootState,
     List<any>,
     List<any>
->(
-    getIntegrationsByTypes([
-        IntegrationType.EmailIntegrationType,
-        IntegrationType.OutlookIntegrationType,
-        IntegrationType.GmailIntegrationType,
-        IntegrationType.AircallIntegrationType,
-        IntegrationType.SmoochInsideIntegrationType,
-        IntegrationType.SmoochIntegrationType,
-        IntegrationType.FacebookIntegrationType,
-    ]),
-    (integrations) => {
-        return integrations.map((inte: Map<any, any>) => {
-            if (inte.get('type') === IntegrationType.FacebookIntegrationType) {
-                return inte.set('name', inte.getIn(['meta', 'name']))
-            }
-            return inte
-        }) as List<any>
-    }
-)
+>(getIntegrationsByTypes(MESSAGING_INTEGRATION_TYPES), (integrations) => {
+    return integrations.map((integration: Map<any, any>) => {
+        if (
+            integration.get('type') === IntegrationType.FacebookIntegrationType
+        ) {
+            return integration.set('name', integration.getIn(['meta', 'name']))
+        }
+        return integration
+    }) as List<any>
+})
 
 export const hasIntegrationOfTypes = (
     types: IntegrationType[] | IntegrationType
