@@ -264,7 +264,7 @@ export default class TicketHeader extends React.Component<Props, State> {
                                     <i className="icon material-icons">
                                         snooze
                                     </i>
-                                    snooze
+                                    Snooze
                                 </DropdownItem>
                                 <DropdownItem
                                     type="button"
@@ -273,7 +273,7 @@ export default class TicketHeader extends React.Component<Props, State> {
                                     <i className="icon material-icons">
                                         call_merge
                                     </i>
-                                    merge ticket
+                                    Merge ticket
                                 </DropdownItem>
                                 <DropdownItem
                                     type="button"
@@ -283,8 +283,8 @@ export default class TicketHeader extends React.Component<Props, State> {
                                         event_note
                                     </i>
                                     {shouldDisplayAuditLogEvents
-                                        ? 'hide'
-                                        : 'display'}{' '}
+                                        ? 'Hide'
+                                        : 'Display'}{' '}
                                     all events
                                 </DropdownItem>
                                 <DropdownItem
@@ -298,7 +298,7 @@ export default class TicketHeader extends React.Component<Props, State> {
                                     }}
                                 >
                                     <i className="icon material-icons">print</i>
-                                    print ticket
+                                    Print ticket
                                 </DropdownItem>
                                 <DropdownItem
                                     type="button"
@@ -316,7 +316,7 @@ export default class TicketHeader extends React.Component<Props, State> {
                                             <i className="icon material-icons">
                                                 not_interested
                                             </i>
-                                            mark as spam
+                                            Mark as spam
                                         </span>
                                     )}
                                 </DropdownItem>
@@ -328,7 +328,7 @@ export default class TicketHeader extends React.Component<Props, State> {
                                         <i className="icon material-icons">
                                             undo
                                         </i>
-                                        undelete
+                                        Undelete
                                     </DropdownItem>
                                 ) : (
                                     <DropdownItem
@@ -341,7 +341,7 @@ export default class TicketHeader extends React.Component<Props, State> {
                                             <i className="icon material-icons">
                                                 delete
                                             </i>
-                                            delete
+                                            Delete
                                         </div>
                                         <Popover
                                             placement="bottom"
