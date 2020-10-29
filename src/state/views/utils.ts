@@ -1,3 +1,4 @@
+import esprima from 'esprima'
 import {fromJS, List, Map} from 'immutable'
 import moment from 'moment'
 import _isArray from 'lodash/isArray'
@@ -7,13 +8,7 @@ import {UNARY_OPERATORS, TIMEDELTA_OPERATOR_DEFAULT_VALUE} from '../../config'
 
 import {Agents} from '../agents/types'
 import {UserRole} from '../../config/types/user'
-import {
-    getAST,
-    getFirstExpressionOfAST,
-    toJS,
-    hasRole,
-    getCode,
-} from '../../utils'
+import {getAST, getFirstExpressionOfAST, toJS, hasRole} from '../../utils'
 import {
     CollectionOperator,
     TimedeltaOperator,
@@ -99,7 +94,7 @@ export function addFilterAST(view: Map<any, any>, filter: ViewFilter) {
         ? `${view.get('filters') as string} && `
         : ''
     const newCode = `${oldCode}${newCallExprCode}`
-    return fromJS(getAST(newCode)) as Map<any, any>
+    return fromJS(esprima.parse(newCode)) as Map<any, any>
 }
 
 // traverse filters_ast, remove the call expressions and return a new tree
@@ -110,7 +105,7 @@ export function removeFilterAST(
     // As always, we assume that we only have && operators
     const codeSplit = (view.get('filters') as string).split('&&')
     codeSplit.splice(index, 1)
-    return fromJS(getAST(codeSplit.join('&&'))) as Maybe<Map<any, any>>
+    return fromJS(esprima.parse(codeSplit.join('&&'))) as Maybe<Map<any, any>>
 }
 
 // Update a node (CallExpression) in the ast
@@ -212,11 +207,7 @@ export function updateFilterOperator(
         )
     }
 
-    return updateAstLoc(setIn(ast, index, [], filter))
-}
-
-function updateAstLoc(ast: Map<any, any>) {
-    return fromJS(getAST(getCode(ast.toJS()))) as Map<any, any>
+    return setIn(ast, index, [], filter)
 }
 
 export function updateFilterValue(
@@ -236,18 +227,14 @@ export function updateFilterValue(
             elements: astLiterals,
         }
 
-        return updateAstLoc(
-            setIn(ast, index, ['arguments', 1], arrayExpression)
-        )
+        return setIn(ast, index, ['arguments', 1], arrayExpression)
     }
     const raw = rawify(value)
-    return updateAstLoc(
-        setIn(
-            ast,
-            index,
-            ['arguments', 1],
-            getFirstExpressionOfAST(getAST(raw))
-        )
+    return setIn(
+        ast,
+        index,
+        ['arguments', 1],
+        getFirstExpressionOfAST(getAST(raw))
     )
 }
 
@@ -283,8 +270,7 @@ export function agentsTypingMessage(agents: Agents): string {
 }
 
 // Class responsible for getting and storing recent views
-export type StoredView = {inserted_datetime: string; updated_datetime: string}
-export class RecentViewsStorage {
+class RecentViewsStorage {
     storage: Maybe<Storage>
     storageKey: string
 
@@ -297,7 +283,7 @@ export class RecentViewsStorage {
         }
     }
 
-    get(): Maybe<Record<string, StoredView>> {
+    get(): Maybe<Record<string, unknown>> {
         if (!this.storage) {
             return
         }
@@ -317,7 +303,7 @@ export class RecentViewsStorage {
             return
         }
 
-        const views: Record<string, StoredView> = {}
+        const views: Record<string, unknown> = {}
         const now = moment.utc().toISOString()
 
         recentViews.forEach((viewId: number) => {

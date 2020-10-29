@@ -218,7 +218,6 @@ export function submitView(view: ViewImmutable) {
                     .delete('visibility')
                     .delete('shared_with_teams')
                     .delete('shared_with_users')
-                    .delete('filters_ast')
                     .toJS()
             )
         } else {
@@ -240,7 +239,6 @@ export function submitView(view: ViewImmutable) {
                     .delete('dirty')
                     .delete('editMode')
                     .delete('allItemsSelected')
-                    .delete('filters_ast')
                     .toJS()
             )
         }
@@ -333,7 +331,7 @@ export function deleteView(view: ViewImmutable) {
 export const deleteViewSuccess = (viewId: number) => (
     dispatch: StoreDispatch,
     getState: () => RootState
-): void => {
+) => {
     dispatch({
         type: types.DELETE_VIEW_SUCCESS,
         viewId,
@@ -425,7 +423,6 @@ export function fetchViewItems(
                         .delete('dirty')
                         .delete('editMode')
                         .delete('allItemsSelected')
-                        .delete('filters_ast')
                         .toJS(),
                 },
                 options

@@ -1,8 +1,7 @@
 import moment from 'moment'
 import {fromJS} from 'immutable'
 
-import * as utils from '../utils'
-import {getAST} from '../../../utils'
+import * as utils from '../utils.ts'
 
 describe('utils', () => {
     describe('RecentViewStorage', () => {
@@ -19,7 +18,7 @@ describe('utils', () => {
 
             it('should not crash if there is no storage', () => {
                 const _storage = utils.recentViewsStorage.storage
-                utils.recentViewsStorage.storage = ({} as unknown) as typeof _storage
+                utils.recentViewsStorage.storage = {}
                 utils.recentViewsStorage.get()
                 utils.recentViewsStorage.storage = _storage
             })
@@ -28,10 +27,7 @@ describe('utils', () => {
                 localStorage.setItem('recentViews', JSON.stringify([1, 2]))
 
                 const beforeGetDt = moment.utc().subtract(1, 's')
-                const views = utils.recentViewsStorage.get() as Record<
-                    string,
-                    utils.StoredView
-                >
+                const views = utils.recentViewsStorage.get()
                 const now = moment.utc().add(1, 's')
 
                 expect(Object.keys(views)).toEqual(['1', '2'])
@@ -56,7 +52,7 @@ describe('utils', () => {
         describe('set()', () => {
             it('should not crash if there is no storage', () => {
                 const _storage = utils.recentViewsStorage.storage
-                utils.recentViewsStorage.storage = ({} as unknown) as typeof _storage
+                utils.recentViewsStorage.storage = {}
                 utils.recentViewsStorage.set([1, 2])
                 utils.recentViewsStorage.storage = _storage
             })
@@ -64,7 +60,7 @@ describe('utils', () => {
             it('should set recent views', () => {
                 utils.recentViewsStorage.set([1, 2])
                 expect(
-                    JSON.parse(localStorage.getItem('recentViews') as string)
+                    JSON.parse(localStorage.getItem('recentViews'))
                 ).toEqual([1, 2])
             })
         })
@@ -72,38 +68,100 @@ describe('utils', () => {
 
     describe('updateFilterOperator', () => {
         it('should remove the right part of the expression if the operator is an empty operator', () => {
-            const ast = getAST(
-                "gt(ticket.created_datetime, '2018-04-02T18:57:04.669744')"
-            )
-            const res = utils.updateFilterOperator(fromJS(ast), 0, 'isEmpty')
-            expect(res.toJS()).toEqual(
-                getAST('isEmpty(ticket.created_datetime)')
-            )
+            const ast = fromJS({
+                type: 'Program',
+                body: [
+                    {
+                        type: 'ExpressionStatement',
+                        expression: {
+                            type: 'CallExpression',
+                            callee: {
+                                name: 'gt',
+                            },
+                            arguments: [
+                                {
+                                    raw: "'ticket.created_datetime'",
+                                    value: 'ticket.created_datetime',
+                                    type: 'Identifier',
+                                },
+                                {
+                                    raw: '2018-04-02T18:57:04.669744',
+                                    value: '2018-04-02T18:57:04.669744',
+                                    type: 'Literal',
+                                },
+                            ],
+                        },
+                    },
+                ],
+            })
+
+            const res = utils.updateFilterOperator(ast, 0, 'isEmpty')
+
+            expect(res.toJS()).toMatchSnapshot()
         })
 
         it("should re-add a right part if there's none and the operator is not an empty operator", () => {
-            const ast = getAST('isEmpty(ticket.created_datetime)')
-            const res = utils.updateFilterOperator(fromJS(ast), 0, 'gte')
-            expect(res.toJS()).toEqual(
-                getAST("gte(ticket.created_datetime, '')")
-            )
+            const ast = fromJS({
+                type: 'Program',
+                body: [
+                    {
+                        type: 'ExpressionStatement',
+                        expression: {
+                            type: 'CallExpression',
+                            callee: {
+                                name: 'isEmpty',
+                            },
+                            arguments: [
+                                {
+                                    raw: "'ticket.created_datetime'",
+                                    value: 'ticket.created_datetime',
+                                    type: 'Identifier',
+                                },
+                            ],
+                        },
+                    },
+                ],
+            })
+
+            const res = utils.updateFilterOperator(ast, 0, 'gte')
+
+            expect(res.toJS()).toMatchSnapshot()
         })
 
         it(
             'should delete the right part and add another one with the default value instead if we are switching from ' +
                 'an absolute to a relative datetime operator',
             () => {
-                const ast = getAST(
-                    "gte(ticket.created_datetime, '2018-04-02T18:57:04.669744')"
-                )
-                const res = utils.updateFilterOperator(
-                    fromJS(ast),
-                    0,
-                    'gteTimedelta'
-                )
-                expect(res.toJS()).toEqual(
-                    getAST("gteTimedelta(ticket.created_datetime, '1d')")
-                )
+                const ast = fromJS({
+                    type: 'Program',
+                    body: [
+                        {
+                            type: 'ExpressionStatement',
+                            expression: {
+                                type: 'CallExpression',
+                                callee: {
+                                    name: 'gte',
+                                },
+                                arguments: [
+                                    {
+                                        raw: "'ticket.created_datetime'",
+                                        value: 'ticket.created_datetime',
+                                        type: 'Identifier',
+                                    },
+                                    {
+                                        raw: "'2018-04-02T18:57:04.669744'",
+                                        value: '2018-04-02T18:57:04.669744',
+                                        type: 'Literal',
+                                    },
+                                ],
+                            },
+                        },
+                    ],
+                })
+
+                const res = utils.updateFilterOperator(ast, 0, 'gteTimedelta')
+
+                expect(res.toJS()).toMatchSnapshot()
             }
         )
 
@@ -111,56 +169,62 @@ describe('utils', () => {
             'should delete the right part and add another one with the default value instead if we are switching from ' +
                 'an absolute to a relative datetime operator',
             () => {
-                const ast = getAST(
-                    "gteTimedelta(ticket.created_datetime, '1d')"
-                )
-                const res = utils.updateFilterOperator(fromJS(ast), 0, 'gte')
-                expect(res.toJS()).toEqual(
-                    getAST("gte(ticket.created_datetime, '')")
-                )
+                const ast = fromJS({
+                    type: 'Program',
+                    body: [
+                        {
+                            type: 'ExpressionStatement',
+                            expression: {
+                                type: 'CallExpression',
+                                callee: {
+                                    name: 'gteTimedelta',
+                                },
+                                arguments: [
+                                    {
+                                        raw: "'ticket.created_datetime'",
+                                        value: 'ticket.created_datetime',
+                                        type: 'Identifier',
+                                    },
+                                    {raw: "'1d'", value: '1d', type: 'Literal'},
+                                ],
+                            },
+                        },
+                    ],
+                })
+
+                const res = utils.updateFilterOperator(ast, 0, 'gte')
+
+                expect(res.toJS()).toMatchSnapshot()
             }
         )
 
         it('should conserve the right part if we are switching between operators of the same kind', () => {
-            const ast = getAST("gte(ticket.created_datetime, '1')")
-            const res = utils.updateFilterOperator(fromJS(ast), 0, 'lte')
-            expect(res.toJS()).toEqual(
-                getAST("lte(ticket.created_datetime, '1')")
-            )
-        })
-    })
+            const ast = fromJS({
+                type: 'Program',
+                body: [
+                    {
+                        type: 'ExpressionStatement',
+                        expression: {
+                            type: 'CallExpression',
+                            callee: {
+                                name: 'gte',
+                            },
+                            arguments: [
+                                {
+                                    raw: "'ticket.id'",
+                                    value: 'ticket.id',
+                                    type: 'Identifier',
+                                },
+                                {raw: '1', value: 1, type: 'Literal'},
+                            ],
+                        },
+                    },
+                ],
+            })
 
-    describe('updateFilterValue', () => {
-        it('should update fields value to number', () => {
-            const ast = getAST('gte(ticket.created_datetime, 1)')
-            const res = utils.updateFilterValue(fromJS(ast), 0, 2)
-            expect(res.toJS()).toEqual(
-                getAST('gte(ticket.created_datetime, 2)')
-            )
-        })
+            const res = utils.updateFilterOperator(ast, 0, 'lte')
 
-        it('should update fields value to string', () => {
-            const ast = getAST("gte(ticket.created_datetime, '1')")
-            const res = utils.updateFilterValue(fromJS(ast), 0, '2')
-            expect(res.toJS()).toEqual(
-                getAST("gte(ticket.created_datetime, '2')")
-            )
-        })
-
-        it('should update fields value to array', () => {
-            const ast = getAST("gte(ticket.created_datetime, '1')")
-            const res = utils.updateFilterValue(fromJS(ast), 0, [1])
-            expect(res.toJS()).toEqual(
-                getAST('gte(ticket.created_datetime, [1])')
-            )
-        })
-
-        it('should remove field value', () => {
-            const ast = getAST("gte(ticket.created_datetime, '1')")
-            const res = utils.updateFilterValue(fromJS(ast), 0, null)
-            expect(res.toJS()).toEqual(
-                getAST("gte(ticket.created_datetime, '')")
-            )
+            expect(res.toJS()).toMatchSnapshot()
         })
     })
 
@@ -168,7 +232,7 @@ describe('utils', () => {
         it('should return index url with no active view', () => {
             const url = utils.activeViewUrl(
                 fromJS({}),
-                {pathname: '/app/ticket/1', search: ''},
+                {pathname: '/app/ticket/1'},
                 fromJS({})
             )
             expect(url).toBe('/app')
@@ -285,7 +349,7 @@ describe('utils', () => {
 
     describe('rawify', () => {
         it('should work with empty values', () => {
-            expect(utils.rawify(null)).toEqual("''")
+            expect(utils.rawify()).toEqual("''")
             expect(utils.rawify('')).toEqual("''")
             expect(utils.rawify(null)).toEqual("''")
         })

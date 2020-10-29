@@ -1,55 +1,53 @@
 import moment from 'moment'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import axios from 'axios'
+import axios, {CancelToken, Cancel} from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-import {fromJS, Map} from 'immutable'
-import _identity from 'lodash/identity'
+import {fromJS} from 'immutable'
 
-import * as actions from '../actions'
-import {initialState} from '../reducers'
+import * as actions from '../actions.ts'
+import {initialState} from '../reducers.ts'
 import {
     ACTIVE_VIEW_COUNT_TIMEOUT,
     baseView,
     RECENT_VIEWS_COUNTS_TIMEOUT,
-} from '../../../config/views'
-import socketManager from '../../../services/socketManager/socketManager'
-import * as socketConstants from '../../../config/socketConstants'
-import {RootState, StoreDispatch} from '../../types'
-import {ViewNavDirection, ViewType, ViewVisibility} from '../types'
-import {JobType} from '../../../models/job/types'
-import {notify} from '../../notifications/actions'
-import {MoveIndexDirection} from '../../../pages/common/utils/keyboard'
-import {getAST} from '../../../utils'
+} from '../../../config/views.tsx'
+import socketManager from '../../../services/socketManager'
+import * as socketConstants from '../../../config/socketConstants.ts'
+import {
+    NEXT_VIEW_NAV_DIRECTION,
+    PREV_VIEW_NAV_DIRECTION,
+    TICKET_LIST_VIEW_TYPE,
+    ViewVisibility,
+} from '../../../constants/view.ts'
 
-const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+const mockStore = configureMockStore([thunk])
 
-jest.mock('../../notifications/actions.ts')
-
+jest.mock('../../notifications/actions.ts', () => {
+    return {
+        notify: jest.fn(() => (args) => args),
+    }
+})
 jest.mock('reapop', () => {
-    const reapop = jest.requireActual('reapop')
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+    const reapop = require.requireActual('reapop')
+
     return {
         ...reapop,
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-        updateNotification: jest.fn(() => (args: any) => args),
+        updateNotification: jest.fn(() => (args) => args),
     }
 })
 
-const store = mockStore({
-    views: initialState,
-})
-const mockServer = new MockAdapter(axios)
-
-beforeEach(() => {
-    store.clearActions()
-    mockServer.reset()
-    jest.clearAllMocks()
-    ;(notify as jest.Mock).mockReturnValue(_identity)
-})
-
 describe('actions', () => {
+    let store
+
     describe('fieldEnumSearch()', () => {
+        let mockServer
+
+        beforeEach(() => {
+            store = mockStore({views: initialState})
+            mockServer = new MockAdapter(axios)
+        })
+
         it('should dispatch results', async () => {
             const response = {
                 data: [
@@ -90,7 +88,7 @@ describe('actions', () => {
 
         it('should reject when cancelled', async () => {
             mockServer.onPost('/api/search/').reply(200, {})
-            const source = axios.CancelToken.source()
+            const source = CancelToken.source()
             source.cancel()
 
             await expect(
@@ -101,13 +99,13 @@ describe('actions', () => {
                         source.token
                     )
                 )
-            ).rejects.toEqual(new axios.Cancel())
+            ).rejects.toEqual(new Cancel())
         })
     })
 
     describe('fetchActiveViewTickets', () => {
         it('should not fetch (no active view)', () => {
-            const store = mockStore({views: initialState})
+            store = mockStore({views: initialState})
             expect(store.dispatch(actions.fetchActiveViewTickets())).toBe(
                 undefined
             )
@@ -116,7 +114,7 @@ describe('actions', () => {
 
         it('should not fetch (not on a view)', () => {
             window.location.pathname = '/app/ticket/12/'
-            const store = mockStore({views: initialState})
+            store = mockStore({views: initialState})
 
             expect(store.dispatch(actions.fetchActiveViewTickets())).toBe(
                 undefined
@@ -131,10 +129,9 @@ describe('actions', () => {
                 fromJS({
                     id: 1,
                     editMode: true,
-                    type: ViewType.TicketList,
                 })
             )
-            const store = mockStore({views: state})
+            store = mockStore({views: state})
 
             expect(store.dispatch(actions.fetchActiveViewTickets())).toBe(
                 undefined
@@ -146,7 +143,7 @@ describe('actions', () => {
             window.location.pathname = '/app/tickets/12/'
             const state = initialState.mergeDeep(
                 fromJS({
-                    active: {id: 1, type: ViewType.TicketList},
+                    active: {id: 1},
                     _internal: {
                         loading: {
                             fetchList: true,
@@ -154,7 +151,7 @@ describe('actions', () => {
                     },
                 })
             )
-            const store = mockStore({views: state})
+            store = mockStore({views: state})
 
             expect(store.dispatch(actions.fetchActiveViewTickets())).toBe(
                 undefined
@@ -174,7 +171,7 @@ describe('actions', () => {
                     },
                 })
             )
-            const store = mockStore({views: state})
+            store = mockStore({views: state})
 
             expect(store.dispatch(actions.fetchActiveViewTickets())).toBe(
                 undefined
@@ -183,13 +180,10 @@ describe('actions', () => {
         })
 
         it('should fetch tickets', () => {
-            const state = initialState.set(
-                'active',
-                fromJS({id: 1, type: ViewType.TicketList})
-            )
+            const state = initialState.set('active', fromJS({id: 1}))
             window.location.pathname = '/app/tickets/12/'
 
-            const store = mockStore({views: state})
+            store = mockStore({views: state})
             expect(
                 store.dispatch(actions.fetchActiveViewTickets())
             ).not.toEqual(undefined)
@@ -199,8 +193,9 @@ describe('actions', () => {
 
     describe('fetchRecentViewsCounts', () => {
         const _send = socketManager.send
-        const sendSpy = jest.fn()
+        let sendSpy = null
         beforeEach(() => {
+            sendSpy = jest.fn()
             socketManager.send = sendSpy
         })
 
@@ -210,7 +205,7 @@ describe('actions', () => {
 
         it('should not fetch views counts (not on a ticket and not on a view)', () => {
             window.location.pathname = '/app/rules/'
-            const store = mockStore({views: initialState})
+            store = mockStore({views: initialState})
             expect(store.dispatch(actions.fetchRecentViewsCounts())).toBe(
                 undefined
             )
@@ -227,7 +222,7 @@ describe('actions', () => {
                     },
                 })
             )
-            const store = mockStore({views: state})
+            store = mockStore({views: state})
 
             expect(store.dispatch(actions.fetchRecentViewsCounts())).toBe(
                 undefined
@@ -251,7 +246,7 @@ describe('actions', () => {
                 })
             )
 
-            const store = mockStore({views: state})
+            store = mockStore({views: state})
 
             store.dispatch(actions.fetchRecentViewsCounts())
             expect(sendSpy.mock.calls.length).toEqual(0)
@@ -275,7 +270,7 @@ describe('actions', () => {
                 })
             )
 
-            const store = mockStore({views: state})
+            store = mockStore({views: state})
             store.dispatch(actions.fetchRecentViewsCounts())
             expect(sendSpy.mock.calls.length).toEqual(1)
             expect(sendSpy.mock.calls[0]).toEqual([
@@ -287,9 +282,10 @@ describe('actions', () => {
 
     describe('fetchActiveViewCount', () => {
         const _send = socketManager.send
-        const sendSpy = jest.fn()
+        let sendSpy = null
 
         beforeEach(() => {
+            sendSpy = jest.fn()
             socketManager.send = sendSpy
         })
 
@@ -299,7 +295,7 @@ describe('actions', () => {
 
         it('should not fetch views counts (not on a ticket)', () => {
             window.location.pathname = '/app/tickets/'
-            const store = mockStore({views: initialState})
+            store = mockStore({views: initialState})
             expect(store.dispatch(actions.fetchActiveViewCount())).toBe(
                 undefined
             )
@@ -316,7 +312,7 @@ describe('actions', () => {
                     },
                 })
             )
-            const store = mockStore({views: state})
+            store = mockStore({views: state})
 
             expect(store.dispatch(actions.fetchActiveViewCount())).toBe(
                 undefined
@@ -340,7 +336,7 @@ describe('actions', () => {
                 })
             )
 
-            const store = mockStore({views: state})
+            store = mockStore({views: state})
             store.dispatch(actions.fetchActiveViewCount())
             expect(sendSpy.mock.calls.length).toEqual(1)
             expect(sendSpy.mock.calls[0]).toEqual([
@@ -360,7 +356,7 @@ describe('actions', () => {
                     },
                 })
             )
-            const store = mockStore({views: state})
+            store = mockStore({views: state})
             expect(
                 store.dispatch(actions.updateRecentViews([1]))
             ).toMatchSnapshot()
@@ -369,24 +365,24 @@ describe('actions', () => {
     })
 
     describe('fetchViewItems', () => {
+        let mockServer
         const viewId = 1
-        const filtersCode = "eq(ticket.channel, 'chat')"
-        const view = {
-            id: viewId,
-            type: ViewType.TicketList,
-            filters: filtersCode,
-            filters_ast: getAST(filtersCode),
-        }
-        const baseReply = {
+        let baseReply = {
             data: [{id: 1}, {id: 2}],
             meta: {
                 current_cursor: 123,
-                prev_items: `/api/views/${viewId}/items?direction=${MoveIndexDirection.Prev}`,
-                next_items: `/api/views/${viewId}/items?direction=${MoveIndexDirection.Next}`,
+                prev_items: `/api/views/${viewId}/items?direction=${PREV_VIEW_NAV_DIRECTION}`,
+                next_items: `/api/views/${viewId}/items?direction=${NEXT_VIEW_NAV_DIRECTION}`,
             },
         }
 
+        beforeEach(() => {
+            mockServer = new MockAdapter(axios)
+        })
+
         it('should not fetch because there is no active view', () => {
+            const store = mockStore({views: fromJS()})
+
             return store.dispatch(actions.fetchViewItems()).then(() => {
                 expect(store.getActions()).toEqual([])
             })
@@ -395,7 +391,7 @@ describe('actions', () => {
         it('should not fetch because the view is not dirty and this is a new view', () => {
             const store = mockStore({
                 views: fromJS({
-                    active: baseView().set('type', ViewType.TicketList),
+                    active: baseView(),
                 }),
             })
 
@@ -407,7 +403,7 @@ describe('actions', () => {
         it('should fetch current page without cursor', () => {
             const store = mockStore({
                 views: fromJS({
-                    active: view,
+                    active: {id: viewId, type: TICKET_LIST_VIEW_TYPE},
                 }),
             })
 
@@ -416,16 +412,16 @@ describe('actions', () => {
                 .reply(200, baseReply)
 
             return store.dispatch(actions.fetchViewItems()).then(() => {
+                expect(mockServer.history.get.length).toBe(1)
                 expect(store.getActions()).toMatchSnapshot()
-                expect(mockServer.history).toMatchSnapshot()
             })
         })
 
         it('should fetch current page with cursor', () => {
-            const cursor = '1234'
+            const cursor = 1234
             const store = mockStore({
                 views: fromJS({
-                    active: view,
+                    active: {id: viewId, type: TICKET_LIST_VIEW_TYPE},
                 }),
             })
 
@@ -436,16 +432,17 @@ describe('actions', () => {
             return store
                 .dispatch(actions.fetchViewItems(null, cursor))
                 .then(() => {
+                    expect(mockServer.history.get.length).toBe(1)
+                    expect(mockServer.history.get[0].url).toEqual(url)
                     expect(store.getActions()).toMatchSnapshot()
-                    expect(mockServer.history).toMatchSnapshot()
                 })
         })
 
         it('should fetch next page', () => {
-            const nextPageUrl = `/api/views/${viewId}/items?direction=${MoveIndexDirection.Next}&cursor=123&ignored_item=7`
+            const nextPageUrl = `/api/views/${viewId}/items?direction=${NEXT_VIEW_NAV_DIRECTION}&cursor=123&ignored_item=7`
             const store = mockStore({
                 views: fromJS({
-                    active: view,
+                    active: {id: viewId, type: TICKET_LIST_VIEW_TYPE},
                     _internal: {
                         navigation: {
                             next_items: nextPageUrl,
@@ -457,18 +454,19 @@ describe('actions', () => {
             mockServer.onGet(nextPageUrl).reply(200, baseReply)
 
             return store
-                .dispatch(actions.fetchViewItems(ViewNavDirection.NextView))
+                .dispatch(actions.fetchViewItems(NEXT_VIEW_NAV_DIRECTION))
                 .then(() => {
+                    expect(mockServer.history.get.length).toBe(1)
+                    expect(mockServer.history.get[0].url).toEqual(nextPageUrl)
                     expect(store.getActions()).toMatchSnapshot()
-                    expect(mockServer.history).toMatchSnapshot()
                 })
         })
 
         it('should fetch prev page', () => {
-            const prevPageUrl = `/api/views/${viewId}/items?direction=${MoveIndexDirection.Prev}cursor=123&ignored_item=7`
+            const prevPageUrl = `/api/views/${viewId}/items?direction=${PREV_VIEW_NAV_DIRECTION}cursor=123&ignored_item=7`
             const store = mockStore({
                 views: fromJS({
-                    active: view,
+                    active: {id: viewId, type: TICKET_LIST_VIEW_TYPE},
                     _internal: {
                         navigation: {
                             prev_items: prevPageUrl,
@@ -480,10 +478,11 @@ describe('actions', () => {
             mockServer.onGet(prevPageUrl).reply(200, baseReply)
 
             return store
-                .dispatch(actions.fetchViewItems(ViewNavDirection.PrevView))
+                .dispatch(actions.fetchViewItems(PREV_VIEW_NAV_DIRECTION))
                 .then(() => {
+                    expect(mockServer.history.get.length).toBe(1)
+                    expect(mockServer.history.get[0].url).toEqual(prevPageUrl)
                     expect(store.getActions()).toMatchSnapshot()
-                    expect(mockServer.history).toMatchSnapshot()
                 })
         })
 
@@ -491,9 +490,10 @@ describe('actions', () => {
             const store = mockStore({
                 views: fromJS({
                     active: {
-                        ...view,
+                        id: viewId,
                         dirty: true,
                         editMode: false,
+                        type: TICKET_LIST_VIEW_TYPE,
                     },
                 }),
             })
@@ -503,8 +503,13 @@ describe('actions', () => {
                 .reply(200, baseReply)
 
             return store.dispatch(actions.fetchViewItems()).then(() => {
+                expect(mockServer.history.put.length).toBe(1)
+                expect(mockServer.history.put[0].data).toEqual(
+                    JSON.stringify({
+                        view: {id: viewId, type: TICKET_LIST_VIEW_TYPE},
+                    })
+                )
                 expect(store.getActions()).toMatchSnapshot()
-                expect(mockServer.history).toMatchSnapshot()
             })
         })
 
@@ -514,8 +519,8 @@ describe('actions', () => {
             () => {
                 const preRequestState = {
                     views: fromJS({
-                        active: view,
-                    }) as Map<any, any>,
+                        active: {id: viewId, type: TICKET_LIST_VIEW_TYPE},
+                    }),
                 }
 
                 const postRequestState = {
@@ -533,8 +538,8 @@ describe('actions', () => {
                 })
 
                 return store.dispatch(actions.fetchViewItems()).then(() => {
+                    expect(mockServer.history.get.length).toBe(1)
                     expect(store.getActions()).toMatchSnapshot()
-                    expect(mockServer.history).toMatchSnapshot()
                 })
             }
         )
@@ -545,10 +550,10 @@ describe('actions', () => {
             () => {
                 const store = mockStore({
                     views: fromJS({
-                        active: view,
+                        active: {id: viewId, type: TICKET_LIST_VIEW_TYPE},
                         _internal: {
                             navigation: {
-                                prev_items: `/api/views/1/items?direction=${MoveIndexDirection.Prev}`,
+                                prev_items: `/api/views/1/items?direction=${PREV_VIEW_NAV_DIRECTION}`,
                             },
                         },
                     }),
@@ -561,8 +566,8 @@ describe('actions', () => {
                 return store
                     .dispatch(actions.fetchViewItems(null, null, true))
                     .then(() => {
+                        expect(mockServer.history.get.length).toBe(1)
                         expect(store.getActions()).toMatchSnapshot()
-                        expect(mockServer.history).toMatchSnapshot()
                     })
             }
         )
@@ -574,10 +579,11 @@ describe('actions', () => {
                 const preRequestState = {
                     views: fromJS({
                         active: {
-                            ...view,
+                            id: viewId,
                             filters: 'foo',
+                            type: TICKET_LIST_VIEW_TYPE,
                         },
-                    }) as Map<any, any>,
+                    }),
                 }
 
                 const postRequestState = {
@@ -598,8 +604,8 @@ describe('actions', () => {
                 })
 
                 return store.dispatch(actions.fetchViewItems()).then(() => {
+                    expect(mockServer.history.get.length).toBe(1)
                     expect(store.getActions()).toMatchSnapshot()
-                    expect(mockServer.history).toMatchSnapshot()
                 })
             }
         )
@@ -607,12 +613,10 @@ describe('actions', () => {
         it('should not fetch because active view is deactivated', () => {
             const store = mockStore({
                 views: fromJS({
-                    active: baseView()
-                        .set(
-                            'deactivated_datetime',
-                            '2020-06-15 22:56:32.708038'
-                        )
-                        .set('type', ViewType.TicketList),
+                    active: baseView().set(
+                        'deactivated_datetime',
+                        '2020-06-15 22:56:32.708038'
+                    ),
                 }),
             })
 
@@ -625,17 +629,18 @@ describe('actions', () => {
             const store = mockStore({
                 views: fromJS({
                     active: {
-                        ...view,
+                        id: viewId,
                         dirty: true,
                         editMode: false,
+                        type: TICKET_LIST_VIEW_TYPE,
                     },
                 }),
             })
-            const source = axios.CancelToken.source()
+            const source = CancelToken.source()
             mockServer
                 .onPut(`/api/views/${viewId}/items/`)
                 .reply(200, baseReply)
-            void store.dispatch(
+            store.dispatch(
                 actions.fetchViewItems(null, null, null, source.token)
             )
             source.cancel()
@@ -648,27 +653,25 @@ describe('actions', () => {
     })
 
     describe('bulkUpdate()', () => {
+        let mockServer
         const viewId = 1
+
+        beforeEach(() => {
+            mockServer = new MockAdapter(axios)
+        })
 
         it("should call the job API with the view id in it's params because the view is not dirty", () => {
             const store = mockStore()
             mockServer.onAny().reply(200)
             const view = fromJS({
                 id: viewId,
-                type: ViewType.TicketList,
                 dirty: false,
             })
             const jobType = 'jobTypeValue'
             const jobPartialParams = {exampleVar: 'exampleValue'}
 
             return store
-                .dispatch(
-                    actions.createJob(
-                        view,
-                        (jobType as unknown) as JobType,
-                        jobPartialParams
-                    )
-                )
+                .dispatch(actions.createJob(view, jobType, jobPartialParams))
                 .then(() => {
                     expect(mockServer.history).toMatchSnapshot()
                 })
@@ -679,7 +682,6 @@ describe('actions', () => {
             mockServer.onAny().reply(200)
             const view = fromJS({
                 id: viewId,
-                type: ViewType.TicketList,
                 dirty: true,
                 editMode: true,
                 allItemsSelected: true,
@@ -690,13 +692,7 @@ describe('actions', () => {
             const jobPartialParams = {exampleVar: 'exampleValue'}
 
             return store
-                .dispatch(
-                    actions.createJob(
-                        view,
-                        (jobType as unknown) as JobType,
-                        jobPartialParams
-                    )
-                )
+                .dispatch(actions.createJob(view, jobType, jobPartialParams))
                 .then(() => {
                     expect(mockServer.history).toMatchSnapshot()
                 })
@@ -704,20 +700,24 @@ describe('actions', () => {
     })
 
     describe('deleteView()', () => {
-        const view = fromJS({
-            id: 1,
-            type: ViewType.TicketList,
-        }) as Map<any, any>
+        let view
+        let store
+        let mockServer
 
         beforeEach(() => {
+            view = fromJS({
+                id: 1,
+                type: 'ticket-list',
+            })
+            mockServer = new MockAdapter(axios)
             mockServer
-                .onDelete(`/api/views/${view.get('id') as string}/`)
+                .onDelete(`/api/views/${view.get('id')}/`)
                 .reply(() => [200, {}])
         })
 
         it('should prevent deletion of last view of same type', async () => {
             const views = initialState.set('items', fromJS([view]))
-            const store = mockStore({views})
+            store = mockStore({views})
 
             await store.dispatch(actions.deleteView(view))
 
@@ -730,7 +730,7 @@ describe('actions', () => {
                 'items',
                 fromJS([view, view.set('id', 2)])
             )
-            const store = mockStore({views})
+            store = mockStore({views})
 
             await store.dispatch(actions.deleteView(view))
 
@@ -740,18 +740,23 @@ describe('actions', () => {
     })
 
     describe('deleteViewSuccess()', () => {
-        const view = fromJS({
-            id: 1,
-            type: ViewType.TicketList,
-        }) as Map<any, any>
+        let view
+        let store
 
-        it('should redirect to other view of same type when view is active', () => {
+        beforeEach(() => {
+            view = fromJS({
+                id: 1,
+                type: TICKET_LIST_VIEW_TYPE,
+            })
+        })
+
+        it('should redirect to other view of same type when view is active', async () => {
             const views = initialState
                 .set('items', fromJS([view, view.set('id', 2)]))
                 .set('active', view)
-            const store = mockStore({views})
+            store = mockStore({views})
 
-            store.dispatch(actions.deleteViewSuccess(view.get('id')))
+            await store.dispatch(actions.deleteViewSuccess(view.get('id')))
 
             expect(store.getActions()).toMatchSnapshot()
         })
@@ -759,16 +764,13 @@ describe('actions', () => {
 
     describe('submitView()', () => {
         const currentUserId = 1
-        const ticketChannelEqualChatFilter = 'eq(ticket.channel, "chat")'
         const view = fromJS({
             id: 0,
-            type: ViewType.TicketList,
+            type: TICKET_LIST_VIEW_TYPE,
             name: 'My Tickets',
             shared_with_users: [currentUserId],
-            visibility: ViewVisibility.Private,
-            filters: ticketChannelEqualChatFilter,
-            filters_ast: getAST(ticketChannelEqualChatFilter),
-        }) as Map<any, any>
+            visibility: ViewVisibility.PRIVATE,
+        })
 
         it('should create view when id is 0', async () => {
             const mockServer = new MockAdapter(axios)
@@ -781,20 +783,14 @@ describe('actions', () => {
             })
             await store.dispatch(actions.submitView(view))
 
-            expect(mockServer.history).toMatchSnapshot()
-            expect(store.getActions()).toMatchSnapshot()
-        })
+            expect(JSON.parse(mockServer.history.post[0].data)).toMatchObject({
+                visibility: ViewVisibility.PRIVATE,
+                shared_with_users: [currentUserId],
+                display_order: null,
+                type: TICKET_LIST_VIEW_TYPE,
+                name: 'My Tickets',
+            })
 
-        it('should update view', async () => {
-            const viewToUpdate = view.set('id', 99)
-            const mockServer = new MockAdapter(axios)
-                .onPut('/api/views/99/')
-                .reply(() => [
-                    200,
-                    viewToUpdate.toJS() as Record<string, unknown>,
-                ])
-            await store.dispatch(actions.submitView(viewToUpdate))
-            expect(mockServer.history).toMatchSnapshot()
             expect(store.getActions()).toMatchSnapshot()
         })
     })
