@@ -23,9 +23,9 @@ type Errors = {
 }
 
 const VALIDATE_PASSWORD_ERROR_MESSAGE = 'Passwords do not match.'
-const USER_PASSWORD_MIN_LENGTH = 8
+const USER_PASSWORD_MIN_LENGTH = 14
 const USER_PASSWORD_MAX_LENGTH = 128
-const USER_PASSWORD_VALIDATION_PATTERN = `.{${USER_PASSWORD_MIN_LENGTH},${USER_PASSWORD_MAX_LENGTH}}`
+const USER_PASSWORD_VALIDATION_PATTERN = `^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{${USER_PASSWORD_MIN_LENGTH},${USER_PASSWORD_MAX_LENGTH}}$`
 
 export const ChangePasswordContainer = ({
     currentUser,
@@ -111,7 +111,7 @@ export const ChangePasswordContainer = ({
                         label="New password"
                         placeholder="New password"
                         pattern={USER_PASSWORD_VALIDATION_PATTERN}
-                        title={`Password must be between ${USER_PASSWORD_MIN_LENGTH} and ${USER_PASSWORD_MAX_LENGTH} characters long.`}
+                        title={`Password must be between ${USER_PASSWORD_MIN_LENGTH} and ${USER_PASSWORD_MAX_LENGTH} characters long and contain at least 1 lower case letter, 1 upper case letter and 1 digit.`}
                         required
                         value={newPassword}
                         onChange={(value) => {
@@ -126,7 +126,7 @@ export const ChangePasswordContainer = ({
                         label="Confirm new password"
                         placeholder="Confirm new password"
                         pattern={USER_PASSWORD_VALIDATION_PATTERN}
-                        title={`Password must be between ${USER_PASSWORD_MIN_LENGTH} and ${USER_PASSWORD_MAX_LENGTH} characters long.`}
+                        title={`Password must be between ${USER_PASSWORD_MIN_LENGTH} and ${USER_PASSWORD_MAX_LENGTH} characters long and contain at least 1 lower case letter, 1 upper case letter and 1 digit.`}
                         required
                         value={confirmNewPassword}
                         onChange={(value) => {
