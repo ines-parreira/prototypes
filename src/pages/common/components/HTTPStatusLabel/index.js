@@ -1,2 +1,2 @@
-import HTTPStatusLabel from './HTTPStatusLabel'
+import HTTPStatusLabel from './HTTPStatusLabel.tsx'
 export default HTTPStatusLabel

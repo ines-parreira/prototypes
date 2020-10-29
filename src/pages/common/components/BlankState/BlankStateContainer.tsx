@@ -1,26 +1,27 @@
-// @flow
-import React, {type Node as ReactNode} from 'react'
-import {connect} from 'react-redux'
+import React, {ReactNode} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 import moment from 'moment'
 import throttle from 'lodash/throttle'
 
 import {fromJS} from 'immutable'
 
-import GorgiasApi from '../../../../services/gorgiasApi.ts'
-import {TICKETS_CLOSED_PER_AGENT} from '../../../../config/stats.tsx'
+import {RootState} from '../../../../state/types'
+import GorgiasApi from '../../../../services/gorgiasApi'
+import {TICKETS_CLOSED_PER_AGENT} from '../../../../config/stats'
 
 import BlankState from './components/BlankState'
 
 export const TICKET_CLOSED_BY_CURRENT_AGENT_7_DAYS =
     'ticket-closed-current-agent-7-days'
 
-type Props = {
-    currentUser: Map<*, *>,
-    message: ReactNode,
+type OwnProps = {
+    message: ReactNode
 }
 
+type Props = OwnProps & ConnectedProps<typeof connector>
+
 type State = {
-    closedTicketsCount: number | null,
+    closedTicketsCount: number | null
 }
 
 class BlankStateContainer extends React.Component<Props, State> {
@@ -30,7 +31,7 @@ class BlankStateContainer extends React.Component<Props, State> {
     }
 
     componentWillMount() {
-        this._fetchStatistic(this.props)
+        void this._fetchStatistic(this.props)
     }
 
     componentWillUnmount() {
@@ -83,8 +84,10 @@ class BlankStateContainer extends React.Component<Props, State> {
     }
 }
 
-export default connect((state) => {
+const connector = connect((state: RootState) => {
     return {
         currentUser: state.currentUser,
     }
-}, {})(BlankStateContainer)
+}, {})
+
+export default connector(BlankStateContainer)

@@ -1,16 +1,15 @@
-// @flow
+import {render} from '@testing-library/react'
 import React from 'react'
-import {shallow} from 'enzyme'
 
 import EmojiPicker from '../EmojiPicker'
 
 describe('<EmojiPicker/>', () => {
     describe('.render()', () => {
         it('should pass props to Picker component', () => {
-            const wrapper = shallow(
+            const {container} = render(
                 <EmojiPicker className="foo" style={{color: 'blue'}} />
             )
-            expect(wrapper).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
         })
     })
 })

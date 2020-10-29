@@ -4,7 +4,7 @@ import {type Map} from 'immutable'
 import {Link} from 'react-router'
 import {connect} from 'react-redux'
 
-import Avatar from '../../common/components/Avatar/Avatar'
+import Avatar from '../../common/components/Avatar/Avatar.tsx'
 import {DatetimeLabel} from '../../common/utils/labels'
 import {getAgents} from '../../../state/agents/selectors.ts'
 

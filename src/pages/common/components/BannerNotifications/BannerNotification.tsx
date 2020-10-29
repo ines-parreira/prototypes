@@ -1,16 +1,17 @@
-// @flow
-import React, {Component, type Node} from 'react'
+import React, {Component, ReactNode} from 'react'
 import classNames from 'classnames'
 
+import {NotificationStatus} from '../../../../state/notifications/types'
+
 type Props = {
-    id: string | number,
-    status: 'info' | 'success' | 'warning' | 'error',
-    onClick?: () => void,
-    message: string | Node,
-    dismissible: boolean,
-    closable: boolean,
-    allowHTML: boolean,
-    hide: (string | number) => void,
+    id: string | number
+    status: NotificationStatus
+    onClick?: () => void
+    message: string | ReactNode
+    dismissible: boolean
+    closable: boolean
+    allowHTML: boolean
+    hide: (value: string | number) => void
 }
 
 class BannerNotification extends Component<Props> {
@@ -53,7 +54,7 @@ class BannerNotification extends Component<Props> {
                     <span
                         onClick={this._onClick}
                         className="banner-notification-message"
-                        dangerouslySetInnerHTML={{__html: message}}
+                        dangerouslySetInnerHTML={{__html: message as string}}
                     ></span>
                 ) : (
                     <span

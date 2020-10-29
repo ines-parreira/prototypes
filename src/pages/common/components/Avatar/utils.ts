@@ -1,12 +1,11 @@
-// @flow
 import md5 from 'md5'
 
 type avatarParamsType = {
-    email: string,
-    size: number,
+    email?: string
+    size?: number
 }
 
-function getGravatarUrl(email: string = '') {
+function getGravatarUrl(email = ''): Promise<string> {
     return new Promise((resolve, reject) => {
         const gravatarUrl = `https://www.gravatar.com/avatar/${md5(
             email
@@ -21,13 +20,13 @@ function getGravatarUrl(email: string = '') {
     })
 }
 
-const avatarCache = {}
+const avatarCache: {[key: string]: Maybe<string>} = {}
 
-function cleanEmail(email): string {
+function cleanEmail(email: Maybe<string>): string {
     return (email || '').toLowerCase().trim()
 }
 
-export function getAvatarFromCache(email: string, size: number): ?string {
+export function getAvatarFromCache(email: string, size: number): Maybe<string> {
     const url = avatarCache[cleanEmail(email)]
     return url ? `${url}&s=${size}` : url
 }
@@ -35,7 +34,7 @@ export function getAvatarFromCache(email: string, size: number): ?string {
 export function getAvatar({
     email = '',
     size = 50,
-}: avatarParamsType = {}): Promise<?string> {
+}: avatarParamsType = {}): Promise<Maybe<string>> {
     const mail = cleanEmail(email)
     if (!mail) {
         return Promise.resolve(null)

@@ -1,7 +1,7 @@
 import {shallow} from 'enzyme'
 import React, {ComponentProps} from 'react'
 
-import BannerNotification from '../BannerNotification.js'
+import BannerNotification from '../BannerNotification'
 import {NotificationStatus} from '../../../../../state/notifications/types'
 
 describe('<BannerNotification/>', () => {

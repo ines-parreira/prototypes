@@ -1,7 +1,7 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 
-import InfiniteScroll from '../InfiniteScroll'
+import InfiniteScroll from '../InfiniteScroll.tsx'
 
 describe('InfiniteScroll component', () => {
     it('should display infinite scroll with children', () => {

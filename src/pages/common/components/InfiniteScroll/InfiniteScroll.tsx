@@ -1,23 +1,20 @@
-// @flow
-import React from 'react'
+import React, {ReactNode} from 'react'
 import classnames from 'classnames'
 
-import type {Node} from 'react'
-
-import Loader from '../Loader'
+import Loader from '../Loader/Loader.js'
 
 import css from './InfiniteScroll.less'
 
 type Props = {
-    load: () => Promise<*>,
-    loadMore: boolean,
-    threshold: number,
-    className: string,
-    children: Node,
+    load: () => Promise<void>
+    loadMore: boolean
+    threshold: number
+    className: string
+    children: ReactNode
 }
 
 type State = {
-    loading: boolean,
+    loading: boolean
 }
 
 export default class InfiniteScroll extends React.Component<Props, State> {
@@ -32,23 +29,23 @@ export default class InfiniteScroll extends React.Component<Props, State> {
         loading: false,
     }
 
-    container = null
+    container: Maybe<HTMLElement> = null
 
     componentDidMount() {
         // load next page if already scrolled
-        this._load(this.container)
+        void this._load(this.container)
     }
 
     componentDidUpdate(prevProps: Props) {
         // loadMore changed from parent,
         // load next page if already scrolled.
         if (prevProps.loadMore !== this.props.loadMore) {
-            this._load(this.container)
+            void this._load(this.container)
         }
     }
 
     // overwrite container for testing
-    _load = (container: ?HTMLElement) => {
+    _load = (container: Maybe<HTMLElement>) => {
         if (
             // parent stopped loading
             !this.props.loadMore ||
@@ -66,14 +63,14 @@ export default class InfiniteScroll extends React.Component<Props, State> {
         // reached the end
         if (containerScroll >= container.scrollHeight) {
             this.setState({loading: true}, () => {
-                this.props.load().then(() => {
+                void this.props.load().then(() => {
                     this.setState({loading: false})
                 })
             })
         }
     }
 
-    _scrollContainer = (ref: ?HTMLElement) => {
+    _scrollContainer = (ref: Maybe<HTMLElement>) => {
         this.container = ref
     }
 
@@ -90,7 +87,7 @@ export default class InfiniteScroll extends React.Component<Props, State> {
                     className
                 )}
                 ref={this._scrollContainer}
-                onScroll={(e: {target: HTMLElement}) => this._load(e.target)}
+                onScroll={(e) => this._load(e.target as any)}
             >
                 {children}
                 <Loader className={css.loader} minHeight="0" />

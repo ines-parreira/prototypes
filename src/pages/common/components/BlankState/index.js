@@ -1,2 +1,2 @@
-import BlankStateContainer from './BlankStateContainer'
+import BlankStateContainer from './BlankStateContainer.tsx'
 export default BlankStateContainer

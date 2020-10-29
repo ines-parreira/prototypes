@@ -1,5 +1,4 @@
-// @flow
-import React from 'react'
+import React, {CSSProperties} from 'react'
 import classnames from 'classnames'
 import _isEqual from 'lodash/isEqual'
 
@@ -7,21 +6,21 @@ import {getAvatar, getAvatarFromCache} from './utils'
 import css from './Avatar.less'
 
 type Props = {
-    email: string,
-    name: string,
-    size: number,
-    url?: string,
-    className?: string,
-    style?: Object,
-    badgeColor?: string,
+    email: string
+    name: string
+    size: number
+    url?: string
+    className?: string
+    style?: CSSProperties
+    badgeColor?: string
 }
 
 type State = {
-    imageUrl: ?string,
+    imageUrl: Maybe<string>
 }
 
 export default class Avatar extends React.Component<Props, State> {
-    component: ?HTMLDivElement
+    component: Maybe<HTMLDivElement>
     isMounted: boolean
 
     static defaultProps = {
@@ -33,7 +32,7 @@ export default class Avatar extends React.Component<Props, State> {
     }
 
     constructor(props: Props) {
-        super()
+        super(props)
 
         this.state = this._getDefaultState(props)
 
@@ -55,7 +54,7 @@ export default class Avatar extends React.Component<Props, State> {
         this.isMounted = false
     }
 
-    _container = (ref: ?HTMLDivElement) => {
+    _container = (ref: Maybe<HTMLDivElement>) => {
         this.component = ref
     }
 
@@ -81,10 +80,10 @@ export default class Avatar extends React.Component<Props, State> {
             return
         }
 
-        getAvatar({
+        void getAvatar({
             email: this.props.email,
             size: this.props.size,
-        }).then((imageUrl) => {
+        }).then((imageUrl: Maybe<string>) => {
             // Still need to do it here in case the component is unmounted while the promise is pending
             if (this.isMounted) {
                 this.setState({imageUrl})

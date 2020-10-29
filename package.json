@@ -120,6 +120,7 @@
         "@types/domhandler": "2.4.1",
         "@types/draft-convert": "2.1.1",
         "@types/draft-js": "0.10.41",
+        "@types/emoji-mart": "3.0.3",
         "@types/enzyme": "3.10.5",
         "@types/escodegen": "0.0.6",
         "@types/esprima": "2.1.36",

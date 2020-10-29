@@ -1,2 +1,2 @@
-import BannerNotifications from './BannerNotifications'
+import BannerNotifications from './BannerNotifications.tsx'
 export default BannerNotifications

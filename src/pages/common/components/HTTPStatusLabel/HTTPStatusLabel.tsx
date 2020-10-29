@@ -1,10 +1,9 @@
-// @flow
 import React, {Component} from 'react'
 import HTTPStatus from 'httpstatus'
 import {Badge} from 'reactstrap'
 
 type Props = {
-    statusCode: number,
+    statusCode: number
 }
 
 export default class HTTPStatusLabel extends Component<Props> {

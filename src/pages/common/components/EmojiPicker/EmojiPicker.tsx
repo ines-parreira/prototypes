@@ -1,12 +1,12 @@
-// @flow
-import React from 'react'
+import React, {CSSProperties} from 'react'
 import {Picker} from 'emoji-mart'
 import classNames from 'classnames'
 
 import css from './EmojiPicker.less'
 
 type Props = {
-    className?: string,
+    className?: string
+    style?: CSSProperties
 }
 
 const EmojiPicker = (props: Props) => (

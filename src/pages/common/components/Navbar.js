@@ -27,7 +27,7 @@ import ToggleButton from '../../../pages/common/components/ToggleButton'
 import './Navbar.less'
 import * as segmentTracker from '../../../store/middlewares/segmentTracker'
 
-import Avatar from './Avatar/Avatar'
+import Avatar from './Avatar/Avatar.tsx'
 
 type NavLinkProps = {
     to: string,

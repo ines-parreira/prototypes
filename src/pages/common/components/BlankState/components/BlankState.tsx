@@ -1,16 +1,15 @@
-// @flow
-import React, {type Node as ReactNode} from 'react'
+import React, {ReactNode} from 'react'
 
 import emptyTicketList from '../../../../../../img/empty-ticket-list.svg'
 
 type Props = {
-    totalClosedTickets: ?number,
-    message: ReactNode,
+    totalClosedTickets: Maybe<number>
+    message: ReactNode
 }
 
 type Message = {
-    title: string,
-    text: ReactNode,
+    title: string
+    text: ReactNode
 }
 
 const defaultMessage: Message = {

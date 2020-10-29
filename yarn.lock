@@ -1427,6 +1427,13 @@
     "@types/react" "*"
     immutable "~3.7.4"
 
+"@types/emoji-mart@3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@types/emoji-mart/-/emoji-mart-3.0.3.tgz#8f830c76fa0cf66835ea67ac7d2169db6d78c32f"
+  integrity sha512-IAfTNRA6OoM7f/GZpuvdM47ktLGcHsnUuR+dQlwEEXSRbS0Z9iFoPA3WgBim6RBL4i7EVLtoRpREn5BgL3aMXA==
+  dependencies:
+    "@types/react" "*"
+
 "@types/enzyme@3.10.5":
   version "3.10.5"
   resolved "https://registry.yarnpkg.com/@types/enzyme/-/enzyme-3.10.5.tgz#fe7eeba3550369eed20e7fb565bfb74eec44f1f0"

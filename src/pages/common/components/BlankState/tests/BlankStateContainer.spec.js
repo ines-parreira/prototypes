@@ -7,7 +7,7 @@ import {Provider} from 'react-redux'
 
 import BlankStateContainer, {
     TICKET_CLOSED_BY_CURRENT_AGENT_7_DAYS,
-} from '../BlankStateContainer'
+} from '../BlankStateContainer.tsx'
 import {initialState} from '../../../../../state/currentUser/reducers.ts'
 
 const mockStore = configureMockStore([thunk])

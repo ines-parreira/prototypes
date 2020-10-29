@@ -1,4 +1,4 @@
-import {getAvatar, getAvatarFromCache} from '../utils'
+import {getAvatar, getAvatarFromCache} from '../utils.ts'
 import {mockImageOnload} from '../../../../../tests/utils'
 
 describe('Avatar utils', () => {

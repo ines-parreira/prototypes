@@ -1,7 +1,7 @@
 import {shallow} from 'enzyme'
 import React from 'react'
 
-import HTTPStatusLabel from '../HTTPStatusLabel'
+import HTTPStatusLabel from '../HTTPStatusLabel.tsx'
 
 describe('HTTPStatusLabel', () => {
     it('should render a secondary label for unknown HTTP status code', () => {
