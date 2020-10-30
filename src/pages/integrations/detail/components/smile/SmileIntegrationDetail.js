@@ -13,6 +13,8 @@ import {
     Row,
 } from 'reactstrap'
 
+import {fromJS} from 'immutable'
+
 import {PENDING_AUTHENTICATION_STATUS} from '../../../../../constants/integration.ts'
 import Loader from '../../../../common/components/Loader'
 import ConfirmButton from '../../../../common/components/ConfirmButton'
@@ -84,9 +86,8 @@ export class SmileIntegrationDetailComponent extends React.Component<
     _handleUpdate = (evt: Event): void => {
         evt.preventDefault()
         const {integration, actions} = this.props
-
         actions.updateOrCreateIntegration(
-            integration.set('name', this.state.name)
+            fromJS({id: integration.get('id'), name: this.state.name})
         )
     }
 

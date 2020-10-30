@@ -223,7 +223,7 @@ describe('<SmileIntegrationDetail/>', () => {
 
                 expect(preventDefault).toHaveBeenCalled()
                 expect(actions.updateOrCreateIntegration).toHaveBeenCalledWith(
-                    integration.set('name', newName)
+                    fromJS({id: integration.get('id'), name: newName})
                 )
             }
         )
