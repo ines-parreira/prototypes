@@ -121,14 +121,14 @@ export function MacrosSettingsContentContainer({
                 <div className={css.description}>
                     <div className={css.descriptionText}>
                         <p>
-                            Macros are used to automatise your client support
+                            Macros are used to automatize your agent support
                             responses. You can create new macros, delete or
                             disable existing ones.
                         </p>
                         <p>
-                            For example you can create a macro for letting your
+                            For example, you can create a macro for letting your
                             clients know the shipment status of their order or
-                            for sending gift-card. Check out the video on the
+                            for sending a gift card. Check out the video on the
                             right to find out more about working with macros.
                         </p>
                     </div>
