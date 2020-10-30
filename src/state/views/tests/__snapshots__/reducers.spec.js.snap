@@ -1168,46 +1168,135 @@ Immutable.Map {
     "dirty": true,
     "filters": "neq(ticket.assignee_user.id, '2')",
     "filters_ast": Immutable.Map {
+      "loc": SourceLocation {
+        "end": Object {
+          "column": 33,
+          "line": 1,
+        },
+        "start": Position {
+          "column": 0,
+          "line": 1,
+        },
+      },
       "type": "Program",
-      "sourceType": "script",
       "body": Immutable.List [
         Immutable.Map {
+          "loc": SourceLocation {
+            "end": Object {
+              "column": 33,
+              "line": 1,
+            },
+            "start": Position {
+              "column": 0,
+              "line": 1,
+            },
+          },
           "type": "ExpressionStatement",
           "expression": Immutable.Map {
+            "loc": WrappingSourceLocation {
+              "end": Object {
+                "column": 33,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 0,
+                "line": 1,
+              },
+            },
             "type": "CallExpression",
             "callee": Immutable.Map {
+              "loc": SourceLocation {
+                "end": Object {
+                  "column": 3,
+                  "line": 1,
+                },
+                "start": Position {
+                  "column": 0,
+                  "line": 1,
+                },
+              },
               "type": "Identifier",
               "name": "neq",
             },
             "arguments": Immutable.List [
               Immutable.Map {
+                "loc": WrappingSourceLocation {
+                  "end": Object {
+                    "column": 27,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 4,
+                    "line": 1,
+                  },
+                },
                 "type": "MemberExpression",
                 "computed": false,
-                "property": Immutable.Map {
-                  "type": "Identifier",
-                  "name": "id",
-                },
                 "object": Immutable.Map {
+                  "loc": WrappingSourceLocation {
+                    "end": Object {
+                      "column": 24,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 4,
+                      "line": 1,
+                    },
+                  },
                   "type": "MemberExpression",
                   "computed": false,
                   "object": Immutable.Map {
+                    "loc": SourceLocation {
+                      "end": Object {
+                        "column": 10,
+                        "line": 1,
+                      },
+                      "start": Position {
+                        "column": 4,
+                        "line": 1,
+                      },
+                    },
                     "type": "Identifier",
                     "name": "ticket",
                   },
                   "property": Immutable.Map {
+                    "loc": SourceLocation {
+                      "end": Object {
+                        "column": 24,
+                        "line": 1,
+                      },
+                      "start": Position {
+                        "column": 11,
+                        "line": 1,
+                      },
+                    },
                     "type": "Identifier",
                     "name": "assignee_user",
                   },
+                },
+                "property": Immutable.Map {
+                  "loc": SourceLocation {
+                    "end": Object {
+                      "column": 27,
+                      "line": 1,
+                    },
+                    "start": Position {
+                      "column": 25,
+                      "line": 1,
+                    },
+                  },
+                  "type": "Identifier",
+                  "name": "id",
                 },
               },
               Immutable.Map {
                 "loc": SourceLocation {
                   "end": Object {
-                    "column": 3,
+                    "column": 32,
                     "line": 1,
                   },
                   "start": Position {
-                    "column": 0,
+                    "column": 29,
                     "line": 1,
                   },
                 },
@@ -1219,6 +1308,7 @@ Immutable.Map {
           },
         },
       ],
+      "sourceType": "script",
     },
   },
 }
@@ -1230,46 +1320,135 @@ Immutable.Map {
     "dirty": true,
     "filters": "eq(ticket.assignee_user.id, '3')",
     "filters_ast": Immutable.Map {
+      "loc": SourceLocation {
+        "end": Object {
+          "column": 32,
+          "line": 1,
+        },
+        "start": Position {
+          "column": 0,
+          "line": 1,
+        },
+      },
       "type": "Program",
-      "sourceType": "script",
       "body": Immutable.List [
         Immutable.Map {
+          "loc": SourceLocation {
+            "end": Object {
+              "column": 32,
+              "line": 1,
+            },
+            "start": Position {
+              "column": 0,
+              "line": 1,
+            },
+          },
           "type": "ExpressionStatement",
           "expression": Immutable.Map {
+            "loc": WrappingSourceLocation {
+              "end": Object {
+                "column": 32,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 0,
+                "line": 1,
+              },
+            },
             "type": "CallExpression",
             "callee": Immutable.Map {
+              "loc": SourceLocation {
+                "end": Object {
+                  "column": 2,
+                  "line": 1,
+                },
+                "start": Position {
+                  "column": 0,
+                  "line": 1,
+                },
+              },
               "type": "Identifier",
               "name": "eq",
             },
             "arguments": Immutable.List [
               Immutable.Map {
+                "loc": WrappingSourceLocation {
+                  "end": Object {
+                    "column": 26,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 3,
+                    "line": 1,
+                  },
+                },
                 "type": "MemberExpression",
                 "computed": false,
-                "property": Immutable.Map {
-                  "type": "Identifier",
-                  "name": "id",
-                },
                 "object": Immutable.Map {
+                  "loc": WrappingSourceLocation {
+                    "end": Object {
+                      "column": 23,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 3,
+                      "line": 1,
+                    },
+                  },
                   "type": "MemberExpression",
                   "computed": false,
                   "object": Immutable.Map {
+                    "loc": SourceLocation {
+                      "end": Object {
+                        "column": 9,
+                        "line": 1,
+                      },
+                      "start": Position {
+                        "column": 3,
+                        "line": 1,
+                      },
+                    },
                     "type": "Identifier",
                     "name": "ticket",
                   },
                   "property": Immutable.Map {
+                    "loc": SourceLocation {
+                      "end": Object {
+                        "column": 23,
+                        "line": 1,
+                      },
+                      "start": Position {
+                        "column": 10,
+                        "line": 1,
+                      },
+                    },
                     "type": "Identifier",
                     "name": "assignee_user",
                   },
+                },
+                "property": Immutable.Map {
+                  "loc": SourceLocation {
+                    "end": Object {
+                      "column": 26,
+                      "line": 1,
+                    },
+                    "start": Position {
+                      "column": 24,
+                      "line": 1,
+                    },
+                  },
+                  "type": "Identifier",
+                  "name": "id",
                 },
               },
               Immutable.Map {
                 "loc": SourceLocation {
                   "end": Object {
-                    "column": 3,
+                    "column": 31,
                     "line": 1,
                   },
                   "start": Position {
-                    "column": 0,
+                    "column": 28,
                     "line": 1,
                   },
                 },
@@ -1281,6 +1460,7 @@ Immutable.Map {
           },
         },
       ],
+      "sourceType": "script",
     },
   },
 }
