@@ -274,6 +274,72 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         image: 'integrations/postscript.png',
     },
     {
+        title: 'SMSBUMP',
+        description:
+            'Create SMS tickets inside Gorgias from your SMSBump admin',
+        url: 'https://docs.gorgias.com/sms-integration/smsbump',
+        image: 'integrations/smsbump.png',
+    },
+    {
+        title: 'Emotive',
+        description:
+            'Create SMS tickets inside Gorgias from your Emotive admin',
+        url: 'https://docs.gorgias.com/sms-integration/emotive',
+        image: 'integrations/emotive.png',
+    },
+    {
+        title: 'ATTENTIVE',
+        description: 'Seamless two-way support via SMS',
+        url: 'https://docs.gorgias.com/sms-integration/attentive-mobile',
+        image: 'integrations/attentive.png',
+    },
+    {
+        title: 'Reviews.io',
+        description: 'Trigger and respond to review within Gorgias admin',
+        url: 'https://docs.gorgias.com/reward-and-loyalty/reviews-io',
+        image: 'integrations/reviews.io.png',
+    },
+    {
+        title: 'GLEW.io',
+        description: 'Get actionable insights on your customer support',
+        url: 'https://docs.gorgias.com/business-intelligence/glew-io',
+        image: 'integrations/glewio.png',
+    },
+    {
+        title: 'Circleloop',
+        description: 'Synchronize customer contacts from Gorgias to CircleLoop',
+        url: 'https://docs.gorgias.com/voice-and-phone/circle-loop',
+        image: 'integrations/circleloop.png',
+    },
+    {
+        title: 'Growave',
+        description:
+            'Brings customer reviews and questions into Gorgias helpdesk',
+        url: 'https://docs.gorgias.com/reward-and-loyalty/growave',
+        image: 'integrations/growave.png',
+    },
+    {
+        title: 'StellaConnect',
+        description:
+            'Unlock full potential of frontline team with real-time customer feedback',
+        url: 'https://docs.gorgias.com/quality-assurance/stella-connect',
+        image: 'integrations/stellaconnect.png',
+    },
+    {
+        title: 'Voicefront',
+        description:
+            'Allows Voicefront to create tickets from customers talking to your Alexa skill inside Gorgias',
+        url: 'https://docs.gorgias.com/voice-and-phone/voicefront-ai',
+        image: 'integrations/voicefront.jpg',
+    },
+    {
+        title: 'Klausapp',
+        description:
+            'Track, review, rate, and improve the quality of your customer support',
+        url: 'https://docs.gorgias.com/quality-assurance/klausapp',
+        image: 'integrations/klaus.png',
+    },
+    {
         type: IntegrationType.GorgiasChatIntegrationType,
         title: 'Gorgias Chat (BETA)',
         description: 'Add a chat on your website',
