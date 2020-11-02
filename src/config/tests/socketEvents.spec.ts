@@ -128,6 +128,29 @@ describe('Config: socketEvents', () => {
                 expect(dataToSend).toHaveProperty('data')
             })
         })
+
+        it('Should stop typing when leaving ticket room', () => {
+            const ticketJoinEvent = _find(joinEvents, {name: 'ticket'})
+
+            class MockSocketManager {
+                ticketOnLeaveJoinEvent = ticketJoinEvent
+                    ? ticketJoinEvent.onLeave
+                    : null
+                send = jest.fn()
+            }
+
+            const mockSocketManager = new MockSocketManager()
+            const ticketId = '1234'
+
+            if (mockSocketManager.ticketOnLeaveJoinEvent) {
+                mockSocketManager.ticketOnLeaveJoinEvent(ticketId)
+            }
+
+            expect(mockSocketManager.send).toHaveBeenCalledWith(
+                SocketEventType.AgentTypingStopped,
+                ticketId
+            )
+        })
     })
 
     describe('receivedEvents', () => {

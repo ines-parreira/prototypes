@@ -163,7 +163,7 @@ export const joinEvents: SendEvent[] = [
         },
         onLeave: function (id) {
             return ((this as unknown) as SocketManager).send(
-                SocketEventType.AgentTypingStarted,
+                SocketEventType.AgentTypingStopped,
                 id
             )
         },
