@@ -2,10 +2,12 @@ import {fromJS, Map, List} from 'immutable'
 import {browserHistory} from 'react-router'
 import _isEmpty from 'lodash/isEmpty'
 import _noop from 'lodash/noop'
+import _pick from 'lodash/pick'
 import axios, {AxiosError} from 'axios'
 import {createAction} from '@reduxjs/toolkit'
 import {removeNotification} from 'reapop'
 import {Moment} from 'moment'
+import {compressToEncodedURIComponent} from 'lz-string'
 
 import {TicketMessageSourceType} from '../../business/types/ticket'
 import {DEFAULT_ACTIONS} from '../../config'
@@ -39,6 +41,7 @@ import {
     Notification,
     NotificationButton,
 } from '../notifications/types'
+import {View} from '../views/types'
 
 import {
     buildPartialUpdateFromAction,
@@ -693,30 +696,64 @@ export const _goToNextOrPrevTicket = (
             promise || Promise.resolve()
 
         //$TsFixMe remove casting once views/selectors is migrated
-        const viewId = (viewsSelectors.getActiveView as (
+        const view = (viewsSelectors.getActiveView as (
             state: RootState
-        ) => Map<any, any>)(getState()).get('id') as string
+        ) => Map<any, any>)(getState())
+        const viewId = view.get('id') as number
+        const viewSearch = view.get('search') as string
+        const viewFilters = view.get('filters') as string
         const viewCursor = ticketsSelectors.getCursor(getState())
-        const url = `/api/views/${viewId}/tickets/${ticketId}/${direction}`
 
-        if (!viewId) {
+        if (!viewId && !viewSearch && !viewFilters) {
             return returnedPromise.then(() => {
                 // there is no active view so we go to the first view
                 browserHistory.push('/app')
             })
         }
 
+        const url = `/api/views/${
+            viewId || '0'
+        }/tickets/${ticketId}/${direction}`
+        const payload_data: {cursor: Maybe<string>; view?: Partial<View>} = {
+            cursor: viewCursor,
+        }
+
+        if (!viewId) {
+            payload_data.view = _pick(view.toJS(), [
+                'filters',
+                'filters_ast',
+                'order_by',
+                'order_dir',
+                'search',
+                'type',
+            ])
+        }
+
         return axios
-            .put<Ticket>(url, {cursor: viewCursor})
+            .put<Ticket>(url, payload_data)
             .then((json) => json?.data)
             .then(
                 (ticket) => {
                     // wait for the promise to be resolved to go to the ticket
                     return returnedPromise.then(() => {
-                        if (!ticket) {
+                        if (!ticket && viewId) {
                             // there is no other ticket the user can handle so we go back to the view
                             browserHistory.push(`/app/tickets/${viewId}`)
                             return
+                        } else if (!ticket && (viewSearch || viewFilters)) {
+                            const query: {q?: string; filters?: string} = {}
+                            if (viewSearch) {
+                                query.q = viewSearch
+                            }
+                            if (viewFilters) {
+                                query.filters = compressToEncodedURIComponent(
+                                    viewFilters
+                                )
+                            }
+                            browserHistory.push({
+                                pathname: '/app/tickets/search',
+                                query,
+                            })
                         }
 
                         const customerId = (fromJS(ticket) as Map<
