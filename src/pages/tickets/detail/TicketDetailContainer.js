@@ -15,7 +15,6 @@ import Loader from '../../common/components/Loader'
 import * as ViewsActions from '../../../state/views/actions.ts'
 import * as TicketActions from '../../../state/ticket/actions.ts'
 import * as MacroActions from '../../../state/macro/actions.ts'
-import {notify} from '../../../state/notifications/actions.ts'
 import * as customersActions from '../../../state/customers/actions.ts'
 import * as TagActions from '../../../state/tags/actions.ts'
 import * as ticketsActions from '../../../state/tickets/actions'
@@ -24,7 +23,6 @@ import pendingMessageManager from '../../../services/pendingMessageManager'
 
 import * as newMessageActions from '../../../state/newMessage/actions.ts'
 
-import {SOURCE_VALUE_PROP} from '../../../config.ts'
 import * as currentAccountSelectors from '../../../state/currentAccount/selectors.ts'
 import * as newMessageSelectors from '../../../state/newMessage/selectors.ts'
 import * as viewsSelectors from '../../../state/views/selectors.ts'
@@ -51,7 +49,6 @@ type Props = {
         ticket: typeof TicketActions,
         views: typeof ViewsActions,
     },
-    notify: typeof notify,
     updateActiveViewCursor: typeof ticketsActions.updateActiveViewCursor,
     submitTicket: typeof newMessageActions.submitTicket,
     activeView: Map<*, *>,
@@ -100,7 +97,6 @@ type State = {
                 views: bindActionCreators(ViewsActions, dispatch),
                 newMessage: bindActionCreators(newMessageActions, dispatch),
             },
-            notify: bindActionCreators(notify, dispatch),
             updateActiveViewCursor: bindActionCreators(
                 ticketsActions.updateCursor,
                 dispatch
@@ -468,10 +464,7 @@ class TicketDetailContainer extends React.Component<Props, State> {
 
         if (status && promise) {
             ;(promise: any).then(() => {
-                return this._setStatus(
-                    status || '',
-                    newMessage.getIn(['newMessage', 'source', 'type'])
-                )
+                return this._setStatus(status || '')
             })
         }
 
@@ -515,15 +508,11 @@ class TicketDetailContainer extends React.Component<Props, State> {
         return sendTicketMessage(messageId, messageToSend, action, resetMessage)
     }
 
-    _setStatus = (
-        status: string,
-        sourceType?: $Keys<typeof SOURCE_VALUE_PROP>
-    ) => {
+    _setStatus = (status: string) => {
         const {
             actions: {
                 ticket: {clearTicket, goToNextTicket, setStatus},
             },
-            notify,
             params: {ticketId},
             ticket,
         } = this.props
@@ -535,12 +524,6 @@ class TicketDetailContainer extends React.Component<Props, State> {
             if (!ticket.getIn(['_internal', 'displayHistory'])) {
                 const promise = this._hideTicket().then(clearTicket)
                 goToNextTicket(parseInt(ticketId), promise)
-            }
-            if (!sourceType || sourceType !== 'email') {
-                notify({
-                    status: 'success',
-                    message: 'The ticket has been closed.',
-                })
             }
         })
     }
