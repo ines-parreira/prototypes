@@ -40,6 +40,48 @@ Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_bla
 ]
 `;
 
+exports[`statusPageManager processComponents() integration filtering should not notify if integration type does not match 1`] = `Array []`;
+
+exports[`statusPageManager processComponents() integration filtering should not notify if matches an inactive integration 1`] = `Array []`;
+
+exports[`statusPageManager processComponents() integration filtering should notify active integrations and filter out inactive ones 1`] = `
+Array [
+  Array [
+    Object {
+      "allowHTML": true,
+      "closable": true,
+      "dismissible": false,
+      "id": "status-page-components",
+      "message": "
+Currently experiencing a major outage in our API affecting
+Gmail Integration components.
+Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a></u>.",
+      "status": "error",
+      "style": "banner",
+    },
+  ],
+]
+`;
+
+exports[`statusPageManager processComponents() integration filtering should notify if matches an active integration 1`] = `
+Array [
+  Array [
+    Object {
+      "allowHTML": true,
+      "closable": true,
+      "dismissible": false,
+      "id": "status-page-components",
+      "message": "
+Currently experiencing a major outage in our API affecting
+Facebook Integration components.
+Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a></u>.",
+      "status": "error",
+      "style": "banner",
+    },
+  ],
+]
+`;
+
 exports[`statusPageManager processComponents() should dispatch notification with the highest error level 1`] = `
 Array [
   Array [

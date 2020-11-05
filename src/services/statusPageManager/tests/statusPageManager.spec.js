@@ -1,5 +1,8 @@
 import {removeNotification} from 'reapop'
 import moment from 'moment'
+import {fromJS} from 'immutable'
+import configureMockStore from 'redux-mock-store'
+import thunk from 'redux-thunk'
 
 import statusPageManager from '../statusPageManager.ts'
 import {
@@ -10,7 +13,15 @@ import {
     MAINTENANCE_NOTIFICATION_ID,
     CLUSTER_GROUP_ID,
 } from '../constants.ts'
+
 import {notify} from '../../../state/notifications/actions.ts'
+
+import {
+    FACEBOOK_INTEGRATION_TYPE,
+    GMAIL_INTEGRATION_TYPE,
+} from '../../../constants/integration.ts'
+
+const mockStore = configureMockStore([thunk])
 
 jest.mock('../../../state/notifications/actions.ts', () => {
     const notificationActions = require.requireActual(
@@ -179,6 +190,131 @@ describe('statusPageManager', () => {
                             name: clusterName,
                             status: COMPONENT_STATUSES.MAJOR_OUTAGE,
                             group_id: CLUSTER_GROUP_ID,
+                        },
+                    ],
+                })
+                expect(notify.mock.calls).toMatchSnapshot()
+            })
+        })
+
+        describe('integration filtering', () => {
+            it('should notify if matches an active integration', () => {
+                statusPageManager.store = mockStore({
+                    integrations: fromJS({
+                        integrations: [
+                            {
+                                id: 1,
+                                type: FACEBOOK_INTEGRATION_TYPE,
+                                deactivated_datetime: null,
+                            },
+                        ],
+                    }),
+                })
+                statusPageManager.processComponents({
+                    page: {
+                        url: 'https://status.gorgias.com/',
+                    },
+                    components: [
+                        {
+                            id: '72gh1dxg7hnv',
+                            name: 'Facebook Integration',
+                            status: COMPONENT_STATUSES.MAJOR_OUTAGE,
+                            group_id: Object.keys(HELPDESK_GROUP_IDS)[0],
+                        },
+                    ],
+                })
+                expect(notify.mock.calls).toMatchSnapshot()
+            })
+
+            it('should not notify if matches an inactive integration', () => {
+                statusPageManager.store = mockStore({
+                    integrations: fromJS({
+                        integrations: [
+                            {
+                                id: 1,
+                                type: FACEBOOK_INTEGRATION_TYPE,
+                                deactivated_datetime: '2020-01-01',
+                            },
+                        ],
+                    }),
+                })
+                statusPageManager.processComponents({
+                    page: {
+                        url: 'https://status.gorgias.com/',
+                    },
+                    components: [
+                        {
+                            id: '72gh1dxg7hnv',
+                            name: 'Facebook Integration',
+                            status: COMPONENT_STATUSES.MAJOR_OUTAGE,
+                            group_id: Object.keys(HELPDESK_GROUP_IDS)[0],
+                        },
+                    ],
+                })
+                expect(notify.mock.calls).toMatchSnapshot()
+            })
+
+            it('should not notify if integration type does not match', () => {
+                statusPageManager.store = mockStore({
+                    integrations: fromJS({
+                        integrations: [
+                            {
+                                id: 1,
+                                type: GMAIL_INTEGRATION_TYPE,
+                                deactivated_datetime: null,
+                            },
+                        ],
+                    }),
+                })
+                statusPageManager.processComponents({
+                    page: {
+                        url: 'https://status.gorgias.com/',
+                    },
+                    components: [
+                        {
+                            id: '72gh1dxg7hnv',
+                            name: 'Facebook Integration',
+                            status: COMPONENT_STATUSES.MAJOR_OUTAGE,
+                            group_id: Object.keys(HELPDESK_GROUP_IDS)[0],
+                        },
+                    ],
+                })
+                expect(notify.mock.calls).toMatchSnapshot()
+            })
+
+            it('should notify active integrations and filter out inactive ones', () => {
+                statusPageManager.store = mockStore({
+                    integrations: fromJS({
+                        integrations: [
+                            {
+                                id: 1,
+                                type: GMAIL_INTEGRATION_TYPE,
+                                deactivated_datetime: null,
+                            },
+                            {
+                                id: 1,
+                                type: FACEBOOK_INTEGRATION_TYPE,
+                                deactivated_datetime: '2020-01-01',
+                            },
+                        ],
+                    }),
+                })
+                statusPageManager.processComponents({
+                    page: {
+                        url: 'https://status.gorgias.com/',
+                    },
+                    components: [
+                        {
+                            id: '72gh1dxg7hnv',
+                            name: 'Facebook Integration',
+                            status: COMPONENT_STATUSES.MAJOR_OUTAGE,
+                            group_id: Object.keys(HELPDESK_GROUP_IDS)[0],
+                        },
+                        {
+                            id: 'wfkm6njpgc6p',
+                            name: 'Gmail Integration',
+                            status: COMPONENT_STATUSES.MAJOR_OUTAGE,
+                            group_id: Object.keys(HELPDESK_GROUP_IDS)[0],
                         },
                     ],
                 })

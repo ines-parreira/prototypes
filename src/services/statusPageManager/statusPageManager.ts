@@ -1,29 +1,34 @@
 import moment from 'moment'
 import {removeNotification} from 'reapop'
 import {EnhancedStore} from '@reduxjs/toolkit'
+import {Set as ImmutableSet, Map as ImmutableMap} from 'immutable'
 
 import {store as reduxStore} from '../../init.js'
 import {notify} from '../../state/notifications/actions'
 import {NotificationStatus} from '../../state/notifications/types'
+import {getActiveIntegrations} from '../../state/integrations/selectors'
+import {IntegrationType} from '../../models/integration/types'
 
-import {
-    PAGE_ID,
-    COMPONENT_STATUS_LABEL,
-    HELPDESK_GROUP_IDS,
-    COMPONENTS_POLLING_INTERVAL_SECONDS,
-    MAINTENANCE_POLLING_INTERVAL_SECONDS,
-    MAINTENANCE_NOTIFICATION_BEFORE_MINUTES,
-    COMPONENTS_NOTIFICATION_ID,
-    MAINTENANCE_NOTIFICATION_ID,
-    CLUSTER_GROUP_ID,
-} from './constants'
 import {
     ComponentStatus,
     MaintenanceStatus,
+    Page,
     StatusPageComponentsResponseData,
     StatusPageScheduledMaintenanceResponseData,
-    Page,
 } from './types'
+
+import {
+    CLUSTER_GROUP_ID,
+    COMPONENT_STATUS_LABEL,
+    COMPONENTS_NOTIFICATION_ID,
+    COMPONENTS_POLLING_INTERVAL_SECONDS,
+    HELPDESK_GROUP_IDS,
+    INTEGRATION_COMPONENTS_TYPES,
+    MAINTENANCE_NOTIFICATION_BEFORE_MINUTES,
+    MAINTENANCE_NOTIFICATION_ID,
+    MAINTENANCE_POLLING_INTERVAL_SECONDS,
+    PAGE_ID,
+} from './constants'
 
 //$TsFixMe remove once init.js is migrated
 const typeSafeReduxStore = reduxStore as EnhancedStore
@@ -102,6 +107,13 @@ export class StatusPageManager {
             groupNames: new Set(),
             componentNames: new Set(),
         }
+        const activeIntegrations = getActiveIntegrations(this.store.getState())
+        const activeIntegrationsTypes: ImmutableSet<IntegrationType> = activeIntegrations
+            .map(
+                (integration: ImmutableMap<any, any>) =>
+                    integration.get('type') as IntegrationType
+            )
+            .toSet()
         let clustersAffected = false
         let foundCluster = false
 
@@ -142,6 +154,16 @@ export class StatusPageManager {
                     ComponentStatus.Operational,
                     ComponentStatus.DegradedPerformance,
                 ].includes(component.status)
+            ) {
+                continue
+            }
+
+            // filter out affected integration components that are not active for this account
+            const affectedIntegrationType =
+                INTEGRATION_COMPONENTS_TYPES[component.id]
+            if (
+                affectedIntegrationType &&
+                !activeIntegrationsTypes.includes(affectedIntegrationType)
             ) {
                 continue
             }
