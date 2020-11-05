@@ -18,10 +18,15 @@ const serverErrorHandler = (store) => (next) => (action) => {
     // notify user and redirect him to the login page when his session has expired
     if ([401, 419].includes(status)) {
         if (error.msg) {
+            let msg = error.msg
+            if (status === 419 && !msg.includes('redirected')) {
+                msg +=
+                    ' You will be redirected to the login page in a few seconds.'
+            }
             store.dispatch(
                 notify({
                     status: 'error',
-                    title: error.msg,
+                    title: msg,
                 })
             )
         }

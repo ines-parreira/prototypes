@@ -136,5 +136,56 @@ describe('middlewares', () => {
                 `),
             })
         })
+
+        it('should append message about redirection for 419 HTTP errors', () => {
+            const notificationTitle = 'Your session has expired.'
+            const errorAction = {
+                error: {
+                    response: {
+                        data: {
+                            error: {
+                                msg: notificationTitle,
+                            },
+                        },
+                        status: 419,
+                    },
+                },
+                type: 'error',
+            }
+            store.dispatch(errorAction)
+
+            expect(store.getActions()[0]).toMatchObject({
+                payload: {
+                    message: `${notificationTitle} You will be redirected to the login page in a few seconds.`,
+                },
+                type: types.addNotification,
+            })
+        })
+
+        it('should not append message about redirection for 419 HTTP errors when error message already has a message about redirection', () => {
+            const notificationTitle =
+                'Your session has expired. You will be redirected to the login page in a few seconds.'
+            const errorAction = {
+                error: {
+                    response: {
+                        data: {
+                            error: {
+                                msg: notificationTitle,
+                            },
+                        },
+                        status: 419,
+                    },
+                },
+                type: 'error',
+            }
+            store.dispatch(errorAction)
+
+            expect(store.getActions()[0]).toMatchObject({
+                payload: {
+                    message: notificationTitle,
+                },
+                type: types.addNotification,
+            })
+        })
     })
 })
