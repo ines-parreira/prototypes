@@ -61,9 +61,12 @@ export class StatsPage extends Component<Props> {
         const hasSatisfactionSurveyFeature = currentAccount
             .get('extra_features')
             .includes('satisfaction-surveys')
-        const hasRevenueStatFeature = currentAccount
-            .get('extra_features')
-            .includes('revenue')
+        const hasRevenueStatFeature =
+            currentAccount.get('extra_features').includes('revenue') &&
+            // Enterprise customer (Smilodox) needed to deactivate revenue statistics.
+            // More information in https://gorgias.gorgias.com/app/ticket/178993761
+            // TODO(@LouisBarranqueiro): remove this as soon as we can restrict features per account.
+            currentAccount.get('domain') !== 'smilodox'
         const hasRequiredStoreIntegration =
             globalFilters &&
             globalFilters.get('integrations', List()).size === 1
