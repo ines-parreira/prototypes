@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import {Widget} from '../Widget'
+import {Widget} from '../Widget.tsx'
 import _schemas from '../../../../../fixtures/openapi.json'
 
 import _astCodeEq from './fixtures/astCodeEq.json'

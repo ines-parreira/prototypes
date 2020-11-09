@@ -2,14 +2,14 @@ import React from 'react'
 
 import {connect} from 'react-redux'
 
-import Select from './ReactSelect'
+import Select from './ReactSelect.tsx'
 
 type Props = {
     actions: ?Object,
     onChange: () => void,
     schemas: ?Object,
     value: ?string,
-    className: ?string,
+    className?: ?string,
 }
 
 class StatusSelect extends React.Component<Props> {

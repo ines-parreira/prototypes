@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ComponentType} from 'react'
 import PropTypes from 'prop-types'
 import {List, Map} from 'immutable'
 import {
@@ -18,6 +18,7 @@ type Props = {
     actions: RuleItemActions
     parent: List<any>
     title: string
+    hoverableClassName: string
 }
 
 export class AddLogicalCondition extends React.Component<Props> {
@@ -214,4 +215,4 @@ export class AddLogicalCondition extends React.Component<Props> {
     }
 }
 
-export default Hoverable(AddLogicalCondition)
+export default Hoverable(AddLogicalCondition) as ComponentType<Props>

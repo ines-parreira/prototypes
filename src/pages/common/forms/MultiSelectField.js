@@ -15,6 +15,7 @@ type Props = {
     caseInsensitive?: boolean,
     onChange: (any[]) => void,
     dropdownMenu?: ComponentType<*>,
+    void?: any,
 }
 
 // Deprecated: Use MultiSelectOptionsField instead

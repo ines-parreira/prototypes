@@ -1,9 +1,8 @@
-// @flow
 import React from 'react'
 import {Badge} from 'reactstrap'
 
 type Props = {
-    type: string,
+    type: string
 }
 
 const UnknownSyntax = ({type}: Props) => (

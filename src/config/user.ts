@@ -22,7 +22,7 @@ export const USER_ROLES_ORDERED_BY_PRIVILEGES = Object.freeze([
     UserRole.BasicAgent,
     UserRole.Agent,
     UserRole.Admin,
-])
+]) as UserRole[]
 
 export const USER_ROLES = USER_ROLES_ORDERED_BY_PRIVILEGES
 

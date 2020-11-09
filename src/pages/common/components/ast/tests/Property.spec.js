@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import Property from '../Property'
+import Property from '../Property.tsx'
 
 const commonProps = {
     parent: fromJS(['body', 0, 'expression']),

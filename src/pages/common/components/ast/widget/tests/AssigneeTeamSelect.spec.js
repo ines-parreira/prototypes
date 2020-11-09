@@ -4,7 +4,7 @@ import thunk from 'redux-thunk'
 import {shallow} from 'enzyme'
 import React from 'react'
 
-import AssigneeTeamSelect from '../AssigneeTeamSelect'
+import AssigneeTeamSelect from '../AssigneeTeamSelect.tsx'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

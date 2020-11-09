@@ -1,31 +1,25 @@
-// @flow
 import React from 'react'
 import classnames from 'classnames'
 import _isFunction from 'lodash/isFunction'
+import {List, Map} from 'immutable'
 
-import type {List} from 'immutable'
+import {RuleItemActions} from '../../../settings/rules/detail/components/RuleItem/RuleItem'
 
 import Widget from './Widget'
-import Errors from './Errors'
+import Errors from './Errors.js'
 
-/*
- interface Property <: Node {
- type: "Property";
- key: Literal | Identifier;
- value: Expression;
- kind: "init" | "get" | "set";
- }
- */
 type Props = {
-    compact: boolean,
-    parent: List<*>,
-    schemas: Object,
-    theKey: Object,
-    value: Object,
-    config?: Object,
-    actions: Object,
-    rule: Object,
-    leftsiblings: List<any>,
+    compact: boolean
+    parent: List<any>
+    schemas: Map<any, any>
+    theKey: Record<string, unknown>
+    value: {value?: any}
+    config?: {
+        validate?: (value: any, schemas: Map<any, any>) => boolean
+    }
+    actions: RuleItemActions
+    rule: Map<any, any>
+    leftsiblings: List<any>
 }
 
 export default class Property extends React.Component<Props> {

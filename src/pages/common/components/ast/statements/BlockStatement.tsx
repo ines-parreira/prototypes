@@ -1,10 +1,19 @@
-// @flow
-import React from 'react'
-import type {List} from 'immutable'
+import React, {ComponentProps} from 'react'
+import {List, Map} from 'immutable'
 
-import Hoverable from '../../Hoverable'
+import {RuleItemActions} from '../../../../settings/rules/detail/components/RuleItem/RuleItem'
+import Hoverable from '../../Hoverable.js'
 
 import Statement from './Statement'
+
+type BlockStatementItemProps = {
+    rule: Map<any, any>
+    actions: RuleItemActions
+    body: Partial<BlockStatementItemProps>
+    parent: List<any>
+    schemas: Map<any, any>
+    depth: number
+}
 
 class _BlockStatementItem extends React.Component<BlockStatementItemProps> {
     render() {
@@ -13,7 +22,7 @@ class _BlockStatementItem extends React.Component<BlockStatementItemProps> {
         return (
             <div className="BlockStatementItem">
                 <Statement
-                    {...body}
+                    {...(body as ComponentProps<typeof Statement>)}
                     parent={parent}
                     rule={rule}
                     schemas={schemas}
@@ -25,22 +34,16 @@ class _BlockStatementItem extends React.Component<BlockStatementItemProps> {
     }
 }
 
-type BlockStatementItemProps = {
-    rule: Object,
-    actions: Object,
-    body: Object,
-    parent: List<*>,
-    schemas: Object,
-    depth: number,
-}
+const BlockStatementItem = Hoverable(_BlockStatementItem)
 
-class BlockStatementItem extends Hoverable(_BlockStatementItem) {}
-
-export default class BlockStatement extends React.Component<BlockStatementProps> {
+export default class BlockStatement extends React.Component<
+    BlockStatementProps
+> {
     _renderStatements = () => {
         const {body, rule, actions, parent, schemas, depth} = this.props
 
         return body.map((bodyItem, idx) => (
+            //@ts-ignore
             <BlockStatementItem
                 key={idx}
                 actions={actions}
@@ -59,10 +62,10 @@ export default class BlockStatement extends React.Component<BlockStatementProps>
 }
 
 type BlockStatementProps = {
-    rule: Object,
-    actions: Object,
-    body: Object,
-    parent: List<*>,
-    schemas: Object,
-    depth: number,
+    rule: Map<any, any>
+    actions: RuleItemActions
+    body: BlockStatementItemProps[]
+    parent: List<any>
+    schemas: Map<any, any>
+    depth: number
 }

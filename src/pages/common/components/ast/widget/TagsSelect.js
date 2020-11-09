@@ -13,9 +13,9 @@ type Props = {
     value: ?string,
     onChange: Function,
     multiple: ?boolean,
-    className: ?string,
+    className?: ?string,
     actions: Object,
-    caseInsensitive: ?string,
+    caseInsensitive: ?boolean,
 }
 
 export class TagsSelect extends Component<Props> {

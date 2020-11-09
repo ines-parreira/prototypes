@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import PropTypes from 'prop-types'
 import {List, Map} from 'immutable'
 import _upperFirst from 'lodash/upperFirst'
@@ -100,7 +100,9 @@ export class WrappedCallExpression extends React.Component<Props> {
                         className="IdentifierDropdown"
                     />
                     <Expression
-                        {...callee}
+                        {...((callee as unknown) as ComponentProps<
+                            typeof Expression
+                        >)}
                         parent={parentCallee}
                         rule={rule}
                         actions={actions}

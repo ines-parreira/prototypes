@@ -1,7 +1,7 @@
 import React from 'react'
 import type {Map, List} from 'immutable'
 
-import Widget from './Widget'
+import Widget from './Widget.tsx'
 
 /*
  interface Identifier <: Node, Expression, Pattern {

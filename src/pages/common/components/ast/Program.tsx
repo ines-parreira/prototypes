@@ -1,17 +1,18 @@
-// @flow
-import React from 'react'
-import {List} from 'immutable'
+import React, {ComponentProps} from 'react'
+import {List, Map} from 'immutable'
 
-import {Statement} from './statements'
-import {AddActionOrIfStatement} from './operations'
+import {RuleItemActions} from '../../../settings/rules/detail/components/RuleItem/RuleItem'
 
-type ProgramType = {
-    rule: Object,
-    actions: Object,
-    body: Array<*>,
+import {Statement} from './statements/index.js'
+import AddActionOrIfStatement from './operations/AddActionOrIfStatement'
+
+type Props = {
+    rule: Map<any, any>
+    actions: RuleItemActions
+    body: Array<ComponentProps<typeof Statement>>
 }
 
-export default class Program extends React.Component<ProgramType> {
+export default class Program extends React.Component<Props> {
     render() {
         const {actions, body, rule} = this.props
 

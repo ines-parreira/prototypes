@@ -2,9 +2,9 @@ import React, {ComponentType} from 'react'
 import {List, Map} from 'immutable'
 
 import {RuleItemActions} from '../../../../settings/rules/detail/components/RuleItem/RuleItem'
-import Literal from '../Literal.js'
+import Literal from '../Literal'
 import Identifier from '../Identifier.js'
-import UnknownSyntax from '../UnknownSyntax.js'
+import UnknownSyntax from '../UnknownSyntax'
 
 import LogicalExpression from './LogicalExpression'
 import BinaryExpression from './BinaryExpression.js'
@@ -21,6 +21,7 @@ type Props = {
     schemas: Map<any, any>
     leftsiblings: Maybe<List<any>>
     type: string
+    depth: number
 }
 
 export default class Expression extends React.Component<Props> {

@@ -1,26 +1,20 @@
-// @flow
 import React from 'react'
+import {Map, List} from 'immutable'
 
-import {UNARY_OPERATORS} from '../../../../config.ts'
+import {RuleItemActions} from '../../../settings/rules/detail/components/RuleItem/RuleItem'
+import {UNARY_OPERATORS} from '../../../../config'
 
-import Errors from './Errors'
+import Errors from './Errors.js'
 import Widget from './Widget'
 
-/*
- interface Literal <: Node, Expression {
- type: "Literal";
- value: string | boolean | null | number | RegExp;
- }
- */
-
 type Props = {
-    callee?: Object,
-    rule: Object,
-    actions: Object,
-    leftsiblings: Object,
-    parent: Object,
-    schemas: Object,
-    value: number | string | boolean,
+    callee?: {name?: string}
+    rule: Map<any, any>
+    actions: RuleItemActions
+    leftsiblings: List<any>
+    parent: List<any>
+    schemas: Map<any, any>
+    value: number | string | boolean
 }
 
 const Literal = ({

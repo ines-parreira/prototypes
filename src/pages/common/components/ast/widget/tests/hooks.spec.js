@@ -1,7 +1,7 @@
 import {renderHook} from 'react-hooks-testing-library'
 import {fromJS} from 'immutable'
 
-import {useOptions} from '../hooks'
+import {useOptions} from '../hooks.ts'
 
 const getOptionId = (option) => option.get('id')
 

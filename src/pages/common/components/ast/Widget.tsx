@@ -1,56 +1,68 @@
-// @flow
-import React from 'react'
-import {connect} from 'react-redux'
-
+import React, {ComponentProps} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 import {List, Map} from 'immutable'
 import drop from 'lodash/drop'
 import _get from 'lodash/get'
 import _isArray from 'lodash/isArray'
 import _isUndefined from 'lodash/isUndefined'
+import {EditorState} from 'draft-js'
 
-import DatetimePicker from '../../../common/forms/DatetimePicker'
+import DatetimePicker from '../../../common/forms/DatetimePicker.js'
+import InputField from '../../forms/InputField.js'
 
-import InputField from '../../forms/InputField'
-
-import {humanizeString} from '../../../../utils.ts'
-import {convertToHTML, getPlainText} from '../../../../utils/editor.ts'
-import MultiSelectField from '../../forms/MultiSelectField'
+import {humanizeString} from '../../../../utils'
+import {convertToHTML, getPlainText} from '../../../../utils/editor'
+import MultiSelectField from '../../forms/MultiSelectField.js'
 import {
     caseInsensitiveOperators,
     collectionOperators,
     deprecatedOperators,
     timedeltaOperators,
-} from '../../../../config/rules.ts'
-import {removeSuffix} from '../../../../utils/string.ts'
-import TimedeltaPicker from '../../forms/TimedeltaPicker'
-import RichFieldWithVariables from '../../forms/RichFieldWithVariables'
-import {makeHasIntegrationOfTypes} from '../../../../state/integrations/selectors.ts'
+} from '../../../../config/rules'
+import {removeSuffix} from '../../../../utils/string'
+import TimedeltaPicker from '../../forms/TimedeltaPicker.js'
+import RichFieldWithVariables from '../../forms/RichFieldWithVariables.js'
+import {makeHasIntegrationOfTypes} from '../../../../state/integrations/selectors'
+import {RuleOperation} from '../../../../state/rules/types'
+import {RuleItemActions} from '../../../settings/rules/detail/components/RuleItem/RuleItem'
+import {IntegrationType} from '../../../../models/integration/types'
+import {RootState} from '../../../../state/types'
 
-import TagsSelect from './widget/TagsSelect'
-import IntegrationSelect from './widget/IntegrationSelect'
+import TagsSelect from './widget/TagsSelect.js'
+import IntegrationSelect from './widget/IntegrationSelect.js'
 import AssigneeTeamSelect from './widget/AssigneeTeamSelect'
 import AssigneeUserSelect from './widget/AssigneeUserSelect'
 import MacroSelect from './widget/MacroSelect'
-import StatusSelect from './widget/StatusSelect'
+import StatusSelect from './widget/StatusSelect.js'
 import Select from './widget/ReactSelect'
 
-type Props = {
-    rule: Object,
-    value: any,
-    parent: List<*>,
-    schemas?: Object,
-    actions: Object,
-    leftsiblings?: Object,
-    config: Object,
-    properties: Array<*>,
-    className?: string,
-    compact?: boolean,
-    hasIntegrationOfTypes: (string) => boolean,
+type Property = {
+    key: {
+        name: string
+    }
+    value: {
+        value: any
+    }
 }
 
+type OwnProps = {
+    rule: Map<any, any>
+    value: any
+    parent: List<any>
+    schemas?: Map<any, any>
+    actions: RuleItemActions
+    leftsiblings?: List<any>
+    config: Record<string, unknown>
+    properties: Array<Property>
+    className?: string
+    compact?: boolean
+}
+
+type Props = OwnProps & ConnectedProps<typeof connector>
+
 type State = {
-    textFieldPropIndex: number,
-    textFieldParent: Array<string>,
+    textFieldPropIndex: number
+    textFieldParent: Array<string>
 }
 
 export class Widget extends React.Component<Props, State> {
@@ -73,22 +85,22 @@ export class Widget extends React.Component<Props, State> {
     }
 
     _getTextField = (
-        config: Object,
-        parent: List<*>,
-        properties: Array<*>
-    ): Object => {
+        config: Record<string, unknown>,
+        parent: List<any>,
+        properties: Array<Property>
+    ) => {
         const textFieldParent = parent.slice(0, -3)
         const textFieldPropIndex = properties.findIndex((property) => {
             return property.key.name === config.textField
         })
-        return {
+        return ({
             textFieldPropIndex: textFieldPropIndex,
             textFieldParent: textFieldParent.concat([
                 textFieldPropIndex,
                 'value',
                 'value',
             ]),
-        }
+        } as unknown) as State
     }
 
     componentWillReceiveProps(nextProps: Props) {
@@ -106,21 +118,17 @@ export class Widget extends React.Component<Props, State> {
 
         // transform the array of string to an array of AST Literal object
         if (_isArray(newValue)) {
-            newValue = newValue.map((val) => ({
+            newValue = newValue.map((val: string | number) => ({
                 type: 'Literal',
                 raw: `'${val}'`,
                 value: val,
             }))
         }
 
-        return actions.modifyCodeAST(parent, newValue, 'UPDATE')
+        return actions.modifyCodeAST(parent, newValue, RuleOperation.Update)
     }
 
-    _input = (
-        value: any,
-        type: string = 'text',
-        caseInsensitive: boolean = false
-    ) => {
+    _input = (value: any, type = 'text', caseInsensitive = false) => {
         const {config = {}, className, compact} = this.props
 
         return (
@@ -155,7 +163,7 @@ export class Widget extends React.Component<Props, State> {
         )
     }
 
-    _onRichFieldChange = (editorState: Object) => {
+    _onRichFieldChange = (editorState: EditorState) => {
         const contentState = editorState.getCurrentContent()
         const {actions, parent} = this.props
         const {textFieldParent} = this.state
@@ -163,16 +171,16 @@ export class Widget extends React.Component<Props, State> {
         // fill the text field with the text version
         if (textFieldParent) {
             actions.modifyCodeAST(
-                textFieldParent,
+                textFieldParent as any,
                 getPlainText(contentState),
-                'UPDATE'
+                RuleOperation.Update
             )
         }
 
         return actions.modifyCodeAST(
             parent,
             convertToHTML(contentState),
-            'UPDATE'
+            RuleOperation.Update
         )
     }
 
@@ -186,11 +194,11 @@ export class Widget extends React.Component<Props, State> {
 
         const variableTypes = ['current_user', 'ticket.customer']
 
-        if (hasIntegrationOfTypes('shopify')) {
+        if (hasIntegrationOfTypes(IntegrationType.ShopifyIntegrationType)) {
             variableTypes.push('shopify')
         }
 
-        if (hasIntegrationOfTypes('recharge')) {
+        if (hasIntegrationOfTypes(IntegrationType.RechargeIntegrationType)) {
             variableTypes.push('recharge')
         }
 
@@ -199,11 +207,11 @@ export class Widget extends React.Component<Props, State> {
                 allowExternalChanges
                 type="text"
                 rows="8"
-                label={config.name}
+                label={config.name as string}
                 value={value}
-                onChange={this._onRichFieldChange}
-                placeholder={config.placeholder || ''}
-                required={config.required || false}
+                onChange={this._onRichFieldChange as any}
+                placeholder={(config.placeholder as string) || ''}
+                required={(config.required as boolean) || false}
                 variableTypes={variableTypes}
             />
         )
@@ -223,17 +231,20 @@ export class Widget extends React.Component<Props, State> {
     _timedeltaSelect = (value: any) => {
         return (
             <div className="widget d-inline-block">
-                <TimedeltaPicker value={value} onChange={this._handleChange} />
+                <TimedeltaPicker
+                    value={value}
+                    onChange={this._handleChange as any}
+                />
             </div>
         )
     }
 
-    _resolveLeft(left: List<*>, schemas: Map<*, *>) {
+    _resolveLeft(left: List<any>, schemas: Map<any, any>): List<any> {
         // we need to figure out if the path contains '$ref' objects, then resolve them and update the path
         const path = []
         for (const item of left.toJS()) {
             path.push(item)
-            const schema = schemas.getIn(path)
+            const schema = schemas.getIn(path) as Map<any, any>
 
             if (schema) {
                 let ref = ''
@@ -248,7 +259,10 @@ export class Widget extends React.Component<Props, State> {
                     // get the remaining path
                     const newLeft = List(['definitions', def, 'properties'])
                     const newRight = List(drop(left.toJS(), path.length))
-                    return this._resolveLeft(newLeft.concat(newRight), schemas)
+                    return this._resolveLeft(
+                        newLeft.concat(newRight) as List<any>,
+                        schemas
+                    )
                 }
             }
         }
@@ -275,11 +289,18 @@ export class Widget extends React.Component<Props, State> {
 
         const left = this._resolveLeft(leftsiblings, schemas)
         // widget data used for rendering
-        const widget = {}
-        widget.type = 'select'
-        widget.value = value
-        widget.description = ''
-        widget.options = []
+        const widget: {
+            type: string
+            value: any
+            description: string
+            options: (string | {value: string; label: string})[]
+            multiple?: boolean
+        } = {
+            type: 'select',
+            value,
+            description: '',
+            options: [],
+        }
 
         let caseInsensitive = false
 
@@ -289,11 +310,15 @@ export class Widget extends React.Component<Props, State> {
         } else if (left.last() === 'properties') {
             // properties are special because they are defining the props
             // that available on the top level objects: ticket, event, etc..
-            const props = schemas.getIn(left).toJS()
+            const props = (schemas.getIn(left) as Map<
+                any,
+                any
+            >).toJS() as Record<string, unknown>
             for (const key of Object.keys(props)) {
-                const prop = props[key]
+                const prop = props[key] as Record<string, any>
 
                 // only show props that have a meta value or a refs
+                //eslint-disable-next-line no-prototype-builtins
                 if (prop.hasOwnProperty('meta')) {
                     // hide prop if it is hidden in rules and not used
                     if (
@@ -312,6 +337,7 @@ export class Widget extends React.Component<Props, State> {
                             ).toLowerCase(),
                     })
                     widget.description = prop.description
+                    //eslint-disable-next-line no-prototype-builtins
                 } else if (prop.hasOwnProperty('$ref')) {
                     widget.options.push({
                         value: key,
@@ -322,35 +348,36 @@ export class Widget extends React.Component<Props, State> {
             }
         } else if (left.last() === 'operators') {
             // operators are using simple select widget, all we need is the options
-            let operators = schemas.getIn(left)
+            let operators = schemas.getIn(left) as Map<any, any>
 
             if (operators) {
                 // exclude deprecated operators which are not already used
-                operators = operators.filter((ope, operatorName) => {
-                    if (deprecatedOperators.includes(operatorName)) {
-                        return deprecatedOperators.includes(widget.value)
+                operators = operators.filter(
+                    (ope: any, operatorName: string) => {
+                        if (deprecatedOperators.includes(operatorName)) {
+                            return deprecatedOperators.includes(widget.value)
+                        }
+                        return true
                     }
-                    return true
-                })
+                ) as Map<any, any>
                 widget.options = operators.toJS()
             }
         } else if (left.first() === 'actions') {
             if (config.widget) {
-                widget.type = config.widget
+                widget.type = config.widget as string
             } else {
-                widget.type = `${left.last()}-select`
+                widget.type = `${left.last() as string}-select`
             }
         } else {
             // all other properties
-            const right = schemas.getIn(left)
+            const right = schemas.getIn(left) as Map<any, any>
             const calleeName = rule.getIn(
-                parent
-                    .slice(0, -3)
-                    .concat(['callee', 'name'])
-                    .insert(0, 'code_ast')
+                (parent.slice(0, -3).concat(['callee', 'name']) as List<
+                    any
+                >).insert(0, 'code_ast')
             )
             widget.type = right
-                ? right.getIn(['meta', 'rules', 'widget'])
+                ? (right.getIn(['meta', 'rules', 'widget']) as string)
                 : 'input'
 
             // display a multi select field in case current attribute is an array AND
@@ -379,14 +406,16 @@ export class Widget extends React.Component<Props, State> {
             }
 
             if (right) {
-                const options = right.getIn(['meta', 'enum'])
-                widget.options = options ? options.toJS() : []
+                const options = right.getIn(['meta', 'enum']) as List<any>
+                widget.options = options ? (options.toJS() as string[]) : []
                 widget.description = right.get('description')
             }
         }
 
         const operatorName = rule.getIn(
-            parent.slice(0, -3).concat(['callee', 'name']).insert(0, 'code_ast')
+            (parent.slice(0, -3).concat(['callee', 'name']) as List<
+                any
+            >).insert(0, 'code_ast')
         )
         const isOperatorRelative = timedeltaOperators.includes(operatorName)
 
@@ -410,7 +439,7 @@ export class Widget extends React.Component<Props, State> {
                         singular="intent"
                         plural="intents"
                         values={widget.value}
-                        onChange={this._handleChange}
+                        onChange={this._handleChange as any}
                     />
                 )
             case 'sentiments-select':
@@ -428,7 +457,7 @@ export class Widget extends React.Component<Props, State> {
                         singular="sentiment"
                         plural="sentiments"
                         values={widget.value}
-                        onChange={this._handleChange}
+                        onChange={this._handleChange as any}
                     />
                 )
             case 'multi-select':
@@ -443,14 +472,16 @@ export class Widget extends React.Component<Props, State> {
                         singular="word"
                         plural="words"
                         allowCustomValues
-                        onChange={this._handleChange}
+                        onChange={this._handleChange as any}
                         caseInsensitive={caseInsensitive}
                     />
                 )
             case 'select':
                 return (
                     <Select
-                        {...widget}
+                        {...((widget as unknown) as ComponentProps<
+                            typeof Select
+                        >)}
                         className={className}
                         onChange={this._handleChange}
                     />
@@ -458,15 +489,19 @@ export class Widget extends React.Component<Props, State> {
             case 'status-select':
                 return (
                     <StatusSelect
-                        {...widget}
+                        {...((widget as unknown) as ComponentProps<
+                            typeof StatusSelect
+                        >)}
                         className={className}
-                        onChange={this._handleChange}
+                        onChange={this._handleChange as any}
                     />
                 )
             case 'tags-select':
                 return (
                     <TagsSelect
-                        {...widget}
+                        {...((widget as unknown) as ComponentProps<
+                            typeof TagsSelect
+                        >)}
                         className={className}
                         onChange={this._handleChange}
                         caseInsensitive={caseInsensitive}
@@ -527,10 +562,8 @@ export class Widget extends React.Component<Props, State> {
     }
 }
 
-function mapStateToProps(state) {
-    return {
-        hasIntegrationOfTypes: makeHasIntegrationOfTypes(state),
-    }
-}
+const connector = connect((state: RootState) => ({
+    hasIntegrationOfTypes: makeHasIntegrationOfTypes(state),
+}))
 
-export default connect(mapStateToProps)(Widget)
+export default connector(Widget)

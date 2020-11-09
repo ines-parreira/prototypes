@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import Literal from '../Literal'
+import Literal from '../Literal.tsx'
 
 const value = 'hey'
 const commonProps = {

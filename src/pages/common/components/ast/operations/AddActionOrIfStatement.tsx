@@ -1,6 +1,6 @@
-import React from 'react'
+import React, {ComponentType} from 'react'
 import PropTypes from 'prop-types'
-import {List} from 'immutable'
+import {List, Map} from 'immutable'
 import {
     UncontrolledButtonDropdown,
     DropdownToggle,
@@ -19,7 +19,8 @@ type Props = {
     parent: List<any>
     title: string
     depth: number
-    removable: boolean
+    removable?: boolean
+    hoverableClassName?: string
 }
 
 export class AddActionOrIfStatement extends React.Component<Props> {
@@ -156,4 +157,4 @@ export class AddActionOrIfStatement extends React.Component<Props> {
     }
 }
 
-export default Hoverable(AddActionOrIfStatement)
+export default Hoverable(AddActionOrIfStatement) as ComponentType<Props>

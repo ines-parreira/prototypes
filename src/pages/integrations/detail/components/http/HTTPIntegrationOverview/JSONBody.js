@@ -4,7 +4,7 @@ import _isEqual from 'lodash/isEqual'
 import _some from 'lodash/some'
 import {FormGroup, FormText, Label} from 'reactstrap'
 
-import Select from '../../../../../common/components/ast/widget/ReactSelect'
+import Select from '../../../../../common/components/ast/widget/ReactSelect.tsx'
 import Tooltip from '../../../../../common/components/Tooltip'
 import JsonField from '../../../../../common/forms/JsonField'
 

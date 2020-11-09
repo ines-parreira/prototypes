@@ -3,7 +3,7 @@ import _pick from 'lodash/pick'
 import {Map, List} from 'immutable'
 
 import {RuleItemActions} from '../../../../settings/rules/detail/components/RuleItem/RuleItem'
-import Property from '../Property.js'
+import Property from '../Property'
 import {ActionConfig} from '../actions/Action'
 
 type Props = {
@@ -26,7 +26,7 @@ export default class ObjectExpression extends React.Component<Props> {
             (
                 property: {
                     key: {name: keyof typeof config.args}
-                    value: string
+                    value: any
                 },
                 idx
             ) => {

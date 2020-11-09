@@ -21,6 +21,10 @@ type Props = {
     allowExternalChanges?: boolean,
     variableTypes: Array<string>,
     onChange: () => any,
+    type?: string,
+    rows?: string,
+    placeholder?: string,
+    required?: boolean,
 }
 
 export default class RichFieldWithVariables extends Component<Props> {

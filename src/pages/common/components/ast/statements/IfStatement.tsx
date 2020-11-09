@@ -1,21 +1,18 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
+import {Map, List} from 'immutable'
 
 import classnames from 'classnames'
 
-import {
-    AddActionOrIfStatement,
-    AddLogicalCondition,
-    DeleteBlockStatementItem,
-} from '../operations'
-import Expression from '../expression/Expression.tsx'
-import {computeLeftPadding} from '../utils'
-import Foldable from '../Foldable'
+import {RuleItemActions} from '../../../../settings/rules/detail/components/RuleItem/RuleItem'
+import AddActionOrIfStatement from '../operations/AddActionOrIfStatement'
+import AddLogicalCondition from '../operations/AddLogicalCondition'
+import DeleteBlockStatementItem from '../operations/DeleteBlockStatementItem'
+import Expression from '../expression/Expression'
+import {computeLeftPadding} from '../utils.js'
+import Foldable from '../Foldable/index.js'
 
 import Statement from './Statement'
 
-/**
- * Test Expression of the IF Statement
- */
 class TestExpression extends React.Component<TestExpressionProps> {
     render() {
         const {
@@ -52,7 +49,7 @@ class TestExpression extends React.Component<TestExpressionProps> {
                     hoverableClassName="d-inline-flex"
                 />
                 <Expression
-                    {...test}
+                    {...(test as ComponentProps<typeof Expression>)}
                     parent={parent.push('test')}
                     rule={rule}
                     actions={actions}
@@ -65,28 +62,24 @@ class TestExpression extends React.Component<TestExpressionProps> {
 }
 
 type TestExpressionProps = {
-    actions: Object,
-    rule: Object,
-    parent: Object,
-    schemas: Object,
-    test: Object,
-    depth: number,
-    onMouseEnter: () => void,
-    onMouseLeave: () => void,
-    isHovered: boolean,
+    actions: RuleItemActions
+    rule: Map<any, any>
+    parent: List<any>
+    schemas: Map<any, any>
+    test: Partial<ComponentProps<typeof Expression>>
+    depth: number
+    onMouseEnter: () => void
+    onMouseLeave: () => void
+    isHovered: boolean
 }
 
-/**
- * Consequent Component of the IF Statement
- */
-
 type ConsequentStatementProps = {
-    rule: Object,
-    actions: Object,
-    consequent: Object,
-    parent: Object,
-    schemas: Object,
-    depth: number,
+    rule: Map<any, any>
+    actions: RuleItemActions
+    consequent: Partial<ComponentProps<typeof Statement>>
+    parent: List<any>
+    schemas: Map<any, any>
+    depth: number
 }
 
 class ConsequentStatement extends React.Component<ConsequentStatementProps> {
@@ -108,7 +101,7 @@ class ConsequentStatement extends React.Component<ConsequentStatementProps> {
                     }
                 >
                     <Statement
-                        {...consequent}
+                        {...(consequent as ComponentProps<typeof Statement>)}
                         parent={parent.push('consequent')}
                         rule={rule}
                         actions={actions}
@@ -145,7 +138,7 @@ class AlternateStatement extends React.Component<AlternateStatementProps> {
                     }
                 >
                     <Statement
-                        {...alternate}
+                        {...(alternate as ComponentProps<typeof Statement>)}
                         parent={parent.push('alternate')}
                         rule={rule}
                         actions={actions}
@@ -159,12 +152,12 @@ class AlternateStatement extends React.Component<AlternateStatementProps> {
 }
 
 type AlternateStatementProps = {
-    rule: Object,
-    actions: Object,
-    alternate: Object,
-    parent: Object,
-    schemas: Object,
-    depth: number,
+    rule: Map<any, any>
+    actions: RuleItemActions
+    alternate: Partial<ComponentProps<typeof Statement>>
+    parent: List<any>
+    schemas: Map<any, any>
+    depth: number
 }
 
 /**
@@ -172,18 +165,18 @@ type AlternateStatementProps = {
  */
 
 type IfStatementProps = {
-    rule: ?Object,
-    test: ?Object,
-    consequent: ?Object,
-    alternate: ?Object,
-    parent: ?Object,
-    schemas: ?Object,
-    actions: ?Object,
-    depth: number,
+    rule: Map<any, any>
+    test: Partial<ComponentProps<typeof Expression>>
+    consequent: Partial<ComponentProps<typeof Expression>>
+    alternate: Partial<ComponentProps<typeof Statement>>
+    parent: List<any>
+    schemas: Map<any, any>
+    actions: RuleItemActions
+    depth: number
 }
 
 type IfStatementState = {
-    isHovered: boolean,
+    isHovered: boolean
 }
 
 export default class IfStatement extends React.Component<

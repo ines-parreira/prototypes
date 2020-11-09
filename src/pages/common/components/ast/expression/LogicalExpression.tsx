@@ -44,7 +44,7 @@ export default class LogicalExpression extends React.Component<Props> {
         return (
             <>
                 <Expression
-                    {...left}
+                    {...(left as ComponentProps<typeof Expression>)}
                     parent={parent.push('left')}
                     rule={rule}
                     actions={actions}
@@ -61,7 +61,7 @@ export default class LogicalExpression extends React.Component<Props> {
                         {operator === '&&' ? 'AND' : 'OR'}
                     </Button>
                     <Expression
-                        {...right}
+                        {...(right as ComponentProps<typeof Expression>)}
                         parent={parent.push('right')}
                         rule={rule}
                         actions={actions}

@@ -1,32 +1,33 @@
-// @flow
 import React from 'react'
-import {connect} from 'react-redux'
-import {fromJS, List, Map} from 'immutable'
+import {connect, ConnectedProps} from 'react-redux'
+import {fromJS, List} from 'immutable'
 
-import * as selectors from '../../../../../state/teams/selectors.ts'
+import {RootState} from '../../../../../state/types'
+import * as selectors from '../../../../../state/teams/selectors'
 
 import Select from './ReactSelect'
 
-type Props = {
-    onChange: (number) => void,
-    value?: string | number,
-    teams: Map<*, *>,
-    className?: string,
-    allowUnassign?: boolean,
+type OwnProps = {
+    onChange: (value: number) => void
+    value?: string | number
+    className?: string
+    allowUnassign?: boolean
 }
 
-class AssigneeTeamSelect extends React.Component<Props> {
+class AssigneeTeamSelect extends React.Component<
+    OwnProps & ConnectedProps<typeof connector>
+> {
     static defaultProps = {
         allowUnassign: true,
     }
 
     render() {
         const {teams, value, onChange, className, allowUnassign} = this.props
-        let options: List<*> = fromJS(
+        let options: List<any> = fromJS(
             allowUnassign ? [{value: null, label: 'Unassigned'}] : []
         )
 
-        teams.forEach((team) => {
+        teams.forEach((team: Map<any, any>) => {
             options = options.push({
                 value: team.get('id'),
                 label: team.get('name'),
@@ -44,9 +45,8 @@ class AssigneeTeamSelect extends React.Component<Props> {
     }
 }
 
-const mapStateToProps = (state) => ({
+const connector = connect((state: RootState) => ({
     teams: selectors.getTeams(state),
-})
+}))
 
-//$FlowFixMe
-export default connect(mapStateToProps)(AssigneeTeamSelect)
+export default connector(AssigneeTeamSelect)

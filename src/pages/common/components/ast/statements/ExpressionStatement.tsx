@@ -1,29 +1,27 @@
-// @flow
-import React from 'react'
+import React, {ComponentProps} from 'react'
+import {Map, List} from 'immutable'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 
-import Expression from '../expression/Expression.tsx'
-import {DeleteBlockStatementItem} from '../operations'
-import Hoverable from '../../Hoverable'
-
-/*
- interface ExpressionStatement <: Statement {
- type: "ExpressionStatement";
- expression: Expression;
- }
- */
+import {RuleItemActions} from '../../../../settings/rules/detail/components/RuleItem/RuleItem'
+import Expression from '../expression/Expression'
+import DeleteBlockStatementItem from '../operations/DeleteBlockStatementItem'
+import Hoverable from '../../Hoverable.js'
 
 type Props = {
-    rule: Object,
-    expression: ?Object,
-    parent: Object,
-    actions: ?Object,
-    schemas: ?Object,
-    depth: number,
+    rule: Map<any, any>
+    expression: Partial<ComponentProps<typeof Expression>>
+    parent: List<any>
+    actions: RuleItemActions
+    schemas: Map<any, any>
+    depth: number
 }
 
 class ExpressionStatement extends React.Component<Props> {
+    static contextTypes = {
+        hovered: PropTypes.bool,
+    }
+
     render() {
         const {expression, rule, actions, parent, schemas, depth} = this.props
         const {hovered} = this.context
@@ -39,7 +37,7 @@ class ExpressionStatement extends React.Component<Props> {
                     type="action"
                 />
                 <Expression
-                    {...expression}
+                    {...(expression as ComponentProps<typeof Expression>)}
                     parent={parentNew}
                     rule={rule}
                     actions={actions}
@@ -49,10 +47,6 @@ class ExpressionStatement extends React.Component<Props> {
             </div>
         )
     }
-}
-
-ExpressionStatement.contextTypes = {
-    hovered: PropTypes.bool,
 }
 
 export default Hoverable(ExpressionStatement)
