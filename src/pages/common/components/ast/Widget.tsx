@@ -463,7 +463,7 @@ export class Widget extends React.Component<Props, State> {
             case 'multi-select':
                 return (
                     <MultiSelectField
-                        className={className}
+                        className={`${className || ''} Text`}
                         style={{
                             display: 'inline-block',
                             paddingBottom: '2px',
