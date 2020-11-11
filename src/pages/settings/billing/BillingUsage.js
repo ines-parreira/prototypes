@@ -198,7 +198,9 @@ export class BillingUsage extends Component {
                 <p>
                     If you have any questions or if you want to unsubscribe,
                     please contact us at{' '}
-                    <a href="mailto:support@gorgias.io">support@gorgias.io</a>{' '}
+                    <a href={`mailto:${window.GORGIAS_SUPPORT_EMAIL}`}>
+                        {window.GORGIAS_SUPPORT_EMAIL}
+                    </a>{' '}
                     or{' '}
                     <a href="" onClick={openChat}>
                         Live Chat

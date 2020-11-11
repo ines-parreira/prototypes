@@ -415,9 +415,9 @@ exports[`BillingUsage component should display price 1`] = `
       If you have any questions or if you want to unsubscribe, please contact us at
        
       <a
-        href="mailto:support@gorgias.io"
+        href="mailto:support@gorgias.com"
       >
-        support@gorgias.io
+        support@gorgias.com
       </a>
        
       or
@@ -791,9 +791,9 @@ exports[`BillingUsage component should load with empty props 1`] = `
       If you have any questions or if you want to unsubscribe, please contact us at
        
       <a
-        href="mailto:support@gorgias.io"
+        href="mailto:support@gorgias.com"
       >
-        support@gorgias.io
+        support@gorgias.com
       </a>
        
       or

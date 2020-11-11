@@ -16,6 +16,7 @@ describe('BillingUsage component', () => {
         start_datetime: '2018-01-01T10:10:10.480Z',
     })
     let activeIntegrations = fromJS([])
+    window.GORGIAS_SUPPORT_EMAIL = 'support@gorgias.com'
 
     beforeEach(() => {
         // reactstrap popover needs to be in the dom
