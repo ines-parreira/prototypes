@@ -106,6 +106,7 @@ exports[`ast Widget should render case-insensitive MultiSelectField (containsAll
 <MultiSelectField
   allowCustomValues={true}
   caseInsensitive={true}
+  className=" Text"
   onChange={[Function]}
   options={Array []}
   plural="words"
