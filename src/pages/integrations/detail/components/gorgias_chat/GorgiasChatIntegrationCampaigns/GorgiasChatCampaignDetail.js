@@ -26,7 +26,7 @@ import PageHeader from '../../../../../common/components/PageHeader'
 import {AgentLabel} from '../../../../../common/utils/labels'
 
 import {sanitizeHtmlDefault} from '../../../../../../utils/html.ts'
-import {convertToHTML} from '../../../../../../utils/editor.ts'
+import {convertToHTML} from '../../../../../../utils/editor.tsx'
 
 import {notify} from '../../../../../../state/notifications/actions.ts'
 import * as campaignActions from '../../../../../../state/campaigns/actions'

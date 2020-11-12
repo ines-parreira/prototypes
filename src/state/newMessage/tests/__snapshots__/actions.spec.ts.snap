@@ -1200,7 +1200,7 @@ Array [
   Object {
     "message": Object {
       "attachments": Array [],
-      "body_html": "<br>",
+      "body_html": "<div><br></div>",
       "body_text": "",
       "channel": "email",
       "from_agent": true,

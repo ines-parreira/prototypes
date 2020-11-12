@@ -2,7 +2,7 @@
 import {EditorState} from 'draft-js'
 
 import {removeLink} from '../utils'
-import {convertFromHTML} from '../../../../../utils/editor.ts'
+import {convertFromHTML} from '../../../../../utils/editor.tsx'
 
 describe('plugin utils', () => {
     describe('removeLink()', () => {

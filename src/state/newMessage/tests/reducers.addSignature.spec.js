@@ -7,14 +7,14 @@ import {ContentState} from 'draft-js'
 
 import reducer, {initialState} from '../reducers.ts'
 import * as types from '../constants.ts'
-import {convertToHTML} from '../../../utils/editor.ts'
+import {convertToHTML} from '../../../utils/editor.tsx'
 
 describe('New message reducers', () => {
     describe('NEW_MESSAGE_ADD_SIGNATURE action', () => {
         let action
         const body_text = 'Hello\n\nCruel World!'
         const body_html =
-            '<div>Hello</div><br><div><a href="about:blank#" target="_blank">Cruel World!</a></div>'
+            '<div>Hello</div><div><br></div><div><a href="about:blank#" target="_blank">Cruel World!</a></div>'
         const signature = fromJS({
             text: 'Cruel World!',
             html: '<a href="#">Cruel World!</a>',

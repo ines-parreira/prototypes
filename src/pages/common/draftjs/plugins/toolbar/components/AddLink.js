@@ -10,7 +10,7 @@ import {
     getSelectedEntityKey,
     getSelectedText,
     linkify,
-} from '../../../../../../utils/editor.ts'
+} from '../../../../../../utils/editor.tsx'
 import type {ActionInjectedProps} from '../types'
 
 import css from './AddLink.less'

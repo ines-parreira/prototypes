@@ -8,7 +8,10 @@ import configureStore from '../../../../../../store/configureStore'
 import ConnectedTicketReplyEditor, {
     TicketReplyEditor,
 } from '../TicketReplyEditor'
-import {convertFromHTML, convertToHTML} from '../../../../../../utils/editor.ts'
+import {
+    convertFromHTML,
+    convertToHTML,
+} from '../../../../../../utils/editor.tsx'
 import {
     TicketChannel,
     TicketMessageSourceType,
@@ -211,7 +214,7 @@ describe('TicketReplyEditor component', () => {
 
         // needed for lifecycle
         setTimeout(() => {
-            const expectedValue = `<div>this is an inline image: </div><figure style="display: inline-block; margin: 0"><img src="https://this-is-a-link-of-image/and-this-is-the-image.png" width="400px" style="max-width: 100%"></figure>`
+            const expectedValue = `<div>this is an inline image: </div><figure style="display:inline-block;margin:0"><img src="https://this-is-a-link-of-image/and-this-is-the-image.png" width="400px" style="max-width: 100%"></figure>`
             expect(convertToHTML(newEditorState)).toBe(expectedValue)
             done()
         }, 500)

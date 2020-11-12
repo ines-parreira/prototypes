@@ -3,7 +3,7 @@ import classnames from 'classnames'
 import {Form, FormGroup, Button, Container} from 'reactstrap'
 import {connect} from 'react-redux'
 
-import {convertToHTML, getPlainText} from '../../../utils/editor.ts'
+import {convertToHTML, getPlainText} from '../../../utils/editor.tsx'
 
 import BooleanField from '../../common/forms/BooleanField'
 import InputField from '../../common/forms/InputField'

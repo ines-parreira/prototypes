@@ -27,7 +27,7 @@ import {
     isValidSelectionKey,
     refreshEditor,
     removeMentions,
-} from '../../../../utils/editor.ts'
+} from '../../../../utils/editor.tsx'
 
 import Signature from './Signature'
 import provideToolbarPlugin, {

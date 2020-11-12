@@ -35,7 +35,7 @@ import {
     isGorgiasSupportAddress,
     displayRestrictedSymbols,
 } from '../../../../../../utils.ts'
-import {convertToHTML} from '../../../../../../utils/editor.ts'
+import {convertToHTML} from '../../../../../../utils/editor.tsx'
 import Loader from '../../../../../common/components/Loader'
 import * as segmentTracker from '../../../../../../store/middlewares/segmentTracker'
 import * as integrationActions from '../../../../../../state/integrations/actions.ts'

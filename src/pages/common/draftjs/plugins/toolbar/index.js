@@ -7,7 +7,7 @@ import {removeLink} from '../utils'
 import {
     getSelectedEntityKey,
     getSelectedText,
-} from '../../../../../utils/editor.ts'
+} from '../../../../../utils/editor.tsx'
 
 import {foundUrl, link} from './decorators'
 import Toolbar from './Toolbar'

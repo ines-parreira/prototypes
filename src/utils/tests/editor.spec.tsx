@@ -12,49 +12,38 @@ import React, {ReactNode} from 'react'
 import * as utils from '../editor'
 
 describe('editor utils', () => {
-    describe('toHTML', () => {
+    describe('convertToHTML', () => {
         it('should convert links (www.xxx.com) to html', () => {
             const text = 'Hello there\n\nwww.google.com'
             const contentState = ContentState.createFromText(text)
-            expect(utils.convertToHTML(contentState)).toEqual(
-                '<div>Hello there</div><br><div><a href="http://www.google.com" class="linkified" target="_blank">www.google.com</a></div>'
-            )
+            expect(utils.convertToHTML(contentState)).toMatchSnapshot()
         })
 
         it('should convert links (xxx.com) to html', () => {
             const text = 'Hello there\n\ngoogle.com'
             const contentState = ContentState.createFromText(text)
-            expect(utils.convertToHTML(contentState)).toEqual(
-                '<div>Hello there</div><br><div><a href="http://google.com" class="linkified" target="_blank">google.com</a></div>'
-            )
+            expect(utils.convertToHTML(contentState)).toMatchSnapshot()
         })
 
         it('should convert multiple links to html', () => {
             const text =
-                'Hey There!\n\nwww.google.com\n\nAnother link: http://www.gorgias.io'
+                'Hey There!\n\nwww.google.com\n\nAnother link: http://www.gorgias.com'
             const contentState = ContentState.createFromText(text)
-            expect(utils.convertToHTML(contentState)).toEqual(
-                '<div>Hey There!</div><br><div><a href="http://www.google.com" class="linkified" target="_blank">www.google.com</a></div><br><div>Another link: <a href="http://www.gorgias.io" class="linkified" target="_blank">http://www.gorgias.io</a></div>'
-            )
+            expect(utils.convertToHTML(contentState)).toMatchSnapshot()
         })
 
         it('should NOT convert adjacent links to html correctly (www.xxx.comwww.yyy.com)', () => {
             const text =
                 'Hey Marie Curie,\nmultiple links: www.facebook.comwww.github.com\n\nThanks for contacting us.'
             const contentState = ContentState.createFromText(text)
-            expect(utils.convertToHTML(contentState)).toEqual(
-                '<div>Hey Marie Curie,</div><div>multiple links: <a href="http://www.facebook.comwww.github.com" class="linkified" target="_blank">www.facebook.comwww.github.com</a></div><br><div>Thanks for contacting us.</div>'
-            )
+            expect(utils.convertToHTML(contentState)).toMatchSnapshot()
         })
 
         it('should wrap images in inline-block figures', () => {
             const baseHTML =
                 '<figure><img src="https://gorgias.io/" /></figure>'
             const contentState = utils.convertFromHTML(baseHTML)
-            const newHTML = utils.convertToHTML(contentState)
-            expect(newHTML).toEqual(
-                '<figure style="display: inline-block; margin: 0"><img src="https://gorgias.io/" width="400px" style="max-width: 100%"></figure>'
-            )
+            expect(utils.convertToHTML(contentState)).toMatchSnapshot()
         })
 
         // tests interaction between convertToHTML and convertFromHTML.
@@ -88,17 +77,13 @@ describe('editor utils', () => {
         it('should convert links with {{variables}} to html', () => {
             const text = 'Hello there\n\nwww.google.com/{{ticket.id}}'
             const contentState = ContentState.createFromText(text)
-            expect(utils.convertToHTML(contentState)).toEqual(
-                '<div>Hello there</div><br><div><a href="http://www.google.com/{{ticket.id}}" class="linkified" target="_blank">www.google.com/{{ticket.id}}</a></div>'
-            )
+            expect(utils.convertToHTML(contentState)).toMatchSnapshot()
         })
 
         it('should turn newlines into br', () => {
             const text = 'One\nTwo\n\nThree\n\n\n'
             const contentState = ContentState.createFromText(text)
-            expect(utils.convertToHTML(contentState)).toEqual(
-                '<div>One</div><div>Two</div><br><div>Three</div><br><br><br>'
-            )
+            expect(utils.convertToHTML(contentState)).toMatchSnapshot()
         })
     })
 

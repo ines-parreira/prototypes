@@ -1,3 +1,4 @@
+import React from 'react'
 import linkifyhtml from 'linkifyjs/html'
 import {
     convertToHTML as _convertToHTML,
@@ -40,23 +41,39 @@ const fixLinkVars = (html: string, callback: (T: string) => string): string => {
     return parsedHtml.replace(restoreRegex, (match) => match.replace(uid, ''))
 }
 
+const EmptyUnstyledBlock: React.FC = () => (
+    <div>
+        <br />
+    </div>
+)
+
 /**
  * Single convertToHTML config for the entire app (same options everywhere if needed)
  */
 export function convertToHTML(contentState: ContentState): string {
     return fixLinkVars(
         _convertToHTML({
-            blockToHTML: {
-                unstyled: {
-                    start: '<div>',
-                    end: '</div>',
-                    empty: '<br>', // when we have an empty block (corresponds with a new line, add a line break)
-                },
-                atomic: {
-                    start: '<figure style="display: inline-block; margin: 0">',
-                    end: '</figure>',
-                },
-            } as any,
+            blockToHTML: (block) => {
+                const {type} = block
+
+                if (type === 'unstyled') {
+                    return {
+                        element: <div />,
+                        empty: <EmptyUnstyledBlock />,
+                    }
+                }
+
+                if (type === 'atomic') {
+                    return (
+                        <figure
+                            style={{
+                                display: 'inline-block',
+                                margin: 0,
+                            }}
+                        />
+                    )
+                }
+            },
             entityToHTML: (entity, originalText) => {
                 if (entity.type === 'link') {
                     // keep the start/end way of doing until https://github.com/HubSpot/draft-convert/issues/47 is fixed

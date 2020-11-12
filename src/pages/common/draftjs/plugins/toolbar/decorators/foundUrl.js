@@ -6,7 +6,7 @@ import type {
     DecoratorComponentProps,
     Decorator,
 } from '../../types'
-import {linkify} from '../../../../../../utils/editor.ts'
+import {linkify} from '../../../../../../utils/editor.tsx'
 import LinkPopover from '../components/LinkPopover'
 
 const foundUrl = (): Decorator => ({

@@ -7,7 +7,7 @@ import React from 'react'
 import {
     contentStateFromTextOrHTML,
     convertToHTML,
-} from '../../../../utils/editor.ts'
+} from '../../../../utils/editor.tsx'
 import {attachEntitiesToVariables} from '../../draftjs/plugins/variables/utils'
 import InputField from '../InputField'
 

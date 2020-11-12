@@ -2,7 +2,7 @@ import {ContentState} from 'draft-js'
 import {fromJS} from 'immutable'
 
 import * as responseUtils from '../responseUtils.ts'
-import {convertToHTML} from '../../../utils/editor.ts'
+import {convertToHTML} from '../../../utils/editor.tsx'
 import {TicketMessageSourceType} from '../../../business/types/ticket'
 
 describe('addSignature', () => {
@@ -44,7 +44,7 @@ describe('addSignature', () => {
             signature
         )
         expect(convertToHTML(newContentState)).toBe(
-            '<br><br><div><a href="https://gorgias.io/" target="_blank">Cruel World!</a></div>'
+            '<div><br></div><div><br></div><div><a href="https://gorgias.io/" target="_blank">Cruel World!</a></div>'
         )
     })
 })
@@ -130,7 +130,7 @@ describe('applyMacro', () => {
                 ticket: fromJS({}),
                 currentUser: fromJS({}),
                 args: fromJS({
-                    body_html: `<div><strong>Hello, check this out</strong></div><br><figure style="display: inline-block; margin: 0"><img src="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/image-e99e1a8a-990b-4df1-876d-cd1ced6df667.png" width="400px" style="max-width: 100%"></figure><br><div><em>should be good now</em></div>`,
+                    body_html: `<div><strong>Hello, check this out</strong></div><div><br></div><figure style="display:inline-block;margin:0"><img src="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/image-e99e1a8a-990b-4df1-876d-cd1ced6df667.png" width="400px" style="max-width: 100%"></figure><div><br></div><div><em>should be good now</em></div>`,
                     body_text: `Hello, check this out\n\n \n\nshould be good now`,
                 }),
             },
@@ -139,7 +139,7 @@ describe('applyMacro', () => {
             context
         )
 
-        const expectedValue = `<div>Hello, check this out</div><br><figure style="display: inline-block; margin: 0"><img src="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/image-e99e1a8a-990b-4df1-876d-cd1ced6df667.png" width="400px" style="max-width: 100%"></figure><br><div>should be good now</div>`
+        const expectedValue = `<div>Hello, check this out</div><div><br></div><figure style="display:inline-block;margin:0"><img src="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/image-e99e1a8a-990b-4df1-876d-cd1ced6df667.png" width="400px" style="max-width: 100%"></figure><div><br></div><div>should be good now</div>`
         expect(convertToHTML(newContext.contentState)).toBe(expectedValue)
         expect(newContext.forceUpdate).toBe(true)
         expect(newContext.forceFocus).toBe(true)
@@ -159,7 +159,7 @@ describe('applyMacro', () => {
                 ticket: fromJS({}),
                 currentUser: fromJS({}),
                 args: fromJS({
-                    body_html: `<div><strong>Hello, check this out</strong></div><br><figure style="display: inline-block; margin: 0"><img src="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/image-e99e1a8a-990b-4df1-876d-cd1ced6df667.png" width="400px" style="max-width: 100%"></figure><br><div><em>should be good now</em></div>`,
+                    body_html: `<div><strong>Hello, check this out</strong></div><div><br></div><figure style="display:inline-block;margin:0"><img src="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/image-e99e1a8a-990b-4df1-876d-cd1ced6df667.png" width="400px" style="max-width: 100%"></figure><br><div><em>should be good now</em></div>`,
                     body_text: `Hello, check this out\n\n \n\nshould be good now`,
                 }),
             },
@@ -168,7 +168,7 @@ describe('applyMacro', () => {
             context
         )
 
-        const expectedValue = `<div><strong>Hello, check this out</strong></div><br><figure style="display: inline-block; margin: 0"><img src="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/image-e99e1a8a-990b-4df1-876d-cd1ced6df667.png" width="400px" style="max-width: 100%"></figure><br><div><em>should be good now</em></div>`
+        const expectedValue = `<div><strong>Hello, check this out</strong></div><div><br></div><figure style="display:inline-block;margin:0"><img src="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/image-e99e1a8a-990b-4df1-876d-cd1ced6df667.png" width="400px" style="max-width: 100%"></figure><div><br></div><div><em>should be good now</em></div>`
         expect(convertToHTML(newContext.contentState)).toBe(expectedValue)
         expect(newContext.forceUpdate).toBe(true)
         expect(newContext.forceFocus).toBe(true)
@@ -188,7 +188,7 @@ describe('applyMacro', () => {
                 ticket: fromJS({}),
                 currentUser: fromJS({}),
                 args: fromJS({
-                    body_html: `<div><strong>Hello, check this out</strong></div><br><figure style="display: inline-block; margin: 0"><img src="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/image-e99e1a8a-990b-4df1-876d-cd1ced6df667.png" width="400px" style="max-width: 100%"></figure><br><div><em>should be good now</em></div>`,
+                    body_html: `<div><strong>Hello, check this out</strong></div><div><br></div><figure style="display: inline-block; margin: 0"><img src="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/image-e99e1a8a-990b-4df1-876d-cd1ced6df667.png" width="400px" style="max-width: 100%"></figure><div><br></div><div><em>should be good now</em></div>`,
                     body_text: `Hello, check this out\n\n \n\nshould be good now`,
                 }),
             },
@@ -223,7 +223,7 @@ describe('applyMacro', () => {
                 ticket: fromJS({}),
                 currentUser: fromJS({}),
                 args: fromJS({
-                    body_html: `<div><strong>Hello, check this out</strong></div><br><figure style="display: inline-block; margin: 0"><img src="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/image-e99e1a8a-990b-4df1-876d-cd1ced6df667.png" width="400px" style="max-width: 100%"></figure><br><div><em>should be good now</em></div>`,
+                    body_html: `<div><strong>Hello, check this out</strong></div><div><br></div><figure style="display: inline-block; margin: 0"><img src="https://uploads.gorgi.us/development/Zr1WE86rb6J4Mvgl/image-e99e1a8a-990b-4df1-876d-cd1ced6df667.png" width="400px" style="max-width: 100%"></figure><div><br></div><div><em>should be good now</em></div>`,
                     body_text: `Hello, check this out\n\n \n\nshould be good now`,
                 }),
             },
