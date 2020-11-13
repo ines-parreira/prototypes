@@ -122,8 +122,8 @@ export function MacrosSettingsContentContainer({
                     <div className={css.descriptionText}>
                         <p>
                             Macros are used to automatize your agent support
-                            responses. You can create new macros, delete or
-                            disable existing ones.
+                            responses. You can create new macros or delete
+                            existing ones.
                         </p>
                         <p>
                             For example, you can create a macro for letting your
