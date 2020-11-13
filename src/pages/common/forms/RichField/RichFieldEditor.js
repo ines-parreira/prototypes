@@ -29,7 +29,7 @@ import {
     removeMentions,
 } from '../../../../utils/editor.tsx'
 
-import Signature from './Signature'
+import Signature from './Signature.tsx'
 import provideToolbarPlugin, {
     type InjectedProps as ToolbarPluginProps,
 } from './provideToolbarPlugin'

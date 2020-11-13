@@ -1,34 +1,35 @@
-// @flow
 import React from 'react'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import {EditorState} from 'draft-js'
 
-import * as newMessageSelectors from '../../../../state/newMessage/selectors.ts'
-import * as newMessageActions from '../../../../state/newMessage/actions.ts'
-import * as responseUtils from '../../../../state/newMessage/responseUtils.ts'
-import Ellipsis from '../../components/Ellipsis'
+import {
+    isDirty,
+    getNewMessageSignature,
+} from '../../../../state/newMessage/selectors'
+import {addSignature} from '../../../../state/newMessage/actions'
+import {isSignatureAdded} from '../../../../state/newMessage/responseUtils'
+import Ellipsis from '../../components/Ellipsis.js'
+import {RootState} from '../../../../state/types'
 
-type Props = {
-    addSignature: typeof newMessageActions.addSignature,
-    editorState: EditorState,
-    isDirty: boolean,
-    signature: Object,
+type OwnProps = {
+    editorState: EditorState
 }
+
+type Props = OwnProps & ConnectedProps<typeof connector>
 
 type State = {
-    forceHideButton: boolean,
+    forceHideButton: boolean
 }
 
-class Signature extends React.Component<Props, State> {
-    constructor() {
-        super()
-
+export class SignatureContainer extends React.Component<Props, State> {
+    constructor(props: Props) {
+        super(props)
         this.state = {
             forceHideButton: false,
         }
     }
 
-    _shouldShowBtn = (props) => {
+    _shouldShowBtn = (props: Props) => {
         const hasSignature =
             props.signature.get('text') || props.signature.get('html')
 
@@ -39,18 +40,15 @@ class Signature extends React.Component<Props, State> {
         return !this.state.forceHideButton
     }
 
-    _hasSignature(props) {
+    _hasSignature(props: Props) {
         const contentState = props.editorState.getCurrentContent()
         return (
             contentState &&
-            responseUtils.isSignatureAdded(
-                contentState,
-                props.signature.get('text')
-            )
+            isSignatureAdded(contentState, props.signature.get('text'))
         )
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props) {
         if (!nextProps.isDirty) {
             // show button again after message is sent
             this.setState({forceHideButton: false})
@@ -86,17 +84,16 @@ class Signature extends React.Component<Props, State> {
     }
 }
 
-function mapStateToProps(state) {
-    let signature = newMessageSelectors.getNewMessageSignature(state)
-
-    return {
-        signature,
-        isDirty: newMessageSelectors.isDirty(state),
+const connector = connect(
+    (state: RootState) => {
+        return {
+            signature: getNewMessageSignature(state),
+            isDirty: isDirty(state),
+        }
+    },
+    {
+        addSignature,
     }
-}
+)
 
-const mapDispatchToProps = {
-    addSignature: newMessageActions.addSignature,
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Signature)
+export default connector(SignatureContainer)
