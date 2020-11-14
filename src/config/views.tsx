@@ -12,11 +12,6 @@ import {getMomentUtcISOString} from '../utils/date'
 import * as ticketConfig from './ticket'
 import TICKET_LANGUAGES from './ticketLanguages'
 
-// Expiration times for views counts (second).
-// After this period, we will ask for a new count.
-export const ACTIVE_VIEW_COUNT_TIMEOUT = 10
-export const RECENT_VIEWS_COUNTS_TIMEOUT = 10
-
 // Number of maximum recent views we store in the reducer and local storage.
 // View counts will only be calculated periodically for these views.
 export const MAX_RECENT_VIEWS = 8
@@ -498,3 +493,9 @@ export const getConfigByType = (type: string) => {
 
     return config
 }
+
+/**
+ * Return the expiration time for a given view count. 1min per 100 tickets. 30s under 100 tickets.
+ */
+export const getExpirationTimeForCount = (count: number) =>
+    count && count >= 100 ? Math.ceil((count / 100) * 60) : 30

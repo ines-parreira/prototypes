@@ -58,7 +58,6 @@ export default function reducer(
                         fromJS({
                             [action.viewId as number]: {
                                 inserted_datetime: now,
-                                updated_datetime: now,
                             },
                         })
                     )

@@ -7,6 +7,7 @@ import * as selectors from '../selectors.ts'
 import {currentUser} from '../../../fixtures/users'
 import {initialState as currentUserInitialState} from '../../currentUser/reducers.ts'
 import {SYSTEM_VIEW_CATEGORY} from '../../../constants/view.ts'
+import {getExpirationTimeForCount} from '../../../config/views.tsx'
 
 jest.addMatchers(immutableMatchers)
 
@@ -97,32 +98,44 @@ describe('selectors', () => {
     })
 
     describe('getExpiredViewsCounts()', () => {
-        it('should return an empty array (no expired counts)', () => {
+        it('should return an empty array because counts are not expired', () => {
             const now = moment.utc().toISOString()
-            const recent = fromJS({
+            const counts = {
+                1: 50,
+                2: 100,
+            }
+            const recent = {
                 1: {updated_datetime: now},
                 2: {updated_datetime: now},
-            })
-            const state = {views: initialState.set('recent', recent)}
-            expect(selectors.getExpiredViewsCounts(5)(state).toJS()).toEqual([])
+            }
+
+            const state = {views: initialState.merge(fromJS({recent, counts}))}
+            expect(selectors.getExpiredViewsCounts()(state)).toEqual([])
         })
 
-        it('should return some view ids (some counts are expired)', () => {
+        it('should return some view ids because some counts are expired', () => {
             const now = moment.utc().toISOString()
-            const recent = fromJS({
-                1: {updated_datetime: now},
-                2: {
+            const counts = {
+                1: 50,
+                3: 200,
+            }
+            const recent = {
+                1: {
+                    // View count is expired.
                     updated_datetime: moment
                         .utc()
-                        .subtract(2, 's')
+                        .subtract(getExpirationTimeForCount(counts[1]) + 1, 's')
                         .toISOString(),
                 },
+                2: {
+                    // View count was not already requested.
+                    updated_datetime: undefined,
+                },
                 3: {updated_datetime: now},
-            })
-            const state = {views: initialState.set('recent', recent)}
-            expect(selectors.getExpiredViewsCounts(1)(state).toJS()).toEqual([
-                2,
-            ])
+            }
+
+            const state = {views: initialState.merge(fromJS({recent, counts}))}
+            expect(selectors.getExpiredViewsCounts()(state)).toEqual([1, 2])
         })
     })
 

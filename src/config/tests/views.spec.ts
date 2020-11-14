@@ -189,4 +189,20 @@ describe('Config: views', () => {
             expect(viewsConfig.getConfigByType(type)).toEqual(viewConfig)
         })
     })
+
+    describe('getExpirationTimeForCount()', () => {
+        it.each([
+            [50, 30],
+            [99, 30],
+            [100, 60],
+            [201, 121],
+        ])(
+            'should return the expiration time for each view count',
+            (count, expectedTime) => {
+                expect(viewsConfig.getExpirationTimeForCount(count)).toEqual(
+                    expectedTime
+                )
+            }
+        )
+    })
 })

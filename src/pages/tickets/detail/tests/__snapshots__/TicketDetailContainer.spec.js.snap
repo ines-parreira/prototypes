@@ -57,7 +57,6 @@ exports[`TicketDetailContainer component should render container for new ticket 
             "createJob": [Function],
             "deleteView": [Function],
             "deleteViewSuccess": [Function],
-            "fetchActiveViewCount": [Function],
             "fetchActiveViewTickets": [Function],
             "fetchRecentViewsCounts": [Function],
             "fetchViewItems": [Function],

@@ -8,11 +8,7 @@ import _identity from 'lodash/identity'
 
 import * as actions from '../actions'
 import {initialState} from '../reducers'
-import {
-    ACTIVE_VIEW_COUNT_TIMEOUT,
-    baseView,
-    RECENT_VIEWS_COUNTS_TIMEOUT,
-} from '../../../config/views'
+import {baseView, getExpirationTimeForCount} from '../../../config/views'
 import socketManager from '../../../services/socketManager/socketManager'
 import * as socketConstants from '../../../config/socketConstants'
 import {RootState, StoreDispatch} from '../../types'
@@ -235,118 +231,36 @@ describe('actions', () => {
             expect(sendSpy.mock.calls.length).toEqual(0)
         })
 
-        it('should not fetch views counts (active view count expired)', () => {
-            window.location.pathname = '/app/tickets/1/'
-
-            const expireAt = moment
-                .utc()
-                .subtract(RECENT_VIEWS_COUNTS_TIMEOUT + 1, 's')
-                .toISOString()
-            const state = initialState.mergeDeep(
-                fromJS({
-                    active: {id: 1},
-                    recent: {
-                        1: {updated_datetime: expireAt},
-                    },
-                })
-            )
-
-            const store = mockStore({views: state})
-
-            store.dispatch(actions.fetchRecentViewsCounts())
-            expect(sendSpy.mock.calls.length).toEqual(0)
-        })
-
-        it('should fetch views counts (active view count expired)', () => {
-            window.location.pathname = '/app/tickets/1/'
-
-            const expiredDt = moment
-                .utc()
-                .subtract(RECENT_VIEWS_COUNTS_TIMEOUT + 1, 's')
-                .toISOString()
-            const state = initialState.mergeDeep(
-                fromJS({
-                    active: {id: 1},
-                    recent: {
-                        2: {updated_datetime: expiredDt},
-                        3: {updated_datetime: expiredDt},
-                        4: {updated_datetime: moment.utc().toISOString()},
-                    },
-                })
-            )
-
-            const store = mockStore({views: state})
-            store.dispatch(actions.fetchRecentViewsCounts())
-            expect(sendSpy.mock.calls.length).toEqual(1)
-            expect(sendSpy.mock.calls[0]).toEqual([
-                socketConstants.VIEWS_COUNTS_EXPIRED,
-                {viewIds: [2, 3]},
-            ])
-        })
-    })
-
-    describe('fetchActiveViewCount', () => {
-        const _send = socketManager.send
-        const sendSpy = jest.fn()
-
-        beforeEach(() => {
-            socketManager.send = sendSpy
-        })
-
-        afterAll(() => {
-            socketManager.send = _send
-        })
-
-        it('should not fetch views counts (not on a ticket)', () => {
-            window.location.pathname = '/app/tickets/'
-            const store = mockStore({views: initialState})
-            expect(store.dispatch(actions.fetchActiveViewCount())).toBe(
-                undefined
-            )
-            expect(sendSpy.mock.calls.length).toEqual(0)
-        })
-
-        it('should not fetch views counts (counts not expired)', () => {
-            window.location.pathname = '/app/ticket/1/'
-            const state = initialState.mergeDeep(
-                fromJS({
-                    active: {id: 1},
-                    recent: {
-                        1: {updated_datetime: moment.utc().toISOString()},
-                    },
-                })
-            )
-            const store = mockStore({views: state})
-
-            expect(store.dispatch(actions.fetchActiveViewCount())).toBe(
-                undefined
-            )
-            expect(sendSpy.mock.calls.length).toEqual(0)
-        })
-
         it('should fetch views counts', () => {
-            window.location.pathname = '/app/ticket/1/'
-
-            const expiredDt = moment
-                .utc()
-                .subtract(ACTIVE_VIEW_COUNT_TIMEOUT + 1, 's')
-                .toISOString()
+            window.location.pathname = '/app/tickets/1/'
+            const counts = {
+                1: 50,
+                2: 300,
+            }
+            const recentViews = {
+                1: {
+                    updated_datetime: moment()
+                        .utc()
+                        .subtract(getExpirationTimeForCount(counts[1]) + 1, 's')
+                        .toISOString(),
+                },
+                2: {updated_datetime: moment().utc().toISOString()},
+            }
             const state = initialState.mergeDeep(
                 fromJS({
+                    counts,
                     active: {id: 1},
-                    recent: {
-                        1: {updated_datetime: expiredDt},
-                    },
+                    recent: recentViews,
                 })
             )
 
             const store = mockStore({views: state})
-            store.dispatch(actions.fetchActiveViewCount())
-            expect(sendSpy.mock.calls.length).toEqual(1)
-            expect(sendSpy.mock.calls[0]).toEqual([
+            store.dispatch(actions.fetchRecentViewsCounts())
+            expect(sendSpy).toHaveBeenNthCalledWith(
+                1,
                 socketConstants.VIEWS_COUNTS_EXPIRED,
-                {viewIds: [1]},
-            ])
+                {viewIds: [1]}
+            )
         })
     })
 

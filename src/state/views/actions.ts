@@ -686,47 +686,10 @@ export const fetchRecentViewsCounts = () => (
         return
     }
 
-    const state = getState()
-    const activeViewId = viewsSelectors.getActiveView(state).get('id')
-    let viewIds = viewsSelectors.getExpiredViewsCounts(
-        viewsConfig.RECENT_VIEWS_COUNTS_TIMEOUT
-    )(state)
-
-    if (viewIds.isEmpty()) {
-        return
-    }
-
-    const activeViewIndex = viewIds.indexOf(activeViewId)
-    // there is already a polling system on ticket view
-    // which fetch view count for the active view
-    // so if the user is on a view, we don't have to fetch new counts for the active view
-    if (isCurrentlyOnView() && ~activeViewIndex) {
-        viewIds = viewIds.delete(activeViewIndex)
-    }
-
-    if (!viewIds.isEmpty()) {
-        dispatch(updateRecentViews(viewIds.toJS()))
-        socketManager.send(SocketEventType.ViewsCountExpired, {
-            viewIds: viewIds.toJS(),
-        })
-    }
-}
-
-export const fetchActiveViewCount = () => (
-    dispatch: StoreDispatch,
-    getState: () => RootState
-) => {
-    const state = getState()
-    const activeViewId = viewsSelectors.getActiveView(state).get('id')
-    const viewIds = viewsSelectors.getExpiredViewsCounts(
-        viewsConfig.ACTIVE_VIEW_COUNT_TIMEOUT
-    )(state)
-
-    if (viewIds.includes(activeViewId)) {
-        dispatch(updateRecentViews([activeViewId]))
-        socketManager.send(SocketEventType.ViewsCountExpired, {
-            viewIds: [activeViewId],
-        })
+    const viewIds = viewsSelectors.getExpiredViewsCounts()(getState())
+    if (viewIds.length) {
+        dispatch(updateRecentViews(viewIds))
+        socketManager.send(SocketEventType.ViewsCountExpired, {viewIds})
     }
 }
 

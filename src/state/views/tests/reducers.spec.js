@@ -306,9 +306,7 @@ describe('reducers', () => {
                 expect(
                     moment(view.insert_datetime).isBetween(beforeActionDt, now)
                 ).toBe(true)
-                expect(
-                    moment(view.updated_datetime).isBetween(beforeActionDt, now)
-                ).toBe(true)
+                expect(view.updated_datetime).toBe(undefined)
             }
 
             // should store recent views in the localStorage

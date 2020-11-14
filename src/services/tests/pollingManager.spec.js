@@ -36,16 +36,16 @@ describe('services', () => {
             store.dispatch = spy
             pollingManager.start()
             // should set intervals to fetch resources periodically
-            expect(setInterval).toHaveBeenCalledTimes(3)
+            expect(setInterval).toHaveBeenCalledTimes(2)
             // should fetch resources immediately
-            expect(spy).toHaveBeenCalledTimes(2)
+            expect(spy).toHaveBeenCalledTimes(1)
         })
 
         it('should stop pollings', () => {
             pollingManager.start()
             jest.clearAllTimers()
             pollingManager.stop()
-            expect(clearInterval).toHaveBeenCalledTimes(3)
+            expect(clearInterval).toHaveBeenCalledTimes(2)
             expect(pollingManager.intervals).toEqual({})
         })
     })

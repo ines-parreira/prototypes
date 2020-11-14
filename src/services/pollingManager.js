@@ -1,5 +1,4 @@
 import {
-    fetchActiveViewCount,
     fetchActiveViewTickets,
     fetchRecentViewsCounts,
 } from '../state/views/actions.ts'
@@ -10,7 +9,6 @@ class PollingManager {
     store = reduxStore
 
     activeViewInterval = 10000
-    activeViewCountInterval = 1000
     recentViewsCountsInterval = 5000
 
     start = () => {
@@ -25,16 +23,11 @@ class PollingManager {
             this.store.dispatch(fetchActiveViewTickets())
         }, this.activeViewInterval)
 
-        this.intervals.activeViewCount = setInterval(() => {
-            this.store.dispatch(fetchActiveViewCount())
-        }, this.activeViewCountInterval)
-
         this.intervals.recentViewsCounts = setInterval(() => {
             this.store.dispatch(fetchRecentViewsCounts())
         }, this.recentViewsCountsInterval)
 
         this.store.dispatch(fetchActiveViewTickets())
-        this.store.dispatch(fetchActiveViewCount())
     }
 
     stop = () => {

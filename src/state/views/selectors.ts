@@ -341,20 +341,28 @@ export const getVisibleViewIds = () =>
 /**
  * Get id of views which have their counts expired
  */
-export const getExpiredViewsCounts = (offset: number) =>
-    createSelector<RootState, List<any>, Map<any, any>>(
-        getRecentViews,
-        (recentViews) => {
-            return recentViews
-                .filter((view: Map<any, any>) => {
-                    const expireAt = moment(view.get('updated_datetime')).add(
-                        offset,
+export const getExpiredViewsCounts = () =>
+    createSelector<
+        RootState,
+        number[],
+        Map<string, Map<string, unknown>>,
+        (viewId: string) => number
+    >(getRecentViews, makeGetViewCount, (recentViews, getViewCount) => {
+        return (recentViews.entrySeq().toArray() as [
+            string,
+            Map<string, unknown>
+        ][])
+            .filter(([viewId, recentView]) => {
+                const count = getViewCount(viewId)
+                const countUpdatedAt = recentView.get('updated_datetime')
+                if (countUpdatedAt) {
+                    const expireAt = moment(countUpdatedAt as string).add(
+                        viewsConfig.getExpirationTimeForCount(count),
                         's'
                     )
                     return expireAt.isBefore(moment.utc())
-                })
-                .keySeq()
-                .map((viewId: string) => parseInt(viewId))
-                .toList()
-        }
-    )
+                }
+                return true
+            })
+            .map(([viewId]) => parseInt(viewId))
+    })
