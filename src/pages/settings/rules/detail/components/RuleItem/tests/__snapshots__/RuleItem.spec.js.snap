@@ -1,267 +1,274 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`RuleItem component should render 1`] = `
+exports[`<RuleItem /> rendering should not render an error message when there is a least one trigger selected 1`] = `
 <tr
-  className="container container"
-  data-id={17}
-  id={17}
-  key="17"
+  class="container container"
+  data-id="17"
+  id="17"
 >
   <td
-    colSpan="3"
+    colspan="3"
   >
     <div
-      className="row"
+      class="row"
     >
       <div
-        className="col left-col"
+        class="col left-col"
       >
         <i
-          className="material-icons closeRuleIcon"
-          onClick={[Function]}
+          class="material-icons closeRuleIcon"
         >
           keyboard_arrow_down
         </i>
       </div>
       <div
-        className="col center-col"
+        class="col center-col"
       >
         <div
-          className="d-flex justify-content-between align-items-center mb-1"
+          class="d-flex justify-content-between align-items-center mb-1"
         >
-          <EditableTitle
-            className="font-weight-bold name"
-            onChange={[Function]}
+          <input
+            class="font-weight-bold name component form-control-md form-control"
             placeholder="Name"
-            size="md"
-            style={Object {}}
-            title="my rule"
-            update={[Function]}
+            tabindex="1"
+            type="text"
+            value="my rule"
           />
         </div>
-        <FormGroup
-          className="mb-0"
-          tag="div"
+        <div
+          class="mb-0 form-group"
         >
-          <InputField
-            className="rule-description"
-            onChange={[Function]}
-            placeholder="Description"
-            rows="1"
-            type="textarea"
-            value=""
-          />
-        </FormGroup>
+          <div
+            class="InputField rule-description form-group"
+            color=""
+          >
+            <div
+              class=""
+            >
+              <textarea
+                class="form-control"
+                id="id-input-2"
+                placeholder="Description"
+                rows="1"
+                type="textarea"
+              >
+                foo
+              </textarea>
+            </div>
+          </div>
+        </div>
       </div>
       <div
-        className="col right-col"
+        class="col right-col"
       >
         <div
           id="rule-toggle-17"
         >
-          <ToggleButton
-            onChange={[Function]}
-            value={true}
-          />
+          <label
+            class="switch"
+          >
+            <input
+              checked=""
+              readonly=""
+              type="checkbox"
+            />
+            <div
+              class="slider"
+            />
+          </label>
         </div>
-        <Popover
-          delay={
-            Object {
-              "hide": 0,
-              "show": 0,
-            }
-          }
-          hideArrow={false}
-          isOpen={false}
-          placement="left"
-          placementPrefix="bs-popover"
-          target="rule-toggle-17"
-          toggle={[Function]}
-        >
-          <PopoverHeader
-            tag="h3"
-          >
-            Are you sure?
-          </PopoverHeader>
-          <PopoverBody
-            tag="div"
-          >
-            <p>
-              Are you sure you want to deactivate this rule?
-            </p>
-            <Button
-              color="success"
-              onClick={[Function]}
-              tag="button"
-              type="submit"
-            >
-              Confirm
-            </Button>
-          </PopoverBody>
-        </Popover>
       </div>
     </div>
     <div
-      className="row"
+      class="row"
     >
       <div
-        className="full-width"
+        class="full-width"
       >
-        <Form
+        <form
+          class=""
           id="rule-form-17"
-          onSubmit={[Function]}
-          tag="form"
         >
-          <FormGroup
-            className="mb-1"
-            tag="div"
+          <div
+            class="mb-1 form-group"
           >
             <div
-              className="when-container"
+              class="when-container"
             >
               <div
-                className="when-btn"
+                class="when-btn"
               >
                 WHEN
               </div>
-              <MultiSelectField
-                allowCustomValues={false}
-                className="when-events"
-                onChange={[Function]}
-                options={
-                  Array [
-                    Object {
-                      "label": "ticket created",
-                      "value": "ticket-created",
-                    },
-                    Object {
-                      "label": "ticket updated",
-                      "value": "ticket-updated",
-                    },
-                    Object {
-                      "label": "ticket assigned",
-                      "value": "ticket-assigned",
-                    },
-                    Object {
-                      "label": "new message in ticket",
-                      "value": "ticket-message-created",
-                    },
-                  ]
-                }
-                plural="events"
-                singular="event"
-                tagColor="#0275d8"
-                values={
-                  Array [
-                    "ticket-updated",
-                  ]
-                }
-              />
+              <div
+                class="MultiSelectField when-events"
+              >
+                <div
+                  class="select"
+                >
+                  <span
+                    class="tag badge badge-secondary"
+                    style="color: rgb(2, 117, 216); margin: 0.25em 0.25em 0px 0.25em;"
+                  >
+                    <span>
+                      ticket created
+                      <i
+                        class="material-icons ml-1"
+                      >
+                        close
+                      </i>
+                    </span>
+                  </span>
+                  <div
+                    class="input-container"
+                  >
+                    <div
+                      class="dropdown"
+                    >
+                      <div
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        class=""
+                        data-toggle="dropdown"
+                      >
+                        <input
+                          class="input ml-2"
+                          placeholder="Add events..."
+                          value=""
+                        />
+                      </div>
+                      <div
+                        aria-hidden="true"
+                        class="options dropdown-menu"
+                        role="menu"
+                        tabindex="-1"
+                      >
+                        <button
+                          class="option option--focused dropdown-item"
+                          tabindex="0"
+                          type="button"
+                        >
+                          ticket updated
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          tabindex="0"
+                          type="button"
+                        >
+                          ticket assigned
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          tabindex="0"
+                          type="button"
+                        >
+                          new message in ticket
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <Program
-              actions={
-                Object {
-                  "getCondition": [Function],
-                  "modifyCodeAST": [Function],
-                }
-              }
-              rule={
-                Immutable.Map {
-                  "id": 17,
-                  "name": "my rule",
-                  "code_ast": Immutable.Map {},
-                  "code": Immutable.Map {},
-                }
-              }
-              triggers={
-                Array [
-                  "ticket-updated",
-                ]
-              }
-            />
-          </FormGroup>
-        </Form>
+            <div
+              class="Program-wrapper"
+            >
+              <div
+                class="consequent"
+              >
+                <span
+                  class=""
+                >
+                  <div
+                    class="btn-group"
+                    style="padding-left: 59px;"
+                  >
+                    <button
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      class="ControlStructureButton dropdown-toggle btn btn-secondary"
+                      type="button"
+                    >
+                      THEN
+                    </button>
+                    <div
+                      aria-hidden="true"
+                      class="dropdown-menu"
+                      role="menu"
+                      tabindex="-1"
+                    >
+                      <button
+                        class="dropdown-item"
+                        tabindex="0"
+                        type="button"
+                      >
+                        Action
+                      </button>
+                      <button
+                        class="dropdown-item"
+                        tabindex="0"
+                        type="button"
+                      >
+                        "IF" statement
+                      </button>
+                    </div>
+                  </div>
+                </span>
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
     <div
-      className="row"
+      class="row"
     >
       <div
-        className="buttons-container"
+        class="buttons-container"
       >
         <div>
-          <UncontrolledButtonDropdown
-            className="mr-2"
+          <button
+            class="btn btn-success"
+            form="rule-form-17"
+            type="submit"
           >
-            <Button
-              color="success"
-              disabled={false}
-              form="rule-form-17"
-              tag="button"
-              type="submit"
-            >
-              Save rule
-            </Button>
-            <DropdownToggle
-              aria-haspopup={true}
-              caret={true}
-              color="success"
+            Save rule
+          </button>
+          <button
+            class="ml-3 btn btn-secondary"
+            type="submit"
+          >
+            Duplicate rule
+          </button>
+          <div
+            class="component d-inline-block ml-3"
+          >
+            <button
+              class="btn btn-secondary"
+              id="confirm-button-0"
               type="button"
-            />
-            <DropdownMenu
-              flip={true}
-              right={true}
-              tag="div"
             >
-              <DropdownItem
-                disabled={false}
-                key="open"
-                onClick={[Function]}
-                tag="button"
-                toggle={true}
-                type="button"
-              >
-                Save as new rule
-              </DropdownItem>
-            </DropdownMenu>
-          </UncontrolledButtonDropdown>
-          <ConfirmButton
-            className=""
-            color="secondary"
-            confirm={[Function]}
-            confirmColor="success"
-            content="Are you sure you want to reset this rule?"
-            disabled={false}
-            loading={false}
-            placement="bottom"
-            skip={false}
-            title="Are you sure?"
-            type="button"
-          >
-            Discard changes
-          </ConfirmButton>
+              Discard changes
+            </button>
+          </div>
         </div>
         <div>
-          <ConfirmButton
-            className="ml-2 delete-button"
-            color="secondary"
-            confirm={[Function]}
-            confirmColor="success"
-            content="Are you sure you want to delete this rule?"
-            disabled={false}
-            loading={false}
-            placement="bottom"
-            skip={false}
-            title="Are you sure?"
-            type="button"
+          <div
+            class="component d-inline-block ml-2 delete-button"
           >
-            <i
-              className="material-icons"
+            <button
+              class="btn btn-secondary"
+              id="confirm-button-0"
+              type="button"
             >
-              delete
-            </i>
-            Delete rule
-          </ConfirmButton>
+              <i
+                class="material-icons"
+              >
+                delete
+              </i>
+              Delete rule
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -269,267 +276,276 @@ exports[`RuleItem component should render 1`] = `
 </tr>
 `;
 
-exports[`RuleItem component should render errors when there is no trigger selected 1`] = `
+exports[`<RuleItem /> rendering should render with default state 1`] = `
 <tr
-  className="container container"
-  data-id={17}
-  id={17}
-  key="17"
+  class="container container"
+  data-id="17"
+  id="17"
 >
   <td
-    colSpan="3"
+    colspan="3"
   >
     <div
-      className="row"
+      class="row"
     >
       <div
-        className="col left-col"
+        class="col left-col"
       >
         <i
-          className="material-icons closeRuleIcon"
-          onClick={[Function]}
+          class="material-icons closeRuleIcon"
         >
           keyboard_arrow_down
         </i>
       </div>
       <div
-        className="col center-col"
+        class="col center-col"
       >
         <div
-          className="d-flex justify-content-between align-items-center mb-1"
+          class="d-flex justify-content-between align-items-center mb-1"
         >
-          <EditableTitle
-            className="font-weight-bold name"
-            onChange={[Function]}
+          <input
+            class="font-weight-bold name component form-control-md form-control"
             placeholder="Name"
-            size="md"
-            style={Object {}}
-            title="my rule"
-            update={[Function]}
+            tabindex="1"
+            type="text"
+            value="my rule"
           />
         </div>
-        <FormGroup
-          className="mb-0"
-          tag="div"
+        <div
+          class="mb-0 form-group"
         >
-          <InputField
-            className="rule-description"
-            onChange={[Function]}
-            placeholder="Description"
-            rows="1"
-            type="textarea"
-            value=""
-          />
-        </FormGroup>
+          <div
+            class="InputField rule-description form-group"
+            color=""
+          >
+            <div
+              class=""
+            >
+              <textarea
+                class="form-control"
+                id="id-input-1"
+                placeholder="Description"
+                rows="1"
+                type="textarea"
+              >
+                foo
+              </textarea>
+            </div>
+          </div>
+        </div>
       </div>
       <div
-        className="col right-col"
+        class="col right-col"
       >
         <div
           id="rule-toggle-17"
         >
-          <ToggleButton
-            onChange={[Function]}
-            value={true}
-          />
+          <label
+            class="switch"
+          >
+            <input
+              checked=""
+              readonly=""
+              type="checkbox"
+            />
+            <div
+              class="slider"
+            />
+          </label>
         </div>
-        <Popover
-          delay={
-            Object {
-              "hide": 0,
-              "show": 0,
-            }
-          }
-          hideArrow={false}
-          isOpen={false}
-          placement="left"
-          placementPrefix="bs-popover"
-          target="rule-toggle-17"
-          toggle={[Function]}
-        >
-          <PopoverHeader
-            tag="h3"
-          >
-            Are you sure?
-          </PopoverHeader>
-          <PopoverBody
-            tag="div"
-          >
-            <p>
-              Are you sure you want to deactivate this rule?
-            </p>
-            <Button
-              color="success"
-              onClick={[Function]}
-              tag="button"
-              type="submit"
-            >
-              Confirm
-            </Button>
-          </PopoverBody>
-        </Popover>
       </div>
     </div>
     <div
-      className="row"
+      class="row"
     >
       <div
-        className="full-width"
+        class="full-width"
       >
-        <Form
+        <form
+          class=""
           id="rule-form-17"
-          onSubmit={[Function]}
-          tag="form"
         >
-          <FormGroup
-            className="mb-1"
-            tag="div"
+          <div
+            class="mb-1 form-group"
           >
             <div
-              className="when-container"
+              class="when-container"
             >
               <div
-                className="when-btn"
+                class="when-btn"
               >
                 WHEN
               </div>
-              <MultiSelectField
-                allowCustomValues={false}
-                className="when-events"
-                onChange={[Function]}
-                options={
-                  Array [
-                    Object {
-                      "label": "ticket created",
-                      "value": "ticket-created",
-                    },
-                    Object {
-                      "label": "ticket updated",
-                      "value": "ticket-updated",
-                    },
-                    Object {
-                      "label": "ticket assigned",
-                      "value": "ticket-assigned",
-                    },
-                    Object {
-                      "label": "new message in ticket",
-                      "value": "ticket-message-created",
-                    },
-                  ]
-                }
-                plural="events"
-                singular="event"
-                tagColor="#0275d8"
-                values={Array []}
-              />
-              <Errors
-                belowInput={false}
-                inline={true}
-                tag="div"
+              <div
+                class="MultiSelectField when-events"
+              >
+                <div
+                  class="select"
+                >
+                  <div
+                    class="input-container"
+                  >
+                    <div
+                      class="dropdown"
+                    >
+                      <div
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        class=""
+                        data-toggle="dropdown"
+                      >
+                        <input
+                          class="input ml-2"
+                          placeholder="Add events..."
+                          value=""
+                        />
+                      </div>
+                      <div
+                        aria-hidden="true"
+                        class="options dropdown-menu"
+                        role="menu"
+                        tabindex="-1"
+                      >
+                        <button
+                          class="option option--focused dropdown-item"
+                          tabindex="0"
+                          type="button"
+                        >
+                          ticket created
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          tabindex="0"
+                          type="button"
+                        >
+                          ticket updated
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          tabindex="0"
+                          type="button"
+                        >
+                          ticket assigned
+                        </button>
+                        <button
+                          class="option dropdown-item"
+                          tabindex="0"
+                          type="button"
+                        >
+                          new message in ticket
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="d-inline-block text-danger ml-2"
               >
                 You need to select at least one trigger
-              </Errors>
+              </div>
             </div>
-            <Program
-              actions={
-                Object {
-                  "getCondition": [Function],
-                  "modifyCodeAST": [Function],
-                }
-              }
-              rule={
-                Immutable.Map {
-                  "id": 17,
-                  "name": "my rule",
-                  "code_ast": Immutable.Map {},
-                  "code": Immutable.Map {},
-                }
-              }
-              triggers={Array []}
-            />
-          </FormGroup>
-        </Form>
+            <div
+              class="Program-wrapper"
+            >
+              <div
+                class="consequent"
+              >
+                <span
+                  class=""
+                >
+                  <div
+                    class="btn-group"
+                    style="padding-left: 59px;"
+                  >
+                    <button
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      class="ControlStructureButton dropdown-toggle btn btn-secondary"
+                      type="button"
+                    >
+                      THEN
+                    </button>
+                    <div
+                      aria-hidden="true"
+                      class="dropdown-menu"
+                      role="menu"
+                      tabindex="-1"
+                    >
+                      <button
+                        class="dropdown-item"
+                        tabindex="0"
+                        type="button"
+                      >
+                        Action
+                      </button>
+                      <button
+                        class="dropdown-item"
+                        tabindex="0"
+                        type="button"
+                      >
+                        "IF" statement
+                      </button>
+                    </div>
+                  </div>
+                </span>
+              </div>
+            </div>
+          </div>
+        </form>
       </div>
     </div>
     <div
-      className="row"
+      class="row"
     >
       <div
-        className="buttons-container"
+        class="buttons-container"
       >
         <div>
-          <UncontrolledButtonDropdown
-            className="mr-2"
+          <button
+            class="btn btn-success disabled"
+            disabled=""
+            form="rule-form-17"
+            type="submit"
           >
-            <Button
-              color="success"
-              disabled={true}
-              form="rule-form-17"
-              tag="button"
-              type="submit"
-            >
-              Save rule
-            </Button>
-            <DropdownToggle
-              aria-haspopup={true}
-              caret={true}
-              color="success"
+            Save rule
+          </button>
+          <button
+            class="ml-3 btn btn-secondary disabled"
+            disabled=""
+            type="submit"
+          >
+            Duplicate rule
+          </button>
+          <div
+            class="component d-inline-block ml-3"
+          >
+            <button
+              class="btn btn-secondary"
+              id="confirm-button-0"
               type="button"
-            />
-            <DropdownMenu
-              flip={true}
-              right={true}
-              tag="div"
             >
-              <DropdownItem
-                disabled={true}
-                key="open"
-                onClick={[Function]}
-                tag="button"
-                toggle={true}
-                type="button"
-              >
-                Save as new rule
-              </DropdownItem>
-            </DropdownMenu>
-          </UncontrolledButtonDropdown>
-          <ConfirmButton
-            className=""
-            color="secondary"
-            confirm={[Function]}
-            confirmColor="success"
-            content="Are you sure you want to reset this rule?"
-            disabled={false}
-            loading={false}
-            placement="bottom"
-            skip={false}
-            title="Are you sure?"
-            type="button"
-          >
-            Discard changes
-          </ConfirmButton>
+              Discard changes
+            </button>
+          </div>
         </div>
         <div>
-          <ConfirmButton
-            className="ml-2 delete-button"
-            color="secondary"
-            confirm={[Function]}
-            confirmColor="success"
-            content="Are you sure you want to delete this rule?"
-            disabled={false}
-            loading={false}
-            placement="bottom"
-            skip={false}
-            title="Are you sure?"
-            type="button"
+          <div
+            class="component d-inline-block ml-2 delete-button"
           >
-            <i
-              className="material-icons"
+            <button
+              class="btn btn-secondary"
+              id="confirm-button-0"
+              type="button"
             >
-              delete
-            </i>
-            Delete rule
-          </ConfirmButton>
+              <i
+                class="material-icons"
+              >
+                delete
+              </i>
+              Delete rule
+            </button>
+          </div>
         </div>
       </div>
     </div>

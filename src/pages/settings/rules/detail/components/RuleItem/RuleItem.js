@@ -4,15 +4,11 @@ import classnames from 'classnames'
 import {fromJS, Map} from 'immutable'
 import {
     Button,
-    DropdownItem,
-    DropdownMenu,
-    DropdownToggle,
     Form as BootstrapForm,
     FormGroup,
     Popover,
     PopoverBody,
     PopoverHeader,
-    UncontrolledButtonDropdown,
 } from 'reactstrap'
 
 import InputField from '../../../../../common/forms/InputField'
@@ -158,7 +154,7 @@ export default class RuleItem extends React.Component<Props, State> {
         }
     }
 
-    _saveAsNewRule = () => {
+    handleRuleDuplicate = () => {
         const {actions, rule} = this.props
 
         this.setState({isSubmitting: true})
@@ -194,34 +190,26 @@ export default class RuleItem extends React.Component<Props, State> {
         return (
             <div className={css['buttons-container']}>
                 <div>
-                    <UncontrolledButtonDropdown className="mr-2">
-                        <Button
-                            color="success"
-                            type="submit"
-                            disabled={
-                                this.state.isSubmitting || !this._canSubmit()
-                            }
-                            form={`rule-form-${rule.get('id')}`}
-                        >
-                            Save rule
-                        </Button>
-                        <DropdownToggle caret type="button" color="success" />
-                        <DropdownMenu right>
-                            <DropdownItem
-                                key="open"
-                                type="button"
-                                disabled={
-                                    this.state.isSubmitting ||
-                                    !this._canSubmit()
-                                }
-                                onClick={this._saveAsNewRule}
-                            >
-                                Save as new rule
-                            </DropdownItem>
-                        </DropdownMenu>
-                    </UncontrolledButtonDropdown>
+                    <Button
+                        color="success"
+                        type="submit"
+                        disabled={this.state.isSubmitting || !this._canSubmit()}
+                        form={`rule-form-${rule.get('id')}`}
+                    >
+                        Save rule
+                    </Button>
+                    <Button
+                        color="secondary"
+                        type="submit"
+                        className="ml-3"
+                        disabled={this.state.isSubmitting || !this._canSubmit()}
+                        onClick={this.handleRuleDuplicate}
+                    >
+                        Duplicate rule
+                    </Button>
                     <ConfirmButton
                         color="secondary"
+                        className="ml-3"
                         loading={this.state.isResetting}
                         confirm={this._handleReset}
                         content="Are you sure you want to reset this rule?"
@@ -247,7 +235,7 @@ export default class RuleItem extends React.Component<Props, State> {
 
     render() {
         const {rule, actions} = this.props
-        const {showConfirmation} = this.state
+        const {description, eventTypes, name, showConfirmation} = this.state
         const toggleId = `rule-toggle-${rule.get('id')}`
 
         let codeAST = rule.get('code_ast')
@@ -281,7 +269,7 @@ export default class RuleItem extends React.Component<Props, State> {
                         <div className={classnames(css.col, css['center-col'])}>
                             <div className="d-flex justify-content-between align-items-center mb-1">
                                 <EditableTitle
-                                    title={this.state.name}
+                                    title={name}
                                     placeholder="Name"
                                     size="md"
                                     className={classnames(
@@ -299,7 +287,7 @@ export default class RuleItem extends React.Component<Props, State> {
                                     type="textarea"
                                     placeholder="Description"
                                     rows="1"
-                                    value={this.state.description}
+                                    value={description}
                                     onChange={(value) =>
                                         this.setState({description: value})
                                     }
@@ -350,14 +338,14 @@ export default class RuleItem extends React.Component<Props, State> {
                                             WHEN
                                         </div>
                                         <SelectField
-                                            values={this.state.eventTypes}
+                                            values={eventTypes}
                                             options={rulesConfig.events.toJS()}
                                             singular="event"
                                             plural="events"
                                             onChange={this._handleChangeEvents}
                                             className={css['when-events']}
                                         />
-                                        {this.state.eventTypes.length === 0 && (
+                                        {eventTypes.length === 0 && (
                                             <Errors inline>
                                                 You need to select at least one
                                                 trigger
@@ -381,7 +369,7 @@ export default class RuleItem extends React.Component<Props, State> {
                                                     )
                                                 ) || fromJS({}),
                                         }}
-                                        triggers={this.state.eventTypes}
+                                        triggers={eventTypes}
                                     />
                                 </FormGroup>
                             </BootstrapForm>
