@@ -1291,6 +1291,11 @@
     redux-thunk "^2.3.0"
     reselect "^4.0.0"
 
+"@sheerun/mutationobserver-shim@0.3.3":
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/@sheerun/mutationobserver-shim/-/mutationobserver-shim-0.3.3.tgz#5405ee8e444ed212db44e79351f0c70a582aae25"
+  integrity sha512-DetpxZw1fzPD5xUBrIAoplLChO2VB8DlL5Gg+I1IR9b2wPqYIca2WSUxL5g1vLeR4MsQq1NeWriXAVffV+U1Fw==
+
 "@shopify/theme-images@3.0.3":
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/@shopify/theme-images/-/theme-images-3.0.3.tgz#b99cce4f95a65ff84371f717a5cc2821515345b5"

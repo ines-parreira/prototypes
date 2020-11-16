@@ -19,6 +19,7 @@ type Props = {
     startDate: ?Object,
     timePicker: ?boolean,
     toggle?: Function,
+    endDate: ?Object,
 }
 
 export default class DatePicker extends Component<Props> {

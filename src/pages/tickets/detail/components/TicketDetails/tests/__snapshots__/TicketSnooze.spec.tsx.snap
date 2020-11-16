@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TicketSnooze/> rendering should render an icon with a tooltip 1`] = `
+<body>
+  <div>
+    <div>
+      <i
+        class="icon material-icons"
+        id="ticket-header-snooze-icon"
+      >
+        snooze
+      </i>
+    </div>
+  </div>
+  <div>
+    <div
+      class="tooltip show bs-tooltip-bottom"
+      data-placement="bottom"
+      style="position: absolute; transform: translate3d(NaNpx, NaNpx, 0); top: 0px; left: 0px; will-change: transform;"
+    >
+      <div
+        class="tooltip-inner"
+      >
+        Snooze 
+        12/22/2017
+      </div>
+      <span
+        class="arrow"
+      />
+    </div>
+  </div>
+</body>
+`;

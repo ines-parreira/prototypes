@@ -1,0 +1,101 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TicketSnoozePicker/> rendering should not render the datepicker when closed 1`] = `
+<div
+  class="DatePicker"
+>
+  applyClass: "btn-success mr-2"
+  buttonClasses: ["btn"]
+  cancelClass: "btn-secondary"
+  isOpen: false
+  minDate: "2017-12-22T13:52:17.000Z"
+  onApply: undefined
+  opens: "left"
+  ranges: {"In 3 hours":["2017-12-22T16:52:17.000Z","2017-12-22T16:52:17.000Z"],"In 6 hours":["2017-12-22T19:52:17.000Z","2017-12-22T19:52:17.000Z"],"In 1 day":["2017-12-23T13:52:17.000Z","2017-12-23T13:52:17.000Z"],"In 3 days":["2017-12-25T13:52:17.000Z","2017-12-25T13:52:17.000Z"],"in 1 week":["2017-12-29T13:52:17.000Z","2017-12-29T13:52:17.000Z"]}
+  showCustomRangeLabel: false
+  singleDatePicker: true
+  startDate: "2018-10-26T07:00:00.000Z"
+  endDate: "2018-10-26T07:00:00.000Z"
+  timePicker: true
+  toggle: undefined
+  children: undefined
+</div>
+`;
+
+exports[`<TicketSnoozePicker/> rendering should render a DatePicker and log error when datetime has a wrong format 1`] = `
+<body>
+  <div>
+    <div
+      class="DatePicker"
+    >
+      applyClass: "btn-success mr-2"
+      buttonClasses: ["btn"]
+      cancelClass: "btn-secondary"
+      isOpen: true
+      minDate: "2017-12-22T13:52:17.000Z"
+      onApply: undefined
+      opens: "left"
+      ranges: {"In 3 hours":["2017-12-22T16:52:17.000Z","2017-12-22T16:52:17.000Z"],"In 6 hours":["2017-12-22T19:52:17.000Z","2017-12-22T19:52:17.000Z"],"In 1 day":["2017-12-23T13:52:17.000Z","2017-12-23T13:52:17.000Z"],"In 3 days":["2017-12-25T13:52:17.000Z","2017-12-25T13:52:17.000Z"],"in 1 week":["2017-12-29T13:52:17.000Z","2017-12-29T13:52:17.000Z"]}
+      showCustomRangeLabel: false
+      singleDatePicker: true
+      startDate: "2017-12-22T13:52:17.000Z"
+      endDate: "2017-12-22T13:52:17.000Z"
+      timePicker: true
+      toggle: undefined
+      children: undefined
+    </div>
+  </div>
+</body>
+`;
+
+exports[`<TicketSnoozePicker/> rendering should render the default datetime value 1`] = `
+<body>
+  <div>
+    <div
+      class="DatePicker"
+    >
+      applyClass: "btn-success mr-2"
+      buttonClasses: ["btn"]
+      cancelClass: "btn-secondary"
+      isOpen: true
+      minDate: "2017-12-22T13:52:17.000Z"
+      onApply: undefined
+      opens: "left"
+      ranges: {"In 3 hours":["2017-12-22T16:52:17.000Z","2017-12-22T16:52:17.000Z"],"In 6 hours":["2017-12-22T19:52:17.000Z","2017-12-22T19:52:17.000Z"],"In 1 day":["2017-12-23T13:52:17.000Z","2017-12-23T13:52:17.000Z"],"In 3 days":["2017-12-25T13:52:17.000Z","2017-12-25T13:52:17.000Z"],"in 1 week":["2017-12-29T13:52:17.000Z","2017-12-29T13:52:17.000Z"]}
+      showCustomRangeLabel: false
+      singleDatePicker: true
+      startDate: "2017-12-22T13:52:17.000Z"
+      endDate: "2017-12-22T13:52:17.000Z"
+      timePicker: true
+      toggle: undefined
+      children: undefined
+    </div>
+  </div>
+</body>
+`;
+
+exports[`<TicketSnoozePicker/> rendering should render the provided value 1`] = `
+<body>
+  <div>
+    <div
+      class="DatePicker"
+    >
+      applyClass: "btn-success mr-2"
+      buttonClasses: ["btn"]
+      cancelClass: "btn-secondary"
+      isOpen: true
+      minDate: "2017-12-22T13:52:17.000Z"
+      onApply: undefined
+      opens: "left"
+      ranges: {"In 3 hours":["2017-12-22T16:52:17.000Z","2017-12-22T16:52:17.000Z"],"In 6 hours":["2017-12-22T19:52:17.000Z","2017-12-22T19:52:17.000Z"],"In 1 day":["2017-12-23T13:52:17.000Z","2017-12-23T13:52:17.000Z"],"In 3 days":["2017-12-25T13:52:17.000Z","2017-12-25T13:52:17.000Z"],"in 1 week":["2017-12-29T13:52:17.000Z","2017-12-29T13:52:17.000Z"]}
+      showCustomRangeLabel: false
+      singleDatePicker: true
+      startDate: "2018-10-26T07:00:00.000Z"
+      endDate: "2018-10-26T07:00:00.000Z"
+      timePicker: true
+      toggle: undefined
+      children: undefined
+    </div>
+  </div>
+</body>
+`;

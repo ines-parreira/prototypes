@@ -1,7 +1,9 @@
+import MutationObserver from '@sheerun/mutationobserver-shim'
 import {browserHistory} from 'react-router'
 import mockMoment from 'moment'
 import Enzyme from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
+import _noop from 'lodash/noop'
 
 Enzyme.configure({adapter: new Adapter()})
 
@@ -26,6 +28,19 @@ Object.defineProperty(window.HTMLMediaElement.prototype, 'load', {
 })
 Object.defineProperty(window.HTMLMediaElement.prototype, 'play', {
     value: jest.fn().mockResolvedValue(),
+})
+
+// https://github.com/testing-library/react-testing-library/issues/731
+global.MutationObserver = MutationObserver
+
+// https://github.com/mui-org/material-ui/issues/15726#issuecomment-493124813
+global.document.createRange = () => ({
+    setStart: _noop,
+    setEnd: _noop,
+    commonAncestorContainer: {
+        nodeName: 'BODY',
+        ownerDocument: document,
+    },
 })
 
 // Mock of the localStorage API
@@ -107,7 +122,7 @@ jest.mock('push.js', () => {
 })
 
 jest.mock('../utils/date.ts', () => ({
-    ...require.requireActual('../utils/date.ts'),
+    ...jest.requireActual('../utils/date.ts'),
     getMoment: jest.fn(() => mockMoment('2018-10-01T00:00:00Z')),
     getMomentNow: jest.fn(() => 'nowTimestamp'),
     getMomentUtcISOString: jest.fn(() => '2018-05-07T18:02:46.039Z'),

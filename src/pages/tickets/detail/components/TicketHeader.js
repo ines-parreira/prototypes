@@ -22,19 +22,21 @@ import MergeTicketsContainer from '../../../common/components/MergeTickets/Merge
 import {notify} from '../../../../state/notifications/actions.ts'
 import * as ticketActions from '../../../../state/ticket/actions.ts'
 import {shouldDisplayAuditLogEvents} from '../../../../state/ticket/selectors.ts'
+import {getTimezone} from '../../../../state/currentUser/selectors.ts'
 
 import TicketTags from './TicketDetails/TicketTags'
 import TicketStatus from './TicketDetails/TicketStatus'
 import TicketAssignee from './TicketDetails/TicketAssignee'
 import TicketSpam from './TicketDetails/TicketSpam'
-import TicketSnooze from './TicketDetails/TicketSnooze'
-import TicketSnoozePicker from './TicketDetails/TicketSnoozePicker'
+import TicketSnooze from './TicketDetails/TicketSnooze.tsx'
+import TicketSnoozePicker from './TicketDetails/TicketSnoozePicker.tsx'
 import TicketTrash from './TicketDetails/TicketTrash'
 
 import css from './TicketHeader.less'
 
 type Props = {
     ticket: Map<*, *>,
+    timezone: string,
     shouldDisplayAuditLogEvents: boolean,
     actions: {
         ticket: typeof ticketActions,
@@ -58,6 +60,7 @@ type State = {
 
 @connect(
     (state) => ({
+        timezone: getTimezone(state),
         shouldDisplayAuditLogEvents: shouldDisplayAuditLogEvents(state),
     }),
     {
@@ -202,6 +205,7 @@ export default class TicketHeader extends React.Component<Props, State> {
             actions,
             className,
             shouldDisplayAuditLogEvents,
+            timezone,
         } = this.props
         const {showSnoozePicker} = this.state
         const isUpdate = !!ticket.get('id')
@@ -221,6 +225,7 @@ export default class TicketHeader extends React.Component<Props, State> {
                     <TicketSnooze
                         className={css.headerIcon}
                         datetime={ticket.get('snooze_datetime')}
+                        timezone={timezone}
                     />
 
                     <TicketTrash
@@ -252,6 +257,7 @@ export default class TicketHeader extends React.Component<Props, State> {
                             </DropdownToggle>
                             <TicketSnoozePicker
                                 datetime={ticket.get('snooze_datetime')}
+                                timezone={timezone}
                                 isOpen={showSnoozePicker}
                                 toggle={this._toggleSnoozePicker}
                                 onApply={this._setSnooze}

@@ -21,6 +21,7 @@ describe('TicketHeader component', () => {
                 setSubject: () => {},
             },
         },
+        timezone: 'America/Los_Angeles',
     }
 
     const commonTicketProps = {
