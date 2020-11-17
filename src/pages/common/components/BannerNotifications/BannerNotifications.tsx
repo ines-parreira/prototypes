@@ -13,18 +13,22 @@ type OwnProps = {
 const BannerNotifications = ({
     notifications = [],
     hide,
-}: OwnProps & ConnectedProps<typeof connector>) => (
-    <div>
-        {notifications.map((notification) => (
-            <BannerNotification
-                key={notification.id as string}
-                //@ts-ignore ts-2783
-                hide={hide}
-                {...(notification as ComponentProps<typeof BannerNotification>)}
-            />
-        ))}
-    </div>
-)
+}: OwnProps & ConnectedProps<typeof connector>) => {
+    return (
+        <div>
+            {notifications.map((notification) => (
+                <BannerNotification
+                    key={notification.id as string}
+                    //@ts-ignore ts-2783
+                    hide={hide}
+                    {...(notification as ComponentProps<
+                        typeof BannerNotification
+                    >)}
+                />
+            ))}
+        </div>
+    )
+}
 
 const connector = connect(null, {hide})
 

@@ -1,4 +1,4 @@
-import {shallow} from 'enzyme'
+import {fireEvent, render} from '@testing-library/react'
 import React, {ComponentProps} from 'react'
 
 import BannerNotification from '../BannerNotification'
@@ -13,21 +13,57 @@ describe('<BannerNotification/>', () => {
         allowHTML: false,
     } as unknown) as ComponentProps<typeof BannerNotification>
 
-    it('should render', () => {
-        const component = shallow(<BannerNotification {...minProps} />)
+    describe('rendering', () => {
+        it('should render with default props', () => {
+            const {container} = render(<BannerNotification {...minProps} />)
 
-        expect(component).toMatchSnapshot()
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should render html message', () => {
+            const text = 'patatas bravas'
+            const message = `<div class="potatoes">${text}</div>`
+            const {container} = render(
+                <BannerNotification {...minProps} allowHTML message={message} />
+            )
+
+            expect(container.firstChild).toMatchSnapshot()
+        })
+
+        it('should render close icon when the notification is closable', () => {
+            const {container} = render(
+                <BannerNotification {...minProps} closable />
+            )
+
+            expect(container.firstChild).toMatchSnapshot()
+        })
     })
 
-    it('should render html message', () => {
-        const component = shallow(
-            <BannerNotification
-                {...minProps}
-                allowHTML
-                message={<div>foo</div>}
-            />
-        )
+    describe('interactions', () => {
+        it('should close the notification', () => {
+            const onClose = jest.fn()
 
-        expect(component).toMatchSnapshot()
+            const {getByText} = render(
+                <BannerNotification {...minProps} onClose={onClose} closable />
+            )
+
+            fireEvent.click(getByText('close'))
+            expect(onClose).toHaveBeenCalledWith()
+        })
+
+        it('should dismiss the notification and trigger callback', () => {
+            const onClick = jest.fn()
+
+            const {getByText} = render(
+                <BannerNotification
+                    {...minProps}
+                    onClick={onClick}
+                    dismissible
+                />
+            )
+
+            fireEvent.click(getByText('foobar'))
+            expect(onClick).toHaveBeenCalledWith()
+        })
     })
 })

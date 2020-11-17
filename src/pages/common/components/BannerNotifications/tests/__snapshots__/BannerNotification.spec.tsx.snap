@@ -1,32 +1,52 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<BannerNotification/> should render 1`] = `
+exports[`<BannerNotification/> rendering should render close icon when the notification is closable 1`] = `
 <div
-  className="banner-notification banner-notification--success banner-notification--active"
+  class="banner-notification banner-notification--active banner-notification--success banner-notification--clickable"
 >
   <span
-    className="banner-notification-message"
-    onClick={[Function]}
+    class="banner-notification-message"
   >
     foobar
+  </span>
+  <span
+    class="banner-notification-message__close"
+  >
+    <span>
+      <i
+        class="material-icons"
+      >
+        close
+      </i>
+    </span>
   </span>
 </div>
 `;
 
-exports[`<BannerNotification/> should render html message 1`] = `
+exports[`<BannerNotification/> rendering should render html message 1`] = `
 <div
-  className="banner-notification banner-notification--success banner-notification--active"
+  class="banner-notification banner-notification--active banner-notification--success banner-notification--clickable"
 >
   <span
-    className="banner-notification-message"
-    dangerouslySetInnerHTML={
-      Object {
-        "__html": <div>
-          foo
-        </div>,
-      }
-    }
-    onClick={[Function]}
-  />
+    class="banner-notification-message"
+  >
+    <div
+      class="potatoes"
+    >
+      patatas bravas
+    </div>
+  </span>
+</div>
+`;
+
+exports[`<BannerNotification/> rendering should render with default props 1`] = `
+<div
+  class="banner-notification banner-notification--active banner-notification--success banner-notification--clickable"
+>
+  <span
+    class="banner-notification-message"
+  >
+    foobar
+  </span>
 </div>
 `;

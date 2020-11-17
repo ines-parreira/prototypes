@@ -1,81 +1,80 @@
-import React, {Component, ReactNode} from 'react'
+import React, {ReactNode} from 'react'
 import classNames from 'classnames'
 
 import {NotificationStatus} from '../../../../state/notifications/types'
 
 type Props = {
-    id: string | number
-    status: NotificationStatus
-    onClick?: () => void
-    message: string | ReactNode
-    dismissible: boolean
-    closable: boolean
     allowHTML: boolean
+    closable: boolean
+    dismissible: boolean
     hide: (value: string | number) => void
+    id: string | number
+    message: string | ReactNode
+    onClick?: () => void
+    onClose?: () => void
+    status: NotificationStatus
 }
 
-class BannerNotification extends Component<Props> {
-    static defaultProps = {
-        allowHTML: true,
-        closable: false,
-        dismissible: true,
-    }
-
-    _onClick = () => {
-        const {id, onClick, dismissible, hide} = this.props
-
-        if (typeof onClick === 'function') {
-            onClick()
-        }
+const BannerNotification = ({
+    allowHTML = true,
+    closable = false,
+    dismissible = true,
+    hide,
+    id,
+    message,
+    onClick,
+    onClose,
+    status,
+}: Props) => {
+    const handleClick = () => {
+        onClick?.()
 
         if (dismissible) {
             hide(id)
         }
     }
 
-    close = () => {
-        const {hide, id} = this.props
+    const handleClose = () => {
         hide(id)
+        onClose?.()
     }
 
-    render() {
-        const {status, message, allowHTML, closable} = this.props
-        const classnames = classNames(
-            'banner-notification',
-            `banner-notification--${status}`,
-            {
-                'banner-notification--active': true,
-            }
-        )
-
-        return (
-            <div className={classnames}>
-                {allowHTML ? (
-                    <span
-                        onClick={this._onClick}
-                        className="banner-notification-message"
-                        dangerouslySetInnerHTML={{__html: message as string}}
-                    ></span>
-                ) : (
-                    <span
-                        onClick={this._onClick}
-                        className="banner-notification-message"
-                    >
-                        {message}
+    return (
+        <div
+            className={classNames(
+                'banner-notification',
+                'banner-notification--active',
+                `banner-notification--${status}`,
+                {
+                    'banner-notification--clickable': onClick || dismissible,
+                }
+            )}
+        >
+            {allowHTML ? (
+                <span
+                    onClick={handleClick}
+                    className="banner-notification-message"
+                    dangerouslySetInnerHTML={{__html: message as string}}
+                ></span>
+            ) : (
+                <span
+                    onClick={handleClick}
+                    className="banner-notification-message"
+                >
+                    {message}
+                </span>
+            )}
+            {closable && (
+                <span className="banner-notification-message__close">
+                    <span>
+                        <i className="material-icons" onClick={handleClose}>
+                            close
+                        </i>
                     </span>
-                )}
-                {closable && (
-                    <span className="banner-notification-message__close">
-                        <span>
-                            <i className="material-icons" onClick={this.close}>
-                                close
-                            </i>
-                        </span>
-                    </span>
-                )}
-            </div>
-        )
-    }
+                </span>
+            )}
+        </div>
+    )
 }
 
 export default BannerNotification
