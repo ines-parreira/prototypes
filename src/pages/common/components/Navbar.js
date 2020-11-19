@@ -158,8 +158,8 @@ export default class Navbar extends React.Component<NavbarProps, NavbarState> {
     render() {
         const {currentUser, currentPlan, available} = this.props
         const currentPlanName = currentPlan.get('name') || ''
-        const isBasicOrPro = ['pro', 'basic'].includes(
-            currentPlanName.toLowerCase()
+        const isBasicOrPro = ['pro', 'basic'].some((planType) =>
+            currentPlanName.toLowerCase().includes(planType)
         )
 
         return (
