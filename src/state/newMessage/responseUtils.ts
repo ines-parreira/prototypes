@@ -1,16 +1,13 @@
 import {
     ContentState,
     convertFromRaw,
-    convertToRaw,
     Modifier,
     SelectionState,
     ContentBlock,
-    RawDraftContentBlock,
 } from 'draft-js'
 import {fromJS, Map} from 'immutable'
 import _findIndex from 'lodash/findIndex'
 import _pick from 'lodash/pick'
-import _pickBy from 'lodash/pickBy'
 import _take from 'lodash/take'
 import _takeRight from 'lodash/takeRight'
 
@@ -20,6 +17,7 @@ import {renderTemplate} from '../../pages/common/utils/template.js'
 import {convertFromHTML} from '../../utils/editor'
 import {sanitizeHtmlForFacebookMessenger} from '../../utils/html'
 import {CurrentUser, StoreState} from '../types'
+import {convertToRawWithoutPredictions} from '../../pages/common/draftjs/plugins/prediction/utils.js'
 
 import * as selectors from './selectors'
 import ticketReplyCache from './ticketReplyCache'
@@ -36,7 +34,7 @@ export type MessageContext = {
         args: Map<any, any>
         signature: Map<any, any>
     }
-    appliedMacro: Map<any, any>
+    appliedMacro?: Map<any, any>
     contentState: ContentState
     forceUpdate: boolean
     forceFocus: boolean
@@ -171,7 +169,7 @@ export const deleteReplyCache = (ticketId: string): void => {
 /**
  * Get the initial editor state (contentState + selectionState) from cache or return an empty state
  */
-export const getCache = (context: MessageContext): MessageContext => {
+const getCache = (context: MessageContext): MessageContext => {
     const {action} = context
 
     // Proceed only if the change didn't come from a macro
@@ -257,25 +255,6 @@ export const addCache = (context: MessageContext): MessageContext => {
     }
 
     return _markCacheAdded(getCache(context))
-}
-
-/**
- * Return a raw content state without any prediction entities
- */
-export const convertToRawWithoutPredictions = (contentState: ContentState) => {
-    // don't cache predictions
-    const rawContent = convertToRaw(contentState)
-    const newRaw: {
-        blocks: RawDraftContentBlock[]
-        entityMap: Record<string, unknown>
-    } = {blocks: [], entityMap: {}}
-
-    newRaw.blocks = rawContent.blocks.slice()
-    newRaw.entityMap = _pickBy(rawContent.entityMap, (val) => {
-        return val.type !== 'prediction'
-    })
-
-    return newRaw
 }
 
 /**

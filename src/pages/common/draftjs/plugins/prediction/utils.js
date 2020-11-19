@@ -1,5 +1,12 @@
 // @flow
-import {ContentState, EditorState, Modifier} from 'draft-js'
+import {
+    ContentState,
+    convertToRaw,
+    EditorState,
+    Modifier,
+    RawDraftContentBlock,
+} from 'draft-js'
+import _pickBy from 'lodash/pickBy'
 
 import {getEntitySelectionState} from '../../../../../utils/editor.tsx'
 
@@ -10,7 +17,7 @@ const PREDICTION_TYPE = 'prediction'
 export const createPrediction = (
     text: string,
     editorState: EditorState
-): EditorState => {
+): string => {
     const currentContent = editorState.getCurrentContent()
     const entityContentState = currentContent.createEntity(
         PREDICTION_TYPE,
@@ -113,4 +120,19 @@ export const getPlainTextFromStateWithPrediction = (
 ): string => {
     const text = editorState.getCurrentContent().getPlainText()
     return text.slice(0, -1)
+}
+
+export const convertToRawWithoutPredictions = (
+    contentState: ContentState
+): {
+    blocks: RawDraftContentBlock[],
+    entityMap: {[key: string]: any},
+} => {
+    const rawContent = convertToRaw(contentState)
+    return {
+        blocks: rawContent.blocks.slice(),
+        entityMap: _pickBy(rawContent.entityMap, (val) => {
+            return val.type !== PREDICTION_TYPE
+        }),
+    }
 }
