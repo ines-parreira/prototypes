@@ -341,7 +341,7 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
     },
     {
         type: IntegrationType.GorgiasChatIntegrationType,
-        title: 'Gorgias Chat (BETA)',
+        title: 'Chat (New)',
         description: 'Add a chat on your website',
     },
 ]

@@ -78,7 +78,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                 style={Object {}}
                 to="/app/settings/integrations/undefined"
               >
-                Gorgias Chat
+                Chat (New)
               </Link>
             </BreadcrumbItem>
             <BreadcrumbItem
@@ -139,7 +139,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                       onClick={[Function]}
                       style={Object {}}
                     >
-                      Gorgias Chat
+                      Chat (New)
                     </a>
                   </Link>
                 </li>
@@ -980,7 +980,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                 style={Object {}}
                 to="/app/settings/integrations/undefined"
               >
-                Gorgias Chat
+                Chat (New)
               </Link>
             </BreadcrumbItem>
             <BreadcrumbItem
@@ -1041,7 +1041,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                       onClick={[Function]}
                       style={Object {}}
                     >
-                      Gorgias Chat
+                      Chat (New)
                     </a>
                   </Link>
                 </li>

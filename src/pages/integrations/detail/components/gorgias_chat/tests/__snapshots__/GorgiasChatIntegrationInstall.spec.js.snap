@@ -85,7 +85,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the list of Shopify sto
                 style={Object {}}
                 to="/app/settings/integrations/gorgias_chat"
               >
-                Gorgias Chat
+                Chat (New)
               </Link>
             </BreadcrumbItem>
             <BreadcrumbItem
@@ -146,7 +146,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the list of Shopify sto
                       onClick={[Function]}
                       style={Object {}}
                     >
-                      Gorgias Chat
+                      Chat (New)
                     </a>
                   </Link>
                 </li>

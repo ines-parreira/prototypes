@@ -3,6 +3,7 @@ import React from 'react'
 import {Link, browserHistory} from 'react-router'
 import {connect} from 'react-redux'
 import {type List, type Map} from 'immutable'
+import Alert from 'reactstrap/lib/Alert'
 
 import {SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../../constants/integration.ts'
 import * as integrationsActions from '../../../../../state/integrations/actions.ts'
@@ -27,11 +28,38 @@ export default class ChatIntegrationList extends React.Component<Props> {
         const {integrations, loading} = this.props
 
         const longTypeDescription = (
-            <span>
-                Live chat with your customers by adding our Chat widget on your
-                website. Every time a customer starts a conversation on your
-                website, it opens a ticket in Gorgias.
-            </span>
+            <div>
+                <Alert color="warning">
+                    <span role="img" aria-label="warning">
+                        ⚠️
+                    </span>{' '}
+                    We are rolling out a{' '}
+                    <Link to="/app/settings/integrations/gorgias_chat">
+                        new version of the chat
+                    </Link>{' '}
+                    with additional features coming out early Q1. The current
+                    chat integration will be progressively rolled-out during the
+                    first half of 2021, don't worry it will remain active until
+                    you complete the migration. To migrate to this{' '}
+                    <Link to="/app/settings/integrations/gorgias_chat">
+                        new version of the chat
+                    </Link>{' '}
+                    follow the steps outlined in{' '}
+                    <a
+                        href="https://docs.gorgias.com/gorgias-chat/migrating-to-new-chat-integration-beta-version"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        this article
+                    </a>
+                    .
+                </Alert>
+                <span>
+                    Live chat with your customers by adding our Chat widget on
+                    your website. Every time a customer starts a conversation on
+                    your website, it opens a ticket in Gorgias.
+                </span>
+            </div>
         )
 
         const integrationToItemDisplay = (integration: Map<*, *>) => {

@@ -74,7 +74,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
                 style={Object {}}
                 to="/app/settings/integrations/gorgias_chat"
               >
-                Gorgias Chat
+                Chat (New)
               </Link>
             </BreadcrumbItem>
             <BreadcrumbItem
@@ -135,7 +135,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
                       onClick={[Function]}
                       style={Object {}}
                     >
-                      Gorgias Chat
+                      Chat (New)
                     </a>
                   </Link>
                 </li>
@@ -408,7 +408,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
                 style={Object {}}
                 to="/app/settings/integrations/gorgias_chat"
               >
-                Gorgias Chat
+                Chat (New)
               </Link>
             </BreadcrumbItem>
             <BreadcrumbItem
@@ -469,7 +469,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
                       onClick={[Function]}
                       style={Object {}}
                     >
-                      Gorgias Chat
+                      Chat (New)
                     </a>
                   </Link>
                 </li>

@@ -3,6 +3,7 @@ import React from 'react'
 import {Link, browserHistory} from 'react-router'
 import {connect} from 'react-redux'
 import {type List, type Map} from 'immutable'
+import Alert from 'reactstrap/lib/Alert'
 
 import {GORGIAS_CHAT_INTEGRATION_TYPE} from '../../../../../constants/integration.ts'
 import * as integrationsActions from '../../../../../state/integrations/actions.ts'
@@ -27,11 +28,30 @@ export default class GorgiasChatIntegrationList extends React.Component<Props> {
         const {integrations, loading} = this.props
 
         const longTypeDescription = (
-            <span>
-                Live chat with your customers by adding our Chat widget on your
-                website. Every time a customer starts a conversation on your
-                website, it opens a ticket in Gorgias.
-            </span>
+            <div>
+                <Alert color="success">
+                    <span role="img" aria-label="white check mark">
+                        ✅
+                    </span>{' '}
+                    Welcome to our new, remodeled chat integration. We've made
+                    significant improvements to the back-end, it's faster &
+                    lighter. Rest assured, it's at feature parity with the
+                    existing one with an improved design and support for screen
+                    readers.{' '}
+                    <a
+                        href="https://portal.productboard.com/gorgias/1-gorgias-product-roadmap/c/79-chatbot-self-service-flows-to-automate-50-of-tickets"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        We'll be adding more features very soon!
+                    </a>
+                </Alert>
+                <span>
+                    Live chat with your customers by adding our Chat widget on
+                    your website. Every time a customer starts a conversation on
+                    your website, it opens a ticket in Gorgias.
+                </span>
+            </div>
         )
 
         const integrationToItemDisplay = (integration: Map<*, *>) => {

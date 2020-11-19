@@ -271,7 +271,7 @@ export class GorgiasChatIntegrationPreferencesComponent extends React.Component<
                             </BreadcrumbItem>
                             <BreadcrumbItem>
                                 <Link to="/app/settings/integrations/gorgias_chat">
-                                    Gorgias Chat
+                                    Chat (New)
                                 </Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem>

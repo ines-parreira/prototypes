@@ -53,7 +53,7 @@ export class GorgiasChatIntegrationCampaignsComponent extends React.Component<Pr
                                         'type'
                                     )}`}
                                 >
-                                    Gorgias Chat
+                                    Chat (New)
                                 </Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem>

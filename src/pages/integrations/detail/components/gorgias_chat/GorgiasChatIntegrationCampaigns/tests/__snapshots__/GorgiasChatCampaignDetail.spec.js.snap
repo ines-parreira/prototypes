@@ -28,7 +28,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
             style={Object {}}
             to="/app/settings/integrations/gorgias_chat/1"
           >
-            Gorgias Chat
+            Chat (New)
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -345,7 +345,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
             style={Object {}}
             to="/app/settings/integrations/gorgias_chat/1"
           >
-            Gorgias Chat
+            Chat (New)
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -702,7 +702,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
             style={Object {}}
             to="/app/settings/integrations/gorgias_chat/1"
           >
-            Gorgias Chat
+            Chat (New)
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem

@@ -134,7 +134,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
             style={Object {}}
             to="/app/settings/integrations/gorgias_chat"
           >
-            Gorgias Chat
+            Chat (New)
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -422,7 +422,7 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
             style={Object {}}
             to="/app/settings/integrations/gorgias_chat"
           >
-            Gorgias Chat
+            Chat (New)
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
