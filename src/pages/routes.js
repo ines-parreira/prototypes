@@ -35,7 +35,7 @@ import BillingDetailsFormContainer from './settings/billing/details/BillingDetai
 import BillingPlansContainer from './settings/billing/plans/BillingPlans'
 import ManageTagsContainer from './settings/tags/ManageTags'
 import ImportDataContainer from './settings/importData/ImportDataContainer'
-import ImportZendeskDetail from './settings/importData/zendesk/ImportZendeskDetail'
+import ImportZendeskDetail from './settings/importData/zendesk/ImportZendeskDetail.tsx'
 import SatisfactionSurveyView from './settings/satisfactionSurveys/SatisfactionSurveyView'
 import MacrosSettingsContent from './settings/macros/MacrosSettingsContent.tsx'
 import MacrosSettingsForm from './settings/macros/MacrosSettingsForm.tsx'
