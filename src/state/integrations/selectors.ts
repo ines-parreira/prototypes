@@ -423,7 +423,7 @@ export const getChatIntegrationCampaignById = (
             ) || fromJS({})) as Map<any, any>
     )
 
-export const hasAtLeastOneEmailIntegration = (state: RootState) =>
+export const isImportAllowed = (state: RootState) =>
     getEmailIntegrations(state).filter((integration: Map<any, any>) => {
         const isBaseIntegration = (integration.getIn(
             ['meta', 'address'],

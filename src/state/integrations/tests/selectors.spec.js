@@ -28,7 +28,7 @@ import {
     getShopifyIntegrationByShopName,
     getShopifyIntegrationsWithoutChat,
     getShopifyIntegrationsWithoutFacebook,
-    hasAtLeastOneEmailIntegration,
+    isImportAllowed,
     getMessagingIntegrations,
 } from '../selectors.ts'
 import {integrationsState} from '../../../fixtures/integrations.ts'
@@ -562,7 +562,7 @@ describe('integrations selectors', () => {
         })
     })
 
-    describe('hasAtLeastOneEmailIntegration()', () => {
+    describe('isImportAllowed()', () => {
         const testadress = {address: 'testaddress@email.com'}
 
         it.each([
@@ -624,19 +624,14 @@ describe('integrations selectors', () => {
                 ],
                 false,
             ],
-        ])(
-            'At least one email integration exists',
-            (integrationsJSON, expectedResult) => {
-                const state = {
-                    integrations: fromJS({
-                        integrations: integrationsJSON,
-                    }),
-                }
-
-                expect(hasAtLeastOneEmailIntegration(state)).toBe(
-                    expectedResult
-                )
+        ])('Import allowed', (integrationsJSON, expectedResult) => {
+            const state = {
+                integrations: fromJS({
+                    integrations: integrationsJSON,
+                }),
             }
-        )
+
+            expect(isImportAllowed(state)).toBe(expectedResult)
+        })
     })
 })
