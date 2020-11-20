@@ -15,7 +15,7 @@ import {GorgiasAction} from '../../types'
 jest.mock('draft-js/lib/generateRandomKey', () => () => 'someRandomKey')
 jest.addMatchers(immutableMatchers)
 
-describe('New message reducers', () => {
+describe('new message reducer', () => {
     it('should return the initial state', () => {
         expect(reducer(undefined, {} as GorgiasAction)).toEqualImmutable(
             initialState

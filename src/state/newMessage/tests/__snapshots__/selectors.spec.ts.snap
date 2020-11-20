@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`selectors new message getNewMessageSignature() should return a rendered signature (email address) 1`] = `
+exports[`new message selectors getNewMessageSignature() should return a rendered signature (email address) 1`] = `
 Immutable.Map {
   "text": "Cheers, Steve",
   "html": "Cheers, <strong>Steve</strong>",

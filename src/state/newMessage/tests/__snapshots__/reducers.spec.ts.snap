@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`New message reducers NEW_MESSAGE_RESET_FROM_TICKET action should reset the state from a message 1`] = `
+exports[`new message reducer NEW_MESSAGE_RESET_FROM_TICKET action should reset the state from a message 1`] = `
 Object {
   "_internal": Object {
     "loading": Object {
@@ -115,7 +115,7 @@ Object {
 }
 `;
 
-exports[`New message reducers should handle NEW_MESSAGE_SET_SUBJECT 1`] = `
+exports[`new message reducer should handle NEW_MESSAGE_SET_SUBJECT 1`] = `
 Immutable.Map {
   "state": Immutable.Map {
     "selectionState": null,

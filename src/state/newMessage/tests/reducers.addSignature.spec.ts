@@ -5,13 +5,14 @@
 import {fromJS} from 'immutable'
 import {ContentState} from 'draft-js'
 
-import reducer, {initialState} from '../reducers.ts'
-import * as types from '../constants.ts'
-import {convertToHTML} from '../../../utils/editor.tsx'
+import reducer, {initialState} from '../reducers'
+import * as types from '../constants'
+import {convertToHTML} from '../../../utils/editor'
+import {GorgiasAction} from '../../types'
 
-describe('New message reducers', () => {
+describe('new message reducer', () => {
     describe('NEW_MESSAGE_ADD_SIGNATURE action', () => {
-        let action
+        let action: GorgiasAction
         const body_text = 'Hello\n\nCruel World!'
         const body_html =
             '<div>Hello</div><div><br></div><div><a href="about:blank#" target="_blank">Cruel World!</a></div>'
@@ -30,9 +31,10 @@ describe('New message reducers', () => {
 
         it('should match the contentState plain text', () => {
             expect(
-                reducer(initialState, action)
-                    .getIn(['state', 'contentState'])
-                    .getPlainText()
+                (reducer(initialState, action).getIn([
+                    'state',
+                    'contentState',
+                ]) as ContentState).getPlainText()
             ).toBe(body_text)
         })
 
