@@ -103,7 +103,7 @@ exports[`<GorgiasChatIntegrationInstall/> should display the list of Shopify sto
         }
       >
         <div
-          className="d-flex align-items-center justify-content-between flex-wrap page-header "
+          className="d-flex align-items-center justify-content-between flex-wrap page-header"
         >
           <Breadcrumb
             tag="ol"

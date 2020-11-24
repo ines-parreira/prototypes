@@ -16,10 +16,10 @@ import {
 import * as integrationHelpers from '../../../../../state/integrations/helpers.ts'
 
 import Loader from '../../../../common/components/Loader'
-import ConfirmButton from '../../../../common/components/ConfirmButton'
+import ConfirmButton from '../../../../common/components/ConfirmButton.tsx'
 
 import InputField from '../../../../common/forms/InputField'
-import PageHeader from '../../../../common/components/PageHeader'
+import PageHeader from '../../../../common/components/PageHeader.tsx'
 
 type Props = {
     integration: Object,

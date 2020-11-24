@@ -221,14 +221,7 @@ exports[`<SmoochIntegrationDetail/> render() should render an active integration
               className="float-right"
               color="secondary"
               confirm={[Function]}
-              confirmColor="success"
               content="Are you sure you want to delete this integration?"
-              disabled={false}
-              loading={false}
-              placement="bottom"
-              skip={false}
-              title="Are you sure?"
-              type="button"
             >
               <i
                 className="material-icons mr-1 text-danger"
@@ -465,14 +458,7 @@ exports[`<SmoochIntegrationDetail/> render() should render an inactive integrati
               className="float-right"
               color="secondary"
               confirm={[Function]}
-              confirmColor="success"
               content="Are you sure you want to delete this integration?"
-              disabled={false}
-              loading={false}
-              placement="bottom"
-              skip={false}
-              title="Are you sure?"
-              type="button"
             >
               <i
                 className="material-icons mr-1 text-danger"
@@ -710,14 +696,7 @@ exports[`<SmoochIntegrationDetail/> render() should render an integration which 
               className="float-right"
               color="secondary"
               confirm={[Function]}
-              confirmColor="success"
               content="Are you sure you want to delete this integration?"
-              disabled={false}
-              loading={false}
-              placement="bottom"
-              skip={false}
-              title="Are you sure?"
-              type="button"
             >
               <i
                 className="material-icons mr-1 text-danger"

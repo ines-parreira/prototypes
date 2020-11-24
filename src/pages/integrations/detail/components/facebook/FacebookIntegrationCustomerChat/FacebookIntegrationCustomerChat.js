@@ -8,7 +8,7 @@ import {Breadcrumb, BreadcrumbItem, Col, Container, Row} from 'reactstrap'
 import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../constants/integration.ts'
 
 import {notify} from '../../../../../../state/notifications/actions.ts'
-import PageHeader from '../../../../../common/components/PageHeader'
+import PageHeader from '../../../../../common/components/PageHeader.tsx'
 
 import * as integrationSelectors from '../../../../../../state/integrations/selectors.ts'
 import CustomInstallationCard from '../../../../common/CustomInstallationCard/CustomInstallationCard'

@@ -11,7 +11,7 @@ import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 
 import SourceIcon from '../SourceIcon'
 import Modal from '../Modal'
-import ConfirmButton from '../ConfirmButton'
+import ConfirmButton from '../ConfirmButton.tsx'
 import Tooltip from '../Tooltip'
 import {JSONTree} from '../JSONTree'
 import BinaryChoiceField from '../BinaryChoiceField'

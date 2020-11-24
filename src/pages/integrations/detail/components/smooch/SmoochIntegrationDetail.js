@@ -18,10 +18,10 @@ import {
     SMOOCH_LANGUAGE_OPTIONS,
 } from '../../../../../config/integrations/smooch.ts'
 
-import ConfirmButton from '../../../../common/components/ConfirmButton'
+import ConfirmButton from '../../../../common/components/ConfirmButton.tsx'
 import InputField from '../../../../common/forms/InputField'
 import Loader from '../../../../common/components/Loader'
-import PageHeader from '../../../../common/components/PageHeader'
+import PageHeader from '../../../../common/components/PageHeader.tsx'
 
 import SmoochIntegrationNavigation from './SmoochIntegrationNavigation'
 

@@ -9,7 +9,7 @@ import {Breadcrumb, BreadcrumbItem, Button, Container, Table} from 'reactstrap'
 import * as campaignActions from '../../../../../../state/campaigns/actions'
 
 import ToggleButton from '../../../../../common/components/ToggleButton'
-import PageHeader from '../../../../../common/components/PageHeader'
+import PageHeader from '../../../../../common/components/PageHeader.tsx'
 import ForwardIcon from '../../ForwardIcon'
 import ChatIntegrationNavigation from '../ChatIntegrationNavigation'
 

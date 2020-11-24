@@ -541,10 +541,11 @@ exports[`<FilterTopbar/> render should render active view filters 1`] = `
       </div>
       <div
         class="component d-inline-block"
+        id="delete-view"
       >
         <button
           class="btn btn-secondary"
-          id="confirm-button-0"
+          id="confirm-button-delete-view"
           type="button"
         >
           <i

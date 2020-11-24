@@ -18,7 +18,7 @@ import {EMAIL_INTEGRATION_TYPE} from '../../../../../../constants/integration.ts
 import {getForwardingEmailAddress} from '../../../../../../state/integrations/selectors.ts'
 import * as notificationActions from '../../../../../../state/notifications/actions.ts'
 import * as integrationActions from '../../../../../../state/integrations/actions.ts'
-import PageHeader from '../../../../../common/components/PageHeader'
+import PageHeader from '../../../../../common/components/PageHeader.tsx'
 import type {Dispatch} from '../../../../../../state/types'
 
 import css from './EmailIntegrationCreateForwarding.less'

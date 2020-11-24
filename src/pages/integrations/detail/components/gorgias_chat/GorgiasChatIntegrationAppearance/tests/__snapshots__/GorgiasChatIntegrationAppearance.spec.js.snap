@@ -545,14 +545,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
             className="float-right"
             color="secondary"
             confirm={[Function]}
-            confirmColor="success"
             content="Are you sure you want to delete this integration?"
-            disabled={false}
-            loading={false}
-            placement="bottom"
-            skip={false}
-            title="Are you sure?"
-            type="button"
           >
             <i
               className="material-icons mr-1 text-danger"
@@ -889,14 +882,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
             className="float-right"
             color="secondary"
             confirm={[Function]}
-            confirmColor="success"
             content="Are you sure you want to delete this integration?"
-            disabled={false}
-            loading={false}
-            placement="bottom"
-            skip={false}
-            title="Are you sure?"
-            type="button"
           >
             <i
               className="material-icons mr-1 text-danger"
@@ -1255,14 +1241,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
             className="float-right"
             color="secondary"
             confirm={[Function]}
-            confirmColor="success"
             content="Are you sure you want to delete this integration?"
-            disabled={false}
-            loading={false}
-            placement="bottom"
-            skip={false}
-            title="Are you sure?"
-            type="button"
           >
             <i
               className="material-icons mr-1 text-danger"
@@ -1603,14 +1582,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
             className="float-right"
             color="secondary"
             confirm={[Function]}
-            confirmColor="success"
             content="Are you sure you want to delete this integration?"
-            disabled={false}
-            loading={false}
-            placement="bottom"
-            skip={false}
-            title="Are you sure?"
-            type="button"
           >
             <i
               className="material-icons mr-1 text-danger"
@@ -1979,14 +1951,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
             className="float-right"
             color="secondary"
             confirm={[Function]}
-            confirmColor="success"
             content="Are you sure you want to delete this integration?"
-            disabled={false}
-            loading={false}
-            placement="bottom"
-            skip={false}
-            title="Are you sure?"
-            type="button"
           >
             <i
               className="material-icons mr-1 text-danger"

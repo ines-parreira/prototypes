@@ -230,22 +230,25 @@ exports[`<RuleItem /> rendering should not render an error message when there is
           <button
             class="btn btn-success"
             form="rule-form-17"
+            id="rule-item-save"
             type="submit"
           >
             Save rule
           </button>
           <button
             class="ml-3 btn btn-secondary"
+            id="rule-item-duplicate"
             type="submit"
           >
             Duplicate rule
           </button>
           <div
             class="component d-inline-block ml-3"
+            id="rule-item-discard"
           >
             <button
               class="btn btn-secondary"
-              id="confirm-button-0"
+              id="confirm-button-rule-item-discard"
               type="button"
             >
               Discard changes
@@ -255,10 +258,11 @@ exports[`<RuleItem /> rendering should not render an error message when there is
         <div>
           <div
             class="component d-inline-block ml-2 delete-button"
+            id="rule-item-delete"
           >
             <button
               class="btn btn-secondary"
-              id="confirm-button-0"
+              id="confirm-button-rule-item-delete"
               type="button"
             >
               <i
@@ -506,6 +510,7 @@ exports[`<RuleItem /> rendering should render with default state 1`] = `
             class="btn btn-success disabled"
             disabled=""
             form="rule-form-17"
+            id="rule-item-save"
             type="submit"
           >
             Save rule
@@ -513,16 +518,18 @@ exports[`<RuleItem /> rendering should render with default state 1`] = `
           <button
             class="ml-3 btn btn-secondary disabled"
             disabled=""
+            id="rule-item-duplicate"
             type="submit"
           >
             Duplicate rule
           </button>
           <div
             class="component d-inline-block ml-3"
+            id="rule-item-discard"
           >
             <button
               class="btn btn-secondary"
-              id="confirm-button-0"
+              id="confirm-button-rule-item-discard"
               type="button"
             >
               Discard changes
@@ -532,10 +539,11 @@ exports[`<RuleItem /> rendering should render with default state 1`] = `
         <div>
           <div
             class="component d-inline-block ml-2 delete-button"
+            id="rule-item-delete"
           >
             <button
               class="btn btn-secondary"
-              id="confirm-button-0"
+              id="confirm-button-rule-item-delete"
               type="button"
             >
               <i

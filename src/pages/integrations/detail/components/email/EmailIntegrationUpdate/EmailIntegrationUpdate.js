@@ -43,12 +43,12 @@ import {
     GMAIL_IMPORTED_EMAILS_FOR_YEARS,
     OUTLOOK_IMPORTED_EMAILS_FOR_YEARS,
 } from '../../../../../../config.ts'
-import ConfirmButton from '../../../../../common/components/ConfirmButton'
+import ConfirmButton from '../../../../../common/components/ConfirmButton.tsx'
 
 import InputField from '../../../../../common/forms/InputField'
 import BooleanField from '../../../../../common/forms/BooleanField'
 import RichFieldWithVariables from '../../../../../common/forms/RichFieldWithVariables'
-import PageHeader from '../../../../../common/components/PageHeader'
+import PageHeader from '../../../../../common/components/PageHeader.tsx'
 
 type Props = {
     domain: string,

@@ -14,7 +14,7 @@ import * as currentUserSelectors from '../../../../../state/currentUser/selector
 import * as newMessageSelectors from '../../../../../state/newMessage/selectors.ts'
 
 import Tooltip from '../../../../common/components/Tooltip'
-import ConfirmButton from '../../../../common/components/ConfirmButton'
+import ConfirmButton from '../../../../common/components/ConfirmButton.tsx'
 
 import css from './TicketSubmitButtons.less'
 

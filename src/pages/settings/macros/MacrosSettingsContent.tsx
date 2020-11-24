@@ -17,7 +17,7 @@ import {
 import {macrosFetched} from '../../../state/entities/macros/actions'
 import {notify} from '../../../state/notifications/actions'
 import {NotificationStatus} from '../../../state/notifications/types'
-import PageHeader from '../../common/components/PageHeader.js'
+import PageHeader from '../../common/components/PageHeader'
 import Pagination from '../../common/components/Pagination.js'
 import Search from '../../common/components/Search.js'
 import {RootState} from '../../../state/types.js'

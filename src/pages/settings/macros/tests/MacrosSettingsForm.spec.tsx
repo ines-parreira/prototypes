@@ -12,7 +12,7 @@ import {
     updateMacro,
 } from '../../../../models/macro/resources'
 import {getDefaultMacro} from '../../../../state/macro/utils'
-import ConfirmButton from '../../../common/components/ConfirmButton.js'
+import ConfirmButton from '../../../common/components/ConfirmButton'
 import {MacrosSettingsFormContainer} from '../MacrosSettingsForm'
 
 jest.mock('react-router')

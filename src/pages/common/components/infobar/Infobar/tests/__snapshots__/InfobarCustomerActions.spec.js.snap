@@ -7,14 +7,8 @@ exports[`InfobarCustomerActions component should not render "merge" button becau
   <ConfirmButton
     className="mr-2"
     confirm={[Function]}
-    confirmColor="success"
     content="Are you sure you want to set  as customer?"
-    disabled={false}
-    loading={false}
-    placement="bottom"
-    skip={false}
     title="Change ticket customer"
-    type="button"
   >
     Set as customer
   </ConfirmButton>
@@ -49,14 +43,8 @@ exports[`InfobarCustomerActions component should render "set as customer" and "m
   <ConfirmButton
     className="mr-2"
     confirm={[Function]}
-    confirmColor="success"
     content="Are you sure you want to set  as customer?"
-    disabled={false}
-    loading={false}
-    placement="bottom"
-    skip={false}
     title="Change ticket customer"
-    type="button"
   >
     Set as customer
   </ConfirmButton>

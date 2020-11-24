@@ -12,7 +12,7 @@ import Pagination from '../../common/components/Pagination'
 
 import * as actions from '../../../state/agents/actions.ts'
 import * as selectors from '../../../state/agents/selectors.ts'
-import PageHeader from '../../common/components/PageHeader'
+import PageHeader from '../../common/components/PageHeader.tsx'
 
 import Row from './Row'
 

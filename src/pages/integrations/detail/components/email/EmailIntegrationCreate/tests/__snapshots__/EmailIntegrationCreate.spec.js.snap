@@ -5,7 +5,7 @@ exports[`<EmailIntegrationCreate/> render() should render 1`] = `
   class="full-width"
 >
   <div
-    class="d-flex align-items-center justify-content-between flex-wrap page-header "
+    class="d-flex align-items-center justify-content-between flex-wrap page-header"
   >
     <ol
       class="breadcrumb"

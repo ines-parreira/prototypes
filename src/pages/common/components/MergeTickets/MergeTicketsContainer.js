@@ -6,7 +6,7 @@ import {fromJS, Map} from 'immutable'
 import {Button, Form} from 'reactstrap'
 
 import Modal from '../Modal'
-import ConfirmButton from '../ConfirmButton'
+import ConfirmButton from '../ConfirmButton.tsx'
 
 import {mergeTickets} from '../../../../state/mergeTickets/actions.ts'
 import shortcutManager from '../../../../services/shortcutManager/shortcutManager.ts'

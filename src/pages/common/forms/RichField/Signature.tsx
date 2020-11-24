@@ -8,7 +8,7 @@ import {
 } from '../../../../state/newMessage/selectors'
 import {addSignature} from '../../../../state/newMessage/actions'
 import {isSignatureAdded} from '../../../../state/newMessage/responseUtils'
-import Ellipsis from '../../components/Ellipsis.js'
+import Ellipsis from '../../components/Ellipsis'
 import {RootState} from '../../../../state/types'
 
 type OwnProps = {

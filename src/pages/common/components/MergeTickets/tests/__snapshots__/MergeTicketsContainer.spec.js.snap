@@ -78,16 +78,10 @@ exports[`MergeTicketsContainer component should render the build component if th
           Cancel
         </Button>
         <ConfirmButton
-          className=""
           color="success"
-          confirm={[Function]}
-          confirmColor="success"
           content="This action is irreversible. Are you sure you want to merge these tickets?"
           disabled={false}
           loading={false}
-          placement="bottom"
-          skip={false}
-          title="Are you sure?"
           type="submit"
         >
           Merge tickets

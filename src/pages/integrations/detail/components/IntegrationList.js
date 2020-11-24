@@ -7,7 +7,7 @@ import {Breadcrumb, BreadcrumbItem, Table, Button, Container} from 'reactstrap'
 
 import {getIntegrationsList} from '../../../../state/integrations/helpers.ts'
 import {notify} from '../../../../state/notifications/actions.ts'
-import PageHeader from '../../../common/components/PageHeader'
+import PageHeader from '../../../common/components/PageHeader.tsx'
 
 import NoIntegration from './NoIntegration'
 

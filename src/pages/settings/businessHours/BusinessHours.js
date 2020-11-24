@@ -6,7 +6,7 @@ import {Link} from 'react-router'
 import {Button, Row, Col, Container, Form, Label} from 'reactstrap'
 import classnames from 'classnames'
 
-import PageHeader from '../../common/components/PageHeader'
+import PageHeader from '../../common/components/PageHeader.tsx'
 import InputField from '../../common/forms/InputField'
 import {getMomentTimezoneNames} from '../../../utils/date.ts'
 

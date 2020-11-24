@@ -587,15 +587,9 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
             className="float-right"
             color="secondary"
             confirm={[Function]}
-            confirmColor="success"
             content="Are you sure you want to delete this campaign?"
-            disabled={false}
             id="delete-campaign-button"
-            loading={false}
             placement="bottom right"
-            skip={false}
-            title="Are you sure?"
-            type="button"
           >
             <i
               className="material-icons mr-1 text-danger"
@@ -944,15 +938,9 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
             className="float-right"
             color="secondary"
             confirm={[Function]}
-            confirmColor="success"
             content="Are you sure you want to delete this campaign?"
-            disabled={false}
             id="delete-campaign-button"
-            loading={false}
             placement="bottom right"
-            skip={false}
-            title="Are you sure?"
-            type="button"
           >
             <i
               className="material-icons mr-1 text-danger"

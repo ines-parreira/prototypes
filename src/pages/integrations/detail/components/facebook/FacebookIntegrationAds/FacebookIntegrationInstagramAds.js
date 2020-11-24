@@ -18,7 +18,7 @@ import classnames from 'classnames'
 
 import {getFacebookMaxAccountAds} from '../../../../../../state/integrations/selectors.ts'
 import FacebookIntegrationNavigation from '../FacebookIntegrationNavigation'
-import PageHeader from '../../../../../common/components/PageHeader'
+import PageHeader from '../../../../../common/components/PageHeader.tsx'
 import ToggleButton from '../../../../../common/components/ToggleButton'
 import {
     getFacebookIntegrationInternals,

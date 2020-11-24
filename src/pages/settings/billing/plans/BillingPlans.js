@@ -22,7 +22,7 @@ import {updateSubscription} from '../../../../state/currentAccount/actions.ts'
 import * as billingSelectors from '../../../../state/billing/selectors.ts'
 import * as currentAccountSelectors from '../../../../state/currentAccount/selectors.ts'
 import {openChat} from '../../../../utils.ts'
-import PageHeader from '../../../common/components/PageHeader'
+import PageHeader from '../../../common/components/PageHeader.tsx'
 import {setFutureSubscriptionPlan} from '../../../../state/billing/actions.ts'
 
 import {Plan} from './Plan'

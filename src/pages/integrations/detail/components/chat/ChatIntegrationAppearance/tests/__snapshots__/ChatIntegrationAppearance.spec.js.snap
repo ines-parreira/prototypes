@@ -565,14 +565,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when int
             className="float-right"
             color="secondary"
             confirm={[Function]}
-            confirmColor="success"
             content="Are you sure you want to delete this integration?"
-            disabled={false}
-            loading={false}
-            placement="bottom"
-            skip={false}
-            title="Are you sure?"
-            type="button"
           >
             <i
               className="material-icons mr-1 text-danger"
@@ -919,14 +912,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when upd
             className="float-right"
             color="secondary"
             confirm={[Function]}
-            confirmColor="success"
             content="Are you sure you want to delete this integration?"
-            disabled={false}
-            loading={false}
-            placement="bottom"
-            skip={false}
-            title="Are you sure?"
-            type="button"
           >
             <i
               className="material-icons mr-1 text-danger"
@@ -1295,14 +1281,7 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
             className="float-right"
             color="secondary"
             confirm={[Function]}
-            confirmColor="success"
             content="Are you sure you want to delete this integration?"
-            disabled={false}
-            loading={false}
-            placement="bottom"
-            skip={false}
-            title="Are you sure?"
-            type="button"
           >
             <i
               className="material-icons mr-1 text-danger"
@@ -1653,14 +1632,7 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
             className="float-right"
             color="secondary"
             confirm={[Function]}
-            confirmColor="success"
             content="Are you sure you want to delete this integration?"
-            disabled={false}
-            loading={false}
-            placement="bottom"
-            skip={false}
-            title="Are you sure?"
-            type="button"
           >
             <i
               className="material-icons mr-1 text-danger"
@@ -2039,14 +2011,7 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
             className="float-right"
             color="secondary"
             confirm={[Function]}
-            confirmColor="success"
             content="Are you sure you want to delete this integration?"
-            disabled={false}
-            loading={false}
-            placement="bottom"
-            skip={false}
-            title="Are you sure?"
-            type="button"
           >
             <i
               className="material-icons mr-1 text-danger"

@@ -19,7 +19,7 @@ import {
 
 import {toJS} from '../../../utils.ts'
 import Loader from '../../common/components/Loader'
-import ConfirmButton from '../../common/components/ConfirmButton'
+import ConfirmButton from '../../common/components/ConfirmButton.tsx'
 import RichDropdown, {type Option} from '../../common/components/RichDropdown'
 import {
     BASIC_AGENT_ROLE,
@@ -32,7 +32,7 @@ import InputField from '../../common/forms/InputField'
 import * as actions from '../../../state/agents/actions.ts'
 import {updateAccountOwner} from '../../../state/currentAccount/actions.ts'
 import * as helpers from '../../../state/agents/helpers.ts'
-import PageHeader from '../../common/components/PageHeader'
+import PageHeader from '../../common/components/PageHeader.tsx'
 import Popover from '../../common/components/Popover'
 
 import DeleteUser from './DeleteUser'

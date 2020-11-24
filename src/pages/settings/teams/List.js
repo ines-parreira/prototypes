@@ -8,7 +8,7 @@ import {connect} from 'react-redux'
 
 import {fromJS, type Map, type List} from 'immutable'
 
-import PageHeader from '../../common/components/PageHeader'
+import PageHeader from '../../common/components/PageHeader.tsx'
 
 import * as actions from '../../../state/teams/actions.ts'
 import Avatar from '../../common/components/Avatar'

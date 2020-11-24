@@ -92,7 +92,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
         }
       >
         <div
-          className="d-flex align-items-center justify-content-between flex-wrap page-header "
+          className="d-flex align-items-center justify-content-between flex-wrap page-header"
         >
           <Breadcrumb
             tag="ol"
@@ -426,7 +426,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
         }
       >
         <div
-          className="d-flex align-items-center justify-content-between flex-wrap page-header "
+          className="d-flex align-items-center justify-content-between flex-wrap page-header"
         >
           <Breadcrumb
             tag="ol"

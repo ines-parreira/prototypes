@@ -27,7 +27,7 @@ import Errors from '../../../common/forms/Errors'
 import InputField from '../../../common/forms/InputField'
 
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
-import PageHeader from '../../../common/components/PageHeader'
+import PageHeader from '../../../common/components/PageHeader.tsx'
 import * as currentAccountSelectors from '../../../../state/currentAccount/selectors.ts'
 import {Plan} from '../plans/Plan'
 

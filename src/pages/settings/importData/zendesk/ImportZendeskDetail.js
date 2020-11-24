@@ -10,7 +10,7 @@ import InputField from '../../../common/forms/InputField'
 import {ZENDESK_IMPORTED_TICKETS_FOR_YEARS} from '../../../../config.ts'
 
 import * as utils from '../../../../utils.ts'
-import PageHeader from '../../../common/components/PageHeader'
+import PageHeader from '../../../common/components/PageHeader.tsx'
 
 import * as integrationActions from './../../../../state/integrations/actions.ts'
 

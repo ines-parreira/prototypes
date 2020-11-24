@@ -171,14 +171,7 @@ exports[`ShopifyIntegrationDetail should render the page for a deactivated integ
               className="float-right"
               color="secondary"
               confirm={[Function]}
-              confirmColor="success"
               content="Are you sure you want to delete this integration?"
-              disabled={false}
-              loading={false}
-              placement="bottom"
-              skip={false}
-              title="Are you sure?"
-              type="button"
             >
               <i
                 className="material-icons mr-1 text-danger"
@@ -458,14 +451,7 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
               className="float-right"
               color="secondary"
               confirm={[Function]}
-              confirmColor="success"
               content="Are you sure you want to delete this integration?"
-              disabled={false}
-              loading={false}
-              placement="bottom"
-              skip={false}
-              title="Are you sure?"
-              type="button"
             >
               <i
                 className="material-icons mr-1 text-danger"
@@ -694,14 +680,7 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
               className="float-right"
               color="secondary"
               confirm={[Function]}
-              confirmColor="success"
               content="Are you sure you want to delete this integration?"
-              disabled={false}
-              loading={false}
-              placement="bottom"
-              skip={false}
-              title="Are you sure?"
-              type="button"
             >
               <i
                 className="material-icons mr-1 text-danger"
@@ -890,14 +869,7 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
               className="float-right"
               color="secondary"
               confirm={[Function]}
-              confirmColor="success"
               content="Are you sure you want to delete this integration?"
-              disabled={false}
-              loading={false}
-              placement="bottom"
-              skip={false}
-              title="Are you sure?"
-              type="button"
             >
               <i
                 className="material-icons mr-1 text-danger"
@@ -1096,14 +1068,7 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
               className="float-right"
               color="secondary"
               confirm={[Function]}
-              confirmColor="success"
               content="Are you sure you want to delete this integration?"
-              disabled={false}
-              loading={false}
-              placement="bottom"
-              skip={false}
-              title="Are you sure?"
-              type="button"
             >
               <i
                 className="material-icons mr-1 text-danger"
@@ -1394,14 +1359,7 @@ exports[`ShopifyIntegrationDetail should render the page to update an existing i
               className="float-right"
               color="secondary"
               confirm={[Function]}
-              confirmColor="success"
               content="Are you sure you want to delete this integration?"
-              disabled={false}
-              loading={false}
-              placement="bottom"
-              skip={false}
-              title="Are you sure?"
-              type="button"
             >
               <i
                 className="material-icons mr-1 text-danger"

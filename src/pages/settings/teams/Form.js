@@ -21,10 +21,10 @@ import classnames from 'classnames'
 
 import * as actions from '../../../state/teams/actions.ts'
 import Loader from '../../common/components/Loader'
-import PageHeader from '../../common/components/PageHeader'
+import PageHeader from '../../common/components/PageHeader.tsx'
 import InputField from '../../common/forms/InputField'
 import SecondaryNavbar from '../../common/components/SecondaryNavbar/SecondaryNavbar'
-import ConfirmButton from '../../common/components/ConfirmButton'
+import ConfirmButton from '../../common/components/ConfirmButton.tsx'
 import {type teamType} from '../../../state/teams/types'
 import EmojiPicker from '../../common/components/EmojiPicker'
 

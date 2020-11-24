@@ -9,7 +9,7 @@ import BooleanField from '../../common/forms/BooleanField'
 import InputField from '../../common/forms/InputField'
 import RichFieldWithVariables from '../../common/forms/RichFieldWithVariables'
 
-import PageHeader from '../../common/components/PageHeader'
+import PageHeader from '../../common/components/PageHeader.tsx'
 import * as currentAccountSelectors from '../../../state/currentAccount/selectors.ts'
 import * as currentAccountActions from '../../../state/currentAccount/actions.ts'
 import * as currentAccountConstants from '../../../state/currentAccount/constants'

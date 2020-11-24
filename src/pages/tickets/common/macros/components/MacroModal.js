@@ -11,7 +11,7 @@ import Loader from '../../../../common/components/Loader'
 import Modal from '../../../../common/components/Modal'
 import {DEFAULT_ACTIONS} from '../../../../../config.ts'
 import {APPLY_MACRO_JOB_TYPE} from '../../../../../constants/job.ts'
-import ConfirmButton from '../../../../common/components/ConfirmButton'
+import ConfirmButton from '../../../../common/components/ConfirmButton.tsx'
 import * as segmentTracker from '../../../../../store/middlewares/segmentTracker'
 import shortcutManager from '../../../../../services/shortcutManager/index.ts'
 

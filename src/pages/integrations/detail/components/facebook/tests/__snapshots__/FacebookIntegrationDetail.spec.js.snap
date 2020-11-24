@@ -269,14 +269,8 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        confirmColor="success"
         content="Are you sure you want to delete this integration?"
         disabled={false}
-        loading={false}
-        placement="bottom"
-        skip={false}
-        title="Are you sure?"
-        type="button"
       >
         <i
           className="material-icons mr-1 text-danger"
@@ -583,14 +577,8 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        confirmColor="success"
         content="Are you sure you want to delete this integration?"
         disabled={false}
-        loading={false}
-        placement="bottom"
-        skip={false}
-        title="Are you sure?"
-        type="button"
       >
         <i
           className="material-icons mr-1 text-danger"
@@ -900,14 +888,8 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        confirmColor="success"
         content="Are you sure you want to delete this integration?"
         disabled={false}
-        loading={false}
-        placement="bottom"
-        skip={false}
-        title="Are you sure?"
-        type="button"
       >
         <i
           className="material-icons mr-1 text-danger"
@@ -1217,14 +1199,8 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        confirmColor="success"
         content="Are you sure you want to delete this integration?"
         disabled={false}
-        loading={false}
-        placement="bottom"
-        skip={false}
-        title="Are you sure?"
-        type="button"
       >
         <i
           className="material-icons mr-1 text-danger"
@@ -1534,14 +1510,8 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         className="float-right"
         color="secondary"
         confirm={[Function]}
-        confirmColor="success"
         content="Are you sure you want to delete this integration?"
         disabled={true}
-        loading={false}
-        placement="bottom"
-        skip={false}
-        title="Are you sure?"
-        type="button"
       >
         <i
           className="material-icons mr-1 text-danger"

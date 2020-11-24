@@ -25,7 +25,7 @@ import {
 
 import Loader from '../../../../../common/components/Loader'
 import ObjectListField from '../ObjectListField'
-import ConfirmButton from '../../../../../common/components/ConfirmButton'
+import ConfirmButton from '../../../../../common/components/ConfirmButton.tsx'
 import InputField from '../../../../../common/forms/InputField'
 import BooleanField from '../../../../../common/forms/BooleanField'
 

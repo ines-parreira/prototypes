@@ -18,7 +18,7 @@ import * as rulesConfig from '../../../../../../config/rules.ts'
 import EditableTitle from '../../../../../common/components/EditableTitle'
 import Program from '../../../../../common/components/ast/Program.tsx'
 import Errors from '../../../../../common/components/ast/Errors'
-import ConfirmButton from '../../../../../common/components/ConfirmButton'
+import ConfirmButton from '../../../../../common/components/ConfirmButton.tsx'
 
 import * as rulesHelpers from '../../../../../../state/rules/helpers.ts'
 
@@ -191,6 +191,7 @@ export default class RuleItem extends React.Component<Props, State> {
             <div className={css['buttons-container']}>
                 <div>
                     <Button
+                        id="rule-item-save"
                         color="success"
                         type="submit"
                         disabled={this.state.isSubmitting || !this._canSubmit()}
@@ -199,6 +200,7 @@ export default class RuleItem extends React.Component<Props, State> {
                         Save rule
                     </Button>
                     <Button
+                        id="rule-item-duplicate"
                         color="secondary"
                         type="submit"
                         className="ml-3"
@@ -208,6 +210,7 @@ export default class RuleItem extends React.Component<Props, State> {
                         Duplicate rule
                     </Button>
                     <ConfirmButton
+                        id="rule-item-discard"
                         color="secondary"
                         className="ml-3"
                         loading={this.state.isResetting}
@@ -219,6 +222,7 @@ export default class RuleItem extends React.Component<Props, State> {
                 </div>
                 <div>
                     <ConfirmButton
+                        id="rule-item-delete"
                         color="secondary"
                         className={classnames('ml-2', css['delete-button'])}
                         loading={this.state.isDeleting}

@@ -13,7 +13,7 @@ import * as currentAccountActions from '../../../state/currentAccount/actions.ts
 import * as currentAccountConstants from '../../../state/currentAccount/constants'
 import * as currentAccountSelectors from '../../../state/currentAccount/selectors.ts'
 
-import PageHeader from '../../common/components/PageHeader'
+import PageHeader from '../../common/components/PageHeader.tsx'
 import BooleanField from '../../common/forms/BooleanField'
 import {
     CHANNELS,

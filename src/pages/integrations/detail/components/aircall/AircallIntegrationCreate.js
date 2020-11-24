@@ -16,7 +16,7 @@ import {
 import Clipboard from 'clipboard'
 
 import * as integrationsSelectors from '../../../../../state/integrations/selectors.ts'
-import PageHeader from '../../../../common/components/PageHeader'
+import PageHeader from '../../../../common/components/PageHeader.tsx'
 
 @connect((state) => {
     return {

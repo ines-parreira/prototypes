@@ -1,95 +1,89 @@
 import React from 'react'
-import {shallow, mount} from 'enzyme'
+import {
+    fireEvent,
+    render,
+    waitFor,
+    waitForElementToBeRemoved,
+} from '@testing-library/react'
 
-import ConfirmButton from '../ConfirmButton'
+import ConfirmButton from '../ConfirmButton.tsx'
 
-describe('ConfirmButton component', () => {
+describe('<ConfirmButton />', () => {
     it('should match snapshot', () => {
-        const component = shallow(<ConfirmButton id="1" />)
+        const {container} = render(<ConfirmButton id="1" />)
 
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should show popover on click', () => {
-        const component = shallow(<ConfirmButton id="1" />)
-        component
-            .find('#confirm-button-1')
-            .simulate('click', new Event('click'))
+        const {getByText} = render(<ConfirmButton id="1">Submit</ConfirmButton>)
 
-        expect(component.state('showConfirmation')).toBe(true)
+        fireEvent.click(getByText('Submit'))
+
+        expect(getByText(/are you sure/i)).toBeTruthy()
     })
 
-    it('should hide popover on confirm', () => {
-        const component = shallow(<ConfirmButton id="1" />)
-        component
-            .find('#confirm-button-1')
-            .simulate('click', new Event('click'))
-        component.find('Popover Button').simulate('click')
+    it('should hide popover on confirm', async () => {
+        const {getByText} = render(<ConfirmButton id="1">Submit</ConfirmButton>)
 
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                expect(component.state('showConfirmation')).toBe(false)
-                resolve()
-            })
-        })
+        fireEvent.click(getByText('Submit'))
+        fireEvent.click(getByText('Confirm'))
+        await waitForElementToBeRemoved(() => getByText('Confirm'))
     })
 
     it('should submit form', () => {
-        // reactstrap popover needs to be in the dom
-        // https://github.com/reactstrap/reactstrap/issues/818
-        const container = document.createElement('div')
-        document.body.appendChild(container)
         const submit = jest.fn()
-        const component = mount(
+        const {getByText} = render(
             <form onSubmit={submit}>
-                <ConfirmButton id="1" type="submit" skip={true} />
-            </form>,
-            {attachTo: container}
+                <ConfirmButton id="1" type="submit" skip={true}>
+                    Submit
+                </ConfirmButton>
+            </form>
         )
 
-        component.find('button#confirm-button-1').simulate('submit')
-
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                expect(submit).toBeCalled()
-                resolve()
-            })
-        })
+        fireEvent.click(getByText('Submit'))
+        expect(submit).toBeCalled()
     })
 
     it('should have loading state', () => {
-        const component = shallow(<ConfirmButton id="1" loading />)
-        expect(component).toMatchSnapshot()
+        const {container} = render(<ConfirmButton id="1" loading />)
+        expect(container.firstChild).toMatchSnapshot()
     })
 
     it('should have loading state on confirm', () => {
         const confirm = () => new Promise((resolve) => setTimeout(resolve, 10))
-        const component = shallow(<ConfirmButton id="1" confirm={confirm} />)
-        component.find('Button').last().simulate('click')
+        const {getByText} = render(
+            <ConfirmButton id="1" confirm={confirm}>
+                Submit
+            </ConfirmButton>
+        )
+        fireEvent.click(getByText('Submit'))
+        fireEvent.click(getByText('Confirm'))
 
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                expect(
-                    component.find('Button').first().hasClass('btn-loading')
-                ).toBe(true)
-                resolve()
-            })
-        })
+        expect(
+            getByText('Submit').getAttribute('class').includes('btn-loading')
+        ).toBe(true)
     })
 
-    it('should not have loading state on confirm done', () => {
+    it('should not have loading state on confirm done', async () => {
         const confirm = jest.fn()
-        const component = shallow(<ConfirmButton id="1" confirm={confirm} />)
-        component.find('Button').last().simulate('click')
+        const {getByText} = render(
+            <ConfirmButton id="1" confirm={confirm}>
+                Submit
+            </ConfirmButton>
+        )
+        const submitNode = getByText('Submit')
+        fireEvent.click(submitNode)
+        fireEvent.click(getByText('Confirm'))
 
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                expect(confirm).toHaveBeenCalled()
-                expect(
-                    component.find('Button').first().hasClass('btn-loading')
-                ).toBe(false)
-                resolve()
-            }, 10)
-        })
+        expect(submitNode.getAttribute('class').includes('btn-loading')).toBe(
+            true
+        )
+
+        await waitFor(() =>
+            expect(
+                submitNode.getAttribute('class').includes('btn-loading')
+            ).toBe(false)
+        )
     })
 })

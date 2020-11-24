@@ -9,7 +9,7 @@ import {
     linkifyString,
     sanitizeHtmlDefault,
 } from '../../../../../utils/html.ts'
-import Ellipsis from '../../../../common/components/Ellipsis'
+import Ellipsis from '../../../../common/components/Ellipsis.tsx'
 
 type Props = {
     html?: string,

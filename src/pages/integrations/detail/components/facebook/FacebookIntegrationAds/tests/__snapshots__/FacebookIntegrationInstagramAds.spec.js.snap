@@ -112,7 +112,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render a spinner 1`]
           }
         >
           <div
-            className="d-flex align-items-center justify-content-between flex-wrap page-header "
+            className="d-flex align-items-center justify-content-between flex-wrap page-header"
           >
             <Breadcrumb
               tag="ol"
@@ -457,7 +457,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
           }
         >
           <div
-            className="d-flex align-items-center justify-content-between flex-wrap page-header "
+            className="d-flex align-items-center justify-content-between flex-wrap page-header"
           >
             <Breadcrumb
               tag="ol"
@@ -1344,7 +1344,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
           }
         >
           <div
-            className="d-flex align-items-center justify-content-between flex-wrap page-header "
+            className="d-flex align-items-center justify-content-between flex-wrap page-header"
           >
             <Breadcrumb
               tag="ol"
@@ -1791,7 +1791,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
           }
         >
           <div
-            className="d-flex align-items-center justify-content-between flex-wrap page-header "
+            className="d-flex align-items-center justify-content-between flex-wrap page-header"
           >
             <Breadcrumb
               tag="ol"
@@ -2332,7 +2332,7 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render without ad 1`
           }
         >
           <div
-            className="d-flex align-items-center justify-content-between flex-wrap page-header "
+            className="d-flex align-items-center justify-content-between flex-wrap page-header"
           >
             <Breadcrumb
               tag="ol"

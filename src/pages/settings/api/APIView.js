@@ -17,7 +17,7 @@ import * as authsSelectors from '../../../state/auths/selectors.ts'
 import * as currentAccountSelectors from '../../../state/currentAccount/selectors.ts'
 import {fetchCurrentAuths, resetApiKey} from '../../../state/auths/actions.ts'
 import {notify} from '../../../state/notifications/actions.ts'
-import PageHeader from '../../common/components/PageHeader'
+import PageHeader from '../../common/components/PageHeader.tsx'
 import * as segmentTracker from '../../../store/middlewares/segmentTracker'
 
 type Props = {

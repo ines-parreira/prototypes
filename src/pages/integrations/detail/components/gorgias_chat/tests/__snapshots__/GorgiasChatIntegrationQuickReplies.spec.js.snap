@@ -96,7 +96,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
         }
       >
         <div
-          className="d-flex align-items-center justify-content-between flex-wrap page-header "
+          className="d-flex align-items-center justify-content-between flex-wrap page-header"
         >
           <Breadcrumb
             tag="ol"
@@ -998,7 +998,7 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
         }
       >
         <div
-          className="d-flex align-items-center justify-content-between flex-wrap page-header "
+          className="d-flex align-items-center justify-content-between flex-wrap page-header"
         >
           <Breadcrumb
             tag="ol"

@@ -3,7 +3,7 @@ import React from 'react'
 
 import type {Node} from 'react'
 
-import ConfirmButton from '../../common/components/ConfirmButton'
+import ConfirmButton from '../../common/components/ConfirmButton.tsx'
 
 type Props = {
     action: () => Promise<*>,

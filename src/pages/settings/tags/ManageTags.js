@@ -18,7 +18,7 @@ import InputField from '../../common/forms/InputField'
 
 import Pagination from '../../common/components/Pagination'
 import Loader from '../../common/components/Loader'
-import PageHeader from '../../common/components/PageHeader'
+import PageHeader from '../../common/components/PageHeader.tsx'
 import Video from '../../common/components/Video'
 import Search from '../../common/components/Search'
 

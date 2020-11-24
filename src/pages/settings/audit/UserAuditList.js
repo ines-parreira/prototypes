@@ -6,7 +6,7 @@ import _pick from 'lodash/pick'
 import moment from 'moment'
 
 import Loader from '../../common/components/Loader/Loader'
-import PageHeader from '../../common/components/PageHeader'
+import PageHeader from '../../common/components/PageHeader.tsx'
 import DatePicker from '../../common/forms/DatePicker'
 import SearchableSelectField from '../../stats/common/SearchableSelectField'
 import Pagination from '../../common/components/Pagination'

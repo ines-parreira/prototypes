@@ -40,12 +40,12 @@ import {
 
 import * as integrationSelectors from '../../../../../../state/integrations/selectors.ts'
 
-import ConfirmButton from '../../../../../common/components/ConfirmButton'
+import ConfirmButton from '../../../../../common/components/ConfirmButton.tsx'
 import ColorField from '../../../../../common/forms/ColorField'
 import FileField from '../../../../../common/forms/FileField'
 import InputField from '../../../../../common/forms/InputField'
 import Loader from '../../../../../common/components/Loader'
-import PageHeader from '../../../../../common/components/PageHeader'
+import PageHeader from '../../../../../common/components/PageHeader.tsx'
 import RadioField from '../../../../../common/forms/RadioField'
 
 import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'

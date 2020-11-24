@@ -18,7 +18,7 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
-import ConfirmButton from '../ConfirmButton.js'
+import ConfirmButton from '../ConfirmButton'
 import {fieldPath, getDefaultOperator, slugify} from '../../../../utils'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
 import ViewSharingButton from '../ViewSharing/index.js'
@@ -359,6 +359,7 @@ export class FilterTopbarContainer extends React.Component<Props, State> {
                             </div>
                             {!isSearch && !isSystemView && isUpdate && (
                                 <ConfirmButton
+                                    id="delete-view"
                                     content={
                                         <span>
                                             You are about to <b>delete</b> this

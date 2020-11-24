@@ -4,7 +4,7 @@ import {fromJS, Map} from 'immutable'
 import {Button} from 'reactstrap'
 
 import {isCurrentlyOnTicket} from '../../../../../utils.ts'
-import ConfirmButton from '../../ConfirmButton'
+import ConfirmButton from '../../ConfirmButton.tsx'
 
 import * as segmentTracker from '../../../../../store/middlewares/segmentTracker'
 

@@ -7,7 +7,7 @@ import _xor from 'lodash/xor'
 import {Button, Container, Table} from 'reactstrap'
 
 import Modal from '../../../../common/components/Modal'
-import PageHeader from '../../../../common/components/PageHeader'
+import PageHeader from '../../../../common/components/PageHeader.tsx'
 
 import ReactSortable from '../../../../common/components/dragging/ReactSortable'
 import {getAST, getCode} from '../../../../../utils.ts'

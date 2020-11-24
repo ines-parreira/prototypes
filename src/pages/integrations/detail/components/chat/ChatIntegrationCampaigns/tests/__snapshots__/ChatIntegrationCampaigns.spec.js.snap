@@ -92,7 +92,7 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
         }
       >
         <div
-          className="d-flex align-items-center justify-content-between flex-wrap page-header "
+          className="d-flex align-items-center justify-content-between flex-wrap page-header"
         >
           <Breadcrumb
             tag="ol"
@@ -426,7 +426,7 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
         }
       >
         <div
-          className="d-flex align-items-center justify-content-between flex-wrap page-header "
+          className="d-flex align-items-center justify-content-between flex-wrap page-header"
         >
           <Breadcrumb
             tag="ol"

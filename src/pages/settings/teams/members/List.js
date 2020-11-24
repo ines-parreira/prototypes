@@ -13,7 +13,7 @@ import {Link} from 'react-router'
 import {fromJS, type List, type Map, Set} from 'immutable'
 import classnames from 'classnames'
 
-import PageHeader from '../../../common/components/PageHeader'
+import PageHeader from '../../../common/components/PageHeader.tsx'
 import SecondaryNavbar from '../../../common/components/SecondaryNavbar/SecondaryNavbar'
 import * as actions from '../../../../state/teams/actions.ts'
 import Pagination from '../../../common/components/Pagination'

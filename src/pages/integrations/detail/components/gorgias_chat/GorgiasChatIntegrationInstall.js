@@ -12,7 +12,7 @@ import {
 
 import {notify} from '../../../../../state/notifications/actions.ts'
 import * as integrationSelectors from '../../../../../state/integrations/selectors.ts'
-import PageHeader from '../../../../common/components/PageHeader'
+import PageHeader from '../../../../common/components/PageHeader.tsx'
 import CustomInstallationCard from '../../../common/CustomInstallationCard/CustomInstallationCard'
 import InstallOnIntegrationsCard from '../../../common/InstallOnIntegrationsCard'
 

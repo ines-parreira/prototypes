@@ -12,7 +12,7 @@ import {
 import {GMAIL_IMPORTED_EMAILS_FOR_YEARS} from '../../../../../../config.ts'
 import {getRedirectUri} from '../../../../../../state/integrations/selectors.ts'
 
-import PageHeader from '../../../../../common/components/PageHeader'
+import PageHeader from '../../../../../common/components/PageHeader.tsx'
 
 import googleLogo from '../../../../../../../img/integrations/google-icon.svg'
 import officeLogo from '../../../../../../../img/integrations/office-transparent.png'

@@ -9,7 +9,7 @@ import type {Map} from 'immutable'
 
 import {changePassword} from '../../../state/currentUser/actions.ts'
 import InputField from '../../common/forms/InputField'
-import PageHeader from '../../common/components/PageHeader'
+import PageHeader from '../../common/components/PageHeader.tsx'
 
 type Props = {
     currentUser: Map<any, any>,

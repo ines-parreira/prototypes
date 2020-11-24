@@ -14,7 +14,7 @@ import {notify} from '../../../../../../state/notifications/actions.ts'
 
 import InputField from '../../../../../common/forms/InputField'
 
-import PageHeader from '../../../../../common/components/PageHeader'
+import PageHeader from '../../../../../common/components/PageHeader.tsx'
 
 import css from './EmailIntegrationCreateCustom.less'
 

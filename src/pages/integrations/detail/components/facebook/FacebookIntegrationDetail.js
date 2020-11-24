@@ -21,8 +21,8 @@ import {
 import InputField from '../../../../common/forms/InputField'
 import BooleanField from '../../../../common/forms/BooleanField'
 import Loader from '../../../../common/components/Loader'
-import PageHeader from '../../../../common/components/PageHeader'
-import ConfirmButton from '../../../../common/components/ConfirmButton'
+import PageHeader from '../../../../common/components/PageHeader.tsx'
+import ConfirmButton from '../../../../common/components/ConfirmButton.tsx'
 
 import pageIconDefault from '../../../../../../img/integrations/facebook-page.png'
 

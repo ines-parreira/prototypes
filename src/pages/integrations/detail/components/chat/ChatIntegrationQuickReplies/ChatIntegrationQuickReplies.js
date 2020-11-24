@@ -14,7 +14,7 @@ import {
 } from 'reactstrap'
 import classnames from 'classnames'
 
-import PageHeader from '../../../../../common/components/PageHeader'
+import PageHeader from '../../../../../common/components/PageHeader.tsx'
 import BooleanField from '../../../../../common/forms/BooleanField'
 import ListField from '../../../../../common/forms/ListField'
 import {updateOrCreateIntegration} from '../../../../../../state/integrations/actions.ts'

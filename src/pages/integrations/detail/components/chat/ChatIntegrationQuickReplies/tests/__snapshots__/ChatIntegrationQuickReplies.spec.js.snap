@@ -96,7 +96,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
         }
       >
         <div
-          className="d-flex align-items-center justify-content-between flex-wrap page-header "
+          className="d-flex align-items-center justify-content-between flex-wrap page-header"
         >
           <Breadcrumb
             tag="ol"
@@ -998,7 +998,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
         }
       >
         <div
-          className="d-flex align-items-center justify-content-between flex-wrap page-header "
+          className="d-flex align-items-center justify-content-between flex-wrap page-header"
         >
           <Breadcrumb
             tag="ol"

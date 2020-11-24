@@ -25,7 +25,7 @@ import InputField from '../../../common/forms/InputField'
 import Avatar from '../../../common/components/Avatar'
 import FileField from '../../../common/forms/FileField'
 import SelectField from '../../../common/forms/SelectField'
-import PageHeader from '../../../common/components/PageHeader'
+import PageHeader from '../../../common/components/PageHeader.tsx'
 
 import {AVAILABLE_LANGUAGES} from './../../../../config.ts'
 

@@ -4,7 +4,7 @@ import React, {Component} from 'react'
 import {Link} from 'react-router'
 import {Breadcrumb, BreadcrumbItem} from 'reactstrap'
 
-import PageHeader from '../../../../../common/components/PageHeader'
+import PageHeader from '../../../../../common/components/PageHeader.tsx'
 import SecondaryNavbar from '../../../../../common/components/SecondaryNavbar/SecondaryNavbar'
 
 type Props = {
