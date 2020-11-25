@@ -68,6 +68,7 @@ type State = {
     name: string,
     import_spam: boolean,
     use_gmail_categories: boolean,
+    enable_gmail_sending: boolean,
     signature_text: string,
     signature_html: string,
 }
@@ -82,6 +83,7 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
         name: '',
         import_spam: false,
         use_gmail_categories: false,
+        enable_gmail_sending: true,
         signature_text: '',
         signature_html: '',
     }
@@ -109,6 +111,10 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
         return {
             name: integration.get('name', ''),
             import_spam: integration.getIn(['meta', 'import_spam']) || false,
+            enable_gmail_sending:
+                integration.get('type') === GMAIL_INTEGRATION_TYPE
+                    ? integration.getIn(['meta', 'enable_gmail_sending'], true)
+                    : true,
             use_gmail_categories:
                 integration.get('type') === GMAIL_INTEGRATION_TYPE
                     ? integration.getIn(['meta', 'use_gmail_categories']) ||
@@ -128,10 +134,15 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
             .setIn(['meta', 'signature', 'html'], this.state.signature_html)
 
         if (integration.get('type') === GMAIL_INTEGRATION_TYPE) {
-            form = form.setIn(
-                ['meta', 'use_gmail_categories'],
-                this.state.use_gmail_categories
-            )
+            form = form
+                .setIn(
+                    ['meta', 'use_gmail_categories'],
+                    this.state.use_gmail_categories
+                )
+                .setIn(
+                    ['meta', 'enable_gmail_sending'],
+                    this.state.enable_gmail_sending
+                )
         }
 
         return form
@@ -423,7 +434,13 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
         const isGmail = integration.get('type') === GMAIL_INTEGRATION_TYPE
         const isOutlook = integration.get('type') === OUTLOOK_INTEGRATION_TYPE
 
-        const {errors, import_spam, name, use_gmail_categories} = this.state
+        const {
+            errors,
+            import_spam,
+            name,
+            use_gmail_categories,
+            enable_gmail_sending,
+        } = this.state
 
         const hasErrors = Object.values(errors).some((val) => val != null)
 
@@ -432,6 +449,25 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
             `Cannot contain these characters: ${displayRestrictedSymbols(
                 EMAIL_INTEGRATION_NAME_FORBIDDEN_CHARS
             )}`
+
+        const enableGmailSendingHelp = (
+            <div>
+                Disable this option if you face connectivity issues with your
+                Gmail integration, or if Gmail keeps identifying your inbox as
+                spam. If you disable this option, we will send those emails
+                directly instead of going through Gmail. In order to keep a good
+                deliverability in this case, you will need to{' '}
+                <a
+                    href="https://docs.gorgias.com/email-integrations/email#spf_setup"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    setup SPF
+                </a>
+                . Also, if you disable this option, your emails will not be
+                synchronized in the Sent folder of your Gmail inbox anymore.
+            </div>
+        )
 
         return (
             <div className="mt-4">
@@ -490,6 +526,23 @@ class EmailIntegrationUpdate extends React.Component<Props, State> {
                             onChange={this._updateSignature}
                         />
                     </FormGroup>
+                    {isGmail && (
+                        <FormGroup>
+                            <BooleanField
+                                name="enable_gmail_sending"
+                                type="checkbox"
+                                label="Enable sending emails with Gmail"
+                                help={enableGmailSendingHelp}
+                                value={enable_gmail_sending}
+                                onChange={(value) =>
+                                    this.setState({
+                                        dirty: true,
+                                        enable_gmail_sending: value,
+                                    })
+                                }
+                            />
+                        </FormGroup>
+                    )}
                     {!isOutlook && (
                         <FormGroup>
                             <BooleanField
