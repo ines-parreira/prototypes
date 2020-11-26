@@ -26,7 +26,7 @@ const TicketSnoozePicker = ({
         'In 3 hours': [moment().add(3, 'hours'), moment().add(3, 'hours')],
         'In 6 hours': [moment().add(6, 'hours'), moment().add(6, 'hours')],
         'In 1 day': [moment().add(1, 'days'), moment().add(1, 'days')],
-        'In 3 days': [moment().add(3, 'days'), moment().add(3, 'days')],
+        'In 2 days': [moment().add(2, 'days'), moment().add(2, 'days')],
         'in 1 week': [moment().add(7, 'days'), moment().add(7, 'days')],
     }
 
