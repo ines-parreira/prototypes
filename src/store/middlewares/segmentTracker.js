@@ -50,7 +50,6 @@ export const EVENTS = {
     DISPLAY_ALL_EVENTS_CLICKED: 'display-all-events-clicked',
     EXTERNAL_LINK_CLICKED: 'external-link-clicked',
     HELP_CENTER_CLICKED: 'help-center-clicked',
-    INFOBAR_ACTION_CLICKED: 'infobar-action-clicked',
     INFOBAR_INTEGRATION_ADD_CLICKED: 'infobar-integration-add-clicked',
     INTEGRATION_CLICKED: 'integration-clicked',
     MODAL_TOGGLED: 'modal-toggled',

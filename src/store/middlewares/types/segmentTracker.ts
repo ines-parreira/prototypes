@@ -4,7 +4,6 @@ export enum SegmentEvent {
     DisplayAllEventsClicked = 'display-all-events-clicked',
     ExternalLinkClicked = 'external-link-clicked',
     HelpCenterClicked = 'help-center-clicked',
-    InfobarActionClicked = 'infobar-action-clicked',
     InfobarIntegrationAddClicked = 'infobar-integration-add-clicked',
     IntegrationClicked = 'integration-clicked',
     ModalToggled = 'modal-toggled',

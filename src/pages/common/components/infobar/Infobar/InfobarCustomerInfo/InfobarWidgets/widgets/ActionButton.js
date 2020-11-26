@@ -24,8 +24,6 @@ import SelectField from '../../../../../../forms/SelectField'
 import BooleanField from '../../../../../../forms/BooleanField'
 import InputField from '../../../../../../forms/InputField'
 
-import {getActionByName} from '../../../../../../../../config/actions.ts'
-import * as segmentTracker from '../../../../../../../../store/middlewares/segmentTracker'
 import * as infobarActions from '../../../../../../../../state/infobar/actions.ts'
 import * as infobarSelectors from '../../../../../../../../state/infobar/selectors.ts'
 import * as infobarUtils from '../../../../../../../../state/infobar/utils.ts'
@@ -180,18 +178,6 @@ export default class ActionButton extends React.Component<Props, State> {
     _confirmAction = (event: ?Event = null) => {
         if (event) {
             event.preventDefault()
-        }
-
-        const actionConfig: ?Object = getActionByName(this.state.actionName)
-
-        if (actionConfig) {
-            segmentTracker.logEvent(
-                segmentTracker.EVENTS.INFOBAR_ACTION_CLICKED,
-                {
-                    type: this.context.integration.get('type'),
-                    name: actionConfig.label,
-                }
-            )
         }
 
         const payload = {
