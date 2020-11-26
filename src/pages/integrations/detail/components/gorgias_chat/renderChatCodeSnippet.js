@@ -48,7 +48,7 @@ const endComment = '<!--Gorgias Chat Widget End-->'
 //                     var c = document.createElement("div");
 //                     c.id = "__CONTAINER_ID__";
 //                     document.body.appendChild(c);
-//                     const s = document.createElement("script");
+//                     var s = document.createElement("script");
 //                     s.setAttribute("defer", true);
 //                     s.src = "__BUNDLE_URL_REPLACE__".replace("__REPLACEABLE_TEXT__", res.bundleVersion);
 //                     document.body.appendChild(s);
@@ -64,7 +64,7 @@ const endComment = '<!--Gorgias Chat Widget End-->'
 // </script>
 // `
 // previous template uglified on https://skalman.github.io/UglifyJS-online/
-const minifiedChatScriptTemplate = `<script>!function(_){_.GORGIAS_CHAT_APP_ID="__CHAT_APP_ID__",_.GORGIAS_CHAT_BASE_URL="__CHAT_URL__",_.GORGIAS_API_BASE_URL="__API_URL__";var e=new XMLHttpRequest;e.open("GET","__ENDPOINT__",!0),e.onload=function(t){if(4===e.readyState)if(200===e.status){var n=JSON.parse(e.responseText);if(!n.application||!n.bundleVersion)throw new Error("Missing fields in the response body - __ENDPOINT__");if(_.GORGIAS_CHAT_APP=n.application,_.GORGIAS_CHAT_BUNDLE_VERSION=n.bundleVersion,n&&n.texts&&(_.GORGIAS_CHAT_TEXTS=n.texts),!document.getElementById("__CONTAINER_ID__")){var o=document.createElement("div");o.id="__CONTAINER_ID__",document.body.appendChild(o);const _=document.createElement("script");_.setAttribute("defer",!0),_.src="__BUNDLE_URL_REPLACE__".replace("__REPLACEABLE_TEXT__",n.bundleVersion),document.body.appendChild(_)}}else console.error("Failed request GET - __ENDPOINT__")},e.onerror=function(_){console.error(_)},e.send()}(window||{});</script>`
+const minifiedChatScriptTemplate = `<script>!function(_){_.GORGIAS_CHAT_APP_ID="__CHAT_APP_ID__",_.GORGIAS_CHAT_BASE_URL="__CHAT_URL__",_.GORGIAS_API_BASE_URL="__API_URL__";var e=new XMLHttpRequest;e.open("GET","__ENDPOINT__",!0),e.onload=function(n){if(4===e.readyState)if(200===e.status){var t=JSON.parse(e.responseText);if(!t.application||!t.bundleVersion)throw new Error("Missing fields in the response body - __ENDPOINT__");if(_.GORGIAS_CHAT_APP=t.application,_.GORGIAS_CHAT_BUNDLE_VERSION=t.bundleVersion,t&&t.texts&&(_.GORGIAS_CHAT_TEXTS=t.texts),!document.getElementById("__CONTAINER_ID__")){var o=document.createElement("div");o.id="__CONTAINER_ID__",document.body.appendChild(o);var r=document.createElement("script");r.setAttribute("defer",!0),r.src="__BUNDLE_URL_REPLACE__".replace("__REPLACEABLE_TEXT__",t.bundleVersion),document.body.appendChild(r)}}else console.error("Failed request GET - __ENDPOINT__")},e.onerror=function(_){console.error(_)},e.send()}(window||{});</script>`
 
 export function renderChatCodeSnippet({
     chatAppId,
@@ -76,7 +76,7 @@ export function renderChatCodeSnippet({
             // TODO: make it available in the helpdesk env variables instead of hardcoding it here?
             bundleUrl: `${gorgiasChatExtraState.get(
                 'bundleUrl'
-            )}/static/js/bundle.js`,
+            )}/static/js/main.js`,
             chatUrl: gorgiasChatExtraState
                 .get('chatUrl', '')
                 .replace('https://', ''),
