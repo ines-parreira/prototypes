@@ -13,21 +13,23 @@ import {
     ComponentStatus,
     MaintenanceStatus,
     Page,
-    StatusPageComponentsResponseData,
+    StatusPageComponent,
     StatusPageScheduledMaintenanceResponseData,
+    StatusPageIncident,
+    StatusPageIncidentsResponseData,
 } from './types'
 
 import {
     CLUSTER_GROUP_ID,
-    COMPONENT_STATUS_LABEL,
-    COMPONENTS_NOTIFICATION_ID,
-    COMPONENTS_POLLING_INTERVAL_SECONDS,
+    INCIDENTS_NOTIFICATION_ID,
+    INCIDENTS_POLLING_INTERVAL_SECONDS,
     HELPDESK_GROUP_IDS,
     INTEGRATION_COMPONENTS_TYPES,
     MAINTENANCE_NOTIFICATION_BEFORE_MINUTES,
     MAINTENANCE_NOTIFICATION_ID,
     MAINTENANCE_POLLING_INTERVAL_SECONDS,
     PAGE_ID,
+    INCIDENT_IMPACT_LABEL,
 } from './constants'
 
 //$TsFixMe remove once init.js is migrated
@@ -40,10 +42,11 @@ const typeSafeReduxStore = reduxStore as EnhancedStore
  * StatusPage JS SDK documentation: https://status.gorgias.com/api
  */
 export class StatusPageManager {
-    statusPage: Maybe<Page> = null
-    store = typeSafeReduxStore
-    fetchComponentsInterval: Maybe<number> = null
-    fetchScheduledMaintenancesInterval: Maybe<number> = null
+    readonly statusPage: Maybe<Page> = null
+    private store = typeSafeReduxStore
+    private fetchScheduledMaintenancesInterval: number | null = null
+    private fetchUnresolvedIncidentsInterval: number | null = null
+    private previousIncidentsIds: string[] = []
 
     constructor() {
         if (window.StatusPage) {
@@ -57,13 +60,13 @@ export class StatusPageManager {
             return
         }
 
-        this.fetchComponents()
+        this.fetchUnresolvedIncidents()
         this.fetchScheduledMaintenances()
 
         // since the status can change we need to poll them continuously to give updates to users.
-        this.fetchComponentsInterval = window.setInterval(
-            this.fetchComponents,
-            COMPONENTS_POLLING_INTERVAL_SECONDS * 1000
+        this.fetchUnresolvedIncidentsInterval = window.setInterval(
+            this.fetchUnresolvedIncidents,
+            INCIDENTS_POLLING_INTERVAL_SECONDS * 1000
         )
 
         this.fetchScheduledMaintenancesInterval = window.setInterval(
@@ -73,24 +76,14 @@ export class StatusPageManager {
     }
 
     stopPolling = () => {
-        window.clearInterval(this.fetchComponentsInterval as number)
+        window.clearInterval(this.fetchUnresolvedIncidentsInterval as number)
         window.clearInterval(this.fetchScheduledMaintenancesInterval as number)
-    }
-
-    /**
-     * Fetch & Process components status updates. Docs: https://status.gorgias.com/api#components
-     */
-    fetchComponents = () => {
-        if (!this.statusPage) {
-            return
-        }
-        this.statusPage.components({success: this.processComponents})
     }
 
     /**
      * Fetch & Process scheduled maintenance status updates. Docs: https://status.gorgias.com/api#scheduled-maintenances
      */
-    fetchScheduledMaintenances = () => {
+    private fetchScheduledMaintenances = () => {
         if (!this.statusPage) {
             return
         }
@@ -99,14 +92,61 @@ export class StatusPageManager {
         })
     }
 
-    processComponents = (data: StatusPageComponentsResponseData) => {
-        const notification = {
-            level: -1,
-            status: NotificationStatus.Info,
-            label: '',
-            groupNames: new Set(),
-            componentNames: new Set(),
+    /**
+     * Fetch & Process unresolved incidents. Docs: https://status.gorgias.com/api#incidents-unresolved
+     */
+    private fetchUnresolvedIncidents = () => {
+        if (!this.statusPage) {
+            return
         }
+        this.statusPage.incidents({
+            filter: 'unresolved',
+            success: this.processIncidents,
+        })
+    }
+
+    static isIncidentImpactingCurrentCluster({components}: StatusPageIncident) {
+        let areClustersAffected = false
+
+        for (const component of components) {
+            if (component.group_id === CLUSTER_GROUP_ID) {
+                areClustersAffected = true
+                if (component.name === window.GORGIAS_CLUSTER) {
+                    return true
+                }
+            }
+        }
+        return !areClustersAffected
+    }
+
+    static getAffectedComponents(
+        components: StatusPageComponent[],
+        activeIntegrationsTypes: ImmutableSet<IntegrationType>
+    ) {
+        return components.filter((component) => {
+            const affectedIntegrationType =
+                INTEGRATION_COMPONENTS_TYPES[component.id]
+            const groupName = HELPDESK_GROUP_IDS[component.group_id]
+            if (
+                component.group_id === CLUSTER_GROUP_ID &&
+                component.name !== window.GORGIAS_CLUSTER
+            ) {
+                return false
+            }
+
+            if (groupName && component.status !== ComponentStatus.Operational) {
+                if (
+                    affectedIntegrationType &&
+                    !activeIntegrationsTypes.includes(affectedIntegrationType)
+                ) {
+                    return false
+                }
+                return true
+            }
+        })
+    }
+
+    processIncidents = (data: StatusPageIncidentsResponseData) => {
         const activeIntegrations = getActiveIntegrations(this.store.getState())
         const activeIntegrationsTypes: ImmutableSet<IntegrationType> = activeIntegrations
             .map(
@@ -114,97 +154,76 @@ export class StatusPageManager {
                     integration.get('type') as IntegrationType
             )
             .toSet()
-        let clustersAffected = false
-        let foundCluster = false
+
+        const relevantIncidents = data.incidents
+            .filter((incident) =>
+                StatusPageManager.isIncidentImpactingCurrentCluster(incident)
+            )
+            .map((incident) => ({
+                ...incident,
+                components: StatusPageManager.getAffectedComponents(
+                    incident.components,
+                    activeIntegrationsTypes
+                ),
+            }))
+            .filter((incident) => incident.components.length)
 
         // remove all previous notifications
-        //eslint-disable-next-line @typescript-eslint/no-unsafe-call
-        this.store.dispatch(removeNotification(COMPONENTS_NOTIFICATION_ID))
+        this.previousIncidentsIds.forEach((id) => {
+            this.store.dispatch(
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+                removeNotification(`${INCIDENTS_NOTIFICATION_ID}-${id}`)
+            )
+        })
+        this.previousIncidentsIds = []
 
-        // Filter incidents per cluster.
-        for (const component of data.components) {
-            if (component.status === ComponentStatus.Operational) {
-                continue
+        relevantIncidents.forEach((incident) => {
+            this.previousIncidentsIds.push(incident.id)
+            const incidentStatus = INCIDENT_IMPACT_LABEL[incident.impact]
+            const notification = {
+                level: incidentStatus.level,
+                status: incidentStatus.status,
+                label: incidentStatus.label,
+                groupNames: new Set(),
+                componentNames: new Set(),
             }
 
-            if (component.group_id === CLUSTER_GROUP_ID) {
-                clustersAffected = true
-
-                if (component.name === window.GORGIAS_CLUSTER) {
-                    foundCluster = true
-                    break
-                }
-            }
-        }
-
-        // if no clusters components are affected then show the notification - meaning that it affects all clusters.
-        if (clustersAffected && !foundCluster) {
-            return
-        }
-
-        // We're only interested in certain components
-        for (const component of data.components) {
-            const groupName = HELPDESK_GROUP_IDS[component.group_id]
-            const componentStatus = COMPONENT_STATUS_LABEL[component.status]
-
-            // filter out components that don't belong to our groups of interest
-            if (
-                !groupName ||
-                [
-                    ComponentStatus.Operational,
-                    ComponentStatus.DegradedPerformance,
-                ].includes(component.status)
-            ) {
-                continue
-            }
-
-            // filter out affected integration components that are not active for this account
-            const affectedIntegrationType =
-                INTEGRATION_COMPONENTS_TYPES[component.id]
-            if (
-                affectedIntegrationType &&
-                !activeIntegrationsTypes.includes(affectedIntegrationType)
-            ) {
-                continue
-            }
-
-            // Find the highest status (Ex: major outage) and use it for display.
-            // Ex: if we have a 'major outage' and a simultaneous 'partial outage' incident only show
-            // 'major outage' since it's more important.
-            if (componentStatus.level >= notification.level) {
-                notification.level = componentStatus.level
-                notification.status = componentStatus.status
-                notification.label = componentStatus.label
-                // if there are mixed incident levels we could combine the groups/names here - this can lead to some
+            incident.components.forEach((component) => {
+                // if there are mixed incident levels we combine the groups/names - this can lead to some
                 // confusion, but it can be resolved by looking at the status page incident itself.
-                notification.groupNames.add(groupName)
+                notification.groupNames.add(
+                    HELPDESK_GROUP_IDS[component.group_id]
+                )
                 // we have a lot of components -> only show a couple
                 if (notification.componentNames.size < 5) {
                     notification.componentNames.add(component.name)
                 }
-            }
-        }
+            })
+            const components = `${Array.from(notification.componentNames).join(
+                ', '
+            )} component${notification.componentNames.size > 1 ? 's' : ''}`
+            const message = `
+                Currently experiencing ${
+                    notification.label
+                } in our ${Array.from(notification.groupNames).join(
+                ' & '
+            )} affecting ${components}.
+                Find out more on our <u><a href="${
+                    data.page.url
+                }" target="_blank" rel="noreferrer noopener">status page</a></u>.`
 
-        if (notification.level > 0) {
             this.store.dispatch(
                 notify({
-                    id: COMPONENTS_NOTIFICATION_ID,
+                    id: `${INCIDENTS_NOTIFICATION_ID}-${incident.id}`,
                     status: notification.status,
                     style: 'banner',
-                    message: `
-Currently experiencing ${notification.label} in our ${Array.from(
-                        notification.groupNames
-                    ).join(' & ')} affecting
-${Array.from(notification.componentNames).join(', ')} components.
-Find out more on our <u><a href="${
-                        data.page.url
-                    }" target="_blank" rel="noreferrer noopener">status page</a></u>.`,
+                    message,
                     allowHTML: true,
                     dismissible: false,
                     closable: true,
                 } as any) as any
             )
-        }
+        })
     }
 
     processScheduledMaintenances = (

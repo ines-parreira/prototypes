@@ -1,10 +1,19 @@
 // @flow
 
-import {MAINTENANCE_STATUSES, COMPONENT_STATUSES} from './constants.ts'
+import {
+    MAINTENANCE_STATUSES,
+    COMPONENT_STATUSES,
+    INCIDENT_IMPACTS,
+    INCIDENT_STATUSES,
+} from './constants.ts'
 
 export type ComponentStatus = $Values<typeof COMPONENT_STATUSES>
 
 export type MaintenanceStatus = $Values<typeof MAINTENANCE_STATUSES>
+
+export type IncidentImpact = $Values<typeof INCIDENT_IMPACTS>
+
+export type IncidentStatus = $Values<typeof INCIDENT_STATUSES>
 
 export type StatusPage = {
     id: string,
@@ -19,9 +28,17 @@ export type StatusPageComponent = {
     status: ComponentStatus,
 }
 
-export type StatusPageComponentsResponseData = {
-    page: StatusPage,
+export type StatusPageIncident = {
+    id: string,
+    name: string,
+    impact: IncidentImpact,
+    status: IncidentStatus,
     components: StatusPageComponent[],
+}
+
+export type StatusPageIncidentsResponseData = {
+    page: StatusPage,
+    components: StatusPageIncident[],
 }
 
 export type StatusPageScheduledMaintenance = {

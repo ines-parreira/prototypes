@@ -5,6 +5,20 @@ export enum ComponentStatus {
     MajorOutage = 'major_outage',
 }
 
+export enum IncidentImpact {
+    None = 'none',
+    Minor = 'minor',
+    Major = 'major',
+    Critical = 'critical',
+}
+
+export enum IncidentStatus {
+    Investigating = 'investigating',
+    Identified = 'identified',
+    Monitoring = 'monitoring',
+    Resolved = 'resolved',
+}
+
 export enum MaintenanceStatus {
     Scheduled = 'scheduled',
     InProgress = 'in_progress',
@@ -26,9 +40,17 @@ export type StatusPageComponent = {
     status: ComponentStatus
 }
 
-export type StatusPageComponentsResponseData = {
-    page: StatusPage
+export type StatusPageIncident = {
+    id: string
+    name: string
+    impact: IncidentImpact
+    status: IncidentStatus
     components: StatusPageComponent[]
+}
+
+export type StatusPageIncidentsResponseData = {
+    page: StatusPage
+    incidents: StatusPageIncident[]
 }
 
 export type StatusPageScheduledMaintenance = {
@@ -45,8 +67,9 @@ export type StatusPageScheduledMaintenanceResponseData = {
 export declare class Page {
     constructor(page: Partial<StatusPage>)
 
-    public components(component: {
-        success: (data: StatusPageComponentsResponseData) => void
+    public incidents(component: {
+        filter: string
+        success: (data: StatusPageIncidentsResponseData) => void
     }): void
 
     public scheduled_maintenances(component: {

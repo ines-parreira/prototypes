@@ -1,6 +1,8 @@
 import {NotificationStatus} from '../../state/notifications/types'
 import {IntegrationType} from '../../models/integration/types'
 
+import {IncidentImpact} from './types'
+
 const isProduction = process.env.NODE_ENV === 'production'
 
 export const PAGE_ID = isProduction ? '2lqy3hys4460' : '35qcq6ntxgz6'
@@ -35,6 +37,22 @@ export const MAINTENANCE_STATUSES = Object.freeze({
     COMPLETED: 'completed',
 })
 
+//$TsFixMe fallback for js files, use IncidentImpact enum
+export const INCIDENT_IMPACTS = Object.freeze({
+    NONE: 'none',
+    MINOR: 'minor',
+    MAJOR: 'major',
+    CRITICAL: 'critical',
+})
+
+//$TsFixMe fallback for js files, use IncidentStatus enum
+export const INCIDENT_STATUSES = Object.freeze({
+    Investigating: 'investigating',
+    Identified: 'identified',
+    Monitoring: 'monitoring',
+    Resolved: 'resolved',
+})
+
 // mapping of statuspage components and integration types
 export const INTEGRATION_COMPONENTS_TYPES: {
     [key: string]: IntegrationType
@@ -62,40 +80,41 @@ export const INTEGRATION_COMPONENTS_TYPES: {
           '72gh1dxg7hnv': IntegrationType.FacebookIntegrationType,
           wfkm6njpgc6p: IntegrationType.GmailIntegrationType,
           '3gk4mkb0w9q4': IntegrationType.OutlookIntegrationType,
+          ys5kq8wycd9w: IntegrationType.FacebookIntegrationType, // Instagram comments
       })
 
 // Mapping between statuspage.io statuses (https://status.gorgias.com/api) and our own notification status/labels.
-export const COMPONENT_STATUS_LABEL = Object.freeze({
-    [COMPONENT_STATUSES.OPERATIONAL]: {
+export const INCIDENT_IMPACT_LABEL = Object.freeze({
+    [IncidentImpact.None]: {
         level: 0,
         status: NotificationStatus.Info,
         label: 'operational',
     },
-    [COMPONENT_STATUSES.DEGRADED_PERFORMANCE]: {
+    [IncidentImpact.Minor]: {
         level: 1,
         status: NotificationStatus.Warning,
         label: 'degraded performance',
     },
-    [COMPONENT_STATUSES.PARTIAL_OUTAGE]: {
+    [IncidentImpact.Major]: {
         level: 2,
         status: NotificationStatus.Error,
         label: 'a partial outage',
     },
-    [COMPONENT_STATUSES.MAJOR_OUTAGE]: {
+    [IncidentImpact.Critical]: {
         level: 3,
         status: NotificationStatus.Error,
         label: 'a major outage',
     },
 })
 
-export const COMPONENTS_NOTIFICATION_ID = 'status-page-components'
+export const INCIDENTS_NOTIFICATION_ID = 'status-page-components'
 export const MAINTENANCE_NOTIFICATION_ID = 'status-page-maintenance'
 
 // time before the maintenance event we'll display a notification to the user - used to give users some warning.
 export const MAINTENANCE_NOTIFICATION_BEFORE_MINUTES = 60
 
-// polling components (incidents) more often
-export const COMPONENTS_POLLING_INTERVAL_SECONDS = 30
+// polling incidents more often
+export const INCIDENTS_POLLING_INTERVAL_SECONDS = 30
 
 // polling scheduled maintenance cycles less often since they are usually scheduled in advance
 export const MAINTENANCE_POLLING_INTERVAL_SECONDS = 300

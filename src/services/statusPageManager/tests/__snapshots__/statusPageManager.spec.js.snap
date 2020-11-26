@@ -1,19 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`statusPageManager processComponents() cluster filtering should not notify if cluster not matched 1`] = `Array []`;
-
-exports[`statusPageManager processComponents() cluster filtering should notify if matches the cluster 1`] = `
+exports[`statusPageManager processIncidents() cluster filtering should notify if matches the cluster 1`] = `
 Array [
   Array [
     Object {
       "allowHTML": true,
       "closable": true,
       "dismissible": false,
-      "id": "status-page-components",
+      "id": "status-page-components-incident-id",
       "message": "
-Currently experiencing a major outage in our API affecting
-REST API components.
-Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a></u>.",
+                Currently experiencing a partial outage in our API affecting REST API component.
+                Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a></u>.",
       "status": "error",
       "style": "banner",
     },
@@ -21,18 +18,17 @@ Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_bla
 ]
 `;
 
-exports[`statusPageManager processComponents() cluster filtering should notify if matches the second cluster 1`] = `
+exports[`statusPageManager processIncidents() cluster filtering should notify if matches the second cluster 1`] = `
 Array [
   Array [
     Object {
       "allowHTML": true,
       "closable": true,
       "dismissible": false,
-      "id": "status-page-components",
+      "id": "status-page-components-incident-id",
       "message": "
-Currently experiencing a major outage in our API affecting
-REST API components.
-Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a></u>.",
+                Currently experiencing a partial outage in our API affecting REST API component.
+                Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a></u>.",
       "status": "error",
       "style": "banner",
     },
@@ -40,22 +36,17 @@ Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_bla
 ]
 `;
 
-exports[`statusPageManager processComponents() integration filtering should not notify if integration type does not match 1`] = `Array []`;
-
-exports[`statusPageManager processComponents() integration filtering should not notify if matches an inactive integration 1`] = `Array []`;
-
-exports[`statusPageManager processComponents() integration filtering should notify active integrations and filter out inactive ones 1`] = `
+exports[`statusPageManager processIncidents() integration filtering should notify active integrations and filter out inactive ones 1`] = `
 Array [
   Array [
     Object {
       "allowHTML": true,
       "closable": true,
       "dismissible": false,
-      "id": "status-page-components",
+      "id": "status-page-components-incident-id",
       "message": "
-Currently experiencing a major outage in our API affecting
-Gmail Integration components.
-Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a></u>.",
+                Currently experiencing a partial outage in our API affecting Gmail Integration component.
+                Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a></u>.",
       "status": "error",
       "style": "banner",
     },
@@ -63,18 +54,17 @@ Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_bla
 ]
 `;
 
-exports[`statusPageManager processComponents() integration filtering should notify if matches an active integration 1`] = `
+exports[`statusPageManager processIncidents() integration filtering should notify if matches an active integration 1`] = `
 Array [
   Array [
     Object {
       "allowHTML": true,
       "closable": true,
       "dismissible": false,
-      "id": "status-page-components",
+      "id": "status-page-components-incident-id",
       "message": "
-Currently experiencing a major outage in our API affecting
-Facebook Integration components.
-Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a></u>.",
+                Currently experiencing a partial outage in our API affecting Facebook Integration component.
+                Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a></u>.",
       "status": "error",
       "style": "banner",
     },
@@ -82,18 +72,30 @@ Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_bla
 ]
 `;
 
-exports[`statusPageManager processComponents() should dispatch notification with the highest error level 1`] = `
+exports[`statusPageManager processIncidents() should dispatch as many notifications as there are incidents 1`] = `
 Array [
   Array [
     Object {
       "allowHTML": true,
       "closable": true,
       "dismissible": false,
-      "id": "status-page-components",
+      "id": "status-page-components-incident-id-1",
       "message": "
-Currently experiencing a major outage in our API affecting
-GraphQL API components.
-Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a></u>.",
+                Currently experiencing degraded performance in our API affecting REST API, GraphQL API components.
+                Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a></u>.",
+      "status": "warning",
+      "style": "banner",
+    },
+  ],
+  Array [
+    Object {
+      "allowHTML": true,
+      "closable": true,
+      "dismissible": false,
+      "id": "status-page-components-incident-id-2",
+      "message": "
+                Currently experiencing a major outage in our API affecting REST API, GraphQL API components.
+                Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a></u>.",
       "status": "error",
       "style": "banner",
     },
@@ -101,20 +103,17 @@ Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_bla
 ]
 `;
 
-exports[`statusPageManager processComponents() should dispatch notify with degraded_performance status 1`] = `Array []`;
-
-exports[`statusPageManager processComponents() should dispatch notify with major_outage status 1`] = `
+exports[`statusPageManager processIncidents() should dispatch notify accordingly with critical impact 1`] = `
 Array [
   Array [
     Object {
       "allowHTML": true,
       "closable": true,
       "dismissible": false,
-      "id": "status-page-components",
+      "id": "status-page-components-incident-id",
       "message": "
-Currently experiencing a major outage in our API affecting
-REST API, GraphQL API components.
-Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a></u>.",
+                Currently experiencing a major outage in our API affecting REST API, GraphQL API components.
+                Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a></u>.",
       "status": "error",
       "style": "banner",
     },
@@ -122,18 +121,17 @@ Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_bla
 ]
 `;
 
-exports[`statusPageManager processComponents() should dispatch notify with partial_outage status 1`] = `
+exports[`statusPageManager processIncidents() should dispatch notify accordingly with major impact 1`] = `
 Array [
   Array [
     Object {
       "allowHTML": true,
       "closable": true,
       "dismissible": false,
-      "id": "status-page-components",
+      "id": "status-page-components-incident-id",
       "message": "
-Currently experiencing a partial outage in our API affecting
-REST API, GraphQL API components.
-Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a></u>.",
+                Currently experiencing a partial outage in our API affecting REST API, GraphQL API components.
+                Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a></u>.",
       "status": "error",
       "style": "banner",
     },
@@ -141,9 +139,45 @@ Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_bla
 ]
 `;
 
-exports[`statusPageManager processScheduledMaintenances() should dispatch notify with completed status 1`] = `Array []`;
+exports[`statusPageManager processIncidents() should dispatch notify accordingly with minor impact 1`] = `
+Array [
+  Array [
+    Object {
+      "allowHTML": true,
+      "closable": true,
+      "dismissible": false,
+      "id": "status-page-components-incident-id",
+      "message": "
+                Currently experiencing degraded performance in our API affecting REST API, GraphQL API components.
+                Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a></u>.",
+      "status": "warning",
+      "style": "banner",
+    },
+  ],
+]
+`;
 
-exports[`statusPageManager processScheduledMaintenances() should dispatch notify with in_progress status 1`] = `
+exports[`statusPageManager processIncidents() should dispatch notify accordingly with none impact 1`] = `
+Array [
+  Array [
+    Object {
+      "allowHTML": true,
+      "closable": true,
+      "dismissible": false,
+      "id": "status-page-components-incident-id",
+      "message": "
+                Currently experiencing operational in our API affecting REST API, GraphQL API components.
+                Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_blank\\" rel=\\"noreferrer noopener\\">status page</a></u>.",
+      "status": "info",
+      "style": "banner",
+    },
+  ],
+]
+`;
+
+exports[`statusPageManager processScheduledMaintenances() should dispatch notify or not according to completed status 1`] = `Array []`;
+
+exports[`statusPageManager processScheduledMaintenances() should dispatch notify or not according to in_progress status 1`] = `
 Array [
   Array [
     Object {
@@ -162,7 +196,7 @@ Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_bla
 ]
 `;
 
-exports[`statusPageManager processScheduledMaintenances() should dispatch notify with scheduled status 1`] = `
+exports[`statusPageManager processScheduledMaintenances() should dispatch notify or not according to scheduled status 1`] = `
 Array [
   Array [
     Object {
@@ -181,7 +215,7 @@ Find out more on our <u><a href=\\"https://status.gorgias.com/\\" target=\\"_bla
 ]
 `;
 
-exports[`statusPageManager processScheduledMaintenances() should dispatch notify with verifying status 1`] = `
+exports[`statusPageManager processScheduledMaintenances() should dispatch notify or not according to verifying status 1`] = `
 Array [
   Array [
     Object {
