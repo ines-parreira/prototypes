@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ticketReplyCache should get default item if does not exist 1`] = `
+Immutable.Map {
+  "contentState": null,
+  "selectionState": null,
+  "macro": null,
+  "sourceType": null,
+  "signatureAdded": false,
+}
+`;

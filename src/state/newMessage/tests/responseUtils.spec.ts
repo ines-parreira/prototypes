@@ -18,12 +18,14 @@ import {
 import {convertToHTML} from '../../../utils/editor'
 import {TicketMessageSourceType} from '../../../business/types/ticket'
 import {initialState as newMessageInitialState} from '../reducers'
-import ticketReplyCache from '../ticketReplyCache'
+import ticketReplyCache, {RawCachedTicket} from '../ticketReplyCache'
 import {
     convertToRawWithoutPredictions,
     createPrediction,
     insertPrediction,
 } from '../../../pages/common/draftjs/plugins/prediction/utils.js'
+
+import {getMessageContextSnapshot} from './testUtils'
 
 describe('responseUtils', () => {
     let defaultMessageContext: MessageContext
@@ -48,25 +50,6 @@ describe('responseUtils', () => {
             },
         }
     })
-
-    type MessageContextSnapshot = Omit<MessageContext, 'contentState'> & {
-        contentState: string
-    }
-
-    const getMessageContextSnapshot = ({
-        state,
-        contentState,
-        ...context
-    }: MessageContext): MessageContextSnapshot => {
-        return {
-            ...context,
-            contentState: convertToHTML(contentState),
-            state: state.setIn(
-                ['state', 'contentState'],
-                convertToHTML(state.getIn(['state', 'contentState']))
-            ),
-        }
-    }
 
     describe('addSignature', () => {
         it('should add plain text signature', () => {
@@ -251,23 +234,22 @@ describe('responseUtils', () => {
     describe('addCache', () => {
         let ticketReplyCacheGetSpy: jest.SpyInstance
 
-        const cachedContentRawState = convertToRaw(
-            ContentState.createFromText('Foo bar baz')
-        )
-
-        const cachedSelectionState = SelectionState.createEmpty('foo')
-            .set('anchorOffset', '1')
-            .set('focusKey', 'bar')
-            .set('focusOffset', '2')
+        const cachedTicket: RawCachedTicket = {
+            contentState: convertToRaw(
+                ContentState.createFromText('Foo bar baz')
+            ),
+            selectionState: SelectionState.createEmpty('foo')
+                .set('anchorOffset', '1')
+                .set('focusKey', 'bar')
+                .set('focusOffset', '2') as SelectionState,
+            signatureAdded: true,
+            macro: null,
+            sourceType: TicketMessageSourceType.Email,
+        }
 
         beforeEach(() => {
             ticketReplyCacheGetSpy = jest.spyOn(ticketReplyCache, 'get')
-            ticketReplyCacheGetSpy.mockReturnValue(
-                fromJS({
-                    contentState: cachedContentRawState,
-                    selectionState: cachedSelectionState,
-                })
-            )
+            ticketReplyCacheGetSpy.mockReturnValue(fromJS(cachedTicket))
         })
 
         afterEach(() => {
@@ -422,6 +404,27 @@ describe('responseUtils', () => {
                 contentState: convertToRaw(contentState),
                 selectionState,
                 sourceType,
+            })
+        })
+
+        it('should update the cache with signatureAdded value if signatureAdded is set in the context', () => {
+            const context: MessageContext = {
+                ...updateCacheContext,
+                signatureAdded: true,
+            }
+            const {
+                contentState,
+                selectionState,
+                sourceType,
+                signatureAdded,
+                action: {ticketId},
+            } = context
+            updateCache(context)
+            expect(ticketReplyCacheSetSpy).toHaveBeenLastCalledWith(ticketId, {
+                contentState: convertToRaw(contentState),
+                selectionState,
+                sourceType,
+                signatureAdded,
             })
         })
     })

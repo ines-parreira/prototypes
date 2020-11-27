@@ -10,12 +10,20 @@ import addMention from '../../../pages/common/draftjs/plugins/mentions/modifiers
 import reducer, {makeNewMessage, initialState} from '../reducers'
 import * as types from '../constants'
 import {GorgiasAction} from '../../types'
+import * as responseUtils from '../responseUtils'
+
+import {getMessageContextSnapshot} from './testUtils'
+
+jest.addMatchers(immutableMatchers)
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => 'someRandomKey')
-jest.addMatchers(immutableMatchers)
 
 describe('new message reducer', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+    })
+
     it('should return the initial state', () => {
         expect(reducer(undefined, {} as GorgiasAction)).toEqualImmutable(
             initialState
@@ -244,6 +252,16 @@ describe('new message reducer', () => {
     })
 
     describe('SET_RESPONSE_TEXT action', () => {
+        let addCacheSpy: jest.SpyInstance
+
+        beforeEach(() => {
+            addCacheSpy = jest.spyOn(responseUtils, 'addCache')
+        })
+
+        afterEach(() => {
+            addCacheSpy.mockRestore()
+        })
+
         it('should attach ids of any agent mentioned if in internal-note mode', () => {
             //@ts-ignore
             const editorState = EditorState.push(
@@ -346,7 +364,6 @@ describe('new message reducer', () => {
         it('should not add signature to email', () => {
             const action = {
                 type: types.SET_RESPONSE_TEXT,
-                state: initialState,
                 args: fromJS({
                     contentState: ContentState.createFromText('Hello'),
                 }),
@@ -367,6 +384,44 @@ describe('new message reducer', () => {
                     'contentState',
                 ]) as ContentState).getPlainText()
             ).toEqual('Hello')
+        })
+
+        it('should add cache', () => {
+            const action = {
+                type: types.SET_RESPONSE_TEXT,
+                args: fromJS({
+                    contentState: ContentState.createFromText('Hello'),
+                }),
+            }
+            reducer(initialState, action)
+            expect(addCacheSpy).toHaveBeenCalledTimes(1)
+            const context = (addCacheSpy.mock.calls[0] as [
+                responseUtils.MessageContext
+            ])[0]
+            expect(getMessageContextSnapshot(context)).toMatchSnapshot()
+        })
+
+        it('should restore signatureAdded from context', () => {
+            const action = {
+                type: types.SET_RESPONSE_TEXT,
+                args: fromJS({
+                    contentState: ContentState.createFromText('Hello'),
+                }),
+            }
+            addCacheSpy.mockImplementation(
+                (context: responseUtils.MessageContext) => {
+                    return {
+                        ...context,
+                        signatureAdded: false,
+                    }
+                }
+            )
+            expect(
+                reducer(
+                    initialState.setIn(['state', 'signatureAdded'], false),
+                    action
+                )
+            ).toMatchSnapshot()
         })
     })
 

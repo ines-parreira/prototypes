@@ -1,15 +1,27 @@
 import {fromJS, Map} from 'immutable'
+import {RawDraftContentState, SelectionState} from 'draft-js'
 
 const CACHE_KEY_SEPARATOR = '~'
 const CACHE_KEY_PREFIX = `G${CACHE_KEY_SEPARATOR}`
 export const CACHE_MAX_ITEMS = 5
 
-export const defaultTicket: Map<any, any> = fromJS({
+export type RawCachedTicket = {
+    contentState: RawDraftContentState | null
+    selectionState: SelectionState | null
+    macro: Map<any, any> | null
+    sourceType: string | null
+    signatureAdded: boolean
+}
+
+const defaultRawCachedTicket: RawCachedTicket = {
     contentState: null,
     selectionState: null,
     macro: null,
     sourceType: null,
-})
+    signatureAdded: false,
+}
+
+const defaultCachedTicket: Map<any, any> = fromJS(defaultRawCachedTicket)
 
 export class TicketReplyCache {
     // flow considers classes read-only
@@ -89,7 +101,10 @@ export class TicketReplyCache {
     /**
      * Set a value for a given key
      */
-    set(ticketId = 'new', ticketDetails: Record<string, unknown>) {
+    set(
+        ticketId = 'new',
+        ticketDetails: Partial<RawCachedTicket> | Map<string, unknown>
+    ) {
         // always use strings for ids
         const id = String(ticketId)
         const timestamp = new Date().getTime()
@@ -105,7 +120,7 @@ export class TicketReplyCache {
         }
 
         let ticket = this.get(id, cacheKeys)
-        if (ticket && !ticket.equals(defaultTicket)) {
+        if (ticket && !ticket.equals(defaultCachedTicket)) {
             // merge existing details
             ticket = ticket.merge(fromJS(ticketDetails))
             // And delete the old key
@@ -128,7 +143,7 @@ export class TicketReplyCache {
     get(ticketId = 'new', keys?: Maybe<Array<string>>): Map<any, any> {
         const id = String(ticketId)
         if (id === 'new') {
-            return defaultTicket
+            return defaultCachedTicket
         }
 
         let cacheKeys = []
@@ -146,11 +161,11 @@ export class TicketReplyCache {
                     ) as Map<any, any>
                 } catch (err) {
                     console.error('Failed to fetch item from local storage')
-                    return defaultTicket
+                    return defaultCachedTicket
                 }
             }
         }
-        return defaultTicket
+        return defaultCachedTicket
     }
 
     delete(ticketId = 'new') {

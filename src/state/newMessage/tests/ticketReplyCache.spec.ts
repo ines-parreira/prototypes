@@ -1,10 +1,7 @@
 import {fromJS} from 'immutable'
 
-import {
-    TicketReplyCache,
-    defaultTicket,
-    CACHE_MAX_ITEMS,
-} from '../ticketReplyCache'
+import {TicketReplyCache, CACHE_MAX_ITEMS} from '../ticketReplyCache'
+import {TicketMessageSourceType} from '../../../business/types/ticket'
 
 // Storage Mock
 const storageMock = () => {
@@ -40,7 +37,7 @@ describe('ticketReplyCache', () => {
     })
 
     it('should set/get item', () => {
-        const data = {a: 1}
+        const data = {sourceType: TicketMessageSourceType.Email}
         const key = '123'
 
         cache.set(key, data)
@@ -49,25 +46,27 @@ describe('ticketReplyCache', () => {
     })
 
     it('should get default item if does not exist', () => {
-        expect(cache.get('does not exist')).toEqual(defaultTicket)
         expect(storage).toHaveLength(0)
+        expect(cache.get('does not exist')).toMatchSnapshot()
     })
 
     it('should evict older items', () => {
         for (let i = 0; i < CACHE_MAX_ITEMS + 10; i++) {
-            cache.set(i.toString(), {a: 1})
+            cache.set(i.toString(), {sourceType: TicketMessageSourceType.Email})
         }
         // should stay the same length
         expect(storage).toHaveLength(CACHE_MAX_ITEMS)
     })
 
     it('should keep a single entry for an id', () => {
-        cache.set('1', {a: 1})
-        cache.set('1', {a: 2})
-        cache.set('1', {a: 3})
+        cache.set('1', {sourceType: TicketMessageSourceType.Email})
+        cache.set('1', {sourceType: TicketMessageSourceType.Aircall})
+        cache.set('1', {sourceType: TicketMessageSourceType.Facebook})
 
         // should stay the same length
-        expect(cache.get('1')).toEqual(fromJS({a: 3}))
+        expect(cache.get('1')).toEqual(
+            fromJS({sourceType: TicketMessageSourceType.Facebook})
+        )
         expect(storage).toHaveLength(1)
     })
 })

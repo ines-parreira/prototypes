@@ -92,6 +92,7 @@ should be good now",
     "isBackward": false,
     "hasFocus": false,
   },
+  "signatureAdded": true,
   "state": Immutable.Map {
     "state": Immutable.Map {
       "selectionState": null,

@@ -322,14 +322,15 @@ export default function reducer(
             const sourceType = forward ? 'email-forward' : source.get('type')
 
             let context: responseUtils.MessageContext = {
-                action: action as any,
                 state,
                 contentState,
                 selectionState,
+                sourceType,
+                action: action as any,
                 appliedMacro: appliedMacro as Map<any, any>,
                 forceUpdate: forceUpdate as boolean,
                 forceFocus: forceFocus as boolean,
-                sourceType,
+                signatureAdded: state.getIn(['state', 'signatureAdded']),
             }
 
             context = responseUtils.addCache(context)
@@ -379,6 +380,7 @@ export default function reducer(
                             forceFocus: !!context.forceFocus,
                             forceUpdate: !!context.forceUpdate,
                             cacheAdded: !!context.cacheAdded,
+                            signatureAdded: !!context.signatureAdded,
                         },
                     })
                     // not in the mergeDeep because it would be merged with the previous contentState instead of replacing it

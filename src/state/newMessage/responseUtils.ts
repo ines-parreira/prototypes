@@ -185,8 +185,9 @@ const getCache = (context: MessageContext): MessageContext => {
         ) as ContentState
         if (cachedContentState) {
             context.contentState = convertFromRaw(cachedContentState.toJS())
-            context.forceUpdate = true
             context.forceFocus = true
+            context.forceUpdate = true
+            context.signatureAdded = cachedContent.get('signatureAdded', false)
             const cachedSelectionState = cachedContent.get('selectionState')
             if (cachedSelectionState) {
                 // create a new selection and just copy the props from the cached state
@@ -211,6 +212,7 @@ export const updateCache = (context: MessageContext) => {
         appliedMacro,
         action,
         sourceType,
+        signatureAdded,
     } = context
     const textSignature = action.signature ? action.signature.get('text') : ''
 
@@ -223,9 +225,10 @@ export const updateCache = (context: MessageContext) => {
     ) {
         // TODO (@xarg): We also need to keep the attachments in the cache
         ticketReplyCache.set(action.ticketId, {
-            contentState: convertToRawWithoutPredictions(contentState),
             selectionState,
-            sourceType: sourceType,
+            sourceType,
+            signatureAdded,
+            contentState: convertToRawWithoutPredictions(contentState),
         })
     } else {
         // we're deleting the data from cache so we don't explode the storage
