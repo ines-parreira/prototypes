@@ -21,7 +21,12 @@ export type TicketAssignee = {
     name: string
 }
 
-export type TicketElement = {
+export type TicketElement =
+    | TicketMessage
+    | TicketEvent
+    | TicketSatisfactionSurvey
+
+export type TicketMessage = {
     id?: number
     ticket_id?: number
     message_id?: string
@@ -55,18 +60,15 @@ export type TicketElement = {
     _internal?: {
         id: number
     }
+    isMessage: true
 }
 
-export type TicketEvent = TicketElement & {
+export type TicketEvent = Omit<TicketMessage, 'isMessage'> & {
     isEvent: true
 }
 
-export type TicketSatisfactionSurvey = TicketElement & {
+export type TicketSatisfactionSurvey = Omit<TicketMessage, 'isMessage'> & {
     isSatisfactionSurvey: true
-}
-
-export type TicketMessage = TicketElement & {
-    isMessage: true
 }
 
 export type Actor = {
