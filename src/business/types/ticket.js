@@ -11,4 +11,4 @@ export type TicketStatus = $Values<typeof TicketStatuses>
 
 export type TicketMessageSourceType = $Values<typeof TicketMessageSourceTypes>
 
-export type TicketVia = 'gorgias_chat'
+export type TicketVia = 'gorgias_chat' | 'email' | 'helpdesk' | 'facebook'

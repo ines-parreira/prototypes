@@ -23,6 +23,9 @@ exports[`Header should display header 1`] = `
       />
     </div>
     <Meta
+      integrationId={null}
+      meta={null}
+      ruleId={null}
       via="email"
     />
   </div>
@@ -32,11 +35,18 @@ exports[`Header should display header 1`] = `
     isMessageDeleted={false}
     message={
       Object {
+        "actions": null,
+        "attachments": Array [],
         "channel": "email",
         "created_datetime": "",
+        "external_id": null,
+        "failed_datetime": null,
         "from_agent": false,
         "id": 1,
+        "integration_id": null,
         "isMessage": true,
+        "meta": null,
+        "opened_datetime": null,
         "public": true,
         "receiver": Object {
           "email": "mary.poppins@example.com",
@@ -45,6 +55,7 @@ exports[`Header should display header 1`] = `
           "lastname": "Poppins",
           "name": "Mary Poppins",
         },
+        "rule_id": null,
         "sender": Object {
           "email": "john.doe@example.com",
           "firstname": "John",
@@ -52,6 +63,9 @@ exports[`Header should display header 1`] = `
           "lastname": "Doe",
           "name": "John Doe",
         },
+        "stripped_html": null,
+        "stripped_signature": null,
+        "stripped_text": null,
         "subject": "Some subject",
         "uri": "http://example.com/messages/1",
         "via": "email",
@@ -97,11 +111,18 @@ exports[`Header should display header with metaContent = "Comment deleted on Fac
     isMessageDeleted={true}
     message={
       Object {
+        "actions": null,
+        "attachments": Array [],
         "channel": "email",
         "created_datetime": "",
+        "external_id": null,
+        "failed_datetime": null,
         "from_agent": false,
         "id": 1,
+        "integration_id": null,
         "isMessage": true,
+        "meta": null,
+        "opened_datetime": null,
         "public": true,
         "receiver": Object {
           "email": "mary.poppins@example.com",
@@ -110,6 +131,7 @@ exports[`Header should display header with metaContent = "Comment deleted on Fac
           "lastname": "Poppins",
           "name": "Mary Poppins",
         },
+        "rule_id": null,
         "sender": Object {
           "email": "john.doe@example.com",
           "firstname": "John",
@@ -117,6 +139,9 @@ exports[`Header should display header with metaContent = "Comment deleted on Fac
           "lastname": "Doe",
           "name": "John Doe",
         },
+        "stripped_html": null,
+        "stripped_signature": null,
+        "stripped_text": null,
         "subject": "Some subject",
         "uri": "http://example.com/messages/1",
         "via": "email",
@@ -162,11 +187,18 @@ exports[`Header should display header with metaContent = "Message hidden" 1`] = 
     isMessageDeleted={false}
     message={
       Object {
+        "actions": null,
+        "attachments": Array [],
         "channel": "email",
         "created_datetime": "",
+        "external_id": null,
+        "failed_datetime": null,
         "from_agent": false,
         "id": 1,
+        "integration_id": null,
         "isMessage": true,
+        "meta": null,
+        "opened_datetime": null,
         "public": true,
         "receiver": Object {
           "email": "mary.poppins@example.com",
@@ -175,6 +207,7 @@ exports[`Header should display header with metaContent = "Message hidden" 1`] = 
           "lastname": "Poppins",
           "name": "Mary Poppins",
         },
+        "rule_id": null,
         "sender": Object {
           "email": "john.doe@example.com",
           "firstname": "John",
@@ -182,6 +215,9 @@ exports[`Header should display header with metaContent = "Message hidden" 1`] = 
           "lastname": "Doe",
           "name": "John Doe",
         },
+        "stripped_html": null,
+        "stripped_signature": null,
+        "stripped_text": null,
         "subject": "Some subject",
         "uri": "http://example.com/messages/1",
         "via": "email",

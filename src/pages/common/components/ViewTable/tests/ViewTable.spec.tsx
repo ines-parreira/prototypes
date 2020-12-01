@@ -5,7 +5,7 @@ import {fromJS, Map} from 'immutable'
 import {browserHistory, InjectedRouter} from 'react-router'
 import {Location} from 'history'
 
-import * as ticketFixtures from '../../../../../fixtures/ticket.js'
+import * as ticketFixtures from '../../../../../fixtures/ticket'
 import * as viewsActions from '../../../../../state/views/actions'
 import {view as fixtureView} from '../../../../../fixtures/views.js'
 import {ViewTableContainer} from '../ViewTable'

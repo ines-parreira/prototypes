@@ -1,27 +1,28 @@
-export const ticket = {
-    channel: 'email',
-    priority: 'normal',
+import {Ticket} from '../models/ticket/types'
+import {
+    TicketChannel,
+    TicketMessageSourceType,
+    TicketStatus,
+    TicketVia,
+} from '../business/types/ticket'
+
+export const ticket: Ticket = {
+    channel: TicketChannel.Email,
     meta: null,
     last_received_message_datetime: null,
     subject: 'Great ticket',
     messages: [
         {
             sent_datetime: '2017-07-31T23:07:36.946068+00:00',
-            channel: 'email',
+            channel: TicketChannel.Email,
             meta: null,
             integration_id: 1,
-            headers: {
-                'X-GORGIAS-TICKET-ID': 152,
-                'Message-Id':
-                    '<150154245609.11.10386011626513378232.152-182@worker>',
-                'reply-to': 'Acme Support <support@acme.gorgias.io>',
-            },
             body_html: '<div>Hi! How are <strong>you</strong>?</div>',
             public: true,
             body_text: 'Hi! How are you?',
             subject: '',
             uri: '/api/tickets/1/messages/0/',
-            via: 'helpdesk',
+            via: TicketVia.Helpdesk,
             ticket_id: 152,
             receiver: {
                 id: 34,
@@ -47,7 +48,7 @@ export const ticket = {
                 lastname: 'Plugaru',
             },
             source: {
-                type: 'email',
+                type: TicketMessageSourceType.Email,
                 to: [
                     {
                         name: 'Jean Bon',
@@ -62,12 +63,12 @@ export const ticket = {
             id: 182,
             actions: null,
             failed_datetime: null,
-            internal: null,
             rule_id: null,
+            isMessage: true,
         },
     ],
     uri: '/api/tickets/0/',
-    via: 'helpdesk',
+    via: TicketVia.Helpdesk,
     closed_datetime: null,
     receiver: {
         id: 34,
@@ -79,8 +80,10 @@ export const ticket = {
     external_id: null,
     from_agent: true,
     opened_datetime: null,
+    snooze_datetime: null,
+    trashed_datetime: null,
     created_datetime: '2017-07-31T23:07:35.150000+00:00',
-    status: 'open',
+    status: TicketStatus.Open,
     sender: {
         id: 2,
         email: 'alex@gorgias.io',

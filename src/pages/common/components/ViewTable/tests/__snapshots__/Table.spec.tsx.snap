@@ -163,8 +163,8 @@ exports[`ViewTable::Table should display a default view 1`] = `
         isSelected={false}
         item={
           Immutable.Map {
+            "trashed_datetime": null,
             "channel": "email",
-            "priority": "normal",
             "meta": null,
             "last_received_message_datetime": null,
             "subject": "Great ticket",
@@ -174,11 +174,6 @@ exports[`ViewTable::Table should display a default view 1`] = `
                 "channel": "email",
                 "meta": null,
                 "integration_id": 1,
-                "headers": Immutable.Map {
-                  "X-GORGIAS-TICKET-ID": 152,
-                  "Message-Id": "<150154245609.11.10386011626513378232.152-182@worker>",
-                  "reply-to": "Acme Support <support@acme.gorgias.io>",
-                },
                 "body_html": "<div>Hi! How are <strong>you</strong>?</div>",
                 "public": true,
                 "body_text": "Hi! How are you?",
@@ -225,7 +220,7 @@ exports[`ViewTable::Table should display a default view 1`] = `
                 "id": 182,
                 "actions": null,
                 "failed_datetime": null,
-                "internal": null,
+                "isMessage": true,
                 "rule_id": null,
               },
             ],
@@ -244,6 +239,7 @@ exports[`ViewTable::Table should display a default view 1`] = `
             "opened_datetime": null,
             "created_datetime": "2017-07-31T23:07:35.150000+00:00",
             "status": "open",
+            "snooze_datetime": null,
             "sender": Immutable.Map {
               "id": 2,
               "email": "alex@gorgias.io",
@@ -875,8 +871,8 @@ exports[`ViewTable::Table should display a default view with option selectable s
         isSelected={false}
         item={
           Immutable.Map {
+            "trashed_datetime": null,
             "channel": "email",
-            "priority": "normal",
             "meta": null,
             "last_received_message_datetime": null,
             "subject": "Great ticket",
@@ -886,11 +882,6 @@ exports[`ViewTable::Table should display a default view with option selectable s
                 "channel": "email",
                 "meta": null,
                 "integration_id": 1,
-                "headers": Immutable.Map {
-                  "X-GORGIAS-TICKET-ID": 152,
-                  "Message-Id": "<150154245609.11.10386011626513378232.152-182@worker>",
-                  "reply-to": "Acme Support <support@acme.gorgias.io>",
-                },
                 "body_html": "<div>Hi! How are <strong>you</strong>?</div>",
                 "public": true,
                 "body_text": "Hi! How are you?",
@@ -937,7 +928,7 @@ exports[`ViewTable::Table should display a default view with option selectable s
                 "id": 182,
                 "actions": null,
                 "failed_datetime": null,
-                "internal": null,
+                "isMessage": true,
                 "rule_id": null,
               },
             ],
@@ -956,6 +947,7 @@ exports[`ViewTable::Table should display a default view with option selectable s
             "opened_datetime": null,
             "created_datetime": "2017-07-31T23:07:35.150000+00:00",
             "status": "open",
+            "snooze_datetime": null,
             "sender": Immutable.Map {
               "id": 2,
               "email": "alex@gorgias.io",
@@ -1474,8 +1466,8 @@ exports[`ViewTable::Table should display a view with no fields 1`] = `
         isSelected={false}
         item={
           Immutable.Map {
+            "trashed_datetime": null,
             "channel": "email",
-            "priority": "normal",
             "meta": null,
             "last_received_message_datetime": null,
             "subject": "Great ticket",
@@ -1485,11 +1477,6 @@ exports[`ViewTable::Table should display a view with no fields 1`] = `
                 "channel": "email",
                 "meta": null,
                 "integration_id": 1,
-                "headers": Immutable.Map {
-                  "X-GORGIAS-TICKET-ID": 152,
-                  "Message-Id": "<150154245609.11.10386011626513378232.152-182@worker>",
-                  "reply-to": "Acme Support <support@acme.gorgias.io>",
-                },
                 "body_html": "<div>Hi! How are <strong>you</strong>?</div>",
                 "public": true,
                 "body_text": "Hi! How are you?",
@@ -1536,7 +1523,7 @@ exports[`ViewTable::Table should display a view with no fields 1`] = `
                 "id": 182,
                 "actions": null,
                 "failed_datetime": null,
-                "internal": null,
+                "isMessage": true,
                 "rule_id": null,
               },
             ],
@@ -1555,6 +1542,7 @@ exports[`ViewTable::Table should display a view with no fields 1`] = `
             "opened_datetime": null,
             "created_datetime": "2017-07-31T23:07:35.150000+00:00",
             "status": "open",
+            "snooze_datetime": null,
             "sender": Immutable.Map {
               "id": 2,
               "email": "alex@gorgias.io",

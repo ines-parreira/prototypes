@@ -18,9 +18,9 @@ import css from './Meta.less'
 type Props = {
     messageId?: string,
     via: string,
-    integrationId?: string,
-    ruleId?: string,
-    meta?: MetaType,
+    integrationId?: number | null,
+    ruleId?: string | null,
+    meta?: MetaType | null,
     source?: Source,
 }
 

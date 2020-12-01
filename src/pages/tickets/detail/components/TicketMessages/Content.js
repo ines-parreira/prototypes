@@ -14,8 +14,8 @@ import Ellipsis from '../../../../common/components/Ellipsis.tsx'
 type Props = {
     html?: string,
     text?: string,
-    strippedHtml?: string,
-    strippedText?: string,
+    strippedHtml?: string | null,
+    strippedText?: string | null,
 }
 
 type State = {

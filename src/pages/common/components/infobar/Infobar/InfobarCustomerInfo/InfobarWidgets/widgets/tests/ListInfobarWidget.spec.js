@@ -3,7 +3,7 @@ import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
 import * as widgetsFixtures from '../../../../../../../../../fixtures/widgets'
-import * as ticketFixtures from '../../../../../../../../../fixtures/ticket'
+import * as ticketFixtures from '../../../../../../../../../fixtures/ticket.ts'
 
 import ListInfobarWidget from '../ListInfobarWidget'
 

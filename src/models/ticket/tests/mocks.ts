@@ -1,8 +1,9 @@
 import {
     TicketChannel,
     TicketMessageSourceType,
+    TicketVia,
 } from '../../../business/types/ticket'
-import {Action, TicketMessage, ActionStatus} from '../types'
+import {Action, ActionStatus, TicketMessage} from '../types'
 
 export const message: TicketMessage = {
     id: 1,
@@ -22,12 +23,23 @@ export const message: TicketMessage = {
     },
     subject: 'Some subject',
     channel: TicketChannel.Email,
-    via: 'email',
+    via: TicketVia.Email,
     uri: 'http://example.com/messages/1',
     public: true,
     from_agent: false,
     created_datetime: '',
     isMessage: true,
+    rule_id: null,
+    external_id: null,
+    stripped_signature: null,
+    actions: null,
+    failed_datetime: null,
+    opened_datetime: null,
+    integration_id: null,
+    meta: null,
+    stripped_html: null,
+    stripped_text: null,
+    attachments: [],
 }
 
 export const facebookMessageNoMeta: TicketMessage = {
@@ -48,7 +60,7 @@ export const facebookMessageNoMeta: TicketMessage = {
     },
     subject: 'Some subject',
     channel: TicketChannel.Facebook,
-    via: 'facebook',
+    via: TicketVia.Facebook,
     uri: 'http://example.com/messages/1',
     public: true,
     from_agent: false,
@@ -59,6 +71,17 @@ export const facebookMessageNoMeta: TicketMessage = {
         from: {name: 'Page', address: '657788504429455-657788504429455'},
         type: TicketMessageSourceType.FacebookComment,
     },
+    stripped_signature: null,
+    actions: null,
+    rule_id: null,
+    external_id: null,
+    failed_datetime: null,
+    opened_datetime: null,
+    integration_id: null,
+    meta: null,
+    stripped_html: null,
+    stripped_text: null,
+    attachments: [],
 }
 
 export const facebookMessageWithCustomerReaction = ({

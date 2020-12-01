@@ -25,7 +25,7 @@ describe('ticket message meta', () => {
                 <Meta
                     messageId="some-id"
                     via="something"
-                    integrationId="118"
+                    integrationId={118}
                     meta={{
                         campaign_id: '123',
                     }}
@@ -44,7 +44,7 @@ describe('ticket message meta', () => {
                 <Meta
                     messageId="some-id"
                     via={TicketVias.GORGIAS_CHAT}
-                    integrationId="118"
+                    integrationId={118}
                     meta={{
                         campaign_id: '123',
                     }}
@@ -67,7 +67,7 @@ describe('ticket message meta', () => {
             }
 
             const component = shallow(
-                <Meta via="facebook" integrationId="118" source={source} />
+                <Meta via="facebook" integrationId={118} source={source} />
             )
 
             const from = component.find('From').dive()
@@ -97,7 +97,7 @@ describe('ticket message meta', () => {
                 <Meta
                     messageId={`${postId}_${commentId}`}
                     via="facebook"
-                    integrationId="118"
+                    integrationId={118}
                     source={source}
                 />
             )
@@ -130,7 +130,7 @@ describe('ticket message meta', () => {
                 <Meta
                     messageId={`${postId}_${replyId}`}
                     via="facebook"
-                    integrationId="118"
+                    integrationId={118}
                     source={source}
                 />
             )
@@ -153,7 +153,7 @@ describe('ticket message meta', () => {
             }
 
             const component = shallow(
-                <Meta via="facebook" integrationId="118" source={source} />
+                <Meta via="facebook" integrationId={118} source={source} />
             )
 
             expect(component).toMatchSnapshot()
@@ -171,7 +171,7 @@ describe('ticket message meta', () => {
             }
 
             const component = shallow(
-                <Meta via="instagram" integrationId="118" source={source} />
+                <Meta via="instagram" integrationId={118} source={source} />
             )
 
             const from = component.find('From').dive()

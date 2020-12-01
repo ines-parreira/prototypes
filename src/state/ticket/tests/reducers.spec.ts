@@ -5,7 +5,7 @@ import reducer, {initialState} from '../reducers'
 import * as newMessageTypes from '../../newMessage/constants'
 import * as customerTypes from '../../customers/constants.js'
 import * as types from '../constants'
-import * as ticketFixtures from '../../../fixtures/ticket.js'
+import * as ticketFixtures from '../../../fixtures/ticket'
 import {AuditLogEventType} from '../../../models/event/types'
 import {GorgiasAction} from '../../types'
 

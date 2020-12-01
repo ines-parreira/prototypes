@@ -3,7 +3,7 @@ import _isObject from 'lodash/isObject'
 
 import * as viewsConfig from '../views'
 
-import * as ticketFixtures from '../../fixtures/ticket.js'
+import * as ticketFixtures from '../../fixtures/ticket'
 import {customer} from '../../fixtures/customer'
 import {getAST} from '../../utils'
 

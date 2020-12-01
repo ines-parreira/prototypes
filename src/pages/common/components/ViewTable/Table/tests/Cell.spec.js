@@ -5,7 +5,7 @@ import _omit from 'lodash/omit'
 
 import configureStore from '../../../../../../store/configureStore'
 import * as viewsConfig from '../../../../../../config/views.tsx'
-import * as ticketFixtures from '../../../../../../fixtures/ticket'
+import * as ticketFixtures from '../../../../../../fixtures/ticket.ts'
 import Cell from '../Cell'
 
 describe('ViewTable::Table::Cell', () => {
