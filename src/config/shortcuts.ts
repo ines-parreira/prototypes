@@ -177,6 +177,10 @@ export default {
                 key: 't',
                 description: 'Open the tags dropdown.',
             },
+            OPEN_SNOOZE_TICKET: {
+                key: 'b',
+                description: 'Open the snooze ticket menu.',
+            },
 
             BLUR_EVERYTHING: {
                 // blurs every inputs in the page

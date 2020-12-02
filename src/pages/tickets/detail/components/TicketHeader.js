@@ -196,6 +196,19 @@ export default class TicketHeader extends React.Component<Props, State> {
                 key: 'esc',
                 action: () => this._toggleTrashConfirmation(false),
             },
+            OPEN_SNOOZE_TICKET: {
+                action: () => {
+                    this._toggleSnoozePicker()
+                },
+            },
+            CLOSE_SNOOZE_TICKET: {
+                key: 'esc',
+                action: () => {
+                    if (this.state.showSnoozePicker) {
+                        this._toggleSnoozePicker()
+                    }
+                },
+            },
         })
     }
 

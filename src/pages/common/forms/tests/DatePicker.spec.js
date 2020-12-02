@@ -53,7 +53,7 @@ describe('DatePicker', () => {
         )
         const component = wrapper.instance()
         component._show = jest.fn()
-        component.componentWillReceiveProps({isOpen: true})
+        wrapper.setProps({isOpen: true})
         expect(component._show).toHaveBeenCalled()
     })
 
@@ -61,7 +61,7 @@ describe('DatePicker', () => {
         const toggleSpy = jest.fn()
         const onHideSpy = jest.fn()
         const wrapper = shallow(
-            <DatePicker isOpen={false} toggle={toggleSpy} onHide={onHideSpy}>
+            <DatePicker isOpen={true} toggle={toggleSpy} onHide={onHideSpy}>
                 Select a date
             </DatePicker>
         )
@@ -81,6 +81,8 @@ describe('DatePicker', () => {
         const showSpy = jest.fn()
         component.datePickerRef.$picker.click = showSpy
         component._show()
-        expect(showSpy).toHaveBeenCalled()
+        setImmediate(() => {
+            expect(showSpy).toHaveBeenCalled()
+        })
     })
 })

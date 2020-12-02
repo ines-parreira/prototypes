@@ -30,9 +30,16 @@ export default class DatePicker extends Component<Props> {
 
     datePickerRef: ?Element<typeof DateRangePicker>
 
-    componentWillReceiveProps(nextProps: Props) {
-        if (!this.props.isOpen && nextProps.isOpen) {
+    componentDidUpdate(prevProps: Props) {
+        const {isOpen} = this.props
+        if (!prevProps.isOpen && isOpen) {
             this._show()
+        } else if (prevProps.isOpen && !isOpen) {
+            if (!this.datePickerRef) {
+                return
+            }
+            // $FlowFixMe
+            this.datePickerRef.$picker.click()
         }
     }
 
@@ -62,12 +69,18 @@ export default class DatePicker extends Component<Props> {
         // there are no API/attributes that enable us
         // to show and hide the date picker component,
         // so we simulate a click on it to open it
-        // $FlowFixMe
-        this.datePickerRef.$picker.click()
+
+        // setImmediate is used here to mediate the issues
+        // bootstrap datepicker is having when being used
+        // as a controlled component
+        setImmediate(() => {
+            // $FlowFixMe
+            this.datePickerRef.$picker.click()
+        })
     }
 
     _onEvent = (event: Object) => {
-        if (event.type === 'hide') {
+        if (event.type === 'hide' && this.props.isOpen) {
             if (this.props.toggle) {
                 this.props.toggle()
             }
