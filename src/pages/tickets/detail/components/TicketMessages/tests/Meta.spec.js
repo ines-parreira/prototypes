@@ -187,7 +187,7 @@ describe('ticket message meta', () => {
                 <Meta
                     messageId={`${postId}_${commentId}`}
                     via="facebook"
-                    integrationId="118"
+                    integrationId={118}
                     source={source}
                     meta={meta}
                 />
