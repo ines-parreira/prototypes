@@ -124,6 +124,8 @@ Array [
 ]
 `;
 
+exports[`<SourceActionsFooter/> should render nothing because it's a duplicated Facebook message 1`] = `null`;
+
 exports[`<SourceActionsFooter/> should render page, customer and other reactions because we have all three types of reactions 1`] = `
 Array [
   <span

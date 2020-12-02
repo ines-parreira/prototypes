@@ -46,7 +46,12 @@ export default class Container extends React.Component<Props> {
         const sender = fromJS(message.sender || {})
         let avatar
 
-        if (!isMessageHidden && !isMessageDeleted) {
+        const isMessageDuplicated = message?.meta?.is_duplicated
+        const shouldRenderAvatar =
+            (!isMessageHidden && !isMessageDeleted) ||
+            (isMessageHidden && isMessageDuplicated)
+
+        if (shouldRenderAvatar) {
             avatar = (
                 <div className={css.avatar}>
                     <Avatar
@@ -87,7 +92,8 @@ export default class Container extends React.Component<Props> {
                 <div
                     className={classNames(css.bodyWrapper, {
                         bodyWrapperForHiddenOrDeletedMessage:
-                            isMessageHidden || isMessageDeleted,
+                            (isMessageHidden && !isMessageDuplicated) ||
+                            isMessageDeleted,
                     })}
                 >
                     <Header

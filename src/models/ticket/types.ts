@@ -152,6 +152,14 @@ export type Meta = {
     page_id?: string
     parent_id?: string
     deleted_datetime?: string
+    private_reply?: FacebookPrivateReply
+    is_duplicated?: boolean
+}
+
+export type FacebookPrivateReply = {
+    already_sent?: boolean
+    sent_datetime?: string
+    messenger_ticket_id?: number
 }
 
 export type LastSendingError = {

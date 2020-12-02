@@ -4,7 +4,10 @@ import {shallow} from 'enzyme'
 
 import Header from '../Header'
 import Meta from '../Meta'
-import {message} from '../../../../../../models/ticket/tests/mocks.ts'
+import {
+    message,
+    duplicatedHiddenFacebookMessage,
+} from '../../../../../../models/ticket/tests/mocks.ts'
 
 describe('Header', () => {
     it('should display header', () => {
@@ -26,6 +29,20 @@ describe('Header', () => {
             <Header
                 id="some-header"
                 message={message}
+                timezone="America/Los_Angeles"
+                isLastRead={false}
+                isMessageHidden={true}
+                isMessageDeleted={false}
+            />
+        )
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should not display header with metaContent = "Message hidden" because the message is duplicated', () => {
+        const component = shallow(
+            <Header
+                id="some-header"
+                message={duplicatedHiddenFacebookMessage}
                 timezone="America/Los_Angeles"
                 isLastRead={false}
                 isMessageHidden={true}

@@ -14,3 +14,5 @@ export const FACEBOOK_LANGUAGE_OPTIONS = fromJS([
     {value: Language.German, label: 'German'},
     {value: Language.Norwegian, label: 'Norwegian'},
 ]) as List<any>
+
+export const FACEBOOK_MESSENGER_MESSAGE_MAX_LENGTH = 2000

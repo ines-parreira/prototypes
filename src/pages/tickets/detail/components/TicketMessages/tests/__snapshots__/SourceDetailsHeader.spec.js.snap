@@ -1,0 +1,128 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<SourceDetailsHeader/> should render a \`go to ticket\` link instead of the date because the message is duplicated and should not render the SourceActionsHeader because the message is deleted 1`] = `
+<div
+  className="wrapper"
+>
+  <From
+    key="ref-widget"
+    label="go to"
+  >
+    <a
+      href={1234}
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      ticket
+    </a>
+  </From>
+</div>
+`;
+
+exports[`<SourceDetailsHeader/> should render a \`go to ticket\` link instead of the date because the message is duplicated and should render the SourceActionsHeader because the message is not deleted 1`] = `
+<div
+  className="wrapper"
+>
+  <Connect(SourceActionsHeader)
+    fromAgent={false}
+    messageCreatedDatetime=""
+    meta={
+      Object {
+        "hidden_datetime": "2020-06-18T14:10:14.291746",
+        "is_duplicated": true,
+        "private_reply": Object {
+          "original_ticket_id": 1234,
+        },
+      }
+    }
+    sender={
+      Object {
+        "email": "john.doe@example.com",
+        "firstname": "John",
+        "id": 1,
+        "lastname": "Doe",
+        "name": "John Doe",
+      }
+    }
+    senderId={1}
+    source={
+      Object {
+        "from": Object {
+          "address": "657788504429455-657788504429455",
+          "name": "Page",
+        },
+        "to": Array [
+          Object {
+            "address": "657788504429455-4135481299826174",
+            "name": "Cust Omer",
+          },
+        ],
+        "type": "facebook-comment",
+      }
+    }
+    ticketMessageId={1}
+  />
+  <From
+    key="ref-widget"
+    label="go to"
+  >
+    <a
+      href={1234}
+      rel="noopener noreferrer"
+      target="_blank"
+    >
+      ticket
+    </a>
+  </From>
+</div>
+`;
+
+exports[`<SourceDetailsHeader/> should render a DatetimeLabel and the SourceActionsHeader because the message is not duplicated and is not deleted 1`] = `
+<div
+  className="wrapper"
+>
+  <Connect(SourceActionsHeader)
+    fromAgent={false}
+    messageCreatedDatetime=""
+    sender={
+      Object {
+        "email": "john.doe@example.com",
+        "firstname": "John",
+        "id": 1,
+        "lastname": "Doe",
+        "name": "John Doe",
+      }
+    }
+    senderId={1}
+    source={
+      Object {
+        "from": Object {
+          "address": "657788504429455-657788504429455",
+          "name": "Page",
+        },
+        "to": Array [
+          Object {
+            "address": "657788504429455-4135481299826174",
+            "name": "Cust Omer",
+          },
+        ],
+        "type": "facebook-comment",
+      }
+    }
+    ticketMessageId={1}
+  />
+  <Connect(DatetimeLabel)
+    dateTime=""
+  />
+</div>
+`;
+
+exports[`<SourceDetailsHeader/> should render a DatetimeLabel because the message is not duplicated and should not render the SourceActionsHeader because the message is deleted 1`] = `
+<div
+  className="wrapper"
+>
+  <Connect(DatetimeLabel)
+    dateTime=""
+  />
+</div>
+`;

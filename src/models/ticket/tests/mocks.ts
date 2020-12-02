@@ -276,6 +276,44 @@ export const hiddenFacebookMessage = ({
     },
 } as unknown) as TicketMessage
 
+export const duplicatedHiddenFacebookMessage = ({
+    id: 1,
+    sender: {
+        id: 1,
+        email: 'john.doe@example.com',
+        name: 'John Doe',
+        firstname: 'John',
+        lastname: 'Doe',
+    },
+    receiver: {
+        id: 2,
+        email: 'mary.poppins@example.com',
+        name: 'Mary Poppins',
+        firstname: 'Mary',
+        lastname: 'Poppins',
+    },
+    subject: 'Some subject',
+    channel: TicketChannel.Facebook,
+    via: 'facebook',
+    uri: 'http://example.com/messages/1',
+    public: true,
+    from_agent: false,
+    created_datetime: '',
+    isMessage: true,
+    meta: {
+        hidden_datetime: '2020-06-18T14:10:14.291746',
+        private_reply: {
+            original_ticket_id: 1234,
+        },
+        is_duplicated: true,
+    },
+    source: {
+        to: [{name: 'Cust Omer', address: '657788504429455-4135481299826174'}],
+        from: {name: 'Page', address: '657788504429455-657788504429455'},
+        type: TicketMessageSourceType.FacebookComment,
+    },
+} as unknown) as TicketMessage
+
 export const action: Action = {
     status: ActionStatus.Success,
     name: 'foo',

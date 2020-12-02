@@ -71,6 +71,11 @@ export const actions = [
         label: 'Refund order',
         objectType: 'order',
     },
+    {
+        name: 'facebookPrivateReply',
+        label: 'Replied via',
+        objectType: 'message',
+    },
 ]
 
 export const getActionByName = (name: string) => {

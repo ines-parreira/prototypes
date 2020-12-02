@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<PrivateReplyButton/> render should render a disabled button 1`] = `
+<a
+  class="container btn btn-secondary disabled"
+  disabled=""
+  href="#"
+  id="private-reply-button"
+>
+  <img
+    alt="Messenger icon"
+    class="messengerIcon"
+    src="test-file-stub"
+  />
+  Message
+</a>
+`;
+
+exports[`<PrivateReplyButton/> render should render a disabled button 2`] = `
+<a
+  class="container btn btn-secondary disabled"
+  disabled=""
+  href="#"
+  id="private-reply-button"
+>
+  <img
+    alt="Messenger icon"
+    class="messengerIcon"
+    src="test-file-stub"
+  />
+  Message
+</a>
+`;
+
+exports[`<PrivateReplyButton/> render should render the button 1`] = `
+<a
+  class="container btn btn-secondary"
+  href="#"
+  id="private-reply-button"
+>
+  <img
+    alt="Messenger icon"
+    class="messengerIcon"
+    src="test-file-stub"
+  />
+  Message
+</a>
+`;

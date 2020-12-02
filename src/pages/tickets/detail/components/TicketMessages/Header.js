@@ -49,6 +49,11 @@ export default function Header(props: Props) {
         />
     )
 
+    let isDuplicated = false
+    if (message.meta && message.meta.is_duplicated) {
+        isDuplicated = true
+    }
+
     if (isMessageDeleted) {
         metaContent = (
             <span className={classnames(css.deletedMessage, 'ml-1')}>
@@ -56,7 +61,7 @@ export default function Header(props: Props) {
                 Comment deleted on Facebook
             </span>
         )
-    } else if (isMessageHidden) {
+    } else if (isMessageHidden && !isDuplicated) {
         metaContent = (
             <span className={classnames(css.hiddenMessage, 'ml-1')}>
                 {' '}
@@ -75,7 +80,7 @@ export default function Header(props: Props) {
                 <div
                     className={classNames(css.author, {
                         isAgent: message.from_agent,
-                        hiddenMessage: isMessageHidden,
+                        hiddenMessage: isMessageHidden && !isDuplicated,
                         deletedMessage: isMessageDeleted,
                     })}
                 >

@@ -120,6 +120,9 @@ export const executeAction = (
         draft_order_id?: number
         draft_order_name?: string
         draft_order_invoice?: unknown
+        facebook_comment?: string
+        messenger_reply?: string
+        from_ticket_message_id?: number
     } = {},
     callback: (response?: AxiosResponse) => void = _noop
 ) => (

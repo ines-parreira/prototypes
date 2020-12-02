@@ -4,7 +4,10 @@ import {shallow} from 'enzyme'
 import moment from 'moment'
 
 import Container from '../Container'
-import {message} from '../../../../../../models/ticket/tests/mocks.ts'
+import {
+    message,
+    duplicatedHiddenFacebookMessage,
+} from '../../../../../../models/ticket/tests/mocks.ts'
 import css from '../Container.less'
 
 describe('Container', () => {
@@ -51,6 +54,22 @@ describe('Container', () => {
                 lastMessageDatetimeAfterMount={moment('2017-01-01T12:12:34Z')}
                 isMessageHidden={false}
                 isMessageDeleted={true}
+            />
+        )
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should render container with an avatar because the hidden message is duplicated', () => {
+        const component = shallow(
+            <Container
+                id="some-header"
+                hasCursor={false}
+                message={duplicatedHiddenFacebookMessage}
+                timezone="America/Los_Angeles"
+                isLastRead={false}
+                lastMessageDatetimeAfterMount={moment('2017-01-01T12:12:34Z')}
+                isMessageHidden={true}
+                isMessageDeleted={false}
             />
         )
         expect(component).toMatchSnapshot()

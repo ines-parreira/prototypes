@@ -9,6 +9,7 @@ import {
     facebookMessageNoMeta,
     facebookMessageWithPageAndCustomerReactions,
     hiddenFacebookMessage,
+    duplicatedHiddenFacebookMessage,
 } from '../../../../../../models/ticket/tests/mocks.ts'
 
 import SourceActionsFooter from '../SourceActionsFooter'
@@ -154,6 +155,21 @@ describe('<SourceActionsFooter/>', () => {
                     facebookMessageWithPageAndCustomerReactions.message_id
                 }
                 isMessageHidden={false}
+                isMessageDeleted={false}
+                store={store}
+            />
+        )
+        expect(component).toMatchSnapshot()
+    })
+
+    it("should render nothing because it's a duplicated Facebook message", () => {
+        const component = render(
+            <SourceActionsFooter
+                source={duplicatedHiddenFacebookMessage.source}
+                meta={duplicatedHiddenFacebookMessage.meta}
+                integrationId={duplicatedHiddenFacebookMessage.integration_id}
+                messageId={duplicatedHiddenFacebookMessage.message_id}
+                isMessageHidden={true}
                 isMessageDeleted={false}
                 store={store}
             />

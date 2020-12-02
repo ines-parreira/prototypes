@@ -16,6 +16,8 @@ import {humanizeString, stripErrorMessage} from '../../../../utils.ts'
 import * as integrationsSelectors from '../../../../state/integrations/selectors.ts'
 import * as ticketSelectors from '../../../../state/ticket/selectors.ts'
 
+import facebookMessengerEvent from '../../../../../img/integrations/facebook-messenger-blue-icon.svg'
+
 import css from './Event.less'
 
 @connect((state, ownProps) => {
@@ -168,6 +170,19 @@ export default class Event extends React.Component {
         let actionLabel = actionConfig.label
         let objectLabel = ''
         let objectLink = ''
+        let eventIcon = (
+            <div
+                className={classnames(css.icon, {
+                    [css.danger]: isError,
+                    [css.success]: isSuccess,
+                })}
+                title={isError ? 'Fail' : 'Success'}
+            >
+                <i className="material-icons">{isError ? 'close' : 'check'}</i>
+            </div>
+        )
+
+        let shouldDisplayIntegration = true
 
         if (hasIntegration) {
             if (integration.get('type') === 'shopify') {
@@ -217,6 +232,30 @@ export default class Event extends React.Component {
                     objectLabel += charge.get('id')
                     objectLink = `https://${storeName}.myshopify.com/tools/recurring/customers/${hash}/orders`
                 }
+            } else if (integration.get('type') === 'facebook') {
+                shouldDisplayIntegration = false
+                objectLabel += `Messenger`
+
+                const messengerTicketId = event.getIn([
+                    'data',
+                    'messenger_ticket_id',
+                ])
+
+                objectLink = `${
+                    messengerTicketId != null ? messengerTicketId : '#'
+                }`
+
+                if (isError === false) {
+                    eventIcon = (
+                        <div className={css.replyViaMessengerIcon}>
+                            <img
+                                src={facebookMessengerEvent}
+                                alt="Reply via Messenger"
+                                key="reply-via-messenger-event"
+                            />
+                        </div>
+                    )
+                }
             }
         } else {
             actionLabel += ` #${payload.get('order_id')} (deleted integration)`
@@ -230,18 +269,7 @@ export default class Event extends React.Component {
             >
                 <div className={css.event}>
                     <div className={css.content}>
-                        <div
-                            className={classnames(css.icon, {
-                                [css.danger]: isError,
-                                [css.success]: isSuccess,
-                            })}
-                            title={isError ? 'Fail' : 'Success'}
-                        >
-                            <i className="material-icons">
-                                {isError ? 'close' : 'check'}
-                            </i>
-                        </div>
-
+                        {eventIcon}
                         <span className={css.actionName}>
                             {actionLabel}{' '}
                             {!!objectLabel && (
@@ -255,14 +283,20 @@ export default class Event extends React.Component {
                             )}
                         </span>
 
-                        <span className={css.equalFiller}>on</span>
+                        {hasIntegration && shouldDisplayIntegration && (
+                            <span className={css.equalFiller}>on</span>
+                        )}
 
-                        <span className={css.actionName}>
-                            {_capitalize(
-                                this.getDisplayableType(integration.get('type'))
-                            )}{' '}
-                            ({integration.get('name')})
-                        </span>
+                        {hasIntegration && shouldDisplayIntegration && (
+                            <span className={css.actionName}>
+                                {_capitalize(
+                                    this.getDisplayableType(
+                                        integration.get('type')
+                                    )
+                                )}{' '}
+                                ({integration.get('name')})
+                            </span>
+                        )}
 
                         <span className={css.filler}>by</span>
 

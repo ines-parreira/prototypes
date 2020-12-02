@@ -4,7 +4,7 @@ import classNamesBind from 'classnames/bind'
 import {connect} from 'react-redux'
 
 import * as infobarActions from '../../../../../state/infobar/actions.ts'
-import type {Meta, Source} from '../../../../../models/ticket/types'
+import type {Actor, Meta, Source} from '../../../../../models/ticket/types'
 import hideIcon from '../../../../../../img/integrations/facebook-action-hide.svg'
 import unhideIcon from '../../../../../../img/integrations/facebook-action-unhide.svg'
 
@@ -13,6 +13,8 @@ import {
     INSTAGRAM_AD_COMMENT_SOURCE,
     INSTAGRAM_COMMENT_SOURCE,
 } from '../../../../../config/ticket.ts'
+
+import PrivateReplyButton from '../../../../common/components/PrivateReplyToFBComment/PrivateReplyButton.tsx'
 
 import css from './SourceActions.less'
 
@@ -25,6 +27,12 @@ type Props = {
     messageId?: string,
     fromAgent: boolean,
     executeAction: typeof infobarActions.executeAction,
+    ticketMessageId: number,
+    senderId: number,
+    ticketId?: number,
+    bodyText?: string,
+    sender: Actor,
+    messageCreatedDatetime: string,
 }
 
 export class SourceActionsHeader extends React.Component<Props> {
@@ -50,11 +58,23 @@ export class SourceActionsHeader extends React.Component<Props> {
     }
 
     render() {
-        const {source, meta, fromAgent} = this.props
+        const {
+            source,
+            meta,
+            fromAgent,
+            integrationId,
+            messageId,
+            ticketMessageId,
+            senderId,
+            ticketId,
+            bodyText,
+            sender,
+            messageCreatedDatetime,
+        } = this.props
 
         const widgets = []
 
-        if (!source || !source.type) {
+        if (!source || !source.type || meta?.is_duplicated) {
             return widgets
         }
 
@@ -80,6 +100,32 @@ export class SourceActionsHeader extends React.Component<Props> {
             if (!shouldHide) {
                 actionIcon = unhideIcon
                 actionText = 'Unhide'
+            }
+
+            if (isFacebookComment && !fromAgent) {
+                widgets.push(
+                    <span
+                        key="private_reply-action"
+                        className={classNames(
+                            'hidden-sm-down',
+                            css.actionButton
+                        )}
+                    >
+                        <PrivateReplyButton
+                            integrationId={integrationId}
+                            messageId={messageId}
+                            ticketMessageId={ticketMessageId}
+                            senderId={senderId}
+                            ticketId={ticketId}
+                            facebookComment={bodyText}
+                            source={source}
+                            sender={sender}
+                            meta={meta}
+                            messageCreatedDatetime={messageCreatedDatetime}
+                            executeAction={this.props.executeAction}
+                        />
+                    </span>
+                )
             }
 
             widgets.push(

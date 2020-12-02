@@ -154,6 +154,14 @@ export type Meta = {
     parent_id?: string,
     facebook_reactions?: FacebookReactions,
     deleted_datetime?: string,
+    private_reply?: FacebookPrivateReply,
+    is_duplicated?: boolean,
+}
+
+export type FacebookPrivateReply = {
+    already_sent?: boolean,
+    sent_datetime?: string,
+    messenger_ticket_id?: number,
 }
 
 export type FacebookReactions = {

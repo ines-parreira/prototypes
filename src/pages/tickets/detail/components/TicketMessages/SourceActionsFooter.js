@@ -224,7 +224,7 @@ export class SourceActionsFooter extends React.Component<Props> {
 
     _getLikeButton = () => {
         return (
-            <span className="mr-3">
+            <span className="mr-3" key="like-reaction">
                 <img
                     src={likeIcon}
                     title="Like"
@@ -271,6 +271,10 @@ export class SourceActionsFooter extends React.Component<Props> {
     render() {
         const {source, meta, isMessageHidden, isMessageDeleted} = this.props
         const widgets = []
+
+        if (meta?.is_duplicated) {
+            return widgets
+        }
 
         if (
             !source ||
