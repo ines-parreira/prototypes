@@ -230,25 +230,25 @@ exports[`<RuleItem /> rendering should not render an error message when there is
           <button
             class="btn btn-success"
             form="rule-form-17"
-            id="rule-item-save"
+            id="rule-item-save-17"
             type="submit"
           >
             Save rule
           </button>
           <button
             class="ml-3 btn btn-secondary"
-            id="rule-item-duplicate"
+            id="rule-item-duplicate-17"
             type="submit"
           >
             Duplicate rule
           </button>
           <div
             class="component d-inline-block ml-3"
-            id="rule-item-discard"
+            id="rule-item-discard-17"
           >
             <button
               class="btn btn-secondary"
-              id="confirm-button-rule-item-discard"
+              id="confirm-button-rule-item-discard-17"
               type="button"
             >
               Discard changes
@@ -258,11 +258,11 @@ exports[`<RuleItem /> rendering should not render an error message when there is
         <div>
           <div
             class="component d-inline-block ml-2 delete-button"
-            id="rule-item-delete"
+            id="rule-item-delete-17"
           >
             <button
               class="btn btn-secondary"
-              id="confirm-button-rule-item-delete"
+              id="confirm-button-rule-item-delete-17"
               type="button"
             >
               <i
@@ -510,7 +510,7 @@ exports[`<RuleItem /> rendering should render with default state 1`] = `
             class="btn btn-success disabled"
             disabled=""
             form="rule-form-17"
-            id="rule-item-save"
+            id="rule-item-save-17"
             type="submit"
           >
             Save rule
@@ -518,18 +518,18 @@ exports[`<RuleItem /> rendering should render with default state 1`] = `
           <button
             class="ml-3 btn btn-secondary disabled"
             disabled=""
-            id="rule-item-duplicate"
+            id="rule-item-duplicate-17"
             type="submit"
           >
             Duplicate rule
           </button>
           <div
             class="component d-inline-block ml-3"
-            id="rule-item-discard"
+            id="rule-item-discard-17"
           >
             <button
               class="btn btn-secondary"
-              id="confirm-button-rule-item-discard"
+              id="confirm-button-rule-item-discard-17"
               type="button"
             >
               Discard changes
@@ -539,11 +539,11 @@ exports[`<RuleItem /> rendering should render with default state 1`] = `
         <div>
           <div
             class="component d-inline-block ml-2 delete-button"
-            id="rule-item-delete"
+            id="rule-item-delete-17"
           >
             <button
               class="btn btn-secondary"
-              id="confirm-button-rule-item-delete"
+              id="confirm-button-rule-item-delete-17"
               type="button"
             >
               <i

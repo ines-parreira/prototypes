@@ -191,7 +191,7 @@ export default class RuleItem extends React.Component<Props, State> {
             <div className={css['buttons-container']}>
                 <div>
                     <Button
-                        id="rule-item-save"
+                        id={`rule-item-save-${rule.get('id')}`}
                         color="success"
                         type="submit"
                         disabled={this.state.isSubmitting || !this._canSubmit()}
@@ -200,7 +200,7 @@ export default class RuleItem extends React.Component<Props, State> {
                         Save rule
                     </Button>
                     <Button
-                        id="rule-item-duplicate"
+                        id={`rule-item-duplicate-${rule.get('id')}`}
                         color="secondary"
                         type="submit"
                         className="ml-3"
@@ -210,7 +210,7 @@ export default class RuleItem extends React.Component<Props, State> {
                         Duplicate rule
                     </Button>
                     <ConfirmButton
-                        id="rule-item-discard"
+                        id={`rule-item-discard-${rule.get('id')}`}
                         color="secondary"
                         className="ml-3"
                         loading={this.state.isResetting}
@@ -222,7 +222,7 @@ export default class RuleItem extends React.Component<Props, State> {
                 </div>
                 <div>
                     <ConfirmButton
-                        id="rule-item-delete"
+                        id={`rule-item-delete-${rule.get('id')}`}
                         color="secondary"
                         className={classnames('ml-2', css['delete-button'])}
                         loading={this.state.isDeleting}
