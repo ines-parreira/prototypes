@@ -294,6 +294,7 @@ Object {
       "headers": Object {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": undefined,
+        "X-Gorgias-User-Client": "web",
       },
       "maxContentLength": -1,
       "method": "delete",
@@ -1796,6 +1797,7 @@ Object {
       "headers": Object {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": undefined,
+        "X-Gorgias-User-Client": "web",
       },
       "maxContentLength": -1,
       "method": "delete",

@@ -15,6 +15,7 @@ Object {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": undefined,
+        "X-Gorgias-User-Client": "web",
       },
       "maxContentLength": -1,
       "method": "post",
@@ -50,6 +51,7 @@ Object {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": undefined,
+        "X-Gorgias-User-Client": "web",
       },
       "maxContentLength": -1,
       "method": "post",
@@ -93,6 +95,7 @@ Object {
       "headers": Object {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": undefined,
+        "X-Gorgias-User-Client": "web",
       },
       "maxContentLength": -1,
       "method": "delete",
@@ -203,6 +206,7 @@ Object {
       "headers": Object {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": undefined,
+        "X-Gorgias-User-Client": "web",
       },
       "maxContentLength": -1,
       "method": "get",
@@ -266,6 +270,7 @@ Object {
       "headers": Object {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": undefined,
+        "X-Gorgias-User-Client": "web",
       },
       "maxContentLength": -1,
       "method": "get",
@@ -329,6 +334,7 @@ Object {
       "headers": Object {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": undefined,
+        "X-Gorgias-User-Client": "web",
       },
       "maxContentLength": -1,
       "method": "get",
@@ -392,6 +398,7 @@ Object {
       "headers": Object {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": undefined,
+        "X-Gorgias-User-Client": "web",
       },
       "maxContentLength": -1,
       "method": "get",
@@ -436,6 +443,7 @@ Object {
       "headers": Object {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": undefined,
+        "X-Gorgias-User-Client": "web",
       },
       "maxContentLength": -1,
       "method": "get",
@@ -480,6 +488,7 @@ Object {
       "headers": Object {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": undefined,
+        "X-Gorgias-User-Client": "web",
       },
       "maxContentLength": -1,
       "method": "get",
@@ -524,6 +533,7 @@ Object {
       "headers": Object {
         "Accept": "application/json, text/plain, */*",
         "X-CSRF-Token": undefined,
+        "X-Gorgias-User-Client": "web",
       },
       "maxContentLength": -1,
       "method": "get",
@@ -604,6 +614,7 @@ Object {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": undefined,
+        "X-Gorgias-User-Client": "web",
       },
       "maxContentLength": -1,
       "method": "put",
@@ -658,6 +669,7 @@ Object {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": undefined,
+        "X-Gorgias-User-Client": "web",
       },
       "maxContentLength": -1,
       "method": "post",
@@ -709,6 +721,7 @@ Object {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": undefined,
+        "X-Gorgias-User-Client": "web",
       },
       "maxContentLength": -1,
       "method": "put",
