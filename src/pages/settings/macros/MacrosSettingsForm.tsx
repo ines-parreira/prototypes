@@ -124,6 +124,34 @@ export function MacrosSettingsFormContainer({
             })
         }
     }, [macroId, macroForm])
+    const [
+        {loading: isDuplicatePending},
+        handleMacroDuplicate,
+    ] = useAsyncFn(async () => {
+        if (!macroId) {
+            return
+        }
+        const {actions, intent, name} = macros[macroId]
+        try {
+            const res = await createMacro({
+                actions,
+                intent,
+                name: `${name} (copy)`,
+            })
+            macroCreated(res)
+            void notify({
+                message: `Successfully duplicated macro.`,
+                status: NotificationStatus.Success,
+            })
+            browserHistory.push(`/app/settings/macros/${res.id}`)
+        } catch (error) {
+            void notify({
+                message: 'Failed to duplicate macro.',
+                status: NotificationStatus.Error,
+            })
+        }
+    }, [macros, macroId])
+
     const [{loading: isDeletePending}, handleDelete] = useAsyncFn(async () => {
         if (!macroId) {
             return
@@ -159,7 +187,8 @@ export function MacrosSettingsFormContainer({
             })
         }
     }, [macros, macroId])
-    const isActionDisabled = isSubmitPending || isDeletePending
+    const isActionDisabled =
+        isSubmitPending || isDeletePending || isDuplicatePending
 
     return (
         <div className="full-width">
@@ -215,15 +244,31 @@ export function MacrosSettingsFormContainer({
                         />
                         <FormGroup className="mt-5">
                             <Button
-                                className={classnames({
-                                    'btn-loading': isSubmitPending,
-                                })}
+                                className={classnames(
+                                    {
+                                        'btn-loading': isSubmitPending,
+                                    },
+                                    'mr-2'
+                                )}
                                 color="success"
                                 disabled={isActionDisabled}
                                 type="submit"
                             >
                                 {macroId ? 'Update macro' : 'Create macro'}
                             </Button>
+                            {macroId && (
+                                <Button
+                                    className={classnames({
+                                        'btn-loading': isDuplicatePending,
+                                    })}
+                                    color="secondary"
+                                    onClick={handleMacroDuplicate}
+                                    disabled={isActionDisabled}
+                                    type="button"
+                                >
+                                    Duplicate macro
+                                </Button>
+                            )}
                             {macroId && (
                                 <ConfirmButton
                                     className="float-right"

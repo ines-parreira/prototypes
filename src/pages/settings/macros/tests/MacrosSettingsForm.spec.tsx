@@ -14,6 +14,7 @@ import {
 import {getDefaultMacro} from '../../../../state/macro/utils'
 import ConfirmButton from '../../../common/components/ConfirmButton'
 import {MacrosSettingsFormContainer} from '../MacrosSettingsForm'
+import {NotificationStatus} from '../../../../state/notifications/types'
 
 jest.mock('react-router')
 jest.mock('../../../../models/macro/resources')
@@ -39,6 +40,11 @@ describe('<MacrosSettingsForm/>', () => {
         uri: '',
         usage: 0,
         intent: null,
+    }
+    const duplicatedMacroFixture = {
+        ...macrosFixtures[0],
+        name: `${macrosFixtures[0].name} (copy)`,
+        id: 5,
     }
     const mockCreateMacro: jest.MockedFunction<typeof createMacro> = createMacro as any
     const mockDeleteMacro: jest.MockedFunction<typeof deleteMacro> = deleteMacro as any
@@ -125,7 +131,7 @@ describe('<MacrosSettingsForm/>', () => {
         setImmediate(() => {
             expect(mockNotify).toHaveBeenNthCalledWith(1, {
                 message: 'Failed to fetch macro',
-                status: 'error',
+                status: NotificationStatus.Error,
             })
             expect(component).toMatchSnapshot()
             expect(browserHistory.push).toHaveBeenNthCalledWith(
@@ -139,7 +145,7 @@ describe('<MacrosSettingsForm/>', () => {
     it('should create macro and redirect to /app/settings/macros', (done) => {
         const component = mount(<MacrosSettingsFormContainer {...minProps} />)
 
-        component.find(Button).simulate('submit')
+        component.find(Button).at(0).simulate('submit')
         expect(mockCreateMacro).toHaveBeenNthCalledWith(
             1,
             getDefaultMacro().toJS()
@@ -148,7 +154,7 @@ describe('<MacrosSettingsForm/>', () => {
             expect(mockMacroCreated).toHaveBeenNthCalledWith(1, newMacroFixture)
             expect(mockNotify).toHaveBeenNthCalledWith(1, {
                 message: 'Successfully created macro.',
-                status: 'success',
+                status: NotificationStatus.Success,
             })
             expect(browserHistory.push).toHaveBeenNthCalledWith(
                 1,
@@ -173,7 +179,7 @@ describe('<MacrosSettingsForm/>', () => {
 
         setImmediate(() => {
             component.update()
-            component.find(Button).simulate('submit')
+            component.find(Button).at(0).simulate('submit')
             setImmediate(() => {
                 expect(mockUpdateMacro).toHaveBeenNthCalledWith(
                     1,
@@ -185,7 +191,7 @@ describe('<MacrosSettingsForm/>', () => {
                 )
                 expect(mockNotify).toHaveBeenNthCalledWith(2, {
                     message: 'Successfully updated macro.',
-                    status: 'success',
+                    status: NotificationStatus.Success,
                 })
                 expect(browserHistory.push).toHaveBeenNthCalledWith(
                     1,
@@ -200,11 +206,11 @@ describe('<MacrosSettingsForm/>', () => {
         mockCreateMacro.mockRejectedValue('error')
         const component = mount(<MacrosSettingsFormContainer {...minProps} />)
 
-        component.find(Button).simulate('submit')
+        component.find(Button).at(0).simulate('submit')
         setImmediate(() => {
             expect(mockNotify).toHaveBeenNthCalledWith(1, {
                 message: 'Failed to create macro.',
-                status: 'error',
+                status: NotificationStatus.Error,
             })
             done()
         })
@@ -226,11 +232,11 @@ describe('<MacrosSettingsForm/>', () => {
 
         setImmediate(() => {
             component.update()
-            component.find(Button).simulate('submit')
+            component.find(Button).at(0).simulate('submit')
             setImmediate(() => {
                 expect(mockNotify).toHaveBeenNthCalledWith(2, {
                     message: 'Failed to update macro.',
-                    status: 'error',
+                    status: NotificationStatus.Error,
                 })
                 done()
             })
@@ -240,8 +246,8 @@ describe('<MacrosSettingsForm/>', () => {
     it('should disable submit button when submitting form', () => {
         const component = mount(<MacrosSettingsFormContainer {...minProps} />)
 
-        component.find(Button).simulate('submit')
-        component.find(Button).simulate('submit')
+        component.find(Button).at(0).simulate('submit')
+        component.find(Button).at(0).simulate('submit')
         expect(mockCreateMacro).toHaveBeenCalledTimes(1)
     })
 
@@ -266,7 +272,7 @@ describe('<MacrosSettingsForm/>', () => {
                 expect(mockMacroDeleted).toHaveBeenNthCalledWith(1, 1)
                 expect(mockNotify).toHaveBeenNthCalledWith(2, {
                     message: 'Successfully deleted macro',
-                    status: 'success',
+                    status: NotificationStatus.Success,
                 })
                 expect(browserHistory.push).toHaveBeenNthCalledWith(
                     1,
@@ -297,7 +303,75 @@ describe('<MacrosSettingsForm/>', () => {
             setImmediate(() => {
                 expect(mockNotify).toHaveBeenNthCalledWith(2, {
                     message: 'Failed to delete macro',
-                    status: 'error',
+                    status: NotificationStatus.Error,
+                })
+                done()
+            })
+        })
+    })
+
+    it('should duplicate macro and redirect ', (done) => {
+        mockCreateMacro.mockResolvedValue(duplicatedMacroFixture)
+        const component = mount(
+            <MacrosSettingsFormContainer
+                {...minProps}
+                macros={{
+                    '1': macrosFixtures[0],
+                }}
+                params={{
+                    macroId: '1',
+                }}
+            />
+        )
+
+        setImmediate(() => {
+            component.update()
+            component.find(Button).at(1).simulate('click')
+            const {actions, intent, name} = macrosFixtures[0]
+            expect(mockCreateMacro).toHaveBeenNthCalledWith(1, {
+                actions,
+                intent,
+                name: `${name} (copy)`,
+            })
+            setImmediate(() => {
+                expect(mockMacroCreated).toHaveBeenNthCalledWith(
+                    1,
+                    duplicatedMacroFixture
+                )
+                expect(mockNotify).toHaveBeenNthCalledWith(2, {
+                    message: 'Successfully duplicated macro.',
+                    status: NotificationStatus.Success,
+                })
+                expect(browserHistory.push).toHaveBeenNthCalledWith(
+                    2,
+                    '/app/settings/macros/5'
+                )
+                done()
+            })
+        })
+    })
+
+    it('should notify when failing to duplicate macro', (done) => {
+        mockCreateMacro.mockRejectedValue('error')
+        const component = mount(
+            <MacrosSettingsFormContainer
+                {...minProps}
+                macros={{
+                    '1': macrosFixtures[0],
+                }}
+                params={{
+                    macroId: '1',
+                }}
+            />
+        )
+
+        setImmediate(() => {
+            component.update()
+            component.find(Button).at(1).simulate('click')
+            setImmediate(() => {
+                expect(mockNotify).toHaveBeenNthCalledWith(2, {
+                    message: 'Failed to duplicate macro.',
+                    status: NotificationStatus.Error,
                 })
                 done()
             })

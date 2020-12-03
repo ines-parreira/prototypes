@@ -588,19 +588,36 @@ Sincerely,
                 className="mt-5 form-group"
               >
                 <Button
-                  className=""
+                  className="mr-2"
                   color="success"
                   disabled={false}
                   tag="button"
                   type="submit"
                 >
                   <button
-                    className="btn btn-success"
+                    className="mr-2 btn btn-success"
                     disabled={false}
                     onClick={[Function]}
                     type="submit"
                   >
                     Update macro
+                  </button>
+                </Button>
+                <Button
+                  className=""
+                  color="secondary"
+                  disabled={false}
+                  onClick={[Function]}
+                  tag="button"
+                  type="button"
+                >
+                  <button
+                    className="btn btn-secondary"
+                    disabled={false}
+                    onClick={[Function]}
+                    type="button"
+                  >
+                    Duplicate macro
                   </button>
                 </Button>
                 <Component
@@ -714,7 +731,7 @@ exports[`<MacrosSettingsForm/> should render an empty form when no macro id 1`] 
         tag="div"
       >
         <Button
-          className=""
+          className="mr-2"
           color="success"
           disabled={false}
           tag="button"
