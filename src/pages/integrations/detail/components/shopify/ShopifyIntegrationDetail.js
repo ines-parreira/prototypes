@@ -207,7 +207,13 @@ class ShopifyIntegrationDetail extends React.Component<Props, State> {
             syncCustomerNotes
         const submitIsDisabled =
             isSubmitting || !!error || (isUpdate && !settingsHaveChanged)
-
+        const activateIntegration = () => {
+            const IntegrationName = integration.get('name')
+            window.location.href = this.props.redirectUri.replace(
+                '{shop_name}',
+                IntegrationName
+            )
+        }
         return (
             <div className="full-width">
                 <PageHeader
@@ -392,27 +398,6 @@ class ShopifyIntegrationDetail extends React.Component<Props, State> {
                                             ? 'Update integration'
                                             : 'Add integration'}
                                     </Button>
-
-                                    {!authenticationRequired &&
-                                    isUpdate &&
-                                    isActive ? (
-                                        <Button
-                                            type="button"
-                                            color="warning"
-                                            outline
-                                            className={classNames({
-                                                'btn-loading': isSubmitting,
-                                            })}
-                                            disabled={isSubmitting}
-                                            onClick={() =>
-                                                actions.deactivateIntegration(
-                                                    integration.get('id')
-                                                )
-                                            }
-                                        >
-                                            Deactivate integration
-                                        </Button>
-                                    ) : null}
                                     {!authenticationRequired &&
                                     isUpdate &&
                                     !isActive ? (
@@ -423,13 +408,9 @@ class ShopifyIntegrationDetail extends React.Component<Props, State> {
                                                 'btn-loading': isSubmitting,
                                             })}
                                             disabled={isSubmitting}
-                                            onClick={() =>
-                                                actions.activateIntegration(
-                                                    integration.get('id')
-                                                )
-                                            }
+                                            onClick={activateIntegration}
                                         >
-                                            Re-activate integration
+                                            Reactivate integration
                                         </Button>
                                     ) : null}
                                     {isUpdate ? (

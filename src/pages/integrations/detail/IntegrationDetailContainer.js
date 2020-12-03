@@ -522,6 +522,7 @@ class IntegrationDetailContainer extends React.Component {
                         actions={actions}
                         integrations={commonProps.integrations}
                         loading={commonProps.loading}
+                        redirectUri={redirectUri}
                     />
                 )
 

@@ -165,7 +165,7 @@ exports[`ShopifyIntegrationDetail should render the page for a deactivated integ
               tag="button"
               type="button"
             >
-              Re-activate integration
+              Reactivate integration
             </Button>
             <ConfirmButton
               className="float-right"
@@ -665,17 +665,6 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
             >
               Update integration
             </Button>
-            <Button
-              className=""
-              color="warning"
-              disabled={false}
-              onClick={[Function]}
-              outline={true}
-              tag="button"
-              type="button"
-            >
-              Deactivate integration
-            </Button>
             <ConfirmButton
               className="float-right"
               color="secondary"
@@ -853,17 +842,6 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
               type="submit"
             >
               Update integration
-            </Button>
-            <Button
-              className="btn-loading"
-              color="warning"
-              disabled={true}
-              onClick={[Function]}
-              outline={true}
-              tag="button"
-              type="button"
-            >
-              Deactivate integration
             </Button>
             <ConfirmButton
               className="float-right"
@@ -1052,17 +1030,6 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
               type="submit"
             >
               Update integration
-            </Button>
-            <Button
-              className=""
-              color="warning"
-              disabled={false}
-              onClick={[Function]}
-              outline={true}
-              tag="button"
-              type="button"
-            >
-              Deactivate integration
             </Button>
             <ConfirmButton
               className="float-right"
@@ -1343,17 +1310,6 @@ exports[`ShopifyIntegrationDetail should render the page to update an existing i
               type="submit"
             >
               Update integration
-            </Button>
-            <Button
-              className=""
-              color="warning"
-              disabled={false}
-              onClick={[Function]}
-              outline={true}
-              tag="button"
-              type="button"
-            >
-              Deactivate integration
             </Button>
             <ConfirmButton
               className="float-right"

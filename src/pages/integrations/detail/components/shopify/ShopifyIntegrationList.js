@@ -1,26 +1,22 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {Link, browserHistory} from 'react-router'
-import {connect} from 'react-redux'
 import Lightbox from 'react-images'
 
-import ToggleButton from '../../../../common/components/ToggleButton'
+import classnames from 'classnames'
+import {Button} from 'reactstrap'
+
 import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'
-import * as integrationsActions from '../../../../../state/integrations/actions.ts'
 
 import Carousel from './../../../common/Carousel'
 
-@connect(null, {
-    activate: integrationsActions.activateIntegration,
-    deactivate: integrationsActions.deactivateIntegration,
-})
 export default class ShopifyIntegrationList extends React.Component {
     static propTypes = {
         integrations: PropTypes.object.isRequired,
         loading: PropTypes.object.isRequired,
+        redirectUri: PropTypes.string.isRequired,
         activate: PropTypes.func.isRequired,
-        deactivate: PropTypes.func.isRequired,
     }
 
     state = {
@@ -105,34 +101,45 @@ export default class ShopifyIntegrationList extends React.Component {
                 <h4>Your Shopify stores</h4>
             </div>
         )
+        const isSubmitting = loading.get('updateIntegration')
 
-        const integrationToItemDisplay = (int) => {
-            const toggleIntegration = (value) => {
-                const integrationId = int.get('id')
-                return value
-                    ? this.props.activate(integrationId)
-                    : this.props.deactivate(integrationId)
-            }
-
-            const isDisabled = int.get('deactivated_datetime')
-            const editLink = `/app/settings/integrations/shopify/${int.get(
+        const integrationToItemDisplay = (integration) => {
+            const active = !integration.get('deactivated_datetime')
+            const isRowSubmitting = isSubmitting === integration.get('id')
+            const editLink = `/app/settings/integrations/shopify/${integration.get(
                 'id'
             )}`
-
+            const activateIntegration = () => {
+                const IntegrationName = integration.get('name')
+                window.location.href = this.props.redirectUri.replace(
+                    '{shop_name}',
+                    IntegrationName
+                )
+            }
             return (
-                <tr key={int.get('id')}>
+                <tr key={integration.get('id')}>
                     <td className="link-full-td">
                         <Link to={editLink}>
                             <div>
-                                <b>{int.get('name')}</b>
+                                <b>{integration.get('name')}</b>
                             </div>
                         </Link>
                     </td>
-                    <td className="smallest align-middle">
-                        <ToggleButton
-                            value={!isDisabled}
-                            onChange={toggleIntegration}
-                        />
+                    <td className="smallest align-middle p-0">
+                        <div>
+                            {!active && (
+                                <Button
+                                    tag="a"
+                                    color="success"
+                                    onClick={activateIntegration}
+                                    className={classnames({
+                                        'btn-loading': isRowSubmitting,
+                                    })}
+                                >
+                                    Reactivate
+                                </Button>
+                            )}
+                        </div>
                     </td>
                     <td className="smallest align-middle">
                         <ForwardIcon href={editLink} />
