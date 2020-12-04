@@ -79,3 +79,11 @@ exports[`CustomerInfoWrapper component should render child a and no show more bu
   </p>
 </div>
 `;
+
+exports[`CustomerInfoWrapper component should render child a and no show more button because there is only one defined child 1`] = `
+<div>
+  <p>
+    a
+  </p>
+</div>
+`;

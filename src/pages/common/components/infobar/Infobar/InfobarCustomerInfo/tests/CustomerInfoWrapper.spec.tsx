@@ -27,6 +27,18 @@ describe('CustomerInfoWrapper component', () => {
         expect(container.firstChild).toMatchSnapshot()
     })
 
+    it('should render child a and no show more button because there is only one defined child', () => {
+        const {container} = render(
+            <CustomerInfoWrapper>
+                <p key={0}>a</p>
+                {undefined}
+                {null}
+            </CustomerInfoWrapper>
+        )
+
+        expect(container.firstChild).toMatchSnapshot()
+    })
+
     it('should render all 4 children and a Show Less button because the Show More button was clicked', () => {
         const {container, getByRole} = render(
             <CustomerInfoWrapper>

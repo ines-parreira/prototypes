@@ -16,8 +16,8 @@ export default function CustomerInfoWrapper({
     children,
     displayedElementsCount = 2,
 }: Props) {
-    const count = Children.count(children)
     const array = Children.toArray(children)
+    const count = array.length
     const [isOpen, setOpen] = useState(false)
 
     return (
