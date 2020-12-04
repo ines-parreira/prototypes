@@ -5,17 +5,16 @@ import {Link} from 'react-router'
 
 import {connect} from 'react-redux'
 
-import {hasAtLeastOneEmailIntegration} from '../../../state/integrations/selectors.ts'
+import {isImportAllowed} from '../../../state/integrations/selectors.ts'
 
 type ImportDataListProps = {
-    hasEmailIntegration: boolean,
+    isImportAllowed: boolean,
     configs: Array<*>,
-    isImportPending: boolean,
 }
 
 @connect((state) => {
     return {
-        hasEmailIntegration: hasAtLeastOneEmailIntegration(state),
+        isImportAllowed: isImportAllowed(state),
         configs: [
             {
                 img: `${
@@ -30,25 +29,18 @@ type ImportDataListProps = {
     }
 })
 export default class ImportDataList extends React.Component<ImportDataListProps> {
-    importNotAllowedAlert = () => {
-        const {hasEmailIntegration} = this.props
-        return (
-            <Alert color="warning" hidden={hasEmailIntegration}>
-                You must add an Email, Gmail or Outlook integration to be able
-                to start a data import.
-            </Alert>
-        )
-    }
-    isImportAllowed = () => {
-        const {isImportPending, hasEmailIntegration} = this.props
-        return !isImportPending && hasEmailIntegration
-    }
+    importNotAllowedAlert = () => (
+        <Alert color="warning">
+            You must add an Email, Gmail or Outlook integration to be able to
+            start a data import.
+        </Alert>
+    )
 
     render() {
         return (
             <div>
-                {this.isImportAllowed() ? '' : this.importNotAllowedAlert()}
-                <Table hover={this.isImportAllowed} cursor="">
+                {this.props.isImportAllowed ? '' : this.importNotAllowedAlert()}
+                <Table hover={this.props.isImportAllowed} cursor="">
                     <tbody>
                         {this.props.configs.map((config, idx) => {
                             return (
@@ -67,12 +59,13 @@ export default class ImportDataList extends React.Component<ImportDataListProps>
                                     <td className="link-full-td">
                                         <Link
                                             style={{
-                                                cursor: this.isImportAllowed()
+                                                cursor: this.props
+                                                    .isImportAllowed
                                                     ? 'pointer'
                                                     : 'not-allowed',
                                             }}
                                             onClick={
-                                                this.isImportAllowed()
+                                                this.props.isImportAllowed
                                                     ? (e) => e.originalEvent
                                                     : (e) => e.preventDefault()
                                             }
