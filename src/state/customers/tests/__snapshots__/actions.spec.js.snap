@@ -9,7 +9,6 @@ Object {
         "Accept": "application/json, text/plain, */*",
         "Content-Type": "application/json;charset=utf-8",
         "X-CSRF-Token": undefined,
-        "X-Gorgias-User-Client": "web",
       },
       "maxContentLength": -1,
       "method": "delete",

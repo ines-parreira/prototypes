@@ -15,13 +15,15 @@ import {Customer} from './state/customers/types'
 import {daysToHours, hoursToSeconds} from './utils'
 import {ActionTemplateExecution} from './types'
 
+// TODO @LouisBarranqueiro switch all configuration to modular version
+
 /**
  * Set default axios headers
  */
-const commonHeaders = (axios.defaults.headers as Record<string, unknown>)
-    .common as Record<string, unknown>
-commonHeaders['X-CSRF-Token'] = window.CSRF_TOKEN
-commonHeaders['X-Gorgias-User-Client'] = 'web'
+;((axios.defaults.headers as Record<string, unknown>).common as Record<
+    string,
+    unknown
+>)['X-CSRF-Token'] = window.CSRF_TOKEN
 
 /**
  * Action related
