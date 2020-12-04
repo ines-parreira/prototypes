@@ -2,90 +2,32 @@
 
 exports[`CustomerChannels component should display all passed channels and not display the button "show more" because there is only 1 passed channel 1`] = `
 <Fragment>
-  <p
-    className="customerChannel"
-    key="0"
-  >
-    <SourceIcon
-      className="uncolored mr-2"
-      type="email"
-    />
-    <a
-      href="mailto:foo@gorgias.io"
-      id="address-copied-undefined"
+  <CustomerInfoWrapper>
+    <p
+      className="customerChannel"
+      key="0"
     >
-      foo@gorgias.io
-    </a>
-    <span
-      className="copyAddress ml-2 js-clipboard-copy"
-      data-clipboard-target="#address-copied-undefined"
-    >
-      <i
-        className="material-icons"
-        id="copy-icon-0"
+      <SourceIcon
+        className="uncolored mr-2"
+        type="email"
+      />
+      <a
+        href="mailto:foo@gorgias.io"
+        id="address-copied-undefined"
       >
-        content_copy
-      </i>
-      <Tooltip
-        delay={
-          Object {
-            "hide": 0,
-            "show": 1000,
-          }
-        }
-        placement="top"
-        target="copy-icon-0"
+        foo@gorgias.io
+      </a>
+      <span
+        className="copyAddress ml-2 js-clipboard-copy"
+        data-clipboard-target="#address-copied-undefined"
       >
-        Copy
-      </Tooltip>
-    </span>
-  </p>
-</Fragment>
-`;
-
-exports[`CustomerChannels component should display all passed channels because the user clicked on "show more" 1`] = `
-Array [
-  <p
-    className="customerChannel"
-    key="0"
-  >
-    <SourceIcon
-      className="uncolored mr-2"
-      type="email"
-    >
-      <i
-        className="icon d-inline-block material-icons uncolored mr-2"
-      >
-        email
-      </i>
-    </SourceIcon>
-    <a
-      href="mailto:foo@gorgias.io"
-      id="address-copied-undefined"
-    >
-      foo@gorgias.io
-    </a>
-    <span
-      className="copyAddress ml-2 js-clipboard-copy"
-      data-clipboard-target="#address-copied-undefined"
-    >
-      <i
-        className="material-icons"
-        id="copy-icon-0"
-      >
-        content_copy
-      </i>
-      <Tooltip
-        delay={
-          Object {
-            "hide": 0,
-            "show": 1000,
-          }
-        }
-        placement="top"
-        target="copy-icon-0"
-      >
-        <UncontrolledTooltip
+        <i
+          className="material-icons"
+          id="copy-icon-0"
+        >
+          content_copy
+        </i>
+        <Tooltip
           delay={
             Object {
               "hide": 0,
@@ -95,66 +37,144 @@ Array [
           placement="top"
           target="copy-icon-0"
         >
-          <Tooltip
-            autohide={true}
+          Copy
+        </Tooltip>
+      </span>
+    </p>
+  </CustomerInfoWrapper>
+</Fragment>
+`;
+
+exports[`CustomerChannels component should display all passed channels and not display the button "show more" because there is only 2 passed location channel and local time channel 1`] = `
+<Fragment>
+  <CustomerInfoWrapper>
+    <p
+      className="customerChannel"
+    >
+      <i
+        className="icon d-inline-block material-icons uncolored mr-2"
+      >
+        language
+      </i>
+      location: France, Paris
+    </p>
+    <p
+      className="customerChannel"
+    >
+      <i
+        className="icon d-inline-block material-icons uncolored mr-2"
+      >
+        access_time
+      </i>
+      local time: 13:34
+    </p>
+  </CustomerInfoWrapper>
+</Fragment>
+`;
+
+exports[`CustomerChannels component should display all passed channels because the user clicked on "show more" 1`] = `
+<CustomerInfoWrapper>
+  <div>
+    <p
+      className="customerChannel"
+      key=".0:$0"
+    >
+      <SourceIcon
+        className="uncolored mr-2"
+        type="email"
+      >
+        <i
+          className="icon d-inline-block material-icons uncolored mr-2"
+        >
+          email
+        </i>
+      </SourceIcon>
+      <a
+        href="mailto:foo@gorgias.io"
+        id="address-copied-undefined"
+      >
+        foo@gorgias.io
+      </a>
+      <span
+        className="copyAddress ml-2 js-clipboard-copy"
+        data-clipboard-target="#address-copied-undefined"
+      >
+        <i
+          className="material-icons"
+          id="copy-icon-0"
+        >
+          content_copy
+        </i>
+        <Tooltip
+          delay={
+            Object {
+              "hide": 0,
+              "show": 1000,
+            }
+          }
+          placement="top"
+          target="copy-icon-0"
+        >
+          <UncontrolledTooltip
             delay={
               Object {
                 "hide": 0,
                 "show": 1000,
               }
             }
-            hideArrow={false}
-            isOpen={false}
             placement="top"
-            placementPrefix="bs-tooltip"
             target="copy-icon-0"
-            toggle={[Function]}
-          />
-        </UncontrolledTooltip>
-      </Tooltip>
-    </span>
-  </p>,
-  <p
-    className="customerChannel"
-    key="1"
-  >
-    <SourceIcon
-      className="uncolored mr-2"
-      type="email"
+          >
+            <Tooltip
+              autohide={true}
+              delay={
+                Object {
+                  "hide": 0,
+                  "show": 1000,
+                }
+              }
+              hideArrow={false}
+              isOpen={false}
+              placement="top"
+              placementPrefix="bs-tooltip"
+              target="copy-icon-0"
+              toggle={[Function]}
+            />
+          </UncontrolledTooltip>
+        </Tooltip>
+      </span>
+    </p>
+    <p
+      className="customerChannel"
+      key=".0:$1"
     >
-      <i
-        className="icon d-inline-block material-icons uncolored mr-2"
+      <SourceIcon
+        className="uncolored mr-2"
+        type="email"
       >
-        email
-      </i>
-    </SourceIcon>
-    <a
-      href="mailto:bar@gorgias.io"
-      id="address-copied-undefined"
-    >
-      bar@gorgias.io
-    </a>
-    <span
-      className="copyAddress ml-2 js-clipboard-copy"
-      data-clipboard-target="#address-copied-undefined"
-    >
-      <i
-        className="material-icons"
-        id="copy-icon-1"
+        <i
+          className="icon d-inline-block material-icons uncolored mr-2"
+        >
+          email
+        </i>
+      </SourceIcon>
+      <a
+        href="mailto:bar@gorgias.io"
+        id="address-copied-undefined"
       >
-        content_copy
-      </i>
-      <Tooltip
-        delay={
-          Object {
-            "hide": 0,
-            "show": 1000,
-          }
-        }
-        placement="top"
-        target="copy-icon-1"
+        bar@gorgias.io
+      </a>
+      <span
+        className="copyAddress ml-2 js-clipboard-copy"
+        data-clipboard-target="#address-copied-undefined"
       >
-        <UncontrolledTooltip
+        <i
+          className="material-icons"
+          id="copy-icon-1"
+        >
+          content_copy
+        </i>
+        <Tooltip
           delay={
             Object {
               "hide": 0,
@@ -164,29 +184,35 @@ Array [
           placement="top"
           target="copy-icon-1"
         >
-          <Tooltip
-            autohide={true}
+          <UncontrolledTooltip
             delay={
               Object {
                 "hide": 0,
                 "show": 1000,
               }
             }
-            hideArrow={false}
-            isOpen={false}
             placement="top"
-            placementPrefix="bs-tooltip"
             target="copy-icon-1"
-            toggle={[Function]}
-          />
-        </UncontrolledTooltip>
-      </Tooltip>
-    </span>
-  </p>,
-  <ShowMore
-    className="pl-0"
-    onClick={[Function]}
-  >
+          >
+            <Tooltip
+              autohide={true}
+              delay={
+                Object {
+                  "hide": 0,
+                  "show": 1000,
+                }
+              }
+              hideArrow={false}
+              isOpen={false}
+              placement="top"
+              placementPrefix="bs-tooltip"
+              target="copy-icon-1"
+              toggle={[Function]}
+            />
+          </UncontrolledTooltip>
+        </Tooltip>
+      </span>
+    </p>
     <Button
       className="container pl-0"
       color="link"
@@ -207,53 +233,44 @@ Array [
         More info
       </button>
     </Button>
-  </ShowMore>,
-]
+  </div>
+</CustomerInfoWrapper>
 `;
 
 exports[`CustomerChannels component should display all passed channels because the user clicked on "show more" 2`] = `
-Array [
-  <p
-    className="customerChannel"
-    key="0"
-  >
-    <SourceIcon
-      className="uncolored mr-2"
-      type="email"
+<CustomerInfoWrapper>
+  <div>
+    <p
+      className="customerChannel"
+      key="0"
     >
-      <i
-        className="icon d-inline-block material-icons uncolored mr-2"
+      <SourceIcon
+        className="uncolored mr-2"
+        type="email"
       >
-        email
-      </i>
-    </SourceIcon>
-    <a
-      href="mailto:foo@gorgias.io"
-      id="address-copied-undefined"
-    >
-      foo@gorgias.io
-    </a>
-    <span
-      className="copyAddress ml-2 js-clipboard-copy"
-      data-clipboard-target="#address-copied-undefined"
-    >
-      <i
-        className="material-icons"
-        id="copy-icon-0"
+        <i
+          className="icon d-inline-block material-icons uncolored mr-2"
+        >
+          email
+        </i>
+      </SourceIcon>
+      <a
+        href="mailto:foo@gorgias.io"
+        id="address-copied-undefined"
       >
-        content_copy
-      </i>
-      <Tooltip
-        delay={
-          Object {
-            "hide": 0,
-            "show": 1000,
-          }
-        }
-        placement="top"
-        target="copy-icon-0"
+        foo@gorgias.io
+      </a>
+      <span
+        className="copyAddress ml-2 js-clipboard-copy"
+        data-clipboard-target="#address-copied-undefined"
       >
-        <UncontrolledTooltip
+        <i
+          className="material-icons"
+          id="copy-icon-0"
+        >
+          content_copy
+        </i>
+        <Tooltip
           delay={
             Object {
               "hide": 0,
@@ -263,66 +280,66 @@ Array [
           placement="top"
           target="copy-icon-0"
         >
-          <Tooltip
-            autohide={true}
+          <UncontrolledTooltip
             delay={
               Object {
                 "hide": 0,
                 "show": 1000,
               }
             }
-            hideArrow={false}
-            isOpen={false}
             placement="top"
-            placementPrefix="bs-tooltip"
             target="copy-icon-0"
-            toggle={[Function]}
-          />
-        </UncontrolledTooltip>
-      </Tooltip>
-    </span>
-  </p>,
-  <p
-    className="customerChannel"
-    key="1"
-  >
-    <SourceIcon
-      className="uncolored mr-2"
-      type="email"
+          >
+            <Tooltip
+              autohide={true}
+              delay={
+                Object {
+                  "hide": 0,
+                  "show": 1000,
+                }
+              }
+              hideArrow={false}
+              isOpen={false}
+              placement="top"
+              placementPrefix="bs-tooltip"
+              target="copy-icon-0"
+              toggle={[Function]}
+            />
+          </UncontrolledTooltip>
+        </Tooltip>
+      </span>
+    </p>
+    <p
+      className="customerChannel"
+      key="1"
     >
-      <i
-        className="icon d-inline-block material-icons uncolored mr-2"
+      <SourceIcon
+        className="uncolored mr-2"
+        type="email"
       >
-        email
-      </i>
-    </SourceIcon>
-    <a
-      href="mailto:bar@gorgias.io"
-      id="address-copied-undefined"
-    >
-      bar@gorgias.io
-    </a>
-    <span
-      className="copyAddress ml-2 js-clipboard-copy"
-      data-clipboard-target="#address-copied-undefined"
-    >
-      <i
-        className="material-icons"
-        id="copy-icon-1"
+        <i
+          className="icon d-inline-block material-icons uncolored mr-2"
+        >
+          email
+        </i>
+      </SourceIcon>
+      <a
+        href="mailto:bar@gorgias.io"
+        id="address-copied-undefined"
       >
-        content_copy
-      </i>
-      <Tooltip
-        delay={
-          Object {
-            "hide": 0,
-            "show": 1000,
-          }
-        }
-        placement="top"
-        target="copy-icon-1"
+        bar@gorgias.io
+      </a>
+      <span
+        className="copyAddress ml-2 js-clipboard-copy"
+        data-clipboard-target="#address-copied-undefined"
       >
-        <UncontrolledTooltip
+        <i
+          className="material-icons"
+          id="copy-icon-1"
+        >
+          content_copy
+        </i>
+        <Tooltip
           delay={
             Object {
               "hide": 0,
@@ -332,66 +349,66 @@ Array [
           placement="top"
           target="copy-icon-1"
         >
-          <Tooltip
-            autohide={true}
+          <UncontrolledTooltip
             delay={
               Object {
                 "hide": 0,
                 "show": 1000,
               }
             }
-            hideArrow={false}
-            isOpen={false}
             placement="top"
-            placementPrefix="bs-tooltip"
             target="copy-icon-1"
-            toggle={[Function]}
-          />
-        </UncontrolledTooltip>
-      </Tooltip>
-    </span>
-  </p>,
-  <p
-    className="customerChannel"
-    key="2"
-  >
-    <SourceIcon
-      className="uncolored mr-2"
-      type="email"
+          >
+            <Tooltip
+              autohide={true}
+              delay={
+                Object {
+                  "hide": 0,
+                  "show": 1000,
+                }
+              }
+              hideArrow={false}
+              isOpen={false}
+              placement="top"
+              placementPrefix="bs-tooltip"
+              target="copy-icon-1"
+              toggle={[Function]}
+            />
+          </UncontrolledTooltip>
+        </Tooltip>
+      </span>
+    </p>
+    <p
+      className="customerChannel"
+      key="2"
     >
-      <i
-        className="icon d-inline-block material-icons uncolored mr-2"
+      <SourceIcon
+        className="uncolored mr-2"
+        type="email"
       >
-        email
-      </i>
-    </SourceIcon>
-    <a
-      href="mailto:baz@gorgias.io"
-      id="address-copied-undefined"
-    >
-      baz@gorgias.io
-    </a>
-    <span
-      className="copyAddress ml-2 js-clipboard-copy"
-      data-clipboard-target="#address-copied-undefined"
-    >
-      <i
-        className="material-icons"
-        id="copy-icon-2"
+        <i
+          className="icon d-inline-block material-icons uncolored mr-2"
+        >
+          email
+        </i>
+      </SourceIcon>
+      <a
+        href="mailto:baz@gorgias.io"
+        id="address-copied-undefined"
       >
-        content_copy
-      </i>
-      <Tooltip
-        delay={
-          Object {
-            "hide": 0,
-            "show": 1000,
-          }
-        }
-        placement="top"
-        target="copy-icon-2"
+        baz@gorgias.io
+      </a>
+      <span
+        className="copyAddress ml-2 js-clipboard-copy"
+        data-clipboard-target="#address-copied-undefined"
       >
-        <UncontrolledTooltip
+        <i
+          className="material-icons"
+          id="copy-icon-2"
+        >
+          content_copy
+        </i>
+        <Tooltip
           delay={
             Object {
               "hide": 0,
@@ -401,66 +418,66 @@ Array [
           placement="top"
           target="copy-icon-2"
         >
-          <Tooltip
-            autohide={true}
+          <UncontrolledTooltip
             delay={
               Object {
                 "hide": 0,
                 "show": 1000,
               }
             }
-            hideArrow={false}
-            isOpen={false}
             placement="top"
-            placementPrefix="bs-tooltip"
             target="copy-icon-2"
-            toggle={[Function]}
-          />
-        </UncontrolledTooltip>
-      </Tooltip>
-    </span>
-  </p>,
-  <p
-    className="customerChannel"
-    key="3"
-  >
-    <SourceIcon
-      className="uncolored mr-2"
-      type="phone"
+          >
+            <Tooltip
+              autohide={true}
+              delay={
+                Object {
+                  "hide": 0,
+                  "show": 1000,
+                }
+              }
+              hideArrow={false}
+              isOpen={false}
+              placement="top"
+              placementPrefix="bs-tooltip"
+              target="copy-icon-2"
+              toggle={[Function]}
+            />
+          </UncontrolledTooltip>
+        </Tooltip>
+      </span>
+    </p>
+    <p
+      className="customerChannel"
+      key="3"
     >
-      <i
-        className="icon d-inline-block material-icons uncolored mr-2"
+      <SourceIcon
+        className="uncolored mr-2"
+        type="phone"
       >
-        phone
-      </i>
-    </SourceIcon>
-    <a
-      href="tel:+15551238523"
-      id="address-copied-undefined"
-    >
-      +15551238523
-    </a>
-    <span
-      className="copyAddress ml-2 js-clipboard-copy"
-      data-clipboard-target="#address-copied-undefined"
-    >
-      <i
-        className="material-icons"
-        id="copy-icon-3"
+        <i
+          className="icon d-inline-block material-icons uncolored mr-2"
+        >
+          phone
+        </i>
+      </SourceIcon>
+      <a
+        href="tel:+15551238523"
+        id="address-copied-undefined"
       >
-        content_copy
-      </i>
-      <Tooltip
-        delay={
-          Object {
-            "hide": 0,
-            "show": 1000,
-          }
-        }
-        placement="top"
-        target="copy-icon-3"
+        +15551238523
+      </a>
+      <span
+        className="copyAddress ml-2 js-clipboard-copy"
+        data-clipboard-target="#address-copied-undefined"
       >
-        <UncontrolledTooltip
+        <i
+          className="material-icons"
+          id="copy-icon-3"
+        >
+          content_copy
+        </i>
+        <Tooltip
           delay={
             Object {
               "hide": 0,
@@ -470,66 +487,66 @@ Array [
           placement="top"
           target="copy-icon-3"
         >
-          <Tooltip
-            autohide={true}
+          <UncontrolledTooltip
             delay={
               Object {
                 "hide": 0,
                 "show": 1000,
               }
             }
-            hideArrow={false}
-            isOpen={false}
             placement="top"
-            placementPrefix="bs-tooltip"
             target="copy-icon-3"
-            toggle={[Function]}
-          />
-        </UncontrolledTooltip>
-      </Tooltip>
-    </span>
-  </p>,
-  <p
-    className="customerChannel"
-    key="4"
-  >
-    <SourceIcon
-      className="uncolored mr-2"
-      type="phone"
+          >
+            <Tooltip
+              autohide={true}
+              delay={
+                Object {
+                  "hide": 0,
+                  "show": 1000,
+                }
+              }
+              hideArrow={false}
+              isOpen={false}
+              placement="top"
+              placementPrefix="bs-tooltip"
+              target="copy-icon-3"
+              toggle={[Function]}
+            />
+          </UncontrolledTooltip>
+        </Tooltip>
+      </span>
+    </p>
+    <p
+      className="customerChannel"
+      key="4"
     >
-      <i
-        className="icon d-inline-block material-icons uncolored mr-2"
+      <SourceIcon
+        className="uncolored mr-2"
+        type="phone"
       >
-        phone
-      </i>
-    </SourceIcon>
-    <a
-      href="tel:+15554567852"
-      id="address-copied-undefined"
-    >
-      +15554567852
-    </a>
-    <span
-      className="copyAddress ml-2 js-clipboard-copy"
-      data-clipboard-target="#address-copied-undefined"
-    >
-      <i
-        className="material-icons"
-        id="copy-icon-4"
+        <i
+          className="icon d-inline-block material-icons uncolored mr-2"
+        >
+          phone
+        </i>
+      </SourceIcon>
+      <a
+        href="tel:+15554567852"
+        id="address-copied-undefined"
       >
-        content_copy
-      </i>
-      <Tooltip
-        delay={
-          Object {
-            "hide": 0,
-            "show": 1000,
-          }
-        }
-        placement="top"
-        target="copy-icon-4"
+        +15554567852
+      </a>
+      <span
+        className="copyAddress ml-2 js-clipboard-copy"
+        data-clipboard-target="#address-copied-undefined"
       >
-        <UncontrolledTooltip
+        <i
+          className="material-icons"
+          id="copy-icon-4"
+        >
+          content_copy
+        </i>
+        <Tooltip
           delay={
             Object {
               "hide": 0,
@@ -539,66 +556,66 @@ Array [
           placement="top"
           target="copy-icon-4"
         >
-          <Tooltip
-            autohide={true}
+          <UncontrolledTooltip
             delay={
               Object {
                 "hide": 0,
                 "show": 1000,
               }
             }
-            hideArrow={false}
-            isOpen={false}
             placement="top"
-            placementPrefix="bs-tooltip"
             target="copy-icon-4"
-            toggle={[Function]}
-          />
-        </UncontrolledTooltip>
-      </Tooltip>
-    </span>
-  </p>,
-  <p
-    className="customerChannel"
-    key="5"
-  >
-    <SourceIcon
-      className="uncolored mr-2"
-      type="phone"
+          >
+            <Tooltip
+              autohide={true}
+              delay={
+                Object {
+                  "hide": 0,
+                  "show": 1000,
+                }
+              }
+              hideArrow={false}
+              isOpen={false}
+              placement="top"
+              placementPrefix="bs-tooltip"
+              target="copy-icon-4"
+              toggle={[Function]}
+            />
+          </UncontrolledTooltip>
+        </Tooltip>
+      </span>
+    </p>
+    <p
+      className="customerChannel"
+      key="5"
     >
-      <i
-        className="icon d-inline-block material-icons uncolored mr-2"
+      <SourceIcon
+        className="uncolored mr-2"
+        type="phone"
       >
-        phone
-      </i>
-    </SourceIcon>
-    <a
-      href="tel:+15557899632"
-      id="address-copied-undefined"
-    >
-      +15557899632
-    </a>
-    <span
-      className="copyAddress ml-2 js-clipboard-copy"
-      data-clipboard-target="#address-copied-undefined"
-    >
-      <i
-        className="material-icons"
-        id="copy-icon-5"
+        <i
+          className="icon d-inline-block material-icons uncolored mr-2"
+        >
+          phone
+        </i>
+      </SourceIcon>
+      <a
+        href="tel:+15557899632"
+        id="address-copied-undefined"
       >
-        content_copy
-      </i>
-      <Tooltip
-        delay={
-          Object {
-            "hide": 0,
-            "show": 1000,
-          }
-        }
-        placement="top"
-        target="copy-icon-5"
+        +15557899632
+      </a>
+      <span
+        className="copyAddress ml-2 js-clipboard-copy"
+        data-clipboard-target="#address-copied-undefined"
       >
-        <UncontrolledTooltip
+        <i
+          className="material-icons"
+          id="copy-icon-5"
+        >
+          content_copy
+        </i>
+        <Tooltip
           delay={
             Object {
               "hide": 0,
@@ -608,111 +625,395 @@ Array [
           placement="top"
           target="copy-icon-5"
         >
-          <Tooltip
-            autohide={true}
+          <UncontrolledTooltip
             delay={
               Object {
                 "hide": 0,
                 "show": 1000,
               }
             }
-            hideArrow={false}
-            isOpen={false}
             placement="top"
-            placementPrefix="bs-tooltip"
             target="copy-icon-5"
-            toggle={[Function]}
-          />
-        </UncontrolledTooltip>
-      </Tooltip>
-    </span>
-  </p>,
-]
+          >
+            <Tooltip
+              autohide={true}
+              delay={
+                Object {
+                  "hide": 0,
+                  "show": 1000,
+                }
+              }
+              hideArrow={false}
+              isOpen={false}
+              placement="top"
+              placementPrefix="bs-tooltip"
+              target="copy-icon-5"
+              toggle={[Function]}
+            />
+          </UncontrolledTooltip>
+        </Tooltip>
+      </span>
+    </p>
+    <p
+      className="customerChannel"
+    >
+      <i
+        className="icon d-inline-block material-icons uncolored mr-2"
+      >
+        language
+      </i>
+      location: France, Paris
+    </p>
+    <p
+      className="customerChannel"
+    >
+      <i
+        className="icon d-inline-block material-icons uncolored mr-2"
+      >
+        access_time
+      </i>
+      local time: 13:34
+    </p>
+    <Button
+      className="container pl-0"
+      color="link"
+      onClick={[Function]}
+      tag="button"
+      type="button"
+    >
+      <button
+        className="container pl-0 btn btn-link"
+        onClick={[Function]}
+        type="button"
+      >
+        <img
+          alt="Contract"
+          className="mr-3"
+          src="test-file-stub"
+        />
+        Less info
+      </button>
+    </Button>
+  </div>
+</CustomerInfoWrapper>
 `;
 
 exports[`CustomerChannels component should display first few passed channels and the button "show more" because there are more channels than those displayed 1`] = `
 <Fragment>
-  <p
-    className="customerChannel"
-    key="0"
-  >
-    <SourceIcon
-      className="uncolored mr-2"
-      type="email"
-    />
-    <a
-      href="mailto:foo@gorgias.io"
-      id="address-copied-undefined"
+  <CustomerInfoWrapper>
+    <p
+      className="customerChannel"
+      key="0"
     >
-      foo@gorgias.io
-    </a>
-    <span
-      className="copyAddress ml-2 js-clipboard-copy"
-      data-clipboard-target="#address-copied-undefined"
+      <SourceIcon
+        className="uncolored mr-2"
+        type="email"
+      />
+      <a
+        href="mailto:foo@gorgias.io"
+        id="address-copied-undefined"
+      >
+        foo@gorgias.io
+      </a>
+      <span
+        className="copyAddress ml-2 js-clipboard-copy"
+        data-clipboard-target="#address-copied-undefined"
+      >
+        <i
+          className="material-icons"
+          id="copy-icon-0"
+        >
+          content_copy
+        </i>
+        <Tooltip
+          delay={
+            Object {
+              "hide": 0,
+              "show": 1000,
+            }
+          }
+          placement="top"
+          target="copy-icon-0"
+        >
+          Copy
+        </Tooltip>
+      </span>
+    </p>
+    <p
+      className="customerChannel"
+      key="1"
+    >
+      <SourceIcon
+        className="uncolored mr-2"
+        type="email"
+      />
+      <a
+        href="mailto:bar@gorgias.io"
+        id="address-copied-undefined"
+      >
+        bar@gorgias.io
+      </a>
+      <span
+        className="copyAddress ml-2 js-clipboard-copy"
+        data-clipboard-target="#address-copied-undefined"
+      >
+        <i
+          className="material-icons"
+          id="copy-icon-1"
+        >
+          content_copy
+        </i>
+        <Tooltip
+          delay={
+            Object {
+              "hide": 0,
+              "show": 1000,
+            }
+          }
+          placement="top"
+          target="copy-icon-1"
+        >
+          Copy
+        </Tooltip>
+      </span>
+    </p>
+    <p
+      className="customerChannel"
+      key="2"
+    >
+      <SourceIcon
+        className="uncolored mr-2"
+        type="email"
+      />
+      <a
+        href="mailto:baz@gorgias.io"
+        id="address-copied-undefined"
+      >
+        baz@gorgias.io
+      </a>
+      <span
+        className="copyAddress ml-2 js-clipboard-copy"
+        data-clipboard-target="#address-copied-undefined"
+      >
+        <i
+          className="material-icons"
+          id="copy-icon-2"
+        >
+          content_copy
+        </i>
+        <Tooltip
+          delay={
+            Object {
+              "hide": 0,
+              "show": 1000,
+            }
+          }
+          placement="top"
+          target="copy-icon-2"
+        >
+          Copy
+        </Tooltip>
+      </span>
+    </p>
+    <p
+      className="customerChannel"
+      key="3"
+    >
+      <SourceIcon
+        className="uncolored mr-2"
+        type="phone"
+      />
+      <a
+        href="tel:+15551238523"
+        id="address-copied-undefined"
+      >
+        +15551238523
+      </a>
+      <span
+        className="copyAddress ml-2 js-clipboard-copy"
+        data-clipboard-target="#address-copied-undefined"
+      >
+        <i
+          className="material-icons"
+          id="copy-icon-3"
+        >
+          content_copy
+        </i>
+        <Tooltip
+          delay={
+            Object {
+              "hide": 0,
+              "show": 1000,
+            }
+          }
+          placement="top"
+          target="copy-icon-3"
+        >
+          Copy
+        </Tooltip>
+      </span>
+    </p>
+    <p
+      className="customerChannel"
+      key="4"
+    >
+      <SourceIcon
+        className="uncolored mr-2"
+        type="phone"
+      />
+      <a
+        href="tel:+15554567852"
+        id="address-copied-undefined"
+      >
+        +15554567852
+      </a>
+      <span
+        className="copyAddress ml-2 js-clipboard-copy"
+        data-clipboard-target="#address-copied-undefined"
+      >
+        <i
+          className="material-icons"
+          id="copy-icon-4"
+        >
+          content_copy
+        </i>
+        <Tooltip
+          delay={
+            Object {
+              "hide": 0,
+              "show": 1000,
+            }
+          }
+          placement="top"
+          target="copy-icon-4"
+        >
+          Copy
+        </Tooltip>
+      </span>
+    </p>
+    <p
+      className="customerChannel"
+      key="5"
+    >
+      <SourceIcon
+        className="uncolored mr-2"
+        type="phone"
+      />
+      <a
+        href="tel:+15557899632"
+        id="address-copied-undefined"
+      >
+        +15557899632
+      </a>
+      <span
+        className="copyAddress ml-2 js-clipboard-copy"
+        data-clipboard-target="#address-copied-undefined"
+      >
+        <i
+          className="material-icons"
+          id="copy-icon-5"
+        >
+          content_copy
+        </i>
+        <Tooltip
+          delay={
+            Object {
+              "hide": 0,
+              "show": 1000,
+            }
+          }
+          placement="top"
+          target="copy-icon-5"
+        >
+          Copy
+        </Tooltip>
+      </span>
+    </p>
+    <p
+      className="customerChannel"
     >
       <i
-        className="material-icons"
-        id="copy-icon-0"
+        className="icon d-inline-block material-icons uncolored mr-2"
       >
-        content_copy
+        language
       </i>
-      <Tooltip
-        delay={
-          Object {
-            "hide": 0,
-            "show": 1000,
-          }
-        }
-        placement="top"
-        target="copy-icon-0"
-      >
-        Copy
-      </Tooltip>
-    </span>
-  </p>
-  <p
-    className="customerChannel"
-    key="1"
-  >
-    <SourceIcon
-      className="uncolored mr-2"
-      type="email"
-    />
-    <a
-      href="mailto:bar@gorgias.io"
-      id="address-copied-undefined"
-    >
-      bar@gorgias.io
-    </a>
-    <span
-      className="copyAddress ml-2 js-clipboard-copy"
-      data-clipboard-target="#address-copied-undefined"
+      location: France, Paris
+    </p>
+    <p
+      className="customerChannel"
     >
       <i
-        className="material-icons"
-        id="copy-icon-1"
+        className="icon d-inline-block material-icons uncolored mr-2"
       >
-        content_copy
+        access_time
       </i>
-      <Tooltip
-        delay={
-          Object {
-            "hide": 0,
-            "show": 1000,
-          }
-        }
-        placement="top"
-        target="copy-icon-1"
+      local time: 13:34
+    </p>
+  </CustomerInfoWrapper>
+</Fragment>
+`;
+
+exports[`CustomerChannels component should display the email channel and the local time channel and then display the button "show more" because there are more channels than those displayed 1`] = `
+<Fragment>
+  <CustomerInfoWrapper>
+    <p
+      className="customerChannel"
+      key="0"
+    >
+      <SourceIcon
+        className="uncolored mr-2"
+        type="email"
+      />
+      <a
+        href="mailto:foo@gorgias.io"
+        id="address-copied-undefined"
       >
-        Copy
-      </Tooltip>
-    </span>
-  </p>
-  <ShowMore
-    className="pl-0"
-    onClick={[Function]}
-  >
-    More info
-  </ShowMore>
+        foo@gorgias.io
+      </a>
+      <span
+        className="copyAddress ml-2 js-clipboard-copy"
+        data-clipboard-target="#address-copied-undefined"
+      >
+        <i
+          className="material-icons"
+          id="copy-icon-0"
+        >
+          content_copy
+        </i>
+        <Tooltip
+          delay={
+            Object {
+              "hide": 0,
+              "show": 1000,
+            }
+          }
+          placement="top"
+          target="copy-icon-0"
+        >
+          Copy
+        </Tooltip>
+      </span>
+    </p>
+    <p
+      className="customerChannel"
+    >
+      <i
+        className="icon d-inline-block material-icons uncolored mr-2"
+      >
+        language
+      </i>
+      location: France, Paris
+    </p>
+    <p
+      className="customerChannel"
+    >
+      <i
+        className="icon d-inline-block material-icons uncolored mr-2"
+      >
+        access_time
+      </i>
+      local time: 13:34
+    </p>
+  </CustomerInfoWrapper>
 </Fragment>
 `;

@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CustomerInfoWrapper component should only 2 children and a Show More button because, the Show More button was clicked once, then all 4 children were rendered and the Less Info button was clicked 1`] = `
+<div>
+  <p>
+    a
+  </p>
+  <p>
+    b
+  </p>
+  <button
+    class="container pl-0 btn btn-link"
+    type="button"
+  >
+    <img
+      alt="Expand"
+      class="mr-3"
+      src="test-file-stub"
+    />
+    More info
+  </button>
+</div>
+`;
+
+exports[`CustomerInfoWrapper component should render all 4 children and a Show Less button because the Show More button was clicked 1`] = `
+<div>
+  <p>
+    a
+  </p>
+  <p>
+    b
+  </p>
+  <p>
+    c
+  </p>
+  <p>
+    d
+  </p>
+  <button
+    class="container pl-0 btn btn-link"
+    type="button"
+  >
+    <img
+      alt="Contract"
+      class="mr-3"
+      src="test-file-stub"
+    />
+    Less info
+  </button>
+</div>
+`;
+
+exports[`CustomerInfoWrapper component should render child a and child b with the show more button because # of children is > 2 1`] = `
+<div>
+  <p>
+    a
+  </p>
+  <p>
+    b
+  </p>
+  <button
+    class="container pl-0 btn btn-link"
+    type="button"
+  >
+    <img
+      alt="Expand"
+      class="mr-3"
+      src="test-file-stub"
+    />
+    More info
+  </button>
+</div>
+`;
+
+exports[`CustomerInfoWrapper component should render child a and no show more button because there is only one child 1`] = `
+<div>
+  <p>
+    a
+  </p>
+</div>
+`;

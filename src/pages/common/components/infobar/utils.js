@@ -1,6 +1,5 @@
 import React from 'react'
 import {fromJS} from 'immutable'
-import moment from 'moment'
 import {Badge} from 'reactstrap'
 import _compact from 'lodash/compact'
 import _concat from 'lodash/concat'
@@ -23,13 +22,14 @@ import _forEach from 'lodash/forEach'
 import _forIn from 'lodash/forIn'
 import _toLower from 'lodash/toLower'
 
+import moment from 'moment'
+
 import {DatetimeLabel} from '../../utils/labels'
 import * as utils from '../../../../utils.ts'
 import {
     getContextFromSourcePath,
     getSourcePathFromContext,
 } from '../../../../state/widgets/utils.ts'
-
 const Raven = window.Raven
 
 /**
@@ -679,4 +679,16 @@ export const displayLabel = (label) => {
     }
 
     return label
+}
+
+/**
+ * Return the local time in string format, based on the UTC offset value
+ * @param timezoneOffset {string} // '+0100' (e.g: for Paris)
+ * @returns {string}
+ */
+export function getLocalTime(timezoneOffset) {
+    const timezoneDifference = parseInt(timezoneOffset.substring(0, 3))
+    const localTime = moment.utc().utcOffset(timezoneDifference)
+
+    return localTime.format('HH:mm')
 }

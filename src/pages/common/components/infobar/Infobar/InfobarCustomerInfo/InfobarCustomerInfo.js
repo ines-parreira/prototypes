@@ -290,6 +290,10 @@ export class InfobarCustomerInfo extends React.Component<Props, State> {
                     <div className={css.detail}>
                         <CustomerChannels
                             channels={customer.get('channels') || fromJS([])}
+                            customerLocationInfo={customer.getIn([
+                                'meta',
+                                'location_info',
+                            ])}
                         >
                             <CustomerNote customer={customer} />
                         </CustomerChannels>

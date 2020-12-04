@@ -1,5 +1,5 @@
 import React, {type Node} from 'react'
-import {type List, type Map} from 'immutable'
+import {fromJS, type List, type Map} from 'immutable'
 import classnames from 'classnames'
 
 import {
@@ -13,32 +13,23 @@ import {
 import SourceIcon from '../../../SourceIcon'
 import Tooltip from '../../../Tooltip'
 import css from '../../Infobar.less'
+import {getLocalTime} from '../../utils'
 
-import {ShowMore} from './ShowMore'
-
-const DEFAULT_COUNT_DISPLAYED_CUSTOMER_CHANNELS = 2
+import CustomerInfoWrapper from './CustomerInfoWrapper.tsx'
 
 type Props = {
     channels: List<Map<*, *>>,
+    customerLocationInfo: Map<any, any>,
     children: Node,
 }
 
-type State = {
-    displayAllCustomerChannels: boolean,
-}
-
-export default class CustomerChannels extends React.Component<Props, State> {
-    state = {
-        displayAllCustomerChannels: false,
-    }
-
-    _displayAllCustomerChannels = () => {
-        this.setState({displayAllCustomerChannels: true})
+export default class CustomerChannels extends React.Component<Props> {
+    static defaultProps = {
+        customerLocationInfo: fromJS({}),
     }
 
     render() {
-        const {channels, children} = this.props
-        const {displayAllCustomerChannels} = this.state
+        const {channels, children, customerLocationInfo} = this.props
 
         let filteredChannels = channels
             .filter((channel) => {
@@ -53,15 +44,12 @@ export default class CustomerChannels extends React.Component<Props, State> {
             .sortBy((channel) => -channel.get('preferred')) // put preferred addresses on top
             .sortBy((channel) => channel.get('type')) // group by channel type
 
-        const hasMoreChannels =
-            !displayAllCustomerChannels &&
-            filteredChannels.size > DEFAULT_COUNT_DISPLAYED_CUSTOMER_CHANNELS
-
-        if (!displayAllCustomerChannels) {
-            filteredChannels = filteredChannels.take(
-                DEFAULT_COUNT_DISPLAYED_CUSTOMER_CHANNELS
-            )
-        }
+        const country = customerLocationInfo.get('country_name')
+        const city = customerLocationInfo.get('city')
+        const timezoneOffset = customerLocationInfo.getIn([
+            'time_zone',
+            'offset',
+        ])
 
         const list = filteredChannels.map((channel, idx) => {
             let props = null
@@ -142,16 +130,40 @@ export default class CustomerChannels extends React.Component<Props, State> {
 
         return (
             <>
-                {list}
                 {children}
-                {hasMoreChannels && (
-                    <ShowMore
-                        className="pl-0"
-                        onClick={this._displayAllCustomerChannels}
-                    >
-                        More info
-                    </ShowMore>
-                )}
+                <CustomerInfoWrapper>
+                    {list}
+                    {country && city && (
+                        <p className={css.customerChannel}>
+                            <i
+                                className={classnames(
+                                    'icon d-inline-block',
+                                    'material-icons',
+                                    'uncolored mr-2'
+                                )}
+                            >
+                                language
+                            </i>
+                            {'location: '.concat(country.concat(', ', city))}
+                        </p>
+                    )}
+                    {timezoneOffset && (
+                        <p className={css.customerChannel}>
+                            <i
+                                className={classnames(
+                                    'icon d-inline-block',
+                                    'material-icons',
+                                    'uncolored mr-2'
+                                )}
+                            >
+                                access_time
+                            </i>
+                            {'local time: '.concat(
+                                getLocalTime(timezoneOffset)
+                            )}
+                        </p>
+                    )}
+                </CustomerInfoWrapper>
             </>
         )
     }

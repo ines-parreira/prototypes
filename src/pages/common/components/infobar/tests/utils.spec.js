@@ -1,4 +1,5 @@
 import {fromJS} from 'immutable'
+import moment from 'moment'
 
 import * as utils from '../utils'
 
@@ -312,6 +313,30 @@ describe('widgets infobar utils', () => {
                 utils.guessFieldValueFromRawData(0, 'boolean')
             ).toMatchSnapshot()
         })
+    })
+
+    describe('getLocalTime()', () => {
+        const nowDates = [
+            ['+0100', '13:34'],
+            ['+0900', '21:34'],
+            ['+0000', '12:34'],
+            ['-0300', '09:34'],
+            ['-0500', '07:34'],
+            ['+1200', '00:34'],
+        ]
+
+        it.each(nowDates)(
+            'should correctly format local time in the hh:mm format',
+            (timezoneOffset, expectedLocalTime) => {
+                const fixedUtcDate = moment.utc('2019-01-26T12:34:56.000Z')
+                jest.spyOn(moment, 'utc').mockImplementationOnce(
+                    () => fixedUtcDate
+                )
+
+                const result = utils.getLocalTime(timezoneOffset)
+                expect(result).toBe(expectedLocalTime)
+            }
+        )
     })
 
     describe('isWidgetEmpty()', () => {

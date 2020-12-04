@@ -1,6 +1,7 @@
 import React from 'react'
 import {fromJS} from 'immutable'
 import {mount, shallow} from 'enzyme'
+import moment from 'moment'
 
 import {
     EMAIL_CUSTOMER_CHANNEL_TYPE,
@@ -9,12 +10,26 @@ import {
 import CustomerChannels from '../CustomerChannels'
 
 describe('CustomerChannels component', () => {
+    beforeEach(() => {
+        const fixedUtcDate = moment.utc('2019-01-26T12:34:56.000Z')
+        jest.spyOn(moment, 'utc').mockImplementation(() => fixedUtcDate)
+    })
+
+    afterEach(() => {
+        jest.spyOn(moment, 'utc').mockRestore()
+    })
+
     it(
         'should display first few passed channels and the button "show more" because there are more channels than ' +
             'those displayed',
         () => {
             const component = shallow(
                 <CustomerChannels
+                    customerLocationInfo={fromJS({
+                        city: 'Paris',
+                        country_name: 'France',
+                        time_zone: {offset: '+0100'},
+                    })}
                     channels={fromJS([
                         {
                             type: EMAIL_CUSTOMER_CHANNEL_TYPE,
@@ -74,9 +89,62 @@ describe('CustomerChannels component', () => {
         }
     )
 
+    it(
+        'should display all passed channels and not display the button "show more" because there is only 2 passed ' +
+            'location channel and local time channel',
+        () => {
+            const fixedUtcDate = moment.utc('2019-01-26T12:34:56.000Z')
+            jest.spyOn(moment, 'utc').mockImplementationOnce(() => fixedUtcDate)
+            const component = shallow(
+                <CustomerChannels
+                    customerLocationInfo={fromJS({
+                        city: 'Paris',
+                        country_name: 'France',
+                        time_zone: {offset: '+0100'},
+                    })}
+                    channels={fromJS([])}
+                />
+            )
+
+            expect(component).toMatchSnapshot()
+        }
+    )
+
+    it(
+        'should display the email channel and the local time channel and then display the button "show more" because there are more channels than ' +
+            'those displayed',
+        () => {
+            const fixedUtcDate = moment.utc('2019-01-26T12:34:56.000Z')
+            jest.spyOn(moment, 'utc').mockImplementationOnce(() => fixedUtcDate)
+            const component = shallow(
+                <CustomerChannels
+                    customerLocationInfo={fromJS({
+                        city: 'Paris',
+                        country_name: 'France',
+                        time_zone: {offset: '+0100'},
+                    })}
+                    channels={fromJS([
+                        {
+                            type: EMAIL_CUSTOMER_CHANNEL_TYPE,
+                            address: 'foo@gorgias.io',
+                            preferred: true,
+                        },
+                    ])}
+                />
+            )
+
+            expect(component).toMatchSnapshot()
+        }
+    )
+
     it('should display all passed channels because the user clicked on "show more"', () => {
         const component = mount(
             <CustomerChannels
+                customerLocationInfo={fromJS({
+                    city: 'Paris',
+                    country_name: 'France',
+                    time_zone: {offset: '+0100'},
+                })}
                 channels={fromJS([
                     {
                         type: EMAIL_CUSTOMER_CHANNEL_TYPE,

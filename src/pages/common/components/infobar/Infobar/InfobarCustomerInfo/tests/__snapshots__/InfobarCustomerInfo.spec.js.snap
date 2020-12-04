@@ -272,6 +272,7 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and a "generat
     >
       <CustomerChannels
         channels={Immutable.List []}
+        customerLocationInfo={Immutable.Map {}}
       >
         <Connect(CustomerNote)
           customer={
@@ -353,6 +354,7 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and empty widg
     >
       <CustomerChannels
         channels={Immutable.List []}
+        customerLocationInfo={Immutable.Map {}}
       >
         <Connect(CustomerNote)
           customer={
@@ -475,6 +477,7 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and the sugges
     >
       <CustomerChannels
         channels={Immutable.List []}
+        customerLocationInfo={Immutable.Map {}}
       >
         <Connect(CustomerNote)
           customer={
@@ -530,6 +533,7 @@ exports[`<InfobarCustomerInfo/> should render only basic customer info because c
     >
       <CustomerChannels
         channels={Immutable.List []}
+        customerLocationInfo={Immutable.Map {}}
       >
         <Connect(CustomerNote)
           customer={
@@ -577,6 +581,7 @@ exports[`<InfobarCustomerInfo/> should render only basic customer info because t
     >
       <CustomerChannels
         channels={Immutable.List []}
+        customerLocationInfo={Immutable.Map {}}
       >
         <Connect(CustomerNote)
           customer={
@@ -624,6 +629,7 @@ exports[`<InfobarCustomerInfo/> sources render basic customer info and widgets b
     >
       <CustomerChannels
         channels={Immutable.List []}
+        customerLocationInfo={Immutable.Map {}}
       >
         <Connect(CustomerNote)
           customer={
