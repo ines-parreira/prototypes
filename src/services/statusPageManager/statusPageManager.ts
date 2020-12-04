@@ -30,6 +30,7 @@ import {
     MAINTENANCE_POLLING_INTERVAL_SECONDS,
     PAGE_ID,
     INCIDENT_IMPACT_LABEL,
+    DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY,
 } from './constants'
 
 //$TsFixMe remove once init.js is migrated
@@ -146,6 +147,27 @@ export class StatusPageManager {
         })
     }
 
+    static hideNotification(id: string) {
+        const notificationIds: string[] = StatusPageManager.getSavedNotificationIds()
+        notificationIds.push(id)
+        StatusPageManager.saveNotificationIds(notificationIds)
+    }
+
+    static saveNotificationIds(notificationIds: string[]) {
+        window.localStorage.setItem(
+            DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY,
+            JSON.stringify(notificationIds)
+        )
+    }
+
+    static getSavedNotificationIds(): string[] {
+        return JSON.parse(
+            window.localStorage.getItem(
+                DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY
+            ) || '[]'
+        ) as string[]
+    }
+
     processIncidents = (data: StatusPageIncidentsResponseData) => {
         const activeIntegrations = getActiveIntegrations(this.store.getState())
         const activeIntegrationsTypes: ImmutableSet<IntegrationType> = activeIntegrations
@@ -177,53 +199,67 @@ export class StatusPageManager {
         })
         this.previousIncidentsIds = []
 
-        relevantIncidents.forEach((incident) => {
-            this.previousIncidentsIds.push(incident.id)
-            const incidentStatus = INCIDENT_IMPACT_LABEL[incident.impact]
-            const notification = {
-                level: incidentStatus.level,
-                status: incidentStatus.status,
-                label: incidentStatus.label,
-                groupNames: new Set(),
-                componentNames: new Set(),
-            }
+        const relevantIncidentsIds = relevantIncidents.map(({id}) => id)
+        // notifications dismissed by user are retrieved in localStorage
+        const closedNotificationIds: string[] = StatusPageManager.getSavedNotificationIds()
+        const cleanedNotificationIds = closedNotificationIds.filter(
+            (id: string) => relevantIncidentsIds.includes(id)
+        )
+        StatusPageManager.saveNotificationIds(cleanedNotificationIds)
 
-            incident.components.forEach((component) => {
-                // if there are mixed incident levels we combine the groups/names - this can lead to some
-                // confusion, but it can be resolved by looking at the status page incident itself.
-                notification.groupNames.add(
-                    HELPDESK_GROUP_IDS[component.group_id]
-                )
-                // we have a lot of components -> only show a couple
-                if (notification.componentNames.size < 5) {
-                    notification.componentNames.add(component.name)
+        for (const incident of relevantIncidents) {
+            if (!closedNotificationIds.includes(incident.id)) {
+                this.previousIncidentsIds.push(incident.id)
+                const incidentStatus = INCIDENT_IMPACT_LABEL[incident.impact]
+                const notification = {
+                    level: incidentStatus.level,
+                    status: incidentStatus.status,
+                    label: incidentStatus.label,
+                    groupNames: new Set(),
+                    componentNames: new Set(),
                 }
-            })
-            const components = `${Array.from(notification.componentNames).join(
-                ', '
-            )} component${notification.componentNames.size > 1 ? 's' : ''}`
-            const message = `
+
+                incident.components.forEach((component) => {
+                    // if there are mixed incident levels we combine the groups/names - this can lead to some
+                    // confusion, but it can be resolved by looking at the status page incident itself.
+                    notification.groupNames.add(
+                        HELPDESK_GROUP_IDS[component.group_id]
+                    )
+                    // we have a lot of components -> only show a couple
+                    if (notification.componentNames.size < 5) {
+                        notification.componentNames.add(component.name)
+                    }
+                })
+                const components = `${Array.from(
+                    notification.componentNames
+                ).join(', ')} component${
+                    notification.componentNames.size > 1 ? 's' : ''
+                }`
+                const message = `
                 Currently experiencing ${
                     notification.label
                 } in our ${Array.from(notification.groupNames).join(
-                ' & '
-            )} affecting ${components}.
+                    ' & '
+                )} affecting ${components}.
                 Find out more on our <u><a href="${
                     data.page.url
                 }" target="_blank" rel="noreferrer noopener">status page</a></u>.`
 
-            this.store.dispatch(
-                notify({
-                    id: `${INCIDENTS_NOTIFICATION_ID}-${incident.id}`,
-                    status: notification.status,
-                    style: 'banner',
-                    message,
-                    allowHTML: true,
-                    dismissible: false,
-                    closable: true,
-                } as any) as any
-            )
-        })
+                this.store.dispatch(
+                    notify({
+                        id: `${INCIDENTS_NOTIFICATION_ID}-${incident.id}`,
+                        status: notification.status,
+                        style: 'banner',
+                        message,
+                        allowHTML: true,
+                        dismissible: false,
+                        closable: true,
+                        onClose: () =>
+                            StatusPageManager.hideNotification(incident.id),
+                    } as any) as any
+                )
+            }
+        }
     }
 
     processScheduledMaintenances = (

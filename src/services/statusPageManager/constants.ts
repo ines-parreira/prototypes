@@ -118,3 +118,6 @@ export const INCIDENTS_POLLING_INTERVAL_SECONDS = 30
 
 // polling scheduled maintenance cycles less often since they are usually scheduled in advance
 export const MAINTENANCE_POLLING_INTERVAL_SECONDS = 300
+
+export const DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY =
+    'gorgias-statuspage-closed-banners'

@@ -11,6 +11,7 @@ import {
     INCIDENTS_NOTIFICATION_ID,
     MAINTENANCE_NOTIFICATION_ID,
     CLUSTER_GROUP_ID,
+    DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY,
 } from '../constants.ts'
 import {ComponentStatus, IncidentImpact} from '../types.ts'
 
@@ -46,6 +47,10 @@ jest.mock('reapop', () => {
 describe('statusPageManager', () => {
     beforeEach(() => {
         jest.clearAllMocks()
+    })
+
+    afterEach(() => {
+        localStorage.clear()
     })
 
     describe('processIncidents()', () => {
@@ -189,6 +194,69 @@ describe('statusPageManager', () => {
                     },
                 ],
             })
+            expect(notify.mock.calls).toMatchSnapshot()
+        })
+
+        it('should not dispatch notification if its incident id is present in localStorage', () => {
+            const id = 'this-is-my-id'
+            localStorage.setItem(
+                DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY,
+                JSON.stringify([id])
+            )
+
+            statusPageManager.processIncidents({
+                page: {
+                    url: 'https://status.gorgias.com/',
+                },
+                incidents: [
+                    {
+                        id,
+                        impact: IncidentImpact.Critical,
+                        components: [
+                            {
+                                name: 'REST API',
+                                status: ComponentStatus.MajorOutage,
+                                group_id: Object.keys(HELPDESK_GROUP_IDS)[0],
+                            },
+                            {
+                                name: 'GraphQL API',
+                                status: ComponentStatus.PartialOutage,
+                                group_id: Object.keys(HELPDESK_GROUP_IDS)[0],
+                            },
+                        ],
+                    },
+                ],
+            })
+
+            expect(notify).not.toHaveBeenCalled()
+        })
+
+        it('should dispatch notification if its incident id is not stored in localStorage', () => {
+            const id = 'this-is-another-incident-id'
+            localStorage.setItem(
+                DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY,
+                JSON.stringify([id])
+            )
+
+            statusPageManager.processIncidents({
+                page: {
+                    url: 'https://status.gorgias.com/',
+                },
+                incidents: [
+                    {
+                        id: 'my-incident-id',
+                        impact: IncidentImpact.Critical,
+                        components: [
+                            {
+                                name: 'REST API',
+                                status: ComponentStatus.MajorOutage,
+                                group_id: Object.keys(HELPDESK_GROUP_IDS)[0],
+                            },
+                        ],
+                    },
+                ],
+            })
+
             expect(notify.mock.calls).toMatchSnapshot()
         })
 
