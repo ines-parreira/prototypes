@@ -16,11 +16,13 @@ jest.mock('lodash/debounce', () => (fn) => fn)
 describe('<OrderFooter/>', () => {
     let onPayloadChange
     let onReasonChange
+    let onNotifyChange
     let setPayload
 
     beforeEach(() => {
         onPayloadChange = jest.fn()
         onReasonChange = jest.fn()
+        onNotifyChange = jest.fn()
         setPayload = jest.fn()
     })
 
@@ -33,11 +35,13 @@ describe('<OrderFooter/>', () => {
                     currencyCode="USD"
                     actionName={ShopifyAction.CANCEL_ORDER}
                     reason={null}
+                    notify={true}
                     loading={false}
                     payload={fromJS(shopifyRefundOrderPayloadFixture())}
                     refund={fromJS(shopifySuggestedRefundFixture())}
                     setPayload={setPayload}
                     onReasonChange={onReasonChange}
+                    onNotifyChange={onNotifyChange}
                     onPayloadChange={onPayloadChange}
                 />
             )
@@ -53,11 +57,13 @@ describe('<OrderFooter/>', () => {
                     currencyCode="USD"
                     actionName={ShopifyAction.REFUND_ORDER}
                     reason={null}
+                    notify={true}
                     loading={false}
                     payload={fromJS(shopifyRefundOrderPayloadFixture())}
                     refund={fromJS(shopifySuggestedRefundFixture())}
                     setPayload={setPayload}
                     onReasonChange={onReasonChange}
+                    onNotifyChange={onNotifyChange}
                     onPayloadChange={onPayloadChange}
                 />
             )
@@ -77,11 +83,13 @@ describe('<OrderFooter/>', () => {
                     currencyCode="USD"
                     actionName={ShopifyAction.CANCEL_ORDER}
                     reason={null}
+                    notify={true}
                     loading={false}
                     payload={payload}
                     refund={fromJS(shopifySuggestedRefundFixture())}
                     setPayload={setPayload}
                     onReasonChange={onReasonChange}
+                    onNotifyChange={onNotifyChange}
                     onPayloadChange={onPayloadChange}
                 />
             )
@@ -103,11 +111,13 @@ describe('<OrderFooter/>', () => {
                     currencyCode="USD"
                     actionName={ShopifyAction.CANCEL_ORDER}
                     reason={null}
+                    notify={true}
                     loading={false}
                     payload={payload}
                     refund={fromJS(shopifySuggestedRefundFixture())}
                     setPayload={setPayload}
                     onReasonChange={onReasonChange}
+                    onNotifyChange={onNotifyChange}
                     onPayloadChange={onPayloadChange}
                 />
             )
@@ -131,11 +141,13 @@ describe('<OrderFooter/>', () => {
                     currencyCode="USD"
                     actionName={ShopifyAction.CANCEL_ORDER}
                     reason={null}
+                    notify={true}
                     loading={false}
                     payload={payload}
                     refund={fromJS(shopifySuggestedRefundFixture())}
                     setPayload={setPayload}
                     onReasonChange={onReasonChange}
+                    onNotifyChange={onNotifyChange}
                     onPayloadChange={onPayloadChange}
                 />
             )
@@ -164,11 +176,13 @@ describe('<OrderFooter/>', () => {
                     currencyCode="USD"
                     actionName={ShopifyAction.CANCEL_ORDER}
                     reason={null}
+                    notify={true}
                     loading={false}
                     payload={payload}
                     refund={fromJS(shopifySuggestedRefundFixture())}
                     setPayload={setPayload}
                     onReasonChange={onReasonChange}
+                    onNotifyChange={onNotifyChange}
                     onPayloadChange={onPayloadChange}
                 />
             )
@@ -184,8 +198,8 @@ describe('<OrderFooter/>', () => {
         })
     })
 
-    describe('_onEmailChange()', () => {
-        it('should call setPayload() with updated payload', () => {
+    describe('onNotifyChange()', () => {
+        it('should call onNotifyChange() with checkbox event', () => {
             const payload = fromJS(shopifyRefundOrderPayloadFixture())
 
             const component = shallow(
@@ -195,21 +209,22 @@ describe('<OrderFooter/>', () => {
                     currencyCode="USD"
                     actionName={ShopifyAction.CANCEL_ORDER}
                     reason={null}
+                    notify={true}
                     loading={false}
                     payload={payload}
                     refund={fromJS(shopifySuggestedRefundFixture())}
                     setPayload={setPayload}
                     onReasonChange={onReasonChange}
+                    onNotifyChange={onNotifyChange}
                     onPayloadChange={onPayloadChange}
                 />
             )
 
-            component
-                .find({type: 'checkbox'})
-                .at(1)
-                .simulate('change', {target: {checked: false}})
+            const event = {target: {checked: false}}
 
-            expect(setPayload).toHaveBeenCalledWith(payload.set('email', false))
+            component.find({type: 'checkbox'}).at(1).simulate('change', event)
+
+            expect(onNotifyChange).toHaveBeenCalledWith(event)
         })
     })
 })

@@ -253,9 +253,7 @@ exports[`<OrderFooter/> render() should render 1`] = `
               color="muted"
               tag="small"
             >
-              The claimed quantity for products in this order will be restocked back to
-               
-              your store.
+              The claimed quantity for products in this order will be restocked back to your store.
             </FormText>
           </FormGroup>
           <FormGroup
@@ -278,7 +276,7 @@ exports[`<OrderFooter/> render() should render 1`] = `
             >
               <Input
                 checked={true}
-                onChange={[Function]}
+                onChange={[MockFunction]}
                 type="checkbox"
               />
               <span
@@ -619,9 +617,7 @@ exports[`<OrderFooter/> render() should render for refund order action 1`] = `
               color="muted"
               tag="small"
             >
-              The claimed quantity for products in this order will be restocked back to
-               
-              your store.
+              The claimed quantity for products in this order will be restocked back to your store.
             </FormText>
           </FormGroup>
           <FormGroup
@@ -644,7 +640,7 @@ exports[`<OrderFooter/> render() should render for refund order action 1`] = `
             >
               <Input
                 checked={true}
-                onChange={[Function]}
+                onChange={[MockFunction]}
                 type="checkbox"
               />
               <span

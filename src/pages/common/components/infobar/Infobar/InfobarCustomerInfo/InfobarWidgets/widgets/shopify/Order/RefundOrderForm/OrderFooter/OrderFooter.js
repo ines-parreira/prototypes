@@ -33,20 +33,17 @@ type Props = {
     hasShippingLine: boolean,
     currencyCode: string,
     reason: ?string,
+    notify: boolean,
     loading: boolean,
     payload: Record<$Shape<RefundOrderPayload>>,
     refund: Record<Refund>,
     setPayload: (Record<$Shape<RefundOrderPayload>>) => void,
     onPayloadChange: (Record<$Shape<RefundOrderPayload>>) => void,
     onReasonChange: (event: SyntheticInputEvent<HTMLInputElement>) => void,
+    onNotifyChange: (event: SyntheticInputEvent<HTMLInputElement>) => void,
 }
 
 export default class OrderFooter extends React.PureComponent<Props> {
-    _getNotifyAttribute(): string {
-        const {actionName} = this.props
-        return actionName === ShopifyAction.CANCEL_ORDER ? 'email' : 'notify'
-    }
-
     _onAmountChange = (value: string) => {
         const {refund, payload, setPayload} = this.props
         const max = getTotalAvailableToRefund(refund)
@@ -73,14 +70,6 @@ export default class OrderFooter extends React.PureComponent<Props> {
         const {payload, setPayload} = this.props
         const restock = event.target.checked
         const newPayload = payload.set('restock', restock)
-
-        setPayload(newPayload)
-    }
-
-    _onEmailChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
-        const {payload, setPayload} = this.props
-        const {checked} = event.target
-        const newPayload = payload.set(this._getNotifyAttribute(), checked)
 
         setPayload(newPayload)
     }
@@ -129,11 +118,13 @@ export default class OrderFooter extends React.PureComponent<Props> {
         const {
             editable,
             hasShippingLine,
+            notify,
             loading,
             payload,
             refund,
             currencyCode,
             onPayloadChange,
+            onNotifyChange,
         } = this.props
         const amount = payload.getIn(['transactions', 0, 'amount'], '')
         const amountMax = refund.isEmpty()
@@ -228,7 +219,7 @@ export default class OrderFooter extends React.PureComponent<Props> {
                                     </Label>
                                     <FormText color="muted">
                                         The claimed quantity for products in
-                                        this order will be restocked back to{' '}
+                                        this order will be restocked back to
                                         your store.
                                     </FormText>
                                 </FormGroup>
@@ -236,11 +227,8 @@ export default class OrderFooter extends React.PureComponent<Props> {
                                     <Label check>
                                         <Input
                                             type="checkbox"
-                                            checked={payload.get(
-                                                this._getNotifyAttribute(),
-                                                true
-                                            )}
-                                            onChange={this._onEmailChange}
+                                            checked={notify}
+                                            onChange={onNotifyChange}
                                         />
                                         <span className="ml-1">
                                             Send notification to customer

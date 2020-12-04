@@ -122,6 +122,14 @@ export class RefundOrderModalComponent extends React.PureComponent<Props> {
         setPayload(newPayload)
     }
 
+    _onNotifyChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
+        const {payload, setPayload} = this.props
+        const {checked} = event.target
+        const newPayload = payload.set('notify', checked)
+
+        setPayload(newPayload)
+    }
+
     _onCancel(via: string) {
         const {onCancel, onClose} = this.props
 
@@ -193,6 +201,7 @@ export class RefundOrderModalComponent extends React.PureComponent<Props> {
                             shopName={shopName}
                             actionName={actionName}
                             reason={payload.get('note', '')}
+                            notify={payload.get('notify')}
                             loading={loading}
                             payload={payload}
                             order={order}
@@ -202,6 +211,7 @@ export class RefundOrderModalComponent extends React.PureComponent<Props> {
                             onPayloadChange={this._onPayloadChange}
                             onLineItemsChange={this._onLineItemsChange}
                             onReasonChange={this._onReasonChange}
+                            onNotifyChange={this._onNotifyChange}
                         />
                     )}
                     <ModalFooter className={css.footer}>

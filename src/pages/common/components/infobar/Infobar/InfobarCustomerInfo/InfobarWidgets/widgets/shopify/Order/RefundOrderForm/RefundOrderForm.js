@@ -18,6 +18,7 @@ type Props = {
     actionName: ?string,
     loading: boolean,
     reason: string,
+    notify: boolean,
     order: Record<Order>,
     refund: Record<Refund>,
     payload: Record<$Shape<RefundOrderPayload>>,
@@ -26,6 +27,7 @@ type Props = {
     onPayloadChange: (Record<$Shape<RefundOrderPayload>>) => void,
     onLineItemsChange: (lineItems: List<$Shape<LineItem>>) => void,
     onReasonChange: (event: SyntheticInputEvent<HTMLInputElement>) => void,
+    onNotifyChange: (event: SyntheticInputEvent<HTMLInputElement>) => void,
 }
 
 export default class RefundOrderForm extends React.PureComponent<Props> {
@@ -34,6 +36,7 @@ export default class RefundOrderForm extends React.PureComponent<Props> {
             shopName,
             loading,
             reason,
+            notify,
             payload,
             refund,
             lineItems,
@@ -43,6 +46,7 @@ export default class RefundOrderForm extends React.PureComponent<Props> {
             setPayload,
             onPayloadChange,
             onReasonChange,
+            onNotifyChange,
         } = this.props
 
         const currencyCode = payload.get('currency')
@@ -65,6 +69,7 @@ export default class RefundOrderForm extends React.PureComponent<Props> {
                 <OrderFooter
                     editable
                     reason={reason}
+                    notify={notify}
                     actionName={actionName}
                     hasShippingLine={!!order.getIn(['shipping_lines', 0])}
                     currencyCode={currencyCode}
@@ -74,6 +79,7 @@ export default class RefundOrderForm extends React.PureComponent<Props> {
                     setPayload={setPayload}
                     onPayloadChange={onPayloadChange}
                     onReasonChange={onReasonChange}
+                    onNotifyChange={onNotifyChange}
                 />
             </React.Fragment>
         )

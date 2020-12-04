@@ -318,6 +318,16 @@ describe('<RefundOrderModalComponent/>', () => {
             })
         })
 
+        describe('_onNotifyChange()', () => {
+            it('should call setPayload()', () => {
+                const event = ({target: {checked: false}}: any)
+                component.instance()._onNotifyChange(event)
+
+                const newPayload = payload.set('notify', false)
+                expect(actions.setPayload).toHaveBeenCalledWith(newPayload)
+            })
+        })
+
         describe('_onSubmit()', () => {
             it('should call onSubmit()', () => {
                 // Click on "Submit"

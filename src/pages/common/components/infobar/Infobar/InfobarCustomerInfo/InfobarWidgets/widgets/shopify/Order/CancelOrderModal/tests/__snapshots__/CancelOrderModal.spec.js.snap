@@ -1029,7 +1029,9 @@ exports[`<CancelOrderModalComponent/> render() should render as open, with order
         ]
       }
       loading={false}
+      notify={true}
       onLineItemsChange={[Function]}
+      onNotifyChange={[Function]}
       onPayloadChange={[Function]}
       onReasonChange={[Function]}
       order={
