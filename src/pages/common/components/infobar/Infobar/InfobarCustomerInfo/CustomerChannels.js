@@ -144,7 +144,7 @@ export default class CustomerChannels extends React.Component<Props> {
                             >
                                 language
                             </i>
-                            {'location: '.concat(country.concat(', ', city))}
+                            {`Location: ${city}, ${country}`}
                         </p>
                     )}
                     {timezoneOffset && (
@@ -158,9 +158,7 @@ export default class CustomerChannels extends React.Component<Props> {
                             >
                                 access_time
                             </i>
-                            {'local time: '.concat(
-                                getLocalTime(timezoneOffset)
-                            )}
+                            {`Local time: ${getLocalTime(timezoneOffset)}`}
                         </p>
                     )}
                 </CustomerInfoWrapper>
