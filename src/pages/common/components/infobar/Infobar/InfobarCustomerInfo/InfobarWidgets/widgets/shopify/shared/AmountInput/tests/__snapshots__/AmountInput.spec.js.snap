@@ -6,14 +6,16 @@ exports[`<AmountInput/> render() should render with currency symbol on left 1`] 
 >
   <span
     className="leftLabel"
+    style={
+      Object {
+        "width": "2rem",
+      }
+    }
   >
-    <ShopifyMoneySymbol
-      currencyCode="USD"
-      short={true}
-    />
+    $
   </span>
   <Input
-    className="input hasLeftLabel"
+    className="input"
     disabled={false}
     id="amount"
     innerRef={[Function]}
@@ -23,6 +25,11 @@ exports[`<AmountInput/> render() should render with currency symbol on left 1`] 
     onChange={[Function]}
     required={true}
     step={0.01}
+    style={
+      Object {
+        "paddingLeft": "2rem",
+      }
+    }
     type="number"
     value="9.99"
   />
@@ -34,7 +41,7 @@ exports[`<AmountInput/> render() should render with percentage symbol on right 1
   className="container"
 >
   <Input
-    className="input hasRightLabel"
+    className="input"
     disabled={false}
     id="amount"
     innerRef={[Function]}
@@ -44,11 +51,21 @@ exports[`<AmountInput/> render() should render with percentage symbol on right 1
     onChange={[Function]}
     required={true}
     step={0.01}
+    style={
+      Object {
+        "paddingRight": "2rem",
+      }
+    }
     type="number"
     value="25"
   />
   <span
     className="rightLabel"
+    style={
+      Object {
+        "width": "2rem",
+      }
+    }
   >
     %
   </span>

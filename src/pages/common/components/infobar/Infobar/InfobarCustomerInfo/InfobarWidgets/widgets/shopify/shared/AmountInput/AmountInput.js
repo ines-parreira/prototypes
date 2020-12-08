@@ -7,7 +7,7 @@ import _noop from 'lodash/noop'
 
 import {NON_FRACTIONAL_CURRENCIES} from '../../../../../../../../../../../constants/integrations/shopify.ts'
 import {formatPrice} from '../../../../../../../../../../../business/shopify/number.ts'
-import ShopifyMoneySymbol from '../MoneySymbol'
+import getShopifyMoneySymbol from '../helpers'
 
 import css from './AmountInput.less'
 
@@ -73,14 +73,19 @@ export default class AmountInput extends React.PureComponent<Props> {
                 ? 1
                 : 0.01
         const hasRightLabel = symbol === '%'
-        const label = symbol || (
-            <ShopifyMoneySymbol currencyCode={currencyCode} short />
-        )
+        const label = symbol || getShopifyMoneySymbol(currencyCode, true)
+        const labelWidth = label.length === 1 ? '2rem' : '3rem'
+        const labelStyle = {width: labelWidth}
+        const inputStyle = hasRightLabel
+            ? {paddingRight: labelWidth}
+            : {paddingLeft: labelWidth}
 
         return (
             <div className={classnames(css.container, className)}>
                 {!hasRightLabel && (
-                    <span className={css.leftLabel}>{label}</span>
+                    <span className={css.leftLabel} style={labelStyle}>
+                        {label}
+                    </span>
                 )}
                 <Input
                     type="number"
@@ -94,13 +99,13 @@ export default class AmountInput extends React.PureComponent<Props> {
                     onChange={this._onChange}
                     onBlur={this._onBlur}
                     innerRef={saveInputRef}
-                    className={classnames(css.input, {
-                        [css.hasLeftLabel]: !hasRightLabel,
-                        [css.hasRightLabel]: hasRightLabel,
-                    })}
+                    className={css.input}
+                    style={inputStyle}
                 />
                 {hasRightLabel && (
-                    <span className={css.rightLabel}>{label}</span>
+                    <span className={css.rightLabel} style={labelStyle}>
+                        {label}
+                    </span>
                 )}
             </div>
         )

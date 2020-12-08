@@ -138,7 +138,7 @@ export default class OrderFooter extends React.PureComponent<Props> {
         return (
             <Container fluid className={css.container}>
                 <Row>
-                    <Col xs={{size: 12, order: 2}} xl={{size: 8, order: 1}}>
+                    <Col xs={{size: 12, order: 2}} xl={{size: 7, order: 1}}>
                         <Row>
                             <Col xs={12} lg={6}>
                                 <FormGroup>
@@ -240,7 +240,7 @@ export default class OrderFooter extends React.PureComponent<Props> {
                     </Col>
                     <Col
                         xs={{size: 12, order: 1}}
-                        xl={{size: 4, order: 2}}
+                        xl={{size: 5, order: 2}}
                         className="mb-sm-4"
                     >
                         <OrderTotals

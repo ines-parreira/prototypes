@@ -26,7 +26,7 @@ import {
     formatPrice,
 } from '../../../../../../../../../../../../business/shopify/number.ts'
 import {focusElement} from '../../../../../../../../../../../../utils/html.ts'
-import ShopifyMoneySymbol from '../../MoneySymbol'
+import getShopifyMoneySymbol from '../../helpers'
 import AmountInput from '../../AmountInput'
 import {ShopifyAction} from '../../../constants'
 
@@ -263,10 +263,10 @@ export default class DiscountPopover extends React.PureComponent<Props, State> {
                                             className={css.focusable}
                                             tabIndex={0}
                                         >
-                                            <ShopifyMoneySymbol
-                                                currencyCode={currencyCode}
-                                                short
-                                            />
+                                            {getShopifyMoneySymbol(
+                                                currencyCode,
+                                                true
+                                            )}
                                         </Button>
                                     </InputGroupAddon>
                                     <InputGroupAddon addonType="prepend">

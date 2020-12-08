@@ -79,10 +79,7 @@ exports[`<DiscountPopover/> render() should render with value 1`] = `
                 tabIndex={0}
                 tag="button"
               >
-                <ShopifyMoneySymbol
-                  currencyCode="USD"
-                  short={true}
-                />
+                $
               </Button>
             </InputGroupAddon>
             <InputGroupAddon
@@ -249,10 +246,7 @@ exports[`<DiscountPopover/> render() should render without value 1`] = `
                 tabIndex={0}
                 tag="button"
               >
-                <ShopifyMoneySymbol
-                  currencyCode="USD"
-                  short={true}
-                />
+                $
               </Button>
             </InputGroupAddon>
             <InputGroupAddon
