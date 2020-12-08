@@ -53,6 +53,7 @@ export enum AuditLogEventType {
     TicketMarkedSpam = 'ticket-marked-spam',
     TicketMerged = 'ticket-merged',
     TicketMessageCreated = 'ticket-message-created',
+    TicketMessageSummaryCreated = 'ticket-message-summary-created',
     TicketReopened = 'ticket-reopened',
     TicketSnoozed = 'ticket-snoozed',
     TicketTagsAdded = 'ticket-tags-added',

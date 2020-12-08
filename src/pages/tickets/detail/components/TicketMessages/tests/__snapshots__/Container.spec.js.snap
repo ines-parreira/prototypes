@@ -240,6 +240,106 @@ exports[`Container should render container with an avatar because the hidden mes
 </div>
 `;
 
+exports[`Container should render container with isBodyHiglighted because it should be highlighted 1`] = `
+<div
+  className="ticket-message component ticketMessagesHighlighted"
+>
+  <div
+    className="bodyWrapper bodyWrapperForHiddenOrDeletedMessage"
+  >
+    <Header
+      hasError={false}
+      id="some-header"
+      isLastRead={false}
+      isMessageDeleted={true}
+      isMessageHidden={false}
+      message={
+        Object {
+          "actions": null,
+          "attachments": Array [],
+          "channel": "email",
+          "created_datetime": "",
+          "external_id": null,
+          "failed_datetime": null,
+          "from_agent": false,
+          "id": 1,
+          "integration_id": null,
+          "isMessage": true,
+          "meta": null,
+          "opened_datetime": null,
+          "public": true,
+          "receiver": Object {
+            "email": "mary.poppins@example.com",
+            "firstname": "Mary",
+            "id": 2,
+            "lastname": "Poppins",
+            "name": "Mary Poppins",
+          },
+          "rule_id": null,
+          "sender": Object {
+            "email": "john.doe@example.com",
+            "firstname": "John",
+            "id": 1,
+            "lastname": "Doe",
+            "name": "John Doe",
+          },
+          "stripped_html": null,
+          "stripped_signature": null,
+          "stripped_text": null,
+          "subject": "Some subject",
+          "uri": "http://example.com/messages/1",
+          "via": "email",
+        }
+      }
+      timezone="America/Los_Angeles"
+    />
+    <Footer
+      id="some-header"
+      isMessageDeleted={true}
+      isMessageHidden={false}
+      message={
+        Object {
+          "actions": null,
+          "attachments": Array [],
+          "channel": "email",
+          "created_datetime": "",
+          "external_id": null,
+          "failed_datetime": null,
+          "from_agent": false,
+          "id": 1,
+          "integration_id": null,
+          "isMessage": true,
+          "meta": null,
+          "opened_datetime": null,
+          "public": true,
+          "receiver": Object {
+            "email": "mary.poppins@example.com",
+            "firstname": "Mary",
+            "id": 2,
+            "lastname": "Poppins",
+            "name": "Mary Poppins",
+          },
+          "rule_id": null,
+          "sender": Object {
+            "email": "john.doe@example.com",
+            "firstname": "John",
+            "id": 1,
+            "lastname": "Doe",
+            "name": "John Doe",
+          },
+          "stripped_html": null,
+          "stripped_signature": null,
+          "stripped_text": null,
+          "subject": "Some subject",
+          "uri": "http://example.com/messages/1",
+          "via": "email",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
 exports[`Container should render container without an avatar because the message is deleted 1`] = `
 <div
   className="ticket-message component"

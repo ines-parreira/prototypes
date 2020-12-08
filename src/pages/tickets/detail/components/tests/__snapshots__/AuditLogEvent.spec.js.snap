@@ -574,6 +574,66 @@ exports[`<AuditLogEvent/> render() should render with event type ticket-merged 1
 </div>
 `;
 
+exports[`<AuditLogEvent/> render() should render with event type ticket-message-summary-created 1`] = `
+<div
+  className="component"
+>
+  <div
+    className="event"
+  >
+    <div
+      className="content"
+    >
+      <div
+        className="icon"
+      >
+        <i
+          className="material-icons"
+        >
+          email
+        </i>
+      </div>
+      <ActionName>
+        <b>
+          Chat summarized
+        </b>
+         -
+         
+        <a
+          href="#"
+          onClick={[Function]}
+        >
+          <u>
+            Unseen chat messages
+          </u>
+        </a>
+         
+        were sent by email
+         
+      </ActionName>
+      <Filler>
+        by
+      </Filler>
+      <AgentLabel
+        className="assigneeLabel"
+        name="User 1"
+        profilePictureUrl=""
+        shouldDisplayAvatar={false}
+      />
+    </div>
+    <Connect(DatetimeLabel)
+      className="date text-faded"
+      dateTime="2019-11-15 19:00:00.000000"
+      settings={
+        Object {
+          "position": "top left",
+        }
+      }
+    />
+  </div>
+</div>
+`;
+
 exports[`<AuditLogEvent/> render() should render with event type ticket-reopened 1`] = `
 <div
   className="component"

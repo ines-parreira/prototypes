@@ -67,6 +67,60 @@ describe('TicketBody', () => {
         expect(component).toMatchSnapshot()
     })
 
+    it('should display and highlight the messages', () => {
+        const component = shallow(
+            <TicketBody
+                elements={fromJS([
+                    {
+                        ...message,
+                        id: 1,
+                        created_datetime: '2017-07-01T18:00:00',
+                    },
+                ])}
+                highlightedElements={{first: 1}}
+                lastReadMessage={fromJS({
+                    id: 1,
+                })}
+                loadingState={fromJS([])}
+                ticket={fromJS({id: 1})}
+                setStatus={() => {}}
+                currentUser={fromJS({
+                    timezone: 'UTC',
+                })}
+            />
+        )
+        component.setState({highlightedElements: {first: 1}})
+
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should display and not highlight the messages', () => {
+        const component = shallow(
+            <TicketBody
+                elements={fromJS([
+                    {
+                        ...message,
+                        id: 1,
+                        created_datetime: '2017-07-01T18:00:00',
+                    },
+                ])}
+                highlightedElements={{first: 1}}
+                lastReadMessage={fromJS({
+                    id: 1,
+                })}
+                loadingState={fromJS([])}
+                ticket={fromJS({id: 1})}
+                setStatus={() => {}}
+                currentUser={fromJS({
+                    timezone: 'UTC',
+                })}
+            />
+        )
+        component.setState({highlightedElements: {first: 2}})
+
+        expect(component).toMatchSnapshot()
+    })
+
     it('should display audit log events with messages', () => {
         const component = shallow(
             <TicketBody

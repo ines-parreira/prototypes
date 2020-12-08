@@ -38,6 +38,12 @@ type Props = {
     teams: List<teamType>,
     tags: List<*>,
     events: List<AuditLogEventType>,
+    setHighlightedElements: (HighlightedElements) => void,
+}
+
+export type HighlightedElements = {
+    first: number,
+    last: number,
 }
 
 class AuditLogEventComponent extends React.Component<Props> {
@@ -63,6 +69,7 @@ class AuditLogEventComponent extends React.Component<Props> {
         [constants.TICKET_UNASSIGNED]: ['person_add_disabled'],
         [constants.TICKET_UNMARKED_SPAM]: ['undo'],
         [constants.TICKET_UNTRASHED]: ['undo'],
+        [constants.TICKET_MESSAGE_SUMMARY_CREATED]: ['email'],
     }
 
     _CONTENT_RENDERERS = {
@@ -95,6 +102,8 @@ class AuditLogEventComponent extends React.Component<Props> {
             <ActionName>Unmarked as spam</ActionName>
         ),
         [constants.TICKET_UNTRASHED]: () => <ActionName>Undeleted</ActionName>,
+        [constants.TICKET_MESSAGE_SUMMARY_CREATED]: () =>
+            this._renderTicketMessageSummaryCreatedEvent(),
     }
 
     _getIcon() {
@@ -239,6 +248,41 @@ class AuditLogEventComponent extends React.Component<Props> {
                 <a href={`/app/customer/${newCustomer.get('id')}`}>
                     {newCustomerName}
                 </a>
+            </ActionName>
+        )
+    }
+
+    _renderTicketMessageSummaryCreatedEvent() {
+        const {event} = this.props
+
+        if (isSystemRuleEvent(event)) {
+            return null
+        }
+
+        const first = event.getIn(['data', 'first_unseen_id'])
+        const last = event.getIn(['data', 'last_unseen_id'])
+
+        if (!first && !last) {
+            return (
+                <ActionName>
+                    <b>Chat summarized</b> - <u>Unseen chat messages</u> were
+                    sent by email{' '}
+                </ActionName>
+            )
+        }
+
+        return (
+            <ActionName>
+                <b>Chat summarized</b> -{' '}
+                <a
+                    href={'#'}
+                    onClick={() => {
+                        this.props.setHighlightedElements({first, last})
+                    }}
+                >
+                    <u>Unseen chat messages</u>
+                </a>{' '}
+                were sent by email{' '}
             </ActionName>
         )
     }

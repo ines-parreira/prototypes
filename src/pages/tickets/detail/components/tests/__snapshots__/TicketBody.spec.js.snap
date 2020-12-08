@@ -12,6 +12,7 @@ exports[`TicketBody last read message should pass \`isLastReadMessage\` only for
 >
   <TicketMessages
     hasCursor={false}
+    highlightedElements={null}
     id="message-0"
     key="message-0"
     lastMessageDatetimeAfterMount={"2017-07-02T03:00:00.000Z"}
@@ -62,6 +63,7 @@ exports[`TicketBody last read message should pass \`isLastReadMessage\` only for
   />
   <TicketMessages
     hasCursor={false}
+    highlightedElements={null}
     id="message-1"
     key="message-1"
     lastMessageDatetimeAfterMount={"2017-07-02T03:00:00.000Z"}
@@ -112,6 +114,7 @@ exports[`TicketBody last read message should pass \`isLastReadMessage\` only for
   />
   <TicketMessages
     hasCursor={true}
+    highlightedElements={null}
     id="message-2"
     key="message-2"
     lastMessageDatetimeAfterMount={"2017-07-02T03:00:00.000Z"}
@@ -163,12 +166,137 @@ exports[`TicketBody last read message should pass \`isLastReadMessage\` only for
 </div>
 `;
 
+exports[`TicketBody should display and highlight the messages 1`] = `
+<div
+  className="TicketMessages"
+>
+  <TicketMessages
+    hasCursor={true}
+    highlightedElements={
+      Object {
+        "first": 1,
+      }
+    }
+    id="message-0"
+    key="message-0"
+    lastMessageDatetimeAfterMount={"2017-07-02T01:00:00.000Z"}
+    lastReadMessageId={1}
+    messages={
+      Array [
+        Object {
+          "actions": null,
+          "attachments": Array [],
+          "channel": "email",
+          "created_datetime": "2017-07-01T18:00:00",
+          "external_id": null,
+          "failed_datetime": null,
+          "from_agent": false,
+          "id": 1,
+          "integration_id": null,
+          "isMessage": true,
+          "meta": null,
+          "opened_datetime": null,
+          "public": true,
+          "receiver": Object {
+            "email": "mary.poppins@example.com",
+            "firstname": "Mary",
+            "id": 2,
+            "lastname": "Poppins",
+            "name": "Mary Poppins",
+          },
+          "rule_id": null,
+          "sender": Object {
+            "email": "john.doe@example.com",
+            "firstname": "John",
+            "id": 1,
+            "lastname": "Doe",
+            "name": "John Doe",
+          },
+          "stripped_html": null,
+          "stripped_signature": null,
+          "stripped_text": null,
+          "subject": "Some subject",
+          "uri": "http://example.com/messages/1",
+          "via": "email",
+        },
+      ]
+    }
+    setStatus={[Function]}
+    ticketId={1}
+    timezone="UTC"
+  />
+</div>
+`;
+
+exports[`TicketBody should display and not highlight the messages 1`] = `
+<div
+  className="TicketMessages"
+>
+  <TicketMessages
+    hasCursor={true}
+    highlightedElements={
+      Object {
+        "first": 2,
+      }
+    }
+    id="message-0"
+    key="message-0"
+    lastMessageDatetimeAfterMount={"2017-07-02T01:00:00.000Z"}
+    lastReadMessageId={1}
+    messages={
+      Array [
+        Object {
+          "actions": null,
+          "attachments": Array [],
+          "channel": "email",
+          "created_datetime": "2017-07-01T18:00:00",
+          "external_id": null,
+          "failed_datetime": null,
+          "from_agent": false,
+          "id": 1,
+          "integration_id": null,
+          "isMessage": true,
+          "meta": null,
+          "opened_datetime": null,
+          "public": true,
+          "receiver": Object {
+            "email": "mary.poppins@example.com",
+            "firstname": "Mary",
+            "id": 2,
+            "lastname": "Poppins",
+            "name": "Mary Poppins",
+          },
+          "rule_id": null,
+          "sender": Object {
+            "email": "john.doe@example.com",
+            "firstname": "John",
+            "id": 1,
+            "lastname": "Doe",
+            "name": "John Doe",
+          },
+          "stripped_html": null,
+          "stripped_signature": null,
+          "stripped_text": null,
+          "subject": "Some subject",
+          "uri": "http://example.com/messages/1",
+          "via": "email",
+        },
+      ]
+    }
+    setStatus={[Function]}
+    ticketId={1}
+    timezone="UTC"
+  />
+</div>
+`;
+
 exports[`TicketBody should display audit log events with messages 1`] = `
 <div
   className="TicketMessages"
 >
   <TicketMessages
     hasCursor={false}
+    highlightedElements={null}
     id="message-0"
     key="message-0"
     lastMessageDatetimeAfterMount={"2019-11-16T02:00:00.000Z"}
@@ -234,6 +362,7 @@ exports[`TicketBody should display audit log events with messages 1`] = `
     }
     isLast={true}
     key="event-1"
+    setHighlightedElements={[Function]}
   />
 </div>
 `;
@@ -244,6 +373,7 @@ exports[`TicketBody should display events with messages 1`] = `
 >
   <TicketMessages
     hasCursor={false}
+    highlightedElements={null}
     id="message-0"
     key="message-0"
     lastMessageDatetimeAfterMount={"2017-07-02T02:00:00.000Z"}
@@ -344,6 +474,7 @@ exports[`TicketBody should display messages 1`] = `
 >
   <TicketMessages
     hasCursor={true}
+    highlightedElements={null}
     id="message-0"
     key="message-0"
     lastMessageDatetimeAfterMount={"2017-07-02T01:00:00.000Z"}

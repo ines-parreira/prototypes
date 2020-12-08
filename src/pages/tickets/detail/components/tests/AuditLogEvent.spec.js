@@ -84,6 +84,9 @@ describe('<AuditLogEvent/>', () => {
                         case constants.TICKET_TEAM_ASSIGNED:
                             event.data = {assignee_team_id: 1}
                             break
+                        case constants.TICKET_MESSAGE_SUMMARY_CREATED:
+                            event.data = {first_unseen_id: 1, last_unseen_id: 2}
+                            break
                         default:
                             break
                     }

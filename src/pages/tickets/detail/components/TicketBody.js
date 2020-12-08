@@ -31,6 +31,7 @@ import {TICKET_AUDIT_LOG_EVENTS} from '../../../../constants/event.ts'
 import TicketMessages from './TicketMessages'
 import SatisfactionSurvey from './SatisfactionSurvey'
 import AuditLogEvent from './AuditLogEvent'
+import type {HighlightedElements} from './AuditLogEvent'
 import Event from './Event'
 
 type Props = {
@@ -46,6 +47,7 @@ type Props = {
 
 type State = {
     messageCursor: number,
+    highlightedElements: HighlightedElements | null,
 }
 
 export class TicketBody extends React.Component<Props, State> {
@@ -74,7 +76,15 @@ export class TicketBody extends React.Component<Props, State> {
         this._messageCursor = props.elements.size - 1
         this.state = {
             messageCursor: this._messageCursor,
+            highlightedElements: null,
         }
+    }
+
+    setHighlightedElements = (value: HighlightedElements) => {
+        this.setState({highlightedElements: value})
+        setTimeout(() => {
+            this.setState({highlightedElements: null})
+        }, 1000)
     }
 
     componentDidMount() {
@@ -206,6 +216,9 @@ export class TicketBody extends React.Component<Props, State> {
                                         hasCursor={
                                             this.state.messageCursor === index
                                         }
+                                        highlightedElements={
+                                            this.state.highlightedElements
+                                        }
                                     />
                                 )
                             }
@@ -231,6 +244,9 @@ export class TicketBody extends React.Component<Props, State> {
                                         key={`event-${elementMap.get('id')}`}
                                         event={elementMap}
                                         isLast={index === elements.size - 1}
+                                        setHighlightedElements={
+                                            this.setHighlightedElements
+                                        }
                                     />
                                 ) : (
                                     <Event

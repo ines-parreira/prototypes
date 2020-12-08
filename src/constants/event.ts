@@ -17,6 +17,7 @@ export const TICKET_UNASSIGNED = 'ticket-unassigned'
 export const TICKET_UNMARKED_SPAM = 'ticket-unmarked-spam'
 export const TICKET_UNTRASHED = 'ticket-untrashed'
 export const TICKET_UPDATED = 'ticket-updated'
+export const TICKET_MESSAGE_SUMMARY_CREATED = 'ticket-message-summary-created'
 
 //$TsFixMe fallback value for js, use TicketAuditLogEvent enum instead
 export const TICKET_AUDIT_LOG_EVENTS_MAP = Object.freeze({
@@ -37,6 +38,7 @@ export const TICKET_AUDIT_LOG_EVENTS_MAP = Object.freeze({
     TICKET_UNASSIGNED,
     TICKET_UNMARKED_SPAM,
     TICKET_UNTRASHED,
+    TICKET_MESSAGE_SUMMARY_CREATED,
 })
 
 export const TICKET_AUDIT_LOG_EVENTS = Object.freeze(

@@ -22,6 +22,7 @@ describe('Container', () => {
                 lastMessageDatetimeAfterMount={moment('2017-01-01T12:12:34Z')}
                 isMessageHidden={false}
                 isMessageDeleted={false}
+                isBodyHighlighted={false}
             />
         )
         expect(component).toMatchSnapshot()
@@ -38,6 +39,7 @@ describe('Container', () => {
                 lastMessageDatetimeAfterMount={moment('2017-01-01T12:12:34Z')}
                 isMessageHidden={true}
                 isMessageDeleted={false}
+                isBodyHighlighted={false}
             />
         )
         expect(component).toMatchSnapshot()
@@ -54,6 +56,24 @@ describe('Container', () => {
                 lastMessageDatetimeAfterMount={moment('2017-01-01T12:12:34Z')}
                 isMessageHidden={false}
                 isMessageDeleted={true}
+                isBodyHighlighted={false}
+            />
+        )
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should render container with isBodyHiglighted because it should be highlighted', () => {
+        const component = shallow(
+            <Container
+                id="some-header"
+                hasCursor={false}
+                message={message}
+                timezone="America/Los_Angeles"
+                isLastRead={false}
+                lastMessageDatetimeAfterMount={moment('2020-01-01T12:12:34Z')}
+                isMessageHidden={false}
+                isMessageDeleted={true}
+                isBodyHighlighted={true}
             />
         )
         expect(component).toMatchSnapshot()
@@ -70,6 +90,7 @@ describe('Container', () => {
                 lastMessageDatetimeAfterMount={moment('2017-01-01T12:12:34Z')}
                 isMessageHidden={true}
                 isMessageDeleted={false}
+                isBodyHighlighted={false}
             />
         )
         expect(component).toMatchSnapshot()
@@ -90,6 +111,7 @@ describe('Container', () => {
                 lastMessageDatetimeAfterMount={moment('2017-01-01T12:12:34Z')}
                 isMessageHidden={false}
                 isMessageDeleted={false}
+                isBodyHighlighted={false}
             />
         )
         expect(component).not.toHaveClassName(css.hasError)

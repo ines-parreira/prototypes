@@ -25,6 +25,7 @@ type Props = {
     isLastRead: boolean,
     isMessageHidden: boolean,
     isMessageDeleted: boolean,
+    isBodyHighlighted: boolean,
 }
 
 export default class Container extends React.Component<Props> {
@@ -32,6 +33,9 @@ export default class Container extends React.Component<Props> {
         // only if it just got the cursor.
         // to prevent focusing on the cursor item when a different one updates.
         if (this.props.hasCursor && !prevProps.hasCursor) {
+            scrollToReactNode(this)
+        }
+        if (this.props.isBodyHighlighted && !prevProps.isBodyHighlighted) {
             scrollToReactNode(this)
         }
     }
@@ -85,6 +89,7 @@ export default class Container extends React.Component<Props> {
                         appear: appear,
                         hasError: isFailed(message),
                         'ticket-message-loading': isPending(message),
+                        ticketMessagesHighlighted: this.props.isBodyHighlighted,
                     }
                 )}
             >

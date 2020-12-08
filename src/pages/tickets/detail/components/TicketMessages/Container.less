@@ -76,6 +76,22 @@
  * https://github.com/css-modules/css-modules/issues/141
  */
 
+.ticketMessagesHighlighted {
+  animation-name: highlight-ticket;
+  animation-duration: 1s;
+  animation-delay: .3s;
+}
+
+@keyframes highlight-ticket{
+    from{
+      background-color: @highlightYellow;
+    }
+    to{
+      background-color: @white;
+    }
+  }
+
+
 @keyframes ticket-message-loading-opacity {
   from {
     opacity: 1;
