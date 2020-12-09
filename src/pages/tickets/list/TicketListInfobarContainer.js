@@ -10,6 +10,7 @@ import type {Map, List} from 'immutable'
 import {
     EMAIL_INTEGRATION_TYPE,
     FACEBOOK_INTEGRATION_TYPE,
+    GORGIAS_CHAT_INTEGRATION_TYPE,
     SHOPIFY_INTEGRATION_TYPE,
     SMOOCH_INSIDE_INTEGRATION_TYPE,
     SMOOCH_INTEGRATION_TYPE,
@@ -86,6 +87,7 @@ class TicketListInfobarContainer extends React.Component<Props> {
         const hasConnectedChat = hasIntegrationsOfTypes([
             SMOOCH_INTEGRATION_TYPE,
             SMOOCH_INSIDE_INTEGRATION_TYPE,
+            GORGIAS_CHAT_INTEGRATION_TYPE,
         ])
 
         const hasInvitedTeamMembers = agents.size > 1
@@ -153,7 +155,7 @@ class TicketListInfobarContainer extends React.Component<Props> {
                                 <div>Connect email</div>
                             </Link>
                             <Link
-                                to="/app/settings/integrations/smooch_inside"
+                                to="/app/settings/integrations/gorgias_chat"
                                 className={css.button}
                                 onClick={() => {
                                     segmentTracker.logEvent(
