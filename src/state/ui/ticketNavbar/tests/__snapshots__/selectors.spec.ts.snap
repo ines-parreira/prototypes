@@ -1,0 +1,103 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`selectors getTicketNavbarElements should properly display a section view without section 1`] = `
+Array [
+  Object {
+    "data": Object {
+      "id": 5,
+      "section_id": null,
+      "type": "ticket-list",
+      "visibility": "private",
+    },
+    "type": "view",
+  },
+  Object {
+    "data": Object {
+      "id": 123,
+      "section_id": 3,
+      "type": "ticket-list",
+      "visibility": "private",
+    },
+    "type": "view",
+  },
+]
+`;
+
+exports[`selectors getTicketNavbarElements should return the elements 1`] = `
+Array [
+  Object {
+    "data": Object {
+      "id": 5,
+      "section_id": null,
+      "type": "ticket-list",
+      "visibility": "private",
+    },
+    "type": "view",
+  },
+  Object {
+    "children": Array [
+      Object {
+        "id": 123,
+        "section_id": 3,
+        "type": "ticket-list",
+        "visibility": "private",
+      },
+    ],
+    "data": Object {
+      "id": 3,
+      "private": true,
+    },
+    "type": "section",
+  },
+]
+`;
+
+exports[`selectors getTicketNavbarElements should return the elements 2`] = `
+Array [
+  Object {
+    "children": Array [
+      Object {
+        "id": 10,
+        "section_id": 1,
+        "type": "ticket-list",
+        "visibility": "public",
+      },
+      Object {
+        "id": 2,
+        "section_id": 1,
+        "type": "ticket-list",
+        "visibility": "public",
+      },
+    ],
+    "data": Object {
+      "id": 1,
+      "private": false,
+    },
+    "type": "section",
+  },
+  Object {
+    "data": Object {
+      "id": 4,
+      "section_id": null,
+      "type": "ticket-list",
+      "visibility": "public",
+    },
+    "type": "view",
+  },
+  Object {
+    "children": Array [
+      Object {
+        "id": 1,
+        "section_id": 2,
+        "type": "ticket-list",
+        "visibility": "public",
+      },
+    ],
+    "data": Object {
+      "id": 2,
+      "private": false,
+    },
+    "type": "section",
+  },
+]
+`;

@@ -6,12 +6,12 @@ import {browserHistory} from 'react-router'
 
 import Search from '../../Search.js'
 import untypedConfigureStore from '../../../../../store/configureStore.js'
-import * as viewsFixtures from '../../../../../fixtures/views.js'
+import * as viewsFixtures from '../../../../../fixtures/views'
 import * as viewsActions from '../../../../../state/views/actions'
+import {View} from '../../../../../models/view/types'
+import {RootState} from '../../../../../state/types'
 import Header, {HeaderContainer} from '../Header'
 import EmojiSelect from '../EmojiSelect/index.js'
-import {View} from '../../../../../state/views/types'
-import {RootState} from '../../../../../state/types'
 
 // $TsFixMe: Remove on store/configureStore migration
 const configureStore = (untypedConfigureStore as unknown) as (

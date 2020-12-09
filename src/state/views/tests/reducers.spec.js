@@ -3,7 +3,7 @@ import moment from 'moment'
 
 import {SYSTEM_VIEW_CATEGORY} from '../../../constants/view.ts'
 import reducers, {initialState} from '../reducers.ts'
-import * as fixtures from '../../../fixtures/views'
+import * as fixtures from '../../../fixtures/views.ts'
 import * as types from '../constants'
 import * as utils from '../utils.ts'
 import * as selectors from '../selectors.ts'

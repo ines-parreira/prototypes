@@ -53,7 +53,7 @@ class ViewNavbarView extends Component {
     }
 
     componentWillUnmount() {
-        shortcutManager.unbind('ViewNavbarView')
+        shortcutManager.unbind('ViewNavbar')
     }
 
     componentWillReceiveProps(nextProps) {
@@ -66,7 +66,7 @@ class ViewNavbarView extends Component {
     }
 
     _bindKeys = () => {
-        shortcutManager.bind('ViewNavbarView', {
+        shortcutManager.bind('ViewNavbar', {
             GO_NEXT_VIEW: {
                 action: () => this._moveCursor(),
             },

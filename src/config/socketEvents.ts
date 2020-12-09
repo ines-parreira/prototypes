@@ -6,6 +6,7 @@ import {shouldTicketBeDisplayedInRecentChats} from '../business/recentChats'
 
 import * as agentsActions from '../state/agents/actions'
 import * as chatsActions from '../state/chats/actions'
+import {viewsCountFetched} from '../state/entities/viewsCount/actions'
 import * as infobarActions from '../state/infobar/actions'
 import * as integrationsActions from '../state/integrations/actions'
 import * as notificationsActions from '../state/notifications/actions'
@@ -20,7 +21,7 @@ import * as currentUserSelectors from '../state/currentUser/selectors'
 import {getTeams} from '../state/teams/selectors'
 
 import {isCurrentlyOnTicket} from '../utils'
-import {store as reduxStore} from '../init.js'
+import {store as reduxStore} from '../init'
 import {isViewSharedWithUser} from '../state/views/utils'
 import {SocketManager} from '../services/socketManager/socketManager'
 import {
@@ -44,11 +45,29 @@ import {
     EmailIntegrationVerifiedEvent,
     FacebookIntegrationsReconnected,
     ViewsDeactivated,
+    ViewSectionCreatedEvent,
+    ViewSectionUpdatedEvent,
+    ViewSectionDeletedEvent,
 } from '../services/socketManager/types'
 import {NotificationStatus} from '../state/notifications/types'
 import {RootState} from '../state/types'
+import {
+    sectionCreated,
+    sectionDeleted,
+    sectionUpdated,
+} from '../state/entities/sections/actions'
+import {
+    viewCreated,
+    viewDeleted,
+    viewUpdated,
+} from '../state/entities/views/actions'
 
 import {MAX_RECENT_CHATS} from './recentChats'
+import {
+    VIEW_SECTION_CREATED,
+    VIEW_SECTION_DELETED,
+    VIEW_SECTION_UPDATED,
+} from './socketConstants'
 
 export type SendData = {
     clientId?: string
@@ -63,7 +82,7 @@ type SendEvent = {
     onLeave?: (value?: string) => void
 }
 
-type ReceivedEvent = {
+export type ReceivedEvent = {
     name: string
     onReceive: (event: ServerMessage) => void
 }
@@ -312,6 +331,9 @@ export const receivedEvents: ReceivedEvent[] = [
                 type: viewsConstants.CREATE_VIEW_SUCCESS,
                 resp: (json as ViewCreatedEvent).view,
             })
+            typeSafeReduxStore.dispatch(
+                viewCreated((json as ViewCreatedEvent).view)
+            )
         },
     },
     {
@@ -327,10 +349,12 @@ export const receivedEvents: ReceivedEvent[] = [
                     type: viewsConstants.UPDATE_VIEW_SUCCESS,
                     resp: view,
                 })
+                typeSafeReduxStore.dispatch(viewUpdated(view))
             } else {
                 typeSafeReduxStore.dispatch(
                     viewsActions.deleteViewSuccess(view.id) as any
                 )
+                typeSafeReduxStore.dispatch(viewDeleted(view.id))
             }
         },
     },
@@ -342,11 +366,43 @@ export const receivedEvents: ReceivedEvent[] = [
                     (json as ViewDeletedEvent).view.id
                 ) as any
             )
+            typeSafeReduxStore.dispatch(
+                viewDeleted((json as ViewDeletedEvent).view.id)
+            )
+        },
+    },
+    {
+        name: VIEW_SECTION_CREATED,
+        onReceive: function (json) {
+            typeSafeReduxStore.dispatch(
+                sectionCreated((json as ViewSectionCreatedEvent).view_section)
+            )
+        },
+    },
+    {
+        name: VIEW_SECTION_UPDATED,
+        onReceive: function (json) {
+            typeSafeReduxStore.dispatch(
+                sectionUpdated((json as ViewSectionUpdatedEvent).view_section)
+            )
+        },
+    },
+    {
+        name: VIEW_SECTION_DELETED,
+        onReceive: function (json) {
+            typeSafeReduxStore.dispatch(
+                sectionDeleted(
+                    (json as ViewSectionDeletedEvent).view_section.id
+                )
+            )
         },
     },
     {
         name: 'views-count-updated',
         onReceive: function (json) {
+            typeSafeReduxStore.dispatch(
+                viewsCountFetched((json as ViewCountUpdatedEvent).counts)
+            )
             typeSafeReduxStore.dispatch(
                 viewsActions.handleViewsCount(
                     (json as ViewCountUpdatedEvent).counts

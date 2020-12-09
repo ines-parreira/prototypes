@@ -112,3 +112,31 @@ export type Integration = {
         id: number
     }
 }
+
+export type IntegrationAuthentication<
+    T extends IntegrationType
+> = T extends IntegrationType.AircallIntegrationType
+    ? {
+          webhook_url: string
+      }
+    : T extends IntegrationType.EmailIntegrationType
+    ? {
+          forwarding_email_address: string
+      }
+    : {
+          redirect_url: string
+      }
+
+export type IntegrationExtra<
+    T extends IntegrationType
+> = T extends IntegrationType.FacebookIntegrationType
+    ? {
+          max_account_ads: number
+      }
+    : T extends IntegrationType.GorgiasChatIntegrationType
+    ? {
+          bundleUrl: string
+          chatUrl: string
+          wsUrl: string
+      }
+    : never

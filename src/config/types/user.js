@@ -43,13 +43,22 @@ export type EditableUserProfile = {
     timezone: string,
 }
 
+export type UserSettingType = 'preferences' | 'ticket-views' | 'view-sections'
+
 export type UserSetting = {
     id: number,
-    type: 'preferences',
+    type: UserSettingType,
     data: UserPreferences,
 }
 
-export type UserPreferences = {
-    available: boolean,
-    show_macros: boolean,
-}
+export type UserPreferences =
+    | {
+          available: boolean,
+          show_macros: boolean,
+      }
+    | {
+          [key: number]: {
+              hide?: boolean,
+              display_order: number,
+          },
+      }

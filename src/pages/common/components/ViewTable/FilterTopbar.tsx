@@ -19,6 +19,7 @@ import {
 } from 'reactstrap'
 
 import ConfirmButton from '../ConfirmButton'
+import {ViewVisibility, View} from '../../../../models/view/types'
 import {fieldPath, getDefaultOperator, slugify} from '../../../../utils'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
 import ViewSharingButton from '../ViewSharing/index.js'
@@ -30,6 +31,12 @@ import * as schemasSelectors from '../../../../state/schemas/selectors'
 import * as viewsConfig from '../../../../config/views'
 import {SYSTEM_VIEW_CATEGORY} from '../../../../constants/view'
 import {RootState} from '../../../../state/types'
+import {
+    viewCreated,
+    viewDeleted,
+    viewUpdated,
+} from '../../../../state/entities/views/actions'
+import {activeViewIdSet} from '../../../../state/ui/views/actions'
 
 import Filters from './Filters/index.js'
 import css from './FilterTopbar.less'
@@ -81,6 +88,7 @@ export class FilterTopbarContainer extends React.Component<Props, State> {
     }
 
     _onClickNew = () => {
+        const {currentUser} = this.props
         if (!this.props.areFiltersValid) {
             return
         }
@@ -101,6 +109,11 @@ export class FilterTopbarContainer extends React.Component<Props, State> {
             const newSlug = slugify(newName)
 
             activeView = activeView.set('name', newName).set('slug', newSlug)
+        }
+        if (activeView.get('visibility') === ViewVisibility.Private) {
+            activeView = activeView.set('shared_with_users', [
+                currentUser.get('id'),
+            ])
         }
 
         this._submitView(activeView)
@@ -134,6 +147,7 @@ export class FilterTopbarContainer extends React.Component<Props, State> {
     }
 
     _createView = () => {
+        const {currentUser} = this.props
         if (!this.props.areFiltersValid) {
             return
         }
@@ -148,15 +162,33 @@ export class FilterTopbarContainer extends React.Component<Props, State> {
             .delete('id')
             .set('name', activeView.get('name') || 'New view')
         activeView = activeView.set('slug', slugify(activeView.get('name')))
+        if (activeView.get('visibility') === ViewVisibility.Private) {
+            activeView = activeView.set('shared_with_users', [
+                currentUser.get('id'),
+            ])
+        }
 
         this._submitView(activeView)
     }
 
     _submitView = (view: Map<any, any>) => {
-        void this.props.submitView(view).then(() => {
+        const {
+            viewCreated,
+            viewUpdated,
+            activeViewIdSet,
+            submitView,
+        } = this.props
+
+        void submitView(view).then((resp) => {
             this.setState({
                 isSubmitting: false,
             })
+            if (view.get('id') == null) {
+                viewCreated(resp as View)
+            } else {
+                viewUpdated(resp as View)
+            }
+            activeViewIdSet((resp as View).id)
         })
     }
 
@@ -170,6 +202,7 @@ export class FilterTopbarContainer extends React.Component<Props, State> {
         const {
             config,
             activeView,
+            activeViewIdSet,
             areFiltersValid,
             isDirty,
             isUpdate,
@@ -177,6 +210,7 @@ export class FilterTopbarContainer extends React.Component<Props, State> {
             agents,
             teams,
             currentUser,
+            viewDeleted,
         } = this.props
         const {isSubmitting} = this.state
         const isSystemView = activeView.get('category') === SYSTEM_VIEW_CATEGORY
@@ -367,7 +401,19 @@ export class FilterTopbarContainer extends React.Component<Props, State> {
                                         </span>
                                     }
                                     confirm={() => {
-                                        return this.props.deleteView(activeView)
+                                        return this.props
+                                            .deleteView(activeView)
+                                            .then((destinationView) => {
+                                                viewDeleted(
+                                                    activeView.get('id')
+                                                )
+                                                activeViewIdSet(
+                                                    (destinationView as Map<
+                                                        any,
+                                                        any
+                                                    >).get('id')
+                                                )
+                                            })
                                     }}
                                 >
                                     <i className="material-icons md-2 mr-2 text-danger">
@@ -407,6 +453,10 @@ const mapDispatchToProps = {
     removeFieldFilter: viewsActions.removeFieldFilter,
     updateFieldFilter: viewsActions.updateFieldFilter,
     updateFieldFilterOperator: viewsActions.updateFieldFilterOperator,
+    viewCreated,
+    viewDeleted,
+    viewUpdated,
+    activeViewIdSet,
 }
 
 const connector = connect(mapStateToProps, mapDispatchToProps)

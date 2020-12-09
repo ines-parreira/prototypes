@@ -6,6 +6,7 @@ import * as viewsConfig from '../views'
 import * as ticketFixtures from '../../fixtures/ticket'
 import {customer} from '../../fixtures/customer'
 import {getAST} from '../../utils'
+import {ViewType, View} from '../../models/view/types'
 
 global.console.error = jest.fn()
 
@@ -128,7 +129,7 @@ describe('Config: views', () => {
                 const newView = (viewConfig.get('newView') as () => Map<
                     any,
                     any
-                >)().toJS()
+                >)().toJS() as View
 
                 expect(newView).toHaveProperty('id', 0)
                 expect(newView).toHaveProperty('name')
@@ -141,6 +142,9 @@ describe('Config: views', () => {
                 expect(newView).toHaveProperty('filters_ast')
                 expect(newView).toHaveProperty('fields')
                 expect(newView).toHaveProperty('type')
+                if (newView.type === ViewType.TicketList) {
+                    expect(newView).toHaveProperty('visibility')
+                }
             })
 
             it('searchView', () => {

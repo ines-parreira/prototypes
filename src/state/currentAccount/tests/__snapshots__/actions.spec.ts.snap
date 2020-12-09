@@ -35,6 +35,27 @@ Array [
 ]
 `;
 
+exports[`current account actions submitSettingSuccess should dispatch the next setting 1`] = `
+Array [
+  Object {
+    "isUpdate": false,
+    "setting": Object {
+      "data": Object {
+        "view_sections": Object {},
+        "views": Object {
+          "1": Object {
+            "display_order": 2,
+          },
+        },
+      },
+      "id": 1,
+      "type": "views-ordering",
+    },
+    "type": "UPDATE_ACCOUNT_SETTING",
+  },
+]
+`;
+
 exports[`current account actions update account 1`] = `
 Array [
   Object {

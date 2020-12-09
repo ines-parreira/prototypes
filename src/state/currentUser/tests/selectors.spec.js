@@ -1,6 +1,7 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS} from 'immutable'
 
+import {UserSettingType} from '../../../config/types/user'
 import * as selectors from '../selectors.ts'
 import {initialState} from '../reducers.ts'
 import * as usersFixtures from '../../../fixtures/users'
@@ -128,6 +129,15 @@ describe('current user selectors', () => {
             expect(settings).toEqualImmutable(
                 state.currentUser.get('settings').first()
             )
+        })
+    })
+
+    describe('getUserSetting', () => {
+        it('should return the setting by type', () => {
+            const res = selectors.getUserSetting(UserSettingType.TicketViews)(
+                state
+            )
+            expect(res).toMatchSnapshot()
         })
     })
 })

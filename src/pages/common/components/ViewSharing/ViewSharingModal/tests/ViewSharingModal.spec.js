@@ -1,4 +1,5 @@
 import React from 'react'
+import {Button} from 'reactstrap'
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 import thunk from 'redux-thunk'
@@ -6,6 +7,12 @@ import configureMockStore from 'redux-mock-store'
 
 import ViewSharingModal from '../ViewSharingModal'
 import {ViewVisibility} from '../../../../../../constants/view.ts'
+import GorgiasApi from '../../../../../../services/gorgiasApi.ts'
+import {view as viewFixture} from '../../../../../../fixtures/views.ts'
+import {viewUpdated} from '../../../../../../state/entities/views/actions.ts'
+
+jest.mock('../../../../../../services/gorgiasApi')
+jest.mock('../../../../../../state/entities/views/actions.ts')
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -25,8 +32,13 @@ describe('<ViewSharingModal/>', () => {
     let notify
 
     beforeEach(() => {
+        jest.clearAllMocks()
         toggle = jest.fn()
         notify = jest.fn()
+        GorgiasApi.mockImplementation(() => ({
+            getViewSharing: jest.fn().mockRejectedValue(),
+            setViewSharing: jest.fn().mockResolvedValue(viewFixture),
+        }))
     })
 
     describe('render()', () => {
@@ -76,6 +88,26 @@ describe('<ViewSharingModal/>', () => {
             )
 
             expect(component.dive()).toMatchSnapshot()
+        })
+
+        it('should update the view on save', (done) => {
+            const view = fromJS({visibility: ViewVisibility.PRIVATE})
+            const component = shallow(
+                <ViewSharingModal
+                    view={view}
+                    isOpen
+                    store={store}
+                    toggle={toggle}
+                    notify={notify}
+                    viewUpdated={viewUpdated}
+                />
+            )
+
+            component.dive().find(Button).first().simulate('click')
+            setImmediate(() => {
+                expect(viewUpdated).toHaveBeenNthCalledWith(1, viewFixture)
+                done()
+            })
         })
     })
 })

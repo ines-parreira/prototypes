@@ -3,7 +3,7 @@ import {browserHistory} from 'react-router'
 import {removeNotification} from 'reapop'
 import {EnhancedStore} from '@reduxjs/toolkit'
 
-import {store as reduxStore} from '../../init.js'
+import {store as reduxStore} from '../../init'
 import {
     newMessageResetFromMessage,
     sendTicketMessage,

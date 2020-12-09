@@ -41,6 +41,17 @@ export const updateAccount = (values: Account) => (
         )
 }
 
+export function submitSettingSuccess(
+    setting: AccountSetting,
+    isUpdate: boolean
+) {
+    return {
+        type: constants.UPDATE_ACCOUNT_SETTING,
+        isUpdate,
+        setting,
+    }
+}
+
 export function submitSetting(setting: AccountSetting) {
     return (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
         const isUpdate = !!setting.id
@@ -64,11 +75,7 @@ export function submitSetting(setting: AccountSetting) {
                         })
                     )
 
-                    return dispatch({
-                        type: constants.UPDATE_ACCOUNT_SETTING,
-                        isUpdate,
-                        setting,
-                    })
+                    return dispatch(submitSettingSuccess(setting, isUpdate))
                 },
                 (error) => {
                     return dispatch({

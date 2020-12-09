@@ -10,13 +10,33 @@ import {shouldTicketBeDisplayedInRecentChats} from '../../business/recentChats'
 import * as chatActions from '../../state/chats/actions'
 import * as currentAccountConstants from '../../state/currentAccount/constants.js'
 import * as currentAccountSelectors from '../../state/currentAccount/selectors'
+import {viewsCountFetched} from '../../state/entities/viewsCount/actions'
 import * as integrationActions from '../../state/integrations/actions'
 import * as notificationActions from '../../state/notifications/actions'
+import {handleViewsCount} from '../../state/views/actions'
 import {SocketEventType} from '../../services/socketManager/types'
 import * as socketEvents from '../socketEvents'
+import {view} from '../../fixtures/views'
+import {
+    viewCreated,
+    viewUpdated,
+    viewDeleted,
+} from '../../state/entities/views/actions'
+import {isViewSharedWithUser} from '../../state/views/utils'
 
 import {isCurrentlyOnTicket} from '../../utils'
-import {store as reduxStore} from '../../init.js'
+import {store as reduxStore} from '../../init'
+import {section} from '../../fixtures/section'
+import {
+    VIEW_SECTION_CREATED,
+    VIEW_SECTION_DELETED,
+    VIEW_SECTION_UPDATED,
+} from '../socketConstants'
+import {
+    sectionCreated,
+    sectionDeleted,
+    sectionUpdated,
+} from '../../state/entities/sections/actions'
 
 //$TsFixMe remove once init.js is migrated
 const typeSafeReduxStore = reduxStore as EnhancedStore
@@ -31,8 +51,10 @@ jest.mock('../../state/chats/actions', () => {
         fetchChatsThrottled: jest.fn(() => _identity),
     }
 })
+jest.mock('../../state/views/actions')
+jest.mock('../../state/entities/viewsCount/actions')
 
-jest.mock('../../init.js', () => {
+jest.mock('../../init', () => {
     /* eslint-disable @typescript-eslint/no-var-requires,@typescript-eslint/no-unsafe-member-access */
     const {fromJS}: {fromJS: (value: any) => any} = require('immutable')
     const {MAX_RECENT_CHATS} = require('../recentChats')
@@ -77,6 +99,10 @@ jest.mock('../../utils', () => {
         isCurrentlyOnTicket: jest.fn(),
     } as Record<string, unknown>
 })
+
+jest.mock('../../state/entities/views/actions')
+
+jest.mock('../../state/views/utils')
 
 describe('Config: socketEvents', () => {
     afterEach(() => {
@@ -563,6 +589,121 @@ describe('Config: socketEvents', () => {
                 }
 
                 expect(spy.mock.calls).toMatchSnapshot()
+            })
+        })
+
+        describe('views-count-updated', () => {
+            const handler = _find(receivedEvents, {
+                name: 'views-count-updated',
+            })
+
+            it('should dispatch the views count', () => {
+                if (handler) {
+                    handler.onReceive({counts: {'1': 10, '2': 20}} as any)
+                }
+
+                expect(viewsCountFetched).toHaveBeenNthCalledWith(1, {
+                    '1': 10,
+                    '2': 20,
+                })
+                expect(handleViewsCount).toHaveBeenNthCalledWith(1, {
+                    '1': 10,
+                    '2': 20,
+                })
+            })
+        })
+
+        describe('View section events', () => {
+            it('should dispatch redux store action for `view-section-created` event', () => {
+                const handler = _find(receivedEvents, {
+                    name: VIEW_SECTION_CREATED,
+                }) as socketEvents.ReceivedEvent
+                handler.onReceive({
+                    event: {
+                        type: VIEW_SECTION_CREATED,
+                    },
+                    view_section: section,
+                })
+                expect(typeSafeReduxStore.dispatch).toHaveBeenCalledTimes(1)
+                expect(typeSafeReduxStore.dispatch).toHaveBeenCalledWith(
+                    sectionCreated(section)
+                )
+            })
+
+            it('should dispatch redux store action for `view-section-updated` event', () => {
+                const handler = _find(receivedEvents, {
+                    name: VIEW_SECTION_UPDATED,
+                }) as socketEvents.ReceivedEvent
+                handler.onReceive({
+                    event: {
+                        type: VIEW_SECTION_UPDATED,
+                    },
+                    view_section: section,
+                })
+                expect(typeSafeReduxStore.dispatch).toHaveBeenCalledTimes(1)
+                expect(typeSafeReduxStore.dispatch).toHaveBeenCalledWith(
+                    sectionUpdated(section)
+                )
+            })
+
+            it('should dispatch redux store action for `view-section-deleted` event', () => {
+                const handler = _find(receivedEvents, {
+                    name: VIEW_SECTION_DELETED,
+                }) as socketEvents.ReceivedEvent
+                handler.onReceive({
+                    event: {
+                        type: VIEW_SECTION_DELETED,
+                    },
+                    view_section: section,
+                })
+                expect(typeSafeReduxStore.dispatch).toHaveBeenCalledTimes(1)
+                expect(typeSafeReduxStore.dispatch).toHaveBeenCalledWith(
+                    sectionDeleted(section.id)
+                )
+            })
+        })
+
+        describe('view-created', () => {
+            const handler = _find(receivedEvents, {
+                name: 'view-created',
+            }) as socketEvents.ReceivedEvent
+
+            it('should dispatch the new view', () => {
+                handler.onReceive({view} as any)
+                expect(viewCreated).toHaveBeenNthCalledWith(1, view)
+            })
+        })
+
+        describe('view-updated', () => {
+            const handler = _find(receivedEvents, {
+                name: 'view-updated',
+            }) as socketEvents.ReceivedEvent
+
+            it('should dispatch the updated view', () => {
+                ;(isViewSharedWithUser as jest.MockedFunction<
+                    typeof isViewSharedWithUser
+                >).mockImplementationOnce(() => true)
+                handler.onReceive({view} as any)
+                expect(viewUpdated).toHaveBeenNthCalledWith(1, view)
+            })
+
+            it('should dispatch the hidden view', () => {
+                ;(isViewSharedWithUser as jest.MockedFunction<
+                    typeof isViewSharedWithUser
+                >).mockImplementationOnce(() => false)
+                handler.onReceive({view} as any)
+                expect(viewDeleted).toHaveBeenNthCalledWith(1, view.id)
+            })
+        })
+
+        describe('view-deleted', () => {
+            const handler = _find(receivedEvents, {
+                name: 'view-deleted',
+            }) as socketEvents.ReceivedEvent
+
+            it('should dispatch the deleted view', () => {
+                handler.onReceive({view} as any)
+                expect(viewDeleted).toHaveBeenNthCalledWith(1, view.id)
             })
         })
     })

@@ -7,11 +7,15 @@ import {notify} from '../notifications/actions'
 import type {StoreDispatch, RootState} from '../types'
 import {fetchChats} from '../chats/actions'
 import {NotificationStatus} from '../notifications/types'
-import {User, EditableUserProfile} from '../../config/types/user'
+import {
+    User,
+    EditableUserProfile,
+    UserSetting,
+    UserPreferences,
+} from '../../config/types/user'
 
 import * as constants from './constants.js'
 import * as currentUserSelectors from './selectors'
-import {UserPreferencesForm} from './types'
 
 export const changePassword = (oldPassword: string, newPassword: string) => (
     dispatch: StoreDispatch
@@ -85,10 +89,16 @@ export function updateCurrentUser(data: EditableUserProfile) {
     }
 }
 
-export function submitSetting(
-    data: UserPreferencesForm,
-    notification: boolean
-) {
+export function submitSettingSuccess(setting: UserSetting, isUpdate: boolean) {
+    return {
+        type: constants.SUBMIT_SETTING_SUCCESS,
+        settingType: setting.type,
+        isUpdate,
+        resp: setting,
+    }
+}
+
+export function submitSetting(data: UserSetting, notification: boolean) {
     return (
         dispatch: StoreDispatch,
         getState: () => RootState
@@ -104,30 +114,25 @@ export function submitSetting(
         })
 
         if (data.id != null) {
-            promise = axios.put<UserPreferencesForm>(
+            promise = axios.put<UserSetting>(
                 `/api/users/0/settings/${data.id}/`,
                 data
             )
         } else {
-            promise = axios.post<UserPreferencesForm>(
-                '/api/users/0/settings/',
-                data
-            )
+            promise = axios.post<UserSetting>('/api/users/0/settings/', data)
         }
 
         return promise
             .then((json) => json?.data)
             .then(
                 (resp) => {
-                    dispatch({
-                        type: constants.SUBMIT_SETTING_SUCCESS,
-                        settingType: data.type,
-                        isUpdate: data.id != null,
-                        resp,
-                    })
+                    dispatch(submitSettingSuccess(data, !!data.id))
 
                     // Refresh chat tickets if the current user updates his availability
-                    if (prevIsAvailableForChat !== data.data.available) {
+                    if (
+                        prevIsAvailableForChat !==
+                        (data.data as UserPreferences).available
+                    ) {
                         void dispatch(fetchChats())
                     }
 

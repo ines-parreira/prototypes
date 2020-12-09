@@ -1,0 +1,46 @@
+@import '~css/new/colors';
+
+:local {
+    .header {
+        display: flex;
+        margin-bottom: 0;
+        height: 23px;
+    }
+
+    .title {
+        color: @neutral8;
+        flex-grow: 1;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        line-height: 27px;
+    }
+
+    .toggle {
+        border: none;
+        color: @neutral7 !important;
+        font-size: 14px;
+        line-height: 20px;
+        padding: 3px 6px;
+        transform: translateX(5px);
+
+        &:hover,
+        &:focus {
+            background-color: @neutral9;
+            color: @neutral0!important;
+        }
+
+        &:active {
+            background-color: @neutral5!important;
+        }
+    }
+
+    .action {
+        font-size: 13px;
+        padding-left: 7px;
+
+        &:focus {
+            outline: none;
+        }
+    }
+}

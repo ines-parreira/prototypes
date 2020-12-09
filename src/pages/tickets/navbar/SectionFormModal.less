@@ -1,0 +1,43 @@
+@import '~css/new/colors';
+
+:local {
+    .modal {
+        :global .modal-header {
+            padding: 12px 24px;
+        }
+
+        :global .modal-body {
+            padding: 20px 24px 24px 24px;
+        }
+    }
+
+    .emojiSelect {
+        border: 1px solid #e8e8ec;
+        border-right: none;
+        border-bottom-left-radius: 3px;
+        border-top-left-radius: 3px;
+        height: 33.5px;
+        padding: 4px 0;
+        width: 33.5px;
+    }
+
+    .nameInput input {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+    }
+
+    .tipWrapper {
+        margin-bottom: 4px;
+    }
+
+    .tipEmoji {
+        display: inline-block;
+        margin-right: 9px;
+        text-align: center;
+        width: 16px;
+    }
+
+    .tip {
+        color: @neutral6;
+    }
+}

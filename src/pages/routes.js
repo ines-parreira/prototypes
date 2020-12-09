@@ -10,7 +10,7 @@ import IntegrationListContainer from './integrations/list/IntegrationListContain
 import TicketDetailContainer from './tickets/detail/TicketDetailContainer'
 import TicketInfobarContainer from './tickets/detail/TicketInfobarContainer'
 import TicketSourceContainer from './tickets/detail/TicketSourceContainer'
-import TicketNavbarContainer from './tickets/common/TicketNavbarContainer'
+import TicketNavbar from './tickets/navbar/TicketNavbar.tsx'
 import TicketListContainer from './tickets/list/TicketListContainer'
 import RuleContainer from './settings/rules/list/RuleContainer'
 import CustomerListContainer from './customers/list/CustomerListContainer'
@@ -53,7 +53,7 @@ export default (
         <IndexRoute
             components={{
                 content: TicketListContainer,
-                navbar: TicketNavbarContainer,
+                navbar: TicketNavbar,
                 infobar: TicketListInfobarContainer,
             }}
         />
@@ -162,7 +162,7 @@ export default (
             path="ticket/:ticketId"
             components={{
                 content: TicketDetailContainer,
-                navbar: TicketNavbarContainer,
+                navbar: TicketNavbar,
                 infobar: TicketInfobarContainer,
             }}
             infobarOnMobile // show Infobar component on mobile
@@ -171,7 +171,7 @@ export default (
             path="ticket/:ticketId/edit-widgets"
             components={{
                 content: TicketSourceContainer,
-                navbar: TicketNavbarContainer,
+                navbar: TicketNavbar,
                 infobar: TicketInfobarContainer,
             }}
             noContainerWidthLimit // no width limit in App wrapper
@@ -182,15 +182,15 @@ export default (
             path="tickets"
             components={{
                 content: TicketListContainer,
-                navbar: TicketNavbarContainer,
+                navbar: TicketNavbar,
                 infobar: TicketListInfobarContainer,
             }}
         />
         <Route
-            path="tickets/new"
+            path="tickets/new(/:visibility)"
             components={{
                 content: TicketListContainer,
-                navbar: TicketNavbarContainer,
+                navbar: TicketNavbar,
                 infobar: TicketListInfobarContainer,
             }}
         />
@@ -198,7 +198,7 @@ export default (
             path="tickets/search"
             components={{
                 content: TicketListContainer,
-                navbar: TicketNavbarContainer,
+                navbar: TicketNavbar,
                 infobar: TicketListInfobarContainer,
             }}
         />
@@ -206,7 +206,7 @@ export default (
             path="tickets/:viewId(/:viewSlug)"
             components={{
                 content: TicketListContainer,
-                navbar: TicketNavbarContainer,
+                navbar: TicketNavbar,
                 infobar: TicketListInfobarContainer,
             }}
         />

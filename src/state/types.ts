@@ -17,6 +17,7 @@ import {HTTPIntegrationEvent} from './HTTPIntegrationEvents/types'
 import {Rule, RulePriority, RuleOperation} from './rules/types'
 import {Tag} from './tags/types'
 import {Customer} from './customers/types'
+import {UIState} from './ui/reducers'
 import {Widget, WidgetContextType} from './widgets/types'
 
 export type StoreState = {
@@ -44,6 +45,7 @@ export type StoreState = {
     teams: Map<any, any>
     ticket: Map<any, any>
     tickets: Map<any, any>
+    ui: UIState
     usersAudit: Map<any, any>
     views: Map<any, any>
     widgets: Map<any, any>

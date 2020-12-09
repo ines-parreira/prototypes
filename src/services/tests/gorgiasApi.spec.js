@@ -581,17 +581,23 @@ describe('services', () => {
                 const visibility = ViewVisibility.PUBLIC
                 const teams = fromJS([{id: 2}])
                 const users = fromJS([{id: 3}])
+                const expectedResult = {
+                    visibility,
+                    shared_with_teams: teams.toJS(),
+                    shared_with_users: users.toJS(),
+                }
 
-                apiMock.onPut(`/api/views/${viewId}`).reply(202)
+                apiMock.onPut(`/api/views/${viewId}`).reply(202, expectedResult)
 
                 const gorgiasApi = new GorgiasApi()
-                await gorgiasApi.setViewSharing(
+                const result = await gorgiasApi.setViewSharing(
                     viewId,
                     visibility,
                     teams,
                     users
                 )
 
+                expect(result).toEqual(expectedResult)
                 expect(apiMock.history).toMatchSnapshot()
             })
         })

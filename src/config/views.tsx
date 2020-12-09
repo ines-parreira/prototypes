@@ -5,7 +5,7 @@ import _isUndefined from 'lodash/isUndefined'
 import {EMAIL_INTEGRATION_TYPES} from '../constants/integration'
 import {BASE_VIEW_ID} from '../constants/view'
 import {OrderDirection} from '../models/api/types'
-import {ViewField, ViewType} from '../state/views/types'
+import {ViewField, ViewType, ViewVisibility} from '../models/view/types'
 import {getAST, getLanguageDisplayName, stripHTML} from '../utils'
 import {getMomentUtcISOString} from '../utils/date'
 
@@ -344,7 +344,7 @@ export const views = fromJS([
                 }
             }
         },
-        newView: () => {
+        newView: (visibility?: ViewVisibility) => {
             return baseView().merge({
                 fields: [
                     ViewField.Details,
@@ -357,6 +357,10 @@ export const views = fromJS([
                 ],
                 type: ViewType.TicketList,
                 order_by: 'last_message_datetime',
+                visibility:
+                    visibility === ViewVisibility.Private
+                        ? ViewVisibility.Private
+                        : ViewVisibility.Public,
             })
         },
         searchView: (query: string, filters?: string) => {

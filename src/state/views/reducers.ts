@@ -5,6 +5,7 @@ import _isNumber from 'lodash/isNumber'
 import {getCode} from '../../utils'
 import {GorgiasAction, RootState} from '../types'
 import {MAX_RECENT_VIEWS} from '../../config/views'
+import {View} from '../../models/view/types'
 
 import * as constants from './constants.js'
 import {
@@ -16,7 +17,7 @@ import {
     updateFilterValue,
 } from './utils'
 import * as selectors from './selectors'
-import {ViewsState, View} from './types'
+import {ViewsState} from './types'
 
 export const initialState: ViewsState = fromJS({
     items: [],

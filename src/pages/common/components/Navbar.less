@@ -1,189 +1,188 @@
-@import "~css/new/colors";
+@import '~css/new/colors';
 
 .nav-primary {
-  display: flex;
-  flex-direction: column;
-  width: 238px;
+    display: flex;
+    flex-direction: column;
+    width: 238px;
 
-  background: @navbarBgColor;
+    background: @navbarBgColor;
 
-  .nav-dropdown {
-    & > button {
-      height: 60px;
-      padding: 20px 19px 17px 20px;
-      width: 100%;
-      transition: all .1s linear;
-      box-shadow: none;
-      border-color: #284064;
-      border-style: solid;
-      border-width: 0 0 1px;
-      border-radius: 0;
+    .nav-dropdown {
+        & > button {
+            height: 60px;
+            padding: 20px 19px 17px 20px;
+            width: 100%;
+            transition: all 0.1s linear;
+            box-shadow: none;
+            border-color: #284064;
+            border-style: solid;
+            border-width: 0 0 1px;
+            border-radius: 0;
 
-      color: #fff;
-      font-size: 15px;
-      font-weight: 700;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
 
-      > div { // content is wrapped in div because some browsers forbid flex in buttons
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-      }
+            > div {
+                // content is wrapped in div because some browsers forbid flex in buttons
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
 
-      &:hover {
-        background-color: darken(@navbarBgColor, 4%);
-      }
+            &:hover {
+                background-color: darken(@navbarBgColor, 4%);
+            }
 
-      &:active {
-        background-color: darken(@navbarBgColor, 8%);
-      }
-    }
+            &:active {
+                background-color: darken(@navbarBgColor, 8%);
+            }
+        }
 
-    &.show > button {
-      background-color: darken(@navbarBgColor, 4%);
-    }
+        &.show > button {
+            background-color: darken(@navbarBgColor, 4%);
+        }
 
-    &.dropup > button {
-      border-width: 1px 0 0;
-      padding-top: 12px;
-      padding-bottom: 12px;
+        &.dropup > button {
+            border-width: 1px 0 0;
+            padding-top: 12px;
+            padding-bottom: 12px;
 
-      font-size: 14px;
-    }
+            font-size: 14px;
+        }
 
-    .dropdown-menu {
-      width: 100%;
-      /* HACK Popper.js's preventOverflow adds 5px to the left of the dropdowns.
+        .dropdown-menu {
+            width: 100%;
+            /* HACK Popper.js's preventOverflow adds 5px to the left of the dropdowns.
        * Need the negativ margin until we can configure it in bootstrap:
        * https://github.com/twbs/bootstrap/issues/25529
        */
-      margin: 0 0 0 -5px;
-      border-radius: 0;
-      border: solid 1px #cfe0ee;
-      border-top: none;
+            margin: 0 0 0 -5px;
+            border-radius: 0;
+            border: solid 1px #cfe0ee;
+            border-top: none;
 
-      .dropdown-item {
-        display: block;
-        padding: 8px 16px;
-        color: #0C0C0C;
-        font-weight: normal;
-        outline: none;
+            .dropdown-item {
+                display: block;
+                padding: 8px 16px;
+                color: #0c0c0c;
+                font-weight: normal;
+                outline: none;
 
-        &.current {
-          font-weight: bold;
+                &.current {
+                    font-weight: bold;
+                }
+
+                &:hover {
+                    background-color: #f3f3f3;
+                }
+            }
         }
-
-        &:hover {
-          background-color: #F3F3F3;
-        }
-      }
     }
-  }
 
-  .navbar-views-settings {
-    font-size: 15px;
-  }
-
-  .navbar-content {
-    flex: 1;
-    overflow: auto;
-    background-color: transparent !important;
-    margin: 0;
-    padding: 14px 0;
-
-    .item > h4 {
-      margin-bottom: 1.6em;
-
-      color: white;
-      font-weight: 700;
-      font-size: 11px;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-
-      .icon {
-        margin-right: .5em;
-
+    .navbar-views-settings {
         font-size: 15px;
-        line-height: inherit;
-      }
     }
 
-    .menu {
-      @item-transition: all 0.1s;
+    .navbar-content {
+        flex: 1;
+        overflow: auto;
+        background-color: transparent !important;
+        margin: 0;
+        padding: 14px 0;
 
-      margin: .5em -1.14285714em 0;
-      white-space: nowrap;
+        .item > h4 {
+            color: white;
+            font-weight: 700;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
 
-      .item {
-        display: flex;
-        position: relative;
-        vertical-align: middle;
-        line-height: 22px;
-        text-decoration: none;
-        flex: 0 0 auto;
-        user-select: none;
-        background: 0 0;
-        text-transform: none;
-        font-weight: 400;
-        transition: @item-transition;
-        color: rgba(255, 255, 255, .45);
-        padding: 1px 1.33333333em;
-        font-size: 14px;
-        overflow: hidden;
-        align-items: center;
-      }
+            .icon {
+                margin-right: 0.5em;
 
-      & > .item {
-        .item-name {
-          flex: 1;
-          margin-right: 8px;
-          text-overflow: ellipsis;
-          overflow: hidden;
+                font-size: 15px;
+                line-height: inherit;
+            }
         }
 
-        .item-count {
-          color: @navbarItemFadedColor;
-          font-size: 14px;
-          line-height: 14px;
-          font-weight: 500;
-          text-transform: uppercase;
-          transition: @item-transition;
+        .menu {
+            @item-transition: all 0.1s;
+
+            margin: 0.5em -1.14285714em 0;
+            white-space: nowrap;
+
+            .item {
+                display: flex;
+                position: relative;
+                vertical-align: middle;
+                line-height: 22px;
+                text-decoration: none;
+                flex: 0 0 auto;
+                user-select: none;
+                background: 0 0;
+                text-transform: none;
+                font-weight: 400;
+                transition: @item-transition;
+                color: rgba(255, 255, 255, 0.45);
+                padding: 1px 1.33333333em;
+                font-size: 14px;
+                overflow: hidden;
+                align-items: center;
+            }
+
+            & > .item {
+                .item-name {
+                    flex: 1;
+                    margin-right: 8px;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                }
+
+                .item-count {
+                    color: @navbarItemFadedColor;
+                    font-size: 14px;
+                    line-height: 14px;
+                    font-weight: 500;
+                    text-transform: uppercase;
+                    transition: @item-transition;
+                }
+
+                &.active,
+                &.focused,
+                &:hover {
+                    font-weight: 600;
+                    color: @quartz;
+
+                    .item-count {
+                        font-weight: 600;
+                        color: @quartz;
+                    }
+                }
+
+                &.focused {
+                    background-color: @blue;
+                }
+
+                & > i.icon {
+                    width: 1.2em;
+                    float: none !important;
+                    margin: inherit !important;
+                    margin-right: 6px !important;
+                    opacity: 0.6;
+                    color: @quartz;
+                    transition: @item-transition;
+                }
+
+                &:hover .icon {
+                    opacity: 1;
+                }
+            }
         }
 
-        &.active,
-        &.focused,
-        &:hover {
-          font-weight: 600;
-          color: @quartz;
-
-          .item-count {
-            font-weight: 600;
-            color: @quartz;
-          }
+        > div > .item {
+            padding: 0.92857143em 1.14285714em;
         }
-
-        &.focused {
-          background-color: @blue;
-        }
-
-        & > i.icon {
-          width: 1.2em;
-          float: none !important;
-          margin: inherit !important;
-          margin-right: 6px !important;
-          opacity: .6;
-          color: @quartz;
-          transition: @item-transition;
-        }
-
-        &:hover .icon {
-          opacity: 1;
-        }
-      }
     }
-
-    > div > .item {
-      padding: .92857143em 1.14285714em;
-    }
-  }
 }

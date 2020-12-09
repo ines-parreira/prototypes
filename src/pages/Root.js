@@ -3,6 +3,8 @@ import React, {Component} from 'react'
 import {hot} from 'react-hot-loader'
 import {Provider} from 'react-redux'
 import {Router, type BrowserHistory} from 'react-router'
+import {DndProvider} from 'react-dnd'
+import {HTML5Backend} from 'react-dnd-html5-backend'
 import Immutable from 'immutable'
 import installDevTools from 'immutable-devtools'
 
@@ -24,7 +26,9 @@ class Root extends Component<Props> {
         const {store, history} = this.props
         return (
             <Provider store={store}>
-                <Router history={history} routes={routes} />
+                <DndProvider backend={HTML5Backend}>
+                    <Router history={history} routes={routes} />
+                </DndProvider>
             </Provider>
         )
     }

@@ -6,11 +6,11 @@ import {Store} from 'redux'
 import BlankState from '../../BlankState/index.js'
 import untypedConfigureStore from '../../../../../store/configureStore.js'
 import * as viewsConfig from '../../../../../config/views'
-import * as viewsFixtures from '../../../../../fixtures/views.js'
+import * as viewsFixtures from '../../../../../fixtures/views'
 import * as ticketFixtures from '../../../../../fixtures/ticket'
 import * as viewsActions from '../../../../../state/views/actions'
-import Table from '../Table'
 import {RootState} from '../../../../../state/types'
+import Table from '../Table'
 
 // $TsFixMe: Remove on store/configureStore migration
 const configureStore = (untypedConfigureStore as unknown) as (

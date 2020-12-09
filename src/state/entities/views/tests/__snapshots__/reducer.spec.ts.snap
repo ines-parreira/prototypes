@@ -1,0 +1,578 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`views reducer viewCreated action should add a new view to the state 1`] = `
+Object {
+  "7": Object {
+    "category": null,
+    "created_datetime": "2017-07-31T21:43:10.610368+00:00",
+    "deactivated_datetime": null,
+    "decoration": null,
+    "display_order": 1,
+    "fields": Array [
+      "details",
+      "tags",
+      "customer",
+      "created",
+    ],
+    "filters": "neq(ticket.status, \\"closed\\")",
+    "filters_ast": Object {
+      "body": Array [
+        Object {
+          "expression": Object {
+            "arguments": Array [
+              Object {
+                "computed": false,
+                "loc": Object {
+                  "end": Object {
+                    "column": 17,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 4,
+                    "line": 1,
+                  },
+                },
+                "object": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 10,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 4,
+                      "line": 1,
+                    },
+                  },
+                  "name": "ticket",
+                  "type": "Identifier",
+                },
+                "property": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 17,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 11,
+                      "line": 1,
+                    },
+                  },
+                  "name": "status",
+                  "type": "Identifier",
+                },
+                "type": "MemberExpression",
+              },
+              Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 27,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 19,
+                    "line": 1,
+                  },
+                },
+                "raw": "\\"closed\\"",
+                "type": "Literal",
+                "value": "closed",
+              },
+            ],
+            "callee": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 3,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 0,
+                  "line": 1,
+                },
+              },
+              "name": "neq",
+              "type": "Identifier",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 28,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 0,
+                "line": 1,
+              },
+            },
+            "type": "CallExpression",
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 28,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 0,
+              "line": 1,
+            },
+          },
+          "type": "ExpressionStatement",
+        },
+      ],
+      "loc": Object {
+        "end": Object {
+          "column": 28,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "sourceType": "script",
+      "type": "Program",
+    },
+    "group_by": null,
+    "id": 7,
+    "name": "New & Open Tickets",
+    "order_by": "updated",
+    "order_dir": "desc",
+    "search": null,
+    "section_id": null,
+    "slug": "new-&-open-tickets",
+    "type": "ticket-list",
+    "uri": "/api/views/7/",
+    "visibility": "public",
+  },
+}
+`;
+
+exports[`views reducer viewDeleted action should delete a view from the state 1`] = `Object {}`;
+
+exports[`views reducer viewUpdated action should update a macro of the state 1`] = `
+Object {
+  "7": Object {
+    "category": null,
+    "created_datetime": "2017-07-31T21:43:10.610368+00:00",
+    "deactivated_datetime": null,
+    "decoration": null,
+    "display_order": 1,
+    "fields": Array [
+      "details",
+      "tags",
+      "customer",
+      "created",
+    ],
+    "filters": "neq(ticket.status, \\"closed\\")",
+    "filters_ast": Object {
+      "body": Array [
+        Object {
+          "expression": Object {
+            "arguments": Array [
+              Object {
+                "computed": false,
+                "loc": Object {
+                  "end": Object {
+                    "column": 17,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 4,
+                    "line": 1,
+                  },
+                },
+                "object": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 10,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 4,
+                      "line": 1,
+                    },
+                  },
+                  "name": "ticket",
+                  "type": "Identifier",
+                },
+                "property": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 17,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 11,
+                      "line": 1,
+                    },
+                  },
+                  "name": "status",
+                  "type": "Identifier",
+                },
+                "type": "MemberExpression",
+              },
+              Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 27,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 19,
+                    "line": 1,
+                  },
+                },
+                "raw": "\\"closed\\"",
+                "type": "Literal",
+                "value": "closed",
+              },
+            ],
+            "callee": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 3,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 0,
+                  "line": 1,
+                },
+              },
+              "name": "neq",
+              "type": "Identifier",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 28,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 0,
+                "line": 1,
+              },
+            },
+            "type": "CallExpression",
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 28,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 0,
+              "line": 1,
+            },
+          },
+          "type": "ExpressionStatement",
+        },
+      ],
+      "loc": Object {
+        "end": Object {
+          "column": 28,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "sourceType": "script",
+      "type": "Program",
+    },
+    "group_by": null,
+    "id": 7,
+    "name": "foo",
+    "order_by": "updated",
+    "order_dir": "desc",
+    "search": null,
+    "section_id": null,
+    "slug": "new-&-open-tickets",
+    "type": "ticket-list",
+    "uri": "/api/views/7/",
+    "visibility": "public",
+  },
+}
+`;
+
+exports[`views reducer viewsFetched action should add the views to the state 1`] = `
+Object {
+  "7": Object {
+    "category": null,
+    "created_datetime": "2017-07-31T21:43:10.610368+00:00",
+    "deactivated_datetime": null,
+    "decoration": null,
+    "display_order": 1,
+    "fields": Array [
+      "details",
+      "tags",
+      "customer",
+      "created",
+    ],
+    "filters": "neq(ticket.status, \\"closed\\")",
+    "filters_ast": Object {
+      "body": Array [
+        Object {
+          "expression": Object {
+            "arguments": Array [
+              Object {
+                "computed": false,
+                "loc": Object {
+                  "end": Object {
+                    "column": 17,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 4,
+                    "line": 1,
+                  },
+                },
+                "object": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 10,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 4,
+                      "line": 1,
+                    },
+                  },
+                  "name": "ticket",
+                  "type": "Identifier",
+                },
+                "property": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 17,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 11,
+                      "line": 1,
+                    },
+                  },
+                  "name": "status",
+                  "type": "Identifier",
+                },
+                "type": "MemberExpression",
+              },
+              Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 27,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 19,
+                    "line": 1,
+                  },
+                },
+                "raw": "\\"closed\\"",
+                "type": "Literal",
+                "value": "closed",
+              },
+            ],
+            "callee": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 3,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 0,
+                  "line": 1,
+                },
+              },
+              "name": "neq",
+              "type": "Identifier",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 28,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 0,
+                "line": 1,
+              },
+            },
+            "type": "CallExpression",
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 28,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 0,
+              "line": 1,
+            },
+          },
+          "type": "ExpressionStatement",
+        },
+      ],
+      "loc": Object {
+        "end": Object {
+          "column": 28,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "sourceType": "script",
+      "type": "Program",
+    },
+    "group_by": null,
+    "id": 7,
+    "name": "New & Open Tickets",
+    "order_by": "updated",
+    "order_dir": "desc",
+    "search": null,
+    "section_id": null,
+    "slug": "new-&-open-tickets",
+    "type": "ticket-list",
+    "uri": "/api/views/7/",
+    "visibility": "public",
+  },
+  "8": Object {
+    "category": null,
+    "created_datetime": "2017-07-31T21:43:10.610368+00:00",
+    "deactivated_datetime": null,
+    "decoration": null,
+    "display_order": 1,
+    "fields": Array [
+      "details",
+      "tags",
+      "customer",
+      "created",
+    ],
+    "filters": "neq(ticket.status, \\"closed\\")",
+    "filters_ast": Object {
+      "body": Array [
+        Object {
+          "expression": Object {
+            "arguments": Array [
+              Object {
+                "computed": false,
+                "loc": Object {
+                  "end": Object {
+                    "column": 17,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 4,
+                    "line": 1,
+                  },
+                },
+                "object": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 10,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 4,
+                      "line": 1,
+                    },
+                  },
+                  "name": "ticket",
+                  "type": "Identifier",
+                },
+                "property": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 17,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 11,
+                      "line": 1,
+                    },
+                  },
+                  "name": "status",
+                  "type": "Identifier",
+                },
+                "type": "MemberExpression",
+              },
+              Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 27,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 19,
+                    "line": 1,
+                  },
+                },
+                "raw": "\\"closed\\"",
+                "type": "Literal",
+                "value": "closed",
+              },
+            ],
+            "callee": Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 3,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 0,
+                  "line": 1,
+                },
+              },
+              "name": "neq",
+              "type": "Identifier",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 28,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 0,
+                "line": 1,
+              },
+            },
+            "type": "CallExpression",
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 28,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 0,
+              "line": 1,
+            },
+          },
+          "type": "ExpressionStatement",
+        },
+      ],
+      "loc": Object {
+        "end": Object {
+          "column": 28,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "sourceType": "script",
+      "type": "Program",
+    },
+    "group_by": null,
+    "id": 8,
+    "name": "New & Open Tickets",
+    "order_by": "updated",
+    "order_dir": "desc",
+    "search": null,
+    "section_id": null,
+    "slug": "new-&-open-tickets",
+    "type": "ticket-list",
+    "uri": "/api/views/7/",
+    "visibility": "public",
+  },
+}
+`;

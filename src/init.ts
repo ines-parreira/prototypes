@@ -1,16 +1,20 @@
 import {fromJS} from 'immutable'
 import moment from 'moment-timezone'
+import {Store} from 'redux'
 
-import './polyfills'
-import {resendVerificationEmail} from './state/currentAccount/actions.ts'
-import {getBaseEmailIntegration} from './state/integrations/selectors.ts'
-import {recentViewsStorage} from './state/views/utils.ts'
-import {notify} from './state/notifications/actions.ts'
-import configureStore from './store/configureStore'
-import * as segmentTracker from './store/middlewares/segmentTracker'
-import {transformSystemMessagesToNotifications} from './utils.ts'
+import './polyfills.js'
+import {EditableUserProfile} from './config/types/user'
+import {resendVerificationEmail} from './state/currentAccount/actions'
+import {getBaseEmailIntegration} from './state/integrations/selectors'
+import {recentViewsStorage} from './state/views/utils'
+import {notify} from './state/notifications/actions'
+import configureStore from './store/configureStore.js'
+import * as segmentTracker from './store/middlewares/segmentTracker.js'
+import {transformSystemMessagesToNotifications} from './utils'
+import {NotificationStatus} from './state/notifications/types'
+import {GorgiasInitialState, InitialRootState} from './types'
 
-const initMoment = (currentUser) => {
+const initMoment = (currentUser: EditableUserProfile) => {
     // set default locale and timezone
     if (currentUser.language) {
         moment.locale(currentUser.language)
@@ -21,28 +25,33 @@ const initMoment = (currentUser) => {
     }
 }
 
-// `configureStore` below needs an object as the parameter so here we're making an
-// object with immutable object props from a plain JS object.
-const toImmutableProps = (plainObject) => {
-    const immutableState = {}
-    Object.keys(plainObject).forEach((key) => {
-        immutableState[key] = fromJS(plainObject[key])
-    })
+export const toInitialStoreState = (initialState: GorgiasInitialState) => {
+    const nextState: Record<keyof GorgiasInitialState | string, any> = {
+        ...initialState,
+    }
+    const sections = initialState.viewSections
+    delete nextState.viewSections
 
-    return immutableState
+    const recentViews = recentViewsStorage.get()
+    if (recentViews) {
+        ;(nextState.views as GorgiasInitialState['views']).recent = recentViews
+    }
+
+    ;(Object.keys(nextState) as (keyof GorgiasInitialState)[]).forEach(
+        (key) => {
+            nextState[key] = fromJS(nextState[key])
+        }
+    )
+    nextState.entities = {sections}
+
+    return nextState as InitialRootState
 }
 
 // Supply an initial state to redux for faster page loads. See #752
 const initialState = window.GORGIAS_STATE || {}
 
 if (initialState.currentUser) {
-    initMoment(initialState.currentUser)
-}
-
-const recentViews = recentViewsStorage.get()
-
-if (recentViews) {
-    initialState.views.recent = recentViews
+    initMoment((initialState.currentUser as unknown) as EditableUserProfile)
 }
 
 const eventsToTrack = window.SEGMENT_EVENTS_TO_TRACK
@@ -53,12 +62,16 @@ if (eventsToTrack) {
     delete window.SEGMENT_EVENTS_TO_TRACK
 }
 
-export const store = configureStore(toImmutableProps(initialState))
+//$TsFixMe: remove on configureStore migration
+export const store = ((configureStore as unknown) as (
+    initialState: Record<string, unknown>
+) => Store)(toInitialStoreState(initialState))
 
 // todo(@martin): delete this in 2021 if we redirect to .com automatically
-export const notifyDeprecatedTld = (url, reduxStore) => {
+export const notifyDeprecatedTld = (url: string, reduxStore: Store) => {
     const urlObject = new URL(url)
 
+    //eslint-disable-next-line @typescript-eslint/prefer-regexp-exec
     if (urlObject.hostname.match(/.io$/)) {
         const updatedUrl = `https://${urlObject.hostname.replace(
             /.io$/,
@@ -68,7 +81,7 @@ export const notifyDeprecatedTld = (url, reduxStore) => {
             notify({
                 id: 'deprecated-tld-notification',
                 style: 'banner',
-                status: 'warning',
+                status: NotificationStatus.Warning,
                 dismissible: false,
                 message:
                     `We\'re now a dot-com 🎉 please update your helpdesk links and bookmarks to ${updatedUrl}. ` +
@@ -76,14 +89,14 @@ export const notifyDeprecatedTld = (url, reduxStore) => {
                 onClick: () => {
                     window.location.href = updatedUrl
                 },
-            })
+            }) as any
         )
     }
 }
 
 notifyDeprecatedTld(window.location.href, store)
 
-export const notifyAccountNotVerified = (reduxStore) => {
+export const notifyAccountNotVerified = (reduxStore: Store) => {
     const baseEmailIntegration = getBaseEmailIntegration(reduxStore.getState())
 
     if (!baseEmailIntegration.getIn(['meta', 'verified'], true)) {
@@ -92,12 +105,12 @@ export const notifyAccountNotVerified = (reduxStore) => {
                 allowHTML: true,
                 id: 'account-not-verified-notification',
                 style: 'banner',
-                status: 'warning',
+                status: NotificationStatus.Warning,
                 dismissible: false,
                 message:
                     'Your email address is not verified. <u>Click here to resend the verification email</u>',
                 onClick: () => resendVerificationEmail()(reduxStore.dispatch),
-            })
+            }) as any
         )
     }
 }
@@ -107,6 +120,6 @@ notifyAccountNotVerified(store)
 // Dispatch system messages as notifications
 transformSystemMessagesToNotifications(window.SYSTEM_MESSAGES || []).forEach(
     (notification) => {
-        store.dispatch(notify(notification))
+        store.dispatch(notify(notification) as any)
     }
 )

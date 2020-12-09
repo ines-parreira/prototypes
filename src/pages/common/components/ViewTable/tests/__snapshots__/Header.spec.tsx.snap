@@ -20,15 +20,16 @@ exports[`ViewTable::Header default view displays 1`] = `
           view={
             Immutable.Map {
               "search": null,
-              "order_by": "updated_datetime",
+              "order_by": "updated",
               "deactivated_datetime": null,
               "name": "New & Open Tickets",
               "slug": "new-&-open-tickets",
               "uri": "/api/views/7/",
-              "user_id": 2,
               "decoration": null,
               "display_order": 1,
               "created_datetime": "2017-07-31T21:43:10.610368+00:00",
+              "visibility": "public",
+              "section_id": null,
               "group_by": null,
               "fields": Immutable.List [
                 "details",
@@ -155,6 +156,7 @@ exports[`ViewTable::Header default view displays 1`] = `
                   },
                 ],
               },
+              "category": null,
             }
           }
         />
@@ -205,15 +207,16 @@ exports[`ViewTable::Header default view get search query from active view 1`] = 
           view={
             Immutable.Map {
               "search": "term1",
-              "order_by": "updated_datetime",
+              "order_by": "updated",
               "deactivated_datetime": null,
               "name": "New & Open Tickets",
               "slug": "new-&-open-tickets",
               "uri": "/api/views/7/",
-              "user_id": 2,
               "decoration": null,
               "display_order": 1,
               "created_datetime": "2017-07-31T21:43:10.610368+00:00",
+              "visibility": "public",
+              "section_id": null,
               "group_by": null,
               "fields": Immutable.List [
                 "details",
@@ -340,6 +343,7 @@ exports[`ViewTable::Header default view get search query from active view 1`] = 
                   },
                 ],
               },
+              "category": null,
             }
           }
         />

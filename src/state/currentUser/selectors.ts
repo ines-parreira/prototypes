@@ -3,6 +3,7 @@ import {createSelector} from 'reselect'
 
 import {RootState} from '../types'
 import {DEFAULT_PREFERENCES} from '../../config'
+import {UserSetting, UserSettingType} from '../../config/types/user'
 import {createImmutableSelector} from '../../utils'
 
 import {CurrentUserState} from './types'
@@ -126,3 +127,12 @@ export const getTimezone = createSelector<
     getCurrentUserState,
     (state) => (state.get('timezone') as Maybe<string>) || null
 )
+
+export const getUserSetting = (type: UserSettingType) =>
+    createSelector<RootState, Maybe<UserSetting>, CurrentUserState>(
+        getCurrentUserState,
+        (state) =>
+            ((state.get('settings') as List<any>).toJS() as UserSetting[]).find(
+                (item) => item.type === type
+            )
+    )

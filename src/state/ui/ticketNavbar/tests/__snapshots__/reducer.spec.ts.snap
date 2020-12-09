@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ticketNavbar reducer optimisticAccountSettingsReset action should reset the account settings 1`] = `
+Object {
+  "optimisticAccountSettings": Object {
+    "view_sections": Object {},
+    "views": Object {},
+  },
+  "optimisticUserSettings": Object {
+    "view_sections": Object {},
+    "views": Object {},
+  },
+}
+`;
+
+exports[`ticketNavbar reducer optimisticAccountSettingsSet action should set the account settings 1`] = `
+Object {
+  "optimisticAccountSettings": Object {
+    "view_sections": Object {
+      "1": Object {
+        "display_order": 2,
+      },
+    },
+    "views": Object {
+      "1": Object {
+        "display_order": 1,
+      },
+    },
+  },
+  "optimisticUserSettings": Object {
+    "view_sections": Object {},
+    "views": Object {},
+  },
+}
+`;
+
+exports[`ticketNavbar reducer optimisticUserSettingsReset action should reset the user settings 1`] = `
+Object {
+  "optimisticAccountSettings": Object {
+    "view_sections": Object {},
+    "views": Object {},
+  },
+  "optimisticUserSettings": Object {
+    "view_sections": Object {},
+    "views": Object {},
+  },
+}
+`;
+
+exports[`ticketNavbar reducer optimisticUserSettingsSet action should set the user settings 1`] = `
+Object {
+  "optimisticAccountSettings": Object {
+    "view_sections": Object {},
+    "views": Object {},
+  },
+  "optimisticUserSettings": Object {
+    "view_sections": Object {
+      "1": Object {
+        "display_order": 2,
+      },
+    },
+    "views": Object {
+      "1": Object {
+        "display_order": 1,
+      },
+    },
+  },
+}
+`;

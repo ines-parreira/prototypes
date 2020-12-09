@@ -8,6 +8,8 @@ import Loader from '../Loader/index.js'
 import withCancellableRequest, {
     CancellableRequestInjectedProps,
 } from '../../../common/utils/withCancellableRequest'
+import {ViewVisibility} from '../../../../models/view/types'
+import {activeViewIdSet} from '../../../../state/ui/views/actions'
 import * as viewsActions from '../../../../state/views/actions'
 import * as viewsSelectors from '../../../../state/views/selectors'
 import * as viewsConfig from '../../../../config/views'
@@ -34,7 +36,10 @@ type OwnProps = {
 }
 
 type Props = OwnProps &
-    WithRouterProps<any, {cursor?: string; q?: string}> &
+    WithRouterProps<
+        {visibility?: ViewVisibility},
+        {cursor?: string; q?: string}
+    > &
     ViewSearchUrlSyncInjectedProps &
     ConnectedProps<typeof connector> &
     CancellableRequestInjectedProps<
@@ -62,6 +67,7 @@ export class ViewTableContainer extends React.Component<Props> {
             location,
             urlSearchView,
             updateView,
+            activeViewIdSet,
         } = this.props
 
         if (isSearch) {
@@ -82,6 +88,7 @@ export class ViewTableContainer extends React.Component<Props> {
             }
 
             setViewActive(getView((suggestedViewId as unknown) as string))
+            activeViewIdSet(suggestedViewId)
         }
 
         void fetchViewItems(null, location.query.cursor)
@@ -101,6 +108,7 @@ export class ViewTableContainer extends React.Component<Props> {
             fetchViewItemsCancellable,
             updateView,
             setViewActive,
+            params,
             getView,
             hasActiveView,
             urlSearchView,
@@ -124,9 +132,17 @@ export class ViewTableContainer extends React.Component<Props> {
             // entering "search" mode
             updateView(urlSearchView, false)
             shouldFetchViewItems = true
-        } else if (prevProps.isUpdate && !isUpdate) {
+        } else if (
+            (prevProps.isUpdate && !isUpdate) ||
+            (params.visibility &&
+                params.visibility !== prevProps.params.visibility)
+        ) {
             // entering "add new" mode
-            updateView((config.get('newView') as () => Map<any, any>)())
+            updateView(
+                (config.get('newView') as (
+                    params?: ViewVisibility
+                ) => Map<any, any>)(params.visibility)
+            )
             shouldFetchViewItems = true
         } else if (
             isSearch &&
@@ -142,6 +158,7 @@ export class ViewTableContainer extends React.Component<Props> {
             setViewActive(
                 getView((currentSuggestedViewId as unknown) as string)
             )
+            activeViewIdSet(currentSuggestedViewId)
             shouldFetchViewItems = true
         } else if (
             !!prevProps.activeView.get('deactivated_datetime') &&
@@ -289,10 +306,11 @@ const connector = connect(
         fetchViewItems: viewsActions.fetchViewItems,
         setViewActive: viewsActions.setViewActive,
         updateView: viewsActions.updateView,
+        activeViewIdSet,
     }
 )
 
-export default withRouter(
+export default withRouter<any, any>(
     withCancellableRequest<
         'fetchViewItemsCancellable',
         'cancelFetchViewItemsCancellable',

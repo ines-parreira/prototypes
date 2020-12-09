@@ -1,10 +1,11 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {fromJS, Map} from 'immutable'
 import {render, fireEvent} from '@testing-library/react'
 
 import {FilterTopbarContainer} from '../FilterTopbar'
+import {view as viewFixture} from '../../../../../fixtures/views'
+import ConfirmButton from '../../ConfirmButton'
 import * as viewsConfig from '../../../../../config/views'
-import {view as viewFixture} from '../../../../../fixtures/views.js'
 import * as utils from '../../../../../utils'
 
 const ticketChannelEqualsEmailFilter = "eq('ticket.channel', 'email')"
@@ -17,28 +18,33 @@ const createViewWithFilters = (filters: string) =>
         filters_ast: utils.getAST(filters),
     }) as Map<any, any>
 
-const defaultProps = {
-    type: 'ticket',
-    isSearch: false,
-    isUpdate: true,
+const minProps = ({
+    agents: fromJS({}),
+    teams: fromJS({}),
     activeView: createViewWithFilters(ticketChannelEqualsEmailFilter),
+    areFiltersValid: true,
+    currentUser: fromJS({first_name: 'Steve', id: 2}),
+    isDirty: false,
     pristineActiveView: fromJS({}),
-    fetchViewItems: jest.fn(),
     schemas: fromJS({}),
-    resetView: jest.fn(),
+    updateView: jest.fn(),
     addFieldFilter: jest.fn(),
     removeFieldFilter: jest.fn(),
     updateFieldFilter: jest.fn(),
+    type: 'ticket',
+    isSearch: false,
+    fetchViewItems: jest.fn(),
+    isUpdate: true,
     updateFieldFilterOperator: jest.fn(),
+    resetView: jest.fn(),
     submitView: jest.fn(),
     deleteView: jest.fn(),
+    activeViewIdSet: jest.fn(),
+    viewCreated: jest.fn(),
+    viewDeleted: jest.fn(),
+    viewUpdated: jest.fn(),
     config: viewsConfig.getConfigByName('ticket'),
-    agents: fromJS({}),
-    teams: fromJS({}),
-    areFiltersValid: true,
-    currentUser: fromJS({first_name: 'Steve'}),
-    isDirty: false,
-}
+} as unknown) as ComponentProps<typeof FilterTopbarContainer>
 
 jest.mock('../Filters/index.js', () => {
     return ({
@@ -75,13 +81,26 @@ jest.mock('../Filters/index.js', () => {
 
 jest.mock('../../ViewSharing/index.js', () => () => null)
 
+jest.mock(
+    '../../ConfirmButton',
+    () => ({confirm}: ComponentProps<typeof ConfirmButton>) => (
+        <div onClick={confirm} />
+    )
+)
+
 beforeEach(() => {
     jest.clearAllMocks()
     jest.spyOn(utils, 'getDefaultOperator').mockImplementation(() => 'foo')
     jest.spyOn(global.Date, 'now').mockImplementation(() => 0) // ConfirmButton generates ids based on the date
-    defaultProps.fetchViewItems.mockResolvedValue(undefined)
-    defaultProps.submitView.mockResolvedValue(undefined)
-    defaultProps.deleteView.mockResolvedValue(undefined)
+    ;(minProps.fetchViewItems as jest.MockedFunction<
+        typeof minProps.fetchViewItems
+    >).mockResolvedValue(undefined)
+    ;(minProps.submitView as jest.MockedFunction<
+        typeof minProps.submitView
+    >).mockResolvedValue(viewFixture)
+    ;(minProps.deleteView as jest.MockedFunction<
+        typeof minProps.deleteView
+    >).mockResolvedValue(fromJS({...viewFixture, id: 8}))
 })
 
 afterEach(() => {
@@ -92,22 +111,20 @@ afterEach(() => {
 describe('<FilterTopbar/>', () => {
     describe('render', () => {
         it('should render active view filters', () => {
-            const {container} = render(
-                <FilterTopbarContainer {...defaultProps} />
-            )
+            const {container} = render(<FilterTopbarContainer {...minProps} />)
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should not render delete button when creating new view', () => {
             const {container} = render(
-                <FilterTopbarContainer {...defaultProps} isUpdate={false} />
+                <FilterTopbarContainer {...minProps} isUpdate={false} />
             )
             expect(container.firstChild).toMatchSnapshot()
         })
 
         it('should not render footer when in search mode', () => {
             const {container} = render(
-                <FilterTopbarContainer {...defaultProps} isSearch={true} />
+                <FilterTopbarContainer {...minProps} isSearch={true} />
             )
             expect(container.firstChild).toMatchSnapshot()
         })
@@ -116,18 +133,18 @@ describe('<FilterTopbar/>', () => {
     describe('updating filters', () => {
         it('should update active view on remove field', () => {
             const {getByTestId} = render(
-                <FilterTopbarContainer {...defaultProps} />
+                <FilterTopbarContainer {...minProps} />
             )
             fireEvent.click(getByTestId('remove-field'))
-            expect(defaultProps.removeFieldFilter).toHaveBeenLastCalledWith(0)
+            expect(minProps.removeFieldFilter).toHaveBeenLastCalledWith(0)
         })
 
         it('should update active view on update field', () => {
             const {getByTestId} = render(
-                <FilterTopbarContainer {...defaultProps} />
+                <FilterTopbarContainer {...minProps} />
             )
             fireEvent.click(getByTestId('update-field'))
-            expect(defaultProps.updateFieldFilter).toHaveBeenLastCalledWith(
+            expect(minProps.updateFieldFilter).toHaveBeenLastCalledWith(
                 0,
                 'foo'
             )
@@ -135,20 +152,19 @@ describe('<FilterTopbar/>', () => {
 
         it('should update active view on update field operator', () => {
             const {getByTestId} = render(
-                <FilterTopbarContainer {...defaultProps} />
+                <FilterTopbarContainer {...minProps} />
             )
             fireEvent.click(getByTestId('update-field-operator'))
-            expect(
-                defaultProps.updateFieldFilterOperator
-            ).toHaveBeenLastCalledWith(0, 'foo')
+            expect(minProps.updateFieldFilterOperator).toHaveBeenLastCalledWith(
+                0,
+                'foo'
+            )
         })
 
         it('should update active view on add field', () => {
-            const {getByText} = render(
-                <FilterTopbarContainer {...defaultProps} />
-            )
+            const {getByText} = render(<FilterTopbarContainer {...minProps} />)
             fireEvent.click(getByText('Channel'))
-            expect(defaultProps.addFieldFilter).toHaveBeenLastCalledWith(
+            expect(minProps.addFieldFilter).toHaveBeenLastCalledWith(
                 expect.objectContaining({
                     name: 'channel',
                 }),
@@ -162,62 +178,54 @@ describe('<FilterTopbar/>', () => {
 
     describe('on active view change', () => {
         it('should fetch view items', () => {
-            const {rerender} = render(
-                <FilterTopbarContainer {...defaultProps} />
-            )
+            const {rerender} = render(<FilterTopbarContainer {...minProps} />)
             rerender(
                 <FilterTopbarContainer
-                    {...defaultProps}
+                    {...minProps}
                     activeView={createViewWithFilters('')}
                 />
             )
-            expect(defaultProps.fetchViewItems).toHaveBeenLastCalledWith()
+            expect(minProps.fetchViewItems).toHaveBeenLastCalledWith()
         })
 
         it('should not fetch view items when filters did not change', () => {
-            const {rerender} = render(
-                <FilterTopbarContainer {...defaultProps} />
-            )
+            const {rerender} = render(<FilterTopbarContainer {...minProps} />)
             rerender(
                 <FilterTopbarContainer
-                    {...defaultProps}
-                    activeView={defaultProps.activeView.set(
+                    {...minProps}
+                    activeView={minProps.activeView.set(
                         'name',
                         viewFixture.name + ' foo'
                     )}
                 />
             )
-            expect(defaultProps.fetchViewItems).not.toHaveBeenCalled()
+            expect(minProps.fetchViewItems).not.toHaveBeenCalled()
         })
 
         it('should not fetch view items when view id changed', () => {
-            const {rerender} = render(
-                <FilterTopbarContainer {...defaultProps} />
-            )
+            const {rerender} = render(<FilterTopbarContainer {...minProps} />)
             rerender(
                 <FilterTopbarContainer
-                    {...defaultProps}
-                    activeView={defaultProps.activeView.set(
+                    {...minProps}
+                    activeView={minProps.activeView.set(
                         'id',
                         viewFixture.id + 1
                     )}
                 />
             )
-            expect(defaultProps.fetchViewItems).not.toHaveBeenCalled()
+            expect(minProps.fetchViewItems).not.toHaveBeenCalled()
         })
 
         it('should not fetch view items when filters are not valid', () => {
-            const {rerender} = render(
-                <FilterTopbarContainer {...defaultProps} />
-            )
+            const {rerender} = render(<FilterTopbarContainer {...minProps} />)
             rerender(
                 <FilterTopbarContainer
-                    {...defaultProps}
+                    {...minProps}
                     activeView={createViewWithFilters('')}
                     areFiltersValid={false}
                 />
             )
-            expect(defaultProps.fetchViewItems).not.toHaveBeenCalled()
+            expect(minProps.fetchViewItems).not.toHaveBeenCalled()
         })
     })
 })

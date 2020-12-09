@@ -9,10 +9,11 @@ enum AccountStatus {
     Active = 'active',
 }
 
-enum AccountSettingType {
+export enum AccountSettingType {
     BusinessHours = 'business-hours',
     TicketAssignment = 'ticket-assignment',
     SatisfactionSurveys = 'satisfaction-surveys',
+    ViewsOrdering = 'views-ordering',
 }
 
 export type AccountSetting =
@@ -48,6 +49,16 @@ export type AccountSetting =
               survey_interval: number
           }
       }
+    | {
+          id: number
+          type: AccountSettingType.ViewsOrdering
+          data: AccountViewsOrderingSettingData
+      }
+
+export type AccountViewsOrderingSettingData = {
+    views: Record<string, {display_order: number}>
+    view_sections: Record<string, {display_order: number}>
+}
 
 export type Account = {
     created_datetime: string

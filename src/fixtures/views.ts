@@ -1,20 +1,30 @@
-export const view = {
+import {OrderDirection} from '../models/api/types'
+import {View, ViewField, ViewType, ViewVisibility} from '../models/view/types'
+
+export const view: View = {
+    category: null,
     search: null,
-    order_by: 'updated_datetime',
+    order_by: ViewField.Updated,
     deactivated_datetime: null,
     name: 'New & Open Tickets',
     slug: 'new-&-open-tickets',
     uri: '/api/views/7/',
-    user_id: 2,
     decoration: null,
     display_order: 1,
     created_datetime: '2017-07-31T21:43:10.610368+00:00',
     group_by: null,
-    fields: ['details', 'tags', 'customer', 'created'],
-    type: 'ticket-list',
+    fields: [
+        ViewField.Details,
+        ViewField.Tags,
+        ViewField.Customer,
+        ViewField.Created,
+    ],
+    section_id: null,
+    type: ViewType.TicketList,
     id: 7,
     filters: 'neq(ticket.status, "closed")',
-    order_dir: 'desc',
+    order_dir: OrderDirection.Desc,
+    visibility: ViewVisibility.Public,
     filters_ast: {
         sourceType: 'script',
         loc: {

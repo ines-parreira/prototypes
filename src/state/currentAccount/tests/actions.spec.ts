@@ -1,24 +1,32 @@
-import {fromJS} from 'immutable'
-import configureMockStore from 'redux-mock-store'
+import {fromJS, Map} from 'immutable'
+import configureMockStore, {MockStoreEnhanced} from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
 
-import * as actions from '../actions.ts'
-import {initialState} from '../reducers.ts'
+import * as actions from '../actions'
+import {initialState} from '../reducers'
+import {StoreDispatch} from '../../types'
+import {AccountSettingType, AccountSetting} from '../types'
+
+type MockedRootState = {
+    currentAccount: Map<any, any>
+}
 
 const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
+const mockStore = configureMockStore<MockedRootState, StoreDispatch>(
+    middlewares
+)
 
-jest.mock('../../notifications/actions.ts', () => {
+jest.mock('../../notifications/actions', () => {
     return {
-        notify: jest.fn(() => (args) => args),
+        notify: jest.fn(() => (args: Record<string, unknown>) => args),
     }
 })
 
 describe('current account actions', () => {
-    let store
-    let mockServer
+    let store: MockStoreEnhanced<MockedRootState, StoreDispatch>
+    let mockServer: MockAdapter
 
     beforeEach(() => {
         store = mockStore({currentAccount: initialState})
@@ -31,7 +39,7 @@ describe('current account actions', () => {
         mockServer.onPut('/api/account/').reply(200, data)
 
         return store
-            .dispatch(actions.updateAccount(data))
+            .dispatch(actions.updateAccount(data as any))
             .then(() => expect(store.getActions()).toMatchSnapshot())
     })
 
@@ -42,7 +50,7 @@ describe('current account actions', () => {
             mockServer.onPost('/api/account/settings/').reply(200, data)
 
             return store
-                .dispatch(actions.submitSetting(data))
+                .dispatch(actions.submitSetting(data as any))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
 
@@ -52,7 +60,7 @@ describe('current account actions', () => {
             mockServer.onPut('/api/account/settings/1/').reply(200, data)
 
             return store
-                .dispatch(actions.submitSetting(data))
+                .dispatch(actions.submitSetting(data as any))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
     })
@@ -81,7 +89,7 @@ describe('current account actions', () => {
                 .reply(202, subscription)
 
             return store
-                .dispatch(actions.updateSubscription())
+                .dispatch(actions.updateSubscription(subscription as any))
                 .then(() => expect(store.getActions()).toMatchSnapshot())
         })
     })
@@ -95,6 +103,25 @@ describe('current account actions', () => {
             expect(
                 actions.setCurrentSubscription(fromJS(subscription))
             ).toMatchSnapshot()
+        })
+    })
+
+    describe('submitSettingSuccess', () => {
+        it('should dispatch the next setting', () => {
+            store = mockStore({currentAccount: initialState})
+            const req = {
+                data: {
+                    views: {
+                        1: {display_order: 2},
+                    },
+                    view_sections: {},
+                },
+                id: 1,
+                type: AccountSettingType.ViewsOrdering,
+            } as AccountSetting
+
+            store.dispatch(actions.submitSettingSuccess(req, false))
+            expect(store.getActions()).toMatchSnapshot()
         })
     })
 })

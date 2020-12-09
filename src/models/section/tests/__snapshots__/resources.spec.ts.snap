@@ -1,0 +1,129 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`section resources createSection should resolve with a new Section on success 1`] = `
+Object {
+  "created_datetime": "2020-10-14T14:26:35.921523+00:00",
+  "decoration": null,
+  "id": 1,
+  "name": "foo",
+  "private": false,
+  "updated_datetime": "2020-10-14T14:26:35.921523+00:00",
+  "uri": "foo",
+}
+`;
+
+exports[`section resources createSection should resolve with a new Section on success 2`] = `
+Object {
+  "delete": Array [],
+  "get": Array [],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [
+    Object {
+      "data": "{\\"name\\":\\"foo\\",\\"private\\":false,\\"decoration\\":null}",
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      "maxContentLength": -1,
+      "method": "post",
+      "timeout": 0,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/api/view-sections/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "put": Array [],
+}
+`;
+
+exports[`section resources deleteSection should resolve on success 1`] = `undefined`;
+
+exports[`section resources fetchSections should resolve with a Section list on success 1`] = `
+Object {
+  "data": Array [
+    Object {
+      "created_datetime": "2020-10-14T14:26:35.921523+00:00",
+      "decoration": null,
+      "id": 1,
+      "name": "foo",
+      "private": false,
+      "updated_datetime": "2020-10-14T14:26:35.921523+00:00",
+      "uri": "foo",
+    },
+    Object {
+      "created_datetime": "2020-10-14T14:26:35.921523+00:00",
+      "decoration": null,
+      "id": 1,
+      "name": "foo",
+      "private": false,
+      "updated_datetime": "2020-10-14T14:26:35.921523+00:00",
+      "uri": "foo",
+    },
+    Object {
+      "created_datetime": "2020-10-14T14:26:35.921523+00:00",
+      "decoration": null,
+      "id": 1,
+      "name": "foo",
+      "private": false,
+      "updated_datetime": "2020-10-14T14:26:35.921523+00:00",
+      "uri": "foo",
+    },
+  ],
+}
+`;
+
+exports[`section resources updateSection should resolve with an updated Section on success 1`] = `
+Object {
+  "created_datetime": "2020-10-14T14:26:35.921523+00:00",
+  "decoration": null,
+  "id": 1,
+  "name": "foo",
+  "private": false,
+  "updated_datetime": "2020-10-14T14:26:35.921523+00:00",
+  "uri": "foo",
+}
+`;
+
+exports[`section resources updateSection should resolve with an updated Section on success 2`] = `
+Object {
+  "delete": Array [],
+  "get": Array [],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [],
+  "put": Array [
+    Object {
+      "data": "{\\"decoration\\":null,\\"name\\":\\"foo\\"}",
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      "maxContentLength": -1,
+      "method": "put",
+      "timeout": 0,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/api/view-sections/1/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+}
+`;

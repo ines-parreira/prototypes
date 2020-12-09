@@ -1,0 +1,558 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TicketNavbar/> should close a new section modal when clicking close section 1`] = `
+<div>
+  <div>
+    RecentChats
+  </div>
+  <div
+    data-testid="NavbarBlock"
+  >
+    NavbarBlock:
+     
+    <div
+      data-testid="TicketNavbarContent"
+    >
+      <div>
+        element: 
+        {"data":{"id":4,"section_id":null,"type":"ticket-list","visibility":"public"},"type":"view"}
+      </div>
+      <div>
+        element: 
+        {"children":[{"id":1,"section_id":1,"type":"ticket-list","visibility":"public"}],"data":{"created_datetime":"2020-10-14T14:26:35.921523+00:00","id":1,"name":"foo","private":false,"decoration":null,"uri":"foo","updated_datetime":"2020-10-14T14:26:35.921523+00:00"},"type":"section"}
+      </div>
+    </div>
+  </div>
+  <div
+    data-testid="NavbarBlock"
+  >
+    NavbarBlock:
+     
+    <span
+      data-testid="NavbarBlock-Create view"
+    >
+      Create view
+    </span>
+    <span
+      data-testid="NavbarBlock-Create section"
+    >
+      Create section
+    </span>
+    <div
+      data-testid="TicketNavbarContent"
+    >
+      <div>
+        element: 
+        {"data":{"id":5,"section_id":null,"type":"ticket-list","visibility":"private"},"type":"view"}
+      </div>
+      <div
+        data-testid="TicketNavbarContent-delete"
+      />
+      <div
+        data-testid="TicketNavbarContent-rename"
+      />
+    </div>
+  </div>
+  <div
+    data-testid="SectionFormModal"
+  >
+    <input
+      data-testid="SectionModal-change"
+      type="text"
+    />
+    <div
+      data-testid="SectionModal-close"
+    />
+    <div
+      data-testid="SectionModal-submit"
+    />
+    <div>
+      isNewSection: 
+      false
+    </div>
+    <div>
+      isOpen: 
+      false
+    </div>
+    <div>
+      isSubmitting: 
+      false
+    </div>
+    <div>
+      sectionForm: 
+      null
+    </div>
+  </div>
+  <div
+    data-testid="DeleteSectionModal"
+  >
+    <div
+      data-testid="DeleteModal-close"
+    />
+    <div
+      data-testid="DeleteModal-submit"
+    />
+    <div>
+      isOpen: 
+      false
+    </div>
+    <div>
+      isSubmitting: 
+      false
+    </div>
+    <div>
+      section: 
+      null
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<TicketNavbar/> should display shared actions for lead-agent/admin 1`] = `
+<div>
+  <div>
+    RecentChats
+  </div>
+  <div
+    data-testid="NavbarBlock"
+  >
+    NavbarBlock:
+     
+    <span
+      data-testid="NavbarBlock-Create view"
+    >
+      Create view
+    </span>
+    <span
+      data-testid="NavbarBlock-Create section"
+    >
+      Create section
+    </span>
+    <div
+      data-testid="TicketNavbarContent"
+    >
+      <div>
+        element: 
+        {"data":{"id":4,"section_id":null,"type":"ticket-list","visibility":"public"},"type":"view"}
+      </div>
+      <div>
+        element: 
+        {"children":[{"id":1,"section_id":1,"type":"ticket-list","visibility":"public"}],"data":{"created_datetime":"2020-10-14T14:26:35.921523+00:00","id":1,"name":"foo","private":false,"decoration":null,"uri":"foo","updated_datetime":"2020-10-14T14:26:35.921523+00:00"},"type":"section"}
+      </div>
+      <div
+        data-testid="TicketNavbarContent-delete"
+      />
+      <div
+        data-testid="TicketNavbarContent-rename"
+      />
+    </div>
+  </div>
+  <div
+    data-testid="NavbarBlock"
+  >
+    NavbarBlock:
+     
+    <span
+      data-testid="NavbarBlock-Create view"
+    >
+      Create view
+    </span>
+    <span
+      data-testid="NavbarBlock-Create section"
+    >
+      Create section
+    </span>
+    <div
+      data-testid="TicketNavbarContent"
+    >
+      <div>
+        element: 
+        {"data":{"id":5,"section_id":null,"type":"ticket-list","visibility":"private"},"type":"view"}
+      </div>
+      <div
+        data-testid="TicketNavbarContent-delete"
+      />
+      <div
+        data-testid="TicketNavbarContent-rename"
+      />
+    </div>
+  </div>
+  <div
+    data-testid="SectionFormModal"
+  >
+    <input
+      data-testid="SectionModal-change"
+      type="text"
+    />
+    <div
+      data-testid="SectionModal-close"
+    />
+    <div
+      data-testid="SectionModal-submit"
+    />
+    <div>
+      isNewSection: 
+      false
+    </div>
+    <div>
+      isOpen: 
+      false
+    </div>
+    <div>
+      isSubmitting: 
+      false
+    </div>
+    <div>
+      sectionForm: 
+      null
+    </div>
+  </div>
+  <div
+    data-testid="DeleteSectionModal"
+  >
+    <div
+      data-testid="DeleteModal-close"
+    />
+    <div
+      data-testid="DeleteModal-submit"
+    />
+    <div>
+      isOpen: 
+      false
+    </div>
+    <div>
+      isSubmitting: 
+      false
+    </div>
+    <div>
+      section: 
+      null
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<TicketNavbar/> should open a new section modal when clicking create section 1`] = `
+<div>
+  <div>
+    RecentChats
+  </div>
+  <div
+    data-testid="NavbarBlock"
+  >
+    NavbarBlock:
+     
+    <div
+      data-testid="TicketNavbarContent"
+    >
+      <div>
+        element: 
+        {"data":{"id":4,"section_id":null,"type":"ticket-list","visibility":"public"},"type":"view"}
+      </div>
+      <div>
+        element: 
+        {"children":[{"id":1,"section_id":1,"type":"ticket-list","visibility":"public"}],"data":{"created_datetime":"2020-10-14T14:26:35.921523+00:00","id":1,"name":"foo","private":false,"decoration":null,"uri":"foo","updated_datetime":"2020-10-14T14:26:35.921523+00:00"},"type":"section"}
+      </div>
+    </div>
+  </div>
+  <div
+    data-testid="NavbarBlock"
+  >
+    NavbarBlock:
+     
+    <span
+      data-testid="NavbarBlock-Create view"
+    >
+      Create view
+    </span>
+    <span
+      data-testid="NavbarBlock-Create section"
+    >
+      Create section
+    </span>
+    <div
+      data-testid="TicketNavbarContent"
+    >
+      <div>
+        element: 
+        {"data":{"id":5,"section_id":null,"type":"ticket-list","visibility":"private"},"type":"view"}
+      </div>
+      <div
+        data-testid="TicketNavbarContent-delete"
+      />
+      <div
+        data-testid="TicketNavbarContent-rename"
+      />
+    </div>
+  </div>
+  <div
+    data-testid="SectionFormModal"
+  >
+    <input
+      data-testid="SectionModal-change"
+      type="text"
+    />
+    <div
+      data-testid="SectionModal-close"
+    />
+    <div
+      data-testid="SectionModal-submit"
+    />
+    <div>
+      isNewSection: 
+      true
+    </div>
+    <div>
+      isOpen: 
+      true
+    </div>
+    <div>
+      isSubmitting: 
+      false
+    </div>
+    <div>
+      sectionForm: 
+      {"name":"","private":true}
+    </div>
+  </div>
+  <div
+    data-testid="DeleteSectionModal"
+  >
+    <div
+      data-testid="DeleteModal-close"
+    />
+    <div
+      data-testid="DeleteModal-submit"
+    />
+    <div>
+      isOpen: 
+      false
+    </div>
+    <div>
+      isSubmitting: 
+      false
+    </div>
+    <div>
+      section: 
+      {"name":"","private":true}
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<TicketNavbar/> should render 1`] = `
+<div>
+  <div>
+    RecentChats
+  </div>
+  <div
+    data-testid="NavbarBlock"
+  >
+    NavbarBlock:
+     
+    <div
+      data-testid="TicketNavbarContent"
+    >
+      <div>
+        element: 
+        {"data":{"id":4,"section_id":null,"type":"ticket-list","visibility":"public"},"type":"view"}
+      </div>
+      <div>
+        element: 
+        {"children":[{"id":1,"section_id":1,"type":"ticket-list","visibility":"public"}],"data":{"created_datetime":"2020-10-14T14:26:35.921523+00:00","id":1,"name":"foo","private":false,"decoration":null,"uri":"foo","updated_datetime":"2020-10-14T14:26:35.921523+00:00"},"type":"section"}
+      </div>
+    </div>
+  </div>
+  <div
+    data-testid="NavbarBlock"
+  >
+    NavbarBlock:
+     
+    <span
+      data-testid="NavbarBlock-Create view"
+    >
+      Create view
+    </span>
+    <span
+      data-testid="NavbarBlock-Create section"
+    >
+      Create section
+    </span>
+    <div
+      data-testid="TicketNavbarContent"
+    >
+      <div>
+        element: 
+        {"data":{"id":5,"section_id":null,"type":"ticket-list","visibility":"private"},"type":"view"}
+      </div>
+      <div
+        data-testid="TicketNavbarContent-delete"
+      />
+      <div
+        data-testid="TicketNavbarContent-rename"
+      />
+    </div>
+  </div>
+  <div
+    data-testid="SectionFormModal"
+  >
+    <input
+      data-testid="SectionModal-change"
+      type="text"
+    />
+    <div
+      data-testid="SectionModal-close"
+    />
+    <div
+      data-testid="SectionModal-submit"
+    />
+    <div>
+      isNewSection: 
+      false
+    </div>
+    <div>
+      isOpen: 
+      false
+    </div>
+    <div>
+      isSubmitting: 
+      false
+    </div>
+    <div>
+      sectionForm: 
+      null
+    </div>
+  </div>
+  <div
+    data-testid="DeleteSectionModal"
+  >
+    <div
+      data-testid="DeleteModal-close"
+    />
+    <div
+      data-testid="DeleteModal-submit"
+    />
+    <div>
+      isOpen: 
+      false
+    </div>
+    <div>
+      isSubmitting: 
+      false
+    </div>
+    <div>
+      section: 
+      null
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<TicketNavbar/> should update the draft form on change 1`] = `
+<div>
+  <div>
+    RecentChats
+  </div>
+  <div
+    data-testid="NavbarBlock"
+  >
+    NavbarBlock:
+     
+    <div
+      data-testid="TicketNavbarContent"
+    >
+      <div>
+        element: 
+        {"data":{"id":4,"section_id":null,"type":"ticket-list","visibility":"public"},"type":"view"}
+      </div>
+      <div>
+        element: 
+        {"children":[{"id":1,"section_id":1,"type":"ticket-list","visibility":"public"}],"data":{"created_datetime":"2020-10-14T14:26:35.921523+00:00","id":1,"name":"foo","private":false,"decoration":null,"uri":"foo","updated_datetime":"2020-10-14T14:26:35.921523+00:00"},"type":"section"}
+      </div>
+    </div>
+  </div>
+  <div
+    data-testid="NavbarBlock"
+  >
+    NavbarBlock:
+     
+    <span
+      data-testid="NavbarBlock-Create view"
+    >
+      Create view
+    </span>
+    <span
+      data-testid="NavbarBlock-Create section"
+    >
+      Create section
+    </span>
+    <div
+      data-testid="TicketNavbarContent"
+    >
+      <div>
+        element: 
+        {"data":{"id":5,"section_id":null,"type":"ticket-list","visibility":"private"},"type":"view"}
+      </div>
+      <div
+        data-testid="TicketNavbarContent-delete"
+      />
+      <div
+        data-testid="TicketNavbarContent-rename"
+      />
+    </div>
+  </div>
+  <div
+    data-testid="SectionFormModal"
+  >
+    <input
+      data-testid="SectionModal-change"
+      name="name"
+      type="text"
+    />
+    <div
+      data-testid="SectionModal-close"
+    />
+    <div
+      data-testid="SectionModal-submit"
+    />
+    <div>
+      isNewSection: 
+      true
+    </div>
+    <div>
+      isOpen: 
+      true
+    </div>
+    <div>
+      isSubmitting: 
+      false
+    </div>
+    <div>
+      sectionForm: 
+      {"name":"foo","private":true}
+    </div>
+  </div>
+  <div
+    data-testid="DeleteSectionModal"
+  >
+    <div
+      data-testid="DeleteModal-close"
+    />
+    <div
+      data-testid="DeleteModal-submit"
+    />
+    <div>
+      isOpen: 
+      false
+    </div>
+    <div>
+      isSubmitting: 
+      false
+    </div>
+    <div>
+      section: 
+      {"name":"foo","private":true}
+    </div>
+  </div>
+</div>
+`;

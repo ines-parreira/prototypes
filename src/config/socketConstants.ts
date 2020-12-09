@@ -15,3 +15,7 @@ export const EMAIL_INTEGRATION_VERIFIED = 'email.integration-verified'
 export const FACEBOOK_INTEGRATIONS_RECONNECTED =
     'facebook-integrations-reconnected'
 export const VIEWS_DEACTIVATED = 'views-deactivated'
+
+export const VIEW_SECTION_CREATED = 'view-section-created'
+export const VIEW_SECTION_UPDATED = 'view-section-updated'
+export const VIEW_SECTION_DELETED = 'view-section-deleted'

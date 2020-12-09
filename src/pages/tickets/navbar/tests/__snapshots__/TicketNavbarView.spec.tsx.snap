@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TicketNavbarView/> should render 1`] = `
+<div
+  class="wrapper view"
+>
+  <div
+    draggable="true"
+    id="ticket-navbar-view-7"
+  >
+    <a
+      class="item"
+      title="New & Open Tickets 4999+"
+    >
+      <span
+        class="viewName item-name flex-grow"
+      >
+        <div
+          data-testid="ViewName"
+        >
+          New & Open Tickets
+        </div>
+      </span>
+      <span
+        class="item-count"
+      >
+        <div
+          data-testid="ViewCount"
+        >
+          New & Open Tickets
+        </div>
+      </span>
+    </a>
+  </div>
+</div>
+`;

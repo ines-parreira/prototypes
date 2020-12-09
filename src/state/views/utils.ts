@@ -7,6 +7,7 @@ import {UNARY_OPERATORS, TIMEDELTA_OPERATOR_DEFAULT_VALUE} from '../../config'
 
 import {Agents} from '../agents/types'
 import {UserRole} from '../../config/types/user'
+import {ViewType, ViewVisibility} from '../../models/view/types'
 import {
     getAST,
     getFirstExpressionOfAST,
@@ -21,7 +22,7 @@ import {
 } from '../rules/types'
 import {isTimedelta} from '../../utils/ast'
 
-import {ViewFilter, ViewType, ViewVisibility} from './types'
+import {ViewFilter} from './types'
 
 export const rawify = (data: Maybe<string | number>): string => {
     if (typeof data === 'string') {
@@ -297,7 +298,9 @@ export class RecentViewsStorage {
         }
     }
 
-    get(): Maybe<Record<string, StoredView>> {
+    get(): Maybe<{
+        [key: string]: {inserted_datetime: string; updated_datetime: string}
+    }> {
         if (!this.storage) {
             return
         }
@@ -317,7 +320,9 @@ export class RecentViewsStorage {
             return
         }
 
-        const views: Record<string, StoredView> = {}
+        const views: {
+            [key: string]: {inserted_datetime: string; updated_datetime: string}
+        } = {}
         const now = moment.utc().toISOString()
 
         recentViews.forEach((viewId: number) => {

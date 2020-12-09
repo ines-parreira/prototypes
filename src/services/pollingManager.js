@@ -2,7 +2,7 @@ import {
     fetchActiveViewTickets,
     fetchRecentViewsCounts,
 } from '../state/views/actions.ts'
-import {store as reduxStore} from '../init'
+import {store as reduxStore} from '../init.ts'
 
 class PollingManager {
     intervals = {}

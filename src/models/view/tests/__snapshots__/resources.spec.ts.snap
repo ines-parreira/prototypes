@@ -1,0 +1,784 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`view resources createView should resolve with a new View on success 1`] = `
+Object {
+  "category": null,
+  "created_datetime": "2017-07-31T21:43:10.610368+00:00",
+  "deactivated_datetime": null,
+  "decoration": null,
+  "display_order": 1,
+  "fields": Array [
+    "details",
+    "tags",
+    "customer",
+    "created",
+  ],
+  "filters": "neq(ticket.status, \\"closed\\")",
+  "filters_ast": Object {
+    "body": Array [
+      Object {
+        "expression": Object {
+          "arguments": Array [
+            Object {
+              "computed": false,
+              "loc": Object {
+                "end": Object {
+                  "column": 17,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 4,
+                  "line": 1,
+                },
+              },
+              "object": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 10,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 4,
+                    "line": 1,
+                  },
+                },
+                "name": "ticket",
+                "type": "Identifier",
+              },
+              "property": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 17,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 11,
+                    "line": 1,
+                  },
+                },
+                "name": "status",
+                "type": "Identifier",
+              },
+              "type": "MemberExpression",
+            },
+            Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 27,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 19,
+                  "line": 1,
+                },
+              },
+              "raw": "\\"closed\\"",
+              "type": "Literal",
+              "value": "closed",
+            },
+          ],
+          "callee": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 3,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 0,
+                "line": 1,
+              },
+            },
+            "name": "neq",
+            "type": "Identifier",
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 28,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 0,
+              "line": 1,
+            },
+          },
+          "type": "CallExpression",
+        },
+        "loc": Object {
+          "end": Object {
+            "column": 28,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "type": "ExpressionStatement",
+      },
+    ],
+    "loc": Object {
+      "end": Object {
+        "column": 28,
+        "line": 1,
+      },
+      "start": Object {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "sourceType": "script",
+    "type": "Program",
+  },
+  "group_by": null,
+  "id": 7,
+  "name": "New & Open Tickets",
+  "order_by": "updated",
+  "order_dir": "desc",
+  "search": null,
+  "section_id": null,
+  "slug": "new-&-open-tickets",
+  "type": "ticket-list",
+  "uri": "/api/views/7/",
+  "visibility": "public",
+}
+`;
+
+exports[`view resources createView should resolve with a new View on success 2`] = `
+Object {
+  "delete": Array [],
+  "get": Array [],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [
+    Object {
+      "data": "{\\"category\\":null,\\"search\\":null,\\"order_by\\":\\"updated\\",\\"deactivated_datetime\\":null,\\"name\\":\\"New & Open Tickets\\",\\"slug\\":\\"new-&-open-tickets\\",\\"uri\\":\\"/api/views/7/\\",\\"decoration\\":null,\\"display_order\\":1,\\"created_datetime\\":\\"2017-07-31T21:43:10.610368+00:00\\",\\"group_by\\":null,\\"fields\\":[\\"details\\",\\"tags\\",\\"customer\\",\\"created\\"],\\"section_id\\":null,\\"type\\":\\"ticket-list\\",\\"filters\\":\\"neq(ticket.status, \\\\\\"closed\\\\\\")\\",\\"order_dir\\":\\"desc\\",\\"visibility\\":\\"public\\",\\"filters_ast\\":{\\"sourceType\\":\\"script\\",\\"loc\\":{\\"start\\":{\\"column\\":0,\\"line\\":1},\\"end\\":{\\"column\\":28,\\"line\\":1}},\\"type\\":\\"Program\\",\\"body\\":[{\\"loc\\":{\\"start\\":{\\"column\\":0,\\"line\\":1},\\"end\\":{\\"column\\":28,\\"line\\":1}},\\"type\\":\\"ExpressionStatement\\",\\"expression\\":{\\"arguments\\":[{\\"object\\":{\\"type\\":\\"Identifier\\",\\"loc\\":{\\"start\\":{\\"column\\":4,\\"line\\":1},\\"end\\":{\\"column\\":10,\\"line\\":1}},\\"name\\":\\"ticket\\"},\\"property\\":{\\"type\\":\\"Identifier\\",\\"loc\\":{\\"start\\":{\\"column\\":11,\\"line\\":1},\\"end\\":{\\"column\\":17,\\"line\\":1}},\\"name\\":\\"status\\"},\\"loc\\":{\\"start\\":{\\"column\\":4,\\"line\\":1},\\"end\\":{\\"column\\":17,\\"line\\":1}},\\"type\\":\\"MemberExpression\\",\\"computed\\":false},{\\"value\\":\\"closed\\",\\"loc\\":{\\"start\\":{\\"column\\":19,\\"line\\":1},\\"end\\":{\\"column\\":27,\\"line\\":1}},\\"type\\":\\"Literal\\",\\"raw\\":\\"\\\\\\"closed\\\\\\"\\"}],\\"callee\\":{\\"type\\":\\"Identifier\\",\\"loc\\":{\\"start\\":{\\"column\\":0,\\"line\\":1},\\"end\\":{\\"column\\":3,\\"line\\":1}},\\"name\\":\\"neq\\"},\\"loc\\":{\\"start\\":{\\"column\\":0,\\"line\\":1},\\"end\\":{\\"column\\":28,\\"line\\":1}},\\"type\\":\\"CallExpression\\"}}]}}",
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      "maxContentLength": -1,
+      "method": "post",
+      "timeout": 0,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/api/views/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "put": Array [],
+}
+`;
+
+exports[`view resources deleteView should resolve on success 1`] = `undefined`;
+
+exports[`view resources fetchViews should resolve with a View list on success 1`] = `
+Object {
+  "data": Array [
+    Object {
+      "category": null,
+      "created_datetime": "2017-07-31T21:43:10.610368+00:00",
+      "deactivated_datetime": null,
+      "decoration": null,
+      "display_order": 1,
+      "fields": Array [
+        "details",
+        "tags",
+        "customer",
+        "created",
+      ],
+      "filters": "neq(ticket.status, \\"closed\\")",
+      "filters_ast": Object {
+        "body": Array [
+          Object {
+            "expression": Object {
+              "arguments": Array [
+                Object {
+                  "computed": false,
+                  "loc": Object {
+                    "end": Object {
+                      "column": 17,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 4,
+                      "line": 1,
+                    },
+                  },
+                  "object": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 10,
+                        "line": 1,
+                      },
+                      "start": Object {
+                        "column": 4,
+                        "line": 1,
+                      },
+                    },
+                    "name": "ticket",
+                    "type": "Identifier",
+                  },
+                  "property": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 17,
+                        "line": 1,
+                      },
+                      "start": Object {
+                        "column": 11,
+                        "line": 1,
+                      },
+                    },
+                    "name": "status",
+                    "type": "Identifier",
+                  },
+                  "type": "MemberExpression",
+                },
+                Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 27,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 19,
+                      "line": 1,
+                    },
+                  },
+                  "raw": "\\"closed\\"",
+                  "type": "Literal",
+                  "value": "closed",
+                },
+              ],
+              "callee": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 3,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 0,
+                    "line": 1,
+                  },
+                },
+                "name": "neq",
+                "type": "Identifier",
+              },
+              "loc": Object {
+                "end": Object {
+                  "column": 28,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 0,
+                  "line": 1,
+                },
+              },
+              "type": "CallExpression",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 28,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 0,
+                "line": 1,
+              },
+            },
+            "type": "ExpressionStatement",
+          },
+        ],
+        "loc": Object {
+          "end": Object {
+            "column": 28,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "sourceType": "script",
+        "type": "Program",
+      },
+      "group_by": null,
+      "id": 7,
+      "name": "New & Open Tickets",
+      "order_by": "updated",
+      "order_dir": "desc",
+      "search": null,
+      "section_id": null,
+      "slug": "new-&-open-tickets",
+      "type": "ticket-list",
+      "uri": "/api/views/7/",
+      "visibility": "public",
+    },
+    Object {
+      "category": null,
+      "created_datetime": "2017-07-31T21:43:10.610368+00:00",
+      "deactivated_datetime": null,
+      "decoration": null,
+      "display_order": 1,
+      "fields": Array [
+        "details",
+        "tags",
+        "customer",
+        "created",
+      ],
+      "filters": "neq(ticket.status, \\"closed\\")",
+      "filters_ast": Object {
+        "body": Array [
+          Object {
+            "expression": Object {
+              "arguments": Array [
+                Object {
+                  "computed": false,
+                  "loc": Object {
+                    "end": Object {
+                      "column": 17,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 4,
+                      "line": 1,
+                    },
+                  },
+                  "object": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 10,
+                        "line": 1,
+                      },
+                      "start": Object {
+                        "column": 4,
+                        "line": 1,
+                      },
+                    },
+                    "name": "ticket",
+                    "type": "Identifier",
+                  },
+                  "property": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 17,
+                        "line": 1,
+                      },
+                      "start": Object {
+                        "column": 11,
+                        "line": 1,
+                      },
+                    },
+                    "name": "status",
+                    "type": "Identifier",
+                  },
+                  "type": "MemberExpression",
+                },
+                Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 27,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 19,
+                      "line": 1,
+                    },
+                  },
+                  "raw": "\\"closed\\"",
+                  "type": "Literal",
+                  "value": "closed",
+                },
+              ],
+              "callee": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 3,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 0,
+                    "line": 1,
+                  },
+                },
+                "name": "neq",
+                "type": "Identifier",
+              },
+              "loc": Object {
+                "end": Object {
+                  "column": 28,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 0,
+                  "line": 1,
+                },
+              },
+              "type": "CallExpression",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 28,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 0,
+                "line": 1,
+              },
+            },
+            "type": "ExpressionStatement",
+          },
+        ],
+        "loc": Object {
+          "end": Object {
+            "column": 28,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "sourceType": "script",
+        "type": "Program",
+      },
+      "group_by": null,
+      "id": 7,
+      "name": "New & Open Tickets",
+      "order_by": "updated",
+      "order_dir": "desc",
+      "search": null,
+      "section_id": null,
+      "slug": "new-&-open-tickets",
+      "type": "ticket-list",
+      "uri": "/api/views/7/",
+      "visibility": "public",
+    },
+    Object {
+      "category": null,
+      "created_datetime": "2017-07-31T21:43:10.610368+00:00",
+      "deactivated_datetime": null,
+      "decoration": null,
+      "display_order": 1,
+      "fields": Array [
+        "details",
+        "tags",
+        "customer",
+        "created",
+      ],
+      "filters": "neq(ticket.status, \\"closed\\")",
+      "filters_ast": Object {
+        "body": Array [
+          Object {
+            "expression": Object {
+              "arguments": Array [
+                Object {
+                  "computed": false,
+                  "loc": Object {
+                    "end": Object {
+                      "column": 17,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 4,
+                      "line": 1,
+                    },
+                  },
+                  "object": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 10,
+                        "line": 1,
+                      },
+                      "start": Object {
+                        "column": 4,
+                        "line": 1,
+                      },
+                    },
+                    "name": "ticket",
+                    "type": "Identifier",
+                  },
+                  "property": Object {
+                    "loc": Object {
+                      "end": Object {
+                        "column": 17,
+                        "line": 1,
+                      },
+                      "start": Object {
+                        "column": 11,
+                        "line": 1,
+                      },
+                    },
+                    "name": "status",
+                    "type": "Identifier",
+                  },
+                  "type": "MemberExpression",
+                },
+                Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 27,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 19,
+                      "line": 1,
+                    },
+                  },
+                  "raw": "\\"closed\\"",
+                  "type": "Literal",
+                  "value": "closed",
+                },
+              ],
+              "callee": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 3,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 0,
+                    "line": 1,
+                  },
+                },
+                "name": "neq",
+                "type": "Identifier",
+              },
+              "loc": Object {
+                "end": Object {
+                  "column": 28,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 0,
+                  "line": 1,
+                },
+              },
+              "type": "CallExpression",
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 28,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 0,
+                "line": 1,
+              },
+            },
+            "type": "ExpressionStatement",
+          },
+        ],
+        "loc": Object {
+          "end": Object {
+            "column": 28,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "sourceType": "script",
+        "type": "Program",
+      },
+      "group_by": null,
+      "id": 7,
+      "name": "New & Open Tickets",
+      "order_by": "updated",
+      "order_dir": "desc",
+      "search": null,
+      "section_id": null,
+      "slug": "new-&-open-tickets",
+      "type": "ticket-list",
+      "uri": "/api/views/7/",
+      "visibility": "public",
+    },
+  ],
+}
+`;
+
+exports[`view resources updateView should resolve with an updated View on success 1`] = `
+Object {
+  "category": null,
+  "created_datetime": "2017-07-31T21:43:10.610368+00:00",
+  "deactivated_datetime": null,
+  "decoration": null,
+  "display_order": 1,
+  "fields": Array [
+    "details",
+    "tags",
+    "customer",
+    "created",
+  ],
+  "filters": "neq(ticket.status, \\"closed\\")",
+  "filters_ast": Object {
+    "body": Array [
+      Object {
+        "expression": Object {
+          "arguments": Array [
+            Object {
+              "computed": false,
+              "loc": Object {
+                "end": Object {
+                  "column": 17,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 4,
+                  "line": 1,
+                },
+              },
+              "object": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 10,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 4,
+                    "line": 1,
+                  },
+                },
+                "name": "ticket",
+                "type": "Identifier",
+              },
+              "property": Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 17,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 11,
+                    "line": 1,
+                  },
+                },
+                "name": "status",
+                "type": "Identifier",
+              },
+              "type": "MemberExpression",
+            },
+            Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 27,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 19,
+                  "line": 1,
+                },
+              },
+              "raw": "\\"closed\\"",
+              "type": "Literal",
+              "value": "closed",
+            },
+          ],
+          "callee": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 3,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 0,
+                "line": 1,
+              },
+            },
+            "name": "neq",
+            "type": "Identifier",
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 28,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 0,
+              "line": 1,
+            },
+          },
+          "type": "CallExpression",
+        },
+        "loc": Object {
+          "end": Object {
+            "column": 28,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "type": "ExpressionStatement",
+      },
+    ],
+    "loc": Object {
+      "end": Object {
+        "column": 28,
+        "line": 1,
+      },
+      "start": Object {
+        "column": 0,
+        "line": 1,
+      },
+    },
+    "sourceType": "script",
+    "type": "Program",
+  },
+  "group_by": null,
+  "id": 7,
+  "name": "foo",
+  "order_by": "updated",
+  "order_dir": "desc",
+  "search": null,
+  "section_id": null,
+  "slug": "new-&-open-tickets",
+  "type": "ticket-list",
+  "uri": "/api/views/7/",
+  "visibility": "public",
+}
+`;
+
+exports[`view resources updateView should resolve with an updated View on success 2`] = `
+Object {
+  "delete": Array [],
+  "get": Array [],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [],
+  "put": Array [
+    Object {
+      "data": "{\\"category\\":null,\\"search\\":null,\\"order_by\\":\\"updated\\",\\"deactivated_datetime\\":null,\\"name\\":\\"foo\\",\\"slug\\":\\"new-&-open-tickets\\",\\"uri\\":\\"/api/views/7/\\",\\"decoration\\":null,\\"display_order\\":1,\\"created_datetime\\":\\"2017-07-31T21:43:10.610368+00:00\\",\\"group_by\\":null,\\"fields\\":[\\"details\\",\\"tags\\",\\"customer\\",\\"created\\"],\\"section_id\\":null,\\"type\\":\\"ticket-list\\",\\"filters\\":\\"neq(ticket.status, \\\\\\"closed\\\\\\")\\",\\"order_dir\\":\\"desc\\",\\"visibility\\":\\"public\\",\\"id\\":7,\\"shared_with_teams\\":[1],\\"shared_with_users\\":[1]}",
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      "maxContentLength": -1,
+      "method": "put",
+      "timeout": 0,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/api/views/7/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+}
+`;

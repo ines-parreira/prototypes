@@ -46,7 +46,7 @@ type Property = {
     items: {$ref: Record<string, unknown>}
     $ref?: string
 }
-type SystemMessage = [NotificationStatus, string]
+export type SystemMessage = [NotificationStatus, string]
 
 type Datetime = Date | number | string
 

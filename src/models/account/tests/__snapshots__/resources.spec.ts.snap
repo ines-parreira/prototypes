@@ -1,0 +1,127 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`account resources createAccountSetting should resolve on success 1`] = `
+Object {
+  "config": Object {
+    "data": "{\\"data\\":{\\"views\\":{\\"1\\":{\\"display_order\\":0}},\\"view_sections\\":{\\"1\\":{\\"display_order\\":1}}},\\"type\\":\\"views-ordering\\"}",
+    "headers": Object {
+      "Accept": "application/json, text/plain, */*",
+      "Content-Type": "application/json;charset=utf-8",
+    },
+    "maxContentLength": -1,
+    "method": "post",
+    "timeout": 0,
+    "transformRequest": Array [
+      [Function],
+    ],
+    "transformResponse": Array [
+      [Function],
+    ],
+    "url": "/api/account/settings/",
+    "validateStatus": [Function],
+    "xsrfCookieName": "XSRF-TOKEN",
+    "xsrfHeaderName": "X-XSRF-TOKEN",
+  },
+  "data": Object {
+    "data": Object {
+      "view_sections": Object {
+        "1": Object {
+          "display_order": 1,
+        },
+      },
+      "views": Object {
+        "1": Object {
+          "display_order": 0,
+        },
+      },
+    },
+    "id": 2,
+    "type": "views-ordering",
+  },
+  "headers": undefined,
+  "request": Object {
+    "responseUrl": "/api/account/settings/",
+  },
+  "status": 200,
+}
+`;
+
+exports[`account resources updateAccountSetting should resolve on success 1`] = `
+Object {
+  "config": Object {
+    "data": "{\\"data\\":{\\"views\\":{\\"1\\":{\\"display_order\\":0}},\\"view_sections\\":{\\"1\\":{\\"display_order\\":1}}},\\"id\\":2,\\"type\\":\\"views-ordering\\"}",
+    "headers": Object {
+      "Accept": "application/json, text/plain, */*",
+      "Content-Type": "application/json;charset=utf-8",
+    },
+    "maxContentLength": -1,
+    "method": "put",
+    "timeout": 0,
+    "transformRequest": Array [
+      [Function],
+    ],
+    "transformResponse": Array [
+      [Function],
+    ],
+    "url": "/api/account/settings/2/",
+    "validateStatus": [Function],
+    "xsrfCookieName": "XSRF-TOKEN",
+    "xsrfHeaderName": "X-XSRF-TOKEN",
+  },
+  "data": Object {
+    "data": Object {
+      "view_sections": Object {
+        "1": Object {
+          "display_order": 1,
+        },
+      },
+      "views": Object {
+        "1": Object {
+          "display_order": 0,
+        },
+      },
+    },
+    "id": 2,
+    "type": "views-ordering",
+  },
+  "headers": undefined,
+  "request": Object {
+    "responseUrl": "/api/account/settings/2/",
+  },
+  "status": 200,
+}
+`;
+
+exports[`account resources updateAccountSetting should resolve on success 2`] = `
+Object {
+  "delete": Array [],
+  "get": Array [],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [],
+  "put": Array [
+    Object {
+      "data": "{\\"data\\":{\\"views\\":{\\"1\\":{\\"display_order\\":0}},\\"view_sections\\":{\\"1\\":{\\"display_order\\":1}}},\\"id\\":2,\\"type\\":\\"views-ordering\\"}",
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      "maxContentLength": -1,
+      "method": "put",
+      "timeout": 0,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/api/account/settings/2/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+}
+`;

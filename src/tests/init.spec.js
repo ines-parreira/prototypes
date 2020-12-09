@@ -3,7 +3,12 @@ import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 import {EMAIL_INTEGRATION_TYPE} from '../constants/integration.ts'
-import {notifyAccountNotVerified, notifyDeprecatedTld} from '../init'
+import {initialState} from '../fixtures/initialState.ts'
+import {
+    notifyAccountNotVerified,
+    notifyDeprecatedTld,
+    toInitialStoreState,
+} from '../init.ts'
 
 const mockStore = configureMockStore([thunk])
 
@@ -67,6 +72,12 @@ describe('init', () => {
             notifyAccountNotVerified(reduxStore)
 
             expect(reduxStore.getActions()).toMatchSnapshot()
+        })
+    })
+
+    describe('toInitialStoreState()', () => {
+        it('should return the expected store state', () => {
+            expect(toInitialStoreState(initialState)).toMatchSnapshot()
         })
     })
 })

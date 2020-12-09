@@ -1,0 +1,126 @@
+@import '~css/new/colors';
+
+:global .nav-primary .navbar-content .menu {
+    :local .section {
+        color: @neutral5;
+        font-weight: bold;
+        overflow: visible;
+        box-sizing: border-box;
+        line-height: 28px;
+        border-radius: 3px;
+        display: block;
+        padding-left: 0;
+        padding-right: 0;
+        margin-left: 0;
+        margin-right: 0;
+
+        &:hover {
+            color: @neutral5;
+
+            .editSectionIcon {
+                opacity: 1;
+            }
+        }
+    }
+
+    :local .sectionView :global .item {
+        padding-left: 29px;
+
+        & .item-count {
+            color: rgba(255, 255, 255, 0.45);
+            font-weight: 400;
+        }
+
+        &:hover > .item-count {
+            color: @quartz;
+            font-weight: 600;
+        }
+    }
+}
+
+:local {
+    .toggleSectionIconWrapper {
+        min-width: 12px;
+        height: 12px;
+        overflow: hidden;
+        position: relative;
+    }
+    .toggleSectionIcon {
+        font-size: 24px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .nameWrapper {
+        cursor: pointer;
+        min-width: 0;
+        margin-left: 4px;
+        margin-right: 11px;
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .name {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .editSectionIcon {
+        border: none;
+        color: @neutral7 !important;
+        font-size: 14px;
+        line-height: 20px;
+        padding: 3px 6px;
+        opacity: 0;
+        transition: opacity 0.3s ease-in;
+        width: 26px;
+        transform: translateX(8px);
+
+        &:hover,
+        &:focus {
+            background-color: @neutral9;
+            color: @neutral0!important;
+        }
+
+        &:active {
+            background-color: @neutral5!important;
+        }
+
+        & > i {
+            font-weight: bold;
+            transform: translate(-0.5px, -6px);
+        }
+    }
+
+    .action {
+        font-size: 13px;
+        padding-bottom: 2px;
+        padding-left: 7px;
+        padding-top: 2px;
+
+        &:focus {
+            outline: none;
+        }
+
+        &.red {
+            color: @red;
+        }
+    }
+
+    .menu {
+        box-sizing: unset;
+        min-width: unset;
+        width: fit-content;
+        width: -moz-fit-content;
+    }
+
+    .isDragged {
+        opacity: 0.5;
+    }
+
+    div.viewIntoSectionIndicator {
+        left: 29px;
+    }
+}

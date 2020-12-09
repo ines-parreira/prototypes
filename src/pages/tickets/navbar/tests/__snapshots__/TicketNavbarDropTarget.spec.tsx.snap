@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TicketNavbarDropTarget/> should render 1`] = `
+<div
+  class="wrapper"
+>
+  <div
+    class=""
+    draggable="true"
+  >
+    Drag me!
+  </div>
+</div>
+`;
+
+exports[`<TicketNavbarDropTarget/> should show an indicator and pass isOver to children 1`] = `
+<div
+  class="wrapper"
+>
+  <div
+    class="isOver"
+    draggable="true"
+  >
+    Drag me!
+  </div>
+  <div
+    class="indicator isDown"
+  />
+</div>
+`;

@@ -10,6 +10,7 @@ import {BASE_VIEW_ID} from '../../constants/view'
 import {OrderDirection, ApiListResponsePagination} from '../../models/api/types'
 import {Job, JobType} from '../../models/job/types'
 import {Ticket} from '../../models/ticket/types'
+import {View, ViewType} from '../../models/view/types'
 import {notify} from '../notifications/actions'
 import {NotificationStatus, Notification} from '../notifications/types'
 import socketManager from '../../services/socketManager/socketManager'
@@ -30,13 +31,7 @@ import {StoreDispatch, RootState} from '../types'
 import {activeViewUrl} from './utils'
 import * as viewsSelectors from './selectors'
 import * as types from './constants.js'
-import {
-    ViewFilter,
-    ViewImmutable,
-    ViewNavDirection,
-    View,
-    ViewType,
-} from './types'
+import {ViewFilter, ViewImmutable, ViewNavDirection} from './types'
 
 export const setViewActive = (view: ViewImmutable) => (
     dispatch: StoreDispatch
@@ -169,11 +164,7 @@ export function fetchViews(currentViewId: string) {
             .then((json) => json?.data)
             .then(
                 (resp) => {
-                    dispatch({
-                        type: types.FETCH_VIEW_LIST_SUCCESS,
-                        resp,
-                        currentViewId,
-                    })
+                    dispatch(fetchViewsSuccess(resp, currentViewId))
                 },
                 (error) => {
                     dispatch({
@@ -183,6 +174,19 @@ export function fetchViews(currentViewId: string) {
                     })
                 }
             )
+    }
+}
+
+export function fetchViewsSuccess(
+    data: {data: View[]},
+    currentViewId?: string
+) {
+    return (dispatch: StoreDispatch) => {
+        dispatch({
+            type: types.FETCH_VIEW_LIST_SUCCESS,
+            resp: data,
+            currentViewId,
+        })
     }
 }
 
@@ -315,7 +319,7 @@ export function deleteView(view: ViewImmutable) {
                 }`
                 dispatch(setViewActive(destinationView))
                 browserHistory.push(destinationRoute)
-                return Promise.resolve()
+                return Promise.resolve(destinationView)
             },
             (error) => {
                 return dispatch({
@@ -627,7 +631,7 @@ export function createJob(
  * Handle views item count update
  */
 export const handleViewsCount = (counts: {
-    counts: number
+    [key: string]: number
 }): ReturnType<StoreDispatch> => ({
     type: types.UPDATE_COUNTS,
     counts,

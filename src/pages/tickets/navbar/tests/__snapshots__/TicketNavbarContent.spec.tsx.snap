@@ -1,0 +1,448 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TicketNavbarContent/> getNextSettings should move a root view to a root view 1`] = `
+Object {
+  "view_sections": Object {
+    "1": Object {
+      "display_order": 2,
+    },
+    "2": Object {
+      "display_order": 6,
+    },
+  },
+  "views": Object {
+    "1": Object {
+      "display_order": 1,
+    },
+    "2": Object {
+      "display_order": 0,
+    },
+    "3": Object {
+      "display_order": 3,
+    },
+    "4": Object {
+      "display_order": 4,
+    },
+    "5": Object {
+      "display_order": 5,
+    },
+    "6": Object {
+      "display_order": 7,
+    },
+  },
+}
+`;
+
+exports[`<TicketNavbarContent/> getNextSettings should move a root view to a section view 1`] = `
+Object {
+  "view_sections": Object {
+    "1": Object {
+      "display_order": 1,
+    },
+    "2": Object {
+      "display_order": 6,
+    },
+  },
+  "views": Object {
+    "1": Object {
+      "display_order": 3,
+    },
+    "2": Object {
+      "display_order": 0,
+    },
+    "3": Object {
+      "display_order": 2,
+    },
+    "4": Object {
+      "display_order": 4,
+    },
+    "5": Object {
+      "display_order": 5,
+    },
+    "6": Object {
+      "display_order": 7,
+    },
+  },
+}
+`;
+
+exports[`<TicketNavbarContent/> getNextSettings should move a section to a root view 1`] = `
+Object {
+  "view_sections": Object {
+    "1": Object {
+      "display_order": 1,
+    },
+    "2": Object {
+      "display_order": 6,
+    },
+  },
+  "views": Object {
+    "1": Object {
+      "display_order": 0,
+    },
+    "2": Object {
+      "display_order": 5,
+    },
+    "3": Object {
+      "display_order": 2,
+    },
+    "4": Object {
+      "display_order": 3,
+    },
+    "5": Object {
+      "display_order": 4,
+    },
+    "6": Object {
+      "display_order": 7,
+    },
+  },
+}
+`;
+
+exports[`<TicketNavbarContent/> getNextSettings should move a section to a section 1`] = `
+Object {
+  "view_sections": Object {
+    "1": Object {
+      "display_order": 4,
+    },
+    "2": Object {
+      "display_order": 2,
+    },
+  },
+  "views": Object {
+    "1": Object {
+      "display_order": 0,
+    },
+    "2": Object {
+      "display_order": 1,
+    },
+    "3": Object {
+      "display_order": 5,
+    },
+    "4": Object {
+      "display_order": 6,
+    },
+    "5": Object {
+      "display_order": 7,
+    },
+    "6": Object {
+      "display_order": 3,
+    },
+  },
+}
+`;
+
+exports[`<TicketNavbarContent/> getNextSettings should move a section to content boundary 1`] = `
+Object {
+  "view_sections": Object {
+    "1": Object {
+      "display_order": 0,
+    },
+    "2": Object {
+      "display_order": 6,
+    },
+  },
+  "views": Object {
+    "1": Object {
+      "display_order": 4,
+    },
+    "2": Object {
+      "display_order": 5,
+    },
+    "3": Object {
+      "display_order": 1,
+    },
+    "4": Object {
+      "display_order": 2,
+    },
+    "5": Object {
+      "display_order": 3,
+    },
+    "6": Object {
+      "display_order": 7,
+    },
+  },
+}
+`;
+
+exports[`<TicketNavbarContent/> getNextSettings should move a section to content boundary 2`] = `
+Object {
+  "view_sections": Object {
+    "1": Object {
+      "display_order": 4,
+    },
+    "2": Object {
+      "display_order": 2,
+    },
+  },
+  "views": Object {
+    "1": Object {
+      "display_order": 0,
+    },
+    "2": Object {
+      "display_order": 1,
+    },
+    "3": Object {
+      "display_order": 5,
+    },
+    "4": Object {
+      "display_order": 6,
+    },
+    "5": Object {
+      "display_order": 7,
+    },
+    "6": Object {
+      "display_order": 3,
+    },
+  },
+}
+`;
+
+exports[`<TicketNavbarContent/> getNextSettings should move a section view to a root view 1`] = `
+Object {
+  "view_sections": Object {
+    "1": Object {
+      "display_order": 3,
+    },
+    "2": Object {
+      "display_order": 6,
+    },
+  },
+  "views": Object {
+    "1": Object {
+      "display_order": 0,
+    },
+    "2": Object {
+      "display_order": 2,
+    },
+    "3": Object {
+      "display_order": 4,
+    },
+    "4": Object {
+      "display_order": 1,
+    },
+    "5": Object {
+      "display_order": 5,
+    },
+    "6": Object {
+      "display_order": 7,
+    },
+  },
+}
+`;
+
+exports[`<TicketNavbarContent/> getNextSettings should move a section view to a section view 1`] = `
+Object {
+  "view_sections": Object {
+    "1": Object {
+      "display_order": 2,
+    },
+    "2": Object {
+      "display_order": 6,
+    },
+  },
+  "views": Object {
+    "1": Object {
+      "display_order": 0,
+    },
+    "2": Object {
+      "display_order": 1,
+    },
+    "3": Object {
+      "display_order": 4,
+    },
+    "4": Object {
+      "display_order": 3,
+    },
+    "5": Object {
+      "display_order": 5,
+    },
+    "6": Object {
+      "display_order": 7,
+    },
+  },
+}
+`;
+
+exports[`<TicketNavbarContent/> getNextSettings should move a view down a section 1`] = `
+Object {
+  "view_sections": Object {
+    "1": Object {
+      "display_order": 1,
+    },
+    "2": Object {
+      "display_order": 6,
+    },
+  },
+  "views": Object {
+    "1": Object {
+      "display_order": 2,
+    },
+    "2": Object {
+      "display_order": 0,
+    },
+    "3": Object {
+      "display_order": 3,
+    },
+    "4": Object {
+      "display_order": 4,
+    },
+    "5": Object {
+      "display_order": 5,
+    },
+    "6": Object {
+      "display_order": 7,
+    },
+  },
+}
+`;
+
+exports[`<TicketNavbarContent/> getNextSettings should move a view ontop of a section 1`] = `
+Object {
+  "view_sections": Object {
+    "1": Object {
+      "display_order": 2,
+    },
+    "2": Object {
+      "display_order": 6,
+    },
+  },
+  "views": Object {
+    "1": Object {
+      "display_order": 1,
+    },
+    "2": Object {
+      "display_order": 0,
+    },
+    "3": Object {
+      "display_order": 3,
+    },
+    "4": Object {
+      "display_order": 4,
+    },
+    "5": Object {
+      "display_order": 5,
+    },
+    "6": Object {
+      "display_order": 7,
+    },
+  },
+}
+`;
+
+exports[`<TicketNavbarContent/> getNextSettings should move a view to content boundary 1`] = `
+Object {
+  "view_sections": Object {
+    "1": Object {
+      "display_order": 2,
+    },
+    "2": Object {
+      "display_order": 6,
+    },
+  },
+  "views": Object {
+    "1": Object {
+      "display_order": 1,
+    },
+    "2": Object {
+      "display_order": 0,
+    },
+    "3": Object {
+      "display_order": 3,
+    },
+    "4": Object {
+      "display_order": 4,
+    },
+    "5": Object {
+      "display_order": 5,
+    },
+    "6": Object {
+      "display_order": 7,
+    },
+  },
+}
+`;
+
+exports[`<TicketNavbarContent/> getNextSettings should move a view to content boundary 2`] = `
+Object {
+  "view_sections": Object {
+    "1": Object {
+      "display_order": 1,
+    },
+    "2": Object {
+      "display_order": 5,
+    },
+  },
+  "views": Object {
+    "1": Object {
+      "display_order": 0,
+    },
+    "2": Object {
+      "display_order": 7,
+    },
+    "3": Object {
+      "display_order": 2,
+    },
+    "4": Object {
+      "display_order": 3,
+    },
+    "5": Object {
+      "display_order": 4,
+    },
+    "6": Object {
+      "display_order": 6,
+    },
+  },
+}
+`;
+
+exports[`<TicketNavbarContent/> rendering should expand/collapse a section 1`] = `
+<div
+  class="wrapper wrapper menu"
+>
+  <div
+    data-testid="TicketNavbarSection"
+  >
+    {"isExpanded":true,"sectionElement":{"data":{"created_datetime":"2020-10-14T14:26:35.921523+00:00","id":1,"name":"foo","private":false,"decoration":null,"uri":"foo","updated_datetime":"2020-10-14T14:26:35.921523+00:00"},"type":"section","children":[]}}
+  </div>
+  <div
+    data-testid="TicketNavbarView"
+  >
+    New & Open Tickets
+  </div>
+</div>
+`;
+
+exports[`<TicketNavbarContent/> rendering should expand/collapse a section 2`] = `
+<div
+  class="wrapper wrapper menu"
+>
+  <div
+    data-testid="TicketNavbarSection"
+  >
+    {"isExpanded":false,"sectionElement":{"data":{"created_datetime":"2020-10-14T14:26:35.921523+00:00","id":1,"name":"foo","private":false,"decoration":null,"uri":"foo","updated_datetime":"2020-10-14T14:26:35.921523+00:00"},"type":"section","children":[]}}
+  </div>
+  <div
+    data-testid="TicketNavbarView"
+  >
+    New & Open Tickets
+  </div>
+</div>
+`;
+
+exports[`<TicketNavbarContent/> rendering should render 1`] = `
+<div
+  class="wrapper wrapper menu"
+>
+  <div
+    data-testid="TicketNavbarSection"
+  >
+    {"isExpanded":true,"sectionElement":{"data":{"created_datetime":"2020-10-14T14:26:35.921523+00:00","id":1,"name":"foo","private":false,"decoration":null,"uri":"foo","updated_datetime":"2020-10-14T14:26:35.921523+00:00"},"type":"section","children":[]}}
+  </div>
+  <div
+    data-testid="TicketNavbarView"
+  >
+    New & Open Tickets
+  </div>
+</div>
+`;

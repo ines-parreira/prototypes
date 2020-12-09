@@ -4,7 +4,7 @@ import {shallow} from 'enzyme'
 
 import * as viewsConfig from '../../../../../../config/views.tsx'
 import ViewSelection from '../ViewSelection'
-import * as viewsFixtures from '../../../../../../fixtures/views'
+import * as viewsFixtures from '../../../../../../fixtures/views.ts'
 import configureStore from '../../../../../../store/configureStore'
 
 describe('<ViewSelection/>', () => {

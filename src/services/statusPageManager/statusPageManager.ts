@@ -3,7 +3,7 @@ import {removeNotification} from 'reapop'
 import {EnhancedStore} from '@reduxjs/toolkit'
 import {Set as ImmutableSet, Map as ImmutableMap} from 'immutable'
 
-import {store as reduxStore} from '../../init.js'
+import {store as reduxStore} from '../../init'
 import {notify} from '../../state/notifications/actions'
 import {NotificationStatus} from '../../state/notifications/types'
 import {getActiveIntegrations} from '../../state/integrations/selectors'

@@ -4,6 +4,7 @@ import moment from 'moment'
 
 import {createImmutableSelector} from '../../utils'
 import * as viewsConfig from '../../config/views'
+import {ViewType} from '../../models/view/types'
 import {
     getSettingsByType as getCurrentUserSettingsByType,
     makeGetSettingsByType,
@@ -12,7 +13,7 @@ import {
 import {RootState} from '../types'
 
 import {sortViews} from './utils'
-import {ViewsState, ViewType} from './types'
+import {ViewsState} from './types'
 
 export const getViewsState = (state: RootState): ViewsState =>
     state.views || fromJS({})

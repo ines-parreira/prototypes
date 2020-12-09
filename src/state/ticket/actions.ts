@@ -26,6 +26,7 @@ import * as segmentTracker from '../../store/middlewares/segmentTracker.js'
 
 import {ApiListResponsePagination} from '../../models/api/types'
 import {Action, Ticket, TicketMessage} from '../../models/ticket/types'
+import {View} from '../../models/view/types'
 import {Macro} from '../macro/types'
 import {StoreDispatch, RootState} from '../types'
 
@@ -41,7 +42,6 @@ import {
     Notification,
     NotificationButton,
 } from '../notifications/types'
-import {View} from '../views/types'
 
 import {
     buildPartialUpdateFromAction,

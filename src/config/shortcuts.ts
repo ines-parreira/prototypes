@@ -51,7 +51,7 @@ export default {
             },
         },
     },
-    ViewNavbarView: {
+    ViewNavbar: {
         description: '',
         actions: {
             GO_NEXT_VIEW: {

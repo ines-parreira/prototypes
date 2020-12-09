@@ -2,8 +2,9 @@ import {Map} from 'immutable'
 
 import {RecentChatTicket} from '../../business/types/recentChats'
 import {Ticket} from '../../models/ticket/types'
-import {View} from '../../state/views/types'
+import {View} from '../../models/view/types'
 import {Account} from '../../state/currentAccount/types'
+import {Section} from '../../models/section/types'
 
 export enum BroadcastChannelEvent {
     ServerMessage = 'SERVER_MESSAGE',
@@ -109,7 +110,7 @@ export type ViewCreatedEvent = {
     event: {
         type: 'view-created'
     }
-    view: Record<string, unknown>
+    view: View
 }
 
 export type ViewUpdatedEvent = {
@@ -131,7 +132,28 @@ export type ViewCountUpdatedEvent = {
         type: 'view-count-updated'
     }
     view: View
-    counts: {counts: number}
+    counts: {[key: string]: number}
+}
+
+export type ViewSectionCreatedEvent = {
+    event: {
+        type: 'view-section-created'
+    }
+    view_section: Section
+}
+
+export type ViewSectionUpdatedEvent = {
+    event: {
+        type: 'view-section-updated'
+    }
+    view_section: Section
+}
+
+export type ViewSectionDeletedEvent = {
+    event: {
+        type: 'view-section-deleted'
+    }
+    view_section: Section
 }
 
 export type AccountUpdatedEvent = {
@@ -195,6 +217,9 @@ export type ServerMessage =
     | ViewUpdatedEvent
     | ViewDeletedEvent
     | ViewCountUpdatedEvent
+    | ViewSectionCreatedEvent
+    | ViewSectionUpdatedEvent
+    | ViewSectionDeletedEvent
     | AccountUpdatedEvent
     | SIDUpdatedEvent
     | TicketMessageChatCreatedEvent

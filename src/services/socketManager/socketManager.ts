@@ -6,7 +6,7 @@ import {EnhancedStore} from '@reduxjs/toolkit'
 
 import * as socketEvents from '../../config/socketEvents'
 import {notify} from '../../state/notifications/actions'
-import {store} from '../../init.js'
+import {store} from '../../init'
 import {devLog} from '../../utils'
 import {NotificationStatus} from '../../state/notifications/types'
 import {StoreDispatch} from '../../state/types'

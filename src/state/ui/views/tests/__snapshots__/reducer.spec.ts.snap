@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`views reducer activeViewIdSet action should set the active view 1`] = `
+Object {
+  "activeViewId": 1,
+}
+`;
+
+exports[`views reducer activeViewIdSet action should set the active view 2`] = `
+Object {
+  "activeViewId": null,
+}
+`;

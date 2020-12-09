@@ -7,6 +7,7 @@ import {fromJS} from 'immutable'
 import * as actions from '../actions.ts'
 import {initialState} from '../reducers.ts'
 import * as types from '../constants'
+import {UserSettingType} from '../../../config/types/user'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -117,6 +118,27 @@ describe('current user actions', () => {
             })
             store.dispatch(actions.toggleActiveStatus(true))
             expect(store.getActions()).toEqual([])
+        })
+    })
+
+    describe('submitSettingSuccess', () => {
+        it('should dispatch the next setting', () => {
+            store = mockStore({
+                currentUser: initialState.set('is_active', true),
+            })
+            const req = {
+                data: {
+                    1: {
+                        hide: false,
+                        display_order: 2,
+                    },
+                },
+                id: 1,
+                type: UserSettingType.TicketViews,
+            }
+
+            store.dispatch(actions.submitSettingSuccess(req, true))
+            expect(store.getActions()).toMatchSnapshot()
         })
     })
 })

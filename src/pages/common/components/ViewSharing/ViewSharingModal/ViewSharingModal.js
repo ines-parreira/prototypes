@@ -18,6 +18,8 @@ import type {notificationType} from '../../../../../state/notifications/actions.
 import {notify} from '../../../../../state/notifications/actions.ts'
 import type {currentUserType} from '../../../../../state/types'
 import {ViewVisibility} from '../../../../../constants/view.ts'
+import {viewUpdated} from '../../../../../state/entities/views/actions.ts'
+import type {View} from '../../../../../models/view/types'
 
 import ViewSharingModalBody from './ViewSharingModalBody'
 import css from './ViewSharingModal.less'
@@ -28,9 +30,17 @@ type Props = {
     currentUser: currentUserType,
     toggle: () => void,
     notify: (message: notificationType) => void,
+    viewUpdated: (data: View) => void,
 }
 
-function ViewSharingModal({view, isOpen, currentUser, toggle, notify}: Props) {
+function ViewSharingModal({
+    view,
+    isOpen,
+    currentUser,
+    toggle,
+    notify,
+    viewUpdated,
+}: Props) {
     const {
         isSaving,
         isLoading,
@@ -53,11 +63,12 @@ function ViewSharingModal({view, isOpen, currentUser, toggle, notify}: Props) {
         isShared && !selectedTeams.size && !selectedUsers.size
     const disabled = isLoading || isSaving || shouldSelectSomething
 
-    const onSaveSuccess = () => {
+    const onSaveSuccess = (data: View) => {
         notify({
             status: 'success',
             message: "View's sharing options saved",
         })
+        viewUpdated(data)
 
         toggle()
     }
@@ -115,7 +126,7 @@ export default connect(
     (state) => ({
         currentUser: state.currentUser,
     }),
-    {notify}
+    {notify, viewUpdated}
 )(ViewSharingModal)
 
 function useViewSharing(view: viewType, currentUser: currentUserType) {

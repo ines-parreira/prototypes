@@ -3,6 +3,7 @@ import type {Map, List} from 'immutable'
 import type {MacrosAction} from './entities/macros'
 import type {InfobarActionsState} from './infobarActions/types'
 import type {EntitiesState} from './entities/types'
+import type {UIState} from './ui/types'
 
 export type stateType = {
     activity: Map<*, *>,
@@ -28,6 +29,7 @@ export type stateType = {
     tags: Map<*, *>,
     ticket: Map<*, *>,
     tickets: Map<*, *>,
+    ui: UIState,
     usersAudit: Map<*, *>,
     views: Map<*, *>,
     widgets: Map<*, *>,

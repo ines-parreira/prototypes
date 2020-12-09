@@ -378,7 +378,7 @@ export default class GorgiasApi {
         teams: List<any>,
         users: List<any>
     ) {
-        await this._api.put(`/api/views/${viewId}`, {
+        const res = await this._api.put(`/api/views/${viewId}`, {
             visibility,
             shared_with_teams: teams.map(
                 (team: Map<any, any>) => team.get('id') as number
@@ -387,5 +387,6 @@ export default class GorgiasApi {
                 (user: Map<any, any>) => user.get('id') as number
             ),
         })
+        return res.data as Map<any, any>
     }
 }

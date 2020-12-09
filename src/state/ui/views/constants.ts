@@ -1,0 +1,1 @@
+export const ACTIVE_VIEW_ID_SET = 'VIEWS/ACTIVE_VIEW_ID_SET'

@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`sections reducer sectionCreated action should add a new section to the state 1`] = `
+Object {
+  "1": Object {
+    "created_datetime": "2020-10-14T14:26:35.921523+00:00",
+    "decoration": null,
+    "id": 1,
+    "name": "foo",
+    "private": false,
+    "updated_datetime": "2020-10-14T14:26:35.921523+00:00",
+    "uri": "foo",
+  },
+}
+`;
+
+exports[`sections reducer sectionDeleted action should delete a section from the state 1`] = `Object {}`;
+
+exports[`sections reducer sectionUpdated action should update a section of the state 1`] = `
+Object {
+  "1": Object {
+    "created_datetime": "2020-10-14T14:26:35.921523+00:00",
+    "decoration": null,
+    "id": 1,
+    "name": "foobar",
+    "private": false,
+    "updated_datetime": "2020-10-14T14:26:35.921523+00:00",
+    "uri": "foo",
+  },
+}
+`;
+
+exports[`sections reducer sectionsFetched action should add the sections to the state 1`] = `
+Object {
+  "1": Object {
+    "created_datetime": "2020-10-14T14:26:35.921523+00:00",
+    "decoration": null,
+    "id": 1,
+    "name": "foo",
+    "private": false,
+    "updated_datetime": "2020-10-14T14:26:35.921523+00:00",
+    "uri": "foo",
+  },
+  "2": Object {
+    "created_datetime": "2020-10-14T14:26:35.921523+00:00",
+    "decoration": null,
+    "id": 2,
+    "name": "foo",
+    "private": false,
+    "updated_datetime": "2020-10-14T14:26:35.921523+00:00",
+    "uri": "foo",
+  },
+}
+`;

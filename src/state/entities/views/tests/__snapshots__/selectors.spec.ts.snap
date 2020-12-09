@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`selectors getOrderedViewsByType should return the ordered list of views 1`] = `
+Array [
+  Object {
+    "id": 10,
+    "type": "ticket-list",
+  },
+  Object {
+    "id": 1,
+    "type": "ticket-list",
+  },
+  Object {
+    "id": 2,
+    "type": "ticket-list",
+  },
+  Object {
+    "id": 4,
+    "type": "ticket-list",
+  },
+  Object {
+    "id": 123,
+    "type": "ticket-list",
+  },
+]
+`;

@@ -97,7 +97,7 @@ class RecentChats extends React.Component {
         return (
             <div className={css.component}>
                 <div className="item">
-                    <h4>
+                    <h4 className={css.title}>
                         <span id="active-chats-title">Chats</span>
                     </h4>
                     <Tooltip

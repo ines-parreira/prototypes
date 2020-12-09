@@ -1,0 +1,144 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<TicketNavbarSection/> should render a section (views collapsed) 1`] = `
+<div
+  class="wrapper section"
+>
+  <div
+    class="wrapper"
+  >
+    <div
+      class="nameWrapper d-flex align-items-center flex-grow"
+      draggable="true"
+      id="ticket-navbar-section-1"
+    >
+      <div
+        class="toggleSectionIconWrapper mr-2"
+      >
+        <i
+          class="toggleSectionIcon material-icons"
+        >
+          arrow_right
+        </i>
+      </div>
+      <div
+        class="name item-name flex-grow"
+        title="foo"
+      >
+        foo
+      </div>
+      <div
+        class="dropdown"
+      >
+        <button
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="editSectionIcon btn-transparent btn btn-secondary"
+          type="button"
+        >
+          <i
+            class="material-icons"
+          >
+            ...
+          </i>
+        </button>
+        <div
+          aria-hidden="true"
+          class="menu dropdown-menu dropdown-menu-right"
+          role="menu"
+          tabindex="-1"
+        >
+          <button
+            class="action dropdown-item"
+            tabindex="0"
+            type="button"
+          >
+            Rename
+          </button>
+          <button
+            class="action red dropdown-item"
+            tabindex="0"
+            type="button"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<TicketNavbarSection/> should render a section (views expanded) 1`] = `
+<div
+  class="wrapper section"
+>
+  <div
+    class="wrapper"
+  >
+    <div
+      class="nameWrapper d-flex align-items-center flex-grow"
+      draggable="true"
+      id="ticket-navbar-section-1"
+    >
+      <div
+        class="toggleSectionIconWrapper mr-2"
+      >
+        <i
+          class="toggleSectionIcon material-icons"
+        >
+          arrow_drop_down
+        </i>
+      </div>
+      <div
+        class="name item-name flex-grow"
+        title="foo"
+      >
+        foo
+      </div>
+      <div
+        class="dropdown"
+      >
+        <button
+          aria-expanded="false"
+          aria-haspopup="true"
+          class="editSectionIcon btn-transparent btn btn-secondary"
+          type="button"
+        >
+          <i
+            class="material-icons"
+          >
+            ...
+          </i>
+        </button>
+        <div
+          aria-hidden="true"
+          class="menu dropdown-menu dropdown-menu-right"
+          role="menu"
+          tabindex="-1"
+        >
+          <button
+            class="action dropdown-item"
+            tabindex="0"
+            type="button"
+          >
+            Rename
+          </button>
+          <button
+            class="action red dropdown-item"
+            tabindex="0"
+            type="button"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div
+    data-testid="TicketNavbarView"
+  >
+    New & Open Tickets
+  </div>
+</div>
+`;
