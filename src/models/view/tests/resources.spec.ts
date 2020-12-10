@@ -61,7 +61,7 @@ describe('view resources', () => {
                 shared_with_users: [],
             })
 
-            const res = await updateView({
+            const res = await updateView(view.id, {
                 ...draftView,
                 id: view.id,
                 name: 'foo',
@@ -77,7 +77,7 @@ describe('view resources', () => {
                 .onPut(/\/api\/views\/\d+\//)
                 .reply(503, {message: 'error'})
             return expect(
-                updateView({
+                updateView(view.id, {
                     ...draftView,
                     id: view.id,
                     shared_with_teams: [{id: 1, meta: {}, name: 'foo'}],

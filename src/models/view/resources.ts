@@ -22,7 +22,7 @@ export const createView = async (viewDraft: ViewDraft) => {
     return res.data
 }
 
-export const updateView = async (view: View) => {
+export const updateView = async (id: number, view: Partial<View>) => {
     const sharedProps = Object.assign(
         view?.shared_with_teams
             ? {shared_with_teams: view.shared_with_teams.map((team) => team.id)}
@@ -31,7 +31,7 @@ export const updateView = async (view: View) => {
             ? {shared_with_users: view.shared_with_users.map((user) => user.id)}
             : {}
     )
-    const res = await client.put<SharedView>(`/api/views/${view.id}/`, {
+    const res = await client.put<SharedView>(`/api/views/${id}/`, {
         ..._omit(view, 'filters_ast'),
         ...sharedProps,
     })

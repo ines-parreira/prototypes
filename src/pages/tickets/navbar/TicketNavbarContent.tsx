@@ -5,13 +5,11 @@ import {DropTargetMonitor} from 'react-dnd'
 import {useLocalStorage} from 'react-use'
 import {produce} from 'immer'
 
-import {SYSTEM_VIEW_CATEGORY} from '../../../constants/view'
 import {Section} from '../../../models/section/types'
 import {View, ViewVisibility} from '../../../models/view/types'
 import {RootState} from '../../../state/types'
 import {viewUpdated} from '../../../state/entities/views/actions'
 import {notify} from '../../../state/notifications/actions'
-import {NotificationStatus} from '../../../state/notifications/types'
 import {ViewsState} from '../../../state/entities/views/types'
 import {SectionsState} from '../../../state/entities/sections/types'
 import {UserViewsOrderingSettingData} from '../../../config/types/user'
@@ -86,17 +84,6 @@ export function TicketNavbarContentContainer({
                 direction,
             }
 
-            if (
-                item.type === TicketNavbarElementType.View &&
-                views[item.id].category === SYSTEM_VIEW_CATEGORY &&
-                dropResult.sectionId != null
-            ) {
-                void notify({
-                    message: 'Default views can not be added to a section',
-                    status: NotificationStatus.Error,
-                })
-                return
-            }
             const currentElement: TicketNavbarElement =
                 item.type === TicketNavbarElementType.View
                     ? {data: views[item.id], type: TicketNavbarElementType.View}

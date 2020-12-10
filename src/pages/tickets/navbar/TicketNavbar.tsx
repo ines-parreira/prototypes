@@ -318,7 +318,9 @@ export function TicketNavbarContainer({
                 nextElement.data.section_id !== currentElement.data.section_id
             ) {
                 try {
-                    const res = await updateView(nextElement.data)
+                    const res = await updateView(nextElement.data.id, {
+                        section_id: nextElement.data.section_id,
+                    })
                     viewUpdated(res)
                 } catch (error) {
                     void notify({
