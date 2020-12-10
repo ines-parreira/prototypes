@@ -31,7 +31,9 @@ import css from './RuleItem.less'
 type Props = {
     rule: Map<*, *>,
     actions: Object,
+    notify: (Object) => void,
     toggleOpening: (number) => void,
+    canDuplicate: boolean,
 }
 
 type State = {
@@ -155,32 +157,39 @@ export default class RuleItem extends React.Component<Props, State> {
     }
 
     handleRuleDuplicate = () => {
-        const {actions, rule} = this.props
+        const {actions, rule, canDuplicate, notify} = this.props
+        if (canDuplicate) {
+            this.setState({isSubmitting: true})
+            if (this._canSubmit()) {
+                let name = this.state.name
 
-        this.setState({isSubmitting: true})
-        if (this._canSubmit()) {
-            let name = this.state.name
+                if (name === rule.get('name')) {
+                    name = `${name} - copy`
+                }
 
-            if (name === rule.get('name')) {
-                name = `${name} - copy`
+                return actions.rules
+                    .create({
+                        description: this.state.description,
+                        event_types: this.state.eventTypes.join(','),
+                        name,
+                        code: rule.get('code'),
+                        code_ast: rule.get('code_ast'),
+                        deactivated_datetime: getMomentUtcISOString(),
+                    })
+                    .then(({rule: newRule}) => {
+                        this.setState({isSubmitting: false})
+
+                        this._handleReset() // reset this rule, as we only want the last changes in the new rule
+                        this.props.toggleOpening(rule.get('id')) // close this rule...
+                        this.props.toggleOpening(newRule.id) // ...and open the new one
+                    })
             }
-
-            return actions.rules
-                .create({
-                    description: this.state.description,
-                    event_types: this.state.eventTypes.join(','),
-                    name,
-                    code: rule.get('code'),
-                    code_ast: rule.get('code_ast'),
-                    deactivated_datetime: getMomentUtcISOString(),
-                })
-                .then(({rule: newRule}) => {
-                    this.setState({isSubmitting: false})
-
-                    this._handleReset() // reset this rule, as we only want the last changes in the new rule
-                    this.props.toggleOpening(rule.get('id')) // close this rule...
-                    this.props.toggleOpening(newRule.id) // ...and open the new one
-                })
+        } else {
+            notify({
+                message:
+                    'Your account has reached the rule limit. To add more rules, please delete any inactive rules.',
+                status: 'error',
+            })
         }
     }
 

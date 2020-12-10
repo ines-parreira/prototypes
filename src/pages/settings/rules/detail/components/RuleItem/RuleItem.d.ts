@@ -1,3 +1,4 @@
+import * as React from 'react'
 import {Map, List} from 'immutable'
 
 import {modifyCodeAST} from '../../../../../../state/rules/actions'
@@ -12,3 +13,5 @@ export type RuleItemActions = {
     ) => ReturnType<ReturnType<typeof modifyCodeAST>>
     getCondition: (path: List<any>) => Map<any, any>
 }
+
+export default class RuleItem extends React.Component<any, any> {}

@@ -31,6 +31,7 @@ class RuleForm extends React.Component {
 
                 return res
             })
+            .catch(() => this.setState({submitting: false}))
     }
 
     _updateField = (value) => {

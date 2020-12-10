@@ -1,26 +1,32 @@
-// @flow
 import React from 'react'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
+import {bindActionCreators} from 'redux'
 import classnames from 'classnames'
 import {Badge, Button, Popover, PopoverHeader, PopoverBody} from 'reactstrap'
+import {Map} from 'immutable'
 
-import ToggleButton from '../../../../../common/components/ToggleButton'
+import * as RuleActions from '../../../../../../state/rules/actions'
+import {notify} from '../../../../../../state/notifications/actions'
+import {RootState} from '../../../../../../state/types'
+import {GorgiasThunkDispatch} from '../../../../../../../../../../types/redux-thunk'
 
-import RuleItem from '../../../detail/components/RuleItem'
+import ToggleButton from '../../../../../common/components/ToggleButton.js'
+import RuleItem from '../../../detail/components/RuleItem/RuleItem.js'
 
 import css from './RuleRow.less'
 
-type Props = {
-    actions: Object,
-    currentUser: Object,
-    rule: Object,
-    toggleOpening: (number) => void,
-    isOpen: boolean,
+type OwnProps = {
+    rule: Map<any, any>
+    toggleOpening: (id: number) => void
+    isOpen: boolean
+    canDuplicate: boolean
 }
 
 type State = {
-    showConfirmation: boolean,
+    showConfirmation: boolean
 }
+
+type Props = OwnProps & ConnectedProps<typeof connector>
 
 class RuleRow extends React.Component<Props, State> {
     state = {
@@ -55,7 +61,7 @@ class RuleRow extends React.Component<Props, State> {
     _renderClosed = () => {
         const {rule} = this.props
         const {showConfirmation} = this.state
-        const toggleId = `rule-toggle-${rule.get('id')}`
+        const toggleId = `rule-toggle-${rule.get('id') as string}`
 
         return (
             <tr
@@ -102,7 +108,9 @@ class RuleRow extends React.Component<Props, State> {
                     <div id={toggleId}>
                         <ToggleButton
                             value={!rule.get('deactivated_datetime')}
-                            onChange={this._toggleItemStatus}
+                            onChange={
+                                this._toggleItemStatus as () => Promise<any>
+                            }
                         />
                     </div>
                     <Popover
@@ -132,13 +140,15 @@ class RuleRow extends React.Component<Props, State> {
     }
 
     _renderOpened = () => {
-        const {rule, actions, toggleOpening} = this.props
+        const {rule, actions, toggleOpening, canDuplicate, notify} = this.props
 
         return (
             <RuleItem
                 rule={rule}
                 actions={actions}
                 toggleOpening={toggleOpening}
+                canDuplicate={canDuplicate}
+                notify={notify}
             />
         )
     }
@@ -152,8 +162,18 @@ class RuleRow extends React.Component<Props, State> {
     }
 }
 
-const mapStateToProps = (state) => ({
-    currentUser: state.currentUser,
-})
+const connector = connect(
+    (state: RootState) => ({
+        currentUser: state.currentUser,
+    }),
+    (dispatch: GorgiasThunkDispatch<any, any, any>) => {
+        return {
+            actions: {
+                rules: bindActionCreators(RuleActions, dispatch),
+            },
+            notify: bindActionCreators(notify, dispatch),
+        }
+    }
+)
 
-export default connect(mapStateToProps)(RuleRow)
+export default connector(RuleRow)

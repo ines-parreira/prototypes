@@ -98,3 +98,9 @@ export enum RuleObjectType {
     Ticket = 'Ticket',
     TicketMessage = 'TicketMessage',
 }
+
+export enum RuleLimitStatus {
+    NonReaching = 'nonReaching',
+    Reaching = 'reaching',
+    Reached = 'reached',
+}

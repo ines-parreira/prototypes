@@ -21,6 +21,8 @@ const defaultProps = {
         },
     },
     toggleOpening: jest.fn(),
+    canDuplicate: true,
+    notify: jest.fn(),
 }
 
 describe('<RuleItem />', () => {
@@ -83,6 +85,27 @@ describe('<RuleItem />', () => {
             await waitFor(() => {
                 expect(defaultProps.toggleOpening).toHaveBeenCalledWith(17) // old rule
                 expect(defaultProps.toggleOpening).toHaveBeenCalledWith(12) // new rule
+            })
+        })
+
+        it('should not duplicate a rule when maximum number of rules is reached and should notify of the reached limit', () => {
+            const rule = fromJS({
+                id: 17,
+                description: 'foo',
+                name: 'my rule',
+                code_ast: {},
+                code: {},
+                event_types: 'ticket-created',
+            })
+            const {getByText} = render(
+                <RuleItem {...defaultProps} rule={rule} canDuplicate={false} />
+            )
+            fireEvent.click(getByText(/duplicate rule/i))
+            expect(defaultProps.actions.rules.create).not.toHaveBeenCalled()
+            expect(defaultProps.notify).toHaveBeenNthCalledWith(1, {
+                message:
+                    'Your account has reached the rule limit. To add more rules, please delete any inactive rules.',
+                status: 'error',
             })
         })
 

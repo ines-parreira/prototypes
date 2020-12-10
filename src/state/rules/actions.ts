@@ -57,7 +57,7 @@ export const initialiseCodeAST = (id: string) => ({
 /**
  * Create a rule
  */
-export const create = (data: RuleOperation) => (
+export const create = (data: Partial<RuleDraft>) => (
     dispatch: StoreDispatch
 ): Promise<ReturnType<StoreDispatch>> => {
     return axios.post<Rule>('/api/rules/', data).then(
