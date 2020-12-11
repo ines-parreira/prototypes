@@ -20,10 +20,10 @@ import {ActionTemplateExecution} from './types'
 /**
  * Set default axios headers
  */
-;((axios.defaults.headers as Record<string, unknown>).common as Record<
-    string,
-    unknown
->)['X-CSRF-Token'] = window.CSRF_TOKEN
+const commonHeaders = (axios.defaults.headers as Record<string, unknown>)
+    .common as Record<string, unknown>
+commonHeaders['X-CSRF-Token'] = window.CSRF_TOKEN
+commonHeaders['X-Gorgias-User-Client'] = 'web'
 
 /**
  * Action related
