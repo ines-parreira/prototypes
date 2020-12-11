@@ -207,7 +207,23 @@ function useViewSharing(view: viewType, currentUser: currentUserType) {
 
             api.setViewSharing(viewId.current, visibility, teams, users)
                 .then(onSuccess)
-                .catch(setError)
+                .catch((error) => {
+                    if (!error.response) {
+                        return setError(error)
+                    }
+
+                    const errorMessage = fromJS(error.response).getIn([
+                        'data',
+                        'error',
+                        'msg',
+                    ])
+
+                    if (!errorMessage) {
+                        return setError(error)
+                    }
+
+                    return setError(errorMessage)
+                })
                 .finally(() => setSaving(false))
         },
         [visibility, selectedTeams, selectedUsers, currentUser]
