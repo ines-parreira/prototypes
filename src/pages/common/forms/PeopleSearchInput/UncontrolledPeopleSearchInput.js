@@ -7,7 +7,7 @@ import {type Map} from 'immutable'
 
 import css from './UncontrolledPeopleSearchInput.less'
 
-import PeopleSearchInput from './PeopleSearchInput'
+import PeopleSearchInput from './PeopleSearchInput.tsx'
 import PeopleSearchResults from './PeopleSearchResults'
 
 type Props = {

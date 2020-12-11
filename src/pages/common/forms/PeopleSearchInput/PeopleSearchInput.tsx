@@ -1,16 +1,16 @@
-// @flow
-
 import React from 'react'
+import type {KeyboardEventHandler} from 'react'
 import {Input} from 'reactstrap'
 import classnames from 'classnames'
 
 import css from './PeopleSearchInput.less'
 
 type Props = {
-    value: string,
-    className?: string,
-    autoFocus?: boolean,
-    onChange: (value: string) => void,
+    value: string
+    className?: string
+    autoFocus?: boolean
+    onChange: (value: string) => void
+    onKeyDown?: KeyboardEventHandler<HTMLInputElement>
 }
 
 export default function PeopleSearchInput({
@@ -18,6 +18,7 @@ export default function PeopleSearchInput({
     className,
     autoFocus,
     onChange,
+    onKeyDown,
 }: Props) {
     return (
         <div className="input-icon input-icon-right">
@@ -30,6 +31,7 @@ export default function PeopleSearchInput({
                 className={className}
                 autoFocus={autoFocus}
                 onChange={(event) => onChange(event.target.value)}
+                onKeyDown={onKeyDown}
             />
         </div>
     )

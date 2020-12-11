@@ -194,6 +194,15 @@ export class TicketAssignee extends React.Component<Props, State> {
         )
     }
 
+    searchRef = React.createRef()
+
+    handleSearchKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'ArrowDown' && this.searchRef.current) {
+            const firstChild = this.searchRef.current.firstChild
+            firstChild.focus()
+        }
+    }
+
     _renderMenu = () => {
         const {
             handleTeams,
@@ -218,16 +227,18 @@ export class TicketAssignee extends React.Component<Props, State> {
             : filteredUsers
 
         return (
-            <PeopleSearchResults
-                handleTeams={handleTeams && !!teams.size}
-                handleUsers={handleUsers}
-                teams={availableTeams}
-                users={availableUsers}
-                onTeamClick={this._selectTeam}
-                onUserClick={this._selectUser}
-            >
-                {this._renderMenuMainOptions()}
-            </PeopleSearchResults>
+            <div ref={this.searchRef}>
+                <PeopleSearchResults
+                    handleTeams={handleTeams && !!teams.size}
+                    handleUsers={handleUsers}
+                    teams={availableTeams}
+                    users={availableUsers}
+                    onTeamClick={this._selectTeam}
+                    onUserClick={this._selectUser}
+                >
+                    {this._renderMenuMainOptions()}
+                </PeopleSearchResults>
+            </div>
         )
     }
 
@@ -326,6 +337,7 @@ export class TicketAssignee extends React.Component<Props, State> {
                                     value={search}
                                     className={css.searchInput}
                                     onChange={this._search}
+                                    onKeyDown={this.handleSearchKeyDown}
                                 />
                             )
                         }

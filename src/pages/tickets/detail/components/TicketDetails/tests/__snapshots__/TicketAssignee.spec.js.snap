@@ -45,42 +45,44 @@ exports[`<TicketAssignee/> render() should display teams only 1`] = `
       tag="button"
       toggle={true}
     />
-    <PeopleSearchResults
-      handleTeams={true}
-      handleUsers={false}
-      onTeamClick={[Function]}
-      onUserClick={[Function]}
-      teams={
-        Immutable.Seq [
-          Immutable.Map {
-            "id": 1,
-            "name": "Team 1",
-            "decoration": Immutable.Map {},
-          },
-          Immutable.Map {
-            "id": 2,
-            "name": "Team 2",
-            "decoration": Immutable.Map {},
-          },
-        ]
-      }
-      users={
-        Immutable.List [
-          Immutable.Map {
-            "id": 1,
-            "name": "User 1",
-            "email": "email1@foo.com",
-            "meta": Immutable.Map {},
-          },
-          Immutable.Map {
-            "id": 2,
-            "name": "User 2",
-            "email": "email2@foo.com",
-            "meta": Immutable.Map {},
-          },
-        ]
-      }
-    />
+    <div>
+      <PeopleSearchResults
+        handleTeams={true}
+        handleUsers={false}
+        onTeamClick={[Function]}
+        onUserClick={[Function]}
+        teams={
+          Immutable.Seq [
+            Immutable.Map {
+              "id": 1,
+              "name": "Team 1",
+              "decoration": Immutable.Map {},
+            },
+            Immutable.Map {
+              "id": 2,
+              "name": "Team 2",
+              "decoration": Immutable.Map {},
+            },
+          ]
+        }
+        users={
+          Immutable.List [
+            Immutable.Map {
+              "id": 1,
+              "name": "User 1",
+              "email": "email1@foo.com",
+              "meta": Immutable.Map {},
+            },
+            Immutable.Map {
+              "id": 2,
+              "name": "User 2",
+              "email": "email2@foo.com",
+              "meta": Immutable.Map {},
+            },
+          ]
+        }
+      />
+    </div>
   </DropdownMenu>
 </Dropdown>
 `;
@@ -134,64 +136,66 @@ exports[`<TicketAssignee/> render() should display the email of the agent assign
       tag="button"
       toggle={true}
     />
-    <PeopleSearchResults
-      handleTeams={true}
-      handleUsers={true}
-      onTeamClick={[Function]}
-      onUserClick={[Function]}
-      teams={
-        Immutable.Seq [
-          Immutable.Map {
-            "id": 1,
-            "name": "Team 1",
-            "decoration": Immutable.Map {},
-          },
-          Immutable.Map {
-            "id": 2,
-            "name": "Team 2",
-            "decoration": Immutable.Map {},
-          },
-        ]
-      }
-      users={
-        Immutable.List [
-          Immutable.Map {
-            "id": 2,
-            "name": "User 2",
-            "email": "email2@foo.com",
-            "meta": Immutable.Map {},
-          },
-        ]
-      }
-    >
-      <DropdownItem
-        className="assigneeItem"
-        tag="button"
-        toggle={true}
+    <div>
+      <PeopleSearchResults
+        handleTeams={true}
+        handleUsers={true}
+        onTeamClick={[Function]}
+        onUserClick={[Function]}
+        teams={
+          Immutable.Seq [
+            Immutable.Map {
+              "id": 1,
+              "name": "Team 1",
+              "decoration": Immutable.Map {},
+            },
+            Immutable.Map {
+              "id": 2,
+              "name": "Team 2",
+              "decoration": Immutable.Map {},
+            },
+          ]
+        }
+        users={
+          Immutable.List [
+            Immutable.Map {
+              "id": 2,
+              "name": "User 2",
+              "email": "email2@foo.com",
+              "meta": Immutable.Map {},
+            },
+          ]
+        }
       >
-        <AgentLabel
-          className="assigneeLabel"
-          name="steve@acme.gorgias.io"
-          profilePictureUrl=""
-          shouldDisplayAvatar={true}
-        />
-        <i
-          className="material-icons md-2"
-          onClick={[Function]}
+        <DropdownItem
+          className="assigneeItem"
+          tag="button"
+          toggle={true}
         >
-          close
-        </i>
-      </DropdownItem>
-      <DropdownItem
-        className="item"
-        onClick={[Function]}
-        tag="button"
-        toggle={true}
-        type="button"
-      >
-        Assign yourself
-      </DropdownItem>
-    </PeopleSearchResults>
+          <AgentLabel
+            className="assigneeLabel"
+            name="steve@acme.gorgias.io"
+            profilePictureUrl=""
+            shouldDisplayAvatar={true}
+          />
+          <i
+            className="material-icons md-2"
+            onClick={[Function]}
+          >
+            close
+          </i>
+        </DropdownItem>
+        <DropdownItem
+          className="item"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Assign yourself
+        </DropdownItem>
+      </PeopleSearchResults>
+    </div>
   </DropdownMenu>
 </Dropdown>
 `;
@@ -245,64 +249,66 @@ exports[`<TicketAssignee/> render() should display the info of the agent assigne
       tag="button"
       toggle={true}
     />
-    <PeopleSearchResults
-      handleTeams={true}
-      handleUsers={true}
-      onTeamClick={[Function]}
-      onUserClick={[Function]}
-      teams={
-        Immutable.Seq [
-          Immutable.Map {
-            "id": 1,
-            "name": "Team 1",
-            "decoration": Immutable.Map {},
-          },
-          Immutable.Map {
-            "id": 2,
-            "name": "Team 2",
-            "decoration": Immutable.Map {},
-          },
-        ]
-      }
-      users={
-        Immutable.List [
-          Immutable.Map {
-            "id": 2,
-            "name": "User 2",
-            "email": "email2@foo.com",
-            "meta": Immutable.Map {},
-          },
-        ]
-      }
-    >
-      <DropdownItem
-        className="assigneeItem"
-        tag="button"
-        toggle={true}
+    <div>
+      <PeopleSearchResults
+        handleTeams={true}
+        handleUsers={true}
+        onTeamClick={[Function]}
+        onUserClick={[Function]}
+        teams={
+          Immutable.Seq [
+            Immutable.Map {
+              "id": 1,
+              "name": "Team 1",
+              "decoration": Immutable.Map {},
+            },
+            Immutable.Map {
+              "id": 2,
+              "name": "Team 2",
+              "decoration": Immutable.Map {},
+            },
+          ]
+        }
+        users={
+          Immutable.List [
+            Immutable.Map {
+              "id": 2,
+              "name": "User 2",
+              "email": "email2@foo.com",
+              "meta": Immutable.Map {},
+            },
+          ]
+        }
       >
-        <AgentLabel
-          className="assigneeLabel"
-          name="Steve Frizeli"
-          profilePictureUrl=""
-          shouldDisplayAvatar={true}
-        />
-        <i
-          className="material-icons md-2"
-          onClick={[Function]}
+        <DropdownItem
+          className="assigneeItem"
+          tag="button"
+          toggle={true}
         >
-          close
-        </i>
-      </DropdownItem>
-      <DropdownItem
-        className="item"
-        onClick={[Function]}
-        tag="button"
-        toggle={true}
-        type="button"
-      >
-        Assign yourself
-      </DropdownItem>
-    </PeopleSearchResults>
+          <AgentLabel
+            className="assigneeLabel"
+            name="Steve Frizeli"
+            profilePictureUrl=""
+            shouldDisplayAvatar={true}
+          />
+          <i
+            className="material-icons md-2"
+            onClick={[Function]}
+          >
+            close
+          </i>
+        </DropdownItem>
+        <DropdownItem
+          className="item"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Assign yourself
+        </DropdownItem>
+      </PeopleSearchResults>
+    </div>
   </DropdownMenu>
 </Dropdown>
 `;
@@ -356,69 +362,71 @@ exports[`<TicketAssignee/> render() should display the info of the agent assigne
       tag="button"
       toggle={true}
     />
-    <PeopleSearchResults
-      handleTeams={true}
-      handleUsers={true}
-      onTeamClick={[Function]}
-      onUserClick={[Function]}
-      teams={Immutable.Seq […]}
-      users={
-        Immutable.List [
-          Immutable.Map {
-            "id": 2,
-            "name": "User 2",
-            "email": "email2@foo.com",
-            "meta": Immutable.Map {},
-          },
-        ]
-      }
-    >
-      <DropdownItem
-        className="assigneeItem"
-        tag="button"
-        toggle={true}
+    <div>
+      <PeopleSearchResults
+        handleTeams={true}
+        handleUsers={true}
+        onTeamClick={[Function]}
+        onUserClick={[Function]}
+        teams={Immutable.Seq […]}
+        users={
+          Immutable.List [
+            Immutable.Map {
+              "id": 2,
+              "name": "User 2",
+              "email": "email2@foo.com",
+              "meta": Immutable.Map {},
+            },
+          ]
+        }
       >
-        <TeamLabel
-          className="assigneeLabel"
-          name="Team 1"
-          shouldDisplayAvatar={true}
-          shouldDisplayTeamIcon={true}
-        />
-        <i
-          className="material-icons md-2"
-          onClick={[Function]}
+        <DropdownItem
+          className="assigneeItem"
+          tag="button"
+          toggle={true}
         >
-          close
-        </i>
-      </DropdownItem>
-      <DropdownItem
-        className="assigneeItem"
-        tag="button"
-        toggle={true}
-      >
-        <AgentLabel
-          className="assigneeLabel"
-          name="steve@acme.gorgias.io"
-          profilePictureUrl=""
-          shouldDisplayAvatar={true}
-        />
-        <i
-          className="material-icons md-2"
-          onClick={[Function]}
+          <TeamLabel
+            className="assigneeLabel"
+            name="Team 1"
+            shouldDisplayAvatar={true}
+            shouldDisplayTeamIcon={true}
+          />
+          <i
+            className="material-icons md-2"
+            onClick={[Function]}
+          >
+            close
+          </i>
+        </DropdownItem>
+        <DropdownItem
+          className="assigneeItem"
+          tag="button"
+          toggle={true}
         >
-          close
-        </i>
-      </DropdownItem>
-      <DropdownItem
-        className="item"
-        onClick={[Function]}
-        tag="button"
-        toggle={true}
-        type="button"
-      >
-        Assign yourself
-      </DropdownItem>
-    </PeopleSearchResults>
+          <AgentLabel
+            className="assigneeLabel"
+            name="steve@acme.gorgias.io"
+            profilePictureUrl=""
+            shouldDisplayAvatar={true}
+          />
+          <i
+            className="material-icons md-2"
+            onClick={[Function]}
+          >
+            close
+          </i>
+        </DropdownItem>
+        <DropdownItem
+          className="item"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Assign yourself
+        </DropdownItem>
+      </PeopleSearchResults>
+    </div>
   </DropdownMenu>
 </Dropdown>
 `;
@@ -472,57 +480,59 @@ exports[`<TicketAssignee/> render() should display the name of the team assigned
       tag="button"
       toggle={true}
     />
-    <PeopleSearchResults
-      handleTeams={true}
-      handleUsers={true}
-      onTeamClick={[Function]}
-      onUserClick={[Function]}
-      teams={Immutable.Seq […]}
-      users={
-        Immutable.List [
-          Immutable.Map {
-            "id": 1,
-            "name": "User 1",
-            "email": "email1@foo.com",
-            "meta": Immutable.Map {},
-          },
-          Immutable.Map {
-            "id": 2,
-            "name": "User 2",
-            "email": "email2@foo.com",
-            "meta": Immutable.Map {},
-          },
-        ]
-      }
-    >
-      <DropdownItem
-        className="assigneeItem"
-        tag="button"
-        toggle={true}
+    <div>
+      <PeopleSearchResults
+        handleTeams={true}
+        handleUsers={true}
+        onTeamClick={[Function]}
+        onUserClick={[Function]}
+        teams={Immutable.Seq […]}
+        users={
+          Immutable.List [
+            Immutable.Map {
+              "id": 1,
+              "name": "User 1",
+              "email": "email1@foo.com",
+              "meta": Immutable.Map {},
+            },
+            Immutable.Map {
+              "id": 2,
+              "name": "User 2",
+              "email": "email2@foo.com",
+              "meta": Immutable.Map {},
+            },
+          ]
+        }
       >
-        <TeamLabel
-          className="assigneeLabel"
-          name="Team 1"
-          shouldDisplayAvatar={true}
-          shouldDisplayTeamIcon={true}
-        />
-        <i
-          className="material-icons md-2"
-          onClick={[Function]}
+        <DropdownItem
+          className="assigneeItem"
+          tag="button"
+          toggle={true}
         >
-          close
-        </i>
-      </DropdownItem>
-      <DropdownItem
-        className="item"
-        onClick={[Function]}
-        tag="button"
-        toggle={true}
-        type="button"
-      >
-        Assign yourself
-      </DropdownItem>
-    </PeopleSearchResults>
+          <TeamLabel
+            className="assigneeLabel"
+            name="Team 1"
+            shouldDisplayAvatar={true}
+            shouldDisplayTeamIcon={true}
+          />
+          <i
+            className="material-icons md-2"
+            onClick={[Function]}
+          >
+            close
+          </i>
+        </DropdownItem>
+        <DropdownItem
+          className="item"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Assign yourself
+        </DropdownItem>
+      </PeopleSearchResults>
+    </div>
   </DropdownMenu>
 </Dropdown>
 `;
@@ -572,52 +582,54 @@ exports[`<TicketAssignee/> render() should display users only 1`] = `
       tag="button"
       toggle={true}
     />
-    <PeopleSearchResults
-      handleTeams={false}
-      handleUsers={true}
-      onTeamClick={[Function]}
-      onUserClick={[Function]}
-      teams={
-        Immutable.Seq [
-          Immutable.Map {
-            "id": 1,
-            "name": "Team 1",
-            "decoration": Immutable.Map {},
-          },
-          Immutable.Map {
-            "id": 2,
-            "name": "Team 2",
-            "decoration": Immutable.Map {},
-          },
-        ]
-      }
-      users={
-        Immutable.List [
-          Immutable.Map {
-            "id": 1,
-            "name": "User 1",
-            "email": "email1@foo.com",
-            "meta": Immutable.Map {},
-          },
-          Immutable.Map {
-            "id": 2,
-            "name": "User 2",
-            "email": "email2@foo.com",
-            "meta": Immutable.Map {},
-          },
-        ]
-      }
-    >
-      <DropdownItem
-        className="item"
-        onClick={[Function]}
-        tag="button"
-        toggle={true}
-        type="button"
+    <div>
+      <PeopleSearchResults
+        handleTeams={false}
+        handleUsers={true}
+        onTeamClick={[Function]}
+        onUserClick={[Function]}
+        teams={
+          Immutable.Seq [
+            Immutable.Map {
+              "id": 1,
+              "name": "Team 1",
+              "decoration": Immutable.Map {},
+            },
+            Immutable.Map {
+              "id": 2,
+              "name": "Team 2",
+              "decoration": Immutable.Map {},
+            },
+          ]
+        }
+        users={
+          Immutable.List [
+            Immutable.Map {
+              "id": 1,
+              "name": "User 1",
+              "email": "email1@foo.com",
+              "meta": Immutable.Map {},
+            },
+            Immutable.Map {
+              "id": 2,
+              "name": "User 2",
+              "email": "email2@foo.com",
+              "meta": Immutable.Map {},
+            },
+          ]
+        }
       >
-        Assign yourself
-      </DropdownItem>
-    </PeopleSearchResults>
+        <DropdownItem
+          className="item"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Assign yourself
+        </DropdownItem>
+      </PeopleSearchResults>
+    </div>
   </DropdownMenu>
 </Dropdown>
 `;
@@ -667,52 +679,54 @@ exports[`<TicketAssignee/> render() should not display any agent info because th
       tag="button"
       toggle={true}
     />
-    <PeopleSearchResults
-      handleTeams={true}
-      handleUsers={true}
-      onTeamClick={[Function]}
-      onUserClick={[Function]}
-      teams={
-        Immutable.Seq [
-          Immutable.Map {
-            "id": 1,
-            "name": "Team 1",
-            "decoration": Immutable.Map {},
-          },
-          Immutable.Map {
-            "id": 2,
-            "name": "Team 2",
-            "decoration": Immutable.Map {},
-          },
-        ]
-      }
-      users={
-        Immutable.List [
-          Immutable.Map {
-            "id": 1,
-            "name": "User 1",
-            "email": "email1@foo.com",
-            "meta": Immutable.Map {},
-          },
-          Immutable.Map {
-            "id": 2,
-            "name": "User 2",
-            "email": "email2@foo.com",
-            "meta": Immutable.Map {},
-          },
-        ]
-      }
-    >
-      <DropdownItem
-        className="item"
-        onClick={[Function]}
-        tag="button"
-        toggle={true}
-        type="button"
+    <div>
+      <PeopleSearchResults
+        handleTeams={true}
+        handleUsers={true}
+        onTeamClick={[Function]}
+        onUserClick={[Function]}
+        teams={
+          Immutable.Seq [
+            Immutable.Map {
+              "id": 1,
+              "name": "Team 1",
+              "decoration": Immutable.Map {},
+            },
+            Immutable.Map {
+              "id": 2,
+              "name": "Team 2",
+              "decoration": Immutable.Map {},
+            },
+          ]
+        }
+        users={
+          Immutable.List [
+            Immutable.Map {
+              "id": 1,
+              "name": "User 1",
+              "email": "email1@foo.com",
+              "meta": Immutable.Map {},
+            },
+            Immutable.Map {
+              "id": 2,
+              "name": "User 2",
+              "email": "email2@foo.com",
+              "meta": Immutable.Map {},
+            },
+          ]
+        }
       >
-        Assign yourself
-      </DropdownItem>
-    </PeopleSearchResults>
+        <DropdownItem
+          className="item"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Assign yourself
+        </DropdownItem>
+      </PeopleSearchResults>
+    </div>
   </DropdownMenu>
 </Dropdown>
 `;
@@ -762,39 +776,41 @@ exports[`<TicketAssignee/> render() should not display teams because object is e
       tag="button"
       toggle={true}
     />
-    <PeopleSearchResults
-      handleTeams={false}
-      handleUsers={true}
-      onTeamClick={[Function]}
-      onUserClick={[Function]}
-      teams={Immutable.List []}
-      users={
-        Immutable.List [
-          Immutable.Map {
-            "id": 1,
-            "name": "User 1",
-            "email": "email1@foo.com",
-            "meta": Immutable.Map {},
-          },
-          Immutable.Map {
-            "id": 2,
-            "name": "User 2",
-            "email": "email2@foo.com",
-            "meta": Immutable.Map {},
-          },
-        ]
-      }
-    >
-      <DropdownItem
-        className="item"
-        onClick={[Function]}
-        tag="button"
-        toggle={true}
-        type="button"
+    <div>
+      <PeopleSearchResults
+        handleTeams={false}
+        handleUsers={true}
+        onTeamClick={[Function]}
+        onUserClick={[Function]}
+        teams={Immutable.List []}
+        users={
+          Immutable.List [
+            Immutable.Map {
+              "id": 1,
+              "name": "User 1",
+              "email": "email1@foo.com",
+              "meta": Immutable.Map {},
+            },
+            Immutable.Map {
+              "id": 2,
+              "name": "User 2",
+              "email": "email2@foo.com",
+              "meta": Immutable.Map {},
+            },
+          ]
+        }
       >
-        Assign yourself
-      </DropdownItem>
-    </PeopleSearchResults>
+        <DropdownItem
+          className="item"
+          onClick={[Function]}
+          tag="button"
+          toggle={true}
+          type="button"
+        >
+          Assign yourself
+        </DropdownItem>
+      </PeopleSearchResults>
+    </div>
   </DropdownMenu>
 </Dropdown>
 `;

@@ -1,7 +1,7 @@
 import React from 'react'
 import {mount, render} from 'enzyme'
 
-import PeopleSearchInput from '../PeopleSearchInput'
+import PeopleSearchInput from '../PeopleSearchInput.tsx'
 
 describe('<PeopleSearchInput/>', () => {
     let onChange
