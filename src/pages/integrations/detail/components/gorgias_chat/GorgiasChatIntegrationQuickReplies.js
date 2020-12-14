@@ -131,7 +131,7 @@ export class GorgiasChatIntegrationQuickRepliesComponent extends React.Component
                                         'type'
                                     )}`}
                                 >
-                                    Chat (New)
+                                    Chat
                                 </Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem>

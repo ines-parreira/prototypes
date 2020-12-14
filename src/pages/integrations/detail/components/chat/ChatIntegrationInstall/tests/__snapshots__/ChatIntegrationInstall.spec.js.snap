@@ -84,7 +84,7 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside"
               >
-                Chat
+                Chat (Deprecated)
               </Link>
             </BreadcrumbItem>
             <BreadcrumbItem
@@ -145,7 +145,7 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                       onClick={[Function]}
                       style={Object {}}
                     >
-                      Chat
+                      Chat (Deprecated)
                     </a>
                   </Link>
                 </li>
@@ -203,6 +203,22 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                 key=".0"
                 onlyActiveOnIndex={false}
                 style={Object {}}
+                to="/app/settings/integrations/smooch_inside/2/migration"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Migration
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".1"
+                onlyActiveOnIndex={false}
+                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/2/appearance"
               >
                 <a
@@ -216,7 +232,7 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".1"
+                key=".2"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/2/installation"
@@ -232,7 +248,7 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".2"
+                key=".3"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/2/preferences"
@@ -248,7 +264,7 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".3"
+                key=".4"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/2/campaigns"
@@ -264,7 +280,7 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".4"
+                key=".5"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/2/quick-replies"

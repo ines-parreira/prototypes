@@ -268,7 +268,7 @@ export class ChatIntegrationPreferences extends React.Component<Props, State> {
                             </BreadcrumbItem>
                             <BreadcrumbItem>
                                 <Link to="/app/settings/integrations/smooch_inside">
-                                    Chat
+                                    Chat (Deprecated)
                                 </Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem>

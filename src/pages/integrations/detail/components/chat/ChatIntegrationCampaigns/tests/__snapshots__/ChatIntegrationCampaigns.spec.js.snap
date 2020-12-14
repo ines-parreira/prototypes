@@ -74,7 +74,7 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside"
               >
-                Chat
+                Chat (Deprecated)
               </Link>
             </BreadcrumbItem>
             <BreadcrumbItem
@@ -135,7 +135,7 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
                       onClick={[Function]}
                       style={Object {}}
                     >
-                      Chat
+                      Chat (Deprecated)
                     </a>
                   </Link>
                 </li>
@@ -213,6 +213,22 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
                 key=".0"
                 onlyActiveOnIndex={false}
                 style={Object {}}
+                to="/app/settings/integrations/smooch_inside/118/migration"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Migration
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".1"
+                onlyActiveOnIndex={false}
+                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/appearance"
               >
                 <a
@@ -226,7 +242,7 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".1"
+                key=".2"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/installation"
@@ -242,7 +258,7 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".2"
+                key=".3"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/preferences"
@@ -258,7 +274,7 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".3"
+                key=".4"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/campaigns"
@@ -274,7 +290,7 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".4"
+                key=".5"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/quick-replies"
@@ -408,7 +424,7 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside"
               >
-                Chat
+                Chat (Deprecated)
               </Link>
             </BreadcrumbItem>
             <BreadcrumbItem
@@ -469,7 +485,7 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
                       onClick={[Function]}
                       style={Object {}}
                     >
-                      Chat
+                      Chat (Deprecated)
                     </a>
                   </Link>
                 </li>
@@ -558,6 +574,22 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
                 key=".0"
                 onlyActiveOnIndex={false}
                 style={Object {}}
+                to="/app/settings/integrations/smooch_inside/118/migration"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Migration
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".1"
+                onlyActiveOnIndex={false}
+                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/appearance"
               >
                 <a
@@ -571,7 +603,7 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".1"
+                key=".2"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/installation"
@@ -587,7 +619,7 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".2"
+                key=".3"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/preferences"
@@ -603,7 +635,7 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".3"
+                key=".4"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/campaigns"
@@ -619,7 +651,7 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".4"
+                key=".5"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/quick-replies"

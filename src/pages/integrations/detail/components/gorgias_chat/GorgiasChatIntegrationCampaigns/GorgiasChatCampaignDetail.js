@@ -373,7 +373,7 @@ export class GorgiasChatCampaignDetailComponent extends React.Component {
                                         'type'
                                     )}/${integration.get('id')}`}
                                 >
-                                    Chat (New)
+                                    Chat
                                 </Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem>

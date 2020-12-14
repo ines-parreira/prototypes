@@ -71,10 +71,20 @@ export default class IntegrationList extends React.Component<Props> {
     render() {
         const {integrations} = this.props
 
+        const hasSmoochInsideIntegration = integrations
+            .get('integrations')
+            .find((integration) => integration.get('type') === 'smooch_inside')
         const list = getIntegrationsList(integrations.get('integrations'))
-        const displayList = list.filter(
-            (integration) => !integration.get('hide')
-        )
+        const displayList = list.filter((integration) => {
+            // do not return the smooch inside integration if none has ever been created
+            if (
+                integration.get('type') === 'smooch_inside' &&
+                !hasSmoochInsideIntegration
+            ) {
+                return false
+            }
+            return !integration.get('hide')
+        })
 
         return (
             <div className="full-width">

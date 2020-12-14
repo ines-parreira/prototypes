@@ -131,7 +131,7 @@ export class ChatIntegrationQuickRepliesComponent extends React.Component<
                                         'type'
                                     )}`}
                                 >
-                                    Chat
+                                    Chat (Deprecated)
                                 </Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem>

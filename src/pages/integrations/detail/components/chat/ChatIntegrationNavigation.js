@@ -17,6 +17,7 @@ export default class ChatIntegrationNavigation extends React.Component<Props> {
 
         return (
             <SecondaryNavbar>
+                <Link to={`${baseURL}/migration`}>Migration</Link>
                 <Link to={`${baseURL}/appearance`}>Appearance</Link>
                 <Link to={`${baseURL}/installation`}>Installation</Link>
                 <Link to={`${baseURL}/preferences`}>Preferences</Link>

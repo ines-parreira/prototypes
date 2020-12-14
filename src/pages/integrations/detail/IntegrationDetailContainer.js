@@ -73,6 +73,7 @@ import ChatIntegrationList from './components/chat/ChatIntegrationList'
 import ChatIntegrationAppearance from './components/chat/ChatIntegrationAppearance'
 import ChatIntegrationCampaigns from './components/chat/ChatIntegrationCampaigns/ChatIntegrationCampaigns'
 import ChatIntegrationQuickReplies from './components/chat/ChatIntegrationQuickReplies'
+import ChatIntegrationMigration from './components/chat/ChatIntegrationMigration'
 import ChatIntegrationPreferences from './components/chat/ChatIntegrationPreferences'
 import ChatIntegrationInstall from './components/chat/ChatIntegrationInstall'
 import CampaignDetail from './components/chat/ChatIntegrationCampaigns/CampaignDetail'
@@ -410,6 +411,16 @@ class IntegrationDetailContainer extends React.Component {
 
             case SMOOCH_INSIDE_INTEGRATION_TYPE:
                 if (isDetail) {
+                    if (params.extra === 'migration') {
+                        return (
+                            <ChatIntegrationMigration
+                                actions={actions}
+                                loading={commonProps.loading}
+                                integration={commonProps.integration}
+                            />
+                        )
+                    }
+
                     if (params.extra === 'installation') {
                         return (
                             <ChatIntegrationInstall

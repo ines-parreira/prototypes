@@ -28,7 +28,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
             style={Object {}}
             to="/app/settings/integrations/gorgias_chat"
           >
-            Chat (New)
+            Chat
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -314,7 +314,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
             style={Object {}}
             to="/app/settings/integrations/gorgias_chat"
           >
-            Chat (New)
+            Chat
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -651,7 +651,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
             style={Object {}}
             to="/app/settings/integrations/gorgias_chat"
           >
-            Chat (New)
+            Chat
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -988,7 +988,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
             style={Object {}}
             to="/app/settings/integrations/gorgias_chat"
           >
-            Chat (New)
+            Chat
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -1347,7 +1347,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
             style={Object {}}
             to="/app/settings/integrations/gorgias_chat"
           >
-            Chat (New)
+            Chat
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -1688,7 +1688,7 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
             style={Object {}}
             to="/app/settings/integrations/gorgias_chat"
           >
-            Chat (New)
+            Chat
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem

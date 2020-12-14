@@ -34,10 +34,11 @@ export default class GorgiasChatIntegrationList extends React.Component<Props> {
                         ✅
                     </span>{' '}
                     Welcome to our new, remodeled chat integration. We've made
-                    significant improvements to the back-end, it's faster &
-                    lighter. Rest assured, it's at feature parity with the
-                    existing one with an improved design and support for screen
-                    readers.{' '}
+                    significant improvements to the back-end, it's faster and
+                    lighter and has new features like customer location with
+                    more to come very soon. Note that, if you're migrating from
+                    our legacy chat, you will need to follow the steps outlined
+                    in this article.{' '}
                     <a
                         href="https://portal.productboard.com/gorgias/1-gorgias-product-roadmap/c/79-chatbot-self-service-flows-to-automate-50-of-tickets"
                         target="_blank"

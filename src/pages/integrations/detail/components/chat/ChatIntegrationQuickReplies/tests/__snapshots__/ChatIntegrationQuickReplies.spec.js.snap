@@ -78,7 +78,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                 style={Object {}}
                 to="/app/settings/integrations/undefined"
               >
-                Chat
+                Chat (Deprecated)
               </Link>
             </BreadcrumbItem>
             <BreadcrumbItem
@@ -139,7 +139,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                       onClick={[Function]}
                       style={Object {}}
                     >
-                      Chat
+                      Chat (Deprecated)
                     </a>
                   </Link>
                 </li>
@@ -196,6 +196,22 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                 key=".0"
                 onlyActiveOnIndex={false}
                 style={Object {}}
+                to="/app/settings/integrations/smooch_inside/7/migration"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Migration
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".1"
+                onlyActiveOnIndex={false}
+                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/7/appearance"
               >
                 <a
@@ -209,7 +225,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".1"
+                key=".2"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/7/installation"
@@ -225,7 +241,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".2"
+                key=".3"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/7/preferences"
@@ -241,7 +257,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".3"
+                key=".4"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/7/campaigns"
@@ -257,7 +273,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".4"
+                key=".5"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/7/quick-replies"
@@ -980,7 +996,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                 style={Object {}}
                 to="/app/settings/integrations/undefined"
               >
-                Chat
+                Chat (Deprecated)
               </Link>
             </BreadcrumbItem>
             <BreadcrumbItem
@@ -1041,7 +1057,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                       onClick={[Function]}
                       style={Object {}}
                     >
-                      Chat
+                      Chat (Deprecated)
                     </a>
                   </Link>
                 </li>
@@ -1106,6 +1122,22 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                 key=".0"
                 onlyActiveOnIndex={false}
                 style={Object {}}
+                to="/app/settings/integrations/smooch_inside/7/migration"
+              >
+                <a
+                  className="nav-link"
+                  onClick={[Function]}
+                  style={Object {}}
+                >
+                  Migration
+                </a>
+              </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".1"
+                onlyActiveOnIndex={false}
+                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/7/appearance"
               >
                 <a
@@ -1119,7 +1151,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".1"
+                key=".2"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/7/installation"
@@ -1135,7 +1167,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".2"
+                key=".3"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/7/preferences"
@@ -1151,7 +1183,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".3"
+                key=".4"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/7/campaigns"
@@ -1167,7 +1199,7 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
               <Link
                 activeClassName="disabled"
                 className="nav-link"
-                key=".4"
+                key=".5"
                 onlyActiveOnIndex={false}
                 style={Object {}}
                 to="/app/settings/integrations/smooch_inside/7/quick-replies"

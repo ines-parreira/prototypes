@@ -151,9 +151,15 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
             'Connect your support email addresses and respond to your customers from Gorgias',
     },
     {
-        type: 'smooch_inside',
+        type: IntegrationType.GorgiasChatIntegrationType,
         title: 'Chat',
-        description: 'Add a chat on your website',
+        description: 'Add a chat on your website.',
+    },
+    {
+        type: 'smooch_inside',
+        title: 'Chat - 🗄 DEPRECATED',
+        description:
+            'Please migrate to the new chat integration as this one will soon be removed.',
     },
     {
         type: 'facebook',
@@ -338,11 +344,6 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
             'Track, review, rate, and improve the quality of your customer support',
         url: 'https://docs.gorgias.com/quality-assurance/klausapp',
         image: 'integrations/klaus.png',
-    },
-    {
-        type: IntegrationType.GorgiasChatIntegrationType,
-        title: 'Chat (New)',
-        description: 'Add a chat on your website',
     },
 ]
 

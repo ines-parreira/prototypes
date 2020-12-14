@@ -134,7 +134,7 @@ exports[`<ChatIntegrationPreferences/> render() should render buttons in loading
             style={Object {}}
             to="/app/settings/integrations/smooch_inside"
           >
-            Chat
+            Chat (Deprecated)
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -422,7 +422,7 @@ exports[`<ChatIntegrationPreferences/> render() should render the Chat preferenc
             style={Object {}}
             to="/app/settings/integrations/smooch_inside"
           >
-            Chat
+            Chat (Deprecated)
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem

@@ -65,7 +65,7 @@ class GorgiasChatIntegrationInstall extends React.Component<Props, State> {
                                 <Link
                                     to={`/app/settings/integrations/${GORGIAS_CHAT_INTEGRATION_TYPE}`}
                                 >
-                                    Chat (New)
+                                    Chat
                                 </Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem>

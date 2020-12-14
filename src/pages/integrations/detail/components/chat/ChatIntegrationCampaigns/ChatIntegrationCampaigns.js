@@ -56,7 +56,7 @@ export default class ChatIntegrationCampaigns extends React.Component<Props> {
                                         'type'
                                     )}`}
                                 >
-                                    Chat
+                                    Chat (Deprecated)
                                 </Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem>

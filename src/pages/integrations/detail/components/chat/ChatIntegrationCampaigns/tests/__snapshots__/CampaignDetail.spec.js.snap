@@ -28,7 +28,7 @@ exports[`CampaignDetail component should display default value when it's a new c
             style={Object {}}
             to="/app/settings/integrations/smooch_inside/\${integration.get('id')}"
           >
-            Chat
+            Chat (Deprecated)
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -345,7 +345,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
             style={Object {}}
             to="/app/settings/integrations/smooch_inside/\${integration.get('id')}"
           >
-            Chat
+            Chat (Deprecated)
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -696,7 +696,7 @@ exports[`CampaignDetail component should display the campaign correctly when upd
             style={Object {}}
             to="/app/settings/integrations/smooch_inside/\${integration.get('id')}"
           >
-            Chat
+            Chat (Deprecated)
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem

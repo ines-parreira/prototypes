@@ -1,0 +1,179 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ChatIntegrationMigration component should display the migration page 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a>
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <a>
+            Chat (Deprecated)
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          hellosmoochintegration
+        </li>
+        <li
+          class="active breadcrumb-item"
+        >
+          Migration
+        </li>
+      </ol>
+    </div>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        class="nav-link"
+      >
+        Migration
+      </a>
+      <a
+        class="nav-link"
+      >
+        Appearance
+      </a>
+      <a
+        class="nav-link"
+      >
+        Installation
+      </a>
+      <a
+        class="nav-link"
+      >
+        Preferences
+      </a>
+      <a
+        class="nav-link"
+      >
+        Campaigns
+      </a>
+      <a
+        class="nav-link"
+      >
+        Quick replies
+      </a>
+    </nav>
+    <div
+      class="page-container container-fluid"
+    >
+      <div
+        class="alert alert-warning fade"
+        role="alert"
+      >
+        <span
+          aria-label="warning"
+          role="img"
+        >
+          ⚠️
+        </span>
+         
+        A
+         
+        <a>
+          new version of the chat
+        </a>
+         
+        with additional features is already available, please plan to migrate rapidly as this version of the chat integration will be progressively rolled-out during the first half of 2021. Don't worry it will remain active until you complete the migration. To migrate to this
+         
+        <a>
+          new version of the chat
+        </a>
+         
+        follow the steps outlined in
+         
+        <a
+          href="https://docs.gorgias.com/gorgias-chat/migrating-to-new-chat-integration-beta-version"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          this article
+        </a>
+        .
+      </div>
+      <div
+        class="mb-4"
+      >
+        <h4>
+          Migration
+        </h4>
+        <p>
+          Click on the button below to automagically
+           
+          <span
+            aria-label="spark"
+            role="img"
+          >
+            ✨
+          </span>
+           
+          migrate 
+          <b>
+            all the settings
+          </b>
+           of your current chat integration to the new chat, this includes Appearance, Preferences, Campaigns & Quick Replies. You will be redirected automatically to the new chat to complete the installation.
+        </p>
+        <p>
+          <span
+            aria-label="pointing up"
+            role="img"
+          >
+            👆
+          </span>
+           
+          Note that you will still
+           
+          <b>
+            need to go through the installations steps
+          </b>
+           
+          for the newly set-up chat in your online store and manually deactivate the old chat.
+           
+          <a
+            href="https://docs.gorgias.com/gorgias-chat/chat-getting-started"
+            title="chat getting started"
+          >
+            Check-out this article
+          </a>
+           
+          to guide you through the installation steps.
+        </p>
+        <p>
+          Don't hesitate to schedule
+           
+          <a
+            href="https://calendly.com/gorgias-office-hours"
+            title="gorgias office hours"
+          >
+            an office hour call if you have any questions
+          </a>
+          !
+        </p>
+      </div>
+      <button
+        class="btn btn-success"
+        type="button"
+      >
+        Migrate
+      </button>
+    </div>
+  </div>
+</div>
+`;

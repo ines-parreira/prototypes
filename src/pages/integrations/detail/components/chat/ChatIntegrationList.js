@@ -33,14 +33,15 @@ export default class ChatIntegrationList extends React.Component<Props> {
                     <span role="img" aria-label="warning">
                         ⚠️
                     </span>{' '}
-                    We are rolling out a{' '}
+                    A{' '}
                     <Link to="/app/settings/integrations/gorgias_chat">
                         new version of the chat
                     </Link>{' '}
-                    with additional features coming out early Q1. The current
-                    chat integration will be progressively rolled-out during the
-                    first half of 2021, don't worry it will remain active until
-                    you complete the migration. To migrate to this{' '}
+                    with additional features is already available, please plan
+                    to migrate rapidly as this version of the chat integration
+                    will be progressively rolled-out during the first half of
+                    2021. Don't worry it will remain active until you complete
+                    the migration. To migrate to this{' '}
                     <Link to="/app/settings/integrations/gorgias_chat">
                         new version of the chat
                     </Link>{' '}
@@ -72,7 +73,7 @@ export default class ChatIntegrationList extends React.Component<Props> {
 
             const editLink = `/app/settings/integrations/smooch_inside/${integration.get(
                 'id'
-            )}/appearance`
+            )}/migration`
             const isDisabled = integration.get('deactivated_datetime')
 
             const isLoading =

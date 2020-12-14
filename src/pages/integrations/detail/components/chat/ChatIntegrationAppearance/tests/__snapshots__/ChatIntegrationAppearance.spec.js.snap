@@ -28,7 +28,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when cre
             style={Object {}}
             to="/app/settings/integrations/smooch_inside"
           >
-            Chat
+            Chat (Deprecated)
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -324,7 +324,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when int
             style={Object {}}
             to="/app/settings/integrations/smooch_inside"
           >
-            Chat
+            Chat (Deprecated)
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -671,7 +671,7 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when upd
             style={Object {}}
             to="/app/settings/integrations/smooch_inside"
           >
-            Chat
+            Chat (Deprecated)
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -1018,7 +1018,7 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
             style={Object {}}
             to="/app/settings/integrations/smooch_inside"
           >
-            Chat
+            Chat (Deprecated)
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -1387,7 +1387,7 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
             style={Object {}}
             to="/app/settings/integrations/smooch_inside"
           >
-            Chat
+            Chat (Deprecated)
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
@@ -1738,7 +1738,7 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
             style={Object {}}
             to="/app/settings/integrations/smooch_inside"
           >
-            Chat
+            Chat (Deprecated)
           </Link>
         </BreadcrumbItem>
         <BreadcrumbItem
