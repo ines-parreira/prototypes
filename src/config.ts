@@ -280,7 +280,7 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         image: 'integrations/postscript.png',
     },
     {
-        title: 'SMSBUMP',
+        title: 'SMSBump',
         description:
             'Create SMS tickets inside Gorgias from your SMSBump admin',
         url: 'https://docs.gorgias.com/sms-integration/smsbump',
@@ -294,7 +294,7 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         image: 'integrations/emotive.png',
     },
     {
-        title: 'ATTENTIVE',
+        title: 'Attentive',
         description: 'Seamless two-way support via SMS',
         url: 'https://docs.gorgias.com/sms-integration/attentive-mobile',
         image: 'integrations/attentive.png',
@@ -306,7 +306,7 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         image: 'integrations/reviews.io.png',
     },
     {
-        title: 'GLEW.io',
+        title: 'Glew.io',
         description: 'Get actionable insights on your customer support',
         url: 'https://docs.gorgias.com/business-intelligence/glew-io',
         image: 'integrations/glewio.png',
@@ -344,6 +344,64 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
             'Track, review, rate, and improve the quality of your customer support',
         url: 'https://docs.gorgias.com/quality-assurance/klausapp',
         image: 'integrations/klaus.png',
+    },
+    {
+        title: 'ElectricSMS',
+        description:
+            'Create SMS tickets inside Gorgias from your ElectricSMS admin',
+        url: 'https://docs.gorgias.com/sms-integration/electric-sms',
+        image: 'integrations/electricsms.png',
+    },
+    {
+        title: 'Chatdesk',
+        description: 'Manage your repetitive tickets and free up your time\n',
+        url: 'https://docs.gorgias.com/other-integrations/chatdesk-teams',
+        image: 'integrations/chatdesk.png',
+    },
+    {
+        title: 'Retention Rocket',
+        description:
+            'Enabling the integration allows you to receive and reply to customer SMS directly',
+        url: 'https://docs.gorgias.com/sms-integration/retention-rocket',
+        image: 'integrations/retentionrocket.jpg',
+    },
+    {
+        title: 'Alloy',
+        description:
+            'Taking your customer support automation to the next level',
+        url: 'https://docs.gorgias.com/business-intelligence/alloy',
+        image: 'integrations/alloy.png',
+    },
+    {
+        title: 'Churn Buster',
+        description: 'For a seamless flow to your failed payments recovery',
+        url: 'https://docs.gorgias.com/business-intelligence/churn-buster',
+        image: 'integrations/churnbuster.png',
+    },
+    {
+        title: 'CloudTalk',
+        description: 'Streamline communication with your customers',
+        url: 'https://docs.gorgias.com/voice-and-phone/cloud-talk',
+        image: 'integrations/cloudtalk.png',
+    },
+    {
+        title: 'Returnly',
+        description: 'Create a seamless return process for your customers',
+        url: 'https://docs.gorgias.com/returns-exchanges/returnly',
+        image: 'integrations/returnly.png',
+    },
+    {
+        title: 'Loop Returns',
+        description: 'Automate your entire returns process, even exchanges',
+        url: 'https://docs.gorgias.com/returns-exchanges/loop-returns',
+        image: 'integrations/loopreturns.png',
+    },
+    {
+        title: 'LateShipment',
+        description:
+            'Real-time visibility on shipping status so you can be proactive with your customers',
+        url: 'https://docs.gorgias.com/shipping/late-shipment',
+        image: 'integrations/lateshipment.png',
     },
 ]
 
