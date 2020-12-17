@@ -303,7 +303,7 @@ class Magento2IntegrationDetail extends React.Component<Props, State> {
                                             onChange={(adminUrl) =>
                                                 this.setState({adminUrl})
                                             }
-                                            pattern="[\w\d\.-]+/[\w\d_-]+/?"
+                                            pattern="^[a-z.0-9]*\.[a-z0-9]*\/(index\.php)?[\/\w\d_-]*$"
                                             required
                                         />
                                     )}

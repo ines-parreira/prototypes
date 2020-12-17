@@ -260,7 +260,7 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for an int
               leftAddon="https://"
               name="name"
               onChange={[Function]}
-              pattern="[\\\\w\\\\d\\\\.-]+/[\\\\w\\\\d_-]+/?"
+              pattern="^[a-z.0-9]*\\\\.[a-z0-9]*\\\\/(index\\\\.php)?[\\\\/\\\\w\\\\d_-]*$"
               placeholder="ex: acme.com/admin_45f1c"
               required={true}
               type="text"
@@ -586,7 +586,7 @@ exports[`<Magento2IntegrationDetail/> render() should render the page to create 
               leftAddon="https://"
               name="name"
               onChange={[Function]}
-              pattern="[\\\\w\\\\d\\\\.-]+/[\\\\w\\\\d_-]+/?"
+              pattern="^[a-z.0-9]*\\\\.[a-z0-9]*\\\\/(index\\\\.php)?[\\\\/\\\\w\\\\d_-]*$"
               placeholder="ex: acme.com/admin_45f1c"
               required={true}
               type="text"
