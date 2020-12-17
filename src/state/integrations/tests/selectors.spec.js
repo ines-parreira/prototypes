@@ -28,7 +28,7 @@ import {
     getShopifyIntegrationByShopName,
     getShopifyIntegrationsWithoutChat,
     getShopifyIntegrationsWithoutFacebook,
-    isImportAllowed,
+    hasAtLeastOneEmailIntegration,
     getMessagingIntegrations,
 } from '../selectors.ts'
 import {integrationsState} from '../../../fixtures/integrations.ts'
@@ -624,14 +624,19 @@ describe('integrations selectors', () => {
                 ],
                 false,
             ],
-        ])('Import allowed', (integrationsJSON, expectedResult) => {
-            const state = {
-                integrations: fromJS({
-                    integrations: integrationsJSON,
-                }),
-            }
+        ])(
+            'hasAtLeastOneEmailIntegration',
+            (integrationsJSON, expectedResult) => {
+                const state = {
+                    integrations: fromJS({
+                        integrations: integrationsJSON,
+                    }),
+                }
 
-            expect(isImportAllowed(state)).toBe(expectedResult)
-        })
+                expect(hasAtLeastOneEmailIntegration(state)).toBe(
+                    expectedResult
+                )
+            }
+        )
     })
 })
