@@ -5,7 +5,7 @@ import * as selectors from '../selectors'
 import {initialState} from '../reducers'
 import {initialState as currentUserInitialState} from '../../currentUser/reducers'
 import * as agentFixtures from '../../../fixtures/agents'
-import * as userFixtures from '../../../fixtures/users.js'
+import * as userFixtures from '../../../fixtures/users'
 import {RootState} from '../../types'
 
 jest.addMatchers(immutableMatchers)
@@ -16,7 +16,7 @@ describe('agents selectors', () => {
     beforeEach(() => {
         state = {
             currentUser: (currentUserInitialState as Map<any, any>).mergeDeep(
-                (fromJS(userFixtures.currentUser) as Map<any, any>).set('id', 2)
+                (fromJS(userFixtures.user) as Map<any, any>).set('id', 2)
             ),
 
             agents: initialState.mergeDeep({

@@ -3,7 +3,7 @@ import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
 import YourProfileView from '../components/YourProfileView'
-import {currentUser} from '../../../../fixtures/users'
+import {user} from '../../../../fixtures/users.ts'
 
 const mockUpdateCurrentUser = jest.fn()
 
@@ -23,7 +23,7 @@ describe('YourProfileView', () => {
             const component = shallow(
                 <YourProfileView
                     updateCurrentUser={mockUpdateCurrentUser}
-                    currentUser={fromJS(currentUser)}
+                    currentUser={fromJS(user)}
                     submitSetting={jest.fn()}
                     preferences={fromJS({data: {}})}
                 />
@@ -35,13 +35,11 @@ describe('YourProfileView', () => {
 
     describe('_handleSubmit', () => {
         it('should submit user data', () => {
-            const updateCurrentUserSpy = jest.fn(() =>
-                Promise.resolve(currentUser)
-            )
+            const updateCurrentUserSpy = jest.fn(() => Promise.resolve(user))
             const component = shallow(
                 <YourProfileView
                     updateCurrentUser={updateCurrentUserSpy}
-                    currentUser={fromJS(currentUser)}
+                    currentUser={fromJS(user)}
                     submitSetting={jest.fn()}
                     preferences={fromJS({data: {}})}
                 />
@@ -56,12 +54,12 @@ describe('YourProfileView', () => {
                 'because the email field was marked as changed',
             (done) => {
                 const updateCurrentUserSpy = jest.fn(() =>
-                    Promise.resolve(currentUser)
+                    Promise.resolve(user)
                 )
                 const component = shallow(
                     <YourProfileView
                         updateCurrentUser={updateCurrentUserSpy}
-                        currentUser={fromJS(currentUser)}
+                        currentUser={fromJS(user)}
                         submitSetting={jest.fn()}
                         preferences={fromJS({data: {}})}
                     />
@@ -87,13 +85,11 @@ describe('YourProfileView', () => {
 
     describe('_saveProfilePicture', () => {
         it('should save profile picture', () => {
-            const updateCurrentUserSpy = jest.fn(() =>
-                Promise.resolve(currentUser)
-            )
+            const updateCurrentUserSpy = jest.fn(() => Promise.resolve(user))
             const component = shallow(
                 <YourProfileView
                     updateCurrentUser={updateCurrentUserSpy}
-                    currentUser={fromJS(currentUser)}
+                    currentUser={fromJS(user)}
                     submitSetting={jest.fn()}
                     preferences={fromJS({data: {}})}
                 />
@@ -122,7 +118,7 @@ describe('YourProfileView', () => {
             const component = shallow(
                 <YourProfileView
                     updateCurrentUser={mockUpdateCurrentUser}
-                    currentUser={fromJS(currentUser)}
+                    currentUser={fromJS(user)}
                     submitSetting={submitSetting}
                     preferences={fromJS({data: {foo: 'bar'}})}
                 />
@@ -155,7 +151,7 @@ describe('YourProfileView', () => {
         it('should return form values because `currentUser` is not empty', () => {
             const props = {
                 updateCurrentUser: mockUpdateCurrentUser,
-                currentUser: fromJS(currentUser),
+                currentUser: fromJS(user),
                 submitSetting: jest.fn(),
                 preferences: fromJS({data: {}}),
             }

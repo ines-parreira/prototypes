@@ -1,6 +1,6 @@
 import {fromJS} from 'immutable'
 
-import {currentUser} from '../../../../fixtures/users.js'
+import {user} from '../../../../fixtures/users'
 import {ViewType} from '../../../../models/view/types'
 import {RootState} from '../../../types'
 import {getOrderedViewsByType} from '../selectors'
@@ -35,7 +35,7 @@ describe('selectors', () => {
                 },
             },
         },
-        currentUser: fromJS(currentUser),
+        currentUser: fromJS(user),
     } as any
 
     describe('getOrderedViewsByType', () => {

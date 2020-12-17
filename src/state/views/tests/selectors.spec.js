@@ -4,7 +4,7 @@ import * as immutableMatchers from 'jest-immutable-matchers'
 
 import {initialState} from '../reducers.ts'
 import * as selectors from '../selectors.ts'
-import {currentUser} from '../../../fixtures/users'
+import {user} from '../../../fixtures/users.ts'
 import {initialState as currentUserInitialState} from '../../currentUser/reducers.ts'
 import {SYSTEM_VIEW_CATEGORY} from '../../../constants/view.ts'
 import {getExpirationTimeForCount} from '../../../config/views.tsx'
@@ -255,7 +255,7 @@ describe('selectors', () => {
                 views: initialState.mergeDeep({
                     items: [view1, view2, view3],
                 }),
-                currentUser: currentUserInitialState.mergeDeep(currentUser).set(
+                currentUser: currentUserInitialState.mergeDeep(user).set(
                     'settings',
                     fromJS([
                         {

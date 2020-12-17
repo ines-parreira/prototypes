@@ -14,18 +14,15 @@ export const agents: User[] = [
         roles: [
             {
                 name: UserRole.Agent,
-                id: 2,
-            },
-            {
-                name: UserRole.Admin,
-                id: 3,
             },
         ],
         updated_datetime: '2017-07-31T21:43:05.502541+00:00',
         settings: [],
         bio: null,
-        data: null,
         meta: {},
+        country: 'US',
+        language: 'en-US',
+        timezone: 'UTC',
     },
     {
         lastname: 'Smith',
@@ -40,14 +37,15 @@ export const agents: User[] = [
         roles: [
             {
                 name: UserRole.Agent,
-                id: 2,
             },
         ],
         updated_datetime: '2017-07-31T21:43:08.033390+00:00',
         bio: null,
-        data: null,
         meta: {},
         settings: [],
+        country: 'US',
+        language: 'en-US',
+        timezone: 'UTC',
     },
 ]
 export const locations = {

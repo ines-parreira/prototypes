@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 
 import * as selectors from '../selectors.ts'
 import {initialState as currentUserInitialState} from '../../currentUser/reducers.ts'
-import * as userFixtures from '../../../fixtures/users'
+import * as userFixtures from '../../../fixtures/users.ts'
 
 jest.addMatchers(immutableMatchers)
 
@@ -21,7 +21,7 @@ describe('users audit selectors', () => {
         }
         state = {
             currentUser: currentUserInitialState.mergeDeep(
-                fromJS(userFixtures.currentUser).set('id', 2)
+                fromJS(userFixtures.user).set('id', 2)
             ),
             usersAudit: fromJS({
                 events: [

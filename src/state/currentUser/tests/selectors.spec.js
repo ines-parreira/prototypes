@@ -4,7 +4,7 @@ import {fromJS} from 'immutable'
 import {UserSettingType} from '../../../config/types/user'
 import * as selectors from '../selectors.ts'
 import {initialState} from '../reducers.ts'
-import * as usersFixtures from '../../../fixtures/users'
+import * as usersFixtures from '../../../fixtures/users.ts'
 
 import {DEFAULT_PREFERENCES} from './../../../config.ts'
 
@@ -15,9 +15,7 @@ describe('current user selectors', () => {
 
     beforeEach(() => {
         state = {
-            currentUser: initialState.mergeDeep(
-                fromJS(usersFixtures.currentUser)
-            ),
+            currentUser: initialState.mergeDeep(fromJS(usersFixtures.user)),
         }
     })
 
@@ -44,42 +42,8 @@ describe('current user selectors', () => {
 
     it('getSettingsByType', () => {
         expect(
-            selectors.getSettingsByType('ticket-views')(state)
+            selectors.getSettingsByType(UserSettingType.Preferences)(state)
         ).toEqualImmutable(state.currentUser.get('settings').first())
-        expect(
-            selectors
-                .getSettingsByType('ticket-views')({
-                    ...state,
-                    views: fromJS({
-                        items: [
-                            {
-                                id: 100,
-                                display_order: 100,
-                            },
-                        ],
-                    }),
-                })
-                .get('data')
-        ).toEqualImmutable(
-            state.currentUser
-                .get('settings')
-                .first()
-                .get('data')
-                .set(
-                    '100',
-                    fromJS({
-                        hide: false,
-                        display_order: 100,
-                    })
-                )
-        )
-    })
-
-    it('getApiKey', () => {
-        expect(selectors.getApiKey(state)).toBe(
-            state.currentUser.getIn(['auths', 0, 'data', 'token'])
-        )
-        expect(selectors.getApiKey({})).toBe('')
     })
 
     it('getPreferences', () => {
@@ -125,7 +89,7 @@ describe('current user selectors', () => {
     describe('makeGetSettingsByType', () => {
         it('should return setting by type', () => {
             const selector = selectors.makeGetSettingsByType()
-            const settings = selector(state, 'ticket-views')
+            const settings = selector(state, UserSettingType.Preferences)
             expect(settings).toEqualImmutable(
                 state.currentUser.get('settings').first()
             )
@@ -134,7 +98,7 @@ describe('current user selectors', () => {
 
     describe('getUserSetting', () => {
         it('should return the setting by type', () => {
-            const res = selectors.getUserSetting(UserSettingType.TicketViews)(
+            const res = selectors.getUserSetting(UserSettingType.Preferences)(
                 state
             )
             expect(res).toMatchSnapshot()

@@ -5,7 +5,7 @@ import {Notification} from '../notifications/types'
 
 export type CurrentAccountState = Map<any, any>
 
-enum AccountStatus {
+export enum AccountStatus {
     Active = 'active',
 }
 
@@ -26,7 +26,7 @@ export type AccountSetting =
                   days: string
                   from_time: string
                   to_time: string
-              }
+              }[]
           }
       }
     | {
@@ -61,12 +61,22 @@ export type AccountViewsOrderingSettingData = {
 }
 
 export type Account = {
+    current_subscription: {
+        plan: string
+        start_datetime: string
+        status: 'active' | 'past_due' | 'trialing'
+        trial_end_datetime: string | null
+        trial_start_datetime: string | null
+    }
     created_datetime: string
     deactivated_datetime: Maybe<string>
     domain: string
-    settings: AccountSetting[]
+    meta: Record<string, unknown>
     status: {
         status: AccountStatus
-        notification: Notification
+        notification?: Notification
     }
+    stripe_id: string
+    settings: AccountSetting[]
+    user_id: number
 }

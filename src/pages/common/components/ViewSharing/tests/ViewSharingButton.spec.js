@@ -5,7 +5,7 @@ import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 
 import ViewSharingButton from '../ViewSharingButton'
-import {currentUser} from '../../../../../fixtures/users'
+import {user} from '../../../../../fixtures/users.ts'
 import {BASIC_AGENT_ROLE} from '../../../../../config/user.ts'
 import {
     SYSTEM_VIEW_CATEGORY,
@@ -37,7 +37,7 @@ describe('<ViewSharingButton/>', () => {
     describe('render()', () => {
         it('should render as public', () => {
             const view = fromJS({visibility: ViewVisibility.PUBLIC})
-            const admin = fromJS(currentUser)
+            const admin = fromJS(user)
             const store = mockStore(getState(admin))
 
             const component = shallow(
@@ -49,7 +49,7 @@ describe('<ViewSharingButton/>', () => {
 
         it('should render as shared', () => {
             const view = fromJS({visibility: ViewVisibility.SHARED})
-            const admin = fromJS(currentUser)
+            const admin = fromJS(user)
             const store = mockStore(getState(admin))
 
             const component = shallow(
@@ -61,7 +61,7 @@ describe('<ViewSharingButton/>', () => {
 
         it('should render as private', () => {
             const view = fromJS({visibility: ViewVisibility.PRIVATE})
-            const admin = fromJS(currentUser)
+            const admin = fromJS(user)
             const store = mockStore(getState(admin))
 
             const component = shallow(
@@ -76,7 +76,7 @@ describe('<ViewSharingButton/>', () => {
                 visibility: ViewVisibility.PUBLIC,
                 category: SYSTEM_VIEW_CATEGORY,
             })
-            const admin = fromJS(currentUser)
+            const admin = fromJS(user)
             const store = mockStore(getState(admin))
 
             const component = shallow(
@@ -89,7 +89,7 @@ describe('<ViewSharingButton/>', () => {
         it('should render as disabled because user is not allowed', () => {
             const view = fromJS({visibility: ViewVisibility.PUBLIC})
             const roles = fromJS([{name: BASIC_AGENT_ROLE}])
-            const basicAgent = fromJS(currentUser).set('roles', roles)
+            const basicAgent = fromJS(user).set('roles', roles)
             const store = mockStore(getState(basicAgent))
 
             const component = shallow(

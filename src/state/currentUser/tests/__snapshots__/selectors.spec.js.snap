@@ -3,56 +3,11 @@
 exports[`current user selectors getUserSetting should return the setting by type 1`] = `
 Object {
   "data": Object {
-    "1": Object {
-      "display_order": 2,
-      "hide": false,
-    },
-    "10": Object {
-      "display_order": 1,
-      "hide": false,
-    },
-    "11": Object {
-      "display_order": 6,
-      "hide": true,
-    },
-    "12": Object {
-      "display_order": 4,
-      "hide": true,
-    },
-    "2": Object {
-      "display_order": 3,
-      "hide": true,
-    },
-    "3": Object {
-      "display_order": 1,
-      "hide": true,
-    },
-    "4": Object {
-      "display_order": 3,
-      "hide": true,
-    },
-    "5": Object {
-      "display_order": 7,
-      "hide": true,
-    },
-    "6": Object {
-      "display_order": 5,
-      "hide": true,
-    },
-    "7": Object {
-      "display_order": 6,
-      "hide": true,
-    },
-    "8": Object {
-      "display_order": 8,
-      "hide": true,
-    },
-    "9": Object {
-      "display_order": 6,
-      "hide": true,
-    },
+    "available": true,
+    "hide_tips": true,
+    "show_macros": true,
   },
-  "id": 1,
-  "type": "ticket-views",
+  "id": 3,
+  "type": "preferences",
 }
 `;

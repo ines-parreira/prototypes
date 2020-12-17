@@ -6,7 +6,7 @@ import {Location} from 'history'
 
 import {UserRole} from '../../../../config/types/user'
 import {section} from '../../../../fixtures/section'
-import {currentUser} from '../../../../fixtures/users.js'
+import {user} from '../../../../fixtures/users'
 import {view} from '../../../../fixtures/views'
 import client from '../../../../models/api/resources'
 import {ViewType, ViewVisibility} from '../../../../models/view/types'
@@ -123,7 +123,7 @@ describe('<TicketNavbar/>', () => {
         activeViewId: 4,
         activeViewIdSet: jest.fn(),
         currentUser: fromJS({
-            ...currentUser,
+            ...user,
             roles: [
                 {
                     id: 1,
@@ -259,10 +259,7 @@ describe('<TicketNavbar/>', () => {
 
     it('should display shared actions for lead-agent/admin', () => {
         const {container} = render(
-            <TicketNavbarContainer
-                {...minProps}
-                currentUser={fromJS(currentUser)}
-            />
+            <TicketNavbarContainer {...minProps} currentUser={fromJS(user)} />
         )
 
         expect(container.firstChild).toMatchSnapshot()

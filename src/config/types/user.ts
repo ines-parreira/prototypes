@@ -25,8 +25,9 @@ export type UserDraft = {
 export type User = UserDraft & {
     active: boolean
     bio: Maybe<string>
+    country: string | null
+    language: string | null
     created_datetime: string
-    data: Maybe<unknown>
     deactivated_datetime: Maybe<string>
     external_id: string
     firstname: string
@@ -34,8 +35,9 @@ export type User = UserDraft & {
     lastname: string
     meta: MetaByAgentRole
     updated_datetime: string
-    roles: {id: number; name: UserRole}[]
+    roles: [{name: UserRole}]
     settings: UserSetting[]
+    timezone: string | null
 }
 
 export type EditableUserProfile = {
@@ -72,6 +74,7 @@ export type UserSetting =
 export type UserPreferences = {
     available: boolean
     show_macros: boolean
+    hide_tips?: boolean
 }
 
 export type UserTicketSettings = {

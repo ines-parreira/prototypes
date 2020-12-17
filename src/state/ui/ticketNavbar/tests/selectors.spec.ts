@@ -1,8 +1,8 @@
 import {fromJS} from 'immutable'
 
 import {UserSettingType} from '../../../../config/types/user'
-import {currentAccountState} from '../../../../fixtures/currentAccount'
-import {currentUser} from '../../../../fixtures/users.js'
+import {account} from '../../../../fixtures/account'
+import {user} from '../../../../fixtures/users'
 import {ViewType, ViewVisibility} from '../../../../models/view/types'
 import {RootState} from '../../../types'
 import {getTicketNavbarElements} from '../selectors'
@@ -72,7 +72,7 @@ describe('selectors', () => {
             },
         },
         currentAccount: fromJS({
-            ...currentAccountState,
+            ...account,
             settings: [
                 {
                     id: 3,
@@ -93,7 +93,7 @@ describe('selectors', () => {
             ],
         }),
         currentUser: fromJS({
-            ...currentUser,
+            ...user,
             settings: [
                 {
                     id: 2,

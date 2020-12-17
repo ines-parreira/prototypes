@@ -8,7 +8,7 @@ import thunk from 'redux-thunk'
 import PerHourPerWeekTableStat, {
     TableCells,
 } from '../PerHourPerWeekTableStat/PerHourPerWeekTableStat'
-import {currentAccountState} from '../../../../../../fixtures/currentAccount.ts'
+import {account} from '../../../../../../fixtures/account.ts'
 
 const mockStore = configureMockStore([thunk])
 
@@ -91,7 +91,7 @@ const statPerHourPerWeekEmptyData = {axes: {}, lines: []}
 describe('PerHourPerWeekTableStat', () => {
     describe('Table', () => {
         const initialState = fromJS({
-            currentAccount: currentAccountState,
+            currentAccount: account,
             currentUser: {
                 timezone: 'Europe/Berlin',
             },
@@ -133,9 +133,7 @@ describe('PerHourPerWeekTableStat', () => {
             const component = shallow(
                 <TableCells
                     lines={fromJS(statPerHourPerWeekData.lines)}
-                    businessHoursSettings={fromJS(
-                        currentAccountState.settings[0]
-                    )}
+                    businessHoursSettings={fromJS(account.settings[0])}
                     userTimezone={'Europe/Berlin'}
                 />
             )
@@ -146,9 +144,7 @@ describe('PerHourPerWeekTableStat', () => {
             const component = shallow(
                 <TableCells
                     lines={fromJS(statPerHourPerWeekData.lines)}
-                    businessHoursSettings={fromJS(
-                        currentAccountState.settings[0]
-                    )}
+                    businessHoursSettings={fromJS(account.settings[0])}
                     userTimezone={'US/Pacific'}
                 />
             )

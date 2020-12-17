@@ -3,10 +3,6 @@
 exports[`selectors getOrderedViewsByType should return the ordered list of views 1`] = `
 Array [
   Object {
-    "id": 10,
-    "type": "ticket-list",
-  },
-  Object {
     "id": 1,
     "type": "ticket-list",
   },
@@ -16,6 +12,10 @@ Array [
   },
   Object {
     "id": 4,
+    "type": "ticket-list",
+  },
+  Object {
+    "id": 10,
     "type": "ticket-list",
   },
   Object {

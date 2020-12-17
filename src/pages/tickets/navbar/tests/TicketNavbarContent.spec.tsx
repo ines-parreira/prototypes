@@ -5,7 +5,7 @@ import {HTML5Backend} from 'react-dnd-html5-backend'
 import {fromJS} from 'immutable'
 
 import {section} from '../../../../fixtures/section'
-import {currentUser} from '../../../../fixtures/users.js'
+import {user} from '../../../../fixtures/users'
 import {view} from '../../../../fixtures/views'
 import {TicketNavbarElementType} from '../TicketNavbar'
 import {
@@ -55,7 +55,7 @@ describe('<TicketNavbarContent/>', () => {
         ] as TicketNavbarElement[],
         onClickDeleteSection: null,
         onClickRenameSection: null,
-        currentUser: fromJS(currentUser),
+        currentUser: fromJS(user),
         views: {
             [view.id]: {...view, section_id: 4},
         },

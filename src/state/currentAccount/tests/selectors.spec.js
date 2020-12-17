@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 
 import * as selectors from '../selectors.ts'
 import {initialState} from '../reducers.ts'
-import * as currentAccountFixtures from '../../../fixtures/currentAccount.ts'
+import * as accountFixtures from '../../../fixtures/account.ts'
 import {
     SETTING_TYPE_BUSINESS_HOURS,
     SETTING_TYPE_SATISFACTION_SURVEYS,
@@ -26,7 +26,7 @@ describe('current account selectors', () => {
     beforeEach(() => {
         state = {
             currentAccount: initialState.mergeDeep(
-                fromJS(currentAccountFixtures.currentAccountState)
+                fromJS(accountFixtures.account)
             ),
         }
     })

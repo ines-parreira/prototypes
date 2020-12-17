@@ -5,7 +5,7 @@ import {HTML5Backend} from 'react-dnd-html5-backend'
 import {fromJS} from 'immutable'
 
 import {section} from '../../../../fixtures/section'
-import {currentUser} from '../../../../fixtures/users.js'
+import {user} from '../../../../fixtures/users'
 import {view} from '../../../../fixtures/views'
 import {TicketNavbarSectionContainer} from '../TicketNavbarSection'
 import TicketNavbarView from '../TicketNavbarView'
@@ -19,7 +19,7 @@ jest.mock(
 )
 
 const minProps = ({
-    currentUser: fromJS(currentUser),
+    currentUser: fromJS(user),
     notify: jest.fn(),
     onSectionDeleteClick: jest.fn(),
     onSectionRenameClick: jest.fn(),
