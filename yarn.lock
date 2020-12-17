@@ -1056,6 +1056,21 @@
     exec-sh "^0.3.2"
     minimist "^1.2.0"
 
+"@datadog/browser-core@2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@datadog/browser-core/-/browser-core-2.0.3.tgz#c90a365b934347f870acdbc661c65c47a06a74df"
+  integrity sha512-XF+em6MFnJ09QJ3sqIft6FlU97TQZGjQMz1D++XPgEsHnXos0Mtm1XYxEQFnkvj3ZtSKxhDqMmHxjZ7PBgpaAg==
+  dependencies:
+    tslib "^1.10.0"
+
+"@datadog/browser-logs@2.0.3":
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/@datadog/browser-logs/-/browser-logs-2.0.3.tgz#71f0c6ad911eb4700b4c86800100dd8aa32fbc56"
+  integrity sha512-09qR6//mLwIj2E8D/HZKdXHpEs+i74Z8V9EHKEjTdds+nXsAHYX16IVqLeWu8wHzoBQJH/jk2kmwNP6xo+J2Ng==
+  dependencies:
+    "@datadog/browser-core" "2.0.3"
+    tslib "^1.10.0"
+
 "@formatjs/ecma402-abstract@^1.2.2":
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/@formatjs/ecma402-abstract/-/ecma402-abstract-1.2.2.tgz#4810bdbd696d3805c535fd0620b7c8f45ab3164f"
@@ -5828,15 +5843,15 @@ image-size@~0.5.0:
   resolved "https://registry.yarnpkg.com/image-size/-/image-size-0.5.5.tgz#09dfd4ab9d20e29eb1c3e80b8990378df9e3cb9c"
   integrity sha1-Cd/Uq50g4p6xw+gLiZA3jfnjy5w=
 
-immer@^6.0.1:
-  version "6.0.9"
-  resolved "https://registry.yarnpkg.com/immer/-/immer-6.0.9.tgz#b9dd69b8e69b3a12391e87db1e3ff535d1b26485"
-  integrity sha512-SyCYnAuiRf67Lvk0VkwFvwtDoEiCMjeamnHvRfnVDyc7re1/rQrNxuL+jJ7lA3WvdC4uznrvbmm+clJ9+XXatg==
-
 immer@8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/immer/-/immer-8.0.0.tgz#08763549ba9dd7d5e2eb4bec504a8315bd9440c2"
   integrity sha512-jm87NNBAIG4fHwouilCHIecFXp5rMGkiFrAuhVO685UnMAlOneEAnOyzPt8OnP47TC11q/E7vpzZe0WvwepFTg==
+
+immer@^6.0.1:
+  version "6.0.9"
+  resolved "https://registry.yarnpkg.com/immer/-/immer-6.0.9.tgz#b9dd69b8e69b3a12391e87db1e3ff535d1b26485"
+  integrity sha512-SyCYnAuiRf67Lvk0VkwFvwtDoEiCMjeamnHvRfnVDyc7re1/rQrNxuL+jJ7lA3WvdC4uznrvbmm+clJ9+XXatg==
 
 immutability-helper@2.9.1:
   version "2.9.1"

@@ -13,6 +13,7 @@ import * as segmentTracker from './store/middlewares/segmentTracker.js'
 import {transformSystemMessagesToNotifications} from './utils'
 import {NotificationStatus} from './state/notifications/types'
 import {GorgiasInitialState, InitialRootState} from './types'
+import {initDatadogLogger} from './utils/datadog'
 
 const initMoment = (currentUser: EditableUserProfile) => {
     // set default locale and timezone
@@ -45,6 +46,14 @@ export const toInitialStoreState = (initialState: GorgiasInitialState) => {
     nextState.entities = {sections}
 
     return nextState as InitialRootState
+}
+
+if (window.PRODUCTION) {
+    initDatadogLogger(
+        window.GORGIAS_STATE.currentAccount,
+        window.GORGIAS_STATE.currentUser,
+        window.GORGIAS_RELEASE
+    )
 }
 
 // Supply an initial state to redux for faster page loads. See #752

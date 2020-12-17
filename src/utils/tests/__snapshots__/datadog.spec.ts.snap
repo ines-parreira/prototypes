@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`initDatadogLogger() should init datadog logger 1`] = `
+Array [
+  Array [
+    Object {
+      "clientToken": "pubc9857173f4901f3b10fc39dfcde707c6",
+      "env": "helpdesk-web-client-production",
+      "forwardErrorsToLogs": true,
+      "sampleRate": 100,
+      "service": "web-client",
+      "site": "datadoghq.com",
+      "version": "v1.4.5",
+    },
+  ],
+]
+`;
+
+exports[`initDatadogLogger() should init datadog logger 2`] = `
+Array [
+  Array [
+    Object {
+      "account": Object {
+        "domain": "acme",
+      },
+      "user": Object {
+        "email": "alex@gorgias.io",
+        "id": 2,
+      },
+    },
+  ],
+]
+`;

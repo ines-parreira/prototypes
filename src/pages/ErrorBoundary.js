@@ -1,6 +1,7 @@
 // @flow
 
 import React, {type Node} from 'react'
+import {datadogLogs} from '@datadog/browser-logs'
 import {Button, Card, CardBody, Collapse} from 'reactstrap'
 import {Emoji} from 'emoji-mart'
 
@@ -29,12 +30,18 @@ export class ErrorBoundary extends React.PureComponent<Props, State> {
     }
 
     componentDidCatch(error: Error, errorInfo: {componentStack: string}) {
-        console.error(error, errorInfo)
-
-        if (window.Raven) {
-            window.Raven.captureException(error, {
+        if (window.PRODUCTION) {
+            datadogLogs.logger.error(error.toString(), {
                 extra: errorInfo,
             })
+
+            if (window.Raven) {
+                window.Raven.captureException(error, {
+                    extra: errorInfo,
+                })
+            }
+        } else {
+            console.error(error, errorInfo)
         }
     }
 
