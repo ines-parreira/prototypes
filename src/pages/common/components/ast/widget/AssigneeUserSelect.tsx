@@ -14,6 +14,7 @@ type OwnProps = {
     onChange: (value: number) => void
     value?: string | number
     className?: string
+    allowUnassign?: boolean
 }
 
 class AssigneeUserSelect extends React.Component<
@@ -28,17 +29,26 @@ class AssigneeUserSelect extends React.Component<
     }
 
     render() {
-        const {value, onChange, agents, className} = this.props
+        const {value, onChange, agents, className, allowUnassign} = this.props
+        let options: List<any> = fromJS(
+            allowUnassign ? [{value: null, label: 'Unassigned'}] : []
+        )
 
         if (agents.isEmpty()) {
             return <span className="text-muted ml-2">Loading agents...</span>
         }
 
-        let options: List<any> = fromJS([{value: null, label: 'Unassigned'}])
+        // TODO(@julian): We need to temporary cast the type of values according to the
+        // context of the widget (strings in rule actions, ints in rule conditions),
+        // until we fix https://github.com/gorgias/gorgias/issues/6609.
 
         agents.forEach((agent: Map<any, any>) => {
+            const currentValue = agent.get('id')
             options = options.push({
-                value: (agent.get('id') as number).toString(),
+                value:
+                    className === 'ActionWidget'
+                        ? (currentValue as number).toString()
+                        : currentValue,
                 label: agent.get('name'),
             })
         })
@@ -46,7 +56,11 @@ class AssigneeUserSelect extends React.Component<
         return (
             <Select
                 className={className}
-                value={value}
+                value={
+                    value && className === 'LiteralWidget'
+                        ? parseInt(value as string)
+                        : value
+                }
                 onChange={onChange}
                 options={options.toJS() || []}
             />

@@ -526,6 +526,7 @@ export class Widget extends React.Component<Props, State> {
                         {...widget}
                         className={className}
                         onChange={this._handleChange}
+                        allowUnassign={!operatorName}
                     />
                 )
             case 'assignee_team-select':

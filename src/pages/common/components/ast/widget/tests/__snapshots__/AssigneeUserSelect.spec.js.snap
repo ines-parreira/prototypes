@@ -6,20 +6,39 @@ exports[`ast widgets <AssigneeUserSelect/> render() should render a dropdown wit
   options={
     Array [
       Object {
-        "label": "Unassigned",
-        "value": null,
-      },
-      Object {
         "label": "Agent 1",
-        "value": "1",
+        "value": 1,
       },
       Object {
         "label": "Agent 2",
-        "value": "2",
+        "value": 2,
       },
       Object {
         "label": "Agent 3",
-        "value": "3",
+        "value": 3,
+      },
+    ]
+  }
+  value={1}
+/>
+`;
+
+exports[`ast widgets <AssigneeUserSelect/> render() should render a dropdown without "Unassign" option 1`] = `
+<Select
+  onSearchChange={[Function]}
+  options={
+    Array [
+      Object {
+        "label": "Agent 1",
+        "value": 1,
+      },
+      Object {
+        "label": "Agent 2",
+        "value": 2,
+      },
+      Object {
+        "label": "Agent 3",
+        "value": 3,
       },
     ]
   }
@@ -33,20 +52,16 @@ exports[`ast widgets <AssigneeUserSelect/> render() should render a dropdown wit
   options={
     Array [
       Object {
-        "label": "Unassigned",
-        "value": null,
-      },
-      Object {
         "label": "Agent 1",
-        "value": "1",
+        "value": 1,
       },
       Object {
         "label": "Agent 2",
-        "value": "2",
+        "value": 2,
       },
       Object {
         "label": "Agent 3",
-        "value": "3",
+        "value": 3,
       },
     ]
   }

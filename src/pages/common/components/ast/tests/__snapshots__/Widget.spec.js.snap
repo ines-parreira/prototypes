@@ -24,6 +24,7 @@ exports[`ast Widget TagsSelect should render component AssigneeTeamSelect 1`] = 
 
 exports[`ast Widget TagsSelect should render component AssigneeUserSelect 1`] = `
 <Connect(AssigneeUserSelect)
+  allowUnassign={false}
   description=""
   onChange={[Function]}
   options={Array []}

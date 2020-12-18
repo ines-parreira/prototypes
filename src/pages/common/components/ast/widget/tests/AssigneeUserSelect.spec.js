@@ -66,6 +66,21 @@ describe('ast', () => {
                     )
                     expect(component.dive()).toMatchSnapshot()
                 })
+
+                it('should render a dropdown without "Unassign" option', () => {
+                    const component = shallow(
+                        <AssigneeUserSelect
+                            value={1}
+                            store={mockStore({
+                                agents: fromJS({
+                                    all: agents,
+                                }),
+                            })}
+                            allowUnassign={false}
+                        />
+                    )
+                    expect(component.dive()).toMatchSnapshot()
+                })
             })
         })
     })
