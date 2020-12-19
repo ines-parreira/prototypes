@@ -1,13 +1,10 @@
 //$TsFixMe fallback value, use IntentName enum instead
 export const INTENT_NAME = Object.freeze({
-    ACCOUNT_CANCEL: 'account/cancel',
     DISCOUNT_REQUEST: 'discount/request',
-    DISCOUNT_POLICY: 'discount/policy',
     EXCHANGE_REQUEST: 'exchange/request',
     EXCHANGE_STATUS: 'exchange/status',
     FEEDBACK_POSITIVE: 'feedback/positive',
     FEEDBACK_NEGATIVE: 'feedback/negative',
-    JOB_APPLICATION: 'job/application',
     ORDER_CANCEL: 'order/cancel',
     ORDER_CHANGE: 'order/change',
     ORDER_DAMAGED: 'order/damaged',
@@ -15,13 +12,10 @@ export const INTENT_NAME = Object.freeze({
     OTHER_NO_REPLY: 'other/no_reply',
     OTHER_QUESTION: 'other/question',
     OTHER_THANKS: 'other/thanks',
-    PASSWORD_RESET: 'password/reset',
     PRODUCT_RECOMMENDATION: 'product/recommendation',
     PRODUCT_QUESTION: 'product/question',
-    REFUND_POLICY: 'refund/policy',
     REFUND_REQUEST: 'refund/request',
     REFUND_STATUS: 'refund/status',
-    RETURN_POLICY: 'return/policy',
     RETURN_REQUEST: 'return/request',
     RETURN_STATUS: 'return/status',
     SHIPPING_CHANGE: 'shipping/change',
@@ -31,5 +25,4 @@ export const INTENT_NAME = Object.freeze({
     STOCK_REQUEST: 'stock/request',
     SUBSCRIPTION_CANCEL: 'subscription/cancel',
     SUBSCRIPTION_CHANGE: 'subscription/change',
-    EMAIL_UNSUBSCRIBE: 'email/unsubscribe',
 })
