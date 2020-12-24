@@ -19,6 +19,8 @@ export type Notification = {
     style?: string
     type?: NotificationStatus
     onClick?: () => void
+    noAutoDismiss?: boolean
+    isTicketMessageFailedEvent?: boolean
 }
 
 export type NotificationButton = {

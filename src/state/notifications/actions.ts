@@ -43,6 +43,14 @@ const isDuplicate = (
     notification: Notification,
     oldNotification: Notification
 ): boolean => {
+    if (
+        !!notification.isTicketMessageFailedEvent &&
+        !!oldNotification.isTicketMessageFailedEvent &&
+        notification.message === oldNotification.message
+    ) {
+        return true
+    }
+
     return _isEqual(
         cleanNotification(notification),
         cleanNotification(oldNotification)
@@ -82,8 +90,11 @@ export const notify = (message: Notification) => (
         delete finalMessage.title
     }
 
-    // calculate auto dismiss time if dismissAfter is not set
-    if (finalMessage.dismissible && finalMessage.dismissAfter === 0) {
+    if (!!finalMessage.noAutoDismiss) {
+        finalMessage.dismissAfter = 0
+    } else if (finalMessage.dismissible && finalMessage.dismissAfter === 0) {
+        // calculate auto dismiss time if dismissAfter is not set
+
         const wordsPerMinute = 230
         const readText = `${finalMessage.title || ''} ${
             finalMessage.message || ''

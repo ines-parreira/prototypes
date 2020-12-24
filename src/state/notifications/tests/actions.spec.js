@@ -98,6 +98,24 @@ describe('actions', () => {
             ])
         })
 
+        it('should set `dismissAfter` to 0 when `noAutoDismiss` is true', () => {
+            store.dispatch(
+                notify({
+                    dismissAfter: 5000,
+                    noAutoDismiss: true,
+                })
+            )
+            const expectedActions = store.getActions()
+
+            expect(expectedActions).toMatchObject([
+                {
+                    payload: {
+                        dismissAfter: 0,
+                    },
+                },
+            ])
+        })
+
         it('should set title as content, if content not defined', () => {
             const title =
                 'Pizza is a yeasted flatbread typically topped with tomato sauce and cheese and baked in an oven.'

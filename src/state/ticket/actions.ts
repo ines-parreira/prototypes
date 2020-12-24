@@ -931,20 +931,19 @@ export const handleMessageActionError = (ticketId: string) => (
 export const handleMessageError = (json: TicketMessageFailedEvent) => (
     dispatch: StoreDispatch
 ) => {
-    let buttons: NotificationButton[] = []
+    const buttons: NotificationButton[] = [
+        {
+            primary: true,
+            name: 'Review',
+            onClick: () => {
+                browserHistory.push(`/app/ticket/${json.ticket_id}`)
+            },
+        },
+    ]
+
     let fetchPromise = null
 
-    if (!isCurrentlyOnTicket(json.ticket_id)) {
-        buttons = [
-            {
-                primary: true,
-                name: 'Review',
-                onClick: () => {
-                    browserHistory.push(`/app/ticket/${json.ticket_id}`)
-                },
-            },
-        ]
-    } else {
+    if (isCurrentlyOnTicket(json.ticket_id)) {
         fetchPromise = dispatch(
             fetchTicket((json.ticket_id as unknown) as string, true)
         )
@@ -953,10 +952,11 @@ export const handleMessageError = (json: TicketMessageFailedEvent) => (
     void dispatch(
         notify({
             status: NotificationStatus.Error,
-            dismissAfter: 0,
+            noAutoDismiss: true,
+            isTicketMessageFailedEvent: true,
             allowHTML: true,
             message:
-                'Your last message could not be sent because ' +
+                `Your last message in the ticket with id ${json.ticket_id} could not be sent because ` +
                 json.event.data.error.message,
             buttons,
         })
