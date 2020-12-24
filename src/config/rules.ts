@@ -1,23 +1,32 @@
 import {fromJS, List} from 'immutable'
 
+export const eventNameToLabel: {[name: string]: string} = {
+    'ticket-created': 'ticket created',
+    'ticket-updated': 'ticket updated',
+    'ticket-assigned': 'ticket assigned',
+    'ticket-message-created': 'new message in ticket',
+}
+
 export const events = fromJS([
     {
-        label: 'ticket created',
+        label: eventNameToLabel['ticket-created'],
         value: 'ticket-created',
     },
     {
-        label: 'ticket updated',
+        label: eventNameToLabel['ticket-updated'],
         value: 'ticket-updated',
     },
     {
-        label: 'ticket assigned',
+        label: eventNameToLabel['ticket-assigned'],
         value: 'ticket-assigned',
     },
     {
-        label: 'new message in ticket',
+        label: eventNameToLabel['ticket-message-created'],
         value: 'ticket-message-created',
     },
 ]) as List<any>
+
+export const eventsDependencies = {'ticket-updated': ['ticket-assigned']}
 
 // variables available in rules
 export const availableVariables = ['ticket', 'message', 'event']

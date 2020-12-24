@@ -22,3 +22,14 @@ export const eventTypes = (rule: Rule): Array<string> => {
 
     return _compact(types.split(',').map((t) => _trim(t)))
 }
+
+/**
+ * Return array of overlapping strings in two string arrays (ex: ['ticket-updated', 'ticket-created']
+ * and ['ticket-updated', 'ticket-assigned'] -> ['ticket-updated'])
+ */
+export const getArraysIntersection = (
+    array1: Array<string>,
+    array2: Array<string>
+) => {
+    return array1.filter((value) => array2.includes(value))
+}

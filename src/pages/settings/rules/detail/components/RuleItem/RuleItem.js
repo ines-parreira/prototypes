@@ -257,6 +257,16 @@ export default class RuleItem extends React.Component<Props, State> {
             codeAST = codeAST.toJS()
         }
 
+        let dependentEvents = rulesHelpers.getArraysIntersection(
+            rulesConfig.eventsDependencies['ticket-updated'],
+            eventTypes
+        )
+        dependentEvents = dependentEvents.map((event) => {
+            return rulesConfig.eventNameToLabel[event]
+        })
+        const containsDependentEvents =
+            eventTypes.includes('ticket-updated') && dependentEvents.length > 0
+
         return (
             <tr
                 id={rule.get('id')}
@@ -362,6 +372,15 @@ export default class RuleItem extends React.Component<Props, State> {
                                             <Errors inline>
                                                 You need to select at least one
                                                 trigger
+                                            </Errors>
+                                        )}
+                                        {containsDependentEvents && (
+                                            <Errors inline>
+                                                <b>
+                                                    {dependentEvents.join(', ')}
+                                                </b>{' '}
+                                                already covered by{' '}
+                                                <b>ticket updated</b>
                                             </Errors>
                                         )}
                                     </div>
