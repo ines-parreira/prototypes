@@ -39,6 +39,10 @@ export default class VariantResult extends React.PureComponent<Props> {
             image,
             title,
             subtitle: variant.sku ? `SKU: ${variant.sku}` : null,
+            stock: {
+                tracked: !!variant.inventory_management,
+                quantity: variant.inventory_quantity,
+            },
         }
     }
 

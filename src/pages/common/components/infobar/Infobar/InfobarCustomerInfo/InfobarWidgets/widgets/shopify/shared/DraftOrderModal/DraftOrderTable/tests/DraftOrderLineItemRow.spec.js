@@ -8,6 +8,7 @@ import {
     shopifyAppliedDiscountFixture,
     shopifyDraftOrderPayloadFixture,
     shopifyProductFixture,
+    shopifyVariantFixture,
 } from '../../../../../../../../../../../../../fixtures/shopify.ts'
 import {
     EVENTS,
@@ -15,6 +16,7 @@ import {
 } from '../../../../../../../../../../../../../store/middlewares/segmentTracker'
 import {DraftOrderLineItemRow} from '../DraftOrderLineItemRow'
 import {ShopifyAction} from '../../../../constants'
+import {InventoryManagement} from '../../../../../../../../../../../../../constants/integrations/types/shopify.ts'
 
 jest.mock('lodash/debounce', () => (fn) => fn)
 
@@ -31,11 +33,21 @@ jest.mock(
 )
 
 describe('<DraftOrderLineItemRow/>', () => {
-    let onChange, onDelete
+    let onChange, onDelete, props
 
     beforeEach(() => {
         onChange = jest.fn()
         onDelete = jest.fn()
+
+        props = {
+            id: 'line-item',
+            actionName: ShopifyAction.DUPLICATE_ORDER,
+            shopName: 'storegorgias3',
+            currencyCode: 'USD',
+            removable: true,
+            onChange,
+            onDelete,
+        }
     })
 
     describe('render()', () => {
@@ -45,15 +57,9 @@ describe('<DraftOrderLineItemRow/>', () => {
 
             const component = shallow(
                 <DraftOrderLineItemRow
-                    id="line-item"
-                    actionName={ShopifyAction.DUPLICATE_ORDER}
+                    {...props}
                     lineItem={lineItem}
                     product={null}
-                    shopName="storegorgias3"
-                    currencyCode="USD"
-                    removable
-                    onChange={onChange}
-                    onDelete={onDelete}
                 />
             )
 
@@ -66,15 +72,9 @@ describe('<DraftOrderLineItemRow/>', () => {
 
             const component = shallow(
                 <DraftOrderLineItemRow
-                    id="line-item"
-                    actionName={ShopifyAction.DUPLICATE_ORDER}
+                    {...props}
                     lineItem={lineItem}
                     product={fromJS(shopifyProductFixture())}
-                    shopName="storegorgias3"
-                    currencyCode="USD"
-                    removable
-                    onChange={onChange}
-                    onDelete={onDelete}
                 />
             )
 
@@ -92,15 +92,9 @@ describe('<DraftOrderLineItemRow/>', () => {
 
             const component = shallow(
                 <DraftOrderLineItemRow
-                    id="line-item"
-                    actionName={ShopifyAction.DUPLICATE_ORDER}
+                    {...props}
                     lineItem={lineItem}
                     product={fromJS(shopifyProductFixture())}
-                    shopName="storegorgias3"
-                    currencyCode="USD"
-                    removable
-                    onChange={onChange}
-                    onDelete={onDelete}
                 />
             )
 
@@ -113,15 +107,60 @@ describe('<DraftOrderLineItemRow/>', () => {
 
             const component = shallow(
                 <DraftOrderLineItemRow
-                    id="line-item"
-                    actionName={ShopifyAction.DUPLICATE_ORDER}
+                    {...props}
                     lineItem={lineItem}
                     product={fromJS(shopifyProductFixture())}
-                    shopName="storegorgias3"
-                    currencyCode="USD"
                     removable={false}
-                    onChange={onChange}
-                    onDelete={onDelete}
+                />
+            )
+
+            expect(component).toMatchSnapshot()
+        })
+
+        it('should render with product stock quantity', () => {
+            const payload = fromJS(shopifyDraftOrderPayloadFixture())
+            const lineItem = payload.getIn(['line_items', 0]).set('quantity', 0)
+            const variantId = payload.getIn(['line_items', 0, 'variant_id'])
+            const variant = fromJS(
+                shopifyVariantFixture({
+                    id: variantId,
+                    inventoryManagement: InventoryManagement.Shopify,
+                    inventoryQuantity: 99,
+                })
+            )
+            const product = fromJS(shopifyProductFixture({variants: [variant]}))
+
+            const component = shallow(
+                <DraftOrderLineItemRow
+                    {...props}
+                    lineItem={lineItem}
+                    product={product}
+                    removable={false}
+                />
+            )
+
+            expect(component).toMatchSnapshot()
+        })
+
+        it('should render without product stock quantity because the inventory is not tracked', () => {
+            const payload = fromJS(shopifyDraftOrderPayloadFixture())
+            const lineItem = payload.getIn(['line_items', 0]).set('quantity', 0)
+            const variantId = payload.getIn(['line_items', 0, 'variant_id'])
+            const variant = fromJS(
+                shopifyVariantFixture({
+                    id: variantId,
+                    inventoryManagement: null, // inventory is not tracked
+                    inventoryQuantity: 0,
+                })
+            )
+            const product = fromJS(shopifyProductFixture({variants: [variant]}))
+
+            const component = shallow(
+                <DraftOrderLineItemRow
+                    {...props}
+                    lineItem={lineItem}
+                    product={product}
+                    removable={false}
                 />
             )
 
@@ -147,15 +186,10 @@ describe('<DraftOrderLineItemRow/>', () => {
 
                 const component = shallow(
                     <DraftOrderLineItemRow
-                        id="line-item"
+                        {...props}
                         actionName={actionName}
                         lineItem={lineItem}
                         product={fromJS(shopifyProductFixture())}
-                        shopName="storegorgias3"
-                        currencyCode="USD"
-                        removable
-                        onChange={onChange}
-                        onDelete={onDelete}
                     />
                 )
 

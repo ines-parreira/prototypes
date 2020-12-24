@@ -13,6 +13,9 @@ exports[`<DraftOrderTable/> render() should render 1`] = `
         Product
       </th>
       <th>
+        In stock
+      </th>
+      <th>
         Item price
       </th>
       <th>
@@ -68,6 +71,8 @@ exports[`<DraftOrderTable/> render() should render 1`] = `
             Object {
               "id": 1,
               "image_id": 1,
+              "inventory_management": null,
+              "inventory_quantity": 0,
               "option1": null,
               "option2": null,
               "option3": null,
@@ -127,6 +132,8 @@ exports[`<DraftOrderTable/> render() should render 1`] = `
             Object {
               "id": 1,
               "image_id": 1,
+              "inventory_management": null,
+              "inventory_quantity": 0,
               "option1": null,
               "option2": null,
               "option3": null,
@@ -157,6 +164,9 @@ exports[`<DraftOrderTable/> render() should render without line items 1`] = `
     <tr>
       <th>
         Product
+      </th>
+      <th>
+        In stock
       </th>
       <th>
         Item price
@@ -195,6 +205,9 @@ exports[`<DraftOrderTable/> render() should render without products 1`] = `
     <tr>
       <th>
         Product
+      </th>
+      <th>
+        In stock
       </th>
       <th>
         Item price

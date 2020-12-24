@@ -1,5 +1,25 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`<VariantResult/> render() should render with product stock quantity 1`] = `
+<Result
+  image={
+    Object {
+      "alt": "Alt",
+      "id": 1,
+      "src": "src",
+    }
+  }
+  stock={
+    Object {
+      "quantity": 1,
+      "tracked": true,
+    }
+  }
+  subtitle="SKU: 11111"
+  title="Product 1"
+/>
+`;
+
 exports[`<VariantResult/> render() should render with product title as title, and SKU as subtitle 1`] = `
 <Result
   image={
@@ -7,6 +27,12 @@ exports[`<VariantResult/> render() should render with product title as title, an
       "alt": "Alt",
       "id": 1,
       "src": "src",
+    }
+  }
+  stock={
+    Object {
+      "quantity": 0,
+      "tracked": false,
     }
   }
   subtitle="SKU: 11111"
@@ -23,8 +49,34 @@ exports[`<VariantResult/> render() should render with variant title in title 1`]
       "src": "src",
     }
   }
+  stock={
+    Object {
+      "quantity": 0,
+      "tracked": false,
+    }
+  }
   subtitle="SKU: 22222"
   title="Product 1 - Variant 2"
+/>
+`;
+
+exports[`<VariantResult/> render() should render without product stock quantity because the inventory is not tracked 1`] = `
+<Result
+  image={
+    Object {
+      "alt": "Alt",
+      "id": 1,
+      "src": "src",
+    }
+  }
+  stock={
+    Object {
+      "quantity": 0,
+      "tracked": false,
+    }
+  }
+  subtitle="SKU: 11111"
+  title="Product 1"
 />
 `;
 
@@ -35,6 +87,12 @@ exports[`<VariantResult/> render() should render without subtitle 1`] = `
       "alt": "Alt",
       "id": 1,
       "src": "src",
+    }
+  }
+  stock={
+    Object {
+      "quantity": 0,
+      "tracked": false,
     }
   }
   subtitle={null}

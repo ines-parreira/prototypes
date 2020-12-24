@@ -1,7 +1,9 @@
 import React from 'react'
+import classnames from 'classnames'
 import {getSizedImageUrl} from '@shopify/theme-images'
 
 import defaultImage from '../../../../../img/presentationals/shopify-product-default-image.png'
+import {ProductStockQuantity} from '../../components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/shared/StockQuantity/index.ts'
 
 import css from './Result.less'
 
@@ -12,9 +14,35 @@ export type Props = {
     },
     title: string,
     subtitle: ?string,
+    stock: {
+        tracked: boolean,
+        quantity: ?number,
+        totalVariants?: number,
+    },
 }
 
 export default class Result extends React.PureComponent<Props> {
+    _renderStock() {
+        const {stock} = this.props
+
+        if (!stock.tracked) {
+            return (
+                <div className={classnames(css.stock, css.grey)}>
+                    Inventory not tracked
+                </div>
+            )
+        }
+
+        return (
+            <div className={css.stock}>
+                <ProductStockQuantity value={stock.quantity} /> in stock{' '}
+                {stock.totalVariants && stock.totalVariants > 1
+                    ? `for ${stock.totalVariants} variants`
+                    : null}
+            </div>
+        )
+    }
+
     render() {
         const {image, title, subtitle} = this.props
         const imageSrc = !!image
@@ -31,6 +59,7 @@ export default class Result extends React.PureComponent<Props> {
                     <div className={css.title}>{title}</div>
                     {subtitle && <div className={css.subtitle}>{subtitle}</div>}
                 </div>
+                {this._renderStock()}
             </div>
         )
     }

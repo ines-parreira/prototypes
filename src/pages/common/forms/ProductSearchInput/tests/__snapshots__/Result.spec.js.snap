@@ -27,6 +27,15 @@ exports[`<Result/> render() should render with default image 1`] = `
       Subtitle
     </div>
   </div>
+  <div
+    className="stock"
+  >
+    <ProductStockQuantity
+      value={1}
+    />
+     in stock
+     
+  </div>
 </div>
 `;
 
@@ -57,6 +66,50 @@ exports[`<Result/> render() should render with image and subtitle 1`] = `
       Subtitle
     </div>
   </div>
+  <div
+    className="stock"
+  >
+    <ProductStockQuantity
+      value={1}
+    />
+     in stock
+     
+  </div>
+</div>
+`;
+
+exports[`<Result/> render() should render without product stock quantity 1`] = `
+<div
+  className="container"
+>
+  <div
+    className="imgContainer"
+  >
+    <img
+      alt="alt"
+      className="img"
+      src="//foo.bar/image_small.jpg"
+    />
+  </div>
+  <div
+    className="legend"
+  >
+    <div
+      className="title"
+    >
+      Title
+    </div>
+    <div
+      className="subtitle"
+    >
+      Subtitle
+    </div>
+  </div>
+  <div
+    className="stock grey"
+  >
+    Inventory not tracked
+  </div>
 </div>
 `;
 
@@ -81,6 +134,15 @@ exports[`<Result/> render() should render without subtitle 1`] = `
     >
       Title
     </div>
+  </div>
+  <div
+    className="stock"
+  >
+    <ProductStockQuantity
+      value={1}
+    />
+     in stock
+     
   </div>
 </div>
 `;

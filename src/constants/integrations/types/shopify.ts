@@ -134,6 +134,10 @@ export enum CancelReason {
     Other = 'other',
 }
 
+export enum InventoryManagement {
+    Shopify = 'shopify',
+}
+
 export type TaxLine = {
     title: string
     rate: number
@@ -329,6 +333,8 @@ export type Variant = {
     taxable: boolean
     tax_code?: string
     requires_shipping: boolean
+    inventory_quantity: number
+    inventory_management: Maybe<InventoryManagement>
 }
 
 export type Product = {

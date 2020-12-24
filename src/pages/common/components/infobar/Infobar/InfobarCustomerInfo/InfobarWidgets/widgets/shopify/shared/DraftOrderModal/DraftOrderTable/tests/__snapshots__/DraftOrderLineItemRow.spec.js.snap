@@ -43,6 +43,15 @@ exports[`<DraftOrderLineItemRow/> render() should render with applied discount 1
   <td
     className="numberCol"
   >
+    <span
+      className="text-muted"
+    >
+      N/A
+    </span>
+  </td>
+  <td
+    className="numberCol"
+  >
     <div
       className="d-flex"
     >
@@ -183,6 +192,15 @@ exports[`<DraftOrderLineItemRow/> render() should render with product image 1`] 
   <td
     className="numberCol"
   >
+    <span
+      className="text-muted"
+    >
+      N/A
+    </span>
+  </td>
+  <td
+    className="numberCol"
+  >
     <div
       className="d-flex"
     >
@@ -255,6 +273,119 @@ exports[`<DraftOrderLineItemRow/> render() should render with product image 1`] 
           close
         </i>
       </Button>
+    </div>
+  </td>
+</tr>
+`;
+
+exports[`<DraftOrderLineItemRow/> render() should render with product stock quantity 1`] = `
+<tr>
+  <td
+    className="container"
+  >
+    <div
+      className="imgContainer"
+    >
+      <img
+        alt="Alt"
+        className="img"
+        src={null}
+      />
+    </div>
+    <div
+      className="legend"
+    >
+      <div>
+        <a
+          className="title"
+          href="https://storegorgias3.myshopify.com/admin/products/8345093387/variants/31128766316567"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Acidulous candy
+        </a>
+      </div>
+      <div
+        className="subtitle"
+      >
+        Red / A
+      </div>
+      <div
+        className="subtitle"
+      >
+        SKU: 
+        0987654321-1
+      </div>
+    </div>
+  </td>
+  <td
+    className="numberCol"
+  >
+    <ProductStockQuantity
+      value={99}
+    />
+  </td>
+  <td
+    className="numberCol"
+  >
+    <div
+      className="d-flex"
+    >
+      <div
+        className="d-inline-block text-center"
+      >
+        <DiscountPopover
+          actionName="shopifyDuplicateOrder"
+          currencyCode="USD"
+          editable={true}
+          id="applied-discount-line-item"
+          label="item"
+          max={1}
+          onChange={[Function]}
+          placement="bottom"
+          value={null}
+        >
+          <MoneyAmount
+            amount="1.00"
+            currencyCode="USD"
+            negative={false}
+            renderIfZero={true}
+          />
+        </DiscountPopover>
+      </div>
+      <span
+        className="times"
+      >
+        x
+      </span>
+    </div>
+  </td>
+  <td
+    className="quantityCol"
+  >
+    <Input
+      min={1}
+      onChange={[Function]}
+      type="number"
+      value={0}
+    />
+  </td>
+  <td
+    className="numberCol"
+  >
+    <div
+      className="d-flex"
+    >
+      <strong
+        className="mt-auto mb-auto ml-auto"
+      >
+        <MoneyAmount
+          amount="0.00"
+          currencyCode="USD"
+          negative={false}
+          renderIfZero={true}
+        />
+      </strong>
     </div>
   </td>
 </tr>
@@ -303,6 +434,15 @@ exports[`<DraftOrderLineItemRow/> render() should render without product image 1
   <td
     className="numberCol"
   >
+    <span
+      className="text-muted"
+    >
+      N/A
+    </span>
+  </td>
+  <td
+    className="numberCol"
+  >
     <div
       className="d-flex"
     >
@@ -380,6 +520,121 @@ exports[`<DraftOrderLineItemRow/> render() should render without product image 1
 </tr>
 `;
 
+exports[`<DraftOrderLineItemRow/> render() should render without product stock quantity because the inventory is not tracked 1`] = `
+<tr>
+  <td
+    className="container"
+  >
+    <div
+      className="imgContainer"
+    >
+      <img
+        alt="Alt"
+        className="img"
+        src={null}
+      />
+    </div>
+    <div
+      className="legend"
+    >
+      <div>
+        <a
+          className="title"
+          href="https://storegorgias3.myshopify.com/admin/products/8345093387/variants/31128766316567"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          Acidulous candy
+        </a>
+      </div>
+      <div
+        className="subtitle"
+      >
+        Red / A
+      </div>
+      <div
+        className="subtitle"
+      >
+        SKU: 
+        0987654321-1
+      </div>
+    </div>
+  </td>
+  <td
+    className="numberCol"
+  >
+    <span
+      className="text-muted"
+    >
+      N/A
+    </span>
+  </td>
+  <td
+    className="numberCol"
+  >
+    <div
+      className="d-flex"
+    >
+      <div
+        className="d-inline-block text-center"
+      >
+        <DiscountPopover
+          actionName="shopifyDuplicateOrder"
+          currencyCode="USD"
+          editable={true}
+          id="applied-discount-line-item"
+          label="item"
+          max={1}
+          onChange={[Function]}
+          placement="bottom"
+          value={null}
+        >
+          <MoneyAmount
+            amount="1.00"
+            currencyCode="USD"
+            negative={false}
+            renderIfZero={true}
+          />
+        </DiscountPopover>
+      </div>
+      <span
+        className="times"
+      >
+        x
+      </span>
+    </div>
+  </td>
+  <td
+    className="quantityCol"
+  >
+    <Input
+      min={1}
+      onChange={[Function]}
+      type="number"
+      value={0}
+    />
+  </td>
+  <td
+    className="numberCol"
+  >
+    <div
+      className="d-flex"
+    >
+      <strong
+        className="mt-auto mb-auto ml-auto"
+      >
+        <MoneyAmount
+          amount="0.00"
+          currencyCode="USD"
+          negative={false}
+          renderIfZero={true}
+        />
+      </strong>
+    </div>
+  </td>
+</tr>
+`;
+
 exports[`<DraftOrderLineItemRow/> render() should render without quantity and without price 1`] = `
 <tr>
   <td
@@ -419,6 +674,15 @@ exports[`<DraftOrderLineItemRow/> render() should render without quantity and wi
         0987654321-1
       </div>
     </div>
+  </td>
+  <td
+    className="numberCol"
+  >
+    <span
+      className="text-muted"
+    >
+      N/A
+    </span>
   </td>
   <td
     className="numberCol"

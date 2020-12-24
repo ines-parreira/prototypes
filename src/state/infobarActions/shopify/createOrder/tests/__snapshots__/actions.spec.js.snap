@@ -253,7 +253,9 @@ Array [
         "variants": Immutable.List [
           Immutable.Map {
             "taxable": true,
+            "inventory_management": null,
             "price": "9.99",
+            "inventory_quantity": 0,
             "title": "Variant 1",
             "id": 1,
             "option1": null,
@@ -700,7 +702,9 @@ Array [
         "variants": Immutable.List [
           Immutable.Map {
             "taxable": true,
+            "inventory_management": null,
             "price": "1.00",
+            "inventory_quantity": 0,
             "title": "Red / A",
             "id": 31128766316567,
             "option1": null,
@@ -712,7 +716,9 @@ Array [
           },
           Immutable.Map {
             "taxable": true,
+            "inventory_management": null,
             "price": "1.00",
+            "inventory_quantity": 0,
             "title": "Red / B",
             "id": 31128766349335,
             "option1": null,
@@ -995,7 +1001,9 @@ Array [
         "variants": Immutable.List [
           Immutable.Map {
             "taxable": true,
+            "inventory_management": null,
             "price": "1.00",
+            "inventory_quantity": 0,
             "title": "Red / A",
             "id": 31128766316567,
             "option1": null,
@@ -1007,7 +1015,9 @@ Array [
           },
           Immutable.Map {
             "taxable": true,
+            "inventory_management": null,
             "price": "1.00",
+            "inventory_quantity": 0,
             "title": "Red / B",
             "id": 31128766349335,
             "option1": null,
@@ -1289,7 +1299,9 @@ Array [
         "variants": Immutable.List [
           Immutable.Map {
             "taxable": true,
+            "inventory_management": null,
             "price": "1.00",
+            "inventory_quantity": 0,
             "title": "Red / A",
             "id": 31128766316567,
             "option1": null,
@@ -1301,7 +1313,9 @@ Array [
           },
           Immutable.Map {
             "taxable": true,
+            "inventory_management": null,
             "price": "1.00",
+            "inventory_quantity": 0,
             "title": "Red / B",
             "id": 31128766349335,
             "option1": null,
@@ -1735,7 +1749,9 @@ Array [
         "variants": Immutable.List [
           Immutable.Map {
             "taxable": true,
+            "inventory_management": null,
             "price": "1.00",
+            "inventory_quantity": 0,
             "title": "Red / A",
             "id": 31128766316567,
             "option1": null,
@@ -1747,7 +1763,9 @@ Array [
           },
           Immutable.Map {
             "taxable": true,
+            "inventory_management": null,
             "price": "1.00",
+            "inventory_quantity": 0,
             "title": "Red / B",
             "id": 31128766349335,
             "option1": null,

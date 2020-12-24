@@ -48,6 +48,8 @@ export const shopifyVariantFixture = ({
     sku = '11111',
     title = 'Variant 1',
     price = '9.99',
+    inventoryQuantity = 0,
+    inventoryManagement = null,
 } = {}): Variant => ({
     id,
     sku,
@@ -59,6 +61,8 @@ export const shopifyVariantFixture = ({
     option3: null,
     taxable: true,
     requires_shipping: true,
+    inventory_quantity: inventoryQuantity,
+    inventory_management: inventoryManagement,
 })
 
 export const shopifyProductFixture = ({

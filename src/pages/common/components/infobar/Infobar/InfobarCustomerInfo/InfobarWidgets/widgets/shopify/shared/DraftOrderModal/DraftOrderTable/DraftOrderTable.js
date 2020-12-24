@@ -55,6 +55,7 @@ export default class DraftOrderTable extends React.PureComponent<Props> {
                 <thead>
                     <tr>
                         <th>Product</th>
+                        <th>In stock</th>
                         <th>Item price</th>
                         <th>Qty</th>
                         <th>Item total</th>

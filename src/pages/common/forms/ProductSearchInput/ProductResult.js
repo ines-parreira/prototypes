@@ -25,6 +25,16 @@ export default class ProductResult extends React.PureComponent<Props> {
                 product.variants.length > 1
                     ? `${product.variants.length} variants`
                     : sku,
+            stock: {
+                tracked: product.variants.every(
+                    (variant) => !!variant.inventory_management
+                ),
+                quantity: product.variants.reduce(
+                    (total, variant) => total + variant.inventory_quantity,
+                    0
+                ),
+                totalVariants: product.variants.length,
+            },
         }
     }
 

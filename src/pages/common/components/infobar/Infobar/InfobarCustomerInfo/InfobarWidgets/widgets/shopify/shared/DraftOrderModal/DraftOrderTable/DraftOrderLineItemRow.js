@@ -19,6 +19,7 @@ import type {
     AppliedDiscount,
 } from '../../../../../../../../../../../../constants/integrations/types/shopify'
 import {formatPrice} from '../../../../../../../../../../../../business/shopify/number.ts'
+import {ProductStockQuantity} from '../../StockQuantity/index.ts'
 import DiscountPopover from '../DiscountPopover'
 import MoneyAmount from '../../../../MoneyAmount'
 import {ShopifyAction} from '../../../constants'
@@ -144,6 +145,28 @@ export class DraftOrderLineItemRow extends React.PureComponent<Props, State> {
         )
     }
 
+    _renderStock() {
+        const {lineItem, product} = this.props
+        const variantId = lineItem.get('variant_id')
+        const variant = !!product
+            ? product
+                  .get('variants', [])
+                  .find((variant) => variant.get('id') === variantId)
+            : null
+
+        return (
+            <td className={css.numberCol}>
+                {!!variant && !!variant.get('inventory_management') ? (
+                    <ProductStockQuantity
+                        value={variant.get('inventory_quantity')}
+                    />
+                ) : (
+                    <span className="text-muted">N/A</span>
+                )}
+            </td>
+        )
+    }
+
     _renderPrice() {
         const {lineItem, currencyCode, id, actionName} = this.props
         const price = lineItem.get('price')
@@ -251,6 +274,7 @@ export class DraftOrderLineItemRow extends React.PureComponent<Props, State> {
         return (
             <tr>
                 {this._renderProduct()}
+                {this._renderStock()}
                 {this._renderPrice()}
                 {this._renderQuantity()}
                 {this._renderTotal()}

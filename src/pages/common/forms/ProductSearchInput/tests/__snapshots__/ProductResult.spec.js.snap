@@ -9,6 +9,13 @@ exports[`<ProductResult/> render() should render with SKU as subtitle 1`] = `
       "src": "src",
     }
   }
+  stock={
+    Object {
+      "quantity": 0,
+      "totalVariants": 1,
+      "tracked": false,
+    }
+  }
   subtitle="SKU: 11111"
   title="Product 1"
 />
@@ -23,6 +30,76 @@ exports[`<ProductResult/> render() should render with number of variants as subt
       "src": "src",
     }
   }
+  stock={
+    Object {
+      "quantity": 0,
+      "totalVariants": 2,
+      "tracked": false,
+    }
+  }
+  subtitle="2 variants"
+  title="Product 1"
+/>
+`;
+
+exports[`<ProductResult/> render() should render with product negative stock quantity 1`] = `
+<Result
+  image={
+    Object {
+      "alt": "Alt",
+      "id": 1,
+      "src": "src",
+    }
+  }
+  stock={
+    Object {
+      "quantity": -8990,
+      "totalVariants": 2,
+      "tracked": true,
+    }
+  }
+  subtitle="2 variants"
+  title="Product 1"
+/>
+`;
+
+exports[`<ProductResult/> render() should render with product stock quantity 1`] = `
+<Result
+  image={
+    Object {
+      "alt": "Alt",
+      "id": 1,
+      "src": "src",
+    }
+  }
+  stock={
+    Object {
+      "quantity": 99,
+      "totalVariants": 1,
+      "tracked": true,
+    }
+  }
+  subtitle="SKU: 11111"
+  title="Product 1"
+/>
+`;
+
+exports[`<ProductResult/> render() should render with product total stock quantity of all variants 1`] = `
+<Result
+  image={
+    Object {
+      "alt": "Alt",
+      "id": 1,
+      "src": "src",
+    }
+  }
+  stock={
+    Object {
+      "quantity": 30,
+      "totalVariants": 2,
+      "tracked": true,
+    }
+  }
   subtitle="2 variants"
   title="Product 1"
 />
@@ -35,6 +112,13 @@ exports[`<ProductResult/> render() should render without subtitle 1`] = `
       "alt": "Alt",
       "id": 1,
       "src": "src",
+    }
+  }
+  stock={
+    Object {
+      "quantity": 0,
+      "totalVariants": 1,
+      "tracked": false,
     }
   }
   subtitle={null}
