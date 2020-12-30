@@ -1,0 +1,36 @@
+@import '~css/new/colors';
+
+:local {
+    .dropdown {
+        width: 230px;
+        padding: 0;
+    }
+
+    .content {
+        max-height: 60vh;
+        overflow-y: auto;
+    }
+
+    .item,
+    .checkbox {
+        cursor: pointer;
+    }
+
+    .header {
+        color: @neutral8;
+        font-weight: 500;
+    }
+
+    .items {
+        padding: 0px 3px 6px 3px;
+
+        &:not(:first-child) {
+            padding: 6px 3px;
+            border-top: 2px solid @neutral2;
+        }
+    }
+
+    .dropdownItemInput {
+        padding: 3px;
+    }
+}

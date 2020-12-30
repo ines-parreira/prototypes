@@ -1,5 +1,6 @@
 // @flow
 import {fromJS, type List} from 'immutable'
+import _capitalize from 'lodash/capitalize'
 import _debounce from 'lodash/debounce'
 import moment from 'moment'
 import React from 'react'
@@ -18,12 +19,14 @@ import {getIntegrations} from '../../state/integrations/selectors.ts'
 import {CHANNELS} from '../../config/ticket.ts'
 import {getAgents} from '../../state/agents/selectors.ts'
 import {getDisplayName} from '../../state/customers/helpers.ts'
+import {getTeams} from '../../state/teams/selectors.ts'
 
 import Popover from '../common/components/Popover'
 import withCancellableRequest from '../common/utils/withCancellableRequest'
 
 import PeriodPicker from './common/PeriodPicker'
 import SearchableSelectField from './common/SearchableSelectField'
+import SelectFilter from './common/SelectFilter.tsx'
 
 type Props = {
     params: Object,
@@ -40,11 +43,13 @@ type Props = {
         query: string
     ) => Promise<?List<*>>,
     mergeStatsFilters: typeof mergeStatsFilters,
+    teams: {label: string, value: string, itemValues: string[]},
 }
 
 type State = {
     tags: any[],
     integrations: any[],
+    selectedTeams: string[],
 }
 
 export class StatsFilters extends React.Component<Props, State> {
@@ -53,6 +58,7 @@ export class StatsFilters extends React.Component<Props, State> {
         this.state = {
             tags: props.tags,
             integrations: props.integrations,
+            selectedTeams: [],
         }
     }
 
@@ -88,7 +94,8 @@ export class StatsFilters extends React.Component<Props, State> {
     }
 
     _renderFilterInput = (filterType: string) => {
-        const {config, filters} = this.props
+        const {config, filters, teams} = this.props
+        const {selectedTeams} = this.state
         const filterValue = filters.get(filterType)
         const filterConfig = config
             .get('filters')
@@ -167,12 +174,20 @@ export class StatsFilters extends React.Component<Props, State> {
                 )
             case 'agents':
                 return (
-                    <SearchableSelectField
+                    <SelectFilter
                         key={filterType}
                         plural="agents"
                         singular="agent"
+                        onGroupChange={(selectedTeams) =>
+                            this.setState({selectedTeams})
+                        }
+                        groupLabel="Teams"
+                        groups={teams}
+                        groupValue={selectedTeams}
+                        itemLabel="Agents"
                         items={this.props.agents}
-                        input={this._makeInputControl('agents')}
+                        onChange={this._handleFilterChange('agents')}
+                        value={filters.get('agents', fromJS([])).toJS()}
                     />
                 )
             case 'integrations': {
@@ -273,6 +288,16 @@ const mapStateToProps = (state: Object, props: Props) => {
             .toJS(),
         filters: getViewFilters(props.params.view)(state),
         config,
+        teams: getTeams(state)
+            .map((team) => ({
+                label: _capitalize(team.get('name')),
+                value: team.get('id'),
+                itemValues: team
+                    .get('members')
+                    .map((user) => user.get('id'))
+                    .toJS(),
+            }))
+            .toJS(),
     }
 }
 

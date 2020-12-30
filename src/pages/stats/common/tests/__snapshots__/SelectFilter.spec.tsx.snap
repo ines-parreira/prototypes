@@ -1,0 +1,336 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SelectFilter should render the component with groups 1`] = `
+<div
+  class="dropdown"
+>
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="mr-2 dropdown-toggle btn btn-secondary"
+    type="button"
+  >
+    <span>
+      All items
+    </span>
+  </button>
+  <div
+    aria-hidden="true"
+    class="dropdown dropdown-menu dropdown-menu-right"
+    role="menu"
+    tabindex="-1"
+  >
+    <h6
+      class="dropdown-item-input dropdownItemInput dropdown-header"
+      tabindex="-1"
+    >
+      <input
+        class="mb-2 form-control"
+        placeholder="Search items..."
+        type="text"
+        value=""
+      />
+    </h6>
+    <div
+      class="content"
+    >
+      <div
+        class="items"
+      >
+        <h6
+          class="header dropdown-header"
+          tabindex="-1"
+        >
+          Groups
+        </h6>
+        <label
+          class="item dropdown-item form-check-label"
+          tabindex="0"
+        >
+          <input
+            class="mr-2 checkbox"
+            type="checkbox"
+          />
+           Group 1
+        </label>
+        <label
+          class="item dropdown-item form-check-label"
+          tabindex="0"
+        >
+          <input
+            class="mr-2 checkbox"
+            type="checkbox"
+          />
+           Group 2
+        </label>
+        <label
+          class="item dropdown-item form-check-label"
+          tabindex="0"
+        >
+          <input
+            class="mr-2 checkbox"
+            type="checkbox"
+          />
+           Group 3
+        </label>
+      </div>
+      <div
+        class="items"
+      >
+        <label
+          class="item dropdown-item form-check-label"
+          tabindex="0"
+        >
+          <input
+            class="mr-2 checkbox"
+            type="checkbox"
+          />
+           Api
+        </label>
+        <label
+          class="item dropdown-item form-check-label"
+          tabindex="0"
+        >
+          <input
+            class="mr-2 checkbox"
+            type="checkbox"
+          />
+           Chat
+        </label>
+        <label
+          class="item dropdown-item form-check-label"
+          tabindex="0"
+        >
+          <input
+            class="mr-2 checkbox"
+            type="checkbox"
+          />
+           Email
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SelectFilter should render the component with selectable items 1`] = `
+<div
+  class="dropdown"
+>
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="mr-2 dropdown-toggle btn btn-secondary"
+    type="button"
+  >
+    <span>
+      All items
+    </span>
+  </button>
+  <div
+    aria-hidden="true"
+    class="dropdown dropdown-menu dropdown-menu-right"
+    role="menu"
+    tabindex="-1"
+  >
+    <h6
+      class="dropdown-item-input dropdownItemInput dropdown-header"
+      tabindex="-1"
+    >
+      <input
+        class="mb-2 form-control"
+        placeholder="Search items..."
+        type="text"
+        value=""
+      />
+    </h6>
+    <div
+      class="content"
+    >
+      <div
+        class="items"
+      />
+      <div
+        class="items"
+      >
+        <label
+          class="item dropdown-item form-check-label"
+          tabindex="0"
+        >
+          <input
+            class="mr-2 checkbox"
+            type="checkbox"
+          />
+           Api
+        </label>
+        <label
+          class="item dropdown-item form-check-label"
+          tabindex="0"
+        >
+          <input
+            class="mr-2 checkbox"
+            type="checkbox"
+          />
+           Chat
+        </label>
+        <label
+          class="item dropdown-item form-check-label"
+          tabindex="0"
+        >
+          <input
+            class="mr-2 checkbox"
+            type="checkbox"
+          />
+           Email
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`SelectFilter should render the component with selected items 1`] = `
+<div
+  class="dropdown"
+>
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="mr-2 dropdown-toggle btn btn-secondary"
+    type="button"
+  >
+    <span>
+      2 items
+    </span>
+  </button>
+  <div
+    aria-hidden="true"
+    class="dropdown dropdown-menu dropdown-menu-right"
+    role="menu"
+    tabindex="-1"
+  >
+    <h6
+      class="dropdown-item-input dropdownItemInput dropdown-header"
+      tabindex="-1"
+    >
+      <input
+        class="mb-2 form-control"
+        placeholder="Search items..."
+        type="text"
+        value=""
+      />
+    </h6>
+    <div
+      class="content"
+    >
+      <div
+        class="items"
+      />
+      <div
+        class="items"
+      >
+        <label
+          class="item dropdown-item form-check-label"
+          tabindex="0"
+        >
+          <input
+            checked=""
+            class="mr-2 checkbox"
+            type="checkbox"
+          />
+           Api
+        </label>
+        <label
+          class="item dropdown-item form-check-label"
+          tabindex="0"
+        >
+          <input
+            checked=""
+            class="mr-2 checkbox"
+            type="checkbox"
+          />
+           Chat
+        </label>
+        <label
+          class="item dropdown-item form-check-label"
+          tabindex="0"
+        >
+          <input
+            class="mr-2 checkbox"
+            type="checkbox"
+          />
+           Email
+        </label>
+      </div>
+    </div>
+    <div
+      class="dropdown-divider"
+      tabindex="-1"
+    />
+    <button
+      class="dropdown-item"
+      tabindex="0"
+      type="button"
+    >
+      <span
+        class="text-warning"
+      >
+        Deselect all
+      </span>
+    </button>
+  </div>
+</div>
+`;
+
+exports[`SelectFilter should render the component without any item 1`] = `
+<div
+  class="dropdown"
+>
+  <button
+    aria-expanded="false"
+    aria-haspopup="true"
+    class="mr-2 dropdown-toggle btn btn-secondary"
+    type="button"
+  >
+    <span>
+      All items
+    </span>
+  </button>
+  <div
+    aria-hidden="true"
+    class="dropdown dropdown-menu dropdown-menu-right"
+    role="menu"
+    tabindex="-1"
+  >
+    <h6
+      class="dropdown-item-input dropdownItemInput dropdown-header"
+      tabindex="-1"
+    >
+      <input
+        class="mb-2 form-control"
+        placeholder="Search items..."
+        type="text"
+        value=""
+      />
+    </h6>
+    <div
+      class="content"
+    >
+      <div
+        class="items"
+      />
+      <div
+        class="items"
+      >
+        <h6
+          class="dropdown-header"
+          tabindex="-1"
+        >
+          Could not find any 
+          item
+        </h6>
+      </div>
+    </div>
+  </div>
+</div>
+`;
