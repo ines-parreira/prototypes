@@ -39,7 +39,6 @@ export default class RichField extends InputField<Props, State> {
         super(props)
 
         let editorState = EditorState.createEmpty()
-        editorState = EditorState.moveFocusToEnd(editorState)
 
         this.state = ({
             editorState,

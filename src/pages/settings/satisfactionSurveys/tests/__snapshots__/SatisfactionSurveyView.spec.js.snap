@@ -784,7 +784,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                 "focusKey": "someRandomKey",
                                                 "focusOffset": 0,
                                                 "isBackward": false,
-                                                "hasFocus": true,
+                                                "hasFocus": false,
                                               },
                                               "selectionAfter": Immutable.Record {
                                                 "anchorKey": "someRandomKey",
@@ -953,7 +953,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                   "focusKey": "someRandomKey",
                                                   "focusOffset": 0,
                                                   "isBackward": false,
-                                                  "hasFocus": true,
+                                                  "hasFocus": false,
                                                 },
                                                 "selectionAfter": Immutable.Record {
                                                   "anchorKey": "someRandomKey",
@@ -1123,7 +1123,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                     "focusKey": "someRandomKey",
                                                     "focusOffset": 0,
                                                     "isBackward": false,
-                                                    "hasFocus": true,
+                                                    "hasFocus": false,
                                                   },
                                                   "selectionAfter": Immutable.Record {
                                                     "anchorKey": "someRandomKey",
@@ -1303,7 +1303,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                       "focusKey": "someRandomKey",
                                                       "focusOffset": 0,
                                                       "isBackward": false,
-                                                      "hasFocus": true,
+                                                      "hasFocus": false,
                                                     },
                                                     "selectionAfter": Immutable.Record {
                                                       "anchorKey": "someRandomKey",
@@ -1512,7 +1512,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                   "focusKey": "someRandomKey",
                                                                   "focusOffset": 0,
                                                                   "isBackward": false,
-                                                                  "hasFocus": true,
+                                                                  "hasFocus": false,
                                                                 },
                                                                 "selectionAfter": Immutable.Record {
                                                                   "anchorKey": "someRandomKey",
@@ -1799,7 +1799,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                     "focusKey": "someRandomKey",
                                                                     "focusOffset": 0,
                                                                     "isBackward": false,
-                                                                    "hasFocus": true,
+                                                                    "hasFocus": false,
                                                                   },
                                                                   "selectionAfter": Immutable.Record {
                                                                     "anchorKey": "someRandomKey",
@@ -2157,7 +2157,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                             "focusKey": "someRandomKey",
                                                                             "focusOffset": 0,
                                                                             "isBackward": false,
-                                                                            "hasFocus": true,
+                                                                            "hasFocus": false,
                                                                           },
                                                                           "selectionAfter": Immutable.Record {
                                                                             "anchorKey": "someRandomKey",
@@ -2331,7 +2331,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                               "focusKey": "someRandomKey",
                                                                               "focusOffset": 0,
                                                                               "isBackward": false,
-                                                                              "hasFocus": true,
+                                                                              "hasFocus": false,
                                                                             },
                                                                             "selectionAfter": Immutable.Record {
                                                                               "anchorKey": "someRandomKey",
@@ -2597,7 +2597,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                 "focusKey": "someRandomKey",
                                                                 "focusOffset": 0,
                                                                 "isBackward": false,
-                                                                "hasFocus": true,
+                                                                "hasFocus": false,
                                                               },
                                                               "selectionAfter": Immutable.Record {
                                                                 "anchorKey": "someRandomKey",

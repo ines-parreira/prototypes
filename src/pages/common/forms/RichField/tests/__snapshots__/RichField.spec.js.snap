@@ -65,7 +65,7 @@ exports[`RichField display alert 1`] = `
                 "focusKey": "123",
                 "focusOffset": 0,
                 "isBackward": false,
-                "hasFocus": true,
+                "hasFocus": false,
               },
               "selectionAfter": Immutable.Record {
                 "anchorKey": "123",
@@ -242,7 +242,7 @@ exports[`RichField should render a MentionSuggestions component to the DOM if in
                 "focusKey": "123",
                 "focusOffset": 0,
                 "isBackward": false,
-                "hasFocus": true,
+                "hasFocus": false,
               },
               "selectionAfter": Immutable.Record {
                 "anchorKey": "123",
@@ -424,7 +424,7 @@ exports[`RichField should render a basic input 1`] = `
                 "focusKey": "123",
                 "focusOffset": 0,
                 "isBackward": false,
-                "hasFocus": true,
+                "hasFocus": false,
               },
               "selectionAfter": Immutable.Record {
                 "anchorKey": "123",
@@ -930,7 +930,7 @@ exports[`RichField should render immutable variable 1`] = `
                       "focusKey": "123",
                       "focusOffset": 0,
                       "isBackward": false,
-                      "hasFocus": true,
+                      "hasFocus": false,
                     },
                     "selectionAfter": Immutable.Record {
                       "anchorKey": "123",
@@ -1368,7 +1368,7 @@ exports[`RichField should render immutable variable 1`] = `
                         "focusKey": "123",
                         "focusOffset": 0,
                         "isBackward": false,
-                        "hasFocus": true,
+                        "hasFocus": false,
                       },
                       "selectionAfter": Immutable.Record {
                         "anchorKey": "123",
@@ -1806,7 +1806,7 @@ exports[`RichField should render immutable variable 1`] = `
                           "focusKey": "123",
                           "focusOffset": 0,
                           "isBackward": false,
-                          "hasFocus": true,
+                          "hasFocus": false,
                         },
                         "selectionAfter": Immutable.Record {
                           "anchorKey": "123",
@@ -2247,7 +2247,7 @@ exports[`RichField should render immutable variable 1`] = `
                             "focusKey": "123",
                             "focusOffset": 0,
                             "isBackward": false,
-                            "hasFocus": true,
+                            "hasFocus": false,
                           },
                           "selectionAfter": Immutable.Record {
                             "anchorKey": "123",
@@ -2718,7 +2718,7 @@ exports[`RichField should render immutable variable 1`] = `
                                         "focusKey": "123",
                                         "focusOffset": 0,
                                         "isBackward": false,
-                                        "hasFocus": true,
+                                        "hasFocus": false,
                                       },
                                       "selectionAfter": Immutable.Record {
                                         "anchorKey": "123",
@@ -3268,7 +3268,7 @@ exports[`RichField should render immutable variable 1`] = `
                                           "focusKey": "123",
                                           "focusOffset": 0,
                                           "isBackward": false,
-                                          "hasFocus": true,
+                                          "hasFocus": false,
                                         },
                                         "selectionAfter": Immutable.Record {
                                           "anchorKey": "123",
@@ -3889,7 +3889,7 @@ exports[`RichField should render immutable variable 1`] = `
                                                   "focusKey": "123",
                                                   "focusOffset": 0,
                                                   "isBackward": false,
-                                                  "hasFocus": true,
+                                                  "hasFocus": false,
                                                 },
                                                 "selectionAfter": Immutable.Record {
                                                   "anchorKey": "123",
@@ -5438,7 +5438,7 @@ exports[`RichField should render immutable variable 1`] = `
                                       "focusKey": "123",
                                       "focusOffset": 0,
                                       "isBackward": false,
-                                      "hasFocus": true,
+                                      "hasFocus": false,
                                     },
                                     "selectionAfter": Immutable.Record {
                                       "anchorKey": "123",
@@ -5976,7 +5976,7 @@ exports[`RichField should render mutable variable 1`] = `
                     "focusKey": "123",
                     "focusOffset": 0,
                     "isBackward": false,
-                    "hasFocus": true,
+                    "hasFocus": false,
                   },
                   "selectionAfter": Immutable.Record {
                     "anchorKey": "123",
@@ -6168,7 +6168,7 @@ exports[`RichField should render mutable variable 1`] = `
                       "focusKey": "123",
                       "focusOffset": 0,
                       "isBackward": false,
-                      "hasFocus": true,
+                      "hasFocus": false,
                     },
                     "selectionAfter": Immutable.Record {
                       "anchorKey": "123",
@@ -6360,7 +6360,7 @@ exports[`RichField should render mutable variable 1`] = `
                         "focusKey": "123",
                         "focusOffset": 0,
                         "isBackward": false,
-                        "hasFocus": true,
+                        "hasFocus": false,
                       },
                       "selectionAfter": Immutable.Record {
                         "anchorKey": "123",
@@ -6555,7 +6555,7 @@ exports[`RichField should render mutable variable 1`] = `
                           "focusKey": "123",
                           "focusOffset": 0,
                           "isBackward": false,
-                          "hasFocus": true,
+                          "hasFocus": false,
                         },
                         "selectionAfter": Immutable.Record {
                           "anchorKey": "123",
@@ -6780,7 +6780,7 @@ exports[`RichField should render mutable variable 1`] = `
                                       "focusKey": "123",
                                       "focusOffset": 0,
                                       "isBackward": false,
-                                      "hasFocus": true,
+                                      "hasFocus": false,
                                     },
                                     "selectionAfter": Immutable.Record {
                                       "anchorKey": "123",
@@ -7084,7 +7084,7 @@ exports[`RichField should render mutable variable 1`] = `
                                         "focusKey": "123",
                                         "focusOffset": 0,
                                         "isBackward": false,
-                                        "hasFocus": true,
+                                        "hasFocus": false,
                                       },
                                       "selectionAfter": Immutable.Record {
                                         "anchorKey": "123",
@@ -7459,7 +7459,7 @@ exports[`RichField should render mutable variable 1`] = `
                                                 "focusKey": "123",
                                                 "focusOffset": 0,
                                                 "isBackward": false,
-                                                "hasFocus": true,
+                                                "hasFocus": false,
                                               },
                                               "selectionAfter": Immutable.Record {
                                                 "anchorKey": "123",
@@ -7667,7 +7667,7 @@ exports[`RichField should render mutable variable 1`] = `
                                                   "focusKey": "123",
                                                   "focusOffset": 0,
                                                   "isBackward": false,
-                                                  "hasFocus": true,
+                                                  "hasFocus": false,
                                                 },
                                                 "selectionAfter": Immutable.Record {
                                                   "anchorKey": "123",
@@ -7968,7 +7968,7 @@ exports[`RichField should render mutable variable 1`] = `
                                     "focusKey": "123",
                                     "focusOffset": 0,
                                     "isBackward": false,
-                                    "hasFocus": true,
+                                    "hasFocus": false,
                                   },
                                   "selectionAfter": Immutable.Record {
                                     "anchorKey": "123",
