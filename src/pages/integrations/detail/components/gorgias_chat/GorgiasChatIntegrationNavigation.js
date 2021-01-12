@@ -23,6 +23,7 @@ export default class GorgiasChatIntegrationNavigation extends React.Component<Pr
                 <Link to={`${baseURL}/preferences`}>Preferences</Link>
                 <Link to={`${baseURL}/quick_replies`}>Quick replies</Link>
                 <Link to={`${baseURL}/campaigns`}>Campaigns</Link>
+                {/*<Link to={`${baseURL}/self_service`}>Self-service</Link>*/}
             </SecondaryNavbar>
         )
     }

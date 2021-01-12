@@ -537,7 +537,7 @@ export function activateIntegration(id: number) {
  */
 export function updateOrCreateIntegration(
     integration: Map<any, any>,
-    action: Record<string, unknown>
+    action?: Record<string, unknown>
 ) {
     return (dispatch: StoreDispatch): ReturnType<StoreDispatch> => {
         return dispatch(updateOrCreateIntegrationRequest(integration, action))

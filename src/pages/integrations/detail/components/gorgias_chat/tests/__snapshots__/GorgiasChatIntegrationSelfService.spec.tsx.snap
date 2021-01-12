@@ -1,0 +1,551 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<GorgiasChatIntegrationSelfService/> onToggleSelfService() should turn on the self service before calling updateOrCreateIntegration 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+  >
+    <ol
+      class="breadcrumb"
+    >
+      <li
+        class="breadcrumb-item"
+      >
+        <a>
+          Integrations
+        </a>
+      </li>
+      <li
+        class="breadcrumb-item"
+      >
+        <a>
+          Chat
+        </a>
+      </li>
+      <li
+        class="breadcrumb-item"
+      >
+        my chat integration
+      </li>
+      <li
+        class="active breadcrumb-item"
+      >
+        Self-service
+      </li>
+    </ol>
+  </div>
+  <nav
+    class="navbar navbar"
+  >
+    <a
+      class="nav-link"
+    >
+      Appearance
+    </a>
+    <a
+      class="nav-link"
+    >
+      Installation
+    </a>
+    <a
+      class="nav-link"
+    >
+      Preferences
+    </a>
+    <a
+      class="nav-link"
+    >
+      Quick replies
+    </a>
+    <a
+      class="nav-link"
+    >
+      Campaigns
+    </a>
+  </nav>
+  <div
+    class="page-container container-fluid"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="col"
+      >
+        <div
+          class="mb-4"
+        >
+          <h4>
+            Self-service
+          </h4>
+          <p>
+            Most e-commerce support requests are about the same 20 types of issues.
+            <br />
+            <br />
+            Self-service enables your customers to browse their orders and select the type of issue they are having. It will create a chat ticket for your team to handle.
+          </p>
+          <div
+            class="mb-3"
+          >
+            <div
+              data-testid="toggle-button"
+            >
+              ToggleButtonMock value=false
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="col"
+      >
+        <img
+          alt="Self-service Mock"
+          src="test-file-stub"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<GorgiasChatIntegrationSelfService/> onToggleSelfService() should turn on the self service before calling updateOrCreateIntegration 2`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+  >
+    <ol
+      class="breadcrumb"
+    >
+      <li
+        class="breadcrumb-item"
+      >
+        <a>
+          Integrations
+        </a>
+      </li>
+      <li
+        class="breadcrumb-item"
+      >
+        <a>
+          Chat
+        </a>
+      </li>
+      <li
+        class="breadcrumb-item"
+      >
+        my chat integration
+      </li>
+      <li
+        class="active breadcrumb-item"
+      >
+        Self-service
+      </li>
+    </ol>
+  </div>
+  <nav
+    class="navbar navbar"
+  >
+    <a
+      class="nav-link"
+    >
+      Appearance
+    </a>
+    <a
+      class="nav-link"
+    >
+      Installation
+    </a>
+    <a
+      class="nav-link"
+    >
+      Preferences
+    </a>
+    <a
+      class="nav-link"
+    >
+      Quick replies
+    </a>
+    <a
+      class="nav-link"
+    >
+      Campaigns
+    </a>
+  </nav>
+  <div
+    class="page-container container-fluid"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="col"
+      >
+        <div
+          class="mb-4"
+        >
+          <h4>
+            Self-service
+          </h4>
+          <p>
+            Most e-commerce support requests are about the same 20 types of issues.
+            <br />
+            <br />
+            Self-service enables your customers to browse their orders and select the type of issue they are having. It will create a chat ticket for your team to handle.
+          </p>
+          <div
+            class="mb-3"
+          >
+            <div
+              data-testid="toggle-button"
+            >
+              ToggleButtonMock value=true
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="col"
+      >
+        <img
+          alt="Self-service Mock"
+          src="test-file-stub"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<GorgiasChatIntegrationSelfService/> render() should render defaults because the self service is not enabled for the integration 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+  >
+    <ol
+      class="breadcrumb"
+    >
+      <li
+        class="breadcrumb-item"
+      >
+        <a>
+          Integrations
+        </a>
+      </li>
+      <li
+        class="breadcrumb-item"
+      >
+        <a>
+          Chat
+        </a>
+      </li>
+      <li
+        class="breadcrumb-item"
+      >
+        my chat integration
+      </li>
+      <li
+        class="active breadcrumb-item"
+      >
+        Self-service
+      </li>
+    </ol>
+  </div>
+  <nav
+    class="navbar navbar"
+  >
+    <a
+      class="nav-link"
+    >
+      Appearance
+    </a>
+    <a
+      class="nav-link"
+    >
+      Installation
+    </a>
+    <a
+      class="nav-link"
+    >
+      Preferences
+    </a>
+    <a
+      class="nav-link"
+    >
+      Quick replies
+    </a>
+    <a
+      class="nav-link"
+    >
+      Campaigns
+    </a>
+  </nav>
+  <div
+    class="page-container container-fluid"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="col"
+      >
+        <div
+          class="mb-4"
+        >
+          <h4>
+            Self-service
+          </h4>
+          <p>
+            Most e-commerce support requests are about the same 20 types of issues.
+            <br />
+            <br />
+            Self-service enables your customers to browse their orders and select the type of issue they are having. It will create a chat ticket for your team to handle.
+          </p>
+          <div
+            class="mb-3"
+          >
+            <div
+              data-testid="toggle-button"
+            >
+              ToggleButtonMock value=false
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="col"
+      >
+        <img
+          alt="Self-service Mock"
+          src="test-file-stub"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<GorgiasChatIntegrationSelfService/> render() should render the toggle button of the self service being in the ON state 1`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+  >
+    <ol
+      class="breadcrumb"
+    >
+      <li
+        class="breadcrumb-item"
+      >
+        <a>
+          Integrations
+        </a>
+      </li>
+      <li
+        class="breadcrumb-item"
+      >
+        <a>
+          Chat
+        </a>
+      </li>
+      <li
+        class="breadcrumb-item"
+      >
+        my chat integration
+      </li>
+      <li
+        class="active breadcrumb-item"
+      >
+        Self-service
+      </li>
+    </ol>
+  </div>
+  <nav
+    class="navbar navbar"
+  >
+    <a
+      class="nav-link"
+    >
+      Appearance
+    </a>
+    <a
+      class="nav-link"
+    >
+      Installation
+    </a>
+    <a
+      class="nav-link"
+    >
+      Preferences
+    </a>
+    <a
+      class="nav-link"
+    >
+      Quick replies
+    </a>
+    <a
+      class="nav-link"
+    >
+      Campaigns
+    </a>
+  </nav>
+  <div
+    class="page-container container-fluid"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="col"
+      >
+        <div
+          class="mb-4"
+        >
+          <h4>
+            Self-service
+          </h4>
+          <p>
+            Most e-commerce support requests are about the same 20 types of issues.
+            <br />
+            <br />
+            Self-service enables your customers to browse their orders and select the type of issue they are having. It will create a chat ticket for your team to handle.
+          </p>
+          <div
+            class="mb-3"
+          >
+            <div
+              data-testid="toggle-button"
+            >
+              ToggleButtonMock value=true
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="col"
+      >
+        <img
+          alt="Self-service Mock"
+          src="test-file-stub"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<GorgiasChatIntegrationSelfService/> render() should render the toggle button of the self service being in the ON state 2`] = `
+<div
+  class="full-width"
+>
+  <div
+    class="d-flex align-items-center justify-content-between flex-wrap page-header"
+  >
+    <ol
+      class="breadcrumb"
+    >
+      <li
+        class="breadcrumb-item"
+      >
+        <a>
+          Integrations
+        </a>
+      </li>
+      <li
+        class="breadcrumb-item"
+      >
+        <a>
+          Chat
+        </a>
+      </li>
+      <li
+        class="breadcrumb-item"
+      >
+        my chat integration
+      </li>
+      <li
+        class="active breadcrumb-item"
+      >
+        Self-service
+      </li>
+    </ol>
+  </div>
+  <nav
+    class="navbar navbar"
+  >
+    <a
+      class="nav-link"
+    >
+      Appearance
+    </a>
+    <a
+      class="nav-link"
+    >
+      Installation
+    </a>
+    <a
+      class="nav-link"
+    >
+      Preferences
+    </a>
+    <a
+      class="nav-link"
+    >
+      Quick replies
+    </a>
+    <a
+      class="nav-link"
+    >
+      Campaigns
+    </a>
+  </nav>
+  <div
+    class="page-container container-fluid"
+  >
+    <div
+      class="row"
+    >
+      <div
+        class="col"
+      >
+        <div
+          class="mb-4"
+        >
+          <h4>
+            Self-service
+          </h4>
+          <p>
+            Most e-commerce support requests are about the same 20 types of issues.
+            <br />
+            <br />
+            Self-service enables your customers to browse their orders and select the type of issue they are having. It will create a chat ticket for your team to handle.
+          </p>
+          <div
+            class="mb-3"
+          >
+            <div
+              data-testid="toggle-button"
+            >
+              ToggleButtonMock value=false
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="col"
+      >
+        <img
+          alt="Self-service Mock"
+          src="test-file-stub"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+`;

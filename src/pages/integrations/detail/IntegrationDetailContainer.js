@@ -83,6 +83,7 @@ import HTTPIntegrationEvents from './components/http/HTTPIntegrationEvents'
 import HTTPIntegrationEvent from './components/http/HTTPIntegrationEvent'
 import HTTPIntegrationLayout from './components/http/HTTPIntegrationLayout/HTTPIntegrationLayout'
 import EmailIntegrationCreateCustom from './components/email/EmailIntegrationCreateCustom/EmailIntegrationCreateCustom'
+import GorgiasChatIntegrationSelfService from './components/gorgias_chat/GorgiasChatIntegrationSelfService.tsx'
 
 class IntegrationDetailContainer extends React.Component {
     componentWillMount() {
@@ -368,6 +369,14 @@ class IntegrationDetailContainer extends React.Component {
                     if (params.extra === 'quick_replies') {
                         return (
                             <GorgiasChatIntegrationQuickReplies
+                                integration={commonProps.integration}
+                            />
+                        )
+                    }
+
+                    if (params.extra === 'self_service') {
+                        return (
+                            <GorgiasChatIntegrationSelfService
                                 integration={commonProps.integration}
                             />
                         )

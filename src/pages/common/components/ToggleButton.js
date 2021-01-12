@@ -9,6 +9,9 @@ type Props = {
     onChange: (boolean) => ?Promise<*>,
     value: boolean,
     loading?: boolean,
+    className?: string,
+    label?: string,
+    name?: string,
 }
 
 export default class ToggleButton extends React.Component<Props> {

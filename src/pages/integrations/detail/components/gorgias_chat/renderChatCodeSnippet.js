@@ -28,7 +28,7 @@ const endComment = '<!--Gorgias Chat Widget End-->'
 //     win.GORGIAS_CHAT_APP_ID = "__CHAT_APP_ID__";
 //     win.GORGIAS_CHAT_BASE_URL = "__CHAT_URL__";
 //     win.GORGIAS_API_BASE_URL = "__API_URL__";
-//
+
 //     var xhrChat = new XMLHttpRequest();
 //     xhrChat.open("GET", "__ENDPOINT__", true);
 //     xhrChat.onload = function(e) {
@@ -43,6 +43,7 @@ const endComment = '<!--Gorgias Chat Widget End-->'
 //                 win.GORGIAS_CHAT_APP = res.application;
 //                 win.GORGIAS_CHAT_BUNDLE_VERSION = res.bundleVersion;
 //                 res && res.texts && (win.GORGIAS_CHAT_TEXTS = res.texts);
+//                 res && res.sspTexts && (win.GORGIAS_CHAT_SELF_SERVICE_PORTAL_TEXTS = res.sspTexts);
 //                 var targetTag = document.getElementById("__CONTAINER_ID__");
 //                 if (!targetTag) {
 //                     var c = document.createElement("div");
@@ -64,7 +65,7 @@ const endComment = '<!--Gorgias Chat Widget End-->'
 // </script>
 // `
 // previous template uglified on https://skalman.github.io/UglifyJS-online/
-const minifiedChatScriptTemplate = `<script>!function(_){_.GORGIAS_CHAT_APP_ID="__CHAT_APP_ID__",_.GORGIAS_CHAT_BASE_URL="__CHAT_URL__",_.GORGIAS_API_BASE_URL="__API_URL__";var e=new XMLHttpRequest;e.open("GET","__ENDPOINT__",!0),e.onload=function(n){if(4===e.readyState)if(200===e.status){var t=JSON.parse(e.responseText);if(!t.application||!t.bundleVersion)throw new Error("Missing fields in the response body - __ENDPOINT__");if(_.GORGIAS_CHAT_APP=t.application,_.GORGIAS_CHAT_BUNDLE_VERSION=t.bundleVersion,t&&t.texts&&(_.GORGIAS_CHAT_TEXTS=t.texts),!document.getElementById("__CONTAINER_ID__")){var o=document.createElement("div");o.id="__CONTAINER_ID__",document.body.appendChild(o);var r=document.createElement("script");r.setAttribute("defer",!0),r.src="__BUNDLE_URL_REPLACE__".replace("__REPLACEABLE_TEXT__",t.bundleVersion),document.body.appendChild(r)}}else console.error("Failed request GET - __ENDPOINT__")},e.onerror=function(_){console.error(_)},e.send()}(window||{});</script>`
+const minifiedChatScriptTemplate = `<script>!function(_){_.GORGIAS_CHAT_APP_ID="__CHAT_APP_ID__",_.GORGIAS_CHAT_BASE_URL="__CHAT_URL__",_.GORGIAS_API_BASE_URL="__API_URL__";var e=new XMLHttpRequest;e.open("GET","__ENDPOINT__",!0),e.onload=function(t){if(4===e.readyState)if(200===e.status){var n=JSON.parse(e.responseText);if(!n.application||!n.bundleVersion)throw new Error("Missing fields in the response body - __ENDPOINT__");if(_.GORGIAS_CHAT_APP=n.application,_.GORGIAS_CHAT_BUNDLE_VERSION=n.bundleVersion,n&&n.texts&&(_.GORGIAS_CHAT_TEXTS=n.texts),n&&n.sspTexts&&(_.GORGIAS_CHAT_SELF_SERVICE_PORTAL_TEXTS=n.sspTexts),!document.getElementById("__CONTAINER_ID__")){var o=document.createElement("div");o.id="__CONTAINER_ID__",document.body.appendChild(o);var r=document.createElement("script");r.setAttribute("defer",!0),r.src="__BUNDLE_URL_REPLACE__".replace("__REPLACEABLE_TEXT__",n.bundleVersion),document.body.appendChild(r)}}else console.error("Failed request GET - __ENDPOINT__")},e.onerror=function(_){console.error(_)},e.send()}(window||{});</script>`
 
 export function renderChatCodeSnippet({
     chatAppId,
