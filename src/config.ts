@@ -211,6 +211,14 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         image: 'integrations/smile.svg',
     },
     {
+        type: IntegrationType.YotpoIntegrationType,
+        title: 'Yotpo',
+        description:
+            'Yotpo is a user-generated content tool for merchants. It includes customer reviews, visual marketing, loyalty, and referrals.',
+        image: 'integrations/yotpo.png',
+        hide: true,
+    },
+    {
         title: 'BigCommerce',
         description:
             'Display customer profiles & orders next to tickets. Edit orders with macros.',

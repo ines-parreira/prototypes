@@ -13,6 +13,7 @@ export const RECHARGE_INTEGRATION_TYPE = 'recharge'
 export const SHOPIFY_INTEGRATION_TYPE = 'shopify'
 export const SMILE_INTEGRATION_TYPE = 'smile'
 export const ZENDESK_INTEGRATION_TYPE = 'zendesk'
+export const YOTPO_INTEGRATION_TYPE = 'yotpo'
 
 export const EMAIL_INTEGRATION_TYPES = Object.freeze([
     EMAIL_INTEGRATION_TYPE,
@@ -33,6 +34,7 @@ export const INTEGRATION_TYPES_MAP = Object.freeze({
     RECHARGE_INTEGRATION_TYPE,
     SMILE_INTEGRATION_TYPE,
     ZENDESK_INTEGRATION_TYPE,
+    YOTPO_INTEGRATION_TYPE,
 })
 
 export const INTEGRATION_TYPES = Object.freeze(

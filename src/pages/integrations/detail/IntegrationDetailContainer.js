@@ -18,6 +18,7 @@ import {
     SMILE_INTEGRATION_TYPE,
     SMOOCH_INSIDE_INTEGRATION_TYPE,
     SMOOCH_INTEGRATION_TYPE,
+    YOTPO_INTEGRATION_TYPE,
 } from '../../../constants/integration.ts'
 
 import {compare} from '../../../utils.ts'
@@ -62,6 +63,9 @@ import RechargeIntegrationDetail from './components/recharge/RechargeIntegration
 
 import SmileIntegrationList from './components/smile/SmileIntegrationList'
 import SmileIntegrationDetail from './components/smile/SmileIntegrationDetail'
+
+import YotpoIntegrationList from './components/yotpo/YotpoIntegrationList.tsx'
+import YotpoIntegrationDetail from './components/yotpo/YotpoIntegrationDetail.tsx'
 
 import EmailIntegrationList from './components/email/EmailIntegrationList'
 import EmailIntegrationUpdate from './components/email/EmailIntegrationUpdate/index'
@@ -580,12 +584,34 @@ class IntegrationDetailContainer extends React.Component {
                             actions={actions}
                             integration={commonProps.integration}
                             loading={commonProps.loading}
+                            redirectUri={redirectUri}
                         />
                     )
                 }
 
                 return (
                     <SmileIntegrationList
+                        actions={actions}
+                        integrations={commonProps.integrations}
+                        loading={commonProps.loading}
+                        redirectUri={redirectUri}
+                    />
+                )
+
+            case YOTPO_INTEGRATION_TYPE:
+                if (isDetail) {
+                    return (
+                        <YotpoIntegrationDetail
+                            actions={actions}
+                            integration={commonProps.integration}
+                            loading={commonProps.loading}
+                            redirectUri={redirectUri}
+                        />
+                    )
+                }
+
+                return (
+                    <YotpoIntegrationList
                         actions={actions}
                         integrations={commonProps.integrations}
                         loading={commonProps.loading}

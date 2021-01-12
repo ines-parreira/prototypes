@@ -20,6 +20,7 @@ export enum IntegrationType {
     SmileIntegrationType = 'smile',
     Magento2IntegrationType = 'magento2',
     ZendeskIntegrationType = 'zendesk',
+    YotpoIntegrationType = 'yotpo',
 }
 
 export enum IntegrationDataItemType {
