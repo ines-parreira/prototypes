@@ -4,75 +4,188 @@ import _union from 'lodash/union'
 import _without from 'lodash/without'
 import _xor from 'lodash/xor'
 import React, {
-    useMemo,
     ComponentProps,
     ComponentType,
-    useState,
-    useEffect,
+    createContext,
+    ReactElement,
     useCallback,
+    useContext,
+    useEffect,
+    useMemo,
+    useState,
 } from 'react'
 import {
-    UncontrolledDropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
     Input,
+    DropdownItem,
+    DropdownMenu,
+    DropdownToggle,
     Label,
+    UncontrolledDropdown,
 } from 'reactstrap'
 
 import css from './SelectFilter.less'
 
-type Group = {
+enum CheckedStatus {
+    Checked = 'checked',
+    Unchecked = 'unchecked',
+    Partial = 'partial',
+}
+
+interface ItemContext {
+    handleChange: (itemId: string) => void
+    isChecked: (label: string) => boolean
+    isDisplayed: (label: string) => boolean
+}
+
+const SelectFilterItemContext = createContext<ItemContext>({
+    handleChange: () => {
+        throw new Error('no handleChange provided')
+    },
+    isChecked: () => {
+        throw new Error('no isChecked provided')
+    },
+    isDisplayed: () => {
+        throw new Error('no isDisplayed provided')
+    },
+})
+
+type ItemProps = {
     label: string
     value: string
-    itemValues: string[]
 }
 
-type Item = {
-    label?: string
-    value?: string
+const Item = ({label, value}: ItemProps) => {
+    const {handleChange, isChecked, isDisplayed} = useContext(
+        SelectFilterItemContext
+    )
+
+    if (!isDisplayed(label)) {
+        return null
+    }
+
+    return (
+        <DropdownItem
+            key={value}
+            tag={(props) => <Label {...props} check />}
+            toggle={false}
+            className={css.item}
+        >
+            <input
+                checked={isChecked(value)}
+                className={classnames('mr-2', css.checkbox)}
+                onChange={() => handleChange(value)}
+                type="checkbox"
+            />
+            {` ${label}`}
+        </DropdownItem>
+    )
 }
+
+Item.displayName = 'SelectFilter.Item'
+
+export type GroupProps = {
+    items: string[]
+    label: string
+    value: string
+}
+
+interface GroupContext {
+    getCheckedStatus: (group: Partial<GroupProps>) => CheckedStatus
+    handleChange: (groupId: string, items: string[]) => void
+    isChecked: (label: string) => boolean
+    isDisplayed: (label: string, items: string[]) => boolean
+}
+
+const SelectFilterGroupContext = createContext<GroupContext>({
+    getCheckedStatus: () => {
+        throw new Error('no getCheckedStatus provided')
+    },
+    handleChange: () => {
+        throw new Error('no handleChange provided')
+    },
+    isChecked: () => {
+        throw new Error('no handleChange provided')
+    },
+    isDisplayed: () => {
+        throw new Error('no isDisplayed provided')
+    },
+})
+
+const Group = ({items, label, value}: GroupProps) => {
+    const {getCheckedStatus, handleChange, isChecked, isDisplayed} = useContext(
+        SelectFilterGroupContext
+    )
+
+    const handleIndeterminate = useCallback(
+        (el: HTMLInputElement) => {
+            if (!el) {
+                return
+            }
+            el.indeterminate =
+                getCheckedStatus({items, value}) === CheckedStatus.Partial
+        },
+        [items, value]
+    )
+
+    if (!isDisplayed(label, items)) {
+        return null
+    }
+
+    return (
+        <DropdownItem
+            key={value}
+            tag={(props) => <Label {...props} check />}
+            toggle={false}
+            className={css.item}
+        >
+            <input
+                checked={isChecked(value)}
+                className={classnames('mr-2', css.checkbox)}
+                onChange={() => handleChange(value, items)}
+                ref={handleIndeterminate}
+                type="checkbox"
+            />
+            {` ${label}`}
+        </DropdownItem>
+    )
+}
+
+Group.displayName = 'SelectFilter.Group'
 
 type Props = {
+    children?: ReactElement<
+        ComponentProps<typeof Item | typeof Group>,
+        typeof Item | typeof Group
+    >[]
     className?: string
     dropdownMenu?: ComponentType<ComponentProps<typeof DropdownMenu>>
-    groupLabel?: string
-    groups?: Group[]
-    groupValue?: string[]
     isDisabled?: boolean
-    itemLabel?: string
-    items: Item[]
-    multiple?: boolean
+    isMultiple?: boolean
+    isRequired?: boolean
     onChange: (value: string[]) => void
-    onGroupChange?: (value: string[]) => void
     onSearch?: (query: string) => void
     plural?: string
-    required?: boolean
     singular?: string
     value: string[]
 }
 
-export default function SelectFilter({
+const SelectFilter = ({
+    children,
     className,
     dropdownMenu: DropdownMenuComponent = (
         props: ComponentProps<typeof DropdownMenu>
     ) => <DropdownMenu {...props} className={css.dropdown} />,
-    groupLabel,
-    groups,
-    groupValue,
     isDisabled = false,
-    itemLabel,
-    items = [],
-    multiple = true,
+    isRequired = false,
+    isMultiple = true,
     onChange,
-    onGroupChange,
     onSearch,
     plural = 'items',
-    required = false,
     singular = 'item',
     value,
-}: Props) {
+}: Props) => {
     const [search, setSearch] = useState('')
+    const [selectedGroupIds, setSelectedGroupIds] = useState<string[]>([])
 
     useEffect(() => {
         if (onSearch) {
@@ -81,228 +194,211 @@ export default function SelectFilter({
     }, [onSearch, search])
 
     const hasSelection = useMemo(() => !!value.length, [value])
+
+    const items = useMemo(
+        () =>
+            children
+                ? React.Children.toArray(children).filter(
+                      (child) =>
+                          child.type.displayName ===
+                          SelectFilter.Item.displayName
+                  )
+                : [],
+        [children]
+    )
+
     const toggleLabel = useMemo(() => {
-        if (multiple) {
+        if (isMultiple) {
             return hasSelection
                 ? `${value.length} ${value.length > 1 ? plural : singular}`
                 : `All ${plural}`
         }
-        const selectedItem = items.find((item) => item.value === value[0])
 
-        return selectedItem ? selectedItem.label : _capitalize(singular)
-    }, [hasSelection, multiple, plural, singular, value])
-    const filteredItems = useMemo(() => {
-        if (!search) {
-            return items
-        }
-        return items.filter(
-            (item) =>
-                item.label &&
-                item.label.toLowerCase().includes(search.toLowerCase())
-        )
-    }, [items, search])
-    const filteredGroups = useMemo(() => {
-        if (!search || !groups) {
-            return groups
-        }
-        const filteredItemValues = filteredItems.map((item) => item.value)
+        const selectedItem = items.find((item) => item.props.value === value[0])
 
-        return groups.filter(
-            (group) =>
-                (group.label &&
-                    group.label.toLowerCase().includes(search.toLowerCase())) ||
-                group.itemValues.some((itemValue) =>
-                    filteredItemValues.includes(itemValue)
-                )
-        )
-    }, [groups, search, filteredItems])
+        return selectedItem ? selectedItem.props.label : _capitalize(singular)
+    }, [hasSelection, isMultiple, plural, singular, value])
 
-    const handleOptionClick = useCallback(
-        (optionValue: string) => {
+    const groups = useMemo(
+        () =>
+            children
+                ? (React.Children.toArray(children).filter(
+                      (child) =>
+                          child.type.displayName ===
+                          SelectFilter.Group.displayName
+                  ) as ReactElement<
+                      ComponentProps<typeof Group>
+                  >[]).map(({props: {value, items}}) => ({value, items}))
+                : [],
+        [children]
+    )
+
+    const updateGroupValue = (nextValue: string[]) => {
+        selectedGroupIds.map((groupId) => {
+            const group = groups?.find((group) => group.value === groupId)
+
+            if (
+                group &&
+                !group.items.some((item) => nextValue.includes(item))
+            ) {
+                setSelectedGroupIds(_without(selectedGroupIds, groupId))
+            }
+        })
+    }
+
+    const handleItemChange = useCallback(
+        (itemId: string) => {
             if (
                 isDisabled ||
-                (value.length === 1 && value[0] === optionValue && required)
+                (value.length === 1 && value[0] === itemId && isRequired)
             ) {
                 return
             }
-            const nextValue = _xor(value, [optionValue])
-            onChange(nextValue)
 
-            if (groupValue?.length && onGroupChange) {
-                groupValue.map((v) => {
-                    const group = groups?.find((group) => group.value === v)
-
-                    if (
-                        group &&
-                        !group.itemValues.some((itemValue) =>
-                            nextValue.includes(itemValue)
-                        )
-                    ) {
-                        onGroupChange(_without(groupValue, v))
-                    }
-                })
-            }
-        },
-        [isDisabled, onChange, required, value, groupValue, onGroupChange]
-    )
-    const handleGroupOptionClick = useCallback(
-        (optionValue: string) => {
-            const currentGroup = groups?.find(
-                (group) => group.value === optionValue
-            )
-
-            if (isDisabled || !groupValue || !onGroupChange || !currentGroup) {
-                return
-            }
-            const nextValue = _xor(groupValue, [optionValue])
-            if (nextValue.length > groupValue.length) {
-                onChange(_union(value, currentGroup.itemValues))
+            let nextValue: string[]
+            if (!isMultiple) {
+                if (value[0] === itemId) {
+                    nextValue = []
+                } else {
+                    nextValue = [itemId]
+                }
             } else {
-                onChange(_without(value, ...currentGroup.itemValues))
+                nextValue = _xor(value, [itemId])
             }
-            onGroupChange(nextValue)
+
+            onChange(nextValue)
+            updateGroupValue(nextValue)
         },
-        [isDisabled, groupValue, onGroupChange, onChange]
+        [isDisabled, isMultiple, isRequired, value]
     )
-    const handleIndeterminate = useCallback(
-        ({itemValues, value: currentGroupValue}: Group) => (
-            el: HTMLInputElement
-        ) => {
-            if (!el || !groupValue) {
+
+    const handleGroupChange = useCallback(
+        (groupId: string, items: string[]) => {
+            if (isDisabled || !selectedGroupIds) {
                 return
             }
-            el.indeterminate =
-                groupValue.includes(currentGroupValue) &&
-                itemValues.some((itemValue) => value.includes(itemValue)) &&
-                !itemValues.every((itemValue) => value.includes(itemValue))
+
+            const nextValue = _xor(selectedGroupIds, [groupId])
+            if (nextValue.length > selectedGroupIds.length) {
+                onChange(_union(value, items))
+            } else {
+                onChange(_without(value, ...items))
+            }
+            setSelectedGroupIds(nextValue)
         },
-        [value, groupValue]
+        [isDisabled, selectedGroupIds, onChange]
     )
+
+    const getCheckedStatus = useCallback(
+        (group: Partial<GroupProps>) => {
+            if (!selectedGroupIds.includes(group.value!)) {
+                return CheckedStatus.Unchecked
+            } else if (group.items?.every((item) => value.includes(item))) {
+                return CheckedStatus.Checked
+            }
+            return CheckedStatus.Partial
+        },
+        [selectedGroupIds, value]
+    )
+
+    const isItemDisplayed = (label: string) =>
+        search === '' || label.toLowerCase().includes(search.toLowerCase())
+
+    const isGroupDisplayed = (label: string, groupItems: string[]) => {
+        if (
+            search === '' ||
+            label?.toLowerCase().includes(search.toLowerCase())
+        ) {
+            return true
+        }
+
+        const groupItemValues = items.filter((item) =>
+            groupItems?.includes(item.props.value)
+        )
+        if (
+            groupItemValues.some((item) =>
+                item.props.label.toLowerCase().includes(search.toLowerCase())
+            )
+        ) {
+            return true
+        }
+        return false
+    }
 
     return (
-        <UncontrolledDropdown disabled={isDisabled} className={className}>
-            <DropdownToggle
-                caret
-                className="mr-2"
-                color="secondary"
-                type="button"
-                disabled={isDisabled}
+        <SelectFilterItemContext.Provider
+            value={{
+                handleChange: handleItemChange,
+                isChecked: (item) => value.includes(item),
+                isDisplayed: isItemDisplayed,
+            }}
+        >
+            <SelectFilterGroupContext.Provider
+                value={{
+                    handleChange: handleGroupChange,
+                    getCheckedStatus,
+                    isChecked: (group) => selectedGroupIds?.includes(group),
+                    isDisplayed: isGroupDisplayed,
+                }}
             >
-                <span>{toggleLabel}</span>
-            </DropdownToggle>
-            <DropdownMenuComponent right>
-                <DropdownItem
-                    header
-                    className={classnames(
-                        'dropdown-item-input',
-                        css.dropdownItemInput
-                    )}
+                <UncontrolledDropdown
+                    disabled={isDisabled}
+                    className={className}
                 >
-                    <Input
-                        autoFocus
-                        className="mb-2"
-                        onChange={(e) => setSearch(e.target.value)}
-                        placeholder={`Search ${plural}...`}
-                        value={search}
-                    />
-                </DropdownItem>
-                <div className={css.content}>
-                    <div className={css.items}>
-                        {groupLabel && !!filteredGroups?.length && (
-                            <DropdownItem header className={css.header}>
-                                {groupLabel}
-                            </DropdownItem>
-                        )}
-                        {!!filteredGroups?.length &&
-                            filteredGroups.map((group) => (
-                                <DropdownItem
-                                    key={group.value}
-                                    tag={(props) => <Label {...props} check />}
-                                    toggle={false}
-                                    className={css.item}
-                                >
-                                    <input
-                                        checked={
-                                            groupValue?.includes(group.value) &&
-                                            group.itemValues.every(
-                                                (itemValue) =>
-                                                    value.includes(itemValue)
-                                            )
-                                        }
-                                        className={classnames(
-                                            'mr-2',
-                                            css.checkbox
-                                        )}
-                                        onChange={() =>
-                                            handleGroupOptionClick(group.value)
-                                        }
-                                        ref={handleIndeterminate(group)}
-                                        type="checkbox"
-                                    />
-                                    {` ${group.label}`}
-                                </DropdownItem>
-                            ))}
-                    </div>
-                    <div className={css.items}>
-                        {itemLabel && (
-                            <DropdownItem header className={css.header}>
-                                {itemLabel}
-                            </DropdownItem>
-                        )}
-                        {filteredItems.length === 0 ? (
-                            <DropdownItem header>
-                                Could not find any {singular}
-                            </DropdownItem>
-                        ) : (
-                            filteredItems.map((item) => (
-                                <DropdownItem
-                                    key={item.value}
-                                    tag={(props) => <Label {...props} check />}
-                                    toggle={false}
-                                    className={css.item}
-                                >
-                                    <input
-                                        checked={
-                                            !!item.value &&
-                                            value.includes(item.value)
-                                        }
-                                        className={classnames(
-                                            'mr-2',
-                                            css.checkbox
-                                        )}
-                                        onChange={() => {
-                                            if (item.value) {
-                                                handleOptionClick(item.value)
-                                            }
-                                        }}
-                                        type="checkbox"
-                                    />
-                                    {` ${item.label || ''}`}
-                                </DropdownItem>
-                            ))
-                        )}
-                    </div>
-                </div>
-                {hasSelection && !required && (
-                    <>
-                        <DropdownItem divider />
+                    <DropdownToggle
+                        caret
+                        className="mr-2"
+                        color="secondary"
+                        type="button"
+                        disabled={isDisabled}
+                    >
+                        <span>{toggleLabel}</span>
+                    </DropdownToggle>
+                    <DropdownMenuComponent right>
                         <DropdownItem
-                            onClick={() => {
-                                if (isDisabled) {
-                                    return
-                                }
-
-                                onChange([])
-                            }}
-                            type="button"
+                            header
+                            className={classnames(
+                                'dropdown-item-input',
+                                css.dropdownItemInput
+                            )}
                         >
-                            <span className="text-warning">{`Deselect ${
-                                value.length > 1 ? 'all' : ''
-                            }`}</span>
+                            <Input
+                                autoFocus
+                                className="mb-2"
+                                onChange={(e) => setSearch(e.target.value)}
+                                placeholder={`Search ${plural}...`}
+                                value={search}
+                            />
                         </DropdownItem>
-                    </>
-                )}
-            </DropdownMenuComponent>
-        </UncontrolledDropdown>
+                        <div className={css.content}>{children}</div>
+                        {hasSelection && !isRequired && (
+                            <>
+                                <DropdownItem divider />
+                                <DropdownItem
+                                    onClick={() => {
+                                        if (isDisabled) {
+                                            return
+                                        }
+
+                                        onChange([])
+                                        setSelectedGroupIds([])
+                                    }}
+                                    type="button"
+                                >
+                                    <span className="text-warning">{`Deselect ${
+                                        value.length > 1 ? 'all' : ''
+                                    }`}</span>
+                                </DropdownItem>
+                            </>
+                        )}
+                    </DropdownMenuComponent>
+                </UncontrolledDropdown>
+            </SelectFilterGroupContext.Provider>
+        </SelectFilterItemContext.Provider>
     )
 }
+
+SelectFilter.Group = Group
+SelectFilter.Item = Item
+
+export default SelectFilter

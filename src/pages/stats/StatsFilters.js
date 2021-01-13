@@ -7,6 +7,7 @@ import React from 'react'
 import {connect} from 'react-redux'
 import _upperFirst from 'lodash/upperFirst'
 import {withRouter} from 'react-router'
+import {DropdownItem} from 'reactstrap'
 
 import {views as statViewsConfig} from '../../config/stats.tsx'
 import {mergeStatsFilters} from '../../state/stats/actions.ts'
@@ -43,13 +44,12 @@ type Props = {
         query: string
     ) => Promise<?List<*>>,
     mergeStatsFilters: typeof mergeStatsFilters,
-    teams: {label: string, value: string, itemValues: string[]},
+    teams: {label: string, value: string, members: string[]}[],
 }
 
 type State = {
     tags: any[],
     integrations: any[],
-    selectedTeams: string[],
 }
 
 export class StatsFilters extends React.Component<Props, State> {
@@ -58,7 +58,6 @@ export class StatsFilters extends React.Component<Props, State> {
         this.state = {
             tags: props.tags,
             integrations: props.integrations,
-            selectedTeams: [],
         }
     }
 
@@ -94,8 +93,7 @@ export class StatsFilters extends React.Component<Props, State> {
     }
 
     _renderFilterInput = (filterType: string) => {
-        const {config, filters, teams} = this.props
-        const {selectedTeams} = this.state
+        const {agents, config, filters, teams} = this.props
         const filterValue = filters.get(filterType)
         const filterConfig = config
             .get('filters')
@@ -178,17 +176,27 @@ export class StatsFilters extends React.Component<Props, State> {
                         key={filterType}
                         plural="agents"
                         singular="agent"
-                        onGroupChange={(selectedTeams) =>
-                            this.setState({selectedTeams})
-                        }
-                        groupLabel="Teams"
-                        groups={teams}
-                        groupValue={selectedTeams}
-                        itemLabel="Agents"
-                        items={this.props.agents}
                         onChange={this._handleFilterChange('agents')}
                         value={filters.get('agents', fromJS([])).toJS()}
-                    />
+                    >
+                        <DropdownItem header>Teams</DropdownItem>
+                        {teams.map((team) => (
+                            <SelectFilter.Group
+                                key={`team-${team.value}`}
+                                items={team.members}
+                                label={team.label}
+                                value={team.value}
+                            />
+                        ))}
+                        <DropdownItem header>Users</DropdownItem>
+                        {agents.map((agent) => (
+                            <SelectFilter.Item
+                                key={`agent-${agent.value}`}
+                                label={agent.label}
+                                value={agent.value}
+                            />
+                        ))}
+                    </SelectFilter>
                 )
             case 'integrations': {
                 const options = filterConfig.get('options')
@@ -292,7 +300,7 @@ const mapStateToProps = (state: Object, props: Props) => {
             .map((team) => ({
                 label: _capitalize(team.get('name')),
                 value: team.get('id'),
-                itemValues: team
+                members: team
                     .get('members')
                     .map((user) => user.get('id'))
                     .toJS(),
