@@ -143,6 +143,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       "value": "de",
                     },
                     Object {
+                      "label": "Norwegian",
+                      "value": "no",
+                    },
+                    Object {
                       "label": "Czech",
                       "value": "cz",
                     },
@@ -198,6 +202,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   value="de"
                 >
                   German
+                </option>
+                <option
+                  key="no"
+                  value="no"
+                >
+                  Norwegian
                 </option>
                 <option
                   key="cz"
@@ -467,6 +477,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       "value": "de",
                     },
                     Object {
+                      "label": "Norwegian",
+                      "value": "no",
+                    },
+                    Object {
                       "label": "Czech",
                       "value": "cz",
                     },
@@ -522,6 +536,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   value="de"
                 >
                   German
+                </option>
+                <option
+                  key="no"
+                  value="no"
+                >
+                  Norwegian
                 </option>
                 <option
                   key="cz"
@@ -804,6 +824,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                       "value": "de",
                     },
                     Object {
+                      "label": "Norwegian",
+                      "value": "no",
+                    },
+                    Object {
                       "label": "Czech",
                       "value": "cz",
                     },
@@ -859,6 +883,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
                   value="de"
                 >
                   German
+                </option>
+                <option
+                  key="no"
+                  value="no"
+                >
+                  Norwegian
                 </option>
                 <option
                   key="cz"
@@ -1163,6 +1193,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                       "value": "de",
                     },
                     Object {
+                      "label": "Norwegian",
+                      "value": "no",
+                    },
+                    Object {
                       "label": "Czech",
                       "value": "cz",
                     },
@@ -1218,6 +1252,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
                   value="de"
                 >
                   German
+                </option>
+                <option
+                  key="no"
+                  value="no"
+                >
+                  Norwegian
                 </option>
                 <option
                   key="cz"
@@ -1504,6 +1544,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       "value": "de",
                     },
                     Object {
+                      "label": "Norwegian",
+                      "value": "no",
+                    },
+                    Object {
                       "label": "Czech",
                       "value": "cz",
                     },
@@ -1559,6 +1603,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   value="de"
                 >
                   German
+                </option>
+                <option
+                  key="no"
+                  value="no"
+                >
+                  Norwegian
                 </option>
                 <option
                   key="cz"
@@ -1873,6 +1923,10 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                       "value": "de",
                     },
                     Object {
+                      "label": "Norwegian",
+                      "value": "no",
+                    },
+                    Object {
                       "label": "Czech",
                       "value": "cz",
                     },
@@ -1928,6 +1982,12 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
                   value="de"
                 >
                   German
+                </option>
+                <option
+                  key="no"
+                  value="no"
+                >
+                  Norwegian
                 </option>
                 <option
                   key="cz"

@@ -10,6 +10,7 @@ import {
     SWEDISH_LANGUAGE,
     GERMAN_LANGUAGE,
     CZECH_LANGUAGE,
+    NORWEGIAN_LANGUAGE,
 } from '../../constants/languages.ts'
 
 export const GORGIAS_CHAT_DECORATION_INTRODUCTION_TEXT_MAX_LENGTH = 50
@@ -24,6 +25,7 @@ export const GORGIAS_CHAT_WIDGET_LANGUAGE_OPTIONS = fromJS([
     {value: ITALIAN_LANGUAGE, label: 'Italian'},
     {value: DUTCH_LANGUAGE, label: 'Dutch'},
     {value: GERMAN_LANGUAGE, label: 'German'},
+    {value: NORWEGIAN_LANGUAGE, label: 'Norwegian'},
     {value: CZECH_LANGUAGE, label: 'Czech'},
 ])
 
