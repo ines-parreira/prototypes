@@ -261,6 +261,27 @@ export default class GorgiasApi {
         ]
     }
 
+    async calculateDraftOrder(
+        integrationId: number,
+        payload: Map<any, any>
+    ): Promise<Map<any, any>> {
+        const url = '/integrations/shopify/order/draft/calculate/'
+        const response = await this._api.post(url, payload.toJS(), {
+            params: {
+                integration_id: integrationId,
+            },
+        })
+
+        const responseData = response.data as {
+            data: {draftOrderCalculate: {calculatedDraftOrder: any}}
+        }
+
+        const calculatedDraftOrder =
+            responseData?.data?.draftOrderCalculate?.calculatedDraftOrder
+
+        return fromJS(calculatedDraftOrder) as Map<any, any>
+    }
+
     async createDraftOrder(
         integrationId: number,
         payload: Map<any, any>,
@@ -286,7 +307,7 @@ export default class GorgiasApi {
         const uniqueVariantIds = new Set(variantIds as any)
 
         if (variantIds.size !== uniqueVariantIds.size) {
-            console.warn(
+            console.error(
                 '[SHOPIFY][duplicate-order] Updating draft order with duplicated rows',
                 payload.toJS()
             )

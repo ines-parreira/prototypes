@@ -323,6 +323,7 @@ export type Image = {
 
 export type Variant = {
     id: number
+    admin_graphql_api_id: string
     sku: string
     price: string
     title: string

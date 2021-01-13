@@ -4,7 +4,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import {fromJS, type Record} from 'immutable'
+import {fromJS, type Map, type Record} from 'immutable'
 
 import {
     integrationDataItemProductFixture,
@@ -13,6 +13,7 @@ import {
     shopifyInvoicePayloadFixture,
     shopifyOrderFixture,
     shopifyProductFixture,
+    shopifyVariantFixture,
 } from '../../../../../../../../../../../../fixtures/shopify.ts'
 import {
     createOrderStateFixture,
@@ -32,21 +33,21 @@ function initActions() {
     return {
         addCustomRow: jest.fn(),
         addRow: jest.fn(),
-        onBulkChange: jest.fn(),
-        onCancel: jest.fn(),
-        onChange: jest
-            .fn()
-            .mockImplementation(
-                (
+        onBulkChange: jest.fn().mockImplementation(
+            (
+                values: Array<{
                     name: string,
                     value: string | number | boolean | Object,
-                    callback?: () => void
-                ) => {
-                    if (callback) {
-                        callback()
-                    }
+                }>,
+                callback?: () => void
+            ) => {
+                if (callback) {
+                    callback()
                 }
-            ),
+            }
+        ),
+        onCancel: jest.fn(),
+        onChange: jest.fn(),
         onClose: jest.fn(),
         onEmailInvoice: jest
             .fn()
@@ -62,13 +63,48 @@ function initActions() {
                 }
             ),
         onInit: jest.fn(),
-        onInitCleanUp: jest.fn(),
         onOpen: jest.fn(),
         onPayloadChange: jest.fn(),
+        onCreateDraftOrder: jest
+            .fn()
+            .mockImplementation(() => Promise.resolve(fromJS({id: 1}))),
         onReset: jest.fn(),
         onSubmit: jest.fn(),
-        onSubmitCleanUp: jest.fn(),
     }
+}
+
+function getProducts(order) {
+    const products = new window.Map()
+
+    order.get('line_items', []).forEach((lineItem) => {
+        const productId = lineItem.get('product_id')
+        const variant = fromJS(
+            shopifyVariantFixture({
+                id: lineItem.get('variant_id'),
+                title: lineItem.get('variant_title'),
+            })
+        )
+        let product: Map<*, *>
+
+        if (products.has(productId)) {
+            product = products.get(productId)
+            product = product.update('variants', (variants) =>
+                variants.push(variant)
+            )
+        } else {
+            product = fromJS(
+                shopifyProductFixture({
+                    id: productId,
+                    title: lineItem.get('title'),
+                    variants: [variant],
+                })
+            )
+        }
+
+        products.set(productId, product)
+    })
+
+    return products
 }
 
 describe('<DraftOrderModal/>', () => {
@@ -158,7 +194,6 @@ describe('<DraftOrderModalComponent/>', () => {
                         'loadingMessage'
                     )}
                     payload={getCreateOrderState(state).get('payload')}
-                    draftOrder={getCreateOrderState(state).get('draftOrder')}
                     products={getCreateOrderState(state).get('products')}
                     header="Duplicate order"
                     isOpen={false}
@@ -193,7 +228,6 @@ describe('<DraftOrderModalComponent/>', () => {
                         'loadingMessage'
                     )}
                     payload={getCreateOrderState(state).get('payload')}
-                    draftOrder={getCreateOrderState(state).get('draftOrder')}
                     products={getCreateOrderState(state).get('products')}
                     header="Duplicate order"
                     isOpen
@@ -213,13 +247,11 @@ describe('<DraftOrderModalComponent/>', () => {
         it('should render as open, with order table', () => {
             const order = fromJS(shopifyOrderFixture())
             const customer = fromJS(shopifyCustomerFixture())
-            const product = fromJS(shopifyProductFixture())
-            const products = new Map([[product.get('id'), product]])
+            const products = getProducts(order)
             const draftOrder = initDraftOrderPayload(customer, order, products)
             const payload = getDuplicateOrderPayload(draftOrder)
             const createOrderState = createOrderStateFixture({
                 payload,
-                draftOrder,
             })
 
             const store = mockStore({
@@ -239,7 +271,6 @@ describe('<DraftOrderModalComponent/>', () => {
                         'loadingMessage'
                     )}
                     payload={getCreateOrderState(state).get('payload')}
-                    draftOrder={getCreateOrderState(state).get('draftOrder')}
                     products={getCreateOrderState(state).get('products')}
                     header="Duplicate order"
                     isOpen
@@ -259,12 +290,11 @@ describe('<DraftOrderModalComponent/>', () => {
         it('should render as open, with empty order table', () => {
             const order = fromJS(shopifyOrderFixture()).set('line_items', [])
             const customer = fromJS(shopifyCustomerFixture())
-            const products = new Map()
+            const products = new window.Map()
             const draftOrder = initDraftOrderPayload(customer, order, products)
             const payload = getDuplicateOrderPayload(draftOrder)
             const createOrderState = createOrderStateFixture({
                 payload,
-                draftOrder,
             })
 
             const store = mockStore({
@@ -284,7 +314,6 @@ describe('<DraftOrderModalComponent/>', () => {
                         'loadingMessage'
                     )}
                     payload={getCreateOrderState(state).get('payload')}
-                    draftOrder={getCreateOrderState(state).get('draftOrder')}
                     products={getCreateOrderState(state).get('products')}
                     header="Duplicate order"
                     isOpen
@@ -304,13 +333,11 @@ describe('<DraftOrderModalComponent/>', () => {
         it('should render as open, with order table and default currency, when its missing', () => {
             const order = fromJS(shopifyOrderFixture())
             const customer = fromJS(shopifyCustomerFixture())
-            const product = fromJS(shopifyProductFixture())
-            const products = new Map([[product.get('id'), product]])
+            const products = getProducts(order)
             const draftOrder = initDraftOrderPayload(customer, order, products)
             const payload = getDuplicateOrderPayload(draftOrder)
             const createOrderState = createOrderStateFixture({
                 payload,
-                draftOrder,
             })
 
             const store = mockStore({
@@ -335,7 +362,6 @@ describe('<DraftOrderModalComponent/>', () => {
                         'loadingMessage'
                     )}
                     payload={getCreateOrderState(state).get('payload')}
-                    draftOrder={getCreateOrderState(state).get('draftOrder')}
                     products={getCreateOrderState(state).get('products')}
                     header="Duplicate order"
                     isOpen
@@ -355,15 +381,13 @@ describe('<DraftOrderModalComponent/>', () => {
         it('should render as open, with invoice sent', () => {
             const order = fromJS(shopifyOrderFixture())
             const customer = fromJS(shopifyCustomerFixture())
-            const product = fromJS(shopifyProductFixture())
-            const products = new Map([[product.get('id'), product]])
+            const products = getProducts(order)
             const draftOrder = initDraftOrderPayload(customer, order, products)
                 .set('status', 'invoice_sent')
                 .set('invoice_sent_at', '2020-02-26T21:31:34-05:00')
             const payload = getDuplicateOrderPayload(draftOrder)
             const createOrderState = createOrderStateFixture({
                 payload,
-                draftOrder,
             })
 
             const store = mockStore({
@@ -382,8 +406,8 @@ describe('<DraftOrderModalComponent/>', () => {
                     loadingMessage={getCreateOrderState(state).get(
                         'loadingMessage'
                     )}
+                    draftOrder={draftOrder}
                     payload={getCreateOrderState(state).get('payload')}
-                    draftOrder={getCreateOrderState(state).get('draftOrder')}
                     products={getCreateOrderState(state).get('products')}
                     header="Duplicate order"
                     isOpen
@@ -430,9 +454,6 @@ describe('<DraftOrderModalComponent/>', () => {
                             'loadingMessage'
                         )}
                         payload={getCreateOrderState(state).get('payload')}
-                        draftOrder={getCreateOrderState(state).get(
-                            'draftOrder'
-                        )}
                         products={getCreateOrderState(state).get('products')}
                         header="Duplicate order"
                         isOpen={false}
@@ -467,13 +488,11 @@ describe('<DraftOrderModalComponent/>', () => {
             order = fromJS(shopifyOrderFixture())
 
             const customer = fromJS(shopifyCustomerFixture())
-            const product = fromJS(shopifyProductFixture())
-            const products = new Map([[product.get('id'), product]])
+            const products = getProducts(order)
             const draftOrder = initDraftOrderPayload(customer, order, products)
             const payload = getDuplicateOrderPayload(draftOrder)
             const createOrderState = createOrderStateFixture({
                 payload,
-                draftOrder,
             })
 
             const store = mockStore({
@@ -493,7 +512,6 @@ describe('<DraftOrderModalComponent/>', () => {
                         'loadingMessage'
                     )}
                     payload={getCreateOrderState(state).get('payload')}
-                    draftOrder={getCreateOrderState(state).get('draftOrder')}
                     products={getCreateOrderState(state).get('products')}
                     header="Duplicate order"
                     isOpen
@@ -559,31 +577,33 @@ describe('<DraftOrderModalComponent/>', () => {
         })
 
         describe('_onSubmitPaid()', () => {
-            it('should call onSubmit()', () => {
-                component.instance()._onSubmitPaid()
+            it('should call onCreateDraftOrder() then onSubmit()', async () => {
+                await component.instance()._onSubmitPaid()
 
-                expect(actions.onChange).toHaveBeenCalledWith(
-                    'payment_pending',
-                    false,
+                expect(actions.onBulkChange).toHaveBeenCalledWith(
+                    [
+                        {name: 'draft_order_id', value: 1},
+                        {name: 'payment_pending', value: false},
+                    ],
                     expect.any(Function)
                 )
                 expect(actions.onSubmit).toHaveBeenCalled()
-                expect(actions.onSubmitCleanUp).toHaveBeenCalled()
                 expect(actions.onReset).toHaveBeenCalled()
             })
         })
 
         describe('_onSubmitPending()', () => {
-            it('should call onSubmit()', () => {
-                component.instance()._onSubmitPending()
+            it('should call onCreateDraftOrder() then onSubmit()', async () => {
+                await component.instance()._onSubmitPending()
 
-                expect(actions.onChange).toHaveBeenCalledWith(
-                    'payment_pending',
-                    true,
+                expect(actions.onBulkChange).toHaveBeenCalledWith(
+                    [
+                        {name: 'draft_order_id', value: 1},
+                        {name: 'payment_pending', value: true},
+                    ],
                     expect.any(Function)
                 )
                 expect(actions.onSubmit).toHaveBeenCalled()
-                expect(actions.onSubmitCleanUp).toHaveBeenCalled()
                 expect(actions.onReset).toHaveBeenCalled()
             })
         })

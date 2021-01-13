@@ -3,7 +3,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {Alert, Button, ModalFooter} from 'reactstrap'
-import {fromJS, type List, type Record} from 'immutable'
+import {fromJS, type List, type Map, type Record} from 'immutable'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import {Link} from 'react-router'
@@ -13,12 +13,11 @@ import {
     addCustomRow,
     addRow,
     onCancel,
+    onCreateDraftOrder,
     onEmailInvoice,
     onInit,
-    onInitCleanUp,
     onPayloadChange,
     onReset,
-    onSubmitCleanUp,
 } from '../../../../../../../../../../../state/infobarActions/shopify/createOrder/actions.ts'
 import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager.ts'
 import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors.ts'
@@ -42,7 +41,7 @@ import type {ShopifyActionType} from '../../types'
 
 import AddCustomItemPopover from './AddCustomItemPopover'
 import EmailInvoicePopover from './EmailInvoicePopover'
-import DuplicateOrderFooter from './OrderFooter'
+import DraftOrderFooter from './OrderFooter'
 import DraftOrderTable from './DraftOrderTable'
 import css from './DraftOrderModal.less'
 
@@ -50,9 +49,9 @@ type Props = InfobarModalProps & {
     integrations: List<*>,
     loading: boolean,
     loadingMessage: ?string,
+    draftOrder: Record<$Shape<DraftOrder>>,
     payload: Record<$Shape<DraftOrder>>,
-    draftOrder: ?Record<DraftOrder>,
-    products: Map<number, Record<Product>>,
+    products: window.Map<number, Record<Product>>,
     data: {
         actionName: ?ShopifyActionType,
         order?: Record<Order>,
@@ -69,7 +68,6 @@ type Props = InfobarModalProps & {
         variant: Variant
     ) => void,
     onCancel: (actionName: string, integrationId: number, via: string) => void,
-    onInitCleanUp: (integrationId: number) => void,
     onEmailInvoice: (
         integrationId: number,
         customerId: number,
@@ -88,8 +86,11 @@ type Props = InfobarModalProps & {
         integrationId: number,
         payload: Record<$Shape<DraftOrder>>
     ) => void,
+    onCreateDraftOrder: (
+        integrationId: number,
+        orderId: ?number
+    ) => Promise<?Map<any, any>>,
     onReset: () => void,
-    onSubmitCleanUp: () => void,
 }
 
 export class DraftOrderModalComponent extends React.PureComponent<Props> {
@@ -101,27 +102,20 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
     }
 
     static defaultProps = {
+        draftOrder: fromJS({}), // TODO this will be used with action "edit order"
         data: {
             actionName: null,
             order: null,
         },
     }
 
-    componentWillMount() {
-        const {onInitCleanUp} = this.props
-        const {integrationId} = this.context
-
-        onInitCleanUp(integrationId)
-    }
-
     componentWillReceiveProps(nextProps: Props) {
         const {
             isOpen,
             data: {actionName, order, customer},
-            draftOrder,
             onOpen,
             onInit,
-            onBulkChange,
+            onChange,
         } = this.props
         const {integrationId} = this.context
         const hasScope = this._hasScope()
@@ -145,21 +139,10 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
                     this._onInitError
                 )
             shortcutManager.pause()
-        }
-
-        const id = draftOrder ? draftOrder.get('id') : null
-        const nextId = nextProps.draftOrder
-            ? nextProps.draftOrder.get('id')
-            : null
-
-        if (nextId && nextId !== id) {
-            const changes = [{name: 'draft_order_id', value: nextId}]
 
             if (order) {
-                changes.push({name: 'order_id', value: order.get('id')})
+                onChange('order_id', order.get('id'))
             }
-
-            onBulkChange(changes)
         }
     }
 
@@ -239,24 +222,38 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
         )
     }
 
-    _onSubmitPaid = () => {
-        const {onChange, onSubmit, onSubmitCleanUp} = this.props
+    _onSubmit(paymentPending: boolean) {
+        const {
+            data: {order},
+            onBulkChange,
+            onCreateDraftOrder,
+            onSubmit,
+        } = this.props
+        const {integrationId} = this.context
+        const orderId: ?number = order ? order.get('id') : null
 
-        onChange('payment_pending', false, () => {
-            onSubmit()
-            onSubmitCleanUp()
-            this._onClose()
+        onCreateDraftOrder(integrationId, orderId).then((draftOrder) => {
+            const draftOrderId: string = !!draftOrder
+                ? draftOrder.get('id')
+                : ''
+            const changes = [
+                {name: 'draft_order_id', value: draftOrderId},
+                {name: 'payment_pending', value: paymentPending},
+            ]
+
+            onBulkChange(changes, () => {
+                onSubmit()
+                this._onClose()
+            })
         })
     }
 
-    _onSubmitPending = () => {
-        const {onChange, onSubmit, onSubmitCleanUp} = this.props
+    _onSubmitPaid = () => {
+        this._onSubmit(false)
+    }
 
-        onChange('payment_pending', true, () => {
-            onSubmit()
-            onSubmitCleanUp()
-            this._onClose()
-        })
+    _onSubmitPending = () => {
+        this._onSubmit(true)
     }
 
     _onCancel(via: string) {
@@ -300,10 +297,10 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
             isOpen,
             payload,
             products,
-            draftOrder,
             loading,
             loadingMessage,
             data: {order, actionName},
+            draftOrder,
         } = this.props
         const {integrationId} = this.context
         const lineItems = payload
@@ -369,7 +366,7 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
                         onSubmit={this._onAddCustomItem}
                     />
                 </div>
-                {payload && draftOrder ? (
+                {payload ? (
                     <div>
                         <DraftOrderTable
                             shopName={shopName}
@@ -379,7 +376,7 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
                             products={products}
                             onChange={this._onLineItemsChange}
                         />
-                        <DuplicateOrderFooter
+                        <DraftOrderFooter
                             editable
                             actionName={actionName}
                             currencyCode={currencyCode}
@@ -401,7 +398,7 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
                                     id="email-invoice"
                                     actionName={actionName}
                                     color="link"
-                                    customerEmail={draftOrder.getIn([
+                                    customerEmail={payload.getIn([
                                         'customer',
                                         'email',
                                     ])}
@@ -418,7 +415,7 @@ export class DraftOrderModalComponent extends React.PureComponent<Props> {
                                     id="email-invoice"
                                     actionName={actionName}
                                     color="primary"
-                                    customerEmail={draftOrder.getIn([
+                                    customerEmail={payload.getIn([
                                         'customer',
                                         'email',
                                     ])}
@@ -480,7 +477,6 @@ const mapStateToProps = (state) => ({
     loading: getCreateOrderState(state).get('loading'),
     loadingMessage: getCreateOrderState(state).get('loadingMessage'),
     payload: getCreateOrderState(state).get('payload'),
-    draftOrder: getCreateOrderState(state).get('draftOrder'),
     products: getCreateOrderState(state).get('products'),
 })
 
@@ -488,11 +484,10 @@ const mapDispatchToProps = {
     addCustomRow,
     addRow,
     onCancel,
-    onInitCleanUp,
-    onSubmitCleanUp,
     onEmailInvoice,
     onInit,
     onPayloadChange,
+    onCreateDraftOrder,
     onReset,
 }
 

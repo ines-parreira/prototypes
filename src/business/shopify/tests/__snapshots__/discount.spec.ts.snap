@@ -4,11 +4,9 @@ exports[`getDiscountAmount() should return the discount amount for fixed amount 
 
 exports[`getDiscountAmount() should return the discount amount for percentage discount 1`] = `"5.00"`;
 
-exports[`getTotalDiscountAmount() should return the total discount amount of given payload when there is an applied discount 1`] = `5`;
+exports[`refreshAppliedDiscounts() should refresh the applied discount amount of the given payload 1`] = `5`;
 
-exports[`getTotalDiscountAmount() should return the total discount amount of given payload when there is no applied discount 1`] = `0`;
-
-exports[`refreshAppliedDiscounts() should refresh the applied discount amount of the given payload 1`] = `6.99`;
+exports[`refreshAppliedDiscounts() should refresh the applied discount amount of the given payload 2`] = `6.99`;
 
 exports[`refreshAppliedDiscounts() should work without rounding errors 1`] = `
 Immutable.Map {
@@ -103,6 +101,7 @@ Immutable.Map {
   "tags": null,
   "customer": Immutable.Map {
     "id": 2721145061399,
+    "admin_graphql_api_id": "gid://shopify/Customer/2721145061399",
   },
 }
 `;

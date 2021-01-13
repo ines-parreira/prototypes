@@ -18,15 +18,6 @@ export function getDiscountAmount(
         : (quantity * value * price) / 100
 }
 
-export function getTotalDiscountAmount(draftOrder: Map<any, any>): number {
-    const appliedDiscount = draftOrder.get('applied_discount') as Maybe<
-        Map<any, any>
-    >
-    return !!appliedDiscount
-        ? parseFloat(appliedDiscount.get('amount') as string)
-        : 0
-}
-
 /**
  * When we change the quantity of a line item, we have to refresh the amounts of applied discounts (on the line items,
  * or on the global applied discount), because discount amounts depend on quantities.

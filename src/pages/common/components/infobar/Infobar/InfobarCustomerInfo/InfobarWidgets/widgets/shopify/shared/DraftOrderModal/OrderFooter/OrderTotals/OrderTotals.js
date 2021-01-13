@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react'
-import {type Record} from 'immutable'
+import {fromJS, type Record, type Map} from 'immutable'
 import classnames from 'classnames'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
@@ -9,13 +9,7 @@ import hash from 'object-hash'
 
 import {getCreateOrderState} from '../../../../../../../../../../../../../state/infobarActions/shopify/createOrder/selectors.ts'
 import {onPayloadChange} from '../../../../../../../../../../../../../state/infobarActions/shopify/createOrder/actions.ts'
-import {
-    getSubtotal,
-    getTaxLinesTotals,
-    getTotalShippingPrice,
-} from '../../../../../../../../../../../../../business/shopify/draftOrder.ts'
 import {getDraftOrderTotalLineItemsPrice} from '../../../../../../../../../../../../../business/shopify/lineItem.ts'
-import {getTotalDiscountAmount} from '../../../../../../../../../../../../../business/shopify/discount.ts'
 import type {
     DraftOrder,
     ShippingLine,
@@ -35,8 +29,7 @@ type Props = {
     currencyCode: string,
     loading: boolean,
     payload: Record<$Shape<DraftOrder>>,
-    draftOrder: Record<DraftOrder>,
-    defaultShippingLine: Record<ShippingLine>,
+    calculatedDraftOrder: Map<*, *>,
     onPayloadChange: (
         integrationId: number,
         Record<$Shape<DraftOrder>>
@@ -58,7 +51,7 @@ export class OrderTotalsComponent extends React.PureComponent<Props> {
         onPayloadChange(integrationId, newPayload)
     }
 
-    _onShippingLinesChange = (shippingLine: $Shape<ShippingLine>) => {
+    _onShippingLineChange = (shippingLine: $Shape<ShippingLine>) => {
         const {onPayloadChange, payload} = this.props
         const {integrationId} = this.context
         const newPayload = payload.set('shipping_line', shippingLine)
@@ -79,12 +72,12 @@ export class OrderTotalsComponent extends React.PureComponent<Props> {
             editable,
             loading,
             payload,
-            draftOrder,
+            calculatedDraftOrder,
             currencyCode,
             actionName,
-            defaultShippingLine,
         } = this.props
-        const uniqueTaxLines = getTaxLinesTotals(draftOrder)
+
+        const taxLines = calculatedDraftOrder.get('taxLines', [])
 
         return (
             <dl className="row text-right mb-0">
@@ -106,7 +99,11 @@ export class OrderTotalsComponent extends React.PureComponent<Props> {
                     {!!payload.getIn(['applied_discount', 'title']) && <br />}
                     <MoneyAmount
                         amount={formatPrice(
-                            getTotalDiscountAmount(payload),
+                            calculatedDraftOrder.getIn([
+                                'appliedDiscount',
+                                'amountV2',
+                                'amount',
+                            ]),
                             currencyCode
                         )}
                         currencyCode={currencyCode}
@@ -118,7 +115,10 @@ export class OrderTotalsComponent extends React.PureComponent<Props> {
                 <dd className="col-3 mb-2">
                     <MoneyAmount
                         renderIfZero
-                        amount={formatPrice(getSubtotal(payload), currencyCode)}
+                        amount={formatPrice(
+                            calculatedDraftOrder.get('subtotalPrice'),
+                            currencyCode
+                        )}
                         currencyCode={currencyCode}
                     />
                 </dd>
@@ -130,8 +130,11 @@ export class OrderTotalsComponent extends React.PureComponent<Props> {
                         actionName={actionName}
                         currencyCode={currencyCode}
                         value={payload.get('shipping_line')}
-                        defaultValue={defaultShippingLine}
-                        onChange={this._onShippingLinesChange}
+                        availableShippingRates={calculatedDraftOrder.get(
+                            'availableShippingRates',
+                            []
+                        )}
+                        onChange={this._onShippingLineChange}
                     >
                         {!!payload.get('shipping_line')
                             ? 'Shipping'
@@ -143,7 +146,7 @@ export class OrderTotalsComponent extends React.PureComponent<Props> {
                     <MoneyAmount
                         renderIfZero={!!payload.get('shipping_line')}
                         amount={formatPrice(
-                            getTotalShippingPrice(payload),
+                            calculatedDraftOrder.get('totalShippingPrice'),
                             currencyCode
                         )}
                         currencyCode={currencyCode}
@@ -162,24 +165,21 @@ export class OrderTotalsComponent extends React.PureComponent<Props> {
                             Taxes
                         </TaxesPopover>
                     </span>
-                    {uniqueTaxLines.map((uniqueTaxLine) => (
+                    {taxLines.map((taxLine) => (
                         <span
-                            key={hash(uniqueTaxLine)}
+                            key={hash(taxLine.toJS())}
                             className={classnames('d-block', css.grey)}
                         >
-                            {uniqueTaxLine.label}
+                            {taxLine.get('title')}{' '}
+                            {taxLine.get('ratePercentage')}%
                         </span>
                     ))}
                 </dt>
                 <dd className="col-3 mb-2">
-                    {payload.get('tax_exempt') || !uniqueTaxLines.length ? (
-                        '—'
-                    ) : (
-                        <br />
-                    )}
-                    {uniqueTaxLines.map((uniqueTaxLine) => (
+                    {payload.get('tax_exempt') || !taxLines.size ? '—' : <br />}
+                    {taxLines.map((taxLine) => (
                         <span
-                            key={hash(uniqueTaxLine)}
+                            key={hash(taxLine.toJS())}
                             className={classnames('d-block', {
                                 'text-muted': loading,
                             })}
@@ -187,7 +187,11 @@ export class OrderTotalsComponent extends React.PureComponent<Props> {
                             <MoneyAmount
                                 renderIfZero
                                 amount={formatPrice(
-                                    uniqueTaxLine.total,
+                                    taxLine.getIn([
+                                        'priceSet',
+                                        'presentmentMoney',
+                                        'amount',
+                                    ]),
                                     currencyCode
                                 )}
                                 currencyCode={currencyCode}
@@ -201,7 +205,7 @@ export class OrderTotalsComponent extends React.PureComponent<Props> {
                     <strong className={classnames({'text-muted': loading})}>
                         <MoneyAmount
                             renderIfZero
-                            amount={draftOrder.get('total_price')}
+                            amount={calculatedDraftOrder.get('totalPrice')}
                             currencyCode={currencyCode}
                         />
                     </strong>
@@ -214,8 +218,8 @@ export class OrderTotalsComponent extends React.PureComponent<Props> {
 const mapStateToProps = (state) => ({
     loading: getCreateOrderState(state).get('loading'),
     payload: getCreateOrderState(state).get('payload'),
-    draftOrder: getCreateOrderState(state).get('draftOrder'),
-    defaultShippingLine: getCreateOrderState(state).get('defaultShippingLine'),
+    calculatedDraftOrder:
+        getCreateOrderState(state).get('calculatedDraftOrder') || fromJS({}),
 })
 
 const mapDispatchToProps = {

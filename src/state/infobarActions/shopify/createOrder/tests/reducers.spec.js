@@ -2,9 +2,8 @@ import {fromJS} from 'immutable'
 import * as immutableMatchers from 'jest-immutable-matchers'
 
 import {
-    shopifyDraftOrderFixture,
+    shopifyCalculatedDraftOrderFixture,
     shopifyDraftOrderPayloadFixture,
-    shopifyShippingLineFixture,
 } from '../../../../../fixtures/shopify.ts'
 import reducer, {initialState} from '../reducers.ts'
 import * as constants from '../constants.ts'
@@ -44,12 +43,19 @@ describe('infobarActions.shopify.createOrder reducer', () => {
         })
     })
 
-    describe('SET_DRAFT_ORDER', () => {
-        it('should set draft order', () => {
-            const draftOrder = fromJS(shopifyDraftOrderFixture())
-            const action = {type: constants.SET_DRAFT_ORDER, draftOrder}
+    describe('SET_CALCULATED_DRAFT_ORDER', () => {
+        it('should set calculated draft order', () => {
+            const calculatedDraftOrder = fromJS(
+                shopifyCalculatedDraftOrderFixture()
+            )
+            const action = {
+                type: constants.SET_CALCULATED_DRAFT_ORDER,
+                calculatedDraftOrder,
+            }
             const nextState = reducer(initialState, action)
-            expect(nextState.get('draftOrder')).toEqualImmutable(draftOrder)
+            expect(nextState.get('calculatedDraftOrder')).toEqualImmutable(
+                calculatedDraftOrder
+            )
         })
     })
 
@@ -62,20 +68,6 @@ describe('infobarActions.shopify.createOrder reducer', () => {
             const action = {type: constants.SET_PRODUCTS, products}
             const nextState = reducer(initialState, action)
             expect(nextState.get('products')).toEqual(products)
-        })
-    })
-
-    describe('SET_DEFAULT_SHIPPING_LINE', () => {
-        it('should set default shipping line', () => {
-            const defaultShippingLine = fromJS(shopifyShippingLineFixture())
-            const action = {
-                type: constants.SET_DEFAULT_SHIPPING_LINE,
-                defaultShippingLine,
-            }
-            const nextState = reducer(initialState, action)
-            expect(nextState.get('defaultShippingLine')).toEqualImmutable(
-                defaultShippingLine
-            )
         })
     })
 

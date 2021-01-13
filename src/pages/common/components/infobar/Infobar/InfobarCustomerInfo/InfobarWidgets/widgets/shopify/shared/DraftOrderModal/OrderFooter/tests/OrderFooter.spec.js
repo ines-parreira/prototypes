@@ -105,7 +105,8 @@ describe('<DuplicateOrderFooterComponent/>', () => {
 
                 expect(onPayloadChange).toHaveBeenCalledWith(
                     context.integrationId,
-                    payload.set('note', 'new note')
+                    payload.set('note', 'new note'),
+                    false
                 )
 
                 expect(logEvent).toHaveBeenCalledWith(event)
@@ -146,7 +147,8 @@ describe('<DuplicateOrderFooterComponent/>', () => {
 
                 expect(onPayloadChange).toHaveBeenCalledWith(
                     context.integrationId,
-                    payload.set('tags', 'new tag 1,new tag 2')
+                    payload.set('tags', 'new tag 1,new tag 2'),
+                    false
                 )
 
                 expect(logEvent).toHaveBeenCalledWith(event)

@@ -124,6 +124,10 @@ class AfterTitle extends React.Component<AfterTitleProps> {
                     order: source,
                     customer: fromJS({
                         id: source.getIn(['customer', 'id']),
+                        admin_graphql_api_id: source.getIn([
+                            'customer',
+                            'admin_graphql_api_id',
+                        ]),
                         email: source.getIn(['customer', 'email']),
                         default_address: source.get('default_address'),
                         currency: source.get('currency'),

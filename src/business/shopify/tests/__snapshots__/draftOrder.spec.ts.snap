@@ -87,6 +87,7 @@ Immutable.Map {
   "tags": null,
   "customer": Immutable.Map {
     "id": 2721145061399,
+    "admin_graphql_api_id": "gid://shopify/Customer/2721145061399",
   },
 }
 `;
@@ -167,6 +168,7 @@ Immutable.Map {
       "requires_shipping": true,
     },
     Immutable.Map {
+      "variant_admin_graphql_api_id": "gid://shopify/ProductVariant/1",
       "taxable": true,
       "price": "9.99",
       "quantity": 1,
@@ -183,6 +185,7 @@ Immutable.Map {
   "tags": null,
   "customer": Immutable.Map {
     "id": 2721145061399,
+    "admin_graphql_api_id": "gid://shopify/Customer/2721145061399",
   },
 }
 `;
@@ -263,6 +266,7 @@ Immutable.Map {
       "requires_shipping": true,
     },
     Immutable.Map {
+      "variant_admin_graphql_api_id": "gid://shopify/ProductVariant/1",
       "taxable": true,
       "price": "9.99",
       "quantity": 2,
@@ -279,25 +283,10 @@ Immutable.Map {
   "tags": null,
   "customer": Immutable.Map {
     "id": 2721145061399,
+    "admin_graphql_api_id": "gid://shopify/Customer/2721145061399",
   },
 }
 `;
-
-exports[`getSubtotal() should return the sub total when there is an applied discount 1`] = `0`;
-
-exports[`getSubtotal() should return the sub total when there is no applied discount 1`] = `5`;
-
-exports[`getTaxLineLabel() should return the correct label without rounding errors 1`] = `"TVA 7.25%"`;
-
-exports[`getTaxLineLabel() should return the label of the given tax line 1`] = `"TVA 20.00%"`;
-
-exports[`getTaxLineLabel() should return the label of the given tax line when taxes are included 1`] = `"TVA 20.00% (included)"`;
-
-exports[`getTotalShippingPrice() should return the total shipping price when it is not set 1`] = `0`;
-
-exports[`getTotalShippingPrice() should return the total shipping price when it is set 1`] = `12`;
-
-exports[`getTotalTaxes() should return the total taxes 1`] = `3`;
 
 exports[`initDraftOrderPayload() should return draft order payload for order creation from scratch 1`] = `
 Immutable.Map {
@@ -414,6 +403,7 @@ Immutable.Map {
   "tax_exempt": false,
   "line_items": Immutable.List [
     Immutable.Map {
+      "variant_admin_graphql_api_id": "gid://shopify/ProductVariant/31128766316567",
       "applied_discount": null,
       "taxable": true,
       "price": "1.00",
@@ -428,6 +418,7 @@ Immutable.Map {
       "requires_shipping": true,
     },
     Immutable.Map {
+      "variant_admin_graphql_api_id": "gid://shopify/ProductVariant/31128766349335",
       "applied_discount": null,
       "taxable": true,
       "price": "1.00",
@@ -512,6 +503,7 @@ Immutable.Map {
   "tax_exempt": false,
   "line_items": Immutable.List [
     Immutable.Map {
+      "variant_admin_graphql_api_id": null,
       "applied_discount": null,
       "taxable": true,
       "price": "1.00",
@@ -526,6 +518,7 @@ Immutable.Map {
       "requires_shipping": true,
     },
     Immutable.Map {
+      "variant_admin_graphql_api_id": null,
       "applied_discount": null,
       "taxable": true,
       "price": "1.00",

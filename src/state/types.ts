@@ -86,7 +86,7 @@ export type GorgiasAction = {
     refund?: Map<any, any>
     amount?: number
     restock?: boolean
-    draftOrder?: Map<any, any>
+    calculatedDraftOrder?: Map<any, any>
     products?: Map<any, any>
     defaultShippingLine?: string
     integration?: Integration | Map<any, any>

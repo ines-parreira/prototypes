@@ -1,8 +1,7 @@
-import {fromJS, List} from 'immutable'
 import type {Map} from 'immutable'
+import {fromJS, List} from 'immutable'
 import _debounce from 'lodash/debounce'
-import axios, {AxiosResponse, AxiosError} from 'axios'
-import moment from 'moment'
+import axios, {AxiosError, AxiosResponse} from 'axios'
 
 import {ShopifyActionType} from '../../../../pages/common/components/infobar/Infobar/InfobarCustomerInfo/InfobarWidgets/widgets/shopify/types'
 import {
@@ -10,6 +9,7 @@ import {
     addVariant,
     initDraftOrderPayload,
 } from '../../../../business/shopify/draftOrder'
+import {getCalculateDraftOrderPayload} from '../../../../business/shopify/calculatedDraftOrder'
 import {
     getDiscountAmount,
     refreshAppliedDiscounts,
@@ -19,39 +19,30 @@ import {
     formatPercentage,
     formatPrice,
 } from '../../../../business/shopify/number'
-import {DRAFT_ORDER_DELETE_AFTER} from '../../../../config/integrations/shopify'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker.js'
-import localStorageManager from '../../../../services/localStorageManager'
 import {
     AppliedDiscount,
-    PollingConfig,
+    DiscountType,
     Product,
     Variant,
-    DiscountType,
 } from '../../../../constants/integrations/types/shopify'
-import {StoreDispatch, RootState} from '../../../types'
+import {RootState, StoreDispatch} from '../../../types'
 import GorgiasApi from '../../../../services/gorgiasApi'
 import {executeAction} from '../../../infobar/actions'
 import {notify} from '../../../notifications/actions'
 import {NotificationStatus} from '../../../notifications/types'
 import {SegmentEvent} from '../../../../store/middlewares/types/segmentTracker'
-import {
-    IntegrationDataItemType,
-    IntegrationType,
-} from '../../../../models/integration/types'
+import {IntegrationDataItemType} from '../../../../models/integration/types'
 
 import {getCreateOrderState} from './selectors'
 import {
-    SET_DEFAULT_SHIPPING_LINE,
-    SET_DRAFT_ORDER,
+    SET_CALCULATED_DRAFT_ORDER,
     SET_INITIAL_STATE,
     SET_LOADING,
     SET_PAYLOAD,
     SET_PRODUCTS,
 } from './constants'
 
-const shopifyLocalStorage =
-    localStorageManager.integrations[IntegrationType.ShopifyIntegrationType]
 let _apiInstances: {[key: string]: GorgiasApi} = {}
 
 const getApiInstance = (key: string) => () => {
@@ -62,8 +53,7 @@ const getApiInstance = (key: string) => () => {
     return _apiInstances[key]
 }
 
-const getPollApi = getApiInstance('poll')
-const getUpdateApi = getApiInstance('update')
+const getCalculateApi = getApiInstance('calculate')
 
 const setLoading = (loading: boolean, message: Maybe<string> = null) => ({
     type: SET_LOADING,
@@ -76,19 +66,14 @@ const setPayload = (payload: Map<any, any>) => ({
     payload,
 })
 
-const setDraftOrder = (draftOrder: Map<any, any>) => ({
-    type: SET_DRAFT_ORDER,
-    draftOrder,
+const setCalculatedDraftOrder = (calculatedDraftOrder: Map<any, any>) => ({
+    type: SET_CALCULATED_DRAFT_ORDER,
+    calculatedDraftOrder,
 })
 
 const setProducts = (products: globalThis.Map<any, any>) => ({
     type: SET_PRODUCTS,
     products,
-})
-
-const setDefaultShippingLine = (defaultShippingLine: Maybe<Map<any, any>>) => ({
-    type: SET_DEFAULT_SHIPPING_LINE,
-    defaultShippingLine,
 })
 
 const setInitialState = () => ({
@@ -136,25 +121,18 @@ export const onInit = (
     if (order) {
         dispatch(setLoading(true, 'Fetching products...'))
 
-        const orderId = order.get('id') as number
         const products = await loadProducts(integrationId, order)
         const draftOrderPayload = initDraftOrderPayload(
             customer,
             order,
             products as any
         )
-        const defaultShippingLine =
-            (draftOrderPayload.get('shipping_line') as Map<any, any>) || null
         const payload = getDuplicateOrderPayload(draftOrderPayload)
 
         return Promise.all([
             dispatch(setPayload(payload)),
-            dispatch(setDraftOrder(payload)),
-            dispatch(
-                createDraftOrder(integrationId, orderId, payload, onError)
-            ),
+            dispatch(calculateDraftOrder(integrationId, payload, onError)),
             dispatch(setProducts(products)),
-            dispatch(setDefaultShippingLine(defaultShippingLine)),
         ])
     }
 
@@ -165,80 +143,38 @@ export const onInit = (
         payload = payload.set('currency', currencyCode)
     }
 
-    return Promise.all([
-        dispatch(setPayload(payload)),
-        dispatch(setDraftOrder(payload)),
-    ])
+    return dispatch(setPayload(payload))
 }
 
-export const onInitCleanUp = (integrationId: number) => async () => {
-    await deleteTemporaryDraftOrders(integrationId)
-
-    // TODO(@samy): remove that in a few weeks, it was the old key. Now we use "infobar/actions/shopify/draft-orders"
-    window.localStorage.removeItem(
-        'infobar/actions/shopify/duplicate-order/draft-order-ids'
-    )
-}
-
-const deleteTemporaryDraftOrders = _debounce(async (integrationId: number) => {
-    const draftOrders = shopifyLocalStorage.draftOrders.getMap()
-
-    //$TsFixMe remove casting when shopifyLocalStorage is migrated
-    for (const [id, createdAt] of draftOrders.entries() as any) {
-        try {
-            const now = moment()
-            const limit = moment(createdAt).add(...DRAFT_ORDER_DELETE_AFTER)
-
-            if (now.valueOf() > limit.valueOf()) {
-                await deleteTemporaryDraftOrder(integrationId, id)
-            }
-        } catch (error) {
-            console.error(error)
-        }
-    }
-}, 1000)
-
-const deleteTemporaryDraftOrder = async (
+export const calculateDraftOrder = (
     integrationId: number,
-    draftOrderId: number
-) => {
-    const api = new GorgiasApi()
-    await api.deleteDraftOrder(integrationId, draftOrderId)
-    shopifyLocalStorage.draftOrders.deleteMapItem(draftOrderId as any)
-}
-
-export const createDraftOrder = (
-    integrationId: number,
-    orderId: Maybe<number>,
     payload: Map<any, any>,
-    onError: () => void
+    onError?: () => void
 ) => async (dispatch: StoreDispatch) => {
     try {
-        dispatch(setLoading(true, 'Creating draft order...'))
+        const api = getCalculateApi()
+        api.cancelPendingRequests(true)
 
-        const api = new GorgiasApi()
-        const [draftOrder, pollingConfig] = await api.createDraftOrder(
+        dispatch(setLoading(true, 'Calculating draft order...'))
+        dispatch(setCalculatedDraftOrder(fromJS({})))
+
+        const calculatePayload = getCalculateDraftOrderPayload(payload)
+        const calculatedDraftOrder = await api.calculateDraftOrder(
             integrationId,
-            payload,
-            orderId
+            calculatePayload
         )
-        const draftOrderId = draftOrder.get('id')
 
-        shopifyLocalStorage.draftOrders.setMapItem(
-            draftOrderId,
-            moment().format()
-        )
-        dispatch(setDraftOrder(draftOrder))
-
-        return pollingConfig
-            ? dispatch(
-                  pollDraftOrder(integrationId, draftOrderId, pollingConfig)
-              )
-            : dispatch(setLoading(false))
+        dispatch(setCalculatedDraftOrder(calculatedDraftOrder))
     } catch (error) {
+        if (axios.isCancel(error)) {
+            return
+        }
+
         console.error(error)
-        onError()
-        return dispatch(onApiError(error, 'Error while creating draft order'))
+        onError && onError()
+        dispatch(onApiError(error, 'Error while calculating draft order'))
+    } finally {
+        dispatch(setLoading(false))
     }
 }
 
@@ -260,52 +196,6 @@ export const onApiError = (
         })
     )
 }
-
-/* eslint-disable @typescript-eslint/no-misused-promises */
-export const pollDraftOrder = (
-    integrationId: number,
-    draftOrderId: number,
-    pollingConfig: PollingConfig
-) => async (dispatch: StoreDispatch): Promise<ReturnType<StoreDispatch>> => {
-    return new Promise((resolve) => {
-        setTimeout(async () => {
-            try {
-                const api = getPollApi()
-                api.cancelPendingRequests(true)
-
-                const [draftOrder, pollingConfig] = await api.getDraftOrder(
-                    integrationId,
-                    draftOrderId
-                )
-                dispatch(setDraftOrder(draftOrder))
-
-                resolve(
-                    pollingConfig
-                        ? dispatch(
-                              pollDraftOrder(
-                                  integrationId,
-                                  draftOrderId,
-                                  pollingConfig
-                              )
-                          )
-                        : dispatch(setLoading(false))
-                )
-            } catch (error) {
-                if (axios.isCancel(error)) {
-                    return
-                }
-
-                console.error(error)
-                resolve(
-                    dispatch(
-                        onApiError(error, 'Error while fetching draft order')
-                    )
-                )
-            }
-        }, pollingConfig.retry_after * 1000)
-    })
-}
-/* eslint-enable */
 
 export const loadProducts = async (
     integrationId: number,
@@ -331,94 +221,18 @@ export const loadProducts = async (
     return products
 }
 
-const getLoadingMessage = (draftOrder: Map<any, any>) =>
-    draftOrder.get('id') ? 'Updating draft order...' : 'Creating draft order...'
-
 export const onPayloadChange = (
     integrationId: number,
-    payload: Map<any, any>
-) => async (dispatch: StoreDispatch, getState: () => RootState) => {
-    const state = getState()
-    const draftOrder = getCreateOrderState(state).get('draftOrder') as Map<
-        any,
-        any
-    >
-    const loadingMessage = getLoadingMessage(draftOrder)
+    payload: Map<any, any>,
+    shouldCalculate: Maybe<boolean> = true
+) => (dispatch: StoreDispatch) => {
     const newPayload = refreshAppliedDiscounts(payload)
-
     dispatch(setPayload(newPayload))
-    dispatch(setLoading(true, loadingMessage))
 
-    return upsertDraftOrder(integrationId, dispatch, getState)
+    return shouldCalculate
+        ? dispatch(calculateDraftOrder(integrationId, newPayload))
+        : null
 }
-
-export const upsertDraftOrder = _debounce(
-    async (
-        integrationId: number,
-        dispatch: StoreDispatch,
-        getState: () => RootState
-    ) => {
-        try {
-            const state = getState()
-            const draftOrder = getCreateOrderState(state).get(
-                'draftOrder'
-            ) as Map<any, any>
-            const payload = getCreateOrderState(state).get('payload') as Map<
-                any,
-                any
-            >
-            const loadingMessage = getLoadingMessage(draftOrder)
-            const draftOrderId = draftOrder.get('id')
-
-            dispatch(setLoading(true, loadingMessage))
-
-            const api = getUpdateApi()
-            api.cancelPendingRequests(true)
-
-            const [newDraftOrder, pollingConfig] = await api.upsertDraftOrder(
-                integrationId,
-                payload,
-                draftOrderId
-            )
-            const newDraftOrderId = newDraftOrder.get('id')
-            dispatch(setDraftOrder(newDraftOrder))
-
-            if (draftOrderId !== newDraftOrderId) {
-                shopifyLocalStorage.draftOrders.setMapItem(
-                    newDraftOrderId,
-                    moment().format()
-                )
-            }
-
-            return pollingConfig
-                ? dispatch(
-                      pollDraftOrder(
-                          integrationId,
-                          newDraftOrderId,
-                          pollingConfig
-                      )
-                  )
-                : dispatch(setLoading(false))
-        } catch (error) {
-            if (axios.isCancel(error)) {
-                return
-            }
-
-            const state = getState()
-            const draftOrder = getCreateOrderState(state).get(
-                'draftOrder'
-            ) as Map<any, any>
-            const draftOrderId = draftOrder.get('id') as number
-            const defaultErrorMessage = draftOrderId
-                ? 'Error while updating draft order'
-                : 'Error while creating draft order'
-
-            console.error(error)
-            return dispatch(onApiError(error, defaultErrorMessage))
-        }
-    },
-    500
-)
 
 export const addRow = (
     actionName: string,
@@ -465,26 +279,41 @@ export const addCustomRow = (
     return dispatch(onPayloadChange(integrationId, newPayload))
 }
 
+export const onCreateDraftOrder = (
+    integrationId: number,
+    orderId?: Maybe<number>
+) => async (
+    dispatch: StoreDispatch,
+    getState: () => RootState
+): Promise<Maybe<Map<any, any>>> => {
+    try {
+        dispatch(setLoading(true, 'Creating draft order...'))
+
+        const state = getState()
+        const payload: Map<any, any> = getCreateOrderState(state).get('payload')
+        const api = new GorgiasApi()
+        const [draftOrder] = await api.createDraftOrder(
+            integrationId,
+            payload,
+            orderId
+        )
+
+        return draftOrder
+    } catch (error) {
+        console.error(error)
+        dispatch(onApiError(error, 'Error while creating draft order'))
+    } finally {
+        dispatch(setLoading(false))
+    }
+}
+
 export const onCancel = (
     actionName: string,
     integrationId: number,
     via: string
-) => async (dispatch: StoreDispatch, getState: () => RootState) => {
-    getPollApi().cancelPendingRequests()
-    getUpdateApi().cancelPendingRequests()
-    upsertDraftOrder.cancel()
+) => () => {
+    getCalculateApi().cancelPendingRequests()
     _apiInstances = {}
-
-    const state = getState()
-    const draftOrder = getCreateOrderState(state).get('draftOrder') as Map<
-        any,
-        any
-    >
-
-    if (draftOrder) {
-        const draftOrderId = draftOrder.get('id') as number
-        await deleteTemporaryDraftOrder(integrationId, draftOrderId)
-    }
 
     const eventName =
         actionName === ShopifyActionType.CreateOrder
@@ -494,19 +323,6 @@ export const onCancel = (
     segmentTracker.logEvent(eventName, {via})
 }
 
-export const onSubmitCleanUp = () => (
-    dispatch: StoreDispatch,
-    getState: () => RootState
-) => {
-    const state = getState()
-    const draftOrder = getCreateOrderState(state).get('draftOrder') as Map<
-        any,
-        any
-    >
-    const id = draftOrder.get('id') as number
-    shopifyLocalStorage.draftOrders.deleteMapItem(id as any)
-}
-
 export const onReset = () => (dispatch: StoreDispatch) => resetState(dispatch)
 
 export const resetState = _debounce(
@@ -514,21 +330,17 @@ export const resetState = _debounce(
     250
 )
 
-export const onEmailInvoice = (
+export const sendInvoice = (
     integrationId: number,
     customerId: number,
     orderId: Maybe<number>,
+    draftOrder: Map<any, any>,
     invoicePayload: Map<any, any>,
     onSuccess: () => void
-) => (dispatch: StoreDispatch, getState: () => RootState): Promise<void> => {
+) => (dispatch: StoreDispatch) => {
     return new Promise((resolve) => {
         dispatch(setLoading(true, 'Sending invoice...'))
 
-        const state = getState()
-        const draftOrder = getCreateOrderState(state).get('draftOrder') as Map<
-            any,
-            any
-        >
         const draftOrderId = draftOrder.get('id') as number
         const draftOrderName = draftOrder.get('name') as string
 
@@ -556,8 +368,6 @@ export const onEmailInvoice = (
             }, 0)
         }
 
-        shopifyLocalStorage.draftOrders.deleteMapItem(draftOrderId as any)
-
         void dispatch(
             executeAction(
                 ShopifyActionType.SendDraftOrderInvoice,
@@ -568,4 +378,31 @@ export const onEmailInvoice = (
             )
         )
     })
+}
+
+export const onEmailInvoice = (
+    integrationId: number,
+    customerId: number,
+    orderId: Maybe<number>,
+    invoicePayload: Map<any, any>,
+    onSuccess: () => void
+) => async (dispatch: StoreDispatch): Promise<any> => {
+    const draftOrder = await dispatch(
+        onCreateDraftOrder(integrationId, orderId)
+    )
+
+    if (!draftOrder) {
+        return
+    }
+
+    return dispatch(
+        sendInvoice(
+            integrationId,
+            customerId,
+            orderId,
+            draftOrder,
+            invoicePayload,
+            onSuccess
+        )
+    )
 }

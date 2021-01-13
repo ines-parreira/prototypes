@@ -4,8 +4,7 @@ import {GorgiasAction} from '../../../types'
 
 import {CreateOrderState} from './types'
 import {
-    SET_DEFAULT_SHIPPING_LINE,
-    SET_DRAFT_ORDER,
+    SET_CALCULATED_DRAFT_ORDER,
     SET_INITIAL_STATE,
     SET_LOADING,
     SET_PAYLOAD,
@@ -16,9 +15,8 @@ export const initialState: CreateOrderState = fromJS({
     loading: false,
     loadingMessage: null,
     payload: null,
-    draftOrder: null,
+    calculatedDraftOrder: null,
     products: new Map(),
-    defaultShippingLine: null,
 })
 
 export default function reducer(
@@ -32,12 +30,13 @@ export default function reducer(
                 .set('loadingMessage', action.message)
         case SET_PAYLOAD:
             return state.set('payload', action.payload)
-        case SET_DRAFT_ORDER:
-            return state.set('draftOrder', action.draftOrder)
+        case SET_CALCULATED_DRAFT_ORDER:
+            return state.set(
+                'calculatedDraftOrder',
+                action.calculatedDraftOrder
+            )
         case SET_PRODUCTS:
             return state.set('products', action.products)
-        case SET_DEFAULT_SHIPPING_LINE:
-            return state.set('defaultShippingLine', action.defaultShippingLine)
         case SET_INITIAL_STATE:
             return initialState
         default:

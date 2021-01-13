@@ -1,0 +1,163 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`getCalculateDraftOrderPayload() should return payload with shipping line 1`] = `
+Immutable.Map {
+  "appliedDiscount": Immutable.Map {
+    "value": 100,
+    "valueType": "PERCENTAGE",
+  },
+  "customerId": "gid://shopify/Customer/2721145061399",
+  "lineItems": Immutable.List [
+    Object {
+      "appliedDiscount": null,
+      "originalUnitPrice": "1.00",
+      "quantity": 1,
+      "requiresShipping": true,
+      "sku": "0987654321-1",
+      "taxable": true,
+      "title": "Acidulous candy",
+      "variantId": undefined,
+    },
+    Object {
+      "appliedDiscount": null,
+      "originalUnitPrice": "1.00",
+      "quantity": 4,
+      "requiresShipping": true,
+      "sku": "0987654321-2",
+      "taxable": true,
+      "title": "Acidulous candy",
+      "variantId": undefined,
+    },
+  ],
+  "shippingAddress": Immutable.Map {
+    "address1": null,
+    "address2": null,
+    "city": null,
+    "countryCode": "FR",
+    "provinceCode": null,
+    "zip": null,
+  },
+  "shippingLine": Immutable.Map {
+    "price": "12.00",
+    "shippingRateHandle": "shopify-Standard%20Shipping-10.00",
+    "title": "Standard Shipping",
+  },
+  "taxExempt": false,
+}
+`;
+
+exports[`getCalculateDraftOrderPayload() should return payload without applied discount 1`] = `
+Immutable.Map {
+  "appliedDiscount": null,
+  "customerId": "gid://shopify/Customer/2721145061399",
+  "lineItems": Immutable.List [
+    Object {
+      "appliedDiscount": null,
+      "originalUnitPrice": "1.00",
+      "quantity": 1,
+      "requiresShipping": true,
+      "sku": "0987654321-1",
+      "taxable": true,
+      "title": "Acidulous candy",
+      "variantId": undefined,
+    },
+    Object {
+      "appliedDiscount": null,
+      "originalUnitPrice": "1.00",
+      "quantity": 4,
+      "requiresShipping": true,
+      "sku": "0987654321-2",
+      "taxable": true,
+      "title": "Acidulous candy",
+      "variantId": undefined,
+    },
+  ],
+  "shippingAddress": Immutable.Map {
+    "address1": null,
+    "address2": null,
+    "city": null,
+    "countryCode": "FR",
+    "provinceCode": null,
+    "zip": null,
+  },
+  "shippingLine": null,
+  "taxExempt": false,
+}
+`;
+
+exports[`getCalculateDraftOrderPayload() should return payload without shipping address 1`] = `
+Immutable.Map {
+  "appliedDiscount": Immutable.Map {
+    "value": 100,
+    "valueType": "PERCENTAGE",
+  },
+  "customerId": "gid://shopify/Customer/2721145061399",
+  "lineItems": Immutable.List [
+    Object {
+      "appliedDiscount": null,
+      "originalUnitPrice": "1.00",
+      "quantity": 1,
+      "requiresShipping": true,
+      "sku": "0987654321-1",
+      "taxable": true,
+      "title": "Acidulous candy",
+      "variantId": undefined,
+    },
+    Object {
+      "appliedDiscount": null,
+      "originalUnitPrice": "1.00",
+      "quantity": 4,
+      "requiresShipping": true,
+      "sku": "0987654321-2",
+      "taxable": true,
+      "title": "Acidulous candy",
+      "variantId": undefined,
+    },
+  ],
+  "shippingAddress": null,
+  "shippingLine": null,
+  "taxExempt": false,
+}
+`;
+
+exports[`getCalculateDraftOrderPayload() should return payload without shipping line 1`] = `
+Immutable.Map {
+  "appliedDiscount": Immutable.Map {
+    "value": 100,
+    "valueType": "PERCENTAGE",
+  },
+  "customerId": "gid://shopify/Customer/2721145061399",
+  "lineItems": Immutable.List [
+    Object {
+      "appliedDiscount": null,
+      "originalUnitPrice": "1.00",
+      "quantity": 1,
+      "requiresShipping": true,
+      "sku": "0987654321-1",
+      "taxable": true,
+      "title": "Acidulous candy",
+      "variantId": undefined,
+    },
+    Object {
+      "appliedDiscount": null,
+      "originalUnitPrice": "1.00",
+      "quantity": 4,
+      "requiresShipping": true,
+      "sku": "0987654321-2",
+      "taxable": true,
+      "title": "Acidulous candy",
+      "variantId": undefined,
+    },
+  ],
+  "shippingAddress": Immutable.Map {
+    "address1": null,
+    "address2": null,
+    "city": null,
+    "countryCode": "FR",
+    "provinceCode": null,
+    "zip": null,
+  },
+  "shippingLine": null,
+  "taxExempt": false,
+}
+`;

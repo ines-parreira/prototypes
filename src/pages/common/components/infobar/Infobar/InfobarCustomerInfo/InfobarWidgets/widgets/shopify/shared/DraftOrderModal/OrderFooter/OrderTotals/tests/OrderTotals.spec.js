@@ -5,7 +5,7 @@ import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
 import {
-    shopifyDraftOrderFixture,
+    shopifyCalculatedDraftOrderFixture,
     shopifyDraftOrderPayloadFixture,
     shopifyShippingLineFixture,
 } from '../../../../../../../../../../../../../../fixtures/shopify.ts'
@@ -17,7 +17,7 @@ jest.mock('lodash/debounce', () => (fn) => fn)
 describe('<OrderTotalsComponent/>', () => {
     const context = {integrationId: 1}
     const payload = fromJS(shopifyDraftOrderPayloadFixture())
-    const draftOrder = fromJS(shopifyDraftOrderFixture())
+    const calculatedDraftOrder = fromJS(shopifyCalculatedDraftOrderFixture())
     let onPayloadChange
 
     beforeEach(() => {
@@ -33,8 +33,7 @@ describe('<OrderTotalsComponent/>', () => {
                     currencyCode="USD"
                     loading
                     payload={payload}
-                    draftOrder={draftOrder}
-                    defaultShippingLine={null}
+                    calculatedDraftOrder={calculatedDraftOrder}
                     onPayloadChange={onPayloadChange}
                 />,
                 {context}
@@ -51,28 +50,7 @@ describe('<OrderTotalsComponent/>', () => {
                     currencyCode="USD"
                     loading={false}
                     payload={payload}
-                    draftOrder={draftOrder}
-                    defaultShippingLine={null}
-                    onPayloadChange={onPayloadChange}
-                />,
-                {context}
-            )
-
-            expect(component).toMatchSnapshot()
-        })
-
-        it('should render with default shipping line', () => {
-            const defaultShippingLine = fromJS(shopifyShippingLineFixture())
-
-            const component = shallow(
-                <OrderTotalsComponent
-                    editable
-                    actionName={ShopifyAction.DUPLICATE_ORDER}
-                    currencyCode="USD"
-                    loading={false}
-                    payload={payload}
-                    draftOrder={draftOrder}
-                    defaultShippingLine={defaultShippingLine}
+                    calculatedDraftOrder={calculatedDraftOrder}
                     onPayloadChange={onPayloadChange}
                 />,
                 {context}
@@ -82,9 +60,10 @@ describe('<OrderTotalsComponent/>', () => {
         })
 
         it('should render with taxes included', () => {
-            const taxesIncludedDraftOrder = draftOrder
-                .set('taxes_included', true)
-                .set('total_price', '9.99')
+            const taxesIncludedDraftOrder = calculatedDraftOrder.set(
+                'totalPrice',
+                '9.99'
+            )
 
             const component = shallow(
                 <OrderTotalsComponent
@@ -93,8 +72,7 @@ describe('<OrderTotalsComponent/>', () => {
                     currencyCode="USD"
                     loading
                     payload={payload}
-                    draftOrder={taxesIncludedDraftOrder}
-                    defaultShippingLine={null}
+                    calculatedDraftOrder={taxesIncludedDraftOrder}
                     onPayloadChange={onPayloadChange}
                 />,
                 {context}
@@ -113,8 +91,7 @@ describe('<OrderTotalsComponent/>', () => {
                     currencyCode="USD"
                     loading={false}
                     payload={payload}
-                    draftOrder={draftOrder}
-                    defaultShippingLine={null}
+                    calculatedDraftOrder={calculatedDraftOrder}
                     onPayloadChange={onPayloadChange}
                 />,
                 {context}
@@ -130,7 +107,7 @@ describe('<OrderTotalsComponent/>', () => {
         })
     })
 
-    describe('_onShippingLinesChange()', () => {
+    describe('_onShippingLineChange()', () => {
         it('should call onPayloadChange() with updated payload', () => {
             const component = shallow(
                 <OrderTotalsComponent
@@ -139,15 +116,14 @@ describe('<OrderTotalsComponent/>', () => {
                     currencyCode="USD"
                     loading={false}
                     payload={payload}
-                    draftOrder={draftOrder}
-                    defaultShippingLine={null}
+                    calculatedDraftOrder={calculatedDraftOrder}
                     onPayloadChange={onPayloadChange}
                 />,
                 {context}
             )
 
             const shippingLine = fromJS(shopifyShippingLineFixture())
-            component.instance()._onShippingLinesChange(shippingLine)
+            component.instance()._onShippingLineChange(shippingLine)
 
             const newPayload = payload.set('shipping_line', shippingLine)
             expect(onPayloadChange).toHaveBeenCalledWith(
@@ -166,8 +142,7 @@ describe('<OrderTotalsComponent/>', () => {
                     currencyCode="USD"
                     loading={false}
                     payload={payload}
-                    draftOrder={draftOrder}
-                    defaultShippingLine={null}
+                    calculatedDraftOrder={calculatedDraftOrder}
                     onPayloadChange={onPayloadChange}
                 />,
                 {context}

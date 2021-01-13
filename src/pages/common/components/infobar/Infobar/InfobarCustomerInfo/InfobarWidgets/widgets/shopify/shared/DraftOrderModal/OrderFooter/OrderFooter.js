@@ -26,7 +26,8 @@ type Props = {
     payload: Record<$Shape<DraftOrder>>,
     onPayloadChange: (
         integrationId: number,
-        Record<$Shape<DraftOrder>>
+        Record<$Shape<DraftOrder>>,
+        shouldCalculate?: boolean
     ) => void,
 }
 
@@ -79,7 +80,7 @@ export class DuplicateOrderFooterComponent extends React.PureComponent<
         const {note} = this.state
 
         const newPayload = payload.set('note', note)
-        onPayloadChange(integrationId, newPayload)
+        onPayloadChange(integrationId, newPayload, false)
     }, 250)
 
     _trackNoteChanged = _debounce(() => {
@@ -99,7 +100,7 @@ export class DuplicateOrderFooterComponent extends React.PureComponent<
         const newValue = tags.map((option) => option.value).join(',')
         const newPayload = payload.set('tags', newValue)
 
-        onPayloadChange(integrationId, newPayload)
+        onPayloadChange(integrationId, newPayload, false)
         segmentTracker.logEvent(
             actionName === ShopifyAction.CREATE_ORDER
                 ? segmentTracker.EVENTS.SHOPIFY_CREATE_ORDER_TAGS_CHANGED

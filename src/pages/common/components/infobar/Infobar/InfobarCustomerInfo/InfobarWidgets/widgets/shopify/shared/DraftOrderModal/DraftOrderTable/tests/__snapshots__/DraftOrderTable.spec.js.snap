@@ -69,6 +69,7 @@ exports[`<DraftOrderTable/> render() should render 1`] = `
           "title": "Product 1",
           "variants": Array [
             Object {
+              "admin_graphql_api_id": "gid://shopify/ProductVariant/1",
               "id": 1,
               "image_id": 1,
               "inventory_management": null,
@@ -130,6 +131,7 @@ exports[`<DraftOrderTable/> render() should render 1`] = `
           "title": "Product 2",
           "variants": Array [
             Object {
+              "admin_graphql_api_id": "gid://shopify/ProductVariant/1",
               "id": 1,
               "image_id": 1,
               "inventory_management": null,

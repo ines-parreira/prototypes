@@ -142,5 +142,3 @@ export const MACRO_PREVIOUS_VARIABLES = {
         },
     ],
 }
-
-export const DRAFT_ORDER_DELETE_AFTER = [1, 'hour']

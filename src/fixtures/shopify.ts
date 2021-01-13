@@ -9,7 +9,6 @@ import {
     LineItem,
     DraftOrder,
     AppliedDiscount,
-    ShippingLine,
     DraftOrderInvoice,
     TaxLine,
     DiscountAllocation,
@@ -52,6 +51,7 @@ export const shopifyVariantFixture = ({
     inventoryManagement = null,
 } = {}): Variant => ({
     id,
+    admin_graphql_api_id: `gid://shopify/ProductVariant/${id}`,
     sku,
     price,
     title,
@@ -785,6 +785,7 @@ export const shopifyDraftOrderPayloadFixture = () =>
         tags: null,
         customer: {
             id: 2721145061399,
+            admin_graphql_api_id: 'gid://shopify/Customer/2721145061399',
         },
         currency: 'USD',
     } as unknown) as DraftOrder)
@@ -1021,39 +1022,12 @@ export const shopifyAppliedDiscountFixture = ({
         value_type: valueType,
     } as unknown) as AppliedDiscount)
 
-export const shopifyShippingLineFixture = ({
-    price = '12.00',
-    discountedPrice = '12.00',
-    currencyCode = null,
-    presentmentPrice = null,
-    presentmentDiscountedPrice = null,
-    presentmentCurrencyCode = null,
-} = {}) => {
-    const shippingLine: Record<string, unknown> = {
-        code: 'custom',
-        price,
-        title: 'Test',
-        discounted_price: discountedPrice,
-    }
-
-    if (currencyCode) {
-        shippingLine.price_set = shopifyPriceSetFixture({
-            amount: price,
-            currencyCode,
-            presentmentAmount: presentmentPrice || price,
-            presentmentCurrencyCode: presentmentCurrencyCode || currencyCode,
-        } as any)
-
-        shippingLine.discounted_price_set = shopifyPriceSetFixture({
-            amount: discountedPrice,
-            currencyCode,
-            presentmentAmount: presentmentDiscountedPrice || discountedPrice,
-            presentmentCurrencyCode: presentmentCurrencyCode || currencyCode,
-        } as any)
-    }
-
-    return shippingLine as ShippingLine
-}
+export const shopifyShippingLineFixture = ({price = '12.00'} = {}) => ({
+    custom: false,
+    handle: 'shopify-Standard%20Shipping-10.00',
+    price,
+    title: 'Standard Shipping',
+})
 
 export const shopifyCustomLineItemFixture = () =>
     ({
@@ -1181,3 +1155,39 @@ export const shopifySuggestedRefundFixture = ({
         ],
         currency: 'USD',
     } as unknown) as Refund)
+
+export const shopifyCalculatedDraftOrderFixture = () => ({
+    appliedDiscount: {
+        amountV2: {
+            amount: '5.00',
+            currencyCode: 'USD',
+        },
+    },
+    taxLines: [shopifyCalculatedTaxLine()],
+    subtotalPrice: '0.00',
+    totalPrice: '0.00',
+    totalShippingPrice: '0.00',
+    totalTax: '0.00',
+    availableShippingRates: [],
+})
+
+export const shopifyCalculatedTaxLine = () => ({
+    priceSet: {
+        presentmentMoney: {
+            amount: '0.00',
+            currencyCode: 'USD',
+        },
+    },
+    rate: 0.2,
+    ratePercentage: 20.0,
+    title: 'TVA',
+})
+
+export const shopifyAvailableShippingRate = () => ({
+    handle: 'shopify-Standard%20Shipping-10.00',
+    title: 'Standard Shipping',
+    price: {
+        amount: '10.0',
+        currencyCode: 'USD',
+    },
+})

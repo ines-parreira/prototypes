@@ -10,7 +10,10 @@ import {
     EVENTS,
     logEvent,
 } from '../../../../../../../../../../../../../store/middlewares/segmentTracker'
-import {shopifyShippingLineFixture} from '../../../../../../../../../../../../../fixtures/shopify.ts'
+import {
+    shopifyAvailableShippingRate,
+    shopifyShippingLineFixture,
+} from '../../../../../../../../../../../../../fixtures/shopify.ts'
 import AmountInput from '../../../AmountInput'
 import ShippingPopover from '../ShippingPopover'
 import {ShopifyAction} from '../../../../constants'
@@ -43,7 +46,7 @@ describe('<ShippingPopover/>', () => {
                     editable
                     currencyCode="USD"
                     value={null}
-                    defaultValue={null}
+                    availableShippingRates={[]}
                     onChange={onChange}
                 >
                     Add shipping
@@ -63,27 +66,7 @@ describe('<ShippingPopover/>', () => {
                     editable
                     currencyCode="USD"
                     value={shippingLine}
-                    defaultValue={null}
-                    onChange={onChange}
-                >
-                    Add shipping
-                </ShippingPopover>
-            )
-
-            expect(component).toMatchSnapshot()
-        })
-
-        it('should render with default value', () => {
-            const shippingLine = fromJS(shopifyShippingLineFixture())
-
-            const component = shallow(
-                <ShippingPopover
-                    id="shipping-lines"
-                    actionName={ShopifyAction.DUPLICATE_ORDER}
-                    editable
-                    currencyCode="USD"
-                    value={null}
-                    defaultValue={shippingLine}
+                    availableShippingRates={[]}
                     onChange={onChange}
                 >
                     Add shipping
@@ -118,7 +101,7 @@ describe('<ShippingPopover/>', () => {
                         editable
                         currencyCode="USD"
                         value={shippingLine}
-                        defaultValue={null}
+                        availableShippingRates={[]}
                         onChange={onChange}
                     >
                         Add shipping
@@ -131,10 +114,10 @@ describe('<ShippingPopover/>', () => {
                 expect(logEvent).toHaveBeenCalledWith(openEvent)
 
                 // Change form values
-                const type = 'custom'
+                const handle = 'custom'
                 component
-                    .find({value: type})
-                    .simulate('change', {target: {value: type}})
+                    .find({value: handle})
+                    .simulate('change', {target: {value: handle}})
                 component
                     .find({type: 'text'})
                     .simulate('change', {target: {value: 'Test'}})
@@ -153,13 +136,16 @@ describe('<ShippingPopover/>', () => {
 
                 expect(onChange).toHaveBeenCalledWith(
                     fromJS({
-                        code: 'custom',
+                        custom: true,
+                        handle: null,
                         price: '12.00',
                         title: 'Test',
                     })
                 )
 
-                expect(logEvent).toHaveBeenCalledWith(submitEvent, {type})
+                expect(logEvent).toHaveBeenCalledWith(submitEvent, {
+                    handle,
+                })
             }
         )
 
@@ -173,7 +159,7 @@ describe('<ShippingPopover/>', () => {
                     editable
                     currencyCode="USD"
                     value={shippingLine}
-                    defaultValue={null}
+                    availableShippingRates={[]}
                     onChange={onChange}
                 >
                     Add shipping
@@ -198,15 +184,16 @@ describe('<ShippingPopover/>', () => {
 
             expect(onChange).toHaveBeenCalledWith(
                 fromJS({
-                    code: 'custom',
+                    custom: true,
+                    handle: null,
                     price: '0.00',
                     title: 'Free shipping',
                 })
             )
         })
 
-        it('should call onChange() with original shipping line', () => {
-            const shippingLine = fromJS(shopifyShippingLineFixture())
+        it('should call onChange() with available shipping line', () => {
+            const availableShippingRate = fromJS(shopifyAvailableShippingRate())
 
             const component = shallow(
                 <ShippingPopover
@@ -215,7 +202,7 @@ describe('<ShippingPopover/>', () => {
                     editable
                     currencyCode="USD"
                     value={null}
-                    defaultValue={shippingLine}
+                    availableShippingRates={[availableShippingRate]}
                     onChange={onChange}
                 >
                     Add shipping
@@ -228,8 +215,10 @@ describe('<ShippingPopover/>', () => {
 
             // Change form values
             component
-                .find({value: 'original'})
-                .simulate('change', {target: {value: 'original'}})
+                .find({value: availableShippingRate.get('handle')})
+                .simulate('change', {
+                    target: {value: availableShippingRate.get('handle')},
+                })
 
             // Submit
             component
@@ -238,7 +227,14 @@ describe('<ShippingPopover/>', () => {
                 .find('form')
                 .simulate('submit', {preventDefault: _noop})
 
-            expect(onChange).toHaveBeenCalledWith(shippingLine)
+            expect(onChange).toHaveBeenCalledWith(
+                fromJS({
+                    custom: false,
+                    handle: availableShippingRate.get('handle'),
+                    price: null,
+                    title: null,
+                })
+            )
         })
     })
 
@@ -262,7 +258,7 @@ describe('<ShippingPopover/>', () => {
                     editable
                     currencyCode="USD"
                     value={shippingLine}
-                    defaultValue={null}
+                    availableShippingRates={[]}
                     onChange={onChange}
                 >
                     Add shipping
@@ -299,7 +295,7 @@ describe('<ShippingPopover/>', () => {
                     editable
                     currencyCode="USD"
                     value={null}
-                    defaultValue={null}
+                    availableShippingRates={[]}
                     onChange={onChange}
                 >
                     Add shipping

@@ -29,17 +29,15 @@ export const createOrderStateFixture = ({
     loading = false,
     loadingMessage = null,
     payload = null,
-    draftOrder = null,
+    calculatedDraftOrder = null,
     products = new Map(),
-    defaultShippingLine = null,
 } = {}) =>
     fromJS({
         loading,
         loadingMessage,
         payload,
-        draftOrder,
+        calculatedDraftOrder,
         products,
-        defaultShippingLine,
     }) as CreateOrderState
 
 export const cancelOrderStateFixture = ({

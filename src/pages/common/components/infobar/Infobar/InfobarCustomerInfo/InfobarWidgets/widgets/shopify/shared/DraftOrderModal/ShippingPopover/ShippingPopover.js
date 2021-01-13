@@ -10,7 +10,7 @@ import {
     Popover,
     PopoverBody,
 } from 'reactstrap'
-import {fromJS, type Record} from 'immutable'
+import {fromJS, type Map, type Record} from 'immutable'
 import classnames from 'classnames'
 
 import * as segmentTracker from '../../../../../../../../../../../../store/middlewares/segmentTracker'
@@ -31,13 +31,13 @@ type Props = {
     editable: boolean,
     currencyCode: string,
     value: Record<$Shape<ShippingLine>> | null,
-    defaultValue: Record<ShippingLine> | null,
+    availableShippingRates: Map<*, *>,
     onChange: (Record<$Shape<ShippingLine>> | null) => void,
 }
 
 type State = {
     isOpen: boolean,
-    type: ?string,
+    handle: ?string,
     title: string,
     price: string,
 }
@@ -50,8 +50,7 @@ export default class ShippingPopover extends React.PureComponent<Props, State> {
     }
 
     _buttonElement: HTMLButtonElement
-    _originalInputElement: HTMLInputElement
-    _freeInputElement: HTMLInputElement
+    _firstInputElement: HTMLInputElement
 
     state = {
         isOpen: false,
@@ -67,9 +66,7 @@ export default class ShippingPopover extends React.PureComponent<Props, State> {
         const onClose = wasOpen && !isOpen
 
         if (onOpen) {
-            focusElement(
-                () => this._originalInputElement || this._freeInputElement
-            )
+            focusElement(() => this._firstInputElement)
             segmentTracker.logEvent(
                 actionName === ShopifyAction.CREATE_ORDER
                     ? segmentTracker.EVENTS
@@ -97,24 +94,11 @@ export default class ShippingPopover extends React.PureComponent<Props, State> {
     }
 
     _initState(): $Shape<State> {
-        const {value, defaultValue} = this.props
+        const {value} = this.props
 
         if (!value) {
             return {
-                type: null,
-                title: '',
-                price: '',
-            }
-        }
-
-        if (
-            defaultValue &&
-            value.get('code') === defaultValue.get('code') &&
-            value.get('price') === defaultValue.get('price') &&
-            value.get('title') === defaultValue.get('title')
-        ) {
-            return {
-                type: 'original',
+                handle: null,
                 title: '',
                 price: '',
             }
@@ -122,14 +106,14 @@ export default class ShippingPopover extends React.PureComponent<Props, State> {
 
         if (this._isFreeShipping(value)) {
             return {
-                type: 'free',
+                handle: 'free',
                 title: '',
                 price: '',
             }
         }
 
         return {
-            type: 'custom',
+            handle: 'custom',
             title: value.get('title'),
             price: value.get('price'),
         }
@@ -139,27 +123,40 @@ export default class ShippingPopover extends React.PureComponent<Props, State> {
         const {currencyCode} = this.props
 
         return (
-            value.get('code') === 'custom' &&
+            value.get('custom') === true &&
+            value.get('handle') === null &&
             value.get('price') === formatPrice(0, currencyCode) &&
             value.get('title') === ShippingPopover._FREE_SHIPPING_TITLE
         )
+    }
+
+    _getShippingRateTitle() {
+        const {value, availableShippingRates} = this.props
+        const {handle} = this.state
+
+        if (!!value && value.get('title')) {
+            return value.get('title')
+        }
+
+        const shippingRate = availableShippingRates.find(
+            (availableShippingRate) =>
+                availableShippingRate.get('handle') === handle
+        )
+
+        return shippingRate ? shippingRate.get('title') : null
     }
 
     _saveButtonRef = (buttonRef: HTMLButtonElement) => {
         this._buttonElement = buttonRef
     }
 
-    _saveOriginalInputRef = (inputRef: HTMLInputElement) => {
-        this._originalInputElement = inputRef
+    _saveFirstInputRef = (inputRef: HTMLInputElement) => {
+        this._firstInputElement = inputRef
     }
 
-    _saveFreeInputRef = (inputRef: HTMLInputElement) => {
-        this._freeInputElement = inputRef
-    }
-
-    _onTypeChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
-        const type = event.target.value
-        this.setState({type})
+    _onHandleChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
+        const handle = event.target.value
+        this.setState({handle})
     }
 
     _onTitleChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
@@ -172,20 +169,18 @@ export default class ShippingPopover extends React.PureComponent<Props, State> {
     }
 
     _onSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
-        const {currencyCode, onChange, defaultValue, actionName} = this.props
-        const {type, title, price} = this.state
+        const {currencyCode, onChange, actionName} = this.props
+        const {handle, title, price} = this.state
 
         event.preventDefault()
         this._toggle()
 
-        switch (type) {
-            case 'original':
-                onChange(defaultValue)
-                break
+        switch (handle) {
             case 'free':
                 onChange(
                     fromJS({
-                        code: 'custom',
+                        custom: true,
+                        handle: null,
                         price: formatPrice(0, currencyCode),
                         title: ShippingPopover._FREE_SHIPPING_TITLE,
                     })
@@ -194,13 +189,22 @@ export default class ShippingPopover extends React.PureComponent<Props, State> {
             case 'custom':
                 onChange(
                     fromJS({
-                        code: 'custom',
+                        custom: true,
+                        handle: null,
                         price: formatPrice(price, currencyCode),
                         title: title || 'Custom',
                     })
                 )
                 break
             default:
+                onChange(
+                    fromJS({
+                        custom: false,
+                        handle,
+                        price: null,
+                        title: null,
+                    })
+                )
                 break
         }
 
@@ -210,7 +214,7 @@ export default class ShippingPopover extends React.PureComponent<Props, State> {
                       .SHOPIFY_CREATE_ORDER_SHIPPING_POPOVER_APPLY
                 : segmentTracker.EVENTS
                       .SHOPIFY_DUPLICATE_ORDER_SHIPPING_POPOVER_APPLY,
-            {type}
+            {handle}
         )
     }
 
@@ -221,7 +225,7 @@ export default class ShippingPopover extends React.PureComponent<Props, State> {
         onChange(fromJS(null))
 
         this.setState({
-            type: null,
+            handle: null,
             title: '',
             price: '',
         })
@@ -257,11 +261,9 @@ export default class ShippingPopover extends React.PureComponent<Props, State> {
             editable,
             value,
             currencyCode,
-            defaultValue,
+            availableShippingRates,
         } = this.props
-        const {isOpen, type, title, price} = this.state
-        const shouldDisplayOriginalOption =
-            !!defaultValue && !this._isFreeShipping(defaultValue)
+        const {isOpen, handle, title, price} = this.state
 
         return (
             <div>
@@ -278,7 +280,9 @@ export default class ShippingPopover extends React.PureComponent<Props, State> {
                     <strong>{children}</strong>
                 </Button>
                 {value && (
-                    <span className={css.title}>{value.get('title')}</span>
+                    <span className={css.title}>
+                        {this._getShippingRateTitle()}
+                    </span>
                 )}
                 <Popover
                     placement={placement}
@@ -288,51 +292,68 @@ export default class ShippingPopover extends React.PureComponent<Props, State> {
                 >
                     <Form onKeyDown={this._onKeyDown} onSubmit={this._onSubmit}>
                         <PopoverBody className="pt-3">
-                            {shouldDisplayOriginalOption && (
-                                <FormGroup check className="mb-3">
-                                    <Label check>
-                                        <Input
-                                            type="radio"
-                                            name="type"
-                                            value="original"
-                                            required
-                                            checked={type === 'original'}
-                                            tabIndex={0}
-                                            innerRef={
-                                                this._saveOriginalInputRef
-                                            }
-                                            onChange={this._onTypeChange}
-                                        />
-                                        <span className="d-inline-block ml-1">
-                                            {defaultValue && (
+                            {availableShippingRates.map(
+                                (availableShippingRate, index) => (
+                                    <FormGroup
+                                        check
+                                        className="mb-3"
+                                        key={availableShippingRate.get(
+                                            'handle'
+                                        )}
+                                    >
+                                        <Label check>
+                                            <Input
+                                                type="radio"
+                                                name="handle"
+                                                value={availableShippingRate.get(
+                                                    'handle'
+                                                )}
+                                                required
+                                                checked={
+                                                    handle ===
+                                                    availableShippingRate.get(
+                                                        'handle'
+                                                    )
+                                                }
+                                                tabIndex={0}
+                                                innerRef={
+                                                    index === 0
+                                                        ? this
+                                                              ._saveFirstInputRef
+                                                        : null
+                                                }
+                                                onChange={this._onHandleChange}
+                                            />
+                                            <span className="d-inline-block ml-1">
                                                 <span className="d-block">
-                                                    {defaultValue.get('title')}
+                                                    {availableShippingRate.get(
+                                                        'title'
+                                                    )}
                                                     <br />
                                                     <MoneyAmount
                                                         currencyCode={
                                                             currencyCode
                                                         }
-                                                        amount={defaultValue.get(
-                                                            'price'
+                                                        amount={availableShippingRate.getIn(
+                                                            ['price', 'amount']
                                                         )}
                                                     />
                                                 </span>
-                                            )}
-                                        </span>
-                                    </Label>
-                                </FormGroup>
+                                            </span>
+                                        </Label>
+                                    </FormGroup>
+                                )
                             )}
                             <FormGroup check className="mb-3">
                                 <Label check>
                                     <Input
                                         type="radio"
-                                        name="type"
+                                        name="handle"
                                         value="free"
                                         required
-                                        checked={type === 'free'}
+                                        checked={handle === 'free'}
                                         tabIndex={0}
-                                        innerRef={this._saveFreeInputRef}
-                                        onChange={this._onTypeChange}
+                                        onChange={this._onHandleChange}
                                     />
                                     <span className="ml-1">Free shipping</span>
                                 </Label>
@@ -341,12 +362,12 @@ export default class ShippingPopover extends React.PureComponent<Props, State> {
                                 <Label check>
                                     <Input
                                         type="radio"
-                                        name="type"
+                                        name="handle"
                                         value="custom"
                                         required
-                                        checked={type === 'custom'}
+                                        checked={handle === 'custom'}
                                         tabIndex={0}
-                                        onChange={this._onTypeChange}
+                                        onChange={this._onHandleChange}
                                     />
                                     <span className="ml-1">Custom</span>
                                 </Label>
@@ -358,12 +379,15 @@ export default class ShippingPopover extends React.PureComponent<Props, State> {
                                     autoComplete="off"
                                     value={title}
                                     className={css.titleInput}
+                                    required={handle === 'custom'}
+                                    disabled={handle !== 'custom'}
                                     onChange={this._onTitleChange}
                                 />
                                 <AmountInput
                                     value={price}
                                     currencyCode={currencyCode}
-                                    required={type === 'custom'}
+                                    required={handle === 'custom'}
+                                    disabled={handle !== 'custom'}
                                     onChange={this._onPriceChange}
                                 />
                             </div>

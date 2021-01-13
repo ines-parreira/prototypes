@@ -106,6 +106,9 @@ class AfterTitle extends React.Component<AfterTitleProps> {
                     actionName: ShopifyAction.CREATE_ORDER,
                     customer: fromJS({
                         id: source.get('id'),
+                        admin_graphql_api_id: source.get(
+                            'admin_graphql_api_id'
+                        ),
                         email: source.get('email'),
                         default_address: source.get('default_address'),
                         currency: source.get('currency'),

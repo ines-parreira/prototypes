@@ -2,12 +2,8 @@ import {fromJS, List, Map} from 'immutable'
 
 import {Product, Variant} from '../../constants/integrations/types/shopify'
 
-import {formatPercentage} from './number'
-import {
-    getDraftOrderTotalLineItemsPrice,
-    initLineItemAppliedDiscount,
-} from './lineItem'
-import {getTotalDiscountAmount, refreshAppliedDiscounts} from './discount'
+import {initLineItemAppliedDiscount} from './lineItem'
+import {refreshAppliedDiscounts} from './discount'
 
 export function initDraftOrderPayload(
     customer: Map<any, any>,
@@ -34,6 +30,9 @@ export function initDraftOrderPayload(
                     product_id:
                         !!product && !!variant ? product.get('id') : null,
                     variant_id: !!variant ? variant.get('id') : null,
+                    variant_admin_graphql_api_id: !!variant
+                        ? variant.get('admin_graphql_api_id')
+                        : null,
                     quantity: lineItem.get('quantity') || 1,
                     price: !!variant
                         ? variant.get('price')
@@ -94,6 +93,8 @@ export function addVariant(
                   fromJS({
                       product_id: product.id,
                       variant_id: variant.id,
+                      variant_admin_graphql_api_id:
+                          variant.admin_graphql_api_id,
                       quantity: 1,
                       price: variant.price,
                       title: product.title,
@@ -123,64 +124,4 @@ export function addCustomLineItem(
     return draftOrder.update('line_items', (lineItems: List<any>) =>
         lineItems.push(lineItem)
     )
-}
-
-export function getSubtotal(draftOrder: Map<any, any>): number {
-    return (
-        getDraftOrderTotalLineItemsPrice(draftOrder) -
-        getTotalDiscountAmount(draftOrder)
-    )
-}
-
-export function getTotalShippingPrice(draftOrder: Map<any, any>): number {
-    return parseFloat(draftOrder.getIn(['shipping_line', 'price'], 0))
-}
-
-export function getTaxLineLabel(
-    taxLine: Map<any, any>,
-    taxesIncluded: boolean
-): string {
-    const label = `${taxLine.get('title') as string} ${formatPercentage(
-        taxLine.get('rate') * 100
-    )}%`
-    return taxesIncluded ? `${label} (included)` : label
-}
-
-export function getTotalTaxes(taxLines: List<any>): number {
-    return taxLines.reduce(
-        (total = 0, taxLine: Map<any, any>) =>
-            total + parseFloat(taxLine.get('price')),
-        0
-    )
-}
-
-export function getTaxLinesTotals(draftOrder: Map<any, any>) {
-    const taxLines = (draftOrder.get('tax_lines') || []) as List<any>
-    const taxesIncluded = draftOrder.get('taxes_included')
-    const taxLinesByLabel = new window.Map()
-
-    taxLines.forEach((taxLine: Map<any, any>) => {
-        const label = getTaxLineLabel(taxLine, taxesIncluded)
-        const values = (taxLinesByLabel.get(label) || []) as List<any>
-        values.push(taxLine)
-        taxLinesByLabel.set(label, values)
-    })
-
-    return Array.from(taxLinesByLabel.entries())
-        .sort((a: [string, Map<any, any>[]], b: [string, Map<any, any>[]]) => {
-            const [, taxLinesA] = a
-            const [, taxLinesB] = b
-            const [taxLineA] = taxLinesA
-            const [taxLineB] = taxLinesB
-
-            return taxLineA.get('rate') === taxLineB.get('rate')
-                ? (taxLineA.get('title') as string).localeCompare(
-                      taxLineB.get('title')
-                  )
-                : taxLineB.get('rate') - taxLineA.get('rate')
-        })
-        .map(([label, values]: [string, List<any>]) => ({
-            label,
-            total: getTotalTaxes(values),
-        })) as Array<{label: string; total: number}>
 }

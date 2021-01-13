@@ -391,7 +391,7 @@ exports[`<DraftOrderModal/> render() should render as closed 1`] = `
       },
     }
   }
-  draftOrder={null}
+  draftOrder={Immutable.Map {}}
   header="Duplicate order"
   integrations={
     Immutable.List [
@@ -457,14 +457,13 @@ exports[`<DraftOrderModal/> render() should render as closed 1`] = `
   onCancel={[Function]}
   onChange={[MockFunction]}
   onClose={[MockFunction]}
+  onCreateDraftOrder={[Function]}
   onEmailInvoice={[Function]}
   onInit={[Function]}
-  onInitCleanUp={[Function]}
   onOpen={[MockFunction]}
   onPayloadChange={[Function]}
   onReset={[Function]}
   onSubmit={[MockFunction]}
-  onSubmitCleanUp={[Function]}
   payload={null}
   products={Map {}}
   store={
@@ -871,7 +870,7 @@ exports[`<DraftOrderModal/> render() should render as open 1`] = `
       },
     }
   }
-  draftOrder={null}
+  draftOrder={Immutable.Map {}}
   header="Duplicate order"
   integrations={
     Immutable.List [
@@ -937,14 +936,13 @@ exports[`<DraftOrderModal/> render() should render as open 1`] = `
   onCancel={[Function]}
   onChange={[MockFunction]}
   onClose={[MockFunction]}
+  onCreateDraftOrder={[Function]}
   onEmailInvoice={[Function]}
   onInit={[Function]}
-  onInitCleanUp={[Function]}
   onOpen={[MockFunction]}
   onPayloadChange={[Function]}
   onReset={[Function]}
   onSubmit={[MockFunction]}
-  onSubmitCleanUp={[Function]}
   payload={null}
   products={Map {}}
   store={
@@ -1168,30 +1166,32 @@ exports[`<DraftOrderModalComponent/> render() should render as open, with invoic
       lineItems={
         Immutable.List [
           Immutable.Map {
+            "variant_admin_graphql_api_id": "gid://shopify/ProductVariant/31128766316567",
             "applied_discount": null,
             "taxable": true,
-            "price": "1.00",
+            "price": "9.99",
             "quantity": 1,
-            "product_id": null,
-            "product_exists": false,
+            "product_id": 8345093387,
+            "product_exists": true,
             "properties": Immutable.List [],
-            "variant_id": null,
+            "variant_id": 31128766316567,
             "title": "Acidulous candy",
-            "sku": "0987654321-1",
+            "sku": "11111",
             "variant_title": "Red / A",
             "requires_shipping": true,
           },
           Immutable.Map {
+            "variant_admin_graphql_api_id": "gid://shopify/ProductVariant/31128766349335",
             "applied_discount": null,
             "taxable": true,
-            "price": "1.00",
+            "price": "9.99",
             "quantity": 4,
-            "product_id": null,
-            "product_exists": false,
+            "product_id": 8345093387,
+            "product_exists": true,
             "properties": Immutable.List [],
-            "variant_id": null,
+            "variant_id": 31128766349335,
             "title": "Acidulous candy",
-            "sku": "0987654321-2",
+            "sku": "11111",
             "variant_title": "Red / B",
             "requires_shipping": true,
           },
@@ -1311,30 +1311,32 @@ exports[`<DraftOrderModalComponent/> render() should render as open, with order 
       lineItems={
         Immutable.List [
           Immutable.Map {
+            "variant_admin_graphql_api_id": "gid://shopify/ProductVariant/31128766316567",
             "applied_discount": null,
             "taxable": true,
-            "price": "1.00",
+            "price": "9.99",
             "quantity": 1,
-            "product_id": null,
-            "product_exists": false,
+            "product_id": 8345093387,
+            "product_exists": true,
             "properties": Immutable.List [],
-            "variant_id": null,
+            "variant_id": 31128766316567,
             "title": "Acidulous candy",
-            "sku": "0987654321-1",
+            "sku": "11111",
             "variant_title": "Red / A",
             "requires_shipping": true,
           },
           Immutable.Map {
+            "variant_admin_graphql_api_id": "gid://shopify/ProductVariant/31128766349335",
             "applied_discount": null,
             "taxable": true,
-            "price": "1.00",
+            "price": "9.99",
             "quantity": 4,
-            "product_id": null,
-            "product_exists": false,
+            "product_id": 8345093387,
+            "product_exists": true,
             "properties": Immutable.List [],
-            "variant_id": null,
+            "variant_id": 31128766349335,
             "title": "Acidulous candy",
-            "sku": "0987654321-2",
+            "sku": "11111",
             "variant_title": "Red / B",
             "requires_shipping": true,
           },
@@ -1443,30 +1445,32 @@ exports[`<DraftOrderModalComponent/> render() should render as open, with order 
       lineItems={
         Immutable.List [
           Immutable.Map {
+            "variant_admin_graphql_api_id": "gid://shopify/ProductVariant/31128766316567",
             "applied_discount": null,
             "taxable": true,
-            "price": "1.00",
+            "price": "9.99",
             "quantity": 1,
-            "product_id": null,
-            "product_exists": false,
+            "product_id": 8345093387,
+            "product_exists": true,
             "properties": Immutable.List [],
-            "variant_id": null,
+            "variant_id": 31128766316567,
             "title": "Acidulous candy",
-            "sku": "0987654321-1",
+            "sku": "11111",
             "variant_title": "Red / A",
             "requires_shipping": true,
           },
           Immutable.Map {
+            "variant_admin_graphql_api_id": "gid://shopify/ProductVariant/31128766349335",
             "applied_discount": null,
             "taxable": true,
-            "price": "1.00",
+            "price": "9.99",
             "quantity": 4,
-            "product_id": null,
-            "product_exists": false,
+            "product_id": 8345093387,
+            "product_exists": true,
             "properties": Immutable.List [],
-            "variant_id": null,
+            "variant_id": 31128766349335,
             "title": "Acidulous candy",
-            "sku": "0987654321-2",
+            "sku": "11111",
             "variant_title": "Red / B",
             "requires_shipping": true,
           },

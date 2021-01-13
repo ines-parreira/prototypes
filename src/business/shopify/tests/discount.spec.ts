@@ -8,11 +8,7 @@ import {
     shopifyLineItemFixture,
 } from '../../../fixtures/shopify'
 import {addCustomLineItem} from '../draftOrder'
-import {
-    getDiscountAmount,
-    getTotalDiscountAmount,
-    refreshAppliedDiscounts,
-} from '../discount'
+import {getDiscountAmount, refreshAppliedDiscounts} from '../discount'
 import {formatPrice} from '../number'
 
 describe('getDiscountAmount()', () => {
@@ -43,23 +39,6 @@ describe('getDiscountAmount()', () => {
     })
 })
 
-describe('getTotalDiscountAmount()', () => {
-    it('should return the total discount amount of given payload when there is an applied discount', () => {
-        const payload = fromJS(shopifyDraftOrderPayloadFixture())
-        const total = getTotalDiscountAmount(payload)
-        expect(total).toMatchSnapshot()
-    })
-
-    it('should return the total discount amount of given payload when there is no applied discount', () => {
-        const payload = (fromJS(shopifyDraftOrderPayloadFixture()) as Map<
-            any,
-            any
-        >).set('applied_discount', null)
-        const total = getTotalDiscountAmount(payload)
-        expect(total).toMatchSnapshot()
-    })
-})
-
 describe('refreshAppliedDiscounts()', () => {
     it('should refresh the applied discount amount of the given payload', () => {
         // Payload has a 100% discount applied
@@ -71,11 +50,22 @@ describe('refreshAppliedDiscounts()', () => {
             payload,
             customLineItem
         )
-        expect(getTotalDiscountAmount(payloadWithCustomLineItem)).toBe(5)
+        expect(
+            parseFloat(
+                payloadWithCustomLineItem.getIn([
+                    'applied_discount',
+                    'amount',
+                ]) as string
+            )
+        ).toMatchSnapshot()
 
         // Refresh applied discounts
         const newPayload = refreshAppliedDiscounts(payloadWithCustomLineItem)
-        expect(getTotalDiscountAmount(newPayload)).toMatchSnapshot()
+        expect(
+            parseFloat(
+                newPayload.getIn(['applied_discount', 'amount']) as string
+            )
+        ).toMatchSnapshot()
     })
 
     it('should work without rounding errors', () => {
