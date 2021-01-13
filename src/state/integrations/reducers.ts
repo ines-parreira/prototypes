@@ -163,6 +163,29 @@ export default function reducer(
                 .setIn(['integration', 'testing'], fromJS(action.response))
                 .setIn(['state', 'loading', 'testing'], false)
 
+        case constants.EMAIL_FORWARDING_ACTIVATED: {
+            const integrations = state.get('integrations') as List<any>
+            return state
+                .setIn(
+                    ['integration', 'meta', 'email_forwarding_activated'],
+                    true
+                )
+                .set(
+                    'integrations',
+                    integrations.update(
+                        integrations.findIndex(
+                            (integration: Map<any, any>) =>
+                                integration.get('id') === action.integrationId
+                        ),
+                        (integration: Map<any, any>) =>
+                            integration.setIn(
+                                ['meta', 'email_forwarding_activated'],
+                                true
+                            )
+                    )
+                )
+        }
+
         case constants.EMAIL_INTEGRATION_VERIFIED: {
             const integrations = state.get('integrations') as List<any>
 

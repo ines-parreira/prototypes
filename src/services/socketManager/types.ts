@@ -31,6 +31,7 @@ export enum SocketEventType {
     TicketMessageChatCreated = 'ticket-message-chat-created',
     TicketChatUpdated = 'ticket-chat-updated',
     EmailIntegrationVerified = 'email.integration-verified',
+    EmailForwardingActivated = 'email.forwarding-activated',
     FacebookIntegrationsReconnected = 'facebook-integrations-reconnected',
     ViewsDeactivated = 'views-deactivated',
 }

@@ -237,6 +237,7 @@ exports[`<EmailIntegrationCreateVerification/> render() should render the regula
         color="secondary"
         confirm={[Function]}
         content="Are you sure you want to delete this integration?"
+        disabled={false}
       >
         <i
           className="material-icons mr-1 text-danger"

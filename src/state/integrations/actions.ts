@@ -597,6 +597,16 @@ export function onVerify(
     })
 }
 
+export function onEmailForwardingActivated(
+    dispatch: StoreDispatch,
+    integrationId: number
+): ReturnType<StoreDispatch> {
+    return dispatch({
+        type: constants.EMAIL_FORWARDING_ACTIVATED,
+        integrationId,
+    })
+}
+
 export function verifyEmailIntegration(token: string) {
     return (
         dispatch: StoreDispatch,
@@ -654,6 +664,40 @@ export function sendVerificationEmail() {
                 },
                 (error: AxiosError) => {
                     void dispatch(
+                        notify({
+                            status: NotificationStatus.Error,
+                            message: (fromJS(error.response) as Map<
+                                any,
+                                any
+                            >).getIn(['data', 'error', 'msg']),
+                        })
+                    )
+                }
+            )
+    }
+}
+
+export function verifyEmailIntegrationManually(token: string) {
+    return (
+        dispatch: StoreDispatch,
+        getState: () => RootState
+    ): Promise<ReturnType<StoreDispatch>> => {
+        const state = getState()
+        const integrationId = integrationSelectors
+            .getCurrentIntegration(state)
+            .get('id') as number
+
+        return axios
+            .post<void>(
+                `/api/integrations/${integrationId}/verify-email-integration/`,
+                {verification_code: token}
+            )
+            .then(
+                () => {
+                    return onVerify(dispatch, integrationId)
+                },
+                (error: AxiosError) => {
+                    return dispatch(
                         notify({
                             status: NotificationStatus.Error,
                             message: (fromJS(error.response) as Map<

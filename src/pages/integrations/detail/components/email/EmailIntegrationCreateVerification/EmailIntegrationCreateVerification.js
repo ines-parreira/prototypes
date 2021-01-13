@@ -1,6 +1,13 @@
 // @flow
 import React from 'react'
-import {Alert, Button, Breadcrumb, BreadcrumbItem, Container} from 'reactstrap'
+import {
+    Alert,
+    Button,
+    Breadcrumb,
+    BreadcrumbItem,
+    Container,
+    Form,
+} from 'reactstrap'
 import {browserHistory, Link} from 'react-router'
 import {connect} from 'react-redux'
 import classNames from 'classnames'
@@ -11,13 +18,19 @@ import socketManager from '../../../../../../services/socketManager'
 import * as accountActions from '../../../../../../state/currentAccount/actions.ts'
 import * as integrationActions from '../../../../../../state/integrations/actions.ts'
 import * as notificationActions from '../../../../../../state/notifications/actions.ts'
-import {getForwardingEmailAddress} from '../../../../../../state/integrations/selectors.ts'
+import {
+    getForwardingEmailAddress,
+    getEmailForwardingActivated,
+} from '../../../../../../state/integrations/selectors.ts'
+import InputField from '../../../../../common/forms/InputField'
 
 type Props = {
     integration: Object,
     deleteIntegration: (Object, string) => void,
     forwardingEmailAddress: string,
+    emailForwardingActivated: boolean,
     sendVerificationEmail: () => Promise<void>,
+    verifyEmailIntegrationManually: (token: string) => Promise<void>,
     notify: ({status: string, message: string}) => Promise<void>,
     resendAccountVerificationEmail: () => Promise<void>,
 }
@@ -25,6 +38,8 @@ type Props = {
 type State = {
     token: string,
     loading: boolean,
+    isDisabled: boolean,
+    isVerificationLoading: boolean,
 }
 
 export class EmailIntegrationCreateVerification extends React.Component<
@@ -34,6 +49,8 @@ export class EmailIntegrationCreateVerification extends React.Component<
     state = {
         token: '',
         loading: false,
+        isDisabled: false,
+        isVerificationLoading: false,
     }
 
     componentWillMount() {
@@ -70,10 +87,18 @@ export class EmailIntegrationCreateVerification extends React.Component<
     }
 
     _sendVerificationEmail = () => {
-        this.setState({loading: true})
+        this.setState({loading: true, isDisabled: true})
 
         this.props.sendVerificationEmail().then(() => {
-            this.setState({loading: false})
+            this.setState({loading: false, isDisabled: false})
+        })
+    }
+
+    _verifyEmailIntegrationManually = (e: Event) => {
+        e.preventDefault()
+        this.setState({isVerificationLoading: true, isDisabled: true})
+        this.props.verifyEmailIntegrationManually(this.state.token).then(() => {
+            this.setState({isVerificationLoading: false, isDisabled: false})
         })
     }
 
@@ -82,16 +107,57 @@ export class EmailIntegrationCreateVerification extends React.Component<
             integration,
             deleteIntegration,
             forwardingEmailAddress,
+            emailForwardingActivated,
         } = this.props
         const isLoading = this.state.loading
-
+        const isShowingManualEmailVerificationForm =
+            emailForwardingActivated ||
+            this.props.integration.getIn(
+                ['meta', 'email_forwarding_activated'],
+                false
+            )
         return (
             <div>
-                <Alert color="info" className="mb-4">
-                    <i className="material-icons md-spin mr-2">autorenew</i>
-                    We're waiting to receive your verification email on{' '}
-                    <strong>{forwardingEmailAddress}</strong>.
-                </Alert>
+                {!isShowingManualEmailVerificationForm && (
+                    <Alert color="info" className="mb-4">
+                        <i className="material-icons md-spin mr-2">autorenew</i>
+                        We're waiting to receive your verification email on{' '}
+                        <strong>{forwardingEmailAddress}</strong>.
+                    </Alert>
+                )}
+                {isShowingManualEmailVerificationForm && (
+                    <div>
+                        if you've received the verification email but your
+                        integration still reads "Verification in progress...",
+                        you can manually input the verification code listed in
+                        the verification email.
+                        <br />
+                        <br />
+                        <Form onSubmit={this._verifyEmailIntegrationManually}>
+                            <InputField
+                                name="code"
+                                type="text"
+                                label="Input verification code manually"
+                                placeholder="f69a26"
+                                onChange={(code) =>
+                                    this.setState({token: code})
+                                }
+                            />
+                            <Button
+                                type="submit"
+                                color="success"
+                                disabled={this.state.isDisabled}
+                                className={classNames({
+                                    'btn-loading': this.state
+                                        .isVerificationLoading,
+                                })}
+                            >
+                                Verify your integration
+                            </Button>
+                        </Form>
+                        <br />
+                    </div>
+                )}
                 <p>
                     If you haven't set up the forwarding yet, you'll find the
                     instructions{' '}
@@ -108,7 +174,7 @@ export class EmailIntegrationCreateVerification extends React.Component<
                 </p>
                 <Button
                     type="button"
-                    disabled={isLoading}
+                    disabled={this.state.isDisabled}
                     className={classNames({
                         'btn-loading': isLoading,
                     })}
@@ -120,6 +186,7 @@ export class EmailIntegrationCreateVerification extends React.Component<
                 <ConfirmButton
                     className="float-right"
                     color="secondary"
+                    disabled={this.state.isDisabled}
                     confirm={() => deleteIntegration(integration, 'email')}
                     content="Are you sure you want to delete this integration?"
                 >
@@ -203,11 +270,16 @@ export class EmailIntegrationCreateVerification extends React.Component<
 }
 
 export default connect(
-    (state) => ({
+    (state, props) => ({
         forwardingEmailAddress: getForwardingEmailAddress(state),
+        emailForwardingActivated: getEmailForwardingActivated(
+            props.integration.get('id')
+        )(state),
     }),
     {
         sendVerificationEmail: integrationActions.sendVerificationEmail,
+        verifyEmailIntegrationManually:
+            integrationActions.verifyEmailIntegrationManually,
         notify: notificationActions.notify,
         deleteIntegration: integrationActions.deleteIntegration,
         resendAccountVerificationEmail: accountActions.resendVerificationEmail,

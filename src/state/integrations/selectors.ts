@@ -436,3 +436,13 @@ export const hasAtLeastOneEmailIntegration = (state: RootState) =>
 
         return !isBaseIntegration && !isDeactivated && !isNotVerified
     }).size > 0
+
+export const getEmailForwardingActivated = (id: number) =>
+    createSelector<RootState, boolean, Map<any, any>>(
+        getIntegrationById(id),
+        (integration) =>
+            integration.getIn(
+                ['meta', 'email_forwarding_activated'],
+                false
+            ) as boolean
+    )

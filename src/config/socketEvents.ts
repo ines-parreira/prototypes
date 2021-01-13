@@ -1,4 +1,4 @@
-import {fromJS, Map, List} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 import _find from 'lodash/find'
 import {EnhancedStore} from '@reduxjs/toolkit'
 
@@ -25,29 +25,29 @@ import {store as reduxStore} from '../init'
 import {isViewSharedWithUser} from '../state/views/utils'
 import {SocketManager} from '../services/socketManager/socketManager'
 import {
-    ServerMessage,
-    SocketEventType,
-    CustomerUpdatedEvent,
-    UserLocationUpdatedEvent,
-    UserTypingStatusUpdatedEvent,
-    TicketUpdatedEvent,
-    TicketMessageCreatedEvent,
-    TicketMessageActionFailedEvent,
-    TicketMessageFailedEvent,
-    ActionExecutedEvent,
-    ViewCreatedEvent,
-    ViewUpdatedEvent,
-    ViewDeletedEvent,
-    ViewCountUpdatedEvent,
     AccountUpdatedEvent,
-    TicketMessageChatCreatedEvent,
-    TicketChatUpdatedEvent,
+    ActionExecutedEvent,
+    CustomerUpdatedEvent,
     EmailIntegrationVerifiedEvent,
     FacebookIntegrationsReconnected,
+    ServerMessage,
+    SocketEventType,
+    TicketChatUpdatedEvent,
+    TicketMessageActionFailedEvent,
+    TicketMessageChatCreatedEvent,
+    TicketMessageCreatedEvent,
+    TicketMessageFailedEvent,
+    TicketUpdatedEvent,
+    UserLocationUpdatedEvent,
+    UserTypingStatusUpdatedEvent,
+    ViewCountUpdatedEvent,
+    ViewCreatedEvent,
+    ViewDeletedEvent,
     ViewsDeactivated,
     ViewSectionCreatedEvent,
-    ViewSectionUpdatedEvent,
     ViewSectionDeletedEvent,
+    ViewSectionUpdatedEvent,
+    ViewUpdatedEvent,
 } from '../services/socketManager/types'
 import {NotificationStatus} from '../state/notifications/types'
 import {RootState} from '../state/types'
@@ -596,6 +596,15 @@ export const receivedEvents: ReceivedEvent[] = [
         name: SocketEventType.EmailIntegrationVerified,
         onReceive: function (json) {
             integrationsActions.onVerify(
+                typeSafeReduxStore.dispatch,
+                (json as EmailIntegrationVerifiedEvent).integration_id
+            )
+        },
+    },
+    {
+        name: SocketEventType.EmailForwardingActivated,
+        onReceive: function (json) {
+            integrationsActions.onEmailForwardingActivated(
                 typeSafeReduxStore.dispatch,
                 (json as EmailIntegrationVerifiedEvent).integration_id
             )
