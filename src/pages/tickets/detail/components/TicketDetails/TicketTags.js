@@ -4,6 +4,7 @@ import _debounce from 'lodash/debounce'
 import _isUndefined from 'lodash/isUndefined'
 import PropTypes from 'prop-types'
 import React from 'react'
+import ReactDOM from 'react-dom'
 import {Dropdown, DropdownItem, DropdownToggle, Input} from 'reactstrap'
 
 import shortcutManager from '../../../../../services/shortcutManager/index.ts'
@@ -28,6 +29,29 @@ export class TicketTags extends React.Component {
         this._bindKeys()
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if (this.state.dropdownOpen && this.searchInputRef.current) {
+            const prevExistingTagNames = prevProps.ticketTags
+                .sortBy((x) => x.get('name'))
+                .map((x) => x.get('name'))
+            const existingTagNames = this.props.ticketTags
+                .sortBy((x) => x.get('name'))
+                .map((x) => x.get('name'))
+
+            if (!prevExistingTagNames.equals(existingTagNames)) {
+                const node = ReactDOM.findDOMNode(this.searchInputRef.current)
+                if (node) {
+                    node.focus()
+                }
+            }
+        }
+
+        if (prevState.search !== this.state.search) {
+            this.setState({isLoading: true})
+            this._queryResultsOnSearch(this.state.search)
+        }
+    }
+
     componentWillUnmount() {
         shortcutManager.unbind('TicketDetailContainer')
     }
@@ -48,13 +72,18 @@ export class TicketTags extends React.Component {
         })
     }
 
+    tagRef = React.createRef()
+    searchInputRef = React.createRef()
+
     _addTag = (name) => {
         if (!name) {
             return
         }
 
         this.props.addTags(name)
-        this.setState({search: ''})
+        const search = ''
+        this.setState({search})
+        this._queryResults(search)
     }
 
     _toggle = (e, visible) => {
@@ -75,7 +104,6 @@ export class TicketTags extends React.Component {
 
     _search = (search) => {
         this.setState({search})
-        this._queryResultsOnSearch(search)
     }
 
     _queryResults = (search) => {
@@ -98,6 +126,15 @@ export class TicketTags extends React.Component {
     }
 
     _queryResultsOnSearch = _debounce(this._queryResults, 300)
+
+    _handleSearchKeyDown = (e: KeyboardEvent) => {
+        if (e.key === 'ArrowDown' && this.tagRef.current) {
+            const node = ReactDOM.findDOMNode(this.tagRef.current)
+            if (node) {
+                node.focus()
+            }
+        }
+    }
 
     _displayMenu = () => {
         const {ticketTags} = this.props
@@ -122,7 +159,9 @@ export class TicketTags extends React.Component {
             return (
                 <DropdownItem
                     key={i}
+                    ref={i === 0 ? this.tagRef : undefined}
                     type="button"
+                    toggle={false}
                     onClick={() => this._addTag(name)}
                 >
                     {name}
@@ -142,6 +181,7 @@ export class TicketTags extends React.Component {
             options = options.push(
                 <DropdownItem
                     key="create"
+                    ref={availableTags.isEmpty() ? this.tagRef : undefined}
                     type="button"
                     onClick={() => this._addTag(search)}
                 >
@@ -210,12 +250,14 @@ export class TicketTags extends React.Component {
                         <DropdownItem header className="dropdown-item-input">
                             {this.state.dropdownOpen && ( // rebuild input on each opening so "autoFocus" works
                                 <Input
+                                    ref={this.searchInputRef}
                                     placeholder="Search tags..."
                                     autoFocus
                                     value={this.state.search}
                                     onChange={(e) =>
                                         this._search(e.target.value)
                                     }
+                                    onKeyDown={this._handleSearchKeyDown}
                                 />
                             )}
                         </DropdownItem>
