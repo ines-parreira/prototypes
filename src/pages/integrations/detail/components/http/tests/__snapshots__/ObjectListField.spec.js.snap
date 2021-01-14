@@ -53,10 +53,10 @@ exports[`ObjectListField component should display the field with items 1`] = `
       xs="5"
     >
       <InputField
-        error=""
+        error="Header name contains invalid characters"
         name="key"
         onChange={[Function]}
-        pattern=""
+        pattern="Header name contains invalid characters"
         placeholder="Key"
         required={true}
         type="text"
@@ -76,7 +76,7 @@ exports[`ObjectListField component should display the field with items 1`] = `
       }
     >
       <InputField
-        error=""
+        error="Header name contains invalid characters"
         name="value"
         onChange={[Function]}
         placeholder="Value"

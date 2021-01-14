@@ -11,7 +11,7 @@ describe('ObjectListField component', () => {
                 fieldName="field"
                 title="Form field"
                 fields={[]}
-                pattern={() => {}}
+                validate={() => {}}
                 onChange={() => {}}
             />
         )
@@ -26,11 +26,26 @@ describe('ObjectListField component', () => {
                 fieldName="field"
                 title="Form field"
                 fields={[{foo: 'bar', baz: 'foo'}]}
-                pattern={() => {}}
+                validate={() => 'Header name contains invalid characters'}
                 onChange={() => {}}
             />
         )
 
         expect(component).toMatchSnapshot()
+    })
+
+    it('should allow any field name if this.props.validate is not presented', () => {
+        const component = shallow(
+            <ObjectListField
+                name="http.form"
+                fieldName="field"
+                title="Form field"
+                fields={[{foo: 'bar', baz: 'foo'}]}
+                onChange={() => {}}
+            />
+        )
+        expect(
+            component.find('InputField').getElements()[0].props.pattern
+        ).toBeNull()
     })
 })
