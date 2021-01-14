@@ -21,6 +21,7 @@ PR).
 * [Use Redux Toolkit to write actions and reducers](#use-redux-toolkit-to-write-actions-and-reducers)
 * [Separate UI and Entity reducers](#separate-ui-and-entity-reducers)
 * [Don't write actions with Axios calls](#dont-write-actions-with-axios-calls)
+* [Migration to Functional Components](#migration-to-functional-components)
 
 ## Turn on the @flow type-checking in the modified files
 
@@ -131,3 +132,16 @@ If you have to write code for making a call to a remote server please add it to:
   Every resource should have its own separate directory, e.g.
 `models/user/{resources,types}.ts`;
 * `services/*` - for communicating with other (usually 3rd-party) services.
+
+## Migration to Functional Components
+
+Don't create any new Class Components, go for Functional Components instead.
+
+When modifying Class Components you can decide to convert them to Functional Components first
+or to create a separate issue for migrating it later as a subtask of
+[Migrate to functional components #7298](https://github.com/gorgias/gorgias/issues/7298).
+
+If you need to reuse a component logic, prioritize Hooks over HOC.
+Always create a Hook first, then you can also write a thin HOC wrapper for the Hook as the situation demands.
+The same procedure applies when migrating the existing HOC: convert it to a Hook and write a HOC wrapper for it
+(only if it's required).
