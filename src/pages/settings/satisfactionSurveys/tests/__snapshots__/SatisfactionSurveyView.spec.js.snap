@@ -1421,7 +1421,6 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                 },
                                               }
                                             }
-                                            emailExtraEnabled={false}
                                             isFocused={false}
                                             linkIsOpen={false}
                                             linkText=""
@@ -1437,6 +1436,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                             onLinkTextChange={[Function]}
                                             onLinkUrlChange={[Function]}
                                             onMentionSearchChange={[Function]}
+                                            signature={false}
                                             type="text"
                                             value={
                                               Object {
@@ -1698,9 +1698,6 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                             },
                                                             Object {
                                                               "handlePastedFiles": [Function],
-                                                            },
-                                                            Object {
-                                                              "blockStyleFn": [Function],
                                                             },
                                                           ]
                                                         }
@@ -1996,9 +1993,6 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                               },
                                                               Object {
                                                                 "handlePastedFiles": [Function],
-                                                              },
-                                                              Object {
-                                                                "blockStyleFn": [Function],
                                                               },
                                                             ]
                                                           }
@@ -2721,7 +2715,6 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                           },
                                                         }
                                                       }
-                                                      emailExtraEnabled={false}
                                                       isFocused={false}
                                                       linkIsOpen={false}
                                                       linkText=""
@@ -2748,6 +2741,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                           "setReadOnly": [Function],
                                                         }
                                                       }
+                                                      signature={false}
                                                       type="text"
                                                       value={
                                                         Object {

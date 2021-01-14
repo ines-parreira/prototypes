@@ -18,7 +18,6 @@ import createMentionPlugin from '../../draftjs/plugins/mentions'
 import createPasteImagePlugin from '../../draftjs/plugins/pasteImage'
 import createVariablesPlugin from '../../draftjs/plugins/variables'
 import createPredictionPlugin from '../../draftjs/plugins/prediction'
-import {createQuotesPlugin} from '../../draftjs/plugins/quotes/quotesPlugin.ts'
 
 import InputField from '../InputField'
 import type {ActionName} from '../../draftjs/plugins/toolbar/types'
@@ -30,7 +29,7 @@ import {
     removeMentions,
 } from '../../../../utils/editor.tsx'
 
-import EmailExtraButton from './EmailExtraButton.tsx'
+import Signature from './Signature.tsx'
 import provideToolbarPlugin, {
     type InjectedProps as ToolbarPluginProps,
 } from './provideToolbarPlugin'
@@ -50,7 +49,7 @@ export type Props = {
     onChange: (EditorState) => void,
     required: boolean,
     displayOnly: boolean,
-    emailExtraEnabled: boolean,
+    signature: boolean,
     isFocused: boolean,
     onFocus: () => boolean,
     onBlur: () => boolean,
@@ -79,7 +78,7 @@ type State = {
 
 export class RichFieldEditor extends InputField<Props, State> {
     static defaultProps = {
-        emailExtraEnabled: false,
+        signature: false,
         type: 'text',
         notify: _noop,
         attachFiles: _noop,
@@ -126,7 +125,6 @@ export class RichFieldEditor extends InputField<Props, State> {
         this.mentionPlugin = createMentionPlugin()
         this.connectedLinksPlugin = createConnectedLinksPlugin()
         this.variablesPlugin = createVariablesPlugin()
-        this.quotesPlugin = createQuotesPlugin()
 
         const plugins = [
             this.dndPlugin,
@@ -137,7 +135,6 @@ export class RichFieldEditor extends InputField<Props, State> {
             this.connectedLinksPlugin,
             this.variablesPlugin,
             this.pasteImage,
-            this.quotesPlugin,
         ]
 
         if (this.props.predictionContext) {
@@ -295,13 +292,7 @@ export class RichFieldEditor extends InputField<Props, State> {
     }
 
     _getField = () => {
-        const {
-            required,
-            displayOnly,
-            onFocus,
-            emailExtraEnabled,
-            ticket,
-        } = this.props
+        const {required, displayOnly, onFocus, signature, ticket} = this.props
         const {MentionSuggestions} = this.mentionPlugin
         return (
             <div
@@ -361,10 +352,8 @@ export class RichFieldEditor extends InputField<Props, State> {
                         />
                     )}
 
-                    {emailExtraEnabled && (
-                        <EmailExtraButton
-                            editorState={this.props.editorState}
-                        />
+                    {signature && (
+                        <Signature editorState={this.props.editorState} />
                     )}
                 </div>
                 <Toolbar

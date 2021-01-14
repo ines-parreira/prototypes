@@ -24,7 +24,7 @@ should be good now",
   "state": Immutable.Map {
     "state": Immutable.Map {
       "selectionState": null,
-      "emailExtraAdded": false,
+      "signatureAdded": false,
       "forceFocus": false,
       "appliedMacro": null,
       "dirty": false,
@@ -57,9 +57,6 @@ should be good now",
         "to": Immutable.List [],
         "cc": Immutable.List [],
         "bcc": Immutable.List [],
-        "extra": Immutable.Map {
-          "include_thread": false,
-        },
       },
     },
   },
@@ -85,7 +82,6 @@ should be good now",
   },
   "cacheAdded": true,
   "contentState": "<div>Foo bar baz</div>",
-  "emailExtraAdded": true,
   "forceFocus": true,
   "forceUpdate": true,
   "selectionState": Immutable.Record {
@@ -96,10 +92,11 @@ should be good now",
     "isBackward": false,
     "hasFocus": false,
   },
+  "signatureAdded": true,
   "state": Immutable.Map {
     "state": Immutable.Map {
       "selectionState": null,
-      "emailExtraAdded": false,
+      "signatureAdded": false,
       "forceFocus": false,
       "appliedMacro": null,
       "dirty": false,
@@ -132,9 +129,6 @@ should be good now",
         "to": Immutable.List [],
         "cc": Immutable.List [],
         "bcc": Immutable.List [],
-        "extra": Immutable.Map {
-          "include_thread": false,
-        },
       },
     },
   },
@@ -165,7 +159,7 @@ should be good now",
   "state": Immutable.Map {
     "state": Immutable.Map {
       "selectionState": null,
-      "emailExtraAdded": false,
+      "signatureAdded": false,
       "forceFocus": false,
       "appliedMacro": null,
       "dirty": false,
@@ -198,139 +192,8 @@ should be good now",
         "to": Immutable.List [],
         "cc": Immutable.List [],
         "bcc": Immutable.List [],
-        "extra": Immutable.Map {
-          "include_thread": false,
-        },
       },
     },
   },
-}
-`;
-
-exports[`responseUtils toReplyAreaStateJS should convert immutable state to object 1`] = `
-Object {
-  "appliedMacro": null,
-  "cacheAdded": true,
-  "contentState": Array [
-    Object {
-      "data": Object {},
-      "depth": 0,
-      "text": "",
-      "type": "unstyled",
-    },
-  ],
-  "dirty": false,
-  "emailExtraAdded": false,
-  "firstNewMessage": true,
-  "forceFocus": true,
-  "forceUpdate": true,
-}
-`;
-
-exports[`responseUtils updateNewMessageWithContentState should not mutate the arguments 1`] = `
-Object {
-  "attachments": Array [],
-  "body_html": "",
-  "body_text": "",
-  "channel": "email",
-  "from_agent": true,
-  "macros": Array [],
-  "mention_ids": Array [],
-  "public": true,
-  "sender": null,
-  "source": Object {
-    "bcc": Array [],
-    "cc": Array [],
-    "extra": Object {
-      "include_thread": false,
-    },
-    "from": Object {},
-    "to": Array [],
-    "type": "email",
-  },
-  "subject": "",
-  "via": "helpdesk",
-}
-`;
-
-exports[`responseUtils updateNewMessageWithContentState should set stripped_text and stripped_body when contentState contains email extras 1`] = `
-Object {
-  "attachments": Array [],
-  "body_html": "<div>Foo bar</div><div><br></div><div>Signature</div>",
-  "body_text": "Foo bar
-
-Signature",
-  "channel": "email",
-  "from_agent": true,
-  "macros": Array [],
-  "mention_ids": Array [],
-  "public": true,
-  "sender": null,
-  "source": Object {
-    "bcc": Array [],
-    "cc": Array [],
-    "extra": Object {
-      "include_thread": false,
-    },
-    "from": Object {},
-    "to": Array [],
-    "type": "email",
-  },
-  "stripped_html": "<div>Foo bar</div>",
-  "stripped_text": "Foo bar",
-  "subject": "",
-  "via": "helpdesk",
-}
-`;
-
-exports[`responseUtils updateNewMessageWithContentState should unset emailExtraAdded, stripped_text and stripped_body when contentState does not contain email extras 1`] = `
-Object {
-  "attachments": Array [],
-  "body_html": "<div>No extras</div>",
-  "body_text": "No extras",
-  "channel": "email",
-  "from_agent": true,
-  "macros": Array [],
-  "mention_ids": Array [],
-  "public": true,
-  "sender": null,
-  "source": Object {
-    "bcc": Array [],
-    "cc": Array [],
-    "extra": Object {
-      "include_thread": false,
-    },
-    "from": Object {},
-    "to": Array [],
-    "type": "email",
-  },
-  "subject": "",
-  "via": "helpdesk",
-}
-`;
-
-exports[`responseUtils updateNewMessageWithContentState should update body_html and body_text 1`] = `
-Object {
-  "attachments": Array [],
-  "body_html": "<div>Foo bar baz</div>",
-  "body_text": "Foo bar baz",
-  "channel": "email",
-  "from_agent": true,
-  "macros": Array [],
-  "mention_ids": Array [],
-  "public": true,
-  "sender": null,
-  "source": Object {
-    "bcc": Array [],
-    "cc": Array [],
-    "extra": Object {
-      "include_thread": false,
-    },
-    "from": Object {},
-    "to": Array [],
-    "type": "email",
-  },
-  "subject": "",
-  "via": "helpdesk",
 }
 `;

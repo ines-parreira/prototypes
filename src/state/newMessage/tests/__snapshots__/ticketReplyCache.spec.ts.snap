@@ -6,6 +6,6 @@ Immutable.Map {
   "selectionState": null,
   "macro": null,
   "sourceType": null,
-  "emailExtraAdded": false,
+  "signatureAdded": false,
 }
 `;

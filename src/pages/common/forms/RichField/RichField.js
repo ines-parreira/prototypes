@@ -1,5 +1,5 @@
 // @flow
-import {ContentState, EditorState} from 'draft-js'
+import {EditorState} from 'draft-js'
 import 'draft-js/dist/Draft.css'
 import _isEqual from 'lodash/isEqual'
 import React from 'react'
@@ -21,7 +21,6 @@ type Props = {
         html?: string,
         text: string,
     },
-    defaultContentState?: ContentState,
 } & $Diff<
     RichFieldEditorProps,
     {
@@ -37,15 +36,9 @@ type State = {
 // Deprecated component, use RichFieldEditor instead
 export default class RichField extends InputField<Props, State> {
     constructor(props: Props) {
-        const {defaultContentState} = props
         super(props)
 
         let editorState = EditorState.createEmpty()
-
-        if (defaultContentState) {
-            editorState = EditorState.createWithContent(defaultContentState)
-            editorState = attachEntitiesToVariables(editorState, true)
-        }
 
         this.state = ({
             editorState,

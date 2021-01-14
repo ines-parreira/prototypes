@@ -1,4 +1,10 @@
-import {ContentState, convertFromRaw, SelectionState} from 'draft-js'
+import {
+    ContentState,
+    convertFromRaw,
+    Modifier,
+    SelectionState,
+    ContentBlock,
+} from 'draft-js'
 import {fromJS, Map} from 'immutable'
 import _findIndex from 'lodash/findIndex'
 import _pick from 'lodash/pick'
@@ -8,21 +14,16 @@ import _takeRight from 'lodash/takeRight'
 import {TicketMessageSourceType} from '../../business/types/ticket'
 import {isRichType} from '../../config/ticket'
 import {renderTemplate} from '../../pages/common/utils/template.js'
-import {convertFromHTML, convertToHTML} from '../../utils/editor'
+import {convertFromHTML} from '../../utils/editor'
 import {sanitizeHtmlForFacebookMessenger} from '../../utils/html'
 import {CurrentUser, StoreState} from '../types'
 import {convertToRawWithoutPredictions} from '../../pages/common/draftjs/plugins/prediction/utils.js'
-import {toJS} from '../../utils'
 
 import * as selectors from './selectors'
 import ticketReplyCache from './ticketReplyCache'
-import {
-    deleteEmailExtraContent,
-    hasEmailExtraContent,
-    hasOnlySignatureText,
-    Signature,
-} from './emailExtraUtils'
-import {NewMessage, ReplyAreaState} from './types'
+
+const signatureHTMLPrefix = '<div></div><div></div>'
+const signatureTextPrefix = '\n\n'
 
 export type MessageContext = {
     action: {
@@ -31,17 +32,119 @@ export type MessageContext = {
         currentUser: CurrentUser
         ticket: Map<any, any>
         args: Map<any, any>
-        signature: Signature
+        signature: Map<any, any>
     }
     appliedMacro?: Map<any, any>
     contentState: ContentState
     forceUpdate: boolean
     forceFocus: boolean
     state: Map<any, any>
-    emailExtraAdded?: boolean
+    signatureAdded?: boolean
     cacheAdded?: boolean
     selectionState?: SelectionState
     sourceType?: string
+}
+
+export const getSignatureContentState = (
+    signature: Map<any, any>
+): ContentState => {
+    let signatureBlocks: Maybe<ContentBlock[]> = null
+    const text = signature.get('text') as Maybe<string>
+    const html = signature.get('html') as Maybe<string>
+
+    if (html) {
+        signatureBlocks = convertFromHTML(
+            `${signatureHTMLPrefix}${html}`
+        ).getBlocksAsArray()
+    } else if (text) {
+        signatureBlocks = ContentState.createFromText(
+            `${signatureTextPrefix}${text}`
+        ).getBlocksAsArray()
+    }
+
+    if (!signatureBlocks) {
+        return ContentState.createFromText('')
+    }
+
+    // mark blocks with signature meta flag - useful later for removing it when switching to chat or internal note
+    signatureBlocks = signatureBlocks.map((b) =>
+        b.set('data', fromJS({signature: true}))
+    ) as ContentBlock[]
+
+    // Concat the signature blocks at the end of the content
+    return ContentState.createFromBlockArray(signatureBlocks)
+}
+
+// find a contentState in another contentState and return a selection state
+function findContentState(
+    parentContentState: ContentState,
+    contentState: ContentState
+): SelectionState {
+    //@ts-ignore
+    let selectionState = SelectionState.createEmpty()
+    const parentBlocks = parentContentState.getBlocksAsArray()
+    const blocks = contentState.getBlocksAsArray()
+    const clearKeys = {
+        key: '',
+        characterList: [],
+    }
+
+    // find block array inside block array
+    let j = 0
+    parentBlocks.some((block) => {
+        const key = block.getKey()
+        if (block.merge(clearKeys).equals(blocks[j].merge(clearKeys))) {
+            j++
+
+            if (!selectionState.getAnchorKey()) {
+                selectionState = selectionState.set(
+                    'anchorKey',
+                    key
+                ) as SelectionState
+            }
+
+            if (j === blocks.length) {
+                selectionState = selectionState.merge({
+                    focusKey: key,
+                    focusOffset: block.getLength(),
+                }) as SelectionState
+                return true
+            }
+        } else {
+            // reset other index
+            j = 0
+        }
+    })
+
+    return selectionState
+}
+
+/**
+ * Test if the given signature is in the content state
+ */
+export const isSignatureAdded = (
+    contentState: Maybe<ContentState>,
+    textSignature = ''
+): boolean => {
+    if (!contentState || !textSignature) {
+        return false
+    }
+
+    return contentState
+        .getPlainText()
+        .includes(signatureTextPrefix + textSignature)
+}
+/**
+ * Test if the contentState only has the signature and nothing else
+ */
+export const hasOnlySignature = (
+    contentState: Maybe<ContentState>,
+    textSignature: Maybe<string>
+): boolean => {
+    if (!contentState || !textSignature) {
+        return false
+    }
+    return contentState.getPlainText() === signatureTextPrefix + textSignature
 }
 
 export const getSourceTypeCache = (
@@ -84,10 +187,7 @@ const getCache = (context: MessageContext): MessageContext => {
             context.contentState = convertFromRaw(cachedContentState.toJS())
             context.forceFocus = true
             context.forceUpdate = true
-            context.emailExtraAdded = cachedContent.get(
-                'emailExtraAdded',
-                false
-            )
+            context.signatureAdded = cachedContent.get('signatureAdded', false)
             const cachedSelectionState = cachedContent.get('selectionState')
             if (cachedSelectionState) {
                 // create a new selection and just copy the props from the cached state
@@ -112,23 +212,22 @@ export const updateCache = (context: MessageContext) => {
         appliedMacro,
         action,
         sourceType,
-        emailExtraAdded,
+        signatureAdded,
     } = context
+    const textSignature = action.signature ? action.signature.get('text') : ''
+
     // We're storing the content state in a persistent storage so we can keep it after page refresh
     if (
         (contentState &&
             contentState.hasText() &&
-            !hasOnlySignatureText(
-                contentState,
-                action.signature || fromJS({})
-            )) ||
+            !hasOnlySignature(contentState, textSignature)) ||
         appliedMacro
     ) {
         // TODO (@xarg): We also need to keep the attachments in the cache
         ticketReplyCache.set(action.ticketId, {
             selectionState,
             sourceType,
-            emailExtraAdded,
+            signatureAdded,
             contentState: convertToRawWithoutPredictions(contentState),
         })
     } else {
@@ -162,6 +261,17 @@ export const addCache = (context: MessageContext): MessageContext => {
 }
 
 /**
+ * Return a selectionState before the first ContentBlock
+ */
+// const _selectionBefore = (blocks) => {
+//     if (blocks && blocks.length) {
+//         // we only want the first block, we put the selection just before it
+//         return SelectionState.createEmpty(blocks[0].key)
+//     }
+//     return null
+// }
+
+/**
  * Return a selectionState after the last ContentBlock
  */
 export const selectionAfter = (
@@ -176,6 +286,59 @@ export const selectionAfter = (
         }) as SelectionState
     }
     return null
+}
+
+/**
+ * Add a signature (if any) at the end of the content state
+ */
+export const addSignature = (
+    contentState: Maybe<ContentState>,
+    signature: Map<any, any>
+): Maybe<ContentState> => {
+    if (!contentState) {
+        return contentState
+    }
+
+    const signatureContentState = getSignatureContentState(signature)
+
+    if (!signatureContentState.hasText()) {
+        return contentState
+    }
+
+    // using contentState.getSelectionAfter inserts the signature at the start,
+    // when the content is loaded from cache.
+    const selectionState =
+        selectionAfter(
+            (contentState.getBlocksAsArray() as unknown) as {
+                key: string
+                text: string
+            }[]
+        ) || contentState.getSelectionAfter()
+    // add the signature contentState at the end of the existing content
+    return Modifier.replaceWithFragment(
+        contentState,
+        selectionState,
+        signatureContentState.getBlockMap()
+    )
+}
+
+/**
+ * Remove the signature (if any) from the content state
+ */
+export const removeSignature = (
+    contentState: ContentState,
+    signature: Map<any, any>
+): ContentState => {
+    const signatureContentState = getSignatureContentState(signature)
+    const selectionState = findContentState(contentState, signatureContentState)
+
+    // check if selection is empty
+    if (selectionState.getAnchorKey() && selectionState.getFocusKey()) {
+        //@ts-ignore
+        return Modifier.removeRange(contentState, selectionState)
+    }
+
+    return contentState
 }
 
 /**
@@ -275,32 +438,4 @@ export const applyMacro = (context: MessageContext): MessageContext => {
     context.forceFocus = true
 
     return context
-}
-
-export const toReplyAreaState = (
-    replyAreaStateMap: Map<any, any>
-): ReplyAreaState => {
-    const replyAreaState = toJS<ReplyAreaState>(replyAreaStateMap)
-    replyAreaState.contentState = replyAreaStateMap.get('contentState')
-    replyAreaState.selectionState = replyAreaStateMap.get('selectionState')
-    return replyAreaState
-}
-
-export const updateNewMessageWithContentState = (
-    prevNewMessage: NewMessage,
-    contentState: ContentState
-): NewMessage => {
-    const newMessage = {...prevNewMessage}
-    delete newMessage.stripped_html
-    delete newMessage.stripped_text
-    newMessage.body_html = convertToHTML(contentState)
-    newMessage.body_text = contentState.getPlainText()
-
-    if (hasEmailExtraContent(contentState)) {
-        const userInput = deleteEmailExtraContent(contentState)
-        newMessage.stripped_text = userInput.getPlainText()
-        newMessage.stripped_html = convertToHTML(userInput)
-    }
-
-    return newMessage
 }

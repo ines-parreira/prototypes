@@ -1,5 +1,5 @@
 import {fromJS, Map, List} from 'immutable'
-import {convertToRaw, ContentState} from 'draft-js'
+import {convertToRaw, ContentState, SelectionState} from 'draft-js'
 
 import _pick from 'lodash/pick'
 import _assign from 'lodash/assign'
@@ -18,24 +18,13 @@ import {
 } from '../../business/types/ticket'
 import * as ticketTypes from '../ticket/constants'
 import * as ticketConfig from '../../config/ticket'
+import {convertToHTML} from '../../utils/editor'
 import {GorgiasAction} from '../types'
 
 import {getReceiversProperties} from './selectors'
 import * as responseUtils from './responseUtils'
 import * as types from './constants'
-import {NewMessage, NewMessageState, ReplyAreaState} from './types'
-import {addEmailExtra} from './actions'
-import {
-    addEmailExtraContent,
-    clearEmailExtraData,
-    deleteEmailExtraContent,
-    getEmailExtraContent,
-    hasEmailExtraContent,
-} from './emailExtraUtils'
-
-const defaultSourceExtra = {
-    include_thread: false,
-}
+import {NewMessageState} from './types'
 
 export const makeNewMessage = (
     channel: TicketChannel,
@@ -52,7 +41,6 @@ export const makeNewMessage = (
             to: [],
             cc: [],
             bcc: [],
-            extra: defaultSourceExtra,
         },
         subject: '',
         body_text: '',
@@ -64,20 +52,18 @@ export const makeNewMessage = (
     }) as Map<any, any>
 }
 
-const initialReplyAreaState: ReplyAreaState = {
-    dirty: false,
-    emailExtraAdded: false,
-    cacheAdded: false,
-    forceUpdate: false,
-    forceFocus: false,
-    contentState: ContentState.createFromText(''),
-    selectionState: null,
-    appliedMacro: null,
-    firstNewMessage: true,
-}
-
 export const initialState: NewMessageState = fromJS({
-    state: initialReplyAreaState,
+    state: {
+        dirty: false,
+        signatureAdded: false,
+        cacheAdded: false,
+        forceUpdate: false,
+        forceFocus: false,
+        contentState: ContentState.createFromText(''),
+        selectionState: null,
+        appliedMacro: null,
+        firstNewMessage: true,
+    },
     _internal: {
         loading: {
             addAttachment: false,
@@ -96,7 +82,7 @@ const resetContentState = (state: Map<any, any>): NewMessageState => {
             state: {
                 dirty: false,
                 cacheAdded: false,
-                emailExtraAdded: false,
+                signatureAdded: false,
             },
         })
         .setIn(['state', 'contentState'], ContentState.createFromText(''))
@@ -314,55 +300,37 @@ export default function reducer(
         case types.NEW_MESSAGE_SET_SOURCE_EXTRA: {
             return state.setIn(
                 ['newMessage', 'source', 'extra'],
-                fromJS({
-                    ...defaultSourceExtra,
-                    ...action.extra,
-                })
+                fromJS(action.extra)
             )
         }
 
         case types.SET_RESPONSE_TEXT: {
-            const prevContentState = state.getIn([
-                'state',
-                'contentState',
-            ]) as ContentState
             let contentState: ContentState =
                 action.args?.get('contentState') ||
                 state.getIn(['state', 'contentState'])
             let selectionState =
                 action.args?.get('selectionState') ||
                 state.getIn(['state', 'selectionState'])
-            const {appliedMacro, forceFocus} = action
-            let {forceUpdate} = action
+            const {appliedMacro, forceFocus, forceUpdate} = action
             const source = state.getIn(
                 ['newMessage', 'source'],
                 fromJS({})
             ) as Map<any, any>
-            const emailExtraAdded = action.args?.has('emailExtraAdded')
-                ? action.args?.get('emailExtraAdded')
-                : state.getIn(['state', 'emailExtraAdded'])
 
             // email-forward uses email source type
             const forward = source.getIn(['extra', 'forward'])
             const sourceType = forward ? 'email-forward' : source.get('type')
-
-            const prevEmailExtraContent = getEmailExtraContent(prevContentState)
-            const emailExtraContent = getEmailExtraContent(contentState)
-            if (!emailExtraContent.equals(prevEmailExtraContent)) {
-                contentState = clearEmailExtraData(contentState)
-                forceUpdate = true
-            }
 
             let context: responseUtils.MessageContext = {
                 state,
                 contentState,
                 selectionState,
                 sourceType,
-                emailExtraAdded,
                 action: action as any,
                 appliedMacro: appliedMacro as Map<any, any>,
                 forceUpdate: forceUpdate as boolean,
                 forceFocus: forceFocus as boolean,
+                signatureAdded: state.getIn(['state', 'signatureAdded']),
             }
 
             context = responseUtils.addCache(context)
@@ -398,21 +366,21 @@ export default function reducer(
 
             return (
                 context.state
-                    .update('newMessage', (newMessage: Map<any, any>) => {
-                        return fromJS(
-                            responseUtils.updateNewMessageWithContentState(
-                                newMessage.toJS() as NewMessage,
-                                contentState
-                            )
-                        ) as Map<any, any>
-                    })
                     .mergeDeep({
+                        newMessage: {
+                            body_text: contentState
+                                ? contentState.getPlainText()
+                                : '',
+                            body_html: contentState
+                                ? convertToHTML(contentState)
+                                : '',
+                        },
                         state: {
                             dirty,
                             forceFocus: !!context.forceFocus,
                             forceUpdate: !!context.forceUpdate,
                             cacheAdded: !!context.cacheAdded,
-                            emailExtraAdded: !!context.emailExtraAdded,
+                            signatureAdded: !!context.signatureAdded,
                         },
                     })
                     // not in the mergeDeep because it would be merged with the previous contentState instead of replacing it
@@ -422,30 +390,26 @@ export default function reducer(
             )
         }
 
-        case types.NEW_MESSAGE_ADD_EMAIL_EXTRA: {
-            const {contentState, emailExtraArgs} = (action as ReturnType<
-                typeof addEmailExtra
-            >).payload
-            if (state.getIn(['state', 'emailExtraAdded'], false)) {
-                return state
-            }
-            const newContentState = addEmailExtraContent(
-                contentState,
-                emailExtraArgs
-            )
+        case types.NEW_MESSAGE_ADD_SIGNATURE: {
+            const {contentState, signature} = action
+            const newContentState = responseUtils.addSignature(
+                contentState as ContentState,
+                signature as Map<any, any>
+            ) as ContentState
+
             return state
-                .update('newMessage', (newMessage: Map<any, any>) => {
-                    return fromJS(
-                        responseUtils.updateNewMessageWithContentState(
-                            newMessage.toJS() as NewMessage,
-                            newContentState
-                        )
-                    ) as Map<any, any>
-                })
                 .mergeDeep({
+                    newMessage: {
+                        body_text: newContentState
+                            ? newContentState.getPlainText()
+                            : '',
+                        body_html: newContentState
+                            ? convertToHTML(newContentState)
+                            : '',
+                    },
                     state: {
                         forceUpdate: true,
-                        emailExtraAdded: true,
+                        signatureAdded: true,
                     },
                 })
                 .setIn(['state', 'contentState'], newContentState)
@@ -496,40 +460,29 @@ export default function reducer(
         }
 
         case types.NEW_MESSAGE_RESET_FROM_MESSAGE: {
-            const payload = action.payload as {
-                newMessage: NewMessage
-                replyAreaState: ReplyAreaState
-            }
-            let {
-                newMessage,
-                replyAreaState: {contentState, emailExtraAdded},
-            } = payload
-
-            // Remove email extra on reset because we always add it on submit
-            if (hasEmailExtraContent(contentState)) {
-                contentState = deleteEmailExtraContent(contentState)
-                newMessage = responseUtils.updateNewMessageWithContentState(
-                    newMessage,
-                    contentState
-                )
-                emailExtraAdded = false
-            }
-
             return resetContentState(state)
                 .mergeDeep({
-                    newMessage: fromJS(newMessage),
                     state: {
-                        emailExtraAdded,
                         cacheAdded: true,
                         dirty: false,
                         forceUpdate: true,
                         forceFocus: true,
                     },
+                    newMessage: fromJS(
+                        (action.payload as {
+                            newMessage: Record<string, unknown>
+                        }).newMessage
+                    ),
                 })
-                .setIn(['state', 'contentState'], contentState)
+                .setIn(
+                    ['state', 'contentState'],
+                    (action.payload as {contentState: Map<any, any>})
+                        .contentState
+                )
                 .setIn(
                     ['state', 'selectionState'],
-                    payload.replyAreaState.selectionState
+                    //@ts-ignore
+                    SelectionState.createEmpty()
                 )
         }
 

@@ -7,6 +7,7 @@ import _merge from 'lodash/merge'
 import {browserHistory} from 'react-router'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
+
 import moment from 'moment'
 
 import * as customersActions from '../../../../state/customers/actions.ts'
@@ -21,8 +22,10 @@ import {
     messageDeleted,
     setCustomer,
 } from '../../../../state/ticket/actions.ts'
+
 import TicketDetailContainer from '../TicketDetailContainer'
 import * as ticketsActions from '../../../../state/tickets/actions'
+
 import TicketView from '../components/TicketView'
 
 const middlewares = [thunk]

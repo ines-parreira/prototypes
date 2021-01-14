@@ -1,5 +1,4 @@
 import _isString from 'lodash/isString'
-import _words from 'lodash/words'
 
 /**
  * Remove a suffix from a string
@@ -21,34 +20,4 @@ export const countLines = (text: string): number => {
     }
 
     return text.split(/\r\n|\r|\n/).length
-}
-
-export const countWords = (text: string): number => {
-    return _words(text, /\S+/g).length
-}
-
-export const truncateWords = (text: string, n: number): string => {
-    if (n < 0) {
-        throw new Error('Unsupported negative words number')
-    } else if (n === 0) {
-        return ''
-    }
-
-    let isProcessingWord = false
-    let processedWordsNum = 0
-    for (let i = 0; i < text.length; i++) {
-        if (/\S/.exec(text.charAt(i))) {
-            if (!isProcessingWord) {
-                processedWordsNum++
-            }
-            isProcessingWord = true
-        } else {
-            if (processedWordsNum === n) {
-                return text.slice(0, i)
-            }
-            isProcessingWord = false
-        }
-    }
-
-    return text
 }

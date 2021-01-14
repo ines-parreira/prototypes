@@ -1,10 +1,5 @@
 import {MessageContext} from '../responseUtils'
-import {
-    convertToHTML,
-    BlockSnapshot,
-    getContentStateBlocksSnapshot,
-} from '../../../utils/editor'
-import {ReplyAreaState} from '../types'
+import {convertToHTML} from '../../../utils/editor'
 
 export type MessageContextSnapshot = Omit<MessageContext, 'contentState'> & {
     contentState: string
@@ -32,24 +27,4 @@ export const getMessageContextSnapshot = ({
             convertToHTML(state.getIn(['state', 'contentState']))
         ),
     }
-}
-
-export type ReplyAreaStateSnapshot = Omit<
-    ReplyAreaState,
-    'contentState' | 'selectionState'
-> & {
-    contentState: BlockSnapshot[]
-}
-
-export const getReplyAreaStateSnapshot = (
-    replyAreaState: ReplyAreaState
-): ReplyAreaStateSnapshot => {
-    const snapshot = {
-        ...replyAreaState,
-        contentState: getContentStateBlocksSnapshot(
-            replyAreaState.contentState
-        ),
-    }
-    delete snapshot.selectionState
-    return snapshot
 }

@@ -7,79 +7,43 @@ import {
     Modifier,
     SelectionState,
 } from 'draft-js'
-import {fromJS} from 'immutable'
 import React, {ReactNode} from 'react'
 
-import {
-    insertNewBlockAtTheEnd,
-    convertToHTML,
-    convertFromHTML,
-    removeMentions,
-    contentStateFromTextOrHTML,
-    getSelectedEntityKey,
-    refreshEditor,
-    getSelectedText,
-    isValidSelectionKey,
-    getPlainText,
-    unescapeTemplateVars,
-    findContentState,
-    createCollapsedSelectionState,
-    insertNewBlockAtTheBeginning,
-    getContentStateBlocksSnapshot,
-    selectWholeContentState,
-    mergeContentStates,
-    truncateContentStateBlocks,
-    truncateContentStateWords,
-    ContentStateCounter,
-} from '../editor'
-import {setQuoteDepth} from '../../pages/common/draftjs/plugins/quotes/quotesEditorUtils'
-
-const imageContentState = ContentState.createFromBlockArray(
-    AtomicBlockUtils.insertAtomicBlock(
-        EditorState.createEmpty(),
-        ContentState.createFromText('')
-            .createEntity('img', 'IMMUTABLE', {src: ''})
-            .getLastCreatedEntityKey(),
-        ' '
-    )
-        .getCurrentContent()
-        .getBlocksAsArray()
-        .slice(1)
-)
+import * as utils from '../editor'
 
 describe('editor utils', () => {
     describe('convertToHTML', () => {
         it('should convert links (www.xxx.com) to html', () => {
             const text = 'Hello there\n\nwww.google.com'
             const contentState = ContentState.createFromText(text)
-            expect(convertToHTML(contentState)).toMatchSnapshot()
+            expect(utils.convertToHTML(contentState)).toMatchSnapshot()
         })
 
         it('should convert links (xxx.com) to html', () => {
             const text = 'Hello there\n\ngoogle.com'
             const contentState = ContentState.createFromText(text)
-            expect(convertToHTML(contentState)).toMatchSnapshot()
+            expect(utils.convertToHTML(contentState)).toMatchSnapshot()
         })
 
         it('should convert multiple links to html', () => {
             const text =
                 'Hey There!\n\nwww.google.com\n\nAnother link: http://www.gorgias.com'
             const contentState = ContentState.createFromText(text)
-            expect(convertToHTML(contentState)).toMatchSnapshot()
+            expect(utils.convertToHTML(contentState)).toMatchSnapshot()
         })
 
         it('should NOT convert adjacent links to html correctly (www.xxx.comwww.yyy.com)', () => {
             const text =
                 'Hey Marie Curie,\nmultiple links: www.facebook.comwww.github.com\n\nThanks for contacting us.'
             const contentState = ContentState.createFromText(text)
-            expect(convertToHTML(contentState)).toMatchSnapshot()
+            expect(utils.convertToHTML(contentState)).toMatchSnapshot()
         })
 
         it('should wrap images in inline-block figures', () => {
             const baseHTML =
                 '<figure><img src="https://gorgias.io/" /></figure>'
-            const contentState = convertFromHTML(baseHTML)
-            expect(convertToHTML(contentState)).toMatchSnapshot()
+            const contentState = utils.convertFromHTML(baseHTML)
+            expect(utils.convertToHTML(contentState)).toMatchSnapshot()
         })
 
         // tests interaction between convertToHTML and convertFromHTML.
@@ -94,9 +58,11 @@ describe('editor utils', () => {
                 ' '
             )
             // convert ContentState to plain html
-            const wrappedHTML = convertToHTML(editorState.getCurrentContent())
+            const wrappedHTML = utils.convertToHTML(
+                editorState.getCurrentContent()
+            )
             // convert resulted html back to ContentState
-            const contentState = convertFromHTML(wrappedHTML)
+            const contentState = utils.convertFromHTML(wrappedHTML)
             expect(
                 contentState
                     .getBlocksAsArray()
@@ -111,26 +77,13 @@ describe('editor utils', () => {
         it('should convert links with {{variables}} to html', () => {
             const text = 'Hello there\n\nwww.google.com/{{ticket.id}}'
             const contentState = ContentState.createFromText(text)
-            expect(convertToHTML(contentState)).toMatchSnapshot()
+            expect(utils.convertToHTML(contentState)).toMatchSnapshot()
         })
 
         it('should turn newlines into br', () => {
             const text = 'One\nTwo\n\nThree\n\n\n'
             const contentState = ContentState.createFromText(text)
-            expect(convertToHTML(contentState)).toMatchSnapshot()
-        })
-
-        it('should convert quotes to blockquote', () => {
-            const contentState = [
-                ContentState.createFromText('Quoted text'),
-                imageContentState,
-            ].reduce((contentState, line, i) => {
-                return mergeContentStates(
-                    contentState,
-                    setQuoteDepth(line, selectWholeContentState(line), i + 1)
-                )
-            }, ContentState.createFromText('No quote'))
-            expect(convertToHTML(contentState)).toMatchSnapshot()
+            expect(utils.convertToHTML(contentState)).toMatchSnapshot()
         })
     })
 
@@ -138,21 +91,21 @@ describe('editor utils', () => {
         it('should ONLY unescape template variables', () => {
             const baseHTML =
                 '<div><a href="http://{{ticket.account.domain}}.gorgias.io/app/ticket/{{ticket.id}}/hel%7B%7Bhello%7D%7D" target="_blank">link</a></div>'
-            const contentState = convertFromHTML(baseHTML)
-            const newHTML = convertToHTML(contentState)
+            const contentState = utils.convertFromHTML(baseHTML)
+            const newHTML = utils.convertToHTML(contentState)
             expect(newHTML).toEqual(baseHTML)
         })
 
         it('should convert image to img entity', () => {
             const baseHTML = '<img src="https://gorgias.io/">'
-            const contentState = convertFromHTML(baseHTML)
+            const contentState = utils.convertFromHTML(baseHTML)
             const entityKey = contentState.getFirstBlock().getEntityAt(0)
             expect(contentState.getEntity(entityKey).getType()).toEqual('img')
         })
 
         it('should convert image to img entity with data', () => {
             const baseHTML = '<img src="https://gorgias.io/">'
-            const contentState = convertFromHTML(baseHTML)
+            const contentState = utils.convertFromHTML(baseHTML)
             const entityKey = contentState.getFirstBlock().getEntityAt(0)
             expect(contentState.getEntity(entityKey).getData()).toEqual({
                 src: 'https://gorgias.io/',
@@ -162,19 +115,19 @@ describe('editor utils', () => {
 
         it('should not add a newline at the end of an unstyled block', () => {
             const baseHTML = '<div>A<br></div>B'
-            const contentState = convertFromHTML(baseHTML)
+            const contentState = utils.convertFromHTML(baseHTML)
             expect(contentState.getFirstBlock().get('text')).toEqual('A')
         })
 
         it('should maintain multiple newlines at the end of a block', () => {
             const baseHTML = '<div>A<br><br><br /></div>B'
-            const contentState = convertFromHTML(baseHTML)
+            const contentState = utils.convertFromHTML(baseHTML)
             expect(contentState.getFirstBlock().get('text')).toEqual('A\n\n')
         })
 
         it('should maintain newlines outside blocks', () => {
             const baseHTML = '<div>A</div><br><br />B'
-            const contentState = convertFromHTML(baseHTML)
+            const contentState = utils.convertFromHTML(baseHTML)
             const blocks = contentState.getBlocksAsArray()
             expect(blocks[0].get('text')).toEqual('A')
             expect(blocks[1].get('text')).toEqual('')
@@ -184,35 +137,18 @@ describe('editor utils', () => {
 
         it('should remove newlines from newline-only blocks', () => {
             const baseHTML = 'A<div><br></div>B'
-            const contentState = convertFromHTML(baseHTML)
+            const contentState = utils.convertFromHTML(baseHTML)
             const blocks = contentState.getBlocksAsArray()
             expect(blocks[0].get('text')).toEqual('A')
             expect(blocks[1].get('text')).toEqual('')
             expect(blocks[2].get('text')).toEqual('B')
-        })
-
-        it('should restore quotes', () => {
-            const contentState = [
-                ContentState.createFromText(''),
-                ContentState.createFromText('Quoted text'),
-                imageContentState,
-            ].reduce((contentState, line, i) => {
-                return mergeContentStates(
-                    contentState,
-                    setQuoteDepth(line, selectWholeContentState(line), i + 1)
-                )
-            }, ContentState.createFromText('No quote'))
-            const html = convertToHTML(contentState)
-            expect(
-                getContentStateBlocksSnapshot(convertFromHTML(html))
-            ).toMatchSnapshot()
         })
     })
 
     describe('unescape template variables', () => {
         it('should ONLY unescape template variables', () => {
             expect(
-                unescapeTemplateVars(
+                utils.unescapeTemplateVars(
                     '%7Bh%7B%7Bello%7D%7D %7B%7Bticket.customer.email%7D%7D %7B%7Bmessage.from_agent%7D%7D %7B%7Bevent.type%7D%7D'
                 )
             ).toEqual(
@@ -222,10 +158,10 @@ describe('editor utils', () => {
 
         it('should NOT unescape variables (invalid template variables)', () => {
             expect(
-                unescapeTemplateVars('hello %7B%7Baccount.id%7D%7D')
+                utils.unescapeTemplateVars('hello %7B%7Baccount.id%7D%7D')
             ).toEqual('hello %7B%7Baccount.id%7D%7D')
             expect(
-                unescapeTemplateVars(
+                utils.unescapeTemplateVars(
                     'hello %7B%7Bintegrations.data%7D%7D 7B%hello 7B%7B%hello7%D7%D'
                 )
             ).toEqual(
@@ -237,12 +173,12 @@ describe('editor utils', () => {
     describe('contentStateFromTextOrHTML', () => {
         it('should use html value if provided', () => {
             const html = '<b>bar</b>'
-            const contentState = contentStateFromTextOrHTML('foo', html)
+            const contentState = utils.contentStateFromTextOrHTML('foo', html)
             expect(contentState.getPlainText()).toBe('bar')
         })
 
         it('should fallback to text value if html not provided', () => {
-            const contentState = contentStateFromTextOrHTML('foo')
+            const contentState = utils.contentStateFromTextOrHTML('foo')
             expect(contentState.getPlainText()).toBe('foo')
         })
     })
@@ -257,7 +193,7 @@ describe('editor utils', () => {
             const selection = SelectionState.createEmpty(block.getKey())
                 .set('anchorOffset', start)
                 .set('focusOffset', end) as SelectionState
-            const selectedText = getSelectedText(contentState, selection)
+            const selectedText = utils.getSelectedText(contentState, selection)
             expect(selectedText).toBe(text.slice(start, end))
         })
 
@@ -267,7 +203,7 @@ describe('editor utils', () => {
             const contentState = ContentState.createFromText(text)
             const block = contentState.getFirstBlock()
             const selection = SelectionState.createEmpty(block.getKey())
-            const selectedText = getSelectedText(contentState, selection)
+            const selectedText = utils.getSelectedText(contentState, selection)
             expect(selectedText).toBe('')
         })
     })
@@ -275,74 +211,92 @@ describe('editor utils', () => {
     describe('getSelectedEntityKey()', () => {
         it('should return entity key when whole entity is selected', () => {
             const html = '<a href="http://google.com">link</a>'
-            const contentState = convertFromHTML(html)
+            const contentState = utils.convertFromHTML(html)
             const block = contentState.getFirstBlock()
             const selection = SelectionState.createEmpty(block.getKey()).set(
                 'focusOffset',
                 3
             ) as SelectionState
-            const entityKey = getSelectedEntityKey(contentState, selection)
+            const entityKey = utils.getSelectedEntityKey(
+                contentState,
+                selection
+            )
             expect(entityKey).toBe(block.getEntityAt(0))
         })
 
         it('should return entity key when part of the entity is selected', () => {
             const html = '<a href="http://google.com">link</a>'
-            const contentState = convertFromHTML(html)
+            const contentState = utils.convertFromHTML(html)
             const block = contentState.getFirstBlock()
             const selection = SelectionState.createEmpty(block.getKey())
                 .set('anchorOffset', 1)
                 .set('focusOffset', 2) as SelectionState
-            const entityKey = getSelectedEntityKey(contentState, selection)
+            const entityKey = utils.getSelectedEntityKey(
+                contentState,
+                selection
+            )
             expect(entityKey).toBe(block.getEntityAt(0))
         })
 
         it('should return falsy value when cursor is right before the entity', () => {
             const html = '<a href="http://google.com">link</a>'
-            const contentState = convertFromHTML(html)
+            const contentState = utils.convertFromHTML(html)
             const block = contentState.getFirstBlock()
             const selection = SelectionState.createEmpty(block.getKey())
-            const entityKey = getSelectedEntityKey(contentState, selection)
+            const entityKey = utils.getSelectedEntityKey(
+                contentState,
+                selection
+            )
             expect(entityKey).toBeFalsy()
         })
 
         it('should return entity key when cursor is right after the entity', () => {
             const html = '<a href="http://google.com">link</a>'
-            const contentState = convertFromHTML(html)
+            const contentState = utils.convertFromHTML(html)
             const block = contentState.getFirstBlock()
             const selection = SelectionState.createEmpty(block.getKey())
                 .set('anchorOffset', 4)
                 .set('focusOffset', 4) as SelectionState
-            const entityKey = getSelectedEntityKey(contentState, selection)
+            const entityKey = utils.getSelectedEntityKey(
+                contentState,
+                selection
+            )
             expect(entityKey).toBe(block.getEntityAt(0))
         })
 
         it('should return falsy value when cursor is outside the entity', () => {
             const html = '<a href="http://google.com">link</a> '
-            const contentState = convertFromHTML(html)
+            const contentState = utils.convertFromHTML(html)
             const block = contentState.getFirstBlock()
             const selection = SelectionState.createEmpty(block.getKey())
                 .set('anchorOffset', 5)
                 .set('focusOffset', 5) as SelectionState
-            const entityKey = getSelectedEntityKey(contentState, selection)
+            const entityKey = utils.getSelectedEntityKey(
+                contentState,
+                selection
+            )
             expect(entityKey).toBeFalsy()
         })
 
         it('should return falsy value when more than the entity is selected', () => {
             const html = 'foo <a href="http://google.com">link</a> bar'
-            const contentState = convertFromHTML(html)
+            const contentState = utils.convertFromHTML(html)
             const block = contentState.getFirstBlock()
             const selection = SelectionState.createEmpty(block.getKey()).set(
                 'focusOffset',
                 9
             ) as SelectionState
-            const entityKey = getSelectedEntityKey(contentState, selection)
+            const entityKey = utils.getSelectedEntityKey(
+                contentState,
+                selection
+            )
             expect(entityKey).toBeFalsy()
         })
     })
 
     describe('removeMentions', () => {
         it('should remove only mentions', () => {
-            let contentState = convertFromHTML(
+            let contentState = utils.convertFromHTML(
                 '@Foo <a href="http://gorgias.io">Gorgias</a>'
             )
             contentState = contentState.createEntity('mention', 'SEGMENTED')
@@ -358,7 +312,7 @@ describe('editor utils', () => {
                 entityKey
             )
             const editorState = EditorState.createWithContent(contentState)
-            const newEditorState = removeMentions(editorState)
+            const newEditorState = utils.removeMentions(editorState)
             const newBlock = newEditorState.getCurrentContent().getFirstBlock()
             expect(newBlock.getEntityAt(0)).toBe(null)
             expect(newBlock.getEntityAt(5)).not.toBe(null)
@@ -391,7 +345,7 @@ describe('editor utils', () => {
                 updatedContentState,
                 'insert-characters'
             )
-            const newEditorState = refreshEditor(editorState)
+            const newEditorState = utils.refreshEditor(editorState)
             expect(newEditorState).not.toBe(editorState)
             expect(newEditorState.getSelection()).toBe(
                 editorState.getSelection()
@@ -422,13 +376,19 @@ describe('editor utils', () => {
 
         it('should return true for selection from the same editorState', () => {
             expect(
-                isValidSelectionKey(editorState1, editorState1.getSelection())
+                utils.isValidSelectionKey(
+                    editorState1,
+                    editorState1.getSelection()
+                )
             ).toBe(true)
         })
 
         it('should return false for selection from some other editorState', () => {
             expect(
-                isValidSelectionKey(editorState1, editorState2.getSelection())
+                utils.isValidSelectionKey(
+                    editorState1,
+                    editorState2.getSelection()
+                )
             ).toBe(false)
         })
 
@@ -436,7 +396,9 @@ describe('editor utils', () => {
             const selection = editorState1
                 .getSelection()
                 .set('focusKey', 'blabla') as SelectionState
-            expect(isValidSelectionKey(editorState1, selection)).toBe(false)
+            expect(utils.isValidSelectionKey(editorState1, selection)).toBe(
+                false
+            )
         })
 
         it('should return false for selection not updated after pushing new state', () => {
@@ -444,7 +406,10 @@ describe('editor utils', () => {
             //@ts-ignore EditorState.push should have 3 args
             const newEditorState = EditorState.push(editorState1, contentState)
             expect(
-                isValidSelectionKey(newEditorState, editorState1.getSelection())
+                utils.isValidSelectionKey(
+                    newEditorState,
+                    editorState1.getSelection()
+                )
             ).toBe(false)
         })
     })
@@ -452,14 +417,16 @@ describe('editor utils', () => {
     describe('getPlainText()', () => {
         it('should return link url in plaintext', () => {
             const html = '<a href="http://gorgias.io">link</a>'
-            const contentState = convertFromHTML(html)
-            expect(getPlainText(contentState)).toBe('link: http://gorgias.io/')
+            const contentState = utils.convertFromHTML(html)
+            expect(utils.getPlainText(contentState)).toBe(
+                'link: http://gorgias.io/'
+            )
         })
 
         it('should return link url in mixed plaintext', () => {
             const html = 'One <a href="http://gorgias.io">gorgias</a> link'
-            const contentState = convertFromHTML(html)
-            expect(getPlainText(contentState)).toBe(
+            const contentState = utils.convertFromHTML(html)
+            expect(utils.getPlainText(contentState)).toBe(
                 'One gorgias: http://gorgias.io/ link'
             )
         })
@@ -469,8 +436,8 @@ describe('editor utils', () => {
                 '' +
                 'One <a href="http://gorgias.io">gorgias</a>' +
                 ' link <a href="https://gorgias.io/features">home</a> and back'
-            const contentState = convertFromHTML(html)
-            expect(getPlainText(contentState)).toBe(
+            const contentState = utils.convertFromHTML(html)
+            expect(utils.getPlainText(contentState)).toBe(
                 'One gorgias: http://gorgias.io/ link home: https://gorgias.io/features and back'
             )
         })
@@ -481,8 +448,8 @@ describe('editor utils', () => {
                 'First line<br>' +
                 'One <a href="http://gorgias.io">gorgias</a> link<br>' +
                 'Last line'
-            const contentState = convertFromHTML(html)
-            expect(getPlainText(contentState)).toBe(
+            const contentState = utils.convertFromHTML(html)
+            expect(utils.getPlainText(contentState)).toBe(
                 'First line\nOne gorgias: http://gorgias.io/ link\nLast line'
             )
         })
@@ -490,8 +457,8 @@ describe('editor utils', () => {
         it('should omit the link content if it is the same as the link url ', () => {
             const html =
                 'One <a href="http://gorgias.io">gorgias</a> and <a href="http://google.com/">http://google.com/</a> end.'
-            const contentState = convertFromHTML(html)
-            expect(getPlainText(contentState)).toBe(
+            const contentState = utils.convertFromHTML(html)
+            expect(utils.getPlainText(contentState)).toBe(
                 'One gorgias: http://gorgias.io/ and http://google.com/ end.'
             )
         })
@@ -499,293 +466,16 @@ describe('editor utils', () => {
         it('should ignore the url link ending slash', () => {
             const html =
                 'a <a href="http://gorgias.io/">http://gorgias.io</a> b.'
-            const contentState = convertFromHTML(html)
-            expect(getPlainText(contentState)).toBe('a http://gorgias.io b.')
+            const contentState = utils.convertFromHTML(html)
+            expect(utils.getPlainText(contentState)).toBe(
+                'a http://gorgias.io b.'
+            )
         })
 
         it('should return regular getPlainText in strings with unicode chars', () => {
             const html = '👀<a href="http://gorgias.io">link</a>'
-            const contentState = convertFromHTML(html)
-            expect(getPlainText(contentState)).toBe('👀link')
-        })
-
-        it('should add ">" to the quoted content', () => {
-            const contentState = [
-                ContentState.createFromText('Quoted text'),
-                ContentState.createFromText(''),
-                ContentState.createFromText('More quoted text'),
-            ].reduce((contentState, line, i) => {
-                return mergeContentStates(
-                    contentState,
-                    setQuoteDepth(line, selectWholeContentState(line), i + 1)
-                )
-            }, ContentState.createFromText('No quote'))
-
-            expect(getPlainText(contentState)).toMatchSnapshot()
-        })
-    })
-
-    describe('insertNewBlockAtTheEnd', () => {
-        it('should insert a new empty block at the end of the content', () => {
-            const contentState = ContentState.createFromText('Foo')
-            const newContentState = insertNewBlockAtTheEnd(contentState)
-            expect(
-                getContentStateBlocksSnapshot(newContentState)
-            ).toMatchSnapshot()
-        })
-    })
-
-    describe('insertNewBlockAtTheBeginning', () => {
-        it('should insert a new empty block at the beginning of the content', () => {
-            const contentState = ContentState.createFromText('Foo')
-            const newContentState = insertNewBlockAtTheBeginning(contentState)
-            expect(
-                getContentStateBlocksSnapshot(newContentState)
-            ).toMatchSnapshot()
-        })
-    })
-
-    describe('findContentState', () => {
-        it('should return null when state was not found', () => {
-            const parentContentState = ContentState.createFromText('Foo')
-            const contentState = ContentState.createFromText('Bar')
-            expect(findContentState(parentContentState, contentState)).toBe(
-                null
-            )
-        })
-
-        it('should return the selection state of the found fragment', () => {
-            const parentContentState = ContentState.createFromText(
-                'Foo\n\n\nBar\nBaz'
-            )
-            const contentState = ContentState.createFromText('\n\nBar')
-            const selectionState = findContentState(
-                parentContentState,
-                contentState
-            )
-            expect(selectionState).not.toBe(null)
-            const removedSelectionContentState = Modifier.removeRange(
-                parentContentState,
-                selectionState as SelectionState,
-                'forward'
-            )
-            expect(removedSelectionContentState.getPlainText()).toBe(
-                'Foo\n\nBaz'
-            )
-        })
-
-        it('should return null when fragment matches partially', () => {
-            const parentContentState = ContentState.createFromText(
-                'Foo\n\n\nBarBaz'
-            )
-            const contentState = ContentState.createFromText('\n\nBar')
-            expect(findContentState(parentContentState, contentState)).toBe(
-                null
-            )
-        })
-
-        it('should return null when text matches but the data is different', () => {
-            const parentContentState = (() => {
-                const contentState = ContentState.createFromText('Foo\nBar')
-                const selectionState = SelectionState.createEmpty(
-                    contentState.getFirstBlock().getKey()
-                )
-                    .set('focusKey', contentState.getLastBlock().getKey())
-                    .set('focusOffset', contentState.getLastBlock().getLength())
-                return Modifier.setBlockData(
-                    contentState,
-                    selectionState as SelectionState,
-                    fromJS({foo: 'bar'})
-                )
-            })()
-            const contentState = ContentState.createFromText('Bar')
-            expect(findContentState(parentContentState, contentState)).toBe(
-                null
-            )
-        })
-
-        it('should return the selection state of the full match when both partial and full matches are in the parent content state', () => {
-            const parentContentState = ContentState.createFromText(
-                'Foo\nBar\nFoo\nBar\nBaz'
-            )
-            const contentState = ContentState.createFromText('Bar\nBaz')
-            const selectionState = findContentState(
-                parentContentState,
-                contentState
-            )
-            expect(selectionState).not.toBe(null)
-            const removedSelectionContentState = Modifier.removeRange(
-                parentContentState,
-                selectionState as SelectionState,
-                'forward'
-            )
-            expect(removedSelectionContentState.getPlainText()).toBe(
-                'Foo\nBar\nFoo\n'
-            )
-        })
-    })
-
-    describe('createCollapsedSelectionState', () => {
-        it('should create a collapsed selection state', () => {
-            const selection = createCollapsedSelectionState('foo', 2)
-            expect(selection.isCollapsed()).toBe(true)
-            expect(selection.getAnchorKey()).toBe('foo')
-            expect(selection.getAnchorOffset()).toBe(2)
-            expect(selection.getFocusKey()).toBe(selection.getAnchorKey())
-            expect(selection.getFocusOffset()).toBe(selection.getAnchorOffset())
-        })
-    })
-
-    describe('selectWholeContentState', () => {
-        it('should return the selection state that selects all content', () => {
-            const contentState = ContentState.createFromText('Foo\nBarBaz')
-            const selection = selectWholeContentState(contentState)
-            expect(selection.getAnchorKey()).toBe(
-                contentState.getFirstBlock().getKey()
-            )
-            expect(selection.getAnchorOffset()).toBe(0)
-            expect(selection.getFocusKey()).toBe(
-                contentState.getLastBlock().getKey()
-            )
-            expect(selection.getFocusOffset()).toBe(
-                contentState.getLastBlock().getLength()
-            )
-        })
-    })
-
-    describe('mergeContentStates', () => {
-        it('should add content state at the end of the original content state', () => {
-            const contentState = mergeContentStates(
-                ContentState.createFromText('Foo\nBar'),
-                ContentState.createFromText('Baz')
-            )
-            expect(
-                getContentStateBlocksSnapshot(contentState)
-            ).toMatchSnapshot()
-        })
-    })
-
-    describe('truncateContentStateBlocks', () => {
-        it('should throw an error if n is negative', () => {
-            expect(() => {
-                truncateContentStateBlocks(
-                    ContentState.createFromText('Foo bar'),
-                    -1
-                )
-            }).toThrow('Negative number of blocks')
-        })
-
-        it('should return empty contentState if n is equal 0', () => {
-            const contentState = ContentState.createFromText('Foo bar')
-            expect(
-                truncateContentStateBlocks(contentState, 0).getBlocksAsArray()
-            ).toEqual([])
-        })
-
-        it('should truncate blocks', () => {
-            const contentState = ContentState.createFromText('Foo\nBar\nBaz')
-            const truncatedContentState = truncateContentStateBlocks(
-                contentState,
-                2
-            )
-            expect(
-                getContentStateBlocksSnapshot(truncatedContentState)
-            ).toMatchSnapshot()
-        })
-
-        it('should return the same content state when n is larger or equal the number of blocks in the content state', () => {
-            const contentState = ContentState.createFromText('Foo\nBar\nBaz')
-            expect(truncateContentStateBlocks(contentState, 3)).toBe(
-                contentState
-            )
-            expect(truncateContentStateBlocks(contentState, 4)).toBe(
-                contentState
-            )
-        })
-    })
-
-    describe('truncateContentStateWords', () => {
-        it('should throw an error if n is negative', () => {
-            expect(() => {
-                truncateContentStateWords(
-                    ContentState.createFromText('Foo bar'),
-                    -1
-                )
-            }).toThrow('Negative number of words')
-        })
-
-        it('should return an empty content state if n is equal 0', () => {
-            expect(
-                truncateContentStateWords(
-                    ContentState.createFromText('Foo'),
-                    0
-                ).getPlainText()
-            ).toBe('')
-        })
-
-        it('should truncate content state words', () => {
-            const contentState = ContentState.createFromText(
-                'Foo bar\n Baz  Bac\nQux quux'
-            )
-            const truncatedContentState = truncateContentStateWords(
-                contentState,
-                5
-            )
-            expect(
-                getContentStateBlocksSnapshot(truncatedContentState)
-            ).toMatchSnapshot()
-        })
-
-        it('should return the same content state if it was not truncated', () => {
-            const contentState = ContentState.createFromText('Foo\nBar\nBaz')
-            expect(truncateContentStateWords(contentState, 3)).toBe(
-                contentState
-            )
-            expect(truncateContentStateWords(contentState, 4)).toBe(
-                contentState
-            )
-        })
-    })
-
-    describe('ContentStateCounter', () => {
-        it('should construct an empty counter', () => {
-            const counter = new ContentStateCounter()
-            expect(counter.words).toBe(0)
-            expect(counter.blocks).toBe(0)
-        })
-
-        it('should construct a counter from content state', () => {
-            const contentState = ContentState.createFromText('Foo Bar\nBaz')
-            const counter = new ContentStateCounter(contentState)
-            expect(counter.words).toBe(3)
-            expect(counter.blocks).toBe(2)
-        })
-
-        it('should add a content state', () => {
-            const counter = new ContentStateCounter(
-                ContentState.createFromText('Foo Bar\nBaz')
-            )
-            counter.addContentState(ContentState.createFromText('Bac'))
-            expect(counter.words).toBe(4)
-            expect(counter.blocks).toBe(3)
-        })
-
-        it('should remove a content state', () => {
-            const counter = new ContentStateCounter(
-                ContentState.createFromText('Foo Bar\nBaz')
-            )
-            counter.removeContentState(ContentState.createFromText('Baz'))
-            expect(counter.words).toBe(2)
-            expect(counter.blocks).toBe(1)
-        })
-
-        it('should reset a content state', () => {
-            const counter = new ContentStateCounter(
-                ContentState.createFromText('Foo Bar\nBaz')
-            )
-            counter.reset(ContentState.createFromText('Baz'))
-            expect(counter.words).toBe(1)
-            expect(counter.blocks).toBe(1)
+            const contentState = utils.convertFromHTML(html)
+            expect(utils.getPlainText(contentState)).toBe('👀link')
         })
     })
 })

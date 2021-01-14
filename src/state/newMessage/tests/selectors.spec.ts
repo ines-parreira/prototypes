@@ -211,18 +211,4 @@ describe('new message selectors', () => {
             )
         })
     })
-
-    describe('isNewMessageEmailExtraAdded', () => {
-        it('should return the emailExtraAdded of the new message state', () => {
-            state.newMessage = state.newMessage.setIn(
-                ['state', 'emailExtraAdded'],
-                true
-            )
-            expect(selectors.isNewMessageEmailExtraAdded(state)).toBe(true)
-        })
-
-        it('should return false for the initial state', () => {
-            expect(selectors.isNewMessageEmailExtraAdded(state)).toBe(false)
-        })
-    })
 })

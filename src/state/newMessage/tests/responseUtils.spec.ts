@@ -1,27 +1,31 @@
-import {ContentState, convertToRaw, SelectionState, EditorState} from 'draft-js'
-import {fromJS, Map} from 'immutable'
+import {
+    ContentState,
+    ContentBlock,
+    convertToRaw,
+    SelectionState,
+    EditorState,
+} from 'draft-js'
+import {fromJS} from 'immutable'
 
 import {
+    addSignature,
+    removeSignature,
     applyMacro,
     MessageContext,
     addCache,
     updateCache,
-    toReplyAreaState,
-    updateNewMessageWithContentState,
 } from '../responseUtils'
 import {convertToHTML} from '../../../utils/editor'
 import {TicketMessageSourceType} from '../../../business/types/ticket'
-import {initialState, initialState as newMessageInitialState} from '../reducers'
+import {initialState as newMessageInitialState} from '../reducers'
 import ticketReplyCache, {RawCachedTicket} from '../ticketReplyCache'
 import {
     convertToRawWithoutPredictions,
     createPrediction,
     insertPrediction,
 } from '../../../pages/common/draftjs/plugins/prediction/utils.js'
-import {addEmailExtraContent} from '../emailExtraUtils'
-import {ticket} from '../../../fixtures/ticket'
 
-import {getMessageContextSnapshot, getReplyAreaStateSnapshot} from './testUtils'
+import {getMessageContextSnapshot} from './testUtils'
 
 describe('responseUtils', () => {
     let defaultMessageContext: MessageContext
@@ -45,6 +49,104 @@ describe('responseUtils', () => {
                 }),
             },
         }
+    })
+
+    describe('addSignature', () => {
+        it('should add plain text signature', () => {
+            const signature = fromJS({
+                text: 'Cruel World!',
+                html: '<a href="#">Cruel World!</a>',
+            })
+            const contentState = ContentState.createFromText('')
+            const newContentState = addSignature(contentState, signature)
+
+            expect(newContentState!.getPlainText()).toBe('\n\nCruel World!')
+        })
+
+        it('should add plain text signature (no html)', () => {
+            const signature = fromJS({
+                text: 'Cruel World!',
+            })
+            const contentState = ContentState.createFromText('')
+            const newContentState = addSignature(contentState, signature)
+
+            expect(newContentState!.getPlainText()).toBe('\n\nCruel World!')
+        })
+
+        it('should add html signature', () => {
+            const signature = fromJS({
+                text: 'Cruel World!',
+                html: '<a href="https://gorgias.io/">Cruel World!</a>',
+            })
+            const contentState = ContentState.createFromText('')
+            const newContentState = addSignature(contentState, signature)
+            expect(convertToHTML(newContentState!)).toBe(
+                '<div><br></div><div><br></div><div><a href="https://gorgias.io/" target="_blank">Cruel World!</a></div>'
+            )
+        })
+    })
+
+    describe('removeSignature', () => {
+        it('should remove signature', () => {
+            const signature = fromJS({
+                text: 'Cruel World!',
+                html: '<a href="https://gorgias.io/">Cruel World!</a>',
+            })
+            let newContentState = addSignature(
+                ContentState.createFromText(''),
+                signature
+            )
+
+            expect(newContentState!.getPlainText()).not.toBe('')
+
+            newContentState = removeSignature(newContentState!, signature)
+            expect(newContentState.getPlainText()).toBe('')
+        })
+
+        it('should not remove changed signature', () => {
+            const signature = fromJS({
+                text: 'Cruel World!',
+                html: '<a href="https://gorgias.io/">Cruel World!</a>',
+            })
+            let newContentState = addSignature(
+                ContentState.createFromText(''),
+                signature
+            )
+
+            // change text in the first signature block.
+            // simulates typing text in the first empty line above the signature.
+            // all blocks are part of the signature ({data: {signature: true}} contentBlocks),
+            // because the original contentState is blank.
+            // it will match the signature blocks because of custom {signature: true} data,
+            // but the editor contentBlocks should not match the signature contentBlocks.
+            const blocks = newContentState!.getBlocksAsArray().map((b, i) => {
+                if (i === 0) {
+                    return b.set('text', 'Pizza Pepperoni')
+                }
+                return b
+            })
+
+            newContentState = removeSignature(
+                ContentState.createFromBlockArray(blocks as ContentBlock[]),
+                signature
+            )
+            expect(newContentState.getPlainText()).toBe(
+                'Pizza Pepperoni\n\nCruel World!'
+            )
+        })
+
+        it('should not remove any text', () => {
+            const signature = fromJS({
+                text: 'Cruel World!',
+                html: '<a href="https://gorgias.io/">Cruel World!</a>',
+            })
+            const newContentState = removeSignature(
+                ContentState.createFromText('Pizza Pepperoni!'),
+                signature
+            )
+
+            expect(newContentState.getPlainText()).toBe('Pizza Pepperoni!')
+        })
     })
 
     describe('applyMacro', () => {
@@ -140,7 +242,7 @@ describe('responseUtils', () => {
                 .set('anchorOffset', '1')
                 .set('focusKey', 'bar')
                 .set('focusOffset', '2') as SelectionState,
-            emailExtraAdded: true,
+            signatureAdded: true,
             macro: null,
             sourceType: TicketMessageSourceType.Email,
         }
@@ -305,16 +407,16 @@ describe('responseUtils', () => {
             })
         })
 
-        it('should update the cache with emailExtraAdded value if emailExtraAdded is set in the context', () => {
+        it('should update the cache with signatureAdded value if signatureAdded is set in the context', () => {
             const context: MessageContext = {
                 ...updateCacheContext,
-                emailExtraAdded: true,
+                signatureAdded: true,
             }
             const {
                 contentState,
                 selectionState,
                 sourceType,
-                emailExtraAdded,
+                signatureAdded,
                 action: {ticketId},
             } = context
             updateCache(context)
@@ -322,95 +424,8 @@ describe('responseUtils', () => {
                 contentState: convertToRaw(contentState),
                 selectionState,
                 sourceType,
-                emailExtraAdded,
+                signatureAdded,
             })
-        })
-    })
-
-    describe('toReplyAreaStateJS', () => {
-        it('should convert immutable state to object', () => {
-            const contentState = ContentState.createFromText('')
-            const selectionState = SelectionState.createEmpty(
-                contentState.getFirstBlock().getKey()
-            )
-            const replyAreaState = (fromJS({
-                emailExtraAdded: false,
-                appliedMacro: null,
-                cacheAdded: true,
-                dirty: false,
-                firstNewMessage: true,
-                forceFocus: true,
-                forceUpdate: true,
-            }) as Map<any, any>)
-                .set('contentState', contentState)
-                .set('selectionState', selectionState)
-            const replyAreaStateJS = toReplyAreaState(replyAreaState)
-            expect(
-                getReplyAreaStateSnapshot(replyAreaStateJS)
-            ).toMatchSnapshot()
-            expect(replyAreaStateJS.selectionState).toBe(selectionState)
-        })
-    })
-
-    describe('updateNewMessageWithContentState', () => {
-        it('should update body_html and body_text', () => {
-            const newMessage = updateNewMessageWithContentState(
-                (initialState.get('newMessage') as Map<any, any>).toJS(),
-                ContentState.createFromText('Foo bar baz')
-            )
-            expect(newMessage).toMatchSnapshot()
-        })
-
-        it('should set stripped_text and stripped_body when contentState contains email extras', () => {
-            const contentState = addEmailExtraContent(
-                ContentState.createFromText('Foo bar'),
-                {
-                    ticket,
-                    replyThreadMessages: [],
-                    isForwarded: false,
-                    signature: fromJS({text: 'Signature'}),
-                }
-            )
-            const newMessage = updateNewMessageWithContentState(
-                (initialState.get('newMessage') as Map<any, any>).toJS(),
-                contentState
-            )
-            expect(newMessage).toMatchSnapshot()
-        })
-
-        it('should unset emailExtraAdded, stripped_text and stripped_body when contentState does not contain email extras', () => {
-            const contentStateWithExtras = addEmailExtraContent(
-                ContentState.createFromText('Foo bar'),
-                {
-                    ticket,
-                    replyThreadMessages: [],
-                    isForwarded: false,
-                    signature: fromJS({text: 'Signature'}),
-                }
-            )
-            const prevNewMessage = updateNewMessageWithContentState(
-                (initialState.get('newMessage') as Map<any, any>).toJS(),
-                contentStateWithExtras
-            )
-            const newMessage = updateNewMessageWithContentState(
-                prevNewMessage,
-                ContentState.createFromText('No extras')
-            )
-            expect(newMessage).toMatchSnapshot()
-        })
-
-        it('should not mutate the arguments', () => {
-            const prevNewMessage = (initialState.get('newMessage') as Map<
-                any,
-                any
-            >).toJS()
-
-            updateNewMessageWithContentState(
-                prevNewMessage,
-                ContentState.createFromText('Foo bar baz')
-            )
-
-            expect(prevNewMessage).toMatchSnapshot()
         })
     })
 })

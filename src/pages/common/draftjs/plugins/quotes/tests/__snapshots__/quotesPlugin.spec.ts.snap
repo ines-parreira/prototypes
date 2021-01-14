@@ -1,3 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`quotesPlugin blockStyleFn should apply quote styles for the blocks with quote depth 1`] = `"replyThread quoteDepth1"`;

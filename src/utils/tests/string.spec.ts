@@ -1,4 +1,4 @@
-import {countLines, countWords, removeSuffix, truncateWords} from '../string'
+import {countLines, removeSuffix} from '../string'
 
 describe('string util', () => {
     describe('removeSuffix', () => {
@@ -32,52 +32,6 @@ describe('string util', () => {
 
         it('should return the number of lines in the given text', () => {
             expect(countLines('\n1\n2\n3')).toEqual(4)
-        })
-    })
-
-    describe('countWords', () => {
-        it('should count words in a text with whitespaces', () => {
-            expect(countWords('   foo   bar  baz')).toBe(3)
-        })
-
-        it('should count words in a text with newlines', () => {
-            expect(countWords('   foo  \n\n\r\n bar  \n\n  baz')).toBe(3)
-        })
-
-        it('should count words in a text with special chars and numbers', () => {
-            expect(countWords('foo@#123$% bar-_&][ baz')).toBe(3)
-        })
-    })
-
-    describe('truncateWords', () => {
-        it('should return first n words in a text with whitespaces', () => {
-            expect(truncateWords('   foo   bar  baz', 2)).toBe('   foo   bar')
-        })
-
-        it('should return first n words in a text with newlines', () => {
-            expect(truncateWords('   foo  \n\n\r\n bar  \n\n  baz', 2)).toBe(
-                '   foo  \n\n\r\n bar'
-            )
-        })
-
-        it('should return empty text when n is 0', () => {
-            expect(truncateWords('foo  bar', 0)).toBe('')
-        })
-
-        it('should throw an error when n is negative ', () => {
-            expect(() => {
-                truncateWords('Foo', -1)
-            }).toThrow('Unsupported negative words number')
-        })
-
-        it('should return the entire string if n is larger then the number of words', () => {
-            expect(truncateWords('foo bar baz', 10)).toBe('foo bar baz')
-        })
-
-        it('should return first n words in a text with special chars and numbers', () => {
-            expect(truncateWords('foo@#123$% bar-_&][ baz', 2)).toBe(
-                'foo@#123$% bar-_&]['
-            )
         })
     })
 })

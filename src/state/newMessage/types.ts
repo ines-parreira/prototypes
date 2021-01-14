@@ -1,5 +1,4 @@
 import {List, Map} from 'immutable'
-import {ContentState, SelectionState} from 'draft-js'
 
 import {TicketMessageSourceType} from '../../business/types/ticket'
 import {Macro} from '../../models/macro/types'
@@ -33,24 +32,10 @@ export type NewMessage = {
     sender: User
     body_text: string
     body_html: string
-    stripped_text?: string
-    stripped_html?: string
     attachments: Attachment[]
     actions: List<Map<any, any>>
     public?: boolean
     macros: {id: number}[]
-}
-
-export type ReplyAreaState = {
-    dirty: boolean
-    emailExtraAdded: boolean
-    cacheAdded: boolean
-    forceUpdate: boolean
-    forceFocus: boolean
-    contentState: ContentState
-    selectionState: SelectionState | null
-    appliedMacro: Map<any, any> | null
-    firstNewMessage: boolean
 }
 
 export type Ticket = {
