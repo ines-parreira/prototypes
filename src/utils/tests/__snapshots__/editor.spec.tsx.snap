@@ -10,6 +10,155 @@ exports[`editor utils convertToHTML should convert links with {{variables}} to h
 
 exports[`editor utils convertToHTML should convert multiple links to html 1`] = `"<div>Hey There!</div><div><br></div><div><a href=\\"http://www.google.com\\" class=\\"linkified\\" target=\\"_blank\\">www.google.com</a></div><div><br></div><div>Another link: <a href=\\"http://www.gorgias.com\\" class=\\"linkified\\" target=\\"_blank\\">http://www.gorgias.com</a></div>"`;
 
+exports[`editor utils convertToHTML should convert quotes to blockquote 1`] = `"<div>No quote</div><blockquote class=\\"gorgias_quote\\" style=\\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\\"><div>Quoted text</div></blockquote><blockquote class=\\"gorgias_quote\\" style=\\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\\"><blockquote class=\\"gorgias_quote\\" style=\\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\\"><figure style=\\"display:inline-block;margin:0\\"><img src=\\"\\" width=\\"400px\\" style=\\"max-width: 100%\\"></figure></blockquote></blockquote><blockquote class=\\"gorgias_quote\\" style=\\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\\"><blockquote class=\\"gorgias_quote\\" style=\\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\\"><div><br></div></blockquote></blockquote>"`;
+
 exports[`editor utils convertToHTML should turn newlines into br 1`] = `"<div>One</div><div>Two</div><div><br></div><div>Three</div><div><br></div><div><br></div><div><br></div>"`;
 
 exports[`editor utils convertToHTML should wrap images in inline-block figures 1`] = `"<figure style=\\"display:inline-block;margin:0\\"><img src=\\"https://gorgias.io/\\" width=\\"400px\\" style=\\"max-width: 100%\\"></figure>"`;
+
+exports[`editor utils from HTML should restore quotes 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "No quote",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "quoteDepth": 1,
+    },
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "quoteDepth": 2,
+    },
+    "depth": 0,
+    "text": "Quoted text",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "quoteDepth": 3,
+    },
+    "depth": 0,
+    "text": " ",
+    "type": "atomic",
+  },
+  Object {
+    "data": Object {
+      "quoteDepth": 3,
+    },
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`editor utils getPlainText() should add ">" to the quoted content 1`] = `
+"No quote
+> Quoted text
+>> 
+>>> More quoted text"
+`;
+
+exports[`editor utils insertNewBlockAtTheBeginning should insert a new empty block at the beginning of the content 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Foo",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`editor utils insertNewBlockAtTheEnd should insert a new empty block at the end of the content 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Foo",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`editor utils mergeContentStates should add content state at the end of the original content state 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Foo",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Bar",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Baz",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`editor utils truncateContentStateBlocks should truncate blocks 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Foo",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Bar",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`editor utils truncateContentStateWords should truncate content state words 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Foo bar",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": " Baz  Bac",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Qux",
+    "type": "unstyled",
+  },
+]
+`;

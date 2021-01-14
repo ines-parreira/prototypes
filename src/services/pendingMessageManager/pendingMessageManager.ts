@@ -1,4 +1,3 @@
-import {ContentState} from 'draft-js'
 import {browserHistory} from 'react-router'
 import {removeNotification} from 'reapop'
 import {EnhancedStore} from '@reduxjs/toolkit'
@@ -13,17 +12,24 @@ import {NotificationStatus} from '../../state/notifications/types'
 import {applyMacro, messageDeleted} from '../../state/ticket/actions'
 import {logEvent, EVENTS} from '../../store/middlewares/segmentTracker.js'
 import {RootState} from '../../state/types'
-
-import {SendMessageArgs} from './types'
+import {NewMessage, ReplyAreaState} from '../../state/newMessage/types'
 
 //$TsFixMe remove once init.js is migrated
 const typeSafeReduxStore = reduxStore as EnhancedStore
 
 const pendingMessageDelay = 5000
 
+export type SendMessageArgs = {
+    messageId: number
+    messageToSend: NewMessage
+    replyAreaState: ReplyAreaState
+    action: Maybe<string>
+    resetMessage: boolean
+    ticketId: Maybe<string>
+}
+
 export class PendingMessageManager {
-    pendingContentState: Maybe<ContentState> = null
-    pendingMessageArgs: Maybe<SendMessageArgs> = null
+    pendingSendMessagesArgs: SendMessageArgs | null = null
     timeoutId: Maybe<number> = null
     message: string
 
@@ -44,8 +50,14 @@ export class PendingMessageManager {
         window.removeEventListener('beforeunload', this.handleBeforeUnload)
     }
 
-    sendMessage = (contentState: ContentState, ...args: SendMessageArgs) => {
-        const [messageId] = args
+    sendMessage = (sendMessageArgs: SendMessageArgs) => {
+        const {
+            messageId,
+            messageToSend,
+            action,
+            resetMessage,
+            ticketId,
+        } = sendMessageArgs
 
         this.skipExistingTimer()
         typeSafeReduxStore.dispatch(
@@ -64,11 +76,18 @@ export class PendingMessageManager {
                 //$TsFixMe remove casting on init.js migration
             }) as any
         )
-        this.pendingContentState = contentState
-        this.pendingMessageArgs = args
+        this.pendingSendMessagesArgs = sendMessageArgs
         this.timeoutId = window.setTimeout(() => {
             //$TsFixMe remove casting on init.js migration
-            typeSafeReduxStore.dispatch(sendTicketMessage(...args) as any)
+            typeSafeReduxStore.dispatch(
+                sendTicketMessage(
+                    messageId,
+                    messageToSend,
+                    action,
+                    resetMessage,
+                    ticketId
+                ) as any
+            )
             this.timeoutId = null
         }, pendingMessageDelay)
     }
@@ -81,16 +100,13 @@ export class PendingMessageManager {
     }
 
     undoMessage = () => {
-        if (this.timeoutId && this.pendingMessageArgs) {
-            const [
+        if (this.timeoutId && this.pendingSendMessagesArgs) {
+            const {
                 messageId,
                 messageToSend,
-                //eslint-disable-next-line @typescript-eslint/no-unused-vars
-                action,
-                //eslint-disable-next-line @typescript-eslint/no-unused-vars
-                reset,
                 ticketId,
-            ] = this.pendingMessageArgs
+                replyAreaState,
+            } = this.pendingSendMessagesArgs
 
             logEvent(EVENTS.UNDO_SENT_MESSAGE, {
                 bodyText: messageToSend.body_text,
@@ -107,7 +123,7 @@ export class PendingMessageManager {
 
                 typeSafeReduxStore.dispatch(
                     newMessageResetFromMessage({
-                        contentState: this.pendingContentState as ContentState,
+                        replyAreaState,
                         newMessage: messageToSend,
                     })
                 )
@@ -129,14 +145,26 @@ export class PendingMessageManager {
     }
 
     skipExistingTimer = () => {
-        if (this.timeoutId && this.pendingMessageArgs) {
-            const [messageId, ...others] = this.pendingMessageArgs
+        if (this.timeoutId && this.pendingSendMessagesArgs) {
+            const {
+                messageId,
+                messageToSend,
+                action,
+                resetMessage,
+                ticketId,
+            } = this.pendingSendMessagesArgs
 
             //eslint-disable-next-line @typescript-eslint/no-unsafe-call
             typeSafeReduxStore.dispatch(removeNotification(messageId))
             //$TsFixMe remove casting on init.js migration
             typeSafeReduxStore.dispatch(
-                sendTicketMessage(messageId, ...others) as any
+                sendTicketMessage(
+                    messageId,
+                    messageToSend,
+                    action,
+                    resetMessage,
+                    ticketId
+                ) as any
             )
             this.clearMessage()
         }

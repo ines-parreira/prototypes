@@ -3,6 +3,7 @@ import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 import {EditorState, ContentState} from 'draft-js'
 import _noop from 'lodash/noop'
+import generateRandomKey from 'draft-js/lib/generateRandomKey'
 
 import configureStore from '../../../../../../store/configureStore'
 import ConnectedTicketReplyEditor, {
@@ -11,6 +12,7 @@ import ConnectedTicketReplyEditor, {
 import {
     convertFromHTML,
     convertToHTML,
+    createDraftJSKeyGeneratorMock,
 } from '../../../../../../utils/editor.tsx'
 import {
     TicketChannel,
@@ -18,7 +20,17 @@ import {
 } from '../../../../../../business/types/ticket'
 import {sanitizeHtmlForFacebookMessenger} from '../../../../../../utils/html.ts'
 
+jest.mock('draft-js/lib/generateRandomKey', () =>
+    jest.fn().mockReturnValue('mock-key')
+)
+
 describe('TicketReplyEditor component', () => {
+    beforeEach(() => {
+        jest.clearAllMocks()
+        const generateKey = createDraftJSKeyGeneratorMock()
+        generateRandomKey.mockImplementation(generateKey)
+    })
+
     it('should render empty ticket', () => {
         const component = shallow(
             <ConnectedTicketReplyEditor
@@ -53,7 +65,7 @@ describe('TicketReplyEditor component', () => {
 
         const newMessage = fromJS({
             state: {
-                contentState: null,
+                contentState: ContentState.createFromText(''),
                 selectionState: null,
                 cacheAdded: true,
             },
@@ -121,7 +133,7 @@ describe('TicketReplyEditor component', () => {
 
         const newMessage = fromJS({
             state: {
-                contentState: null,
+                contentState: ContentState.createFromText(''),
                 selectionState: null,
                 cacheAdded: true,
             },

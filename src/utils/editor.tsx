@@ -11,11 +11,21 @@ import {
     EditorState,
     SelectionState,
     convertToRaw,
+    Modifier,
 } from 'draft-js'
 import {Map} from 'immutable'
 
 import {DEFAULT_IMAGE_WIDTH} from '../config/editor'
 import {availableVariables} from '../config/rules'
+import {
+    decorateQuotedBlockElement,
+    decorateQuotedBlockText,
+    getQuoteDepth,
+    getQuotedHtmlNode,
+    QUOTE_DEPTH_DATA_KEY,
+} from '../pages/common/draftjs/plugins/quotes/quotesEditorUtils'
+
+import {countWords, truncateWords} from './string'
 
 // note that 2 letters tlds are automatically interpreted
 const tlds = 'com edu gov ru org net de jp uk br it pl in fr au ir nl info cn es cz kr ca ua eu co gr za ro biz ch se io'.split(
@@ -54,23 +64,31 @@ export function convertToHTML(contentState: ContentState): string {
     return fixLinkVars(
         _convertToHTML({
             blockToHTML: (block) => {
-                const {type} = block
+                const {type, key} = block
+                const contentBlock = contentState.getBlockForKey(key)
 
                 if (type === 'unstyled') {
                     return {
-                        element: <div />,
-                        empty: <EmptyUnstyledBlock />,
+                        element: decorateQuotedBlockElement(
+                            <div />,
+                            getQuoteDepth(contentBlock)
+                        ),
+                        empty: decorateQuotedBlockElement(
+                            <EmptyUnstyledBlock />,
+                            getQuoteDepth(contentBlock)
+                        ),
                     }
                 }
 
                 if (type === 'atomic') {
-                    return (
+                    return decorateQuotedBlockElement(
                         <figure
                             style={{
                                 display: 'inline-block',
                                 margin: 0,
                             }}
-                        />
+                        />,
+                        getQuoteDepth(contentBlock)
                     )
                 }
             },
@@ -148,11 +166,32 @@ export function unescapeTemplateVars(string: string): string {
  */
 export function convertFromHTML(html: string): ContentState {
     let converted: ContentState = _convertFromHTML({
-        htmlToBlock: (((nodeName: string) => {
-            if (nodeName === 'figure' || nodeName === 'img') {
-                return 'atomic'
+        htmlToBlock: (nodeName: string, node) => {
+            let type
+            let currentNode: Node = node
+            const data: Record<string, unknown> = {}
+            const {quotedNode, quoteDepth} = getQuotedHtmlNode(node) || {}
+
+            if (quotedNode) {
+                currentNode = quotedNode
+                type = 'unstyled'
+                data[QUOTE_DEPTH_DATA_KEY] = quoteDepth
             }
-        }) as unknown) as (nodeName: string) => string | false,
+
+            if (
+                currentNode.nodeName === 'FIGURE' ||
+                currentNode.nodeName === 'IMG'
+            ) {
+                type = 'atomic'
+            }
+
+            return (
+                type && {
+                    type,
+                    data,
+                }
+            )
+        },
         htmlToEntity: (nodeName: string, node: HTMLElement, createEntity) => {
             if (nodeName === 'a') {
                 return createEntity('link', 'MUTABLE', {
@@ -207,7 +246,7 @@ export function convertFromHTML(html: string): ContentState {
 }
 
 export function contentStateFromTextOrHTML(
-    text: string,
+    text?: string,
     html?: string
 ): ContentState {
     let contentState = ContentState.createFromText('')
@@ -273,7 +312,7 @@ export function getSelectedText(
         }, '')
 }
 
-// Enitity selection behavior is based on Gmail's editor link toggle functionality
+// Entity selection behavior is based on Gmail's editor link toggle functionality
 export function getSelectedEntityKey(
     contentState: ContentState,
     selection: SelectionState
@@ -406,7 +445,211 @@ export function getPlainText(
                 }
             })
 
-            return blockText
+            return decorateQuotedBlockText(
+                blockText,
+                getQuoteDepth(ContentState.getBlockForKey(rawBlock.key))
+            )
         })
         .join(delimiter || '\n')
+}
+
+export const createCollapsedSelectionState = (
+    key: string,
+    offset: number
+): SelectionState => {
+    return (SelectionState.createEmpty(key)
+        .set('anchorOffset', offset)
+        .set('focusOffset', offset) as unknown) as SelectionState
+}
+
+export const insertNewBlockAtTheEnd = (
+    contentState: ContentState
+): ContentState => {
+    const lastBlock = contentState.getLastBlock()
+    return Modifier.splitBlock(
+        contentState,
+        createCollapsedSelectionState(lastBlock.getKey(), lastBlock.getLength())
+    )
+}
+
+export const insertNewBlockAtTheBeginning = (contentState: ContentState) => {
+    return Modifier.splitBlock(
+        contentState,
+        createCollapsedSelectionState(contentState.getFirstBlock().getKey(), 0)
+    )
+}
+
+export const mergeContentStates = (
+    contentState1: ContentState,
+    contentState2: ContentState
+): ContentState => {
+    const contentState = insertNewBlockAtTheEnd(contentState1)
+    const lastBlock = contentState.getLastBlock()
+    return Modifier.replaceWithFragment(
+        contentState,
+        createCollapsedSelectionState(
+            lastBlock.getKey(),
+            lastBlock.getLength()
+        ),
+        contentState2.getBlockMap()
+    )
+}
+
+export const selectWholeContentState = (
+    contentState: ContentState
+): SelectionState => {
+    return SelectionState.createEmpty(contentState.getFirstBlock().getKey())
+        .set('focusKey', contentState.getLastBlock().getKey())
+        .set(
+            'focusOffset',
+            contentState.getLastBlock().getLength()
+        ) as SelectionState
+}
+
+export function findContentState(
+    parentContentState: ContentState,
+    contentState: ContentState
+): SelectionState | null {
+    let selectionState = SelectionState.createEmpty('')
+    const parentBlocks = parentContentState.getBlocksAsArray()
+    const blocks = contentState.getBlocksAsArray()
+    const clearKeys = {
+        key: '',
+        characterList: [],
+    }
+
+    let j = 0
+    for (const parentBlock of parentBlocks) {
+        const parentBlockKey = parentBlock.getKey()
+        if (parentBlock.merge(clearKeys).equals(blocks[j].merge(clearKeys))) {
+            j++
+
+            if (!selectionState.getAnchorKey()) {
+                selectionState = selectionState.set(
+                    'anchorKey',
+                    parentBlockKey
+                ) as SelectionState
+            }
+
+            if (j === blocks.length) {
+                return selectionState.merge({
+                    focusKey: parentBlockKey,
+                    focusOffset: parentBlock.getLength(),
+                }) as SelectionState
+            }
+        } else {
+            j = 0
+            selectionState = SelectionState.createEmpty('')
+        }
+    }
+
+    return null
+}
+
+export const truncateContentStateBlocks = (
+    contentState: ContentState,
+    n: number
+): ContentState => {
+    if (n < 0) {
+        throw new Error('Negative number of blocks')
+    } else if (n >= contentState.getBlocksAsArray().length) {
+        return contentState
+    }
+    return ContentState.createFromBlockArray(
+        contentState.getBlocksAsArray().slice(0, n)
+    )
+}
+
+export const truncateContentStateWords = (
+    contentState: ContentState,
+    n: number
+): ContentState => {
+    if (n < 0) {
+        throw new Error('Negative number of words')
+    }
+
+    const newBlocks: ContentBlock[] = []
+    let wordsCount = 0
+    for (const block of contentState.getBlocksAsArray()) {
+        const blockWordsCount = countWords(block.getText())
+        if (wordsCount + blockWordsCount <= n) {
+            newBlocks.push(block)
+            wordsCount += blockWordsCount
+        } else {
+            newBlocks.push(
+                block.set(
+                    'text',
+                    truncateWords(block.getText(), n - wordsCount)
+                ) as ContentBlock
+            )
+            return ContentState.createFromBlockArray(newBlocks)
+        }
+    }
+
+    return contentState
+}
+
+export class ContentStateCounter {
+    blocks = 0
+    words = 0
+
+    constructor(initialContentState?: ContentState) {
+        this.reset(initialContentState)
+    }
+
+    addContentState = (contentState: ContentState) => {
+        this.blocks += contentState.getBlocksAsArray().length
+        this.words += countWords(contentState.getPlainText())
+    }
+
+    removeContentState = (contentState: ContentState) => {
+        this.blocks -= contentState.getBlocksAsArray().length
+        this.words -= countWords(contentState.getPlainText())
+    }
+
+    reset = (contentState?: ContentState) => {
+        this.blocks = 0
+        this.words = 0
+        if (contentState) {
+            this.addContentState(contentState)
+        }
+    }
+}
+
+// $TSFixMe: Move to draftTestUtils
+export type BlockSnapshot = {
+    data: Record<string, unknown>
+    depth: number
+    text: string
+    type: string
+}
+
+// $TSFixMe: Move to draftTestUtils
+export const getContentStateBlocksSnapshot = (
+    contentState: ContentState
+): BlockSnapshot[] => {
+    return contentState.getBlocksAsArray().map((block) => {
+        return {
+            data: block.getData().toJS(),
+            depth: block.getDepth(),
+            text: block.getText(),
+            type: block.getType(),
+        }
+    })
+}
+
+// $TSFixMe: Move to draftTestUtils
+export const createDraftJSKeyGeneratorMock = () => {
+    let counter = 0
+
+    const generateKeyMock = () => {
+        counter++
+        return 'mock-key-' + counter.toString()
+    }
+
+    generateKeyMock.reset = () => {
+        counter = 0
+    }
+
+    return generateKeyMock
 }

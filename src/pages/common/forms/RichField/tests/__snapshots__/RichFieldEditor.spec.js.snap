@@ -194,6 +194,9 @@ exports[`RichFieldEditor should focus the end of input on initial focus 1`] = `
               Object {
                 "handlePastedFiles": [Function],
               },
+              Object {
+                "blockStyleFn": [Function],
+              },
             ]
           }
         />
@@ -304,6 +307,7 @@ exports[`RichFieldEditor should focus the end of input on initial focus 1`] = `
             },
           }
         }
+        emailExtraEnabled={false}
         isFocused={false}
         linkIsOpen={false}
         linkText=""
@@ -315,7 +319,6 @@ exports[`RichFieldEditor should focus the end of input on initial focus 1`] = `
         onLinkOpen={[Function]}
         onLinkTextChange={[Function]}
         onLinkUrlChange={[Function]}
-        signature={false}
         type="text"
       />
     </div>

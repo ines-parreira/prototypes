@@ -481,12 +481,15 @@ class TicketDetailContainer extends React.Component<Props, State> {
             actions: {
                 newMessage: {prepareTicketMessage, sendTicketMessage},
             },
-            newMessage,
             params: {ticketId},
             ticket,
         } = this.props
 
-        const {messageId, messageToSend} = await prepareTicketMessage(
+        const {
+            messageId,
+            messageToSend,
+            replyAreaState,
+        } = await prepareTicketMessage(
             status,
             ticket.getIn(['state', 'appliedMacro', 'actions']),
             action,
@@ -494,14 +497,14 @@ class TicketDetailContainer extends React.Component<Props, State> {
         )
 
         if (messageToSend.source.type === 'email') {
-            pendingMessageManager.sendMessage(
-                newMessage.getIn(['state', 'contentState']),
+            pendingMessageManager.sendMessage({
                 messageId,
                 messageToSend,
                 action,
                 resetMessage,
-                ticketId
-            )
+                ticketId,
+                replyAreaState,
+            })
             return
         }
         pendingMessageManager.skipExistingTimer()

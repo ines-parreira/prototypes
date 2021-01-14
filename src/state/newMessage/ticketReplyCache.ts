@@ -10,7 +10,7 @@ export type RawCachedTicket = {
     selectionState: SelectionState | null
     macro: Map<any, any> | null
     sourceType: string | null
-    signatureAdded: boolean
+    emailExtraAdded: boolean
 }
 
 const defaultRawCachedTicket: RawCachedTicket = {
@@ -18,7 +18,7 @@ const defaultRawCachedTicket: RawCachedTicket = {
     selectionState: null,
     macro: null,
     sourceType: null,
-    signatureAdded: false,
+    emailExtraAdded: false,
 }
 
 const defaultCachedTicket: Map<any, any> = fromJS(defaultRawCachedTicket)

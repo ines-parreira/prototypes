@@ -1,4 +1,3 @@
-import {ContentState} from 'draft-js'
 import {fromJS} from 'immutable'
 import {browserHistory} from 'react-router'
 import {removeNotification} from 'reapop'
@@ -10,8 +9,8 @@ import {
 import {applyMacro, messageDeleted} from '../../../state/ticket/actions'
 import pendingMessageManager, {
     PendingMessageManager,
+    SendMessageArgs,
 } from '../pendingMessageManager'
-import {SendMessageArgs} from '../types'
 
 type fromJSType = typeof fromJS
 
@@ -36,59 +35,63 @@ jest.mock('../../../state/ticket/actions.ts')
 jest.useFakeTimers()
 
 describe('services', () => {
-    const emptyContentState = ContentState.createFromText('')
     describe('pendingMessageManager', () => {
-        const sendMessageArgs: SendMessageArgs = [1, {}, null, true, '1'] as any
+        const sendMessageArgs: SendMessageArgs = {
+            messageId: 1,
+            messageToSend: {} as any,
+            replyAreaState: {} as any,
+            action: null,
+            resetMessage: true,
+            ticketId: '1',
+        }
+
+        const getSendTicketMessageCallArgs = (
+            sendMessageArgs: SendMessageArgs
+        ): Parameters<typeof sendTicketMessage> => {
+            const {
+                messageId,
+                messageToSend,
+                action,
+                resetMessage,
+                ticketId,
+            } = sendMessageArgs
+            return [messageId, messageToSend, action, resetMessage, ticketId]
+        }
+
         beforeEach(() => {
             jest.clearAllMocks()
         })
 
         it('should send deferred message', () => {
-            pendingMessageManager.sendMessage(
-                emptyContentState,
-                ...sendMessageArgs
-            )
-
+            pendingMessageManager.sendMessage(sendMessageArgs)
             jest.runAllTimers()
             expect(sendTicketMessage).toHaveBeenNthCalledWith(
                 1,
-                ...sendMessageArgs
+                ...getSendTicketMessageCallArgs(sendMessageArgs)
             )
         })
 
         it('should send the pending message when sending a new message', () => {
-            const secondSendMessageArgs: SendMessageArgs = [
-                2,
-                {},
-                null,
-                true,
-                '1',
-            ] as any
-            pendingMessageManager.sendMessage(
-                emptyContentState,
-                ...sendMessageArgs
-            )
-            pendingMessageManager.sendMessage(
-                emptyContentState,
-                ...secondSendMessageArgs
-            )
+            const secondSendMessageArgs: SendMessageArgs = {
+                ...sendMessageArgs,
+                messageId: 2,
+            }
+            pendingMessageManager.sendMessage(sendMessageArgs)
+            pendingMessageManager.sendMessage(secondSendMessageArgs)
 
             expect(sendTicketMessage).toHaveBeenNthCalledWith(
                 1,
-                ...sendMessageArgs
+                ...getSendTicketMessageCallArgs(sendMessageArgs)
             )
             jest.runAllTimers()
             expect(sendTicketMessage).toHaveBeenNthCalledWith(
                 2,
-                ...secondSendMessageArgs
+                ...getSendTicketMessageCallArgs(secondSendMessageArgs)
             )
         })
 
         it('should not send the message when clearing the message', () => {
-            pendingMessageManager.sendMessage(
-                emptyContentState,
-                ...sendMessageArgs
-            )
+            pendingMessageManager.sendMessage(sendMessageArgs)
             pendingMessageManager.clearMessage()
 
             jest.runAllTimers()
@@ -96,10 +99,8 @@ describe('services', () => {
         })
 
         it('should remove the pending message and redirect to the ticket when undoing the message', () => {
-            pendingMessageManager.sendMessage(
-                emptyContentState,
-                ...sendMessageArgs
-            )
+            const {messageToSend, replyAreaState} = sendMessageArgs
+            pendingMessageManager.sendMessage(sendMessageArgs)
             pendingMessageManager.undoMessage()
 
             expect(removeNotification).toHaveBeenNthCalledWith(1, 1)
@@ -110,15 +111,17 @@ describe('services', () => {
             )
             jest.runAllTimers()
             expect(newMessageResetFromMessage).toHaveBeenNthCalledWith(1, {
-                contentState: emptyContentState,
-                newMessage: sendMessageArgs[1],
+                replyAreaState,
+                newMessage: messageToSend,
             })
         })
 
         it('should apply macro when undoing a message using macro', () => {
-            const args: SendMessageArgs = [...sendMessageArgs]
-            args[1] = {macros: [{id: '1'}]} as any
-            pendingMessageManager.sendMessage(emptyContentState, ...args)
+            const args: SendMessageArgs = {
+                ...sendMessageArgs,
+                messageToSend: {macros: [{id: '1'}]} as any,
+            }
+            pendingMessageManager.sendMessage(args)
             pendingMessageManager.undoMessage()
 
             jest.runAllTimers()
@@ -130,16 +133,13 @@ describe('services', () => {
             )
         })
 
-        it('should send the message immediatly when skipping the timer', () => {
-            pendingMessageManager.sendMessage(
-                emptyContentState,
-                ...sendMessageArgs
-            )
+        it('should send the message immediately when skipping the timer', () => {
+            pendingMessageManager.sendMessage(sendMessageArgs)
             pendingMessageManager.skipExistingTimer()
 
             expect(sendTicketMessage).toHaveBeenNthCalledWith(
                 1,
-                ...sendMessageArgs
+                ...getSendTicketMessageCallArgs(sendMessageArgs)
             )
         })
 
@@ -151,10 +151,7 @@ describe('services', () => {
             const event = new Event('beforeUnload')
 
             expect(beforeUnloadHandler(event)).toBe(undefined)
-            newPendingMessageManager.sendMessage(
-                emptyContentState,
-                ...sendMessageArgs
-            )
+            newPendingMessageManager.sendMessage(sendMessageArgs)
             expect(beforeUnloadHandler(event)).toBe('foo')
         })
 

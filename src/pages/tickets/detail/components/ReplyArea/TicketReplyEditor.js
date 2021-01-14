@@ -315,6 +315,10 @@ export class TicketReplyEditor extends React.Component<Props, State> {
                             richAreaRef(richArea)
                         }
                     }
+                    defaultContentState={newMessage.getIn([
+                        'state',
+                        'contentState',
+                    ])}
                     value={{
                         text: newMessage.getIn(['newMessage', 'body_text']),
                         html: newMessage.getIn(['newMessage', 'body_html']),
@@ -335,7 +339,7 @@ export class TicketReplyEditor extends React.Component<Props, State> {
                     buttons={this._getButtons()}
                     displayedActions={displayedActions}
                     canDropFiles
-                    signature
+                    emailExtraEnabled
                     spellCheck
                     {...predictionProps}
                 />

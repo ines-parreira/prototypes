@@ -1,0 +1,1037 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`emailExtraUtils addEmailExtraContent should add the forwarded message header to a forwarded message 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "User response",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "---------- Forwarded message ----------",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "From: Acme Support <support@acme.gorgias.io>",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "Date: Mon, Jul 31, 2017, at 11:07 PM",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "Subject: Great ticket",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "To: jeanbon@gorgias.io",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "First message",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "On Mon, Jul 31, 2017, at 11:07 PM, Acme Support <support@acme.gorgias.io> wrote:",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "Second message",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`emailExtraUtils addEmailExtraContent should add the reply thread below the response 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Response content",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "On Mon, Jul 31, 2017, at 11:07 PM, Acme Support <support@acme.gorgias.io> wrote:",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "Hi! How are you?",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`emailExtraUtils addEmailExtraContent should add the signature and reply thread below the response 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Response content",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "signature": true,
+    },
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "signature": true,
+    },
+    "depth": 0,
+    "text": "Foo signature",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "On Mon, Jul 31, 2017, at 11:07 PM, Acme Support <support@acme.gorgias.io> wrote:",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "Hi! How are you?",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`emailExtraUtils addEmailExtraContent should add the signature below the response 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Response content",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "signature": true,
+    },
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "signature": true,
+    },
+    "depth": 0,
+    "text": "Foo signature",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`emailExtraUtils addEmailExtraContent should display sender name in the header when source is not defined 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Foo",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "On Mon, Jul 31, 2017, at 11:07 PM, Alex Plugaru wrote:",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "Hi! How are you?",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`emailExtraUtils addEmailExtraContent should limit reply blocks 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "User response",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "On Mon, Jul 31, 2017, at 11:07 PM, Acme Support <support@acme.gorgias.io> wrote:",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "line_1_word_1",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "line_2_word_1",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "(...)",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`emailExtraUtils addEmailExtraContent should limit reply words 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "line_1_word_1",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "On Mon, Jul 31, 2017, at 11:07 PM, Acme Support <support@acme.gorgias.io> wrote:",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "line_1_word_1 line_1_word_2 line_1_word_3 line_1_word_4 line_1_word_5 line_1_word_6 line_1_word_7",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "(...)",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`emailExtraUtils addEmailExtraContent should limit the number of reply thread messages 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "User response",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "On Mon, Jul 31, 2017, at 11:07 PM, Acme Support <support@acme.gorgias.io> wrote:",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "Message #1",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "(...)",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`emailExtraUtils addEmailExtraContent should not add the signature if the signature is in the content 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Hello",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Foo signature",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "On Mon, Jul 31, 2017, at 11:07 PM, Acme Support <support@acme.gorgias.io> wrote:",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "Hi! How are you?",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`emailExtraUtils addEmailExtraContent should not render the limited reply thread indicator if the blocks count equals the limit 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Foo",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "On Mon, Jul 31, 2017, at 11:07 PM, Acme Support <support@acme.gorgias.io> wrote:",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "line_1_word_1 line_1_word_2 line_1_word_3 line_1_word_4 line_1_word_5",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`emailExtraUtils addEmailExtraContent should not render the limited reply thread indicator if the words count equals the limit 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Foo",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "On Mon, Jul 31, 2017, at 11:07 PM, Acme Support <support@acme.gorgias.io> wrote:",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "line_1_word_1 line_1_word_2 line_1_word_3 line_1_word_4 line_1_word_5 line_1_word_6 line_1_word_7",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`emailExtraUtils addEmailExtraContent should parse the sent_datetime timezone and format header using the same timezone 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Foo",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "On Mon, Dec 14, 2020, at 11:06 AM, Acme Support <support@acme.gorgias.io> wrote:",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "Hi! How are you?",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`emailExtraUtils addEmailExtraContent should render the forwarded message header to a nested forwarded messages 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "User response",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "On Mon, Jul 31, 2017, at 11:07 PM, Acme Support <support@acme.gorgias.io> wrote:",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "First message (forwarded)",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "---------- Forwarded message ----------",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "From: Acme Support <support@acme.gorgias.io>",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "Date: Mon, Jul 31, 2017, at 11:07 PM",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "Subject: Great ticket",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "To: jeanbon@gorgias.io",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "Second message (forwarded)",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "---------- Forwarded message ----------",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "From: Acme Support <support@acme.gorgias.io>",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "Date: Mon, Jul 31, 2017, at 11:07 PM",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "Subject: Great ticket",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "To: jeanbon@gorgias.io",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "Third message",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "On Mon, Jul 31, 2017, at 11:07 PM, Acme Support <support@acme.gorgias.io> wrote:",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 2,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "Fourth message",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`emailExtraUtils addEmailExtraContent should show at least first 3 words of the entirely trimmed message 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "line_1_word_1",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "On Mon, Jul 31, 2017, at 11:07 PM, Acme Support <support@acme.gorgias.io> wrote:",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "line_1_word_1 line_1_word_2 line_1_word_3",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "(...)",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`emailExtraUtils clearEmailExtraData should clear email extra data 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Foo",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Bar",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Signature",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "On Mon, Jul 31, 2017, at 11:07 PM, Acme Support <support@acme.gorgias.io> wrote:",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "quoteDepth": 1,
+    },
+    "depth": 0,
+    "text": "Hi! How are you?",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`emailExtraUtils deleteEmailExtraContent should remove the reply thread from the response 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Foo",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Bar",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`emailExtraUtils deleteEmailExtraContent should remove the signature and the reply thread from the response 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Foo",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Bar",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`emailExtraUtils deleteEmailExtraContent should remove the signature from the response 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Foo",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Bar",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`emailExtraUtils deleteEmailExtraContent should return an empty text when email extra is the only content 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`emailExtraUtils getEmailExtraContent should return email extra content state 1`] = `
+Array [
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "signature": true,
+    },
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "signature": true,
+    },
+    "depth": 0,
+    "text": "Signature",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "On Mon, Jul 31, 2017, at 11:07 PM, Acme Support <support@acme.gorgias.io> wrote:",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {
+      "emailExtra": true,
+      "quoteDepth": 1,
+      "replyThread": true,
+    },
+    "depth": 0,
+    "text": "Hi! How are you?",
+    "type": "unstyled",
+  },
+]
+`;

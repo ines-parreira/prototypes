@@ -133,7 +133,9 @@ export type Source = {
     to: SourceAddress[]
     cc?: SourceAddress[]
     bcc?: SourceAddress[]
-    extra?: any
+    extra?: {
+        forward?: boolean
+    }
 }
 
 export type SourceAddress = {
