@@ -130,7 +130,7 @@ export type Channel = $Values<typeof TicketChannels>
 
 export type Source = {
     type: SourceType,
-    from: SourceAddress,
+    from?: SourceAddress,
     to: SourceAddress[],
     cc?: SourceAddress[],
     bcc?: SourceAddress[],

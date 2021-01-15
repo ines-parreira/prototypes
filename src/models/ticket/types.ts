@@ -129,7 +129,7 @@ export type Channel = TicketChannel
 
 export type Source = {
     type: SourceType
-    from: SourceAddress
+    from?: SourceAddress
     to: SourceAddress[]
     cc?: SourceAddress[]
     bcc?: SourceAddress[]
