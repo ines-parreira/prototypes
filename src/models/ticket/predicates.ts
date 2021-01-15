@@ -53,7 +53,9 @@ export const isTicketMessageHidden = (message: TicketMessage): boolean => {
         ].includes(message.source.type)
         const isFacebookComment =
             message.source &&
-            message.source.type === TicketMessageSourceType.FacebookComment
+            (message.source.type === TicketMessageSourceType.FacebookComment ||
+                message.source.type ===
+                    TicketMessageSourceType.FacebookReviewComment)
         if (isInstagramComment || isFacebookComment) {
             if (message.meta && message.meta.hidden_datetime) {
                 return true
@@ -65,7 +67,11 @@ export const isTicketMessageHidden = (message: TicketMessage): boolean => {
 
 export const isTicketMessageDeleted = (message: TicketMessage): boolean => {
     if (message && message.source && message.source.type) {
-        if (message.source.type === TicketMessageSourceType.FacebookComment) {
+        if (
+            message.source.type === TicketMessageSourceType.FacebookComment ||
+            message.source.type ===
+                TicketMessageSourceType.FacebookReviewComment
+        ) {
             if (message.meta && message.meta.deleted_datetime) {
                 return true
             }

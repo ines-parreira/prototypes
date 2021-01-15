@@ -16,6 +16,8 @@ import {renderTemplate} from '../../pages/common/utils/template'
 
 import * as responseUtils from '../newMessage/responseUtils.ts'
 
+import {TicketMessageSourceType} from '../../business/types/ticket.ts'
+
 import {getProperty} from './selectors.ts'
 
 /**
@@ -31,9 +33,24 @@ export function getLastSameSourceTypeMessage(messages, sourceType) {
         .filter((m) => m.getIn(['source', 'type']) === sourceType)
         .last()
 
-    if (!msg && sourceType === 'facebook-comment') {
+    if (!msg && sourceType === TicketMessageSourceType.FacebookComment) {
         return messages
-            .filter((m) => m.getIn(['source', 'type']) === 'facebook-post')
+            .filter(
+                (m) =>
+                    m.getIn(['source', 'type']) ===
+                    TicketMessageSourceType.FacebookPost
+            )
+            .last()
+    } else if (
+        !msg &&
+        sourceType === TicketMessageSourceType.FacebookReviewComment
+    ) {
+        return messages
+            .filter(
+                (m) =>
+                    m.getIn(['source', 'type']) ===
+                    TicketMessageSourceType.FacebookReview
+            )
             .last()
     }
 
@@ -343,8 +360,19 @@ export function getNewMessageSender(ticket, newMessageSourceType, channels) {
 
         // a message can be a facebook post
         // or a comment but agent can only respond with a comment
-        if (newMessageSourceType === 'facebook-comment') {
-            return [newMessageSourceType, 'facebook-post'].includes(type)
+        if (newMessageSourceType === TicketMessageSourceType.FacebookComment) {
+            return [
+                newMessageSourceType,
+                TicketMessageSourceType.FacebookPost,
+            ].includes(type)
+        } else if (
+            newMessageSourceType ===
+            TicketMessageSourceType.FacebookReviewComment
+        ) {
+            return [
+                newMessageSourceType,
+                TicketMessageSourceType.FacebookReview,
+            ].includes(type)
         }
 
         return type === newMessageSourceType

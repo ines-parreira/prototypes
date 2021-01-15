@@ -28,6 +28,7 @@ export function canAddAttachments(
         [
             TicketMessageSourceType.Chat,
             TicketMessageSourceType.FacebookComment,
+            TicketMessageSourceType.FacebookReviewComment,
             TicketMessageSourceType.FacebookMessenger,
         ].includes(messageType) && attachmentCount > 1
 
@@ -51,9 +52,11 @@ export const TicketMessageSourceTypes = Object.freeze({
     EMAIL: 'email',
     EMAIL_FORWARD: 'email-forward',
     FACEBOOK_COMMENT: 'facebook-comment',
+    FACEBOOK_REVIEW_COMMENT: 'facebook-review-comment',
     FACEBOOK_MESSAGE: 'facebook-message',
     FACEBOOK_MESSENGER: 'facebook-messenger',
     FACEBOOK_POST: 'facebook-post',
+    FACEBOOK_REVIEW: 'facebook-review',
     INSTAGRAM_AD_COMMENT: 'instagram-ad-comment',
     INSTAGRAM_AD_MEDIA: 'instagram-ad-media',
     INSTAGRAM_COMMENT: 'instagram-comment',
@@ -78,6 +81,7 @@ export const TicketChannels = Object.freeze({
     CHAT: 'chat',
     EMAIL: 'email',
     FACEBOOK: 'facebook',
+    FACEBOOK_RECOMMENDATIONS_CHANNEL: 'facebook-recommendations',
     FACEBOOK_MESSENGER: 'facebook-messenger',
     INSTAGRAM_AD_COMMENT: 'instagram-ad-comment',
     INSTAGRAM_COMMENT: 'instagram-comment',

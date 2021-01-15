@@ -272,6 +272,7 @@ Object {
             "email",
             "facebook",
             "facebook-messenger",
+            "facebook-recommendations",
             "instagram-ad-comment",
             "instagram-comment",
             "phone",

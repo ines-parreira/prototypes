@@ -147,6 +147,7 @@ export type Meta = {
     campaign_id?: string,
     facebook_carousel?: FacebookCarouselTemplate[],
     hidden_datetime?: string,
+    permalink_url?: string,
     liked_datetime?: string,
     error?: string,
     post_id?: string,

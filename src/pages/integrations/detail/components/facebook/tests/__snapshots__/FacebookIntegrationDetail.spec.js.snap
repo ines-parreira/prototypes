@@ -127,6 +127,12 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           type="checkbox"
         />
         <BooleanField
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
+          onChange={[Function]}
+          type="checkbox"
+        />
+        <BooleanField
           disabled={false}
           label="Enable Instagram comments"
           name="instagram_comments_enabled"
@@ -389,6 +395,13 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         <BooleanField
           label="Enable Facebook posts, comments and ads comments"
           name="posts_enabled"
+          onChange={[Function]}
+          type="checkbox"
+          value={true}
+        />
+        <BooleanField
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
@@ -697,6 +710,13 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         <BooleanField
           label="Enable Facebook posts, comments and ads comments"
           name="posts_enabled"
+          onChange={[Function]}
+          type="checkbox"
+          value={true}
+        />
+        <BooleanField
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}
@@ -1013,6 +1033,13 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           value={true}
         />
         <BooleanField
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
+          onChange={[Function]}
+          type="checkbox"
+          value={true}
+        />
+        <BooleanField
           disabled={false}
           label="Enable Instagram comments"
           name="instagram_comments_enabled"
@@ -1319,6 +1346,13 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         <BooleanField
           label="Enable Facebook posts, comments and ads comments"
           name="posts_enabled"
+          onChange={[Function]}
+          type="checkbox"
+          value={true}
+        />
+        <BooleanField
+          label="Enable Facebook recommendations"
+          name="recommendations_enabled"
           onChange={[Function]}
           type="checkbox"
           value={true}

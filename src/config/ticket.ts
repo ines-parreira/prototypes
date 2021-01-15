@@ -39,10 +39,13 @@ export const CHAT_SOURCE = TicketMessageSourceType.Chat
 export const EMAIL_FORWARD_SOURCE = TicketMessageSourceType.EmailForward
 export const EMAIL_SOURCE = TicketMessageSourceType.Email
 export const FACEBOOK_COMMENT_SOURCE = TicketMessageSourceType.FacebookComment
+export const FACEBOOK_REVIEW_COMMENT_SOURCE =
+    TicketMessageSourceType.FacebookReviewComment
 export const FACEBOOK_MESSAGE_SOURCE = TicketMessageSourceType.FacebookMessage
 export const FACEBOOK_MESSENGER_SOURCE =
     TicketMessageSourceType.FacebookMessenger
 export const FACEBOOK_POST_SOURCE = TicketMessageSourceType.FacebookPost
+export const FACEBOOK_REVIEW_SOURCE = TicketMessageSourceType.FacebookReview
 export const INSTAGRAM_AD_COMMENT_SOURCE =
     TicketMessageSourceType.InstagramAdComment
 export const INSTAGRAM_AD_MEDIA_SOURCE =
@@ -64,6 +67,7 @@ export const USABLE_SOURCE_TYPES = [
     CHAT_SOURCE,
     EMAIL_SOURCE,
     FACEBOOK_COMMENT_SOURCE,
+    FACEBOOK_REVIEW_COMMENT_SOURCE,
     FACEBOOK_MESSAGE_SOURCE,
     FACEBOOK_MESSENGER_SOURCE,
     INSTAGRAM_AD_COMMENT_SOURCE,
@@ -258,6 +262,13 @@ export function sourceTypeToChannel(
         sourceType.startsWith('facebook') &&
         sourceType !== TicketMessageSourceType.FacebookMessenger
     ) {
+        if (
+            sourceType === TicketMessageSourceType.FacebookReview ||
+            sourceType === TicketMessageSourceType.FacebookReviewComment
+        ) {
+            return TicketChannel.FacebookRecommendations
+        }
+
         return TicketChannel.Facebook
     }
 
@@ -300,6 +311,10 @@ export function responseSourceType(
 
     if (lastSourceType === TicketMessageSourceType.FacebookPost) {
         return TicketMessageSourceType.FacebookComment
+    }
+
+    if (lastSourceType === TicketMessageSourceType.FacebookReview) {
+        return TicketMessageSourceType.FacebookReviewComment
     }
 
     if (lastSourceType === TicketMessageSourceType.InstagramMedia) {

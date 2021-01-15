@@ -38,6 +38,7 @@ type Props = {
 type State = {
     settings: {
         posts_enabled: boolean,
+        recommendations_enabled: boolean,
         messenger_enabled: boolean,
         import_history_enabled: boolean,
         instagram_comments_enabled: boolean,
@@ -54,6 +55,7 @@ export default class FacebookIntegrationDetail extends React.Component<
     state = {
         settings: {
             posts_enabled: true,
+            recommendations_enabled: true,
             messenger_enabled: true,
             import_history_enabled: true,
             instagram_comments_enabled: false,
@@ -72,6 +74,9 @@ export default class FacebookIntegrationDetail extends React.Component<
         if (!settings.isEmpty()) {
             newState.settings = {
                 posts_enabled: settings.get('posts_enabled'),
+                recommendations_enabled: settings.get(
+                    'recommendations_enabled'
+                ),
                 messenger_enabled: settings.get('messenger_enabled'),
                 import_history_enabled: settings.get('import_history_enabled'),
                 instagram_comments_enabled: settings.get(
@@ -263,6 +268,21 @@ export default class FacebookIntegrationDetail extends React.Component<
                                     )
                                 }
                             />
+                            <BooleanField
+                                name="recommendations_enabled"
+                                type="checkbox"
+                                label="Enable Facebook recommendations"
+                                value={
+                                    this.state.settings.recommendations_enabled
+                                }
+                                onChange={(value) =>
+                                    this._onSettingChange(
+                                        value,
+                                        'recommendations_enabled'
+                                    )
+                                }
+                            />
+
                             <BooleanField
                                 name="instagram_comments_enabled"
                                 type="checkbox"

@@ -23,6 +23,7 @@ const defaultProps = {
 
 const defaultFacebookIntegrationSettings = {
     posts_enabled: true,
+    recommendations_enabled: true,
     messenger_enabled: true,
     import_history_enabled: true,
     instagram_comments_enabled: false,

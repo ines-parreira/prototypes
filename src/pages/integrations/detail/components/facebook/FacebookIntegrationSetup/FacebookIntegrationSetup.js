@@ -109,6 +109,7 @@ export default class FacebookIntegrationSetup extends React.Component<
                     fromJS({
                         messenger_enabled: true,
                         posts_enabled: true,
+                        recommendations_enabled: true,
                         instagram_comments_enabled: !!integration.getIn([
                             'meta',
                             'instagram',
@@ -295,6 +296,22 @@ export default class FacebookIntegrationSetup extends React.Component<
                                                         this._setSettingValue(
                                                             id,
                                                             'posts_enabled',
+                                                            value
+                                                        )
+                                                    }
+                                                />
+                                                <BooleanField
+                                                    name={`${id}.recommendations_enabled`}
+                                                    type="checkbox"
+                                                    label="Enable Facebook recommendations"
+                                                    value={this._getSettingValue(
+                                                        id,
+                                                        'recommendations_enabled'
+                                                    )}
+                                                    onChange={(value) =>
+                                                        this._setSettingValue(
+                                                            id,
+                                                            'recommendations_enabled',
                                                             value
                                                         )
                                                     }

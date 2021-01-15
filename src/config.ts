@@ -102,8 +102,10 @@ export const SOURCE_VALUE_PROP = {
     api: null,
     'facebook-message': 'address',
     'facebook-comment': 'address',
+    'facebook-review-comment': 'address',
     'facebook-messenger': 'address',
     'facebook-post': 'address',
+    'facebook-review': 'address',
     'facebook-ad-post': 'address',
     'facebook-ad-comment': 'address',
     'instagram-media': 'address',
@@ -166,7 +168,7 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         type: 'facebook',
         title: 'Facebook, Messenger & Instagram',
         description:
-            'Create tickets from Facebook posts and comments, Instagram comments and Messenger conversations',
+            'Create tickets from Facebook posts, comments and recommendations, Instagram comments and Messenger conversations',
         image: 'integrations/facebook.png',
     },
     {

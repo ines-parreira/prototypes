@@ -32,9 +32,11 @@ import {
     INSTAGRAM_COMMENT_SOURCE,
     INSTAGRAM_MEDIA_SOURCE,
     INTERNAL_NOTE_SOURCE,
+    FACEBOOK_REVIEW_COMMENT_SOURCE,
 } from '../../../../../config/ticket.ts'
 
 import MessageSourceFields from './MessageSourceFields/'
+
 import css from './ReplyMessageChannel.less'
 
 @connect(
@@ -236,6 +238,8 @@ export default class ReplyMessageChannel extends React.Component {
         const suggestChat = isTicketExisting && !!replyOptions.get('chat')
         const suggestFacebookComment =
             isTicketExisting && !!replyOptions.get('facebook-comment')
+        const suggestFacebookReviewComment =
+            isTicketExisting && !!replyOptions.get('facebook-review-comment')
         const suggestFacebookMessenger =
             isTicketExisting && !!replyOptions.get('facebook-messenger')
         const suggestInstagram =
@@ -310,6 +314,21 @@ export default class ReplyMessageChannel extends React.Component {
                                         type={FACEBOOK_COMMENT_SOURCE}
                                     />
                                     Reply via Facebook comment
+                                </DropdownItem>
+                            )}
+                            {suggestFacebookReviewComment && (
+                                <DropdownItem
+                                    type="button"
+                                    onClick={() => {
+                                        prepareNewMessage(
+                                            FACEBOOK_REVIEW_COMMENT_SOURCE
+                                        )
+                                    }}
+                                >
+                                    <SourceIcon
+                                        type={FACEBOOK_REVIEW_COMMENT_SOURCE}
+                                    />
+                                    Reply via Facebook recommendations
                                 </DropdownItem>
                             )}
                             {suggestFacebookMessenger && (

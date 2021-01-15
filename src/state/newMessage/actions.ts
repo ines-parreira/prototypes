@@ -63,10 +63,17 @@ export const addAttachments = (
 
     let attachments = atts
 
-    if (
-        newMessage.getIn(['newMessage', 'source', 'type']) ===
-        TicketMessageSourceType.FacebookComment
-    ) {
+    const newMessageSourceType = newMessage.getIn([
+        'newMessage',
+        'source',
+        'type',
+    ])
+    const isFacebookComment =
+        newMessageSourceType === TicketMessageSourceType.FacebookComment
+    const isFacebookReviewComment =
+        newMessageSourceType === TicketMessageSourceType.FacebookReviewComment
+
+    if (isFacebookComment || isFacebookReviewComment) {
         // We have specific constraints on attachments.
 
         const attachmentsFiltered: FileList | Attachment[] = Object.values(
@@ -557,6 +564,17 @@ export function prepareTicketDataToSend(
     if (data.newMessage) {
         const sourceType = data.newMessage.source.type
 
+        const isFacebookComment =
+            data.newMessage.channel === TicketMessageSourceType.Facebook &&
+            data.newMessage.source.type ===
+                TicketMessageSourceType.FacebookComment
+
+        const isFacebookReviewComment =
+            data.newMessage.channel ===
+                TicketMessageSourceType.FacebookRecommendations &&
+            data.newMessage.source.type ===
+                TicketMessageSourceType.FacebookReviewComment
+
         // add signature
         // only on email, if not already added
         if (
@@ -618,11 +636,7 @@ export function prepareTicketDataToSend(
         }
 
         // Facebook does not accept comment with just an attachment.
-        if (
-            data.newMessage.channel === TicketMessageSourceType.Facebook &&
-            data.newMessage.source.type ===
-                TicketMessageSourceType.FacebookComment
-        ) {
+        if (isFacebookComment || isFacebookReviewComment) {
             if (
                 data.newMessage.body_text.length === 0 &&
                 data.newMessage.attachments.length > 0

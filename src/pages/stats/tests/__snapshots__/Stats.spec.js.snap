@@ -259,6 +259,10 @@ exports[`<Stats/> render() should render stats as loading 1`] = `
               "label": "Twitter",
               "color": "#00aced",
             },
+            "facebook-recommendations": Immutable.Map {
+              "label": "Facebook recommendations",
+              "color": "#4887cd",
+            },
             "chat": Immutable.Map {
               "label": "Chat",
               "color": "#ffb584",

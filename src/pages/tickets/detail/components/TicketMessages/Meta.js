@@ -4,13 +4,15 @@ import React, {type Node} from 'react'
 import {Link} from 'react-router'
 
 import {TicketVias} from '../../../../../business/ticket.ts'
-import type {Meta as MetaType, Source} from '../../../../../models/ticket/types'
+import {Meta as MetaType, Source} from '../../../../../models/ticket/types.ts'
 
 import {
     FACEBOOK_COMMENT_SOURCE,
     FACEBOOK_POST_SOURCE,
     INSTAGRAM_AD_MEDIA_SOURCE,
     INSTAGRAM_MEDIA_SOURCE,
+    FACEBOOK_REVIEW_COMMENT_SOURCE,
+    FACEBOOK_REVIEW_SOURCE,
 } from '../../../../../config/ticket.ts'
 
 import css from './Meta.less'
@@ -55,6 +57,8 @@ export default function Meta(props: Props) {
         FACEBOOK_POST_SOURCE,
         INSTAGRAM_AD_MEDIA_SOURCE,
         INSTAGRAM_MEDIA_SOURCE,
+        FACEBOOK_REVIEW_SOURCE,
+        FACEBOOK_REVIEW_COMMENT_SOURCE,
     ]
 
     if (
@@ -69,6 +73,10 @@ export default function Meta(props: Props) {
         const permalink = source.extra.permalink
 
         const isFacebookPost = source.type === FACEBOOK_POST_SOURCE
+        const isFacebookReview = source.type === FACEBOOK_REVIEW_SOURCE
+        const isFacebookReviewComment =
+            source.type === FACEBOOK_REVIEW_COMMENT_SOURCE
+
         const isFacebookComment = parentId === fullPostId
         const isInstagramMedia = source.type === INSTAGRAM_MEDIA_SOURCE
         const isInstagramAdMedia = source.type === INSTAGRAM_AD_MEDIA_SOURCE
@@ -80,12 +88,22 @@ export default function Meta(props: Props) {
         let link
 
         if (isFacebookPost) {
-            const postId = getId(fullPostId)
+            const postId = isFacebookPost ? getId(fullPostId) : fullPostId
             type = 'post'
             link = `https://facebook.com/${pageId}/posts/${postId}`
+        } else if (!!messageId && isFacebookReview) {
+            type = 'review'
+            link = `https://facebook.com/${messageId}`
         } else if (isInstagramMedia || isInstagramAdMedia) {
             type = 'media'
             link = permalink
+        } else if (!!messageId && isFacebookReviewComment) {
+            type = 'comment'
+            link = permalink
+            if (!link && !!source.extra.open_graph_story_id) {
+                const commentId = getId(messageId)
+                link = `https://facebook.com/${source.extra.open_graph_story_id}/?comment_id=${commentId}`
+            }
         } else if (!!messageId && isFacebookComment) {
             const postId = getId(fullPostId)
             const commentId = getId(messageId)

@@ -21,9 +21,11 @@ import {
     CHAT_SOURCE,
     EMAIL_FORWARD_SOURCE,
     FACEBOOK_COMMENT_SOURCE,
+    FACEBOOK_REVIEW_COMMENT_SOURCE,
     FACEBOOK_MESSAGE_SOURCE,
     FACEBOOK_MESSENGER_SOURCE,
     FACEBOOK_POST_SOURCE,
+    FACEBOOK_REVIEW_SOURCE,
     INSTAGRAM_AD_COMMENT_SOURCE,
     INSTAGRAM_AD_MEDIA_SOURCE,
     INSTAGRAM_COMMENT_SOURCE,
@@ -76,7 +78,9 @@ const sourceTypeToIcon = (sourceType?: SourceType | IntegrationType) => {
             icon.name = 'phone'
             break
         case FACEBOOK_COMMENT_SOURCE:
+        case FACEBOOK_REVIEW_COMMENT_SOURCE:
         case FACEBOOK_INTEGRATION_TYPE:
+        case FACEBOOK_REVIEW_SOURCE:
         case FACEBOOK_POST_SOURCE:
             icon.custom = true
             icon.name = 'facebook'

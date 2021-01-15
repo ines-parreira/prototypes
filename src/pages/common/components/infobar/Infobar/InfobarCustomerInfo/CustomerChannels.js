@@ -9,6 +9,7 @@ import {
     INSTAGRAM_CUSTOMER_CHANNEL_TYPE,
     PHONE_CUSTOMER_CHANNEL_TYPE,
     TWITTER_CUSTOMER_CHANNEL_TYPE,
+    FACEBOOK_RECOMMENDATIONS_CUSTOMER_CHANNEL_TYPE,
 } from '../../../../../../constants/user.ts'
 import SourceIcon from '../../../SourceIcon'
 import Tooltip from '../../../Tooltip'
@@ -37,6 +38,7 @@ export default class CustomerChannels extends React.Component<Props> {
                 return ![
                     CHAT_CUSTOMER_CHANNEL_TYPE,
                     FACEBOOK_CUSTOMER_CHANNEL_TYPE,
+                    FACEBOOK_RECOMMENDATIONS_CUSTOMER_CHANNEL_TYPE,
                     INSTAGRAM_CUSTOMER_CHANNEL_TYPE,
                 ].includes(channel.get('type'))
             })

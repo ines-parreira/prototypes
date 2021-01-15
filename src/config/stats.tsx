@@ -192,6 +192,10 @@ export const stats = fromJS({
                 label: 'Facebook Messenger',
                 color: '#1787fb',
             },
+            'facebook-recommendations': {
+                label: 'Facebook recommendations',
+                color: '#4887cd',
+            },
             twitter: {
                 label: 'Twitter',
                 color: '#00aced',
