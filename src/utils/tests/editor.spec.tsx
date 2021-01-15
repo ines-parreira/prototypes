@@ -85,6 +85,12 @@ describe('editor utils', () => {
             const contentState = ContentState.createFromText(text)
             expect(utils.convertToHTML(contentState)).toMatchSnapshot()
         })
+
+        // It can be removed after https://github.com/HubSpot/draft-convert/issues/182 is fixed
+        it('should convert code-block to pre html tag', () => {
+            const contentState = utils.convertFromHTML('<pre>Foo</pre>')
+            expect(utils.convertToHTML(contentState)).toMatchSnapshot()
+        })
     })
 
     describe('from HTML', () => {

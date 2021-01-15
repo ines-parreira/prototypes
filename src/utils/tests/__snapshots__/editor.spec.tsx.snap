@@ -2,6 +2,8 @@
 
 exports[`editor utils convertToHTML should NOT convert adjacent links to html correctly (www.xxx.comwww.yyy.com) 1`] = `"<div>Hey Marie Curie,</div><div>multiple links: <a href=\\"http://www.facebook.comwww.github.com\\" class=\\"linkified\\" target=\\"_blank\\">www.facebook.comwww.github.com</a></div><div><br></div><div>Thanks for contacting us.</div>"`;
 
+exports[`editor utils convertToHTML should convert code-block to pre html tag 1`] = `"<pre>Foo</pre>"`;
+
 exports[`editor utils convertToHTML should convert links (www.xxx.com) to html 1`] = `"<div>Hello there</div><div><br></div><div><a href=\\"http://www.google.com\\" class=\\"linkified\\" target=\\"_blank\\">www.google.com</a></div>"`;
 
 exports[`editor utils convertToHTML should convert links (xxx.com) to html 1`] = `"<div>Hello there</div><div><br></div><div><a href=\\"http://google.com\\" class=\\"linkified\\" target=\\"_blank\\">google.com</a></div>"`;

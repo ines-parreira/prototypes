@@ -63,6 +63,13 @@ export function convertToHTML(contentState: ContentState): string {
                     }
                 }
 
+                // it be removed after https://github.com/HubSpot/draft-convert/issues/182 is fixed
+                if (type === 'code-block') {
+                    return {
+                        element: <pre />,
+                    }
+                }
+
                 if (type === 'atomic') {
                     return (
                         <figure
