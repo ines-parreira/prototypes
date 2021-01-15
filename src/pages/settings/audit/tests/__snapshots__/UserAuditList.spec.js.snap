@@ -10,81 +10,56 @@ exports[`UserAuditList component mounts correctly 1`] = `
     <div
       className="d-flex flex-wrap float-right"
     >
-      <SearchableSelectField
-        dropdownMenu={[Function]}
-        input={
-          Object {
-            "onChange": [Function],
-            "value": Array [],
-          }
-        }
-        isDisabled={false}
-        items={Immutable.List []}
-        multiple={true}
+      <SelectFilter
+        onChange={[Function]}
         plural="team members"
-        required={false}
         singular="team member"
+        value={Array []}
       />
-      <SearchableSelectField
-        dropdownMenu={[Function]}
-        input={
-          Object {
-            "onChange": [Function],
-            "value": Array [],
-          }
-        }
-        isDisabled={false}
-        items={
-          Immutable.List [
-            Object {
-              "label": "Ticket",
-              "value": "Ticket",
-            },
-            Object {
-              "label": "Macro",
-              "value": "Macro",
-            },
-          ]
-        }
-        multiple={true}
+      <SelectFilter
+        onChange={[Function]}
         plural="objects"
-        required={false}
         singular="object"
-      />
-      <SearchableSelectField
-        dropdownMenu={[Function]}
-        input={
-          Object {
-            "onChange": [Function],
-            "value": Array [],
-          }
-        }
-        isDisabled={false}
-        items={
-          Immutable.List [
-            Object {
-              "label": "Ticket created",
-              "value": "ticket-created",
-            },
-            Object {
-              "label": "Ticket updated",
-              "value": "ticket-updated",
-            },
-            Object {
-              "label": "Ticket deleted",
-              "value": "ticket-deleted",
-            },
-            Object {
-              "label": "Macro created",
-              "value": "macro-created",
-            },
-          ]
-        }
-        multiple={true}
+        value={Array []}
+      >
+        <SelectFilter.Item
+          key="Ticket"
+          label="Ticket"
+          value="Ticket"
+        />
+        <SelectFilter.Item
+          key="Macro"
+          label="Macro"
+          value="Macro"
+        />
+      </SelectFilter>
+      <SelectFilter
+        onChange={[Function]}
         plural="events"
-        required={false}
         singular="event"
-      />
+        value={Array []}
+      >
+        <SelectFilter.Item
+          key="ticket-created"
+          label="Ticket created"
+          value="ticket-created"
+        />
+        <SelectFilter.Item
+          key="ticket-updated"
+          label="Ticket updated"
+          value="ticket-updated"
+        />
+        <SelectFilter.Item
+          key="ticket-deleted"
+          label="Ticket deleted"
+          value="ticket-deleted"
+        />
+        <SelectFilter.Item
+          key="macro-created"
+          label="Macro created"
+          value="macro-created"
+        />
+      </SelectFilter>
       <DatePicker
         applyClass="btn-success mr-2"
         buttonClasses={

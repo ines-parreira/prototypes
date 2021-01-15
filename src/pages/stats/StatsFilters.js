@@ -26,7 +26,6 @@ import Popover from '../common/components/Popover'
 import withCancellableRequest from '../common/utils/withCancellableRequest'
 
 import PeriodPicker from './common/PeriodPicker'
-import SearchableSelectField from './common/SearchableSelectField'
 import SelectFilter from './common/SelectFilter.tsx'
 
 type Props = {
@@ -83,15 +82,6 @@ export class StatsFilters extends React.Component<Props, State> {
         })
     }, 300)
 
-    _makeInputControl = (name: string) => {
-        const {filters} = this.props
-
-        return {
-            value: filters.get(name, fromJS([])).toJS(),
-            onChange: this._handleFilterChange(name),
-        }
-    }
-
     _renderFilterInput = (filterType: string) => {
         const {agents, config, filters, teams} = this.props
         const filterValue = filters.get(filterType)
@@ -105,70 +95,92 @@ export class StatsFilters extends React.Component<Props, State> {
                 const maxValue = filterConfig.get('maxValue')
                 const reverse = filterConfig.get('reverse')
                 const variant = filterConfig.get('variant')
+
+                const scores = Array.from(
+                    {length: maxValue - minValue + 1},
+                    (value, index) => {
+                        const scoreValue = reverse
+                            ? maxValue - index
+                            : index + minValue
+                        switch (variant) {
+                            case 'star':
+                                return {
+                                    value: scoreValue.toString(),
+                                    label:
+                                        Array(minValue + scoreValue - 1)
+                                            .fill('★')
+                                            .join('') +
+                                        Array(maxValue - scoreValue)
+                                            .fill('☆')
+                                            .join(''),
+                                }
+                            default:
+                                return {}
+                        }
+                    }
+                )
                 return (
-                    <SearchableSelectField
+                    <SelectFilter
                         key={filterType}
                         plural="scores"
                         singular="score"
-                        items={Array.from(
-                            {length: maxValue - minValue + 1},
-                            (value, index) => {
-                                const scoreValue = reverse
-                                    ? maxValue - index
-                                    : index + minValue
-                                switch (variant) {
-                                    case 'star':
-                                        return {
-                                            value: scoreValue.toString(),
-                                            label:
-                                                Array(minValue + scoreValue - 1)
-                                                    .fill('★')
-                                                    .join('') +
-                                                Array(maxValue - scoreValue)
-                                                    .fill('☆')
-                                                    .join(''),
-                                        }
-                                    default:
-                                        return {}
-                                }
-                            }
-                        )}
-                        input={this._makeInputControl('score')}
-                    />
+                        onChange={this._handleFilterChange('score')}
+                        value={filters.get('score', fromJS([])).toJS()}
+                    >
+                        {scores.map((score) => (
+                            <SelectFilter.Item
+                                key={score.value}
+                                label={score.label}
+                                value={score.value}
+                            />
+                        ))}
+                    </SelectFilter>
                 )
             }
             case 'channels': {
                 const options = filterConfig.get('options')
+                const channels = options
+                    ? this.props.channels.filter((channel) =>
+                          options.includes(channel.value)
+                      )
+                    : this.props.channels
                 return (
-                    <SearchableSelectField
+                    <SelectFilter
                         key={filterType}
                         plural="channels"
                         singular="channel"
-                        items={
-                            options
-                                ? this.props.channels.filter((channel) =>
-                                      options.includes(channel.value)
-                                  )
-                                : this.props.channels
-                        }
-                        input={this._makeInputControl('channels')}
-                    />
+                        onChange={this._handleFilterChange('channels')}
+                        value={filters.get('channels', fromJS([])).toJS()}
+                    >
+                        {channels.map((channel) => (
+                            <SelectFilter.Item
+                                key={channel.value}
+                                label={channel.label}
+                                value={channel.value}
+                            />
+                        ))}
+                    </SelectFilter>
                 )
             }
             case 'tags':
                 return (
-                    <SearchableSelectField
+                    <SelectFilter
                         key={filterType}
                         plural="tags"
                         singular="tag"
-                        items={this.state.tags.map((tag) => ({
-                            label: tag.name,
-                            value: tag.id,
-                        }))}
-                        input={this._makeInputControl('tags')}
+                        onChange={this._handleFilterChange('tags')}
+                        value={filters.get('tags', fromJS([])).toJS()}
                         onSearch={this._onSearchTags}
                         dropdownMenu={(props) => <TagDropdownMenu {...props} />}
-                    />
+                    >
+                        {this.state.tags.map((tag) => (
+                            <SelectFilter.Item
+                                key={tag.id}
+                                label={tag.name}
+                                value={tag.id}
+                            />
+                        ))}
+                    </SelectFilter>
                 )
             case 'agents':
                 return (
@@ -207,18 +219,23 @@ export class StatsFilters extends React.Component<Props, State> {
                     : this.props.integrations
 
                 return (
-                    <SearchableSelectField
+                    <SelectFilter
                         key={filterType}
                         plural="integrations"
                         singular="integration"
-                        items={integrations.map((integration) => ({
-                            label: integration.name,
-                            value: integration.id,
-                        }))}
-                        input={this._makeInputControl('integrations')}
-                        multiple={false}
-                        required
-                    />
+                        isMultiple={false}
+                        isRequired
+                        onChange={this._handleFilterChange('integrations')}
+                        value={filters.get('integrations', fromJS([])).toJS()}
+                    >
+                        {integrations.map((integration) => (
+                            <SelectFilter.Item
+                                key={integration.id}
+                                label={integration.name}
+                                value={integration.id}
+                            />
+                        ))}
+                    </SelectFilter>
                 )
             }
             case 'period':

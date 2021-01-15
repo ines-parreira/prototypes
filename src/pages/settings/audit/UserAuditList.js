@@ -8,7 +8,7 @@ import moment from 'moment'
 import Loader from '../../common/components/Loader/Loader'
 import PageHeader from '../../common/components/PageHeader.tsx'
 import DatePicker from '../../common/forms/DatePicker'
-import SearchableSelectField from '../../stats/common/SearchableSelectField'
+import SelectFilter from '../../stats/common/SelectFilter.tsx'
 import Pagination from '../../common/components/Pagination'
 import {fetchUsersAudit} from '../../../state/usersAudit/actions.ts'
 import {
@@ -36,16 +36,13 @@ type Props = {
 }
 
 type State = {
-    // toggles
     isFetching: boolean,
     isDatePickerOpen: boolean,
-
-    // filters
     end_datetime: string,
     start_datetime: string,
-    user_ids?: Array<number>,
-    event_types?: Array<string>,
-    object_types?: Array<string>,
+    event_types: Array<string>,
+    object_types: Array<string>,
+    user_ids: Array<number>,
 }
 
 // filters we'll use to fetch from the API
@@ -68,10 +65,23 @@ export class UserAuditList extends React.Component<Props, State> {
         isDatePickerOpen: false,
         start_datetime: _startOfToday().format(),
         end_datetime: _endOfToday().format(),
+        user_ids: [],
+        object_types: [],
+        event_types: [],
     }
 
     componentDidMount() {
         this._fetchUsersAudit()
+    }
+
+    componentDidUpdate(prevProps: Props, prevState: State) {
+        if (
+            prevState.object_types !== this.state.object_types ||
+            prevState.event_types !== this.state.event_types ||
+            prevState.user_ids !== this.state.user_ids
+        ) {
+            this._fetchUsersAudit()
+        }
     }
 
     _fetchUsersAudit = (page: number = 1) => {
@@ -93,17 +103,9 @@ export class UserAuditList extends React.Component<Props, State> {
         )
     }
 
-    _onFilterChange = (filterName: string, values: Array<string>) => {
-        this.setState({[filterName]: values}, this._fetchUsersAudit)
-    }
-
-    _makeInputControl = (filterName: string) => {
-        const filterValue = this.state[filterName]
-        return {
-            value: filterValue ? filterValue : [],
-            onChange: (values: Array<string>) => {
-                this._onFilterChange(filterName, values)
-            },
+    handleChange = (filterName: string) => {
+        return (values: Array<string>) => {
+            this.setState({[filterName]: values})
         }
     }
 
@@ -121,6 +123,9 @@ export class UserAuditList extends React.Component<Props, State> {
             isDatePickerOpen,
             start_datetime,
             end_datetime,
+            user_ids,
+            object_types,
+            event_types,
         } = this.state
 
         if (isFetching) {
@@ -131,31 +136,51 @@ export class UserAuditList extends React.Component<Props, State> {
             <div className="full-width">
                 <PageHeader title="Audit logs">
                     <div className="d-flex flex-wrap float-right">
-                        <SearchableSelectField
+                        <SelectFilter
                             plural="team members"
-                            required={false}
                             singular="team member"
-                            items={userIdOptions}
-                            input={this._makeInputControl('user_ids')}
-                            multiple
-                        />
+                            onChange={this.handleChange('user_ids')}
+                            value={user_ids}
+                        >
+                            {userIdOptions.map((option) => (
+                                <SelectFilter.Item
+                                    key={option.value}
+                                    label={option.label}
+                                    value={option.value}
+                                />
+                            ))}
+                        </SelectFilter>
 
-                        <SearchableSelectField
+                        <SelectFilter
                             plural="objects"
-                            required={false}
                             singular="object"
-                            items={objectTypeOptions}
-                            input={this._makeInputControl('object_types')}
-                            multiple
-                        />
-                        <SearchableSelectField
+                            onChange={this.handleChange('object_types')}
+                            value={object_types}
+                        >
+                            {objectTypeOptions.map((option) => (
+                                <SelectFilter.Item
+                                    key={option.value}
+                                    label={option.label}
+                                    value={option.value}
+                                />
+                            ))}
+                        </SelectFilter>
+
+                        <SelectFilter
                             plural="events"
-                            required={false}
                             singular="event"
-                            items={eventTypeOptions}
-                            input={this._makeInputControl('event_types')}
-                            multiple
-                        />
+                            onChange={this.handleChange('event_types')}
+                            value={event_types}
+                        >
+                            {eventTypeOptions.map((option) => (
+                                <SelectFilter.Item
+                                    key={option.value}
+                                    label={option.label}
+                                    value={option.value}
+                                />
+                            ))}
+                        </SelectFilter>
+
                         <DatePicker
                             isOpen={isDatePickerOpen}
                             onApply={this._onApplyDatePicker}
@@ -257,7 +282,7 @@ export class UserAuditList extends React.Component<Props, State> {
     }
 }
 
-export default connect(
+const connector = connect(
     (state) => ({
         events: getUserAuditEvents(state),
         eventsListMeta: getUserAuditPagination(state),
@@ -267,6 +292,8 @@ export default connect(
         timezone: currentUserSelectors.getTimezone(state),
     }),
     {
-        fetchUsersAudit: fetchUsersAudit,
+        fetchUsersAudit,
     }
-)(UserAuditList)
+)
+
+export default connector(UserAuditList)
