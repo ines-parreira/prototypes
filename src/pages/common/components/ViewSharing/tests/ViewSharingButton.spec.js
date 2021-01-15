@@ -11,6 +11,7 @@ import {
     SYSTEM_VIEW_CATEGORY,
     ViewVisibility,
 } from '../../../../../constants/view.ts'
+import {AccountFeatures} from '../../../../../state/currentAccount/types.ts'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -30,6 +31,9 @@ const getState = (currentUser) => ({
             '2': {id: 2, name: 'Team 2'},
             '3': {id: 3, name: 'Team 3'},
         },
+    }),
+    currentAccount: fromJS({
+        features: fromJS({[AccountFeatures.ViewSharing]: true}),
     }),
 })
 

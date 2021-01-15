@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`UpgradeButton should display with custom props 1`] = `
+<button
+  class="button-class upgradeButton sm invertedColors btn btn-outline-warning"
+>
+  <a
+    class="d-flex align-items-center upgradeLink"
+  >
+    <span
+      class="mr-2 upgradeLabel"
+    >
+      a label
+    </span>
+    <img
+      alt="upgrade-icon"
+      class="upgradeIcon sm"
+      src="test-file-stub"
+    />
+  </a>
+</button>
+`;
+
+exports[`UpgradeButton should display with default props 1`] = `
+<button
+  class="upgradeButton btn btn-outline-warning"
+>
+  <a
+    class="d-flex align-items-center upgradeLink"
+  >
+    <span
+      class="mr-2 upgradeLabel"
+    >
+      Upgrade
+    </span>
+    <img
+      alt="upgrade-icon"
+      class="upgradeIcon"
+      src="test-file-stub"
+    />
+  </a>
+</button>
+`;

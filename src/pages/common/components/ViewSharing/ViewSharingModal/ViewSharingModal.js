@@ -21,6 +21,8 @@ import {ViewVisibility} from '../../../../../constants/view.ts'
 import {viewUpdated} from '../../../../../state/entities/views/actions.ts'
 import type {View} from '../../../../../models/view/types'
 
+import UpgradeButton from '../../UpgradeButton/UpgradeButton.tsx'
+
 import ViewSharingModalBody from './ViewSharingModalBody'
 import css from './ViewSharingModal.less'
 
@@ -28,6 +30,7 @@ type Props = {
     view: viewType,
     isOpen: boolean,
     currentUser: currentUserType,
+    showPaywall: boolean,
     toggle: () => void,
     notify: (message: notificationType) => void,
     viewUpdated: (data: View) => void,
@@ -37,6 +40,7 @@ function ViewSharingModal({
     view,
     isOpen,
     currentUser,
+    showPaywall,
     toggle,
     notify,
     viewUpdated,
@@ -76,46 +80,82 @@ function ViewSharingModal({
     return (
         <Modal isOpen={isOpen} toggle={toggle}>
             <ModalHeader toggle={toggle}>
-                Update view sharing: <b>{view.get('name')}</b>
+                {!showPaywall ? (
+                    <>
+                        Update view sharing: <b>{view.get('name')}</b>
+                    </>
+                ) : (
+                    'Unclutter your helpdesk with view sharing'
+                )}
             </ModalHeader>
-            <ModalBody className="p-0">
-                <ViewSharingModalBody
-                    visibility={visibility}
-                    isLoading={isLoading}
-                    error={error}
-                    initialTeams={initialTeams}
-                    initialUsers={initialUsers}
-                    selectedTeams={selectedTeams}
-                    selectedUsers={selectedUsers}
-                    setVisibility={setVisibility}
-                    onTeamClick={onTeamClick}
-                    onUserClick={onUserClick}
-                    onRemoveTeam={onRemoveTeam}
-                    onRemoveUser={onRemoveUser}
-                />
-            </ModalBody>
-            <ModalFooter>
-                <Button
-                    color="success"
-                    id="view-sharing-submit"
-                    className={css.submit}
-                    disabled={disabled}
-                    href="#"
-                    onClick={() => save(onSaveSuccess)}
-                >
-                    Update view sharing
-                </Button>
-                <Button color="secondary" onClick={toggle}>
-                    Cancel
-                </Button>
-            </ModalFooter>
-            {shouldSelectSomething && (
-                <UncontrolledTooltip
-                    target="view-sharing-submit"
-                    placement="top"
-                >
-                    Please select at least one team or one user
-                </UncontrolledTooltip>
+            {!showPaywall ? (
+                <>
+                    <ModalBody className="p-0">
+                        {
+                            <ViewSharingModalBody
+                                visibility={visibility}
+                                isLoading={isLoading}
+                                error={error}
+                                initialTeams={initialTeams}
+                                initialUsers={initialUsers}
+                                selectedTeams={selectedTeams}
+                                selectedUsers={selectedUsers}
+                                setVisibility={setVisibility}
+                                onTeamClick={onTeamClick}
+                                onUserClick={onUserClick}
+                                onRemoveTeam={onRemoveTeam}
+                                onRemoveUser={onRemoveUser}
+                            />
+                        }
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button
+                            color="success"
+                            id="view-sharing-submit"
+                            className={css.submit}
+                            disabled={disabled}
+                            href="#"
+                            onClick={() => save(onSaveSuccess)}
+                        >
+                            Update view sharing
+                        </Button>
+                        <Button color="secondary" onClick={toggle}>
+                            Cancel
+                        </Button>
+                    </ModalFooter>
+                    {shouldSelectSomething && (
+                        <UncontrolledTooltip
+                            target="view-sharing-submit"
+                            placement="top"
+                        >
+                            Please select at least one team or one user
+                        </UncontrolledTooltip>
+                    )}
+                </>
+            ) : (
+                <ModalBody>
+                    <p className={css.paywallText}>
+                        Upgrade to an advanced plan to customize the visibility
+                        of your views and create <b>public,</b> <b>private,</b>{' '}
+                        and <b>shared views.</b>
+                        <br />
+                    </p>
+                    <p className={css.paywallText}>
+                        Check{' '}
+                        <a
+                            href="https://www.gorgias.com/blog/view-sharing"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            this blog post to
+                        </a>{' '}
+                        learn more about how view sharing can benefit your team.
+                    </p>
+                    <UpgradeButton
+                        className="mb-3"
+                        label="Upgrade to Advanced"
+                    />
+                </ModalBody>
             )}
         </Modal>
     )

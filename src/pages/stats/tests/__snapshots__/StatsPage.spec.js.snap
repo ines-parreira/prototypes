@@ -2,30 +2,33 @@
 
 exports[`StatsPage should not render statistics because there is no filter 1`] = `""`;
 
-exports[`StatsPage should render "Overview" statistics 1`] = `
-<div
-  className="stats full-width"
->
-  <withRouter(Connect(Component)) />
-  <withRouter(Connect(Stats))
-    key="overview-bda01ba4dfda3493e856796c40be4ec6"
-  />
-</div>
-`;
+exports[`StatsPage should render "Overview" statistics 1`] = `<StatsComponent />`;
 
-exports[`StatsPage should render a component used to restrict access to satisfaction survey statistics 1`] = `<RestrictedSatisfactionSurvey />`;
+exports[`StatsPage should render "Revenue" statistics 1`] = `<Component />`;
+
+exports[`StatsPage should render "Satisfaction" statistics 1`] = `<Component />`;
 
 exports[`StatsPage should restrict access to revenue stats because the account doesn't have a store integration 1`] = `
-<RestrictedRevenue
-  hasFeature={true}
-  hasRequiredIntegration={false}
-/>
-`;
-
-exports[`StatsPage should restrict access to revenue stats because the account doesn't have this feature 1`] = `
-<RestrictedRevenue
-  hasFeature={false}
-  hasRequiredIntegration={true}
+<RestrictedFeature
+  alertMsg={
+    <React.Fragment>
+      Your e-commerce store needs to be connected to Gorgias to use this feature.
+      <Link
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/settings/integrations/shopify/new"
+      >
+         
+        Add one here
+      </Link>
+    </React.Fragment>
+  }
+  imagesURL={
+    Array [
+      "/static/private/img/presentationals/revenue-presentation.png",
+    ]
+  }
+  info="Assess how much sales your support team is influencing. Staff and reward your support team according to sales. Track and increase conversion, using Chat campaigns, for example."
 />
 `;
 

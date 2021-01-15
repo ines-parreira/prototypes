@@ -2,6 +2,7 @@ import {fromJS, List, Map} from 'immutable'
 import {createSelector} from 'reselect'
 import _isArray from 'lodash/isArray'
 
+import {INTEGRATION_TYPE_DESCRIPTIONS} from '../../config'
 import {IntegrationType} from '../../models/integration/types'
 import {MESSAGING_INTEGRATION_TYPES} from '../../models/integration/constants'
 import {compare} from '../../utils'
@@ -10,6 +11,10 @@ import {getCurrentUserState} from '../currentUser/selectors'
 import {nestedReplace} from '../ticket/utils.js'
 
 import {IntegrationsState} from './types'
+
+type IntegrationsCountMap = {
+    [key in typeof IntegrationType[keyof typeof IntegrationType]]?: number
+}
 
 export const getIntegrationsState = (state: RootState) =>
     state.integrations || fromJS({})
@@ -22,6 +27,76 @@ export const getIntegrations = createSelector<
     getIntegrationsState,
     (state) => state.get('integrations', fromJS([])) as List<any>
 )
+
+export const getIntegrationsCountPerType = createSelector<
+    RootState,
+    IntegrationsCountMap,
+    List<any>
+>(getIntegrations, (integrations) => {
+    return integrations.reduce(
+        (accumulator: IntegrationsCountMap = {}, item: Map<any, any>) => {
+            if (!item.get('deactivated_datetime')) {
+                if (item.get('type') in accumulator) {
+                    ;(accumulator[
+                        item.get('type') as keyof IntegrationsCountMap
+                    ] as number) += 1
+                } else {
+                    accumulator[
+                        item.get('type') as keyof IntegrationsCountMap
+                    ] = 1
+                }
+            }
+
+            return accumulator
+        },
+        {}
+    )
+})
+
+export const getIntegrationsConfig = createSelector<
+    RootState,
+    List<any>,
+    IntegrationsCountMap
+>(getIntegrationsCountPerType, (counts) => {
+    return fromJS(
+        INTEGRATION_TYPE_DESCRIPTIONS.reduce(
+            (
+                list,
+                typeDescription: typeof INTEGRATION_TYPE_DESCRIPTIONS[keyof typeof INTEGRATION_TYPE_DESCRIPTIONS]
+            ) => {
+                let count = 0
+
+                //$TsFixMe remove the typeof condition when config is migrated
+                if (typeof typeDescription === 'object') {
+                    if (typeDescription.subTypes) {
+                        ;(typeDescription.subTypes as (keyof IntegrationsCountMap)[]).forEach(
+                            (type) => {
+                                count += counts[type] || 0
+                            }
+                        )
+                    } else {
+                        count +=
+                            counts[
+                                typeDescription.type as keyof IntegrationsCountMap
+                            ] || 0
+                    }
+                }
+
+                return [
+                    ...list,
+                    {
+                        //$TsFixMe remove the typeof condition when config is migrated
+                        ...(typeof typeDescription === 'object'
+                            ? typeDescription
+                            : {}),
+                        count,
+                    },
+                ]
+            },
+            [] as Record<string, unknown>[]
+        )
+    ) as List<any>
+})
 
 export const getCurrentIntegration = createSelector<
     RootState,

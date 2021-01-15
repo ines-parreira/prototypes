@@ -13,6 +13,8 @@ import {hasRole} from '../../../../utils.ts'
 import {AGENT_ROLE} from '../../../../config/user.ts'
 import {SYSTEM_VIEW_CATEGORY} from '../../../../constants/view.ts'
 
+import {AccountFeatures} from '../../../../state/currentAccount/types.ts'
+
 import ViewSharingButtonTooltip from './ViewSharingButtonTooltip'
 import ViewSharingModal from './ViewSharingModal'
 import css from './ViewSharingButton.less'
@@ -21,9 +23,15 @@ type Props = {
     className: string,
     currentUser: currentUserType,
     view: viewType,
+    hasViewSharingFeature: boolean,
 }
 
-function ViewSharingButton({currentUser, view, className}: Props) {
+function ViewSharingButton({
+    currentUser,
+    view,
+    className,
+    hasViewSharingFeature,
+}: Props) {
     const isSystem = view.get('category') === SYSTEM_VIEW_CATEGORY
     const label = _capitalize(view.get('visibility'))
     const [isOpen, setOpen] = useState(false)
@@ -45,7 +53,12 @@ function ViewSharingButton({currentUser, view, className}: Props) {
                 <b>{label}</b>
             </Button>
             {isEditable && isOpen && (
-                <ViewSharingModal view={view} isOpen={isOpen} toggle={toggle} />
+                <ViewSharingModal
+                    view={view}
+                    isOpen={isOpen}
+                    toggle={toggle}
+                    showPaywall={!hasViewSharingFeature}
+                />
             )}
             <ViewSharingButtonTooltip
                 isSystem={isSystem}
@@ -55,8 +68,12 @@ function ViewSharingButton({currentUser, view, className}: Props) {
     )
 }
 
-const mapStateToProps = (state) => ({
-    currentUser: state.currentUser,
-})
-
+const mapStateToProps = (state) => {
+    const features = state.currentAccount.get('features')
+    const hasViewSharingFeature = features.get(AccountFeatures.ViewSharing)
+    return {
+        currentUser: state.currentUser,
+        hasViewSharingFeature,
+    }
+}
 export default connect(mapStateToProps)(ViewSharingButton)
