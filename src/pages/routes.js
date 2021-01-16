@@ -3,7 +3,6 @@ import React from 'react'
 import {IndexRedirect, IndexRoute, Route} from 'react-router'
 
 import {ADMIN_ROLE, AGENT_ROLE} from '../config/user.ts'
-import {AccountFeatures} from '../state/currentAccount/types.ts'
 
 import App from './App'
 import IntegrationDetailContainer from './integrations/detail/IntegrationDetailContainer'
@@ -48,8 +47,6 @@ import List from './settings/teams/members/List'
 import UserAuditList from './settings/audit/UserAuditList'
 import BusinessHours from './settings/businessHours'
 import TicketAssignment from './settings/ticketAssignment'
-
-import withPaywall from './common/utils/withPaywall.tsx'
 
 export default (
     <Route path="/app" component={App}>
@@ -315,36 +312,28 @@ export default (
             <Route path="teams">
                 <IndexRoute
                     components={{
-                        content: withPaywall(AccountFeatures.Teams)(
-                            UserRoleRequired(Teams.List, ADMIN_ROLE)
-                        ),
+                        content: UserRoleRequired(Teams.List, ADMIN_ROLE),
                         navbar: SettingsNavbarContainer,
                     }}
                 />
                 <Route
                     path="create"
                     components={{
-                        content: withPaywall(AccountFeatures.Teams)(
-                            UserRoleRequired(Teams.Form, ADMIN_ROLE)
-                        ),
+                        content: UserRoleRequired(Teams.Form, ADMIN_ROLE),
                         navbar: SettingsNavbarContainer,
                     }}
                 />
                 <Route
                     path=":id"
                     components={{
-                        content: withPaywall(AccountFeatures.Teams)(
-                            UserRoleRequired(Teams.Form, ADMIN_ROLE)
-                        ),
+                        content: UserRoleRequired(Teams.Form, ADMIN_ROLE),
                         navbar: SettingsNavbarContainer,
                     }}
                 />
                 <Route
                     path=":id/members"
                     components={{
-                        content: withPaywall(AccountFeatures.Teams)(
-                            UserRoleRequired(List, ADMIN_ROLE)
-                        ),
+                        content: UserRoleRequired(List, ADMIN_ROLE),
                         navbar: SettingsNavbarContainer,
                     }}
                 />
@@ -460,8 +449,9 @@ export default (
             <Route
                 path="satisfaction-surveys"
                 components={{
-                    content: withPaywall(AccountFeatures.SatisfactionSurveys)(
-                        UserRoleRequired(SatisfactionSurveyView, ADMIN_ROLE)
+                    content: UserRoleRequired(
+                        SatisfactionSurveyView,
+                        ADMIN_ROLE
                     ),
                     navbar: SettingsNavbarContainer,
                 }}
@@ -476,9 +466,7 @@ export default (
             <Route
                 path="ticket-assignment"
                 components={{
-                    content: withPaywall(AccountFeatures.AutoAssignment)(
-                        UserRoleRequired(TicketAssignment, ADMIN_ROLE)
-                    ),
+                    content: UserRoleRequired(TicketAssignment, ADMIN_ROLE),
                     navbar: SettingsNavbarContainer,
                 }}
             />

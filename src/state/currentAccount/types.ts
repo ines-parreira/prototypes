@@ -16,19 +16,6 @@ export enum AccountSettingType {
     ViewsOrdering = 'views-ordering',
 }
 
-export enum AccountFeatures {
-    AutoAssignment = 'auto_assignment',
-    ChatCampaigns = 'chat_campaigns',
-    FacebookComment = 'facebook_comment',
-    InstagramComment = 'instagram_comment',
-    MagentoIntegration = 'magento_integration',
-    RevenueStatistics = 'revenue_statistics',
-    SatisfactionSurveys = 'satisfaction_surveys',
-    Teams = 'teams',
-    UserRoles = 'user_roles',
-    ViewSharing = 'view_sharing',
-}
-
 export type AccountSetting =
     | {
           id: number
@@ -92,8 +79,4 @@ export type Account = {
     stripe_id: string
     settings: AccountSetting[]
     user_id: number
-    features: Record<
-        typeof AccountFeatures[keyof typeof AccountFeatures],
-        boolean
-    >
 }

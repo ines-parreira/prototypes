@@ -3,17 +3,15 @@ import React from 'react'
 import {Link} from 'react-router'
 import {Alert, Container, Row, Col} from 'reactstrap'
 
-import type {List, Map} from 'immutable'
+import type {Map} from 'immutable'
 
-import {AccountFeatures} from '../../../../state/currentAccount/types.ts'
-import {IntegrationType} from '../../../../models/integration/types.ts'
 import PageHeader from '../../../common/components/PageHeader.tsx'
+import {getIntegrationsList} from '../../../../state/integrations/helpers.ts'
 
-import IntegrationListRow from './IntegrationListRow.tsx'
+import IntegrationListRow from './IntegrationListRow'
 
 type Props = {
-    integrations: List<Map<string, any>>,
-    integrationsConfig: List<Map<string, any>>,
+    integrations: Map<*, *>,
     currentPlan: Map<*, *>,
     allowedIntegrations: number,
     activeIntegrations: number,
@@ -71,33 +69,22 @@ export default class IntegrationList extends React.Component<Props> {
     }
 
     render() {
-        const {currentPlan, integrations, integrationsConfig} = this.props
-        const hasSmoochInsideIntegration = integrations.find(
-            (integration) => integration.get('type') === 'smooch_inside'
-        )
-        const displayList = integrationsConfig
-            .filter((integration) => {
-                // do not return the smooch inside integration if none has ever been created
-                if (
-                    integration.get('type') === 'smooch_inside' &&
-                    !hasSmoochInsideIntegration
-                ) {
-                    return false
-                }
-                return !integration.get('hide')
-            })
-            .map((integration) => {
-                if (
-                    integration.get('type') ===
-                        IntegrationType.Magento2IntegrationType &&
-                    !currentPlan
-                        .get('features')
-                        .get(AccountFeatures.MagentoIntegration)
-                ) {
-                    return integration.set('displayUpgrade', true)
-                }
-                return integration
-            })
+        const {integrations} = this.props
+
+        const hasSmoochInsideIntegration = integrations
+            .get('integrations')
+            .find((integration) => integration.get('type') === 'smooch_inside')
+        const list = getIntegrationsList(integrations.get('integrations'))
+        const displayList = list.filter((integration) => {
+            // do not return the smooch inside integration if none has ever been created
+            if (
+                integration.get('type') === 'smooch_inside' &&
+                !hasSmoochInsideIntegration
+            ) {
+                return false
+            }
+            return !integration.get('hide')
+        })
 
         return (
             <div className="full-width">

@@ -21,20 +21,16 @@ import {toJS} from '../../../utils.ts'
 import Loader from '../../common/components/Loader'
 import ConfirmButton from '../../common/components/ConfirmButton.tsx'
 import RichDropdown, {type Option} from '../../common/components/RichDropdown'
-import UpgradeButton from '../../common/components/UpgradeButton/UpgradeButton.tsx'
 import {
-    ADMIN_ROLE,
     BASIC_AGENT_ROLE,
     ORDERED_ROLES_META_BY_USER_ROLE,
 } from '../../../config/user.ts'
 import type {MetaByAgentRole} from '../../../config/types/user'
-import {paywallConfigs} from '../../../config/paywalls.tsx'
 
 import InputField from '../../common/forms/InputField'
 
 import * as actions from '../../../state/agents/actions.ts'
 import {updateAccountOwner} from '../../../state/currentAccount/actions.ts'
-import {AccountFeatures} from '../../../state/currentAccount/types.ts'
 import * as helpers from '../../../state/agents/helpers.ts'
 import PageHeader from '../../common/components/PageHeader.tsx'
 import Popover from '../../common/components/Popover'
@@ -53,7 +49,6 @@ type Props = {
     orderedRoleMetaByUserRole: MetaByAgentRole,
     updateAgent: (number, Object) => Promise<Object>,
     updateAccountOwner: Function,
-    hasUserRolesFeature: boolean,
 }
 
 type State = {
@@ -64,7 +59,7 @@ type State = {
     isFetching: boolean,
     isSubmitting: boolean,
     name: string,
-    role: string,
+    role: ?string,
 }
 
 @connect(
@@ -73,9 +68,6 @@ type State = {
             agentId: parseInt(ownProps.params.id),
             accountOwnerId: state.currentAccount.get('user_id'),
             currentUserId: state.currentUser.get('id'),
-            hasUserRolesFeature: state.currentAccount
-                .get('features')
-                .get(AccountFeatures.UserRoles),
         }
     },
     {
@@ -100,7 +92,7 @@ export default class Form extends Component<Props, State> {
         isFetching: false,
         isSubmitting: false,
         name: '',
-        role: this.props.hasUserRolesFeature ? BASIC_AGENT_ROLE : ADMIN_ROLE,
+        role: BASIC_AGENT_ROLE,
     }
 
     componentDidMount() {
@@ -174,7 +166,7 @@ export default class Form extends Component<Props, State> {
     )
 
     render() {
-        const {hasUserRolesFeature, orderedRoleMetaByUserRole} = this.props
+        const {orderedRoleMetaByUserRole} = this.props
         const {agent, role} = this.state
 
         if (this.state.isFetching) {
@@ -187,7 +179,6 @@ export default class Form extends Component<Props, State> {
             this.props.accountOwnerId === this.props.currentUserId
         const isAgentAccountOwner =
             this.props.agentId === this.props.accountOwnerId
-        const paywallConfig = paywallConfigs[AccountFeatures.UserRoles]
 
         return (
             <div className="full-width">
@@ -245,9 +236,7 @@ export default class Form extends Component<Props, State> {
                         <RichDropdown
                             className={css.roleDropdown}
                             options={this.getRolesOptionsFromRoles(
-                                hasUserRolesFeature
-                                    ? orderedRoleMetaByUserRole
-                                    : {[role]: orderedRoleMetaByUserRole[role]}
+                                orderedRoleMetaByUserRole
                             )}
                             onClick={(role) => this.setState({role})}
                             value={
@@ -283,17 +272,6 @@ export default class Form extends Component<Props, State> {
                                 </Popover>
                             </div>
                         </RichDropdown>
-                        {!hasUserRolesFeature && (
-                            <div className={classnames('mb-3', css.paywall)}>
-                                <h3>{paywallConfig.header}</h3>
-
-                                {paywallConfig.description}
-                                <UpgradeButton
-                                    className="mt-3"
-                                    label={`Upgrade to ${paywallConfig.upgradeType}`}
-                                />
-                            </div>
-                        )}
                         <FormGroup>
                             <Button
                                 type="submit"

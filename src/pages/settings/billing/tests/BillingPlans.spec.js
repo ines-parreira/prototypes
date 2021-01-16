@@ -1,49 +1,108 @@
 import React from 'react'
-import {render} from '@testing-library/react'
+import {mount, shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
 import {BillingPlans} from '../plans/BillingPlans'
-import {
-    basicPlan,
-    proPlan,
-    customPlan,
-} from '../../../../fixtures/subscriptionPlan.ts'
-import {account} from '../../../../fixtures/account.ts'
 
-describe('<BillingPlans/>', () => {
-    const publicPlans = {
-        [basicPlan.id]: basicPlan,
-        [proPlan.id]: proPlan,
-    }
-    const legacyAccount = fromJS(account).set('created_datetime', '2021-01-31')
-    const newAccount = fromJS(account).set('created_datetime', '2021-02-01')
-
-    it.each([
-        ['public plans', {plans: fromJS(publicPlans)}],
-        [
-            'a custom plan',
-            {
-                plans: fromJS({
-                    [customPlan.id]: customPlan,
-                    ...publicPlans,
-                }),
-            },
-        ],
-        ['plans with product features', {currentAccount: newAccount}],
-        ['plans without product features', {currentAccount: legacyAccount}],
-    ])('should display %s', (_, props) => {
-        const {container} = render(
+describe('BillingPlans component', () => {
+    it('should load with empty props', () => {
+        const component = mount(
             <BillingPlans
-                currentAccount={legacyAccount}
                 notify={() => true}
                 updateSubscription={() => true}
                 isAllowedToChangePlan={() => true}
-                plans={fromJS(publicPlans)}
-                subscription={fromJS({plan: basicPlan.id})}
-                currentPlan={fromJS(basicPlan)}
-                {...props}
+                plans={fromJS({})}
+                subscription={fromJS({plan: 'some-plan'})}
+                currentPlan={fromJS({})}
             />
         )
-        expect(container.firstChild).toMatchSnapshot()
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should display matching current plan', () => {
+        const component = shallow(
+            <BillingPlans
+                notify={() => true}
+                updateSubscription={() => true}
+                isAllowedToChangePlan={() => true}
+                plans={fromJS({
+                    plan1: {
+                        public: true,
+                        name: 'my plan',
+                        free_tickets: 100,
+                        currencySign: '$',
+                        integrations: 10,
+                    },
+                })}
+                subscription={fromJS({plan: 'plan1'})}
+                currentPlan={fromJS({})}
+            />
+        )
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should display multiple plans', () => {
+        const component = shallow(
+            <BillingPlans
+                notify={() => true}
+                updateSubscription={() => true}
+                isAllowedToChangePlan={() => true}
+                plans={fromJS({
+                    plan1: {
+                        public: true,
+                        name: 'my plan',
+                        free_tickets: 100,
+                        currencySign: '$',
+                        integrations: 10,
+                    },
+                    plan2: {
+                        public: true,
+                        name: 'my second plan',
+                        free_tickets: 1000,
+                        currencySign: '$',
+                        integrations: 100,
+                    },
+                    hidden: {
+                        public: false,
+                        name: 'my hidden plan',
+                        free_tickets: 1000,
+                        currencySign: '$',
+                        integrations: 100,
+                    },
+                })}
+                subscription={fromJS({plan: 'plan1'})}
+                currentPlan={fromJS({})}
+            />
+        )
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should display a custom plan', () => {
+        const component = shallow(
+            <BillingPlans
+                notify={() => true}
+                updateSubscription={() => true}
+                isAllowedToChangePlan={() => true}
+                plans={fromJS({
+                    custom: {
+                        public: true,
+                        name: 'custom plan',
+                        free_tickets: 100,
+                        currencySign: '$',
+                        integrations: 10,
+                    },
+                    plan1: {
+                        public: true,
+                        name: 'plan 1',
+                        free_tickets: 100,
+                        currencySign: '$',
+                        integrations: 10,
+                    },
+                })}
+                subscription={fromJS({plan: 'custom'})}
+                currentPlan={fromJS({custom: true})}
+            />
+        )
+        expect(component).toMatchSnapshot()
     })
 })

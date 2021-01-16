@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RevenueUpgrade should render feature missing 1`] = `
+<RestrictedFeature
+  alertMsg={
+    <React.Fragment>
+      This feature is only available for Pro and above plans.
+      <Link
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/settings/billing/plans"
+      >
+         Upgrade here.
+      </Link>
+    </React.Fragment>
+  }
+  imagesURL={
+    Array [
+      "/static/private/img/presentationals/revenue-presentation.png",
+    ]
+  }
+  info="Assess how much sales your support team is influencing. Staff and reward your support team according to sales. Track and increase conversion, using Chat campaigns, for example."
+/>
+`;
+
+exports[`RevenueUpgrade should render missing required integration 1`] = `
+<RestrictedFeature
+  alertMsg={
+    <React.Fragment>
+      Your e-commerce store needs to be connected to Gorgias to use this feature.
+      <Link
+        onlyActiveOnIndex={false}
+        style={Object {}}
+        to="/app/settings/integrations/shopify/new"
+      >
+         
+        Add one here
+      </Link>
+    </React.Fragment>
+  }
+  imagesURL={
+    Array [
+      "/static/private/img/presentationals/revenue-presentation.png",
+    ]
+  }
+  info="Assess how much sales your support team is influencing. Staff and reward your support team according to sales. Track and increase conversion, using Chat campaigns, for example."
+/>
+`;

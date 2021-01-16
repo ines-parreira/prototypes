@@ -1,350 +1,155 @@
-import classnames from 'classnames'
-import React, {useState} from 'react'
-import {
-    Button,
-    Card,
-    CardBody,
-    CardFooter,
-    CardHeader,
-    Popover,
-    PopoverBody,
-    PopoverHeader,
-} from 'reactstrap'
-import _omitBy from 'lodash/omitBy'
+// @flow
 
+import classnames from 'classnames'
+import React, {type Node} from 'react'
+import {Button, Card, CardBody, CardFooter, CardHeader} from 'reactstrap'
+
+import Tooltip from '../../../common/components/Tooltip'
 import './Plan.less'
-import {openChat} from '../../../../utils.ts'
 
 type Props = {
-    plan: Map<any, any>,
-    currentPlan: Map<any, any>,
-    cheaperPlan: Map<any, any> | null,
-    showFooter: boolean,
-    showProductFeatures: boolean,
+    plan: Object,
+    callToAction?: Node,
+    features?: Node,
+    isCurrentPlan?: boolean,
     isFeatured?: boolean,
+    isTrialing?: boolean,
     isUpdating?: boolean,
+    showFooter?: boolean,
     onClick?: Function,
-    className?: string,
+    className?: ?string,
 }
 
-type FeatureDetail = {
-    name?: string,
-    isCustomIcon?: boolean,
-    icon: string,
-    label: string,
-}
-
-const extraFeaturesPerPlan = {
-    Basic: [
-        {
-            icon: 'all_inclusive',
-            label: 'Unlimited users',
-        },
-        {
-            icon: 'extension',
-            label: '150 integrations included',
-        },
-        {
-            icon: 'widgets',
-            label: 'Shopify integration',
-        },
-        {
-            icon: 'chat',
-            label: 'Live chat',
-        },
-        {
-            icon: 'build',
-            label: 'Macros and rules',
-        },
-    ],
-    Pro: [],
-    Advanced: [
-        {
-            icon: 'call',
-            label: 'Customer success manager',
-        },
-    ],
-    Enterprise: [
-        {
-            icon: 'arrow_downward',
-            label: 'Discounted prices for volumes of 10.000+ tickets',
-        },
-        {
-            icon: 'beach_access',
-            label: 'Premium support',
-        },
-    ],
-}
-
-const featuresConfig = [
-    {
-        name: 'facebook_comment',
-        icon: 'facebook',
-        label: 'Facebook integration',
-    },
-    {
-        name: 'instagram_comment',
-        icon: 'icon-instagram',
-        label: 'Instagram integration',
-        isCustomIcon: true,
-    },
-    {
-        name: 'magento_integration',
-        icon: 'widgets',
-        label: 'Magento integration',
-    },
-    {
-        name: 'satisfaction_surveys',
-        icon: 'insert_emoticon',
-        label: 'Satisfaction surveys',
-    },
-    {
-        name: 'chat_campaigns',
-        icon: 'chat',
-        label: 'Chat campaigns',
-    },
-    {
-        name: 'user_roles',
-        icon: 'lock',
-        label: 'User permissions',
-    },
-    {
-        name: 'revenue_statistics',
-        icon: 'monetization_on',
-        label: 'Revenue stats',
-    },
-    {
-        name: 'teams',
-        icon: 'group',
-        label: 'Teams',
-    },
-    {
-        name: 'auto_assignment',
-        icon: 'assignment_turned_in',
-        label: 'Auto-assignment',
-    },
-    {
-        name: 'view_sharing',
-        icon: 'visibility',
-        label: 'View sharing',
-    },
-]
-
-const countFeatures = (plan: Map<any, any>) => {
-    return plan
-        .get('features')
-        .valueSeq()
-        .filter((hasFeature) => hasFeature)
-        .count()
-}
-
-const getFeatures = (
-    plan: Map<any, any>,
-    cheaperPlan: Map<any, any> | null,
-    includeProductFeatures: true
-): Array<FeatureDetail> => {
-    const costMultiplier = 100
-    const costPerTicket = (
-        plan.get('cost_per_ticket') * costMultiplier
-    ).toFixed(2)
-    const isEnterprisePlan = plan.get('id') === 'enterprise'
-    const planFeatures = Object.keys(
-        _omitBy(plan.get('features').toJS(), (hasFeature, featureName) => {
-            return !(
-                hasFeature &&
-                (!cheaperPlan || !cheaperPlan.getIn(['features', featureName]))
-            )
-        })
-    )
-    let features = isEnterprisePlan
-        ? []
-        : [
-              {
-                  icon: 'playlist_add_check',
-                  label: `${plan.get('free_tickets')} tickets included`,
-              },
-              {
-                  icon: 'playlist_add',
-                  label: `$${costPerTicket} per ${costMultiplier} extra tickets`,
-              },
-          ]
-
-    if (includeProductFeatures) {
-        features = features.concat(
-            featuresConfig.filter((feature) => {
-                return planFeatures.includes(feature.name)
-            })
-        )
-
-        if (extraFeaturesPerPlan.hasOwnProperty(plan.get('name'))) {
-            features = features.concat(extraFeaturesPerPlan[plan.get('name')])
-        }
+export class Plan extends React.Component<Props> {
+    static defaultProps = {
+        isCurrentPlan: false,
+        isFeatured: false,
+        isTrialing: false,
+        isUpdating: false,
+        showFooter: true,
+        className: null,
     }
-    return features
-}
 
-export function Plan(props: Props) {
-    const {
-        className,
-        cheaperPlan,
-        plan,
-        isUpdating,
-        currentPlan,
-        isFeatured,
-        showFooter,
-        showProductFeatures,
-    } = props
-    const [isConfirmationDisplayed, setIsConfirmationDisplayed] = useState(
-        false
-    )
-    const buttonId = `choose-plan-${plan.get('name')}`
-    const isEnterprisePlan = plan.get('id') === 'enterprise'
-    const isCurrentPlan = currentPlan.get('id') === plan.get('id')
-    const isDowngrade = countFeatures(plan) < countFeatures(currentPlan)
-    const features = getFeatures(plan, cheaperPlan, showProductFeatures)
-    const canChoosePlan = !isCurrentPlan && !isUpdating
+    render() {
+        const {
+            className,
+            plan,
+            isUpdating,
+            isCurrentPlan,
+            isTrialing,
+            isFeatured,
+            features,
+            showFooter,
+            callToAction,
+        } = this.props
+        const planSentencePrefix = isTrialing ? 'Choose' : 'Switch to'
+        const costMultiplier = 100
+        const costPerTicket = (
+            plan.get('cost_per_ticket') * costMultiplier
+        ).toFixed(2)
+        const planName = plan.get('name')
+        const planInterval = plan.get('interval') === 'month' ? 'mo' : 'yr'
+        const tooltipId = `additional-tickets-tooltip-${planName.replace(
+            /\s/g,
+            ''
+        )}`
 
-    return (
-        <Card
-            className={classnames(
-                'plan',
-                `plan-${plan.get('name')}`,
-                className,
-                {
+        return (
+            <Card
+                className={classnames('plan', `plan-${planName}`, className, {
                     featured: isFeatured,
-                }
-            )}
-            outline
-        >
-            <CardHeader
-                className={classnames('plan-header', {
-                    'featured-header': isFeatured,
                 })}
+                outline
             >
-                {isFeatured && (
-                    <div className="featured-header-title">Most Popular</div>
-                )}
-                <div className="header-text">
-                    <strong>{plan.get('name')}</strong>
-
-                    {plan.get('amount') && (
-                        <span className="float-right">
-                            {plan.get('currencySign')}
-                            {plan.get('amount')} /{' '}
-                            {plan.get('interval') === 'month' ? 'mo' : 'yr'}
-                        </span>
-                    )}
-                </div>
-            </CardHeader>
-            <CardBody>
-                {cheaperPlan && (
-                    <b>Everything from {cheaperPlan.get('name')} plus...</b>
-                )}
-                <ul>
-                    {features.map((feature) => {
-                        return (
-                            <li
-                                key={feature.label}
-                                className="d-flex align-items-center"
-                            >
-                                {feature.isCustomIcon ? (
-                                    <i
-                                        className={classnames(
-                                            'feature-icon icon-custom mr-3',
-                                            feature.icon
-                                        )}
-                                    />
-                                ) : (
-                                    <i className="material-icons feature-icon mr-3">
-                                        {feature.icon}
-                                    </i>
-                                )}
-                                <strong>{feature.label}</strong>
-                            </li>
-                        )
+                <CardHeader
+                    className={classnames('plan-header', {
+                        'featured-header': isFeatured,
                     })}
-                </ul>
-            </CardBody>
-            {!currentPlan.get('custom') && showFooter && (
-                <CardFooter>
-                    {isEnterprisePlan ? (
-                        <Button color="link" onClick={openChat}>
-                            Contact us
-                        </Button>
+                >
+                    {isFeatured && (
+                        <div className="featured-header-title">
+                            Recommended Plan
+                        </div>
+                    )}
+                    <div className="header-text">
+                        <strong>{planName}</strong>
+
+                        {plan.get('amount') && (
+                            <span className="float-right">
+                                {plan.get('currencySign')}
+                                {plan.get('amount')}/{planInterval}
+                            </span>
+                        )}
+                    </div>
+                </CardHeader>
+                <CardBody>
+                    {features ? (
+                        features
                     ) : (
-                        <>
+                        <ul>
+                            <li>
+                                <i className="material-icons feature-icon">
+                                    all_inclusive
+                                </i>{' '}
+                                <strong>Unlimited</strong> users
+                            </li>
+                            <li>
+                                <i className="material-icons feature-icon">
+                                    playlist_add_check
+                                </i>{' '}
+                                <strong>{plan.get('free_tickets')}</strong>{' '}
+                                tickets included
+                            </li>
+                            <li>
+                                <i className="material-icons feature-icon">
+                                    playlist_add
+                                </i>{' '}
+                                <strong>
+                                    + {plan.get('currencySign')}
+                                    {costPerTicket}
+                                </strong>{' '}
+                                per {costMultiplier} tickets{' '}
+                                <a id={tooltipId}>
+                                    <i className="material-icons text-muted">
+                                        info_outline
+                                    </i>
+                                </a>
+                                <Tooltip target={tooltipId}>
+                                    If you reply to more tickets than included
+                                    in your plan this is the additional cost per
+                                    100 tickets.
+                                </Tooltip>
+                            </li>
+                        </ul>
+                    )}
+                </CardBody>
+                {showFooter && (
+                    <CardFooter>
+                        {callToAction ? (
+                            callToAction
+                        ) : (
                             <Button
-                                id={buttonId}
-                                data-testid="choose-plan-button"
                                 className={classnames({
                                     'btn-loading': isUpdating,
                                 })}
                                 color="link"
-                                disabled={!canChoosePlan}
-                                onClick={() => {
-                                    if (canChoosePlan) {
-                                        setIsConfirmationDisplayed(
-                                            !isConfirmationDisplayed
-                                        )
-                                    }
-                                }}
-                            >
-                                {isCurrentPlan
-                                    ? 'Your current Plan'
-                                    : `Switch to ${plan.get('name')} Plan`}
-                            </Button>
-                            <Popover
-                                placement="top"
-                                isOpen={isConfirmationDisplayed}
-                                target={buttonId}
-                                toggle={() =>
-                                    setIsConfirmationDisplayed(
-                                        !isConfirmationDisplayed
-                                    )
+                                disabled={
+                                    !isTrialing && (isCurrentPlan || isUpdating)
                                 }
+                                onClick={this.props.onClick}
                             >
-                                <PopoverHeader>Are you sure?</PopoverHeader>
-                                <PopoverBody>
-                                    <p>
-                                        Are you sure you want to choose the{' '}
-                                        {plan.get('name')} plan?
-                                        {isDowngrade && (
-                                            <>
-                                                <b>
-                                                    This plan does not include
-                                                    some of the features
-                                                    included in your existing
-                                                    plan.
-                                                </b>{' '}
-                                                You might want to keep your
-                                                existing plan to not have these
-                                                features deactivated.
-                                            </>
-                                        )}
-                                    </p>
-
-                                    <Button
-                                        data-testid="confirm-choose-plan-button"
-                                        type="button"
-                                        color="success"
-                                        onClick={props.onClick}
-                                    >
-                                        Confirm
-                                    </Button>
-                                </PopoverBody>
-                            </Popover>
-                        </>
-                    )}
-                </CardFooter>
-            )}
-        </Card>
-    )
-}
-
-Plan.defaultProps = {
-    isFeatured: false,
-    isUpdating: false,
-    className: null,
-    showFooter: true,
-    showProductFeatures: true,
+                                {isTrialing
+                                    ? `Choose ${plan.get('name')} plan`
+                                    : isCurrentPlan
+                                    ? 'Your current plan'
+                                    : `${planSentencePrefix} ${plan.get(
+                                          'name'
+                                      )} plan`}
+                            </Button>
+                        )}
+                    </CardFooter>
+                )}
+            </Card>
+        )
+    }
 }

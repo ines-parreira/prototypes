@@ -1,4 +1,4 @@
-import React, {ComponentType} from 'react'
+import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
@@ -7,13 +7,6 @@ import {StatsPage} from '../StatsPage'
 jest.mock('moment', () => {
     return () => require.requireActual('moment')('2019-09-03')
 })
-
-jest.mock(
-    '../../common/utils/withPaywall.tsx',
-    () => () => (Component: ComponentType<any>) => () => {
-        return <Component />
-    }
-)
 
 describe('StatsPage', () => {
     const defaultProps = {
@@ -30,7 +23,11 @@ describe('StatsPage', () => {
 
         it('should ensure the default value', () => {
             shallow(
-                <StatsPage {...defaultProps} params={{view: 'satisfaction'}} />
+                <StatsPage
+                    {...defaultProps}
+                    params={{view: 'satisfaction'}}
+                    currentAccount={fromJS({extra_features: []})}
+                />
             )
             expect(defaultProps.setStatsFilters).toMatchSnapshot()
         })
@@ -40,6 +37,7 @@ describe('StatsPage', () => {
                 <StatsPage
                     {...defaultProps}
                     params={{view: 'satisfaction'}}
+                    currentAccount={fromJS({extra_features: []})}
                     storeIntegrations={fromJS([{id: 1}, {id: 2}, {id: 3}])}
                 />
             )
@@ -49,13 +47,17 @@ describe('StatsPage', () => {
 
     it('should ensure that on component unmount we reset the stats filters', () => {
         const component = shallow(
-            <StatsPage {...defaultProps} params={{view: 'satisfaction'}} />
+            <StatsPage
+                {...defaultProps}
+                params={{view: 'satisfaction'}}
+                currentAccount={fromJS({extra_features: []})}
+            />
         )
         component.unmount()
         expect(defaultProps.resetStatsFilters).toHaveBeenCalled()
     })
 
-    it('should render "Satisfaction" statistics', () => {
+    it('should render a component used to restrict access to satisfaction survey statistics', () => {
         const component = shallow(
             <StatsPage
                 {...defaultProps}
@@ -66,13 +68,22 @@ describe('StatsPage', () => {
                     stats: [],
                 })}
                 globalFilters={fromJS({})}
+                currentAccount={fromJS({
+                    extra_features: [],
+                    settings: [
+                        {
+                            data: {},
+                            type: 'satisfaction-surveys',
+                        },
+                    ],
+                })}
             />
         )
 
         expect(component).toMatchSnapshot()
     })
 
-    it('should render "Revenue" statistics', () => {
+    it("should restrict access to revenue stats because the account doesn't have this feature", () => {
         const component = shallow(
             <StatsPage
                 {...defaultProps}
@@ -82,6 +93,7 @@ describe('StatsPage', () => {
                     link: 'revenue',
                     stats: [],
                 })}
+                currentAccount={fromJS({extra_features: []})}
             />
         )
 
@@ -98,6 +110,7 @@ describe('StatsPage', () => {
                     link: 'revenue',
                     stats: [],
                 })}
+                currentAccount={fromJS({extra_features: ['revenue']})}
             />
         )
 
@@ -115,6 +128,7 @@ describe('StatsPage', () => {
                     stats: [],
                 })}
                 globalFilters={null}
+                currentAccount={fromJS({extra_features: []})}
             />
         )
 
@@ -132,6 +146,7 @@ describe('StatsPage', () => {
                     stats: [],
                 })}
                 globalFilters={fromJS({agents: [1, 2]})}
+                currentAccount={fromJS({extra_features: []})}
             />
         )
 

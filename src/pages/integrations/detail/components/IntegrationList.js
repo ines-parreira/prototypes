@@ -2,9 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Link, withRouter} from 'react-router'
 import {connect} from 'react-redux'
+import {fromJS} from 'immutable'
 import {Breadcrumb, BreadcrumbItem, Table, Button, Container} from 'reactstrap'
 
-import {getIntegrationConfig} from '../../../../state/integrations/helpers.ts'
+import {getIntegrationsList} from '../../../../state/integrations/helpers.ts'
 import {notify} from '../../../../state/notifications/actions.ts'
 import PageHeader from '../../../common/components/PageHeader.tsx'
 
@@ -71,7 +72,13 @@ class IntegrationList extends React.Component {
             loading,
         } = this.props
 
-        const integrationTitle = getIntegrationConfig(integrationType).title
+        const integrationTypes = fromJS(getIntegrationsList(integrations))
+        const integrationConfig = integrationTypes.find(
+            (i) => i.get('type', '') === integrationType,
+            null,
+            fromJS({})
+        )
+        const integrationTitle = integrationConfig.get('title')
 
         return (
             <div className="w-100">

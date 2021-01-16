@@ -20,15 +20,6 @@ export const getCurrentAccountMeta = createSelector<
     (state) => (state.get('meta') as Map<any, any>) || fromJS({})
 )
 
-export const getCurrentAccountFeatures = createSelector<
-    RootState,
-    Map<any, any>,
-    CurrentAccountState
->(
-    getCurrentAccountState,
-    (state) => (state.get('features') as Map<any, any>) || fromJS({})
-)
-
 export const getAccountStatus = createSelector<
     RootState,
     Map<any, any>,
