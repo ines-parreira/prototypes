@@ -145,7 +145,7 @@ describe('<SmileIntegrationDetail/>', () => {
                 component.instance().componentWillReceiveProps({
                     ...defaultProps,
                     integration,
-                    location: {query: {action: 'authentication'}},
+                    location: {search: '?action=authentication'},
                 })
 
                 expect(component.state()).toMatchSnapshot()
@@ -182,7 +182,7 @@ describe('<SmileIntegrationDetail/>', () => {
                 component.instance().componentWillReceiveProps({
                     ...defaultProps,
                     integration,
-                    location: {query: {action: 'authentication'}},
+                    location: {search: '?action=authentication'},
                 })
 
                 expect(component.state()).toMatchSnapshot()

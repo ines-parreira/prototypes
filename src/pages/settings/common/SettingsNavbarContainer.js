@@ -1,4 +1,5 @@
 import React from 'react'
+import {withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
 
 import Navbar from '../../common/components/Navbar'
@@ -27,4 +28,4 @@ function mapStateToProps(state) {
     }
 }
 
-export default connect(mapStateToProps)(SettingsNavbarContainer)
+export default withRouter(connect(mapStateToProps)(SettingsNavbarContainer))

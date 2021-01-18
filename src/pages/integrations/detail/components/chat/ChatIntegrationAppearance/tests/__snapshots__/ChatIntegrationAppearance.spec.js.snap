@@ -13,8 +13,6 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when cre
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -24,8 +22,6 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when cre
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/smooch_inside"
           >
             Chat (Deprecated)
@@ -309,8 +305,6 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when int
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -320,8 +314,6 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when int
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/smooch_inside"
           >
             Chat (Deprecated)
@@ -656,8 +648,6 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when upd
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -667,8 +657,6 @@ exports[`<ChatIntegrationAppearance/> render() should display correctly when upd
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/smooch_inside"
           >
             Chat (Deprecated)
@@ -1003,8 +991,6 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -1014,8 +1000,6 @@ exports[`<ChatIntegrationAppearance/> render() should mark the file field for te
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/smooch_inside"
           >
             Chat (Deprecated)
@@ -1372,8 +1356,6 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -1383,8 +1365,6 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/smooch_inside"
           >
             Chat (Deprecated)
@@ -1723,8 +1703,6 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -1734,8 +1712,6 @@ exports[`<ChatIntegrationAppearance/> render() should not mark the file field fo
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/smooch_inside"
           >
             Chat (Deprecated)

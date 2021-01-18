@@ -119,8 +119,6 @@ exports[`<ChatIntegrationPreferences/> render() should render buttons in loading
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -130,8 +128,6 @@ exports[`<ChatIntegrationPreferences/> render() should render buttons in loading
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/smooch_inside"
           >
             Chat (Deprecated)
@@ -253,8 +249,6 @@ exports[`<ChatIntegrationPreferences/> render() should render buttons in loading
                   During
                    
                   <Link
-                    onlyActiveOnIndex={false}
-                    style={Object {}}
                     to="/app/settings/business-hours"
                   >
                     Business hours
@@ -299,8 +293,6 @@ exports[`<ChatIntegrationPreferences/> render() should render buttons in loading
                   Outside
                    
                   <Link
-                    onlyActiveOnIndex={false}
-                    style={Object {}}
                     to="/app/settings/business-hours"
                   >
                     Business hours
@@ -407,8 +399,6 @@ exports[`<ChatIntegrationPreferences/> render() should render the Chat preferenc
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -418,8 +408,6 @@ exports[`<ChatIntegrationPreferences/> render() should render the Chat preferenc
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/smooch_inside"
           >
             Chat (Deprecated)
@@ -541,8 +529,6 @@ exports[`<ChatIntegrationPreferences/> render() should render the Chat preferenc
                   During
                    
                   <Link
-                    onlyActiveOnIndex={false}
-                    style={Object {}}
                     to="/app/settings/business-hours"
                   >
                     Business hours
@@ -587,8 +573,6 @@ exports[`<ChatIntegrationPreferences/> render() should render the Chat preferenc
                   Outside
                    
                   <Link
-                    onlyActiveOnIndex={false}
-                    style={Object {}}
                     to="/app/settings/business-hours"
                   >
                     Business hours

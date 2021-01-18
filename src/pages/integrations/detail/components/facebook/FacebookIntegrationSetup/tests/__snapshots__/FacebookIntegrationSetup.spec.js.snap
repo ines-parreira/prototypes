@@ -13,8 +13,6 @@ exports[`FacebookIntegrationSetup should render a loader because integrations ar
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -24,8 +22,6 @@ exports[`FacebookIntegrationSetup should render a loader because integrations ar
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/facebook"
           >
             Facebook
@@ -111,8 +107,6 @@ exports[`FacebookIntegrationSetup should render an empty list because there is n
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -122,8 +116,6 @@ exports[`FacebookIntegrationSetup should render an empty list because there is n
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/facebook"
           >
             Facebook
@@ -184,8 +176,6 @@ exports[`FacebookIntegrationSetup should render integrations because there is av
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -195,8 +185,6 @@ exports[`FacebookIntegrationSetup should render integrations because there is av
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/facebook"
           >
             Facebook
@@ -409,8 +397,6 @@ exports[`FacebookIntegrationSetup should render the integration as enabled and s
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -420,8 +406,6 @@ exports[`FacebookIntegrationSetup should render the integration as enabled and s
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/facebook"
           >
             Facebook
@@ -634,8 +618,6 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -645,8 +627,6 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/facebook"
           >
             Facebook

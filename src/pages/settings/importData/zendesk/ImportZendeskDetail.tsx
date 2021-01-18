@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {Link} from 'react-router'
+import {Link, withRouter, RouteComponentProps} from 'react-router-dom'
 import {bindActionCreators} from 'redux'
 import {fromJS, Map} from 'immutable'
 import {useEffectOnce} from 'react-use'
@@ -27,19 +27,22 @@ import {ImportStatus} from './types'
 import {getImportCompletionDate} from './utils'
 import './ImportZendeskDetail.less'
 
-export interface ImportZendeskDetailProps
-    extends ConnectedProps<typeof connector> {
-    params: {
-        integrationId: string
-    }
-}
-
-export const ImportZendeskDetail = (props: ImportZendeskDetailProps) => {
-    const {fetchIntegration, params, integration, loading} = props
+export const ImportZendeskDetail = (
+    props: RouteComponentProps<{integrationId: string}> &
+        ConnectedProps<typeof connector>
+) => {
+    const {
+        fetchIntegration,
+        match: {
+            params: {integrationId},
+        },
+        integration,
+        loading,
+    } = props
     const [isPopoverOpened, setIsPopoverOpened] = useState(false)
 
     useEffectOnce(() => {
-        fetchIntegration(params.integrationId, ZENDESK_INTEGRATION_TYPE)
+        fetchIntegration(integrationId, ZENDESK_INTEGRATION_TYPE)
     })
 
     if (loading) {
@@ -312,4 +315,4 @@ const mapDispatchToProps = (dispatch: StoreDispatch) => ({
 })
 
 const connector = connect(mapStateToProps, mapDispatchToProps)
-export default connector(ImportZendeskDetail)
+export default withRouter(connector(ImportZendeskDetail))

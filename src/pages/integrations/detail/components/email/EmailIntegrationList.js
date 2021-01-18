@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import type {List, Map} from 'immutable'
-import {Link, browserHistory} from 'react-router'
+import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 import {Button} from 'reactstrap'
 
@@ -16,6 +16,7 @@ import IntegrationList from '../IntegrationList'
 import {getIntegrationsByTypes} from '../../../../../state/integrations/helpers.ts'
 import gmailImg from '../../../../../../img/integrations/gmail.png'
 import outlookImg from '../../../../../../img/integrations/outlook.png'
+import history from '../../../../history.ts'
 
 import css from './EmailIntegrationList.less'
 
@@ -147,7 +148,7 @@ export default class EmailIntegrationList extends React.Component<Props> {
                 )}
                 longTypeDescription={longTypeDescription}
                 createIntegration={() =>
-                    browserHistory.push('/app/settings/integrations/email/new')
+                    history.push('/app/settings/integrations/email/new')
                 }
                 createIntegrationButtonContent="Add email address"
                 integrationToItemDisplay={integrationToItemDisplay}

@@ -13,14 +13,18 @@ exports[`<EmailIntegrationCreate/> render() should render 1`] = `
       <li
         class="breadcrumb-item"
       >
-        <a>
+        <a
+          to="/app/settings/integrations"
+        >
           Integrations
         </a>
       </li>
       <li
         class="breadcrumb-item"
       >
-        <a>
+        <a
+          to="/app/settings/integrations/email"
+        >
           Email
         </a>
       </li>
@@ -84,7 +88,9 @@ exports[`<EmailIntegrationCreate/> render() should render 1`] = `
       >
         OR
       </div>
-      <a>
+      <a
+        to="/app/settings/integrations/email/new/custom"
+      >
         <button
           class="mb-2 connectButton btn btn-secondary btn-block"
         >

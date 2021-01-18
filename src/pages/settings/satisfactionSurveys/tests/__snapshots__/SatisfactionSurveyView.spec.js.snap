@@ -3216,8 +3216,6 @@ exports[`SatisfactionSurveyView render should render the upgrade to pro componen
                 <React.Fragment>
                   This feature is only available for Pro and above plans.
                   <Link
-                    onlyActiveOnIndex={false}
-                    style={Object {}}
                     to="/app/settings/billing/plans"
                   >
                      Upgrade here.
@@ -3302,13 +3300,10 @@ exports[`SatisfactionSurveyView render should render the upgrade to pro componen
                       >
                         This feature is only available for Pro and above plans.
                         <Link
-                          onlyActiveOnIndex={false}
-                          style={Object {}}
                           to="/app/settings/billing/plans"
                         >
                           <a
-                            onClick={[Function]}
-                            style={Object {}}
+                            to="/app/settings/billing/plans"
                           >
                              Upgrade here.
                           </a>

@@ -2,7 +2,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import DocumentTitle from 'react-document-title'
-import {Link} from 'react-router'
+import {Link, withRouter} from 'react-router-dom'
 import {Button} from 'reactstrap'
 import decorateComponentWithProps from 'decorate-component-with-props'
 
@@ -147,7 +147,7 @@ class TicketListContainer extends React.Component<Props, State> {
 }
 
 function mapStateToProps(state, ownProps) {
-    const urlViewId = ownProps.params.viewId
+    const urlViewId = ownProps.match.params.viewId
 
     return {
         activeView: viewsSelectors.getActiveView(state),
@@ -163,4 +163,6 @@ const mapDispatchToProps = {
     fetchTags: tagsActions.fetchTags,
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TicketListContainer)
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(TicketListContainer)
+)

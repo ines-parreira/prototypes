@@ -63,8 +63,6 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
               tag="li"
             >
               <Link
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations"
               >
                 Integrations
@@ -74,8 +72,6 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
               tag="li"
             >
               <Link
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/undefined"
               >
                 Chat (Deprecated)
@@ -111,13 +107,10 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                   className="breadcrumb-item"
                 >
                   <Link
-                    onlyActiveOnIndex={false}
-                    style={Object {}}
                     to="/app/settings/integrations"
                   >
                     <a
-                      onClick={[Function]}
-                      style={Object {}}
+                      to="/app/settings/integrations"
                     >
                       Integrations
                     </a>
@@ -131,13 +124,10 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                   className="breadcrumb-item"
                 >
                   <Link
-                    onlyActiveOnIndex={false}
-                    style={Object {}}
                     to="/app/settings/integrations/undefined"
                   >
                     <a
-                      onClick={[Function]}
-                      style={Object {}}
+                      to="/app/settings/integrations/undefined"
                     >
                       Chat (Deprecated)
                     </a>
@@ -194,14 +184,12 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                 activeClassName="disabled"
                 className="nav-link"
                 key=".0"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/7/migration"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/7/migration"
                 >
                   Migration
                 </a>
@@ -210,14 +198,12 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                 activeClassName="disabled"
                 className="nav-link"
                 key=".1"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/7/appearance"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/7/appearance"
                 >
                   Appearance
                 </a>
@@ -226,14 +212,12 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                 activeClassName="disabled"
                 className="nav-link"
                 key=".2"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/7/installation"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/7/installation"
                 >
                   Installation
                 </a>
@@ -242,14 +226,12 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                 activeClassName="disabled"
                 className="nav-link"
                 key=".3"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/7/preferences"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/7/preferences"
                 >
                   Preferences
                 </a>
@@ -258,14 +240,12 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                 activeClassName="disabled"
                 className="nav-link"
                 key=".4"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/7/campaigns"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/7/campaigns"
                 >
                   Campaigns
                 </a>
@@ -274,14 +254,12 @@ exports[`<ChatIntegrationQuickReplies/> render() should render defaults because 
                 activeClassName="disabled"
                 className="nav-link"
                 key=".5"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/7/quick-replies"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/7/quick-replies"
                 >
                   Quick replies
                 </a>
@@ -981,8 +959,6 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
               tag="li"
             >
               <Link
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations"
               >
                 Integrations
@@ -992,8 +968,6 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
               tag="li"
             >
               <Link
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/undefined"
               >
                 Chat (Deprecated)
@@ -1029,13 +1003,10 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                   className="breadcrumb-item"
                 >
                   <Link
-                    onlyActiveOnIndex={false}
-                    style={Object {}}
                     to="/app/settings/integrations"
                   >
                     <a
-                      onClick={[Function]}
-                      style={Object {}}
+                      to="/app/settings/integrations"
                     >
                       Integrations
                     </a>
@@ -1049,13 +1020,10 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                   className="breadcrumb-item"
                 >
                   <Link
-                    onlyActiveOnIndex={false}
-                    style={Object {}}
                     to="/app/settings/integrations/undefined"
                   >
                     <a
-                      onClick={[Function]}
-                      style={Object {}}
+                      to="/app/settings/integrations/undefined"
                     >
                       Chat (Deprecated)
                     </a>
@@ -1120,14 +1088,12 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                 activeClassName="disabled"
                 className="nav-link"
                 key=".0"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/7/migration"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/7/migration"
                 >
                   Migration
                 </a>
@@ -1136,14 +1102,12 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                 activeClassName="disabled"
                 className="nav-link"
                 key=".1"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/7/appearance"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/7/appearance"
                 >
                   Appearance
                 </a>
@@ -1152,14 +1116,12 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                 activeClassName="disabled"
                 className="nav-link"
                 key=".2"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/7/installation"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/7/installation"
                 >
                   Installation
                 </a>
@@ -1168,14 +1130,12 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                 activeClassName="disabled"
                 className="nav-link"
                 key=".3"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/7/preferences"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/7/preferences"
                 >
                   Preferences
                 </a>
@@ -1184,14 +1144,12 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                 activeClassName="disabled"
                 className="nav-link"
                 key=".4"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/7/campaigns"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/7/campaigns"
                 >
                   Campaigns
                 </a>
@@ -1200,14 +1158,12 @@ exports[`<ChatIntegrationQuickReplies/> render() should render quick replies fro
                 activeClassName="disabled"
                 className="nav-link"
                 key=".5"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/7/quick-replies"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/7/quick-replies"
                 >
                   Quick replies
                 </a>

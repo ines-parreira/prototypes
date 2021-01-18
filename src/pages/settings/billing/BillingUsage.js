@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
 import moment from 'moment'
-import {Link, browserHistory} from 'react-router'
+import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 
 import {
@@ -22,6 +22,7 @@ import {openChat} from '../../../utils.ts'
 import * as integrationSelectors from '../../../state/integrations/selectors.ts'
 import * as billingSelectors from '../../../state/billing/selectors.ts'
 import * as currentAccountSelectors from '../../../state/currentAccount/selectors.ts'
+import history from '../../history.ts'
 
 import css from './BillingUsage.less'
 
@@ -235,7 +236,7 @@ export class BillingUsage extends Component {
                                 <Button
                                     color="secondary"
                                     onClick={() => {
-                                        browserHistory.push(
+                                        history.push(
                                             '/app/settings/billing/plans'
                                         )
                                     }}
@@ -312,7 +313,7 @@ export class BillingUsage extends Component {
                                 <Button
                                     color={isTrialing ? 'primary' : 'secondary'}
                                     onClick={() => {
-                                        browserHistory.push(
+                                        history.push(
                                             '/app/settings/billing/plans'
                                         )
                                     }}

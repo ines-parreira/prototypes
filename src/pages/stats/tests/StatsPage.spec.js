@@ -25,7 +25,7 @@ describe('StatsPage', () => {
             shallow(
                 <StatsPage
                     {...defaultProps}
-                    params={{view: 'satisfaction'}}
+                    match={{params: {view: 'satisfaction'}}}
                     currentAccount={fromJS({extra_features: []})}
                 />
             )
@@ -36,7 +36,7 @@ describe('StatsPage', () => {
             shallow(
                 <StatsPage
                     {...defaultProps}
-                    params={{view: 'satisfaction'}}
+                    match={{params: {view: 'satisfaction'}}}
                     currentAccount={fromJS({extra_features: []})}
                     storeIntegrations={fromJS([{id: 1}, {id: 2}, {id: 3}])}
                 />
@@ -49,7 +49,7 @@ describe('StatsPage', () => {
         const component = shallow(
             <StatsPage
                 {...defaultProps}
-                params={{view: 'satisfaction'}}
+                match={{params: {view: 'satisfaction'}}}
                 currentAccount={fromJS({extra_features: []})}
             />
         )
@@ -61,7 +61,7 @@ describe('StatsPage', () => {
         const component = shallow(
             <StatsPage
                 {...defaultProps}
-                params={{view: 'satisfaction'}}
+                match={{params: {view: 'satisfaction'}}}
                 config={fromJS({
                     name: 'Satisfaction',
                     link: 'satisfaction',
@@ -87,7 +87,7 @@ describe('StatsPage', () => {
         const component = shallow(
             <StatsPage
                 {...defaultProps}
-                params={{view: 'revenue'}}
+                match={{params: {view: 'revenue'}}}
                 globalFilters={fromJS({integrations: [1]})}
                 config={fromJS({
                     link: 'revenue',
@@ -104,7 +104,7 @@ describe('StatsPage', () => {
         const component = shallow(
             <StatsPage
                 {...defaultProps}
-                params={{view: 'revenue'}}
+                match={{params: {view: 'revenue'}}}
                 globalFilters={fromJS({})}
                 config={fromJS({
                     link: 'revenue',
@@ -121,7 +121,7 @@ describe('StatsPage', () => {
         const component = shallow(
             <StatsPage
                 {...defaultProps}
-                params={{view: 'overview'}}
+                match={{params: {view: 'overview'}}}
                 config={fromJS({
                     name: 'Overview',
                     link: 'overview',
@@ -139,7 +139,7 @@ describe('StatsPage', () => {
         const component = shallow(
             <StatsPage
                 {...defaultProps}
-                params={{view: 'overview'}}
+                match={{params: {view: 'overview'}}}
                 config={fromJS({
                     name: 'Overview',
                     link: 'overview',

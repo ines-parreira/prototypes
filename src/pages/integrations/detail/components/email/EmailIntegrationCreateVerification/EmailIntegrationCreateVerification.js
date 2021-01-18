@@ -8,7 +8,7 @@ import {
     Container,
     Form,
 } from 'reactstrap'
-import {browserHistory, Link} from 'react-router'
+import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import classNames from 'classnames'
 
@@ -23,6 +23,7 @@ import {
     getEmailForwardingActivated,
 } from '../../../../../../state/integrations/selectors.ts'
 import InputField from '../../../../../common/forms/InputField'
+import history from '../../../../../history.ts'
 
 type Props = {
     integration: Object,
@@ -73,7 +74,7 @@ export class EmailIntegrationCreateVerification extends React.Component<
             !this.props.integration.getIn(['meta', 'verified']) &&
             nextProps.integration.getIn(['meta', 'verified'])
         ) {
-            browserHistory.push(
+            history.push(
                 `/app/settings/integrations/email/${nextProps.integration.get(
                     'id'
                 )}`

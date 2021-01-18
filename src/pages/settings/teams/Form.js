@@ -16,7 +16,7 @@ import {
     PopoverBody,
     Row,
 } from 'reactstrap'
-import {browserHistory, Link} from 'react-router'
+import {Link, withRouter} from 'react-router-dom'
 import classnames from 'classnames'
 
 import * as actions from '../../../state/teams/actions.ts'
@@ -27,6 +27,7 @@ import SecondaryNavbar from '../../common/components/SecondaryNavbar/SecondaryNa
 import ConfirmButton from '../../common/components/ConfirmButton.tsx'
 import {type teamType} from '../../../state/teams/types'
 import EmojiPicker from '../../common/components/EmojiPicker'
+import history from '../../history.ts'
 
 import css from './Form.less'
 
@@ -46,10 +47,11 @@ type State = {
     isEmojiPickerOpen: boolean,
 }
 
+@withRouter
 @connect(
     (state, ownProps) => {
         return {
-            teamId: parseInt(ownProps.params.id),
+            teamId: parseInt(ownProps.match.params.id),
         }
     },
     {
@@ -98,9 +100,7 @@ export default class Form extends Component<Props, State> {
         return promise.then((resp) => {
             this.setState({isSubmitting: false})
             if (!this._isUpdate()) {
-                browserHistory.push(
-                    `app/settings/teams/${resp.get('id')}/members`
-                )
+                history.push(`/app/settings/teams/${resp.get('id')}/members`)
             }
         })
     }
@@ -110,7 +110,7 @@ export default class Form extends Component<Props, State> {
             .deleteTeam(this.state.team.get('id'))
             .then((success) => {
                 if (success) {
-                    browserHistory.push('app/settings/teams')
+                    history.push('/app/settings/teams')
                 }
             })
     }

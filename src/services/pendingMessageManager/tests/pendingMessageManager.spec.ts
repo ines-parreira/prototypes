@@ -1,6 +1,5 @@
 import {ContentState} from 'draft-js'
 import {fromJS} from 'immutable'
-import {browserHistory} from 'react-router'
 import {removeNotification} from 'reapop'
 
 import {
@@ -8,6 +7,7 @@ import {
     sendTicketMessage,
 } from '../../../state/newMessage/actions'
 import {applyMacro, messageDeleted} from '../../../state/ticket/actions'
+import history from '../../../pages/history'
 import pendingMessageManager, {
     PendingMessageManager,
 } from '../pendingMessageManager'
@@ -17,7 +17,7 @@ type fromJSType = typeof fromJS
 
 jest.spyOn(window, 'addEventListener')
 jest.spyOn(window, 'removeEventListener')
-jest.mock('react-router')
+jest.mock('react-router-dom')
 jest.mock('reapop')
 jest.mock('../../../init', () => {
     const {fromJS} = require.requireActual('immutable')
@@ -104,10 +104,7 @@ describe('services', () => {
 
             expect(removeNotification).toHaveBeenNthCalledWith(1, 1)
             expect(messageDeleted).toHaveBeenNthCalledWith(1, 1)
-            expect(browserHistory.push).toHaveBeenNthCalledWith(
-                1,
-                '/app/ticket/1'
-            )
+            expect(history.push).toHaveBeenNthCalledWith(1, '/app/ticket/1')
             jest.runAllTimers()
             expect(newMessageResetFromMessage).toHaveBeenNthCalledWith(1, {
                 contentState: emptyContentState,

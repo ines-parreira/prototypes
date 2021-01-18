@@ -21,8 +21,6 @@ exports[`BusinessHours component should render default values 1`] = `
       The appearance of your
        
       <Link
-        onlyActiveOnIndex={false}
-        style={Object {}}
         to="/app/settings/integrations/smooch_inside"
       >
         Chat integrations
@@ -230,13 +228,10 @@ exports[`BusinessHours component should render values from state 1`] = `
             The appearance of your
              
             <Link
-              onlyActiveOnIndex={false}
-              style={Object {}}
               to="/app/settings/integrations/smooch_inside"
             >
               <a
-                onClick={[Function]}
-                style={Object {}}
+                to="/app/settings/integrations/smooch_inside"
               >
                 Chat integrations
               </a>

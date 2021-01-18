@@ -1,6 +1,6 @@
 // @flow
 import React from 'react'
-import {Link, withRouter, browserHistory} from 'react-router'
+import {Link, withRouter} from 'react-router-dom'
 import Clipboard from 'clipboard'
 import classnames from 'classnames'
 import {connect} from 'react-redux'
@@ -20,6 +20,7 @@ import * as notificationActions from '../../../../../../state/notifications/acti
 import * as integrationActions from '../../../../../../state/integrations/actions.ts'
 import PageHeader from '../../../../../common/components/PageHeader.tsx'
 import type {Dispatch} from '../../../../../../state/types'
+import history from '../../../../../history.ts'
 
 import css from './EmailIntegrationCreateForwarding.less'
 
@@ -103,7 +104,7 @@ export class EmailIntegrationCreateForwarding extends React.Component<
         this.setState({isLoading: true})
         this.props.sendVerificationEmail().then(() => {
             this.setState({isLoading: false})
-            browserHistory.push(
+            history.push(
                 `/app/settings/integrations/email/${integration.get(
                     'id'
                 )}/verification`

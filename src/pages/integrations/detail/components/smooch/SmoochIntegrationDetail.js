@@ -1,6 +1,6 @@
 // @flow
 import React from 'react'
-import {Link, withRouter} from 'react-router'
+import {Link, withRouter} from 'react-router-dom'
 import {fromJS, type Map} from 'immutable'
 import classNames from 'classnames'
 import {
@@ -12,6 +12,7 @@ import {
     Row,
     Col,
 } from 'reactstrap'
+import {parse} from 'query-string'
 
 import {
     SMOOCH_LANGUAGE_DEFAULT,
@@ -74,7 +75,7 @@ export class SmoochIntegrationDetail extends React.Component<Props, State> {
 
     componentWillReceiveProps(nextProps: Props) {
         const isAuthenticating =
-            nextProps.location.query.action === 'authentication'
+            parse(nextProps.location.search).action === 'authentication'
 
         if (
             this.props.integration.isEmpty() &&

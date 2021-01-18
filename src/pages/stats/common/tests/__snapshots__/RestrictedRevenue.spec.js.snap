@@ -6,8 +6,6 @@ exports[`RevenueUpgrade should render feature missing 1`] = `
     <React.Fragment>
       This feature is only available for Pro and above plans.
       <Link
-        onlyActiveOnIndex={false}
-        style={Object {}}
         to="/app/settings/billing/plans"
       >
          Upgrade here.
@@ -29,8 +27,6 @@ exports[`RevenueUpgrade should render missing required integration 1`] = `
     <React.Fragment>
       Your e-commerce store needs to be connected to Gorgias to use this feature.
       <Link
-        onlyActiveOnIndex={false}
-        style={Object {}}
         to="/app/settings/integrations/shopify/new"
       >
          

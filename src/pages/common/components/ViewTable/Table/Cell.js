@@ -2,7 +2,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {fromJS, Map} from 'immutable'
-import {Link} from 'react-router'
+import {Link} from 'react-router-dom'
 
 import {RenderLabel} from '../../../utils/labels'
 

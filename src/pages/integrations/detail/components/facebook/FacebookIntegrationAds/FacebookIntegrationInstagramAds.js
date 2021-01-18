@@ -11,7 +11,7 @@ import {
     Table,
     UncontrolledTooltip,
 } from 'reactstrap'
-import {Link} from 'react-router'
+import {Link} from 'react-router-dom'
 import type {Map} from 'immutable'
 import {connect} from 'react-redux'
 import classnames from 'classnames'

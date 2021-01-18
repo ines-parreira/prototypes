@@ -109,8 +109,6 @@ exports[`ManageTags component mounts correctly 1`] = `
           Check your tag statistics
            
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/stats/tags"
           >
             here

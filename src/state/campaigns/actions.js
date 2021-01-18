@@ -1,6 +1,6 @@
 import axios from 'axios'
-import {browserHistory} from 'react-router'
 
+import history from '../../pages/history.ts'
 import {onUpdateSuccess, fetchIntegration} from '../integrations/actions.ts'
 import * as types from '../integrations/constants'
 
@@ -23,7 +23,7 @@ export function createCampaign(campaign, integration) {
                             integration.get('type')
                         )
                     ).then(() => {
-                        browserHistory.push(
+                        history.push(
                             `/app/settings/integrations/${integration.get(
                                 'type'
                             )}/${integration.get('id')}/campaigns/${data.id}`

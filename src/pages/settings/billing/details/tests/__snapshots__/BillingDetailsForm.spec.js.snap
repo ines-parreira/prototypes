@@ -19,8 +19,6 @@ exports[`BillingDetailsForm component should display loader 1`] = `
           >
             <Link
               className="section"
-              onlyActiveOnIndex={false}
-              style={Object {}}
               to="/app/settings/billing/"
             >
               Billing & Usage
@@ -51,14 +49,11 @@ exports[`BillingDetailsForm component should display loader 1`] = `
               >
                 <Link
                   className="section"
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/billing/"
                 >
                   <a
                     className="section"
-                    onClick={[Function]}
-                    style={Object {}}
+                    to="/app/settings/billing/"
                   >
                     Billing & Usage
                   </a>
@@ -167,8 +162,6 @@ exports[`BillingDetailsForm component should display not display the form 1`] = 
           >
             <Link
               className="section"
-              onlyActiveOnIndex={false}
-              style={Object {}}
               to="/app/settings/billing/"
             >
               Billing & Usage
@@ -199,14 +192,11 @@ exports[`BillingDetailsForm component should display not display the form 1`] = 
               >
                 <Link
                   className="section"
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/billing/"
                 >
                   <a
                     className="section"
-                    onClick={[Function]}
-                    style={Object {}}
+                    to="/app/settings/billing/"
                   >
                     Billing & Usage
                   </a>
@@ -303,8 +293,6 @@ exports[`BillingDetailsForm component should display the form with billing conta
           >
             <Link
               className="section"
-              onlyActiveOnIndex={false}
-              style={Object {}}
               to="/app/settings/billing/"
             >
               Billing & Usage
@@ -335,14 +323,11 @@ exports[`BillingDetailsForm component should display the form with billing conta
               >
                 <Link
                   className="section"
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/billing/"
                 >
                   <a
                     className="section"
-                    onClick={[Function]}
-                    style={Object {}}
+                    to="/app/settings/billing/"
                   >
                     Billing & Usage
                   </a>

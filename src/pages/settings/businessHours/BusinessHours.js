@@ -2,7 +2,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {fromJS, Map, List} from 'immutable'
-import {Link} from 'react-router'
+import {Link} from 'react-router-dom'
 import {Button, Row, Col, Container, Form, Label} from 'reactstrap'
 import classnames from 'classnames'
 

@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useCallback} from 'react'
-import {Link} from 'react-router'
+import {Link} from 'react-router-dom'
 import {connect, ConnectedProps} from 'react-redux'
 import {fromJS, Map} from 'immutable'
 import {Breadcrumb, BreadcrumbItem, Col, Container, Row} from 'reactstrap'

@@ -1,9 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Link, withRouter} from 'react-router'
+import {Link, withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import {Breadcrumb, BreadcrumbItem, Table, Button, Container} from 'reactstrap'
+import {parse} from 'query-string'
 
 import {getIntegrationsList} from '../../../../state/integrations/helpers.ts'
 import {notify} from '../../../../state/notifications/actions.ts'
@@ -52,7 +53,7 @@ class IntegrationList extends React.Component {
     }
 
     componentWillMount() {
-        if (this.props.location.query.status === 'create-error') {
+        if (parse(this.props.location.search).status === 'create-error') {
             this.props.notify({
                 status: 'error',
                 message: `Something went wrong while creating your integration. Please wait a few minutes and ' +

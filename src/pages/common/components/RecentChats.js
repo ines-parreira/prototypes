@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
-import {Link, withRouter} from 'react-router'
+import {Link, withRouter} from 'react-router-dom'
 import {fromJS} from 'immutable'
 
 import {isCurrentlyOnTicket} from '../../../utils.ts'
@@ -72,18 +72,13 @@ class RecentChatsItem extends React.Component {
 class RecentChats extends React.Component {
     static propTypes = {
         chats: PropTypes.object,
-        router: PropTypes.object,
+        location: PropTypes.object,
     }
 
-    componentDidMount() {
-        // force redraw on page change, since we care about window.location in RecentChatsItem
-        this.unlisten = this.props.router.listen(() => this.forceUpdate())
-    }
-
-    componentWillUnmount() {
-        // unlisten router changes
-        if (this.unlisten) {
-            this.unlisten()
+    componentDidUpdate(prevProps) {
+        const {location} = this.props
+        if (location.pathname !== prevProps.location.pathname) {
+            this.forceUpdate()
         }
     }
 

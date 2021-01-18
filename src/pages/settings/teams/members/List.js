@@ -9,7 +9,7 @@ import {
     Container,
     Row,
 } from 'reactstrap'
-import {Link} from 'react-router'
+import {Link, withRouter} from 'react-router-dom'
 import {fromJS, type List, type Map, Set} from 'immutable'
 import classnames from 'classnames'
 
@@ -39,8 +39,10 @@ type Props = {
         page: ?number,
         search: ?string
     ) => Promise<*>,
-    params: {
-        id: string,
+    match: {
+        params: {
+            id: string,
+        },
     },
 }
 
@@ -54,6 +56,7 @@ type State = {
     search: string,
 }
 
+@withRouter
 @connect(
     (state) => {
         return {
@@ -86,7 +89,7 @@ export default class MembersList extends Component<Props, State> {
 
     _fetchTeam = () => {
         return this.props
-            .fetchTeam(parseInt(this.props.params.id))
+            .fetchTeam(parseInt(this.props.match.params.id))
             .then((team) => {
                 this.setState({team})
             })

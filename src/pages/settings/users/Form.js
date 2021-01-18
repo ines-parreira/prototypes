@@ -4,7 +4,7 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {fromJS, Map} from 'immutable'
 import classnames from 'classnames'
-import {browserHistory, Link} from 'react-router'
+import {Link, withRouter} from 'react-router-dom'
 import _pick from 'lodash/pick'
 import {
     Badge,
@@ -34,6 +34,7 @@ import {updateAccountOwner} from '../../../state/currentAccount/actions.ts'
 import * as helpers from '../../../state/agents/helpers.ts'
 import PageHeader from '../../common/components/PageHeader.tsx'
 import Popover from '../../common/components/Popover'
+import history from '../../history.ts'
 
 import DeleteUser from './DeleteUser'
 import css from './Form.less'
@@ -62,10 +63,11 @@ type State = {
     role: ?string,
 }
 
+@withRouter
 @connect(
     (state, ownProps) => {
         return {
-            agentId: parseInt(ownProps.params.id),
+            agentId: parseInt(ownProps.match.params.id),
             accountOwnerId: state.currentAccount.get('user_id'),
             currentUserId: state.currentUser.get('id'),
         }
@@ -130,7 +132,7 @@ export default class Form extends Component<Props, State> {
     _delete = () => {
         return this.props.deleteAgent(this.props.agentId).then(({error}) => {
             if (!error) {
-                browserHistory.push('/app/settings/users')
+                history.push('/app/settings/users')
             }
         })
     }
@@ -152,7 +154,7 @@ export default class Form extends Component<Props, State> {
             } else {
                 this.setState({errors: {}})
                 if (!this._isUpdate()) {
-                    browserHistory.push('/app/settings/users')
+                    history.push('/app/settings/users')
                 }
             }
         })

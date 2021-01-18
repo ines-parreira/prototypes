@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import {connect} from 'react-redux'
-import {Link, browserHistory} from 'react-router'
+import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 import {fromJS, type List, type Map} from 'immutable'
 import _truncate from 'lodash/truncate'
@@ -17,7 +17,7 @@ import {
 } from 'reactstrap'
 
 import {FACEBOOK_INTEGRATION_TYPE} from '../../../../../../constants/integration.ts'
-
+import history from '../../../../../history.ts'
 import Loader from '../../../../../common/components/Loader'
 import ToggleButton from '../../../../../common/components/ToggleButton'
 import PageHeader from '../../../../../common/components/PageHeader.tsx'
@@ -94,7 +94,7 @@ export default class FacebookIntegrationSetup extends React.Component<
         actions
             .activateOnboardingIntegrations(data, FACEBOOK_INTEGRATION_TYPE)
             .then(() => actions.fetchIntegrations())
-        browserHistory.push('/app/settings/integrations/facebook')
+        history.push('/app/settings/integrations/facebook')
     }
 
     _toggleIntegration = (integration: Map<*, *>, enable: boolean) => {

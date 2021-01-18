@@ -6,7 +6,7 @@ import moment from 'moment'
 import React from 'react'
 import {connect} from 'react-redux'
 import _upperFirst from 'lodash/upperFirst'
-import {withRouter} from 'react-router'
+import {withRouter} from 'react-router-dom'
 import {DropdownItem} from 'reactstrap'
 
 import {views as statViewsConfig} from '../../config/stats.tsx'
@@ -29,7 +29,7 @@ import PeriodPicker from './common/PeriodPicker'
 import SelectFilter from './common/SelectFilter.tsx'
 
 type Props = {
-    params: Object,
+    match: Object,
     config: Object,
     channels: any[],
     agents: any[],
@@ -295,7 +295,7 @@ export class StatsFilters extends React.Component<Props, State> {
 }
 
 const mapStateToProps = (state: Object, props: Props) => {
-    const view = props.params.view
+    const view = props.match.params.view
     const config = statViewsConfig.get(view)
 
     return {
@@ -311,7 +311,7 @@ const mapStateToProps = (state: Object, props: Props) => {
                 value: agent.get('id'),
             }))
             .toJS(),
-        filters: getViewFilters(props.params.view)(state),
+        filters: getViewFilters(props.match.params.view)(state),
         config,
         teams: getTeams(state)
             .map((team) => ({

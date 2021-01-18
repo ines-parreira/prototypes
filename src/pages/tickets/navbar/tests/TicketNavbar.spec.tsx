@@ -132,8 +132,10 @@ describe('<TicketNavbar/>', () => {
             ],
         }),
         fetchViewsSuccess: jest.fn(),
-        params: {
-            viewId: '1',
+        match: {
+            params: {
+                viewId: '1',
+            },
         },
         location: {
             query: {},
@@ -229,8 +231,8 @@ describe('<TicketNavbar/>', () => {
         render(
             <TicketNavbarContainer
                 {...minProps}
-                params={{}}
-                location={{query: {viewId: '2'}} as Location<{viewId?: string}>}
+                match={{params: {}} as any}
+                location={{search: 'viewId=2'} as Location}
             />
         )
 

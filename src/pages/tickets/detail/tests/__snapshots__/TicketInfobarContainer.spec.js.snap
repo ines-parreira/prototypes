@@ -5,29 +5,51 @@ exports[`TicketInfobarContainer component should render infobar for new ticket 1
   actions={
     Object {
       "infobar": Object {
-        "executeAction": [Function],
-        "fetchPreviewCustomer": [Function],
-        "handleExecutedAction": [Function],
-        "search": [Function],
-        "similarCustomer": [Function],
+        "executeAction": [MockFunction],
+        "fetchPreviewCustomer": [MockFunction],
+        "handleExecutedAction": [MockFunction],
+        "search": [MockFunction],
+        "similarCustomer": [MockFunction],
       },
       "widgets": Object {
-        "cancelDrag": [Function],
-        "drag": [Function],
-        "drop": [Function],
-        "fetchWidgets": [Function],
-        "generateAndSetWidgets": [Function],
-        "removeEditedWidget": [Function],
-        "resetWidgets": [Function],
-        "selectContext": [Function],
-        "setEditedWidgets": [Function],
-        "setEditionAsDirty": [Function],
-        "startEditionMode": [Function],
-        "startWidgetEdition": [Function],
-        "stopEditionMode": [Function],
-        "stopWidgetEdition": [Function],
-        "submitWidgets": [Function],
-        "updateEditedWidget": [Function],
+        "cancelDrag": [MockFunction],
+        "drag": [MockFunction],
+        "drop": [MockFunction],
+        "fetchWidgets": [MockFunction] {
+          "calls": Array [
+            Array [],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": undefined,
+            },
+          ],
+        },
+        "generateAndSetWidgets": [MockFunction],
+        "removeEditedWidget": [MockFunction],
+        "resetWidgets": [MockFunction],
+        "selectContext": [MockFunction] {
+          "calls": Array [
+            Array [
+              "ticket",
+            ],
+          ],
+          "results": Array [
+            Object {
+              "type": "return",
+              "value": undefined,
+            },
+          ],
+        },
+        "setEditedWidgets": [MockFunction],
+        "setEditionAsDirty": [MockFunction],
+        "startEditionMode": [MockFunction],
+        "startWidgetEdition": [MockFunction],
+        "stopEditionMode": [MockFunction],
+        "stopWidgetEdition": [MockFunction],
+        "submitWidgets": [MockFunction],
+        "updateEditedWidget": [MockFunction],
       },
     }
   }

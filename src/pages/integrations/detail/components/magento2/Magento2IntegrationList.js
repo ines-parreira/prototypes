@@ -1,12 +1,13 @@
 // @flow
 import React from 'react'
 import {type Map, type List} from 'immutable'
-import {Link, browserHistory} from 'react-router'
+import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 
 import {MAGENTO2_INTEGRATION_TYPE} from '../../../../../constants/integration.ts'
 import * as integrationsActions from '../../../../../state/integrations/actions.ts'
 import ToggleButton from '../../../../common/components/ToggleButton'
+import history from '../../../../history.ts'
 import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'
 
@@ -96,9 +97,7 @@ export class Magento2IntegrationList extends React.Component<Props> {
                 integrationType={MAGENTO2_INTEGRATION_TYPE}
                 integrations={magento2Integrations}
                 createIntegration={() =>
-                    browserHistory.push(
-                        '/app/settings/integrations/magento2/new'
-                    )
+                    history.push('/app/settings/integrations/magento2/new')
                 }
                 createIntegrationButtonContent="Add Magento 2 store"
                 integrationToItemDisplay={integrationToItemDisplay}

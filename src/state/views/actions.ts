@@ -2,7 +2,6 @@ import axios, {CancelToken, AxiosError} from 'axios'
 import {fromJS, List, Map} from 'immutable'
 import _max from 'lodash/max'
 import {Moment} from 'moment'
-import {browserHistory} from 'react-router'
 import {updateNotification} from 'reapop'
 
 import * as viewsConfig from '../../config/views'
@@ -13,6 +12,7 @@ import {Ticket} from '../../models/ticket/types'
 import {View, ViewType} from '../../models/view/types'
 import {notify} from '../notifications/actions'
 import {NotificationStatus, Notification} from '../notifications/types'
+import history from '../../pages/history'
 import socketManager from '../../services/socketManager/socketManager'
 import {
     SocketEventType,
@@ -260,7 +260,7 @@ export function submitView(view: ViewImmutable) {
                             resp,
                         })
 
-                        browserHistory.push(
+                        history.push(
                             `/app/${objectName}/${resp.id}/${resp.slug}`
                         )
                     }
@@ -318,7 +318,7 @@ export function deleteView(view: ViewImmutable) {
                     destinationView.get('slug') as string
                 }`
                 dispatch(setViewActive(destinationView))
-                browserHistory.push(destinationRoute)
+                history.push(destinationRoute)
                 return Promise.resolve(destinationView)
             },
             (error) => {
@@ -360,7 +360,7 @@ export const deleteViewSuccess = (viewId: number) => (
             destinationView.get('slug') as string
         }`
         dispatch(setViewActive(destinationView))
-        browserHistory.push(destinationRoute)
+        history.push(destinationRoute)
     }
 }
 
@@ -715,10 +715,10 @@ export const gotoActiveView = () => (
     const state = getState()
     const activeView = viewsSelectors.getActiveView(state)
     const navigation = viewsSelectors.getNavigation(state)
-    const currentLocation = browserHistory.getCurrentLocation()
+    const currentLocation = history.location
     const newUrl = activeViewUrl(activeView, currentLocation, navigation)
 
-    browserHistory.push(newUrl)
+    history.push(newUrl)
 
     dispatch({type: types.GOTO_ACTIVE_VIEW})
 }

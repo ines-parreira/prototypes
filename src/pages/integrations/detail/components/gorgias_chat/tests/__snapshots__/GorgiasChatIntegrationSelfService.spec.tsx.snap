@@ -13,14 +13,18 @@ exports[`<GorgiasChatIntegrationSelfService/> onToggleSelfService() should turn 
       <li
         class="breadcrumb-item"
       >
-        <a>
+        <a
+          to="/app/settings/integrations"
+        >
           Integrations
         </a>
       </li>
       <li
         class="breadcrumb-item"
       >
-        <a>
+        <a
+          to="/app/settings/integrations/gorgias_chat"
+        >
           Chat
         </a>
       </li>
@@ -40,27 +44,37 @@ exports[`<GorgiasChatIntegrationSelfService/> onToggleSelfService() should turn 
     class="navbar navbar"
   >
     <a
+      activeclassname="disabled"
       class="nav-link"
+      to="/app/settings/integrations/gorgias_chat/7/appearance"
     >
       Appearance
     </a>
     <a
+      activeclassname="disabled"
       class="nav-link"
+      to="/app/settings/integrations/gorgias_chat/7/installation"
     >
       Installation
     </a>
     <a
+      activeclassname="disabled"
       class="nav-link"
+      to="/app/settings/integrations/gorgias_chat/7/preferences"
     >
       Preferences
     </a>
     <a
+      activeclassname="disabled"
       class="nav-link"
+      to="/app/settings/integrations/gorgias_chat/7/quick_replies"
     >
       Quick replies
     </a>
     <a
+      activeclassname="disabled"
       class="nav-link"
+      to="/app/settings/integrations/gorgias_chat/7/campaigns"
     >
       Campaigns
     </a>
@@ -123,14 +137,18 @@ exports[`<GorgiasChatIntegrationSelfService/> onToggleSelfService() should turn 
       <li
         class="breadcrumb-item"
       >
-        <a>
+        <a
+          to="/app/settings/integrations"
+        >
           Integrations
         </a>
       </li>
       <li
         class="breadcrumb-item"
       >
-        <a>
+        <a
+          to="/app/settings/integrations/gorgias_chat"
+        >
           Chat
         </a>
       </li>
@@ -150,27 +168,37 @@ exports[`<GorgiasChatIntegrationSelfService/> onToggleSelfService() should turn 
     class="navbar navbar"
   >
     <a
+      activeclassname="disabled"
       class="nav-link"
+      to="/app/settings/integrations/gorgias_chat/7/appearance"
     >
       Appearance
     </a>
     <a
+      activeclassname="disabled"
       class="nav-link"
+      to="/app/settings/integrations/gorgias_chat/7/installation"
     >
       Installation
     </a>
     <a
+      activeclassname="disabled"
       class="nav-link"
+      to="/app/settings/integrations/gorgias_chat/7/preferences"
     >
       Preferences
     </a>
     <a
+      activeclassname="disabled"
       class="nav-link"
+      to="/app/settings/integrations/gorgias_chat/7/quick_replies"
     >
       Quick replies
     </a>
     <a
+      activeclassname="disabled"
       class="nav-link"
+      to="/app/settings/integrations/gorgias_chat/7/campaigns"
     >
       Campaigns
     </a>
@@ -233,14 +261,18 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render defaults be
       <li
         class="breadcrumb-item"
       >
-        <a>
+        <a
+          to="/app/settings/integrations"
+        >
           Integrations
         </a>
       </li>
       <li
         class="breadcrumb-item"
       >
-        <a>
+        <a
+          to="/app/settings/integrations/gorgias_chat"
+        >
           Chat
         </a>
       </li>
@@ -260,27 +292,37 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render defaults be
     class="navbar navbar"
   >
     <a
+      activeclassname="disabled"
       class="nav-link"
+      to="/app/settings/integrations/gorgias_chat/7/appearance"
     >
       Appearance
     </a>
     <a
+      activeclassname="disabled"
       class="nav-link"
+      to="/app/settings/integrations/gorgias_chat/7/installation"
     >
       Installation
     </a>
     <a
+      activeclassname="disabled"
       class="nav-link"
+      to="/app/settings/integrations/gorgias_chat/7/preferences"
     >
       Preferences
     </a>
     <a
+      activeclassname="disabled"
       class="nav-link"
+      to="/app/settings/integrations/gorgias_chat/7/quick_replies"
     >
       Quick replies
     </a>
     <a
+      activeclassname="disabled"
       class="nav-link"
+      to="/app/settings/integrations/gorgias_chat/7/campaigns"
     >
       Campaigns
     </a>
@@ -343,14 +385,18 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the toggle 
       <li
         class="breadcrumb-item"
       >
-        <a>
+        <a
+          to="/app/settings/integrations"
+        >
           Integrations
         </a>
       </li>
       <li
         class="breadcrumb-item"
       >
-        <a>
+        <a
+          to="/app/settings/integrations/gorgias_chat"
+        >
           Chat
         </a>
       </li>
@@ -370,27 +416,37 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the toggle 
     class="navbar navbar"
   >
     <a
+      activeclassname="disabled"
       class="nav-link"
+      to="/app/settings/integrations/gorgias_chat/7/appearance"
     >
       Appearance
     </a>
     <a
+      activeclassname="disabled"
       class="nav-link"
+      to="/app/settings/integrations/gorgias_chat/7/installation"
     >
       Installation
     </a>
     <a
+      activeclassname="disabled"
       class="nav-link"
+      to="/app/settings/integrations/gorgias_chat/7/preferences"
     >
       Preferences
     </a>
     <a
+      activeclassname="disabled"
       class="nav-link"
+      to="/app/settings/integrations/gorgias_chat/7/quick_replies"
     >
       Quick replies
     </a>
     <a
+      activeclassname="disabled"
       class="nav-link"
+      to="/app/settings/integrations/gorgias_chat/7/campaigns"
     >
       Campaigns
     </a>
@@ -453,14 +509,18 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the toggle 
       <li
         class="breadcrumb-item"
       >
-        <a>
+        <a
+          to="/app/settings/integrations"
+        >
           Integrations
         </a>
       </li>
       <li
         class="breadcrumb-item"
       >
-        <a>
+        <a
+          to="/app/settings/integrations/gorgias_chat"
+        >
           Chat
         </a>
       </li>
@@ -480,27 +540,37 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the toggle 
     class="navbar navbar"
   >
     <a
+      activeclassname="disabled"
       class="nav-link"
+      to="/app/settings/integrations/gorgias_chat/7/appearance"
     >
       Appearance
     </a>
     <a
+      activeclassname="disabled"
       class="nav-link"
+      to="/app/settings/integrations/gorgias_chat/7/installation"
     >
       Installation
     </a>
     <a
+      activeclassname="disabled"
       class="nav-link"
+      to="/app/settings/integrations/gorgias_chat/7/preferences"
     >
       Preferences
     </a>
     <a
+      activeclassname="disabled"
       class="nav-link"
+      to="/app/settings/integrations/gorgias_chat/7/quick_replies"
     >
       Quick replies
     </a>
     <a
+      activeclassname="disabled"
       class="nav-link"
+      to="/app/settings/integrations/gorgias_chat/7/campaigns"
     >
       Campaigns
     </a>

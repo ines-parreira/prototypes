@@ -1,5 +1,4 @@
 import axios, {AxiosError} from 'axios'
-import {browserHistory} from 'react-router'
 import moment from 'moment'
 import {fromJS, Map} from 'immutable'
 import _capitalize from 'lodash/capitalize'
@@ -10,6 +9,7 @@ import {Integration, IntegrationType} from '../../models/integration/types'
 import {notify} from '../notifications/actions'
 import {NotificationStatus} from '../notifications/types'
 import type {StoreDispatch, RootState} from '../types'
+import history from '../../pages/history'
 
 import * as constants from './constants.js'
 import * as integrationSelectors from './selectors'
@@ -191,7 +191,7 @@ export function onCreateSuccess(dispatch: StoreDispatch, resp: Integration) {
         nextStep = '/overview'
     }
 
-    browserHistory.push(
+    history.push(
         `/app/settings/integrations/${resp.type}/${resp.id || ''}${nextStep}`
     )
 
@@ -288,7 +288,7 @@ export function fetchIntegration(
                 },
                 (error: AxiosError) => {
                     // We redirect to the integrations home page if we can't find the wanted integration on the server
-                    browserHistory.replace(
+                    history.replace(
                         `/app/settings/integrations/${integrationType}`
                     )
                     return dispatch({
@@ -323,7 +323,7 @@ export function deleteIntegration(integration: Map<any, any>) {
 
                     if (~indexOfId) {
                         const nextUrl = currentUrl.substr(0, indexOfId)
-                        browserHistory.push(nextUrl)
+                        history.push(nextUrl)
                     }
 
                     return dispatch(
@@ -428,7 +428,7 @@ export function createImportIntegration(integration: Map<any, any>) {
             .then((json) => json?.data)
             .then(
                 (resp) => {
-                    browserHistory.push('/app/settings/import-data/')
+                    history.push('/app/settings/import-data/')
 
                     void dispatch(
                         notify({

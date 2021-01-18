@@ -13,8 +13,6 @@ exports[`CampaignDetail component should display default value when it's a new c
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -24,8 +22,6 @@ exports[`CampaignDetail component should display default value when it's a new c
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/smooch_inside/\${integration.get('id')}"
           >
             Chat (Deprecated)
@@ -40,8 +36,6 @@ exports[`CampaignDetail component should display default value when it's a new c
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/smooch_inside/1/campaigns"
           >
             Campaigns
@@ -330,8 +324,6 @@ exports[`CampaignDetail component should display the campaign correctly when upd
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -341,8 +333,6 @@ exports[`CampaignDetail component should display the campaign correctly when upd
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/smooch_inside/\${integration.get('id')}"
           >
             Chat (Deprecated)
@@ -357,8 +347,6 @@ exports[`CampaignDetail component should display the campaign correctly when upd
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/smooch_inside/1/campaigns"
           >
             Campaigns
@@ -681,8 +669,6 @@ exports[`CampaignDetail component should display the campaign correctly when upd
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -692,8 +678,6 @@ exports[`CampaignDetail component should display the campaign correctly when upd
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/smooch_inside/\${integration.get('id')}"
           >
             Chat (Deprecated)
@@ -708,8 +692,6 @@ exports[`CampaignDetail component should display the campaign correctly when upd
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/smooch_inside/1/campaigns"
           >
             Campaigns

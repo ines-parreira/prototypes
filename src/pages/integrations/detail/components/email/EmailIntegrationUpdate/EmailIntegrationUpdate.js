@@ -1,6 +1,6 @@
 // @flow
 import React, {type Node} from 'react'
-import {Link, withRouter} from 'react-router'
+import {Link, withRouter} from 'react-router-dom'
 import Clipboard from 'clipboard'
 import {connect} from 'react-redux'
 import _capitalize from 'lodash/capitalize'

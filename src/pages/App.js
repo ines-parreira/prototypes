@@ -1,6 +1,6 @@
 // @flow
 import classnames from 'classnames'
-import React, {type Node} from 'react'
+import React, {type Node, type ComponentType} from 'react'
 import DocumentTitle from 'react-document-title'
 import {connect} from 'react-redux'
 import {Button, Container} from 'reactstrap'
@@ -19,7 +19,6 @@ import * as viewsActions from '../state/views/actions.ts'
 import * as viewsSelectors from '../state/views/selectors.ts'
 import * as segmentTracker from '../store/middlewares/segmentTracker'
 import type {reactRouterLocation} from '../types'
-import * as utils from '../utils.ts'
 import {injectInterceptor} from '../utils/axios.ts'
 import {handleUsageBanner} from '../state/notifications/actions.ts'
 
@@ -35,10 +34,10 @@ type Props = {
     // current logged in user
     currentUser: currentUserType,
     currentAccount: currentAccountType,
-    currentRoute: {
-        infobarOnMobile?: boolean,
-        containerPadding?: boolean,
-    },
+    infobarOnMobile?: boolean,
+    isEditingWidgets?: boolean,
+    containerPadding?: boolean,
+    noContainerWidthLimit?: boolean,
     injectInterceptor: typeof injectInterceptor,
     handleUsageBanner: typeof handleUsageBanner,
     fetchVisibleViewsCounts: typeof viewsActions.fetchVisibleViewsCounts,
@@ -54,11 +53,11 @@ type Props = {
     location: reactRouterLocation,
 
     // Navbar and Infobar containers can be changed depending on the route. See `routes.js`
-    navbar: Node,
-    infobar: Node,
+    navbar: ComponentType<any>,
+    infobar: ComponentType<any>,
     activeContent: {},
 
-    content: Node,
+    content: ComponentType<any>,
     notifications: Array<*>,
 }
 
@@ -118,7 +117,17 @@ class App extends React.Component<Props> {
     }
 
     render() {
-        const {notifications, openedPanel, currentRoute} = this.props
+        const {
+            notifications,
+            openedPanel,
+            infobarOnMobile,
+            isEditingWidgets,
+            noContainerWidthLimit,
+            containerPadding,
+            content: Content,
+            navbar: Navbar,
+            infobar: Infobar,
+        } = this.props
         const bannerNotifications = notifications.filter(
             (notif) => notif.style === 'banner'
         )
@@ -144,7 +153,7 @@ class App extends React.Component<Props> {
                         ))}
 
                         <div className={css.app}>
-                            {this.props.navbar}
+                            <Navbar />
 
                             <div
                                 className={classnames(
@@ -163,7 +172,7 @@ class App extends React.Component<Props> {
                                     >
                                         <i className="material-icons">menu</i>
                                     </Button>
-                                    {currentRoute.infobarOnMobile && (
+                                    {infobarOnMobile && (
                                         <Button
                                             className="ml-3"
                                             type="button"
@@ -176,11 +185,18 @@ class App extends React.Component<Props> {
                                         </Button>
                                     )}
                                 </div>
-                                {currentRoute.containerPadding ? (
-                                    <FullPage>
+                                {containerPadding ? (
+                                    <FullPage
+                                        noContainerWidthLimit={
+                                            !!noContainerWidthLimit
+                                        }
+                                    >
                                         <ErrorBoundary>
-                                            {this.props.content ||
-                                                this.props.children}
+                                            {!!Content ? (
+                                                <Content />
+                                            ) : (
+                                                this.props.children
+                                            )}
                                         </ErrorBoundary>
                                     </FullPage>
                                 ) : (
@@ -191,14 +207,21 @@ class App extends React.Component<Props> {
                                         )}
                                     >
                                         <ErrorBoundary>
-                                            {this.props.content ||
-                                                this.props.children}
+                                            {!!Content ? (
+                                                <Content />
+                                            ) : (
+                                                this.props.children
+                                            )}
                                         </ErrorBoundary>
                                     </Container>
                                 )}
                             </div>
 
-                            {this.props.infobar}
+                            {!!Infobar && (
+                                <Infobar
+                                    isEditingWidgets={!!isEditingWidgets}
+                                />
+                            )}
 
                             <div
                                 className={classnames(css.backdrop, {
@@ -221,14 +244,13 @@ class App extends React.Component<Props> {
     }
 }
 
-function mapStateToProps(state, ownProps) {
+function mapStateToProps(state) {
     return {
         currentUser: state.currentUser,
         currentAccount: state.currentAccount,
         notifications: state.notifications,
         openedPanel: layoutSelectors.getCurrentOpenedPanel(state),
         activeView: viewsSelectors.getActiveView(state),
-        currentRoute: utils.currentRoute(ownProps.routes),
     }
 }
 

@@ -79,8 +79,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render a spinner 1`]
                 tag="li"
               >
                 <Link
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/integrations"
                 >
                   Integrations
@@ -90,8 +88,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render a spinner 1`]
                 tag="li"
               >
                 <Link
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/integrations/facebook"
                 >
                   Facebook, Messenger & Instagram
@@ -127,13 +123,10 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render a spinner 1`]
                     className="breadcrumb-item"
                   >
                     <Link
-                      onlyActiveOnIndex={false}
-                      style={Object {}}
                       to="/app/settings/integrations"
                     >
                       <a
-                        onClick={[Function]}
-                        style={Object {}}
+                        to="/app/settings/integrations"
                       >
                         Integrations
                       </a>
@@ -147,13 +140,10 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render a spinner 1`]
                     className="breadcrumb-item"
                   >
                     <Link
-                      onlyActiveOnIndex={false}
-                      style={Object {}}
                       to="/app/settings/integrations/facebook"
                     >
                       <a
-                        onClick={[Function]}
-                        style={Object {}}
+                        to="/app/settings/integrations/facebook"
                       >
                         Facebook, Messenger & Instagram
                       </a>
@@ -206,14 +196,12 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render a spinner 1`]
                   activeClassName="disabled"
                   className="nav-link"
                   key=".$/app/settings/integrations/facebook/1/overview"
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/integrations/facebook/1/overview"
                 >
                   <a
+                    activeClassName="disabled"
                     className="nav-link"
-                    onClick={[Function]}
-                    style={Object {}}
+                    to="/app/settings/integrations/facebook/1/overview"
                   >
                     Overview
                   </a>
@@ -222,14 +210,12 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render a spinner 1`]
                   activeClassName="disabled"
                   className="nav-link"
                   key=".$/app/settings/integrations/facebook/1/customer_chat"
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/integrations/facebook/1/customer_chat"
                 >
                   <a
+                    activeClassName="disabled"
                     className="nav-link"
-                    onClick={[Function]}
-                    style={Object {}}
+                    to="/app/settings/integrations/facebook/1/customer_chat"
                   >
                     Customer chat
                   </a>
@@ -238,14 +224,12 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render a spinner 1`]
                   activeClassName="disabled"
                   className="nav-link"
                   key=".$/app/settings/integrations/facebook/1/preferences"
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/integrations/facebook/1/preferences"
                 >
                   <a
+                    activeClassName="disabled"
                     className="nav-link"
-                    onClick={[Function]}
-                    style={Object {}}
+                    to="/app/settings/integrations/facebook/1/preferences"
                   >
                     Preferences
                   </a>
@@ -424,8 +408,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                 tag="li"
               >
                 <Link
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/integrations"
                 >
                   Integrations
@@ -435,8 +417,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                 tag="li"
               >
                 <Link
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/integrations/facebook"
                 >
                   Facebook, Messenger & Instagram
@@ -472,13 +452,10 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                     className="breadcrumb-item"
                   >
                     <Link
-                      onlyActiveOnIndex={false}
-                      style={Object {}}
                       to="/app/settings/integrations"
                     >
                       <a
-                        onClick={[Function]}
-                        style={Object {}}
+                        to="/app/settings/integrations"
                       >
                         Integrations
                       </a>
@@ -492,13 +469,10 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                     className="breadcrumb-item"
                   >
                     <Link
-                      onlyActiveOnIndex={false}
-                      style={Object {}}
                       to="/app/settings/integrations/facebook"
                     >
                       <a
-                        onClick={[Function]}
-                        style={Object {}}
+                        to="/app/settings/integrations/facebook"
                       >
                         Facebook, Messenger & Instagram
                       </a>
@@ -551,14 +525,12 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                   activeClassName="disabled"
                   className="nav-link"
                   key=".$/app/settings/integrations/facebook/1/overview"
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/integrations/facebook/1/overview"
                 >
                   <a
+                    activeClassName="disabled"
                     className="nav-link"
-                    onClick={[Function]}
-                    style={Object {}}
+                    to="/app/settings/integrations/facebook/1/overview"
                   >
                     Overview
                   </a>
@@ -567,14 +539,12 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                   activeClassName="disabled"
                   className="nav-link"
                   key=".$/app/settings/integrations/facebook/1/customer_chat"
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/integrations/facebook/1/customer_chat"
                 >
                   <a
+                    activeClassName="disabled"
                     className="nav-link"
-                    onClick={[Function]}
-                    style={Object {}}
+                    to="/app/settings/integrations/facebook/1/customer_chat"
                   >
                     Customer chat
                   </a>
@@ -583,14 +553,12 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                   activeClassName="disabled"
                   className="nav-link"
                   key=".$/app/settings/integrations/facebook/1/preferences"
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/integrations/facebook/1/preferences"
                 >
                   <a
+                    activeClassName="disabled"
                     className="nav-link"
-                    onClick={[Function]}
-                    style={Object {}}
+                    to="/app/settings/integrations/facebook/1/preferences"
                   >
                     Preferences
                   </a>
@@ -748,14 +716,11 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with ads limi
                                
                               <Link
                                 className="alert-link"
-                                onlyActiveOnIndex={false}
-                                style={Object {}}
                                 to="/app/settings/billing"
                               >
                                 <a
                                   className="alert-link"
-                                  onClick={[Function]}
-                                  style={Object {}}
+                                  to="/app/settings/billing"
                                 >
                                   Upgrade your plan!
                                 </a>
@@ -1311,8 +1276,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
                 tag="li"
               >
                 <Link
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/integrations"
                 >
                   Integrations
@@ -1322,8 +1285,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
                 tag="li"
               >
                 <Link
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/integrations/facebook"
                 >
                   Facebook, Messenger & Instagram
@@ -1359,13 +1320,10 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
                     className="breadcrumb-item"
                   >
                     <Link
-                      onlyActiveOnIndex={false}
-                      style={Object {}}
                       to="/app/settings/integrations"
                     >
                       <a
-                        onClick={[Function]}
-                        style={Object {}}
+                        to="/app/settings/integrations"
                       >
                         Integrations
                       </a>
@@ -1379,13 +1337,10 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
                     className="breadcrumb-item"
                   >
                     <Link
-                      onlyActiveOnIndex={false}
-                      style={Object {}}
                       to="/app/settings/integrations/facebook"
                     >
                       <a
-                        onClick={[Function]}
-                        style={Object {}}
+                        to="/app/settings/integrations/facebook"
                       >
                         Facebook, Messenger & Instagram
                       </a>
@@ -1438,14 +1393,12 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
                   activeClassName="disabled"
                   className="nav-link"
                   key=".$/app/settings/integrations/facebook/1/overview"
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/integrations/facebook/1/overview"
                 >
                   <a
+                    activeClassName="disabled"
                     className="nav-link"
-                    onClick={[Function]}
-                    style={Object {}}
+                    to="/app/settings/integrations/facebook/1/overview"
                   >
                     Overview
                   </a>
@@ -1454,14 +1407,12 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
                   activeClassName="disabled"
                   className="nav-link"
                   key=".$/app/settings/integrations/facebook/1/customer_chat"
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/integrations/facebook/1/customer_chat"
                 >
                   <a
+                    activeClassName="disabled"
                     className="nav-link"
-                    onClick={[Function]}
-                    style={Object {}}
+                    to="/app/settings/integrations/facebook/1/customer_chat"
                   >
                     Customer chat
                   </a>
@@ -1470,14 +1421,12 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with one Inst
                   activeClassName="disabled"
                   className="nav-link"
                   key=".$/app/settings/integrations/facebook/1/preferences"
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/integrations/facebook/1/preferences"
                 >
                   <a
+                    activeClassName="disabled"
                     className="nav-link"
-                    onClick={[Function]}
-                    style={Object {}}
+                    to="/app/settings/integrations/facebook/1/preferences"
                   >
                     Preferences
                   </a>
@@ -1758,8 +1707,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                 tag="li"
               >
                 <Link
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/integrations"
                 >
                   Integrations
@@ -1769,8 +1716,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                 tag="li"
               >
                 <Link
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/integrations/facebook"
                 >
                   Facebook, Messenger & Instagram
@@ -1806,13 +1751,10 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                     className="breadcrumb-item"
                   >
                     <Link
-                      onlyActiveOnIndex={false}
-                      style={Object {}}
                       to="/app/settings/integrations"
                     >
                       <a
-                        onClick={[Function]}
-                        style={Object {}}
+                        to="/app/settings/integrations"
                       >
                         Integrations
                       </a>
@@ -1826,13 +1768,10 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                     className="breadcrumb-item"
                   >
                     <Link
-                      onlyActiveOnIndex={false}
-                      style={Object {}}
                       to="/app/settings/integrations/facebook"
                     >
                       <a
-                        onClick={[Function]}
-                        style={Object {}}
+                        to="/app/settings/integrations/facebook"
                       >
                         Facebook, Messenger & Instagram
                       </a>
@@ -1885,14 +1824,12 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                   activeClassName="disabled"
                   className="nav-link"
                   key=".$/app/settings/integrations/facebook/1/overview"
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/integrations/facebook/1/overview"
                 >
                   <a
+                    activeClassName="disabled"
                     className="nav-link"
-                    onClick={[Function]}
-                    style={Object {}}
+                    to="/app/settings/integrations/facebook/1/overview"
                   >
                     Overview
                   </a>
@@ -1901,14 +1838,12 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                   activeClassName="disabled"
                   className="nav-link"
                   key=".$/app/settings/integrations/facebook/1/customer_chat"
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/integrations/facebook/1/customer_chat"
                 >
                   <a
+                    activeClassName="disabled"
                     className="nav-link"
-                    onClick={[Function]}
-                    style={Object {}}
+                    to="/app/settings/integrations/facebook/1/customer_chat"
                   >
                     Customer chat
                   </a>
@@ -1917,14 +1852,12 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render with two ads 
                   activeClassName="disabled"
                   className="nav-link"
                   key=".$/app/settings/integrations/facebook/1/preferences"
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/integrations/facebook/1/preferences"
                 >
                   <a
+                    activeClassName="disabled"
                     className="nav-link"
-                    onClick={[Function]}
-                    style={Object {}}
+                    to="/app/settings/integrations/facebook/1/preferences"
                   >
                     Preferences
                   </a>
@@ -2299,8 +2232,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render without ad 1`
                 tag="li"
               >
                 <Link
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/integrations"
                 >
                   Integrations
@@ -2310,8 +2241,6 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render without ad 1`
                 tag="li"
               >
                 <Link
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/integrations/facebook"
                 >
                   Facebook, Messenger & Instagram
@@ -2347,13 +2276,10 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render without ad 1`
                     className="breadcrumb-item"
                   >
                     <Link
-                      onlyActiveOnIndex={false}
-                      style={Object {}}
                       to="/app/settings/integrations"
                     >
                       <a
-                        onClick={[Function]}
-                        style={Object {}}
+                        to="/app/settings/integrations"
                       >
                         Integrations
                       </a>
@@ -2367,13 +2293,10 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render without ad 1`
                     className="breadcrumb-item"
                   >
                     <Link
-                      onlyActiveOnIndex={false}
-                      style={Object {}}
                       to="/app/settings/integrations/facebook"
                     >
                       <a
-                        onClick={[Function]}
-                        style={Object {}}
+                        to="/app/settings/integrations/facebook"
                       >
                         Facebook, Messenger & Instagram
                       </a>
@@ -2426,14 +2349,12 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render without ad 1`
                   activeClassName="disabled"
                   className="nav-link"
                   key=".$/app/settings/integrations/facebook/1/overview"
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/integrations/facebook/1/overview"
                 >
                   <a
+                    activeClassName="disabled"
                     className="nav-link"
-                    onClick={[Function]}
-                    style={Object {}}
+                    to="/app/settings/integrations/facebook/1/overview"
                   >
                     Overview
                   </a>
@@ -2442,14 +2363,12 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render without ad 1`
                   activeClassName="disabled"
                   className="nav-link"
                   key=".$/app/settings/integrations/facebook/1/customer_chat"
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/integrations/facebook/1/customer_chat"
                 >
                   <a
+                    activeClassName="disabled"
                     className="nav-link"
-                    onClick={[Function]}
-                    style={Object {}}
+                    to="/app/settings/integrations/facebook/1/customer_chat"
                   >
                     Customer chat
                   </a>
@@ -2458,14 +2377,12 @@ exports[`<FacebookIntegrationInstagramAds/> render() should render without ad 1`
                   activeClassName="disabled"
                   className="nav-link"
                   key=".$/app/settings/integrations/facebook/1/preferences"
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/integrations/facebook/1/preferences"
                 >
                   <a
+                    activeClassName="disabled"
                     className="nav-link"
-                    onClick={[Function]}
-                    style={Object {}}
+                    to="/app/settings/integrations/facebook/1/preferences"
                   >
                     Preferences
                   </a>

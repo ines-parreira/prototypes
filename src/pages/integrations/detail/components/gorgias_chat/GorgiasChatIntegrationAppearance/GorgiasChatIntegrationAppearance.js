@@ -1,7 +1,7 @@
 // @flow
 //$FlowFixMe
 import React, {Fragment} from 'react'
-import {Link} from 'react-router'
+import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
 import {fromJS, type List, type Map} from 'immutable'

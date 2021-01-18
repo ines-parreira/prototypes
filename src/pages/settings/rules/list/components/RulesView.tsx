@@ -5,7 +5,8 @@ import classnames from 'classnames'
 import _xor from 'lodash/xor'
 import {Alert, Button, Container, Table} from 'reactstrap'
 import {connect, ConnectedProps} from 'react-redux'
-import {withRouter, WithRouterProps} from 'react-router'
+import {withRouter, RouteComponentProps} from 'react-router-dom'
+import {parse} from 'query-string'
 
 import Modal from '../../../../common/components/Modal.js'
 import PageHeader from '../../../../common/components/PageHeader'
@@ -34,8 +35,7 @@ type State = {
     hasScrolled: boolean
 }
 
-type Props = WithRouterProps<unknown, {ruleId?: string}> &
-    ConnectedProps<typeof connector>
+type Props = RouteComponentProps & ConnectedProps<typeof connector>
 
 export class RulesView extends React.Component<Props, State> {
     static defaultProps: Partial<Props> = {
@@ -50,7 +50,7 @@ export class RulesView extends React.Component<Props, State> {
 
     componentWillMount() {
         const {location} = this.props
-        const ruleId = location.query.ruleId
+        const ruleId = parse(location.search).ruleId as string
 
         if (ruleId) {
             this._toggleRuleOpening(parseInt(ruleId))
@@ -62,7 +62,7 @@ export class RulesView extends React.Component<Props, State> {
     componentWillReceiveProps(nextProps: Props) {
         const {location} = this.props
         const {hasScrolled} = this.state
-        const ruleId = location.query.ruleId
+        const ruleId = parse(location.search).ruleId as string
 
         if (ruleId && !nextProps.rules.isEmpty() && !hasScrolled) {
             this.setState({hasScrolled: true}, () => {

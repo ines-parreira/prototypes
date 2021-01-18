@@ -1,6 +1,5 @@
 // @flow
 import React from 'react'
-import {browserHistory} from 'react-router'
 import {connect} from 'react-redux'
 import {fromJS, Map} from 'immutable'
 import {Button, Form} from 'reactstrap'
@@ -10,8 +9,8 @@ import ConfirmButton from '../ConfirmButton.tsx'
 
 import {mergeTickets} from '../../../../state/mergeTickets/actions.ts'
 import shortcutManager from '../../../../services/shortcutManager/shortcutManager.ts'
-
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
+import history from '../../../history.ts'
 
 import css from './MergeTicketsContainer.less'
 import BuildFinalTicket from './BuildFinalTicket'
@@ -94,7 +93,7 @@ class MergeTicketsContainer extends React.Component<Props, State> {
                 targetTicket.get('id'),
                 finalTicket.toJS()
             )
-            .then((data) => browserHistory.push(`/app/ticket/${data.id}`))
+            .then((data) => history.push(`/app/ticket/${data.id}`))
             .catch(() => this.setState({isLoading: false}))
     }
 

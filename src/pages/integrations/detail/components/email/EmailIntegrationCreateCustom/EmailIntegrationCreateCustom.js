@@ -2,7 +2,7 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
-import {Link, withRouter} from 'react-router'
+import {Link, withRouter} from 'react-router-dom'
 import _capitalize from 'lodash/capitalize'
 import classnames from 'classnames'
 import {Container, Form, Button, Breadcrumb, BreadcrumbItem} from 'reactstrap'

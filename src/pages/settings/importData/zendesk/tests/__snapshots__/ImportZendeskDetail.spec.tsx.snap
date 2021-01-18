@@ -14,7 +14,9 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
         <li
           class="breadcrumb-item"
         >
-          <a>
+          <a
+            to="/app/settings/import-data"
+          >
             Import data
           </a>
         </li>
@@ -208,7 +210,9 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
         <li
           class="breadcrumb-item"
         >
-          <a>
+          <a
+            to="/app/settings/import-data"
+          >
             Import data
           </a>
         </li>
@@ -397,7 +401,9 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
         <li
           class="breadcrumb-item"
         >
-          <a>
+          <a
+            to="/app/settings/import-data"
+          >
             Import data
           </a>
         </li>

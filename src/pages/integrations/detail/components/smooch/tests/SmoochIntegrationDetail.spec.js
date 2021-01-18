@@ -27,7 +27,7 @@ const defaultProps = {
         integration: null,
         updateIntegration: null,
     }),
-    location: {query: {}},
+    location: {search: ''},
 }
 
 describe('<SmoochIntegrationDetail/>', () => {
@@ -208,7 +208,7 @@ describe('<SmoochIntegrationDetail/>', () => {
                 deactivated_datetime: null,
             })
 
-            const location = {query: {action: 'authentication'}}
+            const location = {search: '?action=authentication'}
 
             const component = shallow(
                 <SmoochIntegrationDetail

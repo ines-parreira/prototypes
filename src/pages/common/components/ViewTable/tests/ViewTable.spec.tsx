@@ -1,15 +1,16 @@
 import {render} from '@testing-library/react'
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS, Map} from 'immutable'
-import {browserHistory, InjectedRouter} from 'react-router'
 import {Location} from 'history'
 import _identity from 'lodash/identity'
+import {stringify} from 'query-string'
 
 import * as ticketFixtures from '../../../../../fixtures/ticket'
 import * as viewsActions from '../../../../../state/views/actions'
 import {view as fixtureView} from '../../../../../fixtures/views'
 import {activeViewIdSet} from '../../../../../state/ui/views/actions'
+import history from '../../../../history'
 import {ViewTableContainer} from '../ViewTable'
 
 jest.addMatchers(immutableMatchers)
@@ -34,9 +35,7 @@ jest.mock('../Header', () => () => <div>Header mock</div>)
 jest.mock('../Table', () => () => <div>Table mock</div>)
 jest.mock('../FilterTopbar', () => () => <div>FilterTopbar mock</div>)
 
-browserHistory.push = jest.fn()
-
-const minProps = {
+const minProps = ({
     type: 'ticket',
     items: fromJS([ticketFixtures.ticket]),
     isUpdate: true,
@@ -50,11 +49,9 @@ const minProps = {
     fetchViewItems: jest.fn(),
     getViewIdToDisplay: jest.fn(),
     getView: jest.fn(),
-    location: {query: {}} as Location<any>,
+    location: {search: ''},
     setViewActive: jest.fn(),
-    params: {},
-    router: {} as InjectedRouter,
-    routes: [],
+    match: {params: {}},
     isOnFirstPage: true,
     navigation: fromJS({}),
     hasActiveView: true,
@@ -65,18 +62,24 @@ const minProps = {
     ActionsComponent: null,
     viewButtons: null,
     activeViewIdSet,
-}
+} as unknown) as ComponentProps<typeof ViewTableContainer>
 
 beforeEach(() => {
     jest.clearAllMocks()
-    jest.spyOn(browserHistory, 'push').mockImplementation()
-    minProps.getViewIdToDisplay.mockReturnValue(minProps.activeView.get('id'))
-    minProps.getView.mockReturnValue(minProps.activeView)
-    minProps.isLoading.mockReturnValue(false)
+    history.push = jest.fn()
+    ;(minProps.getViewIdToDisplay as jest.MockedFunction<
+        typeof minProps.getViewIdToDisplay
+    >).mockReturnValue(minProps.activeView.get('id'))
+    ;(minProps.getView as jest.MockedFunction<
+        typeof minProps.getView
+    >).mockReturnValue(minProps.activeView)
+    ;(minProps.isLoading as jest.MockedFunction<
+        typeof minProps.isLoading
+    >).mockReturnValue(false)
 })
 
 afterEach(() => {
-    ;((browserHistory.push as unknown) as jest.SpyInstance).mockRestore()
+    ;((history.push as unknown) as jest.SpyInstance).mockRestore()
 })
 
 describe('<ViewTable />', () => {
@@ -89,7 +92,7 @@ describe('<ViewTable />', () => {
                     {...minProps}
                     isSearch={true}
                     urlSearchView={searchView}
-                    location={{query: {cursor}} as Location<any>}
+                    location={{search: stringify({cursor})} as Location}
                 />
             )
             expect(minProps.updateView).toHaveBeenLastCalledWith(
@@ -139,12 +142,12 @@ describe('<ViewTable />', () => {
 
         it('should redirect to the app when suggested view id does not match urlViewId', () => {
             render(<ViewTableContainer {...minProps} urlViewId="42" />)
-            expect(browserHistory.push).toHaveBeenLastCalledWith('/app')
+            expect(history.push).toHaveBeenLastCalledWith('/app')
         })
 
         it('should not redirect to the app when suggested view id match urlViewId', () => {
             render(<ViewTableContainer {...minProps} />)
-            expect(browserHistory.push).not.toHaveBeenCalled()
+            expect(history.push).not.toHaveBeenCalled()
         })
     })
 
@@ -157,7 +160,11 @@ describe('<ViewTable />', () => {
                 const {rerender} = render(
                     <ViewTableContainer
                         {...minProps}
-                        location={{query: {cursor: '789456'}} as Location<any>}
+                        location={
+                            {search: stringify({cursor: '789456'})} as Location<
+                                any
+                            >
+                        }
                         navigation={fromJS({current_cursor: cursor})}
                         isLoading={() => true}
                         isOnFirstPage={false}
@@ -167,7 +174,11 @@ describe('<ViewTable />', () => {
                 rerender(
                     <ViewTableContainer
                         {...minProps}
-                        location={{query: {cursor: '1256'}} as Location<any>}
+                        location={
+                            {search: stringify({cursor: '1256'})} as Location<
+                                any
+                            >
+                        }
                         navigation={fromJS({
                             current_cursor: cursor,
                             prev_items: 'foo',
@@ -176,9 +187,9 @@ describe('<ViewTable />', () => {
                         isOnFirstPage={false}
                     />
                 )
-                expect(browserHistory.push).toBeCalledWith({
+                expect(history.push).toBeCalledWith({
                     ...minProps.location,
-                    query: {cursor},
+                    search: 'cursor=1234',
                 })
             }
         )
@@ -191,7 +202,11 @@ describe('<ViewTable />', () => {
                 const {rerender} = render(
                     <ViewTableContainer
                         {...minProps}
-                        location={{query: {cursor: '789456'}} as Location<any>}
+                        location={
+                            {search: stringify({cursor: '789456'})} as Location<
+                                any
+                            >
+                        }
                         navigation={fromJS({current_cursor: cursor})}
                         isLoading={() => true}
                     />
@@ -200,14 +215,18 @@ describe('<ViewTable />', () => {
                 rerender(
                     <ViewTableContainer
                         {...minProps}
-                        location={{query: {cursor: '1256'}} as Location<any>}
+                        location={
+                            {search: stringify({cursor: '1256'})} as Location<
+                                any
+                            >
+                        }
                         navigation={fromJS({current_cursor: cursor})}
                         isLoading={() => false}
                     />
                 )
-                expect(browserHistory.push).toBeCalledWith({
+                expect(history.push).toBeCalledWith({
                     ...minProps.location,
-                    query: {},
+                    search: '',
                 })
             }
         )
@@ -219,7 +238,7 @@ describe('<ViewTable />', () => {
             rerender(
                 <ViewTableContainer
                     {...minProps}
-                    location={{query: {cursor}} as Location<any>}
+                    location={{search: stringify({cursor})} as Location<any>}
                 />
             )
             expect(minProps.fetchViewItemsCancellable).toHaveBeenLastCalledWith(
@@ -299,7 +318,9 @@ describe('<ViewTable />', () => {
                 '"search" mode',
             () => {
                 const someView = fromJS({}) as Map<any, any>
-                minProps.getView.mockReturnValue(someView)
+                ;(minProps.getView as jest.MockedFunction<
+                    typeof minProps.getView
+                >).mockReturnValue(someView)
 
                 const {rerender} = render(
                     <ViewTableContainer {...minProps} isSearch />
@@ -321,7 +342,9 @@ describe('<ViewTable />', () => {
                 '"add new" mode',
             () => {
                 const someView = fromJS({}) as Map<any, any>
-                minProps.getView.mockReturnValue(someView)
+                ;(minProps.getView as jest.MockedFunction<
+                    typeof minProps.getView
+                >).mockReturnValue(someView)
 
                 const {rerender} = render(
                     <ViewTableContainer {...minProps} isUpdate={false} />
@@ -345,9 +368,11 @@ describe('<ViewTable />', () => {
                 const {rerender} = render(<ViewTableContainer {...minProps} />)
 
                 jest.clearAllMocks()
-                minProps.getViewIdToDisplay
-                    .mockReturnValueOnce('1')
-                    .mockReturnValueOnce('2')
+                ;(minProps.getViewIdToDisplay as jest.MockedFunction<
+                    typeof minProps.getViewIdToDisplay
+                >)
+                    .mockReturnValueOnce('1' as any)
+                    .mockReturnValueOnce('2' as any)
                 rerender(<ViewTableContainer {...minProps} />)
 
                 expect(minProps.setViewActive).toHaveBeenCalledTimes(1)
@@ -433,7 +458,11 @@ describe('<ViewTable />', () => {
                 const {rerender} = render(
                     <ViewTableContainer
                         {...minProps}
-                        location={{query: {cursor: '1256'}} as Location<any>}
+                        location={
+                            {search: stringify({cursor: '1256'})} as Location<
+                                any
+                            >
+                        }
                         navigation={fromJS({current_cursor: '1256'})}
                     />
                 )
@@ -442,7 +471,9 @@ describe('<ViewTable />', () => {
                     <ViewTableContainer
                         {...minProps}
                         location={
-                            {query: {cursor: '12345678'}} as Location<any>
+                            {
+                                search: stringify({cursor: '12345678'}),
+                            } as Location<any>
                         }
                         isOnFirstPage={false}
                         isLoading={() => true}

@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import {List, type Map} from 'immutable'
-import {Link} from 'react-router'
+import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import Lightbox from 'react-images'
 

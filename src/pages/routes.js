@@ -1,6 +1,11 @@
 //@flow
-import React from 'react'
-import {IndexRedirect, IndexRoute, Route} from 'react-router'
+import React, {type ComponentType} from 'react'
+import {
+    Route,
+    Switch,
+    Redirect,
+    type RouteComponentProps,
+} from 'react-router-dom'
 
 import {ADMIN_ROLE, AGENT_ROLE} from '../config/user.ts'
 
@@ -48,429 +53,597 @@ import UserAuditList from './settings/audit/UserAuditList'
 import BusinessHours from './settings/businessHours'
 import TicketAssignment from './settings/ticketAssignment'
 
-export default (
-    <Route path="/app" component={App}>
-        <IndexRoute
-            components={{
-                content: TicketListContainer,
-                navbar: TicketNavbar,
-                infobar: TicketListInfobarContainer,
-            }}
-        />
-        <Route
-            path="customers"
-            components={{
-                content: CustomerListContainer,
-                navbar: CustomerNavbarContainer,
-            }}
-        />
-        <Route
-            path="customers/new"
-            components={{
-                content: CustomerListContainer,
-                navbar: CustomerNavbarContainer,
-            }}
-        />
-        <Route
-            path="customers/search"
-            components={{
-                content: CustomerListContainer,
-                navbar: CustomerNavbarContainer,
-            }}
-        />
-        <Route
-            path="customers/:viewId(/:viewSlug)"
-            components={{
-                content: CustomerListContainer,
-                navbar: CustomerNavbarContainer,
-            }}
-        />
-        <Route
-            path="customer/:customerId"
-            components={{
-                content: CustomerDetailContainer,
-                navbar: CustomerNavbarContainer,
-                infobar: CustomerInfobarContainer,
-            }}
-            noContainerWidthLimit // no width limit in App wrapper
-            infobarOnMobile // show Infobar component on mobile
-            containerPadding
-        />
-        <Route
-            path="customer/:customerId/edit-widgets"
-            components={{
-                content: CustomerSourceContainer,
-                navbar: CustomerNavbarContainer,
-                infobar: CustomerInfobarContainer,
-            }}
-            isEditingWidgets // is an edition mode route for widgets
-            noContainerWidthLimit // no width limit in App wrapper
-            containerPadding
-        />
-        {/* TODO(customers-migration): Remove these routes when we updated all routes in our app */}
-        <Route
-            path="users"
-            components={{
-                content: CustomerListContainer,
-                navbar: CustomerNavbarContainer,
-            }}
-        />
-        <Route
-            path="users/new"
-            components={{
-                content: CustomerListContainer,
-                navbar: CustomerNavbarContainer,
-            }}
-        />
-        <Route
-            path="users/search"
-            components={{
-                content: CustomerListContainer,
-                navbar: CustomerNavbarContainer,
-            }}
-        />
-        <Route
-            path="users/:viewId(/:viewSlug)"
-            components={{
-                content: CustomerListContainer,
-                navbar: CustomerNavbarContainer,
-            }}
-        />
-        <Route
-            path="user/:customerId"
-            components={{
-                content: CustomerDetailContainer,
-                navbar: CustomerNavbarContainer,
-                infobar: CustomerInfobarContainer,
-            }}
-            noContainerWidthLimit // no width limit in App wrapper
-            infobarOnMobile // show Infobar component on mobile
-            containerPadding
-        />
-        <Route
-            path="user/:customerId/edit-widgets"
-            components={{
-                content: CustomerSourceContainer,
-                navbar: CustomerNavbarContainer,
-                infobar: CustomerInfobarContainer,
-            }}
-            isEditingWidgets // is an edition mode route for widgets
-            noContainerWidthLimit // no width limit in App wrapper
-            containerPadding
-        />
-        <Route
-            path="ticket/:ticketId"
-            components={{
-                content: TicketDetailContainer,
-                navbar: TicketNavbar,
-                infobar: TicketInfobarContainer,
-            }}
-            infobarOnMobile // show Infobar component on mobile
-        />
-        <Route
-            path="ticket/:ticketId/edit-widgets"
-            components={{
-                content: TicketSourceContainer,
-                navbar: TicketNavbar,
-                infobar: TicketInfobarContainer,
-            }}
-            noContainerWidthLimit // no width limit in App wrapper
-            isEditingWidgets // is an edition mode route for widgets
-            containerPadding
-        />
-        <Route
-            path="tickets"
-            components={{
-                content: TicketListContainer,
-                navbar: TicketNavbar,
-                infobar: TicketListInfobarContainer,
-            }}
-        />
-        <Route
-            path="tickets/new(/:visibility)"
-            components={{
-                content: TicketListContainer,
-                navbar: TicketNavbar,
-                infobar: TicketListInfobarContainer,
-            }}
-        />
-        <Route
-            path="tickets/search"
-            components={{
-                content: TicketListContainer,
-                navbar: TicketNavbar,
-                infobar: TicketListInfobarContainer,
-            }}
-        />
-        <Route
-            path="tickets/:viewId(/:viewSlug)"
-            components={{
-                content: TicketListContainer,
-                navbar: TicketNavbar,
-                infobar: TicketListInfobarContainer,
-            }}
-        />
-        <Route path="stats">
-            <IndexRedirect to="overview" />
+const appRender = (props: {
+    navbar: ComponentType<any>,
+    content: ComponentType<any>,
+    infobar?: ComponentType<any>,
+    containerPadding?: boolean,
+    infobarOnMobile?: boolean,
+    noContainerWidthLimit?: boolean,
+    isEditingWidgets?: boolean,
+}) => (routeProps: RouteComponentProps) => {
+    return <App {...routeProps} {...props} />
+}
+
+export default function Routes() {
+    return (
+        <Switch>
+            <Route path="/app" component={AppRoutes} />
+        </Switch>
+    )
+}
+
+export function AppRoutes({match: {path}}: RouteComponentProps) {
+    return (
+        <Switch>
             <Route
-                path=":view"
-                components={{
+                path={`${path}/`}
+                exact
+                render={appRender({
+                    content: TicketListContainer,
+                    navbar: TicketNavbar,
+                    infobar: TicketListInfobarContainer,
+                })}
+            />
+            <Route path={`${path}/customers`} render={CustomersRoutes} />
+            <Route path={`${path}/customer`} render={CustomerRoutes} />
+            <Route path={`${path}/users`} render={UsersRoutes} />
+            <Route path={`${path}/user`} render={UserRoutes} />
+            <Route path={`${path}/ticket`} render={TicketRoutes} />
+            <Route path={`${path}/tickets`} render={TicketsRoutes} />
+            <Route path={`${path}/stats`} render={StatsRoutes} />
+            <Route path={`${path}/settings`} render={SettingsRoutes} />
+            <Route component={NoMatch} />
+        </Switch>
+    )
+}
+
+export function CustomersRoutes({match: {path}}: RouteComponentProps) {
+    return (
+        <Switch>
+            <Route
+                path={`${path}/`}
+                exact
+                render={appRender({
+                    content: CustomerListContainer,
+                    navbar: CustomerNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/new`}
+                exact
+                render={appRender({
+                    content: CustomerListContainer,
+                    navbar: CustomerNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/search`}
+                exact
+                render={appRender({
+                    content: CustomerListContainer,
+                    navbar: CustomerNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/:viewId/:viewSlug?`}
+                exact
+                render={appRender({
+                    content: CustomerListContainer,
+                    navbar: CustomerNavbarContainer,
+                })}
+            />
+        </Switch>
+    )
+}
+
+export function CustomerRoutes({match: {path}}: RouteComponentProps) {
+    return (
+        <Switch>
+            <Route
+                path={`${path}/:customerId`}
+                exact
+                render={appRender({
+                    content: CustomerDetailContainer,
+                    navbar: CustomerNavbarContainer,
+                    infobar: CustomerInfobarContainer,
+                    noContainerWidthLimit: true,
+                    infobarOnMobile: true,
+                    containerPadding: true,
+                })}
+            />
+            <Route
+                path={`${path}/:customerId/edit-widgets`}
+                exact
+                render={appRender({
+                    content: CustomerSourceContainer,
+                    navbar: CustomerNavbarContainer,
+                    infobar: CustomerInfobarContainer,
+                    isEditingWidgets: true,
+                    noContainerWidthLimit: true,
+                    containerPadding: true,
+                })}
+            />
+        </Switch>
+    )
+}
+
+export function UsersRoutes({match: {path}}: RouteComponentProps) {
+    return (
+        <Switch>
+            <Route
+                path={`${path}/`}
+                exact
+                render={appRender({
+                    content: CustomerListContainer,
+                    navbar: CustomerNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/new`}
+                exact
+                render={appRender({
+                    content: CustomerListContainer,
+                    navbar: CustomerNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/search`}
+                exact
+                render={appRender({
+                    content: CustomerListContainer,
+                    navbar: CustomerNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/:viewId/:viewSlug?`}
+                exact
+                render={appRender({
+                    content: CustomerListContainer,
+                    navbar: CustomerNavbarContainer,
+                })}
+            />
+        </Switch>
+    )
+}
+
+export function UserRoutes({match: {path}}: RouteComponentProps) {
+    return (
+        <Switch>
+            <Route
+                path={`${path}/:customerId`}
+                exact
+                render={appRender({
+                    content: CustomerDetailContainer,
+                    navbar: CustomerNavbarContainer,
+                    infobar: CustomerInfobarContainer,
+                    noContainerWidthLimit: true,
+                    infobarOnMobile: true,
+                    containerPadding: true,
+                })}
+            />
+            <Route
+                path={`${path}/:customerId/edit-widgets`}
+                exact
+                render={appRender({
+                    content: CustomerSourceContainer,
+                    navbar: CustomerNavbarContainer,
+                    infobar: CustomerInfobarContainer,
+                    isEditingWidgets: true,
+                    noContainerWidthLimit: true,
+                    containerPadding: true,
+                })}
+            />
+        </Switch>
+    )
+}
+
+export function TicketRoutes({match: {path}}: RouteComponentProps) {
+    return (
+        <Switch>
+            <Route
+                path={`${path}/:ticketId`}
+                exact
+                render={appRender({
+                    content: TicketDetailContainer,
+                    navbar: TicketNavbar,
+                    infobar: TicketInfobarContainer,
+                    infobarOnMobile: true,
+                })}
+            />
+            <Route
+                path={`${path}/:ticketId/edit-widgets`}
+                exact
+                render={appRender({
+                    content: TicketSourceContainer,
+                    navbar: TicketNavbar,
+                    infobar: TicketInfobarContainer,
+                    noContainerWidthLimit: true,
+                    isEditingWidgets: true,
+                    containerPadding: true,
+                })}
+            />
+        </Switch>
+    )
+}
+
+export function TicketsRoutes({match: {path}}: RouteComponentProps) {
+    return (
+        <Switch>
+            <Route
+                path={`${path}/`}
+                exact
+                render={appRender({
+                    content: TicketListContainer,
+                    navbar: TicketNavbar,
+                    infobar: TicketListInfobarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/new/:visibility?`}
+                exact
+                render={appRender({
+                    content: TicketListContainer,
+                    navbar: TicketNavbar,
+                    infobar: TicketListInfobarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/search`}
+                exact
+                render={appRender({
+                    content: TicketListContainer,
+                    navbar: TicketNavbar,
+                    infobar: TicketListInfobarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/:viewId/:viewSlug?`}
+                exact
+                render={appRender({
+                    content: TicketListContainer,
+                    navbar: TicketNavbar,
+                    infobar: TicketListInfobarContainer,
+                })}
+            />
+        </Switch>
+    )
+}
+
+export function StatsRoutes({match: {path}}: RouteComponentProps) {
+    return (
+        <Switch>
+            <Route
+                exact
+                path={`${path}/`}
+                render={() => <Redirect to={`${path}/overview`} />}
+            />
+            <Route
+                path={`${path}/:view`}
+                exact
+                render={appRender({
                     content: StatsPage,
                     navbar: StatsNavbarContainer,
-                }}
+                })}
             />
-        </Route>
-        <Route path="settings">
-            <IndexRoute
-                components={{
+        </Switch>
+    )
+}
+
+export function SettingsRoutes({match: {path}}: RouteComponentProps) {
+    return (
+        <Switch>
+            <Route
+                path={`${path}/`}
+                exact
+                render={appRender({
                     content: YourProfileContainer,
                     navbar: SettingsNavbarContainer,
-                }}
+                })}
             />
             <Route
-                path="integrations"
-                components={{
-                    content: UserRoleRequired(
-                        IntegrationListContainer,
-                        ADMIN_ROLE
-                    ),
-                    navbar: SettingsNavbarContainer,
-                }}
+                path={`${path}/integrations`}
+                render={IntegrationsSettingsRoutes}
             />
+            <Route path={`${path}/macros`} render={MacrosSettingsRoutes} />
             <Route
-                path="integrations/:integrationType"
-                components={{
-                    content: UserRoleRequired(
-                        IntegrationDetailContainer,
-                        ADMIN_ROLE
-                    ),
-                    navbar: SettingsNavbarContainer,
-                }}
-            >
-                <Route path=":integrationId(/:extra)" />
-                <Route path=":integrationId/:extra/:subId" />
-            </Route>
-            <Route
-                path="macros"
-                components={{
-                    content: UserRoleRequired(
-                        MacrosSettingsContent,
-                        AGENT_ROLE
-                    ),
-                    navbar: SettingsNavbarContainer,
-                }}
-            />
-            <Route
-                path="macros/new"
-                components={{
-                    content: UserRoleRequired(MacrosSettingsForm, AGENT_ROLE),
-                    navbar: SettingsNavbarContainer,
-                }}
-            />
-            <Route
-                path="macros/:macroId"
-                components={{
-                    content: UserRoleRequired(MacrosSettingsForm, AGENT_ROLE),
-                    navbar: SettingsNavbarContainer,
-                }}
-            />
-            <Route
-                path="rules"
-                components={{
+                path={`${path}/rules`}
+                exact
+                render={appRender({
                     content: UserRoleRequired(RuleContainer, AGENT_ROLE),
                     navbar: SettingsNavbarContainer,
-                }}
+                })}
             />
             <Route
-                path="profile"
-                components={{
+                path={`${path}/profile`}
+                exact
+                render={appRender({
                     content: YourProfileContainer,
                     navbar: SettingsNavbarContainer,
-                }}
+                })}
             />
             <Route
-                path="change-password"
-                components={{
+                path={`${path}/change-password`}
+                exact
+                render={appRender({
                     content: ChangePassword,
                     navbar: SettingsNavbarContainer,
-                }}
+                })}
             />
             <Route
-                path="api"
-                components={{
+                path={`${path}/api`}
+                exact
+                render={appRender({
                     content: APIView,
                     navbar: SettingsNavbarContainer,
-                }}
+                })}
             />
             <Route
-                path="audit"
-                components={{
+                path={`${path}/audit`}
+                exact
+                render={appRender({
                     content: UserRoleRequired(UserAuditList, ADMIN_ROLE),
                     navbar: SettingsNavbarContainer,
-                }}
+                })}
             />
-            <Route path="teams">
-                <IndexRoute
-                    components={{
-                        content: UserRoleRequired(Teams.List, ADMIN_ROLE),
-                        navbar: SettingsNavbarContainer,
-                    }}
-                />
-                <Route
-                    path="create"
-                    components={{
-                        content: UserRoleRequired(Teams.Form, ADMIN_ROLE),
-                        navbar: SettingsNavbarContainer,
-                    }}
-                />
-                <Route
-                    path=":id"
-                    components={{
-                        content: UserRoleRequired(Teams.Form, ADMIN_ROLE),
-                        navbar: SettingsNavbarContainer,
-                    }}
-                />
-                <Route
-                    path=":id/members"
-                    components={{
-                        content: UserRoleRequired(List, ADMIN_ROLE),
-                        navbar: SettingsNavbarContainer,
-                    }}
-                />
-            </Route>
-            <Route path="users">
-                <IndexRoute
-                    components={{
-                        content: UserRoleRequired(Team.List, ADMIN_ROLE),
-                        navbar: SettingsNavbarContainer,
-                    }}
-                />
-                <Route
-                    path="add"
-                    components={{
-                        content: UserRoleRequired(Team.Form, ADMIN_ROLE),
-                        navbar: SettingsNavbarContainer,
-                    }}
-                />
-                <Route
-                    path=":id"
-                    components={{
-                        content: UserRoleRequired(Team.Form, ADMIN_ROLE),
-                        navbar: SettingsNavbarContainer,
-                    }}
-                />
-            </Route>
-            <Route path="billing">
-                <IndexRoute
-                    components={{
-                        content: UserRoleRequired(BillingContainer, ADMIN_ROLE),
-                        navbar: SettingsNavbarContainer,
-                    }}
-                />
-                <Route
-                    path="add-credit-card"
-                    components={{
-                        content: UserRoleRequired(
-                            CreditCardContainer,
-                            ADMIN_ROLE
-                        ),
-                        navbar: SettingsNavbarContainer,
-                    }}
-                />
-                <Route
-                    path="update-credit-card"
-                    components={{
-                        content: UserRoleRequired(
-                            CreditCardContainer,
-                            ADMIN_ROLE
-                        ),
-                        navbar: SettingsNavbarContainer,
-                    }}
-                />
-                <Route
-                    path="update-billing-details"
-                    components={{
-                        content: UserRoleRequired(
-                            BillingDetailsFormContainer,
-                            ADMIN_ROLE
-                        ),
-                        navbar: SettingsNavbarContainer,
-                    }}
-                />
-                <Route
-                    path="plans"
-                    components={{
-                        content: UserRoleRequired(
-                            BillingPlansContainer,
-                            ADMIN_ROLE
-                        ),
-                        navbar: SettingsNavbarContainer,
-                    }}
-                />
-            </Route>
+            <Route path={`${path}/teams`} render={TeamsSettingsRoutes} />
+            <Route path={`${path}/users`} render={UsersSettingsRoutes} />
+            <Route path={`${path}/billing`} render={BillingSettingsRoutes} />
             <Route
-                path="manage-tags"
-                components={{
+                path={`${path}/manage-tags`}
+                exact
+                render={appRender({
                     content: UserRoleRequired(ManageTagsContainer, AGENT_ROLE),
                     navbar: SettingsNavbarContainer,
-                }}
+                })}
             />
-            <Route path="import-data">
-                <IndexRoute
-                    components={{
-                        content: UserRoleRequired(
-                            ImportDataContainer,
-                            ADMIN_ROLE
-                        ),
-                        navbar: SettingsNavbarContainer,
-                    }}
-                />
-                <Route
-                    path="zendesk"
-                    components={{
-                        content: UserRoleRequired(
-                            ImportZendeskCreate,
-                            ADMIN_ROLE
-                        ),
-                        navbar: SettingsNavbarContainer,
-                    }}
-                />
-                <Route
-                    path="zendesk/:integrationId(/:extra)"
-                    components={{
-                        content: UserRoleRequired(
-                            ImportZendeskDetail,
-                            ADMIN_ROLE
-                        ),
-                        navbar: SettingsNavbarContainer,
-                    }}
-                />
-            </Route>
+            <Route path={`${path}/import-data`} render={ImportSettingsRoutes} />
             <Route
-                path="satisfaction-surveys"
-                components={{
+                path={`${path}/satisfaction-surveys`}
+                exact
+                render={appRender({
                     content: UserRoleRequired(
                         SatisfactionSurveyView,
                         ADMIN_ROLE
                     ),
                     navbar: SettingsNavbarContainer,
-                }}
+                })}
             />
             <Route
-                path="business-hours"
-                components={{
+                path={`${path}/business-hours`}
+                render={appRender({
                     content: UserRoleRequired(BusinessHours, ADMIN_ROLE),
                     navbar: SettingsNavbarContainer,
-                }}
+                })}
+                exact
             />
             <Route
-                path="ticket-assignment"
-                components={{
+                path={`${path}/ticket-assignment`}
+                exact
+                render={appRender({
                     content: UserRoleRequired(TicketAssignment, ADMIN_ROLE),
                     navbar: SettingsNavbarContainer,
-                }}
+                })}
             />
-        </Route>
-        <Route path="*" component={NoMatch} containerPadding />
-    </Route>
-)
+        </Switch>
+    )
+}
+
+export function IntegrationsSettingsRoutes({
+    match: {path},
+}: RouteComponentProps) {
+    return (
+        <Switch>
+            <Route
+                path={`${path}/`}
+                exact
+                render={appRender({
+                    content: UserRoleRequired(
+                        IntegrationListContainer,
+                        ADMIN_ROLE
+                    ),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/:integrationType/:integrationId?/:extra?/:subId?`}
+                exact
+                render={appRender({
+                    content: UserRoleRequired(
+                        IntegrationDetailContainer,
+                        ADMIN_ROLE
+                    ),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+        </Switch>
+    )
+}
+
+export function MacrosSettingsRoutes({match: {path}}: RouteComponentProps) {
+    return (
+        <Switch>
+            <Route
+                path={`${path}/`}
+                exact
+                render={appRender({
+                    content: UserRoleRequired(
+                        MacrosSettingsContent,
+                        AGENT_ROLE
+                    ),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/new`}
+                exact
+                render={appRender({
+                    content: UserRoleRequired(MacrosSettingsForm, AGENT_ROLE),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/:macroId`}
+                exact
+                render={appRender({
+                    content: UserRoleRequired(MacrosSettingsForm, AGENT_ROLE),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+        </Switch>
+    )
+}
+
+export function TeamsSettingsRoutes({match: {path}}: RouteComponentProps) {
+    return (
+        <Switch>
+            <Route
+                path={`${path}/`}
+                exact
+                render={appRender({
+                    content: UserRoleRequired(Teams.List, ADMIN_ROLE),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/create`}
+                exact
+                render={appRender({
+                    content: UserRoleRequired(Teams.Form, ADMIN_ROLE),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/:id`}
+                exact
+                render={appRender({
+                    content: UserRoleRequired(Teams.Form, ADMIN_ROLE),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/:id/members`}
+                exact
+                render={appRender({
+                    content: UserRoleRequired(List, ADMIN_ROLE),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+        </Switch>
+    )
+}
+
+export function UsersSettingsRoutes({match: {path}}: RouteComponentProps) {
+    return (
+        <Switch>
+            <Route
+                path={`${path}/`}
+                exact
+                render={appRender({
+                    content: UserRoleRequired(Team.List, ADMIN_ROLE),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/add`}
+                exact
+                render={appRender({
+                    content: UserRoleRequired(Team.Form, ADMIN_ROLE),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/:id`}
+                exact
+                render={appRender({
+                    content: UserRoleRequired(Team.Form, ADMIN_ROLE),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+        </Switch>
+    )
+}
+
+export function BillingSettingsRoutes({match: {path}}: RouteComponentProps) {
+    return (
+        <Switch>
+            <Route
+                path={`${path}/`}
+                exact
+                render={appRender({
+                    content: UserRoleRequired(BillingContainer, ADMIN_ROLE),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/add-credit-card`}
+                exact
+                render={appRender({
+                    content: UserRoleRequired(CreditCardContainer, ADMIN_ROLE),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/update-credit-card`}
+                exact
+                render={appRender({
+                    content: UserRoleRequired(CreditCardContainer, ADMIN_ROLE),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/update-billing-details`}
+                exact
+                render={appRender({
+                    content: UserRoleRequired(
+                        BillingDetailsFormContainer,
+                        ADMIN_ROLE
+                    ),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/plans`}
+                exact
+                render={appRender({
+                    content: UserRoleRequired(
+                        BillingPlansContainer,
+                        ADMIN_ROLE
+                    ),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+        </Switch>
+    )
+}
+
+export function ImportSettingsRoutes({match: {path}}: RouteComponentProps) {
+    return (
+        <Switch>
+            <Route
+                path={`${path}/`}
+                exact
+                render={appRender({
+                    content: UserRoleRequired(ImportDataContainer, ADMIN_ROLE),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/zendesk`}
+                exact
+                render={appRender({
+                    content: UserRoleRequired(ImportZendeskCreate, ADMIN_ROLE),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+            <Route
+                path={`${path}/zendesk/:integrationId/:extra?`}
+                exact
+                render={appRender({
+                    content: UserRoleRequired(ImportZendeskDetail, ADMIN_ROLE),
+                    navbar: SettingsNavbarContainer,
+                })}
+            />
+        </Switch>
+    )
+}

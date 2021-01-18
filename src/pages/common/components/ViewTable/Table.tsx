@@ -2,7 +2,6 @@ import React from 'react'
 import {fromJS, List, Map} from 'immutable'
 import classnames from 'classnames'
 import {connect, ConnectedProps} from 'react-redux'
-import {browserHistory} from 'react-router'
 
 import Loader from '../Loader/index.js'
 import BlankState from '../BlankState/index.js'
@@ -13,6 +12,7 @@ import {moveIndex, MoveIndexDirection} from '../../../common/utils/keyboard'
 import * as viewsActions from '../../../../state/views/actions'
 import {areAllActiveViewItemsSelected} from '../../../../state/views/selectors'
 import {ViewImmutable, ViewNavDirection} from '../../../../state/views/types'
+import history from '../../../history'
 
 import css from './Table.less'
 import HeaderCell from './Table/HeaderCell.js'
@@ -126,7 +126,7 @@ class Table extends React.Component<Props, State> {
                     if (onItemClick) {
                         onItemClick(item)
                     } else if (getItemUrl) {
-                        browserHistory.push(getItemUrl(item))
+                        history.push(getItemUrl(item))
                     }
                 },
             },

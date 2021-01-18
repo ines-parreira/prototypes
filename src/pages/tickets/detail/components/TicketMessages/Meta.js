@@ -1,7 +1,7 @@
 //@flow
 import classnames from 'classnames'
 import React, {type Node} from 'react'
-import {Link} from 'react-router'
+import {Link} from 'react-router-dom'
 
 import {TicketVias} from '../../../../../business/ticket.ts'
 import {Meta as MetaType, Source} from '../../../../../models/ticket/types.ts'

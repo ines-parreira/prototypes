@@ -1,5 +1,4 @@
 import {ContentState} from 'draft-js'
-import {browserHistory} from 'react-router'
 import {removeNotification} from 'reapop'
 import {EnhancedStore} from '@reduxjs/toolkit'
 
@@ -13,6 +12,7 @@ import {NotificationStatus} from '../../state/notifications/types'
 import {applyMacro, messageDeleted} from '../../state/ticket/actions'
 import {logEvent, EVENTS} from '../../store/middlewares/segmentTracker.js'
 import {RootState} from '../../state/types'
+import history from '../../pages/history'
 
 import {SendMessageArgs} from './types'
 
@@ -98,7 +98,7 @@ export class PendingMessageManager {
             //eslint-disable-next-line @typescript-eslint/no-unsafe-call
             typeSafeReduxStore.dispatch(removeNotification(messageId))
             typeSafeReduxStore.dispatch(messageDeleted(messageId as any))
-            browserHistory.push(`/app/ticket/${ticketId || ''}`)
+            history.push(`/app/ticket/${ticketId || ''}`)
             setTimeout(() => {
                 const macros = messageToSend.macros || []
                 const {

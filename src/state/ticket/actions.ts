@@ -1,5 +1,4 @@
 import {fromJS, Map, List} from 'immutable'
-import {browserHistory} from 'react-router'
 import _isEmpty from 'lodash/isEmpty'
 import _noop from 'lodash/noop'
 import _pick from 'lodash/pick'
@@ -42,6 +41,7 @@ import {
     Notification,
     NotificationButton,
 } from '../notifications/types'
+import history from '../../pages/history'
 
 import {
     buildPartialUpdateFromAction,
@@ -226,7 +226,7 @@ export const setSpam = (spam: boolean, callback: () => void = _noop) => (
                                     //eslint-disable-next-line @typescript-eslint/no-unsafe-call
                                     removeNotification(`spam-${ticketId}`)
                                 )
-                                browserHistory.push(`/app/ticket/${ticketId}`)
+                                history.push(`/app/ticket/${ticketId}`)
                                 return dispatch(fetchTicket(ticketId)).then(
                                     () => {
                                         void dispatch(setSpam(false))
@@ -286,9 +286,7 @@ export const setTrashed = (
                                         //eslint-disable-next-line @typescript-eslint/no-unsafe-call
                                         removeNotification(`trash-${ticketId}`)
                                     )
-                                    browserHistory.push(
-                                        `/app/ticket/${ticketId}`
-                                    )
+                                    history.push(`/app/ticket/${ticketId}`)
                                     return dispatch(fetchTicket(ticketId)).then(
                                         () => {
                                             void dispatch(setTrashed(null))
@@ -707,7 +705,7 @@ export const _goToNextOrPrevTicket = (
         if (!viewId && !viewSearch && !viewFilters) {
             return returnedPromise.then(() => {
                 // there is no active view so we go to the first view
-                browserHistory.push('/app')
+                history.push('/app')
             })
         }
 
@@ -738,7 +736,7 @@ export const _goToNextOrPrevTicket = (
                     return returnedPromise.then(() => {
                         if (!ticket && viewId) {
                             // there is no other ticket the user can handle so we go back to the view
-                            browserHistory.push(`/app/tickets/${viewId}`)
+                            history.push(`/app/tickets/${viewId}`)
                             return
                         } else if (!ticket && (viewSearch || viewFilters)) {
                             const query: {q?: string; filters?: string} = {}
@@ -750,10 +748,10 @@ export const _goToNextOrPrevTicket = (
                                     viewFilters
                                 )
                             }
-                            browserHistory.push({
+                            history.push({
                                 pathname: '/app/tickets/search',
                                 query,
-                            })
+                            } as any)
                         }
 
                         const customerId = (fromJS(ticket) as Map<
@@ -808,7 +806,7 @@ export const _goToNextOrPrevTicket = (
                         )
                         dispatch(newMessageActions.resetReceiversAndSender)
 
-                        browserHistory.push(`/app/ticket/${ticket.id}`)
+                        history.push(`/app/ticket/${ticket.id}`)
                     })
                 },
                 (error: AxiosError) => {
@@ -906,7 +904,7 @@ export const handleMessageActionError = (ticketId: string) => (
                 primary: true,
                 name: 'Review',
                 onClick: () => {
-                    browserHistory.push(`/app/ticket/${ticketId}`)
+                    history.push(`/app/ticket/${ticketId}`)
                 },
             },
         ]
@@ -936,7 +934,7 @@ export const handleMessageError = (json: TicketMessageFailedEvent) => (
             primary: true,
             name: 'Review',
             onClick: () => {
-                browserHistory.push(`/app/ticket/${json.ticket_id}`)
+                history.push(`/app/ticket/${json.ticket_id}`)
             },
         },
     ]

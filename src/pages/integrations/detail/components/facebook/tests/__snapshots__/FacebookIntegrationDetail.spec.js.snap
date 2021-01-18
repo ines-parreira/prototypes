@@ -29,8 +29,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -40,8 +38,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/facebook"
           >
             Facebook, Messenger & Instagram
@@ -303,8 +299,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -314,8 +308,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/facebook"
           >
             Facebook, Messenger & Instagram
@@ -618,8 +610,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -629,8 +619,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/facebook"
           >
             Facebook, Messenger & Instagram
@@ -936,8 +924,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -947,8 +933,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/facebook"
           >
             Facebook, Messenger & Instagram
@@ -1254,8 +1238,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -1265,8 +1247,6 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/facebook"
           >
             Facebook, Messenger & Instagram

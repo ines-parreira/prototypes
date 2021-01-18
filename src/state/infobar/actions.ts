@@ -1,11 +1,11 @@
 import axios, {CancelToken, AxiosError, AxiosResponse} from 'axios'
-import {browserHistory} from 'react-router'
 import _noop from 'lodash/noop'
 
 import {notify} from '../notifications/actions'
 import {isCurrentlyOnTicket, stripErrorMessage} from '../../utils'
 
 import {ApiListResponsePagination} from '../../models/api/types'
+import history from '../../pages/history'
 import {Customer} from '../customers/types'
 import {NotificationStatus} from '../notifications/types'
 import {StoreDispatch, RootState} from '../types'
@@ -190,7 +190,7 @@ export const handleExecutedAction = (response: {
                 primary: true,
                 name: 'Review',
                 onClick: () => {
-                    browserHistory.push(`/app/customer/${response.user_id}`)
+                    history.push(`/app/customer/${response.user_id}`)
                 },
             },
         ]
@@ -200,7 +200,7 @@ export const handleExecutedAction = (response: {
                 buttons = []
             } else {
                 buttons[0].onClick = () => {
-                    browserHistory.push(`/app/ticket/${response.ticket_id}`)
+                    history.push(`/app/ticket/${response.ticket_id}`)
                 }
             }
         }

@@ -1,6 +1,6 @@
 import React from 'react'
 import type {List} from 'immutable'
-import {Link, withRouter} from 'react-router'
+import {Link, withRouter} from 'react-router-dom'
 import classNames from 'classnames'
 import {
     Alert,
@@ -32,7 +32,7 @@ type Props = {
 
     // Router
     location: Object,
-    params: Object,
+    match: Object,
 }
 
 type State = {
@@ -63,7 +63,7 @@ class RechargeIntegrationDetail extends React.Component<Props, State> {
     render() {
         const {actions, integration, shopifyIntegrations, loading} = this.props
 
-        const isUpdate = this.props.params.integrationId !== 'new'
+        const isUpdate = this.props.match.params.integrationId !== 'new'
         const isSubmitting = loading.get('updateIntegration')
         const isActive = !integration.get('deactivated_datetime')
 

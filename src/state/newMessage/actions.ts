@@ -1,4 +1,3 @@
-import {browserHistory} from 'react-router'
 import {fromJS, Map, List} from 'immutable'
 import {ContentState} from 'draft-js'
 import {createAction} from '@reduxjs/toolkit'
@@ -37,6 +36,7 @@ import {Ticket as TicketResponse} from '../../models/ticket/types'
 import {Customer} from '../customers/types'
 import {NotificationStatus} from '../notifications/types'
 import {SocketEventType} from '../../services/socketManager/types'
+import history from '../../pages/history'
 
 import * as responseUtils from './responseUtils'
 import * as selectors from './selectors'
@@ -1012,7 +1012,7 @@ export function submitTicket(
                 (resp) => {
                     onMessageSent(dispatch)
 
-                    browserHistory.push(`/app/ticket/${resp.id}`)
+                    history.push(`/app/ticket/${resp.id}`)
 
                     const state = getState()
                     const {ticket} = state

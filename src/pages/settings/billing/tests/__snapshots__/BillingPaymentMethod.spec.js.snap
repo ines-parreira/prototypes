@@ -334,15 +334,13 @@ exports[`BillingPaymentMethod Stripe should render a button 1`] = `
                           className="btn btn-success"
                           disabled={false}
                           onClick={[Function]}
-                          onlyActiveOnIndex={false}
-                          style={Object {}}
                           to="/app/settings/billing/add-credit-card"
                         >
                           <a
                             className="btn btn-success"
                             disabled={false}
                             onClick={[Function]}
-                            style={Object {}}
+                            to="/app/settings/billing/add-credit-card"
                           >
                             Add credit card
                           </a>
@@ -485,14 +483,12 @@ exports[`BillingPaymentMethod Stripe should render a button to update a credit c
                       <Link
                         className="btn btn-secondary"
                         onClick={[Function]}
-                        onlyActiveOnIndex={false}
-                        style={Object {}}
                         to="/app/settings/billing/update-credit-card"
                       >
                         <a
                           className="btn btn-secondary"
                           onClick={[Function]}
-                          style={Object {}}
+                          to="/app/settings/billing/update-credit-card"
                         >
                           Update credit card
                         </a>

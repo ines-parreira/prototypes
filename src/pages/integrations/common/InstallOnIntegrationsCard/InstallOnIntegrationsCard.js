@@ -1,6 +1,5 @@
 // @flow
 import React from 'react'
-import {browserHistory} from 'react-router'
 import {Card, CardBody} from 'reactstrap'
 import {fromJS, List, Map} from 'immutable'
 import moment from 'moment'
@@ -9,6 +8,7 @@ import _capitalize from 'lodash/capitalize'
 import {SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../constants/integration.ts'
 import * as integrationHelpers from '../../../../state/integrations/helpers.ts'
 import ToggleButton from '../../../common/components/ToggleButton'
+import history from '../../../history.ts'
 
 import css from './InstallOnIntegrations.less'
 
@@ -48,7 +48,7 @@ export default class InstallOnIntegrationsCard extends React.Component<
 
         // todo(@martin): see if this is required too for Magento when implementing
         if (targetIntegration.getIn(['meta', 'need_scope_update'])) {
-            browserHistory.push(
+            history.push(
                 `/app/settings/integrations/${targetIntegration.get('type')}/` +
                     `${targetIntegration.get('id')}/?error=need_scope_update`
             )

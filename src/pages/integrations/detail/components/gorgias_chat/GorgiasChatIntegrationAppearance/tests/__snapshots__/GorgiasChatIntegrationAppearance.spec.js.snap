@@ -13,8 +13,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -24,8 +22,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/gorgias_chat"
           >
             Chat
@@ -309,8 +305,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -320,8 +314,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/gorgias_chat"
           >
             Chat
@@ -656,8 +648,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -667,8 +657,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should display correctly w
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/gorgias_chat"
           >
             Chat
@@ -1003,8 +991,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -1014,8 +1000,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should mark the file field
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/gorgias_chat"
           >
             Chat
@@ -1372,8 +1356,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -1383,8 +1365,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/gorgias_chat"
           >
             Chat
@@ -1723,8 +1703,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -1734,8 +1712,6 @@ exports[`<GorgiasChatIntegrationAppearance/> render() should not mark the file f
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/gorgias_chat"
           >
             Chat

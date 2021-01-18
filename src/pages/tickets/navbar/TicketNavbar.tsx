@@ -1,9 +1,9 @@
-import {Location} from 'history'
 import _debounce from 'lodash/debounce'
 import React, {useEffect, useMemo, useCallback, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {browserHistory} from 'react-router'
+import {RouteComponentProps, withRouter} from 'react-router-dom'
 import {useAsyncFn} from 'react-use'
+import {parse} from 'query-string'
 
 import {
     UserRole,
@@ -59,6 +59,7 @@ import {
     updateAccountSetting,
 } from '../../../models/account'
 import {submitSettingSuccess as submitAccountSettingSuccess} from '../../../state/currentAccount/actions'
+import history from '../../history'
 
 import DeleteSectionModal from './DeleteSectionModal'
 import SectionFormModal from './SectionFormModal'
@@ -69,14 +70,7 @@ export enum TicketNavbarElementType {
     Section = 'section',
 }
 
-type OwnProps = {
-    params: {
-        viewId?: string
-    }
-    location: Location<{
-        viewId?: string
-    }>
-}
+type OwnProps = RouteComponentProps<{viewId: string}, any, unknown>
 
 export function TicketNavbarContainer({
     activeViewId,
@@ -87,7 +81,7 @@ export function TicketNavbarContainer({
     notify,
     optimisticAccountSettingsReset,
     optimisticUserSettingsReset,
-    params,
+    match: {params},
     sectionCreated,
     sectionDeleted,
     sectionUpdated,
@@ -127,7 +121,7 @@ export function TicketNavbarContainer({
                     res,
                     params.viewId != null
                         ? params.viewId
-                        : location.query.viewId
+                        : (parse(location.search).viewId as string)
                 )
                 viewsFetched(res.data)
             } catch (error) {
@@ -190,7 +184,7 @@ export function TicketNavbarContainer({
         [activeViewId, allViews]
     )
     const updateUrl = useCallback(
-        _debounce((viewUrl: string) => browserHistory.push(viewUrl)),
+        _debounce((viewUrl: string) => history.push(viewUrl)),
         []
     )
     useEffect(() => {
@@ -384,7 +378,7 @@ export function TicketNavbarContainer({
                                   {
                                       label: 'Create view',
                                       onClick: () =>
-                                          browserHistory.push(
+                                          history.push(
                                               '/app/tickets/new/public'
                                           ),
                                   },
@@ -415,7 +409,7 @@ export function TicketNavbarContainer({
                         {
                             label: 'Create view',
                             onClick: () =>
-                                browserHistory.push('/app/tickets/new/private'),
+                                history.push('/app/tickets/new/private'),
                         },
                         {
                             label: 'Create section',
@@ -484,4 +478,4 @@ const connector = connect(
     }
 )
 
-export default connector(TicketNavbarContainer)
+export default withRouter(connector(TicketNavbarContainer))

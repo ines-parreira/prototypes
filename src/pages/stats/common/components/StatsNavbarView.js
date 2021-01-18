@@ -1,5 +1,5 @@
 import React from 'react'
-import {Link} from 'react-router'
+import {NavLink} from 'react-router-dom'
 
 import {views} from '../../../../config/stats.tsx'
 
@@ -12,14 +12,15 @@ export default class StatsNavbarView extends React.Component {
                         {views
                             .map((view) => {
                                 return (
-                                    <Link
+                                    <NavLink
                                         key={view.get('name')}
                                         className="item"
                                         to={`/app/stats/${view.get('link')}`}
                                         activeClassName="active"
+                                        exact
                                     >
                                         {view.get('name')}
-                                    </Link>
+                                    </NavLink>
                                 )
                             })
                             .valueSeq()

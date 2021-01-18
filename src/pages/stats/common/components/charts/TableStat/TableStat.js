@@ -5,7 +5,7 @@ import moment from 'moment'
 import _isFunction from 'lodash/isFunction'
 import _truncate from 'lodash/truncate'
 import {Table} from 'reactstrap'
-import {Link, withRouter} from 'react-router'
+import {Link, withRouter} from 'react-router-dom'
 
 import Tooltip from '../../../../../common/components/Tooltip'
 import {DatetimeLabel} from '../../../../../common/utils/labels'

@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Link, browserHistory} from 'react-router'
+import {Link} from 'react-router-dom'
 import Lightbox from 'react-images'
 
 import classnames from 'classnames'
@@ -8,6 +8,7 @@ import {Button} from 'reactstrap'
 
 import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'
+import history from '../../../../history.ts'
 
 import Carousel from './../../../common/Carousel'
 
@@ -156,9 +157,7 @@ export default class ShopifyIntegrationList extends React.Component {
                     (v) => v.get('type') === 'shopify'
                 )}
                 createIntegration={() =>
-                    browserHistory.push(
-                        '/app/settings/integrations/shopify/new'
-                    )
+                    history.push('/app/settings/integrations/shopify/new')
                 }
                 createIntegrationButtonContent="Add Shopify"
                 integrationToItemDisplay={integrationToItemDisplay}

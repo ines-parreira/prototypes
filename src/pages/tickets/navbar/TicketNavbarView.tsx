@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 import React, {useMemo, useRef} from 'react'
 import {useDrag} from 'react-dnd'
 import {connect, ConnectedProps} from 'react-redux'
-import {Link} from 'react-router'
+import {Link} from 'react-router-dom'
 
 import {UserRole} from '../../../config/types/user'
 import {MAX_TICKET_COUNT_PER_VIEW} from '../../../config/views'

@@ -59,8 +59,6 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
               tag="li"
             >
               <Link
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations"
               >
                 Integrations
@@ -70,8 +68,6 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
               tag="li"
             >
               <Link
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside"
               >
                 Chat (Deprecated)
@@ -107,13 +103,10 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
                   className="breadcrumb-item"
                 >
                   <Link
-                    onlyActiveOnIndex={false}
-                    style={Object {}}
                     to="/app/settings/integrations"
                   >
                     <a
-                      onClick={[Function]}
-                      style={Object {}}
+                      to="/app/settings/integrations"
                     >
                       Integrations
                     </a>
@@ -127,13 +120,10 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
                   className="breadcrumb-item"
                 >
                   <Link
-                    onlyActiveOnIndex={false}
-                    style={Object {}}
                     to="/app/settings/integrations/smooch_inside"
                   >
                     <a
-                      onClick={[Function]}
-                      style={Object {}}
+                      to="/app/settings/integrations/smooch_inside"
                     >
                       Chat (Deprecated)
                     </a>
@@ -170,14 +160,12 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
               <Link
                 className="btn btn-success"
                 onClick={[Function]}
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/campaigns/new"
               >
                 <a
                   className="btn btn-success"
                   onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/118/campaigns/new"
                 >
                   Create campaign
                 </a>
@@ -211,14 +199,12 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
                 activeClassName="disabled"
                 className="nav-link"
                 key=".0"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/migration"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/118/migration"
                 >
                   Migration
                 </a>
@@ -227,14 +213,12 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
                 activeClassName="disabled"
                 className="nav-link"
                 key=".1"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/appearance"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/118/appearance"
                 >
                   Appearance
                 </a>
@@ -243,14 +227,12 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
                 activeClassName="disabled"
                 className="nav-link"
                 key=".2"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/installation"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/118/installation"
                 >
                   Installation
                 </a>
@@ -259,14 +241,12 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
                 activeClassName="disabled"
                 className="nav-link"
                 key=".3"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/preferences"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/118/preferences"
                 >
                   Preferences
                 </a>
@@ -275,14 +255,12 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
                 activeClassName="disabled"
                 className="nav-link"
                 key=".4"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/campaigns"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/118/campaigns"
                 >
                   Campaigns
                 </a>
@@ -291,14 +269,12 @@ exports[`ChatIntegrationCampaigns component should display the empty state corre
                 activeClassName="disabled"
                 className="nav-link"
                 key=".5"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/quick-replies"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/118/quick-replies"
                 >
                   Quick replies
                 </a>
@@ -409,8 +385,6 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
               tag="li"
             >
               <Link
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations"
               >
                 Integrations
@@ -420,8 +394,6 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
               tag="li"
             >
               <Link
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside"
               >
                 Chat (Deprecated)
@@ -457,13 +429,10 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
                   className="breadcrumb-item"
                 >
                   <Link
-                    onlyActiveOnIndex={false}
-                    style={Object {}}
                     to="/app/settings/integrations"
                   >
                     <a
-                      onClick={[Function]}
-                      style={Object {}}
+                      to="/app/settings/integrations"
                     >
                       Integrations
                     </a>
@@ -477,13 +446,10 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
                   className="breadcrumb-item"
                 >
                   <Link
-                    onlyActiveOnIndex={false}
-                    style={Object {}}
                     to="/app/settings/integrations/smooch_inside"
                   >
                     <a
-                      onClick={[Function]}
-                      style={Object {}}
+                      to="/app/settings/integrations/smooch_inside"
                     >
                       Chat (Deprecated)
                     </a>
@@ -520,14 +486,12 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
               <Link
                 className="btn btn-success"
                 onClick={[Function]}
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/campaigns/new"
               >
                 <a
                   className="btn btn-success"
                   onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/118/campaigns/new"
                 >
                   Create campaign
                 </a>
@@ -572,14 +536,12 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
                 activeClassName="disabled"
                 className="nav-link"
                 key=".0"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/migration"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/118/migration"
                 >
                   Migration
                 </a>
@@ -588,14 +550,12 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
                 activeClassName="disabled"
                 className="nav-link"
                 key=".1"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/appearance"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/118/appearance"
                 >
                   Appearance
                 </a>
@@ -604,14 +564,12 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
                 activeClassName="disabled"
                 className="nav-link"
                 key=".2"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/installation"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/118/installation"
                 >
                   Installation
                 </a>
@@ -620,14 +578,12 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
                 activeClassName="disabled"
                 className="nav-link"
                 key=".3"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/preferences"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/118/preferences"
                 >
                   Preferences
                 </a>
@@ -636,14 +592,12 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
                 activeClassName="disabled"
                 className="nav-link"
                 key=".4"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/campaigns"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/118/campaigns"
                 >
                   Campaigns
                 </a>
@@ -652,14 +606,12 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
                 activeClassName="disabled"
                 className="nav-link"
                 key=".5"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/118/quick-replies"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/118/quick-replies"
                 >
                   Quick replies
                 </a>
@@ -698,13 +650,10 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
                 className="link-full-td"
               >
                 <Link
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/integrations/smooch_inside/118/campaigns/156a4d-fg68h40-sd6f4"
                 >
                   <a
-                    onClick={[Function]}
-                    style={Object {}}
+                    to="/app/settings/integrations/smooch_inside/118/campaigns/156a4d-fg68h40-sd6f4"
                   >
                     <div>
                       <b>
@@ -743,13 +692,10 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
                   href="/app/settings/integrations/smooch_inside/118/campaigns/156a4d-fg68h40-sd6f4"
                 >
                   <Link
-                    onlyActiveOnIndex={false}
-                    style={Object {}}
                     to="/app/settings/integrations/smooch_inside/118/campaigns/156a4d-fg68h40-sd6f4"
                   >
                     <a
-                      onClick={[Function]}
-                      style={Object {}}
+                      to="/app/settings/integrations/smooch_inside/118/campaigns/156a4d-fg68h40-sd6f4"
                     >
                       <i
                         className="material-icons md-2 align-middle icon-go-forward"
@@ -768,13 +714,10 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
                 className="link-full-td"
               >
                 <Link
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/integrations/smooch_inside/118/campaigns/not-so-good-campaign-d8f9-fds486-sf78"
                 >
                   <a
-                    onClick={[Function]}
-                    style={Object {}}
+                    to="/app/settings/integrations/smooch_inside/118/campaigns/not-so-good-campaign-d8f9-fds486-sf78"
                   >
                     <div>
                       <b>
@@ -813,13 +756,10 @@ exports[`ChatIntegrationCampaigns component should display the list correctly 1`
                   href="/app/settings/integrations/smooch_inside/118/campaigns/not-so-good-campaign-d8f9-fds486-sf78"
                 >
                   <Link
-                    onlyActiveOnIndex={false}
-                    style={Object {}}
                     to="/app/settings/integrations/smooch_inside/118/campaigns/not-so-good-campaign-d8f9-fds486-sf78"
                   >
                     <a
-                      onClick={[Function]}
-                      style={Object {}}
+                      to="/app/settings/integrations/smooch_inside/118/campaigns/not-so-good-campaign-d8f9-fds486-sf78"
                     >
                       <i
                         className="material-icons md-2 align-middle icon-go-forward"

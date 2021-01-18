@@ -13,8 +13,6 @@ exports[`HTTPIntegrationLayout should render layout for a new HTTP integration 1
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -24,8 +22,6 @@ exports[`HTTPIntegrationLayout should render layout for a new HTTP integration 1
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/http"
           >
             HTTP
@@ -59,8 +55,6 @@ exports[`HTTPIntegrationLayout should render the layout of an event page of a HT
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -70,8 +64,6 @@ exports[`HTTPIntegrationLayout should render the layout of an event page of a HT
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/http"
           >
             HTTP
@@ -82,8 +74,6 @@ exports[`HTTPIntegrationLayout should render the layout of an event page of a HT
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/http/1"
           >
             Backend integration
@@ -94,8 +84,6 @@ exports[`HTTPIntegrationLayout should render the layout of an event page of a HT
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/http/1/events"
           >
             Logs
@@ -113,15 +101,11 @@ exports[`HTTPIntegrationLayout should render the layout of an event page of a HT
   />
   <SecondaryNavbar>
     <Link
-      onlyActiveOnIndex={false}
-      style={Object {}}
       to="/app/settings/integrations/http/1"
     >
       Settings
     </Link>
     <Link
-      onlyActiveOnIndex={false}
-      style={Object {}}
       to="/app/settings/integrations/http/1/events"
     >
       Logs
@@ -146,8 +130,6 @@ exports[`HTTPIntegrationLayout should render the layout of the events page of a 
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -157,8 +139,6 @@ exports[`HTTPIntegrationLayout should render the layout of the events page of a 
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/http"
           >
             HTTP
@@ -169,8 +149,6 @@ exports[`HTTPIntegrationLayout should render the layout of the events page of a 
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/http/1"
           >
             Backend integration
@@ -187,15 +165,11 @@ exports[`HTTPIntegrationLayout should render the layout of the events page of a 
   />
   <SecondaryNavbar>
     <Link
-      onlyActiveOnIndex={false}
-      style={Object {}}
       to="/app/settings/integrations/http/1"
     >
       Settings
     </Link>
     <Link
-      onlyActiveOnIndex={false}
-      style={Object {}}
       to="/app/settings/integrations/http/1/events"
     >
       Logs
@@ -220,8 +194,6 @@ exports[`HTTPIntegrationLayout should render the layout of the settings page of 
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -231,8 +203,6 @@ exports[`HTTPIntegrationLayout should render the layout of the settings page of 
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/http"
           >
             HTTP
@@ -249,15 +219,11 @@ exports[`HTTPIntegrationLayout should render the layout of the settings page of 
   />
   <SecondaryNavbar>
     <Link
-      onlyActiveOnIndex={false}
-      style={Object {}}
       to="/app/settings/integrations/http/1"
     >
       Settings
     </Link>
     <Link
-      onlyActiveOnIndex={false}
-      style={Object {}}
       to="/app/settings/integrations/http/1/events"
     >
       Logs

@@ -49,8 +49,6 @@ exports[`<SmileIntegrationDetail/> render() should not render anything about the
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -60,8 +58,6 @@ exports[`<SmileIntegrationDetail/> render() should not render anything about the
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/smile"
           >
             Smile
@@ -161,8 +157,6 @@ exports[`<SmileIntegrationDetail/> render() should render a small paragraph beca
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -172,8 +166,6 @@ exports[`<SmileIntegrationDetail/> render() should render a small paragraph beca
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/smile"
           >
             Smile
@@ -211,8 +203,6 @@ exports[`<SmileIntegrationDetail/> render() should render a small paragraph beca
           All your Smile customers have been imported. You can now see their info in the sidebar.
            
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/customers"
           >
             Review your customers.
@@ -277,8 +267,6 @@ exports[`<SmileIntegrationDetail/> render() should render an alert because the i
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -288,8 +276,6 @@ exports[`<SmileIntegrationDetail/> render() should render an alert because the i
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/smile"
           >
             Smile
@@ -366,8 +352,6 @@ exports[`<SmileIntegrationDetail/> render() should render an alert because the i
             We're currently importing all your Smile customers. This way, you'll see customer rewards points next to tickets. We'll notify you via email when the import is done.
              
             <Link
-              onlyActiveOnIndex={false}
-              style={Object {}}
               to="/app/customers"
             >
               Review imported customers.
@@ -433,8 +417,6 @@ exports[`<SmileIntegrationDetail/> render() should render buttons loading and di
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -444,8 +426,6 @@ exports[`<SmileIntegrationDetail/> render() should render buttons loading and di
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/smile"
           >
             Smile
@@ -522,8 +502,6 @@ exports[`<SmileIntegrationDetail/> render() should render buttons loading and di
             We're currently importing all your Smile customers. This way, you'll see customer rewards points next to tickets. We'll notify you via email when the import is done.
              
             <Link
-              onlyActiveOnIndex={false}
-              style={Object {}}
               to="/app/customers"
             >
               Review imported customers.
@@ -592,8 +570,6 @@ exports[`<SmileIntegrationDetail/> render() should render not render deactivate 
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -603,8 +579,6 @@ exports[`<SmileIntegrationDetail/> render() should render not render deactivate 
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/smile"
           >
             Smile
@@ -681,8 +655,6 @@ exports[`<SmileIntegrationDetail/> render() should render not render deactivate 
             We're currently importing all your Smile customers. This way, you'll see customer rewards points next to tickets. We'll notify you via email when the import is done.
              
             <Link
-              onlyActiveOnIndex={false}
-              style={Object {}}
               to="/app/customers"
             >
               Review imported customers.

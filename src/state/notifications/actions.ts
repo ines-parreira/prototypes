@@ -3,7 +3,6 @@ import _max from 'lodash/max'
 import _isEqual from 'lodash/isEqual'
 import _omit from 'lodash/omit'
 import _functions from 'lodash/functions'
-import {browserHistory} from 'react-router'
 
 import {
     addNotification,
@@ -11,6 +10,7 @@ import {
     removeNotification as hide,
 } from 'reapop'
 
+import history from '../../pages/history'
 import {StoreDispatch, RootState} from '../types'
 
 import {Notification, HandleUsageBanner, NotificationStatus} from './types'
@@ -152,7 +152,7 @@ export const handleUsageBanner = ({
                 dismissible: false,
                 message: notification.message,
                 onClick: () => {
-                    browserHistory.push('/app/settings/billing')
+                    history.push('/app/settings/billing')
                 },
             })
         )

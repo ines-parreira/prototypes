@@ -2,7 +2,6 @@ import axios from 'axios'
 import _pick from 'lodash/pick'
 import {mount, shallow} from 'enzyme'
 import React, {ComponentProps} from 'react'
-import {browserHistory} from 'react-router'
 import {Button} from 'reactstrap'
 
 import {macros as macrosFixtures} from '../../../../fixtures/macro'
@@ -11,6 +10,7 @@ import Pagination from '../../../common/components/Pagination.js'
 import Search from '../../../common/components/Search.js'
 import {MacrosSettingsContentContainer} from '../MacrosSettingsContent'
 import MacroSettingsTable from '../MacrosSettingsTable'
+import history from '../../../history'
 
 jest.mock('../../../../models/macro/resources')
 jest.mock(
@@ -27,7 +27,7 @@ jest.mock(
         <div onChange={(e) => onChange((e.target as HTMLInputElement).value)} />
     )
 )
-jest.mock('react-router')
+jest.mock('../../../history')
 jest.mock(
     '../MacrosSettingsTable',
     () => ({
@@ -153,7 +153,7 @@ describe('<MacrosSettingsContent/>', () => {
         )
 
         component.find(Button).simulate('click')
-        expect(browserHistory.push).toHaveBeenNthCalledWith(
+        expect(history.push).toHaveBeenNthCalledWith(
             1,
             '/app/settings/macros/new'
         )

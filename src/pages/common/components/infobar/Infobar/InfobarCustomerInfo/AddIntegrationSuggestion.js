@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import {type Map} from 'immutable'
-import {Link} from 'react-router'
+import {Link} from 'react-router-dom'
 import {Card, CardBody, Button} from 'reactstrap'
 
 import * as segmentTracker from '../../../../../../store/middlewares/segmentTracker'

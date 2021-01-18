@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {browserHistory, Link} from 'react-router'
+import {Link} from 'react-router-dom'
 import {Map} from 'immutable'
 import classnames from 'classnames'
 
@@ -14,6 +14,7 @@ import shortcutManager from '../../../../services/shortcutManager'
 import ViewName from '../ViewName/index.js'
 import Tooltip from '../Tooltip.js'
 import {RootState} from '../../../../state/types'
+import history from '../../../history'
 
 import EmojiSelect from './EmojiSelect/index.js'
 import css from './Header.less'
@@ -42,7 +43,7 @@ export class HeaderContainer extends React.Component<Props, State> {
                 action: () => {
                     const {isSearch} = this.props
                     if (isSearch) {
-                        browserHistory.push(this._goBackUrl())
+                        history.push(this._goBackUrl())
                     }
                 },
             },
@@ -109,9 +110,7 @@ export class HeaderContainer extends React.Component<Props, State> {
         const {config, activeView, isSearch} = this.props
 
         if (!isSearch && !(activeView.get('search') as string)) {
-            browserHistory.push(
-                `/app/${config.get('routeList') as string}/search?q=`
-            )
+            history.push(`/app/${config.get('routeList') as string}/search?q=`)
         }
     }
 

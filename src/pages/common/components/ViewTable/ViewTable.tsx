@@ -1,8 +1,9 @@
 import React, {ComponentType, ReactNode} from 'react'
 import {fromJS, List, Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
-import {browserHistory, withRouter, WithRouterProps} from 'react-router'
+import {withRouter, RouteComponentProps} from 'react-router-dom'
 import classnames from 'classnames'
+import {parse, stringify} from 'query-string'
 
 import Loader from '../Loader/index.js'
 import withCancellableRequest, {
@@ -14,6 +15,7 @@ import * as viewsActions from '../../../../state/views/actions'
 import * as viewsSelectors from '../../../../state/views/selectors'
 import * as viewsConfig from '../../../../config/views'
 import {RootState} from '../../../../state/types'
+import history from '../../../history'
 
 import Header from './Header'
 import Table from './Table'
@@ -36,10 +38,7 @@ type OwnProps = {
 }
 
 type Props = OwnProps &
-    WithRouterProps<
-        {visibility?: ViewVisibility},
-        {cursor?: string; q?: string}
-    > &
+    RouteComponentProps<{visibility: ViewVisibility}, any, unknown> &
     ViewSearchUrlSyncInjectedProps &
     ConnectedProps<typeof connector> &
     CancellableRequestInjectedProps<
@@ -84,14 +83,14 @@ export class ViewTableContainer extends React.Component<Props> {
                 suggestedViewId.toString() !== urlViewId
 
             if (viewMissing) {
-                browserHistory.push('/app')
+                history.push('/app')
             }
 
             setViewActive(getView((suggestedViewId as unknown) as string))
             activeViewIdSet(suggestedViewId)
         }
 
-        void fetchViewItems(null, location.query.cursor)
+        void fetchViewItems(null, parse(location.search).cursor as string)
     }
 
     componentDidUpdate(prevProps: Props) {
@@ -108,7 +107,7 @@ export class ViewTableContainer extends React.Component<Props> {
             fetchViewItemsCancellable,
             updateView,
             setViewActive,
-            params,
+            match: {params},
             getView,
             hasActiveView,
             urlSearchView,
@@ -123,7 +122,7 @@ export class ViewTableContainer extends React.Component<Props> {
             this.props.urlViewId
         )
 
-        const urlCursor = location.query.cursor || null
+        const urlCursor = (parse(location.search).cursor as string) || null
         const storedCursor = navigation.get('current_cursor') || null
 
         let shouldFetchViewItems = false
@@ -135,7 +134,7 @@ export class ViewTableContainer extends React.Component<Props> {
         } else if (
             (prevProps.isUpdate && !isUpdate) ||
             (params.visibility &&
-                params.visibility !== prevProps.params.visibility)
+                params.visibility !== prevProps.match.params.visibility)
         ) {
             // entering "add new" mode
             updateView(
@@ -171,14 +170,14 @@ export class ViewTableContainer extends React.Component<Props> {
         if (urlCursor !== storedCursor) {
             if (prevProps.isLoading('fetchList') && !isLoading('fetchList')) {
                 // if the stored cursor has changed after a fetch, update the cursor in the URL
-                const query = location.query
+                const query = parse(location.search)
                 const cursorToSet = !isOnFirstPage ? storedCursor : null
                 if (cursorToSet) {
                     query.cursor = cursorToSet
-                    browserHistory.push({...location, query})
+                    history.push({...location, search: stringify(query)} as any)
                 } else if (query.cursor) {
                     delete query.cursor
-                    browserHistory.push({...location, query})
+                    history.push({...location, search: stringify(query)} as any)
                 }
             } else if (
                 !isLoading('fetchList') &&

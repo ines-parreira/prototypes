@@ -13,8 +13,6 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for a deac
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -24,8 +22,6 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for a deac
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/magento2"
           >
             Magento 2
@@ -65,8 +61,6 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for a deac
           All your Magento 2 customers have been imported. You can now see their info in the sidebar.
            
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/customers"
           >
             Review your customers.
@@ -146,8 +140,6 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for an int
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -157,8 +149,6 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for an int
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/magento2"
           >
             Magento 2
@@ -255,7 +245,7 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for an int
             className="mb-4"
           >
             <InputField
-              error="There is already an integration for this Magento 2 store"
+              error={null}
               label="Store admin URL"
               leftAddon="https://"
               name="name"
@@ -271,7 +261,7 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for an int
             <Button
               className="mr-2"
               color="success"
-              disabled={true}
+              disabled={false}
               tag="button"
               type="submit"
             >
@@ -298,8 +288,6 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for an int
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -309,8 +297,6 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for an int
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/magento2"
           >
             Magento 2
@@ -389,8 +375,6 @@ exports[`<Magento2IntegrationDetail/> render() should render the page for an int
             We're currently importing all your Magento 2 customers. This way, you'll see customer & orders info next to tickets. We'll notify you via email when the import is done. We typically sync 3,000 customers an hour.
              
             <Link
-              onlyActiveOnIndex={false}
-              style={Object {}}
               to="/app/customers"
             >
               Review imported customers.
@@ -472,8 +456,6 @@ exports[`<Magento2IntegrationDetail/> render() should render the page to create 
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -483,8 +465,6 @@ exports[`<Magento2IntegrationDetail/> render() should render the page to create 
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/magento2"
           >
             Magento 2
@@ -624,8 +604,6 @@ exports[`<Magento2IntegrationDetail/> render() should render the page to update 
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -635,8 +613,6 @@ exports[`<Magento2IntegrationDetail/> render() should render the page to update 
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/magento2"
           >
             Magento 2
@@ -676,8 +652,6 @@ exports[`<Magento2IntegrationDetail/> render() should render the page to update 
           All your Magento 2 customers have been imported. You can now see their info in the sidebar.
            
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/customers"
           >
             Review your customers.

@@ -1,6 +1,6 @@
 // @flow
 import React from 'react'
-import {browserHistory, Link, withRouter} from 'react-router'
+import {Link, withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
 import classNames from 'classnames'
 import {type Map} from 'immutable'
@@ -16,6 +16,7 @@ import {
     Col,
     Label,
 } from 'reactstrap'
+import {parse} from 'query-string'
 
 import Loader from '../../../../common/components/Loader'
 import ConfirmButton from '../../../../common/components/ConfirmButton.tsx'
@@ -28,6 +29,7 @@ import * as utils from '../../../../../utils.ts'
 import {notify} from '../../../../../state/notifications/actions.ts'
 import * as integrationSelectors from '../../../../../state/integrations/selectors.ts'
 import {PENDING_AUTHENTICATION_STATUS} from '../../../../../constants/integration.ts'
+import history from '../../../../history.ts'
 
 type Props = {
     integration: Map<*, *>,
@@ -52,7 +54,7 @@ type State = {
     isInitialized: boolean,
 }
 
-class ShopifyIntegrationDetail extends React.Component<Props, State> {
+export class ShopifyIntegrationDetail extends React.Component<Props, State> {
     state = {
         name: '',
         syncCustomerNotes: true,
@@ -61,13 +63,10 @@ class ShopifyIntegrationDetail extends React.Component<Props, State> {
 
     componentDidMount() {
         // display message from url
-        const {
-            location: {
-                query: {message, message_type: status = 'info', error},
-            },
-            isUpdate,
-        } = this.props
-
+        const {location, isUpdate} = this.props
+        const message = parse(location.search).message
+        const status = parse(location.search).message_type || 'info'
+        const error = parse(location.search).error
         this.setState({isInitialized: !isUpdate})
 
         if (error === 'need_scope_update') {
@@ -84,11 +83,11 @@ class ShopifyIntegrationDetail extends React.Component<Props, State> {
                 message: decodeURIComponent(message.replace(/\+/g, ' ')),
             })
             // remove error from url
-            browserHistory.push(window.location.pathname)
+            history.push(window.location.pathname)
         }
     }
 
-    componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps: Props) {
         if (
             _isEmpty(this.props.integration.toJS()) &&
             !_isEmpty(nextProps.integration.toJS())
@@ -97,7 +96,7 @@ class ShopifyIntegrationDetail extends React.Component<Props, State> {
                 nextProps.integration.getIn(['meta', 'oauth', 'status']) ===
                 PENDING_AUTHENTICATION_STATUS
             const isAuthenticating =
-                nextProps.location.query.action === 'authentication'
+                parse(nextProps.location.search).action === 'authentication'
 
             if (isAuthenticating) {
                 if (authenticationRequired) {
@@ -118,7 +117,7 @@ class ShopifyIntegrationDetail extends React.Component<Props, State> {
         }
     }
 
-    componentWillUpdate(nextProps, nextState) {
+    componentWillUpdate(nextProps: Props, nextState: State) {
         const {integration, isUpdate, loading} = nextProps
 
         // populating the form when updating an integration

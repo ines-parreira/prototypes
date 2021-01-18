@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Link, browserHistory} from 'react-router'
+import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import _truncate from 'lodash/truncate'
 
@@ -8,6 +8,7 @@ import ToggleButton from '../../../../common/components/ToggleButton'
 import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'
 import * as integrationsActions from '../../../../../state/integrations/actions.ts'
+import history from '../../../../history.ts'
 
 @connect(null, {
     activate: integrationsActions.activateIntegration,
@@ -92,7 +93,7 @@ export default class HTTPIntegrationList extends React.Component {
                 )}
                 longTypeDescription={longTypeDescription}
                 createIntegration={() =>
-                    browserHistory.push('/app/settings/integrations/http/new')
+                    history.push('/app/settings/integrations/http/new')
                 }
                 createIntegrationButtonContent="Add HTTP integration"
                 integrationToItemDisplay={integrationToItemDisplay}

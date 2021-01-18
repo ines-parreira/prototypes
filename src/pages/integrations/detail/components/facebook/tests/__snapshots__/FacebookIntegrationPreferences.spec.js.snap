@@ -31,8 +31,6 @@ exports[`<FacebookIntegrationPreferences/> render() should render loading button
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -42,8 +40,6 @@ exports[`<FacebookIntegrationPreferences/> render() should render loading button
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/facebook"
           >
             Facebook, Messenger & Instagram
@@ -112,8 +108,6 @@ exports[`<FacebookIntegrationPreferences/> render() should render loading button
               During
                
               <Link
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/business-hours"
               >
                 Business hours
@@ -158,8 +152,6 @@ exports[`<FacebookIntegrationPreferences/> render() should render loading button
               Outside
                
               <Link
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/business-hours"
               >
                 Business hours
@@ -198,8 +190,6 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -209,8 +199,6 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/facebook"
           >
             Facebook, Messenger & Instagram
@@ -279,8 +267,6 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
               During
                
               <Link
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/business-hours"
               >
                 Business hours
@@ -325,8 +311,6 @@ exports[`<FacebookIntegrationPreferences/> render() should render the Facebook p
               Outside
                
               <Link
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/business-hours"
               >
                 Business hours

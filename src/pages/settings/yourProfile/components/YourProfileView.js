@@ -16,7 +16,7 @@ import {
     Row,
 } from 'reactstrap'
 
-import {Link} from 'react-router'
+import {Link} from 'react-router-dom'
 
 import type {Map} from 'immutable'
 

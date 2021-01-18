@@ -81,8 +81,8 @@ describe('<RulesView/>', () => {
         updateOrder: updateOrderMock,
         notify: notifyMock,
         location: {
-            query: {},
-        } as Location<any>,
+            search: '',
+        },
         rules: fromJS([]),
         limitStatus: RuleLimitStatus.NonReaching,
     } as any) as ComponentProps<typeof RulesView>
@@ -98,7 +98,7 @@ describe('<RulesView/>', () => {
             <RulesView
                 {...defaultProps}
                 rules={fromJS(rules)}
-                location={{query: {ruleId: '3'}} as Location<any>}
+                location={({search: '?ruleId=3'} as unknown) as Location}
             />
         )
 

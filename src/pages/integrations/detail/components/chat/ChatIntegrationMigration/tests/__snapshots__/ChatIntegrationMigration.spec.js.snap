@@ -14,14 +14,18 @@ exports[`ChatIntegrationMigration component should display the migration page 1`
         <li
           class="breadcrumb-item"
         >
-          <a>
+          <a
+            to="/app/settings/integrations"
+          >
             Integrations
           </a>
         </li>
         <li
           class="breadcrumb-item"
         >
-          <a>
+          <a
+            to="/app/settings/integrations/smooch_inside"
+          >
             Chat (Deprecated)
           </a>
         </li>
@@ -41,32 +45,44 @@ exports[`ChatIntegrationMigration component should display the migration page 1`
       class="navbar navbar"
     >
       <a
+        activeclassname="disabled"
         class="nav-link"
+        to="/app/settings/integrations/smooch_inside/1/migration"
       >
         Migration
       </a>
       <a
+        activeclassname="disabled"
         class="nav-link"
+        to="/app/settings/integrations/smooch_inside/1/appearance"
       >
         Appearance
       </a>
       <a
+        activeclassname="disabled"
         class="nav-link"
+        to="/app/settings/integrations/smooch_inside/1/installation"
       >
         Installation
       </a>
       <a
+        activeclassname="disabled"
         class="nav-link"
+        to="/app/settings/integrations/smooch_inside/1/preferences"
       >
         Preferences
       </a>
       <a
+        activeclassname="disabled"
         class="nav-link"
+        to="/app/settings/integrations/smooch_inside/1/campaigns"
       >
         Campaigns
       </a>
       <a
+        activeclassname="disabled"
         class="nav-link"
+        to="/app/settings/integrations/smooch_inside/1/quick-replies"
       >
         Quick replies
       </a>
@@ -87,13 +103,17 @@ exports[`ChatIntegrationMigration component should display the migration page 1`
          
         A
          
-        <a>
+        <a
+          to="/app/settings/integrations/gorgias_chat"
+        >
           new version of the chat
         </a>
          
         with additional features is already available, please plan to migrate rapidly as this version of the chat integration will be progressively rolled-out during the first half of 2021. Don't worry it will remain active until you complete the migration. To migrate to this
          
-        <a>
+        <a
+          to="/app/settings/integrations/gorgias_chat"
+        >
           new version of the chat
         </a>
          

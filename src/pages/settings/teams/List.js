@@ -2,7 +2,7 @@
 import React from 'react'
 import {Emoji} from 'emoji-mart'
 import {Button, Container} from 'reactstrap'
-import {Link} from 'react-router'
+import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 import {connect} from 'react-redux'
 

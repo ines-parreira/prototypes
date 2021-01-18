@@ -260,8 +260,6 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and a "generat
       />
       <Link
         className="displayName"
-        onlyActiveOnIndex={false}
-        style={Object {}}
         to="/app/customer/1"
       >
         foo
@@ -342,8 +340,6 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and empty widg
       />
       <Link
         className="displayName"
-        onlyActiveOnIndex={false}
-        style={Object {}}
         to="/app/customer/1"
       >
         foo
@@ -465,8 +461,6 @@ exports[`<InfobarCustomerInfo/> should render basic customer info and the sugges
       />
       <Link
         className="displayName"
-        onlyActiveOnIndex={false}
-        style={Object {}}
         to="/app/customer/1"
       >
         foo
@@ -521,8 +515,6 @@ exports[`<InfobarCustomerInfo/> should render only basic customer info because c
       />
       <Link
         className="displayName"
-        onlyActiveOnIndex={false}
-        style={Object {}}
         to="/app/customer/1"
       >
         foo
@@ -569,8 +561,6 @@ exports[`<InfobarCustomerInfo/> should render only basic customer info because t
       />
       <Link
         className="displayName"
-        onlyActiveOnIndex={false}
-        style={Object {}}
         to="/app/customer/1"
       >
         foo
@@ -617,8 +607,6 @@ exports[`<InfobarCustomerInfo/> sources render basic customer info and widgets b
       />
       <Link
         className="displayName"
-        onlyActiveOnIndex={false}
-        style={Object {}}
         to="/app/customer/1"
       >
         foo

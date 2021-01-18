@@ -2,9 +2,9 @@
 import React from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import {withRouter} from 'react-router'
+import {withRouter} from 'react-router-dom'
 import {fromJS, type List, type Map} from 'immutable'
-
+import {parse} from 'query-string'
 import _merge from 'lodash/merge'
 import _pick from 'lodash/pick'
 
@@ -34,10 +34,12 @@ import TicketView from './components/TicketView'
 import {updateMessageText} from './components/ReplyArea/TicketReplyEditor'
 
 type Props = {
-    params: {
-        view?: string,
-        page?: string,
-        ticketId?: string,
+    match: {
+        params: {
+            view?: string,
+            page?: string,
+            ticketId?: string,
+        },
     },
     isTicketDirty: boolean,
     canSendMessage: boolean,
@@ -68,47 +70,7 @@ type State = {
     isTicketHidden: boolean,
 }
 
-@withRouter
-@connect(
-    (state) => {
-        return {
-            activeView: viewsSelectors.getActiveView(state),
-            activeCustomer: customersSelectors.getActiveCustomer(state),
-            currentUser: state.currentUser,
-            customers: customersSelectors.getCustomersState(state),
-            routing: state.routing,
-            ticket: state.ticket,
-            newMessage: state.newMessage,
-            tickets: state.tickets,
-            isTicketDirty: ticketSelectors.isDirty(state),
-            canSendMessage:
-                currentAccountSelectors.isAccountActive(state) &&
-                newMessageSelectors.isReady(state),
-            newMessageSource: newMessageSelectors.getNewMessageSource(state),
-        }
-    },
-    (dispatch) => {
-        return {
-            actions: {
-                macro: bindActionCreators(MacroActions, dispatch),
-                tag: bindActionCreators(TagActions, dispatch),
-                ticket: bindActionCreators(TicketActions, dispatch),
-                customers: bindActionCreators(customersActions, dispatch),
-                views: bindActionCreators(ViewsActions, dispatch),
-                newMessage: bindActionCreators(newMessageActions, dispatch),
-            },
-            updateActiveViewCursor: bindActionCreators(
-                ticketsActions.updateCursor,
-                dispatch
-            ),
-            submitTicket: bindActionCreators(
-                newMessageActions.submitTicket,
-                dispatch
-            ),
-        }
-    }
-)
-class TicketDetailContainer extends React.Component<Props, State> {
+export class TicketDetailContainer extends React.Component<Props, State> {
     static defaultProps = {
         isTicketDirty: false,
     }
@@ -139,19 +101,19 @@ class TicketDetailContainer extends React.Component<Props, State> {
                 ticket: {clearTicket, fetchTicket},
             },
             activeCustomer,
-            location: {
-                query: {customer},
+            location: {search},
+            match: {
+                params: {ticketId},
             },
-            params: {ticketId},
         } = this.props
         fetchTags()
         clearTicket()
         fetchTicket(ticketId || '')
 
-        const customerId = parseInt(customer)
+        const customerId = parse(search).customer
         if (
             ticketId === 'new' &&
-            customer &&
+            customerId &&
             activeCustomer.get('id') !== customerId
         ) {
             fetchCustomer(customerId)
@@ -176,13 +138,15 @@ class TicketDetailContainer extends React.Component<Props, State> {
             },
             activeView,
             newMessageSource,
-            params: {ticketId},
+            match: {
+                params: {ticketId},
+            },
             ticket,
             updateActiveViewCursor,
         } = this.props
         const nextTicket = nextProps.ticket
         const nextCustomer = nextTicket.get('customer') || fromJS({})
-        const nextParams = nextProps.params
+        const nextParams = nextProps.match.params
         const nextCustomers = nextProps.customers
         const prevRecipients = newMessageSource.get('to') || fromJS([])
         const nextRecipients =
@@ -239,12 +203,13 @@ class TicketDetailContainer extends React.Component<Props, State> {
             nextProps.activeCustomer.get('email')
         )
         const customer = ticket.get('customer') || fromJS({})
+        const nextCustomerQuery = parse(nextProps.location.search).customer
 
         if (
             nextTicketIsNew &&
-            nextProps.location.query.customer &&
+            nextCustomerQuery &&
             nextProps.activeCustomer.get('id') ===
-                parseInt(nextProps.location.query.customer) &&
+                parseInt(nextCustomerQuery) &&
             !customer.equals(receiver)
         ) {
             // set customer on ticket
@@ -337,7 +302,9 @@ class TicketDetailContainer extends React.Component<Props, State> {
             actions: {
                 ticket: {clearTicket},
             },
-            params: {ticketId},
+            match: {
+                params: {ticketId},
+            },
             ticket,
         } = this.props
         const customerId = ticket.getIn(['customer', 'id'])
@@ -366,7 +333,9 @@ class TicketDetailContainer extends React.Component<Props, State> {
             GO_BACK: {
                 action: () => {
                     const {
-                        params: {ticketId},
+                        match: {
+                            params: {ticketId},
+                        },
                     } = this.props
                     const ticketNumber = parseInt(ticketId)
                     clearTicket()
@@ -376,7 +345,9 @@ class TicketDetailContainer extends React.Component<Props, State> {
             GO_FORWARD: {
                 action: () => {
                     const {
-                        params: {ticketId},
+                        match: {
+                            params: {ticketId},
+                        },
                     } = this.props
                     const ticketNumber = parseInt(ticketId)
                     clearTicket()
@@ -482,7 +453,9 @@ class TicketDetailContainer extends React.Component<Props, State> {
                 newMessage: {prepareTicketMessage, sendTicketMessage},
             },
             newMessage,
-            params: {ticketId},
+            match: {
+                params: {ticketId},
+            },
             ticket,
         } = this.props
 
@@ -513,7 +486,9 @@ class TicketDetailContainer extends React.Component<Props, State> {
             actions: {
                 ticket: {clearTicket, goToNextTicket, setStatus},
             },
-            params: {ticketId},
+            match: {
+                params: {ticketId},
+            },
             ticket,
         } = this.props
         return setStatus(status, () => {
@@ -532,7 +507,9 @@ class TicketDetailContainer extends React.Component<Props, State> {
         const {
             actions,
             activeView,
-            params: {ticketId},
+            match: {
+                params: {ticketId},
+            },
             ticket,
         } = this.props
         const {isTicketHidden} = this.state
@@ -563,4 +540,40 @@ class TicketDetailContainer extends React.Component<Props, State> {
     }
 }
 
-export default TicketDetailContainer
+const connector = connect(
+    (state) => ({
+        activeView: viewsSelectors.getActiveView(state),
+        activeCustomer: customersSelectors.getActiveCustomer(state),
+        currentUser: state.currentUser,
+        customers: customersSelectors.getCustomersState(state),
+        routing: state.routing,
+        ticket: state.ticket,
+        newMessage: state.newMessage,
+        tickets: state.tickets,
+        isTicketDirty: ticketSelectors.isDirty(state),
+        canSendMessage:
+            currentAccountSelectors.isAccountActive(state) &&
+            newMessageSelectors.isReady(state),
+        newMessageSource: newMessageSelectors.getNewMessageSource(state),
+    }),
+    (dispatch) => ({
+        actions: {
+            macro: bindActionCreators(MacroActions, dispatch),
+            tag: bindActionCreators(TagActions, dispatch),
+            ticket: bindActionCreators(TicketActions, dispatch),
+            customers: bindActionCreators(customersActions, dispatch),
+            views: bindActionCreators(ViewsActions, dispatch),
+            newMessage: bindActionCreators(newMessageActions, dispatch),
+        },
+        updateActiveViewCursor: bindActionCreators(
+            ticketsActions.updateCursor,
+            dispatch
+        ),
+        submitTicket: bindActionCreators(
+            newMessageActions.submitTicket,
+            dispatch
+        ),
+    })
+)
+
+export default withRouter(connector(TicketDetailContainer))

@@ -1,52 +1,68 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
-import {browserHistory} from 'react-router'
-import _noop from 'lodash/noop'
 import * as immutableMatchers from 'jest-immutable-matchers'
 
-import TicketInfobarContainer from '../TicketInfobarContainer'
+import {TicketInfobarContainer} from '../TicketInfobarContainer'
 
 jest.addMatchers(immutableMatchers)
 
-const middlewares = [thunk]
-const mockStore = configureMockStore(middlewares)
-
 describe('TicketInfobarContainer component', () => {
     const minProps = {
-        store: mockStore({
-            infobar: fromJS({}),
-            ticket: fromJS({}),
-            widgets: fromJS({}),
-        }),
-        router: {
-            ...browserHistory,
-            setRouteLeaveHook: _noop,
-            isActive: _noop,
-
+        actions: {
+            widgets: {
+                cancelDrag: jest.fn(),
+                drag: jest.fn(),
+                drop: jest.fn(),
+                generateAndSetWidgets: jest.fn(),
+                removeEditedWidget: jest.fn(),
+                resetWidgets: jest.fn(),
+                setEditedWidgets: jest.fn(),
+                setEditionAsDirty: jest.fn(),
+                startEditionMode: jest.fn(),
+                startWidgetEdition: jest.fn(),
+                stopEditionMode: jest.fn(),
+                stopWidgetEdition: jest.fn(),
+                submitWidgets: jest.fn(),
+                updateEditedWidget: jest.fn(),
+                fetchWidgets: jest.fn(),
+                selectContext: jest.fn(),
+            },
+            infobar: {
+                executeAction: jest.fn(),
+                fetchPreviewCustomer: jest.fn(),
+                handleExecutedAction: jest.fn(),
+                search: jest.fn(),
+                similarCustomer: jest.fn(),
+            },
+        },
+        infobar: fromJS({}),
+        ticket: fromJS({}),
+        widgets: fromJS({}),
+        match: {
             params: {
                 ticketId: 'new',
             },
-            location: {
-                query: {},
-            },
         },
-        route: {},
+        location: {
+            search: '',
+        },
+        sources: fromJS({
+            ticket: fromJS({
+                customer: fromJS({}),
+            }),
+            customer: fromJS({}),
+        }),
     }
 
     it('should render infobar for new ticket', () => {
         const component = shallow(<TicketInfobarContainer {...minProps} />)
-            .dive()
-            .dive()
+
         expect(component).toMatchSnapshot()
     })
 
     it('should disable widget editing new tickets without customer', () => {
         const component = shallow(<TicketInfobarContainer {...minProps} />)
-            .dive()
-            .dive()
 
         expect(component.prop('customer')).toBeImmutable(fromJS({}))
     })
@@ -56,8 +72,6 @@ describe('TicketInfobarContainer component', () => {
             customer: {name: 'Pizza Pepperoni'},
         })
         const component = shallow(<TicketInfobarContainer {...minProps} />)
-            .dive()
-            .dive()
         component.setProps({ticket})
 
         expect(component.prop('customer')).toBeImmutable(ticket.get('customer'))

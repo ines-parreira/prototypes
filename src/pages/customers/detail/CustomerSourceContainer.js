@@ -1,4 +1,5 @@
 import React from 'react'
+import {withRouter} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
@@ -13,7 +14,10 @@ import {getSources} from '../../../state/widgets/selectors.ts'
 
 class CustomerSourceContainer extends React.Component {
     componentWillMount() {
-        const {actions, params} = this.props
+        const {
+            actions,
+            match: {params},
+        } = this.props
         actions.customers.fetchCustomer(params.customerId)
     }
 
@@ -39,7 +43,7 @@ class CustomerSourceContainer extends React.Component {
 }
 
 CustomerSourceContainer.propTypes = {
-    params: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
     widgets: PropTypes.object.isRequired,
     actions: PropTypes.object.isRequired,
     sources: PropTypes.object.isRequired,
@@ -63,7 +67,6 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(CustomerSourceContainer)
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(CustomerSourceContainer)
+)

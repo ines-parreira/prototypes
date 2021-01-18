@@ -599,8 +599,6 @@ exports[`ViewTable::Header search view 1`] = `
         style={Object {}}
       />
       <Link
-        onlyActiveOnIndex={false}
-        style={Object {}}
         to="/app/tickets"
       >
         <i

@@ -31,8 +31,6 @@ exports[`<SmoochIntegrationPreferences/> render() should render loading buttons 
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -42,8 +40,6 @@ exports[`<SmoochIntegrationPreferences/> render() should render loading buttons 
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/smooch"
           >
             Smooch
@@ -112,8 +108,6 @@ exports[`<SmoochIntegrationPreferences/> render() should render loading buttons 
               During
                
               <Link
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/business-hours"
               >
                 Business hours
@@ -158,8 +152,6 @@ exports[`<SmoochIntegrationPreferences/> render() should render loading buttons 
               Outside
                
               <Link
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/business-hours"
               >
                 Business hours
@@ -198,8 +190,6 @@ exports[`<SmoochIntegrationPreferences/> render() should render the Smooch prefe
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -209,8 +199,6 @@ exports[`<SmoochIntegrationPreferences/> render() should render the Smooch prefe
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/smooch"
           >
             Smooch
@@ -279,8 +267,6 @@ exports[`<SmoochIntegrationPreferences/> render() should render the Smooch prefe
               During
                
               <Link
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/business-hours"
               >
                 Business hours
@@ -325,8 +311,6 @@ exports[`<SmoochIntegrationPreferences/> render() should render the Smooch prefe
               Outside
                
               <Link
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/business-hours"
               >
                 Business hours

@@ -1,6 +1,5 @@
 import {shallow} from 'enzyme'
 import React, {ComponentProps} from 'react'
-import {browserHistory} from 'react-router'
 import {Button} from 'reactstrap'
 
 import {createMacro, deleteMacro} from '../../../../models/macro/resources'
@@ -11,8 +10,9 @@ import Loader from '../../../common/components/Loader/index.js'
 import HeaderCellProperty from '../../../common/components/table/cells/HeaderCellProperty.js'
 import TableBodyRow from '../../../common/components/table/TableBodyRow.js'
 import {MacrosSettingsTableContainer} from '../MacrosSettingsTable'
+import history from '../../../history'
 
-jest.mock('react-router')
+jest.mock('../../../history')
 jest.mock('../../../../models/macro/resources')
 
 describe('<MacrosSettingsTable/>', () => {
@@ -89,7 +89,7 @@ describe('<MacrosSettingsTable/>', () => {
         )
 
         component.find(TableBodyRow).at(0).simulate('click')
-        expect(browserHistory.push).toHaveBeenNthCalledWith(
+        expect(history.push).toHaveBeenNthCalledWith(
             1,
             '/app/settings/macros/1'
         )
@@ -116,7 +116,7 @@ describe('<MacrosSettingsTable/>', () => {
                 ...macrosState['1'],
                 id: 3,
             })
-            expect(browserHistory.push).toHaveBeenNthCalledWith(
+            expect(history.push).toHaveBeenNthCalledWith(
                 1,
                 '/app/settings/macros/3'
             )

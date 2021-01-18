@@ -1,6 +1,6 @@
 // @flow
 import React from 'react'
-import {Link} from 'react-router'
+import {Link} from 'react-router-dom'
 import {type Map, fromJS} from 'immutable'
 import {connect} from 'react-redux'
 import moment from 'moment'

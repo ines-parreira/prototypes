@@ -1,38 +1,24 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
-import {MAGENTO2_INTEGRATION_TYPE} from '../../../../../../constants/integration.ts'
-import Magento2IntegrationDetail from '../Magento2IntegrationDetail'
-
-const mockStore = configureMockStore([thunk])
-const _noop = () => {}
+import {Magento2IntegrationDetail} from '../Magento2IntegrationDetail'
 
 describe('<Magento2IntegrationDetail/>', () => {
-    let store
-
     const commonProps = {
         redirectUri: 'gorgias.io',
         location: {
-            query: {
-                message: '',
-                message_type: 'info',
-            },
+            search: '?message=&message_type=info',
         },
-        notify: _noop,
+        notify: jest.fn(),
         actions: {
-            activateIntegration: _noop,
-            deactivateIntegration: _noop,
-            deleteIntegration: _noop,
+            activateIntegration: jest.fn(),
+            deactivateIntegration: jest.fn(),
+            deleteIntegration: jest.fn(),
         },
+        getExistingMagento2Integration: jest.fn().mockReturnValue(fromJS({})),
         loading: fromJS({}),
     }
-
-    beforeEach(() => {
-        store = mockStore({})
-    })
 
     describe('render()', () => {
         it('should render the page to create a new integration', () => {
@@ -40,40 +26,22 @@ describe('<Magento2IntegrationDetail/>', () => {
                 <Magento2IntegrationDetail
                     integration={fromJS({})}
                     isUpdate={false}
-                    store={store}
                     {...commonProps}
                 />
             )
-                .dive()
-                .dive()
 
             expect(component).toMatchSnapshot()
         })
 
         it('should render the page for an integration being created with the name of another existing integration', () => {
             const storeUrl = 'magento.gorgi.us'
-            store = mockStore({
-                integrations: fromJS({
-                    integrations: [
-                        {
-                            type: MAGENTO2_INTEGRATION_TYPE,
-                            meta: {store_url: storeUrl},
-                        },
-                    ],
-                }),
-            })
-
             const component = shallow(
                 <Magento2IntegrationDetail
                     integration={fromJS({})}
                     isUpdate={false}
-                    store={store}
                     {...commonProps}
                 />
-            )
-                .dive()
-                .dive()
-                .setState({url: storeUrl})
+            ).setState({url: storeUrl})
 
             expect(component).toMatchSnapshot()
         })
@@ -92,13 +60,9 @@ describe('<Magento2IntegrationDetail/>', () => {
                         },
                     })}
                     isUpdate={true}
-                    store={store}
                     {...commonProps}
                 />
-            )
-                .dive()
-                .dive()
-                .setState({url: storeUrl, adminUrlSuffix: 'admin_12fg'})
+            ).setState({url: storeUrl, adminUrlSuffix: 'admin_12fg'})
 
             expect(component).toMatchSnapshot()
         })
@@ -118,13 +82,9 @@ describe('<Magento2IntegrationDetail/>', () => {
                         deactivated_datetime: '2018-01-01T18:52:17',
                     })}
                     isUpdate={true}
-                    store={store}
                     {...commonProps}
                 />
-            )
-                .dive()
-                .dive()
-                .setState({url: storeUrl, adminUrlSuffix: 'admin_12fg'})
+            ).setState({url: storeUrl, adminUrlSuffix: 'admin_12fg'})
 
             expect(component).toMatchSnapshot()
         })
@@ -143,13 +103,9 @@ describe('<Magento2IntegrationDetail/>', () => {
                         },
                     })}
                     isUpdate={true}
-                    store={store}
                     {...commonProps}
                 />
-            )
-                .dive()
-                .dive()
-                .setState({url: storeUrl, adminUrlSuffix: 'admin_12fg'})
+            ).setState({url: storeUrl, adminUrlSuffix: 'admin_12fg'})
 
             expect(component).toMatchSnapshot()
         })

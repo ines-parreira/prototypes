@@ -32,8 +32,6 @@ exports[`RestrictedFeature component should render image carusel and Lightbox 1`
   >
     This feature is only available for Pro and above plans.
     <Link
-      onlyActiveOnIndex={false}
-      style={Object {}}
       to="/app/settings/billing/plans"
     >
        

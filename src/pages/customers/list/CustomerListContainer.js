@@ -1,4 +1,5 @@
 import React from 'react'
+import {withRouter} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import {connect} from 'react-redux'
@@ -138,7 +139,7 @@ CustomerListContainer.propTypes = {
 }
 
 const mapStateToProps = (state, ownProps) => {
-    const urlViewId = ownProps.params.viewId
+    const urlViewId = ownProps.match.params.viewId
 
     return {
         activeView: viewsSelectors.getActiveView(state),
@@ -153,7 +154,6 @@ const mapDispatchToProps = {
     fetchViewItems: viewsActions.fetchViewItems,
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(CustomerListContainer)
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(CustomerListContainer)
+)

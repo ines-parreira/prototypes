@@ -13,8 +13,6 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -24,8 +22,6 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/email"
           >
             Email
@@ -193,8 +189,6 @@ exports[`EmailIntegrationCreateForwarding component should render -copied!- butt
           Using GMail or G Suite?
            
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/email/new"
           >
             Connect your account in one click.
@@ -228,8 +222,6 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -239,8 +231,6 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/email"
           >
             Email
@@ -408,8 +398,6 @@ exports[`EmailIntegrationCreateForwarding component should render 1`] = `
           Using GMail or G Suite?
            
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/email/new"
           >
             Connect your account in one click.

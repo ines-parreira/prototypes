@@ -1,17 +1,16 @@
-import React from 'react'
+import React, {ComponentProps} from 'react'
 import {render, RenderResult, fireEvent} from '@testing-library/react'
 import {fromJS} from 'immutable'
 
-import {
-    ImportZendeskDetail,
-    ImportZendeskDetailProps,
-} from '../ImportZendeskDetail'
+import {ImportZendeskDetail} from '../ImportZendeskDetail'
 
 import {IntegrationType} from '../../../../../models/integration/types'
 
 import {failedImport, pendingImport, successImport} from './fixtures'
 
-const renderComponent = (props: ImportZendeskDetailProps): RenderResult => {
+const renderComponent = (
+    props: ComponentProps<typeof ImportZendeskDetail>
+): RenderResult => {
     return render(<ImportZendeskDetail {...props} />)
 }
 
@@ -23,12 +22,14 @@ describe('<ImportZendeskDetail/>', () => {
                 const fetchIntegrationMock = jest.fn()
                 const {container} = renderComponent({
                     fetchIntegration: fetchIntegrationMock,
-                    params: {
-                        integrationId: zendeskImport.id as string,
+                    match: {
+                        params: {
+                            integrationId: zendeskImport.id as string,
+                        },
                     },
                     integration: fromJS(zendeskImport),
                     loading: false,
-                })
+                } as any)
                 expect(fetchIntegrationMock).toBeCalledWith(
                     zendeskImport.id,
                     IntegrationType.ZendeskIntegrationType
@@ -40,12 +41,14 @@ describe('<ImportZendeskDetail/>', () => {
         it('should display the popover', () => {
             const {getByText} = renderComponent({
                 fetchIntegration: jest.fn(),
-                params: {
-                    integrationId: '1',
+                match: {
+                    params: {
+                        integrationId: '1',
+                    },
                 },
                 integration: fromJS(successImport),
                 loading: false,
-            })
+            } as any)
 
             fireEvent.click(getByText('Learn'))
 

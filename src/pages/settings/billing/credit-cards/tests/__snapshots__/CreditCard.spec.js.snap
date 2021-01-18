@@ -14,8 +14,6 @@ exports[`CreditCard component should display credit card form 1`] = `
         >
           <Link
             className="section"
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/billing/"
           >
             Billing & Usage
@@ -174,8 +172,6 @@ exports[`CreditCard component should render nothing if loaded, but no current su
         >
           <Link
             className="section"
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/billing/"
           >
             Billing & Usage

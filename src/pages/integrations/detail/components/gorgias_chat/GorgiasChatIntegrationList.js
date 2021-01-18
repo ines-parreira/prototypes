@@ -1,6 +1,6 @@
 // @flow
 import React from 'react'
-import {Link, browserHistory} from 'react-router'
+import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {type List, type Map} from 'immutable'
 import Alert from 'reactstrap/lib/Alert'
@@ -9,6 +9,7 @@ import {GORGIAS_CHAT_INTEGRATION_TYPE} from '../../../../../constants/integratio
 import * as integrationsActions from '../../../../../state/integrations/actions.ts'
 
 import ToggleButton from '../../../../common/components/ToggleButton'
+import history from '../../../../history.ts'
 import ForwardIcon from '../ForwardIcon'
 import IntegrationList from '../IntegrationList'
 
@@ -105,7 +106,7 @@ export default class GorgiasChatIntegrationList extends React.Component<Props> {
                         GORGIAS_CHAT_INTEGRATION_TYPE
                 )}
                 createIntegration={() =>
-                    browserHistory.push(
+                    history.push(
                         `/app/settings/integrations/${GORGIAS_CHAT_INTEGRATION_TYPE}/new`
                     )
                 }

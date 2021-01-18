@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import type {Map} from 'immutable'
-import {Link, withRouter} from 'react-router'
+import {Link, withRouter} from 'react-router-dom'
 import classNames from 'classnames'
 import {
     Alert,
@@ -12,7 +12,7 @@ import {
     Container,
     Row,
 } from 'reactstrap'
-
+import {parse} from 'query-string'
 import {fromJS} from 'immutable'
 
 import {PENDING_AUTHENTICATION_STATUS} from '../../../../../constants/integration.ts'
@@ -62,7 +62,7 @@ export class SmileIntegrationDetailComponent extends React.Component<
                 nextProps.integration.getIn(['meta', 'oauth', 'status']) ===
                 PENDING_AUTHENTICATION_STATUS
             const isAuthenticating =
-                nextProps.location.query.action === 'authentication'
+                parse(nextProps.location.search).action === 'authentication'
 
             if (isAuthenticating) {
                 if (authenticationRequired) {

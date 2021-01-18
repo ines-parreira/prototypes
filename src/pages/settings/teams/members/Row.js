@@ -2,7 +2,7 @@
 import React, {Component} from 'react'
 import {Badge, Button} from 'reactstrap'
 import classnames from 'classnames'
-import {Link} from 'react-router'
+import {Link} from 'react-router-dom'
 import type {Map} from 'immutable'
 
 import {RoleLabel} from '../../../common/utils/labels'

@@ -1,17 +1,19 @@
 import React, {ComponentType, useMemo} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {browserHistory, withRouter, WithRouterProps} from 'react-router'
+import {withRouter, RouteComponentProps} from 'react-router-dom'
 import {useUpdateEffect} from 'react-use'
 import {Map} from 'immutable'
 import {
     compressToEncodedURIComponent,
     decompressFromEncodedURIComponent,
 } from 'lz-string'
+import {parse, stringify} from 'query-string'
 
 import * as viewsSelectors from '../../../../state/views/selectors'
 import {RootState} from '../../../../state/types'
 import * as viewsActions from '../../../../state/views/actions'
 import * as viewsConfig from '../../../../config/views'
+import history from '../../../history'
 
 type QueryString = {
     q?: string
@@ -24,7 +26,7 @@ type InjectedProps = {
 
 export type ViewSearchUrlSyncInjectedProps = InjectedProps &
     ConnectedProps<typeof connector> &
-    WithRouterProps<Record<string, unknown>, QueryString>
+    RouteComponentProps
 
 type Props = {
     isSearch: boolean
@@ -45,7 +47,10 @@ export function withViewSearchUrlSyncContainer<P extends Props>(
             isSearch,
             areFiltersValid,
         } = props
-        const {q: urlQuery = '', filters = ''} = location.query
+        const {q: urlQuery = '', filters = ''} = parse(location.search) as {
+            q: string | undefined
+            filters: string | undefined
+        }
         const viewQuery = activeView.get('search') || ''
         const urlFilters = useMemo(() => {
             return decompressFromEncodedURIComponent(filters) || ''
@@ -70,26 +75,26 @@ export function withViewSearchUrlSyncContainer<P extends Props>(
 
         useUpdateEffect(() => {
             if (isSearch && viewQuery !== urlQuery) {
-                browserHistory.push({
+                history.push({
                     ...location,
-                    query: {
-                        ...location.query,
+                    search: stringify({
+                        ...parse(location.search),
                         q: viewQuery,
-                    },
+                    }),
                 })
             }
         }, [viewQuery])
 
         useUpdateEffect(() => {
             if (isSearch && viewFilters !== urlFilters && areFiltersValid) {
-                browserHistory.push({
+                history.push({
                     ...location,
-                    query: {
-                        ...location.query,
+                    search: stringify({
+                        ...parse(location.search),
                         filters: viewFilters
                             ? compressToEncodedURIComponent(viewFilters)
                             : undefined,
-                    },
+                    }),
                 })
             }
         }, [viewFilters])
@@ -116,6 +121,8 @@ export default function withViewSearchUrlSync<P extends Props>(
     WrappedComponent: ComponentType<P & ViewSearchUrlSyncInjectedProps>
 ): ComponentType<P> {
     return connector(
-        withRouter(withViewSearchUrlSyncContainer<P>(WrappedComponent) as any)
+        withRouter(
+            withViewSearchUrlSyncContainer<P>(WrappedComponent) as any
+        ) as any
     ) as ComponentType<P>
 }

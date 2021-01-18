@@ -1,12 +1,12 @@
 import React from 'react'
 import {Progress, Table} from 'reactstrap'
-import {browserHistory} from 'react-router'
 import {Map} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
 
 import {getIntegrationsByTypes} from '../../../../state/integrations/selectors'
 import {IntegrationType} from '../../../../models/integration/types'
 import {RootState} from '../../../../state/types'
+import history from '../../../history'
 
 import {getImportCompletionDate} from './utils'
 import {ImportStatus} from './types'
@@ -99,7 +99,7 @@ export const ImportZendeskDataList = (
                                 className="cursor-pointer"
                                 key={idx}
                                 onClick={() => {
-                                    browserHistory.push(
+                                    history.push(
                                         `/app/settings/import-data/zendesk/${
                                             integration.get('id') as string
                                         }`

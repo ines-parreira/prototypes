@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {fromJS} from 'immutable'
-import {withRouter} from 'react-router'
+import {withRouter} from 'react-router-dom'
 
 import Infobar from '../../common/components/infobar/Infobar'
 
@@ -11,7 +11,7 @@ import * as WidgetActions from '../../../state/widgets/actions.ts'
 import * as InfobarActions from '../../../state/infobar/actions.ts'
 import {getSourcesWithCustomer} from '../../../state/widgets/selectors.ts'
 
-class TicketInfobarContainer extends React.Component {
+export class TicketInfobarContainer extends React.Component {
     componentWillMount() {
         const {actions} = this.props
 
@@ -23,11 +23,11 @@ class TicketInfobarContainer extends React.Component {
         const {
             actions,
             widgets,
-            route,
+            isEditingWidgets,
             infobar,
             ticket,
             sources,
-            params,
+            match: {params},
         } = this.props
 
         // the || is used to replace null
@@ -38,7 +38,7 @@ class TicketInfobarContainer extends React.Component {
                 actions={actions}
                 infobar={infobar}
                 sources={sources}
-                isRouteEditingWidgets={!!route.isEditingWidgets}
+                isRouteEditingWidgets={!!isEditingWidgets}
                 identifier={ticket.get('id', params.ticketId || '').toString()}
                 customer={customer}
                 widgets={widgets}
@@ -51,15 +51,13 @@ class TicketInfobarContainer extends React.Component {
 TicketInfobarContainer.propTypes = {
     actions: PropTypes.object.isRequired,
     infobar: PropTypes.object.isRequired,
-    route: PropTypes.object.isRequired,
+    isEditingWidgets: PropTypes.bool,
     ticket: PropTypes.object.isRequired,
     widgets: PropTypes.object.isRequired,
     sources: PropTypes.object.isRequired,
 
     // react-router
-    params: PropTypes.shape({
-        ticketId: PropTypes.string,
-    }).isRequired,
+    match: PropTypes.object.isRequired,
 }
 
 function mapStateToProps(state) {

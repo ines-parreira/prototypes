@@ -13,8 +13,6 @@ exports[`<EmailIntegrationCreateVerification/> render() should render instructio
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -24,8 +22,6 @@ exports[`<EmailIntegrationCreateVerification/> render() should render instructio
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/email"
           >
             Email
@@ -119,8 +115,6 @@ exports[`<EmailIntegrationCreateVerification/> render() should render the regula
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -130,8 +124,6 @@ exports[`<EmailIntegrationCreateVerification/> render() should render the regula
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/email"
           >
             Email
@@ -207,8 +199,6 @@ exports[`<EmailIntegrationCreateVerification/> render() should render the regula
         If you haven't set up the forwarding yet, you'll find the instructions
          
         <Link
-          onlyActiveOnIndex={false}
-          style={Object {}}
           to="/app/settings/integrations/email/1/forwarding"
         >
           there

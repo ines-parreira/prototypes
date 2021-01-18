@@ -69,8 +69,6 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
               tag="li"
             >
               <Link
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations"
               >
                 Integrations
@@ -80,8 +78,6 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
               tag="li"
             >
               <Link
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside"
               >
                 Chat (Deprecated)
@@ -117,13 +113,10 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                   className="breadcrumb-item"
                 >
                   <Link
-                    onlyActiveOnIndex={false}
-                    style={Object {}}
                     to="/app/settings/integrations"
                   >
                     <a
-                      onClick={[Function]}
-                      style={Object {}}
+                      to="/app/settings/integrations"
                     >
                       Integrations
                     </a>
@@ -137,13 +130,10 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                   className="breadcrumb-item"
                 >
                   <Link
-                    onlyActiveOnIndex={false}
-                    style={Object {}}
                     to="/app/settings/integrations/smooch_inside"
                   >
                     <a
-                      onClick={[Function]}
-                      style={Object {}}
+                      to="/app/settings/integrations/smooch_inside"
                     >
                       Chat (Deprecated)
                     </a>
@@ -201,14 +191,12 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                 activeClassName="disabled"
                 className="nav-link"
                 key=".0"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/2/migration"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/2/migration"
                 >
                   Migration
                 </a>
@@ -217,14 +205,12 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                 activeClassName="disabled"
                 className="nav-link"
                 key=".1"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/2/appearance"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/2/appearance"
                 >
                   Appearance
                 </a>
@@ -233,14 +219,12 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                 activeClassName="disabled"
                 className="nav-link"
                 key=".2"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/2/installation"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/2/installation"
                 >
                   Installation
                 </a>
@@ -249,14 +233,12 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                 activeClassName="disabled"
                 className="nav-link"
                 key=".3"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/2/preferences"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/2/preferences"
                 >
                   Preferences
                 </a>
@@ -265,14 +247,12 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                 activeClassName="disabled"
                 className="nav-link"
                 key=".4"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/2/campaigns"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/2/campaigns"
                 >
                   Campaigns
                 </a>
@@ -281,14 +261,12 @@ exports[`ChatIntegrationInstall component should display the list of Shopify sto
                 activeClassName="disabled"
                 className="nav-link"
                 key=".5"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/smooch_inside/2/quick-replies"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/smooch_inside/2/quick-replies"
                 >
                   Quick replies
                 </a>

@@ -21,7 +21,7 @@ import _upperFirst from 'lodash/upperFirst'
 import md5 from 'md5'
 import moment from 'moment-timezone'
 import {createSelectorCreator, defaultMemoize, createSelector} from 'reselect'
-import {Route} from 'react-router'
+import {Route} from 'react-router-dom'
 import URLSafeBase64 from 'urlsafe-base64'
 
 import {humanize} from './business/format'

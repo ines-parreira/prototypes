@@ -3,8 +3,7 @@ import {fireEvent, render, RenderResult} from '@testing-library/react'
 
 import {fromJS, List, Map} from 'immutable'
 
-import {browserHistory} from 'react-router'
-
+import history from '../../../../history'
 import {ImportZendeskDataList} from '../ImportZendeskDataList'
 
 import {failedImport, pendingImport, successImport} from './fixtures'
@@ -67,7 +66,7 @@ describe('<ImportZendeskDataList/>', () => {
 
         it('should redirect to detailed page after user clicked on particular import row', () => {
             const mockedPush = jest.fn()
-            jest.mock('react-router', () => ({
+            jest.mock('react-router-dom', () => ({
                 useHistory: () => ({
                     push: mockedPush,
                 }),
@@ -78,7 +77,7 @@ describe('<ImportZendeskDataList/>', () => {
             })
             const row = getByRole('row')
             fireEvent.click(row)
-            expect(browserHistory.push).toBeCalledWith(
+            expect(history.push).toBeCalledWith(
                 `/app/settings/import-data/zendesk/${successImport.id}`
             )
         })

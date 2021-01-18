@@ -1,5 +1,5 @@
 import React, {MouseEvent} from 'react'
-import {Link, withRouter, WithRouterProps} from 'react-router'
+import {Link, withRouter, RouteComponentProps} from 'react-router-dom'
 import classNames from 'classnames'
 import {
     Breadcrumb,
@@ -9,7 +9,7 @@ import {
     Container,
     Row,
 } from 'reactstrap'
-
+import {parse} from 'query-string'
 import {fromJS, Map} from 'immutable'
 
 import {PENDING_AUTHENTICATION_STATUS} from '../../../../../constants/integration'
@@ -30,7 +30,7 @@ type Props = {
     loading: Map<string, string>
     actions: IActions
     redirectUri: Location
-} & WithRouterProps<Record<string, string>, {action: string}>
+} & RouteComponentProps
 
 export class YotpoIntegrationDetailComponent extends React.Component<Props> {
     state = {
@@ -53,7 +53,7 @@ export class YotpoIntegrationDetailComponent extends React.Component<Props> {
                 nextProps.integration.getIn(['meta', 'oauth', 'status']) ===
                 PENDING_AUTHENTICATION_STATUS
             const isAuthenticating =
-                nextProps.location.query.action === 'authentication'
+                parse(nextProps.location.search)?.action === 'authentication'
 
             if (isAuthenticating) {
                 if (authenticationRequired) {

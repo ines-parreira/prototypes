@@ -1,4 +1,4 @@
-import {browserHistory} from 'react-router'
+import history from '../pages/history'
 
 export default {
     App: {
@@ -9,7 +9,7 @@ export default {
                 description: 'Go to the home view.',
                 action: (e: Event) => {
                     e.preventDefault()
-                    browserHistory.push('/app')
+                    history.push('/app')
                 },
             },
             GO_VIEW: {

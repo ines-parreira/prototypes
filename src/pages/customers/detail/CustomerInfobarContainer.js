@@ -1,4 +1,5 @@
 import React from 'react'
+import {withRouter} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
@@ -26,7 +27,7 @@ class CustomerInfobarContainer extends React.Component {
         const {
             actions,
             widgets,
-            route,
+            isEditingWidgets,
             infobar,
             activeCustomer,
             sources,
@@ -44,7 +45,7 @@ class CustomerInfobarContainer extends React.Component {
                 actions={actions}
                 infobar={infobar}
                 sources={sources}
-                isRouteEditingWidgets={!!route.isEditingWidgets}
+                isRouteEditingWidgets={!!isEditingWidgets}
                 identifier={identifier}
                 customer={activeCustomer}
                 widgets={widgets}
@@ -57,7 +58,7 @@ class CustomerInfobarContainer extends React.Component {
 CustomerInfobarContainer.propTypes = {
     actions: PropTypes.object.isRequired,
     infobar: PropTypes.object.isRequired,
-    route: PropTypes.object.isRequired,
+    isEditingWidgets: PropTypes.bool,
     activeCustomer: PropTypes.object.isRequired,
     widgets: PropTypes.object.isRequired,
     sources: PropTypes.object.isRequired,
@@ -83,7 +84,6 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(CustomerInfobarContainer)
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(CustomerInfobarContainer)
+)

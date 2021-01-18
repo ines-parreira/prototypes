@@ -1,5 +1,4 @@
 import React from 'react'
-import {browserHistory} from 'react-router'
 import {fromJS} from 'immutable'
 import {shallow} from 'enzyme'
 
@@ -7,7 +6,10 @@ import {
     SHOPIFY_INTEGRATION_TYPE,
     SMOOCH_INSIDE_INTEGRATION_TYPE,
 } from '../../../../../constants/integration.ts'
+import history from '../../../../history.ts'
 import InstallOnIntegrationsCard from '../InstallOnIntegrationsCard'
+
+jest.mock('../../../../history.ts')
 
 const defaultProps = {
     integrationType: SHOPIFY_INTEGRATION_TYPE,
@@ -65,7 +67,7 @@ describe('<InstallOnIntegrationsCard/>', () => {
 
                 await component.instance()._installOnStore(targetIntegration)
 
-                expect(browserHistory.push).toHaveBeenCalledWith(
+                expect(history.push).toHaveBeenCalledWith(
                     `/app/settings/integrations/${targetIntegration.get(
                         'type'
                     )}/` +

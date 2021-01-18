@@ -27,14 +27,12 @@ exports[`<FacebookIntegrationNavigation/> should display the Ads tab when Instag
           activeClassName="disabled"
           className="nav-link"
           key=".$/app/settings/integrations/facebook/1/overview"
-          onlyActiveOnIndex={false}
-          style={Object {}}
           to="/app/settings/integrations/facebook/1/overview"
         >
           <a
+            activeClassName="disabled"
             className="nav-link"
-            onClick={[Function]}
-            style={Object {}}
+            to="/app/settings/integrations/facebook/1/overview"
           >
             Overview
           </a>
@@ -43,14 +41,12 @@ exports[`<FacebookIntegrationNavigation/> should display the Ads tab when Instag
           activeClassName="disabled"
           className="nav-link"
           key=".$/app/settings/integrations/facebook/1/customer_chat"
-          onlyActiveOnIndex={false}
-          style={Object {}}
           to="/app/settings/integrations/facebook/1/customer_chat"
         >
           <a
+            activeClassName="disabled"
             className="nav-link"
-            onClick={[Function]}
-            style={Object {}}
+            to="/app/settings/integrations/facebook/1/customer_chat"
           >
             Customer chat
           </a>
@@ -59,14 +55,12 @@ exports[`<FacebookIntegrationNavigation/> should display the Ads tab when Instag
           activeClassName="disabled"
           className="nav-link"
           key=".$/app/settings/integrations/facebook/1/preferences"
-          onlyActiveOnIndex={false}
-          style={Object {}}
           to="/app/settings/integrations/facebook/1/preferences"
         >
           <a
+            activeClassName="disabled"
             className="nav-link"
-            onClick={[Function]}
-            style={Object {}}
+            to="/app/settings/integrations/facebook/1/preferences"
           >
             Preferences
           </a>
@@ -75,14 +69,12 @@ exports[`<FacebookIntegrationNavigation/> should display the Ads tab when Instag
           activeClassName="disabled"
           className="nav-link"
           key=".$/app/settings/integrations/facebook/1/ads"
-          onlyActiveOnIndex={false}
-          style={Object {}}
           to="/app/settings/integrations/facebook/1/ads"
         >
           <a
+            activeClassName="disabled"
             className="nav-link"
-            onClick={[Function]}
-            style={Object {}}
+            to="/app/settings/integrations/facebook/1/ads"
           >
             Instagram ads
           </a>
@@ -115,14 +107,12 @@ exports[`<FacebookIntegrationNavigation/> should not display the Ads tab when ad
           activeClassName="disabled"
           className="nav-link"
           key=".$/app/settings/integrations/facebook/1/overview"
-          onlyActiveOnIndex={false}
-          style={Object {}}
           to="/app/settings/integrations/facebook/1/overview"
         >
           <a
+            activeClassName="disabled"
             className="nav-link"
-            onClick={[Function]}
-            style={Object {}}
+            to="/app/settings/integrations/facebook/1/overview"
           >
             Overview
           </a>
@@ -131,14 +121,12 @@ exports[`<FacebookIntegrationNavigation/> should not display the Ads tab when ad
           activeClassName="disabled"
           className="nav-link"
           key=".$/app/settings/integrations/facebook/1/customer_chat"
-          onlyActiveOnIndex={false}
-          style={Object {}}
           to="/app/settings/integrations/facebook/1/customer_chat"
         >
           <a
+            activeClassName="disabled"
             className="nav-link"
-            onClick={[Function]}
-            style={Object {}}
+            to="/app/settings/integrations/facebook/1/customer_chat"
           >
             Customer chat
           </a>
@@ -147,14 +135,12 @@ exports[`<FacebookIntegrationNavigation/> should not display the Ads tab when ad
           activeClassName="disabled"
           className="nav-link"
           key=".$/app/settings/integrations/facebook/1/preferences"
-          onlyActiveOnIndex={false}
-          style={Object {}}
           to="/app/settings/integrations/facebook/1/preferences"
         >
           <a
+            activeClassName="disabled"
             className="nav-link"
-            onClick={[Function]}
-            style={Object {}}
+            to="/app/settings/integrations/facebook/1/preferences"
           >
             Preferences
           </a>

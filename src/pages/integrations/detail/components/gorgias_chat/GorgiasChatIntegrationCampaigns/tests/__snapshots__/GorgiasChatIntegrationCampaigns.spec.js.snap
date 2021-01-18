@@ -59,8 +59,6 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
               tag="li"
             >
               <Link
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations"
               >
                 Integrations
@@ -70,8 +68,6 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
               tag="li"
             >
               <Link
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/gorgias_chat"
               >
                 Chat
@@ -107,13 +103,10 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
                   className="breadcrumb-item"
                 >
                   <Link
-                    onlyActiveOnIndex={false}
-                    style={Object {}}
                     to="/app/settings/integrations"
                   >
                     <a
-                      onClick={[Function]}
-                      style={Object {}}
+                      to="/app/settings/integrations"
                     >
                       Integrations
                     </a>
@@ -127,13 +120,10 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
                   className="breadcrumb-item"
                 >
                   <Link
-                    onlyActiveOnIndex={false}
-                    style={Object {}}
                     to="/app/settings/integrations/gorgias_chat"
                   >
                     <a
-                      onClick={[Function]}
-                      style={Object {}}
+                      to="/app/settings/integrations/gorgias_chat"
                     >
                       Chat
                     </a>
@@ -170,14 +160,12 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
               <Link
                 className="btn btn-success"
                 onClick={[Function]}
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/gorgias_chat/118/campaigns/new"
               >
                 <a
                   className="btn btn-success"
                   onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/gorgias_chat/118/campaigns/new"
                 >
                   Create campaign
                 </a>
@@ -211,14 +199,12 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
                 activeClassName="disabled"
                 className="nav-link"
                 key=".0"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/gorgias_chat/118/appearance"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/gorgias_chat/118/appearance"
                 >
                   Appearance
                 </a>
@@ -227,14 +213,12 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
                 activeClassName="disabled"
                 className="nav-link"
                 key=".1"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/gorgias_chat/118/installation"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/gorgias_chat/118/installation"
                 >
                   Installation
                 </a>
@@ -243,14 +227,12 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
                 activeClassName="disabled"
                 className="nav-link"
                 key=".2"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/gorgias_chat/118/preferences"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/gorgias_chat/118/preferences"
                 >
                   Preferences
                 </a>
@@ -259,14 +241,12 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
                 activeClassName="disabled"
                 className="nav-link"
                 key=".3"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/gorgias_chat/118/quick_replies"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/gorgias_chat/118/quick_replies"
                 >
                   Quick replies
                 </a>
@@ -275,14 +255,12 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
                 activeClassName="disabled"
                 className="nav-link"
                 key=".4"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/gorgias_chat/118/campaigns"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/gorgias_chat/118/campaigns"
                 >
                   Campaigns
                 </a>
@@ -393,8 +371,6 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
               tag="li"
             >
               <Link
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations"
               >
                 Integrations
@@ -404,8 +380,6 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
               tag="li"
             >
               <Link
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/gorgias_chat"
               >
                 Chat
@@ -441,13 +415,10 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
                   className="breadcrumb-item"
                 >
                   <Link
-                    onlyActiveOnIndex={false}
-                    style={Object {}}
                     to="/app/settings/integrations"
                   >
                     <a
-                      onClick={[Function]}
-                      style={Object {}}
+                      to="/app/settings/integrations"
                     >
                       Integrations
                     </a>
@@ -461,13 +432,10 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
                   className="breadcrumb-item"
                 >
                   <Link
-                    onlyActiveOnIndex={false}
-                    style={Object {}}
                     to="/app/settings/integrations/gorgias_chat"
                   >
                     <a
-                      onClick={[Function]}
-                      style={Object {}}
+                      to="/app/settings/integrations/gorgias_chat"
                     >
                       Chat
                     </a>
@@ -504,14 +472,12 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
               <Link
                 className="btn btn-success"
                 onClick={[Function]}
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/gorgias_chat/118/campaigns/new"
               >
                 <a
                   className="btn btn-success"
                   onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/gorgias_chat/118/campaigns/new"
                 >
                   Create campaign
                 </a>
@@ -556,14 +522,12 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
                 activeClassName="disabled"
                 className="nav-link"
                 key=".0"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/gorgias_chat/118/appearance"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/gorgias_chat/118/appearance"
                 >
                   Appearance
                 </a>
@@ -572,14 +536,12 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
                 activeClassName="disabled"
                 className="nav-link"
                 key=".1"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/gorgias_chat/118/installation"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/gorgias_chat/118/installation"
                 >
                   Installation
                 </a>
@@ -588,14 +550,12 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
                 activeClassName="disabled"
                 className="nav-link"
                 key=".2"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/gorgias_chat/118/preferences"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/gorgias_chat/118/preferences"
                 >
                   Preferences
                 </a>
@@ -604,14 +564,12 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
                 activeClassName="disabled"
                 className="nav-link"
                 key=".3"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/gorgias_chat/118/quick_replies"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/gorgias_chat/118/quick_replies"
                 >
                   Quick replies
                 </a>
@@ -620,14 +578,12 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
                 activeClassName="disabled"
                 className="nav-link"
                 key=".4"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 to="/app/settings/integrations/gorgias_chat/118/campaigns"
               >
                 <a
+                  activeClassName="disabled"
                   className="nav-link"
-                  onClick={[Function]}
-                  style={Object {}}
+                  to="/app/settings/integrations/gorgias_chat/118/campaigns"
                 >
                   Campaigns
                 </a>
@@ -666,13 +622,10 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
                 className="link-full-td"
               >
                 <Link
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/integrations/gorgias_chat/118/campaigns/156a4d-fg68h40-sd6f4"
                 >
                   <a
-                    onClick={[Function]}
-                    style={Object {}}
+                    to="/app/settings/integrations/gorgias_chat/118/campaigns/156a4d-fg68h40-sd6f4"
                   >
                     <div>
                       <b>
@@ -711,13 +664,10 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
                   href="/app/settings/integrations/gorgias_chat/118/campaigns/156a4d-fg68h40-sd6f4"
                 >
                   <Link
-                    onlyActiveOnIndex={false}
-                    style={Object {}}
                     to="/app/settings/integrations/gorgias_chat/118/campaigns/156a4d-fg68h40-sd6f4"
                   >
                     <a
-                      onClick={[Function]}
-                      style={Object {}}
+                      to="/app/settings/integrations/gorgias_chat/118/campaigns/156a4d-fg68h40-sd6f4"
                     >
                       <i
                         className="material-icons md-2 align-middle icon-go-forward"
@@ -736,13 +686,10 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
                 className="link-full-td"
               >
                 <Link
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/integrations/gorgias_chat/118/campaigns/not-so-good-campaign-d8f9-fds486-sf78"
                 >
                   <a
-                    onClick={[Function]}
-                    style={Object {}}
+                    to="/app/settings/integrations/gorgias_chat/118/campaigns/not-so-good-campaign-d8f9-fds486-sf78"
                   >
                     <div>
                       <b>
@@ -781,13 +728,10 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
                   href="/app/settings/integrations/gorgias_chat/118/campaigns/not-so-good-campaign-d8f9-fds486-sf78"
                 >
                   <Link
-                    onlyActiveOnIndex={false}
-                    style={Object {}}
                     to="/app/settings/integrations/gorgias_chat/118/campaigns/not-so-good-campaign-d8f9-fds486-sf78"
                   >
                     <a
-                      onClick={[Function]}
-                      style={Object {}}
+                      to="/app/settings/integrations/gorgias_chat/118/campaigns/not-so-good-campaign-d8f9-fds486-sf78"
                     >
                       <i
                         className="material-icons md-2 align-middle icon-go-forward"

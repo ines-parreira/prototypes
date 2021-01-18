@@ -1,7 +1,7 @@
 // @flow
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {browserHistory, Link} from 'react-router'
+import {Link, withRouter} from 'react-router-dom'
 import classNames from 'classnames'
 import _pick from 'lodash/pick'
 import {
@@ -36,6 +36,7 @@ import GorgiasApi from '../../../../services/gorgiasApi.ts'
 import {setCurrentSubscription} from '../../../../state/currentAccount/actions.ts'
 import {notify} from '../../../../state/notifications/actions.ts'
 import {createStripeCardToken} from '../../../../utils/stripe.ts'
+import history from '../../../history.ts'
 
 import {
     creditCardCVCNormalizer,
@@ -119,7 +120,7 @@ export class CreditCard extends Component<Props, State> {
             !prevState.isStripeLoaded &&
             noSubscriptionNorPlan
         ) {
-            browserHistory.push('/app/settings/billing/')
+            history.push('/app/settings/billing/')
         }
     }
 
@@ -196,7 +197,7 @@ export class CreditCard extends Component<Props, State> {
 
             if (hasSubscription && subscription.get('status') !== 'trialing') {
                 // The subscription is already started.
-                browserHistory.push('/app/settings/billing/')
+                history.push('/app/settings/billing/')
                 return resolve()
             }
 
@@ -242,7 +243,7 @@ export class CreditCard extends Component<Props, State> {
             }
 
             this.setState({isSubmitting: false})
-            browserHistory.push('/app/settings/billing/')
+            history.push('/app/settings/billing/')
             resolve()
         })
     }
@@ -461,4 +462,4 @@ function mapStateToProps(state) {
 
 const actions = {setCurrentSubscription, notify, setCreditCard}
 
-export default connect(mapStateToProps, actions)(CreditCard)
+export default withRouter(connect(mapStateToProps, actions)(CreditCard))

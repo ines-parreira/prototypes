@@ -13,8 +13,6 @@ exports[`<OutlookIntegrationSetup/> render() should render the list of integrati
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -24,8 +22,6 @@ exports[`<OutlookIntegrationSetup/> render() should render the list of integrati
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/email"
           >
             Email
@@ -99,8 +95,6 @@ exports[`<OutlookIntegrationSetup/> render() should render the list of integrati
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -110,8 +104,6 @@ exports[`<OutlookIntegrationSetup/> render() should render the list of integrati
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/email"
           >
             Email
@@ -224,8 +216,6 @@ exports[`<OutlookIntegrationSetup/> render() should render the list of integrati
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -235,8 +225,6 @@ exports[`<OutlookIntegrationSetup/> render() should render the list of integrati
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/email"
           >
             Email

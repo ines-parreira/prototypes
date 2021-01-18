@@ -1,7 +1,6 @@
 import {mount, shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 import React, {ComponentProps} from 'react'
-import {browserHistory} from 'react-router'
 import {Button} from 'reactstrap'
 
 import {macros as macrosFixtures} from '../../../../fixtures/macro'
@@ -15,8 +14,9 @@ import {getDefaultMacro} from '../../../../state/macro/utils'
 import ConfirmButton from '../../../common/components/ConfirmButton'
 import {MacrosSettingsFormContainer} from '../MacrosSettingsForm'
 import {NotificationStatus} from '../../../../state/notifications/types'
+import history from '../../../history'
 
-jest.mock('react-router')
+jest.mock('../../../history')
 jest.mock('../../../../models/macro/resources')
 jest.mock(
     '../../../common/components/ConfirmButton',
@@ -63,8 +63,16 @@ describe('<MacrosSettingsForm/>', () => {
         macroFetched: mockMacroFetched,
         macroUpdated: mockMacroUpdated,
         notify: mockNotify,
-        params: {},
+        match: {params: {}},
     } as any) as ComponentProps<typeof MacrosSettingsFormContainer>
+    const matchProp = {
+        params: {
+            macroId: '1',
+        },
+        isExact: true,
+        path: 'foo/',
+        url: 'foo/',
+    }
 
     mockCreateMacro.mockResolvedValue(newMacroFixture)
     mockDeleteMacro.mockResolvedValue()
@@ -83,12 +91,7 @@ describe('<MacrosSettingsForm/>', () => {
 
     it('should display a loader when fetching a macro', () => {
         const component = mount(
-            <MacrosSettingsFormContainer
-                {...minProps}
-                params={{
-                    macroId: '1',
-                }}
-            />
+            <MacrosSettingsFormContainer {...minProps} match={matchProp} />
         )
 
         expect(component).toMatchSnapshot()
@@ -96,12 +99,7 @@ describe('<MacrosSettingsForm/>', () => {
 
     it('should render a filled form when passed macro id', (done) => {
         const component = mount(
-            <MacrosSettingsFormContainer
-                {...minProps}
-                params={{
-                    macroId: '1',
-                }}
-            />
+            <MacrosSettingsFormContainer {...minProps} match={matchProp} />
         )
 
         expect(mockFetchMacro).toHaveBeenNthCalledWith(1, 1)
@@ -119,12 +117,7 @@ describe('<MacrosSettingsForm/>', () => {
     it('should notify the user when failed to fetch the macro', (done) => {
         mockFetchMacro.mockRejectedValue('error')
         const component = mount(
-            <MacrosSettingsFormContainer
-                {...minProps}
-                params={{
-                    macroId: '1',
-                }}
-            />
+            <MacrosSettingsFormContainer {...minProps} match={matchProp} />
         )
 
         expect(mockFetchMacro).toHaveBeenNthCalledWith(1, 1)
@@ -134,7 +127,7 @@ describe('<MacrosSettingsForm/>', () => {
                 status: NotificationStatus.Error,
             })
             expect(component).toMatchSnapshot()
-            expect(browserHistory.push).toHaveBeenNthCalledWith(
+            expect(history.push).toHaveBeenNthCalledWith(
                 1,
                 '/app/settings/macros'
             )
@@ -156,7 +149,7 @@ describe('<MacrosSettingsForm/>', () => {
                 message: 'Successfully created macro.',
                 status: NotificationStatus.Success,
             })
-            expect(browserHistory.push).toHaveBeenNthCalledWith(
+            expect(history.push).toHaveBeenNthCalledWith(
                 1,
                 '/app/settings/macros'
             )
@@ -171,9 +164,7 @@ describe('<MacrosSettingsForm/>', () => {
                 macros={{
                     '1': macrosFixtures[0],
                 }}
-                params={{
-                    macroId: '1',
-                }}
+                match={matchProp}
             />
         )
 
@@ -193,7 +184,7 @@ describe('<MacrosSettingsForm/>', () => {
                     message: 'Successfully updated macro.',
                     status: NotificationStatus.Success,
                 })
-                expect(browserHistory.push).toHaveBeenNthCalledWith(
+                expect(history.push).toHaveBeenNthCalledWith(
                     1,
                     '/app/settings/macros'
                 )
@@ -224,9 +215,7 @@ describe('<MacrosSettingsForm/>', () => {
                 macros={{
                     '1': macrosFixtures[0],
                 }}
-                params={{
-                    macroId: '1',
-                }}
+                match={matchProp}
             />
         )
 
@@ -258,9 +247,7 @@ describe('<MacrosSettingsForm/>', () => {
                 macros={{
                     '1': macrosFixtures[0],
                 }}
-                params={{
-                    macroId: '1',
-                }}
+                match={matchProp}
             />
         )
 
@@ -274,7 +261,7 @@ describe('<MacrosSettingsForm/>', () => {
                     message: 'Successfully deleted macro',
                     status: NotificationStatus.Success,
                 })
-                expect(browserHistory.push).toHaveBeenNthCalledWith(
+                expect(history.push).toHaveBeenNthCalledWith(
                     1,
                     '/app/settings/macros'
                 )
@@ -291,9 +278,7 @@ describe('<MacrosSettingsForm/>', () => {
                 macros={{
                     '1': macrosFixtures[0],
                 }}
-                params={{
-                    macroId: '1',
-                }}
+                match={matchProp}
             />
         )
 
@@ -318,9 +303,7 @@ describe('<MacrosSettingsForm/>', () => {
                 macros={{
                     '1': macrosFixtures[0],
                 }}
-                params={{
-                    macroId: '1',
-                }}
+                match={matchProp}
             />
         )
 
@@ -342,7 +325,7 @@ describe('<MacrosSettingsForm/>', () => {
                     message: 'Successfully duplicated macro.',
                     status: NotificationStatus.Success,
                 })
-                expect(browserHistory.push).toHaveBeenNthCalledWith(
+                expect(history.push).toHaveBeenNthCalledWith(
                     2,
                     '/app/settings/macros/5'
                 )
@@ -359,9 +342,7 @@ describe('<MacrosSettingsForm/>', () => {
                 macros={{
                     '1': macrosFixtures[0],
                 }}
-                params={{
-                    macroId: '1',
-                }}
+                match={matchProp}
             />
         )
 

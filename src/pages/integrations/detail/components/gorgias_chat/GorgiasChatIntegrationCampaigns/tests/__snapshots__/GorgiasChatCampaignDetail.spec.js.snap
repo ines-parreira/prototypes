@@ -13,8 +13,6 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -24,8 +22,6 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/gorgias_chat/1"
           >
             Chat
@@ -40,8 +36,6 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/gorgias_chat/1/campaigns"
           >
             Campaigns
@@ -330,8 +324,6 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -341,8 +333,6 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/gorgias_chat/1"
           >
             Chat
@@ -357,8 +347,6 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/gorgias_chat/1/campaigns"
           >
             Campaigns
@@ -681,8 +669,6 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -692,8 +678,6 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/gorgias_chat/1"
           >
             Chat
@@ -708,8 +692,6 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/gorgias_chat/1/campaigns"
           >
             Campaigns

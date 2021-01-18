@@ -2,7 +2,6 @@ import React, {ComponentProps, ComponentType} from 'react'
 import {shallow, ShallowWrapper} from 'enzyme'
 import {fromJS, Map} from 'immutable'
 import {Store} from 'redux'
-import {browserHistory} from 'react-router'
 
 import Search from '../../Search.js'
 import untypedConfigureStore from '../../../../../store/configureStore.js'
@@ -10,6 +9,7 @@ import * as viewsFixtures from '../../../../../fixtures/views'
 import * as viewsActions from '../../../../../state/views/actions'
 import {View} from '../../../../../models/view/types'
 import {RootState} from '../../../../../state/types'
+import history from '../../../../history'
 import Header, {HeaderContainer} from '../Header'
 import EmojiSelect from '../EmojiSelect/index.js'
 
@@ -32,19 +32,9 @@ jest.mock('../../../../../state/views/actions.ts', () => {
     }
 })
 
-jest.mock('react-router', () => {
-    const reactRouter = require.requireActual('react-router') as Record<
-        string,
-        any
-    >
+jest.mock('react-router-dom')
 
-    return {
-        ...reactRouter,
-        browserHistory: {
-            push: jest.fn(),
-        },
-    }
-})
+jest.mock('../../../../history')
 
 const HeaderMock = (Header as unknown) as ComponentType<
     ComponentProps<typeof Header> & {store?: any}
@@ -130,7 +120,7 @@ describe('ViewTable::Header', () => {
 
         it('go in search mode when focusing the search input', () => {
             ;(component.find(Search).props() as {onFocus: () => void}).onFocus()
-            expect(browserHistory.push).toHaveBeenNthCalledWith(
+            expect(history.push).toHaveBeenNthCalledWith(
                 1,
                 '/app/tickets/search?q='
             )
@@ -141,7 +131,7 @@ describe('ViewTable::Header', () => {
                 <HeaderMock {...minProps} isSearch={true} />
             ).dive()
             ;(component.find(Search).props() as {onFocus: () => void}).onFocus()
-            expect(browserHistory.push).not.toHaveBeenCalled()
+            expect(history.push).not.toHaveBeenCalled()
         })
 
         it('get search query from active view', () => {

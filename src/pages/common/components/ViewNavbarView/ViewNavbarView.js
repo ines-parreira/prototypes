@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import {browserHistory, Link} from 'react-router'
+import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
 
@@ -19,6 +19,7 @@ import {
 import {makeGetSettingsByType} from '../../../../state/currentUser/selectors.ts'
 import ViewName from '../ViewName'
 import ViewCount from '../ViewCount'
+import history from '../../../history.ts'
 
 import ViewNavbarViewEditor from './ViewNavbarViewEditor'
 import css from './ViewNavbarView.less'
@@ -90,7 +91,7 @@ class ViewNavbarView extends Component {
     }
 
     _updateViewUrl = _debounce((viewUrl) => {
-        browserHistory.push(viewUrl)
+        history.push(viewUrl)
     })
 
     _moveCursor = (direction: string = 'next') => {

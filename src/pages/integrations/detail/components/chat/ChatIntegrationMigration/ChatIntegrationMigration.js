@@ -1,5 +1,5 @@
 import React from 'react'
-import {Link} from 'react-router'
+import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {Breadcrumb, BreadcrumbItem, Button, Container, Alert} from 'reactstrap'
 import classnames from 'classnames'

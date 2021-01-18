@@ -1,7 +1,7 @@
 import React from 'react'
 
 import {List} from 'immutable'
-import {Link} from 'react-router'
+import {Link} from 'react-router-dom'
 
 import {Button} from 'reactstrap'
 

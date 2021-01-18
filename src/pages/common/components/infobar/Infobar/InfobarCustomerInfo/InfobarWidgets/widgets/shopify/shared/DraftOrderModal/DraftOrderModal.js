@@ -6,7 +6,7 @@ import {Alert, Button, ModalFooter} from 'reactstrap'
 import {fromJS, type List, type Map, type Record} from 'immutable'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
-import {Link} from 'react-router'
+import {Link} from 'react-router-dom'
 
 import {getCreateOrderState} from '../../../../../../../../../../../state/infobarActions/shopify/createOrder/selectors.ts'
 import {

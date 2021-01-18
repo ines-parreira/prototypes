@@ -2,7 +2,6 @@ import classnames from 'classnames'
 import moment from 'moment'
 import React, {useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {browserHistory} from 'react-router'
 import {Button, Popover, PopoverHeader, PopoverBody} from 'reactstrap'
 
 import {OrderDirection, MetaSortOptions} from '../../../models/api/types'
@@ -23,6 +22,7 @@ import TableBody from '../../common/components/table/TableBody.js'
 import TableBodyRow from '../../common/components/table/TableBodyRow.js'
 import TableHead from '../../common/components/table/TableHead.js'
 import TableWrapper from '../../common/components/table/TableWrapper.js'
+import history from '../../history'
 
 import css from './MacrosSettingsTable.less'
 
@@ -84,7 +84,7 @@ export function MacrosSettingsTableContainer({
                 name: `${name} (copy)`,
             })
             macroCreated(res)
-            browserHistory.push(`/app/settings/macros/${res.id}`)
+            history.push(`/app/settings/macros/${res.id}`)
         } catch (error) {
             void notify({
                 message: 'Failed to duplicate macro',
@@ -162,7 +162,7 @@ export function MacrosSettingsTableContainer({
                                 className={css.tableBodyRow}
                                 key={macroId}
                                 onClick={() => {
-                                    browserHistory.push(
+                                    history.push(
                                         `/app/settings/macros/${macroId}`
                                     )
                                 }}

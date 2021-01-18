@@ -268,13 +268,10 @@ exports[`BillingUsage component should display price 1`] = `
                             5
                              
                             <Link
-                              onlyActiveOnIndex={false}
-                              style={Object {}}
                               to="/app/settings/integrations"
                             >
                               <a
-                                onClick={[Function]}
-                                style={Object {}}
+                                to="/app/settings/integrations"
                               >
                                 integrations
                               </a>
@@ -644,13 +641,10 @@ exports[`BillingUsage component should load with empty props 1`] = `
                             5
                              
                             <Link
-                              onlyActiveOnIndex={false}
-                              style={Object {}}
                               to="/app/settings/integrations"
                             >
                               <a
-                                onClick={[Function]}
-                                style={Object {}}
+                                to="/app/settings/integrations"
                               >
                                 integrations
                               </a>

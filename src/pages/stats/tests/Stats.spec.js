@@ -38,7 +38,10 @@ describe('<Stats/>', () => {
             apiMock.onAny().reply(200, firstResponseTimeStat)
 
             const componentWrapper = shallow(
-                <Stats {...defaultProps} params={{view: channelsStatView}} />
+                <Stats
+                    {...defaultProps}
+                    match={{params: {view: channelsStatView}}}
+                />
             )
             const component = componentWrapper.instance()
             expect(component.state).toMatchSnapshot(
@@ -56,7 +59,10 @@ describe('<Stats/>', () => {
             apiMock.onAny().reply(400, {error: {msg: 'Invalid filters'}})
 
             const componentWrapper = shallow(
-                <Stats {...defaultProps} params={{view: channelsStatView}} />
+                <Stats
+                    {...defaultProps}
+                    match={{params: {view: channelsStatView}}}
+                />
             )
             const component = componentWrapper.instance()
             setTimeout(() => {
@@ -72,7 +78,10 @@ describe('<Stats/>', () => {
             apiMock.onAny().reply(500)
 
             const componentWrapper = shallow(
-                <Stats {...defaultProps} params={{view: channelsStatView}} />
+                <Stats
+                    {...defaultProps}
+                    match={{params: {view: channelsStatView}}}
+                />
             )
             const component = componentWrapper.instance()
             setTimeout(() => {
@@ -90,7 +99,10 @@ describe('<Stats/>', () => {
             apiMock = new MockAdapter(axios, {delayResponse: 2000})
 
             const componentWrapper = shallow(
-                <Stats {...defaultProps} params={{view: channelsStatView}} />
+                <Stats
+                    {...defaultProps}
+                    match={{params: {view: channelsStatView}}}
+                />
             )
             const component = componentWrapper.instance()
             const cancelPendingRequestsSpy = jest.fn()
@@ -103,7 +115,10 @@ describe('<Stats/>', () => {
     describe('render()', () => {
         it('should render stats', () => {
             const componentWrapper = shallow(
-                <Stats {...defaultProps} params={{view: channelsStatView}} />
+                <Stats
+                    {...defaultProps}
+                    match={{params: {view: channelsStatView}}}
+                />
             )
             const component = componentWrapper.instance()
             component.setState({
@@ -117,7 +132,10 @@ describe('<Stats/>', () => {
 
         it('should render stats as loading', () => {
             const componentWrapper = shallow(
-                <Stats {...defaultProps} params={{view: channelsStatView}} />
+                <Stats
+                    {...defaultProps}
+                    match={{params: {view: channelsStatView}}}
+                />
             )
             const statNames = statsViewsConfig.getIn(['channels', 'stats'])
             const component = componentWrapper.instance()
@@ -133,7 +151,10 @@ describe('<Stats/>', () => {
 
         it("should not render stats because there is no stat to render and it's not fetching stats", () => {
             const componentWrapper = shallow(
-                <Stats {...defaultProps} params={{view: channelsStatView}} />
+                <Stats
+                    {...defaultProps}
+                    match={{params: {view: channelsStatView}}}
+                />
             )
             const component = componentWrapper.instance()
             component.setState({

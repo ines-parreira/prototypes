@@ -1,6 +1,6 @@
 import React from 'react'
 import type {List} from 'immutable'
-import {Link, browserHistory} from 'react-router'
+import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import Lightbox from 'react-images'
 
@@ -11,6 +11,7 @@ import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'
 import * as integrationsActions from '../../../../../state/integrations/actions.ts'
 import * as integrationsSelectors from '../../../../../state/integrations/selectors.ts'
+import history from '../../../../history.ts'
 
 import Carousel from './../../../common/Carousel'
 
@@ -183,9 +184,7 @@ export default class RechargeIntegrationList extends React.Component<
                 integrationType="recharge"
                 integrations={rechargeIntegrations}
                 createIntegration={() =>
-                    browserHistory.push(
-                        '/app/settings/integrations/recharge/new'
-                    )
+                    history.push('/app/settings/integrations/recharge/new')
                 }
                 createIntegrationButtonContent="Add Recharge"
                 integrationToItemDisplay={integrationToItemDisplay}

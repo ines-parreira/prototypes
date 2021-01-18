@@ -1,5 +1,6 @@
 //@flow
 import React from 'react'
+import {withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 
@@ -46,7 +47,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 //$FlowFixMe
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(IntegrationListContainer)
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(IntegrationListContainer)
+)

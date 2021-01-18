@@ -2,7 +2,7 @@
 
 import React from 'react'
 import {connect} from 'react-redux'
-import {browserHistory, Link} from 'react-router'
+import {Link} from 'react-router-dom'
 import {fromJS} from 'immutable'
 import {
     Breadcrumb,
@@ -24,6 +24,7 @@ import * as currentAccountSelectors from '../../../../state/currentAccount/selec
 import {openChat} from '../../../../utils.ts'
 import PageHeader from '../../../common/components/PageHeader.tsx'
 import {setFutureSubscriptionPlan} from '../../../../state/billing/actions.ts'
+import history from '../../../history.ts'
 
 import {Plan} from './Plan'
 
@@ -84,9 +85,9 @@ export class BillingPlans extends React.Component<Props, State> {
 
             if (hasNoSubscription || this.props.isTrialing) {
                 if (this.props.shouldPayWithShopify) {
-                    browserHistory.push('/app/settings/billing')
+                    history.push('/app/settings/billing')
                 } else {
-                    browserHistory.push('/app/settings/billing/add-credit-card')
+                    history.push('/app/settings/billing/add-credit-card')
                 }
             }
         })

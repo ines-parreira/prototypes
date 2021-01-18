@@ -1,9 +1,11 @@
 import MutationObserver from '@sheerun/mutationobserver-shim'
-import {browserHistory} from 'react-router'
 import mockMoment from 'moment'
 import Enzyme from 'enzyme'
 import Adapter from 'enzyme-adapter-react-16'
 import _noop from 'lodash/noop'
+import React from 'react'
+
+import history from '../pages/history.ts'
 
 Enzyme.configure({adapter: new Adapter()})
 
@@ -71,8 +73,8 @@ Object.defineProperty(window, 'localStorage', {
     value: new LocalStorageMock(),
 })
 
-// Mock browserHistoryAPI
-browserHistory.push = jest.fn()
+// Mock historyAPI
+history.push = jest.fn()
 
 // Mock of the PushJS API (browser notification)
 class mockPushJS {
@@ -131,6 +133,12 @@ jest.mock('../utils/date.ts', () => ({
         'US/Pacific',
         'Australia/AUR',
     ]),
+}))
+
+jest.mock('react-router-dom', () => ({
+    ...jest.requireActual('react-router-dom'),
+    //eslint-disable-next-line jsx-a11y/anchor-has-content
+    Link: (props) => <a {...props} />,
 }))
 
 Object.defineProperty(window, 'requestAnimationFrame', {

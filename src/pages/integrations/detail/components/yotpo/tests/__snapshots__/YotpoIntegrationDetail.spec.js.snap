@@ -49,8 +49,6 @@ exports[`<YotpoIntegrationDetailComponent/> render() should not render anything 
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -60,8 +58,6 @@ exports[`<YotpoIntegrationDetailComponent/> render() should not render anything 
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/yotpo"
           >
             Yotpo
@@ -164,8 +160,6 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render a small parag
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -175,8 +169,6 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render a small parag
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/yotpo"
           >
             Yotpo
@@ -271,8 +263,6 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render an alert beca
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -282,8 +272,6 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render an alert beca
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/yotpo"
           >
             Yotpo
@@ -378,8 +366,6 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render buttons loadi
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -389,8 +375,6 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render buttons loadi
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/yotpo"
           >
             Yotpo
@@ -485,8 +469,6 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render not render de
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -496,8 +478,6 @@ exports[`<YotpoIntegrationDetailComponent/> render() should render not render de
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/yotpo"
           >
             Yotpo

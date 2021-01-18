@@ -6,8 +6,6 @@ exports[`RestrictedSatisfactionSurvey should render 1`] = `
     <React.Fragment>
       This feature is only available for Pro and above plans.
       <Link
-        onlyActiveOnIndex={false}
-        style={Object {}}
         to="/app/settings/billing/plans"
       >
          Upgrade here.

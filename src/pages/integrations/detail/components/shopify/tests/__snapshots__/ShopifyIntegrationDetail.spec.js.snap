@@ -13,8 +13,6 @@ exports[`ShopifyIntegrationDetail should render the page for a deactivated integ
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -24,8 +22,6 @@ exports[`ShopifyIntegrationDetail should render the page for a deactivated integ
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/shopify"
           >
             Shopify
@@ -65,8 +61,6 @@ exports[`ShopifyIntegrationDetail should render the page for a deactivated integ
           All your Shopify customers have been imported. You can now see their info in the sidebar.
            
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/customers"
           >
             Review your customers.
@@ -201,8 +195,6 @@ exports[`ShopifyIntegrationDetail should render the page for an integration bein
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -212,8 +204,6 @@ exports[`ShopifyIntegrationDetail should render the page for an integration bein
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/shopify"
           >
             Shopify
@@ -303,8 +293,6 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -314,8 +302,6 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/shopify"
           >
             Shopify
@@ -355,8 +341,6 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
           All your Shopify customers have been imported. You can now see their info in the sidebar.
            
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/customers"
           >
             Review your customers.
@@ -481,8 +465,6 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -492,8 +474,6 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/shopify"
           >
             Shopify
@@ -572,8 +552,6 @@ exports[`ShopifyIntegrationDetail should render the page for an integration for 
             We're currently importing all your Shopify customers. This way, you'll see customer info & orders next to tickets. We'll notify you via email when the import is done. We typically sync 3,000 customers an hour.
              
             <Link
-              onlyActiveOnIndex={false}
-              style={Object {}}
               to="/app/customers"
             >
               Review imported customers.
@@ -699,8 +677,6 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -710,8 +686,6 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/shopify"
           >
             Shopify
@@ -751,8 +725,6 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
           All your Shopify customers have been imported. You can now see their info in the sidebar.
            
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/customers"
           >
             Review your customers.
@@ -877,8 +849,6 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -888,8 +858,6 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/shopify"
           >
             Shopify
@@ -929,8 +897,6 @@ exports[`ShopifyIntegrationDetail should render the page for an integration whic
           All your Shopify customers have been imported. You can now see their info in the sidebar.
            
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/customers"
           >
             Review your customers.
@@ -1065,8 +1031,6 @@ exports[`ShopifyIntegrationDetail should render the page to create a new integra
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -1076,8 +1040,6 @@ exports[`ShopifyIntegrationDetail should render the page to create a new integra
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/shopify"
           >
             Shopify
@@ -1167,8 +1129,6 @@ exports[`ShopifyIntegrationDetail should render the page to update an existing i
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -1178,8 +1138,6 @@ exports[`ShopifyIntegrationDetail should render the page to update an existing i
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/shopify"
           >
             Shopify
@@ -1219,8 +1177,6 @@ exports[`ShopifyIntegrationDetail should render the page to update an existing i
           All your Shopify customers have been imported. You can now see their info in the sidebar.
            
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/customers"
           >
             Review your customers.

@@ -46,8 +46,6 @@ exports[`ViewTable::Table::Cell default cell with a url passed 1`] = `
   className="limit-overflow"
 >
   <Link
-    onlyActiveOnIndex={false}
-    style={Object {}}
     to="/app/ticket/123"
   >
     <div

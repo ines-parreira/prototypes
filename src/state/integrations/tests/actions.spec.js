@@ -3,8 +3,8 @@ import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
 import axios from 'axios'
 import MockAdapter from 'axios-mock-adapter'
-import {browserHistory} from 'react-router'
 
+import history from '../../../pages/history.ts'
 import * as actions from '../actions.ts'
 import {initialState} from '../reducers.ts'
 
@@ -16,18 +16,7 @@ jest.mock('../../notifications/actions.ts', () => {
         notify: jest.fn(() => (args) => args),
     }
 })
-
-jest.mock('react-router', () => {
-    const reactRouter = require.requireActual('react-router')
-
-    return {
-        ...reactRouter,
-        browserHistory: {
-            push: jest.fn(),
-            replace: jest.fn(),
-        },
-    }
-})
+jest.mock('../../../pages/history.ts')
 
 window.location = {
     pathname: '/integration/1',
@@ -58,16 +47,16 @@ describe('integrations actions', () => {
             type: 'email',
         }
 
-        const p = browserHistory.push
+        const p = history.push
         let logUrl = ''
 
-        browserHistory.push = (url) => (logUrl = url)
+        history.push = (url) => (logUrl = url)
 
         actions.onCreateSuccess(store.dispatch, integration)
         expect(store.getActions()).toMatchSnapshot()
         expect(logUrl).toMatchSnapshot()
 
-        browserHistory.push = p
+        history.push = p
     })
 
     it('should do some action and redirect correctly on create smooch_inside success', () => {
@@ -76,16 +65,16 @@ describe('integrations actions', () => {
             type: 'smooch_inside',
         }
 
-        const p = browserHistory.push
+        const p = history.push
         let logUrl = ''
 
-        browserHistory.push = (url) => (logUrl = url)
+        history.push = (url) => (logUrl = url)
 
         actions.onCreateSuccess(store.dispatch, integration)
         expect(store.getActions()).toMatchSnapshot()
         expect(logUrl).toMatchSnapshot()
 
-        browserHistory.push = p
+        history.push = p
     })
 
     it('should do some action and redirect correctly on create smooch success', () => {
@@ -94,16 +83,16 @@ describe('integrations actions', () => {
             type: 'smooch',
         }
 
-        const p = browserHistory.push
+        const p = history.push
         let logUrl = ''
 
-        browserHistory.push = (url) => (logUrl = url)
+        history.push = (url) => (logUrl = url)
 
         actions.onCreateSuccess(store.dispatch, integration)
         expect(store.getActions()).toMatchSnapshot()
         expect(logUrl).toMatchSnapshot()
 
-        browserHistory.push = p
+        history.push = p
     })
 
     it('on update success', () => {

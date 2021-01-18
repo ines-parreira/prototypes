@@ -1,6 +1,6 @@
 // @flow
 import React from 'react'
-import {Link} from 'react-router'
+import {Link} from 'react-router-dom'
 import classNames from 'classnames'
 import {fromJS, type Map} from 'immutable'
 import _truncate from 'lodash/truncate'

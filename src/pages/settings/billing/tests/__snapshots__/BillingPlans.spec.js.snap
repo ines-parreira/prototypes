@@ -14,8 +14,6 @@ exports[`BillingPlans component should display a custom plan 1`] = `
         >
           <Link
             className="section"
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/billing"
           >
             Billing & Usage
@@ -210,8 +208,6 @@ exports[`BillingPlans component should display matching current plan 1`] = `
         >
           <Link
             className="section"
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/billing"
           >
             Billing & Usage
@@ -449,8 +445,6 @@ exports[`BillingPlans component should display multiple plans 1`] = `
         >
           <Link
             className="section"
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/billing"
           >
             Billing & Usage
@@ -700,8 +694,6 @@ exports[`BillingPlans component should load with empty props 1`] = `
           >
             <Link
               className="section"
-              onlyActiveOnIndex={false}
-              style={Object {}}
               to="/app/settings/billing"
             >
               Billing & Usage
@@ -732,14 +724,11 @@ exports[`BillingPlans component should load with empty props 1`] = `
               >
                 <Link
                   className="section"
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/billing"
                 >
                   <a
                     className="section"
-                    onClick={[Function]}
-                    style={Object {}}
+                    to="/app/settings/billing"
                   >
                     Billing & Usage
                   </a>

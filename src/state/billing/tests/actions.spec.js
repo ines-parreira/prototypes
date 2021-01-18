@@ -33,17 +33,6 @@ jest.mock('../../notifications/actions.ts', () => {
     }
 })
 
-jest.mock('react-router', () => {
-    const reactRouter = require.requireActual('react-router')
-
-    return {
-        ...reactRouter,
-        browserHistory: {
-            push: jest.fn(),
-        },
-    }
-})
-
 describe('billing actions', () => {
     let store
     let mockServer

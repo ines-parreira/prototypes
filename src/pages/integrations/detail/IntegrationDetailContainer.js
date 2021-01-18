@@ -1,4 +1,5 @@
 import React from 'react'
+import {withRouter} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
@@ -91,7 +92,10 @@ import GorgiasChatIntegrationSelfService from './components/gorgias_chat/Gorgias
 
 class IntegrationDetailContainer extends React.Component {
     componentWillMount() {
-        const {actions, params} = this.props
+        const {
+            actions,
+            match: {params},
+        } = this.props
         actions.fetchIntegrations()
 
         // We need this to allow the user to refresh the settings page.
@@ -108,8 +112,13 @@ class IntegrationDetailContainer extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        const {actions, params} = this.props
-        const {params: nextParams} = nextProps
+        const {
+            actions,
+            match: {params},
+        } = this.props
+        const {
+            match: {params: nextParams},
+        } = nextProps
         if (
             nextParams.integrationId &&
             !['new', 'setup'].includes(nextParams.integrationId) &&
@@ -126,7 +135,7 @@ class IntegrationDetailContainer extends React.Component {
             integrations,
             getEligibleShopifyIntegrationsFor,
             getRedirectUri,
-            params,
+            match: {params},
         } = this.props
 
         const isDetail = !!params.integrationId
@@ -650,10 +659,7 @@ IntegrationDetailContainer.propTypes = {
     actions: PropTypes.object.isRequired,
     integrations: PropTypes.object.isRequired,
     getEligibleShopifyIntegrationsFor: PropTypes.func.isRequired,
-    params: PropTypes.shape({
-        integrationType: PropTypes.string.isRequired,
-        integrationId: PropTypes.string,
-    }).isRequired,
+    match: PropTypes.object.isRequired,
     getRedirectUri: PropTypes.func.isRequired,
     currentUser: PropTypes.object.isRequired,
 }
@@ -671,7 +677,6 @@ const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators(IntegrationsActions, dispatch),
 })
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(IntegrationDetailContainer)
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(IntegrationDetailContainer)
+)

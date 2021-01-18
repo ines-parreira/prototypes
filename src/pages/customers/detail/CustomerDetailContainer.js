@@ -4,7 +4,7 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import {fromJS} from 'immutable'
 import {Button} from 'reactstrap'
-import {Link} from 'react-router'
+import {Link, withRouter} from 'react-router-dom'
 
 import * as customersActions from '../../../state/customers/actions.ts'
 
@@ -26,15 +26,19 @@ class CustomerDetailContainer extends React.Component {
     }
 
     componentWillMount() {
-        const {params} = this.props
+        const {
+            match: {params},
+        } = this.props
         this._fetchCustomer(params.customerId)
     }
 
     componentWillReceiveProps(nextProps) {
-        const {params} = this.props
+        const {
+            match: {params},
+        } = this.props
 
-        if (nextProps.params.customerId !== params.customerId) {
-            this._fetchCustomer(nextProps.params.customerId)
+        if (nextProps.match.params.customerId !== params.customerId) {
+            this._fetchCustomer(nextProps.match.params.customerId)
         }
     }
 
@@ -135,9 +139,7 @@ class CustomerDetailContainer extends React.Component {
 }
 
 CustomerDetailContainer.propTypes = {
-    params: PropTypes.shape({
-        customerId: PropTypes.string,
-    }).isRequired,
+    match: PropTypes.object.isRequired,
 
     activeCustomer: PropTypes.object.isRequired,
     customerHistory: PropTypes.object.isRequired,
@@ -162,7 +164,6 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(CustomerDetailContainer)
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(CustomerDetailContainer)
+)

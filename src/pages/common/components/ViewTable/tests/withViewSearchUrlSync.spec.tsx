@@ -2,15 +2,16 @@ import React from 'react'
 import {Location} from 'history'
 import {Map} from 'immutable'
 import _noop from 'lodash/noop'
-import {browserHistory, InjectedRouter} from 'react-router'
 import {render} from '@testing-library/react'
 import {compressToEncodedURIComponent} from 'lz-string'
+import {stringify} from 'query-string'
 
 import {
     ViewSearchUrlSyncInjectedProps,
     withViewSearchUrlSyncContainer,
 } from '../withViewSearchUrlSync'
 import * as viewsConfig from '../../../../../config/views'
+import history from '../../../../history'
 
 const InnerComponent = ({urlSearchView}: ViewSearchUrlSyncInjectedProps) => {
     return <div>Search view: {JSON.stringify(urlSearchView.toJS())}</div>
@@ -35,37 +36,39 @@ const createLocation = ({
     filters?: string
 } = {}) => {
     return {
-        query: {
+        search: stringify({
             q: search,
             filters: filters
                 ? compressToEncodedURIComponent(filters)
                 : undefined,
-        },
+        }),
     } as Location<any>
 }
 
-const defaultProps: Omit<ViewSearchUrlSyncInjectedProps, 'urlSearchView'> & {
-    isSearch: boolean
-} = {
+const defaultProps = ({
     config: viewsConfig.getConfigByName('ticket'),
     isSearch: true,
     location: createLocation(),
-    params: {},
-    router: {} as InjectedRouter,
+    match: {
+        params: {},
+    },
+    router: {},
     routes: [],
     activeView: searchView(''),
     updateView: jest.fn(),
     areFiltersValid: true,
+} as unknown) as Omit<ViewSearchUrlSyncInjectedProps, 'urlSearchView'> & {
+    isSearch: boolean
 }
 
 const ticketChannelEqualChatFilter = "eq('ticket.channel', 'chat')"
 
-jest.spyOn(browserHistory, 'push')
+jest.mock('../../../../history')
 
 beforeEach(() => {
     jest.clearAllMocks()
-    ;(browserHistory.push as jest.MockedFunction<
-        typeof browserHistory.push
+    ;(history.push as jest.MockedFunction<
+        typeof history.push
     >).mockImplementation(_noop)
 })
 
@@ -92,7 +95,7 @@ describe('withViewSearchUrlSync', () => {
                     location={createLocation({search: 'bar'})}
                 />
             )
-            expect(browserHistory.push).not.toHaveBeenCalled()
+            expect(history.push).not.toHaveBeenCalled()
             expect(defaultProps.updateView).not.toHaveBeenCalled()
         })
 
@@ -105,7 +108,7 @@ describe('withViewSearchUrlSync', () => {
                     activeView={searchView(newQuery)}
                 />
             )
-            expect(browserHistory.push).toHaveBeenLastCalledWith(
+            expect(history.push).toHaveBeenLastCalledWith(
                 createLocation({search: newQuery})
             )
         })
@@ -125,7 +128,7 @@ describe('withViewSearchUrlSync', () => {
                     activeView={searchView(newQuery)}
                 />
             )
-            expect(browserHistory.push).not.toHaveBeenCalled()
+            expect(history.push).not.toHaveBeenCalled()
         })
 
         it('should not update url search query when not in search mode', () => {
@@ -137,7 +140,7 @@ describe('withViewSearchUrlSync', () => {
                     activeView={searchView('foo search query')}
                 />
             )
-            expect(browserHistory.push).not.toHaveBeenCalled()
+            expect(history.push).not.toHaveBeenCalled()
         })
 
         it('should update active view search on url search query change ', () => {
@@ -198,7 +201,7 @@ describe('withViewSearchUrlSync', () => {
                     })}
                 />
             )
-            expect(browserHistory.push).not.toHaveBeenCalled()
+            expect(history.push).not.toHaveBeenCalled()
             expect(defaultProps.updateView).not.toHaveBeenCalled()
         })
 
@@ -210,7 +213,7 @@ describe('withViewSearchUrlSync', () => {
                     activeView={searchView('', ticketChannelEqualChatFilter)}
                 />
             )
-            expect(browserHistory.push).toHaveBeenLastCalledWith(
+            expect(history.push).toHaveBeenLastCalledWith(
                 createLocation({filters: ticketChannelEqualChatFilter})
             )
         })
@@ -233,7 +236,7 @@ describe('withViewSearchUrlSync', () => {
                     activeView={searchView('', ticketChannelEqualChatFilter)}
                 />
             )
-            expect(browserHistory.push).not.toHaveBeenCalled()
+            expect(history.push).not.toHaveBeenCalled()
         })
 
         it('should not update url filters when not in search mode', () => {
@@ -245,7 +248,7 @@ describe('withViewSearchUrlSync', () => {
                     activeView={searchView('', ticketChannelEqualChatFilter)}
                 />
             )
-            expect(browserHistory.push).not.toHaveBeenCalled()
+            expect(history.push).not.toHaveBeenCalled()
         })
 
         it('should update active view filters on url filters change ', () => {

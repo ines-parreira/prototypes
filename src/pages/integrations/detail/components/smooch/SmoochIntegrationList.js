@@ -1,13 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import {Link, browserHistory, withRouter} from 'react-router'
+import {Link, withRouter} from 'react-router-dom'
+import {parse} from 'query-string'
 
 import ToggleButton from '../../../../common/components/ToggleButton'
 import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'
 import * as integrationsActions from '../../../../../state/integrations/actions.ts'
 import {notify} from '../../../../../state/notifications/actions.ts'
+import history from '../../../../history.ts'
 
 @withRouter
 @connect(null, {
@@ -32,10 +34,9 @@ export default class SmoochIntegrationList extends React.Component {
 
     componentDidMount() {
         // display message from url
-        const {
-            message,
-            message_type: status = 'info',
-        } = this.props.location.query
+        const {message, message_type: status = 'info'} = parse(
+            this.props.location.search
+        )
 
         if (message) {
             this.props.notify({
@@ -43,7 +44,7 @@ export default class SmoochIntegrationList extends React.Component {
                 title: message.replace(/\+/g, ' '),
             })
             // remove error from url
-            browserHistory.push(window.location.pathname)
+            history.push(window.location.pathname)
         }
     }
 

@@ -1,8 +1,9 @@
 import notification, {PushNotification} from 'push.js'
-import {browserHistory} from 'react-router'
 import _throttle from 'lodash/throttle'
 import _isString from 'lodash/isString'
 import _noop from 'lodash/noop'
+
+import history from '../pages/history'
 
 const icon = `${
     window.GORGIAS_ASSETS_URL || ''
@@ -35,7 +36,7 @@ class BrowserNotification {
                     onClick: function () {
                         // go to the ticket
                         if (ticketId) {
-                            browserHistory.push(`/app/ticket/${ticketId}`)
+                            history.push(`/app/ticket/${ticketId}`)
                         }
                         window.focus()
                         ;(this as PushNotification).close()

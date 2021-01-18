@@ -1,11 +1,11 @@
 import React from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Alert, Button, Container} from 'reactstrap'
-import {browserHistory} from 'react-router'
 import {useEffectOnce} from 'react-use'
 import {bindActionCreators} from 'redux'
 
 import PageHeader from '../../common/components/PageHeader'
+import history from '../../history'
 import {RootState, StoreDispatch} from '../../../state/types'
 import {IntegrationType} from '../../../models/integration/types'
 import Loader from '../../common/components/Loader/Loader.js'
@@ -47,7 +47,7 @@ export const ImportDataContainer = (
                     type="submit"
                     color="success"
                     onClick={() => {
-                        browserHistory.push('/app/settings/import-data/zendesk')
+                        history.push('/app/settings/import-data/zendesk')
                     }}
                     className="float-right"
                     disabled={!hasEmailIntegration}

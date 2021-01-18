@@ -13,8 +13,6 @@ exports[`<SmoochIntegrationDetail/> render() should render an active integration
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -24,8 +22,6 @@ exports[`<SmoochIntegrationDetail/> render() should render an active integration
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/smooch"
           >
             Smooch
@@ -251,8 +247,6 @@ exports[`<SmoochIntegrationDetail/> render() should render an inactive integrati
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -262,8 +256,6 @@ exports[`<SmoochIntegrationDetail/> render() should render an inactive integrati
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/smooch"
           >
             Smooch
@@ -488,8 +480,6 @@ exports[`<SmoochIntegrationDetail/> render() should render an integration which 
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -499,8 +489,6 @@ exports[`<SmoochIntegrationDetail/> render() should render an integration which 
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/smooch"
           >
             Smooch

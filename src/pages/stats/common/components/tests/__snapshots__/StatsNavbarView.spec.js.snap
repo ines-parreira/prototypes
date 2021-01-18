@@ -8,76 +8,76 @@ exports[`StatsNavbarView should render 1`] = `
     <div
       className="menu"
     >
-      <Link
+      <NavLink
         activeClassName="active"
+        ariaCurrent="true"
         className="item"
+        exact={true}
         key="Overview"
-        onlyActiveOnIndex={false}
-        style={Object {}}
         to="/app/stats/overview"
       >
         Overview
-      </Link>
-      <Link
+      </NavLink>
+      <NavLink
         activeClassName="active"
+        ariaCurrent="true"
         className="item"
+        exact={true}
         key="Tags"
-        onlyActiveOnIndex={false}
-        style={Object {}}
         to="/app/stats/tags"
       >
         Tags
-      </Link>
-      <Link
+      </NavLink>
+      <NavLink
         activeClassName="active"
+        ariaCurrent="true"
         className="item"
+        exact={true}
         key="Channels"
-        onlyActiveOnIndex={false}
-        style={Object {}}
         to="/app/stats/channels"
       >
         Channels
-      </Link>
-      <Link
+      </NavLink>
+      <NavLink
         activeClassName="active"
+        ariaCurrent="true"
         className="item"
+        exact={true}
         key="Agents"
-        onlyActiveOnIndex={false}
-        style={Object {}}
         to="/app/stats/agents"
       >
         Agents
-      </Link>
-      <Link
+      </NavLink>
+      <NavLink
         activeClassName="active"
+        ariaCurrent="true"
         className="item"
+        exact={true}
         key="Macros"
-        onlyActiveOnIndex={false}
-        style={Object {}}
         to="/app/stats/macros"
       >
         Macros
-      </Link>
-      <Link
+      </NavLink>
+      <NavLink
         activeClassName="active"
+        ariaCurrent="true"
         className="item"
+        exact={true}
         key="Satisfaction"
-        onlyActiveOnIndex={false}
-        style={Object {}}
         to="/app/stats/satisfaction"
       >
         Satisfaction
-      </Link>
-      <Link
+      </NavLink>
+      <NavLink
         activeClassName="active"
+        ariaCurrent="true"
         className="item"
+        exact={true}
         key="Revenue"
-        onlyActiveOnIndex={false}
-        style={Object {}}
         to="/app/stats/revenue"
       >
         Revenue
-      </Link>
+      </NavLink>
     </div>
   </div>
 </div>

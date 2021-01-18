@@ -5,7 +5,6 @@ import classnames from 'classnames'
 import {fromJS, type List, type Map} from 'immutable'
 import moment from 'moment'
 import {bindActionCreators} from 'redux'
-import {browserHistory} from 'react-router'
 import {
     Button,
     ButtonDropdown,
@@ -44,6 +43,7 @@ import {AgentLabel, TeamLabel} from '../../../../common/utils/labels'
 import {hasRole} from '../../../../../utils.ts'
 import TagDropdownMenu from '../../../../common/components/TagDropdownMenu/TagDropdownMenu'
 import withCancellableRequest from '../../../../common/utils/withCancellableRequest'
+import history from '../../../../history.ts'
 
 import css from './TicketListActions.less'
 
@@ -108,7 +108,7 @@ class TicketListActions extends React.Component<Props, State> {
             CREATE_TICKET: {
                 action: (e) => {
                     e.preventDefault()
-                    browserHistory.push('/app/ticket/new')
+                    history.push('/app/ticket/new')
                 },
             },
             OPEN_TICKET: {

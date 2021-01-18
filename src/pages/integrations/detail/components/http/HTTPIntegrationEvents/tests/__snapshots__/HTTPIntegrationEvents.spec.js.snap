@@ -58,8 +58,6 @@ exports[`HTTPIntegrationEvents component should render events 1`] = `
         >
           <Link
             className="disabled"
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/http/undefined/events/undefined"
           >
             <div>
@@ -72,8 +70,6 @@ exports[`HTTPIntegrationEvents component should render events 1`] = `
         >
           <Link
             className="disabled"
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/http/undefined/events/undefined"
           >
             <div>
@@ -86,8 +82,6 @@ exports[`HTTPIntegrationEvents component should render events 1`] = `
         >
           <Link
             className="disabled"
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/http/undefined/events/undefined"
           >
             <div>
@@ -100,8 +94,6 @@ exports[`HTTPIntegrationEvents component should render events 1`] = `
         >
           <Link
             className="disabled"
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/http/undefined/events/undefined"
           >
             <div>

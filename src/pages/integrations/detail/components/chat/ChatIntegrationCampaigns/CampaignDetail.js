@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import {fromJS} from 'immutable'
-import {Link, browserHistory} from 'react-router'
+import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import classnames from 'classnames'
 import {
@@ -40,6 +40,7 @@ import {
     SMOOCH_INSIDE_WIDGET_LANGUAGE_DEFAULT,
     SMOOCH_INSIDE_WIDGET_TEXTS,
 } from '../../../../../../config/integrations/smooch_inside.ts'
+import history from '../../../../../history.ts'
 
 import CampaignPreview from './CampaignPreview'
 import css from './CampaignDetail.less'
@@ -321,7 +322,7 @@ export class CampaignDetail extends React.Component {
     _deleteCampaign = () => {
         const {deleteCampaign, campaign, integration} = this.props
         deleteCampaign(campaign, integration).then(() => {
-            browserHistory.push(
+            history.push(
                 `/app/settings/integrations/${integration.get(
                     'type'
                 )}/${integration.get('id')}/campaigns`

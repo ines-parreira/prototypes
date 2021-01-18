@@ -10,11 +10,7 @@ const mockStore = configureMockStore(middlewares)
 import * as actions from '../actions'
 
 // Would cause SecurityError
-jest.mock('react-router', () => ({
-    browserHistory: {
-        push: () => {},
-    },
-}))
+jest.mock('../../../pages/history.ts')
 
 describe('Campaign actions', () => {
     let store

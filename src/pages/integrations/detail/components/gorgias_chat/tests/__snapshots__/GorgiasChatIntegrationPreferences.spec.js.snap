@@ -119,8 +119,6 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -130,8 +128,6 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/gorgias_chat"
           >
             Chat
@@ -253,8 +249,6 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
                   During
                    
                   <Link
-                    onlyActiveOnIndex={false}
-                    style={Object {}}
                     to="/app/settings/business-hours"
                   >
                     Business hours
@@ -299,8 +293,6 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render buttons in 
                   Outside
                    
                   <Link
-                    onlyActiveOnIndex={false}
-                    style={Object {}}
                     to="/app/settings/business-hours"
                   >
                     Business hours
@@ -407,8 +399,6 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations"
           >
             Integrations
@@ -418,8 +408,6 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/integrations/gorgias_chat"
           >
             Chat
@@ -541,8 +529,6 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                   During
                    
                   <Link
-                    onlyActiveOnIndex={false}
-                    style={Object {}}
                     to="/app/settings/business-hours"
                   >
                     Business hours
@@ -587,8 +573,6 @@ exports[`<GorgiasChatIntegrationPreferences/> render() should render the Chat pr
                   Outside
                    
                   <Link
-                    onlyActiveOnIndex={false}
-                    style={Object {}}
                     to="/app/settings/business-hours"
                   >
                     Business hours

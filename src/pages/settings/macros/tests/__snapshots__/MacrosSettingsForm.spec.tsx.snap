@@ -8,12 +8,17 @@ exports[`<MacrosSettingsForm/> should display a loader when fetching a macro 1`]
   macroFetched={[MockFunction]}
   macroUpdated={[MockFunction]}
   macros={Object {}}
-  notify={[MockFunction]}
-  params={
+  match={
     Object {
-      "macroId": "1",
+      "isExact": true,
+      "params": Object {
+        "macroId": "1",
+      },
+      "path": "foo/",
+      "url": "foo/",
     }
   }
+  notify={[MockFunction]}
 >
   <div
     className="full-width"
@@ -27,8 +32,6 @@ exports[`<MacrosSettingsForm/> should display a loader when fetching a macro 1`]
             tag="li"
           >
             <Link
-              onlyActiveOnIndex={false}
-              style={Object {}}
               to="/app/settings/macros"
             >
               Macros
@@ -59,10 +62,14 @@ exports[`<MacrosSettingsForm/> should display a loader when fetching a macro 1`]
                 className="breadcrumb-item"
               >
                 <Link
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/macros"
-                />
+                >
+                  <a
+                    to="/app/settings/macros"
+                  >
+                    Macros
+                  </a>
+                </Link>
               </li>
             </BreadcrumbItem>
             <BreadcrumbItem
@@ -128,6 +135,16 @@ exports[`<MacrosSettingsForm/> should notify the user when failed to fetch the m
   macroFetched={[MockFunction]}
   macroUpdated={[MockFunction]}
   macros={Object {}}
+  match={
+    Object {
+      "isExact": true,
+      "params": Object {
+        "macroId": "1",
+      },
+      "path": "foo/",
+      "url": "foo/",
+    }
+  }
   notify={
     [MockFunction] {
       "calls": Array [
@@ -146,11 +163,6 @@ exports[`<MacrosSettingsForm/> should notify the user when failed to fetch the m
       ],
     }
   }
-  params={
-    Object {
-      "macroId": "1",
-    }
-  }
 >
   <div
     className="full-width"
@@ -164,8 +176,6 @@ exports[`<MacrosSettingsForm/> should notify the user when failed to fetch the m
             tag="li"
           >
             <Link
-              onlyActiveOnIndex={false}
-              style={Object {}}
               to="/app/settings/macros"
             >
               Macros
@@ -196,10 +206,14 @@ exports[`<MacrosSettingsForm/> should notify the user when failed to fetch the m
                 className="breadcrumb-item"
               >
                 <Link
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/macros"
-                />
+                >
+                  <a
+                    to="/app/settings/macros"
+                  >
+                    Macros
+                  </a>
+                </Link>
               </li>
             </BreadcrumbItem>
             <BreadcrumbItem
@@ -453,12 +467,17 @@ Sincerely,
       },
     }
   }
-  notify={[MockFunction]}
-  params={
+  match={
     Object {
-      "macroId": "1",
+      "isExact": true,
+      "params": Object {
+        "macroId": "1",
+      },
+      "path": "foo/",
+      "url": "foo/",
     }
   }
+  notify={[MockFunction]}
 >
   <div
     className="full-width"
@@ -472,8 +491,6 @@ Sincerely,
             tag="li"
           >
             <Link
-              onlyActiveOnIndex={false}
-              style={Object {}}
               to="/app/settings/macros"
             >
               Macros
@@ -504,10 +521,14 @@ Sincerely,
                 className="breadcrumb-item"
               >
                 <Link
-                  onlyActiveOnIndex={false}
-                  style={Object {}}
                   to="/app/settings/macros"
-                />
+                >
+                  <a
+                    to="/app/settings/macros"
+                  >
+                    Macros
+                  </a>
+                </Link>
               </li>
             </BreadcrumbItem>
             <BreadcrumbItem
@@ -663,8 +684,6 @@ exports[`<MacrosSettingsForm/> should render an empty form when no macro id 1`] 
           tag="li"
         >
           <Link
-            onlyActiveOnIndex={false}
-            style={Object {}}
             to="/app/settings/macros"
           >
             Macros

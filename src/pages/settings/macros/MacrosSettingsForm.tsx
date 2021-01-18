@@ -3,7 +3,7 @@ import {fromJS, Map, List} from 'immutable'
 import _uniqWith from 'lodash/uniqWith'
 import React, {useEffect, useState, SyntheticEvent} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {browserHistory, Link} from 'react-router'
+import {Link, withRouter, RouteComponentProps} from 'react-router-dom'
 import {useAsyncFn} from 'react-use'
 import {
     Breadcrumb,
@@ -38,14 +38,11 @@ import ConfirmButton from '../../common/components/ConfirmButton'
 import Loader from '../../common/components/Loader/index.js'
 import PageHeader from '../../common/components/PageHeader'
 import MacroEdit from '../../tickets/common/macros/components/MacroEdit'
+import history from '../../history'
 
 import css from './MacrosSettingsForm.less'
 
-type OwnProps = {
-    params: {
-        macroId?: string
-    }
-}
+type OwnProps = RouteComponentProps<{macroId?: string}>
 
 export function MacrosSettingsFormContainer({
     agents,
@@ -55,7 +52,9 @@ export function MacrosSettingsFormContainer({
     macroUpdated,
     macros,
     notify,
-    params: {macroId},
+    match: {
+        params: {macroId},
+    },
 }: OwnProps & ConnectedProps<typeof connector>) {
     const [macroForm, setMacroForm] = useState<MacroDraft>(
         getDefaultMacro().toJS()
@@ -75,7 +74,7 @@ export function MacrosSettingsFormContainer({
                 message: 'Failed to fetch macro',
                 status: NotificationStatus.Error,
             })
-            browserHistory.push('/app/settings/macros')
+            history.push('/app/settings/macros')
         }
     }, [macroId])
     const handleActionsChange = (actions: List<any>) => {
@@ -116,7 +115,7 @@ export function MacrosSettingsFormContainer({
                 } macro.`,
                 status: NotificationStatus.Success,
             })
-            browserHistory.push('/app/settings/macros')
+            history.push('/app/settings/macros')
         } catch (error) {
             void notify({
                 message: `Failed to ${macroId ? 'update' : 'create'} macro.`,
@@ -143,7 +142,7 @@ export function MacrosSettingsFormContainer({
                 message: `Successfully duplicated macro.`,
                 status: NotificationStatus.Success,
             })
-            browserHistory.push(`/app/settings/macros/${res.id}`)
+            history.push(`/app/settings/macros/${res.id}`)
         } catch (error) {
             void notify({
                 message: 'Failed to duplicate macro.',
@@ -164,7 +163,7 @@ export function MacrosSettingsFormContainer({
                 message: 'Successfully deleted macro',
                 status: NotificationStatus.Success,
             })
-            browserHistory.push('/app/settings/macros')
+            history.push('/app/settings/macros')
         } catch (error) {
             void notify({
                 message: 'Failed to delete macro',
@@ -312,4 +311,4 @@ const connector = connect(
     }
 )
 
-export default connector(MacrosSettingsFormContainer)
+export default withRouter(connector(MacrosSettingsFormContainer))

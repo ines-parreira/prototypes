@@ -1,7 +1,9 @@
 import React from 'react'
+import {withRouter} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
+import {parse} from 'query-string'
 
 import * as ViewsActions from '../../../state/views/actions.ts'
 import Navbar from '../../common/components/Navbar'
@@ -12,9 +14,9 @@ import CustomersNavbarView from './components/CustomersNavbarView'
 class CustomerNavbarContainer extends React.Component {
     componentWillMount() {
         // fetch the list view only
-        const viewId = this.props.params.viewId
-            ? this.props.params.viewId
-            : this.props.location.query.viewId
+        const viewId = this.props.match.params.viewId
+            ? this.props.match.params.viewId
+            : parse(this.props.location.search).viewId
         this.props.actions.fetchViews(viewId)
     }
 
@@ -33,9 +35,9 @@ class CustomerNavbarContainer extends React.Component {
 
 CustomerNavbarContainer.propTypes = {
     actions: PropTypes.object.isRequired,
-    params: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
     location: PropTypes.shape({
-        query: PropTypes.object,
+        search: PropTypes.string,
     }),
     setting: PropTypes.object,
     isLoading: PropTypes.bool.isRequired,
@@ -55,7 +57,6 @@ const mapDispatchToProps = (dispatch) => ({
     actions: bindActionCreators(ViewsActions, dispatch),
 })
 
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(CustomerNavbarContainer)
+export default withRouter(
+    connect(mapStateToProps, mapDispatchToProps)(CustomerNavbarContainer)
+)

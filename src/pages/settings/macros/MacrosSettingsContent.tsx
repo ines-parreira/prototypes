@@ -2,7 +2,6 @@ import {CancelToken} from 'axios'
 import _pick from 'lodash/pick'
 import React, {useEffect, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {browserHistory} from 'react-router'
 import {Button, Container} from 'reactstrap'
 
 import useDelayedAsyncFn from '../../../hooks/useDelayedAsyncFn'
@@ -21,6 +20,7 @@ import PageHeader from '../../common/components/PageHeader'
 import Pagination from '../../common/components/Pagination.js'
 import Search from '../../common/components/Search.js'
 import {RootState} from '../../../state/types.js'
+import history from '../../history'
 
 import css from './MacrosSettingsContent.less'
 import MacrosSettingsTable from './MacrosSettingsTable'
@@ -109,7 +109,7 @@ export function MacrosSettingsContentContainer({
                     <Button
                         color="success"
                         onClick={() => {
-                            browserHistory.push('/app/settings/macros/new')
+                            history.push('/app/settings/macros/new')
                         }}
                         type="button"
                     >

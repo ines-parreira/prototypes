@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import {connect} from 'react-redux'
-import {Link, browserHistory, withRouter} from 'react-router'
+import {Link, withRouter} from 'react-router-dom'
 import {fromJS, Set, Map} from 'immutable'
 import {Card, CardBody} from 'reactstrap'
 
@@ -13,6 +13,7 @@ import {
     SMILE_INTEGRATION_TYPE,
     SMOOCH_INSIDE_INTEGRATION_TYPE,
 } from '../../../../constants/integration.ts'
+import history from '../../../history.ts'
 
 import {areSourcesReady, jsonToWidgets} from '../infobar/utils'
 
@@ -233,7 +234,7 @@ class SourceWrapper extends React.Component<Props, State> {
         const {actions, context, identifier, location} = this.props
 
         actions.widgets.stopEditionMode()
-        browserHistory.push(`/app/${context}/${identifier}${location.search}`)
+        history.push(`/app/${context}/${identifier}${location.search}`)
     }
 
     render() {

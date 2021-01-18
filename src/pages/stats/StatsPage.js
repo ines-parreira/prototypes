@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {withRouter} from 'react-router'
+import {withRouter} from 'react-router-dom'
 import moment from 'moment'
 import {fromJS, List} from 'immutable'
 
@@ -16,7 +16,7 @@ import RestrictedSatisfactionSurvey from './common/RestrictedSatisfactionSurvey'
 import RestrictedRevenue from './common/RestrictedRevenue'
 
 type Props = {
-    params: Object,
+    match: Object,
     config: Object,
     currentAccount: Map<*, *>,
     globalFilters: Map,
@@ -55,7 +55,9 @@ export class StatsPage extends Component<Props> {
         const {
             globalFilters,
             currentAccount,
-            params: {view},
+            match: {
+                params: {view},
+            },
         } = this.props
 
         const hasSatisfactionSurveyFeature = currentAccount

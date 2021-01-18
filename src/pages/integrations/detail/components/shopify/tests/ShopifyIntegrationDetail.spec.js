@@ -1,72 +1,57 @@
 import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
-import configureMockStore from 'redux-mock-store'
-import thunk from 'redux-thunk'
 
-import ShopifyIntegrationDetail from '../ShopifyIntegrationDetail'
-
-const mockStore = configureMockStore([thunk])
-const _noop = () => {}
+import {ShopifyIntegrationDetail} from '../ShopifyIntegrationDetail'
 
 describe('ShopifyIntegrationDetail', () => {
-    let store
-
     const commonProps = {
         redirectUri: 'gorgias.io',
         location: {
-            query: {
-                message: '',
-                message_type: 'info',
-            },
+            search: '?message=&message_type=info',
         },
-        notify: _noop,
+        notify: jest.fn(),
         actions: {
-            activateIntegration: _noop,
-            deactivateIntegration: _noop,
-            deleteIntegration: _noop,
+            activateIntegration: jest.fn(),
+            deactivateIntegration: jest.fn(),
+            deleteIntegration: jest.fn(),
         },
+        getExistingShopifyIntegration: jest.fn(),
         loading: fromJS({}),
     }
 
     beforeEach(() => {
-        store = mockStore({})
+        jest.clearAllMocks()
     })
 
     it('should render the page to create a new integration', () => {
+        commonProps.getExistingShopifyIntegration.mockReturnValue(fromJS({}))
         const component = shallow(
             <ShopifyIntegrationDetail
                 integration={fromJS({})}
                 isUpdate={false}
-                store={store}
                 {...commonProps}
             />
         )
-            .dive()
-            .dive()
 
         expect(component).toMatchSnapshot()
     })
 
     it('should render the page for an integration being created with the name of another existing integration', () => {
         const name = 'foo'
-        store = mockStore({
-            integrations: fromJS({
-                integrations: [{type: 'shopify', meta: {shop_name: name}}],
-            }),
-        })
-
+        commonProps.getExistingShopifyIntegration.mockReturnValue(
+            fromJS({type: 'shopify', meta: {shop_name: name}})
+        )
         const component = shallow(
             <ShopifyIntegrationDetail
                 integration={fromJS({})}
+                integrations={fromJS({
+                    integrations: [{type: 'shopify', meta: {shop_name: name}}],
+                })}
                 isUpdate={false}
-                store={store}
                 {...commonProps}
             />
-        )
-            .dive()
-            .dive()
-            .setState({name})
+        ).setState({name})
 
         expect(component).toMatchSnapshot()
     })
@@ -87,13 +72,9 @@ describe('ShopifyIntegrationDetail', () => {
                     },
                 })}
                 isUpdate={true}
-                store={store}
                 {...commonProps}
             />
-        )
-            .dive()
-            .dive()
-            .setState({name})
+        ).setState({name})
 
         expect(component).toMatchSnapshot()
     })
@@ -115,13 +96,9 @@ describe('ShopifyIntegrationDetail', () => {
                     deactivated_datetime: '2018-01-01T18:52:17',
                 })}
                 isUpdate={true}
-                store={store}
                 {...commonProps}
             />
-        )
-            .dive()
-            .dive()
-            .setState({name})
+        ).setState({name})
 
         expect(component).toMatchSnapshot()
     })
@@ -143,13 +120,9 @@ describe('ShopifyIntegrationDetail', () => {
                     },
                 })}
                 isUpdate={true}
-                store={store}
                 {...commonProps}
             />
-        )
-            .dive()
-            .dive()
-            .setState({name})
+        ).setState({name})
 
         expect(component).toMatchSnapshot()
     })
@@ -170,13 +143,9 @@ describe('ShopifyIntegrationDetail', () => {
                     },
                 })}
                 isUpdate={true}
-                store={store}
                 {...commonProps}
             />
-        )
-            .dive()
-            .dive()
-            .setState({name})
+        ).setState({name})
 
         expect(component).toMatchSnapshot()
     })
@@ -197,16 +166,12 @@ describe('ShopifyIntegrationDetail', () => {
                     },
                 })}
                 isUpdate={true}
-                store={store}
                 {...commonProps}
                 loading={fromJS({
                     updateIntegration: true,
                 })}
             />
-        )
-            .dive()
-            .dive()
-            .setState({name})
+        ).setState({name})
 
         expect(component).toMatchSnapshot()
     })
@@ -230,13 +195,9 @@ describe('ShopifyIntegrationDetail', () => {
                     },
                 })}
                 isUpdate={true}
-                store={store}
                 {...commonProps}
             />
-        )
-            .dive()
-            .dive()
-            .setState({name})
+        ).setState({name})
 
         expect(component).toMatchSnapshot()
     })

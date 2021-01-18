@@ -1,7 +1,7 @@
 // @flow
 import React from 'react'
 import {connect} from 'react-redux'
-import {browserHistory, Link} from 'react-router'
+import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 import {fromJS, type List, type Map} from 'immutable'
 import {Breadcrumb, BreadcrumbItem, Button, Container, Form} from 'reactstrap'
@@ -13,6 +13,7 @@ import PageHeader from '../../../../../../common/components/PageHeader.tsx'
 import Pagination from '../../../../../../common/components/Pagination'
 import Search from '../../../../../../common/components/Search'
 import * as integrationsSelectors from '../../../../../../../state/integrations/selectors.ts'
+import history from '../../../../../../history.ts'
 
 type Props = {
     integrations: List<Map<*, *>>,
@@ -79,7 +80,7 @@ export default class OutlookIntegrationSetup extends React.Component<
         actions
             .activateOnboardingIntegrations(data, OUTLOOK_INTEGRATION_TYPE)
             .then(() => actions.fetchIntegrations())
-        browserHistory.push('/app/settings/integrations/email')
+        history.push('/app/settings/integrations/email')
     }
 
     _toggleIntegration = (integration: Map<*, *>, enable: boolean) => {

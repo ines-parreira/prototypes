@@ -3,7 +3,7 @@ import classnames from 'classnames'
 import React, {FormEvent, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
 import {Breadcrumb, BreadcrumbItem, Button, Container, Form} from 'reactstrap'
-import {Link} from 'react-router'
+import {Link} from 'react-router-dom'
 import {bindActionCreators} from 'redux'
 
 import InputField from '../../../common/forms/InputField.js'

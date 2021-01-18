@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {browserHistory} from 'react-router'
 import {connect} from 'react-redux'
 
 import IntegrationList from '../IntegrationList'
 import * as integrationsActions from '../../../../../state/integrations/actions.ts'
+import history from '../../../../history.ts'
 
 import AircallIntegrationListItem from './AircallIntegrationListItem'
 
@@ -50,9 +50,7 @@ export default class AircallIntegrationList extends React.Component {
                     (v) => v.get('type') === 'aircall'
                 )}
                 createIntegration={() =>
-                    browserHistory.push(
-                        '/app/settings/integrations/aircall/new'
-                    )
+                    history.push('/app/settings/integrations/aircall/new')
                 }
                 createIntegrationButtonContent="Connect Aircall"
                 integrationToItemDisplay={integrationToItemDisplay}

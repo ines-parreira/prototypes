@@ -1,7 +1,6 @@
 import React from 'react'
 import {Map, List} from 'immutable'
 import {connect, ConnectedProps} from 'react-redux'
-import {browserHistory} from 'react-router'
 import classnames from 'classnames'
 import {
     Button,
@@ -37,6 +36,7 @@ import {
     viewUpdated,
 } from '../../../../state/entities/views/actions'
 import {activeViewIdSet} from '../../../../state/ui/views/actions'
+import history from '../../../history'
 
 import Filters from './Filters/index.js'
 import css from './FilterTopbar.less'
@@ -142,7 +142,7 @@ export class FilterTopbarContainer extends React.Component<Props, State> {
             void fetchViewItems()
         } else {
             // if is updating an existing view, on cancel we leave edition
-            browserHistory.push(`/app/${config.get('routeList') as string}/`)
+            history.push(`/app/${config.get('routeList') as string}/`)
         }
     }
 

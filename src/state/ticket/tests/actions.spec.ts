@@ -6,7 +6,6 @@ import axios from 'axios'
 import moment from 'moment'
 import MockAdapter from 'axios-mock-adapter'
 import thunk from 'redux-thunk'
-import {browserHistory} from 'react-router'
 import {fromJS, Map} from 'immutable'
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {removeNotification} from 'reapop'
@@ -23,6 +22,7 @@ import {
 import {StoreDispatch} from '../../types'
 import {Ticket, TicketMessage} from '../../../models/ticket/types'
 import {TicketMessageFailedEvent} from '../../../services/socketManager/types'
+import history from '../../../pages/history'
 
 type MockedRootState = {
     ticket: Map<any, any>
@@ -85,6 +85,7 @@ jest.mock('../../notifications/actions', () => {
         notify: jest.fn(() => (args: Record<string, unknown>) => args),
     }
 })
+jest.mock('../../../pages/history')
 
 describe('ticket actions', () => {
     let store: MockStoreEnhanced<MockedRootState, StoreDispatch>
@@ -227,7 +228,7 @@ describe('ticket actions', () => {
                         1,
                         'spam-1'
                     )
-                    expect(browserHistory.push).toHaveBeenNthCalledWith(
+                    expect(history.push).toHaveBeenNthCalledWith(
                         1,
                         '/app/ticket/1'
                     )
@@ -290,7 +291,7 @@ describe('ticket actions', () => {
                         1,
                         'trash-1'
                     )
-                    expect(browserHistory.push).toHaveBeenNthCalledWith(
+                    expect(history.push).toHaveBeenNthCalledWith(
                         1,
                         '/app/ticket/1'
                     )
@@ -614,7 +615,7 @@ describe('ticket actions', () => {
         it('should go to first view because there is no active view', (done) => {
             void store.dispatch(actions.goToNextTicket(1)).then(() => {
                 expect(store.getActions()).toMatchSnapshot()
-                expect(browserHistory.push).toHaveBeenCalledWith('/app')
+                expect(history.push).toHaveBeenCalledWith('/app')
                 done()
             })
         })
@@ -628,9 +629,7 @@ describe('ticket actions', () => {
 
             void store.dispatch(actions.goToNextTicket(1)).then(() => {
                 expect(store.getActions()).toMatchSnapshot()
-                expect(browserHistory.push).toHaveBeenCalledWith(
-                    '/app/tickets/1'
-                )
+                expect(history.push).toHaveBeenCalledWith('/app/tickets/1')
                 done()
             })
         })
@@ -649,9 +648,7 @@ describe('ticket actions', () => {
 
             void fetchTicketPromise.then(() => {
                 expect(store.getActions()).toMatchSnapshot()
-                expect(browserHistory.push).toHaveBeenCalledWith(
-                    '/app/ticket/2'
-                )
+                expect(history.push).toHaveBeenCalledWith('/app/ticket/2')
                 done()
             })
         })
@@ -679,9 +676,7 @@ describe('ticket actions', () => {
 
                 void fetchTicketPromise.then(() => {
                     expect(store.getActions()).toMatchSnapshot()
-                    expect(browserHistory.push).toHaveBeenCalledWith(
-                        '/app/ticket/2'
-                    )
+                    expect(history.push).toHaveBeenCalledWith('/app/ticket/2')
                     done()
                 })
             }
@@ -703,9 +698,7 @@ describe('ticket actions', () => {
 
             void fetchTicketPromise.then(() => {
                 expect(store.getActions()).toMatchSnapshot()
-                expect(browserHistory.push).toHaveBeenCalledWith(
-                    '/app/ticket/2'
-                )
+                expect(history.push).toHaveBeenCalledWith('/app/ticket/2')
                 done()
             })
         })
@@ -719,7 +712,7 @@ describe('ticket actions', () => {
         it('should go to first view because there is no active view', (done) => {
             void store.dispatch(actions.goToPrevTicket(2)).then(() => {
                 expect(store.getActions()).toMatchSnapshot()
-                expect(browserHistory.push).toHaveBeenCalledWith('/app')
+                expect(history.push).toHaveBeenCalledWith('/app')
                 done()
             })
         })
@@ -733,9 +726,7 @@ describe('ticket actions', () => {
 
             void store.dispatch(actions.goToPrevTicket(2)).then(() => {
                 expect(store.getActions()).toMatchSnapshot()
-                expect(browserHistory.push).toHaveBeenCalledWith(
-                    '/app/tickets/1'
-                )
+                expect(history.push).toHaveBeenCalledWith('/app/tickets/1')
                 done()
             })
         })
@@ -754,9 +745,7 @@ describe('ticket actions', () => {
 
             void fetchTicketPromise.then(() => {
                 expect(store.getActions()).toMatchSnapshot()
-                expect(browserHistory.push).toHaveBeenCalledWith(
-                    '/app/ticket/1'
-                )
+                expect(history.push).toHaveBeenCalledWith('/app/ticket/1')
                 done()
             })
         })
@@ -786,9 +775,7 @@ describe('ticket actions', () => {
 
                 void fetchTicketPromise.then(() => {
                     expect(store.getActions()).toMatchSnapshot()
-                    expect(browserHistory.push).toHaveBeenCalledWith(
-                        '/app/ticket/1'
-                    )
+                    expect(history.push).toHaveBeenCalledWith('/app/ticket/1')
                     done()
                 })
             }
@@ -812,9 +799,7 @@ describe('ticket actions', () => {
 
             void fetchTicketPromise.then(() => {
                 expect(store.getActions()).toMatchSnapshot()
-                expect(browserHistory.push).toHaveBeenCalledWith(
-                    '/app/ticket/1'
-                )
+                expect(history.push).toHaveBeenCalledWith('/app/ticket/1')
                 done()
             })
         })

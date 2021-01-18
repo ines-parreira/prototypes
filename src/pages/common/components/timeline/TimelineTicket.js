@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {browserHistory} from 'react-router'
 import classnames from 'classnames'
 import {Card, CardBody} from 'reactstrap'
 
+import history from '../../../history.ts'
 import {StatusLabel, AgentLabel, DatetimeLabel} from '../../utils/labels'
 import {stripHTML} from '../../../../utils.ts'
 
@@ -19,7 +19,7 @@ export default class TimelineTicket extends React.Component {
             this.props.actions.displayHistoryOnNextPage(true)
         }
 
-        browserHistory.push(`/app/ticket/${this.props.ticket.get('id')}`)
+        history.push(`/app/ticket/${this.props.ticket.get('id')}`)
     }
 
     render() {

@@ -3,7 +3,7 @@ import {fromJS} from 'immutable'
 import React from 'react'
 import {connect} from 'react-redux'
 import {Container} from 'reactstrap'
-import {withRouter} from 'react-router'
+import {withRouter} from 'react-router-dom'
 
 import axios from 'axios'
 
@@ -21,7 +21,7 @@ import type {Notification} from '../../state/notifications/types'
 import Stat from './common/components/charts/Stat'
 
 type Props = {
-    params: Object,
+    match: Object,
     filters: Map<*, *>,
     notify: typeof notify,
 }
@@ -39,7 +39,10 @@ export class Stats extends React.Component<Props, State> {
     }
 
     componentDidMount() {
-        const {params, filters} = this.props
+        const {
+            match: {params},
+            filters,
+        } = this.props
         const viewConfig = statViewsConfig.get(params.view)
         viewConfig
             .get('stats')
@@ -135,7 +138,10 @@ export class Stats extends React.Component<Props, State> {
     }
 
     render() {
-        const {params, filters} = this.props
+        const {
+            match: {params},
+            filters,
+        } = this.props
         const viewConfig = statViewsConfig.get(params.view)
         const {stats} = this.state
         return (
@@ -183,7 +189,7 @@ export class Stats extends React.Component<Props, State> {
 
 const mapStateToProps = (state: Object, props: Props) => {
     return {
-        filters: getViewFilters(props.params.view)(state),
+        filters: getViewFilters(props.match.params.view)(state),
     }
 }
 

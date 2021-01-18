@@ -1,9 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
-import {withRouter} from 'react-router'
+import {withRouter} from 'react-router-dom'
 import {Container, Row, Col} from 'reactstrap'
-import _last from 'lodash/last'
 
 import appCss from '../../App.less'
 
@@ -12,13 +11,12 @@ import css from './FullPage.less'
 @withRouter
 export default class FullPage extends React.Component {
     static propTypes = {
+        noContainerWidthLimit: PropTypes.bool,
         children: PropTypes.node.isRequired,
-        routes: PropTypes.array.isRequired,
     }
 
     render() {
-        const currentRoute = _last(this.props.routes)
-
+        const {noContainerWidthLimit} = this.props
         return (
             <Container
                 fluid
@@ -30,7 +28,7 @@ export default class FullPage extends React.Component {
             >
                 <Row
                     className={classnames(css.row, {
-                        [css['no-limit']]: currentRoute.noContainerWidthLimit,
+                        [css['no-limit']]: noContainerWidthLimit,
                     })}
                 >
                     <Col className={css.col}>{this.props.children}</Col>

@@ -22,7 +22,7 @@ const defaultProps = {
         integration: null,
         updateIntegration: null,
     }),
-    location: {query: {}},
+    location: {search: ''},
 }
 
 describe('<YotpoIntegrationDetailComponent/>', () => {
@@ -154,7 +154,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                 component.instance().componentWillReceiveProps({
                     ...defaultProps,
                     integration,
-                    location: {query: {action: 'authentication'}},
+                    location: {search: '?action=authentication'},
                 })
 
                 expect(component.state()).toMatchSnapshot()
@@ -195,7 +195,7 @@ describe('<YotpoIntegrationDetailComponent/>', () => {
                 component.instance().componentWillReceiveProps({
                     ...defaultProps,
                     integration,
-                    location: {query: {action: 'authentication'}},
+                    location: {search: '?action=authentication'},
                 })
 
                 expect(component.state()).toMatchSnapshot()

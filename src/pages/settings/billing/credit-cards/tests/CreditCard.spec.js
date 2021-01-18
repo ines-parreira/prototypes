@@ -1,12 +1,12 @@
 //@flow
 import React from 'react'
-import {browserHistory} from 'react-router'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
 import {CreditCard} from '../CreditCard'
+import history from '../../../../history.ts'
 
-jest.mock('react-router')
+jest.mock('../../../../history.ts')
 jest.mock('../../../../../utils', () => {
     return {
         ...jest.requireActual('../../../../../utils'),
@@ -34,7 +34,7 @@ describe('CreditCard component', () => {
     it('should render nothing if loaded, but no current subscription is set', () => {
         const component = shallow(<CreditCard {...minProps} />)
         component.setState({isStripeLoaded: true})
-        expect(browserHistory.push).toHaveBeenNthCalledWith(
+        expect(history.push).toHaveBeenNthCalledWith(
             1,
             '/app/settings/billing/'
         )

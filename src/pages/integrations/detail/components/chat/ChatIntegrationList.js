@@ -1,6 +1,6 @@
 // @flow
 import React from 'react'
-import {Link, browserHistory} from 'react-router'
+import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {type List, type Map} from 'immutable'
 import Alert from 'reactstrap/lib/Alert'
@@ -9,6 +9,7 @@ import {SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../../constants/integrati
 import * as integrationsActions from '../../../../../state/integrations/actions.ts'
 
 import ToggleButton from '../../../../common/components/ToggleButton'
+import history from '../../../../history.ts'
 import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'
 
@@ -113,9 +114,7 @@ export default class ChatIntegrationList extends React.Component<Props> {
                         SMOOCH_INSIDE_INTEGRATION_TYPE
                 )}
                 createIntegration={() =>
-                    browserHistory.push(
-                        '/app/settings/integrations/smooch_inside/new'
-                    )
+                    history.push('/app/settings/integrations/smooch_inside/new')
                 }
                 createIntegrationButtonContent="Add chat"
                 integrationToItemDisplay={integrationToItemDisplay}

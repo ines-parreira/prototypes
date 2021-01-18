@@ -2,7 +2,7 @@
 import React from 'react'
 import classnames from 'classnames'
 import {connect} from 'react-redux'
-import {browserHistory, withRouter} from 'react-router'
+import {withRouter} from 'react-router-dom'
 import {fromJS, List, Map} from 'immutable'
 import {Button} from 'reactstrap'
 import _noop from 'lodash/noop'
@@ -17,6 +17,7 @@ import {
     stopEditionMode,
     submitWidgets,
 } from '../../../../../state/widgets/actions.ts'
+import history from '../../../../history.ts'
 
 import type {reactRouterLocation} from '../../../../../types'
 import * as segmentTracker from '../../../../../store/middlewares/segmentTracker'
@@ -202,13 +203,11 @@ export class Infobar extends React.Component<Props, State> {
         }
 
         if (isEditing) {
-            browserHistory.push(
+            history.push(
                 `/app/${context}/${identifier}/edit-widgets${location.search}`
             )
         } else {
-            browserHistory.push(
-                `/app/${context}/${identifier}${location.search}`
-            )
+            history.push(`/app/${context}/${identifier}${location.search}`)
         }
     }
 

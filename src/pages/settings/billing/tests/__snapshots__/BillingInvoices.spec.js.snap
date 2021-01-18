@@ -131,17 +131,14 @@ exports[`BillingInvoices component should display invoices, without PDF download
               <Link
                 className="btn btn-secondary mr-2"
                 color="secondary"
-                onlyActiveOnIndex={false}
-                style={Object {}}
                 target="_self"
                 to="https://pay.stripe.com/invoice/example125/pdf"
               >
                 <a
                   className="btn btn-secondary mr-2"
                   color="secondary"
-                  onClick={[Function]}
-                  style={Object {}}
                   target="_self"
+                  to="https://pay.stripe.com/invoice/example125/pdf"
                 >
                   <i
                     className="material-icons mr-1"

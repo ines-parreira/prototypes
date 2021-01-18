@@ -1,12 +1,14 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import {withRouter, browserHistory} from 'react-router'
+import {withRouter} from 'react-router-dom'
 import {Container} from 'reactstrap'
+import {parse} from 'query-string'
 
 import {notify} from '../../../state/notifications/actions.ts'
 import PageHeader from '../../common/components/PageHeader.tsx'
 import * as currentAccountSelectors from '../../../state/currentAccount/selectors.ts'
+import history from '../../history.ts'
 
 import BillingUsage from './BillingUsage'
 import BillingPaymentMethod from './BillingPaymentMethod'
@@ -26,7 +28,7 @@ export class BillingContainer extends Component {
 
     componentDidMount() {
         // display message from url
-        const {notif_msg, notif_type} = this.props.location.query
+        const {notif_msg, notif_type} = parse(this.props.location.search)
 
         if (notif_msg) {
             this.props.notify({
@@ -35,12 +37,12 @@ export class BillingContainer extends Component {
                 allowHTML: false,
             })
             // remove notification from url
-            browserHistory.push(window.location.pathname)
+            history.push(window.location.pathname)
         }
 
         const {currentSubscription} = this.props
         if (currentSubscription.isEmpty()) {
-            browserHistory.push('/app/settings/billing/plans')
+            history.push('/app/settings/billing/plans')
         }
     }
 
