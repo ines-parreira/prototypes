@@ -135,7 +135,7 @@ export default class CustomerChannels extends React.Component<Props> {
                 {children}
                 <CustomerInfoWrapper>
                     {list}
-                    {country && city && (
+                    {(country || city) && (
                         <p className={css.customerChannel}>
                             <i
                                 className={classnames(
@@ -146,7 +146,11 @@ export default class CustomerChannels extends React.Component<Props> {
                             >
                                 language
                             </i>
-                            {`Location: ${city}, ${country}`}
+                            {`Location: ${
+                                city && country
+                                    ? `${city}, ${country}`
+                                    : `${city || country}`
+                            }`}
                         </p>
                     )}
                     {timezoneOffset && (
