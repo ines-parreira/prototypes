@@ -1,6 +1,6 @@
 import React from 'react'
-import {mount} from 'enzyme'
 import {fromJS} from 'immutable'
+import {render} from '@testing-library/react'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
@@ -8,6 +8,12 @@ import ChatIntegrationCampaigns from '../ChatIntegrationCampaigns'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
+
+jest.mock('../../../../../../common/utils/withPaywall.tsx', () => () => {
+    return (Component) => (props) => {
+        return <Component {...props} />
+    }
+})
 
 describe('ChatIntegrationCampaigns component', () => {
     let store
@@ -17,7 +23,7 @@ describe('ChatIntegrationCampaigns component', () => {
     })
 
     it('should display the empty state correctly', () => {
-        const component = mount(
+        const {container} = render(
             <ChatIntegrationCampaigns
                 store={store}
                 integration={fromJS({
@@ -32,11 +38,11 @@ describe('ChatIntegrationCampaigns component', () => {
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container).toMatchSnapshot()
     })
 
     it('should display the list correctly', () => {
-        const component = mount(
+        const {container} = render(
             <ChatIntegrationCampaigns
                 store={store}
                 integration={fromJS({
@@ -63,6 +69,6 @@ describe('ChatIntegrationCampaigns component', () => {
             />
         )
 
-        expect(component).toMatchSnapshot()
+        expect(container).toMatchSnapshot()
     })
 })

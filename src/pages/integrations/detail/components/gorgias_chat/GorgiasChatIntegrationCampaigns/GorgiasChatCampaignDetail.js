@@ -27,11 +27,13 @@ import {AgentLabel} from '../../../../../common/utils/labels'
 
 import {sanitizeHtmlDefault} from '../../../../../../utils/html.ts'
 import {convertToHTML} from '../../../../../../utils/editor.tsx'
+import withPaywall from '../../../../../common/utils/withPaywall.tsx'
 
 import {notify} from '../../../../../../state/notifications/actions.ts'
 import * as campaignActions from '../../../../../../state/campaigns/actions'
 import * as integrationsSelectors from '../../../../../../state/integrations/selectors.ts'
 import * as agentSelectors from '../../../../../../state/agents/selectors.ts'
+import {AccountFeatures} from '../../../../../../state/currentAccount/types.ts'
 
 import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
 
@@ -189,6 +191,66 @@ export class GorgiasChatCampaignDetailComponent extends React.Component {
         id: PropTypes.string.isRequired,
         integration: PropTypes.object.isRequired,
         campaign: PropTypes.object.isRequired,
+    }
+
+    render() {
+        const {integration, campaign, id} = this.props
+
+        const isUpdate = id !== 'new'
+
+        return (
+            <div className="full-width">
+                <PageHeader
+                    title={
+                        <Breadcrumb>
+                            <BreadcrumbItem>
+                                <Link to="/app/settings/integrations">
+                                    Integrations
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                <Link
+                                    to={`/app/settings/integrations/${integration.get(
+                                        'type'
+                                    )}/${integration.get('id')}`}
+                                >
+                                    Chat (New)
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                {integration.get('name')}
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                <Link
+                                    to={`/app/settings/integrations/${integration.get(
+                                        'type'
+                                    )}/${integration.get('id')}/campaigns`}
+                                >
+                                    Campaigns
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem active>
+                                {isUpdate
+                                    ? campaign.get('name')
+                                    : 'New campaign'}
+                            </BreadcrumbItem>
+                        </Breadcrumb>
+                    }
+                />
+
+                <GorgiasChatIntegrationNavigation integration={integration} />
+                <CampaignForm {...this.props} />
+            </div>
+        )
+    }
+}
+
+@withPaywall(AccountFeatures.ChatCampaigns)
+export class CampaignForm extends React.Component {
+    static propTypes = {
+        id: PropTypes.string.isRequired,
+        integration: PropTypes.object.isRequired,
+        campaign: PropTypes.object.isRequired,
 
         agents: PropTypes.object.isRequired,
 
@@ -331,7 +393,7 @@ export class GorgiasChatCampaignDetailComponent extends React.Component {
     }
 
     render() {
-        const {integration, campaign, id, agents} = this.props
+        const {integration, id, agents} = this.props
         const {name, triggers, message} = this.state
 
         const isUpdate = id !== 'new'
@@ -359,259 +421,205 @@ export class GorgiasChatCampaignDetailComponent extends React.Component {
         })
 
         return (
-            <div className="full-width">
-                <PageHeader
-                    title={
-                        <Breadcrumb>
-                            <BreadcrumbItem>
-                                <Link to="/app/settings/integrations">
-                                    Integrations
-                                </Link>
-                            </BreadcrumbItem>
-                            <BreadcrumbItem>
-                                <Link
-                                    to={`/app/settings/integrations/${integration.get(
-                                        'type'
-                                    )}/${integration.get('id')}`}
-                                >
-                                    Chat
-                                </Link>
-                            </BreadcrumbItem>
-                            <BreadcrumbItem>
-                                {integration.get('name')}
-                            </BreadcrumbItem>
-                            <BreadcrumbItem>
-                                <Link
-                                    to={`/app/settings/integrations/${integration.get(
-                                        'type'
-                                    )}/${integration.get('id')}/campaigns`}
-                                >
-                                    Campaigns
-                                </Link>
-                            </BreadcrumbItem>
-                            <BreadcrumbItem active>
-                                {isUpdate
-                                    ? campaign.get('name')
-                                    : 'New campaign'}
-                            </BreadcrumbItem>
-                        </Breadcrumb>
-                    }
-                />
+            <Container fluid className="page-container">
+                <Row>
+                    <Col>
+                        <Form onSubmit={this._handleSubmit}>
+                            <div className="mb-4">
+                                <InputField
+                                    type="input"
+                                    name="name"
+                                    label="Campaign name"
+                                    placeholder="My new campaign"
+                                    value={name}
+                                    onChange={(value) =>
+                                        this.setState({name: value})
+                                    }
+                                    required
+                                />
+                            </div>
 
-                <GorgiasChatIntegrationNavigation integration={integration} />
+                            {/* TRIGGERS */}
 
-                <Container fluid className="page-container">
-                    <Row>
-                        <Col>
-                            <Form onSubmit={this._handleSubmit}>
-                                <div className="mb-4">
-                                    <InputField
-                                        type="input"
-                                        name="name"
-                                        label="Campaign name"
-                                        placeholder="My new campaign"
-                                        value={name}
-                                        onChange={(value) =>
-                                            this.setState({name: value})
-                                        }
-                                        required
+                            <h5>Choose your audience</h5>
+                            <div className="mb-4">
+                                {triggers
+                                    .map((trigger, idx) => {
+                                        return (
+                                            <TriggerRow
+                                                key={idx}
+                                                trigger={trigger}
+                                                nbOfTriggers={triggers.size}
+                                                idx={idx}
+                                                onOperatorChange={(value) => {
+                                                    this.setState({
+                                                        triggers: triggers.setIn(
+                                                            [idx, 'operator'],
+                                                            value
+                                                        ),
+                                                    })
+                                                }}
+                                                onValueChange={(value) => {
+                                                    this.setState({
+                                                        triggers: this.state.triggers.setIn(
+                                                            [idx, 'value'],
+                                                            value
+                                                        ),
+                                                    })
+                                                }}
+                                                onDelete={() => {
+                                                    this.setState({
+                                                        triggers: triggers.delete(
+                                                            idx
+                                                        ),
+                                                    })
+                                                }}
+                                            />
+                                        )
+                                    })
+                                    .toList()
+                                    .toJS()}
+
+                                <UncontrolledDropdown>
+                                    <DropdownToggle
+                                        caret
+                                        type="button"
+                                        className="mr-2"
+                                    >
+                                        <i className="material-icons mr-2">
+                                            add
+                                        </i>
+                                        Add condition
+                                    </DropdownToggle>
+                                    <DropdownMenu>
+                                        {CAMPAIGNS_TRIGGER_KEYS.map(
+                                            (keyConfig, idx) => {
+                                                return (
+                                                    <DropdownItem
+                                                        key={keyConfig.get(
+                                                            'name'
+                                                        )}
+                                                        type="button"
+                                                        onClick={() =>
+                                                            this._addNewTrigger(
+                                                                idx
+                                                            )
+                                                        }
+                                                    >
+                                                        {keyConfig.get('label')}
+                                                    </DropdownItem>
+                                                )
+                                            }
+                                        )}
+                                    </DropdownMenu>
+                                </UncontrolledDropdown>
+                            </div>
+
+                            {/* MESSAGE + AUTHOR */}
+
+                            <h5>Write your message</h5>
+                            <div className="mb-4">
+                                <div
+                                    className={classnames(
+                                        'mb-2',
+                                        css.authorWrapper
+                                    )}
+                                >
+                                    <span>From: </span>
+                                    <SelectField
+                                        className={css.authorInput}
+                                        value={message.getIn(
+                                            ['author', 'email'],
+                                            null
+                                        )}
+                                        options={authorOptions}
+                                        onChange={this._setAgent}
                                     />
                                 </div>
+                                {this.isInitialized && (
+                                    <RichField
+                                        type="text"
+                                        rows="8"
+                                        value={{html: message.get('html')}}
+                                        onChange={(value) => {
+                                            const content = value.getCurrentContent()
 
-                                {/* TRIGGERS */}
-
-                                <h5>Choose your audience</h5>
-                                <div className="mb-4">
-                                    {triggers
-                                        .map((trigger, idx) => {
-                                            return (
-                                                <TriggerRow
-                                                    key={idx}
-                                                    trigger={trigger}
-                                                    nbOfTriggers={triggers.size}
-                                                    idx={idx}
-                                                    onOperatorChange={(
-                                                        value
-                                                    ) => {
-                                                        this.setState({
-                                                            triggers: triggers.setIn(
-                                                                [
-                                                                    idx,
-                                                                    'operator',
-                                                                ],
-                                                                value
-                                                            ),
-                                                        })
-                                                    }}
-                                                    onValueChange={(value) => {
-                                                        this.setState({
-                                                            triggers: this.state.triggers.setIn(
-                                                                [idx, 'value'],
-                                                                value
-                                                            ),
-                                                        })
-                                                    }}
-                                                    onDelete={() => {
-                                                        this.setState({
-                                                            triggers: triggers.delete(
-                                                                idx
-                                                            ),
-                                                        })
-                                                    }}
-                                                />
-                                            )
-                                        })
-                                        .toList()
-                                        .toJS()}
-
-                                    <UncontrolledDropdown>
-                                        <DropdownToggle
-                                            caret
-                                            type="button"
-                                            className="mr-2"
-                                        >
-                                            <i className="material-icons mr-2">
-                                                add
-                                            </i>
-                                            Add condition
-                                        </DropdownToggle>
-                                        <DropdownMenu>
-                                            {CAMPAIGNS_TRIGGER_KEYS.map(
-                                                (keyConfig, idx) => {
-                                                    return (
-                                                        <DropdownItem
-                                                            key={keyConfig.get(
-                                                                'name'
-                                                            )}
-                                                            type="button"
-                                                            onClick={() =>
-                                                                this._addNewTrigger(
-                                                                    idx
-                                                                )
-                                                            }
-                                                        >
-                                                            {keyConfig.get(
-                                                                'label'
-                                                            )}
-                                                        </DropdownItem>
+                                            this.setState({
+                                                message: message
+                                                    .set(
+                                                        'html',
+                                                        convertToHTML(content)
                                                     )
-                                                }
-                                            )}
-                                        </DropdownMenu>
-                                    </UncontrolledDropdown>
-                                </div>
-
-                                {/* MESSAGE + AUTHOR */}
-
-                                <h5>Write your message</h5>
-                                <div className="mb-4">
-                                    <div
-                                        className={classnames(
-                                            'mb-2',
-                                            css.authorWrapper
-                                        )}
-                                    >
-                                        <span>From: </span>
-                                        <SelectField
-                                            className={css.authorInput}
-                                            value={message.getIn(
-                                                ['author', 'email'],
-                                                null
-                                            )}
-                                            options={authorOptions}
-                                            onChange={this._setAgent}
-                                        />
-                                    </div>
-                                    {this.isInitialized && (
-                                        <RichField
-                                            type="text"
-                                            rows="8"
-                                            value={{html: message.get('html')}}
-                                            onChange={(value) => {
-                                                const content = value.getCurrentContent()
-
-                                                this.setState({
-                                                    message: message
-                                                        .set(
-                                                            'html',
-                                                            convertToHTML(
-                                                                content
-                                                            )
-                                                        )
-                                                        .set(
-                                                            'text',
-                                                            content.getPlainText()
-                                                        ),
-                                                })
-                                            }}
-                                            displayedActions={[
-                                                'BOLD',
-                                                'ITALIC',
-                                                'UNDERLINE',
-                                                'IMAGE',
-                                                'EMOJI',
-                                            ]}
-                                            placeholder={'Write your message'}
-                                            required
-                                        />
-                                    )}
-                                </div>
-
-                                <Button
-                                    color="success"
-                                    className={classnames({
-                                        'btn-loading': this.state.loading,
-                                    })}
-                                    disabled={this.state.loading}
-                                >
-                                    {isUpdate
-                                        ? 'Save'
-                                        : 'Create & activate campaign'}
-                                </Button>
-
-                                {isUpdate && (
-                                    <ConfirmButton
-                                        id="delete-campaign-button"
-                                        className="float-right"
-                                        placement="bottom right"
-                                        color="secondary"
-                                        confirm={this._deleteCampaign}
-                                        content="Are you sure you want to delete this campaign?"
-                                    >
-                                        <i className="material-icons mr-1 text-danger">
-                                            delete
-                                        </i>
-                                        Delete campaign
-                                    </ConfirmButton>
+                                                    .set(
+                                                        'text',
+                                                        content.getPlainText()
+                                                    ),
+                                            })
+                                        }}
+                                        displayedActions={[
+                                            'BOLD',
+                                            'ITALIC',
+                                            'UNDERLINE',
+                                            'IMAGE',
+                                            'EMOJI',
+                                        ]}
+                                        placeholder={'Write your message'}
+                                        required
+                                    />
                                 )}
-                            </Form>
-                        </Col>
-                        <Col>
-                            <CampaignPreview
-                                html={sanitizeHtmlDefault(message.get('html'))}
-                                mainColor={integration.getIn([
-                                    'decoration',
-                                    'main_color',
-                                ])}
-                                authorName={message.getIn(['author', 'name'])}
-                                authorAvatarUrl={message.getIn([
-                                    'author',
-                                    'avatar_url',
-                                ])}
-                                translatedTexts={
-                                    GORGIAS_CHAT_WIDGET_TEXTS[
-                                        integration.getIn([
-                                            'meta',
-                                            'language',
-                                        ]) ||
-                                            GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
-                                    ]
-                                }
-                            />
-                        </Col>
-                    </Row>
-                </Container>
-            </div>
+                            </div>
+
+                            <Button
+                                color="success"
+                                className={classnames({
+                                    'btn-loading': this.state.loading,
+                                })}
+                                disabled={this.state.loading}
+                            >
+                                {isUpdate
+                                    ? 'Save'
+                                    : 'Create & activate campaign'}
+                            </Button>
+
+                            {isUpdate && (
+                                <ConfirmButton
+                                    id="delete-campaign-button"
+                                    className="float-right"
+                                    placement="bottom right"
+                                    color="secondary"
+                                    confirm={this._deleteCampaign}
+                                    content="Are you sure you want to delete this campaign?"
+                                >
+                                    <i className="material-icons mr-1 text-danger">
+                                        delete
+                                    </i>
+                                    Delete campaign
+                                </ConfirmButton>
+                            )}
+                        </Form>
+                    </Col>
+                    <Col>
+                        <CampaignPreview
+                            html={sanitizeHtmlDefault(message.get('html'))}
+                            mainColor={integration.getIn([
+                                'decoration',
+                                'main_color',
+                            ])}
+                            authorName={message.getIn(['author', 'name'])}
+                            authorAvatarUrl={message.getIn([
+                                'author',
+                                'avatar_url',
+                            ])}
+                            translatedTexts={
+                                GORGIAS_CHAT_WIDGET_TEXTS[
+                                    integration.getIn(['meta', 'language']) ||
+                                        GORGIAS_CHAT_WIDGET_LANGUAGE_DEFAULT
+                                ]
+                            }
+                        />
+                    </Col>
+                </Row>
+            </Container>
         )
     }
 }

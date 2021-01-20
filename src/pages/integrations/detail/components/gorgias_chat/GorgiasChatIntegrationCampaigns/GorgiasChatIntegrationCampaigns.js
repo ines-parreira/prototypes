@@ -8,10 +8,13 @@ import {Breadcrumb, BreadcrumbItem, Button, Container, Table} from 'reactstrap'
 
 import * as campaignActions from '../../../../../../state/campaigns/actions'
 
+import {AccountFeatures} from '../../../../../../state/currentAccount/types.ts'
+
 import ToggleButton from '../../../../../common/components/ToggleButton'
 import PageHeader from '../../../../../common/components/PageHeader.tsx'
 import ForwardIcon from '../../ForwardIcon'
 import GorgiasChatIntegrationNavigation from '../GorgiasChatIntegrationNavigation'
+import withPaywall from '../../../../../common/utils/withPaywall.tsx'
 
 type Props = {
     integration: Map<*, *>,
@@ -37,47 +40,8 @@ export class GorgiasChatIntegrationCampaignsComponent extends React.Component<Pr
 
         const campaigns = integration.getIn(['meta', 'campaigns']) || fromJS([])
 
-        return (
-            <div className="full-width">
-                <PageHeader
-                    title={
-                        <Breadcrumb>
-                            <BreadcrumbItem>
-                                <Link to="/app/settings/integrations">
-                                    Integrations
-                                </Link>
-                            </BreadcrumbItem>
-                            <BreadcrumbItem>
-                                <Link
-                                    to={`/app/settings/integrations/${integration.get(
-                                        'type'
-                                    )}`}
-                                >
-                                    Chat
-                                </Link>
-                            </BreadcrumbItem>
-                            <BreadcrumbItem>
-                                {integration.get('name')}
-                            </BreadcrumbItem>
-                            <BreadcrumbItem active>Campaigns</BreadcrumbItem>
-                        </Breadcrumb>
-                    }
-                >
-                    <Button
-                        tag={Link}
-                        color="success"
-                        to={
-                            `/app/settings/integrations/${integration.get(
-                                'type'
-                            )}/` + `${integration.get('id')}/campaigns/new`
-                        }
-                    >
-                        Create campaign
-                    </Button>
-                </PageHeader>
-
-                <GorgiasChatIntegrationNavigation integration={integration} />
-
+        const CampaignsContent = () => (
+            <>
                 <Container fluid className="page-container">
                     <p>
                         Use campaigns to prompt visitors of your website to
@@ -137,6 +101,54 @@ export class GorgiasChatIntegrationCampaignsComponent extends React.Component<Pr
                         </tbody>
                     </Table>
                 )}
+            </>
+        )
+
+        const PaywalledCampaigns = withPaywall(AccountFeatures.ChatCampaigns)(
+            CampaignsContent
+        )
+
+        return (
+            <div className="full-width">
+                <PageHeader
+                    title={
+                        <Breadcrumb>
+                            <BreadcrumbItem>
+                                <Link to="/app/settings/integrations">
+                                    Integrations
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                <Link
+                                    to={`/app/settings/integrations/${integration.get(
+                                        'type'
+                                    )}`}
+                                >
+                                    Chat (New)
+                                </Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem>
+                                {integration.get('name')}
+                            </BreadcrumbItem>
+                            <BreadcrumbItem active>Campaigns</BreadcrumbItem>
+                        </Breadcrumb>
+                    }
+                >
+                    <Button
+                        tag={Link}
+                        color="success"
+                        to={
+                            `/app/settings/integrations/${integration.get(
+                                'type'
+                            )}/` + `${integration.get('id')}/campaigns/new`
+                        }
+                    >
+                        Create campaign
+                    </Button>
+                </PageHeader>
+
+                <GorgiasChatIntegrationNavigation integration={integration} />
+                <PaywalledCampaigns />
             </div>
         )
     }

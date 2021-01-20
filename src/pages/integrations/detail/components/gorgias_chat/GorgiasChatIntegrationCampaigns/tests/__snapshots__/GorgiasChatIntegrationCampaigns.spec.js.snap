@@ -1,752 +1,295 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty state correctly 1`] = `
-<Connect(GorgiasChatIntegrationCampaignsComponent)
-  integration={
-    Immutable.Map {
-      "id": 118,
-      "type": "gorgias_chat",
-      "name": "My new chat",
-      "meta": Immutable.Map {
-        "campaigns": Immutable.List [],
-      },
-    }
-  }
-  store={
-    Object {
-      "clearActions": [Function],
-      "dispatch": [Function],
-      "getActions": [Function],
-      "getState": [Function],
-      "replaceReducer": [Function],
-      "subscribe": [Function],
-    }
-  }
-  updateCampaign={[Function]}
->
-  <GorgiasChatIntegrationCampaignsComponent
-    integration={
-      Immutable.Map {
-        "id": 118,
-        "type": "gorgias_chat",
-        "name": "My new chat",
-        "meta": Immutable.Map {
-          "campaigns": Immutable.List [],
-        },
-      }
-    }
-    store={
-      Object {
-        "clearActions": [Function],
-        "dispatch": [Function],
-        "getActions": [Function],
-        "getState": [Function],
-        "replaceReducer": [Function],
-        "subscribe": [Function],
-      }
-    }
-    updateCampaign={[Function]}
+<div>
+  <div
+    class="full-width"
   >
     <div
-      className="full-width"
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
     >
-      <PageHeader
-        title={
-          <Breadcrumb
-            tag="ol"
-          >
-            <BreadcrumbItem
-              tag="li"
-            >
-              <Link
-                to="/app/settings/integrations"
-              >
-                Integrations
-              </Link>
-            </BreadcrumbItem>
-            <BreadcrumbItem
-              tag="li"
-            >
-              <Link
-                to="/app/settings/integrations/gorgias_chat"
-              >
-                Chat
-              </Link>
-            </BreadcrumbItem>
-            <BreadcrumbItem
-              tag="li"
-            >
-              My new chat
-            </BreadcrumbItem>
-            <BreadcrumbItem
-              active={true}
-              tag="li"
-            >
-              Campaigns
-            </BreadcrumbItem>
-          </Breadcrumb>
-        }
+      <ol
+        class="breadcrumb"
       >
-        <div
-          className="d-flex align-items-center justify-content-between flex-wrap page-header"
+        <li
+          class="breadcrumb-item"
         >
-          <Breadcrumb
-            tag="ol"
+          <a
+            to="/app/settings/integrations"
           >
-            <ol
-              className="breadcrumb"
-            >
-              <BreadcrumbItem
-                tag="li"
-              >
-                <li
-                  className="breadcrumb-item"
-                >
-                  <Link
-                    to="/app/settings/integrations"
-                  >
-                    <a
-                      to="/app/settings/integrations"
-                    >
-                      Integrations
-                    </a>
-                  </Link>
-                </li>
-              </BreadcrumbItem>
-              <BreadcrumbItem
-                tag="li"
-              >
-                <li
-                  className="breadcrumb-item"
-                >
-                  <Link
-                    to="/app/settings/integrations/gorgias_chat"
-                  >
-                    <a
-                      to="/app/settings/integrations/gorgias_chat"
-                    >
-                      Chat
-                    </a>
-                  </Link>
-                </li>
-              </BreadcrumbItem>
-              <BreadcrumbItem
-                tag="li"
-              >
-                <li
-                  className="breadcrumb-item"
-                >
-                  My new chat
-                </li>
-              </BreadcrumbItem>
-              <BreadcrumbItem
-                active={true}
-                tag="li"
-              >
-                <li
-                  className="active breadcrumb-item"
-                >
-                  Campaigns
-                </li>
-              </BreadcrumbItem>
-            </ol>
-          </Breadcrumb>
-          <div>
-            <Button
-              color="success"
-              tag={[Function]}
-              to="/app/settings/integrations/gorgias_chat/118/campaigns/new"
-            >
-              <Link
-                className="btn btn-success"
-                onClick={[Function]}
-                to="/app/settings/integrations/gorgias_chat/118/campaigns/new"
-              >
-                <a
-                  className="btn btn-success"
-                  onClick={[Function]}
-                  to="/app/settings/integrations/gorgias_chat/118/campaigns/new"
-                >
-                  Create campaign
-                </a>
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </PageHeader>
-      <GorgiasChatIntegrationNavigation
-        integration={
-          Immutable.Map {
-            "id": 118,
-            "type": "gorgias_chat",
-            "name": "My new chat",
-            "meta": Immutable.Map {
-              "campaigns": Immutable.List [],
-            },
-          }
-        }
-      >
-        <SecondaryNavbar>
-          <Navbar
-            className="navbar"
-            expand={false}
-            tag="nav"
-          >
-            <nav
-              className="navbar navbar"
-            >
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
-                key=".0"
-                to="/app/settings/integrations/gorgias_chat/118/appearance"
-              >
-                <a
-                  activeClassName="disabled"
-                  className="nav-link"
-                  to="/app/settings/integrations/gorgias_chat/118/appearance"
-                >
-                  Appearance
-                </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
-                key=".1"
-                to="/app/settings/integrations/gorgias_chat/118/installation"
-              >
-                <a
-                  activeClassName="disabled"
-                  className="nav-link"
-                  to="/app/settings/integrations/gorgias_chat/118/installation"
-                >
-                  Installation
-                </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
-                key=".2"
-                to="/app/settings/integrations/gorgias_chat/118/preferences"
-              >
-                <a
-                  activeClassName="disabled"
-                  className="nav-link"
-                  to="/app/settings/integrations/gorgias_chat/118/preferences"
-                >
-                  Preferences
-                </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
-                key=".3"
-                to="/app/settings/integrations/gorgias_chat/118/quick_replies"
-              >
-                <a
-                  activeClassName="disabled"
-                  className="nav-link"
-                  to="/app/settings/integrations/gorgias_chat/118/quick_replies"
-                >
-                  Quick replies
-                </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
-                key=".4"
-                to="/app/settings/integrations/gorgias_chat/118/campaigns"
-              >
-                <a
-                  activeClassName="disabled"
-                  className="nav-link"
-                  to="/app/settings/integrations/gorgias_chat/118/campaigns"
-                >
-                  Campaigns
-                </a>
-              </Link>
-            </nav>
-          </Navbar>
-        </SecondaryNavbar>
-      </GorgiasChatIntegrationNavigation>
-      <Container
-        className="page-container"
-        fluid={true}
-        tag="div"
-      >
-        <div
-          className="page-container container-fluid"
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
         >
-          <p>
-            Use campaigns to prompt visitors of your website to start chatting with your team.
-          </p>
-          <div>
-            This integration doesn't have any campaigns yet.
-          </div>
-        </div>
-      </Container>
+          <a
+            to="/app/settings/integrations/gorgias_chat"
+          >
+            Chat (New)
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          My new chat
+        </li>
+        <li
+          class="active breadcrumb-item"
+        >
+          Campaigns
+        </li>
+      </ol>
+      <div>
+        <a
+          class="btn btn-success"
+          to="/app/settings/integrations/gorgias_chat/118/campaigns/new"
+        >
+          Create campaign
+        </a>
+      </div>
     </div>
-  </GorgiasChatIntegrationCampaignsComponent>
-</Connect(GorgiasChatIntegrationCampaignsComponent)>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/118/appearance"
+      >
+        Appearance
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/118/installation"
+      >
+        Installation
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/118/preferences"
+      >
+        Preferences
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/118/quick_replies"
+      >
+        Quick replies
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/118/campaigns"
+      >
+        Campaigns
+      </a>
+    </nav>
+    <div
+      class="page-container container-fluid"
+    >
+      <p>
+        Use campaigns to prompt visitors of your website to start chatting with your team.
+      </p>
+      <div>
+        This integration doesn't have any campaigns yet.
+      </div>
+    </div>
+  </div>
+</div>
 `;
 
 exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list correctly 1`] = `
-<Connect(GorgiasChatIntegrationCampaignsComponent)
-  integration={
-    Immutable.Map {
-      "id": 118,
-      "type": "gorgias_chat",
-      "name": "My new chat",
-      "meta": Immutable.Map {
-        "campaigns": Immutable.List [
-          Immutable.Map {
-            "id": "156a4d-fg68h40-sd6f4",
-            "name": "Super campaign",
-            "deactivated_datetime": null,
-          },
-          Immutable.Map {
-            "id": "not-so-good-campaign-d8f9-fds486-sf78",
-            "name": "Not so good campaign",
-            "deactivated_datetime": "2017-10-06T17:17:56.565Z",
-          },
-        ],
-      },
-    }
-  }
-  store={
-    Object {
-      "clearActions": [Function],
-      "dispatch": [Function],
-      "getActions": [Function],
-      "getState": [Function],
-      "replaceReducer": [Function],
-      "subscribe": [Function],
-    }
-  }
-  updateCampaign={[Function]}
->
-  <GorgiasChatIntegrationCampaignsComponent
-    integration={
-      Immutable.Map {
-        "id": 118,
-        "type": "gorgias_chat",
-        "name": "My new chat",
-        "meta": Immutable.Map {
-          "campaigns": Immutable.List [
-            Immutable.Map {
-              "id": "156a4d-fg68h40-sd6f4",
-              "name": "Super campaign",
-              "deactivated_datetime": null,
-            },
-            Immutable.Map {
-              "id": "not-so-good-campaign-d8f9-fds486-sf78",
-              "name": "Not so good campaign",
-              "deactivated_datetime": "2017-10-06T17:17:56.565Z",
-            },
-          ],
-        },
-      }
-    }
-    store={
-      Object {
-        "clearActions": [Function],
-        "dispatch": [Function],
-        "getActions": [Function],
-        "getState": [Function],
-        "replaceReducer": [Function],
-        "subscribe": [Function],
-      }
-    }
-    updateCampaign={[Function]}
+<div>
+  <div
+    class="full-width"
   >
     <div
-      className="full-width"
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
     >
-      <PageHeader
-        title={
-          <Breadcrumb
-            tag="ol"
-          >
-            <BreadcrumbItem
-              tag="li"
-            >
-              <Link
-                to="/app/settings/integrations"
-              >
-                Integrations
-              </Link>
-            </BreadcrumbItem>
-            <BreadcrumbItem
-              tag="li"
-            >
-              <Link
-                to="/app/settings/integrations/gorgias_chat"
-              >
-                Chat
-              </Link>
-            </BreadcrumbItem>
-            <BreadcrumbItem
-              tag="li"
-            >
-              My new chat
-            </BreadcrumbItem>
-            <BreadcrumbItem
-              active={true}
-              tag="li"
-            >
-              Campaigns
-            </BreadcrumbItem>
-          </Breadcrumb>
-        }
+      <ol
+        class="breadcrumb"
       >
-        <div
-          className="d-flex align-items-center justify-content-between flex-wrap page-header"
+        <li
+          class="breadcrumb-item"
         >
-          <Breadcrumb
-            tag="ol"
+          <a
+            to="/app/settings/integrations"
           >
-            <ol
-              className="breadcrumb"
-            >
-              <BreadcrumbItem
-                tag="li"
-              >
-                <li
-                  className="breadcrumb-item"
-                >
-                  <Link
-                    to="/app/settings/integrations"
-                  >
-                    <a
-                      to="/app/settings/integrations"
-                    >
-                      Integrations
-                    </a>
-                  </Link>
-                </li>
-              </BreadcrumbItem>
-              <BreadcrumbItem
-                tag="li"
-              >
-                <li
-                  className="breadcrumb-item"
-                >
-                  <Link
-                    to="/app/settings/integrations/gorgias_chat"
-                  >
-                    <a
-                      to="/app/settings/integrations/gorgias_chat"
-                    >
-                      Chat
-                    </a>
-                  </Link>
-                </li>
-              </BreadcrumbItem>
-              <BreadcrumbItem
-                tag="li"
-              >
-                <li
-                  className="breadcrumb-item"
-                >
-                  My new chat
-                </li>
-              </BreadcrumbItem>
-              <BreadcrumbItem
-                active={true}
-                tag="li"
-              >
-                <li
-                  className="active breadcrumb-item"
-                >
-                  Campaigns
-                </li>
-              </BreadcrumbItem>
-            </ol>
-          </Breadcrumb>
-          <div>
-            <Button
-              color="success"
-              tag={[Function]}
-              to="/app/settings/integrations/gorgias_chat/118/campaigns/new"
-            >
-              <Link
-                className="btn btn-success"
-                onClick={[Function]}
-                to="/app/settings/integrations/gorgias_chat/118/campaigns/new"
-              >
-                <a
-                  className="btn btn-success"
-                  onClick={[Function]}
-                  to="/app/settings/integrations/gorgias_chat/118/campaigns/new"
-                >
-                  Create campaign
-                </a>
-              </Link>
-            </Button>
-          </div>
-        </div>
-      </PageHeader>
-      <GorgiasChatIntegrationNavigation
-        integration={
-          Immutable.Map {
-            "id": 118,
-            "type": "gorgias_chat",
-            "name": "My new chat",
-            "meta": Immutable.Map {
-              "campaigns": Immutable.List [
-                Immutable.Map {
-                  "id": "156a4d-fg68h40-sd6f4",
-                  "name": "Super campaign",
-                  "deactivated_datetime": null,
-                },
-                Immutable.Map {
-                  "id": "not-so-good-campaign-d8f9-fds486-sf78",
-                  "name": "Not so good campaign",
-                  "deactivated_datetime": "2017-10-06T17:17:56.565Z",
-                },
-              ],
-            },
-          }
-        }
-      >
-        <SecondaryNavbar>
-          <Navbar
-            className="navbar"
-            expand={false}
-            tag="nav"
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations/gorgias_chat"
           >
-            <nav
-              className="navbar navbar"
-            >
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
-                key=".0"
-                to="/app/settings/integrations/gorgias_chat/118/appearance"
-              >
-                <a
-                  activeClassName="disabled"
-                  className="nav-link"
-                  to="/app/settings/integrations/gorgias_chat/118/appearance"
-                >
-                  Appearance
-                </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
-                key=".1"
-                to="/app/settings/integrations/gorgias_chat/118/installation"
-              >
-                <a
-                  activeClassName="disabled"
-                  className="nav-link"
-                  to="/app/settings/integrations/gorgias_chat/118/installation"
-                >
-                  Installation
-                </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
-                key=".2"
-                to="/app/settings/integrations/gorgias_chat/118/preferences"
-              >
-                <a
-                  activeClassName="disabled"
-                  className="nav-link"
-                  to="/app/settings/integrations/gorgias_chat/118/preferences"
-                >
-                  Preferences
-                </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
-                key=".3"
-                to="/app/settings/integrations/gorgias_chat/118/quick_replies"
-              >
-                <a
-                  activeClassName="disabled"
-                  className="nav-link"
-                  to="/app/settings/integrations/gorgias_chat/118/quick_replies"
-                >
-                  Quick replies
-                </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
-                key=".4"
-                to="/app/settings/integrations/gorgias_chat/118/campaigns"
-              >
-                <a
-                  activeClassName="disabled"
-                  className="nav-link"
-                  to="/app/settings/integrations/gorgias_chat/118/campaigns"
-                >
-                  Campaigns
-                </a>
-              </Link>
-            </nav>
-          </Navbar>
-        </SecondaryNavbar>
-      </GorgiasChatIntegrationNavigation>
-      <Container
-        className="page-container"
-        fluid={true}
-        tag="div"
-      >
-        <div
-          className="page-container container-fluid"
+            Chat (New)
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
         >
-          <p>
-            Use campaigns to prompt visitors of your website to start chatting with your team.
-          </p>
-        </div>
-      </Container>
-      <Table
-        className="table-integrations mt-3"
-        hover={true}
-        responsiveTag="div"
-        tag="table"
-      >
-        <table
-          className="table-integrations mt-3 table table-hover"
+          My new chat
+        </li>
+        <li
+          class="active breadcrumb-item"
         >
-          <tbody>
-            <tr
-              key="156a4d-fg68h40-sd6f4"
-            >
-              <td
-                className="link-full-td"
-              >
-                <Link
-                  to="/app/settings/integrations/gorgias_chat/118/campaigns/156a4d-fg68h40-sd6f4"
-                >
-                  <a
-                    to="/app/settings/integrations/gorgias_chat/118/campaigns/156a4d-fg68h40-sd6f4"
-                  >
-                    <div>
-                      <b>
-                        Super campaign
-                      </b>
-                    </div>
-                  </a>
-                </Link>
-              </td>
-              <td
-                className="smallest align-middle"
-              >
-                <ToggleButton
-                  onChange={[Function]}
-                  value={true}
-                >
-                  <label
-                    className="switch"
-                    onClick={[Function]}
-                  >
-                    <input
-                      checked={true}
-                      readOnly={true}
-                      type="checkbox"
-                    />
-                    <div
-                      className="slider"
-                    />
-                  </label>
-                </ToggleButton>
-              </td>
-              <td
-                className="smallest align-middle"
-              >
-                <ForwardIcon
-                  href="/app/settings/integrations/gorgias_chat/118/campaigns/156a4d-fg68h40-sd6f4"
-                >
-                  <Link
-                    to="/app/settings/integrations/gorgias_chat/118/campaigns/156a4d-fg68h40-sd6f4"
-                  >
-                    <a
-                      to="/app/settings/integrations/gorgias_chat/118/campaigns/156a4d-fg68h40-sd6f4"
-                    >
-                      <i
-                        className="material-icons md-2 align-middle icon-go-forward"
-                      >
-                        keyboard_arrow_right
-                      </i>
-                    </a>
-                  </Link>
-                </ForwardIcon>
-              </td>
-            </tr>
-            <tr
-              key="not-so-good-campaign-d8f9-fds486-sf78"
-            >
-              <td
-                className="link-full-td"
-              >
-                <Link
-                  to="/app/settings/integrations/gorgias_chat/118/campaigns/not-so-good-campaign-d8f9-fds486-sf78"
-                >
-                  <a
-                    to="/app/settings/integrations/gorgias_chat/118/campaigns/not-so-good-campaign-d8f9-fds486-sf78"
-                  >
-                    <div>
-                      <b>
-                        Not so good campaign
-                      </b>
-                    </div>
-                  </a>
-                </Link>
-              </td>
-              <td
-                className="smallest align-middle"
-              >
-                <ToggleButton
-                  onChange={[Function]}
-                  value={false}
-                >
-                  <label
-                    className="switch"
-                    onClick={[Function]}
-                  >
-                    <input
-                      checked={false}
-                      readOnly={true}
-                      type="checkbox"
-                    />
-                    <div
-                      className="slider"
-                    />
-                  </label>
-                </ToggleButton>
-              </td>
-              <td
-                className="smallest align-middle"
-              >
-                <ForwardIcon
-                  href="/app/settings/integrations/gorgias_chat/118/campaigns/not-so-good-campaign-d8f9-fds486-sf78"
-                >
-                  <Link
-                    to="/app/settings/integrations/gorgias_chat/118/campaigns/not-so-good-campaign-d8f9-fds486-sf78"
-                  >
-                    <a
-                      to="/app/settings/integrations/gorgias_chat/118/campaigns/not-so-good-campaign-d8f9-fds486-sf78"
-                    >
-                      <i
-                        className="material-icons md-2 align-middle icon-go-forward"
-                      >
-                        keyboard_arrow_right
-                      </i>
-                    </a>
-                  </Link>
-                </ForwardIcon>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </Table>
+          Campaigns
+        </li>
+      </ol>
+      <div>
+        <a
+          class="btn btn-success"
+          to="/app/settings/integrations/gorgias_chat/118/campaigns/new"
+        >
+          Create campaign
+        </a>
+      </div>
     </div>
-  </GorgiasChatIntegrationCampaignsComponent>
-</Connect(GorgiasChatIntegrationCampaignsComponent)>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/118/appearance"
+      >
+        Appearance
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/118/installation"
+      >
+        Installation
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/118/preferences"
+      >
+        Preferences
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/118/quick_replies"
+      >
+        Quick replies
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/118/campaigns"
+      >
+        Campaigns
+      </a>
+    </nav>
+    <div
+      class="page-container container-fluid"
+    >
+      <p>
+        Use campaigns to prompt visitors of your website to start chatting with your team.
+      </p>
+    </div>
+    <table
+      class="table-integrations mt-3 table table-hover"
+    >
+      <tbody>
+        <tr>
+          <td
+            class="link-full-td"
+          >
+            <a
+              to="/app/settings/integrations/gorgias_chat/118/campaigns/156a4d-fg68h40-sd6f4"
+            >
+              <div>
+                <b>
+                  Super campaign
+                </b>
+              </div>
+            </a>
+          </td>
+          <td
+            class="smallest align-middle"
+          >
+            <label
+              class="switch"
+            >
+              <input
+                checked=""
+                readonly=""
+                type="checkbox"
+              />
+              <div
+                class="slider"
+              />
+            </label>
+          </td>
+          <td
+            class="smallest align-middle"
+          >
+            <a
+              to="/app/settings/integrations/gorgias_chat/118/campaigns/156a4d-fg68h40-sd6f4"
+            >
+              <i
+                class="material-icons md-2 align-middle icon-go-forward"
+              >
+                keyboard_arrow_right
+              </i>
+            </a>
+          </td>
+        </tr>
+        <tr>
+          <td
+            class="link-full-td"
+          >
+            <a
+              to="/app/settings/integrations/gorgias_chat/118/campaigns/not-so-good-campaign-d8f9-fds486-sf78"
+            >
+              <div>
+                <b>
+                  Not so good campaign
+                </b>
+              </div>
+            </a>
+          </td>
+          <td
+            class="smallest align-middle"
+          >
+            <label
+              class="switch"
+            >
+              <input
+                readonly=""
+                type="checkbox"
+              />
+              <div
+                class="slider"
+              />
+            </label>
+          </td>
+          <td
+            class="smallest align-middle"
+          >
+            <a
+              to="/app/settings/integrations/gorgias_chat/118/campaigns/not-so-good-campaign-d8f9-fds486-sf78"
+            >
+              <i
+                class="material-icons md-2 align-middle icon-go-forward"
+              >
+                keyboard_arrow_right
+              </i>
+            </a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 `;

@@ -239,3 +239,80 @@ exports[`<ViewSharingModal/> render() should render as shared 1`] = `
   </UncontrolledTooltip>
 </Modal>
 `;
+
+exports[`<ViewSharingModal/> render() should render the paywall modal information when view sharing feature is missing 1`] = `
+<Modal
+  autoFocus={true}
+  backdrop={true}
+  backdropTransition={
+    Object {
+      "mountOnEnter": true,
+      "timeout": 150,
+    }
+  }
+  centered={false}
+  fade={true}
+  isOpen={true}
+  keyboard={true}
+  modalTransition={
+    Object {
+      "timeout": 300,
+    }
+  }
+  onClosed={[Function]}
+  onOpened={[Function]}
+  role="dialog"
+  toggle={[MockFunction]}
+  zIndex={1050}
+>
+  <ModalHeader
+    closeAriaLabel="Close"
+    tag="h5"
+    toggle={[MockFunction]}
+    wrapTag="div"
+  >
+    Unclutter your helpdesk with view sharing
+  </ModalHeader>
+  <ModalBody
+    tag="div"
+  >
+    <p
+      className="paywallText"
+    >
+      Upgrade to an advanced plan to customize the visibility of your views and create 
+      <b>
+        public,
+      </b>
+       
+      <b>
+        private,
+      </b>
+       
+      and 
+      <b>
+        shared views.
+      </b>
+      <br />
+    </p>
+    <p
+      className="paywallText"
+    >
+      Check
+       
+      <a
+        href="https://www.gorgias.com/blog/view-sharing"
+        rel="noopener noreferrer"
+        target="_blank"
+      >
+        this blog post to
+      </a>
+       
+      learn more about how view sharing can benefit your team.
+    </p>
+    <UpgradeButton
+      className="mb-3"
+      label="Upgrade to Advanced"
+    />
+  </ModalBody>
+</Modal>
+`;

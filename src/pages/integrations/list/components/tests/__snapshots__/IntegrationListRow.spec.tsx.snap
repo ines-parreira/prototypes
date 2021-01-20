@@ -1,0 +1,92 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`IntegrationListRow should display an integration section 1`] = `
+<div
+  class="component card d-flex flex-row align-items-center mb-3"
+>
+  <div
+    class="icon d-flex align-items-center justify-content-center"
+  >
+    <i
+      class="icon d-inline-block material-icons"
+    >
+      live_help
+    </i>
+  </div>
+  <div
+    class="flex-grow mr-1"
+  >
+    <div
+      class="d-flex align-items-start"
+    >
+      <h5
+        class="title"
+      >
+        an integration
+      </h5>
+      <button
+        class="ml-3 py-0 px-1 upgradeButton sm invertedColors btn btn-outline-warning"
+      >
+        <a
+          class="d-flex align-items-center upgradeLink"
+          to="/app/settings/billing/plans"
+        >
+          <span
+            class="mr-2 upgradeLabel"
+          >
+            Upgrade
+          </span>
+          <img
+            alt="upgrade-icon"
+            class="upgradeIcon sm"
+            src="test-file-stub"
+          />
+        </a>
+      </button>
+    </div>
+    this is a cool integration
+  </div>
+</div>
+`;
+
+exports[`IntegrationListRow should display the integration row as a link 1`] = `
+<a
+  class="component link card d-flex flex-row align-items-center mb-3"
+  to="/app/settings/integrations/undefined"
+>
+  <div
+    class="icon d-flex align-items-center justify-content-center"
+  >
+    <i
+      class="icon d-inline-block material-icons"
+    >
+      live_help
+    </i>
+  </div>
+  <div
+    class="flex-grow mr-1"
+  >
+    <div
+      class="d-flex align-items-start"
+    >
+      <h5
+        class="title"
+      >
+        an integration
+      </h5>
+    </div>
+    this is a cool integration
+  </div>
+  <div>
+    <div
+      class="action"
+    >
+      <i
+        class="material-icons md-1"
+      >
+        navigate_next
+      </i>
+    </div>
+  </div>
+</a>
+`;

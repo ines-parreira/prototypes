@@ -1,0 +1,47 @@
+import React from 'react'
+import {render} from '@testing-library/react'
+import thunk from 'redux-thunk'
+import configureMockStore from 'redux-mock-store'
+import {fromJS} from 'immutable'
+
+import {RootState, StoreDispatch} from '../../../../state/types'
+import {AccountFeatures} from '../../../../state/currentAccount/types'
+
+import withPaywall from '../withPaywall'
+
+const AnyComponent = () => (
+    <div data-testid="paywalled-component">Just a component...</div>
+)
+
+const mockStore = configureMockStore<Partial<RootState>, StoreDispatch>([thunk])
+
+describe('withPaywall', () => {
+    const minProps = {
+        store: mockStore({
+            currentAccount: fromJS({
+                features: fromJS({
+                    [AccountFeatures.InstagramComment]: true,
+                    [AccountFeatures.AutoAssignment]: false,
+                }),
+            }),
+        }),
+    }
+
+    it('should render the passed component when the feature is available', () => {
+        const PaywalledComponent = withPaywall(
+            AccountFeatures.InstagramComment
+        )(AnyComponent)
+        const {container} = render(<PaywalledComponent {...minProps} />)
+
+        expect(container).toMatchSnapshot()
+    })
+
+    it('should not render the passed component when the feature is unavailable', () => {
+        const PaywalledComponent = withPaywall(AccountFeatures.AutoAssignment)(
+            AnyComponent
+        )
+        const {container} = render(<PaywalledComponent {...minProps} />)
+
+        expect(container).toMatchSnapshot()
+    })
+})

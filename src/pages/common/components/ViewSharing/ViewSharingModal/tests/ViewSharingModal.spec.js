@@ -26,7 +26,6 @@ describe('<ViewSharingModal/>', () => {
             all: {},
         }),
     })
-
     const store = mockStore(getState())
     let toggle
     let notify
@@ -42,6 +41,22 @@ describe('<ViewSharingModal/>', () => {
     })
 
     describe('render()', () => {
+        it('should render the paywall modal information when view sharing feature is missing', () => {
+            const view = fromJS({visibility: ViewVisibility.PUBLIC})
+            const component = shallow(
+                <ViewSharingModal
+                    view={view}
+                    isOpen
+                    store={store}
+                    toggle={toggle}
+                    notify={notify}
+                    showPaywall={true}
+                />
+            )
+
+            expect(component.dive()).toMatchSnapshot()
+        })
+
         it('should render as public', () => {
             const view = fromJS({visibility: ViewVisibility.PUBLIC})
 
@@ -52,6 +67,7 @@ describe('<ViewSharingModal/>', () => {
                     store={store}
                     toggle={toggle}
                     notify={notify}
+                    showPaywall={false}
                 />
             )
 
@@ -68,6 +84,7 @@ describe('<ViewSharingModal/>', () => {
                     store={store}
                     toggle={toggle}
                     notify={notify}
+                    showPaywall={false}
                 />
             )
 
@@ -84,6 +101,7 @@ describe('<ViewSharingModal/>', () => {
                     store={store}
                     toggle={toggle}
                     notify={notify}
+                    showPaywall={false}
                 />
             )
 
@@ -100,6 +118,7 @@ describe('<ViewSharingModal/>', () => {
                     toggle={toggle}
                     notify={notify}
                     viewUpdated={viewUpdated}
+                    showPaywall={false}
                 />
             )
 

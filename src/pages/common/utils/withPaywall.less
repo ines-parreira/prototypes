@@ -1,0 +1,74 @@
+@import '~css/new/colors';
+@import '~css/new/mixins';
+
+@medium-and-large-screens: ~'only screen and (min-width: 992px) and (max-width: 1500px)';
+
+:local {
+    .page {
+        @media @medium-and-large-screens {
+            padding-right: 0;
+        }
+        .paywallContainer {
+            margin-top: 64px;
+
+            .header {
+                font-size: 2.1em;
+            }
+
+            .infoText {
+                color: @neutral8;
+                line-height: 1.2em;
+                white-space: pre-wrap;
+            }
+
+            .testimonialText {
+                color: @neutral8;
+                font-size: 16px;
+                font-style: italic;
+            }
+
+            .avatar {
+                height: 40px;
+                width: 40px;
+            }
+
+            .testimonialDetails {
+                margin-bottom: 0;
+                line-height: 1.3rem;
+                font-size: 15px;
+
+                &:nth-of-type(2) {
+                    line-height: 1.2rem;
+                    font-size: unset;
+                }
+
+                .companyLink {
+                    display: inline-block;
+                    color: inherit;
+                    border-bottom: 1px solid @neutral7;
+                    &:hover {
+                        border-bottom: 1px solid @indigo;
+                    }
+                }
+            }
+
+            .preview {
+                .previewImage {
+                    cursor: pointer;
+                    border-radius: 6px;
+                    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15),
+                        0px 6px 39px rgba(0, 0, 0, 0.15);
+                }
+
+                @media @medium-and-large-screens {
+                    display: flex;
+                    justify-content: flex-end;
+                    padding-right: 0;
+                    .previewImage {
+                        align-self: baseline;
+                    }
+                }
+            }
+        }
+    }
+}

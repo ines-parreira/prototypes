@@ -4,17 +4,24 @@ import {withRouter} from 'react-router-dom'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 
+import type {List, Map} from 'immutable'
+
 import * as IntegrationsActions from '../../../state/integrations/actions.ts'
 import {
     planIntegrations,
     currentPlan,
 } from '../../../state/billing/selectors.ts'
-import {getActiveIntegrations} from '../../../state/integrations/selectors.ts'
+import {
+    getActiveIntegrations,
+    getIntegrations,
+    getIntegrationsConfig,
+} from '../../../state/integrations/selectors.ts'
 
 import IntegrationList from './components/IntegrationList'
 
 type Props = {
-    integrations: Object,
+    integrations: List<Map<string, any>>,
+    integrationsConfig: List<Map<string, any>>,
     actions: Object,
     allowedIntegrations: number,
     activeIntegrations: number,
@@ -33,7 +40,8 @@ class IntegrationListContainer extends React.Component<Props> {
 
 function mapStateToProps(state) {
     return {
-        integrations: state.integrations,
+        integrations: getIntegrations(state),
+        integrationsConfig: getIntegrationsConfig(state),
         allowedIntegrations: planIntegrations(state),
         activeIntegrations: getActiveIntegrations(state).size,
         currentPlan: currentPlan(state),

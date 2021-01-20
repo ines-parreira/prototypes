@@ -1,6 +1,6 @@
 import React from 'react'
 import {fromJS} from 'immutable'
-import {shallow} from 'enzyme'
+import {render} from '@testing-library/react'
 
 import {GorgiasChatCampaignDetailComponent} from '../GorgiasChatCampaignDetail'
 
@@ -33,21 +33,20 @@ const commonProps = {
 }
 
 jest.mock('draft-js/lib/generateRandomKey', () => () => 'someRandomKey')
+jest.mock('../../../../../../common/utils/withPaywall.tsx', () => () => {
+    return (Component) => (props) => {
+        return <Component {...props} />
+    }
+})
 
 describe('<GorgiasChatCampaignDetail/>', () => {
-    let container
-
     beforeEach(() => {
-        // reactstrap popover needs to be in the dom
-        // https://github.com/reactstrap/reactstrap/issues/818
-        container = document.createElement('div')
-        document.body.appendChild(container)
         jest.resetAllMocks()
     })
 
     describe('render()', () => {
         it("should display default value when it's a new campaign", () => {
-            const component = shallow(
+            const {container} = render(
                 <GorgiasChatCampaignDetailComponent
                     {...commonProps}
                     campaign={fromJS({})}
@@ -56,7 +55,7 @@ describe('<GorgiasChatCampaignDetail/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container).toMatchSnapshot()
         })
 
         it('should display the campaign correctly when updating it', () => {
@@ -67,12 +66,11 @@ describe('<GorgiasChatCampaignDetail/>', () => {
                     avatar_url:
                         'https://gravatar.docker/as74d6as4d86as4dasd/avatar.jpg',
                 },
-                html:
-                    '<div><img onerror="alert(1)" src="#"/>My little message</div>',
+                html: '<div>My little message</div>',
                 text: 'My little message',
             }
 
-            const component = shallow(
+            const {container} = render(
                 <GorgiasChatCampaignDetailComponent
                     {...commonProps}
                     campaign={fromJS({
@@ -94,11 +92,10 @@ describe('<GorgiasChatCampaignDetail/>', () => {
                     })}
                     integration={fromJS(chatIntegration)}
                     id="my-litte-campaign-789das-ds54f6s-asd64"
-                />,
-                {attachTo: container}
-            ).setState({message: fromJS(message)})
+                />
+            )
 
-            expect(component).toMatchSnapshot()
+            expect(container).toMatchSnapshot()
         })
 
         it('should display the campaign correctly when updating it and strip the html', () => {
@@ -114,7 +111,7 @@ describe('<GorgiasChatCampaignDetail/>', () => {
                 text: 'My little message',
             }
 
-            const component = shallow(
+            const {container} = render(
                 <GorgiasChatCampaignDetailComponent
                     {...commonProps}
                     campaign={fromJS({
@@ -136,11 +133,10 @@ describe('<GorgiasChatCampaignDetail/>', () => {
                     })}
                     integration={fromJS(chatIntegration)}
                     id="my-litte-campaign-789das-ds54f6s-asd64"
-                />,
-                {attachTo: container}
-            ).setState({message: fromJS(message)})
+                />
+            )
 
-            expect(component).toMatchSnapshot()
+            expect(container).toMatchSnapshot()
         })
     })
 })

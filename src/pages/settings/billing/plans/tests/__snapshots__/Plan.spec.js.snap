@@ -1,96 +1,1231 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Plan component should render 1`] = `
+exports[`<Plan/> should render a plan Enterprise 1`] = `
 <div
-  className="plan plan-Free Plan card"
+  class="plan plan-Enterprise card"
 >
-  <CardHeader
-    className="plan-header"
-    tag="div"
+  <div
+    class="plan-header card-header"
   >
     <div
-      className="header-text"
+      class="header-text"
     >
       <strong>
-        Free Plan
+        Enterprise
       </strong>
-      0
     </div>
-  </CardHeader>
-  <CardBody
-    tag="div"
+  </div>
+  <div
+    class="card-body"
   >
     <ul>
-      <li>
+      <li
+        class="d-flex align-items-center"
+      >
         <i
-          className="material-icons feature-icon"
+          class="material-icons feature-icon mr-3"
         >
-          all_inclusive
+          arrow_downward
         </i>
-         
         <strong>
-          Unlimited
+          Discounted prices for volumes of 10.000+ tickets
         </strong>
-         users
       </li>
-      <li>
+      <li
+        class="d-flex align-items-center"
+      >
         <i
-          className="material-icons feature-icon"
+          class="material-icons feature-icon mr-3"
+        >
+          beach_access
+        </i>
+        <strong>
+          Premium support
+        </strong>
+      </li>
+    </ul>
+  </div>
+  <div
+    class="card-footer"
+  >
+    <button
+      class="btn btn-link"
+      type="button"
+    >
+      Contact us
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<Plan/> should render a plan being selected 1`] = `
+<div
+  class="plan plan-Pro card"
+>
+  <div
+    class="plan-header card-header"
+  >
+    <div
+      class="header-text"
+    >
+      <strong>
+        Pro
+      </strong>
+      <span
+        class="float-right"
+      >
+        30000
+         /
+         
+        mo
+      </span>
+    </div>
+  </div>
+  <div
+    class="card-body"
+  >
+    <ul>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
         >
           playlist_add_check
         </i>
-         
         <strong>
-          9999999999
+          2000 tickets included
         </strong>
-         
-        tickets included
       </li>
-      <li>
+      <li
+        class="d-flex align-items-center"
+      >
         <i
-          className="material-icons feature-icon"
+          class="material-icons feature-icon mr-3"
         >
           playlist_add
         </i>
-         
         <strong>
-          + 
-          0.00
+          $23.00 per 100 extra tickets
         </strong>
-         
-        per 
-        100
-         tickets
-         
-        <a
-          id="additional-tickets-tooltip-FreePlan"
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
         >
-          <i
-            className="material-icons text-muted"
-          >
-            info_outline
-          </i>
-        </a>
-        <Tooltip
-          delay={0}
-          target="additional-tickets-tooltip-FreePlan"
+          facebook
+        </i>
+        <strong>
+          Facebook integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="feature-icon icon-custom mr-3 icon-instagram"
+        />
+        <strong>
+          Instagram integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
         >
-          If you reply to more tickets than included in your plan this is the additional cost per 100 tickets.
-        </Tooltip>
+          widgets
+        </i>
+        <strong>
+          Magento integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          insert_emoticon
+        </i>
+        <strong>
+          Satisfaction surveys
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          chat
+        </i>
+        <strong>
+          Chat campaigns
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          lock
+        </i>
+        <strong>
+          User permissions
+        </strong>
       </li>
     </ul>
-  </CardBody>
-  <CardFooter
-    tag="div"
+  </div>
+  <div
+    class="card-footer"
   >
-    <Button
-      className=""
-      color="link"
-      disabled={false}
-      tag="button"
+    <button
+      class="btn-loading btn btn-link disabled"
+      data-testid="choose-plan-button"
+      disabled=""
+      id="choose-plan-Pro"
+      type="button"
     >
-      Switch to Free Plan plan
-    </Button>
-  </CardFooter>
+      Switch to Pro Plan
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<Plan/> should render a plan different from the current plan 1`] = `
+<div
+  class="plan plan-Pro card"
+>
+  <div
+    class="plan-header card-header"
+  >
+    <div
+      class="header-text"
+    >
+      <strong>
+        Pro
+      </strong>
+      <span
+        class="float-right"
+      >
+        30000
+         /
+         
+        mo
+      </span>
+    </div>
+  </div>
+  <div
+    class="card-body"
+  >
+    <ul>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          playlist_add_check
+        </i>
+        <strong>
+          2000 tickets included
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          playlist_add
+        </i>
+        <strong>
+          $23.00 per 100 extra tickets
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          facebook
+        </i>
+        <strong>
+          Facebook integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="feature-icon icon-custom mr-3 icon-instagram"
+        />
+        <strong>
+          Instagram integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          widgets
+        </i>
+        <strong>
+          Magento integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          insert_emoticon
+        </i>
+        <strong>
+          Satisfaction surveys
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          chat
+        </i>
+        <strong>
+          Chat campaigns
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          lock
+        </i>
+        <strong>
+          User permissions
+        </strong>
+      </li>
+    </ul>
+  </div>
+  <div
+    class="card-footer"
+  >
+    <button
+      class="btn btn-link"
+      data-testid="choose-plan-button"
+      id="choose-plan-Pro"
+      type="button"
+    >
+      Switch to Pro Plan
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<Plan/> should render a plan featured 1`] = `
+<div
+  class="plan plan-Pro featured card"
+>
+  <div
+    class="plan-header featured-header card-header"
+  >
+    <div
+      class="featured-header-title"
+    >
+      Most Popular
+    </div>
+    <div
+      class="header-text"
+    >
+      <strong>
+        Pro
+      </strong>
+      <span
+        class="float-right"
+      >
+        30000
+         /
+         
+        mo
+      </span>
+    </div>
+  </div>
+  <div
+    class="card-body"
+  >
+    <ul>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          playlist_add_check
+        </i>
+        <strong>
+          2000 tickets included
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          playlist_add
+        </i>
+        <strong>
+          $23.00 per 100 extra tickets
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          facebook
+        </i>
+        <strong>
+          Facebook integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="feature-icon icon-custom mr-3 icon-instagram"
+        />
+        <strong>
+          Instagram integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          widgets
+        </i>
+        <strong>
+          Magento integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          insert_emoticon
+        </i>
+        <strong>
+          Satisfaction surveys
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          chat
+        </i>
+        <strong>
+          Chat campaigns
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          lock
+        </i>
+        <strong>
+          User permissions
+        </strong>
+      </li>
+    </ul>
+  </div>
+  <div
+    class="card-footer"
+  >
+    <button
+      class="btn btn-link"
+      data-testid="choose-plan-button"
+      id="choose-plan-Pro"
+      type="button"
+    >
+      Switch to Pro Plan
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<Plan/> should render a plan identical to the current plan 1`] = `
+<div
+  class="plan plan-Pro card"
+>
+  <div
+    class="plan-header card-header"
+  >
+    <div
+      class="header-text"
+    >
+      <strong>
+        Pro
+      </strong>
+      <span
+        class="float-right"
+      >
+        30000
+         /
+         
+        mo
+      </span>
+    </div>
+  </div>
+  <div
+    class="card-body"
+  >
+    <ul>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          playlist_add_check
+        </i>
+        <strong>
+          2000 tickets included
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          playlist_add
+        </i>
+        <strong>
+          $23.00 per 100 extra tickets
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          facebook
+        </i>
+        <strong>
+          Facebook integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="feature-icon icon-custom mr-3 icon-instagram"
+        />
+        <strong>
+          Instagram integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          widgets
+        </i>
+        <strong>
+          Magento integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          insert_emoticon
+        </i>
+        <strong>
+          Satisfaction surveys
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          chat
+        </i>
+        <strong>
+          Chat campaigns
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          lock
+        </i>
+        <strong>
+          User permissions
+        </strong>
+      </li>
+    </ul>
+  </div>
+  <div
+    class="card-footer"
+  >
+    <button
+      class="btn btn-link disabled"
+      data-testid="choose-plan-button"
+      disabled=""
+      id="choose-plan-Pro"
+      type="button"
+    >
+      Your current Plan
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<Plan/> should render a plan with cheaper plan 1`] = `
+<div
+  class="plan plan-Pro card"
+>
+  <div
+    class="plan-header card-header"
+  >
+    <div
+      class="header-text"
+    >
+      <strong>
+        Pro
+      </strong>
+      <span
+        class="float-right"
+      >
+        30000
+         /
+         
+        mo
+      </span>
+    </div>
+  </div>
+  <div
+    class="card-body"
+  >
+    <b>
+      Everything from 
+      Basic
+       plus...
+    </b>
+    <ul>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          playlist_add_check
+        </i>
+        <strong>
+          2000 tickets included
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          playlist_add
+        </i>
+        <strong>
+          $23.00 per 100 extra tickets
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          facebook
+        </i>
+        <strong>
+          Facebook integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="feature-icon icon-custom mr-3 icon-instagram"
+        />
+        <strong>
+          Instagram integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          widgets
+        </i>
+        <strong>
+          Magento integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          insert_emoticon
+        </i>
+        <strong>
+          Satisfaction surveys
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          chat
+        </i>
+        <strong>
+          Chat campaigns
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          lock
+        </i>
+        <strong>
+          User permissions
+        </strong>
+      </li>
+    </ul>
+  </div>
+  <div
+    class="card-footer"
+  >
+    <button
+      class="btn btn-link"
+      data-testid="choose-plan-button"
+      id="choose-plan-Pro"
+      type="button"
+    >
+      Switch to Pro Plan
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<Plan/> should render a plan with custom class names 1`] = `
+<div
+  class="plan plan-Pro custom-classname card"
+>
+  <div
+    class="plan-header card-header"
+  >
+    <div
+      class="header-text"
+    >
+      <strong>
+        Pro
+      </strong>
+      <span
+        class="float-right"
+      >
+        30000
+         /
+         
+        mo
+      </span>
+    </div>
+  </div>
+  <div
+    class="card-body"
+  >
+    <ul>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          playlist_add_check
+        </i>
+        <strong>
+          2000 tickets included
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          playlist_add
+        </i>
+        <strong>
+          $23.00 per 100 extra tickets
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          facebook
+        </i>
+        <strong>
+          Facebook integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="feature-icon icon-custom mr-3 icon-instagram"
+        />
+        <strong>
+          Instagram integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          widgets
+        </i>
+        <strong>
+          Magento integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          insert_emoticon
+        </i>
+        <strong>
+          Satisfaction surveys
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          chat
+        </i>
+        <strong>
+          Chat campaigns
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          lock
+        </i>
+        <strong>
+          User permissions
+        </strong>
+      </li>
+    </ul>
+  </div>
+  <div
+    class="card-footer"
+  >
+    <button
+      class="btn btn-link"
+      data-testid="choose-plan-button"
+      id="choose-plan-Pro"
+      type="button"
+    >
+      Switch to Pro Plan
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<Plan/> should render a plan with default props 1`] = `
+<div
+  class="plan plan-Pro card"
+>
+  <div
+    class="plan-header card-header"
+  >
+    <div
+      class="header-text"
+    >
+      <strong>
+        Pro
+      </strong>
+      <span
+        class="float-right"
+      >
+        30000
+         /
+         
+        mo
+      </span>
+    </div>
+  </div>
+  <div
+    class="card-body"
+  >
+    <ul>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          playlist_add_check
+        </i>
+        <strong>
+          2000 tickets included
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          playlist_add
+        </i>
+        <strong>
+          $23.00 per 100 extra tickets
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          facebook
+        </i>
+        <strong>
+          Facebook integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="feature-icon icon-custom mr-3 icon-instagram"
+        />
+        <strong>
+          Instagram integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          widgets
+        </i>
+        <strong>
+          Magento integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          insert_emoticon
+        </i>
+        <strong>
+          Satisfaction surveys
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          chat
+        </i>
+        <strong>
+          Chat campaigns
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          lock
+        </i>
+        <strong>
+          User permissions
+        </strong>
+      </li>
+    </ul>
+  </div>
+  <div
+    class="card-footer"
+  >
+    <button
+      class="btn btn-link"
+      data-testid="choose-plan-button"
+      id="choose-plan-Pro"
+      type="button"
+    >
+      Switch to Pro Plan
+    </button>
+  </div>
+</div>
+`;
+
+exports[`<Plan/> should render a plan with no footer 1`] = `
+<div
+  class="plan plan-Pro card"
+>
+  <div
+    class="plan-header card-header"
+  >
+    <div
+      class="header-text"
+    >
+      <strong>
+        Pro
+      </strong>
+      <span
+        class="float-right"
+      >
+        30000
+         /
+         
+        mo
+      </span>
+    </div>
+  </div>
+  <div
+    class="card-body"
+  >
+    <ul>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          playlist_add_check
+        </i>
+        <strong>
+          2000 tickets included
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          playlist_add
+        </i>
+        <strong>
+          $23.00 per 100 extra tickets
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          facebook
+        </i>
+        <strong>
+          Facebook integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="feature-icon icon-custom mr-3 icon-instagram"
+        />
+        <strong>
+          Instagram integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          widgets
+        </i>
+        <strong>
+          Magento integration
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          insert_emoticon
+        </i>
+        <strong>
+          Satisfaction surveys
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          chat
+        </i>
+        <strong>
+          Chat campaigns
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          lock
+        </i>
+        <strong>
+          User permissions
+        </strong>
+      </li>
+    </ul>
+  </div>
+</div>
+`;
+
+exports[`<Plan/> should render a plan without product features 1`] = `
+<div
+  class="plan plan-Pro card"
+>
+  <div
+    class="plan-header card-header"
+  >
+    <div
+      class="header-text"
+    >
+      <strong>
+        Pro
+      </strong>
+      <span
+        class="float-right"
+      >
+        30000
+         /
+         
+        mo
+      </span>
+    </div>
+  </div>
+  <div
+    class="card-body"
+  >
+    <ul>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          playlist_add_check
+        </i>
+        <strong>
+          2000 tickets included
+        </strong>
+      </li>
+      <li
+        class="d-flex align-items-center"
+      >
+        <i
+          class="material-icons feature-icon mr-3"
+        >
+          playlist_add
+        </i>
+        <strong>
+          $23.00 per 100 extra tickets
+        </strong>
+      </li>
+    </ul>
+  </div>
+  <div
+    class="card-footer"
+  >
+    <button
+      class="btn btn-link"
+      data-testid="choose-plan-button"
+      id="choose-plan-Pro"
+      type="button"
+    >
+      Switch to Pro Plan
+    </button>
+  </div>
 </div>
 `;

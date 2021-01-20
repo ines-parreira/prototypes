@@ -1,5 +1,6 @@
 import {
     Account,
+    AccountFeatures,
     AccountSettingType,
     AccountStatus,
 } from '../state/currentAccount/types'
@@ -42,4 +43,16 @@ export const account: Account = {
     },
     stripe_id: 'cus_BGKUKAzUbK1bix',
     user_id: 1,
+    features: {
+        [AccountFeatures.AutoAssignment]: true,
+        [AccountFeatures.FacebookComment]: true,
+        [AccountFeatures.ChatCampaigns]: true,
+        [AccountFeatures.InstagramComment]: true,
+        [AccountFeatures.MagentoIntegration]: true,
+        [AccountFeatures.RevenueStatistics]: true,
+        [AccountFeatures.SatisfactionSurveys]: true,
+        [AccountFeatures.Teams]: true,
+        [AccountFeatures.UserRoles]: true,
+        [AccountFeatures.ViewSharing]: true,
+    },
 }

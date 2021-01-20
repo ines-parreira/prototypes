@@ -338,6 +338,7 @@ export class CreditCard extends Component<Props, State> {
                                 <Col sm={3}>
                                     <Plan
                                         plan={currentPlan}
+                                        currentPlan={currentPlan}
                                         showFooter={false}
                                     />
                                 </Col>

@@ -1,5 +1,5 @@
 import React from 'react'
-import {mount} from 'enzyme'
+import {render} from '@testing-library/react'
 import {fromJS} from 'immutable'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
@@ -8,6 +8,12 @@ import GorgiasChatIntegrationCampaigns from '../GorgiasChatIntegrationCampaigns'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
+
+jest.mock('../../../../../../common/utils/withPaywall.tsx', () => () => {
+    return (Component) => (props) => {
+        return <Component {...props} />
+    }
+})
 
 describe('<GorgiasChatIntegrationCampaigns/>', () => {
     let store
@@ -18,7 +24,7 @@ describe('<GorgiasChatIntegrationCampaigns/>', () => {
 
     describe('render()', () => {
         it('should display the empty state correctly', () => {
-            const component = mount(
+            const {container} = render(
                 <GorgiasChatIntegrationCampaigns
                     store={store}
                     integration={fromJS({
@@ -33,11 +39,11 @@ describe('<GorgiasChatIntegrationCampaigns/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container).toMatchSnapshot()
         })
 
         it('should display the list correctly', () => {
-            const component = mount(
+            const {container} = render(
                 <GorgiasChatIntegrationCampaigns
                     store={store}
                     integration={fromJS({
@@ -64,7 +70,7 @@ describe('<GorgiasChatIntegrationCampaigns/>', () => {
                 />
             )
 
-            expect(component).toMatchSnapshot()
+            expect(container).toMatchSnapshot()
         })
     })
 })

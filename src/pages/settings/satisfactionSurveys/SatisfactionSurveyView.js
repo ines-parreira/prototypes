@@ -10,15 +10,14 @@ import InputField from '../../common/forms/InputField'
 import RichFieldWithVariables from '../../common/forms/RichFieldWithVariables'
 
 import PageHeader from '../../common/components/PageHeader.tsx'
+
 import * as currentAccountSelectors from '../../../state/currentAccount/selectors.ts'
 import * as currentAccountActions from '../../../state/currentAccount/actions.ts'
 import * as currentAccountConstants from '../../../state/currentAccount/constants'
-import RestrictedSatisfactionSurvey from '../../stats/common/RestrictedSatisfactionSurvey'
 
 import {DELAY_SURVEY_FOR} from './../../../config.ts'
 
 type Props = {
-    currentAccount: Object,
     submitSetting: Object,
     surveysSettings: Object,
 }
@@ -177,19 +176,11 @@ class SatisfactionSurveyView extends React.Component<Props> {
     }
 
     render() {
-        const {currentAccount} = this.props
-
         return (
             <div className="full-width">
                 <PageHeader title="Satisfaction" />
                 <Container fluid className="page-container">
-                    {currentAccount
-                        .get('extra_features')
-                        .includes('satisfaction-surveys') ? (
-                        this._renderSettings()
-                    ) : (
-                        <RestrictedSatisfactionSurvey />
-                    )}
+                    {this._renderSettings()}
                 </Container>
             </div>
         )
@@ -198,7 +189,6 @@ class SatisfactionSurveyView extends React.Component<Props> {
 
 export default connect(
     (state) => ({
-        currentAccount: state.currentAccount,
         surveysSettings: currentAccountSelectors.getSurveysSettings(state),
     }),
     {

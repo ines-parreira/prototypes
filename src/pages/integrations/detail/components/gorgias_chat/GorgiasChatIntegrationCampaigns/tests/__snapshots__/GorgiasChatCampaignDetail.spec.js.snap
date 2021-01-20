@@ -1,1002 +1,2082 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<GorgiasChatCampaignDetail/> render() should display default value when it's a new campaign 1`] = `
-<div
-  className="full-width"
->
-  <PageHeader
-    title={
-      <Breadcrumb
-        tag="ol"
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    >
+      <ol
+        class="breadcrumb"
       >
-        <BreadcrumbItem
-          tag="li"
+        <li
+          class="breadcrumb-item"
         >
-          <Link
+          <a
             to="/app/settings/integrations"
           >
             Integrations
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          tag="li"
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
         >
-          <Link
+          <a
             to="/app/settings/integrations/gorgias_chat/1"
           >
-            Chat
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          tag="li"
+            Chat (New)
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
         >
           My new chat
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          tag="li"
+        </li>
+        <li
+          class="breadcrumb-item"
         >
-          <Link
+          <a
             to="/app/settings/integrations/gorgias_chat/1/campaigns"
           >
             Campaigns
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
+          </a>
+        </li>
+        <li
+          class="active breadcrumb-item"
         >
           New campaign
-        </BreadcrumbItem>
-      </Breadcrumb>
-    }
-  />
-  <GorgiasChatIntegrationNavigation
-    integration={
-      Immutable.Map {
-        "id": 1,
-        "type": "gorgias_chat",
-        "name": "My new chat",
-        "decoration": Immutable.Map {
-          "main_color": "#fefefe",
-        },
-      }
-    }
-  />
-  <Container
-    className="page-container"
-    fluid={true}
-    tag="div"
-  >
-    <Row
-      tag="div"
+        </li>
+      </ol>
+    </div>
+    <nav
+      class="navbar navbar"
     >
-      <Col
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/1/appearance"
       >
-        <Form
-          onSubmit={[Function]}
-          tag="form"
+        Appearance
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/1/installation"
+      >
+        Installation
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/1/preferences"
+      >
+        Preferences
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/1/quick_replies"
+      >
+        Quick replies
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/1/campaigns"
+      >
+        Campaigns
+      </a>
+    </nav>
+    <div
+      class="page-container container-fluid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col"
         >
-          <div
-            className="mb-4"
-          >
-            <InputField
-              label="Campaign name"
-              name="name"
-              onChange={[Function]}
-              placeholder="My new campaign"
-              required={true}
-              type="input"
-            />
-          </div>
-          <h5>
-            Choose your audience
-          </h5>
-          <div
-            className="mb-4"
-          >
-            <TriggerRow
-              idx={0}
-              key="0"
-              nbOfTriggers={1}
-              onDelete={[Function]}
-              onOperatorChange={[Function]}
-              onValueChange={[Function]}
-              trigger={
-                Immutable.Map {
-                  "key": "current_url",
-                  "operator": "eq",
-                  "value": "",
-                }
-              }
-            />
-            <UncontrolledDropdown>
-              <DropdownToggle
-                aria-haspopup={true}
-                caret={true}
-                className="mr-2"
-                color="secondary"
-                type="button"
-              >
-                <i
-                  className="material-icons mr-2"
-                >
-                  add
-                </i>
-                Add condition
-              </DropdownToggle>
-              <DropdownMenu
-                flip={true}
-                tag="div"
-              >
-                <DropdownItem
-                  key="current_url"
-                  onClick={[Function]}
-                  tag="button"
-                  toggle={true}
-                  type="button"
-                >
-                  Current URL
-                </DropdownItem>
-                <DropdownItem
-                  key="time_spent_on_page"
-                  onClick={[Function]}
-                  tag="button"
-                  toggle={true}
-                  type="button"
-                >
-                  Time spent on page
-                </DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
-          </div>
-          <h5>
-            Write your message
-          </h5>
-          <div
-            className="mb-4"
+          <form
+            class=""
           >
             <div
-              className="mb-2 authorWrapper"
+              class="mb-4"
             >
-              <span>
-                From: 
-              </span>
-              <SelectField
-                allowCustomValue={false}
-                className="authorInput"
-                fixedWidth={false}
-                fullWidth={false}
-                onChange={[Function]}
-                onSearchChange={[Function]}
-                options={
-                  Array [
-                    Object {
-                      "label": <AgentLabel
-                        className=""
-                        maxWidth="100"
-                        name="John"
-                        profilePictureUrl=""
-                        shouldDisplayAvatar={false}
-                      />,
-                      "text": "John",
-                      "value": "john@gorgias.io",
-                    },
-                    Object {
-                      "label": <AgentLabel
-                        className=""
-                        maxWidth="100"
-                        name="Doe"
-                        profilePictureUrl=""
-                        shouldDisplayAvatar={false}
-                      />,
-                      "text": "Doe",
-                      "value": "doe@gorgias.io",
-                    },
-                    Object {
-                      "label": "Random agent",
-                      "text": "randomagent",
-                      "value": null,
-                    },
-                  ]
-                }
-                placeholder="Select an option"
-                singular="option"
-                style={Object {}}
-                value={null}
+              <div
+                class="InputField required form-group"
+                color=""
+              >
+                <label
+                  class="control-label"
+                  for="id-name"
+                >
+                  Campaign name
+                </label>
+                <div
+                  class=""
+                >
+                  <input
+                    class="form-control"
+                    id="id-name"
+                    placeholder="My new campaign"
+                    required=""
+                    type="input"
+                    value=""
+                  />
+                </div>
+              </div>
+            </div>
+            <h5>
+              Choose your audience
+            </h5>
+            <div
+              class="mb-4"
+            >
+              <div
+                class="triggerWrapper"
+              >
+                <div
+                  class="btn-frozen btn btn-info"
+                >
+                  Current URL
+                </div>
+                <div>
+                  <div
+                    class="dropdown"
+                  >
+                    <div
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      class=""
+                      data-toggle="dropdown"
+                    >
+                      <div
+                        class="select dropdown-toggle"
+                      >
+                        <span
+                          class="label"
+                          style="min-width: 10px; opacity: 1;"
+                        >
+                          is
+                        </span>
+                        <input
+                          class="input"
+                          style="min-width: 10px;"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      aria-hidden="true"
+                      class="options dropdown-menu"
+                      role="menu"
+                      tabindex="-1"
+                    >
+                      
+                      <button
+                        class="option option--focused dropdown-item"
+                        tabindex="0"
+                        type="button"
+                      >
+                        is not
+                      </button>
+                      <button
+                        class="option dropdown-item"
+                        tabindex="0"
+                        type="button"
+                      >
+                        contains
+                      </button>
+                      <button
+                        class="option dropdown-item"
+                        tabindex="0"
+                        type="button"
+                      >
+                        does not contain
+                      </button>
+                      <button
+                        class="option dropdown-item"
+                        tabindex="0"
+                        type="button"
+                      >
+                        starts with
+                      </button>
+                      <button
+                        class="option dropdown-item"
+                        tabindex="0"
+                        type="button"
+                      >
+                        ends with
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="form-control"
+                      id="id-value"
+                      type="input"
+                      value=""
+                    />
+                  </div>
+                </div>
+                <div
+                  class="closeWrapper"
+                >
+                  <i
+                    class="material-icons text-danger clickable"
+                  >
+                    clear
+                  </i>
+                </div>
+              </div>
+              <div
+                class="dropdown"
+              >
+                <button
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  class="mr-2 dropdown-toggle btn btn-secondary"
+                  type="button"
+                >
+                  <i
+                    class="material-icons mr-2"
+                  >
+                    add
+                  </i>
+                  Add condition
+                </button>
+                <div
+                  aria-hidden="true"
+                  class="dropdown-menu"
+                  role="menu"
+                  tabindex="-1"
+                >
+                  <button
+                    class="dropdown-item"
+                    tabindex="0"
+                    type="button"
+                  >
+                    Current URL
+                  </button>
+                  <button
+                    class="dropdown-item"
+                    tabindex="0"
+                    type="button"
+                  >
+                    Time spent on page
+                  </button>
+                </div>
+              </div>
+            </div>
+            <h5>
+              Write your message
+            </h5>
+            <div
+              class="mb-4"
+            >
+              <div
+                class="mb-2 authorWrapper"
+              >
+                <span>
+                  From: 
+                </span>
+                <div>
+                  <div
+                    class="dropdown"
+                  >
+                    <div
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      class="authorInput"
+                      data-toggle="dropdown"
+                    >
+                      <div
+                        class="select dropdown-toggle"
+                      >
+                        <span
+                          class="label"
+                          style="min-width: 10px; opacity: 1;"
+                        >
+                          Random agent
+                        </span>
+                        <input
+                          class="input"
+                          style="min-width: 10px;"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      aria-hidden="true"
+                      class="options dropdown-menu"
+                      role="menu"
+                      tabindex="-1"
+                    >
+                      
+                      <button
+                        class="option option--focused dropdown-item"
+                        tabindex="0"
+                        type="button"
+                      >
+                        <div
+                          class="AgentLabel"
+                        >
+                          <span
+                            class="material-icons md-2"
+                          >
+                            account_circle
+                          </span>
+                          <span
+                            class="name"
+                            style="max-width: 100px;"
+                          >
+                            John
+                          </span>
+                        </div>
+                      </button>
+                      <button
+                        class="option dropdown-item"
+                        tabindex="0"
+                        type="button"
+                      >
+                        <div
+                          class="AgentLabel"
+                        >
+                          <span
+                            class="material-icons md-2"
+                          >
+                            account_circle
+                          </span>
+                          <span
+                            class="name"
+                            style="max-width: 100px;"
+                          >
+                            Doe
+                          </span>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="InputField required form-group"
+                color=""
+              >
+                <div
+                  class=""
+                >
+                  <div
+                    class="InputField required form-group"
+                    color=""
+                  >
+                    <div
+                      class=""
+                    >
+                      <div
+                        class="rich-textarea-wrapper"
+                      >
+                        <div
+                          class="editor-wrapper"
+                          style="padding-bottom: 26px;"
+                        >
+                          <div
+                            class="DraftEditor-root"
+                          >
+                            <div
+                              class="public-DraftEditorPlaceholder-root"
+                            >
+                              <div
+                                class="public-DraftEditorPlaceholder-inner"
+                                id="placeholder-someRandomKey"
+                                style="white-space: pre-wrap;"
+                              >
+                                Write your message
+                              </div>
+                            </div>
+                            <div
+                              class="DraftEditor-editorContainer"
+                            >
+                              <div
+                                aria-autocomplete="list"
+                                aria-describedby="placeholder-someRandomKey"
+                                aria-expanded="true"
+                                class="notranslate public-DraftEditor-content"
+                                contenteditable="true"
+                                role="combobox"
+                                spellcheck="false"
+                                style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
+                              >
+                                <div
+                                  data-contents="true"
+                                >
+                                  <div
+                                    class=""
+                                    data-block="true"
+                                    data-editor="someRandomKey"
+                                    data-offset-key="someRandomKey-0-0"
+                                  >
+                                    <div
+                                      class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                                      data-offset-key="someRandomKey-0-0"
+                                    >
+                                      <span
+                                        data-offset-key="someRandomKey-0-0"
+                                      >
+                                        <br
+                                          data-text="true"
+                                        />
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <input
+                            required=""
+                            style="opacity: 0; height: 0px; padding: 0px; overflow: hidden;"
+                            value=""
+                          />
+                        </div>
+                        <div
+                          class="editor-toolbar page"
+                        >
+                          <div
+                            class="actions"
+                          >
+                            <button
+                              class="button btn btn-secondary btn-transparent"
+                              title="Bold"
+                              type="button"
+                            >
+                              <i
+                                class="material-icons"
+                              >
+                                format_bold
+                              </i>
+                            </button>
+                            <button
+                              class="button btn btn-secondary btn-transparent"
+                              title="Italic"
+                              type="button"
+                            >
+                              <i
+                                class="material-icons"
+                              >
+                                format_italic
+                              </i>
+                            </button>
+                            <button
+                              class="button btn btn-secondary btn-transparent"
+                              title="Underline"
+                              type="button"
+                            >
+                              <i
+                                class="material-icons"
+                              >
+                                format_underline
+                              </i>
+                            </button>
+                            <span
+                              class="popoverWrapper"
+                            >
+                              <button
+                                class="button btn btn-secondary btn-transparent"
+                                title="Insert image"
+                                type="button"
+                              >
+                                <i
+                                  class="material-icons"
+                                >
+                                  insert_photo
+                                </i>
+                              </button>
+                              <div
+                                class="popover hidden"
+                              />
+                            </span>
+                            <span
+                              class="popoverWrapper"
+                            >
+                              <button
+                                class="button btn btn-secondary btn-transparent"
+                                title="Insert emoji"
+                                type="button"
+                              >
+                                <i
+                                  class="material-icons"
+                                >
+                                  insert_emoticon
+                                </i>
+                              </button>
+                              <div
+                                class="p-0 d-flex popover hidden"
+                              />
+                            </span>
+                          </div>
+                          <div
+                            class="hoverOverlay"
+                          >
+                            Add files as attachments
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button
+              class="btn btn-success"
+            >
+              Create & activate campaign
+            </button>
+          </form>
+        </div>
+        <div
+          class="col"
+        >
+          <div
+            class="preview"
+          >
+            <div
+              class="titlebar"
+            />
+            <div
+              class="campaign"
+            >
+              <div
+                class="header"
+              >
+                <div
+                  class="author"
+                >
+                  <div
+                    class="component authorAvatar"
+                    style="width: 50px; height: 50px;"
+                  >
+                    <div
+                      class="initials"
+                      style="width: 50px; height: 50px; font-size: 20.833333333333336px;"
+                    >
+                      <span>
+                        Ra
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="message"
+                >
+                  <div
+                    class="authorName"
+                  >
+                    <b>
+                      [Random agent's name]
+                    </b>
+                  </div>
+                  <div
+                    class="messageText"
+                  >
+                    <div>
+                      <br />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="poweredby"
+              >
+                Powered by Gorgias
+              </div>
+              <div
+                class="footer"
+              >
+                Click to reply
+              </div>
+            </div>
+            <div
+              class="button"
+              style="background-color: rgb(254, 254, 254);"
+            >
+              <img
+                alt="Close icon"
+                class="icon"
+                src="/static/private/img/icons/DefaultCloseIcon.svg"
               />
             </div>
-            <RichField
-              displayedActions={
-                Array [
-                  "BOLD",
-                  "ITALIC",
-                  "UNDERLINE",
-                  "IMAGE",
-                  "EMOJI",
-                ]
-              }
-              onChange={[Function]}
-              placeholder="Write your message"
-              required={true}
-              rows="8"
-              type="text"
-              value={
-                Object {
-                  "html": undefined,
-                }
-              }
-            />
           </div>
-          <Button
-            className=""
-            color="success"
-            tag="button"
-          >
-            Create & activate campaign
-          </Button>
-        </Form>
-      </Col>
-      <Col
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
-      >
-        <CampaignPreview
-          mainColor="#fefefe"
-          translatedTexts={
-            Object {
-              "actionPostbackError": "An error occurred while processing your action. Please try again.",
-              "backLabelBackInAMinute": "Back in 1 minute",
-              "backLabelBackInAnHour": "Back in 1 hour",
-              "backLabelBackInDays": "Back in {value} days",
-              "backLabelBackInHours": "Back in {value} hours",
-              "backLabelBackInMinutes": "Back in {value} minutes",
-              "backLabelBackTomorrow": "Back tomorrow",
-              "campaignClickToReply": "Click to reply",
-              "clickToRetry": "Message not delivered. Click to retry.",
-              "conversationTimestampHeaderFormat": "MMMM D",
-              "emailCaptureInputLabel": "Get notified by email",
-              "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
-              "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
-              "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
-              "emailCaptureOnlineTriggerText": "Leave us your email and we will reply soon.",
-              "emailCapturePlaceholder": "your@email.com",
-              "emailCaptureRequiredEmailPlaceholder": "Leave your email",
-              "emailCaptureRequiredMessagePlaceholder": "Write your message",
-              "fetchHistory": "Load more",
-              "fetchingHistory": "Retrieving history...",
-              "headerText": "Gorgias Team",
-              "inputPlaceholder": "Type a message...",
-              "introductionText": "How can we help?",
-              "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
-              "messageDelivered": "Delivered",
-              "messageError": "An error occurred while sending your message. Please try again.",
-              "messageIndicatorTitlePlural": "({count}) New messages",
-              "messageIndicatorTitleSingular": "({count}) New message",
-              "messageRelativeTimeDay": "{value}d ago",
-              "messageRelativeTimeHour": "{value}h ago",
-              "messageRelativeTimeJustNow": "Just now",
-              "messageRelativeTimeMinute": "{value}m ago",
-              "messageSending": "Sending...",
-              "messageTimestampFormat": "h:mm A",
-              "offlineIntroductionText": "We'll be back tomorrow",
-              "poweredByGorgias": "Powered by Gorgias",
-              "send": "Send",
-              "tapToRetry": "Message not delivered. Tap to retry.",
-              "unsupportedActionType": "Unsupported action type.",
-              "unsupportedMessageType": "Unsupported message type.",
-            }
-          }
-        />
-      </Col>
-    </Row>
-  </Container>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 `;
 
 exports[`<GorgiasChatCampaignDetail/> render() should display the campaign correctly when updating it 1`] = `
-<div
-  className="full-width"
->
-  <PageHeader
-    title={
-      <Breadcrumb
-        tag="ol"
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    >
+      <ol
+        class="breadcrumb"
       >
-        <BreadcrumbItem
-          tag="li"
+        <li
+          class="breadcrumb-item"
         >
-          <Link
+          <a
             to="/app/settings/integrations"
           >
             Integrations
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          tag="li"
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
         >
-          <Link
+          <a
             to="/app/settings/integrations/gorgias_chat/1"
           >
-            Chat
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          tag="li"
+            Chat (New)
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
         >
           My new chat
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          tag="li"
+        </li>
+        <li
+          class="breadcrumb-item"
         >
-          <Link
+          <a
             to="/app/settings/integrations/gorgias_chat/1/campaigns"
           >
             Campaigns
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
+          </a>
+        </li>
+        <li
+          class="active breadcrumb-item"
         >
           My little campaign
-        </BreadcrumbItem>
-      </Breadcrumb>
-    }
-  />
-  <GorgiasChatIntegrationNavigation
-    integration={
-      Immutable.Map {
-        "id": 1,
-        "type": "gorgias_chat",
-        "name": "My new chat",
-        "decoration": Immutable.Map {
-          "main_color": "#fefefe",
-        },
-      }
-    }
-  />
-  <Container
-    className="page-container"
-    fluid={true}
-    tag="div"
-  >
-    <Row
-      tag="div"
+        </li>
+      </ol>
+    </div>
+    <nav
+      class="navbar navbar"
     >
-      <Col
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/1/appearance"
       >
-        <Form
-          onSubmit={[Function]}
-          tag="form"
+        Appearance
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/1/installation"
+      >
+        Installation
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/1/preferences"
+      >
+        Preferences
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/1/quick_replies"
+      >
+        Quick replies
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/1/campaigns"
+      >
+        Campaigns
+      </a>
+    </nav>
+    <div
+      class="page-container container-fluid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col"
         >
-          <div
-            className="mb-4"
+          <form
+            class=""
           >
-            <InputField
-              label="Campaign name"
-              name="name"
-              onChange={[Function]}
-              placeholder="My new campaign"
-              required={true}
-              type="input"
-              value="My little campaign"
-            />
-          </div>
-          <h5>
-            Choose your audience
-          </h5>
-          <div
-            className="mb-4"
-          >
-            <TriggerRow
-              idx={0}
-              key="0"
-              nbOfTriggers={2}
-              onDelete={[Function]}
-              onOperatorChange={[Function]}
-              onValueChange={[Function]}
-              trigger={
-                Immutable.Map {
-                  "key": "current_url",
-                  "operator": "contains",
-                  "value": "gorgias",
-                }
-              }
-            />
-            <TriggerRow
-              idx={1}
-              key="1"
-              nbOfTriggers={2}
-              onDelete={[Function]}
-              onOperatorChange={[Function]}
-              onValueChange={[Function]}
-              trigger={
-                Immutable.Map {
-                  "key": "time_spent_on_page",
-                  "operator": "gt",
-                  "value": 42,
-                }
-              }
-            />
-            <UncontrolledDropdown>
-              <DropdownToggle
-                aria-haspopup={true}
-                caret={true}
-                className="mr-2"
-                color="secondary"
+            <div
+              class="mb-4"
+            >
+              <div
+                class="InputField required form-group"
+                color=""
+              >
+                <label
+                  class="control-label"
+                  for="id-name"
+                >
+                  Campaign name
+                </label>
+                <div
+                  class=""
+                >
+                  <input
+                    class="form-control"
+                    id="id-name"
+                    placeholder="My new campaign"
+                    required=""
+                    type="input"
+                    value="My little campaign"
+                  />
+                </div>
+              </div>
+            </div>
+            <h5>
+              Choose your audience
+            </h5>
+            <div
+              class="mb-4"
+            >
+              <div
+                class="triggerWrapper"
+              >
+                <div
+                  class="btn-frozen btn btn-info"
+                >
+                  Current URL
+                </div>
+                <div>
+                  <div
+                    class="dropdown"
+                  >
+                    <div
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      class=""
+                      data-toggle="dropdown"
+                    >
+                      <div
+                        class="select dropdown-toggle"
+                      >
+                        <span
+                          class="label"
+                          style="min-width: 10px; opacity: 1;"
+                        >
+                          contains
+                        </span>
+                        <input
+                          class="input"
+                          style="min-width: 10px;"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      aria-hidden="true"
+                      class="options dropdown-menu"
+                      role="menu"
+                      tabindex="-1"
+                    >
+                      
+                      <button
+                        class="option option--focused dropdown-item"
+                        tabindex="0"
+                        type="button"
+                      >
+                        is
+                      </button>
+                      <button
+                        class="option dropdown-item"
+                        tabindex="0"
+                        type="button"
+                      >
+                        is not
+                      </button>
+                      <button
+                        class="option dropdown-item"
+                        tabindex="0"
+                        type="button"
+                      >
+                        does not contain
+                      </button>
+                      <button
+                        class="option dropdown-item"
+                        tabindex="0"
+                        type="button"
+                      >
+                        starts with
+                      </button>
+                      <button
+                        class="option dropdown-item"
+                        tabindex="0"
+                        type="button"
+                      >
+                        ends with
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="form-control"
+                      id="id-value"
+                      type="input"
+                      value="gorgias"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="btn-frozen btn btn-warning"
+                >
+                  and
+                </div>
+                <div
+                  class="closeWrapper"
+                >
+                  <i
+                    class="material-icons text-danger clickable"
+                  >
+                    clear
+                  </i>
+                </div>
+              </div>
+              <div
+                class="triggerWrapper"
+              >
+                <div
+                  class="btn-frozen btn btn-info"
+                >
+                  Time spent on page
+                </div>
+                <div>
+                  <div
+                    class="dropdown"
+                  >
+                    <div
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      class=""
+                      data-toggle="dropdown"
+                    >
+                      <div
+                        class="select dropdown-toggle"
+                      >
+                        <span
+                          class="label"
+                          style="min-width: 10px; opacity: 1;"
+                        >
+                          is greater than
+                        </span>
+                        <input
+                          class="input"
+                          style="min-width: 10px;"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      aria-hidden="true"
+                      class="options dropdown-menu"
+                      role="menu"
+                      tabindex="-1"
+                    >
+                      <h6
+                        class="dropdown-header"
+                        tabindex="-1"
+                      >
+                        No result
+                      </h6>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="InputField secondsCounter form-group"
+                  color=""
+                >
+                  <div
+                    class="input-group"
+                  >
+                    <input
+                      class="form-control"
+                      id="id-input-2"
+                      step="1"
+                      type="number"
+                      value="42"
+                    />
+                    <span
+                      class="input-group-append"
+                    >
+                      <span
+                        class="input-group-text"
+                      >
+                        seconds
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <div
+                  class="closeWrapper"
+                >
+                  <i
+                    class="material-icons text-danger clickable"
+                  >
+                    clear
+                  </i>
+                </div>
+              </div>
+              <div
+                class="dropdown"
+              >
+                <button
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  class="mr-2 dropdown-toggle btn btn-secondary"
+                  type="button"
+                >
+                  <i
+                    class="material-icons mr-2"
+                  >
+                    add
+                  </i>
+                  Add condition
+                </button>
+                <div
+                  aria-hidden="true"
+                  class="dropdown-menu"
+                  role="menu"
+                  tabindex="-1"
+                >
+                  <button
+                    class="dropdown-item"
+                    tabindex="0"
+                    type="button"
+                  >
+                    Current URL
+                  </button>
+                  <button
+                    class="dropdown-item"
+                    tabindex="0"
+                    type="button"
+                  >
+                    Time spent on page
+                  </button>
+                </div>
+              </div>
+            </div>
+            <h5>
+              Write your message
+            </h5>
+            <div
+              class="mb-4"
+            >
+              <div
+                class="mb-2 authorWrapper"
+              >
+                <span>
+                  From: 
+                </span>
+                <div>
+                  <div
+                    class="dropdown"
+                  >
+                    <div
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      class="authorInput"
+                      data-toggle="dropdown"
+                    >
+                      <div
+                        class="select dropdown-toggle"
+                      >
+                        <span
+                          class="label"
+                          style="min-width: 10px; opacity: 1;"
+                        >
+                          <div
+                            class="AgentLabel"
+                          >
+                            <span
+                              class="material-icons md-2"
+                            >
+                              account_circle
+                            </span>
+                            <span
+                              class="name"
+                              style="max-width: 100px;"
+                            >
+                              John
+                            </span>
+                          </div>
+                        </span>
+                        <input
+                          class="input"
+                          style="min-width: 10px;"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      aria-hidden="true"
+                      class="options dropdown-menu"
+                      role="menu"
+                      tabindex="-1"
+                    >
+                      
+                      <button
+                        class="option option--focused dropdown-item"
+                        tabindex="0"
+                        type="button"
+                      >
+                        <div
+                          class="AgentLabel"
+                        >
+                          <span
+                            class="material-icons md-2"
+                          >
+                            account_circle
+                          </span>
+                          <span
+                            class="name"
+                            style="max-width: 100px;"
+                          >
+                            Doe
+                          </span>
+                        </div>
+                      </button>
+                      <button
+                        class="option dropdown-item"
+                        tabindex="0"
+                        type="button"
+                      >
+                        Random agent
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="InputField required form-group"
+                color=""
+              >
+                <div
+                  class=""
+                >
+                  <div
+                    class="InputField required form-group"
+                    color=""
+                  >
+                    <div
+                      class=""
+                    >
+                      <div
+                        class="rich-textarea-wrapper"
+                      >
+                        <div
+                          class="editor-wrapper"
+                          style="padding-bottom: 26px;"
+                        >
+                          <div
+                            class="DraftEditor-root"
+                          >
+                            <div
+                              class="DraftEditor-editorContainer"
+                            >
+                              <div
+                                aria-autocomplete="list"
+                                aria-describedby="placeholder-someRandomKey"
+                                aria-expanded="true"
+                                class="notranslate public-DraftEditor-content"
+                                contenteditable="true"
+                                role="combobox"
+                                spellcheck="false"
+                                style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
+                              >
+                                <div
+                                  data-contents="true"
+                                >
+                                  <div
+                                    class=""
+                                    data-block="true"
+                                    data-editor="someRandomKey"
+                                    data-offset-key="someRandomKey-0-0"
+                                  >
+                                    <div
+                                      class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                                      data-offset-key="someRandomKey-0-0"
+                                    >
+                                      <span
+                                        data-offset-key="someRandomKey-0-0"
+                                      >
+                                        <span
+                                          data-text="true"
+                                        >
+                                          My little message
+                                        </span>
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <input
+                            required=""
+                            style="opacity: 0; height: 0px; padding: 0px; overflow: hidden;"
+                            value="My little message"
+                          />
+                        </div>
+                        <div
+                          class="editor-toolbar page"
+                        >
+                          <div
+                            class="actions"
+                          >
+                            <button
+                              class="button btn btn-secondary btn-transparent"
+                              title="Bold"
+                              type="button"
+                            >
+                              <i
+                                class="material-icons"
+                              >
+                                format_bold
+                              </i>
+                            </button>
+                            <button
+                              class="button btn btn-secondary btn-transparent"
+                              title="Italic"
+                              type="button"
+                            >
+                              <i
+                                class="material-icons"
+                              >
+                                format_italic
+                              </i>
+                            </button>
+                            <button
+                              class="button btn btn-secondary btn-transparent"
+                              title="Underline"
+                              type="button"
+                            >
+                              <i
+                                class="material-icons"
+                              >
+                                format_underline
+                              </i>
+                            </button>
+                            <span
+                              class="popoverWrapper"
+                            >
+                              <button
+                                class="button btn btn-secondary btn-transparent"
+                                title="Insert image"
+                                type="button"
+                              >
+                                <i
+                                  class="material-icons"
+                                >
+                                  insert_photo
+                                </i>
+                              </button>
+                              <div
+                                class="popover hidden"
+                              />
+                            </span>
+                            <span
+                              class="popoverWrapper"
+                            >
+                              <button
+                                class="button btn btn-secondary btn-transparent"
+                                title="Insert emoji"
+                                type="button"
+                              >
+                                <i
+                                  class="material-icons"
+                                >
+                                  insert_emoticon
+                                </i>
+                              </button>
+                              <div
+                                class="p-0 d-flex popover hidden"
+                              />
+                            </span>
+                          </div>
+                          <div
+                            class="hoverOverlay"
+                          >
+                            Add files as attachments
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button
+              class="btn btn-success"
+            >
+              Save
+            </button>
+            <div
+              class="component d-inline-block float-right"
+              id="delete-campaign-button"
+            >
+              <button
+                class="btn btn-secondary"
+                id="confirm-button-delete-campaign-button"
                 type="button"
               >
                 <i
-                  className="material-icons mr-2"
+                  class="material-icons mr-1 text-danger"
                 >
-                  add
+                  delete
                 </i>
-                Add condition
-              </DropdownToggle>
-              <DropdownMenu
-                flip={true}
-                tag="div"
-              >
-                <DropdownItem
-                  key="current_url"
-                  onClick={[Function]}
-                  tag="button"
-                  toggle={true}
-                  type="button"
-                >
-                  Current URL
-                </DropdownItem>
-                <DropdownItem
-                  key="time_spent_on_page"
-                  onClick={[Function]}
-                  tag="button"
-                  toggle={true}
-                  type="button"
-                >
-                  Time spent on page
-                </DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
-          </div>
-          <h5>
-            Write your message
-          </h5>
+                Delete campaign
+              </button>
+            </div>
+          </form>
+        </div>
+        <div
+          class="col"
+        >
           <div
-            className="mb-4"
+            class="preview"
           >
             <div
-              className="mb-2 authorWrapper"
+              class="titlebar"
+            />
+            <div
+              class="campaign"
             >
-              <span>
-                From: 
-              </span>
-              <SelectField
-                allowCustomValue={false}
-                className="authorInput"
-                fixedWidth={false}
-                fullWidth={false}
-                onChange={[Function]}
-                onSearchChange={[Function]}
-                options={
-                  Array [
-                    Object {
-                      "label": <AgentLabel
-                        className=""
-                        maxWidth="100"
-                        name="John"
-                        profilePictureUrl=""
-                        shouldDisplayAvatar={false}
-                      />,
-                      "text": "John",
-                      "value": "john@gorgias.io",
-                    },
-                    Object {
-                      "label": <AgentLabel
-                        className=""
-                        maxWidth="100"
-                        name="Doe"
-                        profilePictureUrl=""
-                        shouldDisplayAvatar={false}
-                      />,
-                      "text": "Doe",
-                      "value": "doe@gorgias.io",
-                    },
-                    Object {
-                      "label": "Random agent",
-                      "text": "randomagent",
-                      "value": null,
-                    },
-                  ]
-                }
-                placeholder="Select an option"
-                singular="option"
-                style={Object {}}
-                value="john@gorgias.io"
+              <div
+                class="header"
+              >
+                <div
+                  class="author"
+                >
+                  <div
+                    class="component hasImage authorAvatar"
+                    style="width: 50px; height: 50px;"
+                  >
+                    <div
+                      class="initials"
+                      style="width: 50px; height: 50px; font-size: 20.833333333333336px;"
+                    >
+                      <span>
+                        J
+                      </span>
+                    </div>
+                    <img
+                      alt="avatar"
+                      class="gravatar"
+                      src="https://gravatar.docker/as74d6as4d86as4dasd/avatar.jpg"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="message"
+                >
+                  <div
+                    class="authorName"
+                  >
+                    <b>
+                      John
+                    </b>
+                  </div>
+                  <div
+                    class="messageText"
+                  >
+                    <div>
+                      My little message
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="poweredby"
+              >
+                Powered by Gorgias
+              </div>
+              <div
+                class="footer"
+              >
+                Click to reply
+              </div>
+            </div>
+            <div
+              class="button"
+              style="background-color: rgb(254, 254, 254);"
+            >
+              <img
+                alt="Close icon"
+                class="icon"
+                src="/static/private/img/icons/DefaultCloseIcon.svg"
               />
             </div>
-            <RichField
-              displayedActions={
-                Array [
-                  "BOLD",
-                  "ITALIC",
-                  "UNDERLINE",
-                  "IMAGE",
-                  "EMOJI",
-                ]
-              }
-              onChange={[Function]}
-              placeholder="Write your message"
-              required={true}
-              rows="8"
-              type="text"
-              value={
-                Object {
-                  "html": "<div><img onerror=\\"alert(1)\\" src=\\"#\\"/>My little message</div>",
-                }
-              }
-            />
           </div>
-          <Button
-            className=""
-            color="success"
-            tag="button"
-          >
-            Save
-          </Button>
-          <ConfirmButton
-            className="float-right"
-            color="secondary"
-            confirm={[Function]}
-            content="Are you sure you want to delete this campaign?"
-            id="delete-campaign-button"
-            placement="bottom right"
-          >
-            <i
-              className="material-icons mr-1 text-danger"
-            >
-              delete
-            </i>
-            Delete campaign
-          </ConfirmButton>
-        </Form>
-      </Col>
-      <Col
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
-      >
-        <CampaignPreview
-          authorAvatarUrl="https://gravatar.docker/as74d6as4d86as4dasd/avatar.jpg"
-          authorName="John"
-          html="<div><img src=\\"#\\" />My little message</div>"
-          mainColor="#fefefe"
-          translatedTexts={
-            Object {
-              "actionPostbackError": "An error occurred while processing your action. Please try again.",
-              "backLabelBackInAMinute": "Back in 1 minute",
-              "backLabelBackInAnHour": "Back in 1 hour",
-              "backLabelBackInDays": "Back in {value} days",
-              "backLabelBackInHours": "Back in {value} hours",
-              "backLabelBackInMinutes": "Back in {value} minutes",
-              "backLabelBackTomorrow": "Back tomorrow",
-              "campaignClickToReply": "Click to reply",
-              "clickToRetry": "Message not delivered. Click to retry.",
-              "conversationTimestampHeaderFormat": "MMMM D",
-              "emailCaptureInputLabel": "Get notified by email",
-              "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
-              "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
-              "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
-              "emailCaptureOnlineTriggerText": "Leave us your email and we will reply soon.",
-              "emailCapturePlaceholder": "your@email.com",
-              "emailCaptureRequiredEmailPlaceholder": "Leave your email",
-              "emailCaptureRequiredMessagePlaceholder": "Write your message",
-              "fetchHistory": "Load more",
-              "fetchingHistory": "Retrieving history...",
-              "headerText": "Gorgias Team",
-              "inputPlaceholder": "Type a message...",
-              "introductionText": "How can we help?",
-              "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
-              "messageDelivered": "Delivered",
-              "messageError": "An error occurred while sending your message. Please try again.",
-              "messageIndicatorTitlePlural": "({count}) New messages",
-              "messageIndicatorTitleSingular": "({count}) New message",
-              "messageRelativeTimeDay": "{value}d ago",
-              "messageRelativeTimeHour": "{value}h ago",
-              "messageRelativeTimeJustNow": "Just now",
-              "messageRelativeTimeMinute": "{value}m ago",
-              "messageSending": "Sending...",
-              "messageTimestampFormat": "h:mm A",
-              "offlineIntroductionText": "We'll be back tomorrow",
-              "poweredByGorgias": "Powered by Gorgias",
-              "send": "Send",
-              "tapToRetry": "Message not delivered. Tap to retry.",
-              "unsupportedActionType": "Unsupported action type.",
-              "unsupportedMessageType": "Unsupported message type.",
-            }
-          }
-        />
-      </Col>
-    </Row>
-  </Container>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 `;
 
 exports[`<GorgiasChatCampaignDetail/> render() should display the campaign correctly when updating it and strip the html 1`] = `
-<div
-  className="full-width"
->
-  <PageHeader
-    title={
-      <Breadcrumb
-        tag="ol"
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    >
+      <ol
+        class="breadcrumb"
       >
-        <BreadcrumbItem
-          tag="li"
+        <li
+          class="breadcrumb-item"
         >
-          <Link
+          <a
             to="/app/settings/integrations"
           >
             Integrations
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          tag="li"
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
         >
-          <Link
+          <a
             to="/app/settings/integrations/gorgias_chat/1"
           >
-            Chat
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          tag="li"
+            Chat (New)
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
         >
           My new chat
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          tag="li"
+        </li>
+        <li
+          class="breadcrumb-item"
         >
-          <Link
+          <a
             to="/app/settings/integrations/gorgias_chat/1/campaigns"
           >
             Campaigns
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbItem
-          active={true}
-          tag="li"
+          </a>
+        </li>
+        <li
+          class="active breadcrumb-item"
         >
           My little campaign
-        </BreadcrumbItem>
-      </Breadcrumb>
-    }
-  />
-  <GorgiasChatIntegrationNavigation
-    integration={
-      Immutable.Map {
-        "id": 1,
-        "type": "gorgias_chat",
-        "name": "My new chat",
-        "decoration": Immutable.Map {
-          "main_color": "#fefefe",
-        },
-      }
-    }
-  />
-  <Container
-    className="page-container"
-    fluid={true}
-    tag="div"
-  >
-    <Row
-      tag="div"
+        </li>
+      </ol>
+    </div>
+    <nav
+      class="navbar navbar"
     >
-      <Col
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/1/appearance"
       >
-        <Form
-          onSubmit={[Function]}
-          tag="form"
+        Appearance
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/1/installation"
+      >
+        Installation
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/1/preferences"
+      >
+        Preferences
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/1/quick_replies"
+      >
+        Quick replies
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/1/campaigns"
+      >
+        Campaigns
+      </a>
+    </nav>
+    <div
+      class="page-container container-fluid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col"
         >
-          <div
-            className="mb-4"
+          <form
+            class=""
           >
-            <InputField
-              label="Campaign name"
-              name="name"
-              onChange={[Function]}
-              placeholder="My new campaign"
-              required={true}
-              type="input"
-              value="My little campaign"
-            />
-          </div>
-          <h5>
-            Choose your audience
-          </h5>
-          <div
-            className="mb-4"
-          >
-            <TriggerRow
-              idx={0}
-              key="0"
-              nbOfTriggers={2}
-              onDelete={[Function]}
-              onOperatorChange={[Function]}
-              onValueChange={[Function]}
-              trigger={
-                Immutable.Map {
-                  "key": "current_url",
-                  "operator": "contains",
-                  "value": "gorgias",
-                }
-              }
-            />
-            <TriggerRow
-              idx={1}
-              key="1"
-              nbOfTriggers={2}
-              onDelete={[Function]}
-              onOperatorChange={[Function]}
-              onValueChange={[Function]}
-              trigger={
-                Immutable.Map {
-                  "key": "time_spent_on_page",
-                  "operator": "gt",
-                  "value": 42,
-                }
-              }
-            />
-            <UncontrolledDropdown>
-              <DropdownToggle
-                aria-haspopup={true}
-                caret={true}
-                className="mr-2"
-                color="secondary"
+            <div
+              class="mb-4"
+            >
+              <div
+                class="InputField required form-group"
+                color=""
+              >
+                <label
+                  class="control-label"
+                  for="id-name"
+                >
+                  Campaign name
+                </label>
+                <div
+                  class=""
+                >
+                  <input
+                    class="form-control"
+                    id="id-name"
+                    placeholder="My new campaign"
+                    required=""
+                    type="input"
+                    value="My little campaign"
+                  />
+                </div>
+              </div>
+            </div>
+            <h5>
+              Choose your audience
+            </h5>
+            <div
+              class="mb-4"
+            >
+              <div
+                class="triggerWrapper"
+              >
+                <div
+                  class="btn-frozen btn btn-info"
+                >
+                  Current URL
+                </div>
+                <div>
+                  <div
+                    class="dropdown"
+                  >
+                    <div
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      class=""
+                      data-toggle="dropdown"
+                    >
+                      <div
+                        class="select dropdown-toggle"
+                      >
+                        <span
+                          class="label"
+                          style="min-width: 10px; opacity: 1;"
+                        >
+                          contains
+                        </span>
+                        <input
+                          class="input"
+                          style="min-width: 10px;"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      aria-hidden="true"
+                      class="options dropdown-menu"
+                      role="menu"
+                      tabindex="-1"
+                    >
+                      
+                      <button
+                        class="option option--focused dropdown-item"
+                        tabindex="0"
+                        type="button"
+                      >
+                        is
+                      </button>
+                      <button
+                        class="option dropdown-item"
+                        tabindex="0"
+                        type="button"
+                      >
+                        is not
+                      </button>
+                      <button
+                        class="option dropdown-item"
+                        tabindex="0"
+                        type="button"
+                      >
+                        does not contain
+                      </button>
+                      <button
+                        class="option dropdown-item"
+                        tabindex="0"
+                        type="button"
+                      >
+                        starts with
+                      </button>
+                      <button
+                        class="option dropdown-item"
+                        tabindex="0"
+                        type="button"
+                      >
+                        ends with
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="InputField form-group"
+                  color=""
+                >
+                  <div
+                    class=""
+                  >
+                    <input
+                      class="form-control"
+                      id="id-value"
+                      type="input"
+                      value="gorgias"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="btn-frozen btn btn-warning"
+                >
+                  and
+                </div>
+                <div
+                  class="closeWrapper"
+                >
+                  <i
+                    class="material-icons text-danger clickable"
+                  >
+                    clear
+                  </i>
+                </div>
+              </div>
+              <div
+                class="triggerWrapper"
+              >
+                <div
+                  class="btn-frozen btn btn-info"
+                >
+                  Time spent on page
+                </div>
+                <div>
+                  <div
+                    class="dropdown"
+                  >
+                    <div
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      class=""
+                      data-toggle="dropdown"
+                    >
+                      <div
+                        class="select dropdown-toggle"
+                      >
+                        <span
+                          class="label"
+                          style="min-width: 10px; opacity: 1;"
+                        >
+                          is greater than
+                        </span>
+                        <input
+                          class="input"
+                          style="min-width: 10px;"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      aria-hidden="true"
+                      class="options dropdown-menu"
+                      role="menu"
+                      tabindex="-1"
+                    >
+                      <h6
+                        class="dropdown-header"
+                        tabindex="-1"
+                      >
+                        No result
+                      </h6>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="InputField secondsCounter form-group"
+                  color=""
+                >
+                  <div
+                    class="input-group"
+                  >
+                    <input
+                      class="form-control"
+                      id="id-input-4"
+                      step="1"
+                      type="number"
+                      value="42"
+                    />
+                    <span
+                      class="input-group-append"
+                    >
+                      <span
+                        class="input-group-text"
+                      >
+                        seconds
+                      </span>
+                    </span>
+                  </div>
+                </div>
+                <div
+                  class="closeWrapper"
+                >
+                  <i
+                    class="material-icons text-danger clickable"
+                  >
+                    clear
+                  </i>
+                </div>
+              </div>
+              <div
+                class="dropdown"
+              >
+                <button
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  class="mr-2 dropdown-toggle btn btn-secondary"
+                  type="button"
+                >
+                  <i
+                    class="material-icons mr-2"
+                  >
+                    add
+                  </i>
+                  Add condition
+                </button>
+                <div
+                  aria-hidden="true"
+                  class="dropdown-menu"
+                  role="menu"
+                  tabindex="-1"
+                >
+                  <button
+                    class="dropdown-item"
+                    tabindex="0"
+                    type="button"
+                  >
+                    Current URL
+                  </button>
+                  <button
+                    class="dropdown-item"
+                    tabindex="0"
+                    type="button"
+                  >
+                    Time spent on page
+                  </button>
+                </div>
+              </div>
+            </div>
+            <h5>
+              Write your message
+            </h5>
+            <div
+              class="mb-4"
+            >
+              <div
+                class="mb-2 authorWrapper"
+              >
+                <span>
+                  From: 
+                </span>
+                <div>
+                  <div
+                    class="dropdown"
+                  >
+                    <div
+                      aria-expanded="false"
+                      aria-haspopup="true"
+                      class="authorInput"
+                      data-toggle="dropdown"
+                    >
+                      <div
+                        class="select dropdown-toggle"
+                      >
+                        <span
+                          class="label"
+                          style="min-width: 10px; opacity: 1;"
+                        >
+                          <div
+                            class="AgentLabel"
+                          >
+                            <span
+                              class="material-icons md-2"
+                            >
+                              account_circle
+                            </span>
+                            <span
+                              class="name"
+                              style="max-width: 100px;"
+                            >
+                              John
+                            </span>
+                          </div>
+                        </span>
+                        <input
+                          class="input"
+                          style="min-width: 10px;"
+                          type="text"
+                          value=""
+                        />
+                      </div>
+                    </div>
+                    <div
+                      aria-hidden="true"
+                      class="options dropdown-menu"
+                      role="menu"
+                      tabindex="-1"
+                    >
+                      
+                      <button
+                        class="option option--focused dropdown-item"
+                        tabindex="0"
+                        type="button"
+                      >
+                        <div
+                          class="AgentLabel"
+                        >
+                          <span
+                            class="material-icons md-2"
+                          >
+                            account_circle
+                          </span>
+                          <span
+                            class="name"
+                            style="max-width: 100px;"
+                          >
+                            Doe
+                          </span>
+                        </div>
+                      </button>
+                      <button
+                        class="option dropdown-item"
+                        tabindex="0"
+                        type="button"
+                      >
+                        Random agent
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="InputField required form-group"
+                color=""
+              >
+                <div
+                  class=""
+                >
+                  <div
+                    class="InputField required form-group"
+                    color=""
+                  >
+                    <div
+                      class=""
+                    >
+                      <div
+                        class="rich-textarea-wrapper"
+                      >
+                        <div
+                          class="editor-wrapper"
+                          style="padding-bottom: 26px;"
+                        >
+                          <div
+                            class="DraftEditor-root"
+                          >
+                            <div
+                              class="DraftEditor-editorContainer"
+                            >
+                              <div
+                                aria-autocomplete="list"
+                                aria-describedby="placeholder-someRandomKey"
+                                aria-expanded="true"
+                                class="notranslate public-DraftEditor-content"
+                                contenteditable="true"
+                                role="combobox"
+                                spellcheck="false"
+                                style="outline: none; user-select: text; white-space: pre-wrap; word-wrap: break-word;"
+                              >
+                                <div
+                                  data-contents="true"
+                                >
+                                  <div
+                                    class=""
+                                    data-block="true"
+                                    data-editor="someRandomKey"
+                                    data-offset-key="someRandomKey-0-0"
+                                  >
+                                    <div
+                                      class="public-DraftStyleDefault-block public-DraftStyleDefault-ltr"
+                                      data-offset-key="someRandomKey-0-0"
+                                    >
+                                      <span
+                                        data-offset-key="someRandomKey-0-0"
+                                      >
+                                        <span
+                                          data-text="true"
+                                        >
+                                          My little message
+                                        </span>
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <input
+                            required=""
+                            style="opacity: 0; height: 0px; padding: 0px; overflow: hidden;"
+                            value="My little message"
+                          />
+                        </div>
+                        <div
+                          class="editor-toolbar page"
+                        >
+                          <div
+                            class="actions"
+                          >
+                            <button
+                              class="button btn btn-secondary btn-transparent"
+                              title="Bold"
+                              type="button"
+                            >
+                              <i
+                                class="material-icons"
+                              >
+                                format_bold
+                              </i>
+                            </button>
+                            <button
+                              class="button btn btn-secondary btn-transparent"
+                              title="Italic"
+                              type="button"
+                            >
+                              <i
+                                class="material-icons"
+                              >
+                                format_italic
+                              </i>
+                            </button>
+                            <button
+                              class="button btn btn-secondary btn-transparent"
+                              title="Underline"
+                              type="button"
+                            >
+                              <i
+                                class="material-icons"
+                              >
+                                format_underline
+                              </i>
+                            </button>
+                            <span
+                              class="popoverWrapper"
+                            >
+                              <button
+                                class="button btn btn-secondary btn-transparent"
+                                title="Insert image"
+                                type="button"
+                              >
+                                <i
+                                  class="material-icons"
+                                >
+                                  insert_photo
+                                </i>
+                              </button>
+                              <div
+                                class="popover hidden"
+                              />
+                            </span>
+                            <span
+                              class="popoverWrapper"
+                            >
+                              <button
+                                class="button btn btn-secondary btn-transparent"
+                                title="Insert emoji"
+                                type="button"
+                              >
+                                <i
+                                  class="material-icons"
+                                >
+                                  insert_emoticon
+                                </i>
+                              </button>
+                              <div
+                                class="p-0 d-flex popover hidden"
+                              />
+                            </span>
+                          </div>
+                          <div
+                            class="hoverOverlay"
+                          >
+                            Add files as attachments
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button
+              class="btn btn-success"
+            >
+              Save
+            </button>
+            <div
+              class="component d-inline-block float-right"
+              id="delete-campaign-button"
+            >
+              <button
+                class="btn btn-secondary"
+                id="confirm-button-delete-campaign-button"
                 type="button"
               >
                 <i
-                  className="material-icons mr-2"
+                  class="material-icons mr-1 text-danger"
                 >
-                  add
+                  delete
                 </i>
-                Add condition
-              </DropdownToggle>
-              <DropdownMenu
-                flip={true}
-                tag="div"
-              >
-                <DropdownItem
-                  key="current_url"
-                  onClick={[Function]}
-                  tag="button"
-                  toggle={true}
-                  type="button"
-                >
-                  Current URL
-                </DropdownItem>
-                <DropdownItem
-                  key="time_spent_on_page"
-                  onClick={[Function]}
-                  tag="button"
-                  toggle={true}
-                  type="button"
-                >
-                  Time spent on page
-                </DropdownItem>
-              </DropdownMenu>
-            </UncontrolledDropdown>
-          </div>
-          <h5>
-            Write your message
-          </h5>
+                Delete campaign
+              </button>
+            </div>
+          </form>
+        </div>
+        <div
+          class="col"
+        >
           <div
-            className="mb-4"
+            class="preview"
           >
             <div
-              className="mb-2 authorWrapper"
+              class="titlebar"
+            />
+            <div
+              class="campaign"
             >
-              <span>
-                From: 
-              </span>
-              <SelectField
-                allowCustomValue={false}
-                className="authorInput"
-                fixedWidth={false}
-                fullWidth={false}
-                onChange={[Function]}
-                onSearchChange={[Function]}
-                options={
-                  Array [
-                    Object {
-                      "label": <AgentLabel
-                        className=""
-                        maxWidth="100"
-                        name="John"
-                        profilePictureUrl=""
-                        shouldDisplayAvatar={false}
-                      />,
-                      "text": "John",
-                      "value": "john@gorgias.io",
-                    },
-                    Object {
-                      "label": <AgentLabel
-                        className=""
-                        maxWidth="100"
-                        name="Doe"
-                        profilePictureUrl=""
-                        shouldDisplayAvatar={false}
-                      />,
-                      "text": "Doe",
-                      "value": "doe@gorgias.io",
-                    },
-                    Object {
-                      "label": "Random agent",
-                      "text": "randomagent",
-                      "value": null,
-                    },
-                  ]
-                }
-                placeholder="Select an option"
-                singular="option"
-                style={Object {}}
-                value="john@gorgias.io"
+              <div
+                class="header"
+              >
+                <div
+                  class="author"
+                >
+                  <div
+                    class="component hasImage authorAvatar"
+                    style="width: 50px; height: 50px;"
+                  >
+                    <div
+                      class="initials"
+                      style="width: 50px; height: 50px; font-size: 20.833333333333336px;"
+                    >
+                      <span>
+                        J
+                      </span>
+                    </div>
+                    <img
+                      alt="avatar"
+                      class="gravatar"
+                      src="https://gravatar.docker/as74d6as4d86as4dasd/avatar.jpg"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="message"
+                >
+                  <div
+                    class="authorName"
+                  >
+                    <b>
+                      John
+                    </b>
+                  </div>
+                  <div
+                    class="messageText"
+                  >
+                    <div>
+                      My little message
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="poweredby"
+              >
+                Powered by Gorgias
+              </div>
+              <div
+                class="footer"
+              >
+                Click to reply
+              </div>
+            </div>
+            <div
+              class="button"
+              style="background-color: rgb(254, 254, 254);"
+            >
+              <img
+                alt="Close icon"
+                class="icon"
+                src="/static/private/img/icons/DefaultCloseIcon.svg"
               />
             </div>
-            <RichField
-              displayedActions={
-                Array [
-                  "BOLD",
-                  "ITALIC",
-                  "UNDERLINE",
-                  "IMAGE",
-                  "EMOJI",
-                ]
-              }
-              onChange={[Function]}
-              placeholder="Write your message"
-              required={true}
-              rows="8"
-              type="text"
-              value={
-                Object {
-                  "html": "<div><img onerror=\\"alert(1)\\" src=\\"#\\"/>My little message</div>",
-                }
-              }
-            />
           </div>
-          <Button
-            className=""
-            color="success"
-            tag="button"
-          >
-            Save
-          </Button>
-          <ConfirmButton
-            className="float-right"
-            color="secondary"
-            confirm={[Function]}
-            content="Are you sure you want to delete this campaign?"
-            id="delete-campaign-button"
-            placement="bottom right"
-          >
-            <i
-              className="material-icons mr-1 text-danger"
-            >
-              delete
-            </i>
-            Delete campaign
-          </ConfirmButton>
-        </Form>
-      </Col>
-      <Col
-        tag="div"
-        widths={
-          Array [
-            "xs",
-            "sm",
-            "md",
-            "lg",
-            "xl",
-          ]
-        }
-      >
-        <CampaignPreview
-          authorAvatarUrl="https://gravatar.docker/as74d6as4d86as4dasd/avatar.jpg"
-          authorName="John"
-          html="<div><img src=\\"#\\" />My little message</div>"
-          mainColor="#fefefe"
-          translatedTexts={
-            Object {
-              "actionPostbackError": "An error occurred while processing your action. Please try again.",
-              "backLabelBackInAMinute": "Back in 1 minute",
-              "backLabelBackInAnHour": "Back in 1 hour",
-              "backLabelBackInDays": "Back in {value} days",
-              "backLabelBackInHours": "Back in {value} hours",
-              "backLabelBackInMinutes": "Back in {value} minutes",
-              "backLabelBackTomorrow": "Back tomorrow",
-              "campaignClickToReply": "Click to reply",
-              "clickToRetry": "Message not delivered. Click to retry.",
-              "conversationTimestampHeaderFormat": "MMMM D",
-              "emailCaptureInputLabel": "Get notified by email",
-              "emailCaptureOfflineThanksText": "Thanks {email}! We'll get back to you shortly.",
-              "emailCaptureOfflineTriggerText": "We're away, leave us your email and we'll respond shortly.",
-              "emailCaptureOnlineThanksText": "Thanks! We'll email you at {email} if you leave.",
-              "emailCaptureOnlineTriggerText": "Leave us your email and we will reply soon.",
-              "emailCapturePlaceholder": "your@email.com",
-              "emailCaptureRequiredEmailPlaceholder": "Leave your email",
-              "emailCaptureRequiredMessagePlaceholder": "Write your message",
-              "fetchHistory": "Load more",
-              "fetchingHistory": "Retrieving history...",
-              "headerText": "Gorgias Team",
-              "inputPlaceholder": "Type a message...",
-              "introductionText": "How can we help?",
-              "invalidFileError": "Only images are supported. Choose a file with a supported extension (jpg, jpeg, png, gif, or bmp).",
-              "messageDelivered": "Delivered",
-              "messageError": "An error occurred while sending your message. Please try again.",
-              "messageIndicatorTitlePlural": "({count}) New messages",
-              "messageIndicatorTitleSingular": "({count}) New message",
-              "messageRelativeTimeDay": "{value}d ago",
-              "messageRelativeTimeHour": "{value}h ago",
-              "messageRelativeTimeJustNow": "Just now",
-              "messageRelativeTimeMinute": "{value}m ago",
-              "messageSending": "Sending...",
-              "messageTimestampFormat": "h:mm A",
-              "offlineIntroductionText": "We'll be back tomorrow",
-              "poweredByGorgias": "Powered by Gorgias",
-              "send": "Send",
-              "tapToRetry": "Message not delivered. Tap to retry.",
-              "unsupportedActionType": "Unsupported action type.",
-              "unsupportedMessageType": "Unsupported message type.",
-            }
-          }
-        />
-      </Col>
-    </Row>
-  </Container>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 `;
