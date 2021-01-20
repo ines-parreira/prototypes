@@ -200,7 +200,9 @@ export function Plan(props: Props) {
     const buttonId = `choose-plan-${plan.get('name')}`
     const isEnterprisePlan = plan.get('id') === 'enterprise'
     const isCurrentPlan = currentPlan.get('id') === plan.get('id')
-    const isDowngrade = countFeatures(plan) < countFeatures(currentPlan)
+    const isDowngrade = currentPlan.isEmpty()
+        ? false
+        : countFeatures(plan) < countFeatures(currentPlan)
     const features = getFeatures(plan, cheaperPlan, showProductFeatures)
     const canChoosePlan = !isCurrentPlan && !isUpdating
 

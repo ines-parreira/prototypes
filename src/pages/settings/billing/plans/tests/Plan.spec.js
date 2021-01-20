@@ -8,6 +8,7 @@ import {Plan} from '../Plan'
 describe('<Plan/>', () => {
     it.each([
         ['with default props', {}],
+        ['with no current plan', {currentPlan: fromJS({})}],
         [
             'different from the current plan',
             {plan: fromJS(proPlan), currentPlan: fromJS(basicPlan)},
