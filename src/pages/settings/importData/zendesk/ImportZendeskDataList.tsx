@@ -21,10 +21,28 @@ export const ImportZendeskDataList = (
         const importStatus = integrationMeta.get('status')
 
         if (importStatus === ImportStatus.Success) {
+            const synchronizationEnabled = integrationMeta.get(
+                'continuous_import_enabled',
+                false
+            )
+            if (synchronizationEnabled) {
+                return (
+                    <span className="float-right">
+                        <i className="material-icons large green">
+                            play_circle_filled
+                        </i>{' '}
+                        <span className="text-black">Synchronizing</span>{' '}
+                        <i className="material-icons">chevron_right</i>
+                    </span>
+                )
+            }
             return (
                 <span className="float-right">
-                    <i className="material-icons green">check_circle</i>{' '}
-                    Completed <i className="material-icons">chevron_right</i>
+                    <i className="material-icons large blue">
+                        pause_circle_filled
+                    </i>{' '}
+                    <span className="text-black">Paused</span>{' '}
+                    <i className="material-icons">chevron_right</i>
                 </span>
             )
         } else if (importStatus === ImportStatus.Pending) {
@@ -66,7 +84,10 @@ export const ImportZendeskDataList = (
                             <Progress
                                 className="w-25"
                                 value={importedTicketsPercentage}
-                                style={{borderRadius: '.50rem'}}
+                                style={{
+                                    borderRadius: '.50rem',
+                                    maxHeight: '8px',
+                                }}
                                 max={100}
                             />
                         </>
