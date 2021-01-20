@@ -32,27 +32,27 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
       class="page-container container-fluid"
     >
       <div
-        class="row mb-5"
+        class="row mb-3"
       >
         <div
           class="col-sm-12 col-md-7 col-lg-4"
         >
           <div
-            class="alert alert-info fade"
+            class="alert alert-success fade"
             role="alert"
           >
-            <b
-              class="heading"
-            >
-              <i
-                class="material-icons mr-3"
+            <span>
+              <b
+                class="alert-heading"
               >
-                info_outline
-              </i>
-              <span>
-                Initial import successful, continuous synchronization paused.
-              </span>
-            </b>
+                <i
+                  class="material-icons mr-2"
+                >
+                  check_circle_outline
+                </i>
+                Import from Zendesk completed
+              </b>
+            </span>
           </div>
         </div>
       </div>
@@ -129,7 +129,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
         </div>
       </div>
       <div
-        class="row no-gutters mb-5"
+        class="row no-gutters"
       >
         <div
           class="col-sm-12 col-md-8 col-lg-5"
@@ -191,19 +191,6 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
           </span>
         </div>
       </div>
-      <button
-        class="btn btn-success"
-        type="button"
-      >
-        <span />
-        <i
-          class="material-icons"
-        >
-          play_circle_filled
-        </i>
-         
-        Resume
-      </button>
     </div>
   </div>
 </div>
@@ -241,7 +228,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
       class="page-container container-fluid"
     >
       <div
-        class="row mb-5"
+        class="row mb-3"
       >
         <div
           class="col-sm-12 col-md-7 col-lg-4"
@@ -250,18 +237,18 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
             class="alert alert-danger fade"
             role="alert"
           >
-            <b
-              class="heading"
-            >
-              <i
-                class="material-icons mr-3"
+            <span>
+              <b
+                class="alert-heading"
               >
-                error_outline
-              </i>
-              <span>
+                <i
+                  class="material-icons mr-2"
+                >
+                  error_outline
+                </i>
                 Import failed because of permissions issues.
-              </span>
-            </b>
+              </b>
+            </span>
           </div>
         </div>
       </div>
@@ -338,7 +325,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
         </div>
       </div>
       <div
-        class="row no-gutters mb-5"
+        class="row no-gutters"
       >
         <div
           class="col-sm-12 col-md-8 col-lg-5"
@@ -432,7 +419,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
       class="page-container container-fluid"
     >
       <div
-        class="row mb-5"
+        class="row mb-3"
       >
         <div
           class="col-sm-12 col-md-7 col-lg-4"
@@ -441,18 +428,18 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
             class="alert alert-info fade"
             role="alert"
           >
-            <b
-              class="heading"
-            >
-              <i
-                class="material-icons md-spin mr-3"
+            <span>
+              <b
+                class="alert-heading"
               >
-                refresh
-              </i>
-              <span>
+                <i
+                  class="material-icons md-spin mr-2"
+                >
+                  refresh
+                </i>
                 Importing your Zendesk data
-              </span>
-            </b>
+              </b>
+            </span>
           </div>
         </div>
       </div>
@@ -529,7 +516,7 @@ exports[`<ImportZendeskDetail/> rendering should assert snapshot rendered with d
         </div>
       </div>
       <div
-        class="row no-gutters mb-5"
+        class="row no-gutters"
       >
         <div
           class="col-sm-12 col-md-8 col-lg-5"

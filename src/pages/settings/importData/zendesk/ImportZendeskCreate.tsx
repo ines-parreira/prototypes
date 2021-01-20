@@ -15,8 +15,6 @@ import {RootState, StoreDispatch} from '../../../../state/types'
 import {getIntegrationsByTypes} from '../../../../state/integrations/selectors'
 import {IntegrationType} from '../../../../models/integration/types'
 
-import Tooltip from '../../../common/components/Tooltip.js'
-
 import {ZENDESK_CONNECTION_TYPE} from './types'
 
 export const ImportZendeskCreate = (
@@ -75,21 +73,16 @@ export const ImportZendeskCreate = (
             />
 
             <Container fluid className="page-container">
-                <div className="col-sm-13 col-md-9 col-lg-6 pl-0 mt-5 mb-5">
-                    <b>Let's connect your account to Gorgias.</b>
+                <p>
+                    Gorgias will import tickets (one way) up to{' '}
+                    {ZENDESK_IMPORTED_TICKETS_FOR_YEARS} years of history from
+                    your Zendesk account.
                     <br />
-                    We'll import your up to {
-                        ZENDESK_IMPORTED_TICKETS_FOR_YEARS
-                    }{' '}
-                    years of Zendesk's history, customers, macros & tags. Once
-                    the initial import is successful, the data from your Zendesk
-                    account will be synchronizing automatically.
-                </div>
+                    Note: The import is performed one time only it will not sync
+                    your tickets continuously.
+                </p>
 
-                <Form
-                    onSubmit={onSubmit}
-                    className="col-sm-12 col-md-7 col-lg-4 pl-0"
-                >
+                <Form onSubmit={onSubmit}>
                     <InputField
                         type="text"
                         name="domain"
@@ -113,27 +106,16 @@ export const ImportZendeskCreate = (
                         required
                     />
                     <InputField
-                        className="mb-4"
                         type="text"
                         name="apiKey"
-                        label={
-                            <span>
-                                API Key{' '}
-                                <i className="material-icons" id="api-key-info">
-                                    info_outline
-                                </i>
-                            </span>
-                        }
+                        label="API Key"
                         placeholder=""
                         onChange={(value: string) => setApiKey(value)}
                         required
+                        help="In your Zendesk, go to Settings > Channels > API, create a new token named Gorgias Import,
+                        and copy/paste it in the field above."
                     />
 
-                    <Tooltip placement="top-start" target="api-key-info">
-                        In Zendesk, go to Settings / Channels / API, create a
-                        new token named "Gorgias Import", and copy/paste it
-                        here.
-                    </Tooltip>
                     <Button
                         type="submit"
                         color="success"

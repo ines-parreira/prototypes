@@ -50,9 +50,7 @@ describe('<ImportZendeskCreate/>', () => {
         })
 
         it('submit the form to create integration', () => {
-            const {getByLabelText, getByText, container} = renderComponent(
-                defaultProps
-            )
+            const {getByLabelText, getByText} = renderComponent(defaultProps)
             const domain = 'gorgias'
             const apiKey = '123456'
             const email = 'gorgias+test@gorgias.com'
@@ -67,11 +65,9 @@ describe('<ImportZendeskCreate/>', () => {
             fireEvent.change(getByLabelText('Login email'), {
                 target: {value: 'gorgias+test@gorgias.com'},
             })
-
-            fireEvent.change(container.querySelector('#id-apiKey') as Element, {
+            fireEvent.change(getByLabelText('API Key'), {
                 target: {value: '123456'},
             })
-
             expect(
                 (getByText('Start import').closest(
                     'button'

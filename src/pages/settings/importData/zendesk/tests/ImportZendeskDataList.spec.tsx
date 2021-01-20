@@ -34,28 +34,12 @@ describe('<ImportZendeskDataList/>', () => {
             expect(getAllByRole('row').length).toEqual(3)
         })
 
-        it('should render a paused import', () => {
+        it('should render a completed import', () => {
             const {getByText} = renderComponent({
                 ...defaultProps,
                 zendeskImports: fromJS([successImport]),
             })
-            expect(getByText('Paused')).toBeDefined()
-            expect(getByText(successImport.name)).toBeDefined()
-        })
-        it('should render a synchronizing import', () => {
-            const {getByText} = renderComponent({
-                ...defaultProps,
-                zendeskImports: fromJS([
-                    {
-                        ...successImport,
-                        meta: {
-                            ...successImport.meta,
-                            continuous_import_enabled: true,
-                        },
-                    },
-                ]),
-            })
-            expect(getByText('Synchronizing')).toBeDefined()
+            expect(getByText('Completed')).toBeDefined()
             expect(getByText(successImport.name)).toBeDefined()
         })
 

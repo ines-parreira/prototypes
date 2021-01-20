@@ -56,17 +56,16 @@ export const ImportDataContainer = (
                 </Button>
             </PageHeader>
             <Container fluid className="page-container">
-                <div className="mb-5">
+                <div className="mb-3">
                     <p>
                         Import data (one way) from your current helpdesk into
                         Gorgias.
                     </p>
                 </div>
                 <Alert color="info" className="col-md-5">
-                    <i className="material-icons">info_outline</i> When you
-                    activate the integration, 2 years of data will be loaded
-                    from Zendesk at first, then continuous syncing will be
-                    enabled automatically.{' '}
+                    <i className="material-icons">info_outline</i> The import is
+                    performed one time only and will not sync your tickets
+                    continuously. We import only 2 years data from Zendesk.{' '}
                     <a
                         className="text-underline"
                         href="https://docs.gorgias.com/migrating-helpdesks/switching-from-zendesk#how_does_import_work"
