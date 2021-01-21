@@ -10,7 +10,6 @@ exports[`StatsNavbarView should render 1`] = `
     >
       <NavLink
         activeClassName="active"
-        ariaCurrent="true"
         className="item"
         exact={true}
         key="Overview"
@@ -20,7 +19,6 @@ exports[`StatsNavbarView should render 1`] = `
       </NavLink>
       <NavLink
         activeClassName="active"
-        ariaCurrent="true"
         className="item"
         exact={true}
         key="Tags"
@@ -30,7 +28,6 @@ exports[`StatsNavbarView should render 1`] = `
       </NavLink>
       <NavLink
         activeClassName="active"
-        ariaCurrent="true"
         className="item"
         exact={true}
         key="Channels"
@@ -40,7 +37,6 @@ exports[`StatsNavbarView should render 1`] = `
       </NavLink>
       <NavLink
         activeClassName="active"
-        ariaCurrent="true"
         className="item"
         exact={true}
         key="Agents"
@@ -50,7 +46,6 @@ exports[`StatsNavbarView should render 1`] = `
       </NavLink>
       <NavLink
         activeClassName="active"
-        ariaCurrent="true"
         className="item"
         exact={true}
         key="Macros"
@@ -60,7 +55,6 @@ exports[`StatsNavbarView should render 1`] = `
       </NavLink>
       <NavLink
         activeClassName="active"
-        ariaCurrent="true"
         className="item"
         exact={true}
         key="Satisfaction"
@@ -70,7 +64,6 @@ exports[`StatsNavbarView should render 1`] = `
       </NavLink>
       <NavLink
         activeClassName="active"
-        ariaCurrent="true"
         className="item"
         exact={true}
         key="Revenue"

@@ -1,7 +1,7 @@
 import _debounce from 'lodash/debounce'
 import React, {useEffect, useMemo, useCallback, useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {RouteComponentProps, withRouter} from 'react-router-dom'
+import {useHistory, useLocation, useParams} from 'react-router-dom'
 import {useAsyncFn} from 'react-use'
 import {parse} from 'query-string'
 
@@ -59,7 +59,6 @@ import {
     updateAccountSetting,
 } from '../../../models/account'
 import {submitSettingSuccess as submitAccountSettingSuccess} from '../../../state/currentAccount/actions'
-import history from '../../history'
 
 import DeleteSectionModal from './DeleteSectionModal'
 import SectionFormModal from './SectionFormModal'
@@ -70,18 +69,14 @@ export enum TicketNavbarElementType {
     Section = 'section',
 }
 
-type OwnProps = RouteComponentProps<{viewId: string}, any, unknown>
-
 export function TicketNavbarContainer({
     activeViewId,
     activeViewIdSet,
     currentUser,
     fetchViewsSuccess,
-    location,
     notify,
     optimisticAccountSettingsReset,
     optimisticUserSettingsReset,
-    match: {params},
     sectionCreated,
     sectionDeleted,
     sectionUpdated,
@@ -94,7 +89,10 @@ export function TicketNavbarContainer({
     accountSetting,
     userSetting,
     submitSettingSuccess,
-}: OwnProps & ConnectedProps<typeof connector>) {
+}: ConnectedProps<typeof connector>) {
+    const history = useHistory()
+    const location = useLocation()
+    const params = useParams<{viewId?: string}>()
     const [isSectionFormModalOpened, setSectionFormModalOpened] = useState(
         false
     )
@@ -478,4 +476,4 @@ const connector = connect(
     }
 )
 
-export default withRouter(connector(TicketNavbarContainer))
+export default connector(TicketNavbarContainer)
