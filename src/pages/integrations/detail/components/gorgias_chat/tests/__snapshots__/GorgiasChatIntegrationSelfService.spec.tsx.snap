@@ -101,12 +101,19 @@ exports[`<GorgiasChatIntegrationSelfService/> onToggleSelfService() should turn 
             Self-service enables your customers to browse their orders and select the type of issue they are having. It will create a chat ticket for your team to handle.
           </p>
           <div
-            class="mb-3"
+            class="mb-3 d-flex align-items-center"
           >
             <div
               data-testid="toggle-button"
             >
               ToggleButtonMock value=false
+            </div>
+            <div
+              class="ml-3"
+            >
+              <b>
+                Enable Self-service
+              </b>
             </div>
           </div>
         </div>
@@ -225,12 +232,19 @@ exports[`<GorgiasChatIntegrationSelfService/> onToggleSelfService() should turn 
             Self-service enables your customers to browse their orders and select the type of issue they are having. It will create a chat ticket for your team to handle.
           </p>
           <div
-            class="mb-3"
+            class="mb-3 d-flex align-items-center"
           >
             <div
               data-testid="toggle-button"
             >
               ToggleButtonMock value=true
+            </div>
+            <div
+              class="ml-3"
+            >
+              <b>
+                Enable Self-service
+              </b>
             </div>
           </div>
         </div>
@@ -349,12 +363,19 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render defaults be
             Self-service enables your customers to browse their orders and select the type of issue they are having. It will create a chat ticket for your team to handle.
           </p>
           <div
-            class="mb-3"
+            class="mb-3 d-flex align-items-center"
           >
             <div
               data-testid="toggle-button"
             >
               ToggleButtonMock value=false
+            </div>
+            <div
+              class="ml-3"
+            >
+              <b>
+                Enable Self-service
+              </b>
             </div>
           </div>
         </div>
@@ -473,12 +494,19 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the toggle 
             Self-service enables your customers to browse their orders and select the type of issue they are having. It will create a chat ticket for your team to handle.
           </p>
           <div
-            class="mb-3"
+            class="mb-3 d-flex align-items-center"
           >
             <div
               data-testid="toggle-button"
             >
               ToggleButtonMock value=true
+            </div>
+            <div
+              class="ml-3"
+            >
+              <b>
+                Enable Self-service
+              </b>
             </div>
           </div>
         </div>
@@ -597,12 +625,19 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the toggle 
             Self-service enables your customers to browse their orders and select the type of issue they are having. It will create a chat ticket for your team to handle.
           </p>
           <div
-            class="mb-3"
+            class="mb-3 d-flex align-items-center"
           >
             <div
               data-testid="toggle-button"
             >
               ToggleButtonMock value=false
+            </div>
+            <div
+              class="ml-3"
+            >
+              <b>
+                Enable Self-service
+              </b>
             </div>
           </div>
         </div>

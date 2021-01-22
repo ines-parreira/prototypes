@@ -113,7 +113,7 @@ export function GorgiasChatIntegrationSelfServiceComponent({
                                 your team to handle.
                             </p>
 
-                            <div className="mb-3">
+                            <div className="mb-3 d-flex align-items-center">
                                 <ToggleButton
                                     className={classnames({
                                         'btn-loading': isUpdating,
@@ -124,6 +124,9 @@ export function GorgiasChatIntegrationSelfServiceComponent({
                                     onChange={onToggleSelfService}
                                     value={selfServiceEnabled}
                                 />
+                                <div className="ml-3">
+                                    <b>Enable Self-service</b>
+                                </div>
                             </div>
                         </div>
                     </Col>
