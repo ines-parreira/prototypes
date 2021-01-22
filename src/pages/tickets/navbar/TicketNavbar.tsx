@@ -177,7 +177,11 @@ export function TicketNavbarContainer({
                     : allViews[nextIndex]
 
             activeViewIdSet(nextView.id)
-            updateUrl(`/app/tickets/${nextView.id}/${nextView.slug}`)
+            updateUrl(
+                `/app/tickets/${nextView.id}/${encodeURIComponent(
+                    nextView.slug
+                )}`
+            )
         },
         [activeViewId, allViews]
     )

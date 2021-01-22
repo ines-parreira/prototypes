@@ -261,7 +261,9 @@ export function submitView(view: ViewImmutable) {
                         })
 
                         history.push(
-                            `/app/${objectName}/${resp.id}/${resp.slug}`
+                            `/app/${objectName}/${resp.id}/${encodeURIComponent(
+                                resp.slug
+                            )}`
                         )
                     }
                     return Promise.resolve(resp)

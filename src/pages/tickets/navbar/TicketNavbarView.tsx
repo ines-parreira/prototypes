@@ -111,7 +111,9 @@ export function TicketNavbarViewContainer({
                                     ? `${MAX_TICKET_COUNT_PER_VIEW - 1}+`
                                     : count
                             }`}
-                            to={`/app/tickets/${view.id}/${view.slug}`}
+                            to={`/app/tickets/${view.id}/${encodeURIComponent(
+                                view.slug
+                            )}`}
                             onClick={() => activeViewIdSet(view.id)}
                         >
                             <span
