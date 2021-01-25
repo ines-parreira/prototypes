@@ -6,7 +6,7 @@ import {Provider} from 'react-redux'
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
-import Order, {statusColors} from '../Order'
+import Order, {statusColors} from '../Order.tsx'
 
 const mockStore = configureMockStore([thunk])
 

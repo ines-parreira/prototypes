@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Order <AfterContent/> render() should display credit memos with links because there is an admin url suffix 1`] = `
-<Connect(AfterContent)
+<Connect(AfterContentContainer)
   source={
     Immutable.Map {
       "customer_id": 1,
@@ -9,7 +9,7 @@ exports[`Order <AfterContent/> render() should display credit memos with links b
     }
   }
 >
-  <AfterContent
+  <AfterContentContainer
     dispatch={[Function]}
     getIntegrationData={[Function]}
     source={
@@ -22,7 +22,7 @@ exports[`Order <AfterContent/> render() should display credit memos with links b
     <div
       className="mt-3"
     >
-      <Connect(CreditMemos)
+      <Connect(CreditMemosContainer)
         creditMemos={
           Immutable.List [
             Immutable.Map {
@@ -51,7 +51,7 @@ exports[`Order <AfterContent/> render() should display credit memos with links b
           ]
         }
       >
-        <CreditMemos
+        <CreditMemosContainer
           creditMemos={
             Immutable.List [
               Immutable.Map {
@@ -241,15 +241,15 @@ exports[`Order <AfterContent/> render() should display credit memos with links b
               </div>
             </CardBody>
           </div>
-        </CreditMemos>
-      </Connect(CreditMemos)>
+        </CreditMemosContainer>
+      </Connect(CreditMemosContainer)>
     </div>
-  </AfterContent>
-</Connect(AfterContent)>
+  </AfterContentContainer>
+</Connect(AfterContentContainer)>
 `;
 
 exports[`Order <AfterContent/> render() should display credit memos without links because there is no admin url suffix 1`] = `
-<Connect(AfterContent)
+<Connect(AfterContentContainer)
   source={
     Immutable.Map {
       "customer_id": 1,
@@ -257,7 +257,7 @@ exports[`Order <AfterContent/> render() should display credit memos without link
     }
   }
 >
-  <AfterContent
+  <AfterContentContainer
     dispatch={[Function]}
     getIntegrationData={[Function]}
     source={
@@ -270,7 +270,7 @@ exports[`Order <AfterContent/> render() should display credit memos without link
     <div
       className="mt-3"
     >
-      <Connect(CreditMemos)
+      <Connect(CreditMemosContainer)
         creditMemos={
           Immutable.List [
             Immutable.Map {
@@ -299,7 +299,7 @@ exports[`Order <AfterContent/> render() should display credit memos without link
           ]
         }
       >
-        <CreditMemos
+        <CreditMemosContainer
           creditMemos={
             Immutable.List [
               Immutable.Map {
@@ -489,15 +489,15 @@ exports[`Order <AfterContent/> render() should display credit memos without link
               </div>
             </CardBody>
           </div>
-        </CreditMemos>
-      </Connect(CreditMemos)>
+        </CreditMemosContainer>
+      </Connect(CreditMemosContainer)>
     </div>
-  </AfterContent>
-</Connect(AfterContent)>
+  </AfterContentContainer>
+</Connect(AfterContentContainer)>
 `;
 
 exports[`Order <BeforeContent/> render() should display shipments with links because there is an admin url suffix 1`] = `
-<Connect(BeforeContent)
+<Connect(BeforeContentContainer)
   source={
     Immutable.Map {
       "customer_id": 1,
@@ -507,7 +507,7 @@ exports[`Order <BeforeContent/> render() should display shipments with links bec
     }
   }
 >
-  <BeforeContent
+  <BeforeContentContainer
     dispatch={[Function]}
     getIntegrationData={[Function]}
     source={
@@ -563,7 +563,7 @@ exports[`Order <BeforeContent/> render() should display shipments with links bec
       <div
         className="mt-3"
       >
-        <Connect(Shipments)
+        <Connect(ShipmentsContainer)
           shipments={
             Immutable.List [
               Immutable.Map {
@@ -611,7 +611,7 @@ exports[`Order <BeforeContent/> render() should display shipments with links bec
             ]
           }
         >
-          <Shipments
+          <ShipmentsContainer
             currentUserTimezone={null}
             dispatch={[Function]}
             shipments={
@@ -912,16 +912,16 @@ exports[`Order <BeforeContent/> render() should display shipments with links bec
                 </div>
               </CardBody>
             </div>
-          </Shipments>
-        </Connect(Shipments)>
+          </ShipmentsContainer>
+        </Connect(ShipmentsContainer)>
       </div>
     </div>
-  </BeforeContent>
-</Connect(BeforeContent)>
+  </BeforeContentContainer>
+</Connect(BeforeContentContainer)>
 `;
 
 exports[`Order <BeforeContent/> render() should display shipments without links because there is no admin url suffix 1`] = `
-<Connect(BeforeContent)
+<Connect(BeforeContentContainer)
   source={
     Immutable.Map {
       "customer_id": 1,
@@ -931,7 +931,7 @@ exports[`Order <BeforeContent/> render() should display shipments without links 
     }
   }
 >
-  <BeforeContent
+  <BeforeContentContainer
     dispatch={[Function]}
     getIntegrationData={[Function]}
     source={
@@ -987,7 +987,7 @@ exports[`Order <BeforeContent/> render() should display shipments without links 
       <div
         className="mt-3"
       >
-        <Connect(Shipments)
+        <Connect(ShipmentsContainer)
           shipments={
             Immutable.List [
               Immutable.Map {
@@ -1035,7 +1035,7 @@ exports[`Order <BeforeContent/> render() should display shipments without links 
             ]
           }
         >
-          <Shipments
+          <ShipmentsContainer
             currentUserTimezone={null}
             dispatch={[Function]}
             shipments={
@@ -1336,12 +1336,12 @@ exports[`Order <BeforeContent/> render() should display shipments without links 
                 </div>
               </CardBody>
             </div>
-          </Shipments>
-        </Connect(Shipments)>
+          </ShipmentsContainer>
+        </Connect(ShipmentsContainer)>
       </div>
     </div>
-  </BeforeContent>
-</Connect(BeforeContent)>
+  </BeforeContentContainer>
+</Connect(BeforeContentContainer)>
 `;
 
 exports[`Order <BeforeContent/> render() should render the state and an empty created at date but no shipments because there are none 1`] = `
@@ -1357,7 +1357,7 @@ exports[`Order <BeforeContent/> render() should render the state and an empty cr
     }
   }
 >
-  <Connect(BeforeContent)
+  <Connect(BeforeContentContainer)
     source={
       Immutable.Map {
         "customer_id": 1,
@@ -1366,7 +1366,7 @@ exports[`Order <BeforeContent/> render() should render the state and an empty cr
       }
     }
   >
-    <BeforeContent
+    <BeforeContentContainer
       dispatch={[Function]}
       getIntegrationData={[Function]}
       source={
@@ -1420,8 +1420,8 @@ exports[`Order <BeforeContent/> render() should render the state and an empty cr
           className="mt-3"
         />
       </div>
-    </BeforeContent>
-  </Connect(BeforeContent)>
+    </BeforeContentContainer>
+  </Connect(BeforeContentContainer)>
 </Provider>
 `;
 
@@ -1438,7 +1438,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the canc
     }
   }
 >
-  <Connect(BeforeContent)
+  <Connect(BeforeContentContainer)
     source={
       Immutable.Map {
         "customer_id": 1,
@@ -1448,7 +1448,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the canc
       }
     }
   >
-    <BeforeContent
+    <BeforeContentContainer
       dispatch={[Function]}
       getIntegrationData={[Function]}
       source={
@@ -1505,8 +1505,8 @@ exports[`Order <BeforeContent/> render() should render with a label for the canc
           className="mt-3"
         />
       </div>
-    </BeforeContent>
-  </Connect(BeforeContent)>
+    </BeforeContentContainer>
+  </Connect(BeforeContentContainer)>
 </Provider>
 `;
 
@@ -1523,7 +1523,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the clos
     }
   }
 >
-  <Connect(BeforeContent)
+  <Connect(BeforeContentContainer)
     source={
       Immutable.Map {
         "customer_id": 1,
@@ -1533,7 +1533,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the clos
       }
     }
   >
-    <BeforeContent
+    <BeforeContentContainer
       dispatch={[Function]}
       getIntegrationData={[Function]}
       source={
@@ -1590,8 +1590,8 @@ exports[`Order <BeforeContent/> render() should render with a label for the clos
           className="mt-3"
         />
       </div>
-    </BeforeContent>
-  </Connect(BeforeContent)>
+    </BeforeContentContainer>
+  </Connect(BeforeContentContainer)>
 </Provider>
 `;
 
@@ -1608,7 +1608,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the comp
     }
   }
 >
-  <Connect(BeforeContent)
+  <Connect(BeforeContentContainer)
     source={
       Immutable.Map {
         "customer_id": 1,
@@ -1618,7 +1618,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the comp
       }
     }
   >
-    <BeforeContent
+    <BeforeContentContainer
       dispatch={[Function]}
       getIntegrationData={[Function]}
       source={
@@ -1675,8 +1675,8 @@ exports[`Order <BeforeContent/> render() should render with a label for the comp
           className="mt-3"
         />
       </div>
-    </BeforeContent>
-  </Connect(BeforeContent)>
+    </BeforeContentContainer>
+  </Connect(BeforeContentContainer)>
 </Provider>
 `;
 
@@ -1693,7 +1693,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the new 
     }
   }
 >
-  <Connect(BeforeContent)
+  <Connect(BeforeContentContainer)
     source={
       Immutable.Map {
         "customer_id": 1,
@@ -1703,7 +1703,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the new 
       }
     }
   >
-    <BeforeContent
+    <BeforeContentContainer
       dispatch={[Function]}
       getIntegrationData={[Function]}
       source={
@@ -1760,8 +1760,8 @@ exports[`Order <BeforeContent/> render() should render with a label for the new 
           className="mt-3"
         />
       </div>
-    </BeforeContent>
-  </Connect(BeforeContent)>
+    </BeforeContentContainer>
+  </Connect(BeforeContentContainer)>
 </Provider>
 `;
 
@@ -1778,7 +1778,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the on_h
     }
   }
 >
-  <Connect(BeforeContent)
+  <Connect(BeforeContentContainer)
     source={
       Immutable.Map {
         "customer_id": 1,
@@ -1788,7 +1788,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the on_h
       }
     }
   >
-    <BeforeContent
+    <BeforeContentContainer
       dispatch={[Function]}
       getIntegrationData={[Function]}
       source={
@@ -1845,8 +1845,8 @@ exports[`Order <BeforeContent/> render() should render with a label for the on_h
           className="mt-3"
         />
       </div>
-    </BeforeContent>
-  </Connect(BeforeContent)>
+    </BeforeContentContainer>
+  </Connect(BeforeContentContainer)>
 </Provider>
 `;
 
@@ -1863,7 +1863,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the pend
     }
   }
 >
-  <Connect(BeforeContent)
+  <Connect(BeforeContentContainer)
     source={
       Immutable.Map {
         "customer_id": 1,
@@ -1873,7 +1873,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the pend
       }
     }
   >
-    <BeforeContent
+    <BeforeContentContainer
       dispatch={[Function]}
       getIntegrationData={[Function]}
       source={
@@ -1930,8 +1930,8 @@ exports[`Order <BeforeContent/> render() should render with a label for the pend
           className="mt-3"
         />
       </div>
-    </BeforeContent>
-  </Connect(BeforeContent)>
+    </BeforeContentContainer>
+  </Connect(BeforeContentContainer)>
 </Provider>
 `;
 
@@ -1948,7 +1948,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the proc
     }
   }
 >
-  <Connect(BeforeContent)
+  <Connect(BeforeContentContainer)
     source={
       Immutable.Map {
         "customer_id": 1,
@@ -1958,7 +1958,7 @@ exports[`Order <BeforeContent/> render() should render with a label for the proc
       }
     }
   >
-    <BeforeContent
+    <BeforeContentContainer
       dispatch={[Function]}
       getIntegrationData={[Function]}
       source={
@@ -2015,8 +2015,8 @@ exports[`Order <BeforeContent/> render() should render with a label for the proc
           className="mt-3"
         />
       </div>
-    </BeforeContent>
-  </Connect(BeforeContent)>
+    </BeforeContentContainer>
+  </Connect(BeforeContentContainer)>
 </Provider>
 `;
 

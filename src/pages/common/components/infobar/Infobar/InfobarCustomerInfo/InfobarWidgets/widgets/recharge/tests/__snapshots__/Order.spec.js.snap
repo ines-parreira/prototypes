@@ -276,7 +276,6 @@ exports[`Order <BeforeContent/> should render with the total_refunds field from 
 
 exports[`Order <TitleWrapper/> should not render any link because no customer hash was passed 1`] = `
 <a
-  href={null}
   rel="noopener noreferrer"
   target="_blank"
 />

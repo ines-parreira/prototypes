@@ -1,32 +1,29 @@
-// @flow
-import React, {type Node} from 'react'
-import {fromJS, type Map} from 'immutable'
+import React, {ReactNode} from 'react'
+import {fromJS, Map, List} from 'immutable'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import {Badge} from 'reactstrap'
 
-import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../../../../state/customers/selectors.ts'
+import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../../../../state/customers/selectors'
 import {
     devLog,
     humanizeString,
     isCurrentlyOnTicket,
-} from '../../../../../../../../../utils.ts'
-import * as ticketSelectors from '../../../../../../../../../state/ticket/selectors.ts'
-import {renderTemplate} from '../../../../../../../utils/template'
-import {DatetimeLabel} from '../../../../../../../utils/labels'
-import ActionButtonsGroup from '../ActionButtonsGroup'
-import {CardHeaderDetails} from '../CardHeaderDetails'
-import {CardHeaderValue} from '../CardHeaderValue'
-import type {ActionType} from '../types'
+} from '../../../../../../../../../utils'
+import {getIntegrationDataByIntegrationId} from '../../../../../../../../../state/ticket/selectors'
+import {renderTemplate} from '../../../../../../../utils/template.js'
+import {DatetimeLabel} from '../../../../../../../utils/labels.js'
+import {RootState} from '../../../../../../../../../state/types'
+import ActionButtonsGroup from '../ActionButtonsGroup.js'
+import {CardHeaderDetails} from '../CardHeaderDetails.js'
+import {CardHeaderValue} from '../CardHeaderValue.js'
 
-const makeGetIntegrationData = (state) => {
+const makeGetIntegrationData = (state: RootState) => {
     return {
-        getIntegrationData: (integrationId, customerId) => {
+        getIntegrationData: (integrationId: string, customerId: string) => {
             const integrationData = isCurrentlyOnTicket()
-                ? ticketSelectors.getIntegrationDataByIntegrationId(
-                      integrationId
-                  )(state)
+                ? getIntegrationDataByIntegrationId(integrationId as any)(state)
                 : getActiveCustomerIntegrationDataByIntegrationId(
                       integrationId
                   )(state)
@@ -39,7 +36,7 @@ const makeGetIntegrationData = (state) => {
                         integrationId,
                     }
                 )
-                return fromJS({})
+                return fromJS({}) as Map<any, any>
             }
 
             return integrationData
@@ -57,10 +54,9 @@ export default function Order() {
 }
 
 type AfterTitleProps = {
-    isEditing: boolean,
-    source: Map<*, *>,
-    getIntegrationData: (number, number) => Map<*, *>,
-}
+    isEditing: boolean
+    source: Map<any, any>
+} & ConnectedProps<typeof connectorAfterTitle>
 
 export class AfterTitle extends React.Component<AfterTitleProps> {
     static contextTypes = {
@@ -78,10 +74,10 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
             isOrderRefunded,
             isChargeRefundable,
         }: {
-            integrationId: number,
-            isOrderCancelled: boolean,
-            isOrderRefunded: boolean,
-            isChargeRefundable: boolean,
+            integrationId: number
+            isOrderCancelled: boolean
+            isOrderRefunded: boolean
+            isChargeRefundable: boolean
         } = this.context
 
         const orderTotalPrice: number = parseFloat(
@@ -89,19 +85,20 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
         )
 
         const charges = getIntegrationData(
-            integrationId,
+            integrationId as any,
             source.get('customer_id')
-        ).get('charges')
+        ).get('charges') as List<any>
         const associatedCharge = charges
-            ? charges.find(
-                  (charge) => charge.get('id') === source.get('charge_id')
-              )
+            ? (charges.find(
+                  (charge: Map<any, any>) =>
+                      charge.get('id') === source.get('charge_id')
+              ) as Map<any, any>)
             : null
         const chargeTotalRefunds: number = associatedCharge
             ? parseFloat(associatedCharge.get('total_refunds') || '0')
             : 0
 
-        let actions: Array<ActionType> = [
+        const actions = [
             {
                 key: 'refund',
                 options: [
@@ -145,7 +142,7 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
             },
         ]
 
-        let ignoredActions = []
+        let ignoredActions: string[] = []
         if (isOrderCancelled || isOrderRefunded || !isChargeRefundable) {
             ignoredActions = ['refund']
         }
@@ -166,7 +163,9 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
             order_id: source.get('id'),
         }
 
-        const chargeStatus = (source.get('charge_status') || '').toLowerCase()
+        const chargeStatus = (
+            (source.get('charge_status') as string) || ''
+        ).toLowerCase() as keyof typeof chargeStatusColors
 
         return (
             <>
@@ -196,7 +195,9 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
     }
 }
 
-const ConnectedAfterTitle = connect(makeGetIntegrationData)(AfterTitle)
+const connectorAfterTitle = connect(makeGetIntegrationData)
+
+const ConnectedAfterTitle = connectorAfterTitle(AfterTitle)
 
 const chargeStatusColors = {
     success: 'success',
@@ -208,9 +209,8 @@ const chargeStatusColors = {
 }
 
 type BeforeContentProps = {
-    source: Map<*, *>,
-    getIntegrationData: (number, number) => Map<*, *>,
-}
+    source: Map<any, any>
+} & ConnectedProps<typeof connectorBeforeContent>
 
 export class BeforeContent extends React.Component<BeforeContentProps> {
     static contextTypes = {
@@ -223,11 +223,12 @@ export class BeforeContent extends React.Component<BeforeContentProps> {
         const charges = getIntegrationData(
             integrationId,
             source.get('customer_id')
-        ).get('charges')
+        ).get('charges') as List<any>
         const associatedCharge = charges
-            ? charges.find(
-                  (charge) => charge.get('id') === source.get('charge_id')
-              )
+            ? (charges.find(
+                  (charge: Map<any, any>) =>
+                      charge.get('id') === source.get('charge_id')
+              ) as Map<any, any>)
             : null
         const chargeTotalRefunds = associatedCharge
             ? associatedCharge.get('total_refunds')
@@ -244,14 +245,15 @@ export class BeforeContent extends React.Component<BeforeContentProps> {
     }
 }
 
-const ConnectedBeforeContent = connect(makeGetIntegrationData)(BeforeContent)
+const connectorBeforeContent = connect(makeGetIntegrationData)
+
+const ConnectedBeforeContent = connectorBeforeContent(BeforeContent)
 
 type TitleWrapperProps = {
-    children: ?Node,
-    source: Map<*, *>,
-    template: Map<*, *>,
-    getIntegrationData: (number, number) => Map<*, *>,
-}
+    children: ReactNode | null
+    source: Map<any, any>
+    template: Map<any, any>
+} & ConnectedProps<typeof connectorTitleWrapper>
 
 export class TitleWrapper extends React.Component<TitleWrapperProps> {
     static contextTypes = {
@@ -260,20 +262,20 @@ export class TitleWrapper extends React.Component<TitleWrapperProps> {
 
     render() {
         const {children, source, getIntegrationData, template} = this.props
-        const {integration} = this.context
-        const storeName = integration.getIn(['meta', 'store_name'])
+        const {integration} = this.context as {integration: Map<any, any>}
+        const storeName = integration.getIn(['meta', 'store_name']) as string
         const customerHash = getIntegrationData(
             integration.get('id'),
             source.get('customer_id')
-        ).getIn(['customer', 'hash'])
-        const orderId = source.get('id')
+        ).getIn(['customer', 'hash']) as string
+        const orderId = source.get('id') as string
 
-        let link = null
+        let link = undefined
 
         if (customerHash) {
             link = `https://${storeName}.myshopify.com/tools/recurring/customers/${customerHash}/orders/${orderId}`
 
-            let customLink = template.getIn(['meta', 'link'])
+            const customLink = template.getIn(['meta', 'link']) as string
 
             if (customLink) {
                 link = renderTemplate(
@@ -291,11 +293,13 @@ export class TitleWrapper extends React.Component<TitleWrapperProps> {
     }
 }
 
-const ConnectedTitleWrapper = connect(makeGetIntegrationData)(TitleWrapper)
+const connectorTitleWrapper = connect(makeGetIntegrationData)
+
+const ConnectedTitleWrapper = connectorTitleWrapper(TitleWrapper)
 
 type WrapperProps = {
-    children: Node,
-    source: Map<*, *>,
+    children: ReactNode
+    source: Map<any, any>
 }
 
 class Wrapper extends React.Component<WrapperProps> {
@@ -314,7 +318,7 @@ class Wrapper extends React.Component<WrapperProps> {
         const isOrderCancelled = order.get('status') === 'cancelled'
 
         const isChargeRefundable = ['success', 'partially_refunded'].includes(
-            (order.get('charge_status') || '').toLowerCase()
+            ((order.get('charge_status') as string) || '').toLowerCase()
         )
 
         return {

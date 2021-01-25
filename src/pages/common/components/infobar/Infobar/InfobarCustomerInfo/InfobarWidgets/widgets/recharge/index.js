@@ -1,7 +1,7 @@
-import Customer from './Customer'
-import Charge from './Charge'
-import Order from './Order'
-import Subscription from './Subscription'
+import Customer from './Customer.tsx'
+import Charge from './Charge.tsx'
+import Order from './Order.tsx'
+import Subscription from './Subscription.tsx'
 
 const recharge = (args) => {
     const path = args.template.get('absolutePath', []).join('.')

@@ -1,25 +1,28 @@
-// @flow
-import React from 'react'
-import {connect} from 'react-redux'
+import React, {ChangeEvent} from 'react'
+import {connect, ConnectedProps} from 'react-redux'
 import classnames from 'classnames'
+import {Map} from 'immutable'
 
-import * as customerActions from '../../../../../../../state/customers/actions.ts'
-import * as segmentTracker from '../../../../../../../store/middlewares/segmentTracker'
-import {countLines} from '../../../../../../../utils/string.ts'
+import {submitCustomer} from '../../../../../../../state/customers/actions'
+import {
+    EVENTS,
+    logEvent,
+} from '../../../../../../../store/middlewares/segmentTracker.js'
+import {countLines} from '../../../../../../../utils/string'
 
 import css from './CustomerNote.less'
 
-type Props = {
-    customer: Map<*, *>,
-    submitCustomer: (Object, ?number) => Promise<*>,
-    mergeTicketCustomer: (Object) => void,
+type OwnProps = {
+    customer: Map<any, any>
 }
 
+type Props = OwnProps & ConnectedProps<typeof connector>
+
 type State = {
-    note: string,
-    isLoading: boolean,
-    isError: boolean,
-    isDirty: boolean,
+    note: string
+    isLoading: boolean
+    isError: boolean
+    isDirty: boolean
 }
 
 export class CustomerNote extends React.Component<Props, State> {
@@ -39,10 +42,15 @@ export class CustomerNote extends React.Component<Props, State> {
         })
     }
 
-    _updateNote = async (event: SyntheticEvent<HTMLInputElement>) => {
-        await this.setState({
-            note: event.currentTarget.value,
-            isDirty: true,
+    _updateNote = async (event: ChangeEvent<HTMLTextAreaElement>) => {
+        await new Promise((resolve) => {
+            this.setState(
+                {
+                    note: event.currentTarget.value,
+                    isDirty: true,
+                },
+                resolve
+            )
         })
     }
 
@@ -54,13 +62,12 @@ export class CustomerNote extends React.Component<Props, State> {
             return
         }
 
-        segmentTracker.logEvent(segmentTracker.EVENTS.CUSTOMER_NOTE_EDITED)
+        logEvent(EVENTS.CUSTOMER_NOTE_EDITED)
 
         this.setState({isLoading: true})
 
         try {
-            // $FlowFixMe
-            await submitCustomer({note}, customer.get('id'))
+            await submitCustomer({note} as any, customer.get('id'))
         } catch (err) {
             this.setState({isLoading: false, isError: true})
             setTimeout(() => this.setState({isError: false}), 2000)
@@ -120,6 +127,8 @@ export class CustomerNote extends React.Component<Props, State> {
     }
 }
 
-export default connect(null, {
-    submitCustomer: customerActions.submitCustomer,
-})(CustomerNote)
+const connector = connect(null, {
+    submitCustomer,
+})
+
+export default connector(CustomerNote)

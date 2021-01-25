@@ -1,33 +1,31 @@
-// @flow
-
-import React from 'react'
-import {shallow} from 'enzyme'
+import React, {ComponentProps} from 'react'
+import {shallow, ShallowWrapper} from 'enzyme'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import {Form} from 'reactstrap'
 
-import {getCancelOrderState} from '../../../../../../../../../../../../state/infobarActions/shopify/cancelOrder/selectors.ts'
-import {getIntegrationsByTypes} from '../../../../../../../../../../../../state/integrations/selectors.ts'
-import {integrationsStateWithShopify} from '../../../../../../../../../../../../fixtures/integrations.ts'
+import {IntegrationType} from '../../../../../../../../../../../../models/integration/types'
+import {getCancelOrderState} from '../../../../../../../../../../../../state/infobarActions/shopify/cancelOrder/selectors'
+import {getIntegrationsByTypes} from '../../../../../../../../../../../../state/integrations/selectors'
+import {integrationsStateWithShopify} from '../../../../../../../../../../../../fixtures/integrations'
 import {
     cancelOrderStateFixture,
     infobarActionsStateFixture,
-} from '../../../../../../../../../../../../fixtures/infobarActions.ts'
-import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../../constants/integration.ts'
+} from '../../../../../../../../../../../../fixtures/infobarActions'
 import {
     shopifyLineItemFixture,
     shopifyOrderFixture,
     shopifyRefundOrderPayloadFixture,
     shopifySuggestedRefundFixture,
-} from '../../../../../../../../../../../../fixtures/shopify.ts'
+} from '../../../../../../../../../../../../fixtures/shopify'
 import CancelOrderModal, {CancelOrderModalComponent} from '../CancelOrderModal'
-import {ShopifyAction} from '../../../constants'
+import {ShopifyAction} from '../../../constants.js'
 import {
     getFinalCancelOrderPayload,
     initRefundOrderLineItems,
     initCancelOrderPayload,
-} from '../../../../../../../../../../../../business/shopify/order.ts'
+} from '../../../../../../../../../../../../business/shopify/order'
 
 function initActions() {
     return {
@@ -38,7 +36,7 @@ function initActions() {
             .mockImplementation(
                 (
                     name: string,
-                    value: string | number | boolean | Object,
+                    value: string | number | boolean | Record<string, unknown>,
                     callback?: () => void
                 ) => {
                     if (callback) {
@@ -60,7 +58,7 @@ function initActions() {
 describe('<CancelOrderModal/>', () => {
     const middlewares = [thunk]
     const mockStore = configureMockStore(middlewares)
-    let actions
+    let actions: ReturnType<typeof initActions>
 
     beforeEach(() => {
         actions = initActions()
@@ -75,7 +73,7 @@ describe('<CancelOrderModal/>', () => {
 
             const component = shallow(
                 <CancelOrderModal
-                    store={store}
+                    {...({store} as any)}
                     header="Cancel order"
                     isOpen={false}
                     data={{
@@ -97,7 +95,7 @@ describe('<CancelOrderModal/>', () => {
 
             const component = shallow(
                 <CancelOrderModal
-                    store={store}
+                    {...({store} as any)}
                     header="Cancel order"
                     isOpen
                     data={{
@@ -117,7 +115,7 @@ describe('<CancelOrderModalComponent/>', () => {
     const middlewares = [thunk]
     const mockStore = configureMockStore(middlewares)
     const context = {integrationId: 1}
-    let actions
+    let actions: ReturnType<typeof initActions>
 
     beforeEach(() => {
         actions = initActions()
@@ -130,12 +128,12 @@ describe('<CancelOrderModalComponent/>', () => {
                 infobarActions: infobarActionsStateFixture(),
             })
 
-            const state = store.getState()
+            const state: any = store.getState()
 
             const component = shallow(
                 <CancelOrderModalComponent
                     integrations={getIntegrationsByTypes([
-                        SHOPIFY_INTEGRATION_TYPE,
+                        IntegrationType.ShopifyIntegrationType,
                     ])(state)}
                     loading={getCancelOrderState(state).get('loading')}
                     loadingMessage={getCancelOrderState(state).get(
@@ -164,12 +162,12 @@ describe('<CancelOrderModalComponent/>', () => {
                 infobarActions: infobarActionsStateFixture(),
             })
 
-            const state = store.getState()
+            const state: any = store.getState()
 
             const component = shallow(
                 <CancelOrderModalComponent
                     integrations={getIntegrationsByTypes([
-                        SHOPIFY_INTEGRATION_TYPE,
+                        IntegrationType.ShopifyIntegrationType,
                     ])(state)}
                     loading={getCancelOrderState(state).get('loading')}
                     loadingMessage={getCancelOrderState(state).get(
@@ -197,8 +195,8 @@ describe('<CancelOrderModalComponent/>', () => {
             const payload = initCancelOrderPayload(order)
             const lineItems = initRefundOrderLineItems(order)
             const cancelOrderState = cancelOrderStateFixture({
-                payload,
-                lineItems,
+                payload: payload as any,
+                lineItems: lineItems as any,
             })
 
             const store = mockStore({
@@ -206,12 +204,12 @@ describe('<CancelOrderModalComponent/>', () => {
                 infobarActions: infobarActionsStateFixture({cancelOrderState}),
             })
 
-            const state = store.getState()
+            const state: any = store.getState()
 
             const component = shallow(
                 <CancelOrderModalComponent
                     integrations={getIntegrationsByTypes([
-                        SHOPIFY_INTEGRATION_TYPE,
+                        IntegrationType.ShopifyIntegrationType,
                     ])(state)}
                     loading={getCancelOrderState(state).get('loading')}
                     loadingMessage={getCancelOrderState(state).get(
@@ -237,20 +235,24 @@ describe('<CancelOrderModalComponent/>', () => {
 
     describe('actions', () => {
         let order
-        let payload
-        let refund
-        let component
+        let payload: Map<any, any>
+        let refund: Map<any, any>
+        let component: ShallowWrapper<
+            ComponentProps<typeof CancelOrderModalComponent>,
+            any,
+            CancelOrderModalComponent
+        >
 
         beforeEach(() => {
             order = fromJS(shopifyOrderFixture())
-            payload = initCancelOrderPayload(order)
+            payload = initCancelOrderPayload(order) as any
             refund = fromJS(shopifySuggestedRefundFixture())
 
             const lineItems = initRefundOrderLineItems(order)
             const cancelOrderState = cancelOrderStateFixture({
-                payload,
-                lineItems,
-                refund,
+                payload: payload as any,
+                lineItems: lineItems as any,
+                refund: refund as any,
             })
 
             const store = mockStore({
@@ -258,12 +260,12 @@ describe('<CancelOrderModalComponent/>', () => {
                 infobarActions: infobarActionsStateFixture({cancelOrderState}),
             })
 
-            const state = store.getState()
+            const state: any = store.getState()
 
             component = shallow(
                 <CancelOrderModalComponent
                     integrations={getIntegrationsByTypes([
-                        SHOPIFY_INTEGRATION_TYPE,
+                        IntegrationType.ShopifyIntegrationType,
                     ])(state)}
                     loading={getCancelOrderState(state).get('loading')}
                     loadingMessage={getCancelOrderState(state).get(
@@ -281,7 +283,7 @@ describe('<CancelOrderModalComponent/>', () => {
                     {...actions}
                 />,
                 {context}
-            )
+            ) as any
         })
 
         describe('_onLineItemsChange()', () => {
@@ -298,9 +300,9 @@ describe('<CancelOrderModalComponent/>', () => {
 
         describe('_onRefundPayloadChange()', () => {
             it('should call onPayloadChange()', () => {
-                const refundPayload = fromJS(
+                const refundPayload = (fromJS(
                     shopifyRefundOrderPayloadFixture()
-                ).setIn(['transactions', 0, 'amount'], '9.99')
+                ) as Map<any, any>).setIn(['transactions', 0, 'amount'], '9.99')
 
                 component.instance()._onRefundPayloadChange(refundPayload)
 
@@ -314,9 +316,9 @@ describe('<CancelOrderModalComponent/>', () => {
 
         describe('_setRefundPayload()', () => {
             it('should call setPayload()', () => {
-                const refundPayload = fromJS(
+                const refundPayload = (fromJS(
                     shopifyRefundOrderPayloadFixture()
-                ).setIn(['transactions', 0, 'amount'], '9.99')
+                ) as Map<any, any>).setIn(['transactions', 0, 'amount'], '9.99')
 
                 component.instance()._setRefundPayload(refundPayload)
 
@@ -327,7 +329,7 @@ describe('<CancelOrderModalComponent/>', () => {
 
         describe('_onReasonChange()', () => {
             it('should call setPayload()', () => {
-                const event = ({target: {value: 'fraud'}}: any)
+                const event = {target: {value: 'fraud'}} as any
                 component.instance()._onReasonChange(event)
 
                 const newPayload = payload
@@ -340,7 +342,7 @@ describe('<CancelOrderModalComponent/>', () => {
 
         describe('_onNotifyChange()', () => {
             it('should call setPayload()', () => {
-                const event = ({target: {checked: false}}: any)
+                const event = {target: {checked: false}} as any
                 component.instance()._onNotifyChange(event)
 
                 const newPayload = payload.set('email', false)
@@ -355,12 +357,12 @@ describe('<CancelOrderModalComponent/>', () => {
                     .find(Form)
                     .at(0)
                     .simulate('submit', {
-                        preventDefault: () => {},
+                        preventDefault: () => undefined,
                     })
 
                 const finalPayload = getFinalCancelOrderPayload(
-                    payload,
-                    refund
+                    payload as any,
+                    refund as any
                 ).toJS()
 
                 expect(actions.onChange).toHaveBeenCalledWith(

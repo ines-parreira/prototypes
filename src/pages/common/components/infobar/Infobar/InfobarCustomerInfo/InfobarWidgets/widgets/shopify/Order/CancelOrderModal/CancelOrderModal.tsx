@@ -1,11 +1,9 @@
-// @flow
-
-import React from 'react'
+import React, {ChangeEvent, FormEvent} from 'react'
 import PropTypes from 'prop-types'
 import classnames from 'classnames'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import {Button, Form, ModalFooter} from 'reactstrap'
-import {fromJS, type List, type Record} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 
 import {
     onCancel,
@@ -14,53 +12,27 @@ import {
     onPayloadChange,
     onReset,
     setPayload,
-} from '../../../../../../../../../../../state/infobarActions/shopify/cancelOrder/actions.ts'
-import {getCancelOrderState} from '../../../../../../../../../../../state/infobarActions/shopify/cancelOrder/selectors.ts'
-import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager.ts'
-import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors.ts'
-import {getFinalCancelOrderPayload} from '../../../../../../../../../../../business/shopify/order.ts'
-import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../constants/integration.ts'
-import type {
-    CancelOrderPayload,
-    LineItem,
-    Refund,
-    Order,
-    RefundOrderPayload,
-} from '../../../../../../../../../../../constants/integrations/types/shopify.js'
-import Loader from '../../../../../../../../Loader/Loader'
-import type {InfobarModalProps} from '../../../types'
-import Modal from '../../../../../../../../Modal'
-import RefundOrderForm from '../RefundOrderForm'
+} from '../../../../../../../../../../../state/infobarActions/shopify/cancelOrder/actions'
+import {IntegrationType} from '../../../../../../../../../../../models/integration/types'
+import {getCancelOrderState} from '../../../../../../../../../../../state/infobarActions/shopify/cancelOrder/selectors'
+import shortcutManager from '../../../../../../../../../../../services/shortcutManager/shortcutManager'
+import {getIntegrationsByTypes} from '../../../../../../../../../../../state/integrations/selectors'
+import {RootState} from '../../../../../../../../../../../state/types'
+import {getFinalCancelOrderPayload} from '../../../../../../../../../../../business/shopify/order'
+import Loader from '../../../../../../../../Loader/Loader.js'
+import {InfobarModalProps} from '../../../types'
+import Modal from '../../../../../../../../Modal.js'
+import RefundOrderForm from '../RefundOrderForm/index.js'
 
 import css from './CancelOrderModal.less'
 
 type Props = InfobarModalProps & {
-    integrations: List<*>,
-    loading: boolean,
-    loadingMessage: string,
-    payload: Record<$Shape<CancelOrderPayload>>,
-    lineItems: List<$Shape<LineItem>>,
-    refund: Record<Refund>,
     data: {
-        actionName: ?string,
-        order: Record<Order>,
-    },
-    onCancel: (via: string) => void,
-    onInit: (integrationId: number, order: Record<Order>) => void,
-    onLineItemsChange: (
-        integrationId: number,
-        lineItems: List<$Shape<LineItem>>
-    ) => void,
-    onReset: () => void,
-    onPayloadChange: (
-        integrationId: number,
-        payload: Record<$Shape<CancelOrderPayload>>
-    ) => void,
-    setPayload: (
-        integrationId: number,
-        Record<$Shape<RefundOrderPayload>>
-    ) => void,
-}
+        actionName: string | null
+        order: Map<any, any>
+    }
+    setPayload: (integrationId: number, payload: Map<any, any>) => void
+} & ConnectedProps<typeof connector>
 
 export class CancelOrderModalComponent extends React.PureComponent<Props> {
     static contextTypes = {
@@ -86,8 +58,8 @@ export class CancelOrderModalComponent extends React.PureComponent<Props> {
 
         if (!isOpen && nextProps.isOpen) {
             onOpen(actionName)
-            onInit(integrationId, order)
-            onChange('order_id', order.get('id'))
+            void onInit(integrationId, order)
+            onChange('order_id', (order as Map<any, any>).get('id'))
             shortcutManager.pause()
         }
     }
@@ -97,35 +69,34 @@ export class CancelOrderModalComponent extends React.PureComponent<Props> {
         const {integrationId} = this.context
 
         return integrations.find(
-            (integration) => integration.get('id') === integrationId
-        )
+            (integration: Map<any, any>) =>
+                integration.get('id') === integrationId
+        ) as Map<any, any> | null
     }
 
-    _onLineItemsChange = (lineItems: List<$Shape<LineItem>>) => {
+    _onLineItemsChange = (lineItems: List<any>) => {
         const {onLineItemsChange} = this.props
         const {integrationId} = this.context
 
-        onLineItemsChange(integrationId, lineItems)
+        void onLineItemsChange(integrationId, lineItems)
     }
 
-    _onRefundPayloadChange = (
-        refundPayload: Record<$Shape<RefundOrderPayload>>
-    ) => {
+    _onRefundPayloadChange = (refundPayload: Map<any, any>) => {
         const {payload, onPayloadChange} = this.props
         const {integrationId} = this.context
         const newPayload = payload.set('refund', refundPayload)
 
-        onPayloadChange(integrationId, newPayload)
+        void onPayloadChange(integrationId, newPayload)
     }
 
-    _setRefundPayload = (refundPayload: Record<$Shape<RefundOrderPayload>>) => {
+    _setRefundPayload = (refundPayload: Map<any, any>) => {
         const {payload, setPayload} = this.props
         const newPayload = payload.set('refund', refundPayload)
 
         setPayload(newPayload)
     }
 
-    _onReasonChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
+    _onReasonChange = (event: ChangeEvent<HTMLInputElement>) => {
         const {payload, setPayload} = this.props
         const {value} = event.target
         const newPayload = payload
@@ -135,7 +106,7 @@ export class CancelOrderModalComponent extends React.PureComponent<Props> {
         setPayload(newPayload)
     }
 
-    _onNotifyChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
+    _onNotifyChange = (event: ChangeEvent<HTMLInputElement>) => {
         const {payload, setPayload} = this.props
         const {checked} = event.target
         const newPayload = payload.set('email', checked)
@@ -166,7 +137,7 @@ export class CancelOrderModalComponent extends React.PureComponent<Props> {
         onReset()
     }
 
-    _onSubmit = (event: SyntheticEvent<HTMLFormElement>) => {
+    _onSubmit = (event: FormEvent<HTMLFormElement>) => {
         const {payload, refund, onChange, onSubmit} = this.props
         const finalPayload = getFinalCancelOrderPayload(payload, refund)
 
@@ -260,25 +231,27 @@ export class CancelOrderModalComponent extends React.PureComponent<Props> {
     }
 }
 
-const mapStateToProps = (state) => ({
-    integrations: getIntegrationsByTypes([SHOPIFY_INTEGRATION_TYPE])(state),
-    loading: getCancelOrderState(state).get('loading'),
-    loadingMessage: getCancelOrderState(state).get('loadingMessage'),
-    payload: getCancelOrderState(state).get('payload'),
-    lineItems: getCancelOrderState(state).get('lineItems'),
-    refund: getCancelOrderState(state).get('refund'),
-})
+const connector = connect(
+    (state: RootState) => ({
+        integrations: getIntegrationsByTypes([
+            IntegrationType.ShopifyIntegrationType,
+        ])(state),
+        loading: getCancelOrderState(state).get('loading') as boolean,
+        loadingMessage: getCancelOrderState(state).get(
+            'loadingMessage'
+        ) as string,
+        payload: getCancelOrderState(state).get('payload') as Map<any, any>,
+        lineItems: getCancelOrderState(state).get('lineItems') as List<any>,
+        refund: getCancelOrderState(state).get('refund') as Map<any, any>,
+    }),
+    {
+        onCancel,
+        onInit,
+        onLineItemsChange,
+        onPayloadChange,
+        onReset,
+        setPayload,
+    }
+)
 
-const mapDispatchToProps = {
-    onCancel,
-    onInit,
-    onLineItemsChange,
-    onPayloadChange,
-    onReset,
-    setPayload,
-}
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(CancelOrderModalComponent)
+export default connector(CancelOrderModalComponent as any)

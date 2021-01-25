@@ -1,4 +1,4 @@
-import Root from './Root'
+import Root from './Root.tsx'
 
 const http = (args) => {
     const path = args.template.get('absolutePath', []).join('.')

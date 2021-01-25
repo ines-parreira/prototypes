@@ -9,7 +9,7 @@ import index, {
     AfterContent,
     AfterTitle,
     TitleWrapper,
-} from '../Charge'
+} from '../Charge.tsx'
 
 const BeforeContent = index().BeforeContent
 const Wrapper = index().Wrapper

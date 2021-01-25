@@ -1,1 +1,1 @@
-export default from './CustomerNote'
+export default from './CustomerNote.tsx'

@@ -1623,6 +1623,14 @@
   integrity sha512-sVXMlktxgleh8xrZJc+abvH62ggzYVByoM0056OHPDZzLPqAYX7v7Ph3kgE7EAV/qM/POylCIqgjkqriybMBZw==
   dependencies:
     "@types/react" "*"
+    
+"@types/react-immutable-proptypes@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@types/react-immutable-proptypes/-/react-immutable-proptypes-2.1.0.tgz#c045fb48ba28c34c9d759abc3a51a04b5321b77a"
+  integrity sha512-NRH4W4mgymzyM2gnAG+i2VoOdWIBOQlJlSyAgnFiBTdJ0l8IVeyCtdWP8g6Lra59sUBj2XUO/+DkfmrRAxj6UA==
+  dependencies:
+    "@types/prop-types" "*"
+    immutable "^3.8.2"
 
 "@types/react-redux@7.1.9":
   version "7.1.9"
@@ -5927,7 +5935,7 @@ immutable-devtools@0.1.4:
   resolved "https://registry.yarnpkg.com/immutable-devtools/-/immutable-devtools-0.1.4.tgz#2aaa0d5a4057c3df19389c1550a1d1bf0468a183"
   integrity sha512-2Gz4j/9EhFVIrky0to3YGsVys7q+alWPErhB96+FOy1kHhk84FgNxcbX86emPUqK1xsVlpjGWIu2DMH3V10Msg==
 
-immutable@3.8.2:
+immutable@3.8.2, immutable@^3.8.2:
   version "3.8.2"
   resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.2.tgz#c2439951455bb39913daf281376f1530e104adf3"
   integrity sha1-wkOZUUVbs5kT2vKBN28VMOEErfM=

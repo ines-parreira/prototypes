@@ -2,7 +2,7 @@ import React from 'react'
 import {fromJS} from 'immutable'
 import {mount} from 'enzyme'
 
-import {CustomerNote} from '../CustomerNote'
+import {CustomerNote} from '../CustomerNote.tsx'
 
 describe('CustomerNote component', () => {
     it.each([null, 'this customer is nice\n and happy'])(

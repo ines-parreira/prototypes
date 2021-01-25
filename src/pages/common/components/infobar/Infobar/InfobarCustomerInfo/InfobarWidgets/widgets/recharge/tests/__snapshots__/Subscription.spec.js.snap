@@ -172,7 +172,6 @@ exports[`Subscription TitleWrapper customer context should render default link b
 
 exports[`Subscription TitleWrapper should not render any link because no customer hash is available 1`] = `
 <a
-  href={null}
   rel="noopener noreferrer"
   target="_blank"
 />
@@ -180,7 +179,6 @@ exports[`Subscription TitleWrapper should not render any link because no custome
 
 exports[`Subscription TitleWrapper should not render any link because no customer hash is available 2`] = `
 <a
-  href={null}
   rel="noopener noreferrer"
   target="_blank"
 />

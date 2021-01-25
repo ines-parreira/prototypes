@@ -2,7 +2,7 @@ import React from 'react'
 import {shallow} from 'enzyme'
 import {fromJS} from 'immutable'
 
-import Customer from '../Customer'
+import Customer from '../Customer.tsx'
 
 const TitleWrapper = Customer().TitleWrapper
 

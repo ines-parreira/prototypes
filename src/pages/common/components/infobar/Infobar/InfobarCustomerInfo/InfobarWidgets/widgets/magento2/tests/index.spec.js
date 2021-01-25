@@ -1,7 +1,7 @@
 import {fromJS} from 'immutable'
 
-import Customer from '../Customer'
-import Order from '../Order'
+import Customer from '../Customer.tsx'
+import Order from '../Order.tsx'
 
 import magento2 from '..'
 

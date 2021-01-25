@@ -1,3 +1,3 @@
 // @flow
 
-export {default} from './CancelOrderModal'
+export {default} from './CancelOrderModal.tsx'

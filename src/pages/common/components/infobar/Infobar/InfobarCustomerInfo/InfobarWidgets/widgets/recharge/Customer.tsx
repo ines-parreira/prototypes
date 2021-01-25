@@ -1,16 +1,15 @@
-// @flow
-import React, {type Node} from 'react'
-import type {Map} from 'immutable'
+import React, {ReactNode} from 'react'
+import {Map} from 'immutable'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 
 import logo from '../../../../../../../../../../img/infobar/recharge.svg'
-import {renderTemplate} from '../../../../../../../utils/template'
-import {CardHeaderDetails} from '../CardHeaderDetails'
-import {CardHeaderValue} from '../CardHeaderValue'
-import {CardHeaderTitle} from '../CardHeaderTitle'
-import {CardHeaderIcon} from '../CardHeaderIcon'
-import ExpandAllButton from '../ExpandAllButton'
-import {CardHeaderSubtitle} from '../CardHeaderSubtitle'
+import {renderTemplate} from '../../../../../../../utils/template.js'
+import {CardHeaderDetails} from '../CardHeaderDetails.js'
+import {CardHeaderValue} from '../CardHeaderValue.js'
+import {CardHeaderTitle} from '../CardHeaderTitle.js'
+import {CardHeaderIcon} from '../CardHeaderIcon.js'
+import ExpandAllButton from '../ExpandAllButton.js'
+import {CardHeaderSubtitle} from '../CardHeaderSubtitle.js'
 
 export default function Customer() {
     return {
@@ -20,7 +19,7 @@ export default function Customer() {
 }
 
 type AfterTitleProps = {
-    source: Map<*, *>,
+    source: Map<any, any>
 }
 
 function AfterTitle({source}: AfterTitleProps) {
@@ -36,25 +35,24 @@ function AfterTitle({source}: AfterTitleProps) {
 }
 
 type TitleWrapperProps = {
-    children: ?Node,
-    source: Map<*, *>,
-    template: Map<*, *>,
+    children: ReactNode | null
+    source: Map<any, any>
+    template: Map<any, any>
 }
 
 export class TitleWrapper extends React.Component<TitleWrapperProps> {
-    // todo(@martin): type the context with `flow` when it's supported
     static contextTypes = {
         integration: ImmutablePropTypes.map.isRequired,
     }
 
     render() {
         const {children, source, template} = this.props
-        const {integration} = this.context
-        const storeName = integration.getIn(['meta', 'store_name'])
-        const customerHash = source.get('hash')
+        const {integration} = this.context as {integration: Map<any, any>}
+        const storeName = integration.getIn(['meta', 'store_name']) as string
+        const customerHash = source.get('hash') as string
 
         const defaultLink = `https://${storeName}.myshopify.com/tools/recurring/customers/${customerHash}/`
-        let customLink = template.getIn(['meta', 'link'])
+        let customLink = template.getIn(['meta', 'link']) as string | null
 
         if (customLink) {
             customLink = renderTemplate(

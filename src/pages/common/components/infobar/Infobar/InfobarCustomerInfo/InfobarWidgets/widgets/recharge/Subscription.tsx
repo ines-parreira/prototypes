@@ -1,29 +1,29 @@
-// @flow
-import React, {type Node} from 'react'
-import {fromJS, type Map} from 'immutable'
+import React, {ReactNode} from 'react'
+import {fromJS, Map} from 'immutable'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import {connect} from 'react-redux'
+import {connect, ConnectedProps} from 'react-redux'
 import {Badge} from 'reactstrap'
 
 import {
     devLog,
     humanizeString,
     isCurrentlyOnTicket,
-} from '../../../../../../../../../utils.ts'
-import {renderTemplate} from '../../../../../../../utils/template'
+} from '../../../../../../../../../utils'
+import {renderTemplate} from '../../../../../../../utils/template.js'
 
 import {
     RECHARGE_CANCELLATION_REASONS,
     RECHARGE_DEFAULT_CANCELLATION_REASON,
-} from '../../../../../../../../../config/integrations/recharge.ts'
-import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../../../../state/customers/selectors.ts'
-import * as ticketSelectors from '../../../../../../../../../state/ticket/selectors.ts'
+} from '../../../../../../../../../config/integrations/recharge'
+import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../../../../state/customers/selectors'
+import * as ticketSelectors from '../../../../../../../../../state/ticket/selectors'
+import {RootState} from '../../../../../../../../../state/types'
 
-import {DatetimeLabel} from '../../../../../../../utils/labels'
-import ActionButtonsGroup from '../ActionButtonsGroup'
-import {CardHeaderDetails} from '../CardHeaderDetails'
-import {CardHeaderValue} from '../CardHeaderValue'
+import {DatetimeLabel} from '../../../../../../../utils/labels.js'
+import ActionButtonsGroup from '../ActionButtonsGroup.js'
+import {CardHeaderDetails} from '../CardHeaderDetails.js'
+import {CardHeaderValue} from '../CardHeaderValue.js'
 
 export default function Subscription() {
     return {
@@ -34,8 +34,8 @@ export default function Subscription() {
 }
 
 type AfterTitleProps = {
-    isEditing: boolean,
-    source: Map<*, *>,
+    isEditing: boolean
+    source: Map<any, any>
 }
 
 const statusColors = {
@@ -109,7 +109,7 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
             },
         ]
 
-        let ignoredActions = [isSubscriptionCancelled ? 'cancel' : 'activate']
+        const ignoredActions = [isSubscriptionCancelled ? 'cancel' : 'activate']
 
         // remove removed actions from list of available actions
         actions = actions.filter(
@@ -119,7 +119,9 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
             subscription_id: source.get('id'),
         }
 
-        const status = (source.get('status') || '').toLowerCase()
+        const status = (
+            (source.get('status') as string) || ''
+        ).toLowerCase() as keyof typeof statusColors
 
         return (
             <>
@@ -146,58 +148,31 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
 }
 
 type TitleWrapperProps = {
-    children: ?Node,
-    source: Map<*, *>,
-    template: Map<*, *>,
-    getIntegrationData: (number, number) => Map<*, *>,
-}
+    children: ReactNode
+    source: Map<any, any>
+    template: Map<any, any>
+} & ConnectedProps<typeof connectorTitleWrapper>
 
-@connect((state) => {
-    return {
-        getIntegrationData: (integrationId, customerId) => {
-            const integrationData = isCurrentlyOnTicket()
-                ? ticketSelectors.getIntegrationDataByIntegrationId(
-                      integrationId
-                  )(state)
-                : getActiveCustomerIntegrationDataByIntegrationId(
-                      integrationId
-                  )(state)
-
-            if (integrationData.getIn(['customer', 'id']) !== customerId) {
-                devLog(
-                    '[INFOBAR][recharge][subscription] Could not find integration data for customer.',
-                    {
-                        customerId,
-                        integrationId,
-                    }
-                )
-                return fromJS({})
-            }
-
-            return integrationData
-        },
-    }
-})
-export class TitleWrapper extends React.Component<TitleWrapperProps> {
+class TitleWrapperContainer extends React.Component<TitleWrapperProps> {
     static contextTypes = {
         integration: ImmutablePropTypes.map.isRequired,
     }
 
     render() {
         const {children, source, getIntegrationData, template} = this.props
-        const {integration} = this.context
-        const storeName = integration.getIn(['meta', 'store_name'])
+        const {integration}: {integration: Map<any, any>} = this.context
+        const storeName = integration.getIn(['meta', 'store_name']) as string
         const customerHash = getIntegrationData(
             integration.get('id'),
             source.get('customer_id')
-        ).getIn(['customer', 'hash'])
+        ).getIn(['customer', 'hash']) as string
 
-        let link = null
+        let link = undefined
 
         if (customerHash) {
             link = `https://${storeName}.myshopify.com/tools/recurring/customers/${customerHash}/`
 
-            let customLink = template.getIn(['meta', 'link'])
+            const customLink = template.getIn(['meta', 'link'])
 
             if (customLink) {
                 link = renderTemplate(
@@ -215,9 +190,38 @@ export class TitleWrapper extends React.Component<TitleWrapperProps> {
     }
 }
 
+const connectorTitleWrapper = connect((state: RootState) => {
+    return {
+        getIntegrationData: (integrationId: number, customerId: number) => {
+            const integrationData = isCurrentlyOnTicket()
+                ? ticketSelectors.getIntegrationDataByIntegrationId(
+                      integrationId
+                  )(state)
+                : getActiveCustomerIntegrationDataByIntegrationId(
+                      integrationId as any
+                  )(state)
+
+            if (integrationData.getIn(['customer', 'id']) !== customerId) {
+                devLog(
+                    '[INFOBAR][recharge][subscription] Could not find integration data for customer.',
+                    {
+                        customerId,
+                        integrationId,
+                    }
+                )
+                return fromJS({}) as Map<any, any>
+            }
+
+            return integrationData
+        },
+    }
+})
+
+export const TitleWrapper = connectorTitleWrapper(TitleWrapperContainer)
+
 type WrapperProps = {
-    children: Node,
-    source: Map<*, *>,
+    children: Node
+    source: Map<any, any>
 }
 
 class Wrapper extends React.Component<WrapperProps> {

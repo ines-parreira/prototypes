@@ -1,26 +1,25 @@
-// @flow
-import React, {type Node} from 'react'
+import React, {ReactNode} from 'react'
 import PropTypes from 'prop-types'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import {fromJS, type Map} from 'immutable'
-import {connect} from 'react-redux'
+import {fromJS, Map} from 'immutable'
+import {connect, ConnectedProps} from 'react-redux'
 import {Badge, CardBody} from 'reactstrap'
-
 import _lowerCase from 'lodash/lowerCase'
 import _groupBy from 'lodash/groupBy'
 
-import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../../../../state/customers/selectors.ts'
-import * as ticketSelectors from '../../../../../../../../../state/ticket/selectors.ts'
-
+import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../../../../state/customers/selectors'
+import {getIntegrationDataByIntegrationId} from '../../../../../../../../../state/ticket/selectors'
 import {
     devLog,
     humanizeString,
     isCurrentlyOnTicket,
     toJS,
-} from '../../../../../../../../../utils.ts'
-import {renderTemplate} from '../../../../../../../utils/template'
+} from '../../../../../../../../../utils'
+import {renderTemplate} from '../../../../../../../utils/template.js'
+import {LineItem} from '../../../../../../../../../constants/integrations/types/shopify'
+import {RootState} from '../../../../../../../../../state/types'
 
-import ActionButtonsGroup from '../ActionButtonsGroup'
+import ActionButtonsGroup from '../ActionButtonsGroup.js'
 
 export default function Charge() {
     return {
@@ -33,8 +32,8 @@ export default function Charge() {
 }
 
 type AfterTitleProps = {
-    isEditing: boolean,
-    source: Map<*, *>,
+    isEditing: boolean
+    source: Map<any, any>
 }
 
 export class AfterTitle extends React.Component<AfterTitleProps> {
@@ -91,7 +90,7 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
         ]
 
         const status = source.get('status')
-        let removed = !['SUCCESS', 'PARTIALLY_REFUNDED'].includes(status)
+        const removed = !['SUCCESS', 'PARTIALLY_REFUNDED'].includes(status)
             ? ['refund']
             : []
 
@@ -107,12 +106,13 @@ export class AfterTitle extends React.Component<AfterTitleProps> {
 }
 
 type SubscriptionAfterTitleProps = {
-    isEditing: boolean,
-    source: Map<*, *>,
+    isEditing: boolean
+    source: Map<any, any>
 }
 
-export class SubscriptionAfterTitle extends React.Component<SubscriptionAfterTitleProps> {
-    // eslint-disable-line
+export class SubscriptionAfterTitle extends React.Component<
+    SubscriptionAfterTitleProps
+> {
     static contextTypes = {
         integrationId: PropTypes.number,
         chargeStatus: PropTypes.string.isRequired,
@@ -163,7 +163,7 @@ export class SubscriptionAfterTitle extends React.Component<SubscriptionAfterTit
             },
         ]
 
-        let removed = []
+        let removed: string[] = []
 
         if (chargeStatus !== 'queued') {
             removed = removed.concat(['skip'])
@@ -195,15 +195,16 @@ const statusColors = {
 }
 
 type BeforeContentProps = {
-    source: Map<*, *>,
+    source: Map<any, any>
 }
 
 class BeforeContent extends React.Component<BeforeContentProps> {
-    // eslint-disable-line
     render() {
         const {source} = this.props
 
-        const status = (source.get('status') || '').toLowerCase()
+        const status = (
+            (source.get('status') as string) || ''
+        ).toLowerCase() as keyof typeof statusColors
 
         return (
             <div>
@@ -221,19 +222,18 @@ class BeforeContent extends React.Component<BeforeContentProps> {
 }
 
 type AfterContentProps = {
-    isEditing: boolean,
-    source: Map<*, *>,
+    isEditing: boolean
+    source: Map<any, any>
 }
 
 export class AfterContent extends React.Component<AfterContentProps> {
-    // eslint-disable-line
     render() {
         const {source, isEditing} = this.props
 
         const chargeSubscriptions = _groupBy(
             toJS(source.get('line_items')),
-            (item) => item.subscription_id
-        )
+            (item: Record<string, unknown>) => item.subscription_id
+        ) as {[key: string]: (LineItem & {id: string})[]}
 
         return (
             <div className="mt-2">
@@ -278,53 +278,26 @@ export class AfterContent extends React.Component<AfterContentProps> {
 }
 
 type TitleWrapperProps = {
-    children: ?Node,
-    source: Map<*, *>,
-    template: Map<*, *>,
-    getIntegrationData: (number, number) => Map<*, *>,
-}
+    children: ReactNode | null
+    source: Map<any, any>
+    template: Map<any, any>
+} & ConnectedProps<typeof connectorTitleWrapper>
 
-@connect((state) => {
-    return {
-        getIntegrationData: (integrationId, customerId) => {
-            const integrationData = isCurrentlyOnTicket()
-                ? ticketSelectors.getIntegrationDataByIntegrationId(
-                      integrationId
-                  )(state)
-                : getActiveCustomerIntegrationDataByIntegrationId(
-                      integrationId
-                  )(state)
-
-            if (integrationData.getIn(['customer', 'id']) !== customerId) {
-                devLog(
-                    '[INFOBAR][recharge][charge] Could not find integration data for customer.',
-                    {
-                        customerId,
-                        integrationId,
-                    }
-                )
-                return fromJS({})
-            }
-
-            return integrationData
-        },
-    }
-})
-export class TitleWrapper extends React.Component<TitleWrapperProps> {
+class TitleWrapperContainer extends React.Component<TitleWrapperProps> {
     static contextTypes = {
         integration: ImmutablePropTypes.map.isRequired,
     }
 
     render() {
         const {children, template, source, getIntegrationData} = this.props
-        const {integration} = this.context
+        const {integration} = this.context as {integration: Map<any, any>}
         const customerHash = getIntegrationData(
             integration.get('id'),
             source.get('customer_id')
         ).getIn(['customer', 'hash'])
 
-        let link = null
-        let customLink = template.getIn(['meta', 'link'])
+        let link = undefined
+        const customLink = template.getIn(['meta', 'link'])
 
         if (customLink && customerHash) {
             link = renderTemplate(
@@ -341,9 +314,36 @@ export class TitleWrapper extends React.Component<TitleWrapperProps> {
     }
 }
 
+const connectorTitleWrapper = connect((state: RootState) => {
+    return {
+        getIntegrationData: (integrationId: string, customerId: string) => {
+            const integrationData = isCurrentlyOnTicket()
+                ? getIntegrationDataByIntegrationId(integrationId as any)(state)
+                : getActiveCustomerIntegrationDataByIntegrationId(
+                      integrationId
+                  )(state)
+
+            if (integrationData.getIn(['customer', 'id']) !== customerId) {
+                devLog(
+                    '[INFOBAR][recharge][charge] Could not find integration data for customer.',
+                    {
+                        customerId,
+                        integrationId,
+                    }
+                )
+                return fromJS({}) as Map<any, any>
+            }
+
+            return integrationData
+        },
+    }
+})
+
+export const TitleWrapper = connectorTitleWrapper(TitleWrapperContainer)
+
 type WrapperProps = {
-    children: Node,
-    source: Map<*, *>,
+    children: Node
+    source: Map<any, any>
 }
 
 class Wrapper extends React.Component<WrapperProps> {

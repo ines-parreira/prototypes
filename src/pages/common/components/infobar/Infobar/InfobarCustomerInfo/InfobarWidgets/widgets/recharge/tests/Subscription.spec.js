@@ -4,7 +4,7 @@ import {fromJS} from 'immutable'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
 
-import {AfterTitle, TitleWrapper} from '../Subscription'
+import {AfterTitle, TitleWrapper} from '../Subscription.tsx'
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)

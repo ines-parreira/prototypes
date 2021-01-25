@@ -2,7 +2,7 @@ import {fromJS} from 'immutable'
 import React from 'react'
 import {shallow} from 'enzyme'
 
-import {AfterTitle, BeforeContent, TitleWrapper} from '../Order'
+import {AfterTitle, BeforeContent, TitleWrapper} from '../Order.tsx'
 
 describe('Order', () => {
     describe('<AfterTitle/>', () => {

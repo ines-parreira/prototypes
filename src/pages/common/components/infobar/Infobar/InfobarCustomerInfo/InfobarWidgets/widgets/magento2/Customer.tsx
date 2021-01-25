@@ -1,16 +1,15 @@
-// @flow
-import React from 'react'
+import React, {ReactNode} from 'react'
 import ImmutablePropTypes from 'react-immutable-proptypes'
 import type {Map} from 'immutable'
 
 import logo from '../../../../../../../../../../img/infobar/magento.svg'
-import {DatetimeLabel} from '../../../../../../../utils/labels'
-import {CardHeaderDetails} from '../CardHeaderDetails'
-import {CardHeaderValue} from '../CardHeaderValue'
-import {CardHeaderTitle} from '../CardHeaderTitle'
-import {CardHeaderIcon} from '../CardHeaderIcon'
-import ExpandAllButton from '../ExpandAllButton'
-import {CardHeaderSubtitle} from '../CardHeaderSubtitle'
+import {DatetimeLabel} from '../../../../../../../utils/labels.js'
+import {CardHeaderDetails} from '../CardHeaderDetails.js'
+import {CardHeaderValue} from '../CardHeaderValue.js'
+import {CardHeaderTitle} from '../CardHeaderTitle.js'
+import {CardHeaderIcon} from '../CardHeaderIcon.js'
+import ExpandAllButton from '../ExpandAllButton.js'
+import {CardHeaderSubtitle} from '../CardHeaderSubtitle.js'
 
 export default function Customer() {
     return {
@@ -21,7 +20,7 @@ export default function Customer() {
 }
 
 type AfterTitleProps = {
-    source: Map<string, *>,
+    source: Map<string, any>
 }
 
 class AfterTitle extends React.Component<AfterTitleProps> {
@@ -44,8 +43,8 @@ class AfterTitle extends React.Component<AfterTitleProps> {
 }
 
 type TitleWrapperProps = {
-    children: Object,
-    source: Map<string, *>,
+    children: ReactNode
+    source: Map<string, any>
 }
 
 class TitleWrapper extends React.Component<TitleWrapperProps> {
@@ -56,15 +55,13 @@ class TitleWrapper extends React.Component<TitleWrapperProps> {
     render() {
         const {children, source} = this.props
 
-        const storeUrl: string = this.context.integration.getIn([
-            'meta',
-            'store_url',
-        ])
-        const adminUrlSuffix: string = this.context.integration.getIn([
-            'meta',
-            'admin_url_suffix',
-        ])
-        const customerId = (source.get('id') || '').toString()
+        const storeUrl: string = (this.context as {
+            integration: Map<any, any>
+        }).integration.getIn(['meta', 'store_url']) as string
+        const adminUrlSuffix: string = (this.context as {
+            integration: Map<any, any>
+        }).integration.getIn(['meta', 'admin_url_suffix']) as string
+        const customerId = ((source.get('id') as string) || '').toString()
 
         const link = `https://${storeUrl}/${adminUrlSuffix}/customer/index/edit/id/${customerId}/`
 

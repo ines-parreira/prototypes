@@ -1,22 +1,22 @@
-// @flow
-import React, {type Node} from 'react'
+import React, {ReactNode} from 'react'
 import ImmutablePropTypes from 'react-immutable-proptypes'
-import {fromJS, type List, type Map} from 'immutable'
-import {connect} from 'react-redux'
+import {fromJS, List, Map} from 'immutable'
+import {connect, ConnectedProps} from 'react-redux'
 import {Badge, CardBody} from 'reactstrap'
 
-import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../../../../state/customers/selectors.ts'
-import * as currentUserSelectors from '../../../../../../../../../state/currentUser/selectors.ts'
-import * as ticketSelectors from '../../../../../../../../../state/ticket/selectors.ts'
+import {getActiveCustomerIntegrationDataByIntegrationId} from '../../../../../../../../../state/customers/selectors'
+import {getTimezone} from '../../../../../../../../../state/currentUser/selectors'
+import {getIntegrationDataByIntegrationId} from '../../../../../../../../../state/ticket/selectors'
+import {RootState} from '../../../../../../../../../state/types'
 
 import {
     devLog,
     humanizeString,
     isCurrentlyOnTicket,
-} from '../../../../../../../../../utils.ts'
-import {getTrackingUrl} from '../../../../../../../../../utils/delivery.ts'
-import {DatetimeLabel} from '../../../../../../../utils/labels'
-import {displayLabel, guessFieldValueFromRawData} from '../../../../../utils'
+} from '../../../../../../../../../utils'
+import {getTrackingUrl} from '../../../../../../../../../utils/delivery'
+import {DatetimeLabel} from '../../../../../../../utils/labels.js'
+import {displayLabel, guessFieldValueFromRawData} from '../../../../../utils.js'
 
 export default function Order() {
     return {
@@ -27,14 +27,12 @@ export default function Order() {
 }
 
 function getIntegrationData(
-    state: Map<*, *>,
+    state: RootState,
     integrationId: string,
     customerId: number
 ) {
     const integrationData = isCurrentlyOnTicket()
-        ? ticketSelectors.getIntegrationDataByIntegrationId(integrationId)(
-              state
-          )
+        ? getIntegrationDataByIntegrationId(integrationId as any)(state)
         : getActiveCustomerIntegrationDataByIntegrationId(integrationId)(state)
 
     if (integrationData.getIn(['customer', 'id']) !== customerId) {
@@ -45,7 +43,7 @@ function getIntegrationData(
                 integrationId,
             }
         )
-        return fromJS({})
+        return fromJS({}) as Map<any, any>
     }
 
     return integrationData
@@ -61,20 +59,12 @@ export const statusColors = {
     closed: 'danger',
 }
 
-type BeforeContentProps = {
-    source: Map<*, *>,
-    getIntegrationData: (number, number) => Map<*, *>,
-    currentUserTimezone: string,
+type BeforeContentProps = ConnectedProps<typeof connectorBeforeContent> & {
+    source: Map<any, any>
+    currentUserTimezone: string
 }
 
-@connect((state) => {
-    return {
-        getIntegrationData: (integrationId, customerId) => {
-            return getIntegrationData(state, integrationId, customerId)
-        },
-    }
-})
-class BeforeContent extends React.Component<BeforeContentProps> {
+class BeforeContentContainer extends React.Component<BeforeContentProps> {
     static contextTypes = {
         integration: ImmutablePropTypes.map.isRequired,
     }
@@ -82,19 +72,23 @@ class BeforeContent extends React.Component<BeforeContentProps> {
     render() {
         const {source, getIntegrationData, currentUserTimezone} = this.props
 
-        const state = (source.get('state') || '').toLowerCase()
+        const state = (
+            (source.get('state') as string) || ''
+        ).toLowerCase() as keyof typeof statusColors
 
-        const {integration} = this.context
+        const {integration} = this.context as {integration: Map<any, any>}
 
         const customerIntegrationData = getIntegrationData(
             integration.get('id'),
             source.get('customer_id')
         )
 
-        const shipments = customerIntegrationData.get('shipments') || fromJS([])
+        const shipments = (customerIntegrationData.get('shipments') ||
+            fromJS([])) as List<any>
         const orderShipments = shipments.filter(
-            (shipment) => shipment.get('order_id') === source.get('entity_id')
-        )
+            (shipment: Map<any, any>) =>
+                shipment.get('order_id') === source.get('entity_id')
+        ) as List<any>
 
         return (
             <div>
@@ -125,37 +119,44 @@ class BeforeContent extends React.Component<BeforeContentProps> {
     }
 }
 
-type ShipmentsProps = {
-    shipments: List<Map<*, *>>,
-    currentUserTimezone: string,
-}
-
-@connect((state) => {
+const connectorBeforeContent = connect((state: RootState) => {
     return {
-        currentUserTimezone: currentUserSelectors.getTimezone(state),
+        getIntegrationData: (
+            integrationId: string,
+            customerId: number
+        ): Map<any, any> => {
+            return getIntegrationData(state, integrationId, customerId)
+        },
     }
 })
-// todo(@martin): remove this flow-fix-me when flow support decorators and props injection
-// $FlowFixMe
-class Shipments extends React.Component<ShipmentsProps> {
+
+const BeforeContent = connectorBeforeContent(BeforeContentContainer)
+
+type ShipmentsProps = ConnectedProps<typeof connectorShipments> & {
+    shipments: List<any>
+}
+
+class ShipmentsContainer extends React.Component<ShipmentsProps> {
     static contextTypes = {
         integration: ImmutablePropTypes.map.isRequired,
     }
 
     render() {
         const {shipments, currentUserTimezone} = this.props
-        const {integration} = this.context
+        const {integration} = this.context as {integration: Map<any, any>}
 
-        const storeUrl: string = integration.getIn(['meta', 'store_url'])
-        const adminUrlSuffix: string = integration.getIn([
+        const storeUrl = integration.getIn(['meta', 'store_url']) as string
+        const adminUrlSuffix = integration.getIn([
             'meta',
             'admin_url_suffix',
-        ])
+        ]) as string
 
-        return shipments.map((shipment) => {
-            const lastTrack = shipment
-                .get('tracks', fromJS([]))
-                .maxBy((track) => track.get('updated_at'))
+        return shipments.map((shipment: Map<any, any>) => {
+            const lastTrack = (shipment.get('tracks', fromJS([])) as List<
+                any
+            >).maxBy(
+                (track: Map<any, any>) => track.get('updated_at') as string
+            ) as Map<any, any>
 
             let trackComponent = null
 
@@ -195,7 +196,9 @@ class Shipments extends React.Component<ShipmentsProps> {
                 )
             }
 
-            const shipmentId = (shipment.get('entity_id') || '').toString()
+            const shipmentId = (
+                (shipment.get('entity_id') as number) || ''
+            ).toString()
             const link = `https://${storeUrl}/${adminUrlSuffix}/sales/shipment/view/shipment_id/${shipmentId}/`
 
             return (
@@ -216,25 +219,27 @@ class Shipments extends React.Component<ShipmentsProps> {
                             <span className="field-value">
                                 <DatetimeLabel
                                     dateTime={shipment.get('updated_at')}
-                                    timezone={currentUserTimezone}
+                                    timezone={currentUserTimezone as any}
                                 />
                             </span>
                         </div>
                         {trackComponent}
                         <div className="list mt-3">
-                            {shipment.get('items').map((item) => (
-                                <div
-                                    key={item.get('order_item_id')}
-                                    className="card"
-                                >
-                                    <CardBody className="header clearfix">
-                                        <span>
-                                            {item.get('qty')} x{' '}
-                                            {item.get('name')}
-                                        </span>
-                                    </CardBody>
-                                </div>
-                            ))}
+                            {(shipment.get('items') as List<any>).map(
+                                (item: Map<any, any>) => (
+                                    <div
+                                        key={item.get('order_item_id')}
+                                        className="card"
+                                    >
+                                        <CardBody className="header clearfix">
+                                            <span>
+                                                {item.get('qty')} x{' '}
+                                                {item.get('name')}
+                                            </span>
+                                        </CardBody>
+                                    </div>
+                                )
+                            )}
                         </div>
                     </CardBody>
                 </div>
@@ -243,35 +248,37 @@ class Shipments extends React.Component<ShipmentsProps> {
     }
 }
 
-type CreditMemosProps = {
-    creditMemos: List<Map<*, *>>,
-    currentUserTimezone: string,
-}
-
-@connect((state) => {
+const connectorShipments = connect((state: RootState) => {
     return {
-        currentUserTimezone: currentUserSelectors.getTimezone(state),
+        currentUserTimezone: getTimezone(state),
     }
 })
-// todo(@martin): remove this flow-fix-me when flow support decorators and props injection
-// $FlowFixMe
-class CreditMemos extends React.Component<CreditMemosProps> {
+
+const Shipments = connectorShipments(ShipmentsContainer)
+
+type CreditMemosProps = ConnectedProps<typeof connectorCreditMemos> & {
+    creditMemos: List<any>
+}
+
+class CreditMemosContainer extends React.Component<CreditMemosProps> {
     static contextTypes = {
         integration: ImmutablePropTypes.map.isRequired,
     }
 
     render() {
         const {creditMemos, currentUserTimezone} = this.props
-        const {integration} = this.context
+        const {integration} = this.context as {integration: Map<any, any>}
 
-        const storeUrl: string = integration.getIn(['meta', 'store_url'])
+        const storeUrl = integration.getIn(['meta', 'store_url']) as string
         const adminUrlSuffix: string = integration.getIn([
             'meta',
             'admin_url_suffix',
         ])
 
-        return creditMemos.map((creditMemo) => {
-            const creditMemoId = (creditMemo.get('entity_id') || '').toString()
+        return creditMemos.map((creditMemo: Map<any, any>) => {
+            const creditMemoId = (
+                (creditMemo.get('entity_id') as number) || ''
+            ).toString()
             const link = `https://${storeUrl}/${adminUrlSuffix}/sales/creditmemo/view/creditmemo_id/${creditMemoId}/`
 
             return (
@@ -295,24 +302,26 @@ class CreditMemos extends React.Component<CreditMemosProps> {
                             <span className="field-value">
                                 <DatetimeLabel
                                     dateTime={creditMemo.get('updated_at')}
-                                    timezone={currentUserTimezone}
+                                    timezone={currentUserTimezone as any}
                                 />
                             </span>
                         </div>
                         <div className="list mt-3">
-                            {creditMemo.get('items').map((item) => (
-                                <div
-                                    key={item.get('order_item_id')}
-                                    className="card"
-                                >
-                                    <CardBody className="header clearfix">
-                                        <span>
-                                            {item.get('qty')} x{' '}
-                                            {item.get('name')}
-                                        </span>
-                                    </CardBody>
-                                </div>
-                            ))}
+                            {(creditMemo.get('items') as List<any>).map(
+                                (item: Map<any, any>) => (
+                                    <div
+                                        key={item.get('order_item_id')}
+                                        className="card"
+                                    >
+                                        <CardBody className="header clearfix">
+                                            <span>
+                                                {item.get('qty')} x{' '}
+                                                {item.get('name')}
+                                            </span>
+                                        </CardBody>
+                                    </div>
+                                )
+                            )}
                         </div>
                     </CardBody>
                 </div>
@@ -321,38 +330,38 @@ class CreditMemos extends React.Component<CreditMemosProps> {
     }
 }
 
-type AfterContentProps = {
-    source: Map<*, *>,
-    getIntegrationData: (number, number) => Map<*, *>,
-}
-
-@connect((state) => {
+const connectorCreditMemos = connect((state: RootState) => {
     return {
-        getIntegrationData: (integrationId, customerId) => {
-            return getIntegrationData(state, integrationId, customerId)
-        },
+        currentUserTimezone: getTimezone(state),
     }
 })
-class AfterContent extends React.Component<AfterContentProps> {
+
+const CreditMemos = connectorCreditMemos(CreditMemosContainer)
+
+type AfterContentProps = ConnectedProps<typeof connectorAfterContent> & {
+    source: Map<any, any>
+}
+
+class AfterContentContainer extends React.Component<AfterContentProps> {
     static contextTypes = {
         integration: ImmutablePropTypes.map.isRequired,
     }
 
     render() {
         const {source, getIntegrationData} = this.props
-        const {integration} = this.context
+        const {integration} = this.context as {integration: Map<any, any>}
 
         const customerIntegrationData = getIntegrationData(
             integration.get('id'),
             source.get('customer_id')
         )
 
-        const creditMemos =
-            customerIntegrationData.get('credit_memos') || fromJS([])
+        const creditMemos = (customerIntegrationData.get('credit_memos') ||
+            fromJS([])) as List<any>
         const orderCreditMemos = creditMemos.filter(
-            (creditMemo) =>
+            (creditMemo: Map<any, any>) =>
                 creditMemo.get('order_id') === source.get('entity_id')
-        )
+        ) as List<any>
 
         if (orderCreditMemos.isEmpty()) {
             return null
@@ -368,9 +377,19 @@ class AfterContent extends React.Component<AfterContentProps> {
     }
 }
 
+const connectorAfterContent = connect((state: RootState) => {
+    return {
+        getIntegrationData: (integrationId: string, customerId: number) => {
+            return getIntegrationData(state, integrationId, customerId)
+        },
+    }
+})
+
+const AfterContent = connectorAfterContent(AfterContentContainer)
+
 type TitleWrapperProps = {
-    children: Node,
-    source: Map<*, *>,
+    children: ReactNode
+    source: Map<any, any>
 }
 
 class TitleWrapper extends React.Component<TitleWrapperProps> {
@@ -380,16 +399,14 @@ class TitleWrapper extends React.Component<TitleWrapperProps> {
 
     render() {
         const {children, source} = this.props
+        const {integration} = this.context as {integration: Map<any, any>}
 
-        const storeUrl: string = this.context.integration.getIn([
-            'meta',
-            'store_url',
-        ])
-        const adminUrlSuffix: string = this.context.integration.getIn([
+        const storeUrl: string = integration.getIn(['meta', 'store_url'])
+        const adminUrlSuffix: string = integration.getIn([
             'meta',
             'admin_url_suffix',
         ])
-        const orderId = (source.get('entity_id') || '').toString()
+        const orderId = ((source.get('entity_id') as number) || '').toString()
 
         const link = `https://${storeUrl}/${adminUrlSuffix}/sales/order/view/order_id/${orderId}/`
 
