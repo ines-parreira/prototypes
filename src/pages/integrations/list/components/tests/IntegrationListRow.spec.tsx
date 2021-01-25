@@ -30,4 +30,18 @@ describe('IntegrationListRow', () => {
         )
         expect(container.firstChild).toMatchSnapshot()
     })
+
+    it('should display an external integration', () => {
+        const integrationConfig = fromJS({
+            title: 'an integration',
+            displayUpgrade: false,
+            description: 'this is a cool integration',
+            url: 'http://www.foo.bar',
+        })
+
+        const {container} = render(
+            <IntegrationListRow integrationConfig={integrationConfig} />
+        )
+        expect(container.firstChild).toMatchSnapshot()
+    })
 })

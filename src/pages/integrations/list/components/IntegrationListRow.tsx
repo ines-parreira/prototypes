@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ComponentProps, FC} from 'react'
 import {Link} from 'react-router-dom'
 import classnames from 'classnames'
 import {Map} from 'immutable'
@@ -23,10 +23,19 @@ const IntegrationListRow = ({integrationConfig}: Props) => {
 
     const isExternalLink = !!integrationConfig.get('url')
 
-    const linkConfig = {
-        to: isExternalLink ? integrationConfig.get('url') : nextUrl,
-        ...(isExternalLink ? {target: '_blank'} : {}),
-    }
+    const linkHref = isExternalLink ? integrationConfig.get('url') : nextUrl
+    const LinkComponent: FC<ComponentProps<typeof Link>> = isExternalLink
+        ? ({children, to, ...other}: ComponentProps<typeof Link>) => (
+              <a
+                  {...other}
+                  href={to as string}
+                  rel="noopener noreferrer"
+                  target="_blank"
+              >
+                  {children}
+              </a>
+          )
+        : Link
 
     const content = (
         <>
@@ -90,7 +99,7 @@ const IntegrationListRow = ({integrationConfig}: Props) => {
             {content}
         </div>
     ) : (
-        <Link
+        <LinkComponent
             className={classnames(
                 css.component,
                 css.link,
@@ -104,10 +113,10 @@ const IntegrationListRow = ({integrationConfig}: Props) => {
                     }
                 )
             }}
-            {...linkConfig}
+            to={linkHref}
         >
             {content}
-        </Link>
+        </LinkComponent>
     )
 }
 
