@@ -128,26 +128,19 @@ exports[`BillingInvoices component should display invoices, without PDF download
                
             </td>
             <td>
-              <Link
+              <a
                 className="btn btn-secondary mr-2"
                 color="secondary"
+                href="https://pay.stripe.com/invoice/example125/pdf"
                 target="_self"
-                to="https://pay.stripe.com/invoice/example125/pdf"
               >
-                <a
-                  className="btn btn-secondary mr-2"
-                  color="secondary"
-                  target="_self"
-                  to="https://pay.stripe.com/invoice/example125/pdf"
+                <i
+                  className="material-icons mr-1"
                 >
-                  <i
-                    className="material-icons mr-1"
-                  >
-                    file_copy
-                  </i>
-                  Download PDF
-                </a>
-              </Link>
+                  file_copy
+                </i>
+                Download PDF
+              </a>
             </td>
           </tr>
         </tbody>

@@ -6,8 +6,6 @@ import {connect} from 'react-redux'
 
 import moment from 'moment'
 
-import {Link} from 'react-router-dom'
-
 import type {Dispatch} from '../../../state/types'
 
 import {SHOPIFY_PAYMENT_SERVICE} from '../../../constants/billing.ts'
@@ -165,9 +163,9 @@ export class BillingInvoices extends Component<Props, State> {
                                     </td>
                                     <td>
                                         {!shopifyPaid && (
-                                            <Link
+                                            <a
                                                 color="secondary"
-                                                to={invoicePdfUrl}
+                                                href={invoicePdfUrl}
                                                 className="btn btn-secondary mr-2"
                                                 target="_self"
                                             >
@@ -175,7 +173,7 @@ export class BillingInvoices extends Component<Props, State> {
                                                     file_copy
                                                 </i>
                                                 Download PDF
-                                            </Link>
+                                            </a>
                                         )}
                                         {paymentIntent &&
                                             paymentIntent.get('status') ===
