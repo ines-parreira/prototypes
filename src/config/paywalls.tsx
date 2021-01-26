@@ -7,7 +7,6 @@ const assetsURL = window.GORGIAS_ASSETS_URL || ''
 type PaywallConfig = {
     header: string
     description: string | ReactElement
-    upgradeType: string
     testimonial?: {
         author: {
             name: string
@@ -30,7 +29,6 @@ export const paywallConfigs: {
         header: 'Auto-assign tickets with teams',
         description:
             'As your team grows, free for all doesn’t work anymore. You waste time manually assigning tickets and cherry picking becomes an issue. \nStart using teams to automatically assign tickets to agents.',
-        upgradeType: 'Advanced',
         testimonial: {
             author: {
                 name: 'Alyse Nathan',
@@ -50,7 +48,6 @@ export const paywallConfigs: {
         header: 'Track customer satisfaction',
         description:
             'Send surveys to customers after your team has assisted them to monitor how well your support team is doing.',
-        upgradeType: 'Pro',
         testimonial: {
             author: {
                 name: 'Jonathan Ward',
@@ -70,7 +67,6 @@ export const paywallConfigs: {
         header: 'Track revenue from support',
         description:
             'Uncover upsell opportunities, track revenue generated per agents to compensate your team based on actual sales.',
-        upgradeType: 'Advanced',
         testimonial: {
             author: {
                 name: 'Jonathan Ward',
@@ -90,7 +86,6 @@ export const paywallConfigs: {
         header: 'Organize your agents with Teams ',
         description:
             'As your support team grows, it becomes crucial to optimize your helpdesk for team collaboration. Starting using teams to auto-assign tickets and share views across groups of agents.',
-        upgradeType: 'Advanced',
         preview: `${assetsURL}/static/private/img/paywalls/screens/auto-assignment.png`,
     },
     [AccountFeatures.UserRoles]: {
@@ -109,13 +104,11 @@ export const paywallConfigs: {
                 </a>
             </div>
         ),
-        upgradeType: 'Pro',
     },
     [AccountFeatures.ChatCampaigns]: {
         header: 'Convert your visitors',
         description:
             'Drive revenue through proactive customer engagement with Chat campaigns.',
-        upgradeType: 'Pro',
         testimonial: {
             author: {
                 name: 'Alyse Nathan',

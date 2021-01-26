@@ -1,3 +1,5 @@
+import {AccountFeatures} from '../../state/currentAccount/types'
+
 export enum PlanInterval {
     'Month' = 'month',
 }
@@ -18,4 +20,8 @@ export type Plan = {
     }
     amount: number
     integrations: number
+    features: Record<
+        string,
+        typeof AccountFeatures[keyof typeof AccountFeatures]
+    >
 }

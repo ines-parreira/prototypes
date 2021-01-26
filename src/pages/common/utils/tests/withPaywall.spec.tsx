@@ -6,6 +6,11 @@ import {fromJS} from 'immutable'
 
 import {RootState, StoreDispatch} from '../../../../state/types'
 import {AccountFeatures} from '../../../../state/currentAccount/types'
+import {
+    advancedPlan,
+    basicPlan,
+    proPlan,
+} from '../../../../fixtures/subscriptionPlan'
 
 import withPaywall from '../withPaywall'
 
@@ -22,6 +27,13 @@ describe('withPaywall', () => {
                 features: fromJS({
                     [AccountFeatures.InstagramComment]: true,
                     [AccountFeatures.AutoAssignment]: false,
+                }),
+            }),
+            billing: fromJS({
+                plans: fromJS({
+                    [basicPlan.id]: basicPlan,
+                    [proPlan.id]: proPlan,
+                    [advancedPlan.id]: advancedPlan,
                 }),
             }),
         }),

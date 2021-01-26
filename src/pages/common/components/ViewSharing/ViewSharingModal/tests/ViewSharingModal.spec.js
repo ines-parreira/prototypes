@@ -10,6 +10,11 @@ import {ViewVisibility} from '../../../../../../constants/view.ts'
 import GorgiasApi from '../../../../../../services/gorgiasApi.ts'
 import {view as viewFixture} from '../../../../../../fixtures/views.ts'
 import {viewUpdated} from '../../../../../../state/entities/views/actions.ts'
+import {
+    advancedPlan,
+    basicPlan,
+    proPlan,
+} from '../../../../../../fixtures/subscriptionPlan.ts'
 
 jest.mock('../../../../../../services/gorgiasApi')
 jest.mock('../../../../../../state/entities/views/actions.ts')
@@ -24,6 +29,13 @@ describe('<ViewSharingModal/>', () => {
         }),
         teams: fromJS({
             all: {},
+        }),
+        billing: fromJS({
+            plans: fromJS({
+                [basicPlan.id]: basicPlan,
+                [proPlan.id]: proPlan,
+                [advancedPlan.id]: advancedPlan,
+            }),
         }),
     })
     const store = mockStore(getState())

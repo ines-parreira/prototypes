@@ -20,6 +20,9 @@ import type {currentUserType} from '../../../../../state/types'
 import {ViewVisibility} from '../../../../../constants/view.ts'
 import {viewUpdated} from '../../../../../state/entities/views/actions.ts'
 import type {View} from '../../../../../models/view/types'
+import {AccountFeatures} from '../../../../../state/currentAccount/types.ts'
+import {getCheaperPlanForFeature} from '../../../../../utils/paywalls.ts'
+import {toJS} from '../../../../../utils.ts'
 
 import UpgradeButton from '../../UpgradeButton/UpgradeButton.tsx'
 
@@ -30,6 +33,7 @@ type Props = {
     view: viewType,
     isOpen: boolean,
     currentUser: currentUserType,
+    plans: Object,
     showPaywall: boolean,
     toggle: () => void,
     notify: (message: notificationType) => void,
@@ -40,6 +44,7 @@ function ViewSharingModal({
     view,
     isOpen,
     currentUser,
+    plans,
     showPaywall,
     toggle,
     notify,
@@ -153,7 +158,10 @@ function ViewSharingModal({
                     </p>
                     <UpgradeButton
                         className="mb-3"
-                        label="Upgrade to Advanced"
+                        label={`Upgrade to ${getCheaperPlanForFeature(
+                            AccountFeatures.ViewSharing,
+                            plans
+                        )}`}
                     />
                 </ModalBody>
             )}
@@ -165,6 +173,7 @@ function ViewSharingModal({
 export default connect(
     (state) => ({
         currentUser: state.currentUser,
+        plans: toJS(state.billing.get('plans')),
     }),
     {notify, viewUpdated}
 )(ViewSharingModal)

@@ -6,8 +6,11 @@ import classnames from 'classnames'
 
 import {RootState} from '../../../state/types'
 import {AccountFeatures} from '../../../state/currentAccount/types'
+import {Plan} from '../../../models/billing/types'
 import {paywallConfigs} from '../../../config/paywalls'
 import UpgradeButton from '../components/UpgradeButton'
+import {getCheaperPlanForFeature} from '../../../utils/paywalls'
+import {toJS} from '../../../utils'
 
 import css from './withPaywall.less'
 
@@ -18,13 +21,16 @@ export const withPaywall = (
         const features = state.currentAccount.get('features') as Map<any, any>
         const hasFeature: boolean | undefined = features.get(feature)
         const paywallData = paywallConfigs[feature]
-        return {hasFeature, paywallData}
+        const plans: Record<string, Plan> = toJS(state.billing.get('plans'))
+        const requiredPlanName = getCheaperPlanForFeature(feature, plans)
+        return {hasFeature, paywallData, requiredPlanName}
     })
 
     return (Component: ComponentType<Record<string, unknown>>) => {
         const PaywallHOC = ({
             hasFeature,
             paywallData,
+            requiredPlanName,
             ...ownProps
         }: ConnectedProps<typeof connector> &
             ComponentProps<typeof Component>) => {
@@ -55,7 +61,7 @@ export const withPaywall = (
                                         </p>
                                         <UpgradeButton
                                             className="mt-3 mb-5"
-                                            label={`Upgrade to ${paywallData.upgradeType}`}
+                                            label={`Upgrade to ${requiredPlanName}`}
                                         />
                                         {paywallData.testimonial && (
                                             <>

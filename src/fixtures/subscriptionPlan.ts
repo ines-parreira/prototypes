@@ -63,6 +63,32 @@ export const proPlan = {
     },
 }
 
+export const advancedPlan = {
+    id: 'advanced-monthly-usd-2',
+    name: 'Advanced',
+    amount: 70000,
+    currency: 'usd',
+    interval: 'month',
+    trial_period_days: 7,
+    free_tickets: 3000,
+    cost_per_ticket: 0.2,
+    limits: ticketLimits,
+    integrations: 200,
+    public: true,
+    features: {
+        auto_assignment: true,
+        chat_campaigns: true,
+        facebook_comment: true,
+        instagram_comment: true,
+        magento_integration: true,
+        revenue_statistics: true,
+        satisfaction_surveys: true,
+        teams: true,
+        user_roles: true,
+        view_sharing: true,
+    },
+}
+
 export const customPlan = {
     id: 'custom-monthly-usd-2',
     name: 'Custom',
