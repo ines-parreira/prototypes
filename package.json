@@ -62,7 +62,7 @@
         "jsonp": "0.2.1",
         "linkify-it": "2.0.3",
         "linkifyjs": "2.1.8",
-        "lodash": "4.17.13",
+        "lodash": "4.17.19",
         "lz-string": "1.4.4",
         "md5": "2.2.1",
         "memoize-one": "5.0.0",
