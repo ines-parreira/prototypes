@@ -11,6 +11,7 @@ Object {
         "X-CSRF-Token": undefined,
         "X-Gorgias-User-Client": "web",
       },
+      "maxBodyLength": -1,
       "maxContentLength": -1,
       "method": "delete",
       "timeout": 0,
