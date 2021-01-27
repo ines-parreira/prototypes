@@ -1,5 +1,6 @@
 import React from 'react'
 import linkifyhtml from 'linkifyjs/html'
+import _kebabeCase from 'lodash/kebabCase'
 import {
     convertToHTML as _convertToHTML,
     convertFromHTML as _convertFromHTML,
@@ -11,11 +12,118 @@ import {
     EditorState,
     SelectionState,
     convertToRaw,
+    Modifier,
 } from 'draft-js'
 import {Map} from 'immutable'
 
 import {DEFAULT_IMAGE_WIDTH} from '../config/editor'
 import {availableVariables} from '../config/rules'
+import {
+    getQuoteDepth,
+    QUOTE_DEPTH_DATA_KEY,
+} from '../pages/common/draftjs/plugins/quotes/quotesEditorUtils'
+
+import {countWords, truncateWords} from './string'
+import {ComposedElements} from './react'
+
+const QUOTE_CLASS_NAME = 'gorgias_quote'
+const QUOTE_DEPTH_DATASET_KEY = 'gorgiasQuoteDepth'
+
+export enum EditorBlockType {
+    Unstyled = 'unstyled',
+    CodeBlock = 'code-block',
+    OrderedListItem = 'ordered-list-item',
+    UnorderedListItem = 'unordered-list-item',
+    HeaderOne = 'header-one',
+    HeaderTwo = 'header-two',
+    HeaderThree = 'header-three',
+    HeaderFour = 'header-four',
+    HeaderFive = 'header-five',
+    HeaderSix = 'header-six',
+    Atomic = 'atomic',
+    Blockquote = 'blockquote',
+}
+
+const BLOCK_TO_HTML: Record<
+    EditorBlockType,
+    {
+        element: React.ReactElement
+        nest?: React.ReactElement
+        empty?: React.ReactElement
+    }
+> = Object.freeze({
+    [EditorBlockType.Unstyled]: {
+        element: <div />,
+        empty: (
+            <ComposedElements
+                elements={[
+                    <div key="empty-block-wrapper" />,
+                    <br key="empty-block-newline" />,
+                ]}
+            />
+        ),
+    },
+    [EditorBlockType.CodeBlock]: {element: <pre />},
+    [EditorBlockType.Atomic]: {
+        element: (
+            <figure
+                style={{
+                    display: 'inline-block',
+                    margin: 0,
+                }}
+            />
+        ),
+    },
+    [EditorBlockType.Blockquote]: {element: <blockquote />},
+    [EditorBlockType.OrderedListItem]: {
+        element: <li />,
+        nest: <ol />,
+    },
+    [EditorBlockType.UnorderedListItem]: {
+        element: <li />,
+        nest: <ul />,
+    },
+    // eslint-disable-next-line jsx-a11y/heading-has-content
+    [EditorBlockType.HeaderOne]: {element: <h1 />},
+    // eslint-disable-next-line jsx-a11y/heading-has-content
+    [EditorBlockType.HeaderTwo]: {element: <h2 />},
+    // eslint-disable-next-line jsx-a11y/heading-has-content
+    [EditorBlockType.HeaderThree]: {element: <h3 />},
+    // eslint-disable-next-line jsx-a11y/heading-has-content
+    [EditorBlockType.HeaderFour]: {element: <h4 />},
+    // eslint-disable-next-line jsx-a11y/heading-has-content
+    [EditorBlockType.HeaderFive]: {element: <h5 />},
+    // eslint-disable-next-line jsx-a11y/heading-has-content
+    [EditorBlockType.HeaderSix]: {element: <h6 />},
+})
+
+const HTML_TO_BLOCK: Record<string, EditorBlockType> = Object.freeze({
+    br: EditorBlockType.Unstyled,
+    div: EditorBlockType.Unstyled,
+    p: EditorBlockType.Unstyled,
+    pre: EditorBlockType.CodeBlock,
+    h1: EditorBlockType.HeaderOne,
+    h2: EditorBlockType.HeaderTwo,
+    h3: EditorBlockType.HeaderThree,
+    h4: EditorBlockType.HeaderFour,
+    h5: EditorBlockType.HeaderFive,
+    h6: EditorBlockType.HeaderSix,
+    figure: EditorBlockType.Atomic,
+    img: EditorBlockType.Atomic,
+    blockquote: EditorBlockType.Blockquote,
+})
+
+const QUOTE_HTML_ELEMENT = (
+    <blockquote
+        className={QUOTE_CLASS_NAME}
+        style={{
+            margin: '0 0 0 .8ex',
+            borderLeft: '1px #ccc solid',
+            paddingLeft: '1ex',
+            overflow: 'auto',
+        }}
+    />
+)
 
 // note that 2 letters tlds are automatically interpreted
 const tlds = 'com edu gov ru org net de jp uk br it pl in fr au ir nl info cn es cz kr ca ua eu co gr za ro biz ch se io'.split(
@@ -41,12 +149,6 @@ const fixLinkVars = (html: string, callback: (T: string) => string): string => {
     return parsedHtml.replace(restoreRegex, (match) => match.replace(uid, ''))
 }
 
-const EmptyUnstyledBlock: React.FC = () => (
-    <div>
-        <br />
-    </div>
-)
-
 /**
  * Single convertToHTML config for the entire app (same options everywhere if needed)
  */
@@ -54,31 +156,56 @@ export function convertToHTML(contentState: ContentState): string {
     return fixLinkVars(
         _convertToHTML({
             blockToHTML: (block) => {
-                const {type} = block
-
-                if (type === 'unstyled') {
-                    return {
-                        element: <div />,
-                        empty: <EmptyUnstyledBlock />,
+                const {type, key, depth} = block
+                const contentBlock = contentState.getBlockForKey(key)
+                const quoteDepth = getQuoteDepth(contentBlock)
+                const blockTag = BLOCK_TO_HTML[type as EditorBlockType]
+                if (blockTag) {
+                    if (quoteDepth === 0) {
+                        return blockTag
                     }
-                }
-
-                // it be removed after https://github.com/HubSpot/draft-convert/issues/182 is fixed
-                if (type === 'code-block') {
-                    return {
-                        element: <pre />,
-                    }
-                }
-
-                if (type === 'atomic') {
-                    return (
-                        <figure
-                            style={{
-                                display: 'inline-block',
-                                margin: 0,
-                            }}
-                        />
+                    const {element, empty, nest} = blockTag
+                    const quoteElements = Array.from(
+                        {length: quoteDepth},
+                        (value, i) =>
+                            React.cloneElement(QUOTE_HTML_ELEMENT, {
+                                key: `quote-level-${i}`,
+                            })
                     )
+                    const quoteDataAttr = {
+                        [`data-${_kebabeCase(
+                            QUOTE_DEPTH_DATASET_KEY
+                        )}`]: quoteDepth,
+                    }
+                    return {
+                        element: nest ? (
+                            React.cloneElement(element, quoteDataAttr)
+                        ) : (
+                            <ComposedElements
+                                elements={[
+                                    ...quoteElements,
+                                    React.cloneElement(element, quoteDataAttr),
+                                ]}
+                            />
+                        ),
+                        empty: empty && (
+                            <ComposedElements
+                                elements={[
+                                    ...quoteElements,
+                                    React.cloneElement(empty, quoteDataAttr),
+                                ]}
+                            />
+                        ),
+                        nest:
+                            nest &&
+                            (depth > 0 ? (
+                                nest
+                            ) : (
+                                <ComposedElements
+                                    elements={[...quoteElements, nest]}
+                                />
+                            )),
+                    }
                 }
             },
             entityToHTML: (entity, originalText) => {
@@ -150,16 +277,66 @@ export function unescapeTemplateVars(string: string): string {
 }
 
 /**
+ * Replace gorgias quote elements that were created by convertToHTML
+ * with its child nodes.
+ */
+const removeGorgiasQuoteNodes = (node: Node) => {
+    for (const child of Array.from(node.childNodes)) {
+        removeGorgiasQuoteNodes(child)
+    }
+
+    if (
+        node &&
+        node.nodeName === 'BLOCKQUOTE' &&
+        (node as HTMLElement).classList.contains(QUOTE_CLASS_NAME)
+    ) {
+        for (const child of Array.from(node.childNodes)) {
+            node.parentNode?.insertBefore(child, node)
+        }
+        node.parentNode?.removeChild(node)
+    }
+}
+
+/**
  * Single convertFromHTML config for the entire app (same options everywhere if needed)
  * @param html
  */
 export function convertFromHTML(html: string): ContentState {
+    // We need to remove quote blockquote elements from the dom,
+    // otherwise draft-convert will try to convert them to the editor blocks
+    const wrapper = document.createElement('body')
+    wrapper.innerHTML = html
+    removeGorgiasQuoteNodes(wrapper)
+
     let converted: ContentState = _convertFromHTML({
-        htmlToBlock: (((nodeName: string) => {
-            if (nodeName === 'figure' || nodeName === 'img') {
-                return 'atomic'
+        htmlToBlock: (nodeName: string, node) => {
+            let blockType
+            const data: Record<string, unknown> = {}
+
+            if (
+                node instanceof HTMLElement &&
+                node.dataset[QUOTE_DEPTH_DATASET_KEY]
+            ) {
+                data[QUOTE_DEPTH_DATA_KEY] = parseInt(
+                    node.dataset[QUOTE_DEPTH_DATASET_KEY] as string
+                )
             }
-        }) as unknown) as (nodeName: string) => string | false,
+
+            blockType = HTML_TO_BLOCK[nodeName]
+            if (nodeName === 'li') {
+                blockType =
+                    node.parentNode?.nodeName === 'UL'
+                        ? EditorBlockType.UnorderedListItem
+                        : EditorBlockType.OrderedListItem
+            }
+
+            return (
+                blockType && {
+                    type: blockType,
+                    data,
+                }
+            )
+        },
         htmlToEntity: (nodeName: string, node: HTMLElement, createEntity) => {
             if (nodeName === 'a') {
                 return createEntity('link', 'MUTABLE', {
@@ -175,7 +352,7 @@ export function convertFromHTML(html: string): ContentState {
                 })
             }
         },
-    })(html)
+    })(wrapper.innerHTML)
 
     // line breaks for windows/linux/mac
     const lineBreaks = ['\r\n', '\n', '\r']
@@ -214,7 +391,7 @@ export function convertFromHTML(html: string): ContentState {
 }
 
 export function contentStateFromTextOrHTML(
-    text: string,
+    text?: string,
     html?: string
 ): ContentState {
     let contentState = ContentState.createFromText('')
@@ -280,7 +457,7 @@ export function getSelectedText(
         }, '')
 }
 
-// Enitity selection behavior is based on Gmail's editor link toggle functionality
+// Entity selection behavior is based on Gmail's editor link toggle functionality
 export function getSelectedEntityKey(
     contentState: ContentState,
     selection: SelectionState
@@ -343,6 +520,12 @@ export function isValidSelectionKey(
     }
 
     return true
+}
+
+const decorateTextWithQuotes = (blockText: string, depth: number): string => {
+    return depth <= 0
+        ? blockText
+        : new Array(depth).fill('>').join('') + ' ' + blockText
 }
 
 // Replacement for DraftJS getPlainText:
@@ -413,7 +596,211 @@ export function getPlainText(
                 }
             })
 
-            return blockText
+            return decorateTextWithQuotes(
+                blockText,
+                getQuoteDepth(ContentState.getBlockForKey(rawBlock.key))
+            )
         })
         .join(delimiter || '\n')
+}
+
+export const createCollapsedSelectionState = (
+    key: string,
+    offset: number
+): SelectionState => {
+    return (SelectionState.createEmpty(key)
+        .set('anchorOffset', offset)
+        .set('focusOffset', offset) as unknown) as SelectionState
+}
+
+export const insertNewBlockAtTheEnd = (
+    contentState: ContentState
+): ContentState => {
+    const lastBlock = contentState.getLastBlock()
+    return Modifier.splitBlock(
+        contentState,
+        createCollapsedSelectionState(lastBlock.getKey(), lastBlock.getLength())
+    )
+}
+
+export const insertNewBlockAtTheBeginning = (contentState: ContentState) => {
+    return Modifier.splitBlock(
+        contentState,
+        createCollapsedSelectionState(contentState.getFirstBlock().getKey(), 0)
+    )
+}
+
+export const mergeContentStates = (
+    contentState1: ContentState,
+    contentState2: ContentState
+): ContentState => {
+    const contentState = insertNewBlockAtTheEnd(contentState1)
+    const lastBlock = contentState.getLastBlock()
+    return Modifier.replaceWithFragment(
+        contentState,
+        createCollapsedSelectionState(
+            lastBlock.getKey(),
+            lastBlock.getLength()
+        ),
+        contentState2.getBlockMap()
+    )
+}
+
+export const selectWholeContentState = (
+    contentState: ContentState
+): SelectionState => {
+    return SelectionState.createEmpty(contentState.getFirstBlock().getKey())
+        .set('focusKey', contentState.getLastBlock().getKey())
+        .set(
+            'focusOffset',
+            contentState.getLastBlock().getLength()
+        ) as SelectionState
+}
+
+export function findContentState(
+    parentContentState: ContentState,
+    contentState: ContentState
+): SelectionState | null {
+    let selectionState = SelectionState.createEmpty('')
+    const parentBlocks = parentContentState.getBlocksAsArray()
+    const blocks = contentState.getBlocksAsArray()
+    const clearKeys = {
+        key: '',
+        characterList: [],
+    }
+
+    let j = 0
+    for (const parentBlock of parentBlocks) {
+        const parentBlockKey = parentBlock.getKey()
+        if (parentBlock.merge(clearKeys).equals(blocks[j].merge(clearKeys))) {
+            j++
+
+            if (!selectionState.getAnchorKey()) {
+                selectionState = selectionState.set(
+                    'anchorKey',
+                    parentBlockKey
+                ) as SelectionState
+            }
+
+            if (j === blocks.length) {
+                return selectionState.merge({
+                    focusKey: parentBlockKey,
+                    focusOffset: parentBlock.getLength(),
+                }) as SelectionState
+            }
+        } else {
+            j = 0
+            selectionState = SelectionState.createEmpty('')
+        }
+    }
+
+    return null
+}
+
+export const truncateContentStateBlocks = (
+    contentState: ContentState,
+    n: number
+): ContentState => {
+    if (n < 0) {
+        throw new Error('Negative number of blocks')
+    } else if (n >= contentState.getBlocksAsArray().length) {
+        return contentState
+    }
+    return ContentState.createFromBlockArray(
+        contentState.getBlocksAsArray().slice(0, n)
+    )
+}
+
+export const truncateContentStateWords = (
+    contentState: ContentState,
+    n: number
+): ContentState => {
+    if (n < 0) {
+        throw new Error('Negative number of words')
+    }
+
+    const newBlocks: ContentBlock[] = []
+    let wordsCount = 0
+    for (const block of contentState.getBlocksAsArray()) {
+        const blockWordsCount = countWords(block.getText())
+        if (wordsCount + blockWordsCount <= n) {
+            newBlocks.push(block)
+            wordsCount += blockWordsCount
+        } else {
+            newBlocks.push(
+                block.set(
+                    'text',
+                    truncateWords(block.getText(), n - wordsCount)
+                ) as ContentBlock
+            )
+            return ContentState.createFromBlockArray(newBlocks)
+        }
+    }
+
+    return contentState
+}
+
+export class ContentStateCounter {
+    blocks = 0
+    words = 0
+
+    constructor(initialContentState?: ContentState) {
+        this.reset(initialContentState)
+    }
+
+    addContentState = (contentState: ContentState) => {
+        this.blocks += contentState.getBlocksAsArray().length
+        this.words += countWords(contentState.getPlainText())
+    }
+
+    removeContentState = (contentState: ContentState) => {
+        this.blocks -= contentState.getBlocksAsArray().length
+        this.words -= countWords(contentState.getPlainText())
+    }
+
+    reset = (contentState?: ContentState) => {
+        this.blocks = 0
+        this.words = 0
+        if (contentState) {
+            this.addContentState(contentState)
+        }
+    }
+}
+
+// $TSFixMe: Move to draftTestUtils
+export type BlockSnapshot = {
+    data: Record<string, unknown>
+    depth: number
+    text: string
+    type: string
+}
+
+// $TSFixMe: Move to draftTestUtils
+export const getContentStateBlocksSnapshot = (
+    contentState: ContentState
+): BlockSnapshot[] => {
+    return contentState.getBlocksAsArray().map((block) => {
+        return {
+            data: block.getData().toJS(),
+            depth: block.getDepth(),
+            text: block.getText(),
+            type: block.getType(),
+        }
+    })
+}
+
+// $TSFixMe: Move to draftTestUtils
+export const createDraftJSKeyGeneratorMock = () => {
+    let counter = 0
+
+    const generateKeyMock = () => {
+        counter++
+        return 'mock-key-' + counter.toString()
+    }
+
+    generateKeyMock.reset = () => {
+        counter = 0
+    }
+
+    return generateKeyMock
 }

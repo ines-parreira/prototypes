@@ -1408,6 +1408,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                 },
                                               }
                                             }
+                                            emailExtraEnabled={false}
                                             isFocused={false}
                                             linkIsOpen={false}
                                             linkText=""
@@ -1423,7 +1424,6 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                             onLinkTextChange={[Function]}
                                             onLinkUrlChange={[Function]}
                                             onMentionSearchChange={[Function]}
-                                            signature={false}
                                             type="text"
                                             value={
                                               Object {
@@ -1686,6 +1686,79 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                             Object {
                                                               "handlePastedFiles": [Function],
                                                             },
+                                                            Object {
+                                                              "blockRenderMap": Immutable.Map {
+                                                                "ordered-list-item": Object {
+                                                                  "element": "li",
+                                                                  "wrapper": <QuotesWrapper
+                                                                    innerWrapper={
+                                                                      <ol
+                                                                        className="public-DraftStyleDefault-ol"
+                                                                      />
+                                                                    }
+                                                                  />,
+                                                                },
+                                                                "header-six": Object {
+                                                                  "element": "h6",
+                                                                  "wrapper": <QuotesWrapper />,
+                                                                },
+                                                                "header-four": Object {
+                                                                  "element": "h4",
+                                                                  "wrapper": <QuotesWrapper />,
+                                                                },
+                                                                "header-one": Object {
+                                                                  "element": "h1",
+                                                                  "wrapper": <QuotesWrapper />,
+                                                                },
+                                                                "unordered-list-item": Object {
+                                                                  "element": "li",
+                                                                  "wrapper": <QuotesWrapper
+                                                                    innerWrapper={
+                                                                      <ul
+                                                                        className="public-DraftStyleDefault-ul"
+                                                                      />
+                                                                    }
+                                                                  />,
+                                                                },
+                                                                "atomic": Object {
+                                                                  "element": "figure",
+                                                                  "wrapper": <QuotesWrapper />,
+                                                                },
+                                                                "unstyled": Object {
+                                                                  "aliasedElements": Array [
+                                                                    "p",
+                                                                  ],
+                                                                  "element": "div",
+                                                                },
+                                                                "header-two": Object {
+                                                                  "element": "h2",
+                                                                  "wrapper": <QuotesWrapper />,
+                                                                },
+                                                                "code-block": Object {
+                                                                  "element": "pre",
+                                                                  "wrapper": <QuotesWrapper
+                                                                    innerWrapper={
+                                                                      <pre
+                                                                        className="public-DraftStyleDefault-pre"
+                                                                      />
+                                                                    }
+                                                                  />,
+                                                                },
+                                                                "blockquote": Object {
+                                                                  "element": "blockquote",
+                                                                  "wrapper": <QuotesWrapper />,
+                                                                },
+                                                                "header-five": Object {
+                                                                  "element": "h5",
+                                                                  "wrapper": <QuotesWrapper />,
+                                                                },
+                                                                "header-three": Object {
+                                                                  "element": "h3",
+                                                                  "wrapper": <QuotesWrapper />,
+                                                                },
+                                                              },
+                                                              "blockStyleFn": [Function],
+                                                            },
                                                           ]
                                                         }
                                                       >
@@ -1697,27 +1770,39 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                             Immutable.Map {
                                                               "ordered-list-item": Object {
                                                                 "element": "li",
-                                                                "wrapper": <ol
-                                                                  className="public-DraftStyleDefault-ol"
+                                                                "wrapper": <QuotesWrapper
+                                                                  innerWrapper={
+                                                                    <ol
+                                                                      className="public-DraftStyleDefault-ol"
+                                                                    />
+                                                                  }
                                                                 />,
                                                               },
                                                               "header-six": Object {
                                                                 "element": "h6",
+                                                                "wrapper": <QuotesWrapper />,
                                                               },
                                                               "header-four": Object {
                                                                 "element": "h4",
+                                                                "wrapper": <QuotesWrapper />,
                                                               },
                                                               "header-one": Object {
                                                                 "element": "h1",
+                                                                "wrapper": <QuotesWrapper />,
                                                               },
                                                               "unordered-list-item": Object {
                                                                 "element": "li",
-                                                                "wrapper": <ul
-                                                                  className="public-DraftStyleDefault-ul"
+                                                                "wrapper": <QuotesWrapper
+                                                                  innerWrapper={
+                                                                    <ul
+                                                                      className="public-DraftStyleDefault-ul"
+                                                                    />
+                                                                  }
                                                                 />,
                                                               },
                                                               "atomic": Object {
                                                                 "element": "figure",
+                                                                "wrapper": <QuotesWrapper />,
                                                               },
                                                               "unstyled": Object {
                                                                 "aliasedElements": Array [
@@ -1727,21 +1812,29 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                               },
                                                               "header-two": Object {
                                                                 "element": "h2",
+                                                                "wrapper": <QuotesWrapper />,
                                                               },
                                                               "code-block": Object {
                                                                 "element": "pre",
-                                                                "wrapper": <pre
-                                                                  className="public-DraftStyleDefault-pre"
+                                                                "wrapper": <QuotesWrapper
+                                                                  innerWrapper={
+                                                                    <pre
+                                                                      className="public-DraftStyleDefault-pre"
+                                                                    />
+                                                                  }
                                                                 />,
                                                               },
                                                               "blockquote": Object {
                                                                 "element": "blockquote",
+                                                                "wrapper": <QuotesWrapper />,
                                                               },
                                                               "header-five": Object {
                                                                 "element": "h5",
+                                                                "wrapper": <QuotesWrapper />,
                                                               },
                                                               "header-three": Object {
                                                                 "element": "h3",
+                                                                "wrapper": <QuotesWrapper />,
                                                               },
                                                             }
                                                           }
@@ -1981,6 +2074,79 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                               Object {
                                                                 "handlePastedFiles": [Function],
                                                               },
+                                                              Object {
+                                                                "blockRenderMap": Immutable.Map {
+                                                                  "ordered-list-item": Object {
+                                                                    "element": "li",
+                                                                    "wrapper": <QuotesWrapper
+                                                                      innerWrapper={
+                                                                        <ol
+                                                                          className="public-DraftStyleDefault-ol"
+                                                                        />
+                                                                      }
+                                                                    />,
+                                                                  },
+                                                                  "header-six": Object {
+                                                                    "element": "h6",
+                                                                    "wrapper": <QuotesWrapper />,
+                                                                  },
+                                                                  "header-four": Object {
+                                                                    "element": "h4",
+                                                                    "wrapper": <QuotesWrapper />,
+                                                                  },
+                                                                  "header-one": Object {
+                                                                    "element": "h1",
+                                                                    "wrapper": <QuotesWrapper />,
+                                                                  },
+                                                                  "unordered-list-item": Object {
+                                                                    "element": "li",
+                                                                    "wrapper": <QuotesWrapper
+                                                                      innerWrapper={
+                                                                        <ul
+                                                                          className="public-DraftStyleDefault-ul"
+                                                                        />
+                                                                      }
+                                                                    />,
+                                                                  },
+                                                                  "atomic": Object {
+                                                                    "element": "figure",
+                                                                    "wrapper": <QuotesWrapper />,
+                                                                  },
+                                                                  "unstyled": Object {
+                                                                    "aliasedElements": Array [
+                                                                      "p",
+                                                                    ],
+                                                                    "element": "div",
+                                                                  },
+                                                                  "header-two": Object {
+                                                                    "element": "h2",
+                                                                    "wrapper": <QuotesWrapper />,
+                                                                  },
+                                                                  "code-block": Object {
+                                                                    "element": "pre",
+                                                                    "wrapper": <QuotesWrapper
+                                                                      innerWrapper={
+                                                                        <pre
+                                                                          className="public-DraftStyleDefault-pre"
+                                                                        />
+                                                                      }
+                                                                    />,
+                                                                  },
+                                                                  "blockquote": Object {
+                                                                    "element": "blockquote",
+                                                                    "wrapper": <QuotesWrapper />,
+                                                                  },
+                                                                  "header-five": Object {
+                                                                    "element": "h5",
+                                                                    "wrapper": <QuotesWrapper />,
+                                                                  },
+                                                                  "header-three": Object {
+                                                                    "element": "h3",
+                                                                    "wrapper": <QuotesWrapper />,
+                                                                  },
+                                                                },
+                                                                "blockStyleFn": [Function],
+                                                              },
                                                             ]
                                                           }
                                                           readOnly={false}
@@ -2038,27 +2204,39 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                     Immutable.Map {
                                                                       "ordered-list-item": Object {
                                                                         "element": "li",
-                                                                        "wrapper": <ol
-                                                                          className="public-DraftStyleDefault-ol"
+                                                                        "wrapper": <QuotesWrapper
+                                                                          innerWrapper={
+                                                                            <ol
+                                                                              className="public-DraftStyleDefault-ol"
+                                                                            />
+                                                                          }
                                                                         />,
                                                                       },
                                                                       "header-six": Object {
                                                                         "element": "h6",
+                                                                        "wrapper": <QuotesWrapper />,
                                                                       },
                                                                       "header-four": Object {
                                                                         "element": "h4",
+                                                                        "wrapper": <QuotesWrapper />,
                                                                       },
                                                                       "header-one": Object {
                                                                         "element": "h1",
+                                                                        "wrapper": <QuotesWrapper />,
                                                                       },
                                                                       "unordered-list-item": Object {
                                                                         "element": "li",
-                                                                        "wrapper": <ul
-                                                                          className="public-DraftStyleDefault-ul"
+                                                                        "wrapper": <QuotesWrapper
+                                                                          innerWrapper={
+                                                                            <ul
+                                                                              className="public-DraftStyleDefault-ul"
+                                                                            />
+                                                                          }
                                                                         />,
                                                                       },
                                                                       "atomic": Object {
                                                                         "element": "figure",
+                                                                        "wrapper": <QuotesWrapper />,
                                                                       },
                                                                       "unstyled": Object {
                                                                         "aliasedElements": Array [
@@ -2068,21 +2246,29 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                                       },
                                                                       "header-two": Object {
                                                                         "element": "h2",
+                                                                        "wrapper": <QuotesWrapper />,
                                                                       },
                                                                       "code-block": Object {
                                                                         "element": "pre",
-                                                                        "wrapper": <pre
-                                                                          className="public-DraftStyleDefault-pre"
+                                                                        "wrapper": <QuotesWrapper
+                                                                          innerWrapper={
+                                                                            <pre
+                                                                              className="public-DraftStyleDefault-pre"
+                                                                            />
+                                                                          }
                                                                         />,
                                                                       },
                                                                       "blockquote": Object {
                                                                         "element": "blockquote",
+                                                                        "wrapper": <QuotesWrapper />,
                                                                       },
                                                                       "header-five": Object {
                                                                         "element": "h5",
+                                                                        "wrapper": <QuotesWrapper />,
                                                                       },
                                                                       "header-three": Object {
                                                                         "element": "h3",
+                                                                        "wrapper": <QuotesWrapper />,
                                                                       },
                                                                     }
                                                                   }
@@ -2702,6 +2888,7 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                           },
                                                         }
                                                       }
+                                                      emailExtraEnabled={false}
                                                       isFocused={false}
                                                       linkIsOpen={false}
                                                       linkText=""
@@ -2728,7 +2915,6 @@ exports[`SatisfactionSurveyView render should render current survey settings for
                                                           "setReadOnly": [Function],
                                                         }
                                                       }
-                                                      signature={false}
                                                       type="text"
                                                       value={
                                                         Object {

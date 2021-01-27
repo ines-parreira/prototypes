@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`quotesPlugin blockRenderMap should define quote wrappers for the wrappable block types 1`] = `
+Object {
+  "atomic": Object {
+    "element": "figure",
+    "wrapper": <QuotesWrapper />,
+  },
+  "blockquote": Object {
+    "element": "blockquote",
+    "wrapper": <QuotesWrapper />,
+  },
+  "code-block": Object {
+    "element": "pre",
+    "wrapper": <QuotesWrapper
+      innerWrapper={
+        <pre
+          className="public-DraftStyleDefault-pre"
+        />
+      }
+    />,
+  },
+  "header-five": Object {
+    "element": "h5",
+    "wrapper": <QuotesWrapper />,
+  },
+  "header-four": Object {
+    "element": "h4",
+    "wrapper": <QuotesWrapper />,
+  },
+  "header-one": Object {
+    "element": "h1",
+    "wrapper": <QuotesWrapper />,
+  },
+  "header-six": Object {
+    "element": "h6",
+    "wrapper": <QuotesWrapper />,
+  },
+  "header-three": Object {
+    "element": "h3",
+    "wrapper": <QuotesWrapper />,
+  },
+  "header-two": Object {
+    "element": "h2",
+    "wrapper": <QuotesWrapper />,
+  },
+  "ordered-list-item": Object {
+    "element": "li",
+    "wrapper": <QuotesWrapper
+      innerWrapper={
+        <ol
+          className="public-DraftStyleDefault-ol"
+        />
+      }
+    />,
+  },
+  "unordered-list-item": Object {
+    "element": "li",
+    "wrapper": <QuotesWrapper
+      innerWrapper={
+        <ul
+          className="public-DraftStyleDefault-ul"
+        />
+      }
+    />,
+  },
+  "unstyled": Object {
+    "aliasedElements": Array [
+      "p",
+    ],
+    "element": "div",
+  },
+}
+`;

@@ -1,0 +1,158 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`new message reducer NEW_MESSAGE_ADD_EMAIL_EXTRA action should add email extra content 1`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {
+      "addAttachment": false,
+      "submitMessage": false,
+    },
+  },
+  "newMessage": Object {
+    "attachments": Array [],
+    "body_html": "<div>Hello</div><div><br></div><div>Foo <strong>signature</strong></div><div><br></div><div>On Mon, Jul 31, 2017, at 11:07 PM, Acme Support &lt;<a href=\\"mailto:support@acme.gorgias.io\\" target=\\"_blank\\">support@acme.gorgias.io</a>&gt; wrote:</div><blockquote class=\\"gorgias_quote\\" style=\\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex;overflow:auto\\"><div data-gorgias-quote-depth=\\"1\\">Hi! How are <strong>you</strong>?</div></blockquote>",
+    "body_text": "Hello
+
+Foo signature
+
+On Mon, Jul 31, 2017, at 11:07 PM, Acme Support <support@acme.gorgias.io> wrote:
+Hi! How are you?",
+    "channel": "email",
+    "from_agent": true,
+    "macros": Array [],
+    "mention_ids": Array [],
+    "public": true,
+    "sender": null,
+    "source": Object {
+      "bcc": Array [],
+      "cc": Array [],
+      "extra": Object {
+        "include_thread": false,
+      },
+      "from": Object {},
+      "to": Array [],
+      "type": "email",
+    },
+    "stripped_html": "<div>Hello</div>",
+    "stripped_text": "Hello",
+    "subject": "",
+    "via": "helpdesk",
+  },
+  "state": Object {
+    "appliedMacro": null,
+    "cacheAdded": false,
+    "contentState": Array [
+      Object {
+        "data": Object {},
+        "depth": 0,
+        "text": "Hello",
+        "type": "unstyled",
+      },
+      Object {
+        "data": Object {
+          "emailExtra": true,
+          "signature": true,
+        },
+        "depth": 0,
+        "text": "",
+        "type": "unstyled",
+      },
+      Object {
+        "data": Object {
+          "emailExtra": true,
+          "signature": true,
+        },
+        "depth": 0,
+        "text": "Foo signature",
+        "type": "unstyled",
+      },
+      Object {
+        "data": Object {
+          "emailExtra": true,
+          "replyThread": true,
+        },
+        "depth": 0,
+        "text": "",
+        "type": "unstyled",
+      },
+      Object {
+        "data": Object {
+          "emailExtra": true,
+          "replyThread": true,
+        },
+        "depth": 0,
+        "text": "On Mon, Jul 31, 2017, at 11:07 PM, Acme Support <support@acme.gorgias.io> wrote:",
+        "type": "unstyled",
+      },
+      Object {
+        "data": Object {
+          "emailExtra": true,
+          "quoteDepth": 1,
+          "replyThread": true,
+        },
+        "depth": 0,
+        "text": "Hi! How are you?",
+        "type": "unstyled",
+      },
+    ],
+    "dirty": false,
+    "emailExtraAdded": true,
+    "firstNewMessage": true,
+    "forceFocus": false,
+    "forceUpdate": true,
+    "selectionState": null,
+  },
+}
+`;
+
+exports[`new message reducer NEW_MESSAGE_ADD_EMAIL_EXTRA action should not add the email extra content if it is already added 1`] = `
+Object {
+  "_internal": Object {
+    "loading": Object {
+      "addAttachment": false,
+      "submitMessage": false,
+    },
+  },
+  "newMessage": Object {
+    "attachments": Array [],
+    "body_html": "<div>Hello</div>",
+    "body_text": "Hello",
+    "channel": "email",
+    "from_agent": true,
+    "macros": Array [],
+    "mention_ids": Array [],
+    "public": true,
+    "sender": null,
+    "source": Object {
+      "bcc": Array [],
+      "cc": Array [],
+      "extra": Object {
+        "include_thread": false,
+      },
+      "from": Object {},
+      "to": Array [],
+      "type": "email",
+    },
+    "subject": "",
+    "via": "helpdesk",
+  },
+  "state": Object {
+    "appliedMacro": null,
+    "cacheAdded": false,
+    "contentState": Array [
+      Object {
+        "data": Object {},
+        "depth": 0,
+        "text": "Hello",
+        "type": "unstyled",
+      },
+    ],
+    "dirty": false,
+    "emailExtraAdded": true,
+    "firstNewMessage": true,
+    "forceFocus": false,
+    "forceUpdate": false,
+    "selectionState": null,
+  },
+}
+`;

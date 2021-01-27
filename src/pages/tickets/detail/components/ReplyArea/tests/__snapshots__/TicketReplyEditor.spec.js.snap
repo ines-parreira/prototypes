@@ -36,17 +36,61 @@ exports[`TicketReplyEditor component should allow inline image 1`] = `
     canAddMention={false}
     canDropFiles={true}
     canInsertInlineImages={true}
+    defaultContentState={
+      Immutable.Record {
+        "entityMap": Object {
+          "__add": [Function],
+          "__create": [Function],
+          "__get": [Function],
+          "__getLastCreatedEntityKey": [Function],
+          "__mergeData": [Function],
+          "__replaceData": [Function],
+          "add": [Function],
+          "create": [Function],
+          "get": [Function],
+          "getLastCreatedEntityKey": [Function],
+          "mergeData": [Function],
+          "replaceData": [Function],
+        },
+        "blockMap": Immutable.OrderedMap {
+          "mock-key-1": Immutable.Record {
+            "key": "mock-key-1",
+            "type": "unstyled",
+            "text": "",
+            "characterList": Immutable.List [],
+            "depth": 0,
+            "data": Immutable.Map {},
+          },
+        },
+        "selectionBefore": Immutable.Record {
+          "anchorKey": "mock-key-1",
+          "anchorOffset": 0,
+          "focusKey": "mock-key-1",
+          "focusOffset": 0,
+          "isBackward": false,
+          "hasFocus": false,
+        },
+        "selectionAfter": Immutable.Record {
+          "anchorKey": "mock-key-1",
+          "anchorOffset": 0,
+          "focusKey": "mock-key-1",
+          "focusOffset": 0,
+          "isBackward": false,
+          "hasFocus": false,
+        },
+      }
+    }
     displayedActions={
       Array [
         "EMOJI",
         "IMAGE",
       ]
     }
+    emailExtraEnabled={true}
     mentionSuggestions={Array []}
     notify={[Function]}
     onChange={[Function]}
     placeholder="Click here to reply, or press r."
-    signature={true}
     spellCheck={true}
     tabIndex="4"
     type="text"
@@ -96,6 +140,51 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
     canAddMention={false}
     canDropFiles={true}
     canInsertInlineImages={true}
+    defaultContentState={
+      Immutable.Record {
+        "entityMap": Object {
+          "__add": [Function],
+          "__create": [Function],
+          "__get": [Function],
+          "__getLastCreatedEntityKey": [Function],
+          "__mergeData": [Function],
+          "__replaceData": [Function],
+          "add": [Function],
+          "create": [Function],
+          "get": [Function],
+          "getLastCreatedEntityKey": [Function],
+          "mergeData": [Function],
+          "replaceData": [Function],
+        },
+        "blockMap": Immutable.OrderedMap {
+          "mock-key": Immutable.Record {
+            "key": "mock-key",
+            "type": "unstyled",
+            "text": "",
+            "characterList": Immutable.List [],
+            "depth": 0,
+            "data": Immutable.Map {},
+          },
+        },
+        "selectionBefore": Immutable.Record {
+          "anchorKey": "mock-key",
+          "anchorOffset": 0,
+          "focusKey": "mock-key",
+          "focusOffset": 0,
+          "isBackward": false,
+          "hasFocus": false,
+        },
+        "selectionAfter": Immutable.Record {
+          "anchorKey": "mock-key",
+          "anchorOffset": 0,
+          "focusKey": "mock-key",
+          "focusOffset": 0,
+          "isBackward": false,
+          "hasFocus": false,
+        },
+      }
+    }
+    emailExtraEnabled={true}
     mentionSuggestions={Immutable.List []}
     notify={[Function]}
     onChange={[Function]}
@@ -120,7 +209,6 @@ exports[`TicketReplyEditor component should render empty ticket 1`] = `
       }
     }
     readOnly={false}
-    signature={true}
     spellCheck={true}
     tabIndex="4"
     type="text"

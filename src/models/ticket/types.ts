@@ -94,7 +94,7 @@ export type TicketSatisfactionSurvey = Omit<TicketMessage, 'isMessage'> & {
 export type Actor = {
     id: number
     email: string
-    name: string
+    name: string | null
     firstname: string
     lastname: string
     meta?: any
@@ -133,7 +133,9 @@ export type Source = {
     to: SourceAddress[]
     cc?: SourceAddress[]
     bcc?: SourceAddress[]
-    extra?: any
+    extra?: {
+        forward?: boolean
+    }
 }
 
 export type SourceAddress = {

@@ -1,6 +1,6 @@
 import * as immutableMatchers from 'jest-immutable-matchers'
 import {fromJS, Map, List} from 'immutable'
-import {EditorState, ContentState} from 'draft-js'
+import {EditorState, ContentState, ContentBlock, SelectionState} from 'draft-js'
 
 import {
     TicketMessageSourceType,
@@ -11,8 +11,14 @@ import reducer, {makeNewMessage, initialState} from '../reducers'
 import * as types from '../constants'
 import {GorgiasAction} from '../../types'
 import * as responseUtils from '../responseUtils'
+import * as emailExtraUtils from '../emailExtraUtils'
+import {ticket} from '../../../fixtures/ticket'
+import {newMessageResetFromMessage} from '../actions'
+import {NewMessage, ReplyAreaState} from '../types'
 
 import {getMessageContextSnapshot} from './testUtils'
+
+const {addEmailExtraContent} = emailExtraUtils
 
 jest.addMatchers(immutableMatchers)
 
@@ -253,13 +259,19 @@ describe('new message reducer', () => {
 
     describe('SET_RESPONSE_TEXT action', () => {
         let addCacheSpy: jest.SpyInstance
+        let clearEmailExtraDataSpy: jest.SpyInstance
 
         beforeEach(() => {
             addCacheSpy = jest.spyOn(responseUtils, 'addCache')
+            clearEmailExtraDataSpy = jest.spyOn(
+                emailExtraUtils,
+                'clearEmailExtraData'
+            )
         })
 
         afterEach(() => {
             addCacheSpy.mockRestore()
+            clearEmailExtraDataSpy.mockRestore()
         })
 
         it('should attach ids of any agent mentioned if in internal-note mode', () => {
@@ -401,7 +413,7 @@ describe('new message reducer', () => {
             expect(getMessageContextSnapshot(context)).toMatchSnapshot()
         })
 
-        it('should restore signatureAdded from context', () => {
+        it('should restore emailExtraAdded from context', () => {
             const action = {
                 type: types.SET_RESPONSE_TEXT,
                 args: fromJS({
@@ -412,13 +424,184 @@ describe('new message reducer', () => {
                 (context: responseUtils.MessageContext) => {
                     return {
                         ...context,
-                        signatureAdded: false,
+                        emailExtraAdded: false,
                     }
                 }
             )
             expect(
                 reducer(
-                    initialState.setIn(['state', 'signatureAdded'], false),
+                    initialState.setIn(['state', 'emailExtraAdded'], false),
+                    action
+                )
+            ).toMatchSnapshot()
+        })
+
+        it('should set emailExtraAdded from args', () => {
+            const action = {
+                type: types.SET_RESPONSE_TEXT,
+                args: fromJS({
+                    emailExtraAdded: false,
+                }),
+            }
+            expect(
+                reducer(
+                    initialState.setIn(['state', 'emailExtraAdded'], true),
+                    action
+                )
+            ).toMatchSnapshot()
+        })
+
+        it('should not clear email extra data when email extra content was not modified', () => {
+            const contentState = addEmailExtraContent(
+                ContentState.createFromText(''),
+                {
+                    isForwarded: false,
+                    replyThreadMessages: [],
+                    signature: fromJS({text: 'Signature', html: 'Signature'}),
+                    ticket,
+                }
+            )
+            const action = {
+                type: types.SET_RESPONSE_TEXT,
+                args: fromJS({
+                    contentState,
+                }),
+            }
+
+            expect(
+                reducer(
+                    initialState.setIn(['state', 'contentState'], contentState),
+                    action
+                )
+            ).toMatchSnapshot()
+            expect(clearEmailExtraDataSpy).not.toHaveBeenCalled()
+        })
+
+        it('should clear email extra data on email extra content modification', () => {
+            const contentState = addEmailExtraContent(
+                ContentState.createFromText(''),
+                {
+                    isForwarded: false,
+                    replyThreadMessages: [],
+                    signature: fromJS({text: 'Signature', html: 'Signature'}),
+                    ticket,
+                }
+            )
+            const modifiedContentState = ContentState.createFromBlockArray(
+                contentState.getBlocksAsArray().map((block, i) => {
+                    if (i === 0) {
+                        return block.set('text', 'Modified')
+                    }
+                    return block
+                }) as ContentBlock[]
+            )
+            const action = {
+                type: types.SET_RESPONSE_TEXT,
+                args: fromJS({
+                    contentState: modifiedContentState,
+                }),
+            }
+
+            expect(
+                reducer(
+                    initialState.setIn(['state', 'contentState'], contentState),
+                    action
+                )
+            ).toMatchSnapshot()
+            expect(clearEmailExtraDataSpy).toHaveBeenLastCalledWith(
+                modifiedContentState
+            )
+        })
+
+        it('should clear email extra data if new content was added below email extra content', () => {
+            const contentState = addEmailExtraContent(
+                ContentState.createFromText(''),
+                {
+                    isForwarded: false,
+                    replyThreadMessages: [],
+                    signature: fromJS({text: 'Signature', html: 'Signature'}),
+                    ticket,
+                }
+            )
+
+            const modifiedContentState = ContentState.createFromBlockArray([
+                ...contentState.getBlocksAsArray(),
+                contentState
+                    .getLastBlock()
+                    .merge({key: 'added-content'})
+                    .set('data', fromJS({})) as ContentBlock,
+            ])
+
+            const action = {
+                type: types.SET_RESPONSE_TEXT,
+                args: fromJS({
+                    contentState: modifiedContentState,
+                }),
+            }
+
+            expect(
+                reducer(
+                    initialState.setIn(['state', 'contentState'], contentState),
+                    action
+                )
+            ).toMatchSnapshot()
+            expect(clearEmailExtraDataSpy).toHaveBeenLastCalledWith(
+                modifiedContentState
+            )
+        })
+
+        it('should not clear email extra data if new content was added below user input', () => {
+            const contentState = ContentState.createFromText('')
+            const modifiedContentState = ContentState.createFromBlockArray([
+                ...contentState.getBlocksAsArray(),
+                contentState
+                    .getLastBlock()
+                    .merge({key: 'added-content'})
+                    .set('data', fromJS({})) as ContentBlock,
+            ])
+
+            const action = {
+                type: types.SET_RESPONSE_TEXT,
+                args: fromJS({
+                    contentState: modifiedContentState,
+                }),
+            }
+
+            reducer(
+                initialState.setIn(['state', 'contentState'], contentState),
+                action
+            )
+
+            expect(clearEmailExtraDataSpy).not.toHaveBeenCalled()
+        })
+
+        it('should return remove stripped_text and stripped_html if email extra was removed from the content state', () => {
+            const contentState = addEmailExtraContent(
+                ContentState.createFromText('Foo bar baz'),
+                {
+                    isForwarded: false,
+                    replyThreadMessages: [],
+                    signature: fromJS({text: 'Signature', html: 'Signature'}),
+                    ticket,
+                }
+            )
+            const action = {
+                type: types.SET_RESPONSE_TEXT,
+                args: fromJS({
+                    contentState: emailExtraUtils.deleteEmailExtraContent(
+                        contentState
+                    ),
+                }),
+            }
+            expect(
+                reducer(
+                    initialState
+                        .setIn(['state', 'contentState'], contentState)
+                        .setIn(['newMessage', 'stripped_text'], 'stripped text')
+                        .setIn(
+                            ['newMessage', 'stripped_html'],
+                            'stripped body'
+                        ),
                     action
                 )
             ).toMatchSnapshot()
@@ -573,30 +756,90 @@ describe('new message reducer', () => {
                 })
             )
         })
+    })
 
-        it('should reset the state from a message', () => {
-            const action = {
-                type: types.NEW_MESSAGE_RESET_FROM_MESSAGE,
-                payload: {
-                    contentState: ContentState.createFromText('foobar'),
-                    newMessage: {
-                        attachments: [],
-                        body_html: '<div>foobar</div>',
-                        body_text: 'foobar',
-                        channel: 'email',
-                        from_agent: true,
-                        macros: [],
-                        mention_ids: [],
-                        public: true,
-                        sender: fromJS({}),
-                        source: {},
-                        subject: 'foo',
-                        via: 'helpdesk',
+    describe('NEW_MESSAGE_RESET_FROM_MESSAGE', () => {
+        const createNewMessage = (contentState: ContentState): NewMessage => {
+            return responseUtils.updateNewMessageWithContentState(
+                {
+                    body_text: '',
+                    body_html: '',
+                    attachments: [],
+                    actions: fromJS([]),
+                    channel: TicketChannel.Email,
+                    macros: [],
+                    public: true,
+                    sender: fromJS({}),
+                    source: {
+                        type: TicketMessageSourceType.Email,
+                        extra: {},
                     },
                 },
+                contentState
+            )
+        }
+        const createReplyAreaState = (
+            contentState: ContentState
+        ): ReplyAreaState => {
+            return {
+                contentState,
+                selectionState: SelectionState.createEmpty(
+                    contentState.getFirstBlock().getKey()
+                ),
+                forceFocus: false,
+                forceUpdate: false,
+                firstNewMessage: false,
+                appliedMacro: null,
+                emailExtraAdded: true,
+                dirty: true,
+                cacheAdded: true,
             }
+        }
+
+        it('should reset the state from a message', () => {
+            const contentState = ContentState.createFromText('foobar')
+            const action = newMessageResetFromMessage({
+                newMessage: createNewMessage(contentState),
+                replyAreaState: createReplyAreaState(contentState),
+            })
 
             expect(reducer(initialState, action).toJS()).toMatchSnapshot()
+        })
+
+        it('should remove email extra from the content', () => {
+            const contentState = addEmailExtraContent(
+                ContentState.createFromText('Foo'),
+                {
+                    signature: fromJS({text: 'Signature'}),
+                    replyThreadMessages: [],
+                    isForwarded: false,
+                    ticket: ticket,
+                }
+            )
+            const action = newMessageResetFromMessage({
+                newMessage: createNewMessage(contentState),
+                replyAreaState: createReplyAreaState(contentState),
+            })
+
+            expect(reducer(initialState, action).toJS()).toMatchSnapshot()
+        })
+    })
+
+    describe('NEW_MESSAGE_SET_SOURCE_EXTRA', () => {
+        it('should set source extra', () => {
+            const action = {
+                type: types.NEW_MESSAGE_SET_SOURCE_EXTRA,
+                extra: {
+                    foo: 'bar',
+                },
+            }
+            expect(
+                (reducer(initialState, action).getIn([
+                    'newMessage',
+                    'source',
+                    'extra',
+                ]) as Map<any, any>).toJS()
+            ).toMatchSnapshot()
         })
     })
 })

@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<QuotesWrapper /> should not wrap the element with malformed quote depth class name 1`] = `
+<div>
+  <div
+    class="draftjs-quote-plugin-wrapper-depth--foo"
+  >
+    Foo
+  </div>
+</div>
+`;
+
+exports[`<QuotesWrapper /> should wrap element in the inner and quote wrappers when element has the quote depth class name 1`] = `
+<div
+  class="replyThread quoteDepth3"
+>
+  <section>
+    <div
+      class="draftjs-quote-plugin-wrapper-depth--3"
+    >
+      Foo
+    </div>
+  </section>
+</div>
+`;
+
+exports[`<QuotesWrapper /> should wrap element in the inner wrapper 1`] = `
+<div>
+  <section>
+    <div>
+      Foo
+    </div>
+  </section>
+</div>
+`;
+
+exports[`<QuotesWrapper /> should wrap the element in quote wrapper when element has the quote depth class name 1`] = `
+<div
+  class="replyThread quoteDepth5"
+>
+  <div
+    class="draftjs-quote-plugin-wrapper-depth--5"
+  >
+    Foo
+  </div>
+</div>
+`;

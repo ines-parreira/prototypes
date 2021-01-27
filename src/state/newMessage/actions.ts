@@ -12,7 +12,6 @@ import {notify} from '../notifications/actions'
 import * as ticketActions from '../ticket/actions'
 import {renderTemplate} from '../../pages/common/utils/template.js'
 import {getActionTemplate, uploadFiles, toJS} from '../../utils'
-import {convertToHTML} from '../../utils/editor'
 import {
     guessReceiversFromTicket,
     receiversValueFromState,
@@ -47,7 +46,15 @@ import {
     Ticket,
     UserSearchResult,
     Message,
+    ReplyAreaState,
 } from './types'
+import {
+    getReplyThreadMessages,
+    addEmailExtraContent,
+    hasOnlySignatureText,
+    deleteEmailExtraContent,
+    EmailExtraArgs,
+} from './emailExtraUtils'
 
 export const addAttachments = (
     ticket: Map<any, any>,
@@ -177,10 +184,7 @@ export const setResponseText = (args: Map<any, any> = fromJS({})) => (
 
         const shouldSendTypingEvent =
             plainText &&
-            !responseUtils.hasOnlySignature(
-                contentState,
-                signature.get('text')
-            ) &&
+            !hasOnlySignatureText(contentState, signature) &&
             newMessage.getIn(['newMessage', 'source', 'type']) !==
                 TicketMessageSourceType.InternalNote
 
@@ -207,33 +211,10 @@ export const setResponseText = (args: Map<any, any> = fromJS({})) => (
     })
 }
 
-/**
- * Add a signature (if any) at the end of the content state
- */
-export const addSignature = (
-    contentState: ContentState,
-    signature: Map<any, any>
-) => (
-    dispatch: StoreDispatch,
-    getState: () => RootState
-): ReturnType<StoreDispatch> => {
-    const {newMessage} = getState()
-
-    if (
-        newMessage.getIn(['newMessage', 'source', 'type']) !== 'email' ||
-        newMessage.getIn(['newMessage', 'state', 'signatureAdded'], false) ===
-            true ||
-        responseUtils.isSignatureAdded(contentState, signature.get('text'))
-    ) {
-        return
-    }
-
-    return dispatch({
-        type: constants.NEW_MESSAGE_ADD_SIGNATURE,
-        contentState,
-        signature,
-    })
-}
+export const addEmailExtra = createAction<{
+    contentState: ContentState
+    emailExtraArgs: EmailExtraArgs
+}>(constants.NEW_MESSAGE_ADD_EMAIL_EXTRA)
 
 /**
  * Set new message receivers
@@ -411,33 +392,23 @@ export const prepare = (sourceType: TicketMessageSourceType) => (
             break
         }
         case TicketMessageSourceType.InternalNote: {
-            // remove signature, if added
-            let contentState = selectors.getNewMessageContentState(state)
-            const signature = selectors.getNewMessageSignature(state)
+            const contentState = selectors.getNewMessageContentState(state)
+            const userInputContentState = deleteEmailExtraContent(contentState)
 
-            if (
-                responseUtils.isSignatureAdded(
-                    contentState,
-                    signature.get('text')
-                )
-            ) {
-                contentState = responseUtils.removeSignature(
-                    contentState,
-                    signature
+            let responseTextArgs = fromJS({
+                contentState: userInputContentState,
+                forceFocus: true,
+                forceUpdate: true,
+            }) as Map<string, unknown>
+
+            if (contentState !== userInputContentState) {
+                responseTextArgs = responseTextArgs.set(
+                    'emailExtraAdded',
+                    false
                 )
             }
 
-            // update content with removed signature,
-            // and focus the editor
-            dispatch(
-                setResponseText(
-                    fromJS({
-                        contentState,
-                        forceFocus: true,
-                        forceUpdate: true,
-                    })
-                )
-            )
+            dispatch(setResponseText(responseTextArgs))
             dispatch(prepareDefault(sourceType))
 
             break
@@ -547,90 +518,90 @@ export const initializeMessageDraft = () => (dispatch: StoreDispatch) => {
 export function prepareTicketDataToSend(
     dispatch: StoreDispatch,
     getState: () => RootState,
-    ticket: Map<any, any>,
-    newMessage: Map<any, any>,
+    ticketState: Map<any, any>,
+    newMessageState: Map<any, any>,
     status: Maybe<string>,
     actionsForMacro: Maybe<MacroActions>,
     currentUser: CurrentUser
-): Maybe<{ticket: Ticket; newMessage: NewMessage}> {
-    const data = toJS<Ticket>(ticket)
-    data.newMessage = toJS<{newMessage: NewMessage}>(newMessage).newMessage
-    data.status = status || data.status
-    if (data.assignee_user) {
-        data.assignee_user = {id: data.assignee_user.id}
+): Maybe<{
+    ticket: Ticket
+    newMessage: NewMessage
+    replyAreaState: ReplyAreaState
+}> {
+    const ticket = toJS<Ticket>(ticketState)
+    const replyAreaState = responseUtils.toReplyAreaState(
+        newMessageState.get('state') as Map<any, any>
+    )
+    ticket.newMessage = (newMessageState.get('newMessage') as Map<
+        any,
+        any
+    >)?.toJS()
+    ticket.status = status || ticket.status
+
+    if (ticket.assignee_user) {
+        ticket.assignee_user = {id: ticket.assignee_user.id}
     }
 
     // Prepare newMessage to send it.
-    if (data.newMessage) {
-        const sourceType = data.newMessage.source.type
+    if (ticket.newMessage) {
+        const sourceType = ticket.newMessage.source.type
+        const {emailExtraAdded, contentState} = replyAreaState
 
         const isFacebookComment =
-            data.newMessage.channel === TicketMessageSourceType.Facebook &&
-            data.newMessage.source.type ===
+            ticket.newMessage.channel === TicketMessageSourceType.Facebook &&
+            ticket.newMessage.source.type ===
                 TicketMessageSourceType.FacebookComment
 
         const isFacebookReviewComment =
-            data.newMessage.channel ===
+            ticket.newMessage.channel ===
                 TicketMessageSourceType.FacebookRecommendations &&
-            data.newMessage.source.type ===
+            ticket.newMessage.source.type ===
                 TicketMessageSourceType.FacebookReviewComment
 
-        // add signature
-        // only on email, if not already added
-        if (
-            sourceType === TicketMessageSourceType.Email &&
-            !newMessage.getIn(['state', 'signatureAdded'], false)
-        ) {
+        if (sourceType === TicketMessageSourceType.Email && !emailExtraAdded) {
             const state = getState()
-            const contentState = newMessage.getIn([
-                'state',
-                'contentState',
-            ]) as ContentState
-            const signature = selectors.getNewMessageSignature(state)
-            const newContentState = responseUtils.addSignature(
-                contentState,
-                signature
-            )
-            const bodyText = newContentState
-                ? newContentState.getPlainText()
-                : ''
-            const bodyHtml = newContentState
-                ? convertToHTML(newContentState)
-                : ''
+            const newContentState = addEmailExtraContent(contentState, {
+                signature: selectors.getNewMessageSignature(state),
+                replyThreadMessages: getReplyThreadMessages(
+                    ticketSelectors.getBody(state).toJS()
+                ),
+                ticket: ticketState.toJS(),
+                isForwarded: selectors.isForward(state),
+            })
 
-            if (bodyText) {
-                data.newMessage.body_text = bodyText
-            }
-            if (bodyHtml) {
-                data.newMessage.body_html = bodyHtml
-            }
+            ticket.newMessage = responseUtils.updateNewMessageWithContentState(
+                ticket.newMessage,
+                newContentState
+            )
+            replyAreaState.emailExtraAdded = true
+            replyAreaState.contentState = newContentState
         }
 
         //$TsFixMe remove casting once migrated
         const lastSameTypeMessage = getLastSameSourceTypeMessage(
-            ticket.get('messages'),
+            ticketState.get('messages'),
             sourceType
         ) as Map<any, any>
 
-        if (data.messages.length && lastSameTypeMessage) {
+        if (ticket.messages.length && lastSameTypeMessage) {
             const lastMessage = lastSameTypeMessage.toJS() as NewMessage
 
             if (lastMessage.source.extra) {
-                data.newMessage.source.extra = _assign(
+                ticket.newMessage.source.extra = _assign(
                     {},
-                    data.newMessage.source.extra,
+                    ticket.newMessage.source.extra,
                     lastMessage.source.extra
                 )
             }
         }
 
         // i.e. if we're creating a new ticket
-        if (!data.messages.length) {
-            data.channel = data.newMessage.channel
+        if (!ticket.messages.length) {
+            ticket.channel = ticket.newMessage.channel
         }
 
-        if (!data.newMessage.sender) {
-            data.newMessage.sender = fromJS(
+        if (!ticket.newMessage.sender) {
+            ticket.newMessage.sender = fromJS(
                 _pick(currentUser.toJS(), ['email', 'id', 'name'])
             )
         }
@@ -638,8 +609,8 @@ export function prepareTicketDataToSend(
         // Facebook does not accept comment with just an attachment.
         if (isFacebookComment || isFacebookReviewComment) {
             if (
-                data.newMessage.body_text.length === 0 &&
-                data.newMessage.attachments.length > 0
+                ticket.newMessage.body_text.length === 0 &&
+                ticket.newMessage.attachments.length > 0
             ) {
                 void dispatch(
                     notify({
@@ -654,24 +625,28 @@ export function prepareTicketDataToSend(
         }
 
         if (actionsForMacro) {
-            data.newMessage.actions = actionsForMacro.map(
+            ticket.newMessage.actions = actionsForMacro.map(
                 (curAction: Map<any, any> = fromJS({})) =>
                     formatAction(
                         curAction,
                         fromJS(getActionTemplate(curAction.get('name'))),
-                        {ticket: ticket.toJS(), currentUser: currentUser.toJS()}
+                        {
+                            ticket: ticketState.toJS(),
+                            currentUser: currentUser.toJS(),
+                        }
                     )
             ) as List<Map<any, any>>
         }
     }
 
-    const newMessageData = data.newMessage
-    delete data.state
-    delete data._internal
-    delete data.newMessage
+    const newMessageData = ticket.newMessage
+    delete ticket.state
+    delete ticket._internal
+    delete ticket.newMessage
 
     return {
-        ticket: data,
+        replyAreaState,
+        ticket: ticket,
         newMessage: newMessageData,
     }
 }
@@ -752,22 +727,28 @@ export function prepareTicketMessage(
     macroActions: Maybe<MacroActions>,
     action: Maybe<string>,
     resetMessage = true,
-    retryMessage: Map<any, any>
+    retryMessage?: Map<any, any>
 ) {
     return (
         dispatch: StoreDispatch,
         getState: () => RootState
-    ): Promise<{messageId: number; messageToSend: NewMessage}> =>
+    ): Promise<{
+        messageId: number
+        messageToSend: NewMessage
+        replyAreaState: ReplyAreaState
+    }> =>
         new Promise((resolve, reject) => {
             const {ticket, currentUser, newMessage} = getState()
             // temporary message id
             let messageId = getMomentNow()
             let messageToSend: NewMessage
+            let replyAreaState = responseUtils.toReplyAreaState(
+                newMessage.get('state')
+            )
 
             // message already parsed
             if (!!retryMessage) {
                 messageId = retryMessage.getIn(['_internal', 'id'])
-
                 messageToSend = retryMessage.get('originalMessage')
             } else {
                 const dataToSend = prepareTicketDataToSend(
@@ -790,6 +771,7 @@ export function prepareTicketMessage(
                 }
 
                 messageToSend = dataToSend.newMessage
+                replyAreaState = dataToSend.replyAreaState
             }
 
             // Execute front-end validations for each action of the message
@@ -854,6 +836,7 @@ export function prepareTicketMessage(
             resolve({
                 messageId,
                 messageToSend,
+                replyAreaState,
             })
         })
 }
@@ -1083,6 +1066,6 @@ export function resetReceiversAndSender(
 }
 
 export const newMessageResetFromMessage = createAction<{
-    contentState: ContentState
     newMessage: NewMessage
+    replyAreaState: ReplyAreaState
 }>(constants.NEW_MESSAGE_RESET_FROM_MESSAGE)

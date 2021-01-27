@@ -52,6 +52,15 @@ export const isCacheAdded = createSelector<RootState, boolean, NewMessageState>(
     (state) => state.getIn(['state', 'cacheAdded'], false) as boolean
 )
 
+export const isNewMessageEmailExtraAdded = createSelector<
+    RootState,
+    boolean,
+    NewMessageState
+>(
+    getNewMessageState,
+    (state) => state.getIn(['state', 'emailExtraAdded'], false) as boolean
+)
+
 export const getNewMessage = createImmutableSelector<
     RootState,
     Map<any, any>,

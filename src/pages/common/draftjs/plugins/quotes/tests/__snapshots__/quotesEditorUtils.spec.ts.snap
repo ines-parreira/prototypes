@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`quotesEditorUtils setQuoteDepth should add the quote data 1`] = `
+Array [
+  Object {
+    "data": Object {
+      "quoteDepth": 2,
+    },
+    "depth": 0,
+    "text": "Foo",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`quotesEditorUtils setQuoteDepth should not add the quote data when depth in 0 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Foo",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`quotesEditorUtils setQuoteDepth should not add the quote when depth is negative 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Foo",
+    "type": "unstyled",
+  },
+]
+`;

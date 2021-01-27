@@ -7,7 +7,7 @@ import css from './Avatar.less'
 
 type Props = {
     email: string
-    name: string
+    name: string | null
     size: number
     url?: string
     className?: string
@@ -91,7 +91,7 @@ export default class Avatar extends React.Component<Props, State> {
         })
     }
 
-    _getInitials = (name: string) => {
+    _getInitials = (name: string | null) => {
         if (!name) {
             return ''
         }

@@ -1,0 +1,27 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`react <ComposedElements /> should filter out invalid elements 1`] = `
+<div>
+  <span>
+    Foo
+  </span>
+</div>
+`;
+
+exports[`react <ComposedElements /> should pass props to the first wrapped component 1`] = `
+<div
+  class="foo"
+>
+  <span>
+    Foo
+  </span>
+</div>
+`;
+
+exports[`react <ComposedElements /> should render children of the composed elements 1`] = `
+<div>
+  <span>
+    Foo
+  </span>
+</div>
+`;

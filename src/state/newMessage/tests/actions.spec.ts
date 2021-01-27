@@ -11,18 +11,24 @@ import * as actions from '../actions'
 import * as types from '../constants'
 import {initialState} from '../reducers'
 import {initialState as ticketInitialState} from '../../ticket/reducers'
-import {StoreDispatch, RootState} from '../../types'
+import {RootState, StoreDispatch} from '../../types'
 
 import {integrationsState} from '../../../fixtures/integrations'
 import * as integrationSelectors from '../../integrations/selectors'
 import {getLastSenderChannel, getPreferredChannel} from '../../ticket/utils.js'
 import {
-    smoochTicket,
     emailTicket,
     instagramMedia,
+    smoochTicket,
 } from '../../ticket/tests/fixtures.js'
 import socketManager from '../../../services/socketManager/socketManager'
 import {Integration} from '../../../models/integration/types'
+import {ticket} from '../../../fixtures/ticket'
+import * as emailExtraUtils from '../emailExtraUtils'
+import {convertFromHTML} from '../../../utils/editor'
+import {ReplyAreaState} from '../types'
+
+import {getReplyAreaStateSnapshot} from './testUtils'
 
 type MockedRootState = {
     agents?: Map<any, any>
@@ -643,6 +649,127 @@ describe('actions', () => {
                     expect(store.getActions()).toMatchSnapshot()
                 })
             })
+
+            describe('internal note', () => {
+                let deleteEmailExtraContentSpy: jest.SpyInstance<ReturnType<
+                    typeof emailExtraUtils.deleteEmailExtraContent
+                >>
+
+                beforeEach(() => {
+                    deleteEmailExtraContentSpy = jest.spyOn(
+                        emailExtraUtils,
+                        'deleteEmailExtraContent'
+                    )
+                })
+
+                afterEach(() => {
+                    deleteEmailExtraContentSpy.mockRestore()
+                })
+
+                it('should remove email extra from the response', () => {
+                    const contentStateWithEmailExtra = ContentState.createFromText(
+                        'Foo\nBar\nBaz'
+                    )
+                    const userInputContentState = ContentState.createFromText(
+                        'Foo'
+                    )
+                    const signature = fromJS({
+                        text: 'Bar\nBaz',
+                    })
+                    const storeTicket = typeSafeEmailTicket.set(
+                        'messages',
+                        fromJS([ticket.messages[0]])
+                    )
+                    deleteEmailExtraContentSpy.mockImplementation(
+                        () => userInputContentState
+                    )
+                    store = mockStore({
+                        ticket: storeTicket,
+                        newMessage: initialState
+                            .setIn(
+                                ['state', 'contentState'],
+                                contentStateWithEmailExtra
+                            )
+                            .setIn(
+                                ['newMessage', 'source', 'from'],
+                                fromJS({
+                                    address:
+                                        integrationsState.integrations[1].meta
+                                            .address,
+                                })
+                            )
+                            .setIn(
+                                ['newMessage', 'source', 'extra', 'forward'],
+                                true
+                            ),
+                        integrations: (fromJS(integrationsState) as Map<
+                            any,
+                            any
+                        >).setIn(
+                            ['integrations', '1', 'meta', 'signature'],
+                            signature
+                        ),
+                    })
+
+                    store.dispatch(
+                        actions.prepare(TicketMessageSourceType.InternalNote)
+                    )
+
+                    expect(deleteEmailExtraContentSpy).toHaveBeenLastCalledWith(
+                        contentStateWithEmailExtra
+                    )
+
+                    const setResponseTextAction = store
+                        .getActions()
+                        .find(
+                            (action: {type: string}) =>
+                                action.type === types.SET_RESPONSE_TEXT
+                        ) as {args: Map<any, any>}
+                    expect(setResponseTextAction.args).toEqual(
+                        fromJS({
+                            contentState: userInputContentState,
+                            emailExtraAdded: false,
+                            forceFocus: true,
+                            forceUpdate: true,
+                        })
+                    )
+                })
+
+                it('should not set emailExtraAdded property when email extra content was not removed', () => {
+                    const contentState = ContentState.createFromText(
+                        'Foo\nBar\nBaz'
+                    )
+                    deleteEmailExtraContentSpy.mockImplementation(
+                        () => contentState
+                    )
+                    store = mockStore({
+                        ticket: typeSafeEmailTicket,
+                        newMessage: initialState.setIn(
+                            ['state', 'contentState'],
+                            contentState
+                        ),
+                        integrations: fromJS(integrationsState),
+                    })
+
+                    store.dispatch(
+                        actions.prepare(TicketMessageSourceType.InternalNote)
+                    )
+
+                    const setResponseTextAction = store
+                        .getActions()
+                        .find(
+                            (action: {type: string}) =>
+                                action.type === types.SET_RESPONSE_TEXT
+                        ) as {args: Map<any, any>}
+                    expect(setResponseTextAction.args).toEqual(
+                        fromJS({
+                            contentState: contentState,
+                            forceFocus: true,
+                            forceUpdate: true,
+                        })
+                    )
+                })
+            })
         })
 
         describe('setResponseText()', () => {
@@ -817,71 +944,107 @@ describe('actions', () => {
         })
 
         describe('prepareTicketDataToSend()', () => {
-            let data: Record<string, unknown> = {}
-
-            beforeEach(() => {
-                const contentState = ContentState.createFromText('Hi ')
-                store = mockStore({
-                    integrations: fromJS(integrationsState),
-                    newMessage: fromJS({
-                        state: {contentState},
-                        newMessage: {
-                            source: {
-                                type: 'email',
-                                from: {
-                                    address: 'support@acme.gorgias.io',
-                                },
+            let data: ReturnType<typeof actions.prepareTicketDataToSend>
+            let addEmailExtraContentSpy: jest.SpyInstance<ReturnType<
+                typeof emailExtraUtils.addEmailExtraContent
+            >>
+            const currentUser = fromJS({
+                id: 1,
+                name: 'Steve',
+                first_name: 'Steve',
+            })
+            const storeState: Partial<RootState> = {
+                integrations: fromJS(integrationsState),
+                newMessage: fromJS({
+                    state: {contentState: ContentState.createFromText('Hi ')},
+                    newMessage: {
+                        source: {
+                            type: TicketMessageSourceType.Email,
+                            from: {
+                                address: 'support@acme.gorgias.io',
                             },
                         },
-                    }),
-                    currentUser: fromJS({
-                        first_name: 'Steve',
-                    }),
-                    ticket: fromJS({
-                        messages: [],
-                        status: 'open',
-                        channel: '',
-                    }),
-                })
+                    },
+                }),
+                currentUser,
+                ticket: fromJS({
+                    messages: [ticket.messages[0]],
+                    status: 'open',
+                    channel: '',
+                }),
+            }
+            const emailExtraContentState = convertFromHTML(
+                '<div>Extra <strong>content</strong></div>'
+            )
 
-                store.dispatch((dispatch, getState) => {
-                    data = actions.prepareTicketDataToSend(
-                        dispatch,
-                        getState,
-                        getState().ticket,
-                        getState().newMessage,
-                        '',
-                        fromJS([]),
-                        fromJS({})
-                    ) as Record<string, unknown>
-                })
+            beforeEach(() => {
+                addEmailExtraContentSpy = jest
+                    .spyOn(emailExtraUtils, 'addEmailExtraContent')
+                    .mockImplementation(() => emailExtraContentState)
             })
 
-            it('should add plain text signature to message', () => {
-                expect.assertions(1)
-                if (!data) {
-                    throw new Error('data should not be null or undefined')
-                }
-                // BUG because generateRandomKey is mocked newlines not added
-                expect((data.newMessage as {body_text: string}).body_text).toBe(
-                    'Hi cheers, Steve'
-                )
+            afterEach(() => {
+                addEmailExtraContentSpy.mockRestore()
             })
 
-            it('should add html signature to message', () => {
-                expect.assertions(1)
-                if (!data) {
-                    throw new Error('data should not be null or undefined')
-                }
-                // BUG because generateRandomKey is mocked <br>s are not added
-                expect((data.newMessage as {body_html: string}).body_html).toBe(
-                    '<div>Hi cheers, <strong>Steve</strong></div>'
+            it('should add email extra to the message when source type is email', () => {
+                const {dispatch, getState} = mockStore(storeState)
+                const {ticket, newMessage} = getState() as RootState
+                data = actions.prepareTicketDataToSend(
+                    dispatch,
+                    getState as () => RootState,
+                    ticket.set('subject', 'Foo subject'),
+                    newMessage,
+                    '',
+                    fromJS([]),
+                    currentUser
                 )
+                expect(addEmailExtraContentSpy.mock.calls).toMatchSnapshot()
+                expect(data?.newMessage).toMatchSnapshot()
+                expect(
+                    getReplyAreaStateSnapshot(
+                        data?.replyAreaState as ReplyAreaState
+                    )
+                ).toMatchSnapshot()
+            })
+
+            it('should not add email extra to the message when source type is not email', () => {
+                const {dispatch, getState} = mockStore({
+                    ...storeState,
+                    newMessage: storeState.newMessage?.mergeIn(['newMessage'], {
+                        ...(storeState.newMessage?.get('newMessage') as Map<
+                            string,
+                            unknown
+                        >).toJS(),
+                        body_text: 'original text',
+                        body_html: 'original html',
+                        source: {
+                            type: TicketMessageSourceType.FacebookMessage,
+                        },
+                    }),
+                })
+                const {ticket, newMessage} = getState() as RootState
+                data = actions.prepareTicketDataToSend(
+                    dispatch,
+                    getState as () => RootState,
+                    ticket,
+                    newMessage,
+                    '',
+                    fromJS([]),
+                    currentUser
+                )
+                expect(addEmailExtraContentSpy).not.toHaveBeenCalled()
+                expect(data?.newMessage).toMatchSnapshot()
+                expect(
+                    getReplyAreaStateSnapshot(
+                        data?.replyAreaState as ReplyAreaState
+                    )
+                ).toMatchSnapshot()
             })
         })
 
-        describe('addSignature()', () => {
-            it('should dispatch NEW_MESSAGE_ADD_SIGNATURE action', () => {
+        describe('addEmailExtra()', () => {
+            it('should dispatch NEW_MESSAGE_ADD_EMAIL_EXTRA action', () => {
                 store = mockStore({
                     newMessage: initialState,
                 })
@@ -890,7 +1053,17 @@ describe('actions', () => {
                     text: 'Cheers, Steve',
                     html: 'Cheers, <strong>Steve</strong>',
                 })
-                store.dispatch(actions.addSignature(contentState, signature))
+                store.dispatch(
+                    actions.addEmailExtra({
+                        contentState,
+                        emailExtraArgs: {
+                            ticket,
+                            signature,
+                            replyThreadMessages: [],
+                            isForwarded: true,
+                        },
+                    })
+                )
 
                 expect(store.getActions()).toMatchSnapshot()
             })
@@ -922,8 +1095,11 @@ describe('actions', () => {
                     store
                         //@ts-ignore
                         .dispatch(actions.prepareTicketMessage())
-                        .then(({messageToSend}) => {
+                        .then(({messageToSend, replyAreaState}) => {
                             expect(messageToSend).toMatchSnapshot()
+                            expect(
+                                getReplyAreaStateSnapshot(replyAreaState)
+                            ).toMatchSnapshot()
                         })
                 )
             })

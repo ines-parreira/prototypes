@@ -2,7 +2,29 @@
 
 exports[`editor utils convertToHTML should NOT convert adjacent links to html correctly (www.xxx.comwww.yyy.com) 1`] = `"<div>Hey Marie Curie,</div><div>multiple links: <a href=\\"http://www.facebook.comwww.github.com\\" class=\\"linkified\\" target=\\"_blank\\">www.facebook.comwww.github.com</a></div><div><br></div><div>Thanks for contacting us.</div>"`;
 
-exports[`editor utils convertToHTML should convert code-block to pre html tag 1`] = `"<pre>Foo</pre>"`;
+exports[`editor utils convertToHTML should convert "atomic" to "img" 1`] = `"<blockquote class=\\"gorgias_quote\\" style=\\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex;overflow:auto\\"><figure style=\\"display:inline-block;margin:0\\" data-gorgias-quote-depth=\\"1\\"><img src=\\"\\" width=\\"400px\\" style=\\"max-width: 100%\\"></figure></blockquote><blockquote class=\\"gorgias_quote\\" style=\\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex;overflow:auto\\"><div data-gorgias-quote-depth=\\"1\\"><br></div></blockquote>"`;
+
+exports[`editor utils convertToHTML should convert "blockquote" to "blockquote" 1`] = `"<blockquote class=\\"gorgias_quote\\" style=\\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex;overflow:auto\\"><blockquote data-gorgias-quote-depth=\\"1\\">blockquote</blockquote></blockquote>"`;
+
+exports[`editor utils convertToHTML should convert "code-block" to "pre" 1`] = `"<blockquote class=\\"gorgias_quote\\" style=\\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex;overflow:auto\\"><pre data-gorgias-quote-depth=\\"1\\">code-block</pre></blockquote>"`;
+
+exports[`editor utils convertToHTML should convert "header-five" to "h5" 1`] = `"<blockquote class=\\"gorgias_quote\\" style=\\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex;overflow:auto\\"><h5 data-gorgias-quote-depth=\\"1\\">header-five</h5></blockquote>"`;
+
+exports[`editor utils convertToHTML should convert "header-four" to "h4" 1`] = `"<blockquote class=\\"gorgias_quote\\" style=\\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex;overflow:auto\\"><h4 data-gorgias-quote-depth=\\"1\\">header-four</h4></blockquote>"`;
+
+exports[`editor utils convertToHTML should convert "header-one" to "h1" 1`] = `"<blockquote class=\\"gorgias_quote\\" style=\\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex;overflow:auto\\"><h1 data-gorgias-quote-depth=\\"1\\">header-one</h1></blockquote>"`;
+
+exports[`editor utils convertToHTML should convert "header-six" to "h6" 1`] = `"<blockquote class=\\"gorgias_quote\\" style=\\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex;overflow:auto\\"><h6 data-gorgias-quote-depth=\\"1\\">header-six</h6></blockquote>"`;
+
+exports[`editor utils convertToHTML should convert "header-three" to "h3" 1`] = `"<blockquote class=\\"gorgias_quote\\" style=\\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex;overflow:auto\\"><h3 data-gorgias-quote-depth=\\"1\\">header-three</h3></blockquote>"`;
+
+exports[`editor utils convertToHTML should convert "header-two" to "h2" 1`] = `"<blockquote class=\\"gorgias_quote\\" style=\\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex;overflow:auto\\"><h2 data-gorgias-quote-depth=\\"1\\">header-two</h2></blockquote>"`;
+
+exports[`editor utils convertToHTML should convert "ordered-list-item" to "ol" 1`] = `"<blockquote class=\\"gorgias_quote\\" style=\\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex;overflow:auto\\"><ol><li data-gorgias-quote-depth=\\"1\\">ordered-list-item</li></ol></blockquote>"`;
+
+exports[`editor utils convertToHTML should convert "unordered-list-item" to "ul" 1`] = `"<blockquote class=\\"gorgias_quote\\" style=\\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex;overflow:auto\\"><ul><li data-gorgias-quote-depth=\\"1\\">unordered-list-item</li></ul></blockquote>"`;
+
+exports[`editor utils convertToHTML should convert "unstyled" to "div" 1`] = `"<blockquote class=\\"gorgias_quote\\" style=\\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex;overflow:auto\\"><div data-gorgias-quote-depth=\\"1\\">unstyled</div></blockquote>"`;
 
 exports[`editor utils convertToHTML should convert links (www.xxx.com) to html 1`] = `"<div>Hello there</div><div><br></div><div><a href=\\"http://www.google.com\\" class=\\"linkified\\" target=\\"_blank\\">www.google.com</a></div>"`;
 
@@ -15,3 +37,263 @@ exports[`editor utils convertToHTML should convert multiple links to html 1`] = 
 exports[`editor utils convertToHTML should turn newlines into br 1`] = `"<div>One</div><div>Two</div><div><br></div><div>Three</div><div><br></div><div><br></div><div><br></div>"`;
 
 exports[`editor utils convertToHTML should wrap images in inline-block figures 1`] = `"<figure style=\\"display:inline-block;margin:0\\"><img src=\\"https://gorgias.io/\\" width=\\"400px\\" style=\\"max-width: 100%\\"></figure>"`;
+
+exports[`editor utils from HTML convert quoted "blockquote" to "blockquote" block 1`] = `
+Array [
+  Object {
+    "data": Object {
+      "quoteDepth": 3,
+    },
+    "depth": 0,
+    "text": "Blockquote",
+    "type": "blockquote",
+  },
+]
+`;
+
+exports[`editor utils from HTML convert quoted "div" to "unstyled" block 1`] = `
+Array [
+  Object {
+    "data": Object {
+      "quoteDepth": 3,
+    },
+    "depth": 0,
+    "text": "Foo",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`editor utils from HTML convert quoted "h1" to "header-one" block 1`] = `
+Array [
+  Object {
+    "data": Object {
+      "quoteDepth": 3,
+    },
+    "depth": 0,
+    "text": "Header 1",
+    "type": "header-one",
+  },
+]
+`;
+
+exports[`editor utils from HTML convert quoted "h2" to "header-two" block 1`] = `
+Array [
+  Object {
+    "data": Object {
+      "quoteDepth": 3,
+    },
+    "depth": 0,
+    "text": "Header 2",
+    "type": "header-two",
+  },
+]
+`;
+
+exports[`editor utils from HTML convert quoted "h3" to "header-three" block 1`] = `
+Array [
+  Object {
+    "data": Object {
+      "quoteDepth": 3,
+    },
+    "depth": 0,
+    "text": "Header 3",
+    "type": "header-three",
+  },
+]
+`;
+
+exports[`editor utils from HTML convert quoted "h4" to "header-four" block 1`] = `
+Array [
+  Object {
+    "data": Object {
+      "quoteDepth": 3,
+    },
+    "depth": 0,
+    "text": "Header 4",
+    "type": "header-four",
+  },
+]
+`;
+
+exports[`editor utils from HTML convert quoted "h5" to "header-five" block 1`] = `
+Array [
+  Object {
+    "data": Object {
+      "quoteDepth": 3,
+    },
+    "depth": 0,
+    "text": "Header 5",
+    "type": "header-five",
+  },
+]
+`;
+
+exports[`editor utils from HTML convert quoted "h6" to "header-six" block 1`] = `
+Array [
+  Object {
+    "data": Object {
+      "quoteDepth": 3,
+    },
+    "depth": 0,
+    "text": "Header 6",
+    "type": "header-six",
+  },
+]
+`;
+
+exports[`editor utils from HTML convert quoted "ol" to "ordered-list-item" block 1`] = `
+Array [
+  Object {
+    "data": Object {
+      "quoteDepth": 3,
+    },
+    "depth": 0,
+    "text": "Ordered list",
+    "type": "ordered-list-item",
+  },
+]
+`;
+
+exports[`editor utils from HTML convert quoted "p" to "unstyled" block 1`] = `
+Array [
+  Object {
+    "data": Object {
+      "quoteDepth": 3,
+    },
+    "depth": 0,
+    "text": "Foo",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`editor utils from HTML convert quoted "pre" to "code-block" block 1`] = `
+Array [
+  Object {
+    "data": Object {
+      "quoteDepth": 3,
+    },
+    "depth": 0,
+    "text": "Code block",
+    "type": "code-block",
+  },
+]
+`;
+
+exports[`editor utils from HTML convert quoted "ul" to "unordered-list-item" block 1`] = `
+Array [
+  Object {
+    "data": Object {
+      "quoteDepth": 3,
+    },
+    "depth": 0,
+    "text": "Unordered list",
+    "type": "ordered-list-item",
+  },
+]
+`;
+
+exports[`editor utils getPlainText() should add ">" to the quoted content 1`] = `
+"No quote
+> Quoted text
+>> 
+>>> More quoted text"
+`;
+
+exports[`editor utils insertNewBlockAtTheBeginning should insert a new empty block at the beginning of the content 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Foo",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`editor utils insertNewBlockAtTheEnd should insert a new empty block at the end of the content 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Foo",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`editor utils mergeContentStates should add content state at the end of the original content state 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Foo",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Bar",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Baz",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`editor utils truncateContentStateBlocks should truncate blocks 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Foo",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Bar",
+    "type": "unstyled",
+  },
+]
+`;
+
+exports[`editor utils truncateContentStateWords should truncate content state words 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Foo bar",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": " Baz  Bac",
+    "type": "unstyled",
+  },
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "Qux",
+    "type": "unstyled",
+  },
+]
+`;

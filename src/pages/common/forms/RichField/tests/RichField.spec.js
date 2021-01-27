@@ -5,6 +5,7 @@ import {ContentState, EditorState} from 'draft-js'
 
 import RichField from '../RichField'
 import createToolbarPlugin from '../../../draftjs/plugins/toolbar'
+import {convertToHTML} from '../../../../../utils/editor.tsx'
 
 // mock random key generation so they match from a snapshot to the other
 jest.mock('draft-js/lib/generateRandomKey', () => () => '123')
@@ -76,6 +77,21 @@ describe('RichField', () => {
         )
         component.instance()._setEditorState(editorState)
 
+        expect(component).toMatchSnapshot()
+    })
+
+    it('should render default content state', () => {
+        const contentState = ContentState.createFromText('foo')
+        const component = mount(
+            <RichField
+                {...defaultProps}
+                defaultContentState={contentState}
+                value={{
+                    text: contentState.getPlainText(),
+                    html: convertToHTML(contentState),
+                }}
+            />
+        )
         expect(component).toMatchSnapshot()
     })
 })

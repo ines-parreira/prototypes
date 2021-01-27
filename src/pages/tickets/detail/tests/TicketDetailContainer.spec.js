@@ -623,12 +623,14 @@ describe('TicketDetailContainer component', () => {
             jest.runAllTimers()
             expect(pendingMessageManager.sendMessage).toHaveBeenNthCalledWith(
                 1,
-                undefined,
-                1,
-                preparedData.messageToSend,
-                undefined,
-                true,
-                '1'
+                {
+                    action: undefined,
+                    messageId: 1,
+                    messageToSend: preparedData.messageToSend,
+                    replyAreaState: undefined,
+                    resetMessage: true,
+                    ticketId: '1',
+                }
             )
             done()
         })
@@ -729,12 +731,14 @@ describe('TicketDetailContainer component', () => {
         setImmediate(() => {
             expect(pendingMessageManager.sendMessage).toHaveBeenNthCalledWith(
                 1,
-                undefined,
-                1,
-                preparedData.messageToSend,
-                undefined,
-                true,
-                '1'
+                {
+                    action: undefined,
+                    messageId: 1,
+                    messageToSend: preparedData.messageToSend,
+                    replyAreaState: undefined,
+                    resetMessage: true,
+                    ticketId: '1',
+                }
             )
             done()
         })

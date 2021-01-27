@@ -99,7 +99,7 @@ export type TicketSatisfactionSurvey = $Diff<
 export type Actor = {
     id: number,
     email: string,
-    name: string,
+    name: string | null,
     firstname: string,
     lastname: string,
     meta?: any,
