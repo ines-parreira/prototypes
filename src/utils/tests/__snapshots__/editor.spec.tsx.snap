@@ -64,6 +64,19 @@ Array [
 ]
 `;
 
+exports[`editor utils from HTML convert quoted "figure" to "atomic" block 1`] = `
+Array [
+  Object {
+    "data": Object {
+      "quoteDepth": 3,
+    },
+    "depth": 0,
+    "text": " ",
+    "type": "atomic",
+  },
+]
+`;
+
 exports[`editor utils from HTML convert quoted "h1" to "header-one" block 1`] = `
 Array [
   Object {
@@ -190,6 +203,17 @@ Array [
     "depth": 0,
     "text": "Unordered list",
     "type": "ordered-list-item",
+  },
+]
+`;
+
+exports[`editor utils from HTML should convert empty figure to an empty atomic block 1`] = `
+Array [
+  Object {
+    "data": Object {},
+    "depth": 0,
+    "text": "",
+    "type": "atomic",
   },
 ]
 `;

@@ -360,7 +360,7 @@ export function convertFromHTML(html: string): ContentState {
     const blocks = converted.getBlocksAsArray().map((block) => {
         const type = block.getType()
         let newBlock = block
-        if (type === 'atomic') {
+        if (type === 'atomic' && newBlock.getText()) {
             // remove the default 'a' character in atomic blocks so that text from getPlainText() of this contentState that not
             // carry a 'a' where images are supposed to be displayed
             // see https://github.com/HubSpot/draft-convert/issues/30

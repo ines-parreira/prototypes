@@ -270,6 +270,7 @@ describe('editor utils', () => {
                 EditorBlockType.Blockquote,
                 '<blockquote>Blockquote</blockquote>',
             ],
+            ['figure', EditorBlockType.Atomic, '<figure>Figure</figure>'],
         ])('convert quoted "%s" to "%s" block', (from, to, htmlToQuote) => {
             const contentState = convertFromHTML(htmlToQuote)
             const quotedContentState = setQuoteDepth(
@@ -281,6 +282,13 @@ describe('editor utils', () => {
             const resultContentState = convertFromHTML(quotedHtml)
             expect(
                 getContentStateBlocksSnapshot(resultContentState)
+            ).toMatchSnapshot()
+        })
+
+        it('should convert empty figure to an empty atomic block', () => {
+            const contentState = convertFromHTML('<figure />')
+            expect(
+                getContentStateBlocksSnapshot(contentState)
             ).toMatchSnapshot()
         })
     })
