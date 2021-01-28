@@ -1,11 +1,10 @@
 import React, {useState} from 'react'
 import {connect, ConnectedProps} from 'react-redux'
-import {Link, withRouter, RouteComponentProps} from 'react-router-dom'
+import {Link, RouteComponentProps, withRouter} from 'react-router-dom'
 import {bindActionCreators} from 'redux'
 import {fromJS, Map} from 'immutable'
 import {useEffectOnce} from 'react-use'
 import {
-    Alert,
     Breadcrumb,
     BreadcrumbItem,
     Button,
@@ -15,7 +14,10 @@ import {
     Table,
 } from 'reactstrap'
 
-import * as IntegrationsActions from '../../../../state/integrations/actions'
+import {
+    fetchIntegration,
+    updateOrCreateIntegration,
+} from '../../../../state/integrations/actions'
 import {RootState, StoreDispatch} from '../../../../state/types'
 import {ZENDESK_INTEGRATION_TYPE} from '../../../../constants/integration'
 import PageHeader from '../../../common/components/PageHeader'
@@ -27,12 +29,15 @@ import {ImportStatus} from './types'
 import {getImportCompletionDate} from './utils'
 import './ImportZendeskDetail.less'
 
+import ImportStatusAlert from './ImportStatusAlert'
+
 export const ImportZendeskDetail = (
     props: RouteComponentProps<{integrationId: string}> &
         ConnectedProps<typeof connector>
 ) => {
     const {
         fetchIntegration,
+        updateOrCreateIntegration,
         match: {
             params: {integrationId},
         },
@@ -48,8 +53,9 @@ export const ImportZendeskDetail = (
     if (loading) {
         return <Loader />
     }
-
     const integrationMeta = integration.get('meta', fromJS({})) as Map<any, any>
+    const importStatus = integrationMeta.get('status')
+
     const displayImportStats = integrationMeta.get(
         'display_import_stats',
         false
@@ -59,63 +65,34 @@ export const ImportZendeskDetail = (
         'tickets_count',
     ])
     const ticketsCount = integrationMeta.getIn(['sync_tickets', 'count'], 0)
-
+    const synchronizationEnabled = integrationMeta.get(
+        'continuous_import_enabled',
+        false
+    )
+    const shouldDisplayPercentage =
+        !synchronizationEnabled || importStatus !== ImportStatus.Success
     const importedTicketsPercentage =
-        accountTicketsCount && displayImportStats && ticketsCount > 0
+        shouldDisplayPercentage &&
+        accountTicketsCount &&
+        displayImportStats &&
+        ticketsCount > 0
             ? ~~((ticketsCount * 100) / accountTicketsCount)
             : null
 
-    const renderImportStatus = (): React.ReactChild => {
-        const importStatus = integration.getIn(['meta', 'status'])
-
-        if (importStatus === ImportStatus.Pending) {
-            return (
-                <Alert color="info">
-                    <span>
-                        <b className="alert-heading">
-                            <i className="material-icons md-spin mr-2">
-                                refresh
-                            </i>
-                            Importing your Zendesk data
-                        </b>
-                    </span>
-                </Alert>
-            )
-        } else if (importStatus === ImportStatus.Success) {
-            return (
-                <Alert color="success">
-                    <span>
-                        <b className="alert-heading">
-                            <i className="material-icons mr-2">
-                                check_circle_outline
-                            </i>
-                            Import from Zendesk completed
-                        </b>
-                    </span>
-                </Alert>
-            )
-        }
-        return (
-            <Alert color="danger">
-                <span>
-                    <b className="alert-heading">
-                        <i className="material-icons mr-2">error_outline</i>
-                        {integrationMeta.get(
-                            'error',
-                            'Import failed. Please contact our support.'
-                        )}
-                    </b>
-                </span>
-            </Alert>
-        )
-    }
     const displayStatisticsValue = (value: number | null): string => {
         if (typeof value === 'number') {
             return value.toLocaleString()
         }
         return 'N/A'
     }
+    const handleSyncClick = () => {
+        const integrationData = fromJS({
+            id: integration.get('id'),
+            meta: {continuous_import_enabled: !synchronizationEnabled},
+        })
 
+        updateOrCreateIntegration(integrationData)
+    }
     return (
         <div className="full-width">
             <PageHeader
@@ -133,9 +110,9 @@ export const ImportZendeskDetail = (
                 }
             />
             <Container fluid className="page-container">
-                <div className="row mb-3">
+                <div className="row mb-5">
                     <div className="col-sm-12 col-md-7 col-lg-4">
-                        {renderImportStatus()}
+                        <ImportStatusAlert integrationMeta={integrationMeta} />
                     </div>
                 </div>
                 <div className="row mb-4">
@@ -213,7 +190,7 @@ export const ImportZendeskDetail = (
                 </div>
 
                 {displayImportStats ? (
-                    <div className="row no-gutters">
+                    <div className="row no-gutters mb-5">
                         <div className="col-sm-12 col-md-8 col-lg-5">
                             <Table
                                 className="table"
@@ -251,7 +228,12 @@ export const ImportZendeskDetail = (
                                             )}
                                             {importedTicketsPercentage ? (
                                                 <span className="text-muted">
-                                                    {` / ${importedTicketsPercentage} %`}
+                                                    {` / ${
+                                                        importedTicketsPercentage >
+                                                        100
+                                                            ? 100
+                                                            : importedTicketsPercentage
+                                                    } %`}
                                                 </span>
                                             ) : null}
                                         </td>
@@ -294,6 +276,23 @@ export const ImportZendeskDetail = (
                         </div>
                     </div>
                 ) : null}
+                {importStatus === ImportStatus.Success &&
+                    (synchronizationEnabled ? (
+                        <Button color="primary" onClick={handleSyncClick}>
+                            <i className="material-icons">
+                                pause_circle_filled
+                            </i>{' '}
+                            Pause
+                        </Button>
+                    ) : (
+                        <Button color="success" onClick={handleSyncClick}>
+                            <span></span>
+                            <i className="material-icons">
+                                play_circle_filled
+                            </i>{' '}
+                            Resume
+                        </Button>
+                    ))}
             </Container>
         </div>
     )
@@ -307,12 +306,14 @@ const mapStateToProps = (state: RootState) => ({
     loading: state.integrations.getIn(['state', 'loading', 'integration']),
 })
 
-const mapDispatchToProps = (dispatch: StoreDispatch) => ({
-    fetchIntegration: bindActionCreators(
-        IntegrationsActions.fetchIntegration,
+const mapDispatchToProps = (dispatch: StoreDispatch) =>
+    bindActionCreators(
+        {
+            fetchIntegration,
+            updateOrCreateIntegration,
+        },
         dispatch
-    ),
-})
+    )
 
 const connector = connect(mapStateToProps, mapDispatchToProps)
 export default withRouter(connector(ImportZendeskDetail))

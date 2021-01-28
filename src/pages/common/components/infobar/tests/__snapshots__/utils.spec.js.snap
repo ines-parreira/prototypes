@@ -115,5 +115,3 @@ exports[`widgets infobar utils guessFieldValueFromRawData() should return a link
   https://gorgias.io
 </a>
 `;
-
-exports[`widgets infobar utils guessFieldValueFromRawData() should return an age string because passed type is \`age\` and passed data is a valid datetime 1`] = `"3 (2018-01-01)"`;

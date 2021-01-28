@@ -27,6 +27,7 @@ describe('<ImportZendeskDetail/>', () => {
                             integrationId: zendeskImport.id as string,
                         },
                     },
+                    updateOrCreateIntegration: jest.fn(),
                     integration: fromJS(zendeskImport),
                     loading: false,
                 } as any)
@@ -41,6 +42,7 @@ describe('<ImportZendeskDetail/>', () => {
         it('should display the popover', () => {
             const {getByText} = renderComponent({
                 fetchIntegration: jest.fn(),
+                updateOrCreateIntegration: jest.fn(),
                 match: {
                     params: {
                         integrationId: '1',
@@ -57,6 +59,45 @@ describe('<ImportZendeskDetail/>', () => {
             expect(learnMoreButton.getAttribute('href')).toEqual(
                 'https://docs.gorgias.com/migrating-helpdesks/switching-from-zendesk'
             )
+        })
+
+        it('should start syncing', () => {
+            const updateIntegrationMock = jest.fn()
+            const props = {
+                fetchIntegration: jest.fn(),
+                updateOrCreateIntegration: updateIntegrationMock,
+                match: {
+                    params: {
+                        integrationId: '1',
+                    },
+                },
+                integration: fromJS(successImport),
+                loading: false,
+            } as any
+
+            const {getByText, rerender} = renderComponent(props)
+            fireEvent.click(getByText('Resume'))
+            expect(updateIntegrationMock).toBeCalledWith(
+                fromJS({
+                    id: 1,
+                    meta: {continuous_import_enabled: true},
+                })
+            )
+            rerender(
+                <ImportZendeskDetail
+                    {...{
+                        ...props,
+                        integration: fromJS({
+                            ...successImport,
+                            meta: {
+                                ...successImport.meta,
+                                continuous_import_enabled: true,
+                            },
+                        }),
+                    }}
+                />
+            )
+            expect(getByText('Pause')).toBeDefined()
         })
     })
 })
