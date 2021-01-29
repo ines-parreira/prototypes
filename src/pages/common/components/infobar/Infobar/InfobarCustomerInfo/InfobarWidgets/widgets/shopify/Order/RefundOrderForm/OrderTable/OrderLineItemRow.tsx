@@ -1,41 +1,35 @@
-// @flow
-
-import React from 'react'
+import React, {ChangeEvent} from 'react'
 import {Button, Input, InputGroup, InputGroupAddon} from 'reactstrap'
-import {type Record} from 'immutable'
+import {Map, List} from 'immutable'
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
 
 import {
     getOrderLineItemDiscountedPrice,
     getOrderLineItemPrice,
-} from '../../../../../../../../../../../../business/shopify/lineItem.ts'
-import type {
-    LineItem,
-    Refund,
-} from '../../../../../../../../../../../../constants/integrations/types/shopify'
-import {formatPrice} from '../../../../../../../../../../../../business/shopify/number.ts'
-import MoneyAmount from '../../../../MoneyAmount'
+} from '../../../../../../../../../../../../business/shopify/lineItem'
+import {formatPrice} from '../../../../../../../../../../../../business/shopify/number'
+import MoneyAmount from '../../../../MoneyAmount.js'
 
 import css from './OrderLineItemRow.less'
 
 type Props = {
-    lineItem: Record<$Shape<LineItem>>,
-    refund: ?Record<$Shape<Refund>>,
-    shopName: string,
-    currencyCode: string,
-    shopCurrencyCode: string,
-    onChange: (Record<$Shape<LineItem>>) => void,
+    lineItem: Map<any, any>
+    refund: Map<any, any> | null
+    shopName: string
+    currencyCode: string
+    shopCurrencyCode: string
+    onChange: (value: Map<any, any>) => void
 }
 
 type State = {
-    quantity: number,
-    restockable: null | boolean,
+    quantity: number
+    restockable: null | boolean
 }
 
 export class OrderLineItemRow extends React.PureComponent<Props, State> {
     state = {
-        quantity: this.props.lineItem.get('quantity'),
+        quantity: this.props.lineItem.get('quantity') as number,
         restockable: null,
     }
 
@@ -44,13 +38,12 @@ export class OrderLineItemRow extends React.PureComponent<Props, State> {
     static getDerivedStateFromProps({refund, lineItem}: Props, state: State) {
         // When we receive the "suggested refund" for the first time
         if (!!refund && !refund.isEmpty() && state.restockable === null) {
-            const refundLineItem = refund
-                .get('refund_line_items', [])
-                .find(
-                    (refundLineItem) =>
-                        refundLineItem.get('line_item_id') ===
-                        lineItem.get('id')
-                )
+            const refundLineItem = (refund.get('refund_line_items', []) as List<
+                any
+            >).find(
+                (refundLineItem: Map<any, any>) =>
+                    refundLineItem.get('line_item_id') === lineItem.get('id')
+            ) as Map<any, any>
 
             return {
                 ...state,
@@ -63,7 +56,7 @@ export class OrderLineItemRow extends React.PureComponent<Props, State> {
         return null
     }
 
-    _onQuantityChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
+    _onQuantityChange = (event: ChangeEvent<HTMLInputElement>) => {
         const value = parseInt(event.target.value)
         let quantity = isNaN(value) ? 0 : value
 
@@ -103,7 +96,7 @@ export class OrderLineItemRow extends React.PureComponent<Props, State> {
 
     _renderTitle() {
         const {shopName, lineItem} = this.props
-        const productId = lineItem.get('product_id')
+        const productId = lineItem.get('product_id') as number | undefined
         if (!productId) {
             return (
                 <div>
@@ -113,7 +106,7 @@ export class OrderLineItemRow extends React.PureComponent<Props, State> {
         }
 
         const href = `https://${shopName}.myshopify.com/admin/products/${productId}`
-        const variantId = lineItem.get('variant_id')
+        const variantId = lineItem.get('variant_id') as number | undefined
 
         return (
             <div>

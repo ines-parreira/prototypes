@@ -1,33 +1,32 @@
-// @flow
-
-import React from 'react'
-import {shallow} from 'enzyme'
+import React, {ComponentProps} from 'react'
+import {shallow, ShallowWrapper} from 'enzyme'
 import thunk from 'redux-thunk'
 import configureMockStore from 'redux-mock-store'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 import {Form} from 'reactstrap'
 
-import {getRefundOrderState} from '../../../../../../../../../../../../state/infobarActions/shopify/refundOrder/selectors.ts'
+import {getRefundOrderState} from '../../../../../../../../../../../../state/infobarActions/shopify/refundOrder/selectors'
 import {
     infobarActionsStateFixture,
     refundOrderStateFixture,
-} from '../../../../../../../../../../../../fixtures/infobarActions.ts'
+} from '../../../../../../../../../../../../fixtures/infobarActions'
 import {
     shopifyLineItemFixture,
     shopifyOrderFixture,
     shopifyRefundOrderPayloadFixture,
     shopifySuggestedRefundFixture,
-} from '../../../../../../../../../../../../fixtures/shopify.ts'
+} from '../../../../../../../../../../../../fixtures/shopify'
 import {
     getFinalRefundOrderPayload,
     initRefundOrderLineItems,
     initRefundOrderPayload,
-} from '../../../../../../../../../../../../business/shopify/order.ts'
-import {getIntegrationsByTypes} from '../../../../../../../../../../../../state/integrations/selectors.ts'
-import {integrationsStateWithShopify} from '../../../../../../../../../../../../fixtures/integrations.ts'
-import {SHOPIFY_INTEGRATION_TYPE} from '../../../../../../../../../../../../constants/integration.ts'
-import RefundOrderModal, {RefundOrderModalComponent} from '../RefundOrderModal'
-import {ShopifyAction} from '../../../constants'
+} from '../../../../../../../../../../../../business/shopify/order'
+import {getIntegrationsByTypes} from '../../../../../../../../../../../../state/integrations/selectors'
+import {integrationsStateWithShopify} from '../../../../../../../../../../../../fixtures/integrations'
+import {RootState} from '../../../../../../../../../../../../state/types'
+import {IntegrationType} from '../../../../../../../../../../../../models/integration/types'
+import RefundOrderModal, {RefundOrderModalContainer} from '../RefundOrderModal'
+import {ShopifyAction} from '../../../constants.js'
 
 function initActions() {
     return {
@@ -38,7 +37,7 @@ function initActions() {
             .mockImplementation(
                 (
                     name: string,
-                    value: string | number | boolean | Object,
+                    value: string | number | boolean | Record<string, unknown>,
                     callback?: () => void
                 ) => {
                     if (callback) {
@@ -60,7 +59,7 @@ function initActions() {
 describe('<RefundOrderModal/>', () => {
     const middlewares = [thunk]
     const mockStore = configureMockStore(middlewares)
-    let actions
+    let actions: ReturnType<typeof initActions>
 
     beforeEach(() => {
         actions = initActions()
@@ -75,7 +74,7 @@ describe('<RefundOrderModal/>', () => {
 
             const component = shallow(
                 <RefundOrderModal
-                    store={store}
+                    {...({store} as any)}
                     header="Refund order"
                     isOpen={false}
                     data={{
@@ -97,7 +96,7 @@ describe('<RefundOrderModal/>', () => {
 
             const component = shallow(
                 <RefundOrderModal
-                    store={store}
+                    {...({store} as any)}
                     header="Refund order"
                     isOpen
                     data={{
@@ -117,7 +116,7 @@ describe('<RefundOrderModalComponent/>', () => {
     const middlewares = [thunk]
     const mockStore = configureMockStore(middlewares)
     const context = {integrationId: 1}
-    let actions
+    let actions: ReturnType<typeof initActions>
 
     beforeEach(() => {
         actions = initActions()
@@ -130,12 +129,12 @@ describe('<RefundOrderModalComponent/>', () => {
                 infobarActions: infobarActionsStateFixture(),
             })
 
-            const state = store.getState()
+            const state = store.getState() as RootState
 
             const component = shallow(
-                <RefundOrderModalComponent
+                <RefundOrderModalContainer
                     integrations={getIntegrationsByTypes([
-                        SHOPIFY_INTEGRATION_TYPE,
+                        IntegrationType.ShopifyIntegrationType,
                     ])(state)}
                     loading={getRefundOrderState(state).get('loading')}
                     loadingMessage={getRefundOrderState(state).get(
@@ -164,12 +163,12 @@ describe('<RefundOrderModalComponent/>', () => {
                 infobarActions: infobarActionsStateFixture(),
             })
 
-            const state = store.getState()
+            const state = store.getState() as RootState
 
             const component = shallow(
-                <RefundOrderModalComponent
+                <RefundOrderModalContainer
                     integrations={getIntegrationsByTypes([
-                        SHOPIFY_INTEGRATION_TYPE,
+                        IntegrationType.ShopifyIntegrationType,
                     ])(state)}
                     loading={getRefundOrderState(state).get('loading')}
                     loadingMessage={getRefundOrderState(state).get(
@@ -206,12 +205,12 @@ describe('<RefundOrderModalComponent/>', () => {
                 infobarActions: infobarActionsStateFixture({refundOrderState}),
             })
 
-            const state = store.getState()
+            const state = store.getState() as RootState
 
             const component = shallow(
-                <RefundOrderModalComponent
+                <RefundOrderModalContainer
                     integrations={getIntegrationsByTypes([
-                        SHOPIFY_INTEGRATION_TYPE,
+                        IntegrationType.ShopifyIntegrationType,
                     ])(state)}
                     loading={getRefundOrderState(state).get('loading')}
                     loadingMessage={getRefundOrderState(state).get(
@@ -237,9 +236,13 @@ describe('<RefundOrderModalComponent/>', () => {
 
     describe('actions', () => {
         let order
-        let payload
-        let refund
-        let component
+        let payload: Map<any, any>
+        let refund: Map<any, any>
+        let component: ShallowWrapper<
+            ComponentProps<typeof RefundOrderModalContainer>,
+            any,
+            RefundOrderModalContainer
+        >
 
         beforeEach(() => {
             order = fromJS(shopifyOrderFixture())
@@ -258,12 +261,12 @@ describe('<RefundOrderModalComponent/>', () => {
                 infobarActions: infobarActionsStateFixture({refundOrderState}),
             })
 
-            const state = store.getState()
+            const state = store.getState() as RootState
 
             component = shallow(
-                <RefundOrderModalComponent
+                <RefundOrderModalContainer
                     integrations={getIntegrationsByTypes([
-                        SHOPIFY_INTEGRATION_TYPE,
+                        IntegrationType.ShopifyIntegrationType,
                     ])(state)}
                     loading={getRefundOrderState(state).get('loading')}
                     loadingMessage={getRefundOrderState(state).get(
@@ -310,7 +313,7 @@ describe('<RefundOrderModalComponent/>', () => {
 
         describe('_onReasonChange()', () => {
             it('should call setPayload()', () => {
-                const event = ({target: {value: 'foo bar'}}: any)
+                const event = {target: {value: 'foo bar'}} as any
                 component.instance()._onReasonChange(event)
 
                 const newPayload = payload.set('note', 'foo bar')
@@ -320,7 +323,7 @@ describe('<RefundOrderModalComponent/>', () => {
 
         describe('_onNotifyChange()', () => {
             it('should call setPayload()', () => {
-                const event = ({target: {checked: false}}: any)
+                const event = {target: {checked: false}} as any
                 component.instance()._onNotifyChange(event)
 
                 const newPayload = payload.set('notify', false)
@@ -335,7 +338,7 @@ describe('<RefundOrderModalComponent/>', () => {
                     .find(Form)
                     .at(0)
                     .simulate('submit', {
-                        preventDefault: () => {},
+                        preventDefault: () => undefined,
                     })
 
                 const finalPayload = getFinalRefundOrderPayload(

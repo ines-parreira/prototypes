@@ -1,6 +1,4 @@
-// @flow
-
-import React from 'react'
+import React, {ChangeEvent} from 'react'
 import {
     Col,
     Container,
@@ -10,37 +8,33 @@ import {
     Label,
     Row,
 } from 'reactstrap'
-import {type Record} from 'immutable'
+import {Map} from 'immutable'
 
 import {
     getRefundAmount,
     getTotalAvailableToRefund,
     getTotalQuantities,
-} from '../../../../../../../../../../../../business/shopify/refund.ts'
-import type {
-    Refund,
-    RefundOrderPayload,
-} from '../../../../../../../../../../../../constants/integrations/types/shopify'
-import {ShopifyAction} from '../../../constants'
-import AmountInput from '../../../shared/AmountInput'
+} from '../../../../../../../../../../../../business/shopify/refund'
+import {ShopifyAction} from '../../../constants.js'
+import AmountInput from '../../../shared/AmountInput/AmountInput.js'
 
-import OrderTotals from './OrderTotals'
+import OrderTotals from './OrderTotals/OrderTotals'
 import css from './OrderFooter.less'
 
 type Props = {
-    editable: boolean,
-    actionName: ?string,
-    hasShippingLine: boolean,
-    currencyCode: string,
-    reason: ?string,
-    notify: boolean,
-    loading: boolean,
-    payload: Record<$Shape<RefundOrderPayload>>,
-    refund: Record<Refund>,
-    setPayload: (Record<$Shape<RefundOrderPayload>>) => void,
-    onPayloadChange: (Record<$Shape<RefundOrderPayload>>) => void,
-    onReasonChange: (event: SyntheticInputEvent<HTMLInputElement>) => void,
-    onNotifyChange: (event: SyntheticInputEvent<HTMLInputElement>) => void,
+    editable: boolean
+    actionName: string | null
+    hasShippingLine: boolean
+    currencyCode: string
+    reason: string | null
+    notify: boolean
+    loading: boolean
+    payload: Map<any, any>
+    refund: Map<any, any>
+    setPayload: (payload: Map<any, any>) => void
+    onPayloadChange: (payload: Map<any, any>) => void
+    onReasonChange: (event: ChangeEvent<HTMLInputElement>) => void
+    onNotifyChange: (event: ChangeEvent<HTMLInputElement>) => void
 }
 
 export default class OrderFooter extends React.PureComponent<Props> {
@@ -56,9 +50,7 @@ export default class OrderFooter extends React.PureComponent<Props> {
         setPayload(newPayload)
     }
 
-    _onDiscrepancyReasonChange = (
-        event: SyntheticInputEvent<HTMLInputElement>
-    ) => {
+    _onDiscrepancyReasonChange = (event: ChangeEvent<HTMLInputElement>) => {
         const {payload, setPayload} = this.props
         const {value} = event.target
         const newPayload = payload.set('discrepancy_reason', value)
@@ -66,7 +58,7 @@ export default class OrderFooter extends React.PureComponent<Props> {
         setPayload(newPayload)
     }
 
-    _onRestockItemsChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
+    _onRestockItemsChange = (event: ChangeEvent<HTMLInputElement>) => {
         const {payload, setPayload} = this.props
         const restock = event.target.checked
         const newPayload = payload.set('restock', restock)

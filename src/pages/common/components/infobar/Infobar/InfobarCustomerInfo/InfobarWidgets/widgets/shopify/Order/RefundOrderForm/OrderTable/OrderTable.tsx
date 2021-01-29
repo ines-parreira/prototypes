@@ -1,29 +1,22 @@
-// @flow
-
 import React from 'react'
 import {Table} from 'reactstrap'
-import {type List, type Record} from 'immutable'
+import {List, Map} from 'immutable'
 import hash from 'object-hash'
-
-import type {
-    Refund,
-    LineItem,
-} from '../../../../../../../../../../../../constants/integrations/types/shopify'
 
 import {OrderLineItemRow} from './OrderLineItemRow'
 import css from './OrderTable.less'
 
 type Props = {
-    shopName: string,
-    currencyCode: string,
-    shopCurrencyCode: string,
-    refund: ?Record<Refund>,
-    lineItems: List<$Shape<LineItem>>,
-    onChange: (lineItems: List<$Shape<LineItem>>) => void,
+    shopName: string
+    currencyCode: string
+    shopCurrencyCode: string
+    refund: Map<any, any> | null
+    lineItems: List<any>
+    onChange: (lineItems: List<any>) => void
 }
 
 export default class OrderTable extends React.PureComponent<Props> {
-    _onLineItemChange = (index: number, updatedLineItem: Record<LineItem>) => {
+    _onLineItemChange = (index: number, updatedLineItem: Map<any, any>) => {
         const {onChange, lineItems} = this.props
         const newLineItems = lineItems.set(index, updatedLineItem)
 
@@ -50,7 +43,7 @@ export default class OrderTable extends React.PureComponent<Props> {
                     </tr>
                 </thead>
                 <tbody>
-                    {lineItems.map((lineItem, index) => {
+                    {lineItems.map((lineItem: Map<any, any>, index) => {
                         const keyObject = lineItem.remove('quantity')
                         const key = hash(keyObject)
 
@@ -64,7 +57,7 @@ export default class OrderTable extends React.PureComponent<Props> {
                                 shopCurrencyCode={shopCurrencyCode}
                                 onChange={(updatedLineItem) =>
                                     this._onLineItemChange(
-                                        index,
+                                        index as number,
                                         updatedLineItem
                                     )
                                 }

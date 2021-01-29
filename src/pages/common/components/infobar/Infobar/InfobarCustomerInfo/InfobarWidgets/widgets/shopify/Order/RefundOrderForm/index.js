@@ -1,3 +1,3 @@
 // @flow
 
-export {default} from './RefundOrderForm'
+export {default} from './RefundOrderForm.tsx'

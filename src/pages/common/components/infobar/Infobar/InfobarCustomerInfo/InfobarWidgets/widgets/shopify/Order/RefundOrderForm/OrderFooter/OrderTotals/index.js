@@ -1,3 +1,3 @@
 // @flow
 
-export {default} from './OrderTotals'
+export {default} from './OrderTotals.tsx'

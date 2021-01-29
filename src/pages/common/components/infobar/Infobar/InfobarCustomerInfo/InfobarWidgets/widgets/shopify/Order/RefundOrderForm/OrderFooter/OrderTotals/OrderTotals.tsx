@@ -1,39 +1,33 @@
-// @flow
-
 import React from 'react'
 import {Label} from 'reactstrap'
 import classnames from 'classnames'
 import _debounce from 'lodash/debounce'
-import {type Record} from 'immutable'
+import {Map} from 'immutable'
 
-import type {
-    Refund,
-    RefundOrderPayload,
-} from '../../../../../../../../../../../../../constants/integrations/types/shopify'
-import {formatPrice} from '../../../../../../../../../../../../../business/shopify/number.ts'
+import {formatPrice} from '../../../../../../../../../../../../../business/shopify/number'
 import {
     getSubtotal,
     getTotalAvailableToRefund,
     getTotalCartDiscountAmount,
     getTotalTax,
-} from '../../../../../../../../../../../../../business/shopify/refund.ts'
-import MoneyAmount from '../../../../../MoneyAmount'
-import AmountInput from '../../../../shared/AmountInput'
+} from '../../../../../../../../../../../../../business/shopify/refund'
+import MoneyAmount from '../../../../../MoneyAmount.js'
+import AmountInput from '../../../../shared/AmountInput/AmountInput.js'
 
 import css from './OrderTotals.less'
 
 type Props = {
-    editable: boolean,
-    hasShippingLine: boolean,
-    currencyCode: string,
-    loading: boolean,
-    payload: Record<$Shape<RefundOrderPayload>>,
-    refund: Record<Refund>,
-    onPayloadChange: (Record<$Shape<RefundOrderPayload>>) => void,
+    editable: boolean
+    hasShippingLine: boolean
+    currencyCode: string
+    loading: boolean
+    payload: Map<any, any>
+    refund: Map<any, any>
+    onPayloadChange: (payload: Map<any, any>) => void
 }
 
 type State = {
-    shipping: string,
+    shipping: string
 }
 
 export default class OrderTotals extends React.PureComponent<Props, State> {

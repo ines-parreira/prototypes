@@ -1,23 +1,25 @@
-// @flow
-
 import React from 'react'
 import {shallow} from 'enzyme'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
 import {
     shopifyRefundOrderPayloadFixture,
     shopifySuggestedRefundFixture,
-} from '../../../../../../../../../../../../../fixtures/shopify.ts'
-import {ShopifyAction} from '../../../../constants'
+} from '../../../../../../../../../../../../../fixtures/shopify'
+import {ShopifyAction} from '../../../../constants.js'
 import OrderFooter from '../OrderFooter'
 
-jest.mock('lodash/debounce', () => (fn) => fn)
+jest.mock('lodash/debounce', () => {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const _identity: <T>(v: T) => T = jest.requireActual('lodash/identity')
+    return _identity
+})
 
 describe('<OrderFooter/>', () => {
-    let onPayloadChange
-    let onReasonChange
-    let onNotifyChange
-    let setPayload
+    let onPayloadChange: jest.MockedFunction<any>
+    let onReasonChange: jest.MockedFunction<any>
+    let onNotifyChange: jest.MockedFunction<any>
+    let setPayload: jest.MockedFunction<any>
 
     beforeEach(() => {
         onPayloadChange = jest.fn()
@@ -74,7 +76,10 @@ describe('<OrderFooter/>', () => {
 
     describe('_onAmountChange()', () => {
         it('should call setPayload() with updated payload', () => {
-            const payload = fromJS(shopifyRefundOrderPayloadFixture())
+            const payload = fromJS(shopifyRefundOrderPayloadFixture()) as Map<
+                any,
+                any
+            >
 
             const component = shallow(
                 <OrderFooter
@@ -102,7 +107,10 @@ describe('<OrderFooter/>', () => {
         })
 
         it('should call setPayload() with maximum amount', () => {
-            const payload = fromJS(shopifyRefundOrderPayloadFixture())
+            const payload = fromJS(shopifyRefundOrderPayloadFixture()) as Map<
+                any,
+                any
+            >
 
             const component = shallow(
                 <OrderFooter
@@ -132,7 +140,10 @@ describe('<OrderFooter/>', () => {
 
     describe('_onDiscrepancyReasonChange()', () => {
         it('should call setPayload() with updated payload', () => {
-            const payload = fromJS(shopifyRefundOrderPayloadFixture())
+            const payload = fromJS(shopifyRefundOrderPayloadFixture()) as Map<
+                any,
+                any
+            >
 
             const component = shallow(
                 <OrderFooter
@@ -167,7 +178,10 @@ describe('<OrderFooter/>', () => {
 
     describe('_onRestockItemsChange()', () => {
         it('should call setPayload() with updated payload', () => {
-            const payload = fromJS(shopifyRefundOrderPayloadFixture())
+            const payload = fromJS(shopifyRefundOrderPayloadFixture()) as Map<
+                any,
+                any
+            >
 
             const component = shallow(
                 <OrderFooter

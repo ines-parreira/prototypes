@@ -1,3 +1,3 @@
 // @flow
 
-export {default} from './OrderFooter'
+export {default} from './OrderFooter.tsx'

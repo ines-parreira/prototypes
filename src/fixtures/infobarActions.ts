@@ -1,4 +1,4 @@
-import {fromJS} from 'immutable'
+import {fromJS, Map as ImmutableMap, List} from 'immutable'
 
 import {initialState as createOrderInitialState} from '../state/infobarActions/shopify/createOrder/reducers'
 import {initialState as cancelOrderInitialState} from '../state/infobarActions/shopify/cancelOrder/reducers'
@@ -64,6 +64,13 @@ export const refundOrderStateFixture = ({
     payload = null,
     lineItems = null,
     refund = null,
+}: {
+    loading?: boolean
+    loadingMessage?: string | null
+    orderId?: string | null
+    payload?: ImmutableMap<any, any> | null
+    lineItems?: List<any> | null
+    refund?: ImmutableMap<any, any> | null
 } = {}) =>
     fromJS({
         loading,

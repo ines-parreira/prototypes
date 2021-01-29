@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<RefundOrderModal/> render() should render as closed 1`] = `
-<RefundOrderModalComponent
+<RefundOrderModalContainer
   data={
     Object {
       "actionName": "shopifyRefundOrder",
@@ -454,7 +454,7 @@ exports[`<RefundOrderModal/> render() should render as closed 1`] = `
 `;
 
 exports[`<RefundOrderModal/> render() should render as open 1`] = `
-<RefundOrderModalComponent
+<RefundOrderModalContainer
   data={
     Object {
       "actionName": "shopifyRefundOrder",

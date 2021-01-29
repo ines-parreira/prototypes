@@ -67,6 +67,8 @@ exports[`<RefundOrderForm/> render() should render 1`] = `
     editable={true}
     hasShippingLine={false}
     loading={false}
+    notify={false}
+    onNotifyChange={[MockFunction]}
     onPayloadChange={[MockFunction]}
     onReasonChange={[MockFunction]}
     payload={
@@ -200,6 +202,8 @@ exports[`<RefundOrderForm/> render() should render for multi-currency order 1`] 
     editable={true}
     hasShippingLine={true}
     loading={false}
+    notify={false}
+    onNotifyChange={[MockFunction]}
     onPayloadChange={[MockFunction]}
     onReasonChange={[MockFunction]}
     payload={

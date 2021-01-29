@@ -1,22 +1,24 @@
-// @flow
-
 import {shallow} from 'enzyme'
 import React from 'react'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
 import {
     shopifyLineItemFixture,
     shopifyOrderFixture,
     shopifyPriceSetFixture,
     shopifySuggestedRefundFixture,
-} from '../../../../../../../../../../../../../fixtures/shopify.ts'
-import {initRefundOrderLineItems} from '../../../../../../../../../../../../../business/shopify/order.ts'
+} from '../../../../../../../../../../../../../fixtures/shopify'
+import {initRefundOrderLineItems} from '../../../../../../../../../../../../../business/shopify/order'
 import {OrderLineItemRow} from '../OrderLineItemRow'
 
-jest.mock('lodash/debounce', () => (fn) => fn)
+jest.mock('lodash/debounce', () => {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const _identity: <T>(v: T) => T = jest.requireActual('lodash/identity')
+    return _identity
+})
 
 describe('<LineItemRow/>', () => {
-    let onChange
+    let onChange: jest.MockedFunction<any>
 
     beforeEach(() => {
         onChange = jest.fn()
@@ -27,9 +29,9 @@ describe('<LineItemRow/>', () => {
             const totalDiscountSet = fromJS(
                 shopifyPriceSetFixture({amount: '0.00'})
             )
-            const lineItem = fromJS(
+            const lineItem = (fromJS(
                 shopifyLineItemFixture({currencyCode: 'USD'})
-            ).set('total_discount_set', totalDiscountSet)
+            ) as Map<any, any>).set('total_discount_set', totalDiscountSet)
             const refund = fromJS(shopifySuggestedRefundFixture())
 
             const component = shallow(
@@ -56,13 +58,13 @@ describe('<LineItemRow/>', () => {
                 })
             )
 
-            const lineItem = fromJS(
+            const lineItem = (fromJS(
                 shopifyLineItemFixture({
                     currencyCode: 'USD',
                     presentmentCurrencyCode: 'JPY',
                     presentmentPrice: '100',
                 })
-            ).set('total_discount_set', totalDiscountSet)
+            ) as Map<any, any>).set('total_discount_set', totalDiscountSet)
 
             const refund = fromJS(shopifySuggestedRefundFixture())
 
@@ -84,9 +86,9 @@ describe('<LineItemRow/>', () => {
             const totalDiscountSet = fromJS(
                 shopifyPriceSetFixture({amount: '0.50'})
             )
-            const lineItem = fromJS(
+            const lineItem = (fromJS(
                 shopifyLineItemFixture({currencyCode: 'USD'})
-            ).set('total_discount_set', totalDiscountSet)
+            ) as Map<any, any>).set('total_discount_set', totalDiscountSet)
             const refund = fromJS(shopifySuggestedRefundFixture())
 
             const component = shallow(
@@ -106,7 +108,10 @@ describe('<LineItemRow/>', () => {
         it('should render without quantity and without price', () => {
             const order = fromJS(shopifyOrderFixture())
             const lineItems = initRefundOrderLineItems(order)
-            const lineItem = lineItems.get(0).set('quantity', 0)
+            const lineItem = (lineItems.get(0) as Map<any, any>).set(
+                'quantity',
+                0
+            )
             const refund = fromJS(shopifySuggestedRefundFixture())
 
             const component = shallow(
@@ -127,9 +132,9 @@ describe('<LineItemRow/>', () => {
             const totalDiscountSet = fromJS(
                 shopifyPriceSetFixture({amount: '0.00'})
             )
-            const lineItem = fromJS(
+            const lineItem = (fromJS(
                 shopifyLineItemFixture({currencyCode: 'USD'})
-            ).set('total_discount_set', totalDiscountSet)
+            ) as Map<any, any>).set('total_discount_set', totalDiscountSet)
             const refund = fromJS(shopifySuggestedRefundFixture())
 
             const component = shallow(
@@ -154,9 +159,9 @@ describe('<LineItemRow/>', () => {
             const totalDiscountSet = fromJS(
                 shopifyPriceSetFixture({amount: '0.00'})
             )
-            const lineItem = fromJS(
+            const lineItem = (fromJS(
                 shopifyLineItemFixture({currencyCode: 'USD'})
-            ).set('total_discount_set', totalDiscountSet)
+            ) as Map<any, any>).set('total_discount_set', totalDiscountSet)
             const refund = fromJS(shopifySuggestedRefundFixture())
 
             const component = shallow(
@@ -181,9 +186,9 @@ describe('<LineItemRow/>', () => {
             const totalDiscountSet = fromJS(
                 shopifyPriceSetFixture({amount: '0.00'})
             )
-            const lineItem = fromJS(
+            const lineItem = (fromJS(
                 shopifyLineItemFixture({currencyCode: 'USD'})
-            ).set('total_discount_set', totalDiscountSet)
+            ) as Map<any, any>).set('total_discount_set', totalDiscountSet)
             const refund = fromJS(shopifySuggestedRefundFixture())
 
             const component = shallow(
@@ -208,9 +213,9 @@ describe('<LineItemRow/>', () => {
             const totalDiscountSet = fromJS(
                 shopifyPriceSetFixture({amount: '0.00'})
             )
-            const lineItem = fromJS(
+            const lineItem = (fromJS(
                 shopifyLineItemFixture({currencyCode: 'USD'})
-            ).set('total_discount_set', totalDiscountSet)
+            ) as Map<any, any>).set('total_discount_set', totalDiscountSet)
             const refund = fromJS(shopifySuggestedRefundFixture())
 
             const component = shallow(
@@ -237,9 +242,9 @@ describe('<LineItemRow/>', () => {
             const totalDiscountSet = fromJS(
                 shopifyPriceSetFixture({amount: '0.00'})
             )
-            const lineItem = fromJS(
+            const lineItem = (fromJS(
                 shopifyLineItemFixture({currencyCode: 'USD', quantity: 0})
-            ).set('total_discount_set', totalDiscountSet)
+            ) as Map<any, any>).set('total_discount_set', totalDiscountSet)
             const refund = fromJS(shopifySuggestedRefundFixture())
 
             const component = shallow(
@@ -253,7 +258,9 @@ describe('<LineItemRow/>', () => {
                 />
             )
 
-            component.instance()._onQuantityUp()
+            ;(component.instance() as InstanceType<
+                typeof OrderLineItemRow
+            >)._onQuantityUp()
 
             expect(onChange).toHaveBeenCalledWith(lineItem.set('quantity', 1))
         })
@@ -262,9 +269,9 @@ describe('<LineItemRow/>', () => {
             const totalDiscountSet = fromJS(
                 shopifyPriceSetFixture({amount: '0.00'})
             )
-            const lineItem = fromJS(
+            const lineItem = (fromJS(
                 shopifyLineItemFixture({currencyCode: 'USD'})
-            ).set('total_discount_set', totalDiscountSet)
+            ) as Map<any, any>).set('total_discount_set', totalDiscountSet)
             const refund = fromJS(shopifySuggestedRefundFixture())
 
             const component = shallow(
@@ -278,7 +285,9 @@ describe('<LineItemRow/>', () => {
                 />
             )
 
-            component.instance()._onQuantityDown()
+            ;(component.instance() as InstanceType<
+                typeof OrderLineItemRow
+            >)._onQuantityDown()
 
             expect(onChange).toHaveBeenCalledWith(lineItem.set('quantity', 0))
         })

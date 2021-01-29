@@ -98,7 +98,14 @@ export const shopifyPriceSetFixture = ({
     currencyCode = 'USD',
     presentmentAmount = null,
     presentmentCurrencyCode = null,
-} = {}): PriceSet => ({
+}:
+    | {
+          amount?: string
+          currencyCode?: string
+          presentmentAmount?: string | null
+          presentmentCurrencyCode?: string | null
+      }
+    | undefined = {}): PriceSet => ({
     shop_money: {
         amount,
         currency_code: currencyCode,
@@ -812,7 +819,7 @@ export const shopifyLineItemFixture = ({
     price?: string
     appliedDiscount?: Maybe<number>
     currencyCode?: Maybe<string>
-    presentmentPrice?: Maybe<number>
+    presentmentPrice?: Maybe<string>
     presentmentCurrencyCode?: Maybe<string>
 } = {}): LineItem => {
     const lineItem = {

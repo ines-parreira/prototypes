@@ -8,9 +8,9 @@ import {
     shopifyOrderFixture,
     shopifyRefundOrderPayloadFixture,
     shopifySuggestedRefundFixture,
-} from '../../../../../../../../../../../../fixtures/shopify.ts'
+} from '../../../../../../../../../../../../fixtures/shopify'
 import RefundOrderForm from '../RefundOrderForm'
-import {ShopifyAction} from '../../../constants'
+import {ShopifyAction} from '../../../constants.js'
 
 describe('<RefundOrderForm/>', () => {
     const order = fromJS(shopifyOrderFixture())
@@ -18,10 +18,10 @@ describe('<RefundOrderForm/>', () => {
     const payload = fromJS(shopifyRefundOrderPayloadFixture())
     const lineItems = fromJS([shopifyLineItemFixture()])
 
-    let setPayload
-    let onPayloadChange
-    let onLineItemsChange
-    let onReasonChange
+    let setPayload: jest.MockedFunction<any>
+    let onPayloadChange: jest.MockedFunction<any>
+    let onLineItemsChange: jest.MockedFunction<any>
+    let onReasonChange: jest.MockedFunction<any>
 
     beforeEach(() => {
         setPayload = jest.fn()
@@ -46,6 +46,8 @@ describe('<RefundOrderForm/>', () => {
                     onPayloadChange={onPayloadChange}
                     onLineItemsChange={onLineItemsChange}
                     onReasonChange={onReasonChange}
+                    notify={false}
+                    onNotifyChange={jest.fn()}
                 />
             )
 
@@ -71,6 +73,8 @@ describe('<RefundOrderForm/>', () => {
                     onPayloadChange={onPayloadChange}
                     onLineItemsChange={onLineItemsChange}
                     onReasonChange={onReasonChange}
+                    notify={false}
+                    onNotifyChange={jest.fn()}
                 />
             )
 

@@ -1,21 +1,23 @@
-// @flow
-
 import React from 'react'
 import {shallow} from 'enzyme'
-import {fromJS} from 'immutable'
+import {fromJS, Map} from 'immutable'
 
 import {
     shopifyRefundOrderPayloadFixture,
     shopifySuggestedRefundFixture,
-} from '../../../../../../../../../../../../../../fixtures/shopify.ts'
+} from '../../../../../../../../../../../../../../fixtures/shopify'
 import OrderTotals from '../OrderTotals'
 
-jest.mock('lodash/debounce', () => (fn) => fn)
+jest.mock('lodash/debounce', () => {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const _identity: <T>(v: T) => T = jest.requireActual('lodash/identity')
+    return _identity
+})
 
 describe('<OrderTotals/>', () => {
-    let payload
-    let refund
-    let onPayloadChange
+    let payload: Map<any, any>
+    let refund: Map<any, any>
+    let onPayloadChange: jest.MockedFunction<any>
 
     beforeEach(() => {
         onPayloadChange = jest.fn()
@@ -98,7 +100,9 @@ describe('<OrderTotals/>', () => {
                 />
             )
 
-            component.instance()._onShippingChange('9.00')
+            ;(component.instance() as InstanceType<
+                typeof OrderTotals
+            >)._onShippingChange('9.00')
 
             const newPayload = payload.setIn(['shipping', 'amount'], '9.00')
             expect(onPayloadChange).toHaveBeenCalledWith(newPayload)
@@ -122,7 +126,9 @@ describe('<OrderTotals/>', () => {
                 />
             )
 
-            component.instance()._onShippingChange('9')
+            ;(component.instance() as InstanceType<
+                typeof OrderTotals
+            >)._onShippingChange('9')
 
             expect(onPayloadChange).not.toHaveBeenCalled()
         })
