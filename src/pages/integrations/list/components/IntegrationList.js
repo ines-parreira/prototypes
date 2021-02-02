@@ -90,9 +90,10 @@ export default class IntegrationList extends React.Component<Props> {
                 if (
                     integration.get('type') ===
                         IntegrationType.Magento2IntegrationType &&
-                    !currentPlan
-                        .get('features')
-                        .get(AccountFeatures.MagentoIntegration)
+                    (currentPlan.isEmpty() ||
+                        !currentPlan
+                            .get('features')
+                            .get(AccountFeatures.MagentoIntegration))
                 ) {
                     return integration.set('displayUpgrade', true)
                 }
