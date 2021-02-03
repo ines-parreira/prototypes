@@ -276,5 +276,4 @@ export default connect(null, {
     remove: tagsActions.remove,
     save: tagsActions.save,
     select: tagsActions.select,
-    fetch: tagsActions.fetchTags,
 })(Row)

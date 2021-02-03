@@ -1,100 +1,127 @@
 // @flow
-import {fromJS, type List} from 'immutable'
+// $FlowFixMe
+import React, {useMemo, useState} from 'react'
+import {fromJS, type Map} from 'immutable'
 import _capitalize from 'lodash/capitalize'
 import _debounce from 'lodash/debounce'
 import moment from 'moment'
-import React from 'react'
 import {connect} from 'react-redux'
 import _upperFirst from 'lodash/upperFirst'
 import {withRouter} from 'react-router-dom'
 import {DropdownItem} from 'reactstrap'
+import {CancelToken} from 'axios'
 
 import {views as statViewsConfig} from '../../config/stats.tsx'
-import {mergeStatsFilters} from '../../state/stats/actions.ts'
-import {fieldEnumSearch} from '../../state/views/actions.ts'
-import PageHeader from '../common/components/PageHeader.tsx'
-import TagDropdownMenu from '../common/components/TagDropdownMenu/TagDropdownMenu'
-import {getViewFilters} from '../../state/stats/selectors.ts'
-import {getTags} from '../../state/tags/selectors.ts'
-import {getIntegrations} from '../../state/integrations/selectors.ts'
 import {CHANNELS} from '../../config/ticket.ts'
+import useCancellableRequest from '../../hooks/useCancellableRequest.ts'
+import useDelayedAsyncFn from '../../hooks/useDelayedAsyncFn.ts'
+import {ORDER_DIRECTION} from '../../models/api'
+import {TAG_SORTABLE_PROPERTIES} from '../../models/tag/constants.ts'
+import {fetchTags} from '../../models/tag/resources.ts'
+import type {FetchTagsOptions, Tag} from '../../models/tag/types'
 import {getAgents} from '../../state/agents/selectors.ts'
 import {getDisplayName} from '../../state/customers/helpers.ts'
+import {tagsFetched, type TagsState} from '../../state/entities/tags'
+import {getIntegrations} from '../../state/integrations/selectors.ts'
+import {notify} from '../../state/notifications/actions.ts'
+import {NOTIFICATION_STATUS} from '../../state/notifications/constants.ts'
+import {mergeStatsFilters} from '../../state/stats/actions.ts'
+import {getViewFilters} from '../../state/stats/selectors.ts'
 import {getTeams} from '../../state/teams/selectors.ts'
 
+import PageHeader from '../common/components/PageHeader.tsx'
 import Popover from '../common/components/Popover'
-import withCancellableRequest from '../common/utils/withCancellableRequest'
+import TagDropdownMenu from '../common/components/TagDropdownMenu/TagDropdownMenu'
 
 import PeriodPicker from './common/PeriodPicker'
 import SelectFilter from './common/SelectFilter.tsx'
+
+const TagDropdownMenuWrapper = (props) => <TagDropdownMenu {...props} />
+
+const orderingOptions = {
+    orderBy: TAG_SORTABLE_PROPERTIES.NAME,
+    orderDir: ORDER_DIRECTION.ASC,
+}
 
 type Props = {
     match: Object,
     config: Object,
     channels: any[],
     agents: any[],
-    tags: any[],
+    tags: TagsState,
     integrations: any[],
     stats: Object,
     filters: Object,
     fetchStat: (any, any, any) => Promise<*>,
-    fieldEnumSearchCancellable: (
-        field: Map<*, *>,
-        query: string
-    ) => Promise<?List<*>>,
     mergeStatsFilters: typeof mergeStatsFilters,
     teams: {label: string, value: string, members: string[]}[],
+    fetchTags: typeof fetchTags,
+    tagsFetched: typeof tagsFetched,
+    notify: Function,
 }
 
-type State = {
-    tags: any[],
-    integrations: any[],
-}
+const StatsFiltersContainer = ({
+    agents,
+    channels,
+    config,
+    filters,
+    integrations,
+    mergeStatsFilters,
+    notify,
+    teams,
+    tags,
+    tagsFetched,
+}: Props) => {
+    const [tagIds, setTagIds] = useState([])
 
-export class StatsFilters extends React.Component<Props, State> {
-    constructor(props: Props) {
-        super(props)
-        this.state = {
-            tags: props.tags,
-            integrations: props.integrations,
-        }
-    }
+    const [
+        cancellableFetchTags,
+    ] = useCancellableRequest(
+        (cancelToken: CancelToken) => async (options: FetchTagsOptions) =>
+            await fetchTags(options, cancelToken)
+    )
 
-    _handleFilterChange = (filterName: string) => {
-        return (values: any) => {
-            this.props.mergeStatsFilters(fromJS({[filterName]: values}))
-        }
-    }
-
-    _onSearchTags = _debounce((search) => {
-        const {fieldEnumSearchCancellable} = this.props
-        const field = fromJS({
-            filter: {type: 'tag'},
-        })
-
-        fieldEnumSearchCancellable(field, search).then((data) => {
-            if (!data) {
-                return
+    const [, handleFetchTags] = useDelayedAsyncFn(
+        async (search) => {
+            try {
+                const res = await cancellableFetchTags({
+                    ...orderingOptions,
+                    search,
+                })
+                if (!res) {
+                    return
+                }
+                tagsFetched(res.data)
+                setTagIds(res.data.map((tag: Tag) => tag.id))
+            } catch (error) {
+                void notify({
+                    message: 'Failed to fetch tags',
+                    status: NOTIFICATION_STATUS.ERROR,
+                })
             }
-            this.setState({
-                tags: data.toJS(),
-            })
-        })
-    }, 300)
+        },
+        [orderingOptions],
+        200
+    )
 
-    _renderFilterInput = (filterType: string) => {
-        const {agents, config, filters, teams} = this.props
+    const handleFilterChange = (filterName: string) => {
+        return (values: any) => {
+            mergeStatsFilters(fromJS({[filterName]: values}))
+        }
+    }
+
+    const onSearchTags = _debounce(handleFetchTags, 300)
+
+    const renderFilterInput = (filter: Map<string, any>) => {
+        const filterType = filter.get('type')
         const filterValue = filters.get(filterType)
-        const filterConfig = config
-            .get('filters')
-            .find((filter) => filter.get('type') === filterType)
 
         switch (filterType) {
             case 'score': {
-                const minValue = filterConfig.get('minValue')
-                const maxValue = filterConfig.get('maxValue')
-                const reverse = filterConfig.get('reverse')
-                const variant = filterConfig.get('variant')
+                const minValue = filter.get('minValue')
+                const maxValue = filter.get('maxValue')
+                const reverse = filter.get('reverse')
+                const variant = filter.get('variant')
 
                 const scores = Array.from(
                     {length: maxValue - minValue + 1},
@@ -124,7 +151,7 @@ export class StatsFilters extends React.Component<Props, State> {
                         key={filterType}
                         plural="scores"
                         singular="score"
-                        onChange={this._handleFilterChange('score')}
+                        onChange={handleFilterChange('score')}
                         value={filters.get('score', fromJS([])).toJS()}
                     >
                         {scores.map((score) => (
@@ -138,21 +165,21 @@ export class StatsFilters extends React.Component<Props, State> {
                 )
             }
             case 'channels': {
-                const options = filterConfig.get('options')
-                const channels = options
-                    ? this.props.channels.filter((channel) =>
+                const options = filter.get('options')
+                const data = options
+                    ? channels.filter((channel) =>
                           options.includes(channel.value)
                       )
-                    : this.props.channels
+                    : channels
                 return (
                     <SelectFilter
                         key={filterType}
                         plural="channels"
                         singular="channel"
-                        onChange={this._handleFilterChange('channels')}
+                        onChange={handleFilterChange('channels')}
                         value={filters.get('channels', fromJS([])).toJS()}
                     >
-                        {channels.map((channel) => (
+                        {data.map((channel) => (
                             <SelectFilter.Item
                                 key={channel.value}
                                 label={channel.label}
@@ -165,21 +192,27 @@ export class StatsFilters extends React.Component<Props, State> {
             case 'tags':
                 return (
                     <SelectFilter
-                        key={filterType}
+                        key="tags"
                         plural="tags"
                         singular="tag"
-                        onChange={this._handleFilterChange('tags')}
+                        onChange={handleFilterChange('tags')}
                         value={filters.get('tags', fromJS([])).toJS()}
-                        onSearch={this._onSearchTags}
-                        dropdownMenu={(props) => <TagDropdownMenu {...props} />}
+                        onSearch={onSearchTags}
+                        dropdownMenu={TagDropdownMenuWrapper}
                     >
-                        {this.state.tags.map((tag) => (
-                            <SelectFilter.Item
-                                key={tag.id}
-                                label={tag.name}
-                                value={tag.id}
-                            />
-                        ))}
+                        {tagIds.map((tagId) => {
+                            const tag = tags[tagId.toString()]
+
+                            return (
+                                tag && (
+                                    <SelectFilter.Item
+                                        key={tag.id}
+                                        label={tag.name}
+                                        value={tag.id}
+                                    />
+                                )
+                            )
+                        })}
                     </SelectFilter>
                 )
             case 'agents':
@@ -188,7 +221,7 @@ export class StatsFilters extends React.Component<Props, State> {
                         key={filterType}
                         plural="agents"
                         singular="agent"
-                        onChange={this._handleFilterChange('agents')}
+                        onChange={handleFilterChange('agents')}
                         value={filters.get('agents', fromJS([])).toJS()}
                     >
                         <DropdownItem header>Teams</DropdownItem>
@@ -211,12 +244,12 @@ export class StatsFilters extends React.Component<Props, State> {
                     </SelectFilter>
                 )
             case 'integrations': {
-                const options = filterConfig.get('options')
-                const integrations = options
-                    ? this.props.integrations.filter((integration) =>
+                const options = filter.get('options')
+                const data = options
+                    ? integrations.filter((integration) =>
                           options.includes(integration.type)
                       )
-                    : this.props.integrations
+                    : integrations
 
                 return (
                     <SelectFilter
@@ -225,10 +258,10 @@ export class StatsFilters extends React.Component<Props, State> {
                         singular="integration"
                         isMultiple={false}
                         isRequired
-                        onChange={this._handleFilterChange('integrations')}
+                        onChange={handleFilterChange('integrations')}
                         value={filters.get('integrations', fromJS([])).toJS()}
                     >
-                        {integrations.map((integration) => (
+                        {data.map((integration) => (
                             <SelectFilter.Item
                                 key={integration.id}
                                 label={integration.name}
@@ -246,7 +279,7 @@ export class StatsFilters extends React.Component<Props, State> {
                             filterValue.get('start_datetime')
                         )}
                         endDatetime={moment(filterValue.get('end_datetime'))}
-                        onChange={this._handleFilterChange('period')}
+                        onChange={handleFilterChange('period')}
                     />
                 )
             default:
@@ -256,17 +289,11 @@ export class StatsFilters extends React.Component<Props, State> {
         }
     }
 
-    render() {
-        const {config} = this.props
-        const configFilterTypes = config
-            .get('filters')
-            .map((filter) => filter.get('type'))
-        let pageTitle = config.get('name')
-
-        if (config.get('description')) {
-            pageTitle = (
+    const pageTitle = useMemo(
+        () =>
+            config.get('description') ? (
                 <h1 className="align-items-center">
-                    <span>{pageTitle}</span>
+                    <span>{config.get('name')}</span>
                     <Popover>
                         <p>{config.get('description')}</p>
                         <a
@@ -274,24 +301,28 @@ export class StatsFilters extends React.Component<Props, State> {
                             rel="noopener noreferrer"
                             target="_blank"
                         >
-                            {`Go to ${pageTitle.toLowerCase()} documentation`}
+                            {`Go to ${config
+                                .get('name')
+                                .toLowerCase()} documentation`}
                         </a>
                         .
                     </Popover>
                 </h1>
-            )
-        }
+            ) : (
+                config.get('name')
+            ),
+        [config]
+    )
 
-        return (
-            <PageHeader title={pageTitle} className="mb-0">
-                <div className="d-flex flex-wrap float-right">
-                    {configFilterTypes.map((filterType) =>
-                        this._renderFilterInput(filterType)
-                    )}
-                </div>
-            </PageHeader>
-        )
-    }
+    return (
+        <PageHeader title={pageTitle} className="mb-0">
+            <div className="d-flex flex-wrap float-right">
+                {config
+                    .get('filters')
+                    .map((filter) => renderFilterInput(filter))}
+            </div>
+        </PageHeader>
+    )
 }
 
 const mapStateToProps = (state: Object, props: Props) => {
@@ -299,7 +330,7 @@ const mapStateToProps = (state: Object, props: Props) => {
     const config = statViewsConfig.get(view)
 
     return {
-        tags: getTags(state).toJS(),
+        tags: state.entities.tags,
         integrations: getIntegrations(state).toJS(),
         channels: (CHANNELS: any).map((channel) => ({
             label: _upperFirst(channel.replace('-', ' ')),
@@ -328,11 +359,10 @@ const mapStateToProps = (state: Object, props: Props) => {
 
 const actions = {
     mergeStatsFilters,
+    tagsFetched,
+    notify,
 }
 
 export default withRouter(
-    withCancellableRequest(
-        'fieldEnumSearchCancellable',
-        fieldEnumSearch
-    )(connect(mapStateToProps, actions)(StatsFilters))
+    connect(mapStateToProps, actions)(StatsFiltersContainer)
 )

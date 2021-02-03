@@ -14,6 +14,8 @@ import {transformSystemMessagesToNotifications} from './utils'
 import {NotificationStatus} from './state/notifications/types'
 import {GorgiasInitialState, InitialRootState} from './types'
 import {initDatadogLogger} from './utils/datadog'
+import {Tag} from './models/tag/types'
+import {View} from './models/view/types'
 
 const initMoment = (currentUser: EditableUserProfile) => {
     // set default locale and timezone
@@ -43,7 +45,28 @@ export const toInitialStoreState = (initialState: GorgiasInitialState) => {
             nextState[key] = fromJS(nextState[key])
         }
     )
-    nextState.entities = {sections}
+
+    const tags = initialState.tags?.items.reduce(
+        (acc: {[key: string]: Tag}, tag) => {
+            acc[tag.id] = tag
+            return acc
+        },
+        {}
+    )
+
+    const views = initialState.views?.items.reduce(
+        (acc: {[key: string]: View}, view) => {
+            acc[view.id] = view
+            return acc
+        },
+        {}
+    )
+
+    nextState.entities = {
+        sections,
+        tags,
+        views,
+    }
 
     return nextState as InitialRootState
 }

@@ -1,0 +1,199 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`tag resources createTag should resolve with a new Tag on success 1`] = `
+Object {
+  "created_datetime": "2021-01-21T13:10:46.444928+00:00",
+  "decoration": null,
+  "deleted_datetime": null,
+  "description": null,
+  "id": 2,
+  "name": "billing",
+  "uri": "/api/tags/2/",
+  "usage": 10,
+}
+`;
+
+exports[`tag resources createTag should resolve with a new Tag on success 2`] = `
+Object {
+  "delete": Array [],
+  "get": Array [],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [
+    Object {
+      "data": "{\\"name\\":\\"billing\\",\\"description\\":null}",
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "post",
+      "timeout": 0,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/api/tags/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "put": Array [],
+}
+`;
+
+exports[`tag resources deleteTag should resolve on success 1`] = `undefined`;
+
+exports[`tag resources fetchTag should resolve with a Tag on success 1`] = `
+Object {
+  "created_datetime": "2021-01-21T13:10:46.444928+00:00",
+  "decoration": null,
+  "deleted_datetime": null,
+  "description": null,
+  "id": 2,
+  "name": "billing",
+  "uri": "/api/tags/2/",
+  "usage": 10,
+}
+`;
+
+exports[`tag resources fetchTags should format orderBy value to snake_case 1`] = `
+Object {
+  "delete": Array [],
+  "get": Array [
+    Object {
+      "data": undefined,
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "get",
+      "params": Object {
+        "order_by": "created_datetime",
+      },
+      "timeout": 0,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/api/tags/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [],
+  "put": Array [],
+}
+`;
+
+exports[`tag resources fetchTags should resolve with a Tag list on success 1`] = `
+Object {
+  "data": Array [
+    Object {
+      "created_datetime": "2021-01-21T13:10:46.444928+00:00",
+      "decoration": null,
+      "deleted_datetime": null,
+      "description": null,
+      "id": 2,
+      "name": "billing",
+      "uri": "/api/tags/2/",
+      "usage": 10,
+    },
+    Object {
+      "created_datetime": "2021-01-21T13:10:46.435364+00:00",
+      "decoration": null,
+      "deleted_datetime": null,
+      "description": null,
+      "id": 1,
+      "name": "refund",
+      "uri": "/api/tags/1/",
+      "usage": 20,
+    },
+    Object {
+      "created_datetime": "2021-01-21T13:10:46.446673+00:00",
+      "decoration": null,
+      "deleted_datetime": null,
+      "description": null,
+      "id": 4,
+      "name": "refund accepted",
+      "uri": "/api/tags/4/",
+      "usage": 0,
+    },
+    Object {
+      "created_datetime": "2021-01-21T13:10:46.445859+00:00",
+      "decoration": null,
+      "deleted_datetime": null,
+      "description": null,
+      "id": 3,
+      "name": "rejected",
+      "uri": "/api/tags/3/",
+      "usage": 0,
+    },
+  ],
+  "meta": Object {
+    "current_page": 2,
+  },
+}
+`;
+
+exports[`tag resources updateTag should resolve with the updated tag on success 1`] = `
+Object {
+  "created_datetime": "2021-01-21T13:10:46.444928+00:00",
+  "decoration": null,
+  "deleted_datetime": null,
+  "description": null,
+  "id": 2,
+  "name": "billing",
+  "uri": "/api/tags/2/",
+  "usage": 10,
+}
+`;
+
+exports[`tag resources updateTag should resolve with the updated tag on success 2`] = `
+Object {
+  "delete": Array [],
+  "get": Array [],
+  "head": Array [],
+  "list": Array [],
+  "options": Array [],
+  "patch": Array [],
+  "post": Array [],
+  "put": Array [
+    Object {
+      "data": "{\\"id\\":2,\\"created_datetime\\":\\"2021-01-21T13:10:46.444928+00:00\\",\\"decoration\\":null,\\"deleted_datetime\\":null,\\"description\\":null,\\"name\\":\\"billing\\",\\"usage\\":10,\\"uri\\":\\"/api/tags/2/\\"}",
+      "headers": Object {
+        "Accept": "application/json, text/plain, */*",
+        "Content-Type": "application/json;charset=utf-8",
+      },
+      "maxBodyLength": -1,
+      "maxContentLength": -1,
+      "method": "put",
+      "timeout": 0,
+      "transformRequest": Array [
+        [Function],
+      ],
+      "transformResponse": Array [
+        [Function],
+      ],
+      "url": "/api/tags/2/",
+      "validateStatus": [Function],
+      "xsrfCookieName": "XSRF-TOKEN",
+      "xsrfHeaderName": "X-XSRF-TOKEN",
+    },
+  ],
+}
+`;

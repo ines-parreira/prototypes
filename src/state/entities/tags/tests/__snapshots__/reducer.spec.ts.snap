@@ -1,0 +1,103 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`tags reducer createTag action should add a new tag to the state 1`] = `
+Object {
+  "2": Object {
+    "created_datetime": "2021-01-21T13:10:46.444928+00:00",
+    "decoration": null,
+    "deleted_datetime": null,
+    "description": null,
+    "id": 2,
+    "name": "billing",
+    "uri": "/api/tags/2/",
+    "usage": 10,
+  },
+}
+`;
+
+exports[`tags reducer deleteTag action should delete a tag from the state 1`] = `Object {}`;
+
+exports[`tags reducer fetchTag action should add a new tag to the state 1`] = `
+Object {
+  "2": Object {
+    "created_datetime": "2021-01-21T13:10:46.444928+00:00",
+    "decoration": null,
+    "deleted_datetime": null,
+    "description": null,
+    "id": 2,
+    "name": "billing",
+    "uri": "/api/tags/2/",
+    "usage": 10,
+  },
+}
+`;
+
+exports[`tags reducer fetchTags action should add the tags to the state 1`] = `
+Object {
+  "1": Object {
+    "created_datetime": "2021-01-21T13:10:46.435364+00:00",
+    "decoration": null,
+    "deleted_datetime": null,
+    "description": null,
+    "id": 1,
+    "name": "refund",
+    "uri": "/api/tags/1/",
+    "usage": 20,
+  },
+  "2": Object {
+    "created_datetime": "2021-01-21T13:10:46.444928+00:00",
+    "decoration": null,
+    "deleted_datetime": null,
+    "description": null,
+    "id": 2,
+    "name": "billing",
+    "uri": "/api/tags/2/",
+    "usage": 10,
+  },
+  "3": Object {
+    "created_datetime": "2021-01-21T13:10:46.445859+00:00",
+    "decoration": null,
+    "deleted_datetime": null,
+    "description": null,
+    "id": 3,
+    "name": "rejected",
+    "uri": "/api/tags/3/",
+    "usage": 0,
+  },
+  "4": Object {
+    "created_datetime": "2021-01-21T13:10:46.446673+00:00",
+    "decoration": null,
+    "deleted_datetime": null,
+    "description": null,
+    "id": 4,
+    "name": "refund accepted",
+    "uri": "/api/tags/4/",
+    "usage": 0,
+  },
+}
+`;
+
+exports[`tags reducer updateTag action should replace an existing tag in the state 1`] = `
+Object {
+  "1": Object {
+    "created_datetime": "2021-01-21T13:10:46.444928+00:00",
+    "decoration": null,
+    "deleted_datetime": null,
+    "description": null,
+    "id": 2,
+    "name": "billing",
+    "uri": "/api/tags/2/",
+    "usage": 10,
+  },
+  "2": Object {
+    "created_datetime": "2021-01-21T13:10:46.444928+00:00",
+    "decoration": null,
+    "deleted_datetime": null,
+    "description": null,
+    "id": 2,
+    "name": "bar",
+    "uri": "/api/tags/2/",
+    "usage": 10,
+  },
+}
+`;

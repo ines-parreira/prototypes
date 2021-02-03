@@ -169,12 +169,14 @@ type Props = {
     value: string[]
 }
 
+const DefaultDropdownMenu = (props: ComponentProps<typeof DropdownMenu>) => (
+    <DropdownMenu {...props} className={css.dropdown} />
+)
+
 const SelectFilter = ({
     children,
     className,
-    dropdownMenu: DropdownMenuComponent = (
-        props: ComponentProps<typeof DropdownMenu>
-    ) => <DropdownMenu {...props} className={css.dropdown} />,
+    dropdownMenu: DropdownMenuComponent = DefaultDropdownMenu,
     isDisabled = false,
     isRequired = false,
     isMultiple = true,
@@ -188,10 +190,8 @@ const SelectFilter = ({
     const [selectedGroupIds, setSelectedGroupIds] = useState<string[]>([])
 
     useEffect(() => {
-        if (onSearch) {
-            onSearch(search)
-        }
-    }, [onSearch, search])
+        onSearch?.(search)
+    }, [search])
 
     const hasSelection = useMemo(() => !!value.length, [value])
 

@@ -1,0 +1,5 @@
+export const TAG_CREATED = 'TAGS/TAG_CREATED'
+export const TAG_DELETED = 'TAGS/TAG_DELETED'
+export const TAG_FETCHED = 'TAGS/TAG_FETCHED'
+export const TAG_UPDATED = 'TAGS/TAG_UPDATED'
+export const TAGS_FETCHED = 'TAGS/TAGS_FETCHED'

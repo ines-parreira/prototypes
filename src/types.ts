@@ -110,6 +110,8 @@ export type InitialRootState = {
     currentUSer: Map<any, any>
     entities: {
         sections: {[key: string]: Section}
+        tags: {[key: string]: Tag}
+        views: {[key: string]: View}
     }
     integrations: Map<any, any>
     schemas: Map<any, any>
