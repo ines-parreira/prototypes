@@ -50,7 +50,7 @@ Start using teams to automatically assign tickets to agents.
             <p
               class="testimonialText"
             >
-              With Auto-assign, tickets are automatically routed to the right person, based on tags and brand. This way, we respond to customers much faster.
+              With Auto-assign, we have been able to utilize rules to assign tickets to certain teams based on the ticket parameters. It has saved us time instead of having our lead agents manually assigning tickets to teams based on the ticket request type.
             </p>
             <div
               class="d-flex mt-4"
@@ -58,30 +58,30 @@ Start using teams to automatically assign tickets to agents.
               <img
                 alt="avatar"
                 class="mr-3 avatar"
-                src="/static/private/img/paywalls/avatars/alyse-nathan.png"
+                src="/static/private/img/paywalls/avatars/amir-mot.png"
               />
               <div>
                 <p
                   class="testimonialDetails"
                 >
                   <strong>
-                    Alyse Nathan
+                    Amir Mot
                   </strong>
                 </p>
                 <p
                   class="testimonialDetails"
                 >
-                  Director of customer Service
+                  CEO
                    
                   at
                    
                   <a
                     class="companyLink"
-                    href="https://www.stevemadden.com/"
+                    href="https://www.bradza.com/"
                     rel="noopener noreferrer"
                     target="_blank"
                   >
-                    Steve Madden
+                    Bradza
                   </a>
                 </p>
               </div>
