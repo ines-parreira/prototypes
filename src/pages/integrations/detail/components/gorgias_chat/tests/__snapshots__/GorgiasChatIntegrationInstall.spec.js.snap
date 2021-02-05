@@ -258,6 +258,20 @@ exports[`<GorgiasChatIntegrationInstall/> should display the list of Shopify sto
                   Campaigns
                 </a>
               </Link>
+              <Link
+                activeClassName="disabled"
+                className="nav-link"
+                key=".5"
+                to="/app/settings/integrations/gorgias_chat/2/self_service"
+              >
+                <a
+                  activeClassName="disabled"
+                  className="nav-link"
+                  to="/app/settings/integrations/gorgias_chat/2/self_service"
+                >
+                  Self-service
+                </a>
+              </Link>
             </nav>
           </Navbar>
         </SecondaryNavbar>
