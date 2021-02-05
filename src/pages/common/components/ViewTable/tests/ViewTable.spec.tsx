@@ -7,6 +7,7 @@ import _identity from 'lodash/identity'
 import {stringify} from 'query-string'
 
 import * as ticketFixtures from '../../../../../fixtures/ticket'
+import {ViewVisibility} from '../../../../../models/view/types'
 import * as viewsActions from '../../../../../state/views/actions'
 import {view as fixtureView} from '../../../../../fixtures/views'
 import {activeViewIdSet} from '../../../../../state/ui/views/actions'
@@ -49,7 +50,7 @@ const minProps = ({
     fetchViewItems: jest.fn(),
     getViewIdToDisplay: jest.fn(),
     getView: jest.fn(),
-    location: {search: ''},
+    location: {search: '', pathname: ''},
     setViewActive: jest.fn(),
     match: {params: {}},
     isOnFirstPage: true,
@@ -92,7 +93,9 @@ describe('<ViewTable />', () => {
                     {...minProps}
                     isSearch={true}
                     urlSearchView={searchView}
-                    location={{search: stringify({cursor})} as Location}
+                    location={
+                        {search: stringify({cursor}), pathname: ''} as Location
+                    }
                 />
             )
             expect(minProps.updateView).toHaveBeenLastCalledWith(
@@ -149,6 +152,27 @@ describe('<ViewTable />', () => {
             render(<ViewTableContainer {...minProps} />)
             expect(history.push).not.toHaveBeenCalled()
         })
+
+        it('should set the new active view based on visibility params and fetch the view items when the url is a creation one', () => {
+            render(
+                <ViewTableContainer
+                    {...minProps}
+                    config={fromJS({newView: () => 'foo'})}
+                    location={
+                        {
+                            search: '',
+                            pathname: `/app/tickets/new/${ViewVisibility.Private}`,
+                        } as Location<any>
+                    }
+                    match={
+                        {params: {visibility: ViewVisibility.Private}} as any
+                    }
+                />
+            )
+
+            expect(minProps.updateView).toHaveBeenCalledWith('foo')
+            expect(minProps.fetchViewItemsCancellable).toHaveBeenCalledTimes(1)
+        })
     })
 
     describe('on update', () => {
@@ -161,9 +185,10 @@ describe('<ViewTable />', () => {
                     <ViewTableContainer
                         {...minProps}
                         location={
-                            {search: stringify({cursor: '789456'})} as Location<
-                                any
-                            >
+                            {
+                                search: stringify({cursor: '789456'}),
+                                pathname: '',
+                            } as Location<any>
                         }
                         navigation={fromJS({current_cursor: cursor})}
                         isLoading={() => true}
@@ -175,9 +200,10 @@ describe('<ViewTable />', () => {
                     <ViewTableContainer
                         {...minProps}
                         location={
-                            {search: stringify({cursor: '1256'})} as Location<
-                                any
-                            >
+                            {
+                                search: stringify({cursor: '1256'}),
+                                pathname: '',
+                            } as Location<any>
                         }
                         navigation={fromJS({
                             current_cursor: cursor,
@@ -203,9 +229,10 @@ describe('<ViewTable />', () => {
                     <ViewTableContainer
                         {...minProps}
                         location={
-                            {search: stringify({cursor: '789456'})} as Location<
-                                any
-                            >
+                            {
+                                search: stringify({cursor: '789456'}),
+                                pathname: '',
+                            } as Location<any>
                         }
                         navigation={fromJS({current_cursor: cursor})}
                         isLoading={() => true}
@@ -216,9 +243,10 @@ describe('<ViewTable />', () => {
                     <ViewTableContainer
                         {...minProps}
                         location={
-                            {search: stringify({cursor: '1256'})} as Location<
-                                any
-                            >
+                            {
+                                search: stringify({cursor: '1256'}),
+                                pathname: '',
+                            } as Location<any>
                         }
                         navigation={fromJS({current_cursor: cursor})}
                         isLoading={() => false}
@@ -238,7 +266,11 @@ describe('<ViewTable />', () => {
             rerender(
                 <ViewTableContainer
                     {...minProps}
-                    location={{search: stringify({cursor})} as Location<any>}
+                    location={
+                        {search: stringify({cursor}), pathname: ''} as Location<
+                            any
+                        >
+                    }
                 />
             )
             expect(minProps.fetchViewItemsCancellable).toHaveBeenLastCalledWith(
@@ -459,9 +491,10 @@ describe('<ViewTable />', () => {
                     <ViewTableContainer
                         {...minProps}
                         location={
-                            {search: stringify({cursor: '1256'})} as Location<
-                                any
-                            >
+                            {
+                                search: stringify({cursor: '1256'}),
+                                pathname: '',
+                            } as Location<any>
                         }
                         navigation={fromJS({current_cursor: '1256'})}
                     />
@@ -473,6 +506,7 @@ describe('<ViewTable />', () => {
                         location={
                             {
                                 search: stringify({cursor: '12345678'}),
+                                pathname: '',
                             } as Location<any>
                         }
                         isOnFirstPage={false}

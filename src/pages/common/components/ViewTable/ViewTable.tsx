@@ -16,6 +16,7 @@ import * as viewsSelectors from '../../../../state/views/selectors'
 import * as viewsConfig from '../../../../config/views'
 import {RootState} from '../../../../state/types'
 import history from '../../../history'
+import {isCreationUrl} from '../../utils/url.js'
 
 import Header from './Header'
 import Table from './Table'
@@ -61,16 +62,25 @@ export class ViewTableContainer extends React.Component<Props> {
             setViewActive,
             getView,
             fetchViewItems,
+            fetchViewItemsCancellable,
             activeView,
             isSearch,
             location,
             urlSearchView,
             updateView,
             activeViewIdSet,
+            match: {params},
         } = this.props
 
         if (isSearch) {
             updateView(urlSearchView, false)
+        } else if (isCreationUrl(location.pathname, 'tickets')) {
+            updateView(
+                (config.get('newView') as (
+                    params?: ViewVisibility
+                ) => Map<any, any>)(params.visibility)
+            )
+            void fetchViewItemsCancellable(null, null, null)
         } else if (activeView.isEmpty() || urlViewId) {
             const suggestedViewId = getViewIdToDisplay(
                 config.get('type'),
