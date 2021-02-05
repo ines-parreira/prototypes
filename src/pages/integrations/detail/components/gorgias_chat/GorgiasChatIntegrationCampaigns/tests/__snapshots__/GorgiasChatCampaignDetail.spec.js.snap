@@ -26,7 +26,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
           <a
             to="/app/settings/integrations/gorgias_chat/1"
           >
-            Chat
+            Chat (New)
           </a>
         </li>
         <li
@@ -87,13 +87,6 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
         to="/app/settings/integrations/gorgias_chat/1/campaigns"
       >
         Campaigns
-      </a>
-      <a
-        activeclassname="disabled"
-        class="nav-link"
-        to="/app/settings/integrations/gorgias_chat/1/self_service"
-      >
-        Self-service
       </a>
     </nav>
     <div
@@ -658,7 +651,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
           <a
             to="/app/settings/integrations/gorgias_chat/1"
           >
-            Chat
+            Chat (New)
           </a>
         </li>
         <li
@@ -719,13 +712,6 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
         to="/app/settings/integrations/gorgias_chat/1/campaigns"
       >
         Campaigns
-      </a>
-      <a
-        activeclassname="disabled"
-        class="nav-link"
-        to="/app/settings/integrations/gorgias_chat/1/self_service"
-      >
-        Self-service
       </a>
     </nav>
     <div
@@ -1393,7 +1379,7 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
           <a
             to="/app/settings/integrations/gorgias_chat/1"
           >
-            Chat
+            Chat (New)
           </a>
         </li>
         <li
@@ -1454,13 +1440,6 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
         to="/app/settings/integrations/gorgias_chat/1/campaigns"
       >
         Campaigns
-      </a>
-      <a
-        activeclassname="disabled"
-        class="nav-link"
-        to="/app/settings/integrations/gorgias_chat/1/self_service"
-      >
-        Self-service
       </a>
     </nav>
     <div

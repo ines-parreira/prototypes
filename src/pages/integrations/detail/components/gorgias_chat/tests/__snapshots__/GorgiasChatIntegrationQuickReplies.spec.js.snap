@@ -250,20 +250,6 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render defaults b
                   Campaigns
                 </a>
               </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
-                key=".5"
-                to="/app/settings/integrations/gorgias_chat/7/self_service"
-              >
-                <a
-                  activeClassName="disabled"
-                  className="nav-link"
-                  to="/app/settings/integrations/gorgias_chat/7/self_service"
-                >
-                  Self-service
-                </a>
-              </Link>
             </nav>
           </Navbar>
         </SecondaryNavbar>
@@ -1152,20 +1138,6 @@ exports[`<GorgiasChatIntegrationQuickReplies/> render() should render quick repl
                   to="/app/settings/integrations/gorgias_chat/7/campaigns"
                 >
                   Campaigns
-                </a>
-              </Link>
-              <Link
-                activeClassName="disabled"
-                className="nav-link"
-                key=".5"
-                to="/app/settings/integrations/gorgias_chat/7/self_service"
-              >
-                <a
-                  activeClassName="disabled"
-                  className="nav-link"
-                  to="/app/settings/integrations/gorgias_chat/7/self_service"
-                >
-                  Self-service
                 </a>
               </Link>
             </nav>

@@ -124,7 +124,7 @@ export class GorgiasChatIntegrationCampaignsComponent extends React.Component<Pr
                                         'type'
                                     )}`}
                                 >
-                                    Chat
+                                    Chat (New)
                                 </Link>
                             </BreadcrumbItem>
                             <BreadcrumbItem>

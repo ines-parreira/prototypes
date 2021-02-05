@@ -26,7 +26,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
           <a
             to="/app/settings/integrations/gorgias_chat"
           >
-            Chat
+            Chat (New)
           </a>
         </li>
         <li
@@ -86,13 +86,6 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the empty st
         to="/app/settings/integrations/gorgias_chat/118/campaigns"
       >
         Campaigns
-      </a>
-      <a
-        activeclassname="disabled"
-        class="nav-link"
-        to="/app/settings/integrations/gorgias_chat/118/self_service"
-      >
-        Self-service
       </a>
     </nav>
     <div
@@ -135,7 +128,7 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
           <a
             to="/app/settings/integrations/gorgias_chat"
           >
-            Chat
+            Chat (New)
           </a>
         </li>
         <li
@@ -195,13 +188,6 @@ exports[`<GorgiasChatIntegrationCampaigns/> render() should display the list cor
         to="/app/settings/integrations/gorgias_chat/118/campaigns"
       >
         Campaigns
-      </a>
-      <a
-        activeclassname="disabled"
-        class="nav-link"
-        to="/app/settings/integrations/gorgias_chat/118/self_service"
-      >
-        Self-service
       </a>
     </nav>
     <div
