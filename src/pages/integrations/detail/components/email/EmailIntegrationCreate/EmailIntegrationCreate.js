@@ -96,7 +96,7 @@ export class EmailIntegrationCreate extends React.Component<Props> {
 
                         <p className="text-muted text-center">
                             Improve email deliverability, keep your data on your
-                            Outlook.com account, import last month of emails
+                            Outlook.com account, import last 2 years of emails
                             (optional)
                         </p>
 
