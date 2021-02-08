@@ -501,24 +501,6 @@ exports[`<GorgiasChatCampaignDetail/> render() should display default value when
                             >
                               <button
                                 class="button btn btn-secondary btn-transparent"
-                                title="Insert link"
-                                type="button"
-                              >
-                                <i
-                                  class="material-icons"
-                                >
-                                  link
-                                </i>
-                              </button>
-                              <div
-                                class="popover hidden"
-                              />
-                            </span>
-                            <span
-                              class="popoverWrapper"
-                            >
-                              <button
-                                class="button btn btn-secondary btn-transparent"
                                 title="Insert image"
                                 type="button"
                               >
@@ -1227,24 +1209,6 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                                 format_underline
                               </i>
                             </button>
-                            <span
-                              class="popoverWrapper"
-                            >
-                              <button
-                                class="button btn btn-secondary btn-transparent"
-                                title="Insert link"
-                                type="button"
-                              >
-                                <i
-                                  class="material-icons"
-                                >
-                                  link
-                                </i>
-                              </button>
-                              <div
-                                class="popover hidden"
-                              />
-                            </span>
                             <span
                               class="popoverWrapper"
                             >
@@ -1980,24 +1944,6 @@ exports[`<GorgiasChatCampaignDetail/> render() should display the campaign corre
                                 format_underline
                               </i>
                             </button>
-                            <span
-                              class="popoverWrapper"
-                            >
-                              <button
-                                class="button btn btn-secondary btn-transparent"
-                                title="Insert link"
-                                type="button"
-                              >
-                                <i
-                                  class="material-icons"
-                                >
-                                  link
-                                </i>
-                              </button>
-                              <div
-                                class="popover hidden"
-                              />
-                            </span>
                             <span
                               class="popoverWrapper"
                             >
