@@ -1,6 +1,178 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<GorgiasChatIntegrationSelfService/> onToggleSelfService() should turn on the self service before calling updateOrCreateIntegration 1`] = `
+exports[`<GorgiasChatIntegrationSelfService/> onToggleSelfService() should call the updateOrCreateIntegration with the right values and set self_service.enabled to false 1`] = `
+<div>
+  <div
+    class="full-width"
+  >
+    <div
+      class="d-flex align-items-center justify-content-between flex-wrap page-header"
+    >
+      <ol
+        class="breadcrumb"
+      >
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations"
+          >
+            Integrations
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          <a
+            to="/app/settings/integrations/gorgias_chat"
+          >
+            Chat
+          </a>
+        </li>
+        <li
+          class="breadcrumb-item"
+        >
+          my chat integration
+        </li>
+        <li
+          class="active breadcrumb-item"
+        >
+          Self-service
+        </li>
+      </ol>
+    </div>
+    <nav
+      class="navbar navbar"
+    >
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/7/appearance"
+      >
+        Appearance
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/7/installation"
+      >
+        Installation
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/7/preferences"
+      >
+        Preferences
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/7/quick_replies"
+      >
+        Quick replies
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/7/campaigns"
+      >
+        Campaigns
+      </a>
+      <a
+        activeclassname="disabled"
+        class="nav-link"
+        to="/app/settings/integrations/gorgias_chat/7/self_service"
+      >
+        Self-service
+      </a>
+    </nav>
+    <div
+      class="page-container container-fluid"
+    >
+      <div
+        class="row"
+      >
+        <div
+          class="col"
+        >
+          <div
+            class="mb-4"
+          >
+            <h4>
+              Self-service
+            </h4>
+            <p>
+              Most e-commerce support requests are about the same 20 types of issues.
+              <br />
+              <br />
+              Self-service enables your customers to browse their orders and select the type of issue they are having. It will create a chat ticket for your team to handle.
+            </p>
+          </div>
+          <h5>
+            Enable Self-service
+          </h5>
+          <p>
+            Self-service is only available for stores that have an active chat integration.
+          </p>
+          <table
+            class="table-integrations mt-3 table table-hover"
+          >
+            <tbody>
+              <tr>
+                <td
+                  class="pl-0"
+                >
+                  <b>
+                    My shop 1
+                  </b>
+                </td>
+                <td
+                  class="smallest align-middle"
+                >
+                  <div
+                    data-testid="toggle-button"
+                  >
+                    ToggleButtonMock value=false
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td
+                  class="pl-0"
+                >
+                  <b>
+                    My shop 2
+                  </b>
+                </td>
+                <td
+                  class="smallest align-middle"
+                >
+                  <div
+                    data-testid="toggle-button"
+                  >
+                    ToggleButtonMock value=true
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div
+          class="col"
+        >
+          <img
+            alt="Self-service Mock"
+            src="test-file-stub"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<GorgiasChatIntegrationSelfService/> render() should render the default message when there is no shopify integration - %# 1`] = `
 <div
   class="full-width"
 >
@@ -78,6 +250,13 @@ exports[`<GorgiasChatIntegrationSelfService/> onToggleSelfService() should turn 
     >
       Campaigns
     </a>
+    <a
+      activeclassname="disabled"
+      class="nav-link"
+      to="/app/settings/integrations/gorgias_chat/7/self_service"
+    >
+      Self-service
+    </a>
   </nav>
   <div
     class="page-container container-fluid"
@@ -100,22 +279,12 @@ exports[`<GorgiasChatIntegrationSelfService/> onToggleSelfService() should turn 
             <br />
             Self-service enables your customers to browse their orders and select the type of issue they are having. It will create a chat ticket for your team to handle.
           </p>
-          <div
-            class="mb-3 d-flex align-items-center"
-          >
-            <div
-              data-testid="toggle-button"
-            >
-              ToggleButtonMock value=false
-            </div>
-            <div
-              class="ml-3"
-            >
-              <b>
-                Enable Self-service
-              </b>
-            </div>
-          </div>
+        </div>
+        <div
+          class="alert alert-warning fade"
+          role="alert"
+        >
+          No active Shopify store detected. Please make sure to add a Shopify integration to access the Self-service features.
         </div>
       </div>
       <div
@@ -131,7 +300,7 @@ exports[`<GorgiasChatIntegrationSelfService/> onToggleSelfService() should turn 
 </div>
 `;
 
-exports[`<GorgiasChatIntegrationSelfService/> onToggleSelfService() should turn on the self service before calling updateOrCreateIntegration 2`] = `
+exports[`<GorgiasChatIntegrationSelfService/> render() should render the list of shopify integrations with 1/2 that has the SSP enabled (with self_service.enabled: false) 1`] = `
 <div
   class="full-width"
 >
@@ -209,6 +378,13 @@ exports[`<GorgiasChatIntegrationSelfService/> onToggleSelfService() should turn 
     >
       Campaigns
     </a>
+    <a
+      activeclassname="disabled"
+      class="nav-link"
+      to="/app/settings/integrations/gorgias_chat/7/self_service"
+    >
+      Self-service
+    </a>
   </nav>
   <div
     class="page-container container-fluid"
@@ -231,23 +407,55 @@ exports[`<GorgiasChatIntegrationSelfService/> onToggleSelfService() should turn 
             <br />
             Self-service enables your customers to browse their orders and select the type of issue they are having. It will create a chat ticket for your team to handle.
           </p>
-          <div
-            class="mb-3 d-flex align-items-center"
-          >
-            <div
-              data-testid="toggle-button"
-            >
-              ToggleButtonMock value=true
-            </div>
-            <div
-              class="ml-3"
-            >
-              <b>
-                Enable Self-service
-              </b>
-            </div>
-          </div>
         </div>
+        <h5>
+          Enable Self-service
+        </h5>
+        <p>
+          Self-service is only available for stores that have an active chat integration.
+        </p>
+        <table
+          class="table-integrations mt-3 table table-hover"
+        >
+          <tbody>
+            <tr>
+              <td
+                class="pl-0"
+              >
+                <b>
+                  My shop 1
+                </b>
+              </td>
+              <td
+                class="smallest align-middle"
+              >
+                <div
+                  data-testid="toggle-button"
+                >
+                  ToggleButtonMock value=true
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td
+                class="pl-0"
+              >
+                <b>
+                  My shop 2
+                </b>
+              </td>
+              <td
+                class="smallest align-middle"
+              >
+                <div
+                  data-testid="toggle-button"
+                >
+                  ToggleButtonMock value=false
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
       <div
         class="col"
@@ -262,7 +470,7 @@ exports[`<GorgiasChatIntegrationSelfService/> onToggleSelfService() should turn 
 </div>
 `;
 
-exports[`<GorgiasChatIntegrationSelfService/> render() should render defaults because the self service is not enabled for the integration 1`] = `
+exports[`<GorgiasChatIntegrationSelfService/> render() should render the list of shopify integrations with 1/2 that has the SSP enabled because the shopify id is present in shopify_integration_ids and the old self service config is enabled 1`] = `
 <div
   class="full-width"
 >
@@ -340,6 +548,13 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render defaults be
     >
       Campaigns
     </a>
+    <a
+      activeclassname="disabled"
+      class="nav-link"
+      to="/app/settings/integrations/gorgias_chat/7/self_service"
+    >
+      Self-service
+    </a>
   </nav>
   <div
     class="page-container container-fluid"
@@ -362,23 +577,55 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render defaults be
             <br />
             Self-service enables your customers to browse their orders and select the type of issue they are having. It will create a chat ticket for your team to handle.
           </p>
-          <div
-            class="mb-3 d-flex align-items-center"
-          >
-            <div
-              data-testid="toggle-button"
-            >
-              ToggleButtonMock value=false
-            </div>
-            <div
-              class="ml-3"
-            >
-              <b>
-                Enable Self-service
-              </b>
-            </div>
-          </div>
         </div>
+        <h5>
+          Enable Self-service
+        </h5>
+        <p>
+          Self-service is only available for stores that have an active chat integration.
+        </p>
+        <table
+          class="table-integrations mt-3 table table-hover"
+        >
+          <tbody>
+            <tr>
+              <td
+                class="pl-0"
+              >
+                <b>
+                  My shop 1
+                </b>
+              </td>
+              <td
+                class="smallest align-middle"
+              >
+                <div
+                  data-testid="toggle-button"
+                >
+                  ToggleButtonMock value=true
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td
+                class="pl-0"
+              >
+                <b>
+                  My shop 2
+                </b>
+              </td>
+              <td
+                class="smallest align-middle"
+              >
+                <div
+                  data-testid="toggle-button"
+                >
+                  ToggleButtonMock value=false
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
       <div
         class="col"
@@ -393,7 +640,7 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render defaults be
 </div>
 `;
 
-exports[`<GorgiasChatIntegrationSelfService/> render() should render the toggle button of the self service being in the ON state 1`] = `
+exports[`<GorgiasChatIntegrationSelfService/> render() should render the list of shopify integrations with the value taken from the meta configuration (ignoring the self_service.enabled value) - enabled = false 1`] = `
 <div
   class="full-width"
 >
@@ -471,6 +718,13 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the toggle 
     >
       Campaigns
     </a>
+    <a
+      activeclassname="disabled"
+      class="nav-link"
+      to="/app/settings/integrations/gorgias_chat/7/self_service"
+    >
+      Self-service
+    </a>
   </nav>
   <div
     class="page-container container-fluid"
@@ -493,23 +747,55 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the toggle 
             <br />
             Self-service enables your customers to browse their orders and select the type of issue they are having. It will create a chat ticket for your team to handle.
           </p>
-          <div
-            class="mb-3 d-flex align-items-center"
-          >
-            <div
-              data-testid="toggle-button"
-            >
-              ToggleButtonMock value=true
-            </div>
-            <div
-              class="ml-3"
-            >
-              <b>
-                Enable Self-service
-              </b>
-            </div>
-          </div>
         </div>
+        <h5>
+          Enable Self-service
+        </h5>
+        <p>
+          Self-service is only available for stores that have an active chat integration.
+        </p>
+        <table
+          class="table-integrations mt-3 table table-hover"
+        >
+          <tbody>
+            <tr>
+              <td
+                class="pl-0"
+              >
+                <b>
+                  My shop 1
+                </b>
+              </td>
+              <td
+                class="smallest align-middle"
+              >
+                <div
+                  data-testid="toggle-button"
+                >
+                  ToggleButtonMock value=false
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td
+                class="pl-0"
+              >
+                <b>
+                  My shop 2
+                </b>
+              </td>
+              <td
+                class="smallest align-middle"
+              >
+                <div
+                  data-testid="toggle-button"
+                >
+                  ToggleButtonMock value=true
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
       <div
         class="col"
@@ -524,7 +810,7 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the toggle 
 </div>
 `;
 
-exports[`<GorgiasChatIntegrationSelfService/> render() should render the toggle button of the self service being in the ON state 2`] = `
+exports[`<GorgiasChatIntegrationSelfService/> render() should render the list of shopify integrations with the value taken from the meta configuration (ignoring the self_service.enabled value) - enabled = true 1`] = `
 <div
   class="full-width"
 >
@@ -602,6 +888,13 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the toggle 
     >
       Campaigns
     </a>
+    <a
+      activeclassname="disabled"
+      class="nav-link"
+      to="/app/settings/integrations/gorgias_chat/7/self_service"
+    >
+      Self-service
+    </a>
   </nav>
   <div
     class="page-container container-fluid"
@@ -624,23 +917,55 @@ exports[`<GorgiasChatIntegrationSelfService/> render() should render the toggle 
             <br />
             Self-service enables your customers to browse their orders and select the type of issue they are having. It will create a chat ticket for your team to handle.
           </p>
-          <div
-            class="mb-3 d-flex align-items-center"
-          >
-            <div
-              data-testid="toggle-button"
-            >
-              ToggleButtonMock value=false
-            </div>
-            <div
-              class="ml-3"
-            >
-              <b>
-                Enable Self-service
-              </b>
-            </div>
-          </div>
         </div>
+        <h5>
+          Enable Self-service
+        </h5>
+        <p>
+          Self-service is only available for stores that have an active chat integration.
+        </p>
+        <table
+          class="table-integrations mt-3 table table-hover"
+        >
+          <tbody>
+            <tr>
+              <td
+                class="pl-0"
+              >
+                <b>
+                  My shop 1
+                </b>
+              </td>
+              <td
+                class="smallest align-middle"
+              >
+                <div
+                  data-testid="toggle-button"
+                >
+                  ToggleButtonMock value=false
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td
+                class="pl-0"
+              >
+                <b>
+                  My shop 2
+                </b>
+              </td>
+              <td
+                class="smallest align-middle"
+              >
+                <div
+                  data-testid="toggle-button"
+                >
+                  ToggleButtonMock value=true
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
       <div
         class="col"
