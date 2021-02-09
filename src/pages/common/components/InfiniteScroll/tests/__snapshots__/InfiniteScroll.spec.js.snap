@@ -2,17 +2,23 @@
 
 exports[`InfiniteScroll component should display infinite scroll with children 1`] = `
 <div
-  className="component"
-  onScroll={[Function]}
+  class="component"
 >
   <div>
     Pizza Pepperoni
   </div>
-  <Loader
-    className="loader"
-    inline={false}
-    minHeight="0"
-    size="40px"
-  />
+  <div
+    class="container loader"
+  >
+    <div
+      class="inner"
+      style="min-height: 0;"
+    >
+      <i
+        class="icon-custom icon-circle-o-notch md-spin"
+        style="font-size: 40px;"
+      />
+    </div>
+  </div>
 </div>
 `;

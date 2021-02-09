@@ -1,4 +1,4 @@
-import React, {ReactNode} from 'react'
+import React, {ReactNode, useCallback, useEffect, useRef, useState} from 'react'
 import classnames from 'classnames'
 
 import Loader from '../Loader/Loader.js'
@@ -6,92 +6,61 @@ import Loader from '../Loader/Loader.js'
 import css from './InfiniteScroll.less'
 
 type Props = {
-    load: () => Promise<void>
-    loadMore: boolean
-    threshold: number
-    className: string
     children: ReactNode
+    className: string
+    onLoad: () => Promise<void>
+    shouldLoadMore: boolean
+    threshold: number
 }
 
-type State = {
-    loading: boolean
-}
+const InfiniteScroll = ({
+    children,
+    className = '',
+    onLoad = () => Promise.resolve(),
+    shouldLoadMore = true,
+    threshold = 50,
+}: Props) => {
+    const [isLoading, setIsLoading] = useState(false)
+    const ref = useRef<HTMLDivElement>(null)
 
-export default class InfiniteScroll extends React.Component<Props, State> {
-    static defaultProps = {
-        className: '',
-        load: () => Promise.resolve(),
-        loadMore: true,
-        threshold: 50,
-    }
+    useEffect(() => {
+        void handleLoad()
+    }, [shouldLoadMore])
 
-    state = {
-        loading: false,
-    }
-
-    container: Maybe<HTMLElement> = null
-
-    componentDidMount() {
-        // load next page if already scrolled
-        void this._load(this.container)
-    }
-
-    componentDidUpdate(prevProps: Props) {
-        // loadMore changed from parent,
-        // load next page if already scrolled.
-        if (prevProps.loadMore !== this.props.loadMore) {
-            void this._load(this.container)
-        }
-    }
-
-    // overwrite container for testing
-    _load = (container: Maybe<HTMLElement>) => {
-        if (
-            // parent stopped loading
-            !this.props.loadMore ||
-            // still loading
-            this.state.loading ||
-            // container not ready
-            !container
-        ) {
+    const handleLoad = useCallback(async () => {
+        if (!shouldLoadMore || isLoading || !ref.current) {
             return
         }
 
-        const containerScroll =
-            container.scrollTop + container.clientHeight + this.props.threshold
+        const containerScroll = ref.current.scrollTop + ref.current.clientHeight
 
-        // reached the end
-        if (containerScroll >= container.scrollHeight) {
-            this.setState({loading: true}, () => {
-                void this.props.load().then(() => {
-                    this.setState({loading: false})
-                })
-            })
+        if (
+            containerScroll !== 0 &&
+            ref.current.scrollHeight !== 0 &&
+            containerScroll + threshold >= ref.current.scrollHeight
+        ) {
+            setIsLoading(true)
+            await onLoad()
+            setIsLoading(false)
         }
-    }
+    }, [isLoading, ref.current, setIsLoading, shouldLoadMore])
 
-    _scrollContainer = (ref: Maybe<HTMLElement>) => {
-        this.container = ref
-    }
-
-    render() {
-        const {children, className} = this.props
-
-        return (
-            <div
-                className={classnames(
-                    css.component,
-                    {
-                        [css.loading]: this.state.loading,
-                    },
-                    className
-                )}
-                ref={this._scrollContainer}
-                onScroll={(e) => this._load(e.target as any)}
-            >
-                {children}
-                <Loader className={css.loader} minHeight="0" />
-            </div>
-        )
-    }
+    return (
+        <div
+            className={classnames(
+                css.component,
+                {
+                    [css.loading]: isLoading,
+                },
+                className
+            )}
+            ref={ref}
+            onScroll={handleLoad}
+        >
+            {children}
+            <Loader className={css.loader} minHeight="0" />
+        </div>
+    )
 }
+
+export default InfiniteScroll

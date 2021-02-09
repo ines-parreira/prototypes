@@ -1,124 +1,114 @@
 import React from 'react'
-import {shallow} from 'enzyme'
+import {fireEvent, render} from '@testing-library/react'
 
 import InfiniteScroll from '../InfiniteScroll.tsx'
 
 describe('InfiniteScroll component', () => {
+    const originalClientHeight = Object.getOwnPropertyDescriptor(
+        HTMLElement.prototype,
+        'clientHeight'
+    )
+
+    const originalScrollHeight = Object.getOwnPropertyDescriptor(
+        HTMLElement.prototype,
+        'scrollHeight'
+    )
+
+    beforeAll(() => {
+        Object.defineProperty(HTMLElement.prototype, 'clientHeight', {
+            configurable: true,
+            value: 100,
+        })
+        Object.defineProperty(HTMLElement.prototype, 'scrollHeight', {
+            configurable: true,
+            value: 200,
+        })
+    })
+
+    afterAll(() => {
+        Object.defineProperty(
+            HTMLElement.prototype,
+            'clientHeight',
+            originalClientHeight
+        )
+        Object.defineProperty(
+            HTMLElement.prototype,
+            'scrollHeight',
+            originalScrollHeight
+        )
+    })
+
     it('should display infinite scroll with children', () => {
-        const component = shallow(
+        const {container} = render(
             <InfiniteScroll>
                 <div>Pizza Pepperoni</div>
             </InfiniteScroll>
         )
-
-        expect(component).toMatchSnapshot()
+        expect(container.firstChild).toMatchSnapshot()
     })
 
-    it('should trigger load on scroll to bottom', (done) => {
+    it('should trigger load on scroll to bottom', () => {
         const load = jest.fn()
-        const component = shallow(
+        const {container} = render(
             <InfiniteScroll
-                load={() => {
+                onLoad={() => {
                     load()
-                    done()
                     return Promise.resolve()
                 }}
             />
         )
 
-        // simulate scroll to bottom
-        const event = {
-            target: {
-                scrollTop: 1,
-                clientHeight: 1,
-                scrollHeight: 2,
-            },
-        }
-        component.prop('onScroll')(event)
+        fireEvent.scroll(container.firstChild, {target: {scrollTop: 200}})
 
         expect(load).toBeCalled()
-        expect(component.state('loading')).toBe(true)
     })
 
-    it('should not trigger load when not scrolled to bottom', (done) => {
+    it('should not trigger load when not scrolled to bottom', () => {
         const load = jest.fn()
-        const component = shallow(
+        const {container} = render(
             <InfiniteScroll
-                load={() => {
+                onLoad={() => {
                     load()
                     return Promise.resolve()
                 }}
             />
         )
 
-        // simulate scroll to bottom
-        const event = {
-            target: {
-                scrollTop: 1,
-                clientHeight: 1,
-                // default threshold is 50
-                scrollHeight: 53,
-            },
-        }
-        component.prop('onScroll')(event)
-
+        fireEvent.scroll(container.firstChild, {target: {scrollTop: 10}})
         expect(load).not.toBeCalled()
-
-        // give it some time for the load promise
-        setTimeout(done, 500)
     })
 
-    it('should trigger load on scroll to bottom with different threshold', (done) => {
+    it('should trigger load on scroll to bottom with different threshold', () => {
         const load = jest.fn()
-        const component = shallow(
+        const {container} = render(
             <InfiniteScroll
                 threshold={1}
-                load={() => {
+                onLoad={() => {
                     load()
-                    done()
                     return Promise.resolve()
                 }}
             />
         )
 
-        // simulate scroll to bottom
-        const event = {
-            target: {
-                scrollTop: 1,
-                clientHeight: 1,
-                scrollHeight: 3,
-            },
-        }
-        component.prop('onScroll')(event)
-
+        fireEvent.scroll(container.firstChild, {
+            target: {scrollTop: 100},
+        })
         expect(load).toBeCalled()
     })
 
-    it('should not trigger load with loadMore=false', (done) => {
+    it('should not trigger load with shouldLoadMore=false', () => {
         const load = jest.fn()
-        const component = shallow(
+        const {container} = render(
             <InfiniteScroll
-                loadMore={false}
-                load={() => {
+                shouldLoadMore={false}
+                onLoad={() => {
                     load()
                     return Promise.resolve()
                 }}
             />
         )
 
-        // simulate scroll to bottom
-        const event = {
-            target: {
-                scrollTop: 1,
-                clientHeight: 1,
-                scrollHeight: 1,
-            },
-        }
-        component.prop('onScroll')(event)
-
+        fireEvent.scroll(container.firstChild, {target: {scrollTop: 50}})
         expect(load).not.toBeCalled()
-
-        // give it some time for the load promise
-        setTimeout(done, 500)
     })
 })

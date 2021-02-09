@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`QuickSelectionOption should display label to deselect all content 1`] = `
+<button
+  class="component dropdown-item"
+  tabindex="0"
+  type="button"
+>
+  <span>
+    Deselect all
+  </span>
+  <div
+    class="badge badge--unselect"
+  >
+    10
+  </div>
+</button>
+`;
+
+exports[`QuickSelectionOption should display label to deselect one item 1`] = `
+<button
+  class="component dropdown-item"
+  tabindex="0"
+  type="button"
+>
+  <span>
+    Deselect
+  </span>
+  <div
+    class="badge badge--unselect"
+  >
+    1
+  </div>
+</button>
+`;
+
+exports[`QuickSelectionOption should display label to select content 1`] = `
+<button
+  class="component dropdown-item"
+  tabindex="0"
+  type="button"
+>
+  <span>
+    Select displayed
+  </span>
+  <div
+    class="badge"
+  >
+    10
+  </div>
+</button>
+`;

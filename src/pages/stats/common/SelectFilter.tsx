@@ -4,10 +4,12 @@ import _union from 'lodash/union'
 import _without from 'lodash/without'
 import _xor from 'lodash/xor'
 import React, {
+    Component,
     ComponentProps,
     ComponentType,
     createContext,
     ReactElement,
+    ReactNode,
     useCallback,
     useContext,
     useEffect,
@@ -23,6 +25,7 @@ import {
     UncontrolledDropdown,
 } from 'reactstrap'
 
+import QuickSelectionOption from './QuickSelectionOption'
 import css from './SelectFilter.less'
 
 enum CheckedStatus {
@@ -152,11 +155,11 @@ const Group = ({items, label, value}: GroupProps) => {
 
 Group.displayName = 'SelectFilter.Group'
 
+type ItemElement = ReactElement<ComponentProps<typeof Item>, typeof Item>
+type GroupElement = ReactElement<ComponentProps<typeof Group>, typeof Group>
+
 type Props = {
-    children?: ReactElement<
-        ComponentProps<typeof Item | typeof Group>,
-        typeof Item | typeof Group
-    >[]
+    children?: ReactNode
     className?: string
     dropdownMenu?: ComponentType<ComponentProps<typeof DropdownMenu>>
     isDisabled?: boolean
@@ -195,17 +198,28 @@ const SelectFilter = ({
 
     const hasSelection = useMemo(() => !!value.length, [value])
 
-    const items = useMemo(
-        () =>
-            children
-                ? React.Children.toArray(children).filter(
-                      (child) =>
-                          child.type.displayName ===
-                          SelectFilter.Item.displayName
-                  )
-                : [],
-        [children]
-    )
+    const getItems = useCallback((children: ReactNode) => {
+        const items: ItemElement[] = []
+        React.Children.toArray(children).forEach((child) => {
+            if (
+                (child as Component).props.children &&
+                typeof (child as Component).props.children === 'object'
+            ) {
+                items.push(...getItems((child as Component).props.children))
+            }
+            if (
+                (child as ItemElement).type.displayName ===
+                SelectFilter.Item.displayName
+            ) {
+                items.push(child as ItemElement)
+            }
+        })
+        return items
+    }, [])
+
+    const items = useMemo(() => (children ? getItems(children) : []), [
+        children,
+    ])
 
     const toggleLabel = useMemo(() => {
         if (isMultiple) {
@@ -224,11 +238,12 @@ const SelectFilter = ({
             children
                 ? (React.Children.toArray(children).filter(
                       (child) =>
-                          child.type.displayName ===
+                          (child as GroupElement).type.displayName ===
                           SelectFilter.Group.displayName
-                  ) as ReactElement<
-                      ComponentProps<typeof Group>
-                  >[]).map(({props: {value, items}}) => ({value, items}))
+                  ) as GroupElement[]).map(({props: {value, items}}) => ({
+                      value,
+                      items,
+                  }))
                 : [],
         [children]
     )
@@ -364,33 +379,31 @@ const SelectFilter = ({
                         >
                             <Input
                                 autoFocus
-                                className="mb-2"
                                 onChange={(e) => setSearch(e.target.value)}
                                 placeholder={`Search ${plural}...`}
                                 value={search}
                             />
                         </DropdownItem>
+                        <QuickSelectionOption
+                            className={css.quickSelectionOption}
+                            totalItemsCount={items.length}
+                            selectedItemsCount={value.length}
+                            onClick={() => {
+                                if (value.length) {
+                                    onChange([])
+                                    setSelectedGroupIds([])
+                                } else {
+                                    onChange(
+                                        items.map(({props: {value}}) => value)
+                                    )
+                                    setSelectedGroupIds(
+                                        groups.map(({value}) => value)
+                                    )
+                                }
+                            }}
+                        />
+                        <DropdownItem divider className={css.dropdownDivider} />
                         <div className={css.content}>{children}</div>
-                        {hasSelection && !isRequired && (
-                            <>
-                                <DropdownItem divider />
-                                <DropdownItem
-                                    onClick={() => {
-                                        if (isDisabled) {
-                                            return
-                                        }
-
-                                        onChange([])
-                                        setSelectedGroupIds([])
-                                    }}
-                                    type="button"
-                                >
-                                    <span className="text-warning">{`Deselect ${
-                                        value.length > 1 ? 'all' : ''
-                                    }`}</span>
-                                </DropdownItem>
-                            </>
-                        )}
                     </DropdownMenuComponent>
                 </UncontrolledDropdown>
             </SelectFilterGroupContext.Provider>

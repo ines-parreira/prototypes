@@ -3,9 +3,8 @@
 exports[`MacroList component should render active and disabled macros 1`] = `
 <InfiniteScroll
   className="component"
-  load={[Function]}
-  loadMore={false}
-  threshold={50}
+  onLoad={[Function]}
+  shouldLoadMore={false}
 >
   <div
     className="item"
@@ -37,9 +36,8 @@ exports[`MacroList component should render active and disabled macros 1`] = `
 exports[`MacroList component should render the macro list 1`] = `
 <InfiniteScroll
   className="component"
-  load={[Function]}
-  loadMore={false}
-  threshold={50}
+  onLoad={[Function]}
+  shouldLoadMore={false}
 >
   <div
     className="item active"

@@ -11,7 +11,18 @@
         overflow-y: auto;
     }
 
-    .item,
+    .item {
+        cursor: pointer;
+
+        &:first-of-type {
+            padding-top: 8px;
+        }
+
+        &:last-of-type {
+            padding-bottom: 8px;
+        }
+    }
+
     .checkbox {
         cursor: pointer;
     }
@@ -32,5 +43,13 @@
 
     .dropdownItemInput {
         padding: 3px;
+    }
+
+    .dropdownDivider {
+        margin: 0;
+    }
+
+    .quickSelectionOption {
+        padding-top: 8px;
     }
 }

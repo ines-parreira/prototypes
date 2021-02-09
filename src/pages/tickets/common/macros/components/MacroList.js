@@ -72,8 +72,8 @@ export default class MacroList extends React.Component<Props> {
         return (
             <InfiniteScroll
                 className={classnames(css.component, className)}
-                load={this._loadMacros}
-                loadMore={page < totalPages}
+                onLoad={this._loadMacros}
+                shouldLoadMore={page < totalPages}
             >
                 {macros.map((macro) => {
                     const isDisabled = isMacroDisabled(

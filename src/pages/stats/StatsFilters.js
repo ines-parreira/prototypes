@@ -29,12 +29,14 @@ import {mergeStatsFilters} from '../../state/stats/actions.ts'
 import {getViewFilters} from '../../state/stats/selectors.ts'
 import {getTeams} from '../../state/teams/selectors.ts'
 
+import InfiniteScroll from '../common/components/InfiniteScroll'
 import PageHeader from '../common/components/PageHeader.tsx'
 import Popover from '../common/components/Popover'
 import TagDropdownMenu from '../common/components/TagDropdownMenu/TagDropdownMenu'
 
 import PeriodPicker from './common/PeriodPicker'
 import SelectFilter from './common/SelectFilter.tsx'
+import css from './style.less'
 
 const TagDropdownMenuWrapper = (props) => <TagDropdownMenu {...props} />
 
@@ -73,6 +75,11 @@ const StatsFiltersContainer = ({
     tagsFetched,
 }: Props) => {
     const [tagIds, setTagIds] = useState([])
+    const [tagSearch, setTagSearch] = useState('')
+    const [pagination, setPagination] = useState({
+        page: 0,
+        nbPages: 1,
+    })
 
     const [
         cancellableFetchTags,
@@ -82,17 +89,30 @@ const StatsFiltersContainer = ({
     )
 
     const [, handleFetchTags] = useDelayedAsyncFn(
-        async (search) => {
+        async (search = '') => {
             try {
+                let previousIds = tagIds
+                let nextPage = pagination.page + 1
+                if (search !== tagSearch) {
+                    setTagSearch(search)
+                    previousIds = []
+                    nextPage = 1
+                }
                 const res = await cancellableFetchTags({
                     ...orderingOptions,
+                    page: nextPage,
                     search,
                 })
                 if (!res) {
                     return
                 }
+
                 tagsFetched(res.data)
-                setTagIds(res.data.map((tag: Tag) => tag.id))
+                setTagIds([
+                    ...previousIds,
+                    ...res.data.map((tag: Tag) => tag.id),
+                ])
+                setPagination({page: res.meta.page, nbPages: res.meta.nb_pages})
             } catch (error) {
                 void notify({
                     message: 'Failed to fetch tags',
@@ -100,7 +120,7 @@ const StatsFiltersContainer = ({
                 })
             }
         },
-        [orderingOptions],
+        [orderingOptions, pagination],
         200
     )
 
@@ -200,19 +220,27 @@ const StatsFiltersContainer = ({
                         onSearch={onSearchTags}
                         dropdownMenu={TagDropdownMenuWrapper}
                     >
-                        {tagIds.map((tagId) => {
-                            const tag = tags[tagId.toString()]
+                        <InfiniteScroll
+                            className={css.infiniteScroll}
+                            onLoad={handleFetchTags}
+                            shouldLoadMore={
+                                pagination.page < pagination.nbPages
+                            }
+                        >
+                            {tagIds.map((tagId) => {
+                                const tag = tags[tagId.toString()]
 
-                            return (
-                                tag && (
-                                    <SelectFilter.Item
-                                        key={tag.id}
-                                        label={tag.name}
-                                        value={tag.id}
-                                    />
+                                return (
+                                    tag && (
+                                        <SelectFilter.Item
+                                            key={tag.id}
+                                            label={tag.name}
+                                            value={tag.id}
+                                        />
+                                    )
                                 )
-                            )
-                        })}
+                            })}
+                        </InfiniteScroll>
                     </SelectFilter>
                 )
             case 'agents':
@@ -224,7 +252,9 @@ const StatsFiltersContainer = ({
                         onChange={handleFilterChange('agents')}
                         value={filters.get('agents', fromJS([])).toJS()}
                     >
-                        <DropdownItem header>Teams</DropdownItem>
+                        <DropdownItem header className={css.dropdownHeader}>
+                            Teams
+                        </DropdownItem>
                         {teams.map((team) => (
                             <SelectFilter.Group
                                 key={`team-${team.value}`}
@@ -233,7 +263,10 @@ const StatsFiltersContainer = ({
                                 value={team.value}
                             />
                         ))}
-                        <DropdownItem header>Users</DropdownItem>
+                        <DropdownItem divider className={css.dropdownDivider} />
+                        <DropdownItem header className={css.dropdownHeader}>
+                            Users
+                        </DropdownItem>
                         {agents.map((agent) => (
                             <SelectFilter.Item
                                 key={`agent-${agent.value}`}
