@@ -33,6 +33,7 @@ import {
     INSTAGRAM_MEDIA_SOURCE,
     INTERNAL_NOTE_SOURCE,
     FACEBOOK_REVIEW_COMMENT_SOURCE,
+    INSTAGRAM_MENTION_COMMENT_SOURCE,
 } from '../../../../../config/ticket.ts'
 
 import MessageSourceFields from './MessageSourceFields/'
@@ -246,6 +247,8 @@ export default class ReplyMessageChannel extends React.Component {
             isTicketExisting && !!replyOptions.get('instagram-comment')
         const suggestInstagramAd =
             isTicketExisting && !!replyOptions.get('instagram-ad-comment')
+        const suggestInstagramMention =
+            isTicketExisting && !!replyOptions.get('instagram-mention-comment')
         const suggestForwardByEmail = isTicketExisting
         const iconLabel = isForward ? 'email-forward' : this.props.sourceType
 
@@ -374,6 +377,21 @@ export default class ReplyMessageChannel extends React.Component {
                                         type={INSTAGRAM_AD_COMMENT_SOURCE}
                                     />
                                     Reply via Instagram
+                                </DropdownItem>
+                            )}
+                            {suggestInstagramMention && (
+                                <DropdownItem
+                                    type="button"
+                                    onClick={() => {
+                                        prepareNewMessage(
+                                            INSTAGRAM_MENTION_COMMENT_SOURCE
+                                        )
+                                    }}
+                                >
+                                    <SourceIcon
+                                        type={INSTAGRAM_MENTION_COMMENT_SOURCE}
+                                    />
+                                    Reply via Instagram mention
                                 </DropdownItem>
                             )}
                             {suggestInternalNote && (

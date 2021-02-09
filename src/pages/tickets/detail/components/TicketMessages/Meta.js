@@ -11,6 +11,7 @@ import {
     FACEBOOK_POST_SOURCE,
     INSTAGRAM_AD_MEDIA_SOURCE,
     INSTAGRAM_MEDIA_SOURCE,
+    INSTAGRAM_MENTION_MEDIA_SOURCE,
     FACEBOOK_REVIEW_COMMENT_SOURCE,
     FACEBOOK_REVIEW_SOURCE,
 } from '../../../../../config/ticket.ts'
@@ -57,6 +58,7 @@ export default function Meta(props: Props) {
         FACEBOOK_POST_SOURCE,
         INSTAGRAM_AD_MEDIA_SOURCE,
         INSTAGRAM_MEDIA_SOURCE,
+        INSTAGRAM_MENTION_MEDIA_SOURCE,
         FACEBOOK_REVIEW_SOURCE,
         FACEBOOK_REVIEW_COMMENT_SOURCE,
     ]
@@ -80,6 +82,8 @@ export default function Meta(props: Props) {
         const isFacebookComment = parentId === fullPostId
         const isInstagramMedia = source.type === INSTAGRAM_MEDIA_SOURCE
         const isInstagramAdMedia = source.type === INSTAGRAM_AD_MEDIA_SOURCE
+        const isInstagramMentionMedia =
+            source.type === INSTAGRAM_MENTION_MEDIA_SOURCE
 
         const getId = (input) =>
             input && input.includes('_') ? input.split('_')[1] : ''
@@ -94,7 +98,11 @@ export default function Meta(props: Props) {
         } else if (!!messageId && isFacebookReview) {
             type = 'review'
             link = `https://facebook.com/${messageId}`
-        } else if (isInstagramMedia || isInstagramAdMedia) {
+        } else if (
+            isInstagramMedia ||
+            isInstagramAdMedia ||
+            isInstagramMentionMedia
+        ) {
             type = 'media'
             link = permalink
         } else if (!!messageId && isFacebookReviewComment) {

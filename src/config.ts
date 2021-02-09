@@ -112,6 +112,8 @@ export const SOURCE_VALUE_PROP = {
     'instagram-comment': 'address',
     'instagram-ad-media': 'address',
     'instagram-ad-comment': 'address',
+    'instagram-mention-media': 'address',
+    'instagram-mention-comment': 'address',
 }
 
 //$TsFixMe fallback for js files, replace with TicketStatus enum
@@ -168,7 +170,7 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         type: 'facebook',
         title: 'Facebook, Messenger & Instagram',
         description:
-            'Create tickets from Facebook posts, comments and recommendations, Instagram comments and Messenger conversations',
+            'Create tickets from Facebook posts, comments and recommendations, Instagram comments and mentions and Messenger conversations',
         image: 'integrations/facebook.png',
     },
     {

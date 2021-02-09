@@ -52,6 +52,10 @@ export const INSTAGRAM_AD_MEDIA_SOURCE =
     TicketMessageSourceType.InstagramAdMedia
 export const INSTAGRAM_COMMENT_SOURCE = TicketMessageSourceType.InstagramComment
 export const INSTAGRAM_MEDIA_SOURCE = TicketMessageSourceType.InstagramMedia
+export const INSTAGRAM_MENTION_MEDIA_SOURCE =
+    TicketMessageSourceType.InstagramMentionMedia
+export const INSTAGRAM_MENTION_COMMENT_SOURCE =
+    TicketMessageSourceType.InstagramMentionComment
 export const INTERNAL_NOTE_SOURCE = TicketMessageSourceType.InternalNote
 export const OTTSPOTT_CALL_SOURCE = TicketMessageSourceType.OttspottCall
 export const PHONE_SOURCE = TicketMessageSourceType.Phone
@@ -72,6 +76,8 @@ export const USABLE_SOURCE_TYPES = [
     FACEBOOK_MESSENGER_SOURCE,
     INSTAGRAM_AD_COMMENT_SOURCE,
     INSTAGRAM_COMMENT_SOURCE,
+    INSTAGRAM_MENTION_MEDIA_SOURCE,
+    INSTAGRAM_MENTION_COMMENT_SOURCE,
     INTERNAL_NOTE_SOURCE,
 ]
 
@@ -276,6 +282,10 @@ export function sourceTypeToChannel(
         return TicketChannel.InstagramAdComment
     }
 
+    if (sourceType.startsWith('instagram-mention')) {
+        return TicketChannel.InstagramMention
+    }
+
     if (sourceType.startsWith('instagram')) {
         return TicketChannel.InstagramComment
     }
@@ -323,6 +333,10 @@ export function responseSourceType(
 
     if (lastSourceType === TicketMessageSourceType.InstagramAdMedia) {
         return TicketMessageSourceType.InstagramAdComment
+    }
+
+    if (lastSourceType === TicketMessageSourceType.InstagramMentionMedia) {
+        return TicketMessageSourceType.InstagramMentionComment
     }
 
     if (!isAnswerableType(lastSourceType)) {

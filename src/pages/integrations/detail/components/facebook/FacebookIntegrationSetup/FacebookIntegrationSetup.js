@@ -115,6 +115,11 @@ export default class FacebookIntegrationSetup extends React.Component<
                             'instagram',
                             'id',
                         ]),
+                        instagram_mentions_enabled: !!integration.getIn([
+                            'meta',
+                            'instagram',
+                            'id',
+                        ]),
                         instagram_ads_enabled: !!integration.getIn([
                             'meta',
                             'instagram',
@@ -329,6 +334,24 @@ export default class FacebookIntegrationSetup extends React.Component<
                                                             this._setSettingValue(
                                                                 id,
                                                                 'instagram_comments_enabled',
+                                                                value
+                                                            )
+                                                        }
+                                                    />
+                                                )}
+                                                {!instagramIsDisabled && (
+                                                    <BooleanField
+                                                        name={`${id}.instagram_mentions_enabled`}
+                                                        type="checkbox"
+                                                        label="Enable Instagram mentions"
+                                                        value={this._getSettingValue(
+                                                            id,
+                                                            'instagram_mentions_enabled'
+                                                        )}
+                                                        onChange={(value) =>
+                                                            this._setSettingValue(
+                                                                id,
+                                                                'instagram_mentions_enabled',
                                                                 value
                                                             )
                                                         }

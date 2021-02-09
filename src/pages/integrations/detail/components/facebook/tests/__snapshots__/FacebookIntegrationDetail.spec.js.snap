@@ -137,6 +137,13 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
         />
         <BooleanField
           disabled={false}
+          label="Enable Instagram mentions"
+          name="instagram_mentions_enabled"
+          onChange={[Function]}
+          type="checkbox"
+        />
+        <BooleanField
+          disabled={false}
           label="Enable Instagram ads"
           name="instagram_ads_enabled"
           onChange={[Function]}
@@ -402,6 +409,14 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           disabled={true}
           label="Enable Instagram comments"
           name="instagram_comments_enabled"
+          onChange={[Function]}
+          type="checkbox"
+          value={false}
+        />
+        <BooleanField
+          disabled={true}
+          label="Enable Instagram mentions"
+          name="instagram_mentions_enabled"
           onChange={[Function]}
           type="checkbox"
           value={false}
@@ -713,6 +728,14 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           disabled={true}
           label="Enable Instagram comments"
           name="instagram_comments_enabled"
+          onChange={[Function]}
+          type="checkbox"
+          value={false}
+        />
+        <BooleanField
+          disabled={true}
+          label="Enable Instagram mentions"
+          name="instagram_mentions_enabled"
           onChange={[Function]}
           type="checkbox"
           value={false}
@@ -1032,6 +1055,14 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           value={false}
         />
         <BooleanField
+          disabled={false}
+          label="Enable Instagram mentions"
+          name="instagram_mentions_enabled"
+          onChange={[Function]}
+          type="checkbox"
+          value={false}
+        />
+        <BooleanField
           disabled={true}
           label="Enable Instagram ads"
           name="instagram_ads_enabled"
@@ -1341,6 +1372,14 @@ exports[`<FacebookIntegrationDetail/> render() should render an integration with
           disabled={false}
           label="Enable Instagram comments"
           name="instagram_comments_enabled"
+          onChange={[Function]}
+          type="checkbox"
+          value={false}
+        />
+        <BooleanField
+          disabled={false}
+          label="Enable Instagram mentions"
+          name="instagram_mentions_enabled"
           onChange={[Function]}
           type="checkbox"
           value={false}

@@ -231,6 +231,10 @@ exports[`<Stats/> render() should render stats as loading 1`] = `
           "style": "bar",
           "downloadable": true,
           "lines": Immutable.Map {
+            "instagram-mention-comment": Immutable.Map {
+              "label": "Instagram mention comment",
+              "color": "#64A7D0",
+            },
             "instagram-comment": Immutable.Map {
               "label": "Instagram comment",
               "color": "#5c9dbb",

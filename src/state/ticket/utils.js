@@ -52,6 +52,17 @@ export function getLastSameSourceTypeMessage(messages, sourceType) {
                     TicketMessageSourceType.FacebookReview
             )
             .last()
+    } else if (
+        !msg &&
+        sourceType === TicketMessageSourceType.InstagramMentionComment
+    ) {
+        return messages
+            .filter(
+                (m) =>
+                    m.getIn(['source', 'type']) ===
+                    TicketMessageSourceType.InstagramMentionMedia
+            )
+            .last()
     }
 
     return msg
@@ -372,6 +383,14 @@ export function getNewMessageSender(ticket, newMessageSourceType, channels) {
             return [
                 newMessageSourceType,
                 TicketMessageSourceType.FacebookReview,
+            ].includes(type)
+        } else if (
+            newMessageSourceType ===
+            TicketMessageSourceType.InstagramMentionComment
+        ) {
+            return [
+                newMessageSourceType,
+                TicketMessageSourceType.InstagramMentionMedia,
             ].includes(type)
         }
 

@@ -7,6 +7,7 @@ import {
     EMAIL_CUSTOMER_CHANNEL_TYPE,
     FACEBOOK_CUSTOMER_CHANNEL_TYPE,
     INSTAGRAM_CUSTOMER_CHANNEL_TYPE,
+    INSTAGRAM_MENTION_CUSTOMER_CHANNEL_TYPE,
     PHONE_CUSTOMER_CHANNEL_TYPE,
     TWITTER_CUSTOMER_CHANNEL_TYPE,
     FACEBOOK_RECOMMENDATIONS_CUSTOMER_CHANNEL_TYPE,
@@ -40,6 +41,7 @@ export default class CustomerChannels extends React.Component<Props> {
                     FACEBOOK_CUSTOMER_CHANNEL_TYPE,
                     FACEBOOK_RECOMMENDATIONS_CUSTOMER_CHANNEL_TYPE,
                     INSTAGRAM_CUSTOMER_CHANNEL_TYPE,
+                    INSTAGRAM_MENTION_CUSTOMER_CHANNEL_TYPE,
                 ].includes(channel.get('type'))
             })
             .sortBy((channel) => channel.get('address', '').toLowerCase()) // order addresses alphabetically

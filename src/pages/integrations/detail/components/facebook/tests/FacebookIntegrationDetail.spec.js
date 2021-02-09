@@ -27,6 +27,7 @@ const defaultFacebookIntegrationSettings = {
     messenger_enabled: true,
     import_history_enabled: true,
     instagram_comments_enabled: false,
+    instagram_mentions_enabled: false,
     instagram_ads_enabled: false,
 }
 

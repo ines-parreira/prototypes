@@ -750,6 +750,13 @@ exports[`FacebookIntegrationSetup should render the integration as enabled with 
                     value={true}
                   />
                   <BooleanField
+                    label="Enable Instagram mentions"
+                    name="1.instagram_mentions_enabled"
+                    onChange={[Function]}
+                    type="checkbox"
+                    value={true}
+                  />
+                  <BooleanField
                     label="Enable Instagram ads"
                     name="1.instagram_ads_enabled"
                     onChange={[Function]}

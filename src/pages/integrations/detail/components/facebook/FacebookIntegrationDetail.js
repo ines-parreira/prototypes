@@ -42,6 +42,7 @@ type State = {
         messenger_enabled: boolean,
         import_history_enabled: boolean,
         instagram_comments_enabled: boolean,
+        instagram_mentions_enabled: boolean,
         instagram_ads_enabled: boolean,
     },
     language: string,
@@ -59,6 +60,7 @@ export default class FacebookIntegrationDetail extends React.Component<
             messenger_enabled: true,
             import_history_enabled: true,
             instagram_comments_enabled: false,
+            instagram_mentions_enabled: false,
             instagram_ads_enabled: false,
         },
         language: FACEBOOK_LANGUAGE_DEFAULT,
@@ -81,6 +83,9 @@ export default class FacebookIntegrationDetail extends React.Component<
                 import_history_enabled: settings.get('import_history_enabled'),
                 instagram_comments_enabled: settings.get(
                     'instagram_comments_enabled'
+                ),
+                instagram_mentions_enabled: settings.get(
+                    'instagram_mentions_enabled'
                 ),
                 instagram_ads_enabled: settings.get(
                     'instagram_ads_enabled',
@@ -295,6 +300,26 @@ export default class FacebookIntegrationDetail extends React.Component<
                                     this._onSettingChange(
                                         value,
                                         'instagram_comments_enabled'
+                                    )
+                                }
+                                disabled={
+                                    doesntHaveInstagramPermissions ||
+                                    doesntHaveInstagramId
+                                }
+                            />
+
+                            <BooleanField
+                                name="instagram_mentions_enabled"
+                                type="checkbox"
+                                label="Enable Instagram mentions"
+                                value={
+                                    this.state.settings
+                                        .instagram_mentions_enabled
+                                }
+                                onChange={(value) =>
+                                    this._onSettingChange(
+                                        value,
+                                        'instagram_mentions_enabled'
                                     )
                                 }
                                 disabled={

@@ -414,7 +414,8 @@ export const prepare = (sourceType: TicketMessageSourceType) => (
             break
         }
         case TicketMessageSourceType.InstagramComment:
-        case TicketMessageSourceType.InstagramAdComment: {
+        case TicketMessageSourceType.InstagramAdComment:
+        case TicketMessageSourceType.InstagramMentionComment: {
             // If we're preparing a new Instagram comment message, we want to insert a mention of format `@username `
             // with the user name of the customer
             dispatch(prepareDefault(sourceType))
@@ -909,6 +910,7 @@ export function sendTicketMessage(
                                 [
                                     TicketMessageSourceType.InstagramComment,
                                     TicketMessageSourceType.InstagramAdComment,
+                                    TicketMessageSourceType.InstagramMentionComment,
                                 ].includes(sourceTypeOfResponse)
                             ) {
                                 dispatch(prepare(sourceTypeOfResponse))

@@ -70,6 +70,18 @@ exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 8`] = `
 
 exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 9`] = `
 <i
+  className="icon d-inline-block icon-custom icon-instagram"
+/>
+`;
+
+exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 10`] = `
+<i
+  className="icon d-inline-block icon-custom icon-instagram"
+/>
+`;
+
+exports[`SourceIcon component should show USABLE_SOURCE_TYPES icons 11`] = `
+<i
   className="icon d-inline-block text-warning material-icons"
 >
   note

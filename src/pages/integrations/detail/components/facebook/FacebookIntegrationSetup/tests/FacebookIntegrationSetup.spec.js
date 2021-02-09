@@ -101,6 +101,7 @@ describe('FacebookIntegrationSetup', () => {
                             messenger_enabled: true,
                             posts_enabled: true,
                             instagram_comments_enabled: false,
+                            instagram_mentions_enabled: false,
                         })
                     )
                 ),
@@ -140,6 +141,7 @@ describe('FacebookIntegrationSetup', () => {
                             messenger_enabled: true,
                             posts_enabled: true,
                             instagram_comments_enabled: true,
+                            instagram_mentions_enabled: true,
                         })
                     )
                 ),

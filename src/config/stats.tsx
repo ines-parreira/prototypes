@@ -184,6 +184,10 @@ export const stats = fromJS({
                 label: 'Instagram ad comment',
                 color: '#4ca4d9',
             },
+            'instagram-mention-comment': {
+                label: 'Instagram mention comment',
+                color: '#64A7D0',
+            },
             facebook: {
                 label: 'Facebook',
                 color: '#4872db',

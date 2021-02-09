@@ -273,6 +273,7 @@ Object {
             "facebook-recommendations",
             "instagram-ad-comment",
             "instagram-comment",
+            "instagram-mention",
             "phone",
             "sms",
             "twitter",
