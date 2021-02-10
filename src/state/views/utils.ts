@@ -4,10 +4,9 @@ import _isArray from 'lodash/isArray'
 import _isInteger from 'lodash/isInteger'
 
 import {UNARY_OPERATORS, TIMEDELTA_OPERATOR_DEFAULT_VALUE} from '../../config'
-
-import {Agents} from '../agents/types'
 import {UserRole} from '../../config/types/user'
 import {ViewType, ViewVisibility} from '../../models/view/types'
+import {tryLocalStorage} from '../../services/common/utils'
 import {
     getAST,
     getFirstExpressionOfAST,
@@ -15,12 +14,13 @@ import {
     hasRole,
     getCode,
 } from '../../utils'
+import {isTimedelta} from '../../utils/ast'
+import {Agents} from '../agents/types'
 import {
     CollectionOperator,
     TimedeltaOperator,
     DatetimeOperator,
 } from '../rules/types'
-import {isTimedelta} from '../../utils/ast'
 
 import {ViewFilter} from './types'
 
@@ -293,9 +293,9 @@ export class RecentViewsStorage {
         this.storage = null
         this.storageKey = 'recentViews'
 
-        if (window.localStorage) {
+        tryLocalStorage(() => {
             this.storage = window.localStorage
-        }
+        })
     }
 
     get(): Maybe<{
@@ -339,11 +339,9 @@ export class RecentViewsStorage {
 
     set(views: Array<number>) {
         if (this.storage) {
-            try {
+            tryLocalStorage(() => {
                 localStorage.setItem(this.storageKey, JSON.stringify(views))
-            } catch (error) {
-                console.error(error)
-            }
+            })
         }
     }
 }

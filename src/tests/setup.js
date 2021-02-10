@@ -52,6 +52,8 @@ class LocalStorageMock {
         this.store = {}
     }
 
+    length = 0
+
     clear() {
         this.store = {}
     }

@@ -1,6 +1,8 @@
 import {fromJS, Map} from 'immutable'
 import {RawDraftContentState, SelectionState} from 'draft-js'
 
+import {tryLocalStorage} from '../../services/common/utils'
+
 const CACHE_KEY_SEPARATOR = '~'
 const CACHE_KEY_PREFIX = `G${CACHE_KEY_SEPARATOR}`
 export const CACHE_MAX_ITEMS = 5
@@ -129,15 +131,12 @@ export class TicketReplyCache {
             ticket = fromJS(ticketDetails)
         }
 
-        // save in storage
-        try {
+        tryLocalStorage(() => {
             this.storage.setItem(
                 `${CACHE_KEY_PREFIX}${id}${CACHE_KEY_SEPARATOR}${timestamp}`,
                 JSON.stringify(ticket.toJS())
             )
-        } catch (err) {
-            console.error('Failed to save new state in local storage', err)
-        }
+        })
     }
 
     get(ticketId = 'new', keys?: Maybe<Array<string>>): Map<any, any> {

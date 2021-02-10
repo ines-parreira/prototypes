@@ -1,6 +1,7 @@
 //@flow
 import * as React from 'react'
 
+import {tryLocalStorage} from '../../../../services/common/utils.ts'
 import * as segmentTracker from '../../../../store/middlewares/segmentTracker'
 
 export type InjectedProps = {
@@ -48,12 +49,12 @@ export default function withGrammarlyUsageTracking<Props>(
                 }
                 segmentTracker.logEvent(segmentTracker.EVENTS.GRAMMARLY_ENABLED)
                 this.setState({grammarlyAlreadyLogged: true})
-                if (window.localStorage) {
-                    localStorage.setItem(
+                tryLocalStorage(() =>
+                    window.localStorage.setItem(
                         GRAMMARLY_FOUND_LOCAL_STORAGE_TAG,
                         Date.now().toString()
                     )
-                }
+                )
             }, 0)
         }
 

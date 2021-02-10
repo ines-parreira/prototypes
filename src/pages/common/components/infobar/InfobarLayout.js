@@ -4,6 +4,7 @@ import {connect} from 'react-redux'
 import classnames from 'classnames'
 import _max from 'lodash/max'
 
+import {tryLocalStorage} from '../../../../services/common/utils.ts'
 import * as layoutSelectors from '../../../../state/layout/selectors.ts'
 import {ErrorBoundary} from '../../../ErrorBoundary'
 
@@ -71,8 +72,9 @@ export default class InfobarLayout extends React.Component {
         this.cursorX = null
         document.body.classList.remove(this.classActive)
 
-        // save width in local storage so it sticks
-        window.localStorage.setItem('infobar-width', this.state.width)
+        tryLocalStorage(() =>
+            window.localStorage.setItem('infobar-width', this.state.width)
+        )
     }
 
     drag = (e) => {

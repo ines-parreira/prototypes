@@ -13,6 +13,7 @@ import {EMAIL_INTEGRATION_TYPES} from '../../constants/integration.ts'
 import {getPersonLabelFromSource} from '../../pages/tickets/common/utils'
 import {getActionTemplate, toImmutable} from '../../utils.ts'
 import {renderTemplate} from '../../pages/common/utils/template'
+import {tryLocalStorage} from '../../services/common/utils.ts'
 
 import * as responseUtils from '../newMessage/responseUtils.ts'
 
@@ -322,12 +323,12 @@ export function getPreferredChannel(channelType, channels) {
 const LAST_SENDER_CHANNEL_KEY = 'lastSenderChannel'
 
 export const persistLastSenderChannel = (channel) => {
-    if (window.localStorage) {
+    tryLocalStorage(() => {
         window.localStorage.setItem(
             LAST_SENDER_CHANNEL_KEY,
             JSON.stringify(channel.toJS())
         )
-    }
+    })
 }
 
 export const getLastSenderChannel = () => {

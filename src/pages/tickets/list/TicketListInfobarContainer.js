@@ -15,17 +15,14 @@ import {
     SMOOCH_INSIDE_INTEGRATION_TYPE,
     SMOOCH_INTEGRATION_TYPE,
 } from '../../../constants/integration.ts'
-
+import {tryLocalStorage} from '../../../services/common/utils.ts'
+import * as agentSelectors from '../../../state/agents/selectors.ts'
+import * as currentUserSelectors from '../../../state/currentUser/selectors.ts'
+import * as integrationsSelectors from '../../../state/integrations/selectors.ts'
+import * as segmentTracker from '../../../store/middlewares/segmentTracker'
 import {isAdmin} from '../../../utils.ts'
 
 import InfobarLayout from '../../common/components/infobar/InfobarLayout'
-
-import * as integrationsSelectors from '../../../state/integrations/selectors.ts'
-import * as currentUserSelectors from '../../../state/currentUser/selectors.ts'
-import * as agentSelectors from '../../../state/agents/selectors.ts'
-
-import * as segmentTracker from '../../../store/middlewares/segmentTracker'
-
 import Video from '../../common/components/Video'
 
 import css from './TicketListInfobarContainer.less'
@@ -50,7 +47,7 @@ type Props = {
 
 class TicketListInfobarContainer extends React.Component<Props> {
     _hideBoarding = () => {
-        window.localStorage.setItem('hideBoarding', true)
+        tryLocalStorage(() => window.localStorage.setItem('hideBoarding', true))
         this.forceUpdate()
     }
 

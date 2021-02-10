@@ -8,6 +8,7 @@ import {notify} from '../../state/notifications/actions'
 import {NotificationStatus} from '../../state/notifications/types'
 import {getActiveIntegrations} from '../../state/integrations/selectors'
 import {IntegrationType} from '../../models/integration/types'
+import {tryLocalStorage} from '../common/utils'
 
 import {
     ComponentStatus,
@@ -154,9 +155,11 @@ export class StatusPageManager {
     }
 
     static saveNotificationIds(notificationIds: string[]) {
-        window.localStorage.setItem(
-            DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY,
-            JSON.stringify(notificationIds)
+        tryLocalStorage(() =>
+            window.localStorage.setItem(
+                DISMISSED_NOTIFICATIONS_LOCAL_STORAGE_KEY,
+                JSON.stringify(notificationIds)
+            )
         )
     }
 
