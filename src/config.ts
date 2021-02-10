@@ -416,6 +416,14 @@ export const INTEGRATION_TYPE_DESCRIPTIONS = [
         url: 'https://docs.gorgias.com/shipping/late-shipment',
         image: 'integrations/lateshipment.png',
     },
+    {
+        title: 'Klaviyo',
+        type: IntegrationType.KlaviyoIntegrationType,
+        description:
+            'Handle your customers, lists and segments from your Klaviyo campaigns via emails or sms.',
+        image: 'integrations/klaviyo.png',
+        hide: true,
+    },
 ]
 
 // Import period for tickets

@@ -21,6 +21,7 @@ export enum IntegrationType {
     Magento2IntegrationType = 'magento2',
     ZendeskIntegrationType = 'zendesk',
     YotpoIntegrationType = 'yotpo',
+    KlaviyoIntegrationType = 'klaviyo',
 }
 
 export enum IntegrationDataItemType {

@@ -14,6 +14,7 @@ export const SHOPIFY_INTEGRATION_TYPE = 'shopify'
 export const SMILE_INTEGRATION_TYPE = 'smile'
 export const ZENDESK_INTEGRATION_TYPE = 'zendesk'
 export const YOTPO_INTEGRATION_TYPE = 'yotpo'
+export const KLAVIYO_INTEGRATION_TYPE = 'klaviyo'
 
 export const EMAIL_INTEGRATION_TYPES = Object.freeze([
     EMAIL_INTEGRATION_TYPE,

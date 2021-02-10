@@ -20,6 +20,7 @@ import {
     SMOOCH_INSIDE_INTEGRATION_TYPE,
     SMOOCH_INTEGRATION_TYPE,
     YOTPO_INTEGRATION_TYPE,
+    KLAVIYO_INTEGRATION_TYPE,
 } from '../../../constants/integration.ts'
 
 import {compare} from '../../../utils.ts'
@@ -58,6 +59,9 @@ import SmoochIntegrationPreferences from './components/smooch/SmoochIntegrationP
 
 import ShopifyIntegrationList from './components/shopify/ShopifyIntegrationList'
 import ShopifyIntegrationDetail from './components/shopify/ShopifyIntegrationDetail'
+
+import KlaviyoIntegrationList from './components/klaviyo/KlaviyoIntegrationList.tsx'
+import KlaviyoIntegrationDetail from './components/klaviyo/KlaviyoIntegrationDetail.tsx'
 
 import RechargeIntegrationList from './components/recharge/RechargeIntegrationList'
 import RechargeIntegrationDetail from './components/recharge/RechargeIntegrationDetail'
@@ -558,7 +562,24 @@ class IntegrationDetailContainer extends React.Component {
                         redirectUri={redirectUri}
                     />
                 )
-
+            case KLAVIYO_INTEGRATION_TYPE:
+                if (isDetail) {
+                    return (
+                        <KlaviyoIntegrationDetail
+                            actions={actions}
+                            integration={commonProps.integration}
+                            isUpdate={isUpdate}
+                            loading={commonProps.loading}
+                        />
+                    )
+                }
+                return (
+                    <KlaviyoIntegrationList
+                        actions={actions}
+                        integrations={commonProps.integrations}
+                        loading={commonProps.loading}
+                    />
+                )
             case RECHARGE_INTEGRATION_TYPE:
                 if (isDetail) {
                     return (
