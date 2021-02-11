@@ -240,6 +240,7 @@ describe('Config: ticket', () => {
             const values: any[] = [
                 'email',
                 'unknown-value',
+                'chat',
                 1,
                 undefined,
                 null,

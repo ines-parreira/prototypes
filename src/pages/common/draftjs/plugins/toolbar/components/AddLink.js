@@ -92,16 +92,20 @@ export default class AddLink extends React.Component<Props> {
     }
 
     _updateLink = () => {
-        let {url, text, entityKey} = this.props
         let editorState = this.props.getEditorState()
         let contentState = editorState.getCurrentContent()
+        let {url, text, entityKey} = this.props
+        // Use linkify to add protocol to the url
+        let parsedUrl = linkify.match(url)[0]?.url || url
 
         if (!entityKey) {
             return
         }
 
         // Update url
-        contentState = contentState.replaceEntityData(entityKey, {url})
+        contentState = contentState.replaceEntityData(entityKey, {
+            url: parsedUrl,
+        })
         editorState = EditorState.push(
             editorState,
             contentState,
@@ -134,13 +138,15 @@ export default class AddLink extends React.Component<Props> {
 
     _insertLink = () => {
         let {url, text} = this.props
+        // Use linkify to add protocol to the url
+        let parsedUrl = linkify.match(url)[0]?.url || url
 
         let editorState = this.props.getEditorState()
         const selection = editorState.getSelection()
 
         let contentState = editorState
             .getCurrentContent()
-            .createEntity('link', 'MUTABLE', {url})
+            .createEntity('link', 'MUTABLE', {url: parsedUrl})
         const entityKey = contentState.getLastCreatedEntityKey()
 
         contentState = Modifier.replaceText(

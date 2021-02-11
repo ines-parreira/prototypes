@@ -360,6 +360,7 @@ export function isRichType(sourceType: TicketMessageSourceType): boolean {
     return [
         TicketMessageSourceType.Email,
         TicketMessageSourceType.InternalNote,
+        TicketMessageSourceType.Chat,
     ].includes(sourceType)
 }
 

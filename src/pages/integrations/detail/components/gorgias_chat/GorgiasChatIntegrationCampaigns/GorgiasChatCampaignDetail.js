@@ -556,13 +556,6 @@ export class CampaignForm extends React.Component {
                                                     ),
                                             })
                                         }}
-                                        displayedActions={[
-                                            'BOLD',
-                                            'ITALIC',
-                                            'UNDERLINE',
-                                            'IMAGE',
-                                            'EMOJI',
-                                        ]}
                                         placeholder={'Write your message'}
                                         required
                                     />

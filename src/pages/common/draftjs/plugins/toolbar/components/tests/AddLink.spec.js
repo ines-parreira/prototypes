@@ -27,6 +27,14 @@ describe('<AddLink />', () => {
         expect(button.props().disabled).toBe(false)
     })
 
+    it('should allow to submit a url without the protocol', () => {
+        const component = shallow(
+            <AddLink {...defaultProps} text="foo" url="gorgias.io" />
+        )
+        const button = component.find('Button')
+        expect(button.props().disabled).toBe(false)
+    })
+
     it('should NOT allow to submit an invalid url', () => {
         const component = shallow(
             <AddLink
