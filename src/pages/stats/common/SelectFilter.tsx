@@ -249,16 +249,18 @@ const SelectFilter = ({
     )
 
     const updateGroupValue = (nextValue: string[]) => {
+        const removedGroupIds: string[] = []
         selectedGroupIds.map((groupId) => {
             const group = groups?.find((group) => group.value === groupId)
 
             if (
-                group &&
+                group?.items.length &&
                 !group.items.some((item) => nextValue.includes(item))
             ) {
-                setSelectedGroupIds(_without(selectedGroupIds, groupId))
+                removedGroupIds.push(groupId)
             }
         })
+        setSelectedGroupIds(_without(selectedGroupIds, ...removedGroupIds))
     }
 
     const handleItemChange = useCallback(
