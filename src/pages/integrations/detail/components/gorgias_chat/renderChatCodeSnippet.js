@@ -35,7 +35,10 @@ const endComment = '<!--Gorgias Chat Widget End-->'
 Uglified with https://skalman.github.io/UglifyJS-online/
 */
 }
+
+/* TODO: add this to the documentation
 const minifiedShopifyScript = `<script id="gorgias-chat-shopify-install">!function(_){_.SHOPIFY_PERMANENT_DOMAIN="{{shop.permanent_domain}}",_.SHOPIFY_CUSTOMER_ID="{{customer.id}}",_.SHOPIFY_CUSTOMER_EMAIL="{{customer.email}}"}(window||{});</script>`
+ */
 
 // unminified version to work with
 // const chatScriptTemplate = `<!-- Gorgias Chat Widget Start -->
@@ -122,7 +125,7 @@ export function renderChatCodeSnippet({
     const urlList = urls[environment]
     const endpoint = `https://${urlList.chatUrl}/applications/${chatAppId}`
     const containerId = 'gorgias-chat-container'
-    const fullInstallScript = `${minifiedChatScriptTemplate}${minifiedShopifyScript}`
+    const fullInstallScript = `${minifiedChatScriptTemplate}`
 
     const generatedChatSnippet = fullInstallScript
         .replace(/__CHAT_APP_ID__/g, chatAppId)

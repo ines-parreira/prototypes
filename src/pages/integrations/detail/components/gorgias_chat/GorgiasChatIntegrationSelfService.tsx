@@ -242,8 +242,15 @@ export function GorgiasChatIntegrationSelfServiceComponent({
                             <>
                                 <h5>Enable Self-service</h5>
                                 <p>
-                                    Self-service is only available for stores
-                                    that have an active chat integration.
+                                    Self-service is only available for Shopify
+                                    stores with an active chat integration. If
+                                    you installed the chat widget manually,
+                                    please refer to{' '}
+                                    <a href="https://docs.gorgias.com/article/48muw8we2j-installing-and-using-the-self-service-chat-portal">
+                                        this documentation
+                                    </a>{' '}
+                                    for the extra steps required to enable the
+                                    Self-service feature.
                                 </p>
                                 <Table
                                     className="table-integrations mt-3"
