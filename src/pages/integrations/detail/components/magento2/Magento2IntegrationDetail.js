@@ -134,6 +134,15 @@ export class Magento2IntegrationDetail extends React.Component<Props, State> {
         )
     }
 
+    _setAdminUrl = (adminUrl: string): void => {
+        this.setState({
+            adminUrl: adminUrl
+                .replace('http://', '')
+                .replace('https://', '')
+                .trim(),
+        })
+    }
+
     render() {
         const {
             actions,
@@ -298,9 +307,7 @@ export class Magento2IntegrationDetail extends React.Component<Props, State> {
                                             value={adminUrl}
                                             error={error}
                                             leftAddon="https://"
-                                            onChange={(adminUrl) =>
-                                                this.setState({adminUrl})
-                                            }
+                                            onChange={this._setAdminUrl}
                                             pattern="^[a-z.0-9-]*\.[a-z0-9]*\/(index\.php)?[\/\w\d_-]*$"
                                             required
                                         />
