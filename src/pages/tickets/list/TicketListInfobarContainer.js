@@ -206,7 +206,7 @@ class TicketListInfobarContainer extends React.Component<Props> {
                         <div className="mt-5 text-info text-center">
                             <h5>Learn how to use Gorgias:</h5>
                             <Video
-                                videoId="dNWQPHfCtmE"
+                                videoId="eohp30weVng"
                                 legend="How to use Gorgias"
                             />
                         </div>
