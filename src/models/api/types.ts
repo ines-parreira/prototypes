@@ -36,3 +36,19 @@ export enum OrderDirection {
 export enum MetaSortOptions {
     Relevance = 'relevance',
 }
+
+export type GorgiasError = Error & {
+    response: {
+        data: {
+            error: {
+                msg: string
+                data: {
+                    actions: Record<
+                        string,
+                        Record<string, Record<string, string>[]>
+                    >
+                }
+            }
+        }
+    }
+}

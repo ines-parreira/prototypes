@@ -1,6 +1,7 @@
 import {fromJS, Map} from 'immutable'
 import _forEach from 'lodash/forEach'
 
+import {GorgiasError} from '../../models/api/types'
 import {MacroActionName} from '../../models/macroAction/types'
 import {getActionTemplate} from '../../utils'
 
@@ -62,4 +63,26 @@ export function getDefaultMacro() {
         name: 'New macro',
         actions: [generateDefaultAction(MacroActionName.SetResponseText)],
     }) as Map<any, any>
+}
+
+export function getErrorReason(error: GorgiasError) {
+    const errorsPerAction = Object.values(
+        error.response.data.error.data?.actions || {}
+    )
+
+    let errorText = ''
+    errorsPerAction.forEach((action) => {
+        Object.values(action).forEach((argumentsValue) => {
+            argumentsValue.forEach((fieldType) => {
+                Object.values(fieldType).forEach(
+                    (message) =>
+                        (errorText += `${
+                            errorText === '' ? '' : ', '
+                        }${message}`)
+                )
+            })
+        })
+    })
+
+    return errorText
 }

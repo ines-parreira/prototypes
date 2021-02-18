@@ -173,8 +173,10 @@ export default class MacroModal extends React.Component<Props, State> {
             .set('name', this.state.name)
             .set('intent', this.state.intent)
         return this.props.actions.macro.createMacro(newMacro).then((resp) => {
-            this.props.onSearch(newMacro.get('name'), true)
-            this.props.handleClickItem(resp.id)
+            if (resp.status !== 'error') {
+                this.props.onSearch(newMacro.get('name'), true)
+                this.props.handleClickItem(resp.id)
+            }
         })
     }
 

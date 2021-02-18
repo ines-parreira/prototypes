@@ -15,6 +15,7 @@ import {
 } from 'reactstrap'
 
 import {DEFAULT_ACTIONS} from '../../../config'
+import {GorgiasError} from '../../../models/api/types'
 import {IntentName} from '../../../models/intent/types'
 import {
     createMacro,
@@ -30,7 +31,7 @@ import {
     macroFetched,
     macroUpdated,
 } from '../../../state/entities/macros/actions'
-import {getDefaultMacro} from '../../../state/macro/utils'
+import {getDefaultMacro, getErrorReason} from '../../../state/macro/utils'
 import {notify} from '../../../state/notifications/actions'
 import {NotificationStatus} from '../../../state/notifications/types'
 import {RootState} from '../../../state/types'
@@ -117,8 +118,11 @@ export function MacrosSettingsFormContainer({
             })
             history.push('/app/settings/macros')
         } catch (error) {
+            const gorgiasError = error as GorgiasError
+            const message = gorgiasError.response.data.error.msg
+            const reason = getErrorReason(gorgiasError)
             void notify({
-                message: `Failed to ${macroId ? 'update' : 'create'} macro.`,
+                message: `${message} ${reason}`,
                 status: NotificationStatus.Error,
             })
         }

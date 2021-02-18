@@ -28,3 +28,22 @@ export type PaginationMeta = {
 export type OrderDirection = $Values<typeof ORDER_DIRECTION>
 
 export type MetaSortOptions = $Values<typeof META_SORT_OPTIONS>
+
+export type GorgiasError = Error & {
+    response: {
+        data: {
+            error: {
+                msg: string,
+                data: {
+                    actions: {
+                        [key: string]: {
+                            [key: string]: {
+                                [key: string]: string,
+                            },
+                        },
+                    },
+                },
+            },
+        },
+    },
+}

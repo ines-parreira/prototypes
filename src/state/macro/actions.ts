@@ -3,12 +3,13 @@ import {fromJS, Map} from 'immutable'
 import _get from 'lodash/get'
 
 import {Macro} from '../../models/macro/types'
-import {ApiListResponsePagination} from '../../models/api/types'
+import {ApiListResponsePagination, GorgiasError} from '../../models/api/types'
 import {NotificationStatus} from '../notifications/types'
 import {notify} from '../notifications/actions'
 import {StoreDispatch} from '../types'
 
 import * as constants from './constants.js'
+import {getErrorReason} from './utils'
 
 export type fetchMacrosParamsTypes = {
     search?: string
@@ -154,11 +155,14 @@ export const createMacro = (macro: Map<any, any>) => (
 
                 return Promise.resolve(resp)
             },
-            () => {
+            (error) => {
+                const gorgiasError = error as GorgiasError
+                const message = gorgiasError.response.data.error.msg
+                const reason = getErrorReason(gorgiasError)
                 return dispatch(
                     notify({
+                        message: `${message} ${reason}`,
                         status: NotificationStatus.Error,
-                        message: 'Failed to create macro',
                     })
                 )
             }
@@ -187,11 +191,14 @@ export const updateMacro = (macro: Map<any, any>) => (
 
                 return Promise.resolve(resp)
             },
-            () => {
+            (error) => {
+                const gorgiasError = error as GorgiasError
+                const message = gorgiasError.response.data.error.msg
+                const reason = getErrorReason(gorgiasError)
                 return dispatch(
                     notify({
+                        message: `${message} ${reason}`,
                         status: NotificationStatus.Error,
-                        message: 'Failed to update macro',
                     })
                 )
             }

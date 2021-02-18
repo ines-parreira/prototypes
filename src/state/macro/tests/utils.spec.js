@@ -1,6 +1,10 @@
 import {fromJS} from 'immutable'
 
-import {getDefaultMacro, generateDefaultAction} from '../utils.ts'
+import {
+    getDefaultMacro,
+    generateDefaultAction,
+    getErrorReason,
+} from '../utils.ts'
 
 describe('macro utils', () => {
     describe('generateDefaultAction', () => {
@@ -39,6 +43,39 @@ describe('macro utils', () => {
                     ],
                 })
             )
+        })
+    })
+
+    describe('getErrorReason', () => {
+        it('should return concatenated error messages', () => {
+            const error = {
+                response: {
+                    data: {
+                        error: {
+                            msg: 'Failed to update macros.',
+                            data: {
+                                actions: {
+                                    '0': {
+                                        arguments: [
+                                            {
+                                                tags: ['Tags cannot be empty.'],
+                                            },
+                                        ],
+                                    },
+                                    '2': {
+                                        arguments: [
+                                            {
+                                                url: ['Invalid URL protocol'],
+                                            },
+                                        ],
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            }
+            expect(getErrorReason(error)).toMatchSnapshot()
         })
     })
 })

@@ -194,13 +194,34 @@ describe('<MacrosSettingsForm/>', () => {
     })
 
     it('should notify when failing to create macro', (done) => {
-        mockCreateMacro.mockRejectedValue('error')
+        const message = 'Error message'
+        const error1Reason = 'Reason 1.'
+        const error2Reason = 'Reason 2.'
+        mockCreateMacro.mockRejectedValue({
+            response: {
+                data: {
+                    error: {
+                        msg: message,
+                        data: {
+                            actions: {
+                                3: {
+                                    arguments: [{tags: [error1Reason]}],
+                                },
+                                5: {
+                                    other: [{url: [error2Reason]}],
+                                },
+                            },
+                        },
+                    },
+                },
+            },
+        })
         const component = mount(<MacrosSettingsFormContainer {...minProps} />)
 
         component.find(Button).at(0).simulate('submit')
         setImmediate(() => {
             expect(mockNotify).toHaveBeenNthCalledWith(1, {
-                message: 'Failed to create macro.',
+                message: `${message} ${error1Reason}, ${error2Reason}`,
                 status: NotificationStatus.Error,
             })
             done()
@@ -208,7 +229,10 @@ describe('<MacrosSettingsForm/>', () => {
     })
 
     it('should notify when failing to update macro', (done) => {
-        mockUpdateMacro.mockRejectedValue('error')
+        const message = 'Error message'
+        mockUpdateMacro.mockRejectedValue({
+            response: {data: {error: {msg: message}}},
+        })
         const component = mount(
             <MacrosSettingsFormContainer
                 {...minProps}
@@ -224,7 +248,7 @@ describe('<MacrosSettingsForm/>', () => {
             component.find(Button).at(0).simulate('submit')
             setImmediate(() => {
                 expect(mockNotify).toHaveBeenNthCalledWith(2, {
-                    message: 'Failed to update macro.',
+                    message: `${message} `,
                     status: NotificationStatus.Error,
                 })
                 done()
