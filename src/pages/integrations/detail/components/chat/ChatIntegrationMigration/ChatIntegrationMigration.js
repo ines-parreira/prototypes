@@ -113,15 +113,8 @@ export class ChatIntegrationMigration extends React.Component<Props, State> {
                         <Link to="/app/settings/integrations/gorgias_chat">
                             new version of the chat
                         </Link>{' '}
-                        with additional features is already available, please
-                        plan to migrate rapidly as this version of the chat
-                        integration will be progressively rolled-out during the
-                        first half of 2021. Don't worry it will remain active
-                        until you complete the migration. To migrate to this{' '}
-                        <Link to="/app/settings/integrations/gorgias_chat">
-                            new version of the chat
-                        </Link>{' '}
-                        follow the steps outlined in{' '}
+                        with additional features is available, please migrate to
+                        the new version by following the steps outlined in{' '}
                         <a
                             href="https://docs.gorgias.com/gorgias-chat/migrating-to-new-chat-integration-beta-version"
                             target="_blank"

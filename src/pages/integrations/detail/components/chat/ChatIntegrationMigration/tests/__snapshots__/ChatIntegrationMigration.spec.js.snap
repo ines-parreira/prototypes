@@ -109,15 +109,7 @@ exports[`ChatIntegrationMigration component should display the migration page 1`
           new version of the chat
         </a>
          
-        with additional features is already available, please plan to migrate rapidly as this version of the chat integration will be progressively rolled-out during the first half of 2021. Don't worry it will remain active until you complete the migration. To migrate to this
-         
-        <a
-          to="/app/settings/integrations/gorgias_chat"
-        >
-          new version of the chat
-        </a>
-         
-        follow the steps outlined in
+        with additional features is available, please migrate to the new version by following the steps outlined in
          
         <a
           href="https://docs.gorgias.com/gorgias-chat/migrating-to-new-chat-integration-beta-version"

@@ -9,6 +9,8 @@ import {AccountFeatures} from '../../../../state/currentAccount/types.ts'
 import {IntegrationType} from '../../../../models/integration/types.ts'
 import PageHeader from '../../../common/components/PageHeader.tsx'
 
+import {SMOOCH_INSIDE_INTEGRATION_TYPE} from '../../../../constants/integration.ts'
+
 import IntegrationListRow from './IntegrationListRow.tsx'
 
 type Props = {
@@ -70,17 +72,49 @@ export default class IntegrationList extends React.Component<Props> {
         )
     }
 
+    _deprecatedChatWarning = () => {
+        const deadline = new Date(Date.UTC(2021, 2, 1))
+        const isBeforeDeadline = new Date(Date.now()) < deadline
+
+        return (
+            <Alert color={isBeforeDeadline ? 'warning' : 'danger'}>
+                <span>
+                    You are currently using a deprecated version of the chat
+                    integration. Please migrate to the{' '}
+                    <Link to="/app/settings/integrations/gorgias_chat">
+                        new chat integration
+                    </Link>
+                    {isBeforeDeadline ? ' ' : ' by 03/31 '}following these{' '}
+                    <a
+                        href="https://docs.gorgias.com/gorgias-chat/migrating-to-new-chat-integration-beta-version"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        instructions
+                    </a>
+                    .
+                    {isBeforeDeadline
+                        ? ''
+                        : ' Past this date, your integration will be automatically disabled.'}
+                </span>
+            </Alert>
+        )
+    }
+
     render() {
         const {currentPlan, integrations, integrationsConfig} = this.props
-        const hasSmoochInsideIntegration = integrations.find(
-            (integration) => integration.get('type') === 'smooch_inside'
+        const hasActiveSmoochInsideIntegration = integrations.find(
+            (integration) =>
+                integration.get('type') === SMOOCH_INSIDE_INTEGRATION_TYPE &&
+                integration.get('deactivated_datetime') == null
         )
         const displayList = integrationsConfig
             .filter((integration) => {
                 // do not return the smooch inside integration if none has ever been created
                 if (
-                    integration.get('type') === 'smooch_inside' &&
-                    !hasSmoochInsideIntegration
+                    integration.get('type') ===
+                        SMOOCH_INSIDE_INTEGRATION_TYPE &&
+                    !hasActiveSmoochInsideIntegration
                 ) {
                     return false
                 }
@@ -117,6 +151,9 @@ export default class IntegrationList extends React.Component<Props> {
                             </p>
 
                             {this._limitWarning()}
+                            {hasActiveSmoochInsideIntegration
+                                ? this._deprecatedChatWarning()
+                                : null}
                         </Col>
                     </Row>
                     <Row>
