@@ -103,10 +103,9 @@ export default class IntegrationList extends React.Component<Props> {
 
     render() {
         const {currentPlan, integrations, integrationsConfig} = this.props
-        const hasActiveSmoochInsideIntegration = integrations.find(
+        const hasSmoochInsideIntegration = integrations.find(
             (integration) =>
-                integration.get('type') === SMOOCH_INSIDE_INTEGRATION_TYPE &&
-                integration.get('deactivated_datetime') == null
+                integration.get('type') === SMOOCH_INSIDE_INTEGRATION_TYPE
         )
         const displayList = integrationsConfig
             .filter((integration) => {
@@ -114,7 +113,7 @@ export default class IntegrationList extends React.Component<Props> {
                 if (
                     integration.get('type') ===
                         SMOOCH_INSIDE_INTEGRATION_TYPE &&
-                    !hasActiveSmoochInsideIntegration
+                    !hasSmoochInsideIntegration
                 ) {
                     return false
                 }
@@ -151,7 +150,7 @@ export default class IntegrationList extends React.Component<Props> {
                             </p>
 
                             {this._limitWarning()}
-                            {hasActiveSmoochInsideIntegration
+                            {hasSmoochInsideIntegration
                                 ? this._deprecatedChatWarning()
                                 : null}
                         </Col>
