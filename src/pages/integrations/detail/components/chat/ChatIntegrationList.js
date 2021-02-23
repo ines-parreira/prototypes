@@ -12,8 +12,6 @@ import ToggleButton from '../../../../common/components/ToggleButton'
 import history from '../../../../history.ts'
 import IntegrationList from '../IntegrationList'
 import ForwardIcon from '../ForwardIcon'
-import {notify} from '../../../../../state/notifications/actions.ts'
-import {store} from '../../../../../init.ts'
 
 type Props = {
     integrations: List<Map<*, *>>,
@@ -74,13 +72,7 @@ export default class ChatIntegrationList extends React.Component<Props> {
             const toggleIntegration = (value: boolean) => {
                 const integrationId = integration.get('id')
                 if (value) {
-                    store.dispatch(
-                        notify({
-                            status: 'error',
-                            message:
-                                'This version of the chat is no longer supported. Please using the new chat integration to add chat to your online store.',
-                        })
-                    )
+                    this.props.activate(integrationId)
                 } else {
                     this.props.deactivate(integrationId)
                 }
