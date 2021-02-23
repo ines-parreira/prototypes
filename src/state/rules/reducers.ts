@@ -151,6 +151,17 @@ export default function reducer(
                 fromJS(action.rule)
             )
 
+        case constants.RULE_UPDATED:
+            return state.setIn(
+                [
+                    'rules',
+                    ((action as {payload: Map<any, any>}).payload.get(
+                        'id'
+                    ) as number).toString(),
+                ],
+                action.payload
+            )
+
         default:
             return state
     }

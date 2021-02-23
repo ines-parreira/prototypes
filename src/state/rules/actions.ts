@@ -1,5 +1,5 @@
 import axios, {AxiosError} from 'axios'
-import {fromJS, List} from 'immutable'
+import {fromJS, List, Map} from 'immutable'
 
 import {ApiListResponsePagination} from '../../models/api/types'
 import {notify} from '../notifications/actions'
@@ -271,4 +271,12 @@ export function updateOrder(priorities: RulePriority[]) {
                 }
             )
     }
+}
+
+export function ruleUpdated(rule: Map<any, any>) {
+    return (dispatch: StoreDispatch) =>
+        dispatch({
+            type: constants.RULE_UPDATED,
+            payload: rule,
+        })
 }

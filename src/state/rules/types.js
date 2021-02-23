@@ -4,3 +4,8 @@ export type ruleType = {
 }
 
 export type RuleObjectType = 'Ticket' | 'TicketMessage'
+
+export type ObjectExpressionPropertyKey = {
+    type: 'Identifier',
+    name: string,
+}

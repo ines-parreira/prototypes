@@ -46,7 +46,9 @@ const Literal = ({
                 className="LiteralWidget"
                 compact
             />
-            {value === '' && <Errors inline>This field cannot be empty</Errors>}
+            {(value === '' || value == null) && (
+                <Errors inline>This field cannot be empty</Errors>
+            )}
         </span>
     )
 }

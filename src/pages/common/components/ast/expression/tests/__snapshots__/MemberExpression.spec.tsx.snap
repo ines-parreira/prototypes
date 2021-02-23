@@ -1,0 +1,665 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<MemberExpression/> should render 1`] = `
+<div
+  class="wrapper IdentifierDropdown test"
+>
+  <div
+    class="btn-group"
+  >
+    <button
+      aria-expanded="false"
+      aria-haspopup="true"
+      class="select ControlStructureButton dropdown-toggle btn btn-secondary"
+      type="button"
+    >
+      <span
+        class="label"
+      >
+        message source from address
+      </span>
+    </button>
+    <div
+      aria-hidden="true"
+      class="options dropdown-menu"
+      role="menu"
+      tabindex="-1"
+    >
+      <button
+        class="option dropdown-item"
+        tabindex="0"
+        type="button"
+      >
+        Message
+        <i
+          class="optionArrow material-icons md-2"
+        >
+          keyboard_arrow_right
+        </i>
+      </button>
+      <button
+        class="option dropdown-item"
+        tabindex="0"
+        type="button"
+      >
+        Ticket
+        <i
+          class="optionArrow material-icons md-2"
+        >
+          keyboard_arrow_right
+        </i>
+      </button>
+      <button
+        class="option dropdown-item"
+        tabindex="0"
+        type="button"
+      >
+        Customer
+        <i
+          class="optionArrow material-icons md-2"
+        >
+          keyboard_arrow_right
+        </i>
+      </button>
+      <button
+        class="option dropdown-item"
+        tabindex="0"
+        type="button"
+      >
+        Shopify Last Order
+        <i
+          class="optionArrow material-icons md-2"
+        >
+          keyboard_arrow_right
+        </i>
+      </button>
+      <button
+        class="option dropdown-item"
+        tabindex="0"
+        type="button"
+      >
+        Shopify Customer
+        <i
+          class="optionArrow material-icons md-2"
+        >
+          keyboard_arrow_right
+        </i>
+      </button>
+      <button
+        class="option dropdown-item"
+        tabindex="0"
+        type="button"
+      >
+        Magento2 Last Order
+        <i
+          class="optionArrow material-icons md-2"
+        >
+          keyboard_arrow_right
+        </i>
+      </button>
+      <button
+        class="option dropdown-item"
+        tabindex="0"
+        type="button"
+      >
+        Magento2 Customer
+        <i
+          class="optionArrow material-icons md-2"
+        >
+          keyboard_arrow_right
+        </i>
+      </button>
+      <button
+        class="option dropdown-item"
+        tabindex="0"
+        type="button"
+      >
+        Recharge Last Subscription
+        <i
+          class="optionArrow material-icons md-2"
+        >
+          keyboard_arrow_right
+        </i>
+      </button>
+      <button
+        class="option dropdown-item"
+        tabindex="0"
+        type="button"
+      >
+        Recharge Customer
+        <i
+          class="optionArrow material-icons md-2"
+        >
+          keyboard_arrow_right
+        </i>
+      </button>
+      <button
+        class="option dropdown-item"
+        tabindex="0"
+        type="button"
+      >
+        Smile Customer
+        <i
+          class="optionArrow material-icons md-2"
+        >
+          keyboard_arrow_right
+        </i>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<MemberExpression/> should update the dropdown on clicking a category 1`] = `
+<div
+  class="wrapper IdentifierDropdown test"
+>
+  <div
+    class="btn-group"
+  >
+    <button
+      aria-expanded="false"
+      aria-haspopup="true"
+      class="select ControlStructureButton dropdown-toggle btn btn-secondary"
+      type="button"
+    >
+      <span
+        class="label"
+      >
+        message source from address
+      </span>
+    </button>
+    <div
+      aria-hidden="true"
+      class="options dropdown-menu"
+      role="menu"
+      tabindex="-1"
+    >
+      <div
+        class="backOption"
+      >
+        <i
+          class="material-icons mr-1"
+        >
+          arrow_back
+        </i>
+        Shopify Last Order
+      </div>
+      <div
+        class="subOptions"
+      >
+        <button
+          class="option dropdown-item"
+          tabindex="0"
+          type="button"
+        >
+          created date
+        </button>
+        <button
+          class="option dropdown-item"
+          tabindex="0"
+          type="button"
+        >
+          financial status
+        </button>
+        <button
+          class="option dropdown-item"
+          tabindex="0"
+          type="button"
+        >
+          fulfillment status
+        </button>
+        <button
+          class="option dropdown-item"
+          tabindex="0"
+          type="button"
+        >
+          tags
+        </button>
+        <button
+          class="option dropdown-item"
+          tabindex="0"
+          type="button"
+        >
+          total price
+        </button>
+        <div
+          class="subcategoryLabel"
+        >
+          Last Fulfillement
+        </div>
+        <button
+          class="option dropdown-item"
+          tabindex="0"
+          type="button"
+        >
+          created date
+        </button>
+        <button
+          class="option dropdown-item"
+          tabindex="0"
+          type="button"
+        >
+          shipment status
+        </button>
+        <button
+          class="option dropdown-item"
+          tabindex="0"
+          type="button"
+        >
+          status
+        </button>
+        <button
+          class="option dropdown-item"
+          tabindex="0"
+          type="button"
+        >
+          tracking number
+        </button>
+        <div
+          class="subcategoryLabel"
+        >
+          Shipping Address
+        </div>
+        <button
+          class="option dropdown-item"
+          tabindex="0"
+          type="button"
+        >
+          country
+        </button>
+        <button
+          class="option dropdown-item"
+          tabindex="0"
+          type="button"
+        >
+          state
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<MemberExpression/> should update the rule on clicking a variable option 1`] = `
+Array [
+  Array [
+    Immutable.Map {
+      "priority": 6,
+      "deactivated_datetime": "2021-01-15T15:26:02.575404+00:00",
+      "name": "Set tags",
+      "uri": "/api/rules/7/",
+      "code": "if (eq(ticket.customer.integrations.shopify.last_order.fulfillment_status, null)) {
+    Action('setTags', { tags: 'set' })
+}",
+      "code_ast": Immutable.Map {
+        "loc": SourceLocation {
+          "end": Object {
+            "column": 1,
+            "line": 3,
+          },
+          "start": Position {
+            "column": 0,
+            "line": 1,
+          },
+        },
+        "type": "Program",
+        "body": Immutable.List [
+          Immutable.Map {
+            "loc": SourceLocation {
+              "end": Object {
+                "column": 1,
+                "line": 3,
+              },
+              "start": Position {
+                "column": 0,
+                "line": 1,
+              },
+            },
+            "type": "IfStatement",
+            "test": Immutable.Map {
+              "loc": WrappingSourceLocation {
+                "end": Object {
+                  "column": 80,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 4,
+                  "line": 1,
+                },
+              },
+              "type": "CallExpression",
+              "callee": Immutable.Map {
+                "loc": SourceLocation {
+                  "end": Object {
+                    "column": 6,
+                    "line": 1,
+                  },
+                  "start": Position {
+                    "column": 4,
+                    "line": 1,
+                  },
+                },
+                "type": "Identifier",
+                "name": "eq",
+              },
+              "arguments": Immutable.List [
+                Immutable.Map {
+                  "loc": WrappingSourceLocation {
+                    "end": Object {
+                      "column": 73,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 7,
+                      "line": 1,
+                    },
+                  },
+                  "type": "MemberExpression",
+                  "computed": false,
+                  "object": Immutable.Map {
+                    "loc": WrappingSourceLocation {
+                      "end": Object {
+                        "column": 54,
+                        "line": 1,
+                      },
+                      "start": Object {
+                        "column": 7,
+                        "line": 1,
+                      },
+                    },
+                    "type": "MemberExpression",
+                    "computed": false,
+                    "object": Immutable.Map {
+                      "loc": WrappingSourceLocation {
+                        "end": Object {
+                          "column": 43,
+                          "line": 1,
+                        },
+                        "start": Object {
+                          "column": 7,
+                          "line": 1,
+                        },
+                      },
+                      "type": "MemberExpression",
+                      "computed": false,
+                      "object": Immutable.Map {
+                        "loc": WrappingSourceLocation {
+                          "end": Object {
+                            "column": 35,
+                            "line": 1,
+                          },
+                          "start": Object {
+                            "column": 7,
+                            "line": 1,
+                          },
+                        },
+                        "type": "MemberExpression",
+                        "computed": false,
+                        "object": Immutable.Map {
+                          "loc": WrappingSourceLocation {
+                            "end": Object {
+                              "column": 22,
+                              "line": 1,
+                            },
+                            "start": Object {
+                              "column": 7,
+                              "line": 1,
+                            },
+                          },
+                          "type": "MemberExpression",
+                          "computed": false,
+                          "object": Immutable.Map {
+                            "loc": SourceLocation {
+                              "end": Object {
+                                "column": 13,
+                                "line": 1,
+                              },
+                              "start": Position {
+                                "column": 7,
+                                "line": 1,
+                              },
+                            },
+                            "type": "Identifier",
+                            "name": "ticket",
+                          },
+                          "property": Immutable.Map {
+                            "loc": SourceLocation {
+                              "end": Object {
+                                "column": 22,
+                                "line": 1,
+                              },
+                              "start": Position {
+                                "column": 14,
+                                "line": 1,
+                              },
+                            },
+                            "type": "Identifier",
+                            "name": "customer",
+                          },
+                        },
+                        "property": Immutable.Map {
+                          "loc": SourceLocation {
+                            "end": Object {
+                              "column": 35,
+                              "line": 1,
+                            },
+                            "start": Position {
+                              "column": 23,
+                              "line": 1,
+                            },
+                          },
+                          "type": "Identifier",
+                          "name": "integrations",
+                        },
+                      },
+                      "property": Immutable.Map {
+                        "loc": SourceLocation {
+                          "end": Object {
+                            "column": 43,
+                            "line": 1,
+                          },
+                          "start": Position {
+                            "column": 36,
+                            "line": 1,
+                          },
+                        },
+                        "type": "Identifier",
+                        "name": "shopify",
+                      },
+                    },
+                    "property": Immutable.Map {
+                      "loc": SourceLocation {
+                        "end": Object {
+                          "column": 54,
+                          "line": 1,
+                        },
+                        "start": Position {
+                          "column": 44,
+                          "line": 1,
+                        },
+                      },
+                      "type": "Identifier",
+                      "name": "last_order",
+                    },
+                  },
+                  "property": Immutable.Map {
+                    "loc": SourceLocation {
+                      "end": Object {
+                        "column": 73,
+                        "line": 1,
+                      },
+                      "start": Position {
+                        "column": 55,
+                        "line": 1,
+                      },
+                    },
+                    "type": "Identifier",
+                    "name": "fulfillment_status",
+                  },
+                },
+                Immutable.Map {
+                  "loc": SourceLocation {
+                    "end": Object {
+                      "column": 79,
+                      "line": 1,
+                    },
+                    "start": Position {
+                      "column": 75,
+                      "line": 1,
+                    },
+                  },
+                  "type": "Literal",
+                  "value": null,
+                  "raw": "null",
+                },
+              ],
+            },
+            "consequent": Immutable.Map {
+              "loc": SourceLocation {
+                "end": Object {
+                  "column": 1,
+                  "line": 3,
+                },
+                "start": Position {
+                  "column": 82,
+                  "line": 1,
+                },
+              },
+              "type": "BlockStatement",
+              "body": Immutable.List [
+                Immutable.Map {
+                  "loc": SourceLocation {
+                    "end": Object {
+                      "column": 38,
+                      "line": 2,
+                    },
+                    "start": Position {
+                      "column": 4,
+                      "line": 2,
+                    },
+                  },
+                  "type": "ExpressionStatement",
+                  "expression": Immutable.Map {
+                    "loc": WrappingSourceLocation {
+                      "end": Object {
+                        "column": 38,
+                        "line": 2,
+                      },
+                      "start": Object {
+                        "column": 4,
+                        "line": 2,
+                      },
+                    },
+                    "type": "CallExpression",
+                    "callee": Immutable.Map {
+                      "loc": SourceLocation {
+                        "end": Object {
+                          "column": 10,
+                          "line": 2,
+                        },
+                        "start": Position {
+                          "column": 4,
+                          "line": 2,
+                        },
+                      },
+                      "type": "Identifier",
+                      "name": "Action",
+                    },
+                    "arguments": Immutable.List [
+                      Immutable.Map {
+                        "loc": SourceLocation {
+                          "end": Object {
+                            "column": 20,
+                            "line": 2,
+                          },
+                          "start": Position {
+                            "column": 11,
+                            "line": 2,
+                          },
+                        },
+                        "type": "Literal",
+                        "value": "setTags",
+                        "raw": "'setTags'",
+                      },
+                      Immutable.Map {
+                        "loc": SourceLocation {
+                          "end": Object {
+                            "column": 37,
+                            "line": 2,
+                          },
+                          "start": Position {
+                            "column": 22,
+                            "line": 2,
+                          },
+                        },
+                        "type": "ObjectExpression",
+                        "properties": Immutable.List [
+                          Immutable.Map {
+                            "loc": SourceLocation {
+                              "end": Object {
+                                "column": 35,
+                                "line": 2,
+                              },
+                              "start": Position {
+                                "column": 24,
+                                "line": 2,
+                              },
+                            },
+                            "type": "Property",
+                            "key": Immutable.Map {
+                              "loc": SourceLocation {
+                                "end": Object {
+                                  "column": 28,
+                                  "line": 2,
+                                },
+                                "start": Position {
+                                  "column": 24,
+                                  "line": 2,
+                                },
+                              },
+                              "type": "Identifier",
+                              "name": "tags",
+                            },
+                            "computed": false,
+                            "value": Immutable.Map {
+                              "loc": SourceLocation {
+                                "end": Object {
+                                  "column": 35,
+                                  "line": 2,
+                                },
+                                "start": Position {
+                                  "column": 30,
+                                  "line": 2,
+                                },
+                              },
+                              "type": "Literal",
+                              "value": "set",
+                              "raw": "'set'",
+                            },
+                            "kind": "init",
+                            "method": false,
+                            "shorthand": false,
+                          },
+                        ],
+                      },
+                    ],
+                  },
+                },
+              ],
+            },
+            "alternate": null,
+          },
+        ],
+        "sourceType": "script",
+      },
+      "created_datetime": "2021-01-15T15:26:02.577755+00:00",
+      "event_types": "ticket-created",
+      "type": "user",
+      "id": 7,
+      "description": "Set tags",
+      "updated_datetime": "2021-02-11T13:15:46.420156+00:00",
+    },
+  ],
+]
+`;

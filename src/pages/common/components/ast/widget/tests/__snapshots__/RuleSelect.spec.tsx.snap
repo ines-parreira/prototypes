@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<RuleSelect/> should display the label of the selected value 1`] = `
+<div
+  class="wrapper test"
+>
+  <div
+    class="btn-group"
+  >
+    <button
+      aria-expanded="false"
+      aria-haspopup="true"
+      class="select ControlStructureButton dropdown-toggle btn btn-secondary"
+      type="button"
+    >
+      <span
+        class="label"
+      >
+        Foo
+      </span>
+    </button>
+    <div
+      aria-hidden="true"
+      class="options dropdown-menu"
+      role="menu"
+      tabindex="-1"
+    >
+      <button
+        class="option dropdown-item"
+        tabindex="0"
+        type="button"
+      >
+        foo
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`<RuleSelect/> should display the placeholder when no label is passed 1`] = `
+<div
+  class="wrapper test"
+>
+  <div
+    class="btn-group"
+  >
+    <button
+      aria-expanded="false"
+      aria-haspopup="true"
+      class="select ControlStructureButton dropdown-toggle btn btn-secondary"
+      type="button"
+    >
+      <span
+        class="label"
+      >
+        Select an option
+      </span>
+    </button>
+    <div
+      aria-hidden="true"
+      class="options dropdown-menu"
+      role="menu"
+      tabindex="-1"
+    >
+      <button
+        class="option dropdown-item"
+        tabindex="0"
+        type="button"
+      >
+        foo
+      </button>
+    </div>
+  </div>
+</div>
+`;

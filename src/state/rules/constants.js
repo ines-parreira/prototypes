@@ -19,6 +19,8 @@ export const UPDATE_RULE_ERROR = 'UPDATE_RULE_ERROR'
 
 export const RESET_RULE_SUCCESS = 'RESET_RULE_SUCCESS'
 
+export const RULE_UPDATED = 'RULE_UPDATED'
+
 // Map between rules and objects in the rule code
 export const OBJECT_DEFINITIONS = {
     ticket: 'Ticket',
