@@ -155,6 +155,11 @@ export const IDENTIFIER_VARIABLES_BY_CATEGORY: {
     ],
     [IdentifierCategoryKey.Ticket]: [
         {
+            label: 'assignee user',
+            text: 'ticket assignee user',
+            value: 'ticket.assignee_user_id',
+        },
+        {
             label: 'assignee team',
             text: 'ticket assignee team',
             value: 'ticket.assignee_team_id',

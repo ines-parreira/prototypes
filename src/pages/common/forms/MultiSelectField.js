@@ -10,7 +10,7 @@ type Props = {
     singular: string,
     style?: {},
     tagColor: string,
-    values: any[],
+    values: ?(any[]),
     className?: string,
     caseInsensitive?: boolean,
     onChange: (any[]) => void,
@@ -35,7 +35,7 @@ export default class MultiSelectField extends React.Component<Props> {
     }
 
     render() {
-        const selectedOptions: Option[] = this.props.values.map(
+        const selectedOptions: Option[] = (this.props.values || []).map(
             (value: any) => {
                 return (
                     this.props.options.find(

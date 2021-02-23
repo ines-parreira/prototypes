@@ -45,4 +45,9 @@ describe('MultiSelectField', () => {
             },
         ])
     })
+
+    it('should render a null value', () => {
+        const component = mount(<MultiSelectField {...props} values={null} />)
+        expect(component).toMatchSnapshot()
+    })
 })
