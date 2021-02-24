@@ -30,7 +30,7 @@ type OwnProps = {
     shopifyIntegrations: Immutable.List<any>
 }
 
-const selfServiceMock = getIconFromUrl('integrations/self_service_mock.png')
+const selfServiceMock = getIconFromUrl('integrations/ssp_mock.png')
 const SHOPIFY_DOMAIN_SUFFIX = '.myshopify.com'
 
 interface SelfServiceConfiguration {
