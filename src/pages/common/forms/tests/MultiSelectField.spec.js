@@ -46,7 +46,7 @@ describe('MultiSelectField', () => {
         ])
     })
 
-    it('should render a null value', () => {
+    it('should render the select field with no selected option', () => {
         const component = mount(<MultiSelectField {...props} values={null} />)
         expect(component).toMatchSnapshot()
     })

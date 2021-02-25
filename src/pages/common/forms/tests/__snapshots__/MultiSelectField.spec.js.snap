@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`MultiSelectField should render a null value 1`] = `
+exports[`MultiSelectField should render the select field with no selected option 1`] = `
 <MultiSelectField
   allowCustomValues={true}
   onChange={[Function]}
