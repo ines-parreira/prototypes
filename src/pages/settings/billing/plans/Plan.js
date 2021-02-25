@@ -1,5 +1,5 @@
 import classnames from 'classnames'
-import React, {useState} from 'react'
+import React, {useRef, useState} from 'react'
 import {
     Button,
     Card,
@@ -197,7 +197,7 @@ export function Plan(props: Props) {
     const [isConfirmationDisplayed, setIsConfirmationDisplayed] = useState(
         false
     )
-    const buttonId = `choose-plan-${plan.get('name')}`
+    const buttonRef = useRef(null)
     const isEnterprisePlan = plan.get('id') === 'enterprise'
     const isCurrentPlan = currentPlan.get('id') === plan.get('id')
     const isDowngrade = currentPlan.isEmpty()
@@ -276,7 +276,7 @@ export function Plan(props: Props) {
                     ) : (
                         <>
                             <Button
-                                id={buttonId}
+                                innerRef={buttonRef}
                                 data-testid="choose-plan-button"
                                 className={classnames({
                                     'btn-loading': isUpdating,
@@ -295,46 +295,48 @@ export function Plan(props: Props) {
                                     ? 'Your current Plan'
                                     : `Switch to ${plan.get('name')} Plan`}
                             </Button>
-                            <Popover
-                                placement="top"
-                                isOpen={isConfirmationDisplayed}
-                                target={buttonId}
-                                toggle={() =>
-                                    setIsConfirmationDisplayed(
-                                        !isConfirmationDisplayed
-                                    )
-                                }
-                            >
-                                <PopoverHeader>Are you sure?</PopoverHeader>
-                                <PopoverBody>
-                                    <p>
-                                        Are you sure you want to choose the{' '}
-                                        {plan.get('name')} plan?
-                                        {isDowngrade && (
-                                            <>
-                                                <b>
-                                                    This plan does not include
-                                                    some of the features
-                                                    included in your existing
-                                                    plan.
-                                                </b>{' '}
-                                                You might want to keep your
-                                                existing plan to not have these
-                                                features deactivated.
-                                            </>
-                                        )}
-                                    </p>
+                            {buttonRef.current && (
+                                <Popover
+                                    placement="top"
+                                    isOpen={isConfirmationDisplayed}
+                                    target={buttonRef.current}
+                                    toggle={() =>
+                                        setIsConfirmationDisplayed(
+                                            !isConfirmationDisplayed
+                                        )
+                                    }
+                                >
+                                    <PopoverHeader>Are you sure?</PopoverHeader>
+                                    <PopoverBody>
+                                        <p>
+                                            Are you sure you want to choose the{' '}
+                                            {plan.get('name')} plan?
+                                            {isDowngrade && (
+                                                <>
+                                                    <b>
+                                                        This plan does not
+                                                        include some of the
+                                                        features included in
+                                                        your existing plan.
+                                                    </b>{' '}
+                                                    You might want to keep your
+                                                    existing plan to not have
+                                                    these features deactivated.
+                                                </>
+                                            )}
+                                        </p>
 
-                                    <Button
-                                        data-testid="confirm-choose-plan-button"
-                                        type="button"
-                                        color="success"
-                                        onClick={props.onClick}
-                                    >
-                                        Confirm
-                                    </Button>
-                                </PopoverBody>
-                            </Popover>
+                                        <Button
+                                            data-testid="confirm-choose-plan-button"
+                                            type="button"
+                                            color="success"
+                                            onClick={props.onClick}
+                                        >
+                                            Confirm
+                                        </Button>
+                                    </PopoverBody>
+                                </Popover>
+                            )}
                         </>
                     )}
                 </CardFooter>

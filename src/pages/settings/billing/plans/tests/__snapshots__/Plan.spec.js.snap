@@ -188,7 +188,6 @@ exports[`<Plan/> should render a plan being selected 1`] = `
       class="btn-loading btn btn-link disabled"
       data-testid="choose-plan-button"
       disabled=""
-      id="choose-plan-Pro"
       type="button"
     >
       Switch to Pro Plan
@@ -326,7 +325,6 @@ exports[`<Plan/> should render a plan different from the current plan 1`] = `
     <button
       class="btn btn-link"
       data-testid="choose-plan-button"
-      id="choose-plan-Pro"
       type="button"
     >
       Switch to Pro Plan
@@ -469,7 +467,6 @@ exports[`<Plan/> should render a plan featured 1`] = `
     <button
       class="btn btn-link"
       data-testid="choose-plan-button"
-      id="choose-plan-Pro"
       type="button"
     >
       Switch to Pro Plan
@@ -608,7 +605,6 @@ exports[`<Plan/> should render a plan identical to the current plan 1`] = `
       class="btn btn-link disabled"
       data-testid="choose-plan-button"
       disabled=""
-      id="choose-plan-Pro"
       type="button"
     >
       Your current Plan
@@ -751,7 +747,6 @@ exports[`<Plan/> should render a plan with cheaper plan 1`] = `
     <button
       class="btn btn-link"
       data-testid="choose-plan-button"
-      id="choose-plan-Pro"
       type="button"
     >
       Switch to Pro Plan
@@ -889,7 +884,6 @@ exports[`<Plan/> should render a plan with custom class names 1`] = `
     <button
       class="btn btn-link"
       data-testid="choose-plan-button"
-      id="choose-plan-Pro"
       type="button"
     >
       Switch to Pro Plan
@@ -1027,7 +1021,6 @@ exports[`<Plan/> should render a plan with default props 1`] = `
     <button
       class="btn btn-link"
       data-testid="choose-plan-button"
-      id="choose-plan-Pro"
       type="button"
     >
       Switch to Pro Plan
@@ -1165,7 +1158,6 @@ exports[`<Plan/> should render a plan with no current plan 1`] = `
     <button
       class="btn btn-link"
       data-testid="choose-plan-button"
-      id="choose-plan-Pro"
       type="button"
     >
       Switch to Pro Plan
@@ -1359,7 +1351,6 @@ exports[`<Plan/> should render a plan without product features 1`] = `
     <button
       class="btn btn-link"
       data-testid="choose-plan-button"
-      id="choose-plan-Pro"
       type="button"
     >
       Switch to Pro Plan

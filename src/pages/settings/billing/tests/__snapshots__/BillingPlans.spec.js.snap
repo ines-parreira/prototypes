@@ -112,7 +112,6 @@ exports[`<BillingPlans/> should display a custom plan 1`] = `
           <button
             class="btn btn-link"
             data-testid="choose-plan-button"
-            id="choose-plan-Custom"
             type="button"
           >
             Switch to Custom Plan
@@ -188,7 +187,6 @@ exports[`<BillingPlans/> should display a custom plan 1`] = `
             class="btn btn-link disabled"
             data-testid="choose-plan-button"
             disabled=""
-            id="choose-plan-Basic"
             type="button"
           >
             Your current Plan
@@ -258,7 +256,6 @@ exports[`<BillingPlans/> should display a custom plan 1`] = `
           <button
             class="btn btn-link"
             data-testid="choose-plan-button"
-            id="choose-plan-Pro"
             type="button"
           >
             Switch to Pro Plan
@@ -566,7 +563,6 @@ exports[`<BillingPlans/> should display plans with product features 1`] = `
             class="btn btn-link disabled"
             data-testid="choose-plan-button"
             disabled=""
-            id="choose-plan-Basic"
             type="button"
           >
             Your current Plan
@@ -711,7 +707,6 @@ exports[`<BillingPlans/> should display plans with product features 1`] = `
           <button
             class="btn btn-link"
             data-testid="choose-plan-button"
-            id="choose-plan-Pro"
             type="button"
           >
             Switch to Pro Plan
@@ -959,7 +954,6 @@ exports[`<BillingPlans/> should display plans without product features 1`] = `
             class="btn btn-link disabled"
             data-testid="choose-plan-button"
             disabled=""
-            id="choose-plan-Basic"
             type="button"
           >
             Your current Plan
@@ -1034,7 +1028,6 @@ exports[`<BillingPlans/> should display plans without product features 1`] = `
           <button
             class="btn btn-link"
             data-testid="choose-plan-button"
-            id="choose-plan-Pro"
             type="button"
           >
             Switch to Pro Plan
@@ -1282,7 +1275,6 @@ exports[`<BillingPlans/> should display public plans 1`] = `
             class="btn btn-link disabled"
             data-testid="choose-plan-button"
             disabled=""
-            id="choose-plan-Basic"
             type="button"
           >
             Your current Plan
@@ -1357,7 +1349,6 @@ exports[`<BillingPlans/> should display public plans 1`] = `
           <button
             class="btn btn-link"
             data-testid="choose-plan-button"
-            id="choose-plan-Pro"
             type="button"
           >
             Switch to Pro Plan
